@@ -15,7 +15,7 @@ class DT_Mapping_Module_Migration_0002 extends DT_Mapping_Module_Migration {
         $expected = 48851;
 
         // TEST for expected tables\
-        $wpdb->query( "SHOW TABLES LIKE $wpdb->dt_geonames" );
+        $wpdb->query( "SHOW TABLES LIKE '$wpdb->dt_geonames'" );
         if ( $wpdb->num_rows < 1 ) {
             error_log( 'Failed to find ' . $wpdb->dt_geonames );
             dt_write_log( $wpdb->num_rows );

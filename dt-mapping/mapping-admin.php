@@ -1871,13 +1871,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             }
 
             // TEST for expected tables and clear it
-            $wpdb->query( "SHOW TABLES LIKE $wpdb->dt_geonames" );
+            $wpdb->query( "SHOW TABLES LIKE '$wpdb->dt_geonames'" );
             if ( $wpdb->num_rows < 1 ) {
                 require_once( get_template_directory() . '/dt-mapping/migrations/0000-initial.php' );
                 $download = new DT_Mapping_Module_Migration_0000();
                 $download->up();
 
-                $wpdb->query( "SHOW TABLES LIKE $wpdb->dt_geonames" );
+                $wpdb->query( "SHOW TABLES LIKE '$wpdb->dt_geonames'" );
                 if ( $wpdb->num_rows < 1 ) {
                     error_log( 'Failed to find ' . $wpdb->dt_geonames );
                     dt_write_log( $wpdb->num_rows );
