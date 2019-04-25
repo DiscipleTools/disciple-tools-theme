@@ -1,108 +1,99 @@
-/* global jQuery:false, wpApiShare:false */
-_ = _ || window.lodash // make sure lodash is defined so plugins like gutenberg don't break it.
 
 window.DRILLDOWNDATA = mappingModule.mapping_module
 window.DRILLDOWN = {
 
-    load_drill_down( geonameid, bindFunction ) {
-        if ( geonameid ) {
-            DRILLDOWN.geoname_drill_down( geonameid, bindFunction )
-        }
-        else {
-            DRILLDOWN.top_level_drill_down( bindFunction )
-        }
-    },
-
-    top_level_drill_down( bindFunction ) {
-        let top_map_list = DRILLDOWNDATA.data.top_map_list
-        let drill_down = jQuery('#drill_down')
-
+    get_drill_down( bindFunction, geonameid ) {
         DRILLDOWN.show_spinner()
 
-        drill_down.empty().append(`<li><select id="drill_down_top_level" onchange="DRILLDOWN.geoname_drill_down( this.value, '${bindFunction}' );jQuery(this).parent().nextAll().remove();"><option value=" "></option></select></li>`)
-        let drill_down_select = jQuery('#drill_down_top_level')
+        if ( ! geonameid ) {
+            geonameid = 'top_map_level'
+        }
+        console.log(geonameid)
 
-        if( Object.keys(top_map_list).length === 1 ) { // single top level
-            jQuery.each(top_map_list, function(i,v) {
-                drill_down_select.append(`<option value="${i}" selected>${v}</option>`)
+        let drill_down = jQuery('#'+bindFunction)
+        let rest = DRILLDOWNDATA.settings.endpoints.get_drilldown_endpoint
 
-                if ( ! DRILLDOWN.isEmpty( DRILLDOWNDATA.data[i].children ) ) {
+        jQuery.ajax({
+            type: rest.method,
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify( {  "bind_function": bindFunction, "geonameid": geonameid } ),
+            dataType: "json",
+            url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
+            },
+        })
+        .done( function( response ) {
+            console.log(response)
 
-                    drill_down.append(`<li><select id="${i}" onchange="DRILLDOWN.geoname_drill_down( this.value, '${bindFunction}' );jQuery(this).parent().nextAll().remove();"><option value="${i}"></option></select></li>`)
+            let html = ``
 
-                    let sorted_children = _.sortBy(DRILLDOWNDATA.data[i].children, [function (o) {
-                        return o.name;
-                    }]);
+            html += `<ul id="drill_down">`
 
-                    jQuery.each(sorted_children, function (ii, vv) {
-                        jQuery('#' + i).append(`<option value="${vv.id}">${vv.name}</option>`)
-                    })
+            jQuery.each( response, function(i,section) {
 
-                    if ( typeof DRILLDOWN[bindFunction] !== "undefined" ) {
-                        DRILLDOWN[bindFunction]( i )
+                // check if section is a link or a dropdown list
+                if ( section.link ) {
+
+                    // highlight the active button
+                    let hollowClass = 'hollow'
+                    if ( section.active ) {
+                        hollowClass = ''
                     }
-                }
-            })
-        } else { // multi-top level
-            drill_down_select.append(`<option value=""></option>`)
 
-            jQuery.each(top_map_list, function(i,v) {
-                drill_down_select.append(`<option value="${i}">${v}</option>`)
-            })
+                    // create button
+                    html += `<li><button id="${section.parent}" style="margin-top:1em;"
+                        onclick="DRILLDOWN.get_drill_down( '${bindFunction}', '${section.selected}' )"
+                        class="button ${hollowClass} geocode-link">${section.selected_name}</button></li>`
 
-            if (typeof DRILLDOWN[bindFunction] !== "undefined" ) {
-                DRILLDOWN[bindFunction]( 'top_map_list' )
-            }
-        }
+                } else { // it is a list
+                    // check if list is not empty
+                    if (!DRILLDOWN.isEmpty(section.list)) {
 
-        DRILLDOWN.hide_spinner()
-    },
+                        // check if hide final drilldown is set and that there are no deeper levels
+                        if ( DRILLDOWN.isEmpty(section.deeper_levels) && DRILLDOWNDATA.settings.hide_final_drill_down === true) {
+                            console.log('no additional dropdown triggered')
+                        } else {
+                            // make select
+                            html += `<li><select id="${section.parent}" 
+                            onchange="DRILLDOWN.get_drill_down( '${bindFunction}', this.value )"
+                            class="geocode-select">`
 
-    geoname_drill_down( geonameid, bindFunction ) {
-        let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_geonameid_endpoint
-        let drill_down = jQuery('#drill_down')
+                            // make initial option
+                            html += `<option value="${section.parent}"></option>`
 
-        DRILLDOWN.show_spinner()
-
-        if ( geonameid !== undefined  && geonameid !== ' ' ) {
-            DRILLDOWNDATA.settings.current_map = geonameid
-
-            jQuery.ajax({
-                type: rest.method,
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify( { 'geonameid': geonameid } ),
-                dataType: "json",
-                url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
-                },
-            })
-                .done( function( response ) {
-                    console.log(response)
-                    DRILLDOWNDATA.data[geonameid] = response
-
-                    if ( ! DRILLDOWN.isEmpty( response.children ) ) {
-                        /* Hide next level drill down if 'hide_final_drill_down' is set to true. This can be defined externally. @see example mapping-admin.php:858 */
-                        if ( ! DRILLDOWN.isEmpty( response.deeper_levels ) || ! DRILLDOWNDATA.settings.hide_final_drill_down === true ) {
-                            drill_down.append(`<li><select id="${response.self.geonameid}" class="geocode-select" onchange="DRILLDOWN.geoname_drill_down( this.value, '${bindFunction}' );jQuery(this).parent().nextAll().remove();"><option value="${response.self.geonameid}"></option></select></li>`)
-                            let sorted_children =  _.sortBy(response.children, [function(o) { return o.name; }]);
-
-                            jQuery.each( sorted_children, function(i,v) {
-                                jQuery('#'+geonameid).append(`<option value="${v.id}">${v.name}</option>`)
+                            // make option list
+                            jQuery.each(section.list, function (ii, item) {
+                                html += `<option value="${item.geonameid}" `
+                                if (item.geonameid === section.selected) {
+                                    html += ` selected`
+                                }
+                                html += `>${item.name}</option>`
                             })
+
+                            html += `</select></li>`
                         }
                     }
+                }
 
-                    if ( typeof DRILLDOWN[bindFunction] !== "undefined" ) {
-                        DRILLDOWN[bindFunction]( geonameid )
-                    }
+            })
 
-                }) // end success statement
-                .fail(function (err) {
-                    console.log("error")
-                    console.log(err)
-                })
-        }
+            // close unordered list
+            html += `</ul>`
+
+            // clear and apply new list
+            drill_down.empty().append(html)
+
+            // trigger supplied bind event
+            if ( typeof DRILLDOWN[bindFunction] !== "undefined" ) {
+                DRILLDOWN[bindFunction]( geonameid )
+            }
+
+        }) // end success statement
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+        })
 
         DRILLDOWN.hide_spinner()
     },
