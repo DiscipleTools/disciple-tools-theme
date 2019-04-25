@@ -1788,6 +1788,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     if ( isset( $value['longitude'] ) ) {
                         $query[$index]['longitude'] = (float) $value['longitude'];
                     }
+                    if ( isset( $value['parent_id'] ) ) {
+                        $query[$index]['parent_id'] = (float) $value['parent_id'];
+                    }
                     if ( isset( $value['country_geonameid'] ) ) {
                         $query[$index]['country_geonameid'] = (float) $value['country_geonameid'];
                     }

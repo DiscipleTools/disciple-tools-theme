@@ -1,3 +1,5 @@
+/* global jQuery:false, wpApiShare:false */
+_ = _ || window.lodash // make sure lodash is defined so plugins like gutenberg don't break it.
 
 window.DRILLDOWNDATA = mappingModule.mapping_module
 window.DRILLDOWN = {
@@ -42,7 +44,7 @@ window.DRILLDOWN = {
                     }
 
                     // create button
-                    html += `<li><button id="${section.parent}" style="margin-top:1em;"
+                    html += `<li><button id="${section.parent}"
                         onclick="DRILLDOWN.get_drill_down( '${bindFunction}', '${section.selected}' )"
                         class="button ${hollowClass} geocode-link">${section.selected_name}</button></li>`
 

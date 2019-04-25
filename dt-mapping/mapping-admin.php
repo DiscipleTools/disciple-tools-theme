@@ -1009,9 +1009,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 </thead>
                 <tbody>
                 <tr>
-                    <td>
-                        <?php DT_Mapping_Module::instance()->drill_down_input( 'population_edit' ) ?>
-                    </td>
+                    <td id="population_edit"></td>
                 </tr>
                 </tbody>
             </table>
@@ -1029,32 +1027,55 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             </table>
 
             <script>
-                window.DRILLDOWNDATA.settings.hide_final_drill_down = true
+                window.DRILLDOWNDATA.settings.hide_final_drill_down = false
+                window.DRILLDOWN.get_drill_down('population_edit')
                 window.DRILLDOWN.population_edit = function (geonameid) {
-                    if (geonameid === 'top_map_list') { // top level multi-list
-                        let list_results = jQuery('#list_results')
-                        let gn = []
-                        list_results.empty()
-                        jQuery.each(window.DRILLDOWNDATA.data.top_map_list, function (i, v) {
-                            gn = window.DRILLDOWNDATA.data[i]
-                            if (gn !== undefined) {
-                                list_results.append(`<tr>
-                                        <td>${gn.self.name}</td>
-                                        <td id="label-${gn.self.geonameid}">${gn.self.population_formatted}</td>
-                                        <td><input type="number" id="input-${gn.self.geonameid}" value=""></td>
-                                        <td id="button-${gn.self.geonameid}"><a class="button" onclick="update( ${gn.self.geonameid}, jQuery('#input-'+${gn.self.geonameid}).val(), 'population' )">Update</a></td>
-                                        <td id="reset-${gn.self.geonameid}"><a class="button" onclick="reset( ${gn.self.geonameid}, 'population' )">Reset</a></td>
-                                        </tr>`)
-                            }
+                    let list_results = jQuery('#list_results')
+                    let div = 'list_results'
+
+                    // Find data source before build
+                    if ( geonameid === 'top_map_level' ) {
+                        let default_map_settings = DRILLDOWNDATA.settings.default_map_settings
+
+                        // Initialize Location Data
+                        let map_data = DRILLDOWNDATA.data[default_map_settings.parent]
+                        if ( map_data === undefined ) {
+                            console.log('error getting map_data')
+                            return;
+                        }
+
+                        build_list( div, map_data )
+                    }
+                    else if ( DRILLDOWNDATA.data[geonameid] === undefined ) {
+                        let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_geonameid_endpoint
+
+                        jQuery.ajax({
+                            type: rest.method,
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify( { 'geonameid': geonameid } ),
+                            dataType: "json",
+                            url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
+                            beforeSend: function(xhr) {
+                                xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
+                            },
                         })
+                            .done( function( response ) {
+                                DRILLDOWNDATA.data[geonameid] = response
+                                build_list( div, DRILLDOWNDATA.data[geonameid] )
+                            })
+                            .fail(function (err) {
+                                console.log("error")
+                                console.log(err)
+                                DRILLDOWN.hide_spinner()
+                            })
+
+                    } else {
+                        build_list( div, DRILLDOWNDATA.data[geonameid] )
                     }
-                    else if (window.DRILLDOWN.isEmpty(window.DRILLDOWNDATA.data[geonameid].children)) { // empty children for geonameid
-                        jQuery('#drill_down').append(`<li><em>deepest level reached!</em></li>`)
-                    }
-                    else { // children available
-                        let list_results = jQuery('#list_results')
+
+                    function build_list( div, map_data ) {
                         list_results.empty()
-                        jQuery.each(window.DRILLDOWNDATA.data[geonameid].children, function (i, v) {
+                        jQuery.each( map_data.children, function (i, v) {
                             list_results.append(`<tr>
                                         <td>${v.name}</td>
                                         <td id="label-${v.geonameid}">${v.population_formatted}</td>
@@ -1079,9 +1100,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 </thead>
                 <tbody>
                 <tr>
-                    <td>
-                        <?php DT_Mapping_Module::instance()->drill_down_input( 'name_select' ) ?>
-                    </td>
+                    <td id="name_select"></td>
                 </tr>
                 </tbody>
             </table>
@@ -1097,30 +1116,55 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             </table>
 
             <script>
-                window.DRILLDOWNDATA.settings.hide_final_drill_down = true
+                window.DRILLDOWNDATA.settings.hide_final_drill_down = false
+                window.DRILLDOWN.get_drill_down('name_select')
                 window.DRILLDOWN.name_select = function (geonameid) {
-                    if (geonameid === 'top_map_list') { // top level multi-list
-                        let list_results = jQuery('#list_results')
-                        let gn = []
-                        list_results.empty()
-                        jQuery.each(window.DRILLDOWNDATA.data.top_map_list, function (i, v) {
-                            gn = window.DRILLDOWNDATA.data[i]
-                            if (gn !== undefined) {
-                                list_results.append(`<tr><td id="label-${gn.self.geonameid}">${gn.self.name}</td>
-                                    <td><input type="text" id="input-${gn.self.geonameid}" value="" /></td>
-                                    <td id="button-${gn.self.geonameid}"><a class="button" onclick="update( ${gn.self.geonameid}, jQuery('#input-'+${gn.self.geonameid}).val(), 'name' )">Update</a></td>
-                                    <td id="reset-${gn.self.geonameid}"><a class="button" onclick="reset( ${gn.self.geonameid}, 'name'  )">Reset</a></td>
-                                    </tr>`)
-                            }
+                    let list_results = jQuery('#list_results')
+                    let div = 'list_results'
+
+                    // Find data source before build
+                    if (geonameid === 'top_map_level') {
+                        let default_map_settings = DRILLDOWNDATA.settings.default_map_settings
+
+                        // Initialize Location Data
+                        let map_data = DRILLDOWNDATA.data[default_map_settings.parent]
+                        if (map_data === undefined) {
+                            console.log('error getting map_data')
+                            return;
+                        }
+
+                        build_list(div, map_data)
+                    }
+                    else if (DRILLDOWNDATA.data[geonameid] === undefined) {
+                        let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_geonameid_endpoint
+
+                        jQuery.ajax({
+                            type: rest.method,
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify({'geonameid': geonameid}),
+                            dataType: "json",
+                            url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
+                            },
                         })
+                            .done(function (response) {
+                                DRILLDOWNDATA.data[geonameid] = response
+                                build_list(div, DRILLDOWNDATA.data[geonameid])
+                            })
+                            .fail(function (err) {
+                                console.log("error")
+                                console.log(err)
+                                DRILLDOWN.hide_spinner()
+                            })
+
+                    } else {
+                        build_list(div, DRILLDOWNDATA.data[geonameid])
                     }
-                    else if (window.DRILLDOWN.isEmpty(window.DRILLDOWNDATA.data[geonameid].children)) { // empty children for geonameid
-                        jQuery('#drill_down').append(`<li><em>deepest level reached!</em></li>`)
-                    }
-                    else { // children available
-                        let list_results = jQuery('#list_results')
+
+                    function build_list(div, map_data) {
                         list_results.empty()
-                        jQuery.each(window.DRILLDOWNDATA.data[geonameid].children, function (i, v) {
+                        jQuery.each(map_data.children, function (i, v) {
                             list_results.append(`<tr><td id="label-${v.geonameid}">${v.name}</td><td><input type="text" id="input-${v.geonameid}" value=""></td>
                                     <td id="button-${v.geonameid}"><a class="button" onclick="update( ${v.geonameid}, jQuery('#input-'+${v.geonameid}).val(), 'name' )">Update</a></td>
                                     <td id="reset-${v.geonameid}"><a class="button" onclick="reset( ${v.geonameid}, 'name' )">Reset</a></td>
@@ -1142,9 +1186,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 </thead>
                 <tbody>
                 <tr>
-                    <td>
-                        <?php DT_Mapping_Module::instance()->drill_down_input( 'sublocation' ) ?>
-                    </td>
+                    <td id="sublocation"></td>
                 </tr>
                 </tbody>
             </table>
@@ -1162,15 +1204,19 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             </table>
 
             <script>
+                _ = _ || window.lodash
                 jQuery(document).on('click', '.open_next_drilldown', function(){
                     let gnid = jQuery(this).data('geonameid')
-                    DRILLDOWN.geoname_drill_down( gnid, 'sublocation' );
-                    jQuery('#' + gnid).parent().nextAll().remove();
-                    jQuery(`#${jQuery(this).data('parent')} option[value=${gnid}]`).attr('selected', 'selected');
+                    DRILLDOWN.get_drill_down( 'sublocation', gnid  );
+
                 })
 
+                window.DRILLDOWNDATA.settings.hide_final_drill_down = false
+                window.DRILLDOWN.get_drill_down('sublocation')
                 window.DRILLDOWN.sublocation = function (geonameid) {
+
                     let list_results = jQuery('#list_results')
+                    let div = 'list_results'
                     let current_subs = jQuery('#current_subs')
                     let other_list = jQuery('#other_list')
 
@@ -1178,27 +1224,96 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     other_list.empty()
                     current_subs.hide()
 
-                    if (geonameid === 'top_map_list') { // top level multi-list
-                        list_results.append(`Select one single location`)
+                    // Find data source before build
+                    if (geonameid === 'top_map_level') {
+                        let default_map_settings = DRILLDOWNDATA.settings.default_map_settings
+
+                        // Initialize Location Data
+                        let map_data = DRILLDOWNDATA.data[default_map_settings.parent]
+                        if (map_data === undefined) {
+                            console.log('error getting map_data')
+                            return;
+                        }
+
+                        build_list(div, map_data)
                     }
-                    else { // children available
-                        if (!window.DRILLDOWN.isEmpty(window.DRILLDOWNDATA.data[geonameid].children)) { // empty children for geonameid
-                            jQuery.each(window.DRILLDOWNDATA.data[geonameid].children, function (gnid, data) {
+                    else if ( DRILLDOWNDATA.data[geonameid] === undefined) {
+                        let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_geonameid_endpoint
+
+                        jQuery.ajax({
+                            type: rest.method,
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify({'geonameid': geonameid}),
+                            dataType: "json",
+                            url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
+                            },
+                        })
+                            .done(function (response) {
+                                DRILLDOWNDATA.data[geonameid] = response
+                                build_list(div, DRILLDOWNDATA.data[geonameid])
+                            })
+                            .fail(function (err) {
+                                console.log("error")
+                                console.log(err)
+                                DRILLDOWN.hide_spinner()
+                            })
+
+                    } else {
+                        build_list(div, DRILLDOWNDATA.data[geonameid])
+                    }
+
+                    function build_list(div, map_data) {
+
+                        if (!window.DRILLDOWN.isEmpty(map_data.children)) { // empty children for geonameid
+                            jQuery.each(map_data.children, function (gnid, data) {
                                 other_list.append(`
                                     <tr><td>
-                                        <a class="open_next_drilldown" data-parent="${geonameid}" data-geonameid="${gnid}" style="cursor: pointer;">${_.escape(data.name)}</a>
-                                    </td></tr>`)
+                                        <a class="open_next_drilldown" data-parent="${data.parent_id}" data-geonameid="${data.geonameid}" style="cursor: pointer;">${_.escape(data.name)}</a>
+                                    </td><td></td></tr>`)
                             })
                             current_subs.show()
                         }
 
-                        list_results.append(`
-                                <tr><td colspan="2">Add New Location to ${window.DRILLDOWNDATA.data[geonameid].self.name}</td></tr>
+                        list_results.empty().append(`
+                                <tr><td colspan="2">Add New Location under ${map_data.self.name}</td></tr>
                                 <tr><td style="width:150px;">Name</td><td><input id="new_name" value="" /></td></tr>
                                 <tr><td>Population</td><td><input id="new_population" value="" /></td></tr>
-                                <tr><td colspan="2"><button type="button" id="save-button" class="button" onclick="update_location( ${geonameid} )" >Save</a></td></tr>`)
+                                <tr><td colspan="2"><button type="button" id="save-button" class="button" onclick="update_location( ${map_data.self.geonameid} )" >Save</a></td></tr>`)
                     }
                 }
+
+                // window.DRILLDOWN.sublocation = function (geonameid) {
+                //     let list_results = jQuery('#list_results')
+                //     let current_subs = jQuery('#current_subs')
+                //     let other_list = jQuery('#other_list')
+                //
+                //     list_results.empty()
+                //     other_list.empty()
+                //     current_subs.hide()
+                //
+                //     if (geonameid === 'top_map_list') { // top level multi-list
+                //         list_results.append(`Select one single location`)
+                //     }
+                //     else { // children available
+                //         if (!window.DRILLDOWN.isEmpty(window.DRILLDOWNDATA.data[geonameid].children)) { // empty children for geonameid
+                //             jQuery.each(window.DRILLDOWNDATA.data[geonameid].children, function (gnid, data) {
+                //                 other_list.append(`
+                //                     <tr><td>
+                //                         <a class="open_next_drilldown" data-parent="${geonameid}" data-geonameid="${gnid}" style="cursor: pointer;">${_.escape(data.name)}</a>
+                //                     </td></tr>`)
+                //             })
+                //             current_subs.show()
+                //         }
+                //
+                //         list_results.append(`
+                //                 <tr><td colspan="2">Add New Location to ${window.DRILLDOWNDATA.data[geonameid].self.name}</td></tr>
+                //                 <tr><td style="width:150px;">Name</td><td><input id="new_name" value="" /></td></tr>
+                //                 <tr><td>Population</td><td><input id="new_population" value="" /></td></tr>
+                //                 <tr><td colspan="2"><button type="button" id="save-button" class="button" onclick="update_location( ${geonameid} )" >Save</a></td></tr>`)
+                //     }
+                // }
 
                 function update_location(geonameid) {
                     jQuery('#save-button').prop('disabled', true)
