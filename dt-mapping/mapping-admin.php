@@ -264,7 +264,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             return new WP_Error( 'missing_param', 'Missing name parameter' );
                         }
 
-                        if ( isset( $params['value']['population'] ) ) {
+                        if ( !empty( $params['value']['population'] ) ) {
                             $population = sanitize_text_field( wp_unslash( $params['value']['population'] ) );
                         } else {
                             $population = 0;
@@ -277,24 +277,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             return new WP_Error( 'missing_param', 'Missing geoname parent.' );
                         }
 
-                        // make unique geonameid
-                        // 999 + increment + 999 + geonameid
-                        // 999 (3) + 999 (3) + 999 (3) + 12031544 (8)
-                        $current_custom_locations = $wpdb->get_col( $wpdb->prepare( "
-                            SELECT * FROM $wpdb->dt_geonames WHERE geonameid LIKE %s AND geonameid LIKE %s
-                         ",
-                            '%' . $wpdb->esc_like( $geonameid ),
-                            $wpdb->esc_like( '999' ) . '%'
-                        ) );
-
-                        $i = 1;
-                        $custom_geonameid = '999' . $i . '999' . $geonameid;
-                        if ( array_search( $custom_geonameid, $current_custom_locations ) !== false ) {
-                            while ( array_search( $custom_geonameid, $current_custom_locations ) !== false ) {
-                                $i++;
-                                $custom_geonameid = '999' . $i . '999' . $geonameid;
-                            }
-                        }
+                        $max_id = $wpdb->get_var( "SELECT MAX(geonameid) FROM $wpdb->dt_geonames" );
+                        $max_id = max( $max_id, 1000000000 );
+                        $custom_geonameid = $max_id + 1;
                         dt_write_log( $custom_geonameid );
 
                         // get level
@@ -851,9 +836,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <!-- Box -->
             <table class="widefat striped">
                 <thead>
+                <tr>
                 <th>Name</th>
                 <th>Current Setting</th>
                 <th></th>
+                </tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -1175,6 +1162,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             </table>
 
             <script>
+                jQuery(document).on('click', '.open_next_drilldown', function(){
+                    let gnid = jQuery(this).data('geonameid')
+                    DRILLDOWN.geoname_drill_down( gnid, 'sublocation' );
+                    jQuery('#' + gnid).parent().nextAll().remove();
+                    jQuery(`#${jQuery(this).data('parent')} option[value=${gnid}]`).attr('selected', 'selected');
+                })
+
                 window.DRILLDOWN.sublocation = function (geonameid) {
                     let list_results = jQuery('#list_results')
                     let current_subs = jQuery('#current_subs')
@@ -1190,7 +1184,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     else { // children available
                         if (!window.DRILLDOWN.isEmpty(window.DRILLDOWNDATA.data[geonameid].children)) { // empty children for geonameid
                             jQuery.each(window.DRILLDOWNDATA.data[geonameid].children, function (gnid, data) {
-                                other_list.append(`<tr><td><a onclick="DRILLDOWN.geoname_drill_down( ${gnid}, 'sublocation' );jQuery('#'+${gnid}).parent().nextAll().remove();jQuery('#${geonameid} option[value=${gnid}]').attr('selected', 'selected');">${data.name}</a></td><td></td></tr>`)
+                                other_list.append(`
+                                    <tr><td>
+                                        <a class="open_next_drilldown" data-parent="${geonameid}" data-geonameid="${gnid}" style="cursor: pointer;">${_.escape(data.name)}</a>
+                                    </td></tr>`)
                             })
                             current_subs.show()
                         }
@@ -1220,10 +1217,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     update.done(function (data) {
                         console.log(data)
                         if (data) {
-                            jQuery('#other_list').append(`<tr><td>${data.name}</td></tr>`)
-
+                            jQuery('#other_list').append(`
+                                <tr><td><a class="open_next_drilldown" data-parent="${geonameid}" data-geonameid="${data.geonameid}" style="cursor: pointer;">${_.escape(data.name)}</a></td></tr>`)
                             jQuery('#new_name').val('')
                             jQuery('#new_population').val('')
+                            jQuery('#current_subs').show()
                         }
                         jQuery('#save-button').removeProp('disabled')
                     })
