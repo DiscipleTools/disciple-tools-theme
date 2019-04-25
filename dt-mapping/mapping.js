@@ -8,9 +8,6 @@ jQuery(document).ready(function() {
         console.log(DRILLDOWNDATA)
         page_mapping_list()
     }
-    if('#mapping_drill' === window.location.hash) {
-        page_mapping_drill()
-    }
 })
 
 _ = _ || window.lodash
@@ -965,27 +962,3 @@ function geoname_list( div, geonameid ) {
        DRILLDOWN.hide_spinner()
     }
 }
-
-window.DRILLDOWN.drill = function( geonameid ) {
-    if ( geonameid !== 'top_map_level' && geonameid !== 'world' ) { // make sure this is not a top level continent or world request
-    }
-    else { // top_level maps
-
-    }
-}
-
-function page_mapping_drill() {
-    "use strict";
-    let chartDiv = jQuery('#chart')
-    chartDiv.empty().html(`
-        
-        <div class="grid-x grid-margin-y">
-            <div class="cell" id="drill"></div>
-        </div>
-        
-        `);
-
-    DRILLDOWN.get_drill_down('drill')
-}
-
-

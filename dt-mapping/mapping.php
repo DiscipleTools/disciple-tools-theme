@@ -180,7 +180,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         public function menu( $content ) {
             $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_view" onclick="page_mapping_view()">' .  esc_html__( 'Map' ) . '</a></li>';
             $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_list" onclick="page_mapping_list()">' .  esc_html__( 'List' ) . '</a></li>';
-            $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_drill" onclick="page_mapping_drill()">' .  esc_html__( 'Drill' ) . '</a></li>';
             return $content;
         }
         public function scripts() {
