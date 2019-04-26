@@ -788,9 +788,7 @@ function mini_map( div, marker_data ) {
  * This page allows for drill-down into the locations and related reports.
  * 
  **********************************************************************************************************************/
-window.DRILLDOWN.location_list_drilldown = function( geonameid ) {
-    geoname_list( 'location_list', geonameid )
-}
+
 
 function page_mapping_list() {
     "use strict";
@@ -836,16 +834,37 @@ function page_mapping_list() {
     window.DRILLDOWN.get_drill_down('location_list_drilldown')
 }
 
+window.DRILLDOWN.location_list_drilldown = function( geonameid ) {
+    geoname_list( 'location_list', geonameid )
+}
+
 
 function geoname_list( div, geonameid ) {
     DRILLDOWN.show_spinner()
 
     // Find data source before build
     if ( geonameid === 'top_map_level' ) {
+        let map_data = null
         let default_map_settings = DRILLDOWNDATA.settings.default_map_settings
 
+        if ( DRILLDOWN.isEmpty( default_map_settings.children ) ) {
+            map_data = DRILLDOWNDATA.data[default_map_settings.parent]
+        }
+        else {
+            if ( default_map_settings.children.length < 2 ) {
+                // single child
+                map_data = DRILLDOWNDATA.data[default_map_settings.children[0]]
+            } else {
+                // multiple child
+                jQuery('#section-title').empty()
+                jQuery('#current_level').empty()
+                jQuery('#location_list').empty().append('Select Location')
+                DRILLDOWN.hide_spinner()
+                return;
+            }
+        }
+
         // Initialize Location Data
-        let map_data = DRILLDOWNDATA.data[default_map_settings.parent]
         if ( map_data === undefined ) {
             console.log('error getting map_data')
             return;
@@ -959,6 +978,7 @@ function geoname_list( div, geonameid ) {
             "paging":   false
         });
 
-       DRILLDOWN.hide_spinner()
+        DRILLDOWN.hide_spinner()
     }
+
 }

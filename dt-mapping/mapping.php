@@ -307,18 +307,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $data['custom_column_data'] = [];
 
             // initialize drill down configuration
-            if ( is_singular( "groups" ) || is_singular( "contacts" ) ) {
-                global $wp_query;
-                if ( isset( $wp_query->queried_object_id ) ) {
-                    $data['default_drill_down'] = $this->default_drill_down( get_post_meta( $wp_query->queried_object_id, 'geonameid', true ), $wp_query->queried_object_id );
-                }
-            }
-            else if ( 'settings' === dt_get_url_path() ) {
-                $data['default_drill_down'] = $this->default_drill_down();
-            }
-            else {
-                $data['default_drill_down'] = $this->default_drill_down();
-            }
+//            $data['default_drill_down'] = $this->drill_down_array();
 
 
             return $data;
@@ -1507,6 +1496,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
          *
          * @return array
          */
+        /*
         public function default_drill_down( $geonameid = null, $post_id = null ) : array {
 
             $default_level = $this->default_map_settings();
@@ -1772,6 +1762,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     break;
             }
         }
+        */
 
         public function format_geoname_types( $query ) {
             if ( ! empty( $query ) || ! is_array( $query ) ) {
@@ -1815,6 +1806,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
          * @param null $geonameid
          * @param null $post_id
          */
+        /*
         public function drill_down_input( $bind_function, $geonameid = null, $post_id = null ) {
             $dd_array = $this->default_drill_down( $geonameid, $post_id );
 
@@ -1848,7 +1840,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             echo '</u>';
         }
+        */
 
+        /*
         public function drill_down_widget( $bind_function, $echo = true, $geonameid = null) {
             $dd_array = $this->drill_down_array( $geonameid );
 
@@ -1893,148 +1887,68 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 return $html;
             }
         }
+        */
 
         public function drill_down_array( $geonameid = null ) {
 
             $default_level = $this->default_map_settings();
             $list = $this->default_map_short_list();
-            $default_list = [];
             $preset_array = [];
+
+            $default_select_first_level = false;
+            if ( count( $list ) < 2 ) {
+                $default_select_first_level = true;
+            }
 
             if ( is_null( $geonameid ) || $geonameid === 'top_map_level' ) {
                 $geonameid = null;
 
-                $default_select_first_level = false;
-                if ( count( $list ) < 2 ) {
-                    $default_select_first_level = true;
-                }
-
                 switch ( $default_level['type'] ) {
+
                     case 'country':
 
-                        if ( $geonameid ) {
-
-                            foreach ( $list as $key => $value ) {
-                                $default_list[] = [
-                                    'geonameid' => (int) $key,
-                                    'name' => $value,
-                                ];
-                            }
-
-
-                           $reference = $this->query( 'get_hierarchy', [ 'geonameid' => $geonameid ] );
-
-
-                            switch ( $reference['level'] ) {
-
-                                case 'admin1':
-                                    $preset_array = [
-                                        0 => [
-                                            'parent' => 'drill_down_top_level',
-                                            'selected' => (int) $reference['country_geonameid'] ?? 0,
-                                            'list' => $default_list,
-                                        ],
-                                        1 => [
-                                            'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin1_geonameid'] ?? 0,
-                                            'list' => $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) ),
-                                        ],
-                                        2 => [
-                                            'parent' => (int) $reference['admin1_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin2_geonameid'] ?? 0,
-                                            'list' => $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) ),
-                                        ],
-                                    ];
-                                    break;
-
-                                case 'admin2':
-                                    $preset_array = [
-                                        0 => [
-                                            'parent' => 'drill_down_top_level',
-                                            'selected' => (int) $reference['country_geonameid'] ?? 0,
-                                            'list' => $default_list,
-                                        ],
-                                        1 => [
-                                            'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin1_geonameid'] ?? 0,
-                                            'list' => $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) ),
-                                        ],
-                                        2 => [
-                                            'parent' => (int) $reference['admin1_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin2_geonameid'] ?? 0,
-                                            'list' => $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) ),
-                                        ],
-                                        3 => [
-                                            'parent' => (int) $reference['admin2_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['adm3'] ?? 0,
-                                            'list' => $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin2_geonameid'] ] ) ),
-                                        ],
-                                    ];
-                                    break;
-
-                                case 'country':
-                                default:
-                                    $preset_array = [
-                                        0 => [
-                                            'parent' => 'drill_down_top_level',
-                                            'selected' => (int) $reference['country_geonameid'] ?? 0,
-                                            'list' => $default_list,
-                                        ],
-                                        1 => [
-                                            'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin1_geonameid'] ?? 0,
-                                            'list' => $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) ),
-                                        ]
-                                    ];
-                                    break;
-                            }
-                        } else {
-                            // if default list is just one country, then pre-populate second level
-                            if ( $default_select_first_level ) {
-                                foreach ( $list as $geonameid => $name ) {
-                                    $preset_array[0]['list'][] = [
-                                        'geonameid' => (int) $geonameid,
-                                        'name' => $name
-                                    ];
-                                    $preset_array[0]['parent'] = 'drill_down_top_level';
-                                    $preset_array[0]['selected'] = (int) $geonameid;
-                                }
-                                $second_level_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $preset_array[0]['selected'] ] ) );
-                                if ( ! empty( $second_level_list ) ) {
-                                    foreach ( $second_level_list as $item ) {
-                                        $preset_array[1]['list'][] = [
-                                            'geonameid' => (int) $item['geonameid'],
-                                            'name' => $item['name'],
-                                        ];
-                                    }
-                                    $preset_array[1]['parent'] = (int) $geonameid;
-                                    $preset_array[1]['selected'] = 0;
-                                }
-
-                                // top level list has more than one option
-                            } else {
-                                foreach ( $list as $geonameid => $name ) {
-                                    $preset_array[0]['list'][] = [
-                                        'geonameid' => (int) $geonameid,
-                                        'name' => $name
-                                    ];
-                                }
-                                $preset_array[0]['parent'] = 'drill_down_top_level';
-                                $preset_array[0]['selected'] = 0;
-                            }
-                        }
-
-                        return $preset_array;
-                        break;
-
-                    case 'state':
                         if ( $default_select_first_level ) {
+                            // if there is only one top level selected
 
-                        } else {
-                            $preset_array = [ // @todo not finished
+                            foreach ( $list as $index => $item ) {
+                                $selected = $index;
+                                $selected_name = $item;
+                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $index ] ) );
+                            }
+
+                            $deeper_levels = $this->get_deeper_levels( $child_list );
+                            $preset_array = [
                                 0 => [
                                     'parent' => 'top_map_level',
-                                    'selected' => $list[0],
+                                    'selected' => $selected,
+                                    'selected_name' => $selected_name,
+                                    'link' => true,
+                                    'active' => true,
+                                ],
+                                1 => [
+                                    'parent' => $selected,
+                                    'selected' => 0,
+                                    'list' => $child_list,
+                                    'link' => false,
+                                    'active' => false,
+                                    'deeper_levels' => $deeper_levels,
+                                ],
+                            ];
+
+                        } else {
+                            // if there are multiple top levels selected
+                            $items = [];
+                            foreach ( $list as $index => $item ) {
+                                $items[] = $index;
+                            }
+
+                            $child_list = $this->format_geoname_types( $this->query( 'get_by_geonameid_list', [ 'list' => $items ] ) );
+                            $deeper_levels = $this->get_deeper_levels( $child_list );
+
+                            $preset_array = [
+                                0 => [
+                                    'parent' => 'top_map_level',
+                                    'selected' => 'top_map_level',
                                     'selected_name' => __( 'World', 'disciple_tools' ),
                                     'link' => true,
                                     'active' => false,
@@ -2042,10 +1956,78 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 1 => [
                                     'parent' => 'top_map_level',
                                     'selected' => 0,
-                                    'list' => $this->format_geoname_types( $this->query( 'get_countries' ) ),
+                                    'selected_name' => '',
+                                    'list' => $child_list,
                                     'link' => false,
+                                    'active' => true,
+                                    'deeper_levels' => $deeper_levels,
                                 ],
                             ];
+
+                        }
+
+                        return $preset_array;
+                        break;
+
+                    case 'state':
+                        if ( $default_select_first_level ) {
+                            // if there is only one top level selected
+
+                            foreach ( $list as $index => $item ) {
+                                $selected = $index;
+                                $selected_name = $item;
+                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $index ] ) );
+                            }
+
+                            $deeper_levels = $this->get_deeper_levels( $child_list );
+                            $preset_array = [
+                                0 => [
+                                    'parent' => 'top_map_level',
+                                    'selected' => $selected,
+                                    'selected_name' => $selected_name,
+                                    'link' => true,
+                                    'active' => true,
+                                ],
+                                1 => [
+                                    'parent' => $selected,
+                                    'selected' => 0,
+                                    'list' => $child_list,
+                                    'link' => false,
+                                    'active' => false,
+                                    'deeper_levels' => $deeper_levels,
+                                ],
+                            ];
+
+                        } else {
+                            // if there are multiple top levels selected
+                            $items = [];
+                            foreach ( $list as $index => $item ) {
+                                $items[] = $index;
+                            }
+
+                            $child_list = $this->format_geoname_types( $this->query( 'get_by_geonameid_list', [ 'list' => $items ] )  );
+                            $parent = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $child_list[0]['country_geonameid'] ] ) );
+                            $deeper_levels = $this->get_deeper_levels( $child_list );
+
+                            $preset_array = [
+                                0 => [
+                                    'parent' => 'top_map_level',
+                                    'selected' => 'top_map_level',
+                                    'selected_name' => $parent['name'],
+                                    'link' => true,
+                                    'active' => true,
+                                ],
+                                1 => [
+                                    'parent' => 'top_map_level',
+                                    'selected' => 0,
+                                    'selected_name' => '',
+                                    'list' => $child_list,
+                                    'link' => false,
+                                    'active' => true,
+                                    'deeper_levels' => $deeper_levels,
+                                ],
+                            ];
+
                         }
 
                         return $preset_array;
@@ -2087,135 +2069,425 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 }
 
                 switch ( $default_level['type'] ) {
+
                     case 'country':
 
-
-
-                        return $preset_array;
-                        break;
-
-                    case 'state':
+                        // build array according to level
                         switch ( $reference['level'] ) {
 
                             case 'admin3':
                             case 'admin2':
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin2_geonameid'] ] ) );
+                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin3_geonameid'] ] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
-                                $preset_array = [
-                                    0 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => 'top_map_level',
-                                        'selected_name' => __( 'World', 'disciple_tools' ),
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    1 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => (int) $reference['country_geonameid'],
-                                        'selected_name' => $reference['country_name'],
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    2 => [
-                                        'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin1_geonameid'],
-                                        'selected_name' => $reference['admin1_name'],
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    3 => [
-                                        'parent' => (int) $reference['admin1_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin2_geonameid'],
-                                        'selected_name' => $reference['admin2_name'],
-                                        'link' => true,
-                                        'active' => true,
-                                    ],
-                                    4 => [
-                                        'parent' => (int) $reference['admin2_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin3_geonameid'] ?? 0,
-                                        'selected_name' => $reference['admin3_name'],
-                                        'list' => $child_list,
-                                        'link' => false,
-                                        'active' => false,
-                                        'deeper_levels' => $deeper_levels,
-                                    ],
 
-                                ];
+                                if ( $default_select_first_level ) {
+                                    $preset_array = [
+                                        0 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => (int) $reference['country_geonameid'],
+                                            'selected_name' => $reference['country_name'],
+                                            'link' => true,
+                                            'active' => false,
+                                        ],
+                                        1 => [
+                                            'parent' => (int) $reference['country_geonameid'] ?? 0,
+                                            'selected' => (int) $reference['admin1_geonameid'],
+                                            'selected_name' => $reference['admin1_name'],
+                                            'link' => true,
+                                            'active' => false,
+                                        ],
+                                        2 => [
+                                            'parent' => (int) $reference['admin1_geonameid'] ?? 0,
+                                            'selected' => (int) $reference['admin2_geonameid'],
+                                            'selected_name' => $reference['admin2_name'],
+                                            'link' => true,
+                                            'active' => true,
+                                        ],
+                                        3 => [
+                                            'parent' => (int) $reference['admin2_geonameid'] ?? 0,
+                                            'selected' => (int) $reference['admin3_geonameid'] ?? 0,
+                                            'selected_name' => $reference['admin3_name'],
+                                            'list' => $child_list,
+                                            'link' => false,
+                                            'active' => false,
+                                            'deeper_levels' => $deeper_levels,
+                                        ],
+
+                                    ];
+                                } else {
+                                    $preset_array = [
+                                        0 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => 'top_map_level',
+                                            'selected_name' => __( 'World', 'disciple_tools' ),
+                                            'link' => true,
+                                            'active' => false,
+                                        ],
+                                        1 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => (int) $reference['country_geonameid'],
+                                            'selected_name' => $reference['country_name'],
+                                            'link' => true,
+                                            'active' => false,
+                                        ],
+                                        2 => [
+                                            'parent' => (int) $reference['country_geonameid'] ?? 0,
+                                            'selected' => (int) $reference['admin1_geonameid'],
+                                            'selected_name' => $reference['admin1_name'],
+                                            'link' => true,
+                                            'active' => false,
+                                        ],
+                                        3 => [
+                                            'parent' => (int) $reference['admin1_geonameid'] ?? 0,
+                                            'selected' => (int) $reference['admin2_geonameid'],
+                                            'selected_name' => $reference['admin2_name'],
+                                            'link' => true,
+                                            'active' => true,
+                                        ],
+                                        4 => [
+                                            'parent' => (int) $reference['admin2_geonameid'] ?? 0,
+                                            'selected' => (int) $reference['admin3_geonameid'] ?? 0,
+                                            'selected_name' => $reference['admin3_name'],
+                                            'list' => $child_list,
+                                            'link' => false,
+                                            'active' => false,
+                                            'deeper_levels' => $deeper_levels,
+                                        ],
+
+                                    ];
+                                }
                                 break;
 
                             case 'admin1':
                                 $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
-                                $preset_array = [
-                                    0 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => 'top_map_level',
-                                        'selected_name' => __( 'World', 'disciple_tools' ),
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    1 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => (int) $reference['country_geonameid'],
-                                        'selected_name' => $reference['country_name'],
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    2 => [
-                                        'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin1_geonameid'],
-                                        'selected_name' => $reference['admin1_name'],
-                                        'link' => true,
-                                        'active' => true,
-                                    ],
-                                    3 => [
-                                        'parent' => (int) $reference['admin1_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin2_geonameid'] ?? 0,
-                                        'selected_name' => $reference['admin2_name'],
-                                        'list' => $child_list,
-                                        'link' => false,
-                                        'active' => false,
-                                        'deeper_levels' => $deeper_levels,
-                                    ],
 
-                                ];
+                                if ( $default_select_first_level ) {
+                                    $preset_array = [
+                                        0 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => (int) $reference['country_geonameid'],
+                                            'selected_name' => $reference['country_name'],
+                                            'link' => true,
+                                            'active' => false,
+                                        ],
+                                        1 => [
+                                            'parent' => (int) $reference['country_geonameid'] ?? 0,
+                                            'selected' => (int) $reference['admin1_geonameid'],
+                                            'selected_name' => $reference['admin1_name'],
+                                            'link' => true,
+                                            'active' => true,
+                                        ],
+                                        2 => [
+                                            'parent' => (int) $reference['admin1_geonameid'] ?? 0,
+                                            'selected' => (int) $reference['admin2_geonameid'] ?? 0,
+                                            'selected_name' => $reference['admin2_name'],
+                                            'list' => $child_list,
+                                            'link' => false,
+                                            'active' => false,
+                                            'deeper_levels' => $deeper_levels,
+                                        ],
+
+                                    ];
+                                } else {
+                                    $preset_array = [
+                                        0 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => 'top_map_level',
+                                            'selected_name' => __( 'World', 'disciple_tools' ),
+                                            'link' => true,
+                                            'active' => false,
+                                        ],
+                                        1 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => (int) $reference['country_geonameid'],
+                                            'selected_name' => $reference['country_name'],
+                                            'link' => true,
+                                            'active' => false,
+                                        ],
+                                        2 => [
+                                            'parent' => (int) $reference['country_geonameid'] ?? 0,
+                                            'selected' => (int) $reference['admin1_geonameid'],
+                                            'selected_name' => $reference['admin1_name'],
+                                            'link' => true,
+                                            'active' => true,
+                                        ],
+                                        3 => [
+                                            'parent' => (int) $reference['admin1_geonameid'] ?? 0,
+                                            'selected' => (int) $reference['admin2_geonameid'] ?? 0,
+                                            'selected_name' => $reference['admin2_name'],
+                                            'list' => $child_list,
+                                            'link' => false,
+                                            'active' => false,
+                                            'deeper_levels' => $deeper_levels,
+                                        ],
+
+                                    ];
+                                }
                                 break;
 
                             case 'country':
                             default:
                                 $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
-                                $preset_array = [
-                                    0 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => 'top_map_level',
-                                        'selected_name' => __( 'World', 'disciple_tools' ),
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    1 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => (int) $reference['country_geonameid'],
-                                        'selected_name' => $reference['country_name'],
-                                        'link' => true,
-                                        'active' => true,
-                                    ],
-                                    2 => [
-                                        'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin1_geonameid'] ?? 0,
-                                        'selected_name' => $reference['admin1_name'],
-                                        'list' => $child_list,
-                                        'link' => false,
-                                        'active' => false,
-                                        'deeper_levels' => $deeper_levels,
-                                    ],
 
-                                ];
+                                if ( $default_select_first_level ) {
+                                    $preset_array = [
+                                        0 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => (int) $reference['country_geonameid'],
+                                            'selected_name' => $reference['country_name'],
+                                            'link' => true,
+                                            'active' => true,
+                                        ],
+                                        1 => [
+                                            'parent' => (int) $reference['country_geonameid'] ?? 0,
+                                            'selected' => (int) $reference['admin1_geonameid'] ?? 0,
+                                            'selected_name' => $reference['admin1_name'],
+                                            'list' => $child_list,
+                                            'link' => false,
+                                            'active' => false,
+                                            'deeper_levels' => $deeper_levels,
+                                        ],
+                                    ];
+                                } else {
+                                    $preset_array = [
+                                        0 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => 'top_map_level',
+                                            'selected_name' => __( 'World', 'disciple_tools' ),
+                                            'link' => true,
+                                            'active' => false,
+                                        ],
+                                        1 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => (int) $reference['country_geonameid'],
+                                            'selected_name' => $reference['country_name'],
+                                            'link' => true,
+                                            'active' => true,
+                                        ],
+                                        2 => [
+                                            'parent' => (int) $reference['country_geonameid'] ?? 0,
+                                            'selected' => (int) $reference['admin1_geonameid'] ?? 0,
+                                            'selected_name' => $reference['admin1_name'],
+                                            'list' => $child_list,
+                                            'link' => false,
+                                            'active' => false,
+                                            'deeper_levels' => $deeper_levels,
+                                        ],
+                                    ];
+                                }
+
                                 break;
                         }
 
 
                         return $preset_array;
+                        break;
+
+                    case 'state':
+
+                        // build array according to level
+                        switch ( $reference['level'] ) {
+
+                            case 'admin3':
+                            case 'admin2':
+                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['geonameid'] ] ) );
+                                $deeper_levels = $this->get_deeper_levels( $child_list );
+
+                                $country = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) );
+                                $state = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) );
+                                $county = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['admin2_geonameid'] ] ) );
+
+                                if ( $default_select_first_level ) {
+
+                                    $preset_array = [
+                                        0 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => 'top_map_level',
+                                            'selected_name' => $reference['admin1_name'],
+                                            'link' => true,
+                                            'active' => false,
+                                        ],
+                                        1 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => (int) $reference['admin2_geonameid'],
+                                            'selected_name' => $reference['admin2_name'],
+                                            'link' => true,
+                                            'active' => true,
+                                        ],
+                                        2 => [
+                                            'parent' => $reference['admin2_geonameid'],
+                                            'selected' => 0,
+                                            'selected_name' => '',
+                                            'list' => $child_list,
+                                            'link' => false,
+                                            'active' => true,
+                                            'deeper_levels' => $deeper_levels,
+                                        ],
+                                    ];
+
+                                } else {
+
+                                    $preset_array = [
+                                        0 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => 'top_map_level',
+                                            'selected_name' => $country['name'],
+                                            'link' => true,
+                                            'active' => false,
+                                        ],
+                                        1 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => $state['geonameid'],
+                                            'selected_name' => $state['name'],
+                                            'link' => true,
+                                            'active' => false,
+                                        ],
+                                        3 => [
+                                            'parent' => $state['geonameid'],
+                                            'selected' => $county['geonameid'],
+                                            'selected_name' => $county['name'],
+                                            'link' => true,
+                                            'active' => true,
+                                        ],
+                                        4 => [
+                                            'parent' => $county['geonameid'],
+                                            'selected' => 0,
+                                            'selected_name' => '',
+                                            'list' => $child_list,
+                                            'link' => false,
+                                            'active' => true,
+                                            'deeper_levels' => $deeper_levels,
+                                        ],
+                                    ];
+                                }
+
+                                break;
+
+                            case 'admin1':
+                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['geonameid'] ] ) );
+                                $deeper_levels = $this->get_deeper_levels( $child_list );
+
+                                $country = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) );
+                                $state = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) );
+
+                                if ( $default_select_first_level ) {
+
+                                    $preset_array = [
+                                        0 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => (int) $reference['admin1_geonameid'],
+                                            'selected_name' => $reference['admin1_name'],
+                                            'link' => true,
+                                            'active' => true,
+                                        ],
+                                        1 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => $list['parent'],
+                                            'selected_name' => '',
+                                            'list' => $child_list,
+                                            'link' => false,
+                                            'active' => true,
+                                            'deeper_levels' => $deeper_levels,
+                                        ],
+                                        2 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => $list['parent'],
+                                            'selected_name' => '',
+                                            'list' => $child_list,
+                                            'link' => false,
+                                            'active' => true,
+                                            'deeper_levels' => $deeper_levels,
+                                        ],
+                                    ];
+
+                                } else {
+
+                                    $preset_array = [
+                                        0 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => 'top_map_level',
+                                            'selected_name' => $country['name'],
+                                            'link' => true,
+                                            'active' => false,
+                                        ],
+                                        1 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => $state['geonameid'],
+                                            'selected_name' => $state['name'],
+                                            'link' => true,
+                                            'active' => true,
+                                        ],
+                                        3 => [
+                                            'parent' => $state['geonameid'],
+                                            'selected' => 0,
+                                            'selected_name' => '',
+                                            'list' => $child_list,
+                                            'link' => false,
+                                            'active' => false,
+                                            'deeper_levels' => $deeper_levels,
+                                        ],
+                                    ];
+                                }
+                                break;
+
+                            case 'country':
+                            default:
+
+                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['geonameid'] ] ) );
+                                $deeper_levels = $this->get_deeper_levels( $child_list );
+
+                                if ( $default_select_first_level ) {
+
+                                    $preset_array = [
+                                        0 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => (int) $reference['admin1_geonameid'],
+                                            'selected_name' => $reference['admin1_name'],
+                                            'link' => true,
+                                            'active' => true,
+                                        ],
+                                        1 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => $list['parent'],
+                                            'selected_name' => '',
+                                            'list' => $child_list,
+                                            'link' => false,
+                                            'active' => true,
+                                            'deeper_levels' => $deeper_levels,
+                                        ],
+                                    ];
+
+                                } else {
+                                    $parent = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) );
+                                    $preset_array = [
+                                        0 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => 'top_map_level',
+                                            'selected_name' => $parent['name'],
+                                            'link' => true,
+                                            'active' => true,
+                                        ],
+                                        1 => [
+                                            'parent' => 'top_map_level',
+                                            'selected' => 0,
+                                            'selected_name' => '',
+                                            'list' => $child_list,
+                                            'link' => false,
+                                            'active' => true,
+                                            'deeper_levels' => $deeper_levels,
+                                        ],
+                                    ];
+                                }
+
+                                break;
+
+                        }
+
+
+                        return $preset_array;
+
                         break;
 
                     case 'world':

@@ -41,6 +41,7 @@ window.DRILLDOWN = {
                     let hollowClass = 'hollow'
                     if ( section.active ) {
                         hollowClass = ''
+                        geonameid = section.selected
                     }
 
                     // create button
