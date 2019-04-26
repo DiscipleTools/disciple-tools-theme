@@ -16,7 +16,6 @@ if ( !defined( 'ABSPATH' ) ) {
 add_action( 'admin_enqueue_scripts', 'dt_contact_page_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_group_page_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_dashboard_page_scripts' );
-add_action( 'admin_enqueue_scripts', 'dt_location_page_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_dismiss_notice_callback_script' );
 add_action( 'admin_enqueue_scripts', 'dt_people_groups_post_type_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_options_scripts' );
@@ -87,36 +86,6 @@ function dt_dashboard_page_scripts() {
                 'nonce' => wp_create_nonce( 'wp_rest' )
             )
         );
-    }
-}
-
-/**
- * Loads scripts and styles for the locations page.
- */
-function dt_location_page_scripts() {
-    global $pagenow, $post;
-
-    if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'locations' === get_post_type( $post ) ) {
-
-        wp_register_style( 'dt_admin_css', disciple_tools()->admin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->admin_css_path . 'disciple-tools-admin-styles.css' ) );
-        wp_enqueue_style( 'dt_admin_css' );
-
-        wp_enqueue_script( 'dt_locations_scripts', disciple_tools()->admin_js_url . 'dt-locations.js', [
-            'jquery',
-            'jquery-ui-core',
-        ], filemtime( disciple_tools()->admin_js_path . 'dt-locations.js' ), true );
-        wp_localize_script(
-            "dt_locations_scripts", "dtLocAPI", array(
-                'root' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'current_user_login' => wp_get_current_user()->user_login,
-                'current_user_id' => get_current_user_id(),
-                'theme_uri' => get_stylesheet_directory_uri(),
-                'images_uri' => disciple_tools()->admin_img_url,
-                'spinner' => ' <img src="'.disciple_tools()->admin_img_url.'spinner.svg" width="12px" />'
-            )
-        );
-        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
     }
 }
 
