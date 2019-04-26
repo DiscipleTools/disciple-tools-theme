@@ -55,7 +55,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             }
 
             add_action( "admin_menu", [ $this, 'register_menu' ] );
-
+            add_action( 'admin_notices', [ $this, 'dt_locations_migration_admin_notice' ] );
             if ( is_admin() && isset( $_GET['page'] ) && 'dt_mapping_module' === $_GET['page'] ) {
                 $this->spinner = spinner();
                 $this->nonce = wp_create_nonce( 'wp_rest' );
@@ -256,8 +256,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                     case 'sub_location':
 
-                        dt_write_log( $params['value'] );
-
                         if ( isset( $params['value']['name'] ) ) {
                             $name = sanitize_text_field( wp_unslash( $params['value']['name'] ) );
                         } else {
@@ -270,114 +268,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             $population = 0;
                         }
 
-                        $parent_geoname = $wpdb->get_row( $wpdb->prepare( "
-                            SELECT * FROM $wpdb->dt_geonames WHERE geonameid = %d
-                        ", $geonameid ), ARRAY_A );
-                        if ( empty( $parent_geoname ) ) {
-                            return new WP_Error( 'missing_param', 'Missing geoname parent.' );
-                        }
 
-                        $max_id = $wpdb->get_var( "SELECT MAX(geonameid) FROM $wpdb->dt_geonames" );
-                        $max_id = max( $max_id, 1000000000 );
-                        $custom_geonameid = $max_id + 1;
-                        dt_write_log( $custom_geonameid );
 
-                        // get level
-                        if ( isset( $parent_geoname['level'] ) ) {
-                            switch ( $parent_geoname['level'] ) {
-                                case 'country':
-                                    $level = 'admin1';
-                                    $parent_geoname['admin1_geonameid'] = $custom_geonameid;
-                                    $parent_geoname['feature_code'] = 'ADM1';
-                                    break;
-                                case 'admin1':
-                                    $level = 'admin2';
-                                    $parent_geoname['admin2_geonameid'] = $custom_geonameid;
-                                    $parent_geoname['feature_code'] = 'ADM2';
-                                    break;
-                                case 'admin2':
-                                    $level = 'admin3';
-                                    $parent_geoname['admin3_geonameid'] = $custom_geonameid;
-                                    $parent_geoname['feature_code'] = 'ADM3';
-                                    break;
-                                case 'admin3':
-                                    $level = 'admin4';
-                                    $parent_geoname['admin4_geonameid'] = $custom_geonameid;
-                                    $parent_geoname['feature_code'] = 'ADM4';
-                                    break;
-                                case 'admin4':
-                                default:
-                                    $level = 'place';
-                                    $parent_geoname['feature_class'] = 'P';
-                                    $parent_geoname['feature_code'] = 'PPL';
-                                    break;
-                            }
-                        } else {
-                            $level = 'place';
-                            $parent_geoname['feature_class'] = 'P';
-                            $parent_geoname['feature_code'] = 'PPL';
-                        }
-
-                        // save new record
-                        $result = $wpdb->insert(
-                            $wpdb->dt_geonames,
-                            [
-                                      'geonameid' => $custom_geonameid,
-                                      'name' => $name,
-                                      'latitude' => $parent_geoname['latitude'],
-                                      'longitude' => $parent_geoname['longitude'],
-                                      'feature_class' => $parent_geoname['feature_class'],
-                                      'feature_code' => $parent_geoname['feature_code'],
-                                      'country_code' => $parent_geoname['country_code'],
-                                      'cc2' => $parent_geoname['cc2'],
-                                      'admin1_code' => $parent_geoname['admin1_code'],
-                                      'admin2_code' => $parent_geoname['admin2_code'],
-                                      'admin3_code' => $parent_geoname['admin3_code'],
-                                      'admin4_code' => $parent_geoname['admin4_code'],
-                                      'population' => $population,
-                                      'elevation' => $parent_geoname['elevation'],
-                                      'dem' => $parent_geoname['dem'],
-                                      'timezone' => $parent_geoname['timezone'],
-                                      'modification_date' => current_time( 'mysql' ),
-                                      'parent_id' => $geonameid,
-                                      'country_geonameid' => $parent_geoname['country_geonameid'],
-                                      'admin1_geonameid' => $parent_geoname['admin1_geonameid'],
-                                      'admin2_geonameid' => $parent_geoname['admin2_geonameid'],
-                                      'admin3_geonameid' => $parent_geoname['admin3_geonameid'],
-                                      'level' => $level,
-                                      'alt_name' => $name,
-                                      'is_custom_location' => 1,
-                                ],
-                            [
-                                    '%d', // geonameid
-                                    '%s',
-                                    '%d', // latitude
-                                    '%d', // longitude
-                                    '%s',
-                                    '%s',
-                                    '%s', // country code
-                                    '%s',
-                                    '%s', // admin1 code
-                                    '%s',
-                                    '%s',
-                                    '%s',
-                                    '%d', // population
-                                    '%d',
-                                    '%d',
-                                    '%s', // timezone
-                                    '%s', // modification date
-                                    '%d', // parent id
-                                    '%d',
-                                    '%d',
-                                    '%d',
-                                    '%d',
-                                    '%s', // level
-                                    '%s',
-                                    '%d' //is custom location
-                                ]
-                        );
-
-                        dt_write_log( $result );
+                        $custom_geonameid = $this->add_sublocation_under_geoname( $geonameid, $name, $population );
 
                         return [
                                 'name' => $name,
@@ -417,6 +310,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <?php ( $tab == 'general' || ! isset( $tab ) ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
                         <?php esc_attr_e( 'General Settings', 'disciple_tools' ) ?>
                     </a>
+
+                    <?php if ( !get_option( "dt_locations_migrated_to_geonames" ) ) : ?>
+                        <!-- Location Migration Tab -->
+                        <a href="<?php echo esc_attr( $link ) . 'location-migration' ?>" class="nav-tab
+                            <?php ( $tab == 'location-migration' || ! isset( $tab ) ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                            <?php esc_attr_e( 'Migrating From Locations', 'disciple_tools' ) ?>
+                        </a>
+                    <?php endif; ?>
+
                     <!-- Starting Map -->
                     <a href="<?php echo esc_attr( $link ) . 'focus' ?>" class="nav-tab
                         <?php ( $tab == 'focus' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
@@ -465,6 +367,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     case "general":
                         $this->general_tab();
                         break;
+                    case "location-migration":
+                        $this->migration_from_locations_tab();
+                        break;
                     case "focus":
                         $this->focus_tab();
                         break;
@@ -506,6 +411,32 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <!-- Main Column -->
 
                             <?php $this->summary_metabox() ?>
+
+
+                            <!-- End Main Column -->
+                        </div><!-- end post-body-content -->
+                        <div id="postbox-container-1" class="postbox-container">
+                            <!-- Right Column -->
+
+                            <!-- End Right Column -->
+                        </div><!-- postbox-container 1 -->
+                        <div id="postbox-container-2" class="postbox-container">
+                        </div><!-- postbox-container 2 -->
+                    </div><!-- post-body meta box container -->
+                </div><!--poststuff end -->
+            </div><!-- wrap end -->
+            <?php
+        }
+
+        public function migration_from_locations_tab() {
+            ?>
+            <div class="wrap">
+                <div id="poststuff">
+                    <div id="post-body" class="metabox-holder columns-2">
+                        <div id="post-body-content">
+                            <!-- Main Column -->
+
+                            <?php $this->migration_from_locations_meta_box() ?>
 
 
                             <!-- End Main Column -->
@@ -901,6 +832,87 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 </tbody>
             </table>
             <?php
+        }
+
+        public function migration_from_locations_meta_box(){
+            if ( isset( $_POST["save_location_migration"], $_POST["location_migrate_nonce"] ) && wp_verify_nonce( sanitize_key( $_POST['location_migrate_nonce'] ), 'save' ) ) {
+                $location_id = sanitize_text_field( wp_unslash( $_POST["save_location_migration"] ) );
+                $location = get_post( $location_id );
+                $geonameid = null;
+                if ( isset( $_POST[$location_id . "_create_as_sublocation"] ) && $location && !empty( $_POST[$location_id . "_create_as_sublocation"] )){
+                    $parent_geoname = sanitize_text_field( wp_unslash( $_POST[$location_id . "_create_as_sublocation"] ) );
+                    $geonameid = $this->add_sublocation_under_geoname( $parent_geoname, $location->post_title, 0 );
+                }
+                if ( isset( $_POST[$location_id . "_convert_to_geoname"] ) && !empty( $_POST[$location_id . "_convert_to_geoname"] ) ) {
+                    $geonameid = sanitize_text_field( wp_unslash( $_POST[$location_id . "_convert_to_geoname"] ) );
+                }
+                if ( $geonameid ){
+                    $this->convert_location_to_geoname( $location_id, $geonameid );
+                    ?>
+                    <div class="notice notice-success is-dismissible">
+                        <p>Successfully migrated to geonames location: <?php echo esc_html( $location->post_title )?></p>
+                    </div>
+                    <?php
+                }
+            }
+
+
+
+
+            global $wpdb;
+            $locations_with_records = $wpdb->get_results( "
+                SELECT DISTINCT( posts.ID ), post_title, post_parent, COUNT( p2p.p2p_from ) as count
+                FROM $wpdb->posts as posts
+                JOIN $wpdb->p2p as p2p on (p2p.p2p_to = posts.ID)
+                WHERE posts.post_type = 'locations' 
+                GROUP BY posts.ID
+            ", ARRAY_A );
+            if ( sizeof( $locations_with_records ) === 0 ) :
+                update_option( "dt_locations_migrated_to_geonames", true )
+                ?>
+                <p>Awesome, you are all migrated! this tab will no longer appear on this page</p>
+
+            <?php else : ?>
+
+
+
+            <p>Thank you for completing this important step in using D.T</p>
+            <p>This tool is to help you migrate from the old locations system, to the new one that uses geonames as it's base. </p>
+            <p>To explore what geonames are available, click <a target="_blank" href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=explore' ) ) ?>">here</a></p>
+            <p>Below, for each location, select to convert it to an existing geoname or to create it as a sub-location under an existing geoname. You can also create sub-locations first by going to the "Sub-Locations" tab</p>
+
+            <form method="post" action="">
+                <?php wp_nonce_field( 'save', 'location_migrate_nonce', true, true ) ?>
+                <table class="widefat striped">
+                    <thead>
+                    <tr>
+                        <th>Locations to Migrate ( <?php echo esc_html( sizeof( $locations_with_records ) ) ?> )</th>
+                        <th>Select Corresponding Geoname</th>
+                        <th>OR </th>
+                        <th>Create as location under a Geoname</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ( $locations_with_records as $location ) : ?>
+                        <tr>
+                            <td> <?php echo esc_html( $location["post_title"] ) ?>
+                                ( <?php echo esc_html( $location["count"] ) ?> )
+                            </td>
+                            <td><input name="<?php echo esc_html( $location["ID"] ) ?>_convert_to_geoname"></td>
+                            <td>Or</td>
+                            <td><input name="<?php echo esc_html( $location["ID"] ) ?>_create_as_sublocation"></td>
+                            <td>
+                                <button type="submit" value="<?php echo esc_html( $location["ID"] ) ?>"
+                                        name="save_location_migration">Save
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </form>
+            <?php endif;
         }
 
         public function migration_status_metabox() {
@@ -2051,6 +2063,165 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             dt_write_log( 'end geonames install: ' . microtime() );
 
             fclose( $fp );
+        }
+
+        /**
+         * Add a sublocation under a geoname (or other sublocation) parent
+         */
+
+        /**
+         * @param $parent_geoname_id
+         * @param $name
+         * @param $population
+         *
+         * @return int|WP_Error, the id of the new sublocation
+         */
+        public function add_sublocation_under_geoname( $parent_geoname_id, $name, $population ){
+            global $wpdb;
+            $parent_geoname = $wpdb->get_row( $wpdb->prepare( "
+                SELECT * FROM $wpdb->dt_geonames WHERE geonameid = %d
+            ", $parent_geoname_id ), ARRAY_A );
+            if ( empty( $parent_geoname ) ) {
+                return new WP_Error( 'missing_param', 'Missing or incorrect geoname parent.' );
+            }
+
+            $max_id = (int) $wpdb->get_var( "SELECT MAX(geonameid) FROM $wpdb->dt_geonames" );
+            $max_id = max( $max_id, 1000000000 );
+            $custom_geonameid = $max_id + 1;
+
+            // get level
+            if ( isset( $parent_geoname['level'] ) ) {
+                switch ( $parent_geoname['level'] ) {
+                    case 'country':
+                        $level = 'admin1';
+                        $parent_geoname['admin1_geonameid'] = $custom_geonameid;
+                        $parent_geoname['feature_code'] = 'ADM1';
+                        break;
+                    case 'admin1':
+                        $level = 'admin2';
+                        $parent_geoname['admin2_geonameid'] = $custom_geonameid;
+                        $parent_geoname['feature_code'] = 'ADM2';
+                        break;
+                    case 'admin2':
+                        $level = 'admin3';
+                        $parent_geoname['admin3_geonameid'] = $custom_geonameid;
+                        $parent_geoname['feature_code'] = 'ADM3';
+                        break;
+                    case 'admin3':
+                        $level = 'admin4';
+                        $parent_geoname['admin4_geonameid'] = $custom_geonameid;
+                        $parent_geoname['feature_code'] = 'ADM4';
+                        break;
+                    case 'admin4':
+                    default:
+                        $level = 'place';
+                        $parent_geoname['feature_class'] = 'P';
+                        $parent_geoname['feature_code'] = 'PPL';
+                        break;
+                }
+            } else {
+                $level = 'place';
+                $parent_geoname['feature_class'] = 'P';
+                $parent_geoname['feature_code'] = 'PPL';
+            }
+
+            // save new record
+            $result = $wpdb->insert(
+                $wpdb->dt_geonames,
+                [
+                    'geonameid' => $custom_geonameid,
+                    'name' => $name,
+                    'latitude' => $parent_geoname['latitude'],
+                    'longitude' => $parent_geoname['longitude'],
+                    'feature_class' => $parent_geoname['feature_class'],
+                    'feature_code' => $parent_geoname['feature_code'],
+                    'country_code' => $parent_geoname['country_code'],
+                    'cc2' => $parent_geoname['cc2'],
+                    'admin1_code' => $parent_geoname['admin1_code'],
+                    'admin2_code' => $parent_geoname['admin2_code'],
+                    'admin3_code' => $parent_geoname['admin3_code'],
+                    'admin4_code' => $parent_geoname['admin4_code'],
+                    'population' => $population,
+                    'elevation' => $parent_geoname['elevation'],
+                    'dem' => $parent_geoname['dem'],
+                    'timezone' => $parent_geoname['timezone'],
+                    'modification_date' => current_time( 'mysql' ),
+                    'parent_id' => $parent_geoname_id,
+                    'country_geonameid' => $parent_geoname['country_geonameid'],
+                    'admin1_geonameid' => $parent_geoname['admin1_geonameid'],
+                    'admin2_geonameid' => $parent_geoname['admin2_geonameid'],
+                    'admin3_geonameid' => $parent_geoname['admin3_geonameid'],
+                    'level' => $level,
+                    'alt_name' => $name,
+                    'is_custom_location' => 1,
+                ],
+                [
+                    '%d', // geonameid
+                    '%s',
+                    '%d', // latitude
+                    '%d', // longitude
+                    '%s',
+                    '%s',
+                    '%s', // country code
+                    '%s',
+                    '%s', // admin1 code
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%d', // population
+                    '%d',
+                    '%d',
+                    '%s', // timezone
+                    '%s', // modification date
+                    '%d', // parent id
+                    '%d',
+                    '%d',
+                    '%d',
+                    '%d',
+                    '%s', // level
+                    '%s',
+                    '%d' //is custom location
+                ]
+            );
+            if ( !$result ){
+                return new WP_Error( __FUNCTION__, 'Error creating sublocation' );
+            } else {
+                return $custom_geonameid;
+            }
+        }
+
+        public function convert_location_to_geoname( $location_id, $geoname_id ){
+
+            global $wpdb;
+            $wpdb->query( $wpdb->prepare(
+                "INSERT INTO $wpdb->postmeta
+                (
+                    post_id,
+                    meta_key,
+                    meta_value
+                )
+                SELECT p2p_from, 'geonames', %s
+                FROM $wpdb->p2p as p2p
+                WHERE p2p_to = %s
+                ",
+                esc_sql( $geoname_id ),
+                esc_sql( $location_id )
+            ));
+            // delete location connections
+            $wpdb->query( $wpdb->prepare(
+                "DELETE FROM $wpdb->p2p
+                  WHERE p2p_to = %s
+            ", esc_sql( $location_id ) ) );
+
+        }
+
+        public function dt_locations_migration_admin_notice() {
+            if ( ! get_option( 'dt_locations_migrated_to_geonames', false ) ) { ?>
+                <div class="notice notice-error notice-dt-locations-migration is-dismissible" data-notice="dt-locations-migration">
+                    <p>We have updated Disciple.Tools locations system. Please use the migration tool to make sure all you locations are carried over:
+                        <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=location-migration' ) ) ?>">Migration Tool</a></p>
+                </div>
+            <?php }
         }
     }
 

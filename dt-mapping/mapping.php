@@ -1295,7 +1295,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     // WordPress.WP.PreparedSQL.NotPrepared
                     $geonames = $wpdb->get_results( $wpdb->prepare( "
                         SELECT SQL_CALC_FOUND_ROWS
-                        g.geonameid,
+                        DISTINCT( g.geonameid ),
                         CASE 
                             WHEN g.level = 'country' 
                               THEN g.alt_name
@@ -1329,7 +1329,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                     $geonames = $wpdb->get_results( $wpdb->prepare( "
                         SELECT SQL_CALC_FOUND_ROWS
-                        g.geonameid,
+                        DISTINCT( g.geonameid ),
                         CASE 
                             WHEN g.level = 'country' 
                               THEN g.alt_name
