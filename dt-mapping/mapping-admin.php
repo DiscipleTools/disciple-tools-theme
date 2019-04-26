@@ -55,7 +55,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             }
 
             add_action( "admin_menu", [ $this, 'register_menu' ] );
-
+            add_action( 'admin_notices', [ $this, 'dt_locations_migration_admin_notice' ] );
             if ( is_admin() && isset( $_GET['page'] ) && 'dt_mapping_module' === $_GET['page'] ) {
                 $this->spinner = spinner();
                 $this->nonce = wp_create_nonce( 'wp_rest' );
@@ -311,11 +311,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <?php esc_attr_e( 'General Settings', 'disciple_tools' ) ?>
                     </a>
 
-                    <!-- Location Migration Tab -->
-                    <a href="<?php echo esc_attr( $link ) . 'location-migration' ?>" class="nav-tab
-                        <?php ( $tab == 'location-migration' || ! isset( $tab ) ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
-                        <?php esc_attr_e( 'Migrating From Locations', 'disciple_tools' ) ?>
-                    </a>
+                    <?php if ( !get_option( "dt_locations_migrated_to_geonames" ) ) : ?>
+                        <!-- Location Migration Tab -->
+                        <a href="<?php echo esc_attr( $link ) . 'location-migration' ?>" class="nav-tab
+                            <?php ( $tab == 'location-migration' || ! isset( $tab ) ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                            <?php esc_attr_e( 'Migrating From Locations', 'disciple_tools' ) ?>
+                        </a>
+                    <?php endif; ?>
+
                     <!-- Starting Map -->
                     <a href="<?php echo esc_attr( $link ) . 'focus' ?>" class="nav-tab
                         <?php ( $tab == 'focus' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
@@ -845,6 +848,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 }
                 if ( $geonameid ){
                     $this->convert_location_to_geoname( $location_id, $geonameid );
+                    ?>
+                    <div class="notice notice-success is-dismissible">
+                        <p>Successfully migrated to geonames location: <?php echo esc_html( $location->post_title )?></p>
+                    </div>
+                    <?php
                 }
             }
 
@@ -859,8 +867,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 WHERE posts.post_type = 'locations' 
                 GROUP BY posts.ID
             ", ARRAY_A );
+            if ( sizeof( $locations_with_records ) === 0 ) :
+                update_option( "dt_locations_migrated_to_geonames", true )
+                ?>
+                <p>Awesome, you are all migrated! this tab will no longer appear on this page</p>
 
-            ?>
+            <?php else : ?>
+
+
 
             <p>Thank you for completing this important step in using D.T</p>
             <p>This tool is to help you migrate from the old locations system, to the new one that uses geonames as it's base. </p>
@@ -898,7 +912,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     </tbody>
                 </table>
             </form>
-            <?php
+            <?php endif;
         }
 
         public function migration_status_metabox() {
@@ -2199,6 +2213,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                   WHERE p2p_to = %s
             ", esc_sql( $location_id ) ) );
 
+        }
+
+        public function dt_locations_migration_admin_notice() {
+            if ( ! get_option( 'dt_locations_migrated_to_geonames', false ) ) { ?>
+                <div class="notice notice-error notice-dt-locations-migration is-dismissible" data-notice="dt-locations-migration">
+                    <p>We have updated Disciple.Tools locations system. Please use the migration tool to make sure all you locations are carried over:
+                        <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=location-migration' ) ) ?>">Migration Tool</a></p>
+                </div>
+            <?php }
         }
     }
 
