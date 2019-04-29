@@ -103,7 +103,7 @@ function top_level_map( div ) {
             title.empty().html(map_data.self.name)
 
             // sort custom start level url
-            mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'maps/world.geojson'
+            mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'polygons/world.geojson'
 
             // get geojson
             jQuery.getJSON( mapUrl, function( data ) {
@@ -251,7 +251,7 @@ function top_level_map( div ) {
             } else {
                 // multiple countries selected. So load the world and reduce the polygons
 
-                mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'maps/world.geojson'
+                mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'polygons/world.geojson'
                 jQuery.getJSON( mapUrl, function( data ) {
 
 
@@ -406,7 +406,7 @@ function top_level_map( div ) {
             } else {
                 // multiple countries selected. So load the world and reduce the polygons
 
-                mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'maps/' +default_map_settings.parent+ '.geojson'
+                mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'polygons/' +default_map_settings.parent+ '.geojson'
                 jQuery.getJSON( mapUrl, function( data ) {
 
                     // set title
@@ -569,7 +569,7 @@ function geoname_map( div, geonameid ) {
 
             title.html(response.self.name)
 
-            jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'maps/' + geonameid+'.geojson', function( data ) { // get geojson data
+            jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'polygons/' + geonameid+'.geojson', function( data ) { // get geojson data
 
                 // load geojson with additional parameters
                 let mapData = data
@@ -697,49 +697,9 @@ function heatmap_focus_change( focus_id, current_map ) {
     }
 }
 
-function load_breadcrumbs( div, id, parent_name ) {
-    let separator = ` > `
-
-    if ( DRILLDOWNDATA.breadcrumbs === undefined) {
-        DRILLDOWNDATA.breadcrumbs = []
-    }
-
-    for(let i = 0; i < DRILLDOWNDATA.breadcrumbs.length; i++ ) {
-        if ( DRILLDOWNDATA.breadcrumbs[i].id === id ) {
-            let reset = DRILLDOWNDATA.breadcrumbs.slice(0,i)
-            DRILLDOWNDATA.breadcrumbs = []
-            DRILLDOWNDATA.breadcrumbs = reset
-        }
-    }
-
-    DRILLDOWNDATA.breadcrumbs.push({id,parent_name})
-
-    // clear breadcrumbs
-    let content = jQuery('#breadcrumbs')
-    content.empty()
-
-    for(let i = 0; i < DRILLDOWNDATA.breadcrumbs.length; i++ ) {
-        let separator = ` > `
-        if ( i === 0 ) {
-            separator = ''
-        }
-        if ( DRILLDOWNDATA.breadcrumbs[i].id === id ) {
-            // DRILLDOWNDATA.breadcrumbs.slice(0,i)
-            return false;
-        }
-        content.append(`<span id="${DRILLDOWNDATA.breadcrumbs[i].id}">${separator}<a onclick="map_chart('${div}', ${DRILLDOWNDATA.breadcrumbs[i].id} ) ">${DRILLDOWNDATA.breadcrumbs[i].parent_name}</a></span>`)
-    }
-
-    content.append(`<span id="${id}" data-value="${id}">${separator}<a onclick="map_chart('${div}', ${id} ) ">${parent_name}</a></span>`)
-
-    console.log(DRILLDOWNDATA.breadcrumbs)
-
-} // @todo remove?
-
-
 function mini_map( div, marker_data ) {
 
-    jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'maps/world.geojson', function( data ) {
+    jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'polygons/world.geojson', function( data ) {
         am4core.useTheme(am4themes_animated);
 
         var chart = am4core.create( div, am4maps.MapChart);

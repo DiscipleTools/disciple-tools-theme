@@ -21,14 +21,14 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
         }
 
         // get mirror source file url
-        $mirror = get_option( 'dt_mapping_module_polygon_mirror' );
+        $mirror = get_option( 'dt_saturation_mapping_mirror' );
         if ( empty( $mirror ) ) {
             $array = [
                 'key' => 'github',
                 'label' => 'GitHub',
-                'url' => 'https://raw.githubusercontent.com/DiscipleTools/dt-mapping-data/master/'
+                'url' => 'https://raw.githubusercontent.com/DiscipleTools/saturation-mapping/master/'
             ];
-            update_option( 'dt_mapping_module_polygon_mirror', $array, true );
+            update_option( 'dt_saturation_mapping_mirror', $array, true );
             $mirror = $array;
         }
         $mirror_source = $mirror['url'];

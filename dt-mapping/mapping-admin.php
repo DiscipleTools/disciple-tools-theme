@@ -800,7 +800,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     </td>
                     <td>
                         <?php
-                        $mirror = dt_get_mapping_polygon_mirror();
+                        $mirror = dt_get_saturation_mapping_mirror();
                         echo esc_attr( $mirror['label'] ) ?? '';
                         ?>
                     </td>
@@ -1697,14 +1697,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             /**
              * https://storage.googleapis.com/disciple-tools-maps/
-             * https://raw.githubusercontent.com/DiscipleTools/dt-mapping-data/master/
+             * https://raw.githubusercontent.com/DiscipleTools/saturation-mapping/master/
              * https://s3.amazonaws.com/mapping-source/
              */
             $mirror_list = [
                 'github' => [
                     'key'   => 'github',
                     'label' => 'GitHub',
-                    'url'   => 'https://raw.githubusercontent.com/DiscipleTools/dt-mapping-data/master/',
+                    'url'   => 'https://raw.githubusercontent.com/DiscipleTools/saturation-mapping/master/',
                 ],
                 'google' => [
                     'key'   => 'google',
@@ -1739,7 +1739,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             'label' => 'Other',
                             'url'   => $url,
                         ];
-                        update_option( 'dt_mapping_module_polygon_mirror', $array, true );
+                        update_option( 'dt_saturation_mapping_mirror', $array, true );
                     }
                 } elseif ( $selection_key !== 'other' ) {
                     $array = [
@@ -1747,14 +1747,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         'label' => $mirror_list[$selection_key]['label'],
                         'url'   => $mirror_list[$selection_key]['url'],
                     ];
-                    update_option( 'dt_mapping_module_polygon_mirror', $array, true );
+                    update_option( 'dt_saturation_mapping_mirror', $array, true );
                 }
             }
 
-            $mirror = dt_get_mapping_polygon_mirror();
+            $mirror = dt_get_saturation_mapping_mirror();
 
             set_error_handler( [ $this, "warning_handler" ], E_WARNING );
-            $list = file_get_contents( $mirror['url'] . 'available_locations.json' );
+            $list = file_get_contents( $mirror['url'] . 'available_polygons.json' );
             restore_error_handler();
 
             if ( $list ) {
@@ -1821,7 +1821,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 <strong>Custom Mirror Note:</strong>
                                 <em>
                                     Note: The custom mirror option allows you to download the polygon source repo (<a
-                                            href="https://github.com/DiscipleTools/dt-mapping-data/archive/master.zip">Download
+                                            href="https://github.com/DiscipleTools/saturation-mapping/archive/master.zip">Download
                                         source</a>) and install
                                     this folder to your own mirror. You will be responsible for syncing occasional
                                     updates to

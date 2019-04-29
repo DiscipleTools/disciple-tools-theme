@@ -317,7 +317,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             $settings['root'] = esc_url_raw( rest_url() );
             $settings['endpoints'] = $this->endpoints;
-            $settings['mapping_source_url'] = dt_get_mapping_polygon_mirror( true );
+            $settings['mapping_source_url'] = dt_get_saturation_mapping_mirror( true );
             $settings['population_division'] = $this->get_population_division();
             $settings['default_map_settings'] = $this->default_map_settings();
             $settings['spinner'] = ' <img src="'. spinner() . '" width="12px" />';
@@ -1658,14 +1658,16 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             //caching response
 //            self::reset_available_geojson(); // @todo remove (only used for dev)
+            // @todo add transient
+
             if ( get_option( 'dt_mapping_module_available_geojson' ) ) {
                 return get_option( 'dt_mapping_module_available_geojson' );
             }
 
             // get mirror source
-            $mirror_source = dt_get_mapping_polygon_mirror( true );
+            $mirror_source = dt_get_saturation_mapping_mirror( true );
             // get new array
-            $list = file_get_contents( $mirror_source . 'available_locations.json' );
+            $list = file_get_contents( $mirror_source . 'polygons/available_polygons.json' );
             if ( ! $list ) {
                 dt_write_log( 'Failed to retrieve available locations list. Check Mapping admin configuration.' );
                 dt_write_log( $list );
@@ -2713,15 +2715,15 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
      * Best way to call for the mapping polygon
      * @return array
      */
-    function dt_get_mapping_polygon_mirror( $url_only = false ) {
-        $mirror = get_option( 'dt_mapping_module_polygon_mirror' );
+    function dt_get_saturation_mapping_mirror( $url_only = false ) {
+        $mirror = get_option( 'dt_saturation_mapping_mirror' );
         if ( empty( $mirror ) ) {
             $array = [
                 'key' => 'github',
                 'label' => 'GitHub',
-                'url' => 'https://raw.githubusercontent.com/DiscipleTools/dt-mapping-data/master/'
+                'url' => 'https://raw.githubusercontent.com/DiscipleTools/saturation-mapping/master/'
             ];
-            update_option( 'dt_mapping_module_polygon_mirror', $array, true );
+            update_option( 'dt_saturation_mapping_mirror', $array, true );
             $mirror = $array;
         }
 
