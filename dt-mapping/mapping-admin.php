@@ -131,17 +131,17 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     cursor: pointer;
                 }
 
-                #drill_down {
+                .drill_down {
                     margin-bottom: 0;
                     list-style-type: none;
                 }
 
-                #drill_down li {
+                .drill_down li {
                     display: inline;
                     margin-right: 3px;
                 }
 
-                #drill_down li select {
+                .drill_down li select {
                     width: 150px;
                 }
             </style>
@@ -642,6 +642,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <div id="poststuff">
                     <div id="post-body" class="metabox-holder columns-1">
                         <div id="post-body-content">
+
+                            <?php DT_Mapping_Module::instance()->drill_down_widget( 'test' ) ?>
                             <!-- Main Column -->
 
                             <!-- Drill Down Box -->

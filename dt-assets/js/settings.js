@@ -78,7 +78,7 @@ function load_settings_locations( reload = false ) {
 
 function add_drill_down_selector() {
     jQuery('#new_locations').empty().append(
-            `<ul id="drill_down"></ul>
+            `<ul class="drill_down"></ul>
             <input type="hidden" id="add_location_geoname_value" />
             <button type="button" class="button" onclick="save_new_location()">Save</button>`
     )

@@ -30,7 +30,7 @@ window.DRILLDOWN = {
 
             let html = ``
 
-            html += `<ul id="drill_down">`
+            html += `<ul class="drill_down">`
 
             jQuery.each( response, function(i,section) {
 

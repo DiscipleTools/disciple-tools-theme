@@ -382,7 +382,6 @@ function top_level_map( div ) {
 
                         if( DRILLDOWNDATA.data[ev.target.dataItem.dataContext.geonameid] )
                         {
-                            jQuery("select#drill_down_top_level option[value="+ev.target.dataItem.dataContext.geonameid+"]").attr('selected', true)
                             return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
                         }
                     }, this);
@@ -529,7 +528,6 @@ function top_level_map( div ) {
 
                         if( DRILLDOWNDATA.data[ev.target.dataItem.dataContext.geonameid] )
                         {
-                            jQuery("select#drill_down_top_level option[value="+ev.target.dataItem.dataContext.geonameid+"]").attr('selected', true)
                             return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
                         }
                     }, this);
