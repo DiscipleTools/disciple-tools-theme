@@ -1,13 +1,8 @@
 <?php
-/**
- * @package  Disciple_Tools
- * @category Plugin
- * @author   Chasm.Solutions & Kingdom.Training
- * @since    0.1.0
- */
+
 if ( !defined( 'ABSPATH' ) ) {
     exit;
-} // Exit if accessed directly.
+}
 
 /**
  * Class Disciple_Tools_Contacts
@@ -154,7 +149,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @param  bool|true $check_permissions
      * @param  bool|true $silent
      *
-     * @access private
      * @since  0.1.0
      * @return int | WP_Error
      */

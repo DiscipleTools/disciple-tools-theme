@@ -535,5 +535,24 @@ class Disciple_Tools_Groups_Post_Type
         add_rewrite_rule( 'groups/([0-9]+)?$', 'index.php?post_type=groups&p=$matches[1]', 'top' );
     }
 
+    public function get_post_type_settings_hook( $settings, $post_type ){
+        if ( $post_type === "groups" ){
+            $fields = $this->get_custom_fields_settings();
+//            @todo connections types
+            $settings = [
+                'fields' => $fields,
+                'address_types' => dt_address_metabox()->get_address_type_list( "groups" ),
+                'channels' => [],
+                'connection_types' => array_keys( array_filter( $fields, function ( $a ) {
+                    return $a["type"] === "connection";
+                } ) ),
+                'label_singular' => $this->singular,
+                'label_plural' => $this->plural,
+                'post_type' => 'groups'
+            ];
+        }
+        return $settings;
+    }
+
 
 } // End Class

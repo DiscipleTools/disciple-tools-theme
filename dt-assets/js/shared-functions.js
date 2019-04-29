@@ -31,6 +31,22 @@ function makeRequest (type, url, data) {
   return jQuery.ajax(options)
 }
 
+function makeRequest_v2 (type, url, data) {
+  const options = {
+    type: type,
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    url: url.startsWith('http') ? url : `${wpApiShare.root}dt-posts/v2/${url}`,
+    beforeSend: xhr => {
+      xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+    }
+  }
+  if (data) {
+    options.data = JSON.stringify(data)
+  }
+  return jQuery.ajax(options)
+}
+
 window.API = {
   get_post: (type, postId) => makeRequest('get', `${type}/${postId}`),
 
@@ -71,6 +87,46 @@ window.API = {
   create_user: user => makeRequest('post', 'users/create', user),
 
   transfer_contact: (contactId, siteId) => makeRequest('post', 'contact/transfer', { contact_id: contactId, site_post_id: siteId }),
+}
+
+window.APIV2 = {
+  get_post: (type, postId) => makeRequest_v2('get', `${type}/${postId}`),
+
+  create_post: fields => makeRequest_v2('post', `contact/create`, fields),
+
+  save_field_api: (type, postId, postData) => makeRequest_v2('post', `${type}/${postId}`, postData),
+
+  post_comment: (type, postId, comment) => makeRequest_v2('post', `${type}/${postId}/comment`, { comment }),
+
+  delete_comment: (type, postId, comment_ID) => makeRequest_v2('delete', `${type}/${postId}/comment/${comment_ID}`),
+
+  update_comment: (type, postId, comment_ID, comment_content) => makeRequest_v2('post', `${type}/${postId}/comment/${comment_ID}`, {  comment: comment_content }),
+
+  get_comments: (type, postId) => makeRequest_v2('get', `${type}/${postId}/comments`),
+
+  get_activity: (type, postId) => makeRequest_v2('get', `${type}/${postId}/activity`),
+
+  get_single_activity: (type, postId, activityId) => makeRequest_v2('get', `${type}/${postId}/activity/${activityId}`),
+
+  revert_activity: (type, postId, activityId) => makeRequest_v2('get', `${type}/${postId}/revert/${activityId}`),
+
+  get_shared: (type, postId)=> makeRequest_v2('get', `${type}/${postId}/shared-with`),
+
+  add_shared: (type, postId, userId) => makeRequest_v2('post', `${type}/${postId}/add-shared`, { user_id: userId }),
+
+  remove_shared: (type, postId, userId)=> makeRequest_v2('post', `${type}/${postId}/remove-shared`, { user_id: userId }),
+
+  search_users: query => makeRequest_v2('get', `users/get_users?s=${query}`),
+
+  get_filters: () => makeRequest_v2('get', 'users/get_filters'),
+
+  save_filters: filters => makeRequest_v2('post', 'users/save_filters', { filters }),
+
+  get_duplicates_on_post: (type, postId) => makeRequest_v2('get', `${type}/${postId}/duplicates`),
+
+  create_user: user => makeRequest_v2('post', 'users/create', user),
+
+  transfer_contact: (contactId, siteId) => makeRequest_v2('post', 'contact/transfer', { contact_id: contactId, site_post_id: siteId }),
 }
 
 function handleAjaxError (err) {

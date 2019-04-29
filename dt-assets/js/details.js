@@ -1,11 +1,16 @@
 jQuery(document).ready(function($) {
   let post_id = detailsSettings.post_id
-  let post_type = detailsSettings.post_type.substring(0, detailsSettings.post_type.length - 1);
+  let post_type = detailsSettings.post_type
+  let rest_api = window.APIV2
+  if ( ['contacts', 'groups'].includes(detailsSettings.post_type ) ){
+    post_type = post_type.substring(0, detailsSettings.post_type.length - 1);
+    rest_api = window.API
+  }
 
   $('input.text-input').change(function(){
     const id = $(this).attr('id')
     const val = $(this).val()
-    API.save_field_api(post_type, post_id, { [id]: val }).then((newPost)=>{
+    rest_api.save_field_api(post_type, post_id, { [id]: val }).then((newPost)=>{
       $( document ).trigger( "text-input-updated", [ newPost, id, val ] );
     }).catch(handleAjaxError)
   })
@@ -27,7 +32,7 @@ jQuery(document).ready(function($) {
       fieldValue = {values:[{value:optionKey}]}
     }
     data[optionKey] = fieldValue
-    API.save_field_api(post_type, post_id, {[fieldKey]: fieldValue}).then((resp)=>{
+    rest_api.save_field_api(post_type, post_id, {[fieldKey]: fieldValue}).then((resp)=>{
       field.removeClass("submitting-select-button selected-select-button")
       field.blur();
       field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
@@ -43,7 +48,7 @@ jQuery(document).ready(function($) {
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
       let id = $(this).attr('id')
-      API.save_field_api( post_type, post_id, { [id]: date }).then((resp)=>{
+      rest_api.save_field_api( post_type, post_id, { [id]: date }).then((resp)=>{
         $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
       }).catch(handleAjaxError)
     },
@@ -56,7 +61,7 @@ jQuery(document).ready(function($) {
     const id = $(e.currentTarget).attr('id')
     const val = $(e.currentTarget).val()
 
-    API.save_field_api(post_type, post_id, { [id]: val }).then(resp => {
+    rest_api.save_field_api(post_type, post_id, { [id]: val }).then(resp => {
       $( document ).trigger( "select-field-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
   })
@@ -65,7 +70,7 @@ jQuery(document).ready(function($) {
     const id = $(this).attr('id')
     const val = $(this).val()
 
-    API.save_field_api('group', groupId, { [id]: val }).then((groupResp)=>{
+    rest_api.save_field_api('group', groupId, { [id]: val }).then((groupResp)=>{
       $( document ).trigger( "number-input-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
   })
@@ -83,7 +88,7 @@ jQuery(document).ready(function($) {
       follow: {values:[{value:contactsDetailsWpApiSettings.current_user_id, delete:!following}]},
       unfollow: {values:[{value:contactsDetailsWpApiSettings.current_user_id, delete:following}]}
     }
-    API.save_field_api( post_type, post_id, update )
+    rest_api.save_field_api( post_type, post_id, update )
   })
 
   // expand and collapse tiles

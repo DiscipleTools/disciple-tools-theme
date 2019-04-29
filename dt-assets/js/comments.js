@@ -4,8 +4,13 @@ jQuery(document).ready(function($) {
   let commentPostedEvent = document.createEvent('Event');
   commentPostedEvent.initEvent('comment_posted', true, true);
 
-  let postId = $("#post-id").text()
-  let postType = $("#post-type").text()
+  let postId = window.detailsSettings.post_id
+  let postType = window.detailsSettings.post_type
+  let rest_api = window.APIV2
+  if ( ['contacts', 'groups'].includes(detailsSettings.post_type ) ){
+    postType = postType.substring(0, detailsSettings.post_type.length - 1);
+    rest_api = window.API
+  }
 
   let comments = []
   let activity = [] // not guaranteed to be in any particular order
@@ -17,11 +22,12 @@ jQuery(document).ready(function($) {
         commentButton.toggleClass('loading')
         commentInput.attr("disabled", true)
         commentButton.attr("disabled", true)
-        API.post_comment(postType, postId, _.escape(comment_plain_text)).then(data => {
+        rest_api.post_comment(postType, postId, _.escape(comment_plain_text)).then(data => {
+          let updated_comment = data.comment || data
           commentInput.val("").trigger( "change" )
           commentButton.toggleClass('loading')
-          data.comment.date = moment(data.comment.comment_date_gmt + "Z")
-          comments.push(data.comment)
+          updated_comment.date = moment(updated_comment.comment_date_gmt + "Z")
+          comments.push(updated_comment)
           display_activity_comment()
           // fire comment posted event
           $('#content')[0].dispatchEvent(commentPostedEvent);
@@ -136,7 +142,7 @@ jQuery(document).ready(function($) {
   $('#confirm-comment-delete').on("click", function () {
     let id = $(this).data("id")
     $(this).toggleClass('loading')
-    API.delete_comment( postType, postId, id ).then(response=>{
+    rest_api.delete_comment( postType, postId, id ).then(response=>{
       $(this).toggleClass('loading')
       if (response){
         $('#delete-comment-modal').foundation('close')
@@ -171,9 +177,9 @@ jQuery(document).ready(function($) {
     $(this).toggleClass('loading')
     let id = $(this).data("id")
     let updated_comment = $('#comment-to-edit').val()
-    API.update_comment( postType, postId, id, updated_comment).then((response)=>{
+    rest_api.update_comment( postType, postId, id, updated_comment).then((response)=>{
       $(this).toggleClass('loading')
-      if (response === 1 || response === 0){
+      if (response === 1 || response === 0 || response.comment_ID){
         $('#edit-comment-modal').foundation('close')
       } else {
         $('.edit-comment.callout').show()
@@ -333,8 +339,8 @@ jQuery(document).ready(function($) {
       getActivityPromise.abort()
       getCommentsPromise.abort()
     }
-    getCommentsPromise =  API.get_comments(postType, postId)
-    getActivityPromise = API.get_activity(postType, postId)
+    getCommentsPromise =  rest_api.get_comments(postType, postId)
+    getActivityPromise = rest_api.get_activity(postType, postId)
     getAllPromise = $.when(
       getCommentsPromise,
       getActivityPromise

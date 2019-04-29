@@ -257,6 +257,10 @@ else {
              * dt-posts
              */
             require_once( get_template_directory() . '/dt-core/posts.php' );
+            require_once( get_template_directory() . '/dt-posts/custom-post-type.php' );
+            require_once( get_template_directory() . '/dt-posts/dt-posts.php' );
+            require_once( get_template_directory() . '/dt-posts/dt-posts-endpoints.php' );
+            Disciple_Tools_Posts_Endpoints::instance();
 
             /**
              * dt-contacts

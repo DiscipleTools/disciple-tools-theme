@@ -24,13 +24,14 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
     <div class="title-bar-right">
         <ul class="dropdown menu" data-dropdown-menu style="display:inline-block; margin-left: 10px">
             <li class="has-submenu center-items" style="width:21px;">
-              <button>
-                  <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add.svg" ?>" style="width:21px;">
-              </button>
-              <ul class="submenu menu vertical">
-                  <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'contacts/new'; ?>"><?php esc_html_e( 'New Contact', 'disciple_tools' )?></a></li>
-                  <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'groups/new'; ?>"><?php esc_html_e( 'New Group', 'disciple_tools' )?></a></li>
-              </ul>
+                <button>
+                    <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add.svg" ?>" style="width:21px;">
+                </button>
+                <ul class="submenu menu vertical">
+                    <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'contacts/new'; ?>"><?php esc_html_e( 'New Contact', 'disciple_tools' )?></a></li>
+                    <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'groups/new'; ?>"><?php esc_html_e( 'New Group', 'disciple_tools' )?></a></li>
+                    <?php do_action( 'dt_nav_add_post_menu' ) ?>
+                </ul>
             </li>
         </ul>
 
@@ -73,6 +74,7 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
                     <ul class="submenu menu vertical">
                         <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'contacts/new'; ?>"><?php esc_html_e( 'New Contact', 'disciple_tools' )?></a></li>
                         <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'groups/new'; ?>"><?php esc_html_e( 'New Group', 'disciple_tools' )?></a></li>
+                        <?php do_action( 'dt_nav_add_post_menu' ) ?>
                     </ul>
                 </li>
                 <li class="image-menu-nav">

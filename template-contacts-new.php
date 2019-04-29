@@ -77,33 +77,60 @@ get_header();
 <script>jQuery(function($) {
     $(".js-create-contact-button").removeAttr("disabled");
     let selectedLocations = []
-    $(".js-create-contact").on("submit", function() {
-        $(".js-create-contact-button")
-            .attr("disabled", true)
-            .addClass("loading");
+    $(".js-create-contact").on("submit", function(event) {
+        event.preventDefault();
+        // $(".js-create-contact-button")
+        //     .attr("disabled", true)
+        //     .addClass("loading");
         let source = $(".js-create-contact select[name=sources]").val()
         let status = 'new'
         if ( source === "personal" ){
             status = "active"
         }
-        API.create_contact({
+        const options = {
+            type: "post",
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            url: `${wpApiShare.root}dt/v2/contacts/create?silent=true`,
+            beforeSend: xhr => {
+                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+            }
+        }
+
+        let data = {
             overall_status: status,
             title: $(".js-create-contact input[name=title]").val(),
             contact_phone: [{value:$(".js-create-contact input[name=phone]").val()}],
             contact_email: [{value:$(".js-create-contact input[name=email]").val()}],
             sources: {values:[{value:source || "personal"}]},
             locations: {values:selectedLocations.map(i=>{return {value:i}})},
-            initial_comment: $(".js-create-contact textarea[name=initial_comment]").val(),
-        }).then(function(data) {
-            window.location = data.permalink;
-        }).catch(function(error) {
-            $(".js-create-contact-button").removeClass("loading").addClass("alert");
-            $(".js-create-contact").append(
-                $("<div>").html(error.responseText)
-            );
-            console.error(error);
-        });
-        return false;
+            initial_comment: $(".js-create-contact textarea[name=initial_comment]").val()
+        }
+        if (data) {
+            options.data = JSON.stringify(data)
+        }
+
+        console.log(options);
+        return jQuery.ajax(options)
+
+        // API.create_contact({
+        //     overall_status: status,
+        //     title: $(".js-create-contact input[name=title]").val(),
+        //     contact_phone: [{value:$(".js-create-contact input[name=phone]").val()}],
+        //     contact_email: [{value:$(".js-create-contact input[name=email]").val()}],
+        //     sources: {values:[{value:source || "personal"}]},
+        //     locations: {values:selectedLocations.map(i=>{return {value:i}})},
+        //     initial_comment: $(".js-create-contact textarea[name=initial_comment]").val(),
+        // }).then(function(data) {
+        //     window.location = data.permalink;
+        // }).catch(function(error) {
+        //     $(".js-create-contact-button").removeClass("loading").addClass("alert");
+        //     $(".js-create-contact").append(
+        //         $("<div>").html(error.responseText)
+        //     );
+        //     console.error(error);
+        // });
+        // return false;
     });
 
     /**

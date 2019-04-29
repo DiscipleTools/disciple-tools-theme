@@ -107,6 +107,7 @@ class Disciple_Tools_Contact_Post_Type
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'contacts_rewrites_init' ] );
         add_filter( 'post_type_link', [ $this, 'contacts_permalink' ], 1, 3 );
+        add_filter( 'dt_get_post_type_settings', [ $this, 'get_post_type_settings_hook' ], 10, 2 );
 
         if ( is_admin() ) {
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
@@ -164,10 +165,8 @@ class Disciple_Tools_Contact_Post_Type
             'show_in_admin_bar'     => true,
             'show_in_nav_menus'     => true,
             'can_export'            => true,
-            'exclude_from_search'   => false,
-            'show_in_rest'          => true,
-            'rest_base'             => 'contacts',
-            'rest_controller_class' => 'WP_REST_Posts_Controller',
+            'exclude_from_search'   => true,
+            'show_in_rest'          => false
         ];
 
         $args = wp_parse_args( $this->args, $defaults );
@@ -536,11 +535,57 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["locations"] = [
             "name" => __( "Locations", "disciple_tools" ),
-            "type" => "connection"
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "contacts_to_locations"
+        ];
+        $fields["relation"] = [
+            "name" => __( "Relation", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "to",
+            "p2p_key" => "contacts_to_relation"
+        ];
+        $fields["coached_by"] = [
+            "name" => __( "Coached_by", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "to",
+            "p2p_key" => "contacts_to_contacts"
+        ];
+        $fields["coached"] = [
+            "name" => __( "Coached", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "contacts_to_contacts"
+        ];
+        $fields["baptized"] = [
+            "name" => __( "Baptized", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "baptizer_to_baptized"
+        ];
+        $fields["baptized_by"] = [
+            "name" => __( "Baptized_by", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "to",
+            "p2p_key" => "baptizer_to_baptized"
+        ];
+        $fields["people_groups"] = [
+            "name" => __( "People Groups", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "contacts_to_peoplegroups"
+        ];
+        $fields["groups"] = [
+            "name" => __( "Groups", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "contacts_to_groups"
         ];
         $fields["subassigned"] = [
             "name" => __( "Sub-assigned to", "disciple_tools" ),
-            "type" => "connection"
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "contacts_to_subassigned"
         ];
 
         return $fields;
@@ -623,6 +668,25 @@ class Disciple_Tools_Contact_Post_Type
         wp_cache_set( "contact_field_settings", $fields );
         return $fields;
     } // End get_custom_fields_settings()
+
+    public function get_post_type_settings_hook( $settings, $post_type ){
+        if ( $post_type === "contacts" ){
+            $fields = $this->get_custom_fields_settings();
+            $settings = [
+                'sources' => dt_get_option( 'dt_site_custom_lists' )['sources'],
+                'fields' => $fields,
+                'address_types' => dt_get_option( "dt_site_custom_lists" )["contact_address_types"],
+                'channels' => $this->get_channels_list(),
+                'connection_types' => array_keys( array_filter( $fields, function ( $a ) {
+                    return $a["type"] === "connection";
+                } ) ),
+                'label_singular' => $this->singular,
+                'label_plural' => $this->plural,
+                'post_type' => 'contacts'
+            ];
+        }
+        return $settings;
+    }
 
     /**
      * Field: Contact Fields

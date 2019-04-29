@@ -127,14 +127,18 @@ function dt_site_scripts() {
     dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
     dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
 
-    if ( is_singular( "contacts" ) || is_singular( "groups" ) ) {
+    $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
+    if ( is_singular( $post_types ) ) {
         $post_type = get_post_type();
         if ( is_singular( "contacts" )){
             $post = Disciple_Tools_Contacts::get_contact( get_the_ID(), true, true );
-        } else {
+        } elseif ( is_singular( "groups" ) ){
             $post = Disciple_Tools_Groups::get_group( get_the_ID(), true, true );
+        } else {
+            $post = DT_Posts::get_post( get_post_type(), get_the_ID() );
         }
         if ( !is_wp_error( $post )){
+            $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
             dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.min.js', array( 'jquery' ), true );
             dt_theme_enqueue_script( 'jquery-mentions-elastic', 'dt-core/dependencies/jquery-mentions-input/lib/jquery.elastic.min.js', array( 'jquery' ), true );
             dt_theme_enqueue_style( 'jquery-mentions-css', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.css', array() );
@@ -161,7 +165,7 @@ function dt_site_scripts() {
                     'current_user_id' => get_current_user_id(),
                     'additional_sections' => apply_filters( 'dt_comments_additional_sections', [], $post_type ),
                     'comments' => Disciple_Tools_Posts::get_post_comments( $post_type, $post["ID"], true ),
-                    'activity' => $post_type === 'contacts' ? Disciple_Tools_Contacts::get_activity( $post["ID"] ) : Disciple_Tools_Groups::get_activity( $post["ID"] )
+                    'activity' => Disciple_Tools_Posts::get_post_activity( $post_type, $post["ID"], $post_settings["fields"] )
                 ]
             );
             dt_theme_enqueue_script( 'details', 'dt-assets/js/details.js', array(
@@ -218,8 +222,7 @@ function dt_site_scripts() {
                         'spinner_url'                     => get_template_directory_uri() . '/dt-assets/images/ajax-loader.gif',
                     )
                 );
-            }
-            if ( is_singular( "groups" ) ) {
+            } elseif ( is_singular( "groups" ) ) {
                 dt_theme_enqueue_script( 'group-details', 'dt-assets/js/group-details.js', array(
                     'jquery',
                     'lodash',
