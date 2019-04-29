@@ -61,6 +61,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
         public function __construct() {
 
+            require_once( 'google-geocode-api.php' );
+            if ( is_admin() ) {
+                require_once( 'mapping-admin.php' );
+            }
+
+
             /**
              * PERMISSION CHECK
              *
@@ -79,11 +85,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 return;
             }
             /** END PERMISSION CHECK */
-
-            require_once( 'add-contacts-column.php' );
-            require_once( 'add-groups-column.php' );
-            require_once( 'add-users-column.php' );
-            require_once( 'mapping-admin.php' );
 
             /**
              * SET FILE LOCATIONS
@@ -147,9 +148,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
             $url_path = trim( str_replace( get_site_url(), "", $url ), '/' );
             if ( 'mapping' === $url_base ) {
-
-                add_action( 'dt_top_nav_desktop', [ $this, 'top_nav_desktop' ] ); // add menu bar before checking for page
-
                 if ( 'mapping' === substr( $url_path, '0', $url_base_length ) ) {
 
                     add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
@@ -167,12 +165,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         /**
          * ENABLED DEFAULT NAVIGATION FUNCTIONS
          */
-        public function top_nav_desktop() {
-            ?>
-            <li><a
-                href="<?php echo esc_url( site_url( '/mapping/' ) ) . '#mapping_view'; ?>"><?php esc_html_e( "Mapping" ); ?></a>
-            </li><?php
-        }
+
         public function add_url( $template_for_url ) {
             $template_for_url['mapping'] = 'template-metrics.php';
             return $template_for_url;
@@ -183,43 +176,20 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             return $content;
         }
         public function scripts() {
+            // Amcharts
+            wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
+            wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
+            wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', false, '4' );
+            wp_register_script( 'amcharts-maps', 'https://www.amcharts.com/lib/4/maps.js', false, '4' );
+            wp_register_script( 'amcharts-world', 'https://www.amcharts.com/lib/4/geodata/worldLow.js', false, '4' );
 
-            // self hosted or publically hosted amcharts scripts
-            if ( get_option( 'dt_mapping_module_local_amcharts' ) === true ) { // local hosted @todo add checkbox to admin area
 
-                wp_enqueue_script( 'amcharts-core', $this->module_url . 'amcharts/dist/script/core.js',
-                    [], filemtime( $this->module_path . 'amcharts4/dist/script/core.js' ), true
-                );
-                wp_enqueue_script( 'amcharts-charts', $this->module_url . 'amcharts/dist/script/charts.js',
-                    [ 'amcharts-core' ],
-                    filemtime( $this->module_path . 'amcharts4/dist/script/charts.js' ), true
-                );
-                wp_enqueue_script( 'amcharts-maps', $this->module_url . 'amcharts/dist/script/maps.js',
-                    [
-                        'amcharts-core'
-                    ], filemtime( $this->module_path . 'amcharts4/dist/script/maps.js' ), true
-                );
-                wp_enqueue_script( 'amcharts-animated', $this->module_url . 'amcharts/dist/script/themes/animated.js',
-                    [
-                        'amcharts-core'
-                    ], filemtime( $this->module_path . 'amcharts4/dist/script/themes/animated.js' ), true
-                );
-
-            } else { // cdn hosted files
-
-                wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
-                wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
-                wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', false, '4' );
-                wp_register_script( 'amcharts-maps', 'https://www.amcharts.com/lib/4/maps.js', false, '4' );
-                wp_register_script( 'amcharts-world', 'https://www.amcharts.com/lib/4/geodata/worldLow.js', false, '4' );
-
-            }
-
+            // Datatable
             wp_register_style( 'datatable-css', '//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css' );
             wp_enqueue_style( 'datatable-css' );
             wp_register_script( 'datatable', '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', false, '1.10' );
 
-            // drill down tool
+            // Drill Down Tool
             wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery', 'lodash' ], '1.1' );
             wp_localize_script(
                 'mapping-drill-down', 'mappingModule', array(
@@ -227,6 +197,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 )
             );
 
+            // Mapping Script
             wp_enqueue_script( 'dt_mapping_module_script', $this->module_url . 'mapping.js', [
                 'jquery',
                 'jquery-ui-core',
@@ -1614,7 +1585,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
         public function get_countries_map_data() {
             $children = $this->query( 'get_countries' );
-
+dt_write_log($children);
             $results = [];
 
             if ( ! empty( $children ) ) {
@@ -1653,15 +1624,10 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             return $result['name'] ?? '';
         }
 
-
         public function get_available_geojson() {
 
-            //caching response
-//            self::reset_available_geojson(); // @todo remove (only used for dev)
-            // @todo add transient
-
-            if ( get_option( 'dt_mapping_module_available_geojson' ) ) {
-                return get_option( 'dt_mapping_module_available_geojson' );
+            if ( get_transient( 'dt_mapping_module_available_geojson' ) ) {
+                return get_transient( 'dt_mapping_module_available_geojson' );
             }
 
             // get mirror source
@@ -1677,7 +1643,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $list = json_decode( $list, true );
 
             // cache new response
-            add_option( 'dt_mapping_module_available_geojson', $list, "", false );
+            set_transient( 'dt_mapping_module_available_geojson', $list, strtotime( 'today midnight' ) );
 
             return $list;
         }
@@ -1734,7 +1700,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                               g.geonameid as id, 
                               g.geonameid, 
                               g.alt_name as name, 
-                              IFNULL(g.alt_population, g.population) as population, 
+                              IF(g.alt_population > 0, g.alt_population, g.population) as population, 
                               g.latitude, 
                               g.longitude,
                               g.country_code,
@@ -1758,7 +1724,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                               p.geonameid as id, 
                               p.geonameid, 
                               p.alt_name as name, 
-                              IFNULL(p.alt_population, p.population) as population, 
+                              IF(g.alt_population > 0, g.alt_population, g.population) as population, 
                               p.latitude, 
                               p.longitude,
                               p.country_code,
@@ -1782,7 +1748,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                               g.geonameid as id, 
                               g.geonameid, 
                               g.alt_name as name, 
-                              IFNULL(g.alt_population, g.population) as population, 
+                              IF(g.alt_population > 0, g.alt_population, g.population) as population, 
                               g.latitude, 
                               g.longitude,
                               g.country_code,
@@ -1824,7 +1790,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                               g.geonameid as id, 
                               g.geonameid, 
                               g.alt_name as name, 
-                              IFNULL(g.alt_population, g.population) as population, 
+                              IF(g.alt_population > 0, g.alt_population, g.population) as population,
                               g.latitude, 
                               g.longitude,
                               g.country_code,
@@ -1876,7 +1842,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 g.admin2_code,
                                 g.admin3_code,
                                 g.admin4_code,
-                                IFNULL(g.alt_population, g.population) as population,
+                                IF(g.alt_population > 0, g.alt_population, g.population) as population,
                                 g.timezone,
                                 g.modification_date,
                                 g.parent_id,
@@ -1965,7 +1931,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                               g.geonameid as id, 
                               g.geonameid, 
                               g.alt_name as name, 
-                              IFNULL(g.alt_population, g.population) as population, 
+                              IF(g.alt_population > 0, g.alt_population, g.population) as population, 
                               g.latitude, 
                               g.longitude,
                               g.country_code,
@@ -2009,7 +1975,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 g.admin2_code,
                                 g.admin3_code,
                                 g.admin4_code,
-                                IFNULL(g.alt_population, g.population) as population,
+                                IF(g.alt_population > 0, g.alt_population, g.population) as population,
                                 g.timezone,
                                 g.modification_date,
                                 g.parent_id,
@@ -2040,7 +2006,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 g.admin2_code,
                                 g.admin3_code,
                                 g.admin4_code,
-                                IFNULL(g.alt_population, g.population) as population,
+                                IF(g.alt_population > 0, g.alt_population, g.population) as population,
                                 g.timezone,
                                 g.modification_date,
                                 g.parent_id,
@@ -2071,7 +2037,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 g.admin2_code,
                                 g.admin3_code,
                                 g.admin4_code,
-                                IFNULL(g.alt_population, g.population) as population,
+                                IF(g.alt_population > 0, g.alt_population, g.population) as population,
                                 g.timezone,
                                 g.modification_date,
                                 g.parent_id,

@@ -11,20 +11,34 @@ class DT_Mapping_Module_Config
     } // End instance()
 
     public function __construct() {
+
+        add_action( 'dt_top_nav_desktop', [ $this, 'top_nav_desktop' ], 5 ); // add menu bar before checking for page
+
+        /**
+         * Load custom columns or remove these and replace with your own.
+         * Use these as examples and make your own columns.
+         */
+        require_once( 'add-contacts-column.php' );
+        require_once( 'add-groups-column.php' );
+        require_once( 'add-users-column.php' );
+
         /**
          * dt_mapping_module_has_permissions
+         *
          * @see    mapping.php:56
          */
         add_filter( 'dt_mapping_module_has_permissions', [ $this, 'custom_permission_check' ] );
 
         /**
          * dt_mapping_module_translations
+         *
          * @see     mapping.php:119 125
          */
         add_filter( 'dt_mapping_module_translations', [ $this, 'custom_translations_filter' ] );
 
         /**
          * dt_mapping_module_settings
+         *
          * @see     mapping.php:241
          */
         add_filter( 'dt_mapping_module_settings', [ $this, 'custom_settings_filter' ] );
@@ -32,27 +46,35 @@ class DT_Mapping_Module_Config
         /**
          * Use this filter to add data to sub levels by geoname
          * dt_mapping_module_map_level_by_geoname
+         *
          * @see     mapping.php:389
          */
         add_filter( 'dt_mapping_module_map_level_by_geoname', [ $this, 'map_level_by_geoname_filter' ], 10, 1 );
 
         /**
          * dt_mapping_module_url_base
+         *
          * @see     mapping.php:102
          */
         add_filter( 'dt_mapping_module_url_base', [ $this, 'custom_url_base' ] );
 
         /**
          * dt_mapping_module_endpoints
+         *
          * @see     mapping.php:77
          */
         add_filter( 'dt_mapping_module_endpoints', [ $this, 'add_custom_endpoints' ], 10, 1 );
 
-        /**
-         * dt_mapping_module_custom_population_divisions
-         * @see     mapping.php:748
-         */
-        add_filter( 'dt_mapping_module_custom_population_divisions', [ $this, 'custom_population_division' ] );
+    }
+
+    /**
+     * Set a link in the top bar of the site
+     */
+    public function top_nav_desktop() {
+        ?>
+        <li><a
+            href="<?php echo esc_url( site_url( '/mapping/' ) ) . '#mapping_view'; ?>"><?php esc_html_e( "Mapping" ); ?></a>
+        </li><?php
     }
 
     /**
@@ -134,18 +156,4 @@ class DT_Mapping_Module_Config
         return $base_url;
     }
 
-    /**
-     * Filter to supply custom divisions geographic unit.
-     * @example     [
-     *                  6252001 => 5000
-     *              ]
-     *
-     *              This would make the "United States" ( i.e. 6252001) use divisions of 5000
-     */
-    public function custom_population_division( $data ) { // @todo move this to a admin tab for configuration
-        /**
-         * Filter population division
-         */
-        return $data;
-    }
 }
