@@ -546,8 +546,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 ?>
                             </select>
                         </li>
-                    <?php
-                    endif;
+                    <?php endif;
                 }
             }
 
@@ -557,7 +556,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         /**
          * Drill Down Array
          * This is the core logic and array builder for the drilldown
-         * 
+         *
          * @param null $geonameid
          *
          * @return array|bool|mixed
