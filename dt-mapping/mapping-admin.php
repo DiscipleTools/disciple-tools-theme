@@ -643,7 +643,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <div id="post-body" class="metabox-holder columns-1">
                         <div id="post-body-content">
 
-                            <?php DT_Mapping_Module::instance()->drill_down_widget( 'test' ) ?>
                             <!-- Main Column -->
 
                             <!-- Drill Down Box -->
