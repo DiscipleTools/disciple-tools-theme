@@ -1709,7 +1709,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 'google' => [
                     'key'   => 'google',
                     'label' => 'Google',
-                    'url'   => 'https://storage.googleapis.com/mapping-source/',
+                    'url'   => 'https://storage.googleapis.com/saturation-mapping/',
                 ],
                 'amazon' => [
                     'key'   => 'amazon',
