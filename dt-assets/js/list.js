@@ -403,39 +403,40 @@
         filter.labels = [{ id:"all", name:wpApiListSettings.translations.filter_all, field: "assigned"}]
       } else if ( selectedFilterTab === "shared" ){
         query.assigned_to = ["shared"]
-        filter.labels = [{ id:"shared", name:__( 'Shared with me', 'disciple_tools' ), field: "assigned"}]
+        filter.labels = [{ id:"shared", name:wpApiListSettings.translations.filter_shared, field: "assigned"}]
       } else if ( selectedFilterTab === "subassigned" ){
         query.subassigned = [wpApiListSettings.current_user_contact_id]
-        filter.labels = [{ id:"subbassigned", name:__( 'Subassigned to me', 'disciple_tools' ), field: "assigned"}]
+        filter.labels = [{ id:"subbassigned", name:wpApiListSettings.translations.filter_subassigned, field: "assigned"}]
       }
       else if ( selectedFilterTab === "my" ){
         query.assigned_to = ["me"]
-        filter.labels = [{ id:"me", name:__( 'Assigned to me', 'disciple_tools' ), field: "assigned"}]
+        filter.labels = [{ id:"me", name:wpApiListSettings.translations.filter_my, field: "assigned"}]
       }
     }
+    let filter_name = wpApiListSettings.translations[`filter_${currentView}`]
     if ( currentView === "needs_accepted" ){
       query.overall_status = ["assigned"]
-      filter.labels = [{ id:"needs_accepted", name:__( 'Waiting to be accepted', 'disciple_tools' ), field: "accepted"}]
+      filter.labels = [{ id:"needs_accepted", name:filter_name, field: "accepted"}]
     } else if ( currentView === "new") {
       query.overall_status = ["new"]
-      filter.labels = [{ id:"new", name:__( 'New', 'disciple_tools' ), field: "overall_status"}]
+      filter.labels = [{ id:"new", name:filter_name, field: "overall_status"}]
     } else if ( currentView === "active") {
       query.overall_status = ["active"]
-      filter.labels = [{ id:"active", name:__( 'Active', 'disciple_tools' ), field: "overall_status"}]
+      filter.labels = [{ id:"active", name:filter_name, field: "overall_status"}]
     } else if ( currentView === "assignment_needed" ){
       query.overall_status = ["unassigned"]
-      filter.labels = [{ id:"unassigned", name:__( 'Dispatch needed', 'disciple_tools' ), field: "assigned"}]
+      filter.labels = [{ id:"unassigned", name:filter_name, field: "assigned"}]
     } else if ( currentView === "update_needed" ){
-      filter.labels = [{ id:"update_needed", name:__( 'Update needed', 'disciple_tools' ), field: "requires_update"}]
+      filter.labels = [{ id:"update_needed", name:filter_name, field: "requires_update"}]
       query.requires_update = [true]
     } else if ( currentView === "meeting_scheduled" ){
       query.overall_status = ["active"]
       query.seeker_path = ["scheduled"]
-      filter.labels = [{ id:"active", name:__( 'Meeting scheduled', 'disciple_tools' ), field: "seeker_path"}]
+      filter.labels = [{ id:"active", name:filter_name, field: "seeker_path"}]
     } else if ( currentView === "contact_unattempted" ){
       query.overall_status = ["active"]
       query.seeker_path = ["none"]
-      filter.labels = [{ id:"all", name:__( 'Contact attempt needed', 'disciple_tools' ), field: "seeker_path"}]
+      filter.labels = [{ id:"all", name:filter_name, field: "seeker_path"}]
     } else if ( currentView === "custom_filter"){
       let filterId = checked.data("id")
       filter = _.find(customFilters, {ID:filterId})

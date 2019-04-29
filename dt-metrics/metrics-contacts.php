@@ -86,6 +86,23 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
                 'overall_status_settings' => $overall_status_settings,
                 'seeker_path_settings' => $seeker_path_settings,
                 'milestone_settings' => $milestone_settings,
+                'translations' => [
+                    'seeker_path' => __( "Seeker path", 'disciple_tools' ),
+                    'filter_contacts_to_date_range' => __( "Filter contacts to date range:", 'disciple_tools' ),
+                    'all_time' => __( "All time", 'disciple_tools' ),
+                    'milestones' => __( "Milestones", 'disciple_tools' ),
+                    'filter_to_date_range' => __( "Filter to date range", 'disciple_tools' ),
+                    'sources' => __( "Sources", 'disciple_tools' ),
+                    'sources_filter_out_text' => __( "Showing contacts created during", 'disciple_tools' ),
+                    'sources_all_contacts_by_source_and_status' => __( "All contacts, by source and status", 'disciple_tools' ),
+                    'sources_contacts_warning' => __( "A contact can come from more than one source.", 'disciple_tools' ),
+                    'sources_active_by_seeker_path' => __( "Active contacts, by source and seeker path", 'disciple_tools' ),
+                    'sources_only_active' => __( "This is displaying only the contacts with an active status right now.", 'disciple_tools' ),
+                    'sources_active_milestone' => __( "Active contacts, by source and faith milestone", 'disciple_tools' ),
+                    'sources_active_status_warning' => __( "This is displaying only the contacts with an \"active\" status right now.", 'disciple_tools' ),
+                    'sources_contacts_warning_milestones' => __( "A contact can come from more than one source, and it can have more than one faith milestone at the same time.", 'disciple_tools' ),
+                    'faith_milestone' => __( "Faith milestone", 'disciple_tools' ),
+                ]
             ]
         );
     }

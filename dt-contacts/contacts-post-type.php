@@ -209,12 +209,12 @@ class Disciple_Tools_Contact_Post_Type
                 ],
                 'assigned'     => [
                     "color" => "#FF9800",
-                    "label" => _X( "Waiting to be accepted", 'Contact Status', 'disciple_tools' ),
+                    "label" => _x( "Waiting to be accepted", 'Contact Status', 'disciple_tools' ),
                     "description" => _x( "The contact has been assigned to someone, but has not yet been accepted by that person.", "Contact Status", 'disciple_tools' )
                 ],
                 'active'       => [
                     "color" => "#4CAF50",
-                    "label" => _X( 'Active', 'Contact Status', 'disciple_tools' ),
+                    "label" => _x( 'Active', 'Contact Status', 'disciple_tools' ),
                     "description" => _x( "The contact is progressing and/or continually being updated.", "Contact Status", 'disciple_tools' )
                 ],
                 'paused'       => [

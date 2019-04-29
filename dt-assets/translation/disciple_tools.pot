@@ -30,6 +30,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-8: dt-network\n"
 "X-Poedit-SearchPathExcluded-9: vendor\n"
 "X-Poedit-SearchPathExcluded-10: node_modules\n"
+"X-Poedit-SearchPathExcluded-11: *.js\n"
 
 #: 403.php:9
 msgid "Permission denied"
