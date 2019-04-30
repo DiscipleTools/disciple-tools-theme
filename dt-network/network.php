@@ -825,12 +825,8 @@ class Disciple_Tools_Snapshot_Report
                 'last_thirty_day_engagement' => self::user_logins_last_thirty_days(),
             ],
             'locations' => [
-                'countries' => self::get_countries_summary(),
-                'current_state' => [
-                    'active_locations' => rand( 300, 1000 ),
-                    'inactive_locations' => rand( 300, 1000 ),
-                    'all_locations' => rand( 300, 1000 ),
-                ],
+                'countries' => self::get_locations_list( true ),
+                'current_state' => self::get_locations_current_state(),
                 'list' => self::get_locations_list(),
             ],
             'date' => current_time( 'timestamp' ),
@@ -1377,15 +1373,45 @@ class Disciple_Tools_Snapshot_Report
         return $data;
     }
 
-    public static function get_locations_list() {
+    public static function get_locations_list( $countries_only = false ) {
 
-        $data = DT_Mapping_Module::instance()->query( 'get_geoname_totals' );
+        $data = [];
+
+        if ( $countries_only ) {
+            $results = DT_Mapping_Module::instance()->query( 'get_geoname_totals', [ 'country_only' => true ] );
+        } else {
+            $results = DT_Mapping_Module::instance()->query( 'get_geoname_totals' );
+        }
+
+        if ( ! empty( $results ) ) {
+            foreach( $results as $item ) {
+                // skip custom geonames. Their totals are represented in the standard parents.
+                if ( $item['geonameid'] > 1000000000 ) {
+                    continue;
+                }
+                // set array, if not set
+                if ( ! isset( $data[$item['geonameid']] ) ) {
+                    $data[$item['geonameid']] = [];
+                }
+                // increment existing item type or add new
+                if ( isset( $data[$item['geonameid']][$item['type']] ) ) {
+                    $data[$item['geonameid']][$item['type']] = $data[$item['geonameid']][$item['type']] + $item['count'];
+                } else {
+                    $data[$item['geonameid']][$item['type']] = $item['count'];
+                }
+            }
+        }
 
         return $data;
     }
 
-    public static function get_countries_summary() {
+    public static function get_locations_current_state() {
         $data = [];
+        $data = [
+            'active_locations' => rand( 300, 1000 ),
+            'inactive_locations' => rand( 300, 1000 ),
+            'all_locations' => rand( 300, 1000 ),
+        ];
 
 
 
