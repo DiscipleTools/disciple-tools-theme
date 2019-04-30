@@ -825,66 +825,13 @@ class Disciple_Tools_Snapshot_Report
                 'last_thirty_day_engagement' => self::user_logins_last_thirty_days(),
             ],
             'locations' => [
-                'countries' => [
-                    [
-                        'id' => $location_list[$location_id]['id'],
-                        'name' => $location_list[$location_id]['name'],
-                        'site_name' => $profile['partner_name'],
-                        'contacts' => rand( 300, 1000 ),
-                        'groups' => rand( 300, 1000 ),
-                        'value' => 100,
-                        'color' => 'red'
-                    ]
-                ],
+                'countries' => self::get_countries_summary(),
                 'current_state' => [
                     'active_locations' => rand( 300, 1000 ),
                     'inactive_locations' => rand( 300, 1000 ),
                     'all_locations' => rand( 300, 1000 ),
                 ],
-                'list' => [
-                    [
-                        'location_name' => '',
-                        'location_id' => '',
-                        'parent_id' => '',
-                        'geonameid' => '',
-                        'longitude' => '',
-                        'latitude' => '',
-                        'total_contacts' => 0,
-                        'total_groups' => 0,
-                        'total_users' => 0,
-                        'new_contacts' => 0,
-                        'new_groups' => 0,
-                        'new_users' => 0,
-                    ],
-                    [
-                        'location_name' => '',
-                        'location_id' => '',
-                        'parent_id' => '',
-                        'geonameid' => '',
-                        'longitude' => '',
-                        'latitude' => '',
-                        'total_contacts' => 0,
-                        'total_groups' => 0,
-                        'total_users' => 0,
-                        'new_contacts' => 0,
-                        'new_groups' => 0,
-                        'new_users' => 0,
-                    ],
-                    [
-                        'location_name' => '',
-                        'location_id' => '',
-                        'parent_id' => '',
-                        'geonameid' => '',
-                        'longitude' => '',
-                        'latitude' => '',
-                        'total_contacts' => 0,
-                        'total_groups' => 0,
-                        'total_users' => 0,
-                        'new_contacts' => 0,
-                        'new_groups' => 0,
-                        'new_users' => 0,
-                    ],
-                ],
+                'list' => self::get_locations_list(),
             ],
             'date' => current_time( 'timestamp' ),
             'status' => 'OK',
@@ -1426,6 +1373,21 @@ class Disciple_Tools_Snapshot_Report
                 $end = true;
             }
         }
+
+        return $data;
+    }
+
+    public static function get_locations_list() {
+
+        $data = DT_Mapping_Module::instance()->query( 'get_geoname_totals' );
+
+        return $data;
+    }
+
+    public static function get_countries_summary() {
+        $data = [];
+
+
 
         return $data;
     }

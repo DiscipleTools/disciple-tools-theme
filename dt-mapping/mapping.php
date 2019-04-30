@@ -1913,7 +1913,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         ", $args['geonameid'] ), ARRAY_A );
                     }
                     break;
-
+                    
                 case 'get_drilldown_by_geonameid':
                     if ( isset( $args['geonameid'] ) ) {
                         $results = $wpdb->get_row( $wpdb->prepare( "

@@ -22,14 +22,14 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
                 g.geonameid,
    				g.level,
                 p.post_id,
-                IF (cu.meta_value = 'user', 'users', pp.post_type) as type, 
+                IF (cu.meta_value IS NULL, pp.post_type, 'users' ) as type, 
                 IF (pp.post_type = 'contacts', cs.meta_value, gs.meta_value) as status,
                 IF (pp.post_type = 'contacts', UNIX_TIMESTAMP(pp.post_date), gd.meta_value) as created_date,
                 IF (pp.post_type = 'contacts', ce.meta_value, ge.meta_value) as end_date
             FROM {$wpdb->prefix}postmeta as p
                 JOIN {$wpdb->prefix}posts as pp ON p.post_id=pp.ID
                 LEFT JOIN {$wpdb->prefix}dt_geonames as g ON g.geonameid=p.meta_value             
-                LEFT JOIN {$wpdb->prefix}postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'type'
+                LEFT JOIN {$wpdb->prefix}postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
                 LEFT JOIN {$wpdb->prefix}postmeta as cs ON cs.post_id=p.post_id AND cs.meta_key = 'overall_status'
                 LEFT JOIN {$wpdb->prefix}postmeta as gs ON gs.post_id=p.post_id AND gs.meta_key = 'group_status'
                 LEFT JOIN {$wpdb->prefix}postmeta as gd ON gd.post_id=p.post_id AND gd.meta_key = 'start_date'
