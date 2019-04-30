@@ -22,12 +22,11 @@ function project_overview() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
-
-    console.log( sourceData )
+    let translations = dtMetricsProject.data.translations
 
     chartDiv.empty().html(`
         <div class="cell center">
-            <h3>${ __( 'Project Overview', 'disciple_tools' ) }</h3>
+            <h3>${ translations.title_overview }</h3>
         </div>
         <div class="medium reveal" id="dt-project-legend" data-reveal>
             <button class="close-button" data-close aria-label="Close modal" type="button">
@@ -37,37 +36,37 @@ function project_overview() {
         <br><br>
         <div class="grid-x grid-padding-x grid-padding-y">
             
-            <h3 class="section-header">${ __( 'Contacts', 'disciple_tools' ) }</h3>
+            <h3 class="section-header">${ translations.title_contacts }</h3>
             <div class="cell center callout">
                 <div class="cell center">
                 </div>
                 <div class="grid-x">
                     <div class="medium-3 cell center">
-                        <h5>${ __( 'Waiting on Accept', 'disciple_tools' ) }<br><span id="needs_accepted">0</span></h5>
+                        <h5>${ translations.title_waiting_on_accept }<br><span id="needs_accepted">0</span></h5>
                     </div>
                     <div class="medium-3 cell center left-border-grey">
-                        <h5>${ __( 'Waiting on Update', 'disciple_tools' ) }<br><span id="updates_needed">0</span></h5>
+                        <h5>${ translations.title_waiting_on_update }<br><span id="updates_needed">0</span></h5>
                     </div>
                     <div class="medium-3 cell center left-border-grey">
-                        <h5>${ __( 'Active Contacts', 'disciple_tools' ) }<br><span id="active_contacts">0</span></h5>
+                        <h5>${ translations.title_active_contacts }<br><span id="active_contacts">0</span></h5>
                     </div>
                     <div class="medium-3 cell center left-border-grey">
-                        <h5>${ __( 'All Contacts', 'disciple_tools' ) }<br><span id="all_contacts">0</span></h5>
+                        <h5>${ translations.title_all_contacts }<br><span id="all_contacts">0</span></h5>
                     </div>
                 </div>
             </div>
             <div class="cell">
                 <div id="my_contacts_progress" style="height: 350px; width=100%"></div>
             </div>
-            <h3 class="section-header" style="margin-top:40px;">${ __( 'Groups', 'disciple_tools' ) }</h3>
+            <h3 class="section-header" style="margin-top:40px;">${ translations.title_groups }</h3>
             <div class="cell">
                 <div class="cell center callout">
                     <div class="grid-x">
                         <div class="medium-4 cell center">
-                            <h5>${ __( 'Total Groups', 'disciple_tools' ) }<br><span id="total_groups">0</span></h5>
+                            <h5>${ translations.title_total_groups }<br><span id="total_groups">0</span></h5>
                         </div>
                         <div class="medium-4 cell center left-border-grey">
-                            <h5>${ __( 'Teams', 'disciple_tools' ) }<br><span id="teams">0</span></h5>
+                            <h5>${ translations.title_teams }<br><span id="teams">0</span></h5>
                         </div>
                    </div> 
                 </div>
@@ -110,7 +109,7 @@ function project_overview() {
       console.log(sourceData.contacts_progress);
       let chart = am4core.create("my_contacts_progress", am4charts.XYChart)
       let title = chart.titles.create()
-      title.text = `[bold]${ __( 'Follow-up of my active contacts', 'disciple_tools' ) }[/]`
+      title.text = `[bold]${ window.dtMetricsProject.data.translations.label_follow_up_progress }[/]`
       chart.data = sourceData.contacts_progress.reverse()
 
       let categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
@@ -140,7 +139,7 @@ function project_overview() {
       let chart = am4core.create("my_groups_health", am4charts.XYChart);
       chart.data = sourceData.group_health
       let title = chart.titles.create()
-      title.text = `[bold]${__( 'Active Group Health Metrics', 'disciple_tools' )}[/]`
+      title.text = `[bold]${dtMetricsProject.data.translations.label_group_needs_training}[/]`
       let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
       categoryAxis.dataFields.category = "label";
       categoryAxis.renderer.grid.template.location = 0;
@@ -185,7 +184,7 @@ function project_overview() {
     function drawGroupTypes() {
       let chart = am4core.create("group_types", am4charts.PieChart);
       let title = chart.titles.create()
-      title.text = `[bold]${__( 'Group Types', 'disciple_tools' )}[/]`
+      title.text = `[bold]${dtMetricsProject.data.translations.label_group_types}[/]`
       chart.data = sourceData.group_types
       let pieSeries = chart.series.push(new am4charts.PieSeries());
       pieSeries.dataFields.value = "count";
@@ -197,7 +196,7 @@ function project_overview() {
     function drawGroupGenerations() {
       let chart = am4core.create("group_generations", am4charts.XYChart);
       let title = chart.titles.create()
-      title.text = `[bold]${ __( 'Group and Church Generations', 'disciple_tools' ) }[/]`
+      title.text = `[bold]${ dtMetricsProject.data.translations.title_generations }[/]`
 
       chart.data = sourceData.group_generations.reverse()
 
@@ -205,7 +204,7 @@ function project_overview() {
       categoryAxis.dataFields.category = "generation";
       categoryAxis.renderer.grid.template.location = 0;
       categoryAxis.renderer.labels.template.adapter.add("text", function(text) {
-        return __( "Generation", "disciple_tools" ) + ' ' + text;
+        return dtMetricsProject.data.translations.label_generation + ' ' + text;
       });
 
       let valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
@@ -227,9 +226,9 @@ function project_overview() {
         return series;
       }
 
-      createSeries("pre-group", __( 'Pre-Group', 'disciple_tools' ) );
-      createSeries("group", __( 'Group', 'disciple_tools' ) );
-      createSeries("church", __( 'Church', 'disciple_tools' ) );
+      createSeries("pre-group", dtMetricsProject.data.translations.label_pre_group );
+      createSeries("group", dtMetricsProject.data.translations.label_group );
+      createSeries("church", dtMetricsProject.data.translations.label_church );
       chart.legend = new am4charts.Legend();
     }
 
@@ -251,12 +250,13 @@ function project_group_tree() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
+    let translations = dtMetricsProject.data.translations
 
     let height = $(window).height()
     let chartHeight = height - ( height * .15 )
 
     chartDiv.empty().html(`
-        <span class="section-header">${ __( 'Group Generation Tree', 'disciple_tools' ) }</span><hr>
+        <span class="section-header">${ translations.title_group_tree }</span><hr>
         
         <br clear="all">
         <div class="grid-x grid-padding-x">
@@ -388,9 +388,10 @@ function project_baptism_tree() {
 
     let height = $(window).height()
     let chartHeight = height - ( height * .15 )
+    let translations = dtMetricsProject.data.translations
 
     chartDiv.empty().html(`
-        <span class="section-header">${ __( 'Baptism Generation Tree', 'disciple_tools' ) }</span><hr>
+        <span class="section-header">${ translations.title_baptism_tree }</span><hr>
         
         <br clear="all">
         <div class="grid-x grid-padding-x">
@@ -436,7 +437,7 @@ function project_coaching_tree() {
     let chartHeight = height - ( height * .15 )
 
     chartDiv.empty().html(`
-        <span class="section-header">${ __( 'Coaching Generation Tree', 'disciple_tools' ) }</span><hr>
+        <span class="section-header">${ dtMetricsProject.data.translations.title_coaching_tree }</span><hr>
         
         <br clear="all">
         <div class="grid-x grid-padding-x">
@@ -471,160 +472,3 @@ function project_coaching_tree() {
 
 }
 
-// function project_locations() {
-//     "use strict";
-//     let chartDiv = jQuery('#chart')
-//     jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
-//     let sourceData = dtMetricsProject.data
-//     chartDiv.empty().html(`
-//         <span class="section-header">${ __( 'Locations', 'disciple_tools' ) }</span><br><br>
-//
-//         <div class="grid-x grid-padding-x grid-padding-y">
-//             <div class="cell center callout">
-//                 <div class="grid-x">
-//                     <div class="medium-4 cell center">
-//                         <h4>${ __( 'Total Locations', 'disciple_tools' ) }<br><span id="total_locations">0</span></h4>
-//                     </div>
-//                     <div class="medium-4 cell center left-border-grey">
-//                         <h4>${ __( 'Active Locations', 'disciple_tools' ) }<br><span id="total_active_locations">0</span></h4>
-//                     </div>
-//                     <div class="medium-4 cell center left-border-grey">
-//                         <h4>${ __( 'Inactive Locations', 'disciple_tools' ) }<br><span id="total_inactive_locations">0</span></h4>
-//                     </div>
-//                 </div>
-//             </div>
-//             <div class="cell">
-//                 <span class="section-subheader">${ __( 'Location Tree', 'disciple_tools' ) }</span>
-//                 <div id="generation_map" class="scrolling-wrapper"><img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
-//             </div>
-//         </div>
-//         <div id="modal" class="large reveal" data-reveal data-v-offset="20px"></div>
-//
-//         `)
-//
-//     /* Load hero stats */
-//     let hero = sourceData.location_hero_stats
-//     jQuery('#total_locations').html( numberWithCommas( hero.total_locations ) )
-//     jQuery('#total_active_locations').html( numberWithCommas( hero.total_active_locations ) )
-//     jQuery('#total_inactive_locations').html( numberWithCommas( hero.total_inactive_locations ) )
-//
-//     /* Get tree data */
-//     jQuery.ajax({
-//         type: "POST",
-//         contentType: "application/json; charset=utf-8",
-//         data:JSON.stringify({ "type": "location" }),
-//         dataType: "json",
-//         url: dtMetricsProject.root + 'dt/v1/metrics/project/tree/',
-//         beforeSend: function(xhr) {
-//             xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
-//         },
-//     })
-//         .done(function (data) {
-//             if( data ) {
-//                 jQuery('#generation_map').empty().html(data)
-//                 jQuery('#generation_map li:last-child').addClass('last');
-//             }
-//         })
-//         .fail(function (err) {
-//             console.log("error")
-//             console.log(err)
-//             jQuery("#errors").append(err.responseText)
-//         })
-//
-//     new Foundation.Reveal(jQuery('#modal') )
-//
-// }
-// function open_location_modal_details( id ) {
-//     let modal = jQuery('#modal')
-//     let spinner = `<img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" />`
-//     modal.empty().html(spinner).foundation('open')
-//     jQuery.ajax({
-//         type: "POST",
-//         contentType: "application/json; charset=utf-8",
-//         data: JSON.stringify({"id": id } ),
-//         dataType: "json",
-//         url: dtMetricsProject.root + 'dt/v1/locations/get_location_with_connections/',
-//         beforeSend: function(xhr) {
-//             xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
-//         },
-//     })
-//         .done(function (data) {
-//             if( data ) {
-//                 console.log(data)
-//                 let columns = 4
-//                 let map = ''
-//                 if ( data.latitude && data.longitude && data.api_key ) {
-//                     map += `<div class="cell medium-3">
-//                                 <img src="https://maps.googleapis.com/maps/api/staticmap?center=${data.latitude},${data.longitude}&zoom=${data.zoom}&size=400x500&markers=color:red|${data.latitude},${data.longitude}&key=${data.api_key}"/>
-//                             </div>`
-//                     columns = 3
-//                 }
-//
-//                 let groups = ''
-//                 if ( data.groups ) {
-//                     jQuery.each( data.groups, function(i,v) {
-//                         groups += `- <a href="/groups/${v.id}">` + v.name + `</a>`
-//                         if ( v.type === 'church' ) {
-//                             groups += ` <i class="fi-home"></i>`
-//                         }
-//                         groups += `<br>`
-//                     })
-//                 }
-//
-//                 let contacts = ''
-//                 if ( data.contacts ) {
-//                     jQuery.each( data.contacts, function(i,v) {
-//                         contacts += `- <a href="/contacts/${v.id}">` + v.name + `</a><br>`
-//                     })
-//                 }
-//
-//                 let workers = ''
-//                 if ( data.workers ) {
-//                     workers += `<div class="cell medium-${columns}">
-//                                 <strong>Workers (${data.total_workers})</strong><br><br>`
-//                     jQuery.each( data.workers, function(i,v) {
-//                         workers += `- <a href="/contacts/${v.id}">` + v.name + `</a><br>`
-//                     })
-//                     workers += `</div>`
-//                 }
-//
-//                 let content = `
-//                 <div class="grid-x">
-//                     <div class="cell"><span class="section-header">${data.post_title}</span><hr style="max-width:100%;"></div>
-//
-//                     <div class="cell">
-//                         <div class="grid-x grid-padding-x grid-padding-y">
-//                             ${map}
-//                             ${workers}
-//                             <div class="cell medium-${columns}">
-//                                 <strong>Groups (${data.total_groups})</strong><br><br>
-//                                 ${groups}
-//                             </div>
-//                             <div class="cell medium-${columns}">
-//                                 <strong>Contacts (${data.total_contacts})</strong><br><br>
-//                                  ${contacts}
-//                             </div>
-//                         </div>
-//                     </div>
-//
-//                     <div class="cell center">
-//                         <hr>
-//                         <button data-close aria-label="Close modal" class="button" type="button">
-//                             <span aria-hidden="true">Close</span>
-//                           </button>
-//                     </div>
-//                 </div>
-//                 <button class="close-button" data-close aria-label="Close modal" type="button">
-//                     <span aria-hidden="true">&times;</span>
-//                   </button>
-//                 `
-//
-//                 modal.empty().html(content)
-//             }
-//         })
-//         .fail(function (err) {
-//             console.log("error")
-//             console.log(err)
-//             jQuery("#errors").append(err.responseText)
-//         })
-// }

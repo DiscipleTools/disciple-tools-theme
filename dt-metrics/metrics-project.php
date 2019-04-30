@@ -44,7 +44,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                     <li><a href="'. site_url( '/metrics/project/' ) .'#group_tree" onclick="project_group_tree()">'. esc_html__( 'Group Tree', 'disciple_tools' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#baptism_tree" onclick="project_baptism_tree()">'. esc_html__( 'Baptism Tree', 'disciple_tools' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#coaching_tree" onclick="project_coaching_tree()">'. esc_html__( 'Coaching Tree', 'disciple_tools' ) .'</a></li>
-                    <!-- <li><a href="'. site_url( '/metrics/project/' ) .'#project_locations" onclick="project_locations()">'. esc_html__( 'Locations' ) .'</a></li> -->
                 </ul>
             </li>
             ';
@@ -76,6 +75,45 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 
     public function data() {
         return [
+            'translations' => [
+                'title_overview' => __( 'Project Overview', 'disciple_tools' ),
+                'title_contacts' => __( 'Contacts', 'disciple_tools' ),
+                'title_groups' => __( 'Groups', 'disciple_tools' ),
+                'title_multiplication' => __( 'Multiplication', 'disciple_tools' ),
+                'title_all_contacts' => __( 'All Contacts', 'disciple_tools' ),
+                'title_active_contacts' => __( 'Active Contacts', 'disciple_tools' ),
+                'title_waiting_on_accept' => __( 'Waiting on Accept', 'disciple_tools' ),
+                'title_waiting_on_update' => __( 'Waiting on Update', 'disciple_tools' ),
+                'title_project_groups' => __( 'Project Groups', 'disciple_tools' ),
+                'title_total_groups' => __( 'Total Groups', 'disciple_tools' ),
+                'title_needs_training' => __( 'Needs Training', 'disciple_tools' ),
+                'title_fully_practicing' => __( 'Fully Practicing', 'disciple_tools' ),
+                'title_generations' => __( 'Group and Church Generations', 'disciple_tools' ),
+                'title_group_types' => __( 'Group Types', 'disciple_tools' ),
+                'title_group_tree' => __( 'Group Generation Tree', 'disciple_tools' ),
+                'title_baptism_tree' => __( 'Baptism Generation Tree', 'disciple_tools' ),
+                'title_coaching_tree' => __( 'Coaching Generation Tree', 'disciple_tools' ),
+                'title_locations' => __( 'Locations', 'disciple_tools' ),
+                'title_locations_tree' => __( 'Location Tree', 'disciple_tools' ),
+                'title_teams' => __( 'Teams', 'disciple_tools' ),
+                'label_number_of_contacts' => strtolower( __( 'number of contacts', 'disciple_tools' ) ),
+                'label_follow_up_progress' => __( 'Follow-up of my active contacts', 'disciple_tools' ),
+                'label_group_needs_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
+                'label_groups' => strtolower( __( 'groups', 'disciple_tools' ) ),
+                'label_generations' => strtolower( __( 'generations', 'disciple_tools' ) ),
+                'label_generation' => strtolower( __( 'Generation', 'disciple_tools' ) ),
+                'label_groups_by_type' => strtolower( __( 'groups by type', 'disciple_tools' ) ),
+                'label_group_types' => __( 'Group Types', 'disciple_tools' ),
+                'label_total_locations' => __( 'Total Locations', 'disciple_tools' ),
+                'label_active_locations' => __( 'Active Locations', 'disciple_tools' ),
+                'label_inactive_locations' => __( 'Inactive Locations', 'disciple_tools' ),
+                'label_countries' => __( 'Countries', 'disciple_tools' ),
+                'label_states' => __( 'States', 'disciple_tools' ),
+                'label_counties' => __( 'Counties', 'disciple_tools' ),
+                'label_pre_group' => __( 'Pre-Group', 'disciple_tools' ),
+                'label_group' => __( 'Group', 'disciple_tools' ),
+                'label_church' => __( 'Church', 'disciple_tools' ),
+            ],
             'hero_stats' => self::chart_project_hero_stats(),
             'contacts_progress' => self::chart_contacts_progress( 'project' ),
             'group_types' => self::chart_group_types( 'project' ),
