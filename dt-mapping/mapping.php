@@ -61,9 +61,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
         public function __construct() {
 
+            require_once( 'mapping-queries.php' );
             require_once( 'google-geocode-api.php' );
             require_once( 'mapping-admin.php' ); // can't filter for is_admin because of REST dependencies
-
 
 
             /**
@@ -1672,6 +1672,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
          *
          * @return array|int|null|object|string|\WP_Error
          */
+        // @todo migrate all citations to Disciple_Tools_Mapping_Queries
         public function query( $type, $args = [] ) {
             global $wpdb;
             $results = [];
