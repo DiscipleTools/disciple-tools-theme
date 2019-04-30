@@ -1320,37 +1320,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     }
                 }
 
-                // window.DRILLDOWN.sublocation = function (geonameid) {
-                //     let list_results = jQuery('#list_results')
-                //     let current_subs = jQuery('#current_subs')
-                //     let other_list = jQuery('#other_list')
-                //
-                //     list_results.empty()
-                //     other_list.empty()
-                //     current_subs.hide()
-                //
-                //     if (geonameid === 'top_map_list') { // top level multi-list
-                //         list_results.append(`Select one single location`)
-                //     }
-                //     else { // children available
-                //         if (!window.DRILLDOWN.isEmpty(window.DRILLDOWNDATA.data[geonameid].children)) { // empty children for geonameid
-                //             jQuery.each(window.DRILLDOWNDATA.data[geonameid].children, function (gnid, data) {
-                //                 other_list.append(`
-                //                     <tr><td>
-                //                         <a class="open_next_drilldown" data-parent="${geonameid}" data-geonameid="${gnid}" style="cursor: pointer;">${_.escape(data.name)}</a>
-                //                     </td></tr>`)
-                //             })
-                //             current_subs.show()
-                //         }
-                //
-                //         list_results.append(`
-                //                 <tr><td colspan="2">Add New Location to ${window.DRILLDOWNDATA.data[geonameid].self.name}</td></tr>
-                //                 <tr><td style="width:150px;">Name</td><td><input id="new_name" value="" /></td></tr>
-                //                 <tr><td>Population</td><td><input id="new_population" value="" /></td></tr>
-                //                 <tr><td colspan="2"><button type="button" id="save-button" class="button" onclick="update_location( ${geonameid} )" >Save</a></td></tr>`)
-                //     }
-                // }
-
                 function update_location(geonameid) {
                     jQuery('#save-button').prop('disabled', true)
 
