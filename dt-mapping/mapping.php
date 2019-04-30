@@ -493,7 +493,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     }
                     ?>
                     <li>
-                        <button id="<?php echo esc_html( $section['parent'] ) ?>"
+                        <button id="<?php echo esc_html( $section['parent'] ) ?>" type="button"
                                 onclick="DRILLDOWN.get_drill_down( '<?php echo esc_attr( $bind_function ) ?>', '<?php echo esc_attr( $section['selected'] ) ?>' )"
                                 class="button <?php echo esc_attr( $hollow_class ) ?> geocode-link">
                             <?php echo esc_html( $section['selected_name'] ) ?>

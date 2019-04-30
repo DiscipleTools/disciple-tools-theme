@@ -836,29 +836,33 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function migration_from_locations_meta_box(){
-            if ( isset( $_POST["save_location_migration"], $_POST["location_migrate_nonce"] ) && wp_verify_nonce( sanitize_key( $_POST['location_migrate_nonce'] ), 'save' ) ) {
-                $location_id = sanitize_text_field( wp_unslash( $_POST["save_location_migration"] ) );
+            if ( isset( $_POST["location_migrate_nonce"] ) && wp_verify_nonce( sanitize_key( $_POST['location_migrate_nonce'] ), 'save' ) ) {
+                $location_id = null;
+
+                if ( isset( $_POST["save_as_sublocation"] ) ){
+                    $location_id = sanitize_text_field( wp_unslash( $_POST["save_as_sublocation"] ) );
+                } elseif ( isset( $_POST["save_as_geoname"] ) ){
+                    $location_id = sanitize_text_field( wp_unslash( $_POST["save_as_geoname"] ) );
+                }
                 $location = get_post( $location_id );
-                $geonameid = null;
-                if ( isset( $_POST[$location_id . "_create_as_sublocation"] ) && $location && !empty( $_POST[$location_id . "_create_as_sublocation"] )){
-                    $parent_geoname = sanitize_text_field( wp_unslash( $_POST[$location_id . "_create_as_sublocation"] ) );
-                    $geonameid = $this->add_sublocation_under_geoname( $parent_geoname, $location->post_title, 0 );
-                }
-                if ( isset( $_POST[$location_id . "_convert_to_geoname"] ) && !empty( $_POST[$location_id . "_convert_to_geoname"] ) ) {
-                    $geonameid = sanitize_text_field( wp_unslash( $_POST[$location_id . "_convert_to_geoname"] ) );
-                }
-                if ( $geonameid ){
-                    $this->convert_location_to_geoname( $location_id, $geonameid );
-                    ?>
-                    <div class="notice notice-success is-dismissible">
-                        <p>Successfully migrated to geonames location: <?php echo esc_html( $location->post_title )?></p>
-                    </div>
-                    <?php
+                if ( isset( $_POST[$location_id . "_selected_geoname"] ) && $location ){
+                    $selected_geoname = sanitize_text_field( wp_unslash( $_POST[$location_id . "_selected_geoname"] ) );
+                    if ( empty( $selected_geoname )){
+                        $selected_geoname = '6295630';
+                    }
+                    if ( isset( $_POST["save_as_sublocation"] ) ){
+                        $selected_geoname = $this->add_sublocation_under_geoname( $selected_geoname, $location->post_title, 0 );
+                    }
+                    if ( $selected_geoname ){
+                        $this->convert_location_to_geoname( $location_id, $selected_geoname );
+                        ?>
+                        <div class="notice notice-success is-dismissible">
+                            <p>Successfully migrated to geonames location: <?php echo esc_html( $location->post_title )?></p>
+                        </div>
+                        <?php
+                    }
                 }
             }
-
-
-
 
             global $wpdb;
             $locations_with_records = $wpdb->get_results( "
@@ -877,20 +881,21 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
 
 
-            <p>Thank you for completing this important step in using D.T</p>
-            <p>This tool is to help you migrate from the old locations system, to the new one that uses geonames as it's base. </p>
-            <p>To explore what geonames are available, click <a target="_blank" href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=explore' ) ) ?>">here</a></p>
-            <p>Below, for each location, select to convert it to an existing geoname or to create it as a sub-location under an existing geoname. You can also create sub-locations first by going to the "Sub-Locations" tab</p>
+            <p>Thank you for completing this important step in using D.T.</p>
+            <p>This tool is to help you migrate from the old locations system, to the new one that uses <a href="https://www.geonames.org/about.html">GeoNames</a>  as it's base. GeoNames is a free database of countries and regions and will help us achieve better collaborate across instances. </p>
+            <p>To explore what geonames are available, click <a target="_blank" href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=explore' ) ) ?>">here</a>.</p>
+
+<!--            <p>Below, for each of the old locations, select to convert it to an geoname location or to create it as a sub-location under a geoname location. You can also create sub-locations first by going to the "Sub-Locations" tab.</p>-->
+            <p>Below, we need to select the corresponding GeoNames location for each of the old locations. You can also add the old location as a sublocation under one of the GeoNames locations.</p>
 
             <form method="post" action="">
                 <?php wp_nonce_field( 'save', 'location_migrate_nonce', true, true ) ?>
+                <h3>Locations to Migrate ( <?php echo esc_html( sizeof( $locations_with_records ) ) ?> )</h3>
                 <table class="widefat striped">
                     <thead>
                     <tr>
-                        <th>Locations to Migrate ( <?php echo esc_html( sizeof( $locations_with_records ) ) ?> )</th>
-                        <th>Select Corresponding Geoname</th>
-                        <th>OR </th>
-                        <th>Create as location under a Geoname</th>
+                        <th>Old Location Name</th>
+                        <th>Select a Location</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -900,12 +905,21 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <td> <?php echo esc_html( $location["post_title"] ) ?>
                                 ( <?php echo esc_html( $location["count"] ) ?> )
                             </td>
-                            <td><input name="<?php echo esc_html( $location["ID"] ) ?>_convert_to_geoname"></td>
-                            <td>Or</td>
-                            <td><input name="<?php echo esc_html( $location["ID"] ) ?>_create_as_sublocation"></td>
-                            <td>
-                                <button type="submit" value="<?php echo esc_html( $location["ID"] ) ?>"
-                                        name="save_location_migration">Save
+                            <td id="<?php echo esc_html( $location["ID"] ) ?>_sublocation" class="to-location">
+                                <input name="<?php echo esc_html( $location["ID"] ) ?>_selected_geoname" class="convert-input" type="hidden">
+                                <div class="drilldown">
+                                    <?php DT_Mapping_Module::instance()->drill_down_widget( esc_html( $location["ID"] ) . "_sublocation .drilldown" ) ?>
+                                </div>
+                            </td>
+                            <td id="<?php echo esc_html( $location["ID"] ) ?>_buttons">
+                                <button type="submit" value="<?php echo esc_html( $location["ID"] ) ?>" class="button primary"
+                                        name="save_as_geoname">Convert <?php echo esc_html( $location["post_title"] ) ?> to <span class="selected-geoname-label">World</span>
+                                </button>
+                                <br>
+                                Or
+                                <br>
+                                <button type="submit" value="<?php echo esc_html( $location["ID"] ) ?>" class="button"
+                                        name="save_as_sublocation">Create <?php echo esc_html( $location["post_title"] ) ?> as a sub-location under <span class="selected-geoname-label">World</span>
                                 </button>
                             </td>
                         </tr>
@@ -913,6 +927,16 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     </tbody>
                 </table>
             </form>
+            <script>
+                jQuery(".to-location").each((a, b)=>{
+                    let id = jQuery(b).attr('id')
+                    window.DRILLDOWN[`${ id } .drilldown`] = function (geonameid, label) {
+                        jQuery(`#${id} .convert-input`).val(geonameid)
+                        jQuery(`#${id.replace("sublocation", "buttons")} .selected-geoname-label`).text(label)
+                    }
+                })
+
+            </script>
             <?php endif;
         }
 

@@ -31,7 +31,7 @@ window.DRILLDOWN = {
             let html = ``
 
             html += `<ul class="drill_down">`
-
+            let selectedGeonameLabel = '';
             jQuery.each( response, function(i,section) {
 
                 // check if section is a link or a dropdown list
@@ -42,10 +42,12 @@ window.DRILLDOWN = {
                     if ( section.active ) {
                         hollowClass = ''
                         geonameid = section.selected
+                        selectedGeonameLabel = section.selected_name
                     }
+                    let disabled = !response[i+2]
 
                     // create button
-                    html += `<li><button id="${section.parent}"
+                    html += `<li><button id="${section.parent}" type="button" ${disabled ? "disabled" : ""}
                         onclick="DRILLDOWN.get_drill_down( '${bindFunction}', '${section.selected}' )"
                         class="button ${hollowClass} geocode-link">${section.selected_name}</button></li>`
 
@@ -58,7 +60,7 @@ window.DRILLDOWN = {
                             console.log('no additional dropdown triggered')
                         } else {
                             // make select
-                            html += `<li><select id="${section.parent}" 
+                            html += `<li><select id="${section.parent}"
                             onchange="DRILLDOWN.get_drill_down( '${bindFunction}', this.value )"
                             class="geocode-select">`
 
@@ -89,7 +91,7 @@ window.DRILLDOWN = {
 
             // trigger supplied bind event
             if ( typeof DRILLDOWN[bindFunction] !== "undefined" ) {
-                DRILLDOWN[bindFunction]( geonameid )
+                DRILLDOWN[bindFunction]( geonameid, selectedGeonameLabel )
             }
 
         }) // end success statement
