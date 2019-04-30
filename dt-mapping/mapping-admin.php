@@ -616,7 +616,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <div id="post-body-content">
                             <!-- Main Column -->
 
-
                             <?php $this->migration_status_metabox() ?>
                             <br>
                             <?php $this->migration_rebuild_geonames() ?>
@@ -2118,22 +2117,22 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             if ( isset( $parent_geoname['level'] ) ) {
                 switch ( $parent_geoname['level'] ) {
                     case 'country':
-                        $level = 'admin1';
+                        $level = 'admin1c';
                         $parent_geoname['admin1_geonameid'] = $custom_geonameid;
                         $parent_geoname['feature_code'] = 'ADM1';
                         break;
                     case 'admin1':
-                        $level = 'admin2';
+                        $level = 'admin2c';
                         $parent_geoname['admin2_geonameid'] = $custom_geonameid;
                         $parent_geoname['feature_code'] = 'ADM2';
                         break;
                     case 'admin2':
-                        $level = 'admin3';
+                        $level = 'admin3c';
                         $parent_geoname['admin3_geonameid'] = $custom_geonameid;
                         $parent_geoname['feature_code'] = 'ADM3';
                         break;
                     case 'admin3':
-                        $level = 'admin4';
+                        $level = 'admin4c';
                         $parent_geoname['admin4_geonameid'] = $custom_geonameid;
                         $parent_geoname['feature_code'] = 'ADM4';
                         break;
