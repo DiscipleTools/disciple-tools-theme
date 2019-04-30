@@ -80,13 +80,13 @@ function dt_dashboard_page_scripts() {
     if ( is_admin() && 'index.php' === $pagenow ) {
 
         // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
-        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(), false );
-        wp_localize_script(
-            'dt_dashboard_scripts', 'wpApiDashboard', array(
-                'root' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' )
-            )
-        );
+//        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(), false );
+//        wp_localize_script(
+//            'dt_dashboard_scripts', 'wpApiDashboard', array(
+//                'root' => esc_url_raw( rest_url() ),
+//                'nonce' => wp_create_nonce( 'wp_rest' )
+//            )
+//        );
     }
 }
 

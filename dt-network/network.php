@@ -39,9 +39,6 @@ class Disciple_Tools_Network {
                 self::create_partner_profile();
             }
 
-            add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
-            add_filter( "dt_custom_fields_settings", [ $this, 'saturation_field_filter' ], 1, 2 );
-
         }
     }
 
@@ -54,10 +51,6 @@ class Disciple_Tools_Network {
         ];
         update_option( 'dt_site_partner_profile', $partner_profile, true );
         return $partner_profile;
-    }
-
-    public function meta_box_setup() {
-        add_meta_box( 'location_network_box', __( 'Network Dashboard Fields', 'disciple_tools' ), [ $this, 'load_mapping_meta_box' ], 'locations', 'normal', 'high' );
     }
 
     /**
@@ -197,10 +190,6 @@ class Disciple_Tools_Network {
         <?php
     }
 
-    public static function admin_locations_gname_installed_box() {
-        // @codingStandardsIgnoreLine
-        echo self::load_current_locations();
-    }
 
     public function site_link_type( $type ) {
         $type['network_dashboard_sending'] = __( 'Network Dashboard Sending' );
@@ -212,84 +201,6 @@ class Disciple_Tools_Network {
             $args['capabilities'][] = 'network_dashboard_transfer';
         }
         return $args;
-    }
-
-    public static function load_current_locations() {
-        global $wpdb;
-
-        // @todo pull these locations from the new location source
-        $query = $wpdb->get_results("
-            SELECT
-                  a.ID as id,
-                  a.post_parent as parent_id,
-                  a.post_title as name
-                FROM $wpdb->posts as a
-                WHERE a.post_status = 'publish'
-                AND a.post_type = 'locations'
-            ", ARRAY_A );
-
-
-        // prepare special array with parent-child relations
-        $menu_data = array(
-            'items' => array(),
-            'parents' => array()
-        );
-
-        foreach ( $query as $menu_item )
-        {
-            $menu_data['items'][$menu_item['id']] = $menu_item;
-            $menu_data['parents'][$menu_item['parent_id']][] = $menu_item['id'];
-        }
-
-        // output the menu
-        return self::build_tree( 0, $menu_data, -1 );
-
-    }
-
-    public static function build_tree( $parent_id, $menu_data, $gen) {
-        $html = '';
-
-        if (isset( $menu_data['parents'][$parent_id] ))
-        {
-            $gen++;
-            foreach ($menu_data['parents'][$parent_id] as $item_id)
-            {
-                if ( $gen >= 1 ) {
-                    for ($i = 0; $i < $gen; $i++ ) {
-                        $html .= '-- ';
-                    }
-                }
-                $html .= '<a href="'. esc_url( admin_url() ) . 'post.php?post=' . esc_attr( $menu_data['items'][$item_id]['id'] ) .'&action=edit">' . esc_attr( $menu_data['items'][$item_id]['name'] ) . '</a><br>';
-
-                // find childitems recursively
-                $html .= self::build_tree( $item_id, $menu_data, $gen );
-            }
-        }
-        return $html;
-    }
-
-    public function saturation_field_filter( $fields, $post_type ) {
-        if ( 'locations' === $post_type ) {
-            $fields['gn_geonameid'] = [
-                'name'        => 'GeoNames ID ',
-                'description' => __( 'Geoname ID is the unique global id for this location or its nearest known location. This is usually supplied by the Network Dashboard, but can be overwritten by clicking "edit"' ),
-                'type'        => 'locked',
-                'default'     => '',
-                'section'     => 'saturation_mapping',
-            ];
-            $fields['gn_population'] = [
-                'name'        => 'Population',
-                'description' => __( 'Population for this location' ),
-                'type'        => 'number',
-                'default'     => 0,
-                'section'     => 'saturation_mapping',
-            ];
-        }
-        return $fields;
-    }
-
-    public function load_mapping_meta_box() {
-        Disciple_Tools_Location_Post_Type::instance()->meta_box_content( 'saturation_mapping' );
     }
 
     /**
@@ -539,7 +450,7 @@ class Disciple_Tools_Snapshot_Report
 {
     public static function snapshot_report( $force_refresh = false ) {
 
-        $force_refresh = true; // @todo @development mode
+        $force_refresh = true; // @todo @development mode. remove line for production
 
         if ( $force_refresh ) {
             delete_transient( 'dt_snapshot_report' );
@@ -547,22 +458,6 @@ class Disciple_Tools_Snapshot_Report
         if ( get_transient( 'dt_snapshot_report' ) ) {
             return get_transient( 'dt_snapshot_report' );
         }
-
-        $location_list = [
-            [
-        'id' => 'AF',
-        'name' => 'Afganistan'
-            ],
-            [
-            'id' => 'US',
-            'name' => 'United States'
-            ],
-            [
-            'id' => 'TN',
-            'name' => 'Tunisia'
-            ],
-        ];
-        $location_id = rand( 0, 2 );
 
         $profile = dt_get_partner_profile();
 
@@ -611,6 +506,7 @@ class Disciple_Tools_Snapshot_Report
                 'last_thirty_day_engagement' => self::user_logins_last_thirty_days(),
             ],
             'locations' => [
+                'data_types' => self::location_data_types(),
                 'countries' => self::get_locations_list( true ),
                 'current_state' => self::get_locations_current_state(),
                 'list' => self::get_locations_list(),
@@ -1141,6 +1037,25 @@ class Disciple_Tools_Snapshot_Report
         return $data;
     }
 
+    public static function location_data_types( $preset = false ) {
+        if ( $preset ) {
+            return [
+                'contacts' => 0,
+                'groups' => 0,
+                'churches' => 0,
+                'users' => 0,
+            ];
+        } else {
+            return [
+                'contacts',
+                'groups',
+                'churches',
+                'users',
+            ];
+        }
+
+    }
+
     public static function get_locations_list( $countries_only = false ) {
 
         $data = [];
@@ -1159,7 +1074,7 @@ class Disciple_Tools_Snapshot_Report
                 }
                 // set array, if not set
                 if ( ! isset( $data[$item['geonameid']] ) ) {
-                    $data[$item['geonameid']] = [];
+                    $data[$item['geonameid']] = self::location_data_types( true );
                 }
                 // increment existing item type or add new
                 if ( isset( $data[$item['geonameid']][$item['type']] ) ) {
@@ -1176,8 +1091,11 @@ class Disciple_Tools_Snapshot_Report
     public static function get_locations_current_state() {
         $data = [
             'active_countries' => 0,
+            'active_countries_geonames' => [],
             'active_admin1' => 0,
+            'active_admin1_geonames' => [],
             'active_admin2' => 0,
+            'active_admin2_geonames' => [],
         ];
 
         $results = Disciple_Tools_Network_Queries::locations_current_state();
@@ -1189,6 +1107,25 @@ class Disciple_Tools_Snapshot_Report
         }
         if ( ! empty( $results['active_countries'] ) ) {
             $data['active_admin2'] = (int) $results['active_admin2'];
+        }
+
+        $active_countries_geonames = Disciple_Tools_Mapping_Queries::active_countries_geonames();
+        if ( ! empty( $active_countries_geonames ) ) {
+            foreach ( $active_countries_geonames as $geonameid ) {
+                $data['active_countries_geonames'][] = (int) $geonameid;
+            }
+        }
+        $active_admin1_geonames = Disciple_Tools_Mapping_Queries::active_admin1_geonames();
+        if ( ! empty( $active_admin1_geonames ) ) {
+            foreach ( $active_admin1_geonames as $geonameid ) {
+                $data['active_admin1_geonames'][] = (int) $geonameid;
+            }
+        }
+        $active_admin2_geonames = Disciple_Tools_Mapping_Queries::active_admin2_geonames();
+        if ( ! empty( $active_admin2_geonames ) ) {
+            foreach ( $active_admin2_geonames as $geonameid ) {
+                $data['active_admin2_geonames'][] = (int) $geonameid;
+            }
         }
 
         return $data;

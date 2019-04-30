@@ -93,7 +93,7 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
-    public static function get_by_geonameid_list( array $list ) {
+    public static function get_by_geonameid_list( array $list, $short = false ) {
         global $wpdb;
 
         $prepared_list = '';
@@ -109,26 +109,41 @@ class Disciple_Tools_Mapping_Queries {
         // and this query requires a list of numbers separated by commas but without surrounding ''
         // Any better ideas on how to still use ->prepare and not break the sql, welcome. :)
         // @codingStandardsIgnoreStart
-        $results = $wpdb->get_results("
-            SELECT
-              g.geonameid as id, 
-              g.geonameid, 
-              g.alt_name as name, 
-              IF(g.alt_population > 0, g.alt_population, g.population) as population,
-              g.latitude, 
-              g.longitude,
-              g.country_code,
-              g.feature_code,
-              g.parent_id,
-              g.country_geonameid,
-              g.admin1_geonameid,
-              g.admin2_geonameid,
-              g.admin3_geonameid,
-              g.level
-            FROM $wpdb->dt_geonames as g
-            WHERE g.geonameid IN ($prepared_list)
-            ORDER BY g.alt_name ASC
-        ", ARRAY_A );
+        if ( $short ) {
+            $results = $wpdb->get_results("
+                SELECT
+                  g.geonameid, 
+                  g.alt_name as name, 
+                  IF(g.alt_population > 0, g.alt_population, g.population) as population,
+                  g.latitude, 
+                  g.longitude,
+                  g.level
+                FROM $wpdb->dt_geonames as g
+                WHERE g.geonameid IN ($prepared_list)
+                ORDER BY g.alt_name ASC
+            ", ARRAY_A );
+        } else {
+            $results = $wpdb->get_results("
+                SELECT
+                  g.geonameid as id, 
+                  g.geonameid, 
+                  g.alt_name as name, 
+                  IF(g.alt_population > 0, g.alt_population, g.population) as population,
+                  g.latitude, 
+                  g.longitude,
+                  g.country_code,
+                  g.feature_code,
+                  g.parent_id,
+                  g.country_geonameid,
+                  g.admin1_geonameid,
+                  g.admin2_geonameid,
+                  g.admin3_geonameid,
+                  g.level
+                FROM $wpdb->dt_geonames as g
+                WHERE g.geonameid IN ($prepared_list)
+                ORDER BY g.alt_name ASC
+            ", ARRAY_A );
+        }
         // @codingStandardsIgnoreEnd
 
         if ( empty( $results ) ) {
@@ -637,6 +652,54 @@ class Disciple_Tools_Mapping_Queries {
             }
         }
         return $prepared;
+    }
+
+    public static function active_countries_geonames() {
+        global $wpdb;
+
+        $results = $wpdb->get_col( "
+            SELECT DISTINCT country_geonameid as geonameid 
+            FROM $wpdb->dt_geonames_counter
+            WHERE country_geonameid != 0
+        ");
+
+        if ( empty( $results ) ) {
+            $results = [];
+        }
+
+        return $results;
+    }
+
+    public static function active_admin1_geonames() {
+        global $wpdb;
+
+        $results = $wpdb->get_col( "
+            SELECT DISTINCT admin1_geonameid as geonameid 
+            FROM $wpdb->dt_geonames_counter
+            WHERE admin1_geonameid != 0
+        ");
+
+        if ( empty( $results ) ) {
+            $results = [];
+        }
+
+        return $results;
+    }
+
+    public static function active_admin2_geonames() {
+        global $wpdb;
+
+        $results = $wpdb->get_col( "
+            SELECT DISTINCT admin2_geonameid as geonameid 
+            FROM $wpdb->dt_geonames_counter
+            WHERE admin2_geonameid != 0
+        ");
+
+        if ( empty( $results ) ) {
+            $results = [];
+        }
+
+        return $results;
     }
 
 }
