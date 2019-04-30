@@ -2206,10 +2206,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             $mapped_geoname_id_to_name[$geoname["geonameid"]] = $geoname["name"];
                         }
                         foreach ( $geonames as $geoname ){
-                            $prepared[$geoname["post_id"]][] = [
-                                "geoname_id" => $geoname["meta_value"],
-                                "name" => $mapped_geoname_id_to_name[$geoname["meta_value"]]
-                            ];
+                            if ( isset( $mapped_geoname_id_to_name[$geoname["meta_value"]] ) ){
+                                $prepared[$geoname["post_id"]][] = [
+                                    "geoname_id" => $geoname["meta_value"],
+                                    "name" => $mapped_geoname_id_to_name[$geoname["meta_value"]]
+                                ];
+                            }
                         }
                         return $prepared;
                     }
