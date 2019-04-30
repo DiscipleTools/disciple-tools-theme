@@ -441,8 +441,12 @@ class Disciple_Tools_Posts
                 if ($fields[$activity->meta_key]["type"] === "number"){
                     $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
                 }
-                if ($fields[$activity->meta_key]["type"] === "date" ){
+                if ( $fields[$activity->meta_key]["type"] === "date" ){
                     $message = $fields[$activity->meta_key]["name"] . ": " . dt_format_date( $activity->meta_value );
+                }
+                if ( $fields[$activity->meta_key]["type"] === "location" ){
+                    $geoname = DT_Mapping_Module::instance()->query( 'get_by_geonameid', [ 'geonameid' => $activity->meta_value ] );
+                    $message = sprintf( _x( '%1$s added to locations', 'Milestone1 added to Milestones', 'disciple_tools' ), $geoname ? $geoname["name"] : $activity->meta_value );
                 }
             } else {
                 if ( strpos( $activity->meta_key, "_details" ) !== false ) {

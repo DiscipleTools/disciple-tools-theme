@@ -202,8 +202,7 @@ function dt_site_scripts() {
                     'lodash',
                     'shared-functions',
                     'typeahead-jquery',
-                    'comments',
-                    'mapping-drill-down'
+                    'comments'
                 ) );
                 wp_localize_script(
                     'contact-details', 'contactsDetailsWpApiSettings', array(
@@ -228,8 +227,7 @@ function dt_site_scripts() {
                     'jquery',
                     'lodash',
                     'typeahead-jquery',
-                    'shared-functions',
-                    'mapping-drill-down'
+                    'shared-functions'
                 ) );
                 wp_localize_script(
                     'group-details', 'wpApiGroupsSettings', array(
@@ -264,7 +262,7 @@ function dt_site_scripts() {
             )
         );
     }
-    if ( is_singular( "groups" ) || is_singular( "contacts" ) || 'settings' === $url_path ) {
+    if ( 'settings' === $url_path ) {
         wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery', 'lodash' ], '1' );
         wp_localize_script(
             'mapping-drill-down', 'mappingModule', array(

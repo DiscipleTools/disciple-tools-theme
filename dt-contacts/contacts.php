@@ -260,7 +260,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 unset( $fields[$field_key] );
             }
             $field_type = $contact_fields[$field_key]["type"] ?? '';
-            if ( $field_type === "multi_select" ){
+            if ( $field_type === "multi_select" || $field_type === "location" ){
                 $multi_select_fields[$field_key] = $field_value;
                 unset( $fields[$field_key] );
             }
