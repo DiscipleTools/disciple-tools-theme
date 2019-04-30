@@ -62,9 +62,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         public function __construct() {
 
             require_once( 'google-geocode-api.php' );
-            if ( is_admin() ) {
-                require_once( 'mapping-admin.php' );
-            }
+            require_once( 'mapping-admin.php' ); // can't filter for is_admin because of REST dependencies
+
 
 
             /**
@@ -2041,6 +2040,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     break;
 
                 case 'count_geonames':
+
                     $results = $wpdb->get_var("
                             SELECT count(*)
                             FROM $wpdb->dt_geonames 
@@ -2049,10 +2049,20 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     break;
 
                 case 'get_geoname_totals':
-                    $results = $wpdb->get_results("
+                    if ( isset( $args['country_only'] ) ) {
+                        $results = $wpdb->get_results("
                             SELECT
                               country_geonameid as geonameid,
-                              level,
+                              type,
+                              count(country_geonameid) as count
+                            FROM $wpdb->dt_geonames_counter
+                            WHERE country_geonameid != ''
+                            GROUP BY country_geonameid, type
+                        ", ARRAY_A );
+                    } else {
+                        $results = $wpdb->get_results("
+                            SELECT
+                              country_geonameid as geonameid,
                               type,
                               count(country_geonameid) as count
                             FROM $wpdb->dt_geonames_counter
@@ -2061,7 +2071,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             UNION
                             SELECT
                               admin1_geonameid as geonameid,
-                              level,
                               type,
                               count(admin1_geonameid) as count
                             FROM $wpdb->dt_geonames_counter
@@ -2070,13 +2079,21 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             UNION
                             SELECT
                               admin2_geonameid as geonameid,
-                              level,
                               type,
                               count(admin2_geonameid) as count
                             FROM $wpdb->dt_geonames_counter
                             WHERE admin2_geonameid != ''
                             GROUP BY admin2_geonameid, type
+                            UNION
+                            SELECT
+                              admin3_geonameid as geonameid,
+                              type,
+                              count(admin3_geonameid) as count
+                            FROM $wpdb->dt_geonames_counter
+                            WHERE admin3_geonameid != ''
+                            GROUP BY admin3_geonameid, type
                         ", ARRAY_A );
+                    }
 
                     break;
 
