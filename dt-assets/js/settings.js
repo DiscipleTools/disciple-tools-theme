@@ -36,7 +36,7 @@ function change_password() {
 /**
  * Locations
  */
-window.DRILLDOWN.add_settings_location = function( geonameid ) {
+window.DRILLDOWN.add_user_location = function( geonameid ) {
     jQuery('#add_location_geoname_value').val(geonameid)
 }
 
@@ -78,11 +78,11 @@ function load_settings_locations( reload = false ) {
 
 function add_drill_down_selector() {
     jQuery('#new_locations').empty().append(
-            `<ul class="drill_down"></ul>
+            `<div id="add_user_location"><ul class="drill_down"></ul></div>
             <input type="hidden" id="add_location_geoname_value" />
             <button type="button" class="button" onclick="save_new_location()">Save</button>`
     )
-    window.DRILLDOWN.top_level_drill_down( 'add_settings_location' )
+    window.DRILLDOWN.get_drill_down( 'add_user_location' )
     jQuery('#locations_add_button').hide()
 }
 

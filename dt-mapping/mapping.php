@@ -1564,19 +1564,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                  'deeper_levels' => [],
             ];
 
+            $results['self'] = $this->format_geoname_types( $this->query( 'get_earth' ) );
+            $results['self']['population_formatted'] = number_format( $results['self']['population'] );
 
-            $results['self'] = [
-                'name' => 'World',
-                'id' => 'world',
-                'geonameid' => 6295630,
-                'population' => 7700000000,
-                'population_formatted' => number_format( 7700000000 ),
-                'latitude' => 0,
-                'longitude' => 0,
-                'countries' => [],
-                'unique_source_url' => false,
-                'url' => '',
-            ];
             $results['children'] = $this->get_countries_map_data();
             $results['deeper_levels'] = $this->get_deeper_levels( $results['children'] );
 
@@ -1585,7 +1575,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
         public function get_countries_map_data() {
             $children = $this->query( 'get_countries' );
-dt_write_log($children);
+
             $results = [];
 
             if ( ! empty( $children ) ) {
@@ -2023,29 +2013,27 @@ dt_write_log($children);
                     break;
 
                 case 'get_earth':
-                    $results = $wpdb->get_results("
+                    $results = $wpdb->get_row("
                             SELECT
                                 g.geonameid,
+                                ('world') as id,
                                 g.alt_name as name,
                                 g.latitude,
                                 g.longitude,
                                 g.feature_class,
                                 g.feature_code,
                                 g.country_code,
-                                g.cc2,
                                 g.admin1_code,
                                 g.admin2_code,
                                 g.admin3_code,
                                 g.admin4_code,
                                 IF(g.alt_population > 0, g.alt_population, g.population) as population,
-                                g.timezone,
-                                g.modification_date,
                                 g.parent_id,
                                 g.country_geonameid,
                                 g.admin1_geonameid,
                                 g.admin2_geonameid,
                                 g.admin3_geonameid,
-                                g.level
+                                ('world') as level
                             FROM $wpdb->dt_geonames as g
                             WHERE g.geonameid = 6295630
                         ", ARRAY_A );
