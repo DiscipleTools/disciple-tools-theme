@@ -1,5 +1,4 @@
 jQuery(document).ready(function() {
-    console.log( dtMetricsPrayer )
     if( ! window.location.hash || '#prayer_overview' === window.location.hash  ) {
         prayer_overview()
     }
@@ -10,6 +9,7 @@ function prayer_overview() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#prayer-menu'));
     let chartDiv = jQuery('#chart')
     let dt = dtMetricsPrayer
+    let translations = dtMetricsPrayer.data.translations
 
 
     chartDiv.empty().html(`
