@@ -595,10 +595,10 @@ class Disciple_Tools_Mapping_Queries {
         ];
     }
 
-    public static function get_names_from_ids( $args ) {
+    public static function get_names_from_ids( $geoname_ids ) {
         global $wpdb;
 
-        $ids = dt_array_to_sql( $args['geoname_ids'] );
+        $ids = dt_array_to_sql( $geoname_ids );
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
         $results = $wpdb->get_results("
@@ -614,14 +614,15 @@ class Disciple_Tools_Mapping_Queries {
         return $prepared;
     }
 
-    public static function get_geoname_ids_and_names_for_post_ids( $args ) {
+    public static function get_geoname_ids_and_names_for_post_ids( $post_ids ) {
         global $wpdb;
 
         $prepared = [];
-        foreach ( $args as $post_id ) {
+
+        foreach ( $post_ids as $post_id ) {
             $prepared[$post_id] = [];
         }
-        $joined_post_ids = dt_array_to_sql( $args );
+        $joined_post_ids = dt_array_to_sql( $post_ids );
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
         $geonames = $wpdb->get_results("
