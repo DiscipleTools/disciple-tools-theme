@@ -268,8 +268,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             $population = 0;
                         }
 
-
-
                         $custom_geonameid = $this->add_sublocation_under_geoname( $geonameid, $name, $population );
 
                         return [
@@ -2081,6 +2079,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $max_id = (int) $wpdb->get_var( "SELECT MAX(geonameid) FROM $wpdb->dt_geonames" );
             $max_id = max( $max_id, 1000000000 );
             $custom_geonameid = $max_id + 1;
+
 
             // get level
             if ( isset( $parent_geoname['level'] ) ) {
