@@ -22,8 +22,7 @@ function numberWithCommas(x) {
 
 function project_critical_path() {
   let chartDiv = jQuery('#chart')
-  let sourceData = dtMetricsProject.data.translations
-  let translations = sourceData.translations
+  let translations = dtMetricsProject.translations
 
   chartDiv.empty().html(`
     <div class="section-header">${ translations.title_critical_path }</div>
@@ -202,7 +201,7 @@ let mediaChart = function ( data ) {
   if ( data.length ) {
     let chart = am4core.create("mediachart", am4charts.XYChart);
     chart.data = data
-    setupChart( chart, "outreach", dtMetricsProject.data.translations.title_outreach )
+    setupChart( chart, "outreach", dtMetricsProject.translations.title_outreach )
   }
 }
 
@@ -212,7 +211,7 @@ let activityChart = function ( data ) {
   if ( data.length ) {
     let chart = am4core.create("activityChart", am4charts.XYChart);
     chart.data = data
-    setupChart( chart, "value", dtMetricsProject.data.translations.title_follow_up )
+    setupChart( chart, "value", dtMetricsProject.translations.title_follow_up )
   }
 }
 let ongoingChart = function ( data ) {
@@ -221,7 +220,7 @@ let ongoingChart = function ( data ) {
   if ( data.length ) {
     let chart = am4core.create("ongoingChart", am4charts.XYChart);
     chart.data = data
-    setupChart( chart, "total", dtMetricsProject.data.translations.movement_training )
+    setupChart( chart, "total", dtMetricsProject.translations.movement_training )
   }
 }
 
