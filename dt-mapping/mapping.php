@@ -1505,6 +1505,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $results['parent']['population_formatted'] = number_format( $parent['population'] );
                 $results['parent']['latitude'] = (float) $parent['latitude'];
                 $results['parent']['longitude'] = (float) $parent['longitude'];
+                $results['parent']['parent_id'] = (int) $parent['parent_id'];
+                $results['parent']['country_geonameid'] = (int) $parent['country_geonameid'];
+                $results['parent']['admin1_geonameid'] = (int) $parent['admin1_geonameid'];
+                $results['parent']['admin2_geonameid'] = (int) $parent['admin2_geonameid'];
+                $results['parent']['admin3_geonameid'] = (int) $parent['admin3_geonameid'];
             }
 
             $self = $this->query( 'get_by_geonameid', [ 'geonameid' => $geonameid ] );
@@ -1518,6 +1523,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $results['self']['population_formatted'] = number_format( $self['population'] );
                 $results['self']['latitude'] = (float) $self['latitude'];
                 $results['self']['longitude'] = (float) $self['longitude'];
+                $results['self']['parent_id'] = (int) $self['parent_id'];
+                $results['self']['country_geonameid'] = (int) $self['country_geonameid'];
+                $results['self']['admin1_geonameid'] = (int) $self['admin1_geonameid'];
+                $results['self']['admin2_geonameid'] = (int) $self['admin2_geonameid'];
+                $results['self']['admin3_geonameid'] = (int) $self['admin3_geonameid'];
             }
 
             // get children
@@ -1535,6 +1545,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     $results['children'][$index]['population_formatted'] = number_format( $child['population'] );
                     $results['children'][$index]['latitude'] = (float) $child['latitude'];
                     $results['children'][$index]['longitude'] = (float) $child['longitude'];
+                    $results['children'][$index]['parent_id'] = (int) $child['parent_id'];
+                    $results['children'][$index]['country_geonameid'] = (int) $child['country_geonameid'];
+                    $results['children'][$index]['admin1_geonameid'] = (int) $child['admin1_geonameid'];
+                    $results['children'][$index]['admin2_geonameid'] = (int) $child['admin2_geonameid'];
+                    $results['children'][$index]['admin3_geonameid'] = (int) $child['admin3_geonameid'];
                 }
             }
 
@@ -1590,6 +1605,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     $results[$index]['population_formatted'] = number_format( $child['population'] );
                     $results[$index]['latitude'] = (float) $child['latitude'];
                     $results[$index]['longitude'] = (float) $child['longitude'];
+                    $results[$index]['parent_id'] = (int) $child['parent_id'];
+                    $results[$index]['country_geonameid'] = (int) $child['country_geonameid'];
+                    $results[$index]['admin1_geonameid'] = (int) $child['admin1_geonameid'];
+                    $results[$index]['admin2_geonameid'] = (int) $child['admin2_geonameid'];
+                    $results[$index]['admin3_geonameid'] = (int) $child['admin3_geonameid'];
                 }
             }
             return $results;
@@ -2316,6 +2336,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     }
                     if ( isset( $value['population'] ) ) {
                         $query[$index]['population'] = (int) $value['population'];
+                        $query[$index]['population_formatted'] = number_format( (int) $query[$index]['population'] );
                     }
                     if ( isset( $value['latitude'] ) ) {
                         $query[$index]['latitude'] = (float) $value['latitude'];
@@ -2342,8 +2363,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
             return $query;
         }
-
-
 
 
         public function get_post_locations( $post_id ) {
