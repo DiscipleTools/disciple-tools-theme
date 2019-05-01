@@ -425,11 +425,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
             //search for only the locations that are currently in use
             if ( $filter === "used" ){
-                $locations = $this->query( "search_used_geonames_by_name", [
+                $locations = Disciple_Tools_Mapping_Queries::search_geonames_by_name( [
                     "search_query" => $search,
                 ] );
             } else {
-                $locations = $this->query( "search_geonames_by_name", [
+                $locations = Disciple_Tools_Mapping_Queries::search_geonames_by_name( [
                     "search_query" => $search,
                     "filter" => $filter
                 ] );
@@ -559,7 +559,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             foreach ( $list as $index => $item ) {
                                 $selected = $index;
                                 $selected_name = $item;
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $index ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $index ) );
                             }
 
                             $deeper_levels = $this->get_deeper_levels( $child_list );
@@ -588,7 +588,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 $items[] = $index;
                             }
 
-                            $child_list = $this->format_geoname_types( $this->query( 'get_by_geonameid_list', [ 'list' => $items ] ) );
+                            $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid_list( $items ) );
                             $deeper_levels = $this->get_deeper_levels( $child_list );
 
                             $preset_array = [
@@ -622,7 +622,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             foreach ( $list as $index => $item ) {
                                 $selected = $index;
                                 $selected_name = $item;
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $index ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $index ) );
                             }
 
                             $deeper_levels = $this->get_deeper_levels( $child_list );
@@ -651,8 +651,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 $items[] = $index;
                             }
 
-                            $child_list = $this->format_geoname_types( $this->query( 'get_by_geonameid_list', [ 'list' => $items ] ) );
-                            $parent = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $child_list[0]['country_geonameid'] ] ) );
+                            $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid_list( $items ) );
+                            $parent = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $child_list[0]['country_geonameid'] ) );
                             $deeper_levels = $this->get_deeper_levels( $child_list );
 
                             $preset_array = [
@@ -681,7 +681,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                     case 'world':
                     default:
-                        $child_list = $this->format_geoname_types( $this->query( 'get_countries' ) );
+                        $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_countries() );
                         $deeper_levels = $this->get_deeper_levels( $child_list );
                         $preset_array = [
                             0 => [
@@ -711,7 +711,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             } else {
                 // build from geonameid
 
-                $reference = $this->query( 'get_drilldown_by_geonameid', [ 'geonameid' => $geonameid ] );
+                $reference = Disciple_Tools_Mapping_Queries::get_drilldown_by_geonameid( $geonameid );
                 if ( empty( $reference ) ) {
                     return new WP_Error( 'no_geoname', 'Geoname not found.' );
                 }
@@ -727,7 +727,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             case 'admin3c': // custom
                             case 'admin2':
                             case 'admin2c': // custom
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin3_geonameid'] ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin3_geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
@@ -810,7 +810,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case 'admin1':
                             case 'admin1c':
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin1_geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
@@ -879,7 +879,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case 'country':
                             default:
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['country_geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
@@ -945,12 +945,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             case 'admin3c':
                             case 'admin2':
                             case 'admin2c':
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['geonameid'] ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
-                                $country = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) );
-                                $state = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) );
-                                $county = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['admin2_geonameid'] ] ) );
+                                $country = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['country_geonameid'] ) );
+                                $state = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['admin1_geonameid'] ) );
+                                $county = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['admin2_geonameid'] ) );
 
                                 if ( $default_select_first_level ) {
 
@@ -1020,11 +1020,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case 'admin1':
                             case 'admin1c':
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['geonameid'] ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
-                                $country = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) );
-                                $state = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) );
+                                $country = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['country_geonameid'] ) );
+                                $state = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['admin1_geonameid'] ) );
 
                                 if ( $default_select_first_level ) {
 
@@ -1088,7 +1088,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case 'country':
                             default:
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['geonameid'] ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
@@ -1113,7 +1113,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                     ];
 
                                 } else {
-                                    $parent = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) );
+                                    $parent = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['country_geonameid'] ) );
                                     $preset_array = [
                                         0 => [
                                             'parent' => 'top_map_level',
@@ -1150,7 +1150,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case 'admin3':
                             case 'admin3c':
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin3_geonameid'] ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin3_geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1203,7 +1203,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case 'admin2':
                             case 'admin2c':
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin2_geonameid'] ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin2_geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1249,7 +1249,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case 'admin1':
                             case 'admin1c':
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin1_geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1288,7 +1288,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case 'country':
                             default:
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['country_geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1351,7 +1351,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         $geonameid = $starting_map_level['children'][0];
 
                         // self
-                        $self = $this->query( 'get_by_geonameid', [ 'geonameid' => $geonameid ] );
+                        $self = Disciple_Tools_Mapping_Queries::get_by_geonameid( $geonameid );
                         if ( ! $self ) {
                             return $this->get_world_map_data();
                         }
@@ -1366,7 +1366,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         ];
 
                         // children
-                        $children = $this->query( 'get_children_by_geonameid', [ 'geonameid' => $geonameid ] );
+                        $children = Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $geonameid );
 
                         if ( ! empty( $children ) ) {
                             // loop and modify types and population
@@ -1389,7 +1389,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     }
                     else {
 
-                        $self = $this->query( 'get_by_geonameid_list', [ 'list' => array_keys( $starting_map_level['children'] ) ] );
+                        $self = Disciple_Tools_Mapping_Queries::get_by_geonameid_list( array_keys( $starting_map_level['children'] ) );
                         if ( empty( $self ) ) {
                             return $this->get_world_map_data();
                         }
@@ -1398,7 +1398,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             $geonameid = $k;
 
                             // self
-                            $self = $this->query( 'get_by_geonameid', [ 'geonameid' => $geonameid ] );
+                            $self = Disciple_Tools_Mapping_Queries::get_by_geonameid( $geonameid );
                             if ( ! $self ) {
                                 return $this->get_world_map_data();
                             }
@@ -1413,7 +1413,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             ];
 
                             // children
-                            $children = $this->query( 'get_children_by_geonameid', [ 'geonameid' => $geonameid ] );
+                            $children = Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $geonameid );
 
                             if ( ! empty( $children ) ) {
                                 // loop and modify types and population
@@ -1484,7 +1484,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $list = [ 'world' => 'World' ];
             }
             else {
-                $children = $this->query( 'get_by_geonameid_list', [ 'list' => $default_map_settings['children'] ] );
+                $children = Disciple_Tools_Mapping_Queries::get_by_geonameid( $default_map_settings['children'] );
                 if ( ! empty( $children ) ) {
                     foreach ( $children as $child ) {
                         $list[$child['geonameid']] = $child['name'];
@@ -1503,7 +1503,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             ];
 
             // else if not world, build data from geonameid
-            $parent = $this->query( 'get_parent_by_geonameid', [ 'geonameid' => $geonameid ] );
+            $parent = Disciple_Tools_Mapping_Queries::get_parent_by_geonameid( $geonameid );
             if ( ! empty( $parent ) ) {
                 $results['parent'] = $parent;
 
@@ -1521,7 +1521,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $results['parent']['admin3_geonameid'] = (int) $parent['admin3_geonameid'];
             }
 
-            $self = $this->query( 'get_by_geonameid', [ 'geonameid' => $geonameid ] );
+            $self = Disciple_Tools_Mapping_Queries::get_by_geonameid( $geonameid );
             if ( ! empty( $self ) ) {
                 $results['self'] = $self;
 
@@ -1540,7 +1540,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
 
             // get children
-            $children = $this->query( 'get_children_by_geonameid', [ 'geonameid' => $geonameid ] );
+            $children = Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $geonameid );
             if ( ! empty( $children ) ) {
                 // loop and modify types and population
                 foreach ( $children as $child ) {
@@ -1587,7 +1587,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                  'deeper_levels' => [],
             ];
 
-            $results['self'] = $this->format_geoname_types( $this->query( 'get_earth' ) );
+            $results['self'] = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_earth() );
             $results['self']['population_formatted'] = number_format( $results['self']['population'] );
 
             $results['children'] = $this->get_countries_map_data();
@@ -1597,7 +1597,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function get_countries_map_data() {
-            $children = $this->query( 'get_countries' );
+            $children = Disciple_Tools_Mapping_Queries::get_countries();
 
             $results = [];
 
@@ -1638,7 +1638,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function get_geonameid_title( int $geonameid ) : string {
-            $result = $this->query( 'get_by_geonameid', [ 'geonameid' => $geonameid ] );
+            $result = Disciple_Tools_Mapping_Queries::get_by_geonameid( $geonameid );
             return $result['name'] ?? '';
         }
 
@@ -2378,7 +2378,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $list = [];
             $geoname_list = get_post_meta( $post_id, 'geonames' );
             if ( !empty( $geoname_list ) ) {
-                $list = $this->query( 'get_by_geonameid_list', [ 'list' => $geoname_list ] );
+                $list = Disciple_Tools_Mapping_Queries::get_by_geonameid_list( $geoname_list );
             }
             return $list;
         }
@@ -2386,7 +2386,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         /**
          * Get a list of parent geonameids from a supplied geonameid
          * Currently this is a heavy query because it pulls the entire hierarchy table and loops through it.
-         * If possible it is better to use $this->query( 'get_hierarchy_for_geoname') which returns a single row
+         * If possible it is better to use Disciple_Tools_Mapping_Queries::get_hierarchy( $geonameid ) which returns a single row
          * that has related country, state, and county for any given geoname. The result is narrow, but the
          * query is much lighter and faster.
          *
@@ -2395,7 +2395,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
          * @return array
          */
         public function get_parents( $geonameid ) : array {
-            $query = $this->query( 'get_hierarchy' );
+            $query = Disciple_Tools_Mapping_Queries::get_hierarchy();
             $hierarchy_data = $this->_prepare_list( $query );
             $parents = $this->_build_parent_list( $geonameid, $hierarchy_data );
             array_unshift( $parents, $geonameid );
@@ -2428,8 +2428,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function get_countries_grouped_by_region( $regions = null ): array {
-            $regions = $this->query( 'get_regions', [ 'add_country_info' => true ] );
-            $countries = $this->query( 'get_countries' );
+            $regions = Disciple_Tools_Mapping_Queries::get_regions();
+            $countries = Disciple_Tools_Mapping_Queries::get_countries();
             $list = [];
 
             foreach ( $regions as $item ) {

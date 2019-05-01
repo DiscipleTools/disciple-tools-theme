@@ -108,7 +108,8 @@ class Disciple_Tools_Mapping_Queries {
         // Note: $wpdb->prepare does not have a way to add a string without surrounding it with ''
         // and this query requires a list of numbers separated by commas but without surrounding ''
         // Any better ideas on how to still use ->prepare and not break the sql, welcome. :)
-        // @codingStandardsIgnoreStart
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
         if ( $short ) {
             $results = $wpdb->get_results("
                 SELECT
@@ -117,6 +118,7 @@ class Disciple_Tools_Mapping_Queries {
                   IF(g.alt_population > 0, g.alt_population, g.population) as population,
                   g.latitude, 
                   g.longitude,
+                  g.country_code,
                   g.level
                 FROM $wpdb->dt_geonames as g
                 WHERE g.geonameid IN ($prepared_list)
@@ -144,7 +146,7 @@ class Disciple_Tools_Mapping_Queries {
                 ORDER BY g.alt_name ASC
             ", ARRAY_A );
         }
-        // @codingStandardsIgnoreEnd
+        // phpcs:enable
 
         if ( empty( $results ) ) {
             $results = [];

@@ -1060,9 +1060,9 @@ class Disciple_Tools_Snapshot_Report
         $data = [];
 
         if ( $countries_only ) {
-            $results = DT_Mapping_Module::instance()->query( 'get_geoname_totals', [ 'country_only' => true ] );
+            $results = Disciple_Tools_Mapping_Queries::get_geoname_totals( true );
         } else {
-            $results = DT_Mapping_Module::instance()->query( 'get_geoname_totals' );
+            $results = Disciple_Tools_Mapping_Queries::get_geoname_totals();
         }
 
         if ( ! empty( $results ) ) {

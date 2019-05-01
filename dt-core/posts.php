@@ -445,7 +445,7 @@ class Disciple_Tools_Posts
                     $message = $fields[$activity->meta_key]["name"] . ": " . dt_format_date( $activity->meta_value );
                 }
                 if ( $fields[$activity->meta_key]["type"] === "location" ){
-                    $geoname = DT_Mapping_Module::instance()->query( 'get_by_geonameid', [ 'geonameid' => $activity->meta_value ] );
+                    $geoname = Disciple_Tools_Mapping_Queries::get_by_geonameid( (int) $activity->meta_value );
                     $message = sprintf( _x( '%1$s added to locations', 'Milestone1 added to Milestones', 'disciple_tools' ), $geoname ? $geoname["name"] : $activity->meta_value );
                 }
             } else {

@@ -1391,10 +1391,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     $option['children'] = [];
                 }
                 else if ( $option['type'] === 'country' && empty( $_POST['children'] ) ) {
-                    $option['children'] = $mm->query( 'get_countries', [ 'ids_only' => true ] );
+                    $option['children'] = Disciple_Tools_Mapping_Queries::get_countries( true );
                 }
                 else if ( $option['type'] === 'state' && empty( $_POST['children'] && ! empty( $_POST['parent'] ) ) ) {
-                    $list = $mm->query( 'get_children_by_geonameid', [ 'geonameid' => $option['parent'] ] );
+                    $list = Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $option['parent'] );
                     foreach ( $list as $item ) {
                         $option['children'][] = $item['geonameid'];
                     }
@@ -1470,7 +1470,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
              ******************************/
             if ( $default_map_settings['type'] === 'country' ) :
 
-                $country_list = $mm->query( 'get_countries' );
+                $country_list = Disciple_Tools_Mapping_Queries::get_countries();
 
                 ?>
                 <!-- Box -->
@@ -1549,7 +1549,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             if ( $default_map_settings['type'] === 'state' ) :
 
                 // create select
-                $country_list = $mm->query( 'get_countries' );
+                $country_list = Disciple_Tools_Mapping_Queries::get_countries();
 
                 ?>
                 <table class="widefat striped">
@@ -1583,8 +1583,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 if ( $default_map_settings['parent'] ) :
 
                     $country_id = $default_map_settings['parent'];
-                    $parent = $mm->query( 'get_by_geonameid', [ 'geonameid' => $country_id ] );
-                    $state_list = $mm->query( 'get_children_by_geonameid', [ 'geonameid' => $country_id ] );
+                    $parent = Disciple_Tools_Mapping_Queries::get_by_geonameid( $country_id );
+                    $state_list = Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $country_id );
 
                     ?>
                     <!-- Box -->
@@ -1929,7 +1929,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <tr>
                         <td>
                             Current Geoname
-                            Records: <?php echo esc_attr( DT_Mapping_Module::instance()->query( 'count_geonames' ) ) ?>
+                            Records: <?php echo esc_attr( Disciple_Tools_Mapping_Queries::count_geonames() ) ?>
                         </td>
                     </tr>
                     <tr>
