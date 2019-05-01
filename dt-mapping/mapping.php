@@ -61,10 +61,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
         public function __construct() {
 
+            require_once( 'mapping-queries.php' );
             require_once( 'google-geocode-api.php' );
-            if ( is_admin() ) {
-                require_once( 'mapping-admin.php' );
-            }
+            require_once( 'mapping-admin.php' ); // can't filter for is_admin because of REST dependencies
 
 
             /**
@@ -426,11 +425,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
             //search for only the locations that are currently in use
             if ( $filter === "used" ){
-                $locations = $this->query( "search_used_geonames_by_name", [
+                $locations = Disciple_Tools_Mapping_Queries::search_geonames_by_name( [
                     "search_query" => $search,
                 ] );
             } else {
-                $locations = $this->query( "search_geonames_by_name", [
+                $locations = Disciple_Tools_Mapping_Queries::search_geonames_by_name( [
                     "search_query" => $search,
                     "filter" => $filter
                 ] );
@@ -560,7 +559,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             foreach ( $list as $index => $item ) {
                                 $selected = $index;
                                 $selected_name = $item;
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $index ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $index ) );
                             }
 
                             $deeper_levels = $this->get_deeper_levels( $child_list );
@@ -589,7 +588,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 $items[] = $index;
                             }
 
-                            $child_list = $this->format_geoname_types( $this->query( 'get_by_geonameid_list', [ 'list' => $items ] ) );
+                            $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid_list( $items ) );
                             $deeper_levels = $this->get_deeper_levels( $child_list );
 
                             $preset_array = [
@@ -623,7 +622,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             foreach ( $list as $index => $item ) {
                                 $selected = $index;
                                 $selected_name = $item;
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $index ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $index ) );
                             }
 
                             $deeper_levels = $this->get_deeper_levels( $child_list );
@@ -652,8 +651,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 $items[] = $index;
                             }
 
-                            $child_list = $this->format_geoname_types( $this->query( 'get_by_geonameid_list', [ 'list' => $items ] ) );
-                            $parent = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $child_list[0]['country_geonameid'] ] ) );
+                            $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid_list( $items ) );
+                            $parent = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $child_list[0]['country_geonameid'] ) );
                             $deeper_levels = $this->get_deeper_levels( $child_list );
 
                             $preset_array = [
@@ -682,7 +681,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                     case 'world':
                     default:
-                        $child_list = $this->format_geoname_types( $this->query( 'get_countries' ) );
+                        $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_countries() );
                         $deeper_levels = $this->get_deeper_levels( $child_list );
                         $preset_array = [
                             0 => [
@@ -712,7 +711,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             } else {
                 // build from geonameid
 
-                $reference = $this->query( 'get_drilldown_by_geonameid', [ 'geonameid' => $geonameid ] );
+                $reference = Disciple_Tools_Mapping_Queries::get_drilldown_by_geonameid( $geonameid );
                 if ( empty( $reference ) ) {
                     return new WP_Error( 'no_geoname', 'Geoname not found.' );
                 }
@@ -725,8 +724,10 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         switch ( $reference['level'] ) {
 
                             case 'admin3':
+                            case 'admin3c': // custom
                             case 'admin2':
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin3_geonameid'] ] ) );
+                            case 'admin2c': // custom
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin3_geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
@@ -808,7 +809,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 break;
 
                             case 'admin1':
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) );
+                            case 'admin1c':
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin1_geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
@@ -877,7 +879,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case 'country':
                             default:
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['country_geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
@@ -940,13 +942,15 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         switch ( $reference['level'] ) {
 
                             case 'admin3':
+                            case 'admin3c':
                             case 'admin2':
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['geonameid'] ] ) );
+                            case 'admin2c':
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
-                                $country = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) );
-                                $state = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) );
-                                $county = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['admin2_geonameid'] ] ) );
+                                $country = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['country_geonameid'] ) );
+                                $state = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['admin1_geonameid'] ) );
+                                $county = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['admin2_geonameid'] ) );
 
                                 if ( $default_select_first_level ) {
 
@@ -1015,11 +1019,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 break;
 
                             case 'admin1':
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['geonameid'] ] ) );
+                            case 'admin1c':
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
-                                $country = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) );
-                                $state = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) );
+                                $country = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['country_geonameid'] ) );
+                                $state = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['admin1_geonameid'] ) );
 
                                 if ( $default_select_first_level ) {
 
@@ -1083,7 +1088,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case 'country':
                             default:
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['geonameid'] ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
@@ -1108,7 +1113,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                     ];
 
                                 } else {
-                                    $parent = $this->format_geoname_types( $this->query( 'get_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) );
+                                    $parent = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['country_geonameid'] ) );
                                     $preset_array = [
                                         0 => [
                                             'parent' => 'top_map_level',
@@ -1144,7 +1149,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         switch ( $reference['level'] ) {
 
                             case 'admin3':
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin3_geonameid'] ] ) );
+                            case 'admin3c':
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin3_geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1196,7 +1202,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 break;
 
                             case 'admin2':
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin2_geonameid'] ] ) );
+                            case 'admin2c':
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin2_geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1241,7 +1248,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 break;
 
                             case 'admin1':
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) );
+                            case 'admin1c':
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin1_geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1280,7 +1288,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case 'country':
                             default:
-                                $child_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['country_geonameid'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1343,7 +1351,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         $geonameid = $starting_map_level['children'][0];
 
                         // self
-                        $self = $this->query( 'get_by_geonameid', [ 'geonameid' => $geonameid ] );
+                        $self = Disciple_Tools_Mapping_Queries::get_by_geonameid( $geonameid );
                         if ( ! $self ) {
                             return $this->get_world_map_data();
                         }
@@ -1358,7 +1366,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         ];
 
                         // children
-                        $children = $this->query( 'get_children_by_geonameid', [ 'geonameid' => $geonameid ] );
+                        $children = Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $geonameid );
 
                         if ( ! empty( $children ) ) {
                             // loop and modify types and population
@@ -1381,7 +1389,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     }
                     else {
 
-                        $self = $this->query( 'get_by_geonameid_list', [ 'list' => array_keys( $starting_map_level['children'] ) ] );
+                        $self = Disciple_Tools_Mapping_Queries::get_by_geonameid_list( array_keys( $starting_map_level['children'] ) );
                         if ( empty( $self ) ) {
                             return $this->get_world_map_data();
                         }
@@ -1390,7 +1398,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             $geonameid = $k;
 
                             // self
-                            $self = $this->query( 'get_by_geonameid', [ 'geonameid' => $geonameid ] );
+                            $self = Disciple_Tools_Mapping_Queries::get_by_geonameid( $geonameid );
                             if ( ! $self ) {
                                 return $this->get_world_map_data();
                             }
@@ -1405,7 +1413,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             ];
 
                             // children
-                            $children = $this->query( 'get_children_by_geonameid', [ 'geonameid' => $geonameid ] );
+                            $children = Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $geonameid );
 
                             if ( ! empty( $children ) ) {
                                 // loop and modify types and population
@@ -1476,7 +1484,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $list = [ 'world' => 'World' ];
             }
             else {
-                $children = $this->query( 'get_by_geonameid_list', [ 'list' => $default_map_settings['children'] ] );
+                $children = Disciple_Tools_Mapping_Queries::get_by_geonameid( $default_map_settings['children'] );
                 if ( ! empty( $children ) ) {
                     foreach ( $children as $child ) {
                         $list[$child['geonameid']] = $child['name'];
@@ -1495,7 +1503,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             ];
 
             // else if not world, build data from geonameid
-            $parent = $this->query( 'get_parent_by_geonameid', [ 'geonameid' => $geonameid ] );
+            $parent = Disciple_Tools_Mapping_Queries::get_parent_by_geonameid( $geonameid );
             if ( ! empty( $parent ) ) {
                 $results['parent'] = $parent;
 
@@ -1506,9 +1514,14 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $results['parent']['population_formatted'] = number_format( $parent['population'] );
                 $results['parent']['latitude'] = (float) $parent['latitude'];
                 $results['parent']['longitude'] = (float) $parent['longitude'];
+                $results['parent']['parent_id'] = (int) $parent['parent_id'];
+                $results['parent']['country_geonameid'] = (int) $parent['country_geonameid'];
+                $results['parent']['admin1_geonameid'] = (int) $parent['admin1_geonameid'];
+                $results['parent']['admin2_geonameid'] = (int) $parent['admin2_geonameid'];
+                $results['parent']['admin3_geonameid'] = (int) $parent['admin3_geonameid'];
             }
 
-            $self = $this->query( 'get_by_geonameid', [ 'geonameid' => $geonameid ] );
+            $self = Disciple_Tools_Mapping_Queries::get_by_geonameid( $geonameid );
             if ( ! empty( $self ) ) {
                 $results['self'] = $self;
 
@@ -1519,10 +1532,15 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $results['self']['population_formatted'] = number_format( $self['population'] );
                 $results['self']['latitude'] = (float) $self['latitude'];
                 $results['self']['longitude'] = (float) $self['longitude'];
+                $results['self']['parent_id'] = (int) $self['parent_id'];
+                $results['self']['country_geonameid'] = (int) $self['country_geonameid'];
+                $results['self']['admin1_geonameid'] = (int) $self['admin1_geonameid'];
+                $results['self']['admin2_geonameid'] = (int) $self['admin2_geonameid'];
+                $results['self']['admin3_geonameid'] = (int) $self['admin3_geonameid'];
             }
 
             // get children
-            $children = $this->query( 'get_children_by_geonameid', [ 'geonameid' => $geonameid ] );
+            $children = Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $geonameid );
             if ( ! empty( $children ) ) {
                 // loop and modify types and population
                 foreach ( $children as $child ) {
@@ -1536,6 +1554,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     $results['children'][$index]['population_formatted'] = number_format( $child['population'] );
                     $results['children'][$index]['latitude'] = (float) $child['latitude'];
                     $results['children'][$index]['longitude'] = (float) $child['longitude'];
+                    $results['children'][$index]['parent_id'] = (int) $child['parent_id'];
+                    $results['children'][$index]['country_geonameid'] = (int) $child['country_geonameid'];
+                    $results['children'][$index]['admin1_geonameid'] = (int) $child['admin1_geonameid'];
+                    $results['children'][$index]['admin2_geonameid'] = (int) $child['admin2_geonameid'];
+                    $results['children'][$index]['admin3_geonameid'] = (int) $child['admin3_geonameid'];
                 }
             }
 
@@ -1564,7 +1587,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                  'deeper_levels' => [],
             ];
 
-            $results['self'] = $this->format_geoname_types( $this->query( 'get_earth' ) );
+            $results['self'] = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_earth() );
             $results['self']['population_formatted'] = number_format( $results['self']['population'] );
 
             $results['children'] = $this->get_countries_map_data();
@@ -1574,7 +1597,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function get_countries_map_data() {
-            $children = $this->query( 'get_countries' );
+            $children = Disciple_Tools_Mapping_Queries::get_countries();
 
             $results = [];
 
@@ -1591,6 +1614,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     $results[$index]['population_formatted'] = number_format( $child['population'] );
                     $results[$index]['latitude'] = (float) $child['latitude'];
                     $results[$index]['longitude'] = (float) $child['longitude'];
+                    $results[$index]['parent_id'] = (int) $child['parent_id'];
+                    $results[$index]['country_geonameid'] = (int) $child['country_geonameid'];
+                    $results[$index]['admin1_geonameid'] = (int) $child['admin1_geonameid'];
+                    $results[$index]['admin2_geonameid'] = (int) $child['admin2_geonameid'];
+                    $results[$index]['admin3_geonameid'] = (int) $child['admin3_geonameid'];
                 }
             }
             return $results;
@@ -1610,7 +1638,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function get_geonameid_title( int $geonameid ) : string {
-            $result = $this->query( 'get_by_geonameid', [ 'geonameid' => $geonameid ] );
+            $result = Disciple_Tools_Mapping_Queries::get_by_geonameid( $geonameid );
             return $result['name'] ?? '';
         }
 
@@ -1665,566 +1693,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
          * UTILITIES SECTION
          */
 
-        /**
-         * All Queries
-         *
-         * @param       $type
-         * @param array $args
-         *
-         * @return array|int|null|object|string|\WP_Error
-         */
-        public function query( $type, $args = [] ) {
-            global $wpdb;
-            $results = [];
-
-            if ( empty( $type ) ) {
-                return new WP_Error( __METHOD__, 'Required type is missing.' );
-            }
-
-            switch ( $type ) {
-
-                case 'get_by_geonameid':
-                    if ( isset( $args['geonameid'] ) ) {
-                        $results = $wpdb->get_row( $wpdb->prepare( "
-                            SELECT
-                              g.geonameid as id, 
-                              g.geonameid, 
-                              g.alt_name as name, 
-                              IF(g.alt_population > 0, g.alt_population, g.population) as population, 
-                              g.latitude, 
-                              g.longitude,
-                              g.country_code,
-                              g.parent_id,
-                              g.country_geonameid,
-                              g.admin1_geonameid,
-                              g.admin2_geonameid,
-                              g.admin3_geonameid,
-                              g.level,
-                              g.is_custom_location
-                            FROM $wpdb->dt_geonames as g
-                            WHERE g.geonameid = %s
-                        ", $args['geonameid'] ), ARRAY_A );
-                    }
-                    break;
-
-                case 'get_parent_by_geonameid':
-                    if ( isset( $args['geonameid'] ) ) {
-                        $results = $wpdb->get_row( $wpdb->prepare( "
-                            SELECT 
-                              p.geonameid as id, 
-                              p.geonameid, 
-                              p.alt_name as name, 
-                              IF(g.alt_population > 0, g.alt_population, g.population) as population, 
-                              p.latitude, 
-                              p.longitude,
-                              p.country_code,
-                              p.parent_id,
-                              p.country_geonameid,
-                              p.admin1_geonameid,
-                              p.admin2_geonameid,
-                              p.admin3_geonameid,
-                              p.level
-                            FROM $wpdb->dt_geonames as g
-                            JOIN $wpdb->dt_geonames as p ON g.parent_id=p.geonameid
-                            WHERE g.geonameid = %s
-                        ", $args['geonameid'] ), ARRAY_A );
-                    }
-                    break;
-
-                case 'get_children_by_geonameid':
-                    if ( isset( $args['geonameid'] ) ) {
-                        $results = $wpdb->get_results( $wpdb->prepare( "
-                            SELECT
-                              g.geonameid as id, 
-                              g.geonameid, 
-                              g.alt_name as name, 
-                              IF(g.alt_population > 0, g.alt_population, g.population) as population, 
-                              g.latitude, 
-                              g.longitude,
-                              g.country_code,
-                              g.parent_id,
-                              g.country_geonameid,
-                              g.admin1_geonameid,
-                              g.admin2_geonameid,
-                              g.admin3_geonameid,
-                              g.level,
-                              g.is_custom_location
-                            FROM $wpdb->dt_geonames as g
-                            WHERE g.parent_id = %d
-                            ORDER BY g.alt_name ASC
-                        ", $args['geonameid'] ), ARRAY_A );
-                    }
-                    break;
-
-                case 'get_by_geonameid_list':
-                    /**
-                     * Gets a specific list of geonameids
-                     * This requires an array of geonames.
-                     */
-                    if ( isset( $args['list'] ) && is_array( $args['list'] ) ) {
-                        $prepared_list = '';
-                        $i = 0;
-                        foreach ( $args['list'] as $list ) {
-                            if ( $i !== 0 ) {
-                                $prepared_list .= ',';
-                            }
-                            $prepared_list .= (int) $list;
-                            $i++;
-                        }
-                        // Note: $wpdb->prepare does not have a way to add a string without surrounding it with ''
-                        // and this query requires a list of numbers separated by commas but without surrounding ''
-                        // Any better ideas on how to still use ->prepare and not break the sql, welcome. :)
-                        // @codingStandardsIgnoreStart
-                        $results = $wpdb->get_results("
-                            SELECT
-                              g.geonameid as id, 
-                              g.geonameid, 
-                              g.alt_name as name, 
-                              IF(g.alt_population > 0, g.alt_population, g.population) as population,
-                              g.latitude, 
-                              g.longitude,
-                              g.country_code,
-                              g.feature_code,
-                              g.parent_id,
-                              g.country_geonameid,
-                              g.admin1_geonameid,
-                              g.admin2_geonameid,
-                              g.admin3_geonameid,
-                              g.level
-                            FROM $wpdb->dt_geonames as g
-                            WHERE g.geonameid IN ($prepared_list)
-                            ORDER BY g.alt_name ASC
-                        ", ARRAY_A );
-                        // @codingStandardsIgnoreEnd
-                    }
-                    break;
-
-                case 'get_countries':
-                    /**
-                     * Returns full list of countries, territories, and other political geographic entities.
-                     * PCLI    independent political entity
-                     * PCLD: dependent political entities (guam, american samoa, etc.)
-                     * PCLF: freely associated state (micronesia, federated states of)
-                     * PCLH: historical political entity, a former political entity (Netherlands Antilles)
-                     * PCLIX: section of independent political entity
-                     * PCLS: semi-independent political entity
-                     * TERR: territory
-                     */
-                    if ( isset( $args['ids_only'] ) ) {
-                        $results = $wpdb->get_col( "
-                         SELECT g.geonameid
-                         FROM $wpdb->dt_geonames as g
-                         WHERE g.level = 'country'
-                         ORDER BY name ASC
-                    " );
-                    } else {
-                        $results = $wpdb->get_results( "
-                         SELECT
-                                g.geonameid,
-                                g.alt_name as name,
-                                g.latitude,
-                                g.longitude,
-                                g.feature_class,
-                                g.feature_code,
-                                g.country_code,
-                                g.cc2,
-                                g.admin1_code,
-                                g.admin2_code,
-                                g.admin3_code,
-                                g.admin4_code,
-                                IF(g.alt_population > 0, g.alt_population, g.population) as population,
-                                g.timezone,
-                                g.modification_date,
-                                g.parent_id,
-                                g.country_geonameid,
-                                g.admin1_geonameid,
-                                g.admin2_geonameid,
-                                g.admin3_geonameid,
-                                g.level
-                         FROM $wpdb->dt_geonames as g
-                         WHERE g.level = 'country'
-                         ORDER BY name ASC
-                    ", ARRAY_A );
-                    }
-
-
-                    if ( empty( $results ) ) {
-                        $results = [];
-                    }
-
-                    break;
-
-                case 'get_country_code_by_id':
-                    if ( isset( $args['id'] ) ) {
-                        $results = $wpdb->get_var( $wpdb->prepare( "
-                            SELECT country_code 
-                            FROM $wpdb->dt_geonames 
-                            WHERE geonameid = %s;
-                        ", $args['id'] ) );
-                    }
-                    if ( ! isset( $args['id'] ) ) {
-                        $results = 0;
-                    }
-
-                    break;
-
-                case 'get_hierarchy':
-                    if ( isset( $args['geonameid'] ) ) {
-                        $results = $wpdb->get_row( $wpdb->prepare( "
-                            SELECT
-                            g.parent_id,
-                            g.geonameid,
-                            g.country_geonameid,
-                            g.admin1_geonameid,
-                            g.admin2_geonameid,
-                            g.admin3_geonameid,
-                            g.level
-                            FROM $wpdb->dt_geonames as g
-                            WHERE g.geonameid = %d;
-                        ", $args['geonameid'] ), ARRAY_A );
-                    } else {
-                        $results = $wpdb->get_results("
-                          SELECT 
-                            g.parent_id,
-                            g.geonameid,
-                            g.country_geonameid,
-                            g.admin1_geonameid,
-                            g.admin2_geonameid,
-                            g.admin3_geonameid,
-                            g.level
-                          FROM $wpdb->dt_geonames as g", ARRAY_A );
-                    }
-
-                    break;
-
-                case 'get_counter':
-                    if ( isset( $args['post_id'] ) ) {
-                        $results = $wpdb->get_row( $wpdb->prepare( "
-                            SELECT * 
-                            FROM $wpdb->dt_geonames_counter 
-                            WHERE post_id = %s;
-                        ", $args['post_id'] ), ARRAY_A );
-                    }
-                    else if ( isset( $args['geonameid'] ) ) {
-                        $results = $wpdb->get_row( $wpdb->prepare( "
-                            SELECT * 
-                            FROM $wpdb->dt_geonames_counter 
-                            WHERE geonameid = %d;
-                        ", $args['geonameid'] ), ARRAY_A );
-                    }
-                    break;
-
-                case 'get_drilldown_by_geonameid':
-                    if ( isset( $args['geonameid'] ) ) {
-                        $results = $wpdb->get_row( $wpdb->prepare( "
-                            SELECT
-                              g.geonameid as id, 
-                              g.geonameid, 
-                              g.alt_name as name, 
-                              IF(g.alt_population > 0, g.alt_population, g.population) as population, 
-                              g.latitude, 
-                              g.longitude,
-                              g.country_code,
-                              g.parent_id,
-                              g.country_geonameid,
-                              gc.alt_name as country_name,
-                              g.admin1_geonameid,
-                              ga1.alt_name as admin1_name,
-                              g.admin2_geonameid,
-                              ga2.alt_name as admin2_name,
-                              g.admin3_geonameid,
-                              ga3.alt_name as admin3_name,
-                              g.level,
-                              g.is_custom_location
-                            FROM $wpdb->dt_geonames as g
-                            LEFT JOIN $wpdb->dt_geonames as gc ON g.country_geonameid=gc.geonameid
-                            LEFT JOIN $wpdb->dt_geonames as ga1 ON g.admin1_geonameid=ga1.geonameid
-                            LEFT JOIN $wpdb->dt_geonames as ga2 ON g.admin2_geonameid=ga2.geonameid
-                            LEFT JOIN $wpdb->dt_geonames as ga3 ON g.admin3_geonameid=ga3.geonameid
-                            WHERE g.geonameid = %s
-                        ", $args['geonameid'] ), ARRAY_A );
-                    }
-                    break;
-
-                case 'get_regions':
-                    /**
-                     * Lists all countries with their region_name and region_id
-                     * @note There are often two regions that claim the same country.
-                     */
-                    $results = $wpdb->get_results("
-                            SELECT
-                                g.geonameid,
-                                g.alt_name as name,
-                                g.latitude,
-                                g.longitude,
-                                g.feature_class,
-                                g.feature_code,
-                                g.country_code,
-                                g.cc2,
-                                g.admin1_code,
-                                g.admin2_code,
-                                g.admin3_code,
-                                g.admin4_code,
-                                IF(g.alt_population > 0, g.alt_population, g.population) as population,
-                                g.timezone,
-                                g.modification_date,
-                                g.parent_id,
-                                g.country_geonameid,
-                                g.admin1_geonameid,
-                                g.admin2_geonameid,
-                                g.admin3_geonameid,
-                                g.level
-                            FROM $wpdb->dt_geonames as g
-                            WHERE feature_code = 'RGN' 
-                            AND country_code = '';
-                        ", ARRAY_A );
-
-                    break;
-
-                case 'get_continents':
-                    $results = $wpdb->get_results("
-                            SELECT
-                                g.geonameid,
-                                g.alt_name as name,
-                                g.latitude,
-                                g.longitude,
-                                g.feature_class,
-                                g.feature_code,
-                                g.country_code,
-                                g.cc2,
-                                g.admin1_code,
-                                g.admin2_code,
-                                g.admin3_code,
-                                g.admin4_code,
-                                IF(g.alt_population > 0, g.alt_population, g.population) as population,
-                                g.timezone,
-                                g.modification_date,
-                                g.parent_id,
-                                g.country_geonameid,
-                                g.admin1_geonameid,
-                                g.admin2_geonameid,
-                                g.admin3_geonameid,
-                                g.level
-                            FROM $wpdb->dt_geonames as g
-                            WHERE g.geonameid IN (6255146,6255147,6255148,6255149,6255151,6255150,6255152)
-                            ORDER BY name ASC;
-                        ", ARRAY_A );
-
-                    break;
-
-                case 'get_earth':
-                    $results = $wpdb->get_row("
-                            SELECT
-                                g.geonameid,
-                                ('world') as id,
-                                g.alt_name as name,
-                                g.latitude,
-                                g.longitude,
-                                g.feature_class,
-                                g.feature_code,
-                                g.country_code,
-                                g.admin1_code,
-                                g.admin2_code,
-                                g.admin3_code,
-                                g.admin4_code,
-                                IF(g.alt_population > 0, g.alt_population, g.population) as population,
-                                g.parent_id,
-                                g.country_geonameid,
-                                g.admin1_geonameid,
-                                g.admin2_geonameid,
-                                g.admin3_geonameid,
-                                ('world') as level
-                            FROM $wpdb->dt_geonames as g
-                            WHERE g.geonameid = 6295630
-                        ", ARRAY_A );
-
-                    break;
-
-                case 'count_geonames':
-                    $results = $wpdb->get_var("
-                            SELECT count(*)
-                            FROM $wpdb->dt_geonames 
-                        ");
-
-                    break;
-
-                case 'get_geoname_totals':
-                    $results = $wpdb->get_results("
-                            SELECT
-                              country_geonameid as geonameid,
-                              level,
-                              type,
-                              count(country_geonameid) as count
-                            FROM $wpdb->dt_geonames_counter
-                            WHERE country_geonameid != ''
-                            GROUP BY country_geonameid, type
-                            UNION
-                            SELECT
-                              admin1_geonameid as geonameid,
-                              level,
-                              type,
-                              count(admin1_geonameid) as count
-                            FROM $wpdb->dt_geonames_counter
-                            WHERE admin1_geonameid != ''
-                            GROUP BY admin1_geonameid, type
-                            UNION
-                            SELECT
-                              admin2_geonameid as geonameid,
-                              level,
-                              type,
-                              count(admin2_geonameid) as count
-                            FROM $wpdb->dt_geonames_counter
-                            WHERE admin2_geonameid != ''
-                            GROUP BY admin2_geonameid, type
-                        ", ARRAY_A );
-
-                    break;
-
-                case 'search_geonames_by_name':
-                    $search_query = $wpdb->esc_like( $args['search_query'] ?? "" );
-                    $focus_search_sql = "";
-                    if ( isset( $args['filter'] ) && $args["filter"] == "focus" ){
-                        $default_map_settings = $this->default_map_settings();
-                        if ( $default_map_settings["type"] === "country" && sizeof( $default_map_settings["children"] ) > 0 ){
-                            $joined_geoname_ids = dt_array_to_sql( $default_map_settings["children"] );
-                            $focus_search_sql = "AND g.country_geonameid IN ( $joined_geoname_ids ) ";
-                        }
-                    }
-                    // phpcs:disable
-                    // WordPress.WP.PreparedSQL.NotPrepared
-                    $geonames = $wpdb->get_results( $wpdb->prepare( "
-                        SELECT SQL_CALC_FOUND_ROWS
-                        DISTINCT( g.geonameid ),
-                        CASE 
-                            WHEN g.level = 'country' 
-                              THEN g.alt_name
-                            WHEN g.level = 'admin1' 
-                              THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
-                            g.alt_name ) 
-                            WHEN g.level = 'admin2' OR g.level = 'admin3'
-                              THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
-                            (SELECT a1.alt_name FROM $wpdb->dt_geonames AS a1 WHERE a1.geonameid = g.admin1_geonameid LIMIT 1), ' > ', 
-                            g.alt_name )
-                            ELSE g.alt_name
-                        END as label
-                        FROM $wpdb->dt_geonames as g
-                        WHERE g.alt_name LIKE %s
-                        $focus_search_sql
-                        ORDER BY g.country_code, CHAR_LENGTH(label)
-                        LIMIT 30;
-                        ", '%' . $search_query . '%' ),
-                        ARRAY_A
-                    );
-                    // phpcs:enable
-
-                    $total_rows = $wpdb->get_var( "SELECT found_rows();" );
-                    return [
-                        'geonames' => $geonames,
-                        'total' => $total_rows
-                    ];
-
-                case 'search_used_geonames_by_name':
-                    $search_query = $wpdb->esc_like( $args['search_query'] ?? "" );
-
-                    $geonames = $wpdb->get_results( $wpdb->prepare( "
-                        SELECT SQL_CALC_FOUND_ROWS
-                        DISTINCT( g.geonameid ),
-                        CASE 
-                            WHEN g.level = 'country' 
-                              THEN g.alt_name
-                            WHEN g.level = 'admin1' 
-                              THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
-                            g.alt_name ) 
-                            WHEN g.level = 'admin2' OR g.level = 'admin3'
-                              THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
-                            (SELECT a1.alt_name FROM $wpdb->dt_geonames AS a1 WHERE a1.geonameid = g.admin1_geonameid LIMIT 1), ' > ', 
-                            g.alt_name )
-                            ELSE g.alt_name
-                        END as label
-                        FROM $wpdb->dt_geonames as g
-                        INNER JOIN $wpdb->dt_geonames_counter as counter ON (g.geonameid = counter.geonameid)
-                        WHERE g.alt_name LIKE %s
-                        
-                        ORDER BY g.country_code, CHAR_LENGTH(label)
-                        LIMIT 30;
-                        ", '%' . $search_query . '%' ),
-                        ARRAY_A
-                    );
-                    $total_rows = $wpdb->get_var( "SELECT found_rows();" );
-                    return [
-                        'geonames' => $geonames,
-                        'total' => $total_rows
-                    ];
-
-                case 'get_names_from_ids':
-                    if ( isset( $args['geoname_ids'] ) ){
-                        $ids = dt_array_to_sql( $args['geoname_ids'] );
-                        // phpcs:disable
-                        // WordPress.WP.PreparedSQL.NotPrepared
-                        $results = $wpdb->get_results("
-                            SELECT geonameid, name 
-                            FROM $wpdb->dt_geonames
-                            WHERE geonameid IN ( $ids ) 
-                        ", ARRAY_A );
-                        // phpcs:enable
-                        $prepared = [];
-                        foreach ( $results as $row ){
-                            $prepared[$row["geonameid"]] = $row["name"];
-                        }
-                        return $prepared;
-                    }
-                    break;
-
-                case 'get_geoname_ids_and_names_for_post_ids':
-                    if ( !empty( $args['post_ids'] ) ){
-                        $prepared = [];
-                        foreach ( $args['post_ids'] as $post_id ) {
-                            $prepared[$post_id] = [];
-                        }
-                        $joined_post_ids = dt_array_to_sql( $args['post_ids'] );
-                        // phpcs:disable
-                        // WordPress.WP.PreparedSQL.NotPrepared
-                        $geonames = $wpdb->get_results("
-                            SELECT post_id, meta_value
-                            FROM $wpdb->postmeta pm
-                            WHERE meta_key = 'geonames'
-                            AND post_id IN ( $joined_post_ids )
-                        ", ARRAY_A );
-                        if ( empty( $geonames ) ){
-                            return $prepared;
-                        }
-                        $geoname_ids = array_map( function( $g ){ return $g["meta_value"]; }, $geonames );
-                        $joined_geoname_ids = dt_array_to_sql( $geoname_ids );
-                        $geoname_id_names = $wpdb->get_results("
-                            SELECT geonameid, name 
-                            FROM $wpdb->dt_geonames
-                            WHERE geonameid IN ( $joined_geoname_ids ) 
-                        ", ARRAY_A );
-                        // phpcs:enable
-                        $mapped_geoname_id_to_name = [];
-                        foreach ( $geoname_id_names as $geoname ){
-                            $mapped_geoname_id_to_name[$geoname["geonameid"]] = $geoname["name"];
-                        }
-                        foreach ( $geonames as $geoname ){
-                            if ( isset( $mapped_geoname_id_to_name[$geoname["meta_value"]] ) ){
-                                $prepared[$geoname["post_id"]][] = [
-                                    "geoname_id" => $geoname["meta_value"],
-                                    "name" => $mapped_geoname_id_to_name[$geoname["meta_value"]]
-                                ];
-                            }
-                        }
-                        return $prepared;
-                    }
-                    break;
-
-                default:
-                    $results = [];
-                    break;
-
-            }
-
-            return $results;
-        }
 
 
         /**
@@ -2298,6 +1766,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     }
                     if ( isset( $value['population'] ) ) {
                         $query[$index]['population'] = (int) $value['population'];
+                        $query[$index]['population_formatted'] = number_format( (int) $query[$index]['population'] );
                     }
                     if ( isset( $value['latitude'] ) ) {
                         $query[$index]['latitude'] = (float) $value['latitude'];
@@ -2326,13 +1795,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
 
-
-
         public function get_post_locations( $post_id ) {
             $list = [];
             $geoname_list = get_post_meta( $post_id, 'geonames' );
             if ( !empty( $geoname_list ) ) {
-                $list = $this->query( 'get_by_geonameid_list', [ 'list' => $geoname_list ] );
+                $list = Disciple_Tools_Mapping_Queries::get_by_geonameid_list( $geoname_list );
             }
             return $list;
         }
@@ -2340,7 +1807,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         /**
          * Get a list of parent geonameids from a supplied geonameid
          * Currently this is a heavy query because it pulls the entire hierarchy table and loops through it.
-         * If possible it is better to use $this->query( 'get_hierarchy_for_geoname') which returns a single row
+         * If possible it is better to use Disciple_Tools_Mapping_Queries::get_hierarchy( $geonameid ) which returns a single row
          * that has related country, state, and county for any given geoname. The result is narrow, but the
          * query is much lighter and faster.
          *
@@ -2349,7 +1816,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
          * @return array
          */
         public function get_parents( $geonameid ) : array {
-            $query = $this->query( 'get_hierarchy' );
+            $query = Disciple_Tools_Mapping_Queries::get_hierarchy();
             $hierarchy_data = $this->_prepare_list( $query );
             $parents = $this->_build_parent_list( $geonameid, $hierarchy_data );
             array_unshift( $parents, $geonameid );
@@ -2382,8 +1849,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function get_countries_grouped_by_region( $regions = null ): array {
-            $regions = $this->query( 'get_regions', [ 'add_country_info' => true ] );
-            $countries = $this->query( 'get_countries' );
+            $regions = Disciple_Tools_Mapping_Queries::get_regions();
+            $countries = Disciple_Tools_Mapping_Queries::get_countries();
             $list = [];
 
             foreach ( $regions as $item ) {
@@ -2402,270 +1869,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             return $list;
         }
 
-        public function get_full_country_name( $country_code ) {
-
-            //phpcs:disable
-            switch ( $country_code ) {
-                case "AF": $name = "Afghanistan"; break;
-                case "AX": $name = "Ahvenanmaan Laeaeni"; break;
-                case "AL": $name = "Albania"; break;
-                case "DZ": $name = "Algeria"; break;
-                case "AS": $name = "American Samoa"; break;
-                case "AD": $name = "Andorra"; break;
-                case "AO": $name = "Angola"; break;
-                case "AI": $name = "Anguilla"; break;
-                case "AG": $name = "Antigua And Barbuda"; break;
-                case "AR": $name = "Argentina"; break;
-                case "AM": $name = "Armenia"; break;
-                case "AW": $name = "Aruba"; break;
-                case "AU": $name = "Australia"; break;
-                case "AT": $name = "Austria"; break;
-                case "AZ": $name = "Azerbaijan"; break;
-                case "BS": $name = "Bahamas, The"; break;
-                case "BH": $name = "Bahrain"; break;
-                case "BD": $name = "Bangladesh"; break;
-                case "BB": $name = "Barbados"; break;
-                case "BY": $name = "Belarus"; break;
-                case "BE": $name = "Belgium"; break;
-                case "BZ": $name = "Belize"; break;
-                case "BJ": $name = "Benin"; break;
-                case "BM": $name = "Bermuda"; break;
-                case "BT": $name = "Bhutan"; break;
-                case "BO": $name = "Bolivia"; break;
-                case "BQ": $name = "Bonaire, Saint Eustatius and Saba"; break;
-                case "BA": $name = "Bosnia And Herzegovina"; break;
-                case "BW": $name = "Botswana"; break;
-                case "BV": $name = "Bouvet Island"; break;
-                case "BR": $name = "Brazil"; break;
-                case "IO": $name = "British Indian Ocean Territory"; break;
-                case "VG": $name = "British Virgin Islands"; break;
-                case "BN": $name = "Brunei"; break;
-                case "BG": $name = "Bulgaria"; break;
-                case "BF": $name = "Burkina Faso"; break;
-                case "MM": $name = "Burma"; break;
-                case "BI": $name = "Burundi"; break;
-                case "CV": $name = "Cabo Verde"; break;
-                case "KH": $name = "Cambodia"; break;
-                case "CM": $name = "Cameroon"; break;
-                case "CA": $name = "Canada"; break;
-                case "KY": $name = "Cayman Islands"; break;
-                case "CF": $name = "Central African Republic"; break;
-                case "TD": $name = "Chad"; break;
-                case "CL": $name = "Chile"; break;
-                case "CN": $name = "China"; break;
-                case "CX": $name = "Christmas Island"; break;
-                case "CO": $name = "Colombia"; break;
-                case "KM": $name = "Comoros"; break;
-                case "CG": $name = "Congo (Brazzaville)"; break;
-                case "CD": $name = "Congo (Kinshasa)"; break;
-                case "CK": $name = "Cook Islands"; break;
-                case "CR": $name = "Costa Rica"; break;
-                case "CI": $name = "Côte D’Ivoire"; break;
-                case "HR": $name = "Croatia"; break;
-                case "CU": $name = "Cuba"; break;
-                case "CW": $name = "Curaçao"; break;
-                case "CY": $name = "Cyprus"; break;
-                case "CZ": $name = "Czechia"; break;
-                case "DK": $name = "Denmark"; break;
-                case "DJ": $name = "Djibouti"; break;
-                case "DM": $name = "Dominica"; break;
-                case "DO": $name = "Dominican Republic"; break;
-                case "EC": $name = "Ecuador"; break;
-                case "EG": $name = "Egypt"; break;
-                case "SV": $name = "El Salvador"; break;
-                case "GQ": $name = "Equatorial Guinea"; break;
-                case "ER": $name = "Eritrea"; break;
-                case "EE": $name = "Estonia"; break;
-                case "ET": $name = "Ethiopia"; break;
-                case "FK": $name = "Falkland Islands (Islas Malvinas)"; break;
-                case "FO": $name = "Faroe Islands"; break;
-                case "FJ": $name = "Fiji"; break;
-                case "FI": $name = "Finland"; break;
-                case "FR": $name = "France"; break;
-                case "GF": $name = "French Guiana"; break;
-                case "PF": $name = "French Polynesia"; break;
-                case "GA": $name = "Gabon"; break;
-                case "GM": $name = "Gambia, The"; break;
-                case "GE": $name = "Georgia"; break;
-                case "DE": $name = "Germany"; break;
-                case "GH": $name = "Ghana"; break;
-                case "GI": $name = "Gibraltar"; break;
-                case "GR": $name = "Greece"; break;
-                case "GL": $name = "Greenland"; break;
-                case "GD": $name = "Grenada"; break;
-                case "GP": $name = "Guadeloupe"; break;
-                case "GU": $name = "Guam"; break;
-                case "GT": $name = "Guatemala"; break;
-                case "GG": $name = "Guernsey"; break;
-                case "GN": $name = "Guinea"; break;
-                case "GW": $name = "Guinea-Bissau"; break;
-                case "GY": $name = "Guyana"; break;
-                case "HT": $name = "Haiti"; break;
-                case "HN": $name = "Honduras"; break;
-                case "HK": $name = "Hong Kong"; break;
-                case "HU": $name = "Hungary"; break;
-                case "IS": $name = "Iceland"; break;
-                case "IN": $name = "India"; break;
-                case "ID": $name = "Indonesia"; break;
-                case "IR": $name = "Iran"; break;
-                case "IQ": $name = "Iraq"; break;
-                case "IE": $name = "Ireland"; break;
-                case "IM": $name = "Isle Of Man"; break;
-                case "IL": $name = "Israel"; break;
-                case "IT": $name = "Italy"; break;
-                case "JM": $name = "Jamaica"; break;
-                case "JP": $name = "Japan"; break;
-                case "JE": $name = "Jersey"; break;
-                case "JO": $name = "Jordan"; break;
-                case "KZ": $name = "Kazakhstan"; break;
-                case "KE": $name = "Kenya"; break;
-                case "KI": $name = "Kiribati"; break;
-                case "KP": $name = "Korea, North"; break;
-                case "KR": $name = "Korea, South"; break;
-                case "XK": $name = "Kosovo"; break;
-                case "KW": $name = "Kuwait"; break;
-                case "KG": $name = "Kyrgyzstan"; break;
-                case "LA": $name = "Laos"; break;
-                case "LV": $name = "Latvia"; break;
-                case "LB": $name = "Lebanon"; break;
-                case "LS": $name = "Lesotho"; break;
-                case "LR": $name = "Liberia"; break;
-                case "LY": $name = "Libya"; break;
-                case "LI": $name = "Liechtenstein"; break;
-                case "LT": $name = "Lithuania"; break;
-                case "LU": $name = "Luxembourg"; break;
-                case "MO": $name = "Macau"; break;
-                case "MK": $name = "Macedonia"; break;
-                case "MG": $name = "Madagascar"; break;
-                case "MW": $name = "Malawi"; break;
-                case "MY": $name = "Malaysia"; break;
-                case "MV": $name = "Maldives"; break;
-                case "ML": $name = "Mali"; break;
-                case "MT": $name = "Malta"; break;
-                case "MH": $name = "Marshall Islands"; break;
-                case "MQ": $name = "Martinique"; break;
-                case "MR": $name = "Mauritania"; break;
-                case "MU": $name = "Mauritius"; break;
-                case "YT": $name = "Mayotte"; break;
-                case "MX": $name = "Mexico"; break;
-                case "FM": $name = "Micronesia, Federated States Of"; break;
-                case "MD": $name = "Moldova"; break;
-                case "MC": $name = "Monaco"; break;
-                case "MN": $name = "Mongolia"; break;
-                case "ME": $name = "Montenegro"; break;
-                case "MS": $name = "Montserrat"; break;
-                case "MA": $name = "Morocco"; break;
-                case "MZ": $name = "Mozambique"; break;
-                case "NA": $name = "Namibia"; break;
-                case "NR": $name = "Nauru"; break;
-                case "NP": $name = "Nepal"; break;
-                case "NL": $name = "Netherlands"; break;
-                case "AN": $name = "Netherlands Antilles"; break;
-                case "NC": $name = "New Caledonia"; break;
-                case "NZ": $name = "New Zealand"; break;
-                case "NI": $name = "Nicaragua"; break;
-                case "NE": $name = "Niger"; break;
-                case "NG": $name = "Nigeria"; break;
-                case "NU": $name = "Niue"; break;
-                case "NF": $name = "Norfolk Island"; break;
-                case "MP": $name = "Northern Mariana Islands"; break;
-                case "NO": $name = "Norway"; break;
-                case "OM": $name = "Oman"; break;
-                case "PK": $name = "Pakistan"; break;
-                case "PW": $name = "Palau"; break;
-                case "PS": $name = "Palestine"; break;
-                case "PA": $name = "Panama"; break;
-                case "PG": $name = "Papua New Guinea"; break;
-                case "PY": $name = "Paraguay"; break;
-                case "PE": $name = "Peru"; break;
-                case "PH": $name = "Philippines"; break;
-                case "PN": $name = "Pitcairn, Henderson, Ducie and Oeno Islands"; break;
-                case "PL": $name = "Poland"; break;
-                case "PT": $name = "Portugal"; break;
-                case "PR": $name = "Puerto Rico"; break;
-                case "QA": $name = "Qatar"; break;
-                case "RE": $name = "Reunion"; break;
-                case "RO": $name = "Romania"; break;
-                case "RU": $name = "Russia"; break;
-                case "RW": $name = "Rwanda"; break;
-                case "BL": $name = "Saint Barthelemy"; break;
-                case "SH": $name = "Saint Helena, Ascension, And Tristan Da Cunha"; break;
-                case "KN": $name = "Saint Kitts And Nevis"; break;
-                case "LC": $name = "Saint Lucia"; break;
-                case "MF": $name = "Saint Martin"; break;
-                case "PM": $name = "Saint Pierre And Miquelon"; break;
-                case "VC": $name = "Saint Vincent And The Grenadines"; break;
-                case "WS": $name = "Samoa"; break;
-                case "SM": $name = "San Marino"; break;
-                case "ST": $name = "Sao Tome And Principe"; break;
-                case "SA": $name = "Saudi Arabia"; break;
-                case "SN": $name = "Senegal"; break;
-                case "RS": $name = "Serbia"; break;
-                case "CS": $name = "Serbia and Montenegro"; break;
-                case "SC": $name = "Seychelles"; break;
-                case "SL": $name = "Sierra Leone"; break;
-                case "SG": $name = "Singapore"; break;
-                case "SX": $name = "Sint Maarten"; break;
-                case "SK": $name = "Slovakia"; break;
-                case "SI": $name = "Slovenia"; break;
-                case "SB": $name = "Solomon Islands"; break;
-                case "SO": $name = "Somalia"; break;
-                case "ZA": $name = "South Africa"; break;
-                case "GS": $name = "South Georgia And South Sandwich Islands"; break;
-                case "SS": $name = "South Sudan"; break;
-                case "ES": $name = "Spain"; break;
-                case "LK": $name = "Sri Lanka"; break;
-                case "VA": $name = "State of the Vatican City"; break;
-                case "SD": $name = "Sudan"; break;
-                case "SR": $name = "Suriname"; break;
-                case "SJ": $name = "Svalbard and Jan Mayen"; break;
-                case "SZ": $name = "Swaziland"; break;
-                case "SE": $name = "Sweden"; break;
-                case "CH": $name = "Switzerland"; break;
-                case "SY": $name = "Syria"; break;
-                case "TW": $name = "Taiwan"; break;
-                case "TJ": $name = "Tajikistan"; break;
-                case "TZ": $name = "Tanzania"; break;
-                case "CC": $name = "Territory of Cocos (Keeling) Islands"; break;
-                case "HM": $name = "Territory of Heard Island and McDonald Islands"; break;
-                case "TF": $name = "Territory of the French Southern and Antarctic Lands"; break;
-                case "TH": $name = "Thailand"; break;
-                case "TL": $name = "Timor-Leste"; break;
-                case "TG": $name = "Togo"; break;
-                case "TK": $name = "Tokelau"; break;
-                case "TO": $name = "Tonga"; break;
-                case "TT": $name = "Trinidad And Tobago"; break;
-                case "TN": $name = "Tunisia"; break;
-                case "TR": $name = "Turkey"; break;
-                case "TM": $name = "Turkmenistan"; break;
-                case "TC": $name = "Turks And Caicos Islands"; break;
-                case "TV": $name = "Tuvalu"; break;
-                case "VI": $name = "U.S. Virgin Islands"; break;
-                case "UG": $name = "Uganda"; break;
-                case "UA": $name = "Ukraine"; break;
-                case "AE": $name = "United Arab Emirates"; break;
-                case "GB": $name = "United Kingdom"; break;
-                case "UM": $name = "United States Minor Outlying Islands"; break;
-                case "US": $name = "United States of America"; break;
-                case "UY": $name = "Uruguay"; break;
-                case "UZ": $name = "Uzbekistan"; break;
-                case "VU": $name = "Vanuatu"; break;
-                case "VE": $name = "Venezuela"; break;
-                case "VN": $name = "Vietnam"; break;
-                case "WF": $name = "Wallis And Futuna"; break;
-                case "EH": $name = "Western Sahara"; break;
-                case "YE": $name = "Yemen"; break;
-                case "ZM": $name = "Zambia"; break;
-                case "ZW": $name = "Zimbabwe"; break;
-                default: $name = false;
-
-            }
-            //phpcs:enable
-            return $name;
-
-        }
 
     } DT_Mapping_Module::instance(); // end DT_Mapping_Module class
+
 
     /**
      * Best way to call for the mapping polygon

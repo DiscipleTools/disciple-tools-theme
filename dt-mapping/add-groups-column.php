@@ -73,7 +73,7 @@ function dt_mm_add_groups_column( $data ) {
      * @note    Don't add 0 values, or you might create unnecessary array and
      *          transfer weight to the mapping javascript file.
      */
-    $results = DT_Mapping_Module::instance()->query( 'get_geoname_totals' );
+    $results = Disciple_Tools_Mapping_Queries::get_geoname_totals();
     if ( ! empty( $results ) ) {
         foreach ( $results as $result ) {
             if ( $result['type'] === 'groups' && $result['count'] > 0 ) { // filter for only contact and positive counts

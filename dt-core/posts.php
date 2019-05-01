@@ -446,10 +446,10 @@ class Disciple_Tools_Posts
                 }
                 if ( $fields[$activity->meta_key]["type"] === "location" ){
                     if ( $activity->meta_value === "value_deleted" ){
-                        $geoname = DT_Mapping_Module::instance()->query( 'get_by_geonameid', [ 'geonameid' => $activity->old_value ] );
+                        $geoname = Disciple_Tools_Mapping_Queries::get_by_geonameid( (int) $activity->old_value );
                         $message = sprintf( _x( '%1$s removed from locations', 'Location1 added to locations', 'disciple_tools' ), $geoname ? $geoname["name"] : $activity->old_value );
                     } else {
-                        $geoname = DT_Mapping_Module::instance()->query( 'get_by_geonameid', [ 'geonameid' => $activity->meta_value ] );
+                        $geoname = Disciple_Tools_Mapping_Queries::get_by_geonameid( (int) $activity->meta_value );
                         $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $geoname ? $geoname["name"] : $activity->meta_value );
                     }
                 }

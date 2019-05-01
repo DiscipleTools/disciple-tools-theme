@@ -194,7 +194,7 @@ class Disciple_Tools_Groups_Endpoints
             function( $g ){ return $g->ID; },
             $groups
         );
-        $geonames = DT_Mapping_Module::instance()->query( "get_geoname_ids_and_names_for_post_ids", [ "post_ids" => $group_ids ] );
+        $geonames = Disciple_Tools_Mapping_Queries::get_geoname_ids_and_names_for_post_ids( $group_ids );
         p2p_type( 'contacts_to_groups' )->each_connected( $groups, [], 'members' );
         p2p_type( 'groups_to_leaders' )->each_connected( $groups, [], 'leaders' );
         $rv = [];

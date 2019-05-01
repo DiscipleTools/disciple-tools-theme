@@ -38,10 +38,6 @@ class Disciple_Tools_Network {
             if ( ! get_option( 'dt_site_partner_profile' ) ) {
                 self::create_partner_profile();
             }
-
-            add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
-            add_filter( "dt_custom_fields_settings", [ $this, 'saturation_field_filter' ], 1, 2 );
-
         }
     }
 
@@ -54,10 +50,6 @@ class Disciple_Tools_Network {
         ];
         update_option( 'dt_site_partner_profile', $partner_profile, true );
         return $partner_profile;
-    }
-
-    public function meta_box_setup() {
-        add_meta_box( 'location_network_box', __( 'Network Dashboard Fields', 'disciple_tools' ), [ $this, 'load_mapping_meta_box' ], 'locations', 'normal', 'high' );
     }
 
     /**
@@ -197,10 +189,6 @@ class Disciple_Tools_Network {
         <?php
     }
 
-    public static function admin_locations_gname_installed_box() {
-        // @codingStandardsIgnoreLine
-        echo self::load_current_locations();
-    }
 
     public function site_link_type( $type ) {
         $type['network_dashboard_sending'] = __( 'Network Dashboard Sending' );
@@ -214,83 +202,6 @@ class Disciple_Tools_Network {
         return $args;
     }
 
-    public static function load_current_locations() {
-        global $wpdb;
-
-        $query = $wpdb->get_results("
-            SELECT
-                  a.ID as id,
-                  a.post_parent as parent_id,
-                  a.post_title as name
-                FROM $wpdb->posts as a
-                WHERE a.post_status = 'publish'
-                AND a.post_type = 'locations'
-            ", ARRAY_A );
-
-
-        // prepare special array with parent-child relations
-        $menu_data = array(
-            'items' => array(),
-            'parents' => array()
-        );
-
-        foreach ( $query as $menu_item )
-        {
-            $menu_data['items'][$menu_item['id']] = $menu_item;
-            $menu_data['parents'][$menu_item['parent_id']][] = $menu_item['id'];
-        }
-
-        // output the menu
-        return self::build_tree( 0, $menu_data, -1 );
-
-    }
-
-    public static function build_tree( $parent_id, $menu_data, $gen) {
-        $html = '';
-
-        if (isset( $menu_data['parents'][$parent_id] ))
-        {
-            $gen++;
-            foreach ($menu_data['parents'][$parent_id] as $item_id)
-            {
-                if ( $gen >= 1 ) {
-                    for ($i = 0; $i < $gen; $i++ ) {
-                        $html .= '-- ';
-                    }
-                }
-                $html .= '<a href="'. esc_url( admin_url() ) . 'post.php?post=' . esc_attr( $menu_data['items'][$item_id]['id'] ) .'&action=edit">' . esc_attr( $menu_data['items'][$item_id]['name'] ) . '</a><br>';
-
-                // find childitems recursively
-                $html .= self::build_tree( $item_id, $menu_data, $gen );
-            }
-        }
-        return $html;
-    }
-
-    public function saturation_field_filter( $fields, $post_type ) {
-        if ( 'locations' === $post_type ) {
-            $fields['gn_geonameid'] = [
-                'name'        => 'GeoNames ID ',
-                'description' => __( 'Geoname ID is the unique global id for this location or its nearest known location. This is usually supplied by the Network Dashboard, but can be overwritten by clicking "edit"' ),
-                'type'        => 'locked',
-                'default'     => '',
-                'section'     => 'saturation_mapping',
-            ];
-            $fields['gn_population'] = [
-                'name'        => 'Population',
-                'description' => __( 'Population for this location' ),
-                'type'        => 'number',
-                'default'     => 0,
-                'section'     => 'saturation_mapping',
-            ];
-        }
-        return $fields;
-    }
-
-    public function load_mapping_meta_box() {
-        Disciple_Tools_Location_Post_Type::instance()->meta_box_content( 'saturation_mapping' );
-    }
-
     /**
      * Returns array of locations and counts of groups
      * This does not distinguish between types of groups.
@@ -301,6 +212,8 @@ class Disciple_Tools_Network {
     public function get_child_groups() {
         // get the groups and child groups of the location
         global $wpdb;
+
+        // @todo move this query to the central query class
         return $wpdb->get_results( "SELECT p2p_to as location, count(p2p_id) as count FROM $wpdb->p2p WHERE p2p_type = 'groups_to_locations' GROUP BY p2p_to", ARRAY_A );
     }
 
@@ -311,6 +224,7 @@ class Disciple_Tools_Network {
             return 0;
         }
 
+        // @todo pull these populations from the new locations system
         // Set up the objects needed
         $my_wp_query = new WP_Query();
         $all_wp_pages = $my_wp_query->query( array(
@@ -323,226 +237,7 @@ class Disciple_Tools_Network {
         return $children;
     }
 
-    public static function api_report_by_date( $force_refresh = false ) {
 
-
-        $report_data = [];
-
-        $report_data['partner_id'] = dt_get_partner_profile_id();
-
-        // @todo add real data to response
-        $report_data = [
-            'partner_id' => dt_get_partner_profile_id(),
-            'total_contacts' => 0,
-            'total_groups' => 0,
-            'total_users' => 0,
-            'new_contacts' => 0,
-            'new_groups' => 0,
-            'new_users' => 0,
-            'total_baptisms' => 0,
-            'new_baptisms' => 0,
-            'baptism_generations' => 0,
-            'church_generations' => 0,
-            'locations' => [
-                [
-                    'location_name' => '',
-                    'location_id' => '',
-                    'parent_id' => '',
-                    'geonameid' => '',
-                    'longitude' => '',
-                    'latitude' => '',
-                    'total_contacts' => 0,
-                    'total_groups' => 0,
-                    'total_users' => 0,
-                    'new_contacts' => 0,
-                    'new_groups' => 0,
-                    'new_users' => 0,
-                ],
-                [
-                    'location_name' => '',
-                    'location_id' => '',
-                    'parent_id' => '',
-                    'geonameid' => '',
-                    'longitude' => '',
-                    'latitude' => '',
-                    'total_contacts' => 0,
-                    'total_groups' => 0,
-                    'total_users' => 0,
-                    'new_contacts' => 0,
-                    'new_groups' => 0,
-                    'new_users' => 0,
-                ],
-                [
-                    'location_name' => '',
-                    'location_id' => '',
-                    'parent_id' => '',
-                    'geonameid' => '',
-                    'longitude' => '',
-                    'latitude' => '',
-                    'total_contacts' => 0,
-                    'total_groups' => 0,
-                    'total_users' => 0,
-                    'new_contacts' => 0,
-                    'new_groups' => 0,
-                    'new_users' => 0,
-                ],
-            ],
-            'critical_path' => [
-                'new_inquirers' => 0,
-                'first_meetings' => 0,
-                'ongoing_meetings' => 0,
-                'total_baptisms' => 0,
-                'baptism_generations' => [
-                    1 => 0,
-                    2 => 0,
-                    3 => 0,
-                ],
-                'baptizers' => 0,
-                'total_churches_and_groups' => 0,
-                'active_groups' => 0,
-                'active_churches' => 0,
-                'church_generations' => [
-                    1 => 0,
-                    2 => 0,
-                    3 => 0,
-                ],
-                'church_planters' => 0,
-                'people_groups' => 0,
-            ],
-            'date' => current_time( 'mysql' ),
-        ];
-
-        if ( $report_data ) {
-            set_transient( 'dt_snapshot_report', $report_data, strtotime( 'tomorrow midnight' ) );
-            return $report_data;
-        } else {
-            return new WP_Error( __METHOD__, 'Failed to get report' );
-        }
-    }
-
-
-
-    /**
-     * @return array|\WP_Error
-     */
-    public static function api_report_project_total() {
-        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
-            return new WP_Error( __METHOD__, 'Network report permission error.' );
-        }
-
-        $report_data['partner_id'] = dt_get_partner_profile_id();
-
-
-        // @todo add real data to response
-        $report_data = [
-            'partner_id' => dt_get_partner_profile_id(),
-            'total_contacts' => 0,
-            'total_groups' => 0,
-            'total_users' => 0,
-            'new_contacts' => 0,
-            'new_groups' => 0,
-            'new_users' => 0,
-            'total_baptisms' => 0,
-            'new_baptisms' => 0,
-            'baptism_generations' => 0,
-            'church_generations' => 0,
-            'locations' => [
-                [
-                    'location_name' => '',
-                    'location_id' => '',
-                    'parent_id' => '',
-                    'geonameid' => '',
-                    'longitude' => '',
-                    'latitude' => '',
-                    'total_contacts' => 0,
-                    'total_groups' => 0,
-                    'total_users' => 0,
-                    'new_contacts' => 0,
-                    'new_groups' => 0,
-                    'new_users' => 0,
-                ],
-                [
-                    'location_name' => '',
-                    'location_id' => '',
-                    'parent_id' => '',
-                    'geonameid' => '',
-                    'longitude' => '',
-                    'latitude' => '',
-                    'total_contacts' => 0,
-                    'total_groups' => 0,
-                    'total_users' => 0,
-                    'new_contacts' => 0,
-                    'new_groups' => 0,
-                    'new_users' => 0,
-                ],
-                [
-                    'location_name' => '',
-                    'location_id' => '',
-                    'parent_id' => '',
-                    'geonameid' => '',
-                    'longitude' => '',
-                    'latitude' => '',
-                    'total_contacts' => 0,
-                    'total_groups' => 0,
-                    'total_users' => 0,
-                    'new_contacts' => 0,
-                    'new_groups' => 0,
-                    'new_users' => 0,
-                ],
-            ],
-            'critical_path' => [
-                'new_inquirers' => 0,
-                'first_meetings' => 0,
-                'ongoing_meetings' => 0,
-                'total_baptisms' => 0,
-                'baptism_generations' => [
-                    1 => 0,
-                    2 => 0,
-                    3 => 0,
-                ],
-                'baptizers' => 0,
-                'total_churches_and_groups' => 0,
-                'active_groups' => 0,
-                'active_churches' => 0,
-                'church_generations' => [
-                    1 => 0,
-                    2 => 0,
-                    3 => 0,
-                ],
-                'church_planters' => 0,
-                'people_groups' => 0,
-            ],
-            'date' => current_time( 'mysql' ),
-        ];
-        if ( true ) {
-            return $report_data;
-        } else {
-            return new WP_Error( __METHOD__, 'Failed to get report' );
-        }
-    }
-
-    /**
-     * @param $check_sum
-     *
-     * @return \WP_Error
-     */
-    public static function api_get_locations( $check_sum ) {
-        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
-            return new WP_Error( __METHOD__, 'Network report permission error.' );
-        }
-
-        // @todo finish response
-        // test if the check_sum matches current locations
-
-        // if it does not match, then return a new array of locations for the site to be stored and referred to in the network dashboard.
-
-
-        if ( true ) {
-            return $check_sum;
-        } else {
-            return new WP_Error( __METHOD__, 'Failed to get report' );
-        }
-    }
 
     public static function api_set_location_attributes( $collection ) {
         if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
@@ -688,6 +383,7 @@ class Disciple_Tools_Network {
 }
 Disciple_Tools_Network::instance();
 
+
 /**
  * Helper function to get the partner profile id.
  * @return mixed
@@ -753,7 +449,7 @@ class Disciple_Tools_Snapshot_Report
 {
     public static function snapshot_report( $force_refresh = false ) {
 
-        $force_refresh = true; // @todo @development mode
+//        $force_refresh = true; // @todo @development mode. remove line for production
 
         if ( $force_refresh ) {
             delete_transient( 'dt_snapshot_report' );
@@ -761,22 +457,6 @@ class Disciple_Tools_Snapshot_Report
         if ( get_transient( 'dt_snapshot_report' ) ) {
             return get_transient( 'dt_snapshot_report' );
         }
-
-        $location_list = [
-            [
-        'id' => 'AF',
-        'name' => 'Afganistan'
-            ],
-            [
-            'id' => 'US',
-            'name' => 'United States'
-            ],
-            [
-            'id' => 'TN',
-            'name' => 'Tunisia'
-            ],
-        ];
-        $location_id = rand( 0, 2 );
 
         $profile = dt_get_partner_profile();
 
@@ -791,7 +471,7 @@ class Disciple_Tools_Snapshot_Report
                 ],
                 'baptisms' => [
                     'current_state' => [
-                        'all_baptisms' => self::query( 'total_baptisms' ),
+                        'all_baptisms' => Disciple_Tools_Network_Queries::total_baptisms(),
                     ],
                     'added' => [
                         'sixty_days' => self::counted_by_day( 'baptisms' ),
@@ -825,12 +505,9 @@ class Disciple_Tools_Snapshot_Report
                 'last_thirty_day_engagement' => self::user_logins_last_thirty_days(),
             ],
             'locations' => [
-                'countries' => self::get_countries_summary(),
-                'current_state' => [
-                    'active_locations' => rand( 300, 1000 ),
-                    'inactive_locations' => rand( 300, 1000 ),
-                    'all_locations' => rand( 300, 1000 ),
-                ],
+                'data_types' => self::location_data_types(),
+                'countries' => self::get_locations_list( true ),
+                'current_state' => self::get_locations_current_state(),
                 'list' => self::get_locations_list(),
             ],
             'date' => current_time( 'timestamp' ),
@@ -863,7 +540,7 @@ class Disciple_Tools_Snapshot_Report
         // Add
         $data['status'] = self::get_contacts_status();
 
-        $data['all_contacts'] = self::query( 'all_contacts' );
+        $data['all_contacts'] = Disciple_Tools_Network_Queries::all_contacts();
 
         return $data;
     }
@@ -884,7 +561,7 @@ class Disciple_Tools_Snapshot_Report
         $data = [];
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         $status_defaults = $contact_fields['overall_status']['default'];
-        $current_state = self::query( 'contacts_current_state' );
+        $current_state = Disciple_Tools_Network_Queries::contacts_current_state();
         foreach ( $status_defaults as $key => $status ) {
             $data[$key] = 0;
             foreach ( $current_state as $state ) {
@@ -903,25 +580,16 @@ class Disciple_Tools_Snapshot_Report
 
         switch ( $type ) {
             case 'groups':
-                $dates = self::query( 'counted_by_day', [
-                    'object_type' => 'groups',
-                    'action' => 'created'
-                ] );
+                $dates = Disciple_Tools_Network_Queries::counted_by_day( 'created', 'groups' );
                 break;
             case 'logged_in':
-                $dates = self::query( 'counted_by_day', [
-                    'object_type' => 'user',
-                    'action' => 'logged_in'
-                ] );
+                $dates = Disciple_Tools_Network_Queries::counted_by_day( 'logged_in', 'user' );
                 break;
             case 'baptisms':
-                $dates = self::query( 'baptisms_counted_by_day' );
+                $dates = Disciple_Tools_Network_Queries::baptisms_counted_by_day();
                 break;
             default: // contacts
-                $dates = self::query( 'counted_by_day', [
-                    'object_type' => 'contacts',
-                    'action' => 'created'
-                ] );
+                $dates = Disciple_Tools_Network_Queries::counted_by_day( 'created', 'contacts' );
                 break;
         }
 
@@ -961,25 +629,16 @@ class Disciple_Tools_Snapshot_Report
 
         switch ( $type ) {
             case 'groups':
-                $dates = self::query( 'counted_by_month', [
-                    'object_type' => 'groups',
-                    'action' => 'created'
-                ] );
+                $dates = Disciple_Tools_Network_Queries::counted_by_month( 'created', 'groups' );
                 break;
             case 'logged_in':
-                $dates = self::query( 'counted_by_month', [
-                    'object_type' => 'user',
-                    'action' => 'logged_in'
-                ] );
+                $dates = Disciple_Tools_Network_Queries::counted_by_month( 'logged_in', 'user' );
                 break;
             case 'baptisms':
-                $dates = self::query( 'baptisms_counted_by_month' );
+                $dates = Disciple_Tools_Network_Queries::baptisms_counted_by_month();
                 break;
             default: // contacts
-                $dates = self::query( 'counted_by_month', [
-                    'object_type' => 'contacts',
-                    'action' => 'created'
-                ] );
+                $dates = Disciple_Tools_Network_Queries::counted_by_month( 'created', 'contacts' );
                 break;
         }
 
@@ -1014,7 +673,7 @@ class Disciple_Tools_Snapshot_Report
 
     public static function user_logins_last_thirty_days() {
 
-        $active = self::query( 'user_logins_last_thirty_days' );
+        $active = Disciple_Tools_Network_Queries::user_logins_last_thirty_days();
 
         $total_users = count_users();
 
@@ -1108,7 +767,7 @@ class Disciple_Tools_Snapshot_Report
         ];
 
         // Add types and status
-        $types_and_status = self::query( 'groups_types_and_status' );
+        $types_and_status = Disciple_Tools_Network_Queries::groups_types_and_status();
         foreach ( $types_and_status as $value ) {
             $value['type'] = str_replace( '-', '_', $value['type'] );
 
@@ -1119,7 +778,7 @@ class Disciple_Tools_Snapshot_Report
             }
         }
 
-        $data['all'] = self::query( 'all_groups' );
+        $data['all'] = Disciple_Tools_Network_Queries::all_groups();
 
         return $data;
     }
@@ -1127,7 +786,7 @@ class Disciple_Tools_Snapshot_Report
     public static function groups_by_type() {
         $data = [];
 
-        $types_and_status = self::query( 'groups_types_and_status' );
+        $types_and_status = Disciple_Tools_Network_Queries::groups_types_and_status();
 
         $keyed = [];
         foreach ( $types_and_status as $status ) {
@@ -1187,7 +846,7 @@ class Disciple_Tools_Snapshot_Report
         }
 
         // get results
-        $practicing = self::query( 'group_health' );
+        $practicing = Disciple_Tools_Network_Queries::group_health();
 
         // build keyed practicing
         foreach ( $practicing as $value ) {
@@ -1195,7 +854,7 @@ class Disciple_Tools_Snapshot_Report
         }
 
         // get total number
-        $total_groups = self::query( 'groups_churches_total' ); // total groups and churches
+        $total_groups = Disciple_Tools_Network_Queries::groups_churches_total(); // total groups and churches
 
         // add real numbers and prepare array
         foreach ( $labels as $key => $label ) {
@@ -1377,360 +1036,98 @@ class Disciple_Tools_Snapshot_Report
         return $data;
     }
 
-    public static function get_locations_list() {
+    public static function location_data_types( $preset = false ) {
+        if ( $preset ) {
+            return [
+                'contacts' => 0,
+                'groups' => 0,
+                'churches' => 0,
+                'users' => 0,
+            ];
+        } else {
+            return [
+                'contacts',
+                'groups',
+                'churches',
+                'users',
+            ];
+        }
 
-        $data = DT_Mapping_Module::instance()->query( 'get_geoname_totals' );
-
-        return $data;
     }
 
-    public static function get_countries_summary() {
+    public static function get_locations_list( $countries_only = false ) {
+
         $data = [];
 
+        if ( $countries_only ) {
+            $results = Disciple_Tools_Mapping_Queries::get_geoname_totals( true );
+        } else {
+            $results = Disciple_Tools_Mapping_Queries::get_geoname_totals();
+        }
 
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $item ) {
+                // skip custom geonames. Their totals are represented in the standard parents.
+                if ( $item['geonameid'] > 1000000000 ) {
+                    continue;
+                }
+                // set array, if not set
+                if ( ! isset( $data[$item['geonameid']] ) ) {
+                    $data[$item['geonameid']] = self::location_data_types( true );
+                }
+                // increment existing item type or add new
+                if ( isset( $data[$item['geonameid']][$item['type']] ) ) {
+                    $data[$item['geonameid']][$item['type']] = (int) $data[$item['geonameid']][$item['type']] + (int) $item['count'];
+                } else {
+                    $data[$item['geonameid']][$item['type']] = (int) $item['count'];
+                }
+            }
+        }
 
         return $data;
     }
 
-    public static function query( $type, $args = [] ) {
-        global $wpdb;
+    public static function get_locations_current_state() {
+        $data = [
+            'active_countries' => 0,
+            'active_countries_geonames' => [],
+            'active_admin1' => 0,
+            'active_admin1_geonames' => [],
+            'active_admin2' => 0,
+            'active_admin2_geonames' => [],
+        ];
 
-        if ( empty( $type ) ) {
-            return new WP_Error( __METHOD__, 'Required type is missing.' );
+        $results = Disciple_Tools_Network_Queries::locations_current_state();
+        if ( ! empty( $results['active_countries'] ) ) {
+            $data['active_countries'] = (int) $results['active_countries'];
+        }
+        if ( ! empty( $results['active_countries'] ) ) {
+            $data['active_admin1'] = (int) $results['active_admin1'];
+        }
+        if ( ! empty( $results['active_countries'] ) ) {
+            $data['active_admin2'] = (int) $results['active_admin2'];
         }
 
-        switch ( $type ) {
-
-            case 'contacts_current_state':
-                /**
-                 * Returns status and count of contacts according to the overall status
-                 * return array
-                 */
-                $results = $wpdb->get_results("
-                SELECT
-                  b.meta_value as status,
-                  count(a.ID) as count
-                FROM $wpdb->posts as a
-                  JOIN $wpdb->postmeta as b
-                    ON a.ID = b.post_id
-                       AND b.meta_key = 'overall_status'
-                WHERE a.post_status = 'publish'
-                      AND a.post_type = 'contacts'
-                      AND a.ID NOT IN (
-                  SELECT bb.post_id
-                  FROM $wpdb->postmeta as bb
-                  WHERE meta_key = 'corresponds_to_user'
-                        AND meta_value != 0
-                  GROUP BY bb.post_id )
-                GROUP BY b.meta_value
-            ", ARRAY_A );
-                break;
-
-            case 'all_contacts':
-                /**
-                 * Returns single digit count of all contacts in the system.
-                 * return int
-                 */
-                $results = $wpdb->get_var("
-                    SELECT
-                      count(a.ID) as count
-                    FROM $wpdb->posts as a
-                    WHERE a.post_status = 'publish'
-                          AND a.post_type = 'contacts'
-                          AND a.ID NOT IN (
-                      SELECT bb.post_id
-                      FROM $wpdb->postmeta as bb
-                      WHERE meta_key = 'corresponds_to_user'
-                            AND meta_value != 0
-                      GROUP BY bb.post_id )
-                ");
-                if ( empty( $results ) ) {
-                    $results = 0;
-                }
-                break;
-
-            case 'all_groups':
-                /**
-                 * Returns single digit count of all pre-groups, groups, and churches in the system.
-                 * return int
-                 */
-                $results = $wpdb->get_var("
-                    SELECT
-                      count(a.ID) as count
-                    FROM $wpdb->posts as a
-                    WHERE a.post_status = 'publish'
-                          AND a.post_type = 'groups'
-                ");
-                if ( empty( $results ) ) {
-                    $results = 0;
-                }
-                break;
-
-            case 'groups_churches_total':
-                /**
-                 * Returns single digit count of all groups and churches in the system.
-                 * return int
-                 */
-                $results = $wpdb->get_var("
-                    SELECT
-                      count(a.ID) as count
-                    FROM $wpdb->posts as a
-                    JOIN $wpdb->postmeta as c
-                        ON a.ID = c.post_id
-                           AND c.meta_key = 'group_status'
-                           AND c.meta_value = 'active'
-                    JOIN $wpdb->postmeta as b 
-                      ON a.ID=b.post_id
-                      AND b.meta_key = 'group_type'
-                      AND ( b.meta_value = 'group' OR b.meta_value = 'church' )
-                    WHERE a.post_status = 'publish'
-                      AND a.post_type = 'groups'
-                ");
-                break;
-
-            case 'groups_types_and_status':
-                /**
-                 * Returns the different types of groups and their count
-                 *
-                 *  pre-group   active      5
-                    pre-group   inactive    7
-                    group       active      2
-                    group       inactive    1
-                    church      active      9
-                    church      inactive    2
-                 */
-                $results = $wpdb->get_results( "
-                    SELECT
-                      c.meta_value as type,
-                      b.meta_value as status,
-                      count(a.ID)  as count
-                    FROM $wpdb->posts as a
-                      JOIN $wpdb->postmeta as b
-                        ON a.ID = b.post_id
-                           AND b.meta_key = 'group_status'
-                      JOIN $wpdb->postmeta as c
-                        ON a.ID = c.post_id
-                           AND c.meta_key = 'group_type'
-                    WHERE a.post_status = 'publish'
-                          AND a.post_type = 'groups'
-                    GROUP BY type, status
-                    ORDER BY type ASC
-                ", ARRAY_A );
-                break;
-
-            case 'baptisms_counted_by_day':
-            /**
-             * Returns list grouped by timestamp
-             *
-             *   2018-04-30     9
-             *   2018-04-29     11
-             *   2018-04-28     9
-             *   2018-04-27     39
-             */
-                $results = $wpdb->get_results( "
-               SELECT
-                  from_unixtime( meta_value , '%Y-%m-%d') as date,
-                  count( DISTINCT object_id) as value
-                FROM $wpdb->dt_activity_log
-                WHERE object_type = 'contacts'
-                AND object_subtype = 'baptism_date'
-                AND meta_value != ''
-                AND meta_value REGEXP ('^[0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
-                GROUP BY meta_value
-                ORDER BY date DESC
-                LIMIT 60;
-            ", ARRAY_A );
-            break;
-
-            case 'baptisms_counted_by_month':
-                /**
-                 * Can collect various events just by specifying object type and action.
-                 *
-                 * Returns list grouped by timestamp
-                 *
-                 *   2019-01        9
-                 *   2018-12        11
-                 *   2018-11        9
-                 *   2018-10        39
-                 *
-                 */
-                $results = $wpdb->get_results( "
-                    SELECT
-                      from_unixtime( meta_value , '%Y-%m') as date,
-                      count( DISTINCT object_id) as value
-                    FROM $wpdb->dt_activity_log
-                    WHERE object_type = 'contacts'
-                      AND object_subtype = 'baptism_date'
-                      AND meta_value != ''
-                      AND meta_value REGEXP ('^[0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
-                    GROUP BY meta_value
-                    ORDER BY date DESC
-                    LIMIT 25;
-                ", ARRAY_A );
-                break;
-
-            case 'total_baptisms':
-                /**
-                 * Returns the count for baptisms in the system
-                 *
-                 *   2018-04-30     9
-                 *   2018-04-29     11
-                 *   2018-04-28     9
-                 *   2018-04-27     39
-                 */
-                $results = $wpdb->get_var( "
-                   SELECT
-                      count( DISTINCT object_id) as value
-                    FROM $wpdb->dt_activity_log
-                    WHERE 
-                        object_type = 'contacts'
-                        AND object_subtype = 'baptism_date'
-                        AND meta_value != ''
-                        AND meta_value REGEXP ('^[0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
-                " );
-                if ( empty( $results ) ) {
-                    $results = 0;
-                } else {
-                    $results = (int) $results;
-                }
-                break;
-
-            case 'counted_by_day':
-                /**
-                 * Can collect various events just by specifying object type and action.
-                 *
-                 * Returns list grouped by timestamp
-                 *
-                 *   2019-01        9
-                 *   2018-12        11
-                 *   2018-11        9
-                 *   2018-10        39
-                 *
-                 */
-                if ( isset( $args['action'] ) && isset( $args['object_type'] ) ) {
-                    $action = $args['action'];
-                    $object_type = $args['object_type'];
-                } else {
-                    return [];
-                }
-
-                $results = $wpdb->get_results( $wpdb->prepare( "
-                    SELECT
-                      from_unixtime( hist_time , '%%Y-%%m-%%d') as date,
-                      count( DISTINCT object_id) as value
-                    FROM $wpdb->dt_activity_log
-                    WHERE object_type = %s
-                          AND action = %s
-                          AND hist_time != ''
-                          AND hist_time REGEXP ('^[0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
-                    GROUP BY date
-                    ORDER BY date DESC
-                    LIMIT 60;
-                ",
-                    $object_type,
-                    $action
-                ), ARRAY_A );
-                break;
-
-            case 'counted_by_month':
-                /**
-                 * Can collect various events just by specifying object type and action.
-                 *
-                 * Returns list grouped by timestamp
-                 *
-                 *   2019-01        9
-                 *   2018-12        11
-                 *   2018-11        9
-                 *   2018-10        39
-                 *
-                 */
-                if ( isset( $args['action'] ) && isset( $args['object_type'] ) ) {
-                    $action = $args['action'];
-                    $object_type = $args['object_type'];
-                } else {
-                    return [];
-                }
-
-                $results = $wpdb->get_results( $wpdb->prepare( "
-                    SELECT
-                      from_unixtime( hist_time , '%%Y-%%m') as date,
-                      count( DISTINCT object_id) as value
-                    FROM $wpdb->dt_activity_log
-                    WHERE object_type = %s
-                      AND action = %s
-                      AND hist_time != ''
-                      AND hist_time REGEXP ('^[0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
-                    GROUP BY date
-                    ORDER BY date DESC
-                    LIMIT 25;
-                ",
-                    $object_type,
-                    $action
-                ), ARRAY_A );
-                break;
-
-            case 'user_logins_last_thirty_days':
-                /**
-                 * Returns count for number of unique users signed in within the last month.
-                 */
-                $results = $wpdb->get_var("
-                    SELECT
-                      COUNT( DISTINCT object_id ) as value
-                    FROM $wpdb->dt_activity_log
-                    WHERE
-                      object_type = 'user'
-                      AND action = 'logged_in'
-                      AND hist_time >= UNIX_TIMESTAMP(CURDATE() - INTERVAL 1 MONTH );
-                ");
-
-                if ( empty( $results ) ) {
-                    $results = 0;
-                }
-
-                break;
-
-            case 'group_health':
-                /**
-                 * Returns health numbers for groups and churches but not pre-groups
-                 *
-                 *  category            practicing
-                 *  church_baptism      4
-                    church_bible        5
-                    church_commitment   1
-                    church_communion    2
-                    church_fellowship   2
-                    church_giving       1
-                    church_leaders      1
-                    church_praise       1
-                    church_prayer       4
-                    church_sharing      2
-                 *
-                 */
-                $results = $wpdb->get_results( "
-                    SELECT
-                      d.meta_value           as category,
-                      count(distinct (a.ID)) as practicing
-                    FROM $wpdb->posts as a
-                      JOIN $wpdb->postmeta as c
-                        ON a.ID = c.post_id
-                           AND c.meta_key = 'group_status'
-                           AND c.meta_value = 'active'
-                      JOIN $wpdb->postmeta as d
-                        ON a.ID = d.post_id
-                            AND d.meta_key = 'health_metrics'
-                      JOIN $wpdb->postmeta as e
-                        ON a.ID = e.post_id
-                           AND e.meta_key = 'group_type'
-                            AND ( e.meta_value = 'group' OR e.meta_value = 'church')
-                    WHERE a.post_status = 'publish'
-                          AND a.post_type = 'groups'
-                    GROUP BY d.meta_value;
-                ", ARRAY_A );
-
-                break;
+        $active_countries_geonames = Disciple_Tools_Mapping_Queries::active_countries_geonames();
+        if ( ! empty( $active_countries_geonames ) ) {
+            foreach ( $active_countries_geonames as $geonameid ) {
+                $data['active_countries_geonames'][] = (int) $geonameid;
+            }
+        }
+        $active_admin1_geonames = Disciple_Tools_Mapping_Queries::active_admin1_geonames();
+        if ( ! empty( $active_admin1_geonames ) ) {
+            foreach ( $active_admin1_geonames as $geonameid ) {
+                $data['active_admin1_geonames'][] = (int) $geonameid;
+            }
+        }
+        $active_admin2_geonames = Disciple_Tools_Mapping_Queries::active_admin2_geonames();
+        if ( ! empty( $active_admin2_geonames ) ) {
+            foreach ( $active_admin2_geonames as $geonameid ) {
+                $data['active_admin2_geonames'][] = (int) $geonameid;
+            }
         }
 
-        return $results;
+        return $data;
     }
+
 }
-//dt_write_log( Disciple_Tools_Snapshot_Report::generations('baptisms') ); // @todo remove

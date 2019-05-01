@@ -381,7 +381,7 @@ class Disciple_Tools_Contacts_Endpoints
             function( $c ){ return $c->ID; },
             $contacts
         );
-        $geonames = DT_Mapping_Module::instance()->query( "get_geoname_ids_and_names_for_post_ids", [ "post_ids" => $contact_ids ] );
+        $geonames = Disciple_Tools_Mapping_Queries::get_geoname_ids_and_names_for_post_ids( $contact_ids );
         p2p_type( 'contacts_to_groups' )->each_connected( $contacts, [], 'groups' );
         $rv = [];
         foreach ( $contacts as $contact ) {

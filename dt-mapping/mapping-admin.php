@@ -268,8 +268,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             $population = 0;
                         }
 
-
-
                         $custom_geonameid = $this->add_sublocation_under_geoname( $geonameid, $name, $population );
 
                         return [
@@ -615,7 +613,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <div id="post-body" class="metabox-holder columns-1">
                         <div id="post-body-content">
                             <!-- Main Column -->
-
 
                             <?php $this->migration_status_metabox() ?>
                             <br>
@@ -1321,37 +1318,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     }
                 }
 
-                // window.DRILLDOWN.sublocation = function (geonameid) {
-                //     let list_results = jQuery('#list_results')
-                //     let current_subs = jQuery('#current_subs')
-                //     let other_list = jQuery('#other_list')
-                //
-                //     list_results.empty()
-                //     other_list.empty()
-                //     current_subs.hide()
-                //
-                //     if (geonameid === 'top_map_list') { // top level multi-list
-                //         list_results.append(`Select one single location`)
-                //     }
-                //     else { // children available
-                //         if (!window.DRILLDOWN.isEmpty(window.DRILLDOWNDATA.data[geonameid].children)) { // empty children for geonameid
-                //             jQuery.each(window.DRILLDOWNDATA.data[geonameid].children, function (gnid, data) {
-                //                 other_list.append(`
-                //                     <tr><td>
-                //                         <a class="open_next_drilldown" data-parent="${geonameid}" data-geonameid="${gnid}" style="cursor: pointer;">${_.escape(data.name)}</a>
-                //                     </td></tr>`)
-                //             })
-                //             current_subs.show()
-                //         }
-                //
-                //         list_results.append(`
-                //                 <tr><td colspan="2">Add New Location to ${window.DRILLDOWNDATA.data[geonameid].self.name}</td></tr>
-                //                 <tr><td style="width:150px;">Name</td><td><input id="new_name" value="" /></td></tr>
-                //                 <tr><td>Population</td><td><input id="new_population" value="" /></td></tr>
-                //                 <tr><td colspan="2"><button type="button" id="save-button" class="button" onclick="update_location( ${geonameid} )" >Save</a></td></tr>`)
-                //     }
-                // }
-
                 function update_location(geonameid) {
                     jQuery('#save-button').prop('disabled', true)
 
@@ -1425,10 +1391,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     $option['children'] = [];
                 }
                 else if ( $option['type'] === 'country' && empty( $_POST['children'] ) ) {
-                    $option['children'] = $mm->query( 'get_countries', [ 'ids_only' => true ] );
+                    $option['children'] = Disciple_Tools_Mapping_Queries::get_countries( true );
                 }
                 else if ( $option['type'] === 'state' && empty( $_POST['children'] && ! empty( $_POST['parent'] ) ) ) {
-                    $list = $mm->query( 'get_children_by_geonameid', [ 'geonameid' => $option['parent'] ] );
+                    $list = Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $option['parent'] );
                     foreach ( $list as $item ) {
                         $option['children'][] = $item['geonameid'];
                     }
@@ -1504,7 +1470,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
              ******************************/
             if ( $default_map_settings['type'] === 'country' ) :
 
-                $country_list = $mm->query( 'get_countries' );
+                $country_list = Disciple_Tools_Mapping_Queries::get_countries();
 
                 ?>
                 <!-- Box -->
@@ -1583,7 +1549,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             if ( $default_map_settings['type'] === 'state' ) :
 
                 // create select
-                $country_list = $mm->query( 'get_countries' );
+                $country_list = Disciple_Tools_Mapping_Queries::get_countries();
 
                 ?>
                 <table class="widefat striped">
@@ -1617,8 +1583,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 if ( $default_map_settings['parent'] ) :
 
                     $country_id = $default_map_settings['parent'];
-                    $parent = $mm->query( 'get_by_geonameid', [ 'geonameid' => $country_id ] );
-                    $state_list = $mm->query( 'get_children_by_geonameid', [ 'geonameid' => $country_id ] );
+                    $parent = Disciple_Tools_Mapping_Queries::get_by_geonameid( $country_id );
+                    $state_list = Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $country_id );
 
                     ?>
                     <!-- Box -->
@@ -1963,7 +1929,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <tr>
                         <td>
                             Current Geoname
-                            Records: <?php echo esc_attr( DT_Mapping_Module::instance()->query( 'count_geonames' ) ) ?>
+                            Records: <?php echo esc_attr( Disciple_Tools_Mapping_Queries::count_geonames() ) ?>
                         </td>
                     </tr>
                     <tr>
@@ -2114,26 +2080,27 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $max_id = max( $max_id, 1000000000 );
             $custom_geonameid = $max_id + 1;
 
+
             // get level
             if ( isset( $parent_geoname['level'] ) ) {
                 switch ( $parent_geoname['level'] ) {
                     case 'country':
-                        $level = 'admin1';
+                        $level = 'admin1c';
                         $parent_geoname['admin1_geonameid'] = $custom_geonameid;
                         $parent_geoname['feature_code'] = 'ADM1';
                         break;
                     case 'admin1':
-                        $level = 'admin2';
+                        $level = 'admin2c';
                         $parent_geoname['admin2_geonameid'] = $custom_geonameid;
                         $parent_geoname['feature_code'] = 'ADM2';
                         break;
                     case 'admin2':
-                        $level = 'admin3';
+                        $level = 'admin3c';
                         $parent_geoname['admin3_geonameid'] = $custom_geonameid;
                         $parent_geoname['feature_code'] = 'ADM3';
                         break;
                     case 'admin3':
-                        $level = 'admin4';
+                        $level = 'admin4c';
                         $parent_geoname['admin4_geonameid'] = $custom_geonameid;
                         $parent_geoname['feature_code'] = 'ADM4';
                         break;

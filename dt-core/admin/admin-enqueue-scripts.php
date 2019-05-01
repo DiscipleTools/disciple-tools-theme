@@ -80,13 +80,13 @@ function dt_dashboard_page_scripts() {
     if ( is_admin() && 'index.php' === $pagenow ) {
 
         // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
-        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(), false );
-        wp_localize_script(
-            'dt_dashboard_scripts', 'wpApiDashboard', array(
-                'root' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' )
-            )
-        );
+//        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(), false );
+//        wp_localize_script(
+//            'dt_dashboard_scripts', 'wpApiDashboard', array(
+//                'root' => esc_url_raw( rest_url() ),
+//                'nonce' => wp_create_nonce( 'wp_rest' )
+//            )
+//        );
     }
 }
 
@@ -188,7 +188,7 @@ function dt_new_user_scripts(){
         wp_enqueue_script( 'jquery' );
 
         // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-        wp_register_style( 'jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
+        wp_register_style( 'jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' ); // @todo consider sourcing jquery from other than google, because of blocks in China.
         wp_enqueue_style( 'jquery-ui' );
         wp_enqueue_script( 'jquery-ui-autocomplete' );
     }

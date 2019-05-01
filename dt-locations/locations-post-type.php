@@ -100,12 +100,11 @@ class Disciple_Tools_Location_Post_Type
         if ( is_admin() ) {
             global $pagenow;
 
-            add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
             add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
-//            add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
 
             if ( isset( $_GET['post_type'] ) ) {
+//                add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
                 $post_type = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
 
                 if ( $pagenow == 'edit.php' && $this->post_type === $post_type ) {
@@ -159,7 +158,7 @@ class Disciple_Tools_Location_Post_Type
             'capability_type'       => 'locations',
             'has_archive'           => true,
             'hierarchical'          => true,
-            'supports'              => [ 'title', 'custom-fields' ],
+            'supports'              => [ 'title' ],
             'menu_position'         => 6,
             'menu_icon'             => 'dashicons-smiley',
             'show_in_rest'          => true,

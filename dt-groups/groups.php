@@ -190,7 +190,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                         "formatted" => dt_format_date( $value[0] ),
                     ];
                 } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'location' ) {
-                    $names = DT_Mapping_Module::instance()->query( "get_names_from_ids", [ "geoname_ids" => $value ] );
+                    $names = Disciple_Tools_Mapping_Queries::get_names_from_ids( $value );
                     $fields[ $key ] = [];
                     foreach ( $names as $id => $name ) {
                         $fields[ $key ][] = [
