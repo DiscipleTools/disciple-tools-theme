@@ -449,7 +449,7 @@ class Disciple_Tools_Snapshot_Report
 {
     public static function snapshot_report( $force_refresh = false ) {
 
-        $force_refresh = true; // @todo @development mode. remove line for production
+//        $force_refresh = true; // @todo @development mode. remove line for production
 
         if ( $force_refresh ) {
             delete_transient( 'dt_snapshot_report' );
