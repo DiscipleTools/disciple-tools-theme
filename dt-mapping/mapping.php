@@ -425,7 +425,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
             //search for only the locations that are currently in use
             if ( $filter === "used" ){
-                $locations = Disciple_Tools_Mapping_Queries::search_geonames_by_name( [
+                $locations = Disciple_Tools_Mapping_Queries::search_used_geonames_by_name( [
                     "search_query" => $search,
                 ] );
             } else {
@@ -1484,7 +1484,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $list = [ 'world' => 'World' ];
             }
             else {
-                $children = Disciple_Tools_Mapping_Queries::get_by_geonameid( $default_map_settings['children'] );
+                $children = Disciple_Tools_Mapping_Queries::get_by_geonameid_list( $default_map_settings['children'] );
                 if ( ! empty( $children ) ) {
                     foreach ( $children as $child ) {
                         $list[$child['geonameid']] = $child['name'];
