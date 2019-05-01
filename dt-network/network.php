@@ -38,7 +38,6 @@ class Disciple_Tools_Network {
             if ( ! get_option( 'dt_site_partner_profile' ) ) {
                 self::create_partner_profile();
             }
-
         }
     }
 
@@ -1067,7 +1066,7 @@ class Disciple_Tools_Snapshot_Report
         }
 
         if ( ! empty( $results ) ) {
-            foreach( $results as $item ) {
+            foreach ( $results as $item ) {
                 // skip custom geonames. Their totals are represented in the standard parents.
                 if ( $item['geonameid'] > 1000000000 ) {
                     continue;
