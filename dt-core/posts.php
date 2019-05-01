@@ -445,8 +445,13 @@ class Disciple_Tools_Posts
                     $message = $fields[$activity->meta_key]["name"] . ": " . dt_format_date( $activity->meta_value );
                 }
                 if ( $fields[$activity->meta_key]["type"] === "location" ){
-                    $geoname = DT_Mapping_Module::instance()->query( 'get_by_geonameid', [ 'geonameid' => $activity->meta_value ] );
-                    $message = sprintf( _x( '%1$s added to locations', 'Milestone1 added to Milestones', 'disciple_tools' ), $geoname ? $geoname["name"] : $activity->meta_value );
+                    if ( $activity->meta_value === "value_deleted" ){
+                        $geoname = DT_Mapping_Module::instance()->query( 'get_by_geonameid', [ 'geonameid' => $activity->old_value ] );
+                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 added to locations', 'disciple_tools' ), $geoname ? $geoname["name"] : $activity->old_value );
+                    } else {
+                        $geoname = DT_Mapping_Module::instance()->query( 'get_by_geonameid', [ 'geonameid' => $activity->meta_value ] );
+                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $geoname ? $geoname["name"] : $activity->meta_value );
+                    }
                 }
             } else {
                 if ( strpos( $activity->meta_key, "_details" ) !== false ) {
