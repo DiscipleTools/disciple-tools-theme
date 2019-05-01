@@ -2,7 +2,7 @@
 
 class Disciple_Tools_Mapping_Queries {
 
-    public static function get_by_geonameid( int $geonameid ) {
+    public static function get_by_geonameid( $geonameid ) {
         global $wpdb;
 
         $results = $wpdb->get_row( $wpdb->prepare( "
@@ -32,7 +32,7 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
-    public static function get_parent_by_geonameid( int $geonameid ) {
+    public static function get_parent_by_geonameid( $geonameid ) {
         global $wpdb;
 
         $results = $wpdb->get_row( $wpdb->prepare( "
@@ -62,7 +62,7 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
-    public static function get_children_by_geonameid( int $geonameid ) {
+    public static function get_children_by_geonameid( $geonameid ) {
         global $wpdb;
 
         $results = $wpdb->get_results( $wpdb->prepare( "
