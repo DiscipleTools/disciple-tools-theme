@@ -93,7 +93,7 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
-    public static function get_by_geonameid_list( array $list, $short = false ) {
+    public static function get_by_geonameid_list( $list, $short = false ) {
         global $wpdb;
 
         $prepared_list = '';
@@ -212,7 +212,7 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
-    public static function get_country_code_by_id( int $geonameid ) {
+    public static function get_country_code_by_id( $geonameid ) {
         global $wpdb;
 
         $results = $wpdb->get_var( $wpdb->prepare( "
@@ -289,7 +289,7 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
-    public static function get_drilldown_by_geonameid( int $geonameid ) {
+    public static function get_drilldown_by_geonameid( $geonameid ) {
         global $wpdb;
 
         $results = $wpdb->get_row( $wpdb->prepare( "
@@ -618,6 +618,7 @@ class Disciple_Tools_Mapping_Queries {
         global $wpdb;
 
         $prepared = [];
+
         foreach ( $post_ids as $post_id ) {
             $prepared[$post_id] = [];
         }
