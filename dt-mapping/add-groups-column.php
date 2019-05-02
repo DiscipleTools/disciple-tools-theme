@@ -3,8 +3,6 @@
 function dt_mm_add_groups_column( $data ) {
 
 
-    $url_base = apply_filters( 'dt_mapping_module_url_base', 'mapping' );
-    $url_base_length = (int) strlen( $url_base );
     if ( isset( $_SERVER["SERVER_NAME"] ) ) {
         $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) )
             ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) )
@@ -14,7 +12,8 @@ function dt_mm_add_groups_column( $data ) {
         }
     }
     $url_path = trim( str_replace( get_site_url(), "", $url ), '/' );
-    if ( $url_base === substr( $url_path, '0', $url_base_length ) ) {
+    if ( 'mapping' === substr( $url_path, '0', 7 ) ) {
+
         /**
          * Step 1
          * Extract the labels and data from the data section of the filter

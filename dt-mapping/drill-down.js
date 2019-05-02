@@ -1,6 +1,3 @@
-/* global jQuery:false, wpApiShare:false */
-_ = _ || window.lodash // make sure lodash is defined so plugins like gutenberg don't break it.
-
 window.DRILLDOWNDATA = mappingModule.mapping_module
 window.DRILLDOWN = {
 
