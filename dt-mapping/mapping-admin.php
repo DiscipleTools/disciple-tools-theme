@@ -2205,6 +2205,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                   WHERE p2p_to = %s
             ", esc_sql( $location_id ) ) );
 
+            wp_trash_post( $location_id );
+
             $wpdb->query(  $wpdb->prepare(" 
                 UPDATE $wpdb->dt_activity_log
                 SET 
@@ -2213,9 +2215,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     meta_key = 'geonames',
                     meta_value = %s,
                     field_type = 'location'
-                WHERE meta_key = 'contacts_to_locations' OR meta_key = 'groups_to_locations'
+                WHERE meta_key = ( 'contacts_to_locations' OR meta_key = 'groups_to_locations' )
+                AND meta_value = %s
                 ",
-                $geoname_id
+                $geoname_id,
+                $location_id
             ));
         }
 
