@@ -22,8 +22,8 @@ function dt_mm_add_contacts_column( $data ) {
          *
          * @note        No modification to this section needed.
          */
-        $column_labels = $data[ 'custom_column_labels' ] ?? [];
-        $column_data   = $data[ 'custom_column_data' ] ?? [];
+        $column_labels = $data['custom_column_labels'] ?? [];
+        $column_data   = $data['custom_column_data'] ?? [];
 
         /**
          * Step 2
@@ -66,7 +66,7 @@ function dt_mm_add_contacts_column( $data ) {
          */
         if ( ! empty( $column_data ) ) {
             foreach ( $column_data as $key => $value ) {
-                $column_data[ $key ][ $next_column_number ] = 0;
+                $column_data[$key][$next_column_number] = 0;
             }
         }
 
@@ -84,21 +84,21 @@ function dt_mm_add_contacts_column( $data ) {
         $results = Disciple_Tools_Mapping_Queries::get_geoname_totals();
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
-                if ( $result[ 'type' ] === 'contacts' && $result[ 'count' ] > 0 ) { // filter for only contact and positive counts
-                    $geonameid = $result[ 'geonameid' ];
+                if ( $result['type'] === 'contacts' && $result['count'] > 0 ) { // filter for only contact and positive counts
+                    $geonameid = $result['geonameid'];
 
                     // test if geonameid exists, else prepare it with 0 values
                     if ( ! isset( $column_data[ $geonameid ] ) ) {
                         $column_data[ $geonameid ] = [];
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
-                            $column_data[ $geonameid ][ $i ] = 0;
+                            $column_data[$geonameid][$i] = 0;
                             $i ++;
                         }
                     }
 
                     // add new record to column
-                    $column_data[ $geonameid ][ $next_column_number ] = (int) $result[ 'count' ] ?? 0; // must be string
+                    $column_data[$geonameid][$next_column_number] = (int) $result['count'] ?? 0; // must be string
                 }
             }
         }
@@ -109,8 +109,8 @@ function dt_mm_add_contacts_column( $data ) {
          *
          * @note    No modification to this section needed.
          */
-        $data[ 'custom_column_labels' ] = $column_labels;
-        $data[ 'custom_column_data' ]   = $column_data;
+        $data['custom_column_labels'] = $column_labels;
+        $data['custom_column_data']   = $column_data;
 
     }
     return $data;
