@@ -150,9 +150,16 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
      * Not used when launching via the dt_send_email() function.
      */
     protected function run_action() {
-        $email = sanitize_email( $_POST[0]['email'] );
-        $subject = sanitize_text_field( $_POST[0]['subject'] );
-        $message_plain_text = sanitize_textarea_field( $_POST[0]['message_plain_text'] );
+        /**
+         * Nonce validation is done through a custom nonce process inside Disciple_Tools_Async_Task
+         * to allow for asynchronous processing. This is a valid nonce but is not recognized by the WP standards checker.
+         */
+        // WordPress.CSRF.NonceVerification.NoNonceVerification
+        // @phpcs:disable
+        $email = isset( $_POST[0]['email'] ) ? sanitize_email( wp_unslash( $_POST[0]['email'] ) ) : '';
+        $subject = isset( $_POST[0]['subject'] ) ? sanitize_text_field( wp_unslash( $_POST[0]['subject'] ) ) : '';
+        $message_plain_text = isset( $_POST[0]['message_plain_text'] ) ? sanitize_textarea_field( $_POST[0]['message_plain_text'] ) : '';
+        // phpcs:enable
 
         do_action( "dt_async_$this->action", $email, $subject, $message_plain_text );
 
