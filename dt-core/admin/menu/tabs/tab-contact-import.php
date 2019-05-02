@@ -84,9 +84,9 @@ class Disciple_Tools_Contact_Import_Tab extends Disciple_Tools_Abstract_Menu_Bas
         }
         //check for action of csv import
         if ( isset( $_POST['csv_import_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['csv_import_nonce'] ) ), 'csv_import' ) && $run ) {
-            if ( isset( $_FILES["csv_file"] ) ) {
+            if ( isset( $_FILES["csv_file"]["name"] ) ) {
                 $file_parts = explode( ".", sanitize_text_field( wp_unslash( $_FILES["csv_file"]["name"] ) ) )[ count( explode( ".", sanitize_text_field( wp_unslash( $_FILES["csv_file"]["name"] ) ) ) ) - 1 ];
-                if ( $_FILES["csv_file"]["error"] > 0 ) {
+                if ( isset( $_FILES["csv_file"]["error"] ) && $_FILES["csv_file"]["error"] > 0 ) {
                     esc_html_e( "ERROR UPLOADING FILE", 'disciple_tools' );
                     ?>
                     <form id="back" method="post" enctype="multipart/form-data">
@@ -104,7 +104,7 @@ class Disciple_Tools_Contact_Import_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <?php
                     exit;
                 }
-                if ( mb_detect_encoding( file_get_contents( sanitize_text_field( wp_unslash( $_FILES["csv_file"]['tmp_name'] ) ), false, null, 0, 100 ), 'UTF-8', true ) === false ) {
+                if ( isset( $_FILES["csv_file"]['tmp_name'] ) && mb_detect_encoding( file_get_contents( sanitize_text_field( wp_unslash( $_FILES["csv_file"]['tmp_name'] ) ), false, null, 0, 100 ), 'UTF-8', true ) === false ) {
                     esc_html_e( "FILE IS NOT UTF-8", 'disciple_tools' );
                     ?>
                     <form id="back" method="post" enctype="multipart/form-data">
