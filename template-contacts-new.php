@@ -32,7 +32,7 @@ get_header();
 
                 <?php if ( current_user_can( 'view_any_contacts' )) :?>
                     <label>
-                        <?php esc_html_e( "Source", "disciple_tools" ); ?>
+                        <?php esc_html_e( "How did you meet?", "disciple_tools" ); ?>
                         <select name="sources" aria-describedby="source-help-text">
                             <?php foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $source_key => $source ): ?>
                                 <option value="<?php echo esc_attr( $source_key, 'disciple_tools' ); ?>">

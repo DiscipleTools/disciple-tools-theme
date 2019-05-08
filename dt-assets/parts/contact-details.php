@@ -256,7 +256,7 @@
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
-                    <?php esc_html_e( 'Source' ); ?>
+                    <?php esc_html_e( 'How did you meet?' ); ?>
                 </div>
                 <ul class="sources-list <?php echo esc_html( user_can( get_current_user_id(), 'view_any_contacts' ) ? 'details-list' : '' ) ?>">
                     <?php
@@ -341,7 +341,7 @@
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
-                    <?php esc_html_e( 'Source', "disciple_tools" ); ?>
+                    <?php esc_html_e( 'How did you meet?', "disciple_tools" ); ?>
                 </div>
                 <?php if ( user_can( get_current_user_id(), 'view_any_contacts' ) ) : ?>
                     <span id="sources-result-container" class="result-container"></span>
@@ -350,7 +350,7 @@
                             <div class="typeahead__field">
                                             <span class="typeahead__query">
                                                 <input class="js-typeahead-sources"
-                                                       name="sources[query]" placeholder="<?php esc_html_e( "Search sources", 'disciple_tools' ) ?>"
+                                                       name="sources[query]" placeholder="<?php esc_html_e( "Search", 'disciple_tools' ) ?>"
                                                        autocomplete="off">
                                             </span>
                             </div>

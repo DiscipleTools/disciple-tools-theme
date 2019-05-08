@@ -72,7 +72,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             /* end Worker Profile */
 
             /* Sources */
-            $this->box( 'top', 'Sources' );
+            $this->box( 'top', '\'How did you meet?\' Options' );
             $this->process_sources_box();
             $this->sources_box(); // prints
             $this->box( 'bottom' );

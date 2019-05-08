@@ -552,7 +552,24 @@ function dt_get_site_custom_lists( string $list_title = null ) {
             'description' => 'Contacts coming an contact transfer partnership with another Disciple.Tools site.',
             'enabled'     => true,
         ],
-
+        'whatsapp' => [
+            'label'       => 'WhatsApp',
+            'key'         => 'whatsapp',
+            'description' => 'Contacts coming from WhatsApp.',
+            'enabled'     => true,
+        ],
+        'viber' => [
+            'label'       => 'Viber',
+            'key'         => 'viber',
+            'description' => 'Contacts coming from Viber.',
+            'enabled'     => true,
+        ],
+        'wechat' => [
+            'label'       => 'WeChat',
+            'key'         => 'wechat',
+            'description' => 'Contacts coming from WeChat.',
+            'enabled'     => true,
+        ],
     ];
     $fields["contact_address_types"] = [
         "home"  => [ "label" => __( 'Home', 'disciple_tools' ) ],
