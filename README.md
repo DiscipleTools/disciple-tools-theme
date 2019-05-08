@@ -4,7 +4,7 @@
 Disciple.Tools software boosts collaboration, clarity, and accountability for disciple and church multiplication movements.
 
 ## Description
-As a contact relationship management system it is : 
+As a contact relationship management (CRM) system it is : 
 
 - unique – able to track and organize individuals or groups generationally
 - insightful - giving end-to-end dashboards, charts, and maps on contacts, baptisms, groups, churches, and movements
@@ -19,7 +19,7 @@ As a contact relationship management system it is :
 The commit team will shape the development of Disciple.Tools, and is currently implementing generational mapping, a mobile app with offline use, and people group tracking. 
 
 ## Purpose
-There needs to exist a simple, low-cost, highly distributable DRM that is tailored to the process of using digital marketing to accelerate disciple making movements. Most DRM solutions are too expensive to be used by small volunteer teams, and they often require significant configuration and development to implement. This project is attempting to make a rapid launch, low cost system that is tailored for movements.
+There needs to exist a simple, low-cost, highly distributable CRM that is tailored to the process of using digital marketing to accelerate disciple making movements. Most CRM solutions are too expensive to be used by small volunteer teams, and they often require significant configuration and development to implement. This project is attempting to make a rapid launch, low cost system that is tailored for movements.
 
 ## Platform
 We are building on the Wordpress platform because of its open-source availability, simplicity of installation, numerous low cost hosting options, multi-lingual support, substantial configurability and customization, giant development community and resources, native REST API, mobile readiness, and healthy market place for distributing themes and plugins.
