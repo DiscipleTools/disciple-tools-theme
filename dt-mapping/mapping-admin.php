@@ -1680,19 +1680,19 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             /**
              * https://storage.googleapis.com/disciple-tools-maps/
-             * https://raw.githubusercontent.com/DiscipleTools/saturation-mapping/master/
+             * https://raw.githubusercontent.com/DiscipleTools/saturation-grid-project/master/
              * https://s3.amazonaws.com/mapping-source/
              */
             $mirror_list = [
                 'github' => [
                     'key'   => 'github',
                     'label' => 'GitHub',
-                    'url'   => 'https://raw.githubusercontent.com/DiscipleTools/saturation-mapping/master/',
+                    'url'   => 'https://raw.githubusercontent.com/DiscipleTools/saturation-grid-project/master/',
                 ],
                 'google' => [
                     'key'   => 'google',
                     'label' => 'Google',
-                    'url'   => 'https://storage.googleapis.com/saturation-mapping/',
+                    'url'   => 'https://storage.googleapis.com/saturation-grid-project/',
                 ],
                 'amazon' => [
                     'key'   => 'amazon',
@@ -1804,7 +1804,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 <strong>Custom Mirror Note:</strong>
                                 <em>
                                     Note: The custom mirror option allows you to download the polygon source repo (<a
-                                            href="https://github.com/DiscipleTools/saturation-mapping/archive/master.zip">Download
+                                            href="https://github.com/DiscipleTools/saturation-grid-project/archive/master.zip">Download
                                         source</a>) and install
                                     this folder to your own mirror. You will be responsible for syncing occasional
                                     updates to
