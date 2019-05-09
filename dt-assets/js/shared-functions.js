@@ -349,9 +349,10 @@ window.TYPEAHEADS = {
   },
   contactListRowTemplate: function (query, item){
     let img = item.user ? `<img src="${wpApiShare.template_dir}/dt-assets/images/profile.svg">` : ''
-    return `<span dir="auto">
+    let statusStyle = item.status === "closed" ? 'style="color:gray"' : ''
+    return `<span dir="auto" ${statusStyle}>
       <span class="typeahead-user-row" style="width:20px">${img}</span>
-      ${_.escape(item.name)} 
+      ${_.escape(item.name)}
       <span dir="auto">(#${item.ID})</span>
     </span>`
   },
