@@ -311,7 +311,7 @@ function show_sources_overview() {
         series.dataFields.valueX = "active_seeker_path_" + seeker_path;
         series.dataFields.categoryY = "translated_source";
         series.stroke = am4core.color("#000");
-        series.name = localizedObject.seeker_path_settings.default[seeker_path].label || seeker_path;
+        series.name = _.get( localizedObject, `seeker_path_settings.default[${seeker_path}].label`, seeker_path );
         series.tooltipText = "{name}: [bold]{valueX}[/]";
         series.stacked = true;
       }
