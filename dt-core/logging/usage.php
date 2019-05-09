@@ -14,7 +14,7 @@ class Disciple_Tools_Usage {
     public $version = 1;
 
     public function send_usage() {
-        $url = 'https://dt-usage/wp-json/dt-usage/v1/telemetry';
+        $url = 'https://disciple.tools/wp-json/dt-usage/v1/telemetry';
         $args = [
             'method' => 'POST',
             'timeout' => 45,
