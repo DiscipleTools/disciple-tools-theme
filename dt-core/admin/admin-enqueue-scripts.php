@@ -15,7 +15,6 @@ if ( !defined( 'ABSPATH' ) ) {
 
 add_action( 'admin_enqueue_scripts', 'dt_contact_page_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_group_page_scripts' );
-add_action( 'admin_enqueue_scripts', 'dt_dashboard_page_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_location_page_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_dismiss_notice_callback_script' );
 add_action( 'admin_enqueue_scripts', 'dt_people_groups_post_type_scripts' );
@@ -71,23 +70,6 @@ function dt_group_page_scripts() {
     }
 }
 
-/**
- * Loads scripts and styles for the groups page.
- */
-function dt_dashboard_page_scripts() {
-    global $pagenow;
-
-//    if ( is_admin() && 'index.php' === $pagenow ) {
-        // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
-//        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(), false );
-//        wp_localize_script(
-//            'dt_dashboard_scripts', 'wpApiDashboard', array(
-//                'root' => esc_url_raw( rest_url() ),
-//                'nonce' => wp_create_nonce( 'wp_rest' )
-//            )
-//        );
-//    }
-}
 
 /**
  * Loads scripts and styles for the locations page.
