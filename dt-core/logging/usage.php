@@ -43,6 +43,8 @@ class Disciple_Tools_Usage {
             'payload' => [
 
                 // BASIC STATS
+                'site_id' => hash( 'sha256', get_site_url() ),
+                'usage_version' => $this->version,
                 'php_version' => phpversion(),
                 'wp_version' => $wp_version,
                 'wp_db_version' => $wp_db_version,
