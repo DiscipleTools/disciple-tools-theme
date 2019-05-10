@@ -102,6 +102,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     function dt_array_to_sql( $values ) {
+        if ( empty( $values ) ){
+            return 'NULL';
+        }
         foreach ( $values as &$val ) {
             $val = "'" . esc_sql( trim( $val ) ) . "'";
         }

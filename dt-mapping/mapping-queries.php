@@ -622,6 +622,9 @@ class Disciple_Tools_Mapping_Queries {
         foreach ( $post_ids as $post_id ) {
             $prepared[$post_id] = [];
         }
+        if ( empty( $post_ids ) ){
+            return [];
+        }
         $joined_post_ids = dt_array_to_sql( $post_ids );
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
