@@ -293,9 +293,6 @@ else {
 
 
             // dt-locations
-            require_once( get_template_directory() . '/dt-locations/locations-post-type.php' );
-            $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
-
             require_once( get_template_directory() . '/dt-locations/locations.php' ); // serves the locations rest endpoints
             require_once( get_template_directory() . '/dt-locations/locations-endpoints.php' ); // builds rest endpoints
             $this->endpoints['locations'] = Disciple_Tools_Locations_Endpoints::instance();

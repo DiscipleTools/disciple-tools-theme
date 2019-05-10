@@ -11,9 +11,6 @@ jQuery(document).ready(function() {
     if( '#coaching_tree' === window.location.hash  ) {
         project_coaching_tree()
     }
-    // if( '#project_locations' === window.location.hash  ) {
-    //     project_locations()
-    // }
 
 })
 
@@ -471,4 +468,3 @@ function project_coaching_tree() {
         })
 
 }
-
