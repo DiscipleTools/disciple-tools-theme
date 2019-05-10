@@ -703,42 +703,40 @@ function heatmap_focus_change( focus_id, current_map ) {
 
 function mini_map( div, marker_data ) {
 
-    jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'polygons/world.geojson', function( data ) {
-        am4core.useTheme(am4themes_animated);
+  am4core.useTheme(am4themes_animated);
 
-        var chart = am4core.create( div, am4maps.MapChart);
+  var chart = am4core.create( div, am4maps.MapChart);
 
-        chart.projection = new am4maps.projections.Orthographic(); // Set projection
+  chart.projection = new am4maps.projections.Orthographic(); // Set projection
 
-        chart.seriesContainer.draggable = false;
-        chart.seriesContainer.resizable = false;
+  chart.seriesContainer.draggable = false;
+  chart.seriesContainer.resizable = false;
 
-        if ( parseInt(marker_data[0].longitude) < 0 ) {
-            chart.deltaLongitude = parseInt(Math.abs(marker_data[0].longitude));
-        } else {
-            chart.deltaLongitude = parseInt(-Math.abs(marker_data[0].longitude));
-        }
+  if ( parseInt(marker_data[0].longitude) < 0 ) {
+    chart.deltaLongitude = parseInt(Math.abs(marker_data[0].longitude));
+  } else {
+    chart.deltaLongitude = parseInt(-Math.abs(marker_data[0].longitude));
+  }
 
-        chart.geodata = data;
-        var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+  chart.geodata = am4geodata_worldLow;
+  var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
 
-        polygonSeries.useGeodata = true;
+  polygonSeries.useGeodata = true;
 
-        var imageSeries = chart.series.push(new am4maps.MapImageSeries());
+  var imageSeries = chart.series.push(new am4maps.MapImageSeries());
 
-        imageSeries.data = marker_data;
+  imageSeries.data = marker_data;
 
-        var imageSeriesTemplate = imageSeries.mapImages.template;
-        var circle = imageSeriesTemplate.createChild(am4core.Circle);
-        circle.radius = 4;
-        circle.fill = am4core.color("#B27799");
-        circle.stroke = am4core.color("#FFFFFF");
-        circle.strokeWidth = 2;
-        circle.nonScaling = true;
-        circle.tooltipText = "{title}";
-        imageSeriesTemplate.propertyFields.latitude = "latitude";
-        imageSeriesTemplate.propertyFields.longitude = "longitude";
-    })
+  var imageSeriesTemplate = imageSeries.mapImages.template;
+  var circle = imageSeriesTemplate.createChild(am4core.Circle);
+  circle.radius = 4;
+  circle.fill = am4core.color("#B27799");
+  circle.stroke = am4core.color("#FFFFFF");
+  circle.strokeWidth = 2;
+  circle.nonScaling = true;
+  circle.tooltipText = "{title}";
+  imageSeriesTemplate.propertyFields.latitude = "latitude";
+  imageSeriesTemplate.propertyFields.longitude = "longitude";
 
 }
 
@@ -1497,6 +1495,7 @@ function geoname_points( div, geonameid ) {
     },
   })
     .done( function( response ) {
+      console.log(response)
 
       title.html(response.self.name)
 

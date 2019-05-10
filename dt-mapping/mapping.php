@@ -182,7 +182,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
             wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', false, '4' );
             wp_register_script( 'amcharts-maps', 'https://www.amcharts.com/lib/4/maps.js', false, '4' );
-//            wp_register_script( 'amcharts-world', 'https://www.amcharts.com/lib/4/geodata/worldLow.js', false, '4' );
+            wp_register_script( 'amcharts-world', 'https://www.amcharts.com/lib/4/geodata/worldLow.js', false, '4' );
 
 
             // Datatable
@@ -198,7 +198,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 'amcharts-charts',
                 'amcharts-animated',
                 'amcharts-maps',
-//                'amcharts-world',
+                'amcharts-world',
                 'datatable',
                 'mapping-drill-down',
                 'lodash'
