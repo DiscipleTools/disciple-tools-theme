@@ -2008,10 +2008,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                 $data = str_getcsv( $line, "\t" );
 
-                if ( isset( $data[28] ) ) {
+                if ( isset( $data[29] ) ) {
                     $wpdb->query( $wpdb->prepare( "
                         INSERT IGNORE INTO $wpdb->dt_geonames
-                        VALUES (%d,%s,%s,%s,%d,%d,%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%s,%d,%d,%d,%d,%d,%s,%d,%d,%d,%d,%s)",
+                        VALUES (%d,%s,%s,%s,%d,%d,%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%s,%d,%d,%d,%d,%d,%s,%d,%d,%d,%d,%s,null,null,null)",
                         $data[0], // geonameid
                         $data[1],
                         $data[2],
