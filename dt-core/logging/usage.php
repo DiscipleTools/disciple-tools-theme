@@ -62,6 +62,7 @@ class Disciple_Tools_Usage {
                 'total_users' => $users->get_total(),
 
                 'regions' => $regions,
+                'timestamp' => date('Y-m-d'),
 
             ],
         ];
@@ -172,21 +173,8 @@ class Disciple_Tools_Usage_Scheduler {
     }
 
     public static function action(){
-        do_action( "dt_usage" );
-    }
-}
-new Disciple_Tools_Usage_Scheduler();
-
-class Disciple_Tools_Usage_Async extends Disciple_Tools_Async_Task {
-
-    protected $action = 'dt_usage';
-
-    protected function prepare_data( $data ) {
-        return $data;
-    }
-
-    protected function run_action() {
         $usage = new Disciple_Tools_Usage();
         $usage->send_usage();
     }
 }
+new Disciple_Tools_Usage_Scheduler();
