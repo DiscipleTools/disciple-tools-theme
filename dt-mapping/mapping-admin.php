@@ -2011,13 +2011,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 if ( isset( $data[28] ) ) {
                     $wpdb->query( $wpdb->prepare( "
                         INSERT IGNORE INTO $wpdb->dt_geonames
-                        VALUES (%d,%s,%s,%s,%d,%d,%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%s,%d,%d,%d,%d,%d,%s,%s,%d,%d,%d)",
-                        $data[0],
+                        VALUES (%d,%s,%s,%s,%d,%d,%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%s,%d,%d,%d,%d,%d,%s,%d,%d,%d,%d,%s)",
+                        $data[0], // geonameid
                         $data[1],
                         $data[2],
                         $data[3],
-                        $data[4],
-                        $data[5],
+                        $data[4], // latitude
+                        $data[5], // longitude
                         $data[6],
                         $data[7],
                         $data[8],
@@ -2026,21 +2026,22 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         $data[11],
                         $data[12],
                         $data[13],
-                        $data[14],
+                        $data[14], // population
                         $data[15],
                         $data[16],
                         $data[17],
-                        $data[18],
-                        $data[19],
+                        $data[18], // modification date
+                        $data[19], // parent id
                         $data[20],
                         $data[21],
                         $data[22],
                         $data[23],
-                        $data[24],
+                        $data[24], // level
                         $data[25],
                         $data[26],
                         $data[27],
-                        $data[28]
+                        $data[28],
+                        $data[29]
                     ) );
                 }
             }
