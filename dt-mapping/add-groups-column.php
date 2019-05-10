@@ -79,7 +79,7 @@ function dt_mm_add_groups_column( $data ) {
          * @note    Don't add 0 values, or you might create unnecessary array and
          *          transfer weight to the mapping javascript file.
          */
-        $results = Disciple_Tools_Mapping_Queries::get_geoname_totals();
+        $results = Disciple_Tools_Mapping_Queries::get_groups_geonames_totals();
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
                 if ( $result['type'] === 'groups' && $result['count'] > 0 ) { // filter for only contact and positive counts
@@ -113,4 +113,4 @@ function dt_mm_add_groups_column( $data ) {
     }
     return $data;
 }
-add_filter( 'dt_mapping_module_data', 'dt_mm_add_groups_column', 50, 1 );
+add_filter( 'dt_mapping_module_data', 'dt_mm_add_groups_column', 51, 1 );

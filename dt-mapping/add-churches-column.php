@@ -1,8 +1,7 @@
 <?php
 
-function dt_mm_add_contacts_column( $data ) {
+function dt_mm_add_churches_column( $data ) {
 
-    // Only add column data for specific URLs
 
     if ( isset( $_SERVER["SERVER_NAME"] ) ) {
         $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) )
@@ -14,7 +13,6 @@ function dt_mm_add_contacts_column( $data ) {
     }
     $url_path = trim( str_replace( get_site_url(), "", $url ), '/' );
     if ( 'mapping' === substr( $url_path, '0', 7 ) ) {
-
 
         /**
          * Step 1
@@ -54,8 +52,8 @@ function dt_mm_add_contacts_column( $data ) {
          * @note     Modify this! Add your column name and key.
          */
         $column_labels[ $next_column_number ] = [
-            'key'   => 'contacts',
-            'label' => __( 'Contacts', 'disciple_tools' )
+            'key'   => 'churches',
+            'label' => __( 'Churches', 'disciple_tools' )
         ];
 
         /**
@@ -81,15 +79,15 @@ function dt_mm_add_contacts_column( $data ) {
          * @note    Don't add 0 values, or you might create unnecessary array and
          *          transfer weight to the mapping javascript file.
          */
-        $results = Disciple_Tools_Mapping_Queries::get_geoname_totals();
+        $results = Disciple_Tools_Mapping_Queries::get_church_geonames_totals();
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
-                if ( $result['type'] === 'contacts' && $result['count'] > 0 ) { // filter for only contact and positive counts
+                if ( $result['type'] === 'churches' && $result['count'] > 0 ) { // filter for only contact and positive counts
                     $geonameid = $result['geonameid'];
 
                     // test if geonameid exists, else prepare it with 0 values
                     if ( ! isset( $column_data[ $geonameid ] ) ) {
-                        $column_data[ $geonameid ] = [];
+                        $column_data[$geonameid] = [];
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$geonameid][$i] = 0;
@@ -115,4 +113,4 @@ function dt_mm_add_contacts_column( $data ) {
     }
     return $data;
 }
-add_filter( 'dt_mapping_module_data', 'dt_mm_add_contacts_column', 50, 1 );
+add_filter( 'dt_mapping_module_data', 'dt_mm_add_churches_column', 52, 1 );

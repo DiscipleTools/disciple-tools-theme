@@ -173,6 +173,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         public function menu( $content ) {
             $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_view" onclick="page_mapping_view()">' .  esc_html__( 'Map' ) . '</a></li>';
             $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_list" onclick="page_mapping_list()">' .  esc_html__( 'List' ) . '</a></li>';
+            $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_point" onclick="page_mapping_point()">' .  esc_html__( 'Point' ) . '</a></li>';
             return $content;
         }
         public function scripts() {
@@ -181,7 +182,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
             wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', false, '4' );
             wp_register_script( 'amcharts-maps', 'https://www.amcharts.com/lib/4/maps.js', false, '4' );
-            wp_register_script( 'amcharts-world', 'https://www.amcharts.com/lib/4/geodata/worldLow.js', false, '4' );
+//            wp_register_script( 'amcharts-world', 'https://www.amcharts.com/lib/4/geodata/worldLow.js', false, '4' );
 
 
             // Datatable
@@ -197,7 +198,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 'amcharts-charts',
                 'amcharts-animated',
                 'amcharts-maps',
-                'amcharts-world',
+//                'amcharts-world',
                 'datatable',
                 'mapping-drill-down',
                 'lodash'

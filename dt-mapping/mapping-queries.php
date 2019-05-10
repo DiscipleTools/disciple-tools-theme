@@ -513,6 +513,142 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
+    public static function get_church_geonames_totals() {
+        global $wpdb;
+
+        $results = $wpdb->get_results("
+            SELECT
+                  country_geonameid as geonameid,
+                  ('churches') as type,
+                  count(country_geonameid) as count
+                FROM $wpdb->dt_geonames_counter
+                WHERE country_geonameid != ''
+                	AND post_id IN (SELECT ID 
+                FROM $wpdb->posts as p
+                JOIN $wpdb->postmeta as pm ON p.ID=pm.post_id 
+                    AND meta_key = 'group_type' 
+                    AND meta_value = 'church'
+                WHERE p.post_type = 'groups')
+                GROUP BY country_geonameid, type
+                UNION
+                SELECT
+                  admin1_geonameid as geonameid,
+                 ('churches') as type,
+                  count(admin1_geonameid) as count
+                FROM $wpdb->dt_geonames_counter
+                WHERE admin1_geonameid != ''
+                AND post_id IN (SELECT ID 
+                FROM $wpdb->posts as p
+                JOIN $wpdb->postmeta as pm ON p.ID=pm.post_id 
+                    AND meta_key = 'group_type' 
+                    AND meta_value = 'church'
+                WHERE p.post_type = 'groups')
+                GROUP BY admin1_geonameid, type
+                UNION
+                SELECT
+                  admin2_geonameid as geonameid,
+                  ('churches') as type,
+                  count(admin2_geonameid) as count
+                FROM $wpdb->dt_geonames_counter
+                WHERE admin2_geonameid != ''
+                AND post_id IN (SELECT ID 
+                FROM $wpdb->posts as p
+                JOIN $wpdb->postmeta as pm ON p.ID=pm.post_id 
+                    AND meta_key = 'group_type' 
+                    AND meta_value = 'church'
+                WHERE p.post_type = 'groups')
+                GROUP BY admin2_geonameid, type
+                UNION
+                SELECT
+                  admin3_geonameid as geonameid,
+                  ('churches') as type,
+                  count(admin3_geonameid) as count
+                FROM $wpdb->dt_geonames_counter
+                WHERE admin3_geonameid != ''
+                AND post_id IN (SELECT ID 
+                FROM $wpdb->posts as p
+                JOIN $wpdb->postmeta as pm ON p.ID=pm.post_id 
+                    AND meta_key = 'group_type' 
+                    AND meta_value = 'church'
+                WHERE p.post_type = 'groups')
+                GROUP BY admin3_geonameid, type
+        ", ARRAY_A );
+
+        if ( empty( $results ) ) {
+            $results = [];
+        }
+
+        return $results;
+    }
+
+    public static function get_groups_geonames_totals() {
+        global $wpdb;
+
+        $results = $wpdb->get_results("
+            SELECT
+                  country_geonameid as geonameid,
+                  ('groups') as type,
+                  count(country_geonameid) as count
+                FROM $wpdb->dt_geonames_counter
+                WHERE country_geonameid != ''
+                	AND post_id IN (SELECT ID 
+                FROM $wpdb->posts as p
+                JOIN $wpdb->postmeta as pm ON p.ID=pm.post_id 
+                    AND meta_key = 'group_type' 
+                    AND meta_value = 'group'
+                WHERE p.post_type = 'groups')
+                GROUP BY country_geonameid, type
+                UNION
+                SELECT
+                  admin1_geonameid as geonameid,
+                 ('groups') as type,
+                  count(admin1_geonameid) as count
+                FROM $wpdb->dt_geonames_counter
+                WHERE admin1_geonameid != ''
+                AND post_id IN (SELECT ID 
+                FROM $wpdb->posts as p
+                JOIN $wpdb->postmeta as pm ON p.ID=pm.post_id 
+                    AND meta_key = 'group_type' 
+                    AND meta_value = 'group'
+                WHERE p.post_type = 'groups')
+                GROUP BY admin1_geonameid, type
+                UNION
+                SELECT
+                  admin2_geonameid as geonameid,
+                  ('groups') as type,
+                  count(admin2_geonameid) as count
+                FROM $wpdb->dt_geonames_counter
+                WHERE admin2_geonameid != ''
+                AND post_id IN (SELECT ID 
+                FROM $wpdb->posts as p
+                JOIN $wpdb->postmeta as pm ON p.ID=pm.post_id 
+                    AND meta_key = 'group_type' 
+                    AND meta_value = 'group'
+                WHERE p.post_type = 'groups')
+                GROUP BY admin2_geonameid, type
+                UNION
+                SELECT
+                  admin3_geonameid as geonameid,
+                  ('groups') as type,
+                  count(admin3_geonameid) as count
+                FROM $wpdb->dt_geonames_counter
+                WHERE admin3_geonameid != ''
+                AND post_id IN (SELECT ID 
+                FROM $wpdb->posts as p
+                JOIN $wpdb->postmeta as pm ON p.ID=pm.post_id 
+                    AND meta_key = 'group_type' 
+                    AND meta_value = 'group'
+                WHERE p.post_type = 'groups')
+                GROUP BY admin3_geonameid, type
+        ", ARRAY_A );
+
+        if ( empty( $results ) ) {
+            $results = [];
+        }
+
+        return $results;
+    }
+
     public static function search_geonames_by_name( $args ) {
         global $wpdb;
 

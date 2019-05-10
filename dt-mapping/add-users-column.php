@@ -111,4 +111,4 @@ function dt_mm_add_workers_column( $data ) {
     }
     return $data;
 }
-add_filter( 'dt_mapping_module_data', 'dt_mm_add_workers_column', 40, 1 );
+add_filter( 'dt_mapping_module_data', 'dt_mm_add_workers_column', 53, 1 );
