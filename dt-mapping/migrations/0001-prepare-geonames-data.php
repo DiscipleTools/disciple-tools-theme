@@ -67,7 +67,12 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
         $zip->extractTo( $extract_path );
         $zip->close();
 
-        $this->test();
+        try {
+            $this->test();
+        } catch( Exception $e ) {
+            dt_write_log($e);
+        }
+
 
     }
 

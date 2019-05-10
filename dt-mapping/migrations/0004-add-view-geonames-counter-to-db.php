@@ -38,7 +38,12 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
             WHERE p.meta_key = 'geonames'
         ");
 
-        $this->test();
+        try {
+            $this->test();
+        } catch ( Exception $e ) {
+            dt_write_log( $e );
+        }
+
     }
 
     public function down() {
