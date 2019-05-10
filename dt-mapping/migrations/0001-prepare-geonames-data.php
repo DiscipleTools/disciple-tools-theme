@@ -26,7 +26,7 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
             $array = [
                 'key' => 'github',
                 'label' => 'GitHub',
-                'url' => 'https://raw.githubusercontent.com/DiscipleTools/saturation-mapping/master/'
+                'url' => 'https://raw.githubusercontent.com/DiscipleTools/saturation-grid-project/master/'
             ];
             update_option( 'dt_saturation_mapping_mirror', $array, true );
             $mirror = $array;

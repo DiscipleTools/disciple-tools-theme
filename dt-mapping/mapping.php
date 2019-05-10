@@ -151,11 +151,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                     add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
                     add_filter( 'dt_metrics_menu', [ $this, 'menu' ], 99 );
+                    add_action( 'wp_enqueue_scripts', [ $this, 'drilldown_script' ], 89 );
                     add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
                 }
             }
             else if ( $url_base === substr( $url_path, '0', $url_base_length ) ) {
-                add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+                add_action( 'wp_enqueue_scripts', [ $this, 'drilldown_script' ], 89 );
             }
             /* End DEFAULT MAPPING DEFINITION */
 
@@ -188,14 +189,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             wp_enqueue_style( 'datatable-css' );
             wp_register_script( 'datatable', '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', false, '1.10' );
 
-            // Drill Down Tool
-            wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery', 'lodash' ], '1.1' );
-            wp_localize_script(
-                'mapping-drill-down', 'mappingModule', array(
-                    'mapping_module' => self::localize_script(),
-                )
-            );
-
             // Mapping Script
             wp_enqueue_script( 'dt_mapping_module_script', $this->module_url . 'mapping.js', [
                 'jquery',
@@ -218,6 +211,16 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     'current_user_id' => get_current_user_id(),
                     'mapping_module' => $this->localize_script(),
                 ]
+            );
+        }
+
+        public function drilldown_script() {
+            // Drill Down Tool
+            wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery' ], '1.1' );
+            wp_localize_script(
+                'mapping-drill-down', 'mappingModule', array(
+                    'mapping_module' => self::localize_script(),
+                )
             );
         }
 
@@ -1883,7 +1886,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $array = [
                 'key' => 'github',
                 'label' => 'GitHub',
-                'url' => 'https://raw.githubusercontent.com/DiscipleTools/saturation-mapping/master/'
+                'url' => 'https://raw.githubusercontent.com/DiscipleTools/saturation-grid-project/master/'
             ];
             update_option( 'dt_saturation_mapping_mirror', $array, true );
             $mirror = $array;
