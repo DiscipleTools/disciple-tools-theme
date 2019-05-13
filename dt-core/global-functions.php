@@ -153,6 +153,15 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         } );
         return $array;
     }
+
+    /**
+     * This is the modifiable url for downloading the geonames and people groups source files for the DT system.
+     * The filter can be used to override the default GitHub location and move this to a custom mirror or fork.
+     * @return string
+     */
+    function dt_get_theme_data_url() {
+        return apply_filters( 'disciple_tools_theme_data_url', 'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-theme-data/master/');
+    }
     /**
      * All code above here.
      */

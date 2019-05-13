@@ -11,7 +11,7 @@ class DT_Mapping_Module_Migration_0002 extends DT_Mapping_Module_Migration {
             $wpdb->dt_geonames = $wpdb->prefix . 'dt_geonames';
         }
 
-        $file = 'dt_geonames.tsv';
+        $file = 'geonames.tsv';
         $expected = 48851;
 
         // TEST for expected tables\

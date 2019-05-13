@@ -21,21 +21,12 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
         }
 
         // get mirror source file url
-        $mirror = get_option( 'dt_saturation_mapping_mirror' );
-        if ( empty( $mirror ) ) {
-            $array = [
-                'key' => 'github',
-                'label' => 'GitHub',
-                'url' => 'https://raw.githubusercontent.com/DiscipleTools/saturation-grid-project/master/'
-            ];
-            update_option( 'dt_saturation_mapping_mirror', $array, true );
-            $mirror = $array;
-        }
-        $mirror_source = $mirror['url'];
+        require_once( get_template_directory() . '/dt-core/global-functions.php' );
+        $mirror_source =  dt_get_theme_data_url();
 
-        $gn_source_url = $mirror_source . 'data_source/geonames.zip';
+        $gn_source_url = $mirror_source . 'geonames/geonames.tsv.zip';
 
-        $zip_file = $uploads_dir . "geonames/geonames.zip";
+        $zip_file = $uploads_dir . "geonames/geonames.tsv.zip";
 
         $zip_resource = fopen( $zip_file, "w" );
 
@@ -88,13 +79,13 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
         $dir = wp_upload_dir();
         $uploads_dir = trailingslashit( $dir['basedir'] );
 
-        if ( ! file_exists( $uploads_dir . "geonames/geonames.zip" ) ) {
-            error_log( 'Failed to find geonames.zip' );
-            throw new Exception( 'Failed to find geonames.zip' );
+        if ( ! file_exists( $uploads_dir . "geonames/geonames.tsv.zip" ) ) {
+            error_log( 'Failed to find geonames.tsv.zip' );
+            throw new Exception( 'Failed to find geonames.tsv.zip' );
         }
-        if ( ! file_exists( $uploads_dir . "geonames/dt_geonames.tsv" ) ) {
-            error_log( 'Failed to find dt_geonames.tsv' );
-            throw new Exception( 'Failed to find dt_geonames.tsv' );
+        if ( ! file_exists( $uploads_dir . "geonames/geonames.tsv" ) ) {
+            error_log( 'Failed to find geonames.tsv' );
+            throw new Exception( 'Failed to find geonames.tsv' );
         }
     }
 
