@@ -62,7 +62,7 @@ class Disciple_Tools_Usage {
                 'total_users' => $users->get_total(),
 
                 'regions' => $regions,
-                'timestamp' => date('Y-m-d'),
+                'timestamp' => date( 'Y-m-d' ),
 
             ],
         ];
