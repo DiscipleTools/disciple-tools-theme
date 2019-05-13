@@ -587,7 +587,9 @@ class Disciple_Tools_Users
                         <?php if ( $contact_id ) : ?>
                             <span class="description"><a href="<?php echo esc_html( get_site_url() . '/contacts/' . $contact_id )?>" target="_blank"><?php esc_html_e( "View contact", 'disciple_tools' ) ?></a></span>
                         <?php else :?>
-                            <span class="description"><?php esc_html_e( "Is this user already a contact in Disciple.Tools?", 'disciple_tools' ) ?></span>
+                            <span class="description"><?php esc_html_e( "Add the name of the contact record this user corresponds to.", 'disciple_tools' ) ?>
+                                <a target="_blank" href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/users.html#inviting-users"><?php esc_html_e( "Learn more.", "disciple_tools" ) ?></a>
+                            </span>
                         <?php endif; ?>
                     <?php endif; ?>
                 </td>
