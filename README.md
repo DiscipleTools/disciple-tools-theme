@@ -40,7 +40,7 @@ If you need support, email us at supportXXXdisciple.tools, replacing XXXX with t
 ---
 
 ## How to Install
-The goal of the project is to create a disciple-making DRM that is incredibly simple, cheap, and fast to launch. Below are the simple steps to do that.
+The goal of the project is to create a disciple-making CRM that is incredibly simple, cheap, and fast to launch. Below are the simple steps to do that.
 
 **Note: You must have PHP 7.0 or above. PHP 5.6 will not work.**
 

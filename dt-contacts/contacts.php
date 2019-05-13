@@ -1361,7 +1361,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     }
                     $fields["address"][] = $details;
                 }
-            } elseif ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]["type"] == "key_select" && !empty( $value[0] )) {
+            } elseif ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]["type"] == "key_select" ) {
+                if ( empty( $value[0] ) ){
+                    unset( $fields[$key] );
+                    continue;
+                }
                 $value_options = $contact_fields[ $key ]["default"][ $value[0] ] ?? $value[0];
                 if ( isset( $value_options["label"] ) ){
                     $label = $value_options["label"];
