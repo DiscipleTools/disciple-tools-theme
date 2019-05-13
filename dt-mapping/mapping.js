@@ -210,7 +210,7 @@ function top_level_map( div ) {
           // Zoom control
           chart.zoomControl = new am4maps.ZoomControl();
 
-          var homeButton = new am4core.Button();
+          let homeButton = new am4core.Button();
           homeButton.events.on("hit", function(){
             chart.goHome();
           });
@@ -358,7 +358,7 @@ function top_level_map( div ) {
               // Zoom control
               chart.zoomControl = new am4maps.ZoomControl();
 
-              var homeButton = new am4core.Button();
+              let homeButton = new am4core.Button();
               homeButton.events.on("hit", function(){
                 chart.goHome();
               });
@@ -500,7 +500,7 @@ function top_level_map( div ) {
                     // Zoom control
                     chart.zoomControl = new am4maps.ZoomControl();
 
-                    var homeButton = new am4core.Button();
+                    let homeButton = new am4core.Button();
                     homeButton.events.on("hit", function(){
                         chart.goHome();
                     });
@@ -651,11 +651,6 @@ function geoname_map( div, geonameid ) {
           console.log(ev.target.dataItem.dataContext.geonameid)
           console.log(ev.target.dataItem.dataContext.name)
           return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
-          if( response.deeper_levels[ev.target.dataItem.dataContext.geonameid] )
-          {
-            jQuery("select#"+response.self.geonameid+" option[value="+ev.target.dataItem.dataContext.geonameid+"]").attr('selected', true)
-            return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
-          }
         }, this);
 
         let coordinates = []
