@@ -69,8 +69,8 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
 
         try {
             $this->test();
-        } catch( Exception $e ) {
-            dt_write_log($e);
+        } catch ( Exception $e ) {
+            dt_write_log( $e );
         }
 
 

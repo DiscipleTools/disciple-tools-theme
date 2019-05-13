@@ -24,7 +24,7 @@ class Disciple_Tools_Usage {
         ];
 
         wp_remote_post( $url, $args );
-dt_write_log('ran');
+        dt_write_log( 'ran' );
     }
 
     public function telemetry() {
