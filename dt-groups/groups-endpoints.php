@@ -290,9 +290,10 @@ class Disciple_Tools_Groups_Endpoints
      */
     public function post_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
-        $body = $request->get_json_params();
+        $body = $request->get_json_params() ?? $request->get_params();
+        $silent = isset( $params["silent"] ) && $params["silent"] == true;
         if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
-            $result = Disciple_Tools_Groups::add_comment( $params['id'], $body["comment"] );
+            $result = Disciple_Tools_Groups::add_comment( $params['id'], $body["comment"], "comment", [ "comment_date" => $body["date"] ?? null ], false, $silent );
 
             if ( is_wp_error( $result ) ) {
                 return $result;
