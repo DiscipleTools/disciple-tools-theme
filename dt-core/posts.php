@@ -192,7 +192,7 @@ class Disciple_Tools_Posts
         global $wpdb;
         $shares = $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT * 
+                "SELECT *
                 FROM $wpdb->dt_share as shares
                 INNER JOIN $wpdb->posts as posts
                 WHERE user_id = %d
@@ -675,8 +675,9 @@ class Disciple_Tools_Posts
             $query_args['meta_key'] = 'assigned_to';
             $query_args['meta_value'] = "user-" . $current_user->ID;
             $posts = $wpdb->get_results( $wpdb->prepare( "
-                SELECT * FROM $wpdb->posts
+                SELECT *, statusReport.meta_value as overall_status FROM $wpdb->posts
                 INNER JOIN $wpdb->postmeta as assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id AND assigned_to.meta_key = 'assigned_to')
+                LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = $wpdb->posts.ID AND statusReport.meta_key = 'overall_status')
                 WHERE assigned_to.meta_value = %s
                 AND INSTR( $wpdb->posts.post_title, %s ) > 0
                 AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
@@ -689,9 +690,10 @@ class Disciple_Tools_Posts
             ), OBJECT );
         } else {
             $posts = $wpdb->get_results( $wpdb->prepare( "
-                SELECT ID, post_title, pm.meta_value as corresponds_to_user 
+                SELECT ID, post_title, pm.meta_value as corresponds_to_user, statusReport.meta_value as overall_status
                 FROM $wpdb->posts
-                LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = $wpdb->posts.ID AND pm.meta_key = 'corresponds_to_user' ) 
+                LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = $wpdb->posts.ID AND pm.meta_key = 'corresponds_to_user' )
+                LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = $wpdb->posts.ID AND statusReport.meta_key = 'overall_status')
                 WHERE INSTR( $wpdb->posts.post_title, %s ) > 0
                 AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
                 ORDER BY  CASE
@@ -737,7 +739,8 @@ class Disciple_Tools_Posts
             $compact[] = [
                 "ID" => $post->ID,
                 "name" => $post->post_title,
-                "user" => $post->corresponds_to_user > 1
+                "user" => $post->corresponds_to_user > 1,
+                "status" => $post->overall_status
             ];
         }
 
