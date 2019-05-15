@@ -166,7 +166,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             // Drill Down Tool
             wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery' ], '1.1' );
             wp_localize_script(
-                'mapping-drill-down', 'drillDown', array(
+                'mapping-drill-down', 'mappingModule', array(
                     'mapping_module' => DT_Mapping_Module::instance()->localize_script(),
                 )
             );
@@ -350,7 +350,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <!-- Add Locations Explorer -->
                     <a href="<?php echo esc_attr( $link ) . 'explore' ?>" class="nav-tab
                         <?php ( $tab == 'explore' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
-                        <?php esc_attr_e( 'Explore', 'disciple_tools' ) ?>
+                        <?php esc_attr_e( 'Credits', 'disciple_tools' ) ?>
                     </a>
 
                 </h2>
@@ -636,118 +636,144 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <div id="post-body-content">
 
                             <!-- Main Column -->
-
-                            <!-- Drill Down Box -->
-                            <form method="post">
-                                <table class="widefat striped">
-                                    <thead>
-                                    <th>Drill-Down</th>
-                                    </thead>
-                                    <tbody id="drill_down_body"></tbody>
-                                </table>
-                            </form>
-
-                            <br>
-
-                            <!-- Results Box-->
                             <table class="widefat striped">
                                 <thead>
-                                <th>List</th>
+                                <th>Mapping Data Credits</th>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td id="results_body"><img src="<?php echo esc_url( $this->spinner ); ?>"
-                                                               style="width:20px; padding-top:5px;"/></td>
-                                </tr>
+                                    <tr>
+                                        <td>
+                                            <p><strong><a href="https://github.com/DiscipleTools/saturation-grid-project">Saturation Grid Project</a></strong></p>
+                                            <p>
+                                                The Saturation Grid Project hopes to offer a cross-referenced grid for reporting on movement progress across the planet,
+                                                while at the same time is location sensitive for activity in dangerous or anti-christian locations and compliance with
+                                                increasing privacy laws like GDPR.</p>
+                                            <p>
+                                                The project serves to support the vision of consistently tracking church planting movement efforts globally in a way
+                                                that allows networks and different organizations to share location sensitive reports to visualize and respond to
+                                                areas of disciple making movement and areas where there is no disciple making movement.
+                                            </p>
+                                            <p>
+                                                The project offers a global grid of unique location ids for countries, states, and counties,
+                                                longitude/latitude, populations for those administrative areas, and the supporting geojson polygon files for
+                                                lightweight application display.
+                                            </p>
+                                            <p>
+                                                <a onclick="show_totals()">Show Grid Totals</a><br>
+                                                <a onclick="show_list()">Show Grid Hierarchy</a><br>
+                                                <a onclick="show_missing_polygons()">Show Missing Polygons</a><br>
+                                                <a onclick="show_missing_populations()">Show Missing Populations</a><br>
+                                                <a onclick="show_license()">Show Grid License</a><br>
+                                            </p>
+                                            <div id="hierarchy_list" style="display:none; padding: 15px; border: solid 2px #ccc;">
+                                                <img src="<?php echo esc_html( spinner() ) ?>" width="30px" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p><strong><a href="https://www.geonames.org/">Geonames</a></strong></p>
+                                            <p>The GeoNames database contains over 25,000,000 geographical names corresponding
+                                                to over 11,800,000 unique features.[1] All features are categorized into one
+                                                of nine feature classes and further subcategorized into one of 645 feature codes.
+                                                Beyond names of places in various languages, data stored include latitude, longitude,
+                                                elevation, population, administrative subdivision and postal codes. All
+                                                coordinates use the World Geodetic System 1984 (WGS84).
+                                                <a href="https://en.wikipedia.org/wiki/GeoNames">Wikipedia Article</a>
+                                            </p>
+                                            <p>This work is licensed under a Creative Commons Attribution 4.0 License,
+                                                see https://creativecommons.org/licenses/by/4.0/</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p><strong><a href="https://www.openstreetmap.org">OpenStreeMap</a></strong></p>
+                                            <p>OpenStreetMap (OSM) is a collaborative project to create a free editable
+                                                map of the world. Rather than the map itself, the data generated by the
+                                                project is considered its primary output. The creation and growth of OSM
+                                                has been motivated by restrictions on use or availability of map information
+                                                across much of the world, and the advent of inexpensive portable satellite
+                                                navigation devices.[6] OSM is considered a prominent example of volunteered
+                                                geographic information.
+                                                <a href="https://en.wikipedia.org/wiki/OpenStreetMap">Wikipedia Article</a>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+
                                 </tbody>
                             </table>
-
                             <!-- End Main Column -->
+
+                            <div id="hierarchy_list" style="display:none; padding: 15px; border: solid 2px #ccc;">
+                                <img src="<?php echo esc_html( spinner() ) ?>" width="30px" />
+                            </div>
+
                         </div><!-- end post-body-content -->
                     </div><!-- post-body meta box container -->
                 </div><!--poststuff end -->
             </div><!-- wrap end -->
+
             <script>
-                jQuery(document).ready(function () {
-                    reset_drill_down()
-                })
-
-                function reset_drill_down() {
-                    jQuery('#drill_down_body').empty().append(`<tr><td>World</td></tr><tr><td><select id="6295630" onchange="get_children( this.value );jQuery(this).parent().parent().nextAll().remove();"><option>Select</option></select> <span id="spinner_6295630"><img src="<?php echo esc_url( $this->spinner ) ?>" style="width:20px; padding-top:5px;" /></span></td></tr>`)
+                function show_license() {
+                    let hl = jQuery("#hierarchy_list")
+                    hl.show()
                     jQuery.ajax({
-                        type: "POST",
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify({'geonameid': 6295630}),
-                        dataType: "json",
-                        url: "<?php echo esc_url_raw( rest_url() ) ?>dt/v1/mapping_module/get_children",
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader('X-WP-Nonce', '<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ) ?>');
-                        },
+                        url: "https://raw.githubusercontent.com/DiscipleTools/saturation-grid-project/master/LICENSE",
+                        dataType: "text",
+                        success: function( data ) {
+                            hl.html( '<br clear="all"><pre>\n' + data + '</pre>')
+                        }
                     })
-                        .done(function (response) {
-                            console.log(response)
-
-                            jQuery('#spinner_6295630').empty()
-                            jQuery('#results_body').empty()
-
-                            if (response) {
-                                jQuery.each(response.list, function (i, v) {
-                                    jQuery('#6295630').append(`<option value="${v.id}">${v.name}</option>`)
-                                })
-                            }
-
-                        }) // end success statement
-                        .fail(function (err) {
-                            console.log("error")
-                            console.log(err)
-                        })
                 }
-
-                function get_children(id) {
-                    let drill_down = jQuery('#drill_down_body')
-                    console.log(id)
-                    console.log(drill_down)
-
-                    let spinner_span = jQuery('#spinner_' + id)
-                    let results_box = jQuery('#results_body')
-                    let spinner = `<img src="<?php echo esc_url( $this->spinner ) ?>" style="width:20px; padding-top:5px;" />`
-
-                    results_box.empty().append(spinner)
-
+                function show_list() {
+                    let hl = jQuery("#hierarchy_list")
+                    hl.show()
                     jQuery.ajax({
-                        type: "POST",
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify({'geonameid': id}),
-                        dataType: "json",
-                        url: "<?php echo esc_url_raw( rest_url() ) ?>dt/v1/mapping_module/get_children",
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader('X-WP-Nonce', '<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ) ?>');
-                        },
+                        url: "https://raw.githubusercontent.com/DiscipleTools/saturation-grid-project/master/hierarchy.txt",
+                        dataType: "text",
+                        success: function( data ) {
+                            hl.html( '<br clear="all"><pre>\n' + data + '</pre>')
+                        }
                     })
-                        .done(function (response) {
-                            console.log(response)
-
-                            spinner_span.empty()
-                            results_box.empty()
-
-                            if (response.list.length === 0) {
-                                results_box.append(`<tr><td>No Children Locations</td></tr>`)
-                            }
-                            else {
-                                jQuery('#drill_down_body').append(`<tr><td><select id="${id}" onchange="get_children( this.value );jQuery(this).parent().parent().nextAll().remove()"><option>Select</option></select> <span id="spinner_${id}"></span></td></tr>`)
-                                jQuery.each(response.list, function (i, v) {
-                                    jQuery('#' + id).append(`<option value="${v.id}">${v.name}</option>`)
-                                })
-                                results_box.append(response.html)
-                            }
-
-                        }) // end success statement
-                        .fail(function (err) {
-                            console.log("error")
-                            console.log(err)
-                        })
+                }
+                function show_totals() {
+                    let hl = jQuery("#hierarchy_list")
+                    hl.show()
+                    jQuery.ajax({
+                        url: "https://raw.githubusercontent.com/DiscipleTools/saturation-grid-project/master/totals.txt",
+                        dataType: "text",
+                        success: function( data ) {
+                            hl.html( '<br clear="all"><pre>\n' + data + '</pre>')
+                        }
+                    })
+                }
+                function show_missing_polygons() {
+                    let hl = jQuery("#hierarchy_list")
+                    hl.show()
+                    jQuery.ajax({
+                        url: "https://raw.githubusercontent.com/DiscipleTools/saturation-grid-project/master/missing_polygons.txt",
+                        dataType: "text",
+                        success: function( data ) {
+                            hl.html( '<br clear="all"><pre>\n' + data + '</pre>')
+                        }
+                    })
+                }
+                function show_missing_populations() {
+                    let hl = jQuery("#hierarchy_list")
+                    hl.show()
+                    jQuery.ajax({
+                        url: "https://raw.githubusercontent.com/DiscipleTools/saturation-grid-project/master/missing_populations.txt",
+                        dataType: "text",
+                        success: function( data ) {
+                            hl.html( '<br clear="all"><pre>\n' + data + '</pre>')
+                        }
+                    })
                 }
             </script>
+
             <?php
         }
 

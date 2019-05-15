@@ -12,7 +12,7 @@ class DT_Mapping_Module_Migration_0002 extends DT_Mapping_Module_Migration {
         }
 
         $file = 'geonames.tsv';
-        $expected = 48851;
+        $expected = 48700;
 
         // TEST for expected tables\
         $wpdb->query( "SHOW TABLES LIKE '$wpdb->dt_geonames'" );
@@ -53,9 +53,7 @@ class DT_Mapping_Module_Migration_0002 extends DT_Mapping_Module_Migration {
 
             // TEST
             $rows = (int) $wpdb->get_var( "SELECT count(*) FROM $wpdb->dt_geonames" );
-            if ( $rows === $expected ) {
-                error_log( 'success install of geonames data' );
-            } elseif ( $rows > $expected ) {
+            if ( $rows >= $expected ) {
                 error_log( 'success, but additional records found' );
             } elseif ( $rows < $expected ) {
                  // fail over install
