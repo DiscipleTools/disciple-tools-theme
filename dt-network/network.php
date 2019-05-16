@@ -529,9 +529,11 @@ class Disciple_Tools_Snapshot_Report
         ];
 
         // Add critical path
+
         if ( ! class_exists( 'Disciple_Tools_Metrics_Hooks_Base' ) ) {
             require_once( get_template_directory() . '/dt-metrics/metrics.php' );
         }
+
         $critical_path = Disciple_Tools_Metrics_Hooks_Base::query_project_contacts_progress();
         foreach ( $critical_path as $path ) {
             $data['critical_path'][$path['key']] = $path;
@@ -929,6 +931,7 @@ class Disciple_Tools_Snapshot_Report
             $labels[$key] = $value['label'];
         }
 
+        require_once( get_template_directory() . '/dt-metrics/metrics.php' );
         $results = Disciple_Tools_Metrics_Hooks_Base::query_project_contacts_progress();
         if ( empty( $results ) || is_wp_error( $results ) ) {
             $results = [];
@@ -1129,5 +1132,10 @@ class Disciple_Tools_Snapshot_Report
 
         return $data;
     }
+<<<<<<< HEAD
 
 }
+=======
+}
+//dt_write_log( Disciple_Tools_Snapshot_Report::generations('baptisms') ); // @todo remove
+>>>>>>> master

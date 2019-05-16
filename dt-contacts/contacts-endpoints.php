@@ -538,8 +538,9 @@ class Disciple_Tools_Contacts_Endpoints
     public function post_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
         $body = $request->get_json_params() ?? $request->get_params();
+        $silent = isset( $params["silent"] ) && ( $params["silent"] === "true" || $params["silent"] == true );
         if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
-            $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"] );
+            $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"], "comment", [ "comment_date" => $body["date"] ?? null ], false, $silent );
 
             if ( is_wp_error( $result ) ) {
                 return $result;
@@ -563,7 +564,7 @@ class Disciple_Tools_Contacts_Endpoints
         $params = $request->get_params();
         $body = $request->get_json_params() ?? $request->get_params();
         $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
-        $silent = isset( $params["silent"] ) && $params["silent"] == true;
+        $silent = isset( $params["silent"] ) && ( $params["silent"] === "true" || $params["silent"] == true );
         if ( !$site_key ){
             return new WP_Error(
                 "contact_creation_error",

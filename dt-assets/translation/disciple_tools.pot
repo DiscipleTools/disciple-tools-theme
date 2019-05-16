@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Disciple Tools\n"
-"POT-Creation-Date: 2019-04-29 18:54+0100\n"
+"POT-Creation-Date: 2019-05-15 14:32+0100\n"
 "PO-Revision-Date: 2018-01-09 14:10-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -996,11 +996,11 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: dt-contacts/contacts-endpoints.php:844
+#: dt-contacts/contacts-endpoints.php:845
 msgid "Transfer token error."
 msgstr ""
 
-#: dt-contacts/contacts-endpoints.php:851
+#: dt-contacts/contacts-endpoints.php:852
 msgid "Permission error."
 msgstr ""
 
@@ -1425,12 +1425,12 @@ msgstr ""
 
 #: dt-contacts/contacts-post-type.php:715
 #: dt-contacts/contacts-post-type.php:724
-#: dt-core/admin/config-site-defaults.php:559 dt-core/posts.php:1571
+#: dt-core/admin/config-site-defaults.php:559 dt-core/posts.php:1574
 msgid "Work"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:716
-#: dt-core/admin/config-site-defaults.php:558 dt-core/posts.php:1570
+#: dt-core/admin/config-site-defaults.php:558 dt-core/posts.php:1573
 msgid "Home"
 msgstr ""
 
@@ -1438,7 +1438,7 @@ msgstr ""
 #: dt-contacts/contacts-post-type.php:725
 #: dt-contacts/contacts-post-type.php:763
 #: dt-contacts/contacts-post-type.php:765
-#: dt-core/admin/config-site-defaults.php:560 dt-core/posts.php:1572
+#: dt-core/admin/config-site-defaults.php:560 dt-core/posts.php:1575
 #: single-contacts.php:458 template-settings.php:141
 msgid "Other"
 msgstr ""
@@ -1554,17 +1554,17 @@ msgctxt "Contact1 was merged into Contact2"
 msgid "%1$s was merged into %2$s"
 msgstr ""
 
-#: dt-contacts/contacts.php:1552
+#: dt-contacts/contacts.php:1556
 #, php-format
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr ""
 
-#: dt-contacts/contacts.php:2294
+#: dt-contacts/contacts.php:2298
 msgid "Possible duplicates on"
 msgstr ""
 
-#: dt-contacts/contacts.php:2297
+#: dt-contacts/contacts.php:2301
 msgid "more duplicates not shown"
 msgstr ""
 
@@ -2125,25 +2125,25 @@ msgstr ""
 msgid "Unshared with %s"
 msgstr ""
 
-#: dt-core/posts.php:1230
+#: dt-core/posts.php:1233
 msgid "Record not deleted."
 msgstr ""
 
-#: dt-core/posts.php:1327
+#: dt-core/posts.php:1330
 msgid "Post already shared with user."
 msgstr ""
 
-#: dt-core/posts.php:1579
+#: dt-core/posts.php:1582
 msgctxt "Main address"
 msgid "Main"
 msgstr ""
 
-#: dt-core/posts.php:1580
+#: dt-core/posts.php:1583
 msgctxt "Alternate address"
 msgid "Alternate"
 msgstr ""
 
-#: dt-core/posts.php:1587
+#: dt-core/posts.php:1590
 msgid "Main"
 msgstr ""
 
@@ -2759,39 +2759,61 @@ msgstr ""
 msgid "Enter the People Group title here"
 msgstr ""
 
-#: dt-users/users.php:55
+#: dt-users/users.php:59
 msgid "No permissions to assign"
 msgstr ""
 
-#: dt-users/users.php:264
+#: dt-users/users.php:268
 msgid "Insufficient permissions"
 msgstr ""
 
-#: dt-users/users.php:519
+#: dt-users/users.php:567
 msgid "Extra Disciple.Tools Information"
 msgstr ""
 
-#: dt-users/users.php:522
+#: dt-users/users.php:570
 msgid "Corresponds to Contact"
 msgstr ""
 
-#: dt-users/users.php:530
+#: dt-users/users.php:578
 msgid "View contact"
 msgstr ""
 
-#: dt-users/users.php:532
-msgid "Is this user already a contact in Disciple.Tools?"
+#: dt-users/users.php:580
+msgid "Add the name of the contact record this user corresponds to."
 msgstr ""
 
-#: dt-users/users.php:586
+#: dt-users/users.php:581
+msgid "Learn more."
+msgstr ""
+
+#: dt-users/users.php:647
+#, php-format
+msgid ""
+"Hi,\n"
+"\n"
+"You've been invited to join '%1$s' at\n"
+"%2$s with the role of %3$s.\n"
+"\n"
+"Please click the following link to confirm the invite:\n"
+"%4$s"
+msgstr ""
+
+#. translators: Joining confirmation notification email subject. %s: Site title
+#: dt-users/users.php:657
+#, php-format
+msgid "[%s] Joining Confirmation"
+msgstr ""
+
+#: dt-users/users.php:680
 msgid "Email already exists"
 msgstr ""
 
-#: dt-users/users.php:591
+#: dt-users/users.php:685
 msgid "Username already exists"
 msgstr ""
 
-#: dt-users/users.php:618
+#: dt-users/users.php:715
 msgid "View contact record"
 msgstr ""
 
@@ -2799,13 +2821,13 @@ msgstr ""
 msgid "Updated Needed"
 msgstr ""
 
-#: functions.php:474
+#: functions.php:475
 msgid ""
 "Disciple Tools theme requires PHP version 7.0 or greater. Your current "
 "version is:"
 msgstr ""
 
-#: functions.php:476
+#: functions.php:477
 msgid "Please upgrade PHP or uninstall this theme"
 msgstr ""
 

@@ -162,23 +162,24 @@ window.TYPEAHEADS = {
                 }
             }
         }
-    },
-    typeaheadHelpText : function (resultCount, query, result){
-        let text = "";
-        if (result.length > 0 && result.length < resultCount) {
-            text = `Showing <strong>${result.length}</strong> of <strong>${resultCount}</strong>${query ? ' (elements matching ' + query + ')': ''}`
-        } else if (result.length > 0 && query) {
-            text = `Showing <strong>${result.length}</strong> items matching ${query}`;
-        } else if (result.length > 0) {
-            text = `Showing <strong>${result.length}</strong> items`;
-        } else {
-            text = `No results matching ${query}`
-        }
-        return text
-    },
-    contactListRowTemplate: function (query, item){
-        let img = item.user ? `<img src="${wpApiShare.template_dir}/dt-assets/images/profile.svg">` : ''
-        return `<span dir="auto">
+  },
+  typeaheadHelpText : function (resultCount, query, result){
+    let text = "";
+    if (result.length > 0 && result.length < resultCount) {
+      text = `Showing <strong>${result.length}</strong> of <strong>${resultCount}</strong>(${query ? 'elements matching ' + query : ''})`
+    } else if (result.length > 0 && query) {
+      text = `Showing <strong>${result.length}</strong> items matching ${query}`;
+    } else if (result.length > 0) {
+      text = `Showing <strong>${result.length}</strong> items`;
+    } else {
+      text = `No results matching ${query}`
+    }
+    return text
+  },
+  contactListRowTemplate: function (query, item){
+    let img = item.user ? `<img src="${wpApiShare.template_dir}/dt-assets/images/profile.svg">` : ''
+    let statusStyle = item.status === "closed" ? 'style="color:gray"' : ''
+    return `<span dir="auto" ${statusStyle}>
       <span class="typeahead-user-row" style="width:20px">${img}</span>
       ${_.escape(item.name)}
       <span dir="auto">(#${item.ID})</span>
