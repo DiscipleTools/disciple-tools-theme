@@ -18,10 +18,10 @@ class DT_Mapping_Module_Config
          * Load custom columns or remove these and replace with your own.
          * Use these as examples and make your own columns.
          */
-//        require_once( 'add-churches-column.php' );
-//        require_once( 'add-contacts-column.php' );
-//        require_once( 'add-groups-column.php' );
-//        require_once( 'add-users-column.php' );
+        require_once( 'add-churches-column.php' );
+        require_once( 'add-groups-column.php' );
+        require_once( 'add-contacts-column.php' );
+        require_once( 'add-users-column.php' );
 
         /**
          * dt_mapping_module_has_permissions

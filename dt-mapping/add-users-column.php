@@ -79,6 +79,7 @@ function dt_mm_add_workers_column( $data ) {
          *          transfer weight to the mapping javascript file.
          */
         $results = Disciple_Tools_Mapping_Queries::get_geoname_totals();
+
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
                 if ( $result['type'] === 'users' && $result['count'] > 0 ) { // filter for only contact and positive counts

@@ -79,7 +79,7 @@ function dt_mm_add_churches_column( $data ) {
          * @note    Don't add 0 values, or you might create unnecessary array and
          *          transfer weight to the mapping javascript file.
          */
-        $results = Disciple_Tools_Mapping_Queries::get_church_geonames_totals();
+        $results = Disciple_Tools_Mapping_Queries::get_geoname_totals();
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
                 if ( $result['type'] === 'churches' && $result['count'] > 0 ) { // filter for only contact and positive counts

@@ -213,7 +213,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
         public function drilldown_script() {
             // Drill Down Tool
-            wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery' ], '1.1' );
+            wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery', 'lodash' ], '1.1' );
             wp_localize_script(
                 'mapping-drill-down', 'mappingModule', array(
                     'mapping_module' => self::localize_script(),
