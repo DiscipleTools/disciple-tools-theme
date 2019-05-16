@@ -336,12 +336,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'method' => 'POST',
             ];
-            $endpoints['get_children'] = [ // @todo remove with the explore section of the admin
-                'namespace' => $this->namespace,
-                'route' => '/mapping_module/get_children',
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'method' => 'POST',
-            ];
             $endpoints['modify_location_endpoint'] = [
                    'namespace' => $this->namespace,
                    'route' => '/mapping_module/modify_location',
@@ -1624,7 +1618,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             return $results;
         }
 
-        public function get_deeper_levels( array $children ) {
+        public function get_deeper_levels( array $children ) { // todo remove
             $available_geojson = $this->get_available_geojson();
             $results = [];
             if ( ! empty( $children ) || ! empty( $available_geojson ) ) {
@@ -1688,76 +1682,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             return $data;
         }
-
-        /**
-         * UTILITIES SECTION
-         */
-
-
-
-        /**
-         * Explore section of the admin area
-         * @param int $start_geonameid
-         * @return array|string
-         */
-        public function get_locations_list( $start_geonameid = 6295630 ) {
-            global $wpdb;
-            // build list array
-            $response = [];
-            $response['list'] = $wpdb->get_results( $wpdb->prepare( "
-              SELECT parent_id, geonameid as id, alt_name as name 
-              FROM $wpdb->dt_geonames 
-              WHERE parent_id = %d 
-              ORDER BY name ASC", $start_geonameid ), ARRAY_A );
-
-            // build full results
-            $query = $wpdb->get_results( "SELECT parent_id, geonameid as id, alt_name as name FROM $wpdb->dt_geonames", ARRAY_A );
-            if ( empty( $query ) ) {
-                return $this->_no_results();
-            }
-            $menu_data = $this->prepare_menu_array( $query );
-            $response['html'] = $this->build_locations_html_list( $start_geonameid, $menu_data, 0, 3 );
-
-            return $response;
-        }
-        public function build_locations_html_list( $parent_id, $menu_data, $gen, $depth_limit ) {
-            $list = '';
-
-            if ( isset( $menu_data['parents'][$parent_id] ) && $gen < $depth_limit ) {
-                $gen++;
-                foreach ($menu_data['parents'][$parent_id] as $item_id)
-                {
-                    $list .= '<div style="padding-left: ' . $gen . '0px;">' . $menu_data['items'][ $item_id ]['name'] . ' (' . $item_id . ')</div>';
-                    $sub = $this->build_locations_html_list( $item_id, $menu_data, $gen, $depth_limit );
-                    if ( ! empty( $sub ) ) {
-                        $list .= $sub;
-                    }
-                }
-            }
-            return $list;
-        }
-        public function prepare_menu_array( $query) {
-            // prepare special array with parent-child relations
-            $menu_data = array(
-                'items' => array(),
-                'parents' => array()
-            );
-
-            foreach ( $query as $menu_item )
-            {
-                $menu_data['items'][$menu_item['id']] = $menu_item;
-                $menu_data['parents'][$menu_item['parent_id']][] = $menu_item['id'];
-            }
-            return $menu_data;
-        }
-        public function _no_results() {
-            return '<p>'. esc_attr( 'No Results', 'disciple_tools' ) .'</p>';
-        }
-        /**
-         * End explore section of the admin area
-         */
-
-
         public function format_geoname_types( $query ) {
             if ( ! empty( $query ) || ! is_array( $query ) ) {
                 foreach ( $query as $index => $value ) {
@@ -1793,57 +1717,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
             return $query;
         }
-
-
         public function get_post_locations( $post_id ) {
             $list = [];
             $geoname_list = get_post_meta( $post_id, 'geonames' );
             if ( !empty( $geoname_list ) ) {
                 $list = Disciple_Tools_Mapping_Queries::get_by_geonameid_list( $geoname_list );
-            }
-            return $list;
-        }
-
-        /**
-         * Get a list of parent geonameids from a supplied geonameid
-         * Currently this is a heavy query because it pulls the entire hierarchy table and loops through it.
-         * If possible it is better to use Disciple_Tools_Mapping_Queries::get_hierarchy( $geonameid ) which returns a single row
-         * that has related country, state, and county for any given geoname. The result is narrow, but the
-         * query is much lighter and faster.
-         *
-         * @param $geonameid
-         *
-         * @return array
-         */
-        public function get_parents( $geonameid ) : array {
-            $query = Disciple_Tools_Mapping_Queries::get_hierarchy();
-            $hierarchy_data = $this->_prepare_list( $query );
-            $parents = $this->_build_parent_list( $geonameid, $hierarchy_data );
-            array_unshift( $parents, $geonameid );
-            dt_write_log( $parents );
-            return $parents;
-        }
-        public function _prepare_list( $query ) : array {
-
-            $menu_data = [];
-
-            foreach ( $query as $menu_item )
-            {
-                $menu_data[$menu_item['geonameid']] = $menu_item;
-            }
-
-            return $menu_data;
-        }
-        public function _build_parent_list( $geonameid, $hierarchy_data ) : array {
-            $list = [];
-
-            if (isset( $hierarchy_data[$geonameid] ) )
-            {
-                $list[] = $hierarchy_data[$geonameid]['parent_id'];
-                $parents = $this->_build_parent_list( $hierarchy_data[$geonameid]['parent_id'], $hierarchy_data );
-                if ( ! empty( $parents ) ) {
-                    $list = array_merge( $list, $parents );
-                }
             }
             return $list;
         }
@@ -1868,8 +1746,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             return $list;
         }
-
-
     } DT_Mapping_Module::instance(); // end DT_Mapping_Module class
 
 
