@@ -1,3 +1,4 @@
+_ = _ || window.lodash
 window.DRILLDOWNDATA = mappingModule.mapping_module
 window.DRILLDOWN = {
 

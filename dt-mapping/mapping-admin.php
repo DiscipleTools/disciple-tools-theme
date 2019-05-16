@@ -164,7 +164,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 return;
             }
             // Drill Down Tool
-            wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery' ], '1.1' );
+            wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery','lodash' ], '1.1' );
             wp_localize_script(
                 'mapping-drill-down', 'mappingModule', array(
                     'mapping_module' => DT_Mapping_Module::instance()->localize_script(),
@@ -658,13 +658,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                                 longitude/latitude, populations for those administrative areas, and the supporting geojson polygon files for
                                                 lightweight application display.
                                             </p>
+                                            <p><em>This is an open source project, so if something is missing that matters to you, help us add it!</em></p>
                                             <p>
                                                 <a onclick="show_totals()">Show Grid Totals</a><br>
                                                 <a onclick="show_list()">Show Grid Hierarchy</a><br>
-                                                <a onclick="show_missing_polygons()">Show Missing Polygons</a><br>
-                                                <a onclick="show_missing_populations()">Show Missing Populations</a><br>
                                                 <a onclick="show_license()">Show Grid License</a><br>
                                             </p>
+
                                             <div id="hierarchy_list" style="display:none; padding: 15px; border: solid 2px #ccc;">
                                                 <img src="<?php echo esc_html( spinner() ) ?>" width="30px" />
                                             </div>
@@ -699,10 +699,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                             </p>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td></td>
-                                    </tr>
-
                                 </tbody>
                             </table>
                             <!-- End Main Column -->
@@ -719,7 +715,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <script>
                 function show_license() {
                     let hl = jQuery("#hierarchy_list")
-                    hl.show()
+                    hl.show().empty().html('<img src="<?php echo esc_html( spinner() ) ?>" width="30px" />')
                     jQuery.ajax({
                         url: "https://raw.githubusercontent.com/DiscipleTools/saturation-grid-project/master/LICENSE",
                         dataType: "text",
@@ -730,7 +726,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 }
                 function show_list() {
                     let hl = jQuery("#hierarchy_list")
-                    hl.show()
+                    hl.show().empty().html('<img src="<?php echo esc_html( spinner() ) ?>" width="30px" />')
                     jQuery.ajax({
                         url: "https://raw.githubusercontent.com/DiscipleTools/saturation-grid-project/master/hierarchy.txt",
                         dataType: "text",
@@ -741,31 +737,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 }
                 function show_totals() {
                     let hl = jQuery("#hierarchy_list")
-                    hl.show()
+                    hl.show().empty().html('<img src="<?php echo esc_html( spinner() ) ?>" width="30px" />')
                     jQuery.ajax({
                         url: "https://raw.githubusercontent.com/DiscipleTools/saturation-grid-project/master/totals.txt",
-                        dataType: "text",
-                        success: function( data ) {
-                            hl.html( '<br clear="all"><pre>\n' + data + '</pre>')
-                        }
-                    })
-                }
-                function show_missing_polygons() {
-                    let hl = jQuery("#hierarchy_list")
-                    hl.show()
-                    jQuery.ajax({
-                        url: "https://raw.githubusercontent.com/DiscipleTools/saturation-grid-project/master/missing_polygons.txt",
-                        dataType: "text",
-                        success: function( data ) {
-                            hl.html( '<br clear="all"><pre>\n' + data + '</pre>')
-                        }
-                    })
-                }
-                function show_missing_populations() {
-                    let hl = jQuery("#hierarchy_list")
-                    hl.show()
-                    jQuery.ajax({
-                        url: "https://raw.githubusercontent.com/DiscipleTools/saturation-grid-project/master/missing_populations.txt",
                         dataType: "text",
                         success: function( data ) {
                             hl.html( '<br clear="all"><pre>\n' + data + '</pre>')
@@ -1324,7 +1298,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             jQuery.each(map_data.children, function (gnid, data) {
                                 other_list.append(`
                                     <tr><td>
-                                        <a class="open_next_drilldown" data-parent="${data.parent_id}" data-geonameid="${data.geonameid}" style="cursor: pointer;">${_.escape(data.name)}</a>
+                                        <a class="open_next_drilldown" data-parent="${data.parent_id}" data-geonameid="${data.geonameid}" style="cursor: pointer;">${data.name}</a>
                                     </td><td></td></tr>`)
                             })
                             current_subs.show()
