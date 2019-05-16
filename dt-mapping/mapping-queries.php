@@ -499,39 +499,18 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
-    public static function get_geoname_totals( $country_only = false ) : array {
-
+    public static function get_geoname_totals_for_countries() {
         global $wpdb;
 
-        if ( $country_only ) {
+        if ( wp_cache_get( 'get_geoname_totals', 'country' ) ) {
+            return wp_cache_get( 'get_geoname_totals', 'country' );
+        }
 
-            if ( wp_cache_get( 'get_geoname_totals', 'country' ) ) {
-                return wp_cache_get( 'get_geoname_totals', 'country' );
-            }
-
-            $results = $wpdb->get_results("
+        $results = $wpdb->get_results("
                 SELECT
                   country_geonameid as geonameid,
                   type,
                   count(country_geonameid) as count
-                FROM $wpdb->dt_geonames_counter
-                WHERE country_geonameid != ''
-                GROUP BY country_geonameid, type
-            ", ARRAY_A );
-
-            wp_cache_set( 'get_geoname_totals', $results, 'country' );
-
-        } else {
-
-            if ( wp_cache_get( 'get_geoname_totals', 'all' ) ) {
-                return wp_cache_get( 'get_geoname_totals', 'all' );
-            }
-
-            $results = $wpdb->get_results("
-                SELECT
-                  t1.country_geonameid as geonameid,
-                  t1.type,
-                  count(t1.country_geonameid) as count
                 FROM (
                         SELECT
                         g.country_geonameid,
@@ -540,220 +519,105 @@ class Disciple_Tools_Mapping_Queries {
                         JOIN $wpdb->posts as pp ON p.post_id=pp.ID
                         LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
                         LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
-                    WHERE p.meta_key = 'geonames'
+                    WHERE p.meta_key = 'geonames' AND g.country_geonameid != ''
                 ) as t1
-                WHERE t1.country_geonameid != ''
-                GROUP BY t1.country_geonameid, t1.type
-                UNION
-                SELECT
-                  t2.admin1_geonameid as geonameid,
-                  t2.type,
-                  count(t2.admin1_geonameid) as count
-                FROM (
-                        SELECT
-                        g.admin1_geonameid,
-                        IF (cu.meta_value IS NULL, pp.post_type, 'users' ) as type
-                    FROM $wpdb->postmeta as p
-                        JOIN $wpdb->posts as pp ON p.post_id=pp.ID
-                        LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
-                        LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
-                    WHERE p.meta_key = 'geonames'
-                ) as t2
-                WHERE t2.admin1_geonameid != ''
-                GROUP BY t2.admin1_geonameid, t2.type
-                UNION
-                SELECT
-                  t3.admin2_geonameid as geonameid,
-                  t3.type,
-                  count(t3.admin2_geonameid) as count
-                FROM (
-                        SELECT
-                        g.admin2_geonameid,
-                        IF (cu.meta_value IS NULL, pp.post_type, 'users' ) as type
-                    FROM $wpdb->postmeta as p
-                        JOIN $wpdb->posts as pp ON p.post_id=pp.ID
-                        LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
-                        LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
-                    WHERE p.meta_key = 'geonames'
-                ) as t3
-                WHERE t3.admin2_geonameid != ''
-                GROUP BY t3.admin2_geonameid, t3.type
-                UNION
-                SELECT
-                  t4.admin3_geonameid as geonameid,
-                  t4.type,
-                  count(t4.admin3_geonameid) as count
-                FROM (
-                        SELECT
-                        g.admin3_geonameid,
-                        IF (cu.meta_value IS NULL, pp.post_type, 'users' ) as type
-                    FROM $wpdb->postmeta as p
-                        JOIN $wpdb->posts as pp ON p.post_id=pp.ID
-                        LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
-                        LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
-                    WHERE p.meta_key = 'geonames'
-                ) as t4
-                WHERE t4.admin3_geonameid != ''
-                GROUP BY t4.admin3_geonameid, t4.type;
+                GROUP BY country_geonameid, type
             ", ARRAY_A );
 
-            wp_cache_set( 'get_geoname_totals', $results, 'all' );
-
-        }
 
         if ( empty( $results ) ) {
             $results = [];
         }
+
+        wp_cache_set( 'get_geoname_totals', $results, 'country' );
 
         return $results;
     }
 
-    public static function get_church_geonames_totals() {
 
-        if ( wp_cache_get( 'get_church_geonames_totals' ) ) {
-            return wp_cache_get( 'get_church_geonames_totals' );
-        }
+    public static function get_geoname_totals() : array {
 
         global $wpdb;
 
+        if ( get_transient( 'get_geoname_totals') ) {
+            return get_transient( 'get_geoname_totals' );
+        }
+
         $results = $wpdb->get_results("
             SELECT
-                  country_geonameid as geonameid,
-                  ('churches') as type,
-                  count(country_geonameid) as count
-                FROM $wpdb->dt_geonames_counter
-                WHERE country_geonameid != ''
-                	AND post_id IN (SELECT ID 
-                FROM $wpdb->posts as p
-                JOIN $wpdb->postmeta as pm ON p.ID=pm.post_id 
-                    AND meta_key = 'group_type' 
-                    AND meta_value = 'church'
-                WHERE p.post_type = 'groups')
-                GROUP BY country_geonameid, type
-                UNION
-                SELECT
-                  admin1_geonameid as geonameid,
-                 ('churches') as type,
-                  count(admin1_geonameid) as count
-                FROM $wpdb->dt_geonames_counter
-                WHERE admin1_geonameid != ''
-                AND post_id IN (SELECT ID 
-                FROM $wpdb->posts as p
-                JOIN $wpdb->postmeta as pm ON p.ID=pm.post_id 
-                    AND meta_key = 'group_type' 
-                    AND meta_value = 'church'
-                WHERE p.post_type = 'groups')
-                GROUP BY admin1_geonameid, type
-                UNION
-                SELECT
-                  admin2_geonameid as geonameid,
-                  ('churches') as type,
-                  count(admin2_geonameid) as count
-                FROM $wpdb->dt_geonames_counter
-                WHERE admin2_geonameid != ''
-                AND post_id IN (SELECT ID 
-                FROM $wpdb->posts as p
-                JOIN $wpdb->postmeta as pm ON p.ID=pm.post_id 
-                    AND meta_key = 'group_type' 
-                    AND meta_value = 'church'
-                WHERE p.post_type = 'groups')
-                GROUP BY admin2_geonameid, type
-                UNION
-                SELECT
-                  admin3_geonameid as geonameid,
-                  ('churches') as type,
-                  count(admin3_geonameid) as count
-                FROM $wpdb->dt_geonames_counter
-                WHERE admin3_geonameid != ''
-                AND post_id IN (SELECT ID 
-                FROM $wpdb->posts as p
-                JOIN $wpdb->postmeta as pm ON p.ID=pm.post_id 
-                    AND meta_key = 'group_type' 
-                    AND meta_value = 'church'
-                WHERE p.post_type = 'groups')
-                GROUP BY admin3_geonameid, type
+              t1.country_geonameid as geonameid,
+              t1.type,
+              count(t1.country_geonameid) as count
+            FROM (
+                    SELECT
+                    g.country_geonameid,
+                    IF (cu.meta_value IS NULL, pp.post_type, 'users' ) as type
+                FROM $wpdb->postmeta as p
+                    JOIN $wpdb->posts as pp ON p.post_id=pp.ID
+                    LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+                    LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
+                WHERE p.meta_key = 'geonames'
+            ) as t1
+            WHERE t1.country_geonameid != ''
+            GROUP BY t1.country_geonameid, t1.type
+            UNION
+            SELECT
+              t2.admin1_geonameid as geonameid,
+              t2.type,
+              count(t2.admin1_geonameid) as count
+            FROM (
+                    SELECT
+                    g.admin1_geonameid,
+                    IF (cu.meta_value IS NULL, pp.post_type, 'users' ) as type
+                FROM $wpdb->postmeta as p
+                    JOIN $wpdb->posts as pp ON p.post_id=pp.ID
+                    LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+                    LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
+                WHERE p.meta_key = 'geonames'
+            ) as t2
+            WHERE t2.admin1_geonameid != ''
+            GROUP BY t2.admin1_geonameid, t2.type
+            UNION
+            SELECT
+              t3.admin2_geonameid as geonameid,
+              t3.type,
+              count(t3.admin2_geonameid) as count
+            FROM (
+                    SELECT
+                    g.admin2_geonameid,
+                    IF (cu.meta_value IS NULL, pp.post_type, 'users' ) as type
+                FROM $wpdb->postmeta as p
+                    JOIN $wpdb->posts as pp ON p.post_id=pp.ID
+                    LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+                    LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
+                WHERE p.meta_key = 'geonames'
+            ) as t3
+            WHERE t3.admin2_geonameid != ''
+            GROUP BY t3.admin2_geonameid, t3.type
+            UNION
+            SELECT
+              t4.admin3_geonameid as geonameid,
+              t4.type,
+              count(t4.admin3_geonameid) as count
+            FROM (
+                    SELECT
+                    g.admin3_geonameid,
+                    IF (cu.meta_value IS NULL, pp.post_type, 'users' ) as type
+                FROM $wpdb->postmeta as p
+                    JOIN $wpdb->posts as pp ON p.post_id=pp.ID
+                    LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+                    LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
+                WHERE p.meta_key = 'geonames'
+            ) as t4
+            WHERE t4.admin3_geonameid != ''
+            GROUP BY t4.admin3_geonameid, t4.type;
         ", ARRAY_A );
+
+        set_transient( 'get_geoname_totals', $results, strtotime( 'Tomorrow 3am' ) );
 
         if ( empty( $results ) ) {
             $results = [];
         }
-
-        wp_cache_set( 'get_church_geonames_totals', $results );
-
-        return $results;
-    }
-
-    public static function get_groups_geonames_totals() {
-
-        if ( wp_cache_get( 'get_groups_geonames_totals' ) ) {
-            return wp_cache_get( 'get_groups_geonames_totals' );
-        }
-
-        global $wpdb;
-
-        $results = $wpdb->get_results("
-            SELECT
-                  country_geonameid as geonameid,
-                  ('groups') as type,
-                  count(country_geonameid) as count
-                FROM $wpdb->dt_geonames_counter
-                WHERE country_geonameid != ''
-                	AND post_id IN (SELECT ID 
-                FROM $wpdb->posts as p
-                JOIN $wpdb->postmeta as pm ON p.ID=pm.post_id 
-                    AND meta_key = 'group_type' 
-                    AND meta_value = 'group'
-                WHERE p.post_type = 'groups')
-                GROUP BY country_geonameid, type
-                UNION
-                SELECT
-                  admin1_geonameid as geonameid,
-                 ('groups') as type,
-                  count(admin1_geonameid) as count
-                FROM $wpdb->dt_geonames_counter
-                WHERE admin1_geonameid != ''
-                AND post_id IN (SELECT ID 
-                FROM $wpdb->posts as p
-                JOIN $wpdb->postmeta as pm ON p.ID=pm.post_id 
-                    AND meta_key = 'group_type' 
-                    AND meta_value = 'group'
-                WHERE p.post_type = 'groups')
-                GROUP BY admin1_geonameid, type
-                UNION
-                SELECT
-                  admin2_geonameid as geonameid,
-                  ('groups') as type,
-                  count(admin2_geonameid) as count
-                FROM $wpdb->dt_geonames_counter
-                WHERE admin2_geonameid != ''
-                AND post_id IN (SELECT ID 
-                FROM $wpdb->posts as p
-                JOIN $wpdb->postmeta as pm ON p.ID=pm.post_id 
-                    AND meta_key = 'group_type' 
-                    AND meta_value = 'group'
-                WHERE p.post_type = 'groups')
-                GROUP BY admin2_geonameid, type
-                UNION
-                SELECT
-                  admin3_geonameid as geonameid,
-                  ('groups') as type,
-                  count(admin3_geonameid) as count
-                FROM $wpdb->dt_geonames_counter
-                WHERE admin3_geonameid != ''
-                AND post_id IN (SELECT ID 
-                FROM $wpdb->posts as p
-                JOIN $wpdb->postmeta as pm ON p.ID=pm.post_id 
-                    AND meta_key = 'group_type' 
-                    AND meta_value = 'group'
-                WHERE p.post_type = 'groups')
-                GROUP BY admin3_geonameid, type
-        ", ARRAY_A );
-
-        if ( empty( $results ) ) {
-            $results = [];
-        }
-
-        wp_cache_set( 'get_groups_geonames_totals', $results );
 
         return $results;
     }
@@ -825,7 +689,13 @@ class Disciple_Tools_Mapping_Queries {
                 ELSE g.alt_name
             END as label
             FROM $wpdb->dt_geonames as g
-            INNER JOIN $wpdb->dt_geonames_counter as counter ON (g.geonameid = counter.geonameid)
+            INNER JOIN (
+                SELECT
+                    g.geonameid
+                FROM $wpdb->postmeta as p
+                JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+                WHERE p.meta_key = 'geonames' AND p.meta_value != ''
+            ) as counter ON (g.geonameid = counter.geonameid)
             WHERE g.alt_name LIKE %s
             
             ORDER BY g.country_code, CHAR_LENGTH(label)
@@ -914,9 +784,11 @@ class Disciple_Tools_Mapping_Queries {
         global $wpdb;
 
         $results = $wpdb->get_col( "
-            SELECT DISTINCT country_geonameid as geonameid 
-            FROM $wpdb->dt_geonames_counter
-            WHERE country_geonameid != 0
+            SELECT DISTINCT
+                g.country_geonameid as geonameid
+            FROM $wpdb->postmeta as p
+            JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+            WHERE p.meta_key = 'geonames' AND g.country_geonameid != 0
         ");
 
         if ( empty( $results ) ) {
@@ -937,9 +809,11 @@ class Disciple_Tools_Mapping_Queries {
         global $wpdb;
 
         $results = $wpdb->get_col( "
-            SELECT DISTINCT admin1_geonameid as geonameid 
-            FROM $wpdb->dt_geonames_counter
-            WHERE admin1_geonameid != 0
+            SELECT DISTINCT
+                g.admin1_geonameid as geonameid
+            FROM $wpdb->postmeta as p
+            JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+            WHERE p.meta_key = 'geonames' AND g.admin1_geonameid != 0
         ");
 
         if ( empty( $results ) ) {
@@ -960,9 +834,11 @@ class Disciple_Tools_Mapping_Queries {
         global $wpdb;
 
         $results = $wpdb->get_col( "
-            SELECT DISTINCT admin2_geonameid as geonameid 
-            FROM $wpdb->dt_geonames_counter
-            WHERE admin2_geonameid != 0
+            SELECT DISTINCT
+                g.admin2_geonameid as geonameid
+            FROM $wpdb->postmeta as p
+            JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+            WHERE p.meta_key = 'geonames' AND g.admin2_geonameid != 0
         ");
 
         if ( empty( $results ) ) {
@@ -975,6 +851,10 @@ class Disciple_Tools_Mapping_Queries {
     }
 
     public static function counter() {
+
+        if ( get_transient( 'counter') ) {
+            return get_transient( 'counter' );
+        }
 
         if ( wp_cache_get( 'counter' ) ) {
             return wp_cache_get( 'counter' );
@@ -995,15 +875,15 @@ class Disciple_Tools_Mapping_Queries {
                 IF (pp.post_type = 'contacts', cs.meta_value, gs.meta_value) as status,
                 IF (pp.post_type = 'contacts', UNIX_TIMESTAMP(pp.post_date), gd.meta_value) as created_date,
                 IF (pp.post_type = 'contacts', ce.meta_value, ge.meta_value) as end_date
-            FROM {$wpdb->prefix}postmeta as p
-                JOIN {$wpdb->prefix}posts as pp ON p.post_id=pp.ID
-                LEFT JOIN {$wpdb->prefix}dt_geonames as g ON g.geonameid=p.meta_value             
-                LEFT JOIN {$wpdb->prefix}postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
-                LEFT JOIN {$wpdb->prefix}postmeta as cs ON cs.post_id=p.post_id AND cs.meta_key = 'overall_status'
-                LEFT JOIN {$wpdb->prefix}postmeta as gs ON gs.post_id=p.post_id AND gs.meta_key = 'group_status'
-                LEFT JOIN {$wpdb->prefix}postmeta as gd ON gd.post_id=p.post_id AND gd.meta_key = 'start_date'
-                LEFT JOIN {$wpdb->prefix}postmeta as ge ON ge.post_id=p.post_id AND ge.meta_key = 'end_date'
-                LEFT JOIN {$wpdb->prefix}postmeta as ce ON ce.post_id=p.post_id AND ce.meta_key = 'last_modified' AND cs.meta_value = 'closed'
+            FROM $wpdb->postmeta as p
+                JOIN $wpdb->posts as pp ON p.post_id=pp.ID
+                LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+                LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
+                LEFT JOIN $wpdb->postmeta as cs ON cs.post_id=p.post_id AND cs.meta_key = 'overall_status'
+                LEFT JOIN $wpdb->postmeta as gs ON gs.post_id=p.post_id AND gs.meta_key = 'group_status'
+                LEFT JOIN $wpdb->postmeta as gd ON gd.post_id=p.post_id AND gd.meta_key = 'start_date'
+                LEFT JOIN $wpdb->postmeta as ge ON ge.post_id=p.post_id AND ge.meta_key = 'end_date'
+                LEFT JOIN $wpdb->postmeta as ce ON ce.post_id=p.post_id AND ce.meta_key = 'last_modified' AND cs.meta_value = 'closed'
             WHERE p.meta_key = 'geonames'
         ");
 
@@ -1012,6 +892,8 @@ class Disciple_Tools_Mapping_Queries {
         }
 
         wp_cache_set( 'counter', $results );
+
+        set_transient( 'counter', $results, strtotime( 'Tomorrow 3am') );
 
         return $results;
     }
@@ -1027,8 +909,31 @@ class Disciple_Tools_Mapping_Queries {
 
             $results = $wpdb->get_row( $wpdb->prepare( "
                 SELECT * 
-                FROM $wpdb->dt_geonames_counter 
-                WHERE post_id = %s;
+                FROM (
+                        SELECT
+                        g.country_geonameid,
+                        g.admin1_geonameid,
+                        g.admin2_geonameid,
+                        g.admin3_geonameid,
+                        g.geonameid,
+                        g.level,
+                        p.post_id,
+                        IF (cu.meta_value IS NULL, pp.post_type, 'users' ) as type, 
+                        IF (pp.post_type = 'contacts', cs.meta_value, gs.meta_value) as status,
+                        IF (pp.post_type = 'contacts', UNIX_TIMESTAMP(pp.post_date), gd.meta_value) as created_date,
+                        IF (pp.post_type = 'contacts', ce.meta_value, ge.meta_value) as end_date
+                    FROM $wpdb->postmeta as p
+                        JOIN $wpdb->posts as pp ON p.post_id=pp.ID
+                        LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+                        LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
+                        LEFT JOIN $wpdb->postmeta as cs ON cs.post_id=p.post_id AND cs.meta_key = 'overall_status'
+                        LEFT JOIN $wpdb->postmeta as gs ON gs.post_id=p.post_id AND gs.meta_key = 'group_status'
+                        LEFT JOIN $wpdb->postmeta as gd ON gd.post_id=p.post_id AND gd.meta_key = 'start_date'
+                        LEFT JOIN $wpdb->postmeta as ge ON ge.post_id=p.post_id AND ge.meta_key = 'end_date'
+                        LEFT JOIN $wpdb->postmeta as ce ON ce.post_id=p.post_id AND ce.meta_key = 'last_modified' AND cs.meta_value = 'closed'
+                    WHERE p.meta_key = 'geonames'
+                ) as t1 
+                WHERE t1.post_id = %s;
             ", $args['post_id'] ), ARRAY_A );
 
             wp_cache_set( 'get_counter', $results, $args['post_id'] );
@@ -1042,8 +947,31 @@ class Disciple_Tools_Mapping_Queries {
 
             $results = $wpdb->get_row( $wpdb->prepare( "
                 SELECT * 
-                FROM $wpdb->dt_geonames_counter 
-                WHERE geonameid = %d;
+                FROM (
+                        SELECT
+                        g.country_geonameid,
+                        g.admin1_geonameid,
+                        g.admin2_geonameid,
+                        g.admin3_geonameid,
+                        g.geonameid,
+                        g.level,
+                        p.post_id,
+                        IF (cu.meta_value IS NULL, pp.post_type, 'users' ) as type, 
+                        IF (pp.post_type = 'contacts', cs.meta_value, gs.meta_value) as status,
+                        IF (pp.post_type = 'contacts', UNIX_TIMESTAMP(pp.post_date), gd.meta_value) as created_date,
+                        IF (pp.post_type = 'contacts', ce.meta_value, ge.meta_value) as end_date
+                    FROM $wpdb->postmeta as p
+                        JOIN $wpdb->posts as pp ON p.post_id=pp.ID
+                        LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+                        LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
+                        LEFT JOIN $wpdb->postmeta as cs ON cs.post_id=p.post_id AND cs.meta_key = 'overall_status'
+                        LEFT JOIN $wpdb->postmeta as gs ON gs.post_id=p.post_id AND gs.meta_key = 'group_status'
+                        LEFT JOIN $wpdb->postmeta as gd ON gd.post_id=p.post_id AND gd.meta_key = 'start_date'
+                        LEFT JOIN $wpdb->postmeta as ge ON ge.post_id=p.post_id AND ge.meta_key = 'end_date'
+                        LEFT JOIN $wpdb->postmeta as ce ON ce.post_id=p.post_id AND ce.meta_key = 'last_modified' AND cs.meta_value = 'closed'
+                    WHERE p.meta_key = 'geonames'
+                ) as t1  
+                WHERE t1.geonameid = %d;
             ", $args['geonameid'] ), ARRAY_A );
 
             wp_cache_set( 'get_counter', $results, $args['geonameid'] );

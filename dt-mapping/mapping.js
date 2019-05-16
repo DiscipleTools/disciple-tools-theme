@@ -91,7 +91,7 @@ function page_mapping_view() {
         
         <hr style="max-width:100%;">
         
-        <span style="float:right;font-size:.8em;"><a onclick="DRILLDOWN.get_drill_down('map_chart_drilldown')" >return to top level</a></span>
+        <span style="float:right;font-size:.8em;"><a onclick="refresh_data('get_geoname_totals')" >refresh data</a></span>
         <br>
         `);
 
@@ -838,6 +838,33 @@ function mini_map( div, marker_data ) {
   imageSeriesTemplate.propertyFields.longitude = "longitude";
 
 }
+
+function refresh_data( key ) {
+  let rest = DRILLDOWNDATA.settings.endpoints.delete_transient_endpoint
+
+  jQuery.ajax({
+    type: rest.method,
+    contentType: "application/json; charset=utf-8",
+    data: JSON.stringify( { 'key': key } ),
+    dataType: "json",
+    url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
+    },
+  })
+    .done( function( response ) {
+        if ( DRILLDOWNDATA.settings.current_map !== undefined ) {
+          DRILLDOWN.get_drill_down('map_chart_drilldown', DRILLDOWNDATA.settings.current_map )
+        } else {
+          DRILLDOWN.get_drill_down('map_chart_drilldown')
+        }
+    })
+    .fail(function (err) {
+      console.log("error")
+      console.log(err)
+    })
+}
+
 
 
 /**********************************************************************************************************************

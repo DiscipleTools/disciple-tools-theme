@@ -354,6 +354,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'method' => 'POST',
             ];
+            $endpoints['delete_transient_endpoint'] = [
+                'namespace' => $this->namespace,
+                'route' => '/mapping_module/delete_transient',
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'method' => 'POST',
+            ];
             // add another endpoint here
             return $endpoints;
         }
@@ -379,21 +385,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
         }
 
-        public function get_children( WP_REST_Request $request ) { // @todo remove with the explore section of the admin
-            /**
-             * Services the explore section of the admin area
-             */
-            if ( ! $this->permissions ) {
-                return new WP_Error( __METHOD__, 'No permission', [ 'status' => 101 ] );
-            }
-
-            $params = $request->get_params();
-            if ( isset( $params['geonameid'] ) ) {
-                return $this->get_locations_list( $params['geonameid'] );
-            } else {
-                return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
-            }
-        }
         public function modify_location_endpoint( WP_REST_Request $request ) {
             if ( !user_can( get_current_user_id(), 'manage_dt' ) ) {
                 return new WP_Error( 'permissions', 'No permissions for the action.', [ 'status' => 401 ] );
@@ -453,6 +444,22 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             } else {
                 return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
             }
+        }
+        public function delete_transient_endpoint( WP_REST_Request $request ) {
+            $params = $request->get_params();
+
+            if ( isset( $params['key'] ) && $params['key'] === 'counter' ) {
+                delete_transient( 'counter' );
+                Disciple_Tools_Mapping_Queries::counter();
+                return true;
+            }
+            if ( isset( $params['key'] ) && $params['key'] === 'get_geoname_totals' ) {
+                delete_transient( 'get_geoname_totals' );
+                Disciple_Tools_Mapping_Queries::get_geoname_totals();
+                return true;
+            }
+
+            return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
         }
 
 

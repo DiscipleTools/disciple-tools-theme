@@ -1065,7 +1065,7 @@ class Disciple_Tools_Snapshot_Report {
         $data = [];
 
         if ( $countries_only ) {
-            $results = Disciple_Tools_Mapping_Queries::get_geoname_totals( true );
+            $results = Disciple_Tools_Mapping_Queries::get_geoname_totals_for_countries();
         } else {
             $results = Disciple_Tools_Mapping_Queries::get_geoname_totals();
         }
