@@ -389,9 +389,10 @@ class Disciple_Tools_Network_Queries {
     }
 
     public static function locations_current_state() : array {
-        $results['active_countries'] = Disciple_Tools_Mapping_Queries::active_countries_geonames();
-        $results['active_admin1'] = Disciple_Tools_Mapping_Queries::active_admin1_geonames();
-        $results['active_admin2'] = Disciple_Tools_Mapping_Queries::active_admin2_geonames();
+
+        $results['active_countries'] = (int) count( Disciple_Tools_Mapping_Queries::active_countries_geonames() );
+        $results['active_admin1'] = (int) count( Disciple_Tools_Mapping_Queries::active_admin1_geonames() );
+        $results['active_admin2'] = (int) count( Disciple_Tools_Mapping_Queries::active_admin2_geonames() );
 
         return $results;
     }
