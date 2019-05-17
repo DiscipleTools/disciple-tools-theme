@@ -1694,11 +1694,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     'label' => 'Google',
                     'url'   => 'https://storage.googleapis.com/saturation-grid-project/',
                 ],
-                'amazon' => [
-                    'key'   => 'amazon',
-                    'label' => 'Amazon',
-                    'url'   => 'https://s3.amazonaws.com/mapping-source/',
-                ],
+//                'amazon' => [
+//                    'key'   => 'amazon',
+//                    'label' => 'Amazon',
+//                    'url'   => 'https://s3.amazonaws.com/mapping-source/',
+//                ],
                 'other'  => [
                     'key'   => 'other',
                     'label' => 'Other',
@@ -1779,10 +1779,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                       value="google" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'google' ) ? 'checked' : '' ?>><label
                                         for="google"><?php echo esc_html( $mirror_list['google']['label'] ) ?></label>
                             </p>
-                            <p><input type="radio" id="amazon" name="source"
-                                      value="amazon" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'amazon' ) ? 'checked' : '' ?>><label
-                                        for="amazon"><?php echo esc_html( $mirror_list['amazon']['label'] ) ?></label>
-                            </p>
+<!--                            <p><input type="radio" id="amazon" name="source"-->
+<!--                                      value="amazon" --><?php //echo ( isset( $mirror['key'] ) && $mirror['key'] === 'amazon' ) ? 'checked' : '' ?><!--><label-->
+<!--                                        for="amazon">--><?php //echo esc_html( $mirror_list['amazon']['label'] ) ?><!--</label>-->
+<!--                            </p>-->
                             <p><input type="radio" id="other" name="source"
                                       value="other" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'other' ) ? 'checked' : '' ?>>
                                 <input type="text" style="width:50em;"
