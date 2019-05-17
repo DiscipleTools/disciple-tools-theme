@@ -726,11 +726,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case 'admin3':
                             case 'admin3c': // custom
-                            $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin3_geonameid'] ) );
-                            $deeper_levels = $this->get_deeper_levels( $child_list );
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin3_geonameid'] ) );
+                                $deeper_levels = $this->get_deeper_levels( $child_list );
 
-                            if ( $default_select_first_level ) {
-                                $preset_array = [
+                                if ( $default_select_first_level ) {
+                                    $preset_array = [
                                     0 => [
                                         'parent' => 'top_map_level',
                                         'selected' => (int) $reference['country_geonameid'],
@@ -762,9 +762,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         'deeper_levels' => $deeper_levels,
                                     ],
 
-                                ];
-                            } else {
-                                $preset_array = [
+                                    ];
+                                } else {
+                                    $preset_array = [
                                     0 => [
                                         'parent' => 'top_map_level',
                                         'selected' => 'top_map_level',
@@ -803,8 +803,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         'deeper_levels' => $deeper_levels,
                                     ],
 
-                                ];
-                            }
+                                    ];
+                                }
                             break;
 
                             case 'admin2':

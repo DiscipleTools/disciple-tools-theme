@@ -460,7 +460,7 @@ class Disciple_Tools_Snapshot_Report {
         $profile = dt_get_partner_profile();
 
         $report_data = [
-            'partner_id' => $profile[ 'partner_id' ],
+            'partner_id' => $profile['partner_id'],
             'profile'    => $profile,
             'contacts'   => [
                 'current_state'    => self::contacts_current_state(),
@@ -536,13 +536,13 @@ class Disciple_Tools_Snapshot_Report {
 
         $critical_path = Disciple_Tools_Metrics_Hooks_Base::query_project_contacts_progress();
         foreach ( $critical_path as $path ) {
-            $data[ 'critical_path' ][ $path[ 'key' ] ] = $path;
+            $data['critical_path'][ $path['key'] ] = $path;
         }
 
         // Add
-        $data[ 'status' ] = self::get_contacts_status();
+        $data['status'] = self::get_contacts_status();
 
-        $data[ 'all_contacts' ] = Disciple_Tools_Network_Queries::all_contacts();
+        $data['all_contacts'] = Disciple_Tools_Network_Queries::all_contacts();
 
         return $data;
     }
@@ -562,13 +562,13 @@ class Disciple_Tools_Snapshot_Report {
     public static function get_contacts_status(): array {
         $data            = [];
         $contact_fields  = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
-        $status_defaults = $contact_fields[ 'overall_status' ][ 'default' ];
+        $status_defaults = $contact_fields['overall_status']['default'];
         $current_state   = Disciple_Tools_Network_Queries::contacts_current_state();
         foreach ( $status_defaults as $key => $status ) {
             $data[ $key ] = 0;
             foreach ( $current_state as $state ) {
-                if ( $state[ 'status' ] === $key ) {
-                    $data[ $key ] = (int) $state[ 'count' ];
+                if ( $state['status'] === $key ) {
+                    $data[ $key ] = (int) $state['count'];
                 }
             }
         }
@@ -597,16 +597,16 @@ class Disciple_Tools_Snapshot_Report {
         }
 
         foreach ( $dates as $date ) {
-            $date[ 'value' ]          = (int) $date[ 'value' ];
-            $data1[ $date[ 'date' ] ] = $date;
+            $date['value']          = (int) $date['value'];
+            $data1[ $date['date'] ] = $date;
         }
 
         $day_list = self::get_day_list( 60 );
         foreach ( $day_list as $day ) {
             if ( isset( $data1[ $day ] ) ) {
                 $data2[] = [
-                    'date'  => $data1[ $day ][ 'date' ],
-                    'value' => $data1[ $day ][ 'value' ],
+                    'date'  => $data1[ $day ]['date'],
+                    'value' => $data1[ $day ]['value'],
                 ];
             } else {
                 $data2[] = [
@@ -646,16 +646,16 @@ class Disciple_Tools_Snapshot_Report {
         }
 
         foreach ( $dates as $date ) {
-            $date[ 'value' ]          = (int) $date[ 'value' ];
-            $data1[ $date[ 'date' ] ] = $date;
+            $date['value']          = (int) $date['value'];
+            $data1[ $date['date'] ] = $date;
         }
 
         $list = self::get_month_list( 25 );
         foreach ( $list as $month ) {
             if ( isset( $data1[ $month ] ) ) {
                 $data2[] = [
-                    'date'  => $data1[ $month ][ 'date' ] . '-01',
-                    'value' => $data1[ $month ][ 'value' ],
+                    'date'  => $data1[ $month ]['date'] . '-01',
+                    'value' => $data1[ $month ]['value'],
                 ];
             } else {
                 $data2[] = [
@@ -680,7 +680,7 @@ class Disciple_Tools_Snapshot_Report {
 
         $total_users = count_users();
 
-        $inactive = $total_users[ 'total_users' ] - $active;
+        $inactive = $total_users['total_users'] - $active;
         if ( $inactive < 1 ) {
             $inactive = 0;
         }
@@ -771,16 +771,16 @@ class Disciple_Tools_Snapshot_Report {
         // Add types and status
         $types_and_status = Disciple_Tools_Network_Queries::groups_types_and_status();
         foreach ( $types_and_status as $value ) {
-            $value[ 'type' ] = str_replace( '-', '_', $value[ 'type' ] );
+            $value['type'] = str_replace( '-', '_', $value['type'] );
 
-            $data[ $value[ 'status' ] ][ $value[ 'type' ] ] = (int) $value[ 'count' ];
+            $data[ $value['status'] ][ $value['type'] ] = (int) $value['count'];
 
-            if ( 'active' === $value[ 'status' ] ) {
-                $data [ 'total_active' ] = $data[ 'total_active' ] + (int) $value[ 'count' ];
+            if ( 'active' === $value['status'] ) {
+                $data ['total_active'] = $data['total_active'] + (int) $value['count'];
             }
         }
 
-        $data[ 'all' ] = Disciple_Tools_Network_Queries::all_groups();
+        $data['all'] = Disciple_Tools_Network_Queries::all_groups();
 
         return $data;
     }
@@ -792,15 +792,15 @@ class Disciple_Tools_Snapshot_Report {
 
         $keyed = [];
         foreach ( $types_and_status as $status ) {
-            if ( 'active' === $status[ 'status' ] ) {
-                $keyed[ $status[ 'type' ] ] = $status;
+            if ( 'active' === $status['status'] ) {
+                $keyed[ $status['type'] ] = $status;
             }
         }
 
-        if ( isset( $keyed[ 'pre-group' ] ) ) {
+        if ( isset( $keyed['pre-group'] ) ) {
             $data[] = [
                 'name'  => 'Pre-Group',
-                'value' => $keyed[ 'pre-group' ][ 'count' ],
+                'value' => $keyed['pre-group']['count'],
             ];
         } else {
             $data[] = [
@@ -809,10 +809,10 @@ class Disciple_Tools_Snapshot_Report {
             ];
         }
 
-        if ( isset( $keyed[ 'group' ] ) ) {
+        if ( isset( $keyed['group'] ) ) {
             $data[] = [
                 'name'  => 'Group',
-                'value' => $keyed[ 'group' ][ 'count' ],
+                'value' => $keyed['group']['count'],
             ];
         } else {
             $data[] = [
@@ -821,10 +821,10 @@ class Disciple_Tools_Snapshot_Report {
             ];
         }
 
-        if ( isset( $keyed[ 'church' ] ) ) {
+        if ( isset( $keyed['church'] ) ) {
             $data[] = [
                 'name'  => 'Church',
-                'value' => $keyed[ 'church' ][ 'count' ],
+                'value' => $keyed['church']['count'],
             ];
         } else {
             $data[] = [
@@ -843,8 +843,8 @@ class Disciple_Tools_Snapshot_Report {
 
         // Make key list
         $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
-        foreach ( $group_fields[ "health_metrics" ][ "default" ] as $key => $option ) {
-            $labels[ $key ] = $option[ "label" ];
+        foreach ( $group_fields["health_metrics"]["default"] as $key => $option ) {
+            $labels[ $key ] = $option["label"];
         }
 
         // get results
@@ -852,7 +852,7 @@ class Disciple_Tools_Snapshot_Report {
 
         // build keyed practicing
         foreach ( $practicing as $value ) {
-            $keyed_practicing[ $value[ 'category' ] ] = $value[ 'practicing' ];
+            $keyed_practicing[ $value['category'] ] = $value['practicing'];
         }
 
         // get total number
@@ -897,23 +897,23 @@ class Disciple_Tools_Snapshot_Report {
         // Add types and status
         $users = count_users();
 
-        $data[ 'total_users' ] = (int) $users[ 'total_users' ];
+        $data['total_users'] = (int) $users['total_users'];
 
-        foreach ( $users[ 'avail_roles' ] as $role => $count ) {
+        foreach ( $users['avail_roles'] as $role => $count ) {
             if ( $role === 'marketer' ) {
-                $data[ 'roles' ][ 'responders' ] = $data[ 'roles' ][ 'responders' ] + $count;
+                $data['roles']['responders'] = $data['roles']['responders'] + $count;
             }
             if ( $role === 'dispatcher' ) {
-                $data[ 'roles' ][ 'dispatchers' ] = $data[ 'roles' ][ 'dispatchers' ] + $count;
+                $data['roles']['dispatchers'] = $data['roles']['dispatchers'] + $count;
             }
             if ( $role === 'multiplier' ) {
-                $data[ 'roles' ][ 'multipliers' ] = $data[ 'roles' ][ 'multipliers' ] + $count;
+                $data['roles']['multipliers'] = $data['roles']['multipliers'] + $count;
             }
             if ( $role === 'administrator' || $role === 'dt_admin' ) {
-                $data[ 'roles' ][ 'admins' ] = $data[ 'roles' ][ 'admins' ] + $count;
+                $data['roles']['admins'] = $data['roles']['admins'] + $count;
             }
             if ( $role === 'strategist' ) {
-                $data[ 'roles' ][ 'strategists' ] = $data[ 'roles' ][ 'strategists' ] + $count;
+                $data['roles']['strategists'] = $data['roles']['strategists'] + $count;
             }
         }
 
@@ -927,8 +927,8 @@ class Disciple_Tools_Snapshot_Report {
 
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
 
-        foreach ( $contact_fields[ 'seeker_path' ][ 'default' ] as $key => $value ) {
-            $labels[ $key ] = $value[ 'label' ];
+        foreach ( $contact_fields['seeker_path']['default'] as $key => $value ) {
+            $labels[ $key ] = $value['label'];
         }
 
         require_once( get_template_directory() . '/dt-metrics/metrics.php' );
@@ -938,14 +938,14 @@ class Disciple_Tools_Snapshot_Report {
         }
 
         foreach ( $results as $result ) {
-            $keyed_result[ $result[ 'key' ] ] = $result;
+            $keyed_result[ $result['key'] ] = $result;
         }
 
         foreach ( $labels as $key => $label ) {
             if ( isset( $keyed_result[ $key ] ) ) {
                 $data[] = [
                     "name"  => $label,
-                    "value" => (int) $keyed_result[ $key ][ 'value' ]
+                    "value" => (int) $keyed_result[ $key ]['value']
                 ];
             } else {
                 $data[] = [
@@ -964,8 +964,8 @@ class Disciple_Tools_Snapshot_Report {
 
     public static function ongoing_meetings() {
         $data = self::follow_up_funnel();
-        if ( isset( $data[ 5 ] ) ) {
-            return (int) $data[ 5 ][ 'value' ];
+        if ( isset( $data[5] ) ) {
+            return (int) $data[5]['value'];
         }
 
         return 0; // returns 0 if fail
@@ -978,8 +978,8 @@ class Disciple_Tools_Snapshot_Report {
      */
     public static function coaching() {
         $data = self::follow_up_funnel();
-        if ( isset( $data[ 6 ] ) ) {
-            return (int) $data[ 6 ][ 'value' ];
+        if ( isset( $data[6] ) ) {
+            return (int) $data[6]['value'];
         }
 
         return 0; // returns 0 if fail
@@ -1030,7 +1030,7 @@ class Disciple_Tools_Snapshot_Report {
             }
 
             $data[] = [
-                'label' => 'Gen ' . $gen[ 'generation' ],
+                'label' => 'Gen ' . $gen['generation'],
                 'value' => $gen[ $item ]
             ];
 
@@ -1073,18 +1073,18 @@ class Disciple_Tools_Snapshot_Report {
         if ( ! empty( $results ) ) {
             foreach ( $results as $item ) {
                 // skip custom geonames. Their totals are represented in the standard parents.
-                if ( $item[ 'geonameid' ] > 1000000000 ) {
+                if ( $item['geonameid'] > 1000000000 ) {
                     continue;
                 }
                 // set array, if not set
-                if ( ! isset( $data[ $item[ 'geonameid' ] ] ) ) {
-                    $data[ $item[ 'geonameid' ] ] = self::location_data_types( true );
+                if ( ! isset( $data[ $item['geonameid'] ] ) ) {
+                    $data[ $item['geonameid'] ] = self::location_data_types( true );
                 }
                 // increment existing item type or add new
-                if ( isset( $data[ $item[ 'geonameid' ] ][ $item[ 'type' ] ] ) ) {
-                    $data[ $item[ 'geonameid' ] ][ $item[ 'type' ] ] = (int) $data[ $item[ 'geonameid' ] ][ $item[ 'type' ] ] + (int) $item[ 'count' ];
+                if ( isset( $data[ $item['geonameid'] ][ $item['type'] ] ) ) {
+                    $data[ $item['geonameid'] ][ $item['type'] ] = (int) $data[ $item['geonameid'] ][ $item['type'] ] + (int) $item['count'];
                 } else {
-                    $data[ $item[ 'geonameid' ] ][ $item[ 'type' ] ] = (int) $item[ 'count' ];
+                    $data[ $item['geonameid'] ][ $item['type'] ] = (int) $item['count'];
                 }
             }
         }
@@ -1103,32 +1103,32 @@ class Disciple_Tools_Snapshot_Report {
         ];
 
         $results = Disciple_Tools_Network_Queries::locations_current_state();
-        if ( ! empty( $results[ 'active_countries' ] ) ) {
-            $data[ 'active_countries' ] = (int) $results[ 'active_countries' ];
+        if ( ! empty( $results['active_countries'] ) ) {
+            $data['active_countries'] = (int) $results['active_countries'];
         }
-        if ( ! empty( $results[ 'active_countries' ] ) ) {
-            $data[ 'active_admin1' ] = (int) $results[ 'active_admin1' ];
+        if ( ! empty( $results['active_countries'] ) ) {
+            $data['active_admin1'] = (int) $results['active_admin1'];
         }
-        if ( ! empty( $results[ 'active_countries' ] ) ) {
-            $data[ 'active_admin2' ] = (int) $results[ 'active_admin2' ];
+        if ( ! empty( $results['active_countries'] ) ) {
+            $data['active_admin2'] = (int) $results['active_admin2'];
         }
 
         $active_countries_geonames = Disciple_Tools_Mapping_Queries::active_countries_geonames();
         if ( ! empty( $active_countries_geonames ) ) {
             foreach ( $active_countries_geonames as $geonameid ) {
-                $data[ 'active_countries_geonames' ][] = (int) $geonameid;
+                $data['active_countries_geonames'][] = (int) $geonameid;
             }
         }
         $active_admin1_geonames = Disciple_Tools_Mapping_Queries::active_admin1_geonames();
         if ( ! empty( $active_admin1_geonames ) ) {
             foreach ( $active_admin1_geonames as $geonameid ) {
-                $data[ 'active_admin1_geonames' ][] = (int) $geonameid;
+                $data['active_admin1_geonames'][] = (int) $geonameid;
             }
         }
         $active_admin2_geonames = Disciple_Tools_Mapping_Queries::active_admin2_geonames();
         if ( ! empty( $active_admin2_geonames ) ) {
             foreach ( $active_admin2_geonames as $geonameid ) {
-                $data[ 'active_admin2_geonames' ][] = (int) $geonameid;
+                $data['active_admin2_geonames'][] = (int) $geonameid;
             }
         }
 

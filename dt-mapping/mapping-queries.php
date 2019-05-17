@@ -364,7 +364,7 @@ class Disciple_Tools_Mapping_Queries {
 
     public static function get_regions() {
 
-        if ( wp_cache_get( 'get_regions') ) {
+        if ( wp_cache_get( 'get_regions' ) ) {
             return wp_cache_get( 'get_regions' );
         }
 
@@ -539,7 +539,7 @@ class Disciple_Tools_Mapping_Queries {
 
         global $wpdb;
 
-        if ( get_transient( 'get_geoname_totals') ) {
+        if ( get_transient( 'get_geoname_totals' ) ) {
             return get_transient( 'get_geoname_totals' );
         }
 
@@ -852,7 +852,7 @@ class Disciple_Tools_Mapping_Queries {
 
     public static function counter() {
 
-        if ( get_transient( 'counter') ) {
+        if ( get_transient( 'counter' ) ) {
             return get_transient( 'counter' );
         }
 
@@ -893,7 +893,7 @@ class Disciple_Tools_Mapping_Queries {
 
         wp_cache_set( 'counter', $results );
 
-        set_transient( 'counter', $results, strtotime( 'Tomorrow 3am') );
+        set_transient( 'counter', $results, strtotime( 'Tomorrow 3am' ) );
 
         return $results;
     }

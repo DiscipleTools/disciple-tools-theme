@@ -22,7 +22,7 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
 
         // get mirror source file url
         require_once( get_template_directory() . '/dt-core/global-functions.php' );
-        $mirror_source =  dt_get_theme_data_url();
+        $mirror_source = dt_get_theme_data_url();
 
         $gn_source_url = $mirror_source . 'geonames/geonames.tsv.zip';
 

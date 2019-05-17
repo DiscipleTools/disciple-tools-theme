@@ -160,7 +160,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * @return string
      */
     function dt_get_theme_data_url() {
-        return apply_filters( 'disciple_tools_theme_data_url', 'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-theme-data/master/');
+        return apply_filters( 'disciple_tools_theme_data_url', 'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-theme-data/master/' );
     }
     /**
      * All code above here.
