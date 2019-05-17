@@ -8,6 +8,16 @@ class DT_Posts extends Disciple_Tools_Posts {
         parent::__construct();
     }
 
+    /**
+     * Create a post
+     * For fields format See https://github.com/DiscipleTools/disciple-tools-theme/wiki/Contact-Fields-Format
+     *
+     * @param string $post_type
+     * @param array $fields
+     * @param bool $silent
+     *
+     * @return array|WP_Error
+     */
     public static function create_post( string $post_type, array $fields, bool $silent = false ){
         if ( !self::can_create( $post_type ) ){
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
@@ -142,8 +152,19 @@ class DT_Posts extends Disciple_Tools_Posts {
     }
 
 
+    /**
+     * Update post
+     * For fields format See https://github.com/DiscipleTools/disciple-tools-theme/wiki/Contact-Fields-Format
+     *
+     * @param string $post_type
+     * @param int $post_id
+     * @param array $fields
+     * @param bool $silent
+     *
+     * @return array|WP_Error
+     */
     public static function update_post( string $post_type, int $post_id, array $fields, bool $silent ){
-        $post_types = apply_filters( 'dt_registered_post_types', [] );
+        $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
         if ( !in_array( $post_type, $post_types ) ){
             return new WP_Error( __FUNCTION__, "Post type does not exist", [ 'status' => 403 ] );
         }
@@ -224,6 +245,15 @@ class DT_Posts extends Disciple_Tools_Posts {
     }
 
 
+    /**
+     * Get Post
+     *
+     * @param $post_type
+     * @param $post_id
+     * @param bool $use_cache
+     *
+     * @return array|WP_Error
+     */
     public static function get_post( $post_type, $post_id, $use_cache = true ){
         if ( !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read " . $post_type, [ 'status' => 403 ] );
@@ -233,12 +263,13 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $cached;
         }
 
-        $post = get_post( $post_id );
+        $wp_post = get_post( $post_id );
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
-        if ( !$post ){
+        if ( !$wp_post ){
             return new WP_Error( __FUNCTION__, "post does not exist", [ 'status' => 400 ] );
         }
         $fields = [];
+
         /**
          * add connections
          */
@@ -247,29 +278,23 @@ class DT_Posts extends Disciple_Tools_Posts {
             $args = [
                 'connected_type'   => $field["p2p_key"],
                 'connected_direction' => $field["p2p_direction"],
-                'connected_items'  => $post,
+                'connected_items'  => $wp_post,
                 'nopaging'         => true,
                 'suppress_filters' => false,
             ];
             $connections = get_posts( $args );
             $fields[$connection_type] = [];
             foreach ( $connections as $c ){
-                $fields[$connection_type][] = [
-                    "ID" => $c->ID,
-                    "post_type" => $c->post_type,
-                    "post_date_gmt" => $c->post_date_gmt,
-                    "post_date" => $c->post_date,
-                    "post_title" => $c->post_title,
-                    "permalink" => get_permalink( $c->ID )
-                ];
+                $fields[$connection_type][] = self::filter_wp_post_object_fields( $c );
             }
         }
 
         self::adjust_post_custom_fields( $post_settings, $post_id, $fields );
 
+
         $fields["ID"] = $post_id;
-        $fields["title"] = $post->post_title;
-        $fields["created_date"] = $post->post_date;
+        $fields["title"] = $wp_post->post_title;
+        $fields["created_date"] = $wp_post->post_date;
         $fields["permalink"] = get_permalink( $post_id );
 
         $fields = apply_filters( 'dt_after_get_post_fields_filter', $fields );
@@ -279,12 +304,42 @@ class DT_Posts extends Disciple_Tools_Posts {
     }
 
 
+    /**
+     * Get a list of posts
+     * For query format see https://github.com/DiscipleTools/disciple-tools-theme/wiki/Filter-and-Search-Lists
+     *
+     * @param $post_type
+     * @param $search_and_filter_query
+     *
+     * @return array|WP_Error
+     */
+    public static function list_posts( $post_type, $search_and_filter_query ){
+        $data = self::search_viewable_post( $post_type, $search_and_filter_query );
+        if ( is_wp_error( $data ) ) {
+            return $data;
+        }
+        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+        $records = $data["posts"];
+        foreach ( $post_settings["connection_types"] as $connection_type ){
+            $p2p_type = $post_settings["fields"][$connection_type]["p2p_key"];
+            p2p_type( $p2p_type )->each_connected( $records, [], $connection_type );
+        }
+
+        foreach ( $records as  &$record ){
+            foreach ( $post_settings["connection_types"] as $connection_type ){
+                foreach ( $record->$connection_type as &$post ) {
+                    $post = self::filter_wp_post_object_fields( $post );
+                }
+            }
+            $record = (array) $record;
+            self::adjust_post_custom_fields( $post_settings, $record["ID"], $record );
+            $record["permalink"] = get_permalink( $record["ID"] );
+        }
+        $data["posts"] = $records;
+
+        return $data;
+    }
+
 }
-new Disciple_Tools_Post_Type_Template( "blobs", 'Blob', 'Blobs' );
-new Disciple_Tools_Post_Type_Template( "clusters", 'Cluster', 'Clusters' );
 
-
-//@todo register menu
-//@todo get archive set up
-//@todo get single page set up
 

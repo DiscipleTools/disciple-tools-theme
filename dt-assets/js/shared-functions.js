@@ -90,31 +90,31 @@ window.API = {
 }
 
 window.APIV2 = {
-  get_post: (type, postId) => makeRequest_v2('get', `${type}/${postId}`),
+  get_post: (post_type, postId) => makeRequest_v2('get', `${post_type}/${postId}`),
 
-  create_post: fields => makeRequest_v2('post', `contact/create`, fields),
+  create_post: (post_type, fields) => makeRequest_v2('post', `${post_type}`, fields),
 
-  save_field_api: (type, postId, postData) => makeRequest_v2('post', `${type}/${postId}`, postData),
+  update_post: (post_type, postId, postData) => makeRequest_v2('post', `${post_type}/${postId}`, postData),
 
-  post_comment: (type, postId, comment) => makeRequest_v2('post', `${type}/${postId}/comment`, { comment }),
+  post_comment: (post_type, postId, comment) => makeRequest_v2('post', `${post_type}/${postId}/comment`, { comment }),
 
-  delete_comment: (type, postId, comment_ID) => makeRequest_v2('delete', `${type}/${postId}/comment/${comment_ID}`),
+  delete_comment: (post_type, postId, comment_ID) => makeRequest_v2('delete', `${post_type}/${postId}/comment/${comment_ID}`),
 
-  update_comment: (type, postId, comment_ID, comment_content) => makeRequest_v2('post', `${type}/${postId}/comment/${comment_ID}`, {  comment: comment_content }),
+  update_comment: (post_type, postId, comment_ID, comment_content) => makeRequest_v2('post', `${post_type}/${postId}/comment/${comment_ID}`, {  comment: comment_content }),
 
-  get_comments: (type, postId) => makeRequest_v2('get', `${type}/${postId}/comments`),
+  get_comments: (post_type, postId) => makeRequest_v2('get', `${post_type}/${postId}/comments`),
 
-  get_activity: (type, postId) => makeRequest_v2('get', `${type}/${postId}/activity`),
+  get_activity: (post_type, postId) => makeRequest_v2('get', `${post_type}/${postId}/activity`),
 
-  get_single_activity: (type, postId, activityId) => makeRequest_v2('get', `${type}/${postId}/activity/${activityId}`),
+  get_single_activity: (post_type, postId, activityId) => makeRequest_v2('get', `${post_type}/${postId}/activity/${activityId}`),
 
-  revert_activity: (type, postId, activityId) => makeRequest_v2('get', `${type}/${postId}/revert/${activityId}`),
+  revert_activity: (post_type, postId, activityId) => makeRequest_v2('get', `${post_type}/${postId}/revert/${activityId}`),
 
-  get_shared: (type, postId)=> makeRequest_v2('get', `${type}/${postId}/shared-with`),
+  get_shared: (post_type, postId)=> makeRequest_v2('get', `${post_type}/${postId}/shares`),
 
-  add_shared: (type, postId, userId) => makeRequest_v2('post', `${type}/${postId}/add-shared`, { user_id: userId }),
+  add_shared: (post_type, postId, userId) => makeRequest_v2('post', `${post_type}/${postId}/shares`, { user_id: userId }),
 
-  remove_shared: (type, postId, userId)=> makeRequest_v2('post', `${type}/${postId}/remove-shared`, { user_id: userId }),
+  remove_shared: (post_type, postId, userId)=> makeRequest_v2('post', `${post_type}/${postId}/remove-shared`, { user_id: userId }),
 
   search_users: query => makeRequest_v2('get', `users/get_users?s=${query}`),
 
@@ -122,7 +122,7 @@ window.APIV2 = {
 
   save_filters: filters => makeRequest_v2('post', 'users/save_filters', { filters }),
 
-  get_duplicates_on_post: (type, postId) => makeRequest_v2('get', `${type}/${postId}/duplicates`),
+  get_duplicates_on_post: (post_type, postId) => makeRequest_v2('get', `${post_type}/${postId}/duplicates`),
 
   create_user: user => makeRequest_v2('post', 'users/create', user),
 
@@ -216,6 +216,27 @@ window.TYPEAHEADS = {
       }
     }
   },
+  typeaheadPostsSource : function (post_type){
+    return {
+      contacts: {
+        display: [ "name", "ID" ],
+        ajax: {
+          url: wpApiShare.root + `dt-posts/v2/${post_type}/compact`,
+          data: {
+            s: "{{query}}"
+          },
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+          },
+          callback: {
+            done: function (data) {
+              return data.posts
+            }
+          }
+        }
+      }
+    }
+  },
   typeaheadHelpText : function (resultCount, query, result){
     let text = "";
     if (result.length > 0 && result.length < resultCount) {
@@ -239,7 +260,9 @@ window.TYPEAHEADS = {
   },
 
 
-  share(type, id){
+  share(type, id, v2){
+    let api = v2 ? window.APIV2 : window.API
+
     return $.typeahead({
       input: '.js-typeahead-share',
       minLength: 0,
@@ -253,7 +276,7 @@ window.TYPEAHEADS = {
         matchOn: ["ID"],
         data: function () {
           var deferred = $.Deferred();
-          return window.API.get_shared(type, id).then(sharedResult => {
+          return api.get_shared(type, id).then(sharedResult => {
             return deferred.resolve(sharedResult.map(g => {
               return {ID: g.user_id, name: g.display_name}
             }))
@@ -262,7 +285,7 @@ window.TYPEAHEADS = {
         callback: {
           onCancel: function (node, item) {
             $('#share-result-container').html("");
-            window.API.remove_shared(type, id, item.ID).catch(err=>{
+            api.remove_shared(type, id, item.ID).catch(err=>{
               Typeahead['.js-typeahead-share'].addMultiselectItemLayout(
                 {ID:item.ID, name:item.name}
               )
@@ -273,7 +296,7 @@ window.TYPEAHEADS = {
       },
       callback: {
         onClick: function (node, a, item, event) {
-          window.API.add_shared(type, id, item.ID)
+          api.add_shared(type, id, item.ID)
         },
         onResult: function (node, query, result, resultCount) {
           if (query) {

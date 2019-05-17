@@ -22,6 +22,7 @@ class Disciple_Tools_Post_Type_Template {
         add_action( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ] );
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 2 );
         add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
+        add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
     }
 
     public function register_post_type(){
@@ -141,8 +142,6 @@ class Disciple_Tools_Post_Type_Template {
     /**
      * Get the settings for the custom fields.
      *
-     * @param bool $include_current_post
-     * @param int|null $post_id
      * @param bool $with_deleted_options
      * @param bool $load_from_cache
      *

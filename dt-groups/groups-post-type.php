@@ -102,6 +102,7 @@ class Disciple_Tools_Groups_Post_Type
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'groups_rewrites_init' ] );
         add_filter( 'post_type_link', [ $this, 'groups_permalink' ], 1, 3 );
+        add_filter( 'dt_get_post_type_settings', [ $this, 'get_post_type_settings_hook' ], 10, 2 );
 
         if ( is_admin() ) {
             global $pagenow;
@@ -372,7 +373,10 @@ class Disciple_Tools_Groups_Post_Type
         ];
         $fields["locations"] = [
             "name" => __( "Locations", "disciple_tools" ),
-            "type" => "connection"
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "contacts_to_locations",
+            'icon' => get_template_directory_uri() .'/dt-assets/images/location.svg',
         ];
         $fields["requires_update"] = [
             'name'        => __( 'Requires Update', 'disciple_tools' ),

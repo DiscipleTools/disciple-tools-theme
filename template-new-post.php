@@ -36,35 +36,25 @@ get_header();
     </div>
 
     <script>jQuery(function($) {
-            console.log(wpApiShare);
-            $(".js-create-post-button").removeAttr("disabled");
-            $(".js-create-post").on("submit", function() {
-                $(".js-create-post-button")
-                    .attr("disabled", true)
-                    .addClass("loading");
-                $.ajax({
-                    url: wpApiShare.root + 'dt-posts/v2/<?php echo esc_html( $dt_post_type ) ?>/',
-                    type: "POST",
-                    contentType: "application/json; charset=UTF-8",
-                    dataType: "json",
-                    data: JSON.stringify({
-                        title: $(".js-create-post input[name=title]").val(),
-                    }),
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-                    }
-                }).promise().then(function(data) {
-                    window.location = data.permalink;
-                }).catch(function(error) {
-                    $(".js-create-post-button").removeClass("loading").addClass("alert");
-                    $(".js-create-post").append(
-                        $("<div>").html(error.responseText)
-                    );
-                    console.error(error);
-                });
-                return false;
+        $(".js-create-post-button").removeAttr("disabled");
+        $(".js-create-post").on("submit", function() {
+            $(".js-create-post-button")
+                .attr("disabled", true)
+                .addClass("loading");
+            APIV2.create_post( '<?php echo esc_html( $dt_post_type ) ?>', {
+                title: $(".js-create-post input[name=title]").val(),
+            }).promise().then(function(data) {
+                window.location = data.permalink;
+            }).catch(function(error) {
+                $(".js-create-post-button").removeClass("loading").addClass("alert");
+                $(".js-create-post").append(
+                    $("<div>").html(error.responseText)
+                );
+                console.error(error);
             });
-        });</script>
+            return false;
+        });
+    });</script>
 
 
 <?php

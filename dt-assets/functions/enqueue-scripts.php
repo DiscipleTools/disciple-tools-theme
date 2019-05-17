@@ -170,11 +170,15 @@ function dt_site_scripts() {
             );
             dt_theme_enqueue_script( 'details', 'dt-assets/js/details.js', array(
                 'jquery',
-                'lodash'
+                'lodash',
+                'shared-functions',
             ) );
             wp_localize_script( 'details', 'detailsSettings', [
                 'post_type' => $post_type,
-                'post_id' => get_the_ID()
+                'post_id' => get_the_ID(),
+                'post_settings' => $post_settings,
+                'current_user_id' => get_current_user_id(),
+                'post_fields' => $post
             ]);
 
 
@@ -296,6 +300,14 @@ function dt_site_scripts() {
             'filters' => Disciple_Tools_Users::get_user_filters(),
             'additional_filter_options' => apply_filters( 'dt_filters_additional_fields', [], $post_type ),
             'connection_types' => Disciple_Tools_Posts::$connection_types,
+        ) );
+    } elseif ( in_array( $url_path, $post_types ) ){
+        $post_type = $url_path;
+        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+        dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/js/modular-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js' ), true );
+        wp_localize_script( 'modular-list-js', 'listSettings', array(
+            'post_type' => $post_type,
+            'post_type_settings' => $post_settings,
         ) );
     }
 

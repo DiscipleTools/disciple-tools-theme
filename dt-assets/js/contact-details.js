@@ -439,16 +439,6 @@ jQuery(document).ready(function($) {
     assigned_to_input.focus()
   })
 
-  /**
-   * Share
-   */
-  let shareTypeahead = null
-  $('.open-share').on("click", function(){
-    $('#share-contact-modal').foundation('open');
-    if  (!shareTypeahead) {
-      shareTypeahead = TYPEAHEADS.share("contact", contactId)
-    }
-  })
 
 
   /**

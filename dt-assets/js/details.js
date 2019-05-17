@@ -1,16 +1,19 @@
 jQuery(document).ready(function($) {
   let post_id = detailsSettings.post_id
   let post_type = detailsSettings.post_type
+  let post = detailsSettings.post_fields
   let rest_api = window.APIV2
-  if ( ['contacts', 'groups'].includes(detailsSettings.post_type ) ){
-    post_type = post_type.substring(0, detailsSettings.post_type.length - 1);
-    rest_api = window.API
-  }
+  // if ( ['contacts', 'groups'].includes(detailsSettings.post_type ) ){
+  //   post_type = post_type.substring(0, detailsSettings.post_type.length - 1);
+  //   rest_api = window.API
+  // }
+
+  let masonGrid = $('.grid') // responsible for resizing and moving the tiles
 
   $('input.text-input').change(function(){
     const id = $(this).attr('id')
     const val = $(this).val()
-    rest_api.save_field_api(post_type, post_id, { [id]: val }).then((newPost)=>{
+    rest_api.update_post(post_type, post_id, { [id]: val }).then((newPost)=>{
       $( document ).trigger( "text-input-updated", [ newPost, id, val ] );
     }).catch(handleAjaxError)
   })
@@ -32,7 +35,7 @@ jQuery(document).ready(function($) {
       fieldValue = {values:[{value:optionKey}]}
     }
     data[optionKey] = fieldValue
-    rest_api.save_field_api(post_type, post_id, {[fieldKey]: fieldValue}).then((resp)=>{
+    rest_api.update_post(post_type, post_id, {[fieldKey]: fieldValue}).then((resp)=>{
       field.removeClass("submitting-select-button selected-select-button")
       field.blur();
       field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
@@ -48,7 +51,7 @@ jQuery(document).ready(function($) {
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
       let id = $(this).attr('id')
-      rest_api.save_field_api( post_type, post_id, { [id]: date }).then((resp)=>{
+      rest_api.update_post( post_type, post_id, { [id]: date }).then((resp)=>{
         $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
       }).catch(handleAjaxError)
     },
@@ -61,7 +64,7 @@ jQuery(document).ready(function($) {
     const id = $(e.currentTarget).attr('id')
     const val = $(e.currentTarget).val()
 
-    rest_api.save_field_api(post_type, post_id, { [id]: val }).then(resp => {
+    rest_api.update_post(post_type, post_id, { [id]: val }).then(resp => {
       $( document ).trigger( "select-field-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
   })
@@ -70,9 +73,64 @@ jQuery(document).ready(function($) {
     const id = $(this).attr('id')
     const val = $(this).val()
 
-    rest_api.save_field_api('group', groupId, { [id]: val }).then((groupResp)=>{
+    rest_api.update_post('group', groupId, { [id]: val }).then((groupResp)=>{
       $( document ).trigger( "number-input-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
+  })
+
+  $('.dt_typeahead').each((key, el)=>{
+    let field_id = $(el).attr('id').replace('_connection', '')
+    let listing_post_type = _.get(detailsSettings.post_settings.fields[field_id], "p2p_listing", 'contacts')
+    $.typeahead({
+      input: `.js-typeahead-${field_id}`,
+      minLength: 0,
+      accent: true,
+      maxItem: 30,
+      searchOnFocus: true,
+      template: window.TYPEAHEADS.contactListRowTemplate,
+      matcher: function (item) {
+        return item.ID !== post_id
+      },
+      source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type),
+      display: "name",
+      templateValue: "{{name}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["ID"],
+        data: function () {
+          return (post[field_id] || [] ).map(g=>{
+            return {ID:g.ID, name:g.post_title}
+          })
+        }, callback: {
+          onCancel: function (node, item) {
+            APIV2.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}})
+              .catch(err => { console.error(err) })
+          }
+        },
+        href: window.wpApiShare.site_url + `/${listing_post_type}/{{ID}}`
+      },
+      callback: {
+        onClick: function(node, a, item, event){
+          APIV2.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).catch(err => { console.error(err) })
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
+          masonGrid.masonry('layout')
+        },
+        onResult: function (node, query, result, resultCount) {
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $(`#${field_id}-result-container`).html(text);
+        },
+        onHideLayout: function () {
+          $(`#${field_id}-result-container`).html("");
+          masonGrid.masonry('layout')
+        },
+        onShowLayout (){
+          masonGrid.masonry('layout')
+        }
+      }
+    })
   })
 
 
@@ -85,10 +143,10 @@ jQuery(document).ready(function($) {
     $(this).html( following ? "Following" : "Follow")
     $(this).toggleClass( "hollow" )
     let update = {
-      follow: {values:[{value:contactsDetailsWpApiSettings.current_user_id, delete:!following}]},
-      unfollow: {values:[{value:contactsDetailsWpApiSettings.current_user_id, delete:following}]}
+      follow: {values:[{value:detailsSettings.current_user_id, delete:!following}]},
+      unfollow: {values:[{value:detailsSettings.current_user_id, delete:following}]}
     }
-    rest_api.save_field_api( post_type, post_id, update )
+    rest_api.update_post( post_type, post_id, update )
   })
 
   // expand and collapse tiles
@@ -96,4 +154,65 @@ jQuery(document).ready(function($) {
     $(this).parent().toggleClass("collapsed")
     $('.grid').masonry('layout')
   })
+
+  /**
+   * Share
+   */
+  let shareTypeahead = null
+  $('.open-share').on("click", function(){
+    $('#share-contact-modal').foundation('open');
+    if  (!shareTypeahead) {
+      shareTypeahead = TYPEAHEADS.share(post_type, post_id, !['contacts', 'groups'].includes(detailsSettings.post_type ) )
+    }
+  })
+
+
+  // /*
+  //  * Custom post types
+  //  */
+  // let details_section_dom = $('#details-section')
+  // let details_fields_html = ''
+  // _.forOwn( detailsSettings.post_settings.fields, ( field_settings, field_key )=>{
+  //   if ( field_settings.tile === 'details' ){
+  //     let field_value = _.get( detailsSettings.post_fields, field_key, false )
+  //     if ( field_value !== false ){
+  //       let values_html = '';
+  //       if ( field_settings.type === 'text' ){
+  //         values_html = _.escape( field_value )
+  //       } else if ( field_settings.type === 'date' ){
+  //         values_html = _.escape( field_value.formatted )
+  //       } else if ( field_settings.type === 'key_select' ){
+  //         values_html = _.escape( field_value.label )
+  //       } else if ( field_settings.type === 'multi_select' ){
+  //         field_value.push('test')
+  //         values_html = field_value.map(v=>{
+  //           return `<li>${_.escape( _.get( field_settings, `default[${v}].label`, v ))}</li>`;
+  //         }).join('')
+  //       }
+  //       // @todo connections maybe
+  //
+  //       details_fields_html += `
+  //         <div style="flex-basis: 33%">
+  //           <div class="section-subheader">
+  //             <img src="${_.escape( field_settings.icon )}">
+  //             ${ _.escape( field_settings.name )}
+  //           </div>
+  //           <ul>
+  //             ${ values_html }
+  //           </ul>
+  //         </div>
+  //       `
+  //     }
+  //   }
+  // })
+  // details_section_dom.html(details_fields_html)
+
+
+
+  //leave at the end of this file
+  masonGrid.masonry({
+    itemSelector: '.grid-item',
+    percentPosition: true
+  });
+  //leave at the end of this file
 })

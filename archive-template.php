@@ -2,7 +2,11 @@
 declare(strict_types=1);
 
 ( function () {
-    //@todo permissions
+    $post_type = dt_get_url_path();
+    if ( !current_user_can( 'access_' . $post_type ) ) {
+        wp_safe_redirect( '/settings' );
+    }
+
     get_header();
     ?>
 
@@ -15,7 +19,7 @@ declare(strict_types=1);
             </aside>
             <main id="main" class="large-9 cell padding-bottom" role="main">
                 <div class="bordered-box">
-                    You are awesome
+                    <div id="table-content">
                 </div>
             </main>
         </div>

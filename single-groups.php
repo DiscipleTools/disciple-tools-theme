@@ -218,7 +218,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                 <div class="bordered-box">
                                     <?php
                                     // let the plugin add section content
-                                    do_action( "dt_details_additional_section", $section );
+                                    do_action( "dt_details_additional_section", $section, 'groups' );
                                     //setup tile label if see by customizations
                                     if ( isset( $custom_tiles["groups"][$section]["label"] ) ){ ?>
                                         <label class="section-header">

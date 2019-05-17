@@ -1691,7 +1691,7 @@ class Disciple_Tools_Posts
                 $existing_connections = [];
                 if ( isset( $existing_contact[$connection_type] ) ){
                     foreach ( $existing_contact[$connection_type] as $connection){
-                        $existing_connections[] = $connection->ID;
+                        $existing_connections[] = isset( $connection->ID ) ? $connection->ID : $connection["ID"];
                     }
                 }
                 //check for new connections
@@ -1796,8 +1796,8 @@ class Disciple_Tools_Posts
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
         $connect = null;
         $field_setting = $post_settings["fields"][$field_key] ?? [];
-        if ( isset( $field_setting["p2p_key"], $field_setting["p2p_direction"] ) ) {
-            return new WP_Error( __FUNCTION__, "Could not add connection. Field settings missing", [ 'status' => 400 ] );
+        if ( !isset( $field_setting["p2p_key"], $field_setting["p2p_direction"] ) ) {
+            return new WP_Error( __FUNCTION__, "Could not remove connection. Field settings missing", [ 'status' => 400 ] );
         }
         if ( $field_setting["p2p_direction"] === "from" ){
             return p2p_type( $field_setting["p2p_key"] )->disconnect(
@@ -1820,8 +1820,8 @@ class Disciple_Tools_Posts
      * to use this instead of get_custom for performance reasons.
      *
      * @param array $post_settings This is what get_custom_fields_settings() returns
-     * @param int   $post_id     The ID number of the contact
-     * @param array $fields         This array will be mutated with the results
+     * @param int $post_id The ID number of the contact
+     * @param array $fields This array will be mutated with the results
      *
      * @return void
      */
@@ -1895,6 +1895,23 @@ class Disciple_Tools_Posts
                 $fields[ $key ] = $value[0];
             }
         }
+    }
+
+    /**
+     * Reduced the number of fields on a post to what is useful in D.T
+     *
+     * @param object $post
+     * @return array
+     */
+    public static function filter_wp_post_object_fields( object $post ){
+        return [
+            "ID" => $post->ID,
+            "post_type" => $post->post_type,
+            "post_date_gmt" => $post->post_date_gmt,
+            "post_date" => $post->post_date,
+            "post_title" => $post->post_title,
+            "permalink" => get_permalink( $post->ID )
+        ];
     }
 
     public static function format_post_contact_details( $post_settings, $meta_fields, $type, $key, $value ) {

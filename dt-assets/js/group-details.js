@@ -72,16 +72,6 @@ jQuery(document).ready(function($) {
     assignedToInput.trigger('input.typeahead')
   })
 
-  /**
-   * Share
-   */
-  let shareTypeahead = null
-  $('.open-share').on("click", function(){
-    $('#share-contact-modal').foundation('open');
-    if  (!shareTypeahead) {
-      shareTypeahead = TYPEAHEADS.share("group", groupId)
-    }
-  })
   
 
 

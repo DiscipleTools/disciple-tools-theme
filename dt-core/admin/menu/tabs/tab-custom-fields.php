@@ -204,7 +204,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         $post_fields = $this->get_post_fields( $post_type );
         if ( !isset( $post_fields[$field_key]["default"] ) ) {
-            wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
+            wp_die( 'Failed to get dt_site_custom_lists() from options table. Or field is missing the "default" field key' );
         }
         $field = $post_fields[$field_key];
 
@@ -219,6 +219,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         $first = true;
         $tile_options = dt_get_option( "dt_custom_tiles" );
         $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type );
+        if ( !isset( $tile_options[$post_type] ) ){
+            $tile_options[$post_type] = [];
+        }
         foreach ( $sections as $section_id ){
             $tile_options[$post_type][$section_id] = [];
         }
