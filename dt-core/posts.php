@@ -1073,7 +1073,23 @@ class Disciple_Tools_Posts
             $inner_joins .= " LEFT JOIN $wpdb->p2p as from_p2p ON ( from_p2p.p2p_to = $wpdb->posts.ID )";
         }
         if ( !empty( $location_sql )){
-            $inner_joins .= " INNER JOIN $wpdb->dt_geonames_counter as geonames_counter ON ( geonames_counter.post_id = $wpdb->posts.ID )";
+            $inner_joins .= " INNER JOIN (
+                    SELECT
+                        g.country_geonameid,
+                        g.admin1_geonameid,
+                        g.admin2_geonameid,
+                        g.admin3_geonameid,
+                        g.geonameid,
+                        g.level,
+                        p.post_id,
+                        IF (cu.meta_value IS NULL, pp.post_type, 'users' ) as type, 
+                    FROM $wpdb->postmeta as p
+                        JOIN $wpdb->posts as pp ON p.post_id=pp.ID
+                        LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+                        LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
+                        LEFT JOIN $wpdb->postmeta as cs ON cs.post_id=p.post_id AND cs.meta_key = 'overall_status'
+                    WHERE p.meta_key = 'geonames'
+            ) as geonames_counter ON ( geonames_counter.post_id = $wpdb->posts.ID )";
         }
 
         $access_query = $access_query ? ( "AND ( " . $access_query . " ) " ) : "";

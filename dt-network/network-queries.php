@@ -389,18 +389,9 @@ class Disciple_Tools_Network_Queries {
     }
 
     public static function locations_current_state() : array {
-        global $wpdb;
-
-        $results = $wpdb->get_row( "
-            SELECT
-            ( SELECT COUNT( DISTINCT country_geonameid) FROM $wpdb->dt_geonames_counter ) as active_countries,
-            ( SELECT COUNT( DISTINCT admin1_geonameid) FROM $wpdb->dt_geonames_counter ) as active_admin1,
-            ( SELECT COUNT( DISTINCT admin2_geonameid) FROM $wpdb->dt_geonames_counter ) as active_admin2
-        ", ARRAY_A );
-
-        if ( empty( $results ) ) {
-            $results = [];
-        }
+        $results['active_countries'] = Disciple_Tools_Mapping_Queries::active_countries_geonames();
+        $results['active_admin1'] = Disciple_Tools_Mapping_Queries::active_admin1_geonames();
+        $results['active_admin2'] = Disciple_Tools_Mapping_Queries::active_admin2_geonames();
 
         return $results;
     }

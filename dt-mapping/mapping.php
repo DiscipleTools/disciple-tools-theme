@@ -9,7 +9,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
      */
     global $wpdb;
     $wpdb->dt_geonames = $wpdb->prefix .'dt_geonames';
-    $wpdb->dt_geonames_counter = $wpdb->prefix . 'dt_geonames_counter';
 
     /*******************************************************************************************************************
      * MIGRATION ENGINE

@@ -12,7 +12,7 @@ class DT_Mapping_Module_Migration_0002 extends DT_Mapping_Module_Migration {
         }
 
         $file = 'geonames.tsv';
-        $expected = 48700;
+        $expected = 48500;
 
         // TEST for expected tables\
         $wpdb->query( "SHOW TABLES LIKE '$wpdb->dt_geonames'" );

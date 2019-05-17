@@ -1923,7 +1923,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <tr>
                         <td>
                             Current Geoname
-                            Records: <?php echo esc_attr( Disciple_Tools_Mapping_Queries::count_geonames() ) ?>
+                            Records: <?php echo esc_attr( Disciple_Tools_Mapping_Queries::get_total_record_count_in_geonames_database() ) ?>
                         </td>
                     </tr>
                     <tr>

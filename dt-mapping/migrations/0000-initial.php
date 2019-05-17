@@ -99,20 +99,6 @@ class DT_Mapping_Module_Migration_0000 extends DT_Mapping_Module_Migration {
                   FULLTEXT KEY `name` (`name`),
                   FULLTEXT KEY `alt_name` (`alt_name`)
                 ) $charset_collate;",
-            "{$wpdb->prefix}dt_geonames_counter" =>
-            "CREATE OR REPLACE ALGORITHM = MERGE VIEW {$wpdb->prefix}dt_geonames_counter AS    
-                SELECT
-                (NULL) as country_geonameid,
-                (NULL) as admin1_geonameid,
-                (NULL) as admin2_geonameid,
-                (NULL) as admin3_geonameid,
-                (NULL) as geonameid,
-   				(NULL) as level,
-                (NULL) as post_id,
-                (NULL) as type, 
-                (NULL) as status,
-                (NULL) as created_date,
-                (NULL) as end_date;",
         );
     }
 
