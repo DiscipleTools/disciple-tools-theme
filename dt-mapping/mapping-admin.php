@@ -2011,7 +2011,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 if ( isset( $data[29] ) ) {
                     $wpdb->query( $wpdb->prepare( "
                         INSERT IGNORE INTO $wpdb->dt_geonames
-                        VALUES (%d,%s,%s,%s,%d,%d,%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%s,%d,%d,%d,%d,%d,%s,%d,%d,%d,%d,%s,null,null,null)",
+                        VALUES (%d,%s,%s,%s,%d,%d,%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%s,%d,%d,%d,%d,%d,%s,%d,%d,%d,%d,%s,%d,%d,%d,%d)",
                         $data[0], // geonameid
                         $data[1],
                         $data[2],
@@ -2037,11 +2037,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         $data[22],
                         $data[23],
                         $data[24], // level
-                        $data[25],
-                        $data[26],
-                        $data[27],
-                        $data[28],
-                        $data[29]
+                        $data[25], //n
+                        $data[26], //s
+                        $data[27], //w
+                        $data[28], //e
+                        $data[29], // alt name
+                        $data[30], // alt_population
+                        $data[31], // is_custom_location
+                        $data[32], // alt_name_changed
+                        $data[33] // has polygons
                     ) );
                 }
             }

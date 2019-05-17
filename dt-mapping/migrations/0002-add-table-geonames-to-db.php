@@ -12,7 +12,7 @@ class DT_Mapping_Module_Migration_0002 extends DT_Mapping_Module_Migration {
         }
 
         $file = 'geonames.tsv';
-        $expected = 48500;
+        $expected = 48000;
 
         // TEST for expected tables\
         $wpdb->query( "SHOW TABLES LIKE '$wpdb->dt_geonames'" );
@@ -47,7 +47,7 @@ class DT_Mapping_Module_Migration_0002 extends DT_Mapping_Module_Migration {
                 INTO TABLE $wpdb->dt_geonames
                 FIELDS TERMINATED BY '\t'
                 LINES TERMINATED BY '\n'
-                (geonameid,name,asciiname,alternatenames,latitude,longitude,feature_class,feature_code,country_code,cc2,admin1_code,admin2_code,admin3_code,admin4_code,population,elevation,dem,timezone,modification_date,parent_id,country_geonameid,admin1_geonameid,admin2_geonameid,admin3_geonameid,level,north_latitude,south_latitude,west_longitude,east_longitude,alt_name)
+                (geonameid,name,asciiname,alternatenames,latitude,longitude,feature_class,feature_code,country_code,cc2,admin1_code,admin2_code,admin3_code,admin4_code,population,elevation,dem,timezone,modification_date,parent_id,country_geonameid,admin1_geonameid,admin2_geonameid,admin3_geonameid,level,north_latitude,south_latitude,west_longitude,east_longitude,alt_name,alt_population,is_custom_location,alt_name_changed,has_polygon)
                 ", $file_location ) );
 
 
