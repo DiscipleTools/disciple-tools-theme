@@ -3,7 +3,7 @@ jQuery(document).ready(function() {
     if('#mapping_view' === window.location.hash) {
         console.log(DRILLDOWNDATA)
         if ( window.am4geodata_worldLow === undefined ) {
-          mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'polygons/world.geojson'
+          mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'polygon_collection/world.geojson'
           jQuery.getJSON( mapUrl, function( data ) {
             window.am4geodata_worldLow = data
             page_mapping_view()
@@ -18,7 +18,7 @@ jQuery(document).ready(function() {
     if('#mapping_list' === window.location.hash) {
         console.log(DRILLDOWNDATA)
         if ( window.am4geodata_worldLow === undefined ) {
-          mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'polygons/world.geojson'
+          mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'polygon_collection/world.geojson'
           jQuery.getJSON( mapUrl, function( data ) {
             window.am4geodata_worldLow = data
             page_mapping_list()
@@ -399,7 +399,7 @@ function top_level_map( div ) {
             } else {
                 // multiple countries selected. So load the world and reduce the polygons
 
-                mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'polygons/' +default_map_settings.parent+ '.geojson'
+                mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'polygon_collection/' +default_map_settings.parent+ '.geojson'
                 jQuery.getJSON( mapUrl, function( data ) {
 
                     // set title
@@ -575,7 +575,7 @@ function geoname_map( div, geonameid ) {
     function build_map( response ) {
       title.html(response.self.name)
 
-      jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'polygons/' + geonameid+'.geojson', function( data ) { // get geojson data
+      jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'polygon_collection/' + geonameid+'.geojson', function( data ) { // get geojson data
 
         // load geojson with additional parameters
         let mapData = data
@@ -682,76 +682,57 @@ function geoname_map( div, geonameid ) {
 
 
         .fail(function() {
-        // if failed to get multi polygon map, then get boundary map and fill with placemarks
+          // if failed to get multi polygon map, then get boundary map and fill with placemarks
 
-          jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'single_polygons/' + geonameid+'.geojson', function( data ) {
+          jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'polygon/' + geonameid+'.geojson', function( data ) {
             // Create map polygon series
 
-            let mapData = data
-            let i = 0
-            mapData.features[i].properties.population = response.self.population
+            let polygon = data
 
-            /* custom columns */
-            if ( DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
-              /* Note: Amcharts calculates heatmap off last variable. So this section moves selected
-              * heatmap variable to the end of the array */
-              let focus = DRILLDOWNDATA.settings.heatmap_focus
-              jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                if ( ii !== focus ) {
-                  mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
-                  mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
-                }
-              })
-              jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                if ( ii === focus ) {
-                  mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
-                  mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
-                }
-              })
-            } else {
-              jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                mapData.features[i].properties[vv.key] = 0
-                mapData.features[i].properties.value = 0
-              })
-            }
-            /* end custom column */
-            chart.geodata = mapData;
+            chart.geodata = polygon;
 
             chart.projection = new am4maps.projections.Miller();
             let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
-            polygonSeries.exclude = ["AQ"];
             polygonSeries.useGeodata = true;
-
-            let template = polygonSeries.mapPolygons.template;
-
-            // create tool tip
-            let toolTipContent = `<strong>{name}</strong><br>
-                            ---------<br>
-                            Population: {population}<br>
-                            `;
-            jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
-              toolTipContent += vc.label + ': {' + vc.key + '}<br>'
-            })
-            template.tooltipHTML = toolTipContent
-
-            // Create hover state and set alternative fill color
-            let hs = template.states.create("hover");
-            hs.properties.fill = am4core.color("#3c5bdc");
 
 
             let imageSeries = chart.series.push(new am4maps.MapImageSeries());
 
             let locations = []
             jQuery.each( DRILLDOWNDATA.data[geonameid].children, function(i, v) {
+
+              /* custom columns */
+              if ( DRILLDOWNDATA.data.custom_column_data[v.geonameid] ) {
+                /* Note: Amcharts calculates heatmap off last variable. So this section moves selected
+                * heatmap variable to the end of the array */
+                let focus = DRILLDOWNDATA.settings.heatmap_focus
+                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
+                  if ( ii !== focus ) {
+                    v[vv.key] = DRILLDOWNDATA.data.custom_column_data[v.geonameid][ii]
+                  }
+                })
+                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
+                  if ( ii === focus ) {
+                    v[vv.key] = DRILLDOWNDATA.data.custom_column_data[v.geonameid][ii]
+                  }
+                })
+              } else {
+                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
+                  v[vv.key] = 0
+                })
+              }
+              /* end custom column */
+
               locations.push( v )
             } )
             imageSeries.data = locations;
 
+
             let imageSeriesTemplate = imageSeries.mapImages.template;
             let circle = imageSeriesTemplate.createChild(am4core.Circle);
-            circle.radius = 13;
-            circle.fill = am4core.color("#8bc34a");
-            circle.stroke = am4core.color("#8bc34a");
+            circle.radius = 6;
+            circle.fill = am4core.color("#3c5bdc");
+            circle.stroke = am4core.color("#3c5bdc");
             circle.strokeWidth = 2;
             circle.nonScaling = true;
 
@@ -764,7 +745,21 @@ function geoname_map( div, geonameid ) {
 
             }, this);
 
-            circle.tooltipText = "[bold]{name}[/] \n";
+            let circleTipContent = `<strong>{name}</strong><br>
+                            ---------<br>
+                            Population: {population}<br>
+                            `;
+            jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
+              circleTipContent += vc.label + ': {' + vc.key + '}<br>'
+            })
+            circle.tooltipHTML = circleTipContent
+
+            imageSeries.heatRules.push({
+              property: "fill",
+              target: circle,
+              min: chart.colors.getIndex(1).brighten(1.5),
+              max: chart.colors.getIndex(1).brighten(-0.3)
+            });
 
             imageSeriesTemplate.propertyFields.latitude = "latitude";
             imageSeriesTemplate.propertyFields.longitude = "longitude";
