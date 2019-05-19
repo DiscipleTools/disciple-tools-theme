@@ -83,6 +83,7 @@ class DT_Mapping_Module_Migration_0000 extends DT_Mapping_Module_Migration {
                   `is_custom_location` TINYINT(1) NOT NULL DEFAULT 0,
                   `alt_name_changed` TINYINT(1) NOT NULL DEFAULT 0,
                   `has_polygon` TINYINT(1) NOT NULL DEFAULT 0,
+                  `has_polygon_collection` TINYINT(1) NOT NULL DEFAULT 0,
                   PRIMARY KEY (`geonameid`),
                   KEY `feature_code` (`feature_code`),
                   KEY `country_code` (`country_code`),
@@ -98,6 +99,7 @@ class DT_Mapping_Module_Migration_0000 extends DT_Mapping_Module_Migration {
                   KEY `west_longitude` (`west_longitude`),
                   KEY `east_longitude` (`east_longitude`),
                   KEY `has_polygon` (`has_polygon`),
+                  KEY `has_polygon` (`has_polygon_collection`),
                   FULLTEXT KEY `name` (`name`),
                   FULLTEXT KEY `alt_name` (`alt_name`)
                 ) $charset_collate;",
