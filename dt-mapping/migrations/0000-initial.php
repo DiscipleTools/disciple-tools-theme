@@ -99,7 +99,7 @@ class DT_Mapping_Module_Migration_0000 extends DT_Mapping_Module_Migration {
                   KEY `west_longitude` (`west_longitude`),
                   KEY `east_longitude` (`east_longitude`),
                   KEY `has_polygon` (`has_polygon`),
-                  KEY `has_polygon` (`has_polygon_collection`),
+                  KEY `has_polygon_collection` (`has_polygon_collection`),
                   FULLTEXT KEY `name` (`name`),
                   FULLTEXT KEY `alt_name` (`alt_name`)
                 ) $charset_collate;",

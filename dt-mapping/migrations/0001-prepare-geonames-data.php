@@ -20,6 +20,7 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
             mkdir( $uploads_dir . 'geonames' );
         }
 
+
         // get mirror source file url
         require_once( get_template_directory() . '/dt-core/global-functions.php' );
         $mirror_source = dt_get_theme_data_url();
@@ -27,6 +28,7 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
         $gn_source_url = $mirror_source . 'geonames/geonames.tsv.zip';
 
         $zip_file = $uploads_dir . "geonames/geonames.tsv.zip";
+        // @todo add delete current files if exist.
 
         $zip_resource = fopen( $zip_file, "w" );
 
