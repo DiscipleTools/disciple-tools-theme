@@ -16,7 +16,7 @@ function prayer_overview() {
         <span style="float:right;"><i class="fi-info primary-color"></i> </span>
         
         <div class="grid-x grid-padding-x grid-padding-y">
-            <div class="cell medium-2"><span class="section-header">${ translations.title_1 }</span> </div>
+            <div class="cell medium-2"><span class="section-header">${ _.escape( translations.title_1 ) }</span> </div>
             <div class="cell medium-2">
                 <span><select id="days">
                     <option value="7">Last 7 Days</option>
