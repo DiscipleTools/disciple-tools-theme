@@ -549,7 +549,7 @@
   $(`#confirm-filter-save`).on('click', function () {
     let filterName = $('#filter-name').val()
     let filter = _.find(customFilters, {ID:filterToSave})
-    filter.name = filterName
+    filter.name = _.escape( filterName )
     if (filter.query){
       savedFilters[wpApiListSettings.current_post_type].push(filter)
       API.save_filters(savedFilters).then(()=>{
