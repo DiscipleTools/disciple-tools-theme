@@ -1737,7 +1737,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $mirror = dt_get_saturation_mapping_mirror();
 
             set_error_handler( [ $this, "warning_handler" ], E_WARNING );
-            $list = file_get_contents( $mirror['url'] . 'polygons/available_polygons.json' );
+            $list = file_get_contents( $mirror['url'] . 'polygon/available_polygons.json' );
             restore_error_handler();
 
             if ( $list ) {

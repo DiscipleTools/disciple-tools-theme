@@ -1721,7 +1721,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             return $result['name'] ?? '';
         }
 
-        public function get_available_geojson() {
+        public function get_available_geojson() { // @todo needs upgrade. Now polygon, polygon_collection are both folders to check
 
             if ( get_transient( 'dt_mapping_module_available_geojson' ) ) {
                 return get_transient( 'dt_mapping_module_available_geojson' );
@@ -1730,7 +1730,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             // get mirror source
             $mirror_source = dt_get_saturation_mapping_mirror( true );
             // get new array
-            $list = file_get_contents( $mirror_source . 'polygons/available_polygons.json' );
+            $list = file_get_contents( $mirror_source . 'polygon/available_polygons.json' );
             if ( ! $list ) {
                 dt_write_log( 'Failed to retrieve available locations list. Check Mapping admin configuration.' );
                 dt_write_log( $list );
