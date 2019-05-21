@@ -97,8 +97,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             if ( isset( $_SERVER["REQUEST_URI"] ) ) {
                 $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
             }
+            return trim( str_replace( get_site_url(), "", $url ), '/' );
         }
-        return trim( str_replace( get_site_url(), "", $url ), '/' );
+        return '';
     }
 
     function dt_array_to_sql( $values ) {

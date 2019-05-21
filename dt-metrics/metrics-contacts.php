@@ -428,7 +428,7 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
                 self::check_date_string( $params['end'] );
                 return self::get_source_data_from_db( $params['start'], $params['end'] );
             } else {
-                return self::get_data_source_from_db();
+                return self::get_source_data_from_db();
             }
         } catch (Exception $e) {
             error_log( $e );

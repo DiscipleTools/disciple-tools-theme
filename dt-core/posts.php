@@ -211,7 +211,7 @@ class Disciple_Tools_Posts
         return $shares;
     }
 
-    public static function format_connection_message( $p2p_id, $action = 'connected to', $activity ){
+    public static function format_connection_message( $p2p_id, $activity, $action = 'connected to' ){
         // Get p2p record
         $p2p_record = p2p_get_connection( (int) $p2p_id ); // returns object
 
@@ -456,7 +456,7 @@ class Disciple_Tools_Posts
             $user = get_user_by( "ID", $activity->user_id );
             $message = sprintf( __( "%s accepted assignment", 'disciple_tools' ), $user->display_name ?? __( "A user", "disciple_tools" ) );
         } elseif ( $activity->object_subtype === "p2p" ){
-            $message = self::format_connection_message( $activity->meta_id, $activity->action, $activity );
+            $message = self::format_connection_message( $activity->meta_id, $activity, $activity->action );
         } elseif ( $activity->object_subtype === "share" ){
             if ($activity->action === "share"){
                 $message = sprintf( __( "Shared with %s", "disciple_tools" ), dt_get_user_display_name( $activity->meta_value ) );
