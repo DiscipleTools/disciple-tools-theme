@@ -313,12 +313,12 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                         <button type="submit" name="move_down" value="<?php echo esc_html( $key ) ?>" class="button small" >↓</button>
                                     <?php endif; ?>
                                 </td>
-                                    <td>
-                                        <?php if ( ( isset( $defaults[$field_key]["customizable"] ) && $defaults[$field_key]["customizable"] === "all" )
-                                            || !isset( $defaults[$field_key]["default"][$key] )) : ?>
-                                        <button type="submit" name="delete_option" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "Hide", 'disciple_tools' ) ?></button>
-                                        <?php endif; ?>
-                                    </td>
+                                <td>
+                                    <?php if ( ( isset( $field["customizable"] ) && $field["customizable"] === "all" )
+                                        || !isset( $field["default"][$key] )) : ?>
+                                    <button type="submit" name="delete_option" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "Hide", 'disciple_tools' ) ?></button>
+                                    <?php endif; ?>
+                                </td>
                             </tr>
                             <?php $first = false;
                         endif;

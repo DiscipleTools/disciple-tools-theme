@@ -192,7 +192,7 @@ class Disciple_Tools_Posts
         global $wpdb;
         $shares = $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT * 
+                "SELECT *
                 FROM $wpdb->dt_share as shares
                 INNER JOIN $wpdb->posts as posts
                 WHERE user_id = %d
@@ -1328,6 +1328,10 @@ class Disciple_Tools_Posts
                     $fields["address"][] = $details;
                 }
             } elseif ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]["type"] == "key_select" && !empty( $value[0] )) {
+                if ( empty( $value[0] ) ){
+                    unset( $fields[$key] );
+                    continue;
+                }
                 $value_options = $field_settings[ $key ]["default"][ $value[0] ] ?? $value[0];
                 if ( isset( $value_options["label"] ) ){
                     $label = $value_options["label"];

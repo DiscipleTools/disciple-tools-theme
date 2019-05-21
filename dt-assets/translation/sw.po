@@ -46,33 +46,34 @@ msgstr "Ukurasa uliotafuta haupatikani au ulifutika"
 msgid "All"
 msgstr "Wote"
 
-#: archive-contacts.php:22 dt-assets/js/list.js:424
+#: archive-contacts.php:22 dt-assets/functions/enqueue-scripts.php:288
 #: dt-groups/groups-post-type.php:250
 msgid "Active"
 msgstr "Walio Amilifu"
 
-#: archive-contacts.php:28 dt-assets/js/list.js:421
+#: archive-contacts.php:28 dt-assets/functions/enqueue-scripts.php:287
 #: template-notifications.php:35
 msgid "New"
 msgstr "Wapya"
 
-#: archive-contacts.php:33 dt-assets/js/list.js:427
+#: archive-contacts.php:33 dt-assets/functions/enqueue-scripts.php:282
+#: dt-assets/functions/enqueue-scripts.php:286
 msgid "Dispatch needed"
 msgstr "Utumaji unahitajika"
 
-#: archive-contacts.php:39 dt-assets/js/list.js:418
+#: archive-contacts.php:39 dt-assets/functions/enqueue-scripts.php:281
 msgid "Waiting to be accepted"
 msgstr "Wanaosubiri kupokelewa"
 
-#: archive-contacts.php:44 dt-assets/js/list.js:429
+#: archive-contacts.php:44 dt-assets/functions/enqueue-scripts.php:283
 msgid "Update needed"
 msgstr "Sasisho inahitajika"
 
-#: archive-contacts.php:49 dt-assets/js/list.js:438
+#: archive-contacts.php:49 dt-assets/functions/enqueue-scripts.php:285
 msgid "Contact attempt needed"
 msgstr "Mawasiliano yanahitajika"
 
-#: archive-contacts.php:54 dt-assets/js/list.js:434
+#: archive-contacts.php:54 dt-assets/functions/enqueue-scripts.php:284
 msgid "Meeting scheduled"
 msgstr "Mkutano umepangwa"
 
@@ -110,15 +111,15 @@ msgstr "Vichujio vya Waasiliani"
 msgid "All contacts"
 msgstr "Waasiliani wote"
 
-#: archive-contacts.php:143 dt-assets/js/list.js:413
+#: archive-contacts.php:143 dt-assets/functions/enqueue-scripts.php:278
 msgid "Assigned to me"
 msgstr "Waliopewa kwangu"
 
-#: archive-contacts.php:152 dt-assets/js/list.js:409
+#: archive-contacts.php:152 dt-assets/functions/enqueue-scripts.php:279
 msgid "Subassigned to me"
 msgstr "Waliopewa kwangu na mwingine"
 
-#: archive-contacts.php:161 dt-assets/js/list.js:406
+#: archive-contacts.php:161 dt-assets/functions/enqueue-scripts.php:280
 msgid "Shared with me"
 msgstr "Walioshirikishwa kwangu"
 
@@ -140,7 +141,7 @@ msgid "Assigned To"
 msgstr "Nani amepewa?"
 
 #: archive-contacts.php:236 archive-groups.php:198
-#: dt-assets/functions/enqueue-scripts.php:275
+#: dt-assets/functions/enqueue-scripts.php:292
 msgid "Creation Date"
 msgstr "Tarehe ya Kuundwa"
 
@@ -182,16 +183,16 @@ msgstr "Kumalizia Wapi"
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:22
-#: dt-assets/parts/modals/modal-new-group.php:22 single-contacts.php:520
-#: single-contacts.php:547 single-contacts.php:573 single-contacts.php:634
-#: single-contacts.php:715 single-contacts.php:769 single-contacts.php:818
+#: dt-assets/parts/modals/modal-new-group.php:22 single-contacts.php:522
+#: single-contacts.php:549 single-contacts.php:575 single-contacts.php:599
+#: single-contacts.php:680 single-contacts.php:734 single-contacts.php:783
 msgid "Cancel"
 msgstr "Katisha"
 
 #: archive-contacts.php:342 archive-groups.php:297
-#: dt-assets/functions/enqueue-scripts.php:267
+#: dt-assets/functions/enqueue-scripts.php:273
 #: dt-assets/parts/contact-details.php:463
-#: dt-assets/parts/group-details.php:298 template-settings.php:500
+#: dt-assets/parts/group-details.php:298 template-settings.php:515
 msgid "Save"
 msgstr "Hifadhi"
 
@@ -237,7 +238,7 @@ msgid "Posts by %s"
 msgstr "Vichapisho kwa %"
 
 #: dt-assets/functions/details-bar.php:35
-#: dt-core/admin/config-site-defaults.php:310
+#: dt-core/admin/config-site-defaults.php:311
 msgid "Update Needed"
 msgstr "Sasisho Inahitajika"
 
@@ -289,139 +290,139 @@ msgstr "Huna taarifa isiyosomeka"
 msgid "You don't have any notifications"
 msgstr "Huna taarifa yoyote"
 
-#: dt-assets/functions/enqueue-scripts.php:155
+#: dt-assets/functions/enqueue-scripts.php:154
 msgid "Created record at {}"
 msgstr "Rekodi iliundwa {}"
 
-#: dt-assets/functions/enqueue-scripts.php:159
+#: dt-assets/functions/enqueue-scripts.php:158
 #: dt-locations/locations-post-type.php:472
 msgid "edit"
 msgstr "hariri"
 
-#: dt-assets/functions/enqueue-scripts.php:160
+#: dt-assets/functions/enqueue-scripts.php:159
 msgid "delete"
 msgstr "futa"
 
-#: dt-assets/functions/enqueue-scripts.php:173
+#: dt-assets/functions/enqueue-scripts.php:179
 #: dt-assets/parts/contact-details.php:270
 #: dt-assets/parts/contact-details.php:369
 msgid "No source set"
 msgstr "Hakuna chanzo kilichowekwa"
 
-#: dt-assets/functions/enqueue-scripts.php:174
+#: dt-assets/functions/enqueue-scripts.php:180
 #: dt-assets/parts/group-details.php:119
 msgid "No location set"
 msgstr "Hakuna eneo lililowekwa"
 
-#: dt-assets/functions/enqueue-scripts.php:175
+#: dt-assets/functions/enqueue-scripts.php:181
 msgid "No leaders set"
 msgstr "Hakuna viongozi waliowekwa"
 
-#: dt-assets/functions/enqueue-scripts.php:176
+#: dt-assets/functions/enqueue-scripts.php:182
 #: dt-assets/parts/group-details.php:138
 msgid "No people group set"
 msgstr "Hakuna kikundi cha watu kilichowekwa"
 
-#: dt-assets/functions/enqueue-scripts.php:177
+#: dt-assets/functions/enqueue-scripts.php:183
 msgid "No email set"
 msgstr "Hakuna barua pepe iliyowekwa"
 
-#: dt-assets/functions/enqueue-scripts.php:178
+#: dt-assets/functions/enqueue-scripts.php:184
 msgid "No phone set"
 msgstr "Hakuna simu iliyowekwa"
 
-#: dt-assets/functions/enqueue-scripts.php:179
+#: dt-assets/functions/enqueue-scripts.php:185
 #: dt-assets/parts/group-details.php:154
 msgid "No address set"
 msgstr "Hakuna anwani iliyowekwa"
 
-#: dt-assets/functions/enqueue-scripts.php:180
+#: dt-assets/functions/enqueue-scripts.php:186
 msgid "None set"
 msgstr "Hakuna chochote kilichowekwa"
 
-#: dt-assets/functions/enqueue-scripts.php:181
+#: dt-assets/functions/enqueue-scripts.php:187
 msgid "No sub-assigned set"
 msgstr "Hakuna waliopewa na wengine"
 
-#: dt-assets/functions/enqueue-scripts.php:182
+#: dt-assets/functions/enqueue-scripts.php:188
 #: dt-assets/parts/contact-details.php:230
 msgid "No age set"
 msgstr "Hakuna umri uliowekwa"
 
-#: dt-assets/functions/enqueue-scripts.php:183
+#: dt-assets/functions/enqueue-scripts.php:189
 #: dt-assets/parts/contact-details.php:249
 msgid "No gender set"
 msgstr "Hakuna jinsia iliyowekwa"
 
-#: dt-assets/functions/enqueue-scripts.php:185
+#: dt-assets/functions/enqueue-scripts.php:191
 msgid "Valid"
 msgstr "Halali"
 
-#: dt-assets/functions/enqueue-scripts.php:186
+#: dt-assets/functions/enqueue-scripts.php:192
 msgid "Invalid"
 msgstr "Siyo Halali"
 
-#: dt-assets/functions/enqueue-scripts.php:187
+#: dt-assets/functions/enqueue-scripts.php:193
 msgid "Unconfirmed"
 msgstr "Haijathibitishwa"
 
-#: dt-assets/functions/enqueue-scripts.php:188
+#: dt-assets/functions/enqueue-scripts.php:194
 msgid "Delete item"
 msgstr "Futa kipengee"
 
-#: dt-assets/functions/enqueue-scripts.php:189
+#: dt-assets/functions/enqueue-scripts.php:195
 msgid "email"
 msgstr "barua pepe"
 
-#: dt-assets/functions/enqueue-scripts.php:190
+#: dt-assets/functions/enqueue-scripts.php:196
 msgid "Transfer failed. Check site-to-site configuration."
 msgstr "Uhamisho umeshindikana. Angalia usanidi tovuti kwa tovuti"
 
-#: dt-assets/functions/enqueue-scripts.php:268
+#: dt-assets/functions/enqueue-scripts.php:274
 #: dt-assets/parts/contact-details.php:57 dt-assets/parts/group-details.php:27
 #: dt-core/admin/multi-role/functions-admin.php:38 template-settings.php:57
 #: template-settings.php:387
 msgid "Edit"
 msgstr "Hariri"
 
-#: dt-assets/functions/enqueue-scripts.php:269
+#: dt-assets/functions/enqueue-scripts.php:275
 #: dt-assets/parts/loop-activity-comment.php:121
 msgid "Delete"
 msgstr "Futa"
 
-#: dt-assets/functions/enqueue-scripts.php:270
+#: dt-assets/functions/enqueue-scripts.php:276
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "Inaonyesha_START_of_TOTAL_"
 
-#: dt-assets/functions/enqueue-scripts.php:271
+#: dt-assets/functions/enqueue-scripts.php:277
 msgctxt "Contacts or Groups"
 msgid "All %s"
 msgstr "%s Yote"
 
 #. "mwanzo" is the noun and means "the beginning or start" If it is meant to be an action as it "begin" then the correct translation would be "anza"
-#: dt-assets/functions/enqueue-scripts.php:272
+#: dt-assets/functions/enqueue-scripts.php:289
 msgid "start"
 msgstr "mwanzo"
 
 #. "mwisho" is the noun as in "the end" If it is meant to be in verb form as in "stop" then the correct translation would be "maliza"
-#: dt-assets/functions/enqueue-scripts.php:273
+#: dt-assets/functions/enqueue-scripts.php:290
 msgid "end"
 msgstr "mwisho"
 
-#: dt-assets/functions/enqueue-scripts.php:274
+#: dt-assets/functions/enqueue-scripts.php:291
 msgid "Sorting By"
 msgstr "Kuorodhesha Kwa"
 
-#: dt-assets/functions/enqueue-scripts.php:276
+#: dt-assets/functions/enqueue-scripts.php:293
 msgid "Date Modified"
 msgstr "Tarehe Ambayo Ilibadiliwa"
 
-#: dt-assets/functions/enqueue-scripts.php:278
+#: dt-assets/functions/enqueue-scripts.php:295
 msgid "Showing 0 to 0 of 0 entries"
 msgstr "Inaonyesha 0 hadi 0 ya vipengee 0"
 
-#: dt-assets/functions/enqueue-scripts.php:279
+#: dt-assets/functions/enqueue-scripts.php:296
 msgctxt "just copy `_MAX_`"
 msgid "(filtered from _MAX_ total entries)"
 msgstr "(kutoka kwenye _MAX_ vipengee)"
@@ -432,14 +433,15 @@ msgstr "Viungo vya Kijachini"
 
 #: dt-assets/functions/menu.php:13 dt-assets/functions/menu.php:73
 #: dt-assets/parts/content-contacts.php:5 dt-metrics/metrics-contacts.php:43
-#: dt-metrics/metrics-personal.js:20
+#: dt-metrics/metrics-personal.php:66 dt-metrics/metrics-project.php:81
 msgid "Contacts"
 msgstr "Waasiliani"
 
 #: dt-assets/functions/menu.php:16 dt-assets/functions/menu.php:76
 #: dt-assets/parts/content-groups.php:5 dt-core/posts.php:29
-#: dt-groups/groups-post-type.php:99 dt-metrics/metrics-personal.js:37
-#: single-contacts.php:268 single-groups.php:146
+#: dt-groups/groups-post-type.php:99 dt-metrics/metrics-personal.php:67
+#: dt-metrics/metrics-project.php:82 single-contacts.php:268
+#: single-groups.php:146
 msgid "Groups"
 msgstr "Vikundi"
 
@@ -502,7 +504,6 @@ msgstr "Mwasiliani huyu ni mtumiaji"
 #: dt-assets/parts/contact-details.php:64
 #: dt-assets/parts/content-contacts.php:41
 #: dt-assets/parts/content-groups.php:41 dt-assets/parts/group-details.php:34
-#: dt-locations/utilities/tab-import-csv.php:324
 msgid "Status"
 msgstr "Hali"
 
@@ -512,7 +513,7 @@ msgid "Assigned to"
 msgstr "Nani amepewa?"
 
 #: dt-assets/parts/contact-details.php:125 dt-assets/parts/group-details.php:68
-#: dt-assets/parts/modals/modal-share.php:25 single-contacts.php:747
+#: dt-assets/parts/modals/modal-share.php:25 single-contacts.php:712
 msgid "Search Users"
 msgstr "Tafuta Watumiaji"
 
@@ -522,7 +523,7 @@ msgid "Sub-assigned to"
 msgstr "Nani amepewa na mwingine"
 
 #: dt-assets/parts/contact-details.php:151 single-contacts.php:305
-#: single-contacts.php:661 single-contacts.php:797
+#: single-contacts.php:626 single-contacts.php:762
 msgid "Search multipliers and contacts"
 msgstr "Tafuta wazidishaji na waasiliani"
 
@@ -543,10 +544,9 @@ msgstr "Anwani"
 #: dt-assets/parts/contact-details.php:440
 #: dt-assets/parts/group-details.php:107 dt-assets/parts/group-details.php:275
 #: dt-contacts/contacts-post-type.php:538 dt-core/posts.php:28
-#: dt-groups/groups-post-type.php:374
-#: dt-locations/utilities/tab-import-csv.php:169
-#: dt-metrics/metrics-project.js:480 dt-metrics/metrics-project.php:47
-#: template-settings.php:165 template-settings.php:447
+#: dt-groups/groups-post-type.php:374 dt-metrics/metrics-project.php:47
+#: dt-metrics/metrics-project.php:97 template-settings.php:165
+#: template-settings.php:447
 msgid "Locations"
 msgstr "Maeneo"
 
@@ -652,8 +652,8 @@ msgid "Location"
 msgstr "Eneo"
 
 #: dt-assets/parts/content-contacts.php:46 dt-groups/groups-post-type.php:98
-#: dt-groups/groups-post-type.php:262 dt-metrics/metrics-personal.js:211
-#: dt-metrics/metrics-project.js:231
+#: dt-groups/groups-post-type.php:262 dt-metrics/metrics-personal.php:84
+#: dt-metrics/metrics-project.php:115
 msgid "Group"
 msgstr "Kikundi"
 
@@ -766,7 +766,7 @@ msgstr "Futa Maoni:"
 #: dt-assets/parts/loop-activity-comment.php:138
 #: dt-assets/parts/modals/modal-help.php:96
 #: dt-assets/parts/modals/modal-revert.php:15
-#: dt-assets/parts/modals/modal-share.php:48 single-contacts.php:679
+#: dt-assets/parts/modals/modal-share.php:48 single-contacts.php:644
 #: single-groups.php:332
 msgid "Close"
 msgstr "Funga"
@@ -820,8 +820,8 @@ msgstr "Ondosha"
 msgid "Unsure"
 msgstr "Huna Hakika"
 
-#: dt-assets/parts/merge-details.php:178 single-contacts.php:776
-#: single-contacts.php:825
+#: dt-assets/parts/merge-details.php:178 single-contacts.php:741
+#: single-contacts.php:790
 msgid "Merge"
 msgstr "Unganisha"
 
@@ -881,8 +881,8 @@ msgid "Name of Contact"
 msgstr "Jina la Mwasiliani"
 
 #: dt-assets/parts/modals/modal-new-contact.php:10
-#: dt-assets/parts/modals/modal-new-group.php:10 single-contacts.php:629
-#: single-contacts.php:702 template-contacts-new.php:22
+#: dt-assets/parts/modals/modal-new-group.php:10 single-contacts.php:594
+#: single-contacts.php:667 template-contacts-new.php:22
 #: template-groups-new.php:23
 msgid "This is required"
 msgstr "Hii inahitajika"
@@ -982,11 +982,11 @@ msgstr "Maelezo Mafupi"
 msgid "Help"
 msgstr "Msaada"
 
-#: dt-contacts/contacts-endpoints.php:844
+#: dt-contacts/contacts-endpoints.php:845
 msgid "Transfer token error."
 msgstr "Kosa juu ya tuzo ya uhamisho."
 
-#: dt-contacts/contacts-endpoints.php:851
+#: dt-contacts/contacts-endpoints.php:852
 msgid "Permission error."
 msgstr "Kosa juu ya kibali."
 
@@ -1132,7 +1132,7 @@ msgid "Sharing Gospel/Testimony"
 msgstr "Anashirikisha Injili / Ushuhuda"
 
 #: dt-contacts/contacts-post-type.php:285 dt-core/posts.php:32
-#: single-contacts.php:291 single-contacts.php:647
+#: single-contacts.php:291 single-contacts.php:612
 msgid "Baptized"
 msgstr "Amebatizwa"
 
@@ -1149,7 +1149,7 @@ msgid "Starting Churches"
 msgstr "Anaanzisha Makanisa"
 
 #: dt-contacts/contacts-post-type.php:295 single-contacts.php:377
-#: single-contacts.php:669
+#: single-contacts.php:634
 msgid "Baptism Date"
 msgstr "Tarehe ya Ubatizo"
 
@@ -1309,8 +1309,8 @@ msgstr "Haijulikani"
 msgid "Accepted"
 msgstr "Amekubaliwa"
 
-#: dt-contacts/contacts-post-type.php:412 dt-metrics/metrics-contacts.js:144
-#: dt-metrics/metrics-contacts.php:46
+#: dt-contacts/contacts-post-type.php:412 dt-metrics/metrics-contacts.php:46
+#: dt-metrics/metrics-contacts.php:95
 msgid "Sources"
 msgstr "Vyanzo"
 
@@ -1394,12 +1394,12 @@ msgstr "Ya Mkononi"
 
 #: dt-contacts/contacts-post-type.php:715
 #: dt-contacts/contacts-post-type.php:724
-#: dt-core/admin/config-site-defaults.php:558 dt-core/posts.php:1570
+#: dt-core/admin/config-site-defaults.php:559 dt-core/posts.php:1574
 msgid "Work"
 msgstr "Ya Kazini"
 
 #: dt-contacts/contacts-post-type.php:716
-#: dt-core/admin/config-site-defaults.php:557 dt-core/posts.php:1569
+#: dt-core/admin/config-site-defaults.php:558 dt-core/posts.php:1573
 msgid "Home"
 msgstr "Ya Nyumbani"
 
@@ -1407,12 +1407,12 @@ msgstr "Ya Nyumbani"
 #: dt-contacts/contacts-post-type.php:725
 #: dt-contacts/contacts-post-type.php:763
 #: dt-contacts/contacts-post-type.php:765
-#: dt-core/admin/config-site-defaults.php:559 dt-core/posts.php:1571
-#: single-contacts.php:456 template-settings.php:141
+#: dt-core/admin/config-site-defaults.php:560 dt-core/posts.php:1575
+#: single-contacts.php:458 template-settings.php:141
 msgid "Other"
 msgstr "Nyingine"
 
-#: dt-contacts/contacts-post-type.php:721 single-contacts.php:699
+#: dt-contacts/contacts-post-type.php:721 single-contacts.php:664
 #: template-contacts-new.php:29 template-contacts-new.php:30
 #: template-settings.php:96 template-settings.php:200
 msgid "Email"
@@ -1507,30 +1507,30 @@ msgstr "Mwasiliani amehamishwa kutoka tovuti"
 msgid "ALERT: Possible duplicate contact from a previous transfer."
 msgstr "ONYO: Inawezekana mwasiliani huyu tayari yupo kutokana na uhamisho uliopita."
 
-#: dt-contacts/contacts.php:538
+#: dt-contacts/contacts.php:537
 msgctxt "Contact1 is a duplicated and was merged into Contact2"
 msgid "%1$s is a duplicate and was merged into %2$s"
 msgstr "%1$s tayari yupo na ameunganishwa na %2$s"
 
-#: dt-contacts/contacts.php:544
+#: dt-contacts/contacts.php:543
 msgctxt "Contact1 was merged into Contact2"
 msgid "%1$s was merged into %2$s"
 msgstr "%1$s ameunganishwa na %2$s"
 
-#: dt-contacts/contacts.php:1554
+#: dt-contacts/contacts.php:1556
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "(Kutoka Rekodi): %s"
 
-#: dt-contacts/contacts.php:2296
+#: dt-contacts/contacts.php:2298
 msgid "Possible duplicates on"
 msgstr "Waasiliani ambao labda wapo mara mbili"
 
-#: dt-contacts/contacts.php:2299
+#: dt-contacts/contacts.php:2301
 msgid "more duplicates not shown"
 msgstr "wengine ambao wapo mara mbili lakini hawaonekani"
 
-#: dt-core/admin/admin-theme-design.php:43
+#: dt-core/admin/admin-theme-design.php:44
 msgid "Welcome, %1$s"
 msgstr "Karibu, %1$s"
 
@@ -1562,75 +1562,75 @@ msgstr "Amesajiliwa"
 msgid "Subscriber"
 msgstr "Amejiunga"
 
-#: dt-core/admin/config-site-defaults.php:58
+#: dt-core/admin/config-site-defaults.php:59
 msgid "You may only set your permalink settings to \"Post name\""
 msgstr "Inawezekana tu kuweka mipangilio ya permalink kwenye \"Post name\""
 
-#: dt-core/admin/config-site-defaults.php:295
+#: dt-core/admin/config-site-defaults.php:296
 msgid "Newly Assigned Contact"
 msgstr "Mwasiliani Aliyepewa Kwa Mwingine Hivi Karibuni"
 
-#: dt-core/admin/config-site-defaults.php:300
+#: dt-core/admin/config-site-defaults.php:301
 msgid "@Mentions"
 msgstr "@Kumbukumbu"
 
-#: dt-core/admin/config-site-defaults.php:305
+#: dt-core/admin/config-site-defaults.php:306
 msgid "New comments"
 msgstr "Maoni Mapya"
 
-#: dt-core/admin/config-site-defaults.php:315
+#: dt-core/admin/config-site-defaults.php:316
 msgid "Contact Info Changed"
 msgstr "Maelezo ya Mwasiliani Yamebadilika"
 
-#: dt-core/admin/config-site-defaults.php:320
+#: dt-core/admin/config-site-defaults.php:321
 #: dt-core/migrations/0012-typo-rename.php:7
 msgid "Contact Milestones and Group Health metrics"
 msgstr "Hatua za Muhimu za Mwasiliani na Metriki za Afya ya Kikundi"
 
-#: dt-core/admin/config-site-defaults.php:353
+#: dt-core/admin/config-site-defaults.php:354
 msgid "This contact is active but there is no record of anybody contacting them. Please do contact them."
 msgstr "Mwasiliani huyu ni amilifu lakini hakuna rekodi ya mtu yeyote akiwasiliana naye. Tafadhali, wasiliana naye."
 
-#: dt-core/admin/config-site-defaults.php:359
+#: dt-core/admin/config-site-defaults.php:360
 msgid "Please try connecting with this contact again."
 msgstr "Tafadhali, jaribu kuwasiliana na mwasiliani huyu tena."
 
-#: dt-core/admin/config-site-defaults.php:365
-#: dt-core/admin/config-site-defaults.php:371
-#: dt-core/admin/config-site-defaults.php:377
-#: dt-core/admin/config-site-defaults.php:383
-#: dt-core/admin/config-site-defaults.php:389
+#: dt-core/admin/config-site-defaults.php:366
+#: dt-core/admin/config-site-defaults.php:372
+#: dt-core/admin/config-site-defaults.php:378
+#: dt-core/admin/config-site-defaults.php:384
+#: dt-core/admin/config-site-defaults.php:390
 msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
 msgstr "Kwa muda hatujasikia kutoka kwa mtu huyu. Je, una kisasisho juu yake?"
 
-#: dt-core/admin/config-site-defaults.php:399
+#: dt-core/admin/config-site-defaults.php:400
 msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr "Kwa muda hatujasikia habari za kikundi hiki. Je, una kisasisho juu yake?"
 
-#: dt-core/admin/config-site-defaults.php:672
+#: dt-core/admin/config-site-defaults.php:673
 msgctxt "either rtl or ltr"
 msgid "ltr"
 msgstr "Itr"
 
-#: dt-core/admin/config-site-defaults.php:699
+#: dt-core/admin/config-site-defaults.php:700
 msgid "Someone has requested a password reset for the following account:"
 msgstr "Kuna mtu aliyeomba uwekaji upya nywila kwa akaunti ifuatayo:"
 
 #. translators: %s: site name
-#: dt-core/admin/config-site-defaults.php:701
+#: dt-core/admin/config-site-defaults.php:702
 msgid "Site Name: %s"
 msgstr "Jina la Tovuti: %s"
 
 #. translators: %s: user login
-#: dt-core/admin/config-site-defaults.php:703
+#: dt-core/admin/config-site-defaults.php:704
 msgid "Username: %s"
 msgstr "Jina la mtumiaji: %s"
 
-#: dt-core/admin/config-site-defaults.php:704
+#: dt-core/admin/config-site-defaults.php:705
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr "Ikiwa hii ilikuwa kosa, upuuze tu na hakuna kitakachotokea. "
 
-#: dt-core/admin/config-site-defaults.php:705
+#: dt-core/admin/config-site-defaults.php:706
 msgid "To reset your password, visit the following address:"
 msgstr "Ili kuweka upya nywila yako, tembelea anwani ifuatayo:"
 
@@ -1671,7 +1671,7 @@ msgstr "Watumiaji waliothibitishwa tu wanaweza kufikia REST API."
 msgid "(no title)"
 msgstr "(hakuna cheo)"
 
-#: dt-core/posts.php:31 single-contacts.php:290 single-contacts.php:651
+#: dt-core/posts.php:31 single-contacts.php:290 single-contacts.php:616
 msgid "Baptized By"
 msgstr "Alibatizwa Na"
 
@@ -2011,25 +2011,25 @@ msgstr "Imeshirikishwa na %s"
 msgid "Unshared with %s"
 msgstr "Haishirikishwi tena na %s"
 
-#: dt-core/posts.php:1230
+#: dt-core/posts.php:1233
 msgid "Record not deleted."
 msgstr "Rekodi haikufutwa."
 
-#: dt-core/posts.php:1327
+#: dt-core/posts.php:1330
 msgid "Post already shared with user."
 msgstr "Chapisho ilishirikishwa tayari na mtumiaji."
 
-#: dt-core/posts.php:1578
+#: dt-core/posts.php:1582
 msgctxt "Main address"
 msgid "Main"
 msgstr "Anwani Kuu"
 
-#: dt-core/posts.php:1579
+#: dt-core/posts.php:1583
 msgctxt "Alternate address"
 msgid "Alternate"
 msgstr "Anwani Nyingine"
 
-#: dt-core/posts.php:1586
+#: dt-core/posts.php:1590
 msgid "Main"
 msgstr "Mkuu"
 
@@ -2041,13 +2041,13 @@ msgstr "Sio amilifu"
 msgid "Group Type"
 msgstr "Aina ya Kikundi"
 
-#: dt-groups/groups-post-type.php:261 dt-metrics/metrics-personal.js:210
-#: dt-metrics/metrics-project.js:230
+#: dt-groups/groups-post-type.php:261 dt-metrics/metrics-personal.php:83
+#: dt-metrics/metrics-project.php:114
 msgid "Pre-Group"
 msgstr "Kikundi cha Kabla"
 
-#: dt-groups/groups-post-type.php:263 dt-metrics/metrics-personal.js:212
-#: dt-metrics/metrics-project.js:232
+#: dt-groups/groups-post-type.php:263 dt-metrics/metrics-personal.php:85
+#: dt-metrics/metrics-project.php:116
 msgid "Church"
 msgstr "Kanisa"
 
@@ -2163,7 +2163,7 @@ msgstr "Ingiza jina la eneo hapa"
 msgid "You must geocode address to see map."
 msgstr "Lazima ufanye Msimbo-Geo ya anwani ili kuona ramani."
 
-#: dt-metrics/counter.php:129 dt-metrics/metrics-critical-path.php:191
+#: dt-metrics/counter.php:129 dt-metrics/metrics-critical-path.php:198
 msgid "New Contacts"
 msgstr "Waasiliani Wapya"
 
@@ -2183,11 +2183,11 @@ msgstr "Jumla ya Waliobatiza Wengine"
 msgid "Total Churches and Groups"
 msgstr "Jumla ya Makanisa na Vikundi"
 
-#: dt-metrics/counter.php:167 dt-metrics/metrics-critical-path.php:265
+#: dt-metrics/counter.php:167 dt-metrics/metrics-critical-path.php:272
 msgid "Active Groups"
 msgstr "Vikundi Amilifu"
 
-#: dt-metrics/counter.php:172 dt-metrics/metrics-critical-path.php:274
+#: dt-metrics/counter.php:172 dt-metrics/metrics-critical-path.php:281
 msgid "Active Churches"
 msgstr "Makanisa Amilifu"
 
@@ -2195,49 +2195,50 @@ msgstr "Makanisa Amilifu"
 msgid "Church Generation"
 msgstr "Vizazi vya Makanisa"
 
-#: dt-metrics/counter.php:185 dt-metrics/metrics-critical-path.php:296
+#: dt-metrics/counter.php:185 dt-metrics/metrics-critical-path.php:303
 msgid "Church Planters"
 msgstr "Wapanda Makanisa"
 
 #. This could be either Hitos or Pilares depending on the context.
-#: dt-metrics/metrics-contacts.js:88 dt-metrics/metrics-contacts.php:45
+#: dt-metrics/metrics-contacts.php:45 dt-metrics/metrics-contacts.php:93
 msgid "Milestones"
 msgstr "Hatua Muhimu"
 
-#: dt-metrics/metrics-critical-path.js:28
 #: dt-metrics/metrics-critical-path.php:43
+#: dt-metrics/metrics-critical-path.php:77
 msgid "Critical Path"
 msgstr "Njia Muhimu"
 
-#: dt-metrics/metrics-critical-path.php:87 dt-metrics/metrics-workers.php:159
+#: dt-metrics/metrics-workers.php:163
 msgid "Select All time or a specific year to display"
 msgstr "Teua Muda Wote au ingiza mwaka fulani ili kuonyesha"
 
-#: dt-metrics/metrics-workers.js:188
+#: dt-metrics/metrics-contacts.php:92 dt-metrics/metrics-workers.php:164
 msgid "All time"
 msgstr "Muda Wote"
 
-#: dt-metrics/metrics-critical-path.php:200
+#: dt-metrics/metrics-critical-path.php:207
 msgid "Assigned Contacts"
 msgstr "Waasiliani Waliopewa Kwa Mtu"
 
-#: dt-metrics/metrics-critical-path.php:208
+#: dt-metrics/metrics-critical-path.php:215 dt-metrics/metrics-personal.php:74
+#: dt-metrics/metrics-project.php:85
 msgid "Active Contacts"
 msgstr "Waasiliani Amilifu"
 
-#: dt-metrics/metrics-critical-path.php:230
+#: dt-metrics/metrics-critical-path.php:237
 msgid "Baptisms"
 msgstr "Waliobatizwa"
 
-#: dt-metrics/metrics-critical-path.php:246
+#: dt-metrics/metrics-critical-path.php:253
 msgid "Baptism Generation %s"
 msgstr "Ubatizo wa Kizazi cha %s"
 
-#: dt-metrics/metrics-critical-path.php:256
+#: dt-metrics/metrics-critical-path.php:263
 msgid "Baptizers"
 msgstr "Waliobatiza Wengine"
 
-#: dt-metrics/metrics-critical-path.php:286
+#: dt-metrics/metrics-critical-path.php:293
 msgid "Church Generation %s"
 msgstr "Kanisa la Kizazi cha %s"
 
@@ -2245,67 +2246,69 @@ msgstr "Kanisa la Kizazi cha %s"
 msgid "Personal"
 msgstr "Ya Binafsi"
 
-#: dt-metrics/metrics-personal.js:16
+#: dt-metrics/metrics-personal.php:63
 msgid "My Overview"
 msgstr "Mapitio Yangu"
 
-#: dt-metrics/metrics-personal.php:62 dt-metrics/metrics-project.php:96
+#: dt-metrics/metrics-personal.php:64 dt-metrics/metrics-project.php:86
 msgid "Waiting on Accept"
 msgstr "Inasubiri Kibali"
 
-#: dt-metrics/metrics-personal.js:27 dt-metrics/metrics-project.js:49
+#: dt-metrics/metrics-personal.php:65 dt-metrics/metrics-project.php:87
 msgid "Waiting on Update"
 msgstr "Inasubiri Sasisho"
 
-#: dt-metrics/metrics-project.js:67
+#: dt-metrics/metrics-personal.php:68 dt-metrics/metrics-personal.php:75
+#: dt-metrics/metrics-project.php:89
 msgid "Total Groups"
 msgstr "Jumla ya Vikundi"
 
-#: dt-metrics/metrics-personal.php:67 dt-metrics/metrics-project.php:100
+#: dt-metrics/metrics-personal.php:69 dt-metrics/metrics-project.php:90
 msgid "Needs Training"
 msgstr "Wanaohitaji Mafunzo"
 
-#: dt-metrics/metrics-personal.php:68 dt-metrics/metrics-project.php:101
+#: dt-metrics/metrics-personal.php:70 dt-metrics/metrics-project.php:91
 msgid "Fully Practicing"
 msgstr "Wanaofanya Kikamilifu"
 
-#: dt-metrics/metrics-personal.js:58
+#: dt-metrics/metrics-personal.php:71 dt-metrics/metrics-project.php:93
+#: dt-metrics/metrics-project.php:107
 msgid "Group Types"
 msgstr "Aina za Vikundi"
 
-#: dt-metrics/metrics-personal.js:180 dt-metrics/metrics-project.js:200
+#: dt-metrics/metrics-personal.php:72 dt-metrics/metrics-project.php:92
 msgid "Group and Church Generations"
 msgstr "Vizazi vya Vikundi na vya Makanisa"
 
-#: dt-metrics/metrics-personal.js:45
+#: dt-metrics/metrics-personal.php:73
 msgid "Lead Teams"
 msgstr "Wanaoongoza Timu"
 
-#: dt-metrics/metrics-personal.php:74
+#: dt-metrics/metrics-personal.php:76
 msgid "Updates Needed"
 msgstr "Wanaohitaji Sasisho"
 
-#: dt-metrics/metrics-personal.php:75
+#: dt-metrics/metrics-personal.php:77
 msgid "Attempts Needed"
 msgstr "Wanaohitaji Mawasiliano"
 
-#: dt-metrics/metrics-personal.php:76 dt-metrics/metrics-project.php:115
+#: dt-metrics/metrics-personal.php:78 dt-metrics/metrics-project.php:106
 msgid "groups by type"
 msgstr "vikundi kwa aina"
 
-#: dt-metrics/metrics-personal.php:77 dt-metrics/metrics-project.php:110
+#: dt-metrics/metrics-personal.php:79 dt-metrics/metrics-project.php:100
 msgid "number of contacts"
 msgstr "idadi ya waasiliani"
 
-#: dt-metrics/metrics-personal.js:92 dt-metrics/metrics-project.js:113
+#: dt-metrics/metrics-personal.php:80 dt-metrics/metrics-project.php:101
 msgid "Follow-up of my active contacts"
 msgstr "Ufuatiliaji wa waasiliani wangu amilifu"
 
-#: dt-metrics/metrics-personal.js:122 dt-metrics/metrics-project.js:143
+#: dt-metrics/metrics-personal.php:81 dt-metrics/metrics-project.php:102
 msgid "Active Group Health Metrics"
 msgstr "Metriki za Afya za Vikundi Amilifu"
 
-#: dt-metrics/metrics-personal.php:80
+#: dt-metrics/metrics-personal.php:82
 msgid "stats as of"
 msgstr "takwimu mpaka"
 
@@ -2313,7 +2316,7 @@ msgstr "takwimu mpaka"
 msgid "Prayer List"
 msgstr "Orodha ya Maombi"
 
-#: dt-metrics/metrics-prayer.js:19
+#: dt-metrics/metrics-prayer.php:68
 msgid "Prayer Lists"
 msgstr "Orodha za Maombi"
 
@@ -2325,7 +2328,7 @@ msgstr "Sifa kwa Hatua Zilizochukuliwa"
 msgid "Requests for Next Steps Needed"
 msgstr "Maombi kwa Hatua Zijazo Zinazohitajika"
 
-#: dt-metrics/metrics-prayer.php:71 dt-metrics/metrics-project.php:122
+#: dt-metrics/metrics-project.php:113
 msgid "Counties"
 msgstr "Kata"
 
@@ -2349,7 +2352,7 @@ msgstr "Mti wa Ubatizo"
 msgid "Coaching Tree"
 msgstr "Mti wa Ushauri"
 
-#: dt-metrics/metrics-project.js:30
+#: dt-metrics/metrics-project.php:80
 msgid "Project Overview"
 msgstr "Mapitio ya Mradi"
 
@@ -2358,11 +2361,11 @@ msgid "Timeline Activity"
 msgstr "Shughuli Katika Mfululizo wa Wakati"
 
 #. The word I used here, "Ufikiaji" means simply "Accessing people" because there is not a good Swahili word for "Outreach." If the intent is more close to the meaning of "Evangelism" then the Swahili word, "Uinjilisti" could be used, which means "Evangelism."
-#: dt-metrics/metrics-critical-path.js:204
+#: dt-metrics/metrics-critical-path.php:76
 msgid "Outreach"
 msgstr "Ufikiaji"
 
-#: dt-metrics/metrics-project.php:89
+#: dt-metrics/metrics-critical-path.php:75
 msgid "Follow Up"
 msgstr "Ufuatiliaji"
 
@@ -2370,31 +2373,31 @@ msgstr "Ufuatiliaji"
 msgid "Training"
 msgstr "Mafunzo"
 
-#: dt-metrics/metrics-project.php:93
+#: dt-metrics/metrics-project.php:83
 msgid "Multiplication"
 msgstr "Uzidishaji"
 
-#: dt-metrics/metrics-project.js:55
+#: dt-metrics/metrics-project.php:84
 msgid "All Contacts"
 msgstr "Waasiliani Wote"
 
-#: dt-metrics/metrics-project.php:98
+#: dt-metrics/metrics-project.php:88
 msgid "Project Groups"
 msgstr "Vikundi Mradi"
 
-#: dt-metrics/metrics-project.js:259
+#: dt-metrics/metrics-project.php:94
 msgid "Group Generation Tree"
 msgstr "Mti wa Vizazi vya Vikundi"
 
-#: dt-metrics/metrics-project.php:105
+#: dt-metrics/metrics-project.php:95
 msgid "Baptism Generation Tree"
 msgstr "Mti wa Vizazi vya Ubatizo"
 
-#: dt-metrics/metrics-project.js:439
+#: dt-metrics/metrics-project.php:96
 msgid "Coaching Generation Tree"
 msgstr "Mti wa Vizazi vya Ushauri"
 
-#: dt-metrics/metrics-project.php:109
+#: dt-metrics/metrics-project.php:99
 msgid "Teams"
 msgstr "Timu"
 
@@ -2406,31 +2409,31 @@ msgstr "Maendeleo ya ufuatiliaji wa waasiliani amilifu"
 msgid "Active Group and Church Health Metrics"
 msgstr "Vikundi Amilifu na Metriki za Afya ya Kanisa"
 
-#: dt-metrics/metrics-project.php:113
+#: dt-metrics/metrics-project.php:103
 msgid "groups"
 msgstr "vikundi"
 
-#: dt-metrics/metrics-project.php:114
+#: dt-metrics/metrics-project.php:104
 msgid "generations"
 msgstr "vizazi"
 
-#: dt-metrics/metrics-project.php:117
+#: dt-metrics/metrics-project.php:108
 msgid "Total Locations"
 msgstr "Jumla ya Maeneo"
 
-#: dt-metrics/metrics-project.js:489
+#: dt-metrics/metrics-project.php:109
 msgid "Active Locations"
 msgstr "Maeneo Amilifu"
 
-#: dt-metrics/metrics-project.php:119
+#: dt-metrics/metrics-project.php:110
 msgid "Inactive Locations"
 msgstr "Maeneo Yasiyo Amilifu"
 
-#: dt-metrics/metrics-project.php:120
+#: dt-metrics/metrics-project.php:111
 msgid "Countries"
 msgstr "Mataifa"
 
-#: dt-metrics/metrics-project.php:121
+#: dt-metrics/metrics-project.php:112
 msgid "States"
 msgstr "Majimbo"
 
@@ -2443,48 +2446,47 @@ msgstr "Wafanyakazi"
 msgid "Overall Pace"
 msgstr "Kasi kwa Jumla"
 
-#: dt-metrics/metrics-workers.js:153 dt-metrics/metrics-workers.js:264
-#: dt-metrics/metrics-workers.php:119
+#: dt-metrics/metrics-workers.php:119 dt-metrics/metrics-workers.php:154
 msgid "Follow-up Pace"
 msgstr "Kasi ya Ufuatiliaji"
 
-#: dt-metrics/metrics-workers.js:22
+#: dt-metrics/metrics-workers.php:152
 msgid "Workers Activity"
 msgstr "Shughuli ya Wafanyakazi"
 
-#: dt-metrics/metrics-workers.js:48
+#: dt-metrics/metrics-workers.php:153
 msgid "Worker System Engagement for the Last 30 Days"
 msgstr "Kazi ya Mfumo wa Wafanyakazi katika Siku 30 Zilizopita"
 
-#: dt-metrics/metrics-workers.php:151
+#: dt-metrics/metrics-workers.php:155
 msgid "Total Workers"
 msgstr "Jumla ya Wafanyakazi"
 
-#: dt-metrics/metrics-workers.js:32
+#: dt-metrics/metrics-workers.php:156
 msgid "Multipliers"
 msgstr "Wazidishaji"
 
-#: dt-metrics/metrics-workers.php:153
+#: dt-metrics/metrics-workers.php:157
 msgid "Dispatchers"
 msgstr "Watumaji"
 
-#: dt-metrics/metrics-workers.js:38
+#: dt-metrics/metrics-workers.php:158
 msgid "Admins"
 msgstr "Wasimamizi"
 
-#: dt-metrics/metrics-workers.php:155
+#: dt-metrics/metrics-workers.php:159
 msgid "Strategists"
 msgstr "Wastrategisti"
 
-#: dt-metrics/metrics-workers.php:156
+#: dt-metrics/metrics-workers.php:160
 msgid "Contact Progress per Worker"
 msgstr "Maendeleo ya Kila Mfanyakazi Kuwasiliana na Waasiliani"
 
-#: dt-metrics/metrics-workers.php:157
+#: dt-metrics/metrics-workers.php:161
 msgid "Least Active"
 msgstr "Yasiyo Amilifu Zaidi"
 
-#: dt-metrics/metrics-workers.php:158
+#: dt-metrics/metrics-workers.php:162
 msgid "Most Active"
 msgstr "Yaliyo Amilifu Zaidi"
 
@@ -2586,24 +2588,24 @@ msgstr "Maelezo ya Kikundi cha Watu"
 msgid "Enter the People Group title here"
 msgstr "Ingiza jina la Kikundi cha Watu hapa"
 
-#: dt-users/users.php:55
+#: dt-users/users.php:59
 msgid "No permissions to assign"
 msgstr "Hakuna ruhusa ya kumpa mwingine"
 
-#: dt-users/users.php:264
+#: dt-users/users.php:268
 msgid "Insufficient permissions"
 msgstr "Hakuna ruhusa ya kutosha"
 
-#: dt-users/users.php:519
+#: dt-users/users.php:567
 msgid "Extra Disciple.Tools Information"
 msgstr "Taarifa Zaidi Juu Ya Disciple.Tools"
 
 #. The Swahili written here literally means, "Relates to the Contact"
-#: dt-users/users.php:522
+#: dt-users/users.php:570
 msgid "Corresponds to Contact"
 msgstr "Inahusiana na Mwasiliani"
 
-#: dt-users/users.php:530
+#: dt-users/users.php:578
 msgid "View contact"
 msgstr "Tazama mwasiliani"
 
@@ -2611,15 +2613,15 @@ msgstr "Tazama mwasiliani"
 msgid "Is this user already a contact in Disciple.Tools?"
 msgstr "Je, mtumiaji huyu ni mwasiliani katika Disciple.Tools?"
 
-#: dt-users/users.php:591
+#: dt-users/users.php:685
 msgid "Username already exists"
 msgstr "Jina la mtumiaji tayari lipo"
 
-#: dt-users/users.php:586
+#: dt-users/users.php:680
 msgid "Email already exists"
 msgstr "Barua pepe hii tayari ipo"
 
-#: dt-users/users.php:618
+#: dt-users/users.php:715
 msgid "View contact record"
 msgstr "Tazama rekodi ya mwasiliani"
 
@@ -2627,11 +2629,11 @@ msgstr "Tazama rekodi ya mwasiliani"
 msgid "Updated Needed"
 msgstr "Sasisho Inahitajika"
 
-#: functions.php:474
+#: functions.php:475
 msgid "Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:"
 msgstr "Mandhari ya Disciple.Tools inahitaji PHP toleo 7.0 au kubwa zaidi. Toleo lako ni: "
 
-#: functions.php:476
+#: functions.php:477
 msgid "Please upgrade PHP or uninstall this theme"
 msgstr "Tafadhali sasisha PHP au sakinusha mandhari hii"
 
@@ -2671,92 +2673,92 @@ msgstr "Mwunganiko au Uhusiano"
 msgid "Progress"
 msgstr "Maendeleo"
 
-#: single-contacts.php:468
+#: single-contacts.php:470
 msgid "Search Tags"
 msgstr "Lebo za Kutafutia"
 
-#: single-contacts.php:506
+#: single-contacts.php:508
 msgid "Close Contact"
 msgstr "Funga Mwasiliani"
 
-#: single-contacts.php:507
+#: single-contacts.php:509
 msgid "Why do you want to close this contact?"
 msgstr "Kwa nini unataka kufunga mwasiliani huyu?"
 
-#: single-contacts.php:523 single-contacts.php:550 single-contacts.php:576
+#: single-contacts.php:525 single-contacts.php:552 single-contacts.php:578
 msgid "Confirm"
 msgstr "Thibitisha"
 
-#: single-contacts.php:531
+#: single-contacts.php:533
 msgid "Pause Contact"
 msgstr "Sitisha Mwasiliani"
 
-#: single-contacts.php:532
+#: single-contacts.php:534
 msgid "Why do you want to pause this contact?"
 msgstr "Kwa nini unataka kusitisha mwasiliani huyu?"
 
-#: single-contacts.php:622
+#: single-contacts.php:587
 msgid "Create Tag"
 msgstr "Unda Lebo"
 
-#: single-contacts.php:626
+#: single-contacts.php:591
 msgid "Tag"
 msgstr "Lebo"
 
-#: single-contacts.php:628
+#: single-contacts.php:593
 msgid "tag"
 msgstr "lebo"
 
-#: single-contacts.php:637
+#: single-contacts.php:602
 msgid "Create and apply tag"
 msgstr "Unda na tumia lebo"
 
-#: single-contacts.php:689
+#: single-contacts.php:654
 msgid "Create User"
 msgstr "Unda Mtumiaji"
 
 #. The Swahili translation I used means, "This contact is already a user" If the meaning desired is more of representation, then the proper Swahili would be "Mwasiliani huyu tayari anawakilisha mtumiaji" which conveys the meaning that "This contact is already representing (like in a court of law) a user"
-#: single-contacts.php:692 single-contacts.php:734
+#: single-contacts.php:657 single-contacts.php:699
 msgid "This contact already represents a user"
 msgstr "Mwasiliani huyu tayari ni mtumiaji"
 
-#: single-contacts.php:695
+#: single-contacts.php:660
 msgid "This will invite this contact to Disciple.Tools as a multiplier"
 msgstr "Hii itamwalika mwasiliani huyu kwenye Disciple.Tools kama mzidishaji"
 
-#: single-contacts.php:704
+#: single-contacts.php:669
 msgid "Display Name"
 msgstr "Jina Linaloonekana"
 
-#: single-contacts.php:707
+#: single-contacts.php:672
 msgid "Display name"
 msgstr "Jina linaloonekana"
 
-#: single-contacts.php:718
+#: single-contacts.php:683
 msgid "Create user"
 msgstr "Unda mtumiaji"
 
-#: single-contacts.php:731
+#: single-contacts.php:696
 msgid "Link this contact to an existing user"
 msgstr "Unganisha mwasiliani huyu na mtumiaji aliyepo"
 
-#: single-contacts.php:738
+#: single-contacts.php:703
 msgid "First, find the user"
 msgstr "Kwanza, pata mtumiaji"
 
-#: single-contacts.php:762
+#: single-contacts.php:727
 msgid "To finish the linking, merge this contact with the existing user details."
 msgstr "Ili kumaliza kuunganisha, unganisha mwasiliani huyu na maelezo ya mtumiaji aliyepo"
 
-#: single-contacts.php:787
+#: single-contacts.php:752
 msgid "Merge this contact with another contact"
 msgstr "Unganisha mwasiliani huyu na mwasiliani mwingine"
 
-#: single-contacts.php:812
+#: single-contacts.php:777
 msgid "selected."
 msgstr "imeteuliwa."
 
-#: single-contacts.php:813
+#: single-contacts.php:778
 msgid "Click merge to continue."
 msgstr "Bofya \"unganisha\" ili kuendelea."
 
@@ -3062,7 +3064,7 @@ msgstr "Baada ya kubofya \"Ijayo,\" itachukua muda kidogo ili kushughulikia. Usi
 msgid "Report"
 msgstr "Toa Taarifa"
 
-#: dt-metrics/metrics-project.js:497
+#: dt-metrics/metrics-project.php:98
 msgid "Location Tree"
 msgstr "Mti wa Maeneo"
 
@@ -3079,47 +3081,47 @@ msgctxt "disciple_tools"
 msgid "No contacts found matching \"{{query}}\""
 msgstr ""
 
-#: dt-core/admin/config-site-defaults.php:725
+#: dt-core/admin/config-site-defaults.php:726
 msgid "<strong>ERROR</strong>: Invalid username/password combination."
 msgstr ""
 
-#: dt-core/admin/config-site-defaults.php:729
+#: dt-core/admin/config-site-defaults.php:730
 msgid "Reset password"
 msgstr ""
 
-#: dt-core/admin/config-site-defaults.php:730
+#: dt-core/admin/config-site-defaults.php:731
 msgid "Lost pour password"
 msgstr ""
 
-#: dt-metrics/metrics-contacts.js:31
+#: dt-metrics/metrics-contacts.php:90
 msgid "Seeker path"
 msgstr ""
 
-#: dt-metrics/metrics-contacts.js:180
+#: dt-metrics/metrics-contacts.php:96
 msgid "Showing contacts created during"
 msgstr ""
 
-#: dt-metrics/metrics-contacts.js:184
+#: dt-metrics/metrics-contacts.php:97
 msgid "All contacts, by source and status"
 msgstr ""
 
-#: dt-metrics/metrics-contacts.js:194
+#: dt-metrics/metrics-contacts.php:100
 msgid "This is displaying only the contacts with an active status right now."
 msgstr ""
 
-#: dt-metrics/metrics-contacts.js:196
+#: dt-metrics/metrics-contacts.php:98
 msgid "A contact can come from more than one source."
 msgstr ""
 
-#: dt-metrics/metrics-contacts.js:203
+#: dt-metrics/metrics-contacts.php:101
 msgid "Active contacts, by source and faith milestone"
 msgstr ""
 
-#: dt-metrics/metrics-contacts.js:209
+#: dt-metrics/metrics-contacts.php:104
 msgid "Faith milestone"
 msgstr ""
 
-#: dt-metrics/metrics-critical-path.js:41
+#: dt-metrics/metrics-critical-path.php:78
 msgid "Filter Critical Path fields"
 msgstr ""
 
@@ -3127,7 +3129,64 @@ msgstr ""
 msgid "Follow-Up"
 msgstr ""
 
-#: dt-metrics/metrics-critical-path.js:223
+#: dt-metrics/metrics-critical-path.php:79
 msgid "Movement Tracking"
+msgstr ""
+
+#: dt-contacts/contacts-post-type.php:212
+msgctxt "Contact Status"
+msgid "Waiting to be accepted"
+msgstr ""
+
+#: dt-contacts/contacts-post-type.php:217
+msgctxt "Contact Status"
+msgid "Active"
+msgstr ""
+
+#: dt-metrics/metrics-contacts.php:91
+msgid "Filter contacts to date range:"
+msgstr ""
+
+#: dt-metrics/metrics-contacts.php:94
+msgid "Filter to date range"
+msgstr ""
+
+#: dt-metrics/metrics-contacts.php:99
+msgid "Active contacts, by source and seeker path"
+msgstr ""
+
+#: dt-metrics/metrics-contacts.php:102
+msgid "This is displaying only the contacts with an \"active\" status right now."
+msgstr ""
+
+#: dt-metrics/metrics-contacts.php:103
+msgid "A contact can come from more than one source, and it can have more than one faith milestone at the same time."
+msgstr ""
+
+#: dt-metrics/metrics-personal.php:86 dt-metrics/metrics-project.php:105
+msgid "Generation"
+msgstr ""
+
+#: dt-users/users.php:580
+msgid "Add the name of the contact record this user corresponds to."
+msgstr ""
+
+#: dt-users/users.php:581
+msgid "Learn more."
+msgstr ""
+
+#: dt-users/users.php:647
+msgid "Hi,\n"
+"\n"
+"You've been invited to join '%1$s' at\n"
+"%2$s with the role of %3$s.\n"
+"\n"
+"Please click the following link to confirm the invite:\n"
+"%4$s"
+msgstr ""
+
+#. translators: Joining confirmation notification email subject. %s: Site title
+#: dt-users/users.php:657
+msgid "[%s] Joining Confirmation"
 msgstr ""
 

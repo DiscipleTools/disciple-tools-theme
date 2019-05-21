@@ -22,10 +22,10 @@ function numberWithCommas(x) {
 
 function project_critical_path() {
   let chartDiv = jQuery('#chart')
-  let sourceData = dtMetricsProject.data
+  let translations = dtMetricsProject.translations
 
   chartDiv.empty().html(`
-    <div class="section-header">${__('Critical Path', 'disciple_tools')}</div>
+    <div class="section-header">${ translations.title_critical_path }</div>
     <div class="date_range_picker">
         <i class="fi-calendar"></i>&nbsp;
         <span>${moment().format("YYYY")}</span> 
@@ -38,7 +38,7 @@ function project_critical_path() {
     <div id="ongoingChart" style="width:90%;"></div>
     <!--<div id="chartdiv" style="height: 800px; width:100%;"></div>-->
     <br>
-    <h4>${ __( 'Filter Critical Path fields', 'disciple_tools' ) }</h4>
+    <h4>${ translations.filter_critical_path }</h4>
     <div id="field_selector" style="display: flex; flex-wrap: wrap"> </div>
   `)
 
@@ -201,7 +201,7 @@ let mediaChart = function ( data ) {
   if ( data.length ) {
     let chart = am4core.create("mediachart", am4charts.XYChart);
     chart.data = data
-    setupChart( chart, "outreach", __( 'Outreach', 'disciple_tools' ) )
+    setupChart( chart, "outreach", dtMetricsProject.translations.title_outreach )
   }
 }
 
@@ -211,7 +211,7 @@ let activityChart = function ( data ) {
   if ( data.length ) {
     let chart = am4core.create("activityChart", am4charts.XYChart);
     chart.data = data
-    setupChart( chart, "value", __( 'Follow-Up', 'disciple_tools' ) )
+    setupChart( chart, "value", dtMetricsProject.translations.title_follow_up )
   }
 }
 let ongoingChart = function ( data ) {
@@ -220,7 +220,7 @@ let ongoingChart = function ( data ) {
   if ( data.length ) {
     let chart = am4core.create("ongoingChart", am4charts.XYChart);
     chart.data = data
-    setupChart( chart, "total", __( 'Movement Tracking', 'disciple_tools' ))
+    setupChart( chart, "total", dtMetricsProject.translations.movement_training )
   }
 }
 

@@ -38,7 +38,7 @@ jQuery(document).ready(function($) {
     template: function (query, item) {
       return `<span class="row">
         <span class="avatar"><img src="{{avatar}}"/> </span>
-        <span>${item.name}</span>
+        <span>${_.escape( item.name )}</span>
       </span>`
     },
     dynamic: true,
@@ -228,7 +228,7 @@ jQuery(document).ready(function($) {
       },
       href: function(item){
         if (item){
-          return `${window.wpApiShare.site_url}/groups/${item.ID}`
+          return `${_.escape(window.wpApiShare.site_url)}/groups/${_.escape( item.ID )}`
         }
       }
     },
@@ -292,7 +292,7 @@ jQuery(document).ready(function($) {
       },
       href: function(item){
         if (item){
-          return `${window.wpApiShare.site_url}/groups/${item.ID}`
+          return `${_.escape(window.wpApiShare.site_url)}/groups/${_.escape( item.ID )}`
         }
       }
     },
@@ -355,7 +355,7 @@ jQuery(document).ready(function($) {
       },
       href: function(item){
         if (item){
-          return `${window.wpApiShare.site_url}/groups/${item.ID}`
+          return `${_.escape(window.wpApiShare.site_url)}/groups/${item.ID}`
         }
       }
     },
@@ -405,7 +405,7 @@ jQuery(document).ready(function($) {
     APIV2.create_post('groups', {title, parent_groups: {values:[{ value:groupId }]}, group_type:"group"})
       .then((newGroup)=>{
         $(".reveal-after-group-create").show()
-        $("#new-group-link").html(`<a href="${newGroup.permalink}">${title}</a>`)
+        $("#new-group-link").html(`<a href="${_.escape( newGroup.permalink )}">${_.escape( title )}</a>`)
         $(".hide-after-group-create").hide()
         $('#go-to-group').attr('href', newGroup.permalink);
         Typeahead['.js-typeahead-child_groups'].addMultiselectItemLayout({ID:newGroup.post_id.toString(), name:title})
@@ -424,7 +424,7 @@ jQuery(document).ready(function($) {
       <li style="display: flex">
         <textarea rows="3" class="contact-input" data-type="contact_address" dir="auto"></textarea>
         <button class="button clear delete-button" data-id="new">
-          <img src="${wpApiGroupsSettings.template_dir}/dt-assets/images/invalid.svg">
+          <img src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/invalid.svg">
         </button>
     </li>`)
   })
@@ -540,7 +540,7 @@ jQuery(document).ready(function($) {
       addressHTML += `<li style="display: flex">
         <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${_.escape(field.value)}</textarea>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
-            <img src="${wpApiGroupsSettings.template_dir}/dt-assets/images/invalid.svg">
+            <img src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/invalid.svg">
         </button>
       </li>`
     })
@@ -624,13 +624,13 @@ jQuery(document).ready(function($) {
         }
         htmlField.append(`<li class="details-list ${_.escape(field.key)}">
             ${_.escape(field.value)}
-              <img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${wpApiGroupsSettings.template_dir}/dt-assets/images/verified.svg"/>
-              <img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${wpApiGroupsSettings.template_dir}/dt-assets/images/broken.svg"/>
+              <img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/verified.svg"/>
+              <img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/broken.svg"/>
             </li>
           `)
       })
       if (!fields || fields.length === 0 || allEmptyValues){
-        htmlField.append(`<li id="no-${fieldDesignator}">${wpApiGroupsSettings.translations["not-set"][fieldDesignator]}</li>`)
+        htmlField.append(`<li id="no-${_.escape( fieldDesignator )}">${_.escape( wpApiGroupsSettings.translations["not-set"][fieldDesignator] )}</li>`)
       }
     })
 
@@ -638,17 +638,17 @@ jQuery(document).ready(function($) {
     connections.forEach(connection=>{
       let htmlField = $(`.${connection}-list`).empty()
       if ( !group[connection] || group[connection].length === 0 ){
-        htmlField.append(`<li id="no-${connection}">${wpApiGroupsSettings.translations["not-set"][connection]}</li>`)
+        htmlField.append(`<li id="no-${_.escape( connection )}">${_.escape( wpApiGroupsSettings.translations["not-set"][connection] )}</li>`)
       } else {
         group[connection].forEach(field=>{
           let title = `${_.escape(field.post_title)}`
           if ( connection === "leaders" ){
-            title = `<a href="${_.escape(field.permalink)}">${title}</a>`
+            title = `<a href="${_.escape(field.permalink)}">${_.escape( title )}</a>`
           }
           htmlField.append(`<li class="details-list ${_.escape(field.key)}">
             ${title}
-              <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${wpApiGroupsSettings.template_dir}/dt-assets/images/verified.svg"/>
-              <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${wpApiGroupsSettings.template_dir}/dt-assets/images/broken.svg"/>
+              <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/verified.svg"/>
+              <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/broken.svg"/>
             </li>
           `)
         })
@@ -695,7 +695,7 @@ jQuery(document).ready(function($) {
       `groups_custom_fields_settings.group_status.default.${status}.color`
     )
     if (statusColor){
-      statusSelect.css("background-color", statusColor)
+      statusSelect.css("background-color", _.escape( statusColor ))
     } else {
       statusSelect.css("background-color", "#4CAF50")
     }
@@ -768,16 +768,16 @@ jQuery(document).ready(function($) {
       if( member.leader ){
         leaderHTML = `<i class="fi-foot small leader"></i>`
       }
-      let memberHTML = `<div class="member-row" style="" data-id="${member.ID}">
+      let memberHTML = `<div class="member-row" style="" data-id="${_.escape( member.ID )}">
           <div style="flex-grow: 1" class="member-status">
               <i class="fi-torso small"></i>
-              <a href="${window.wpApiShare.site_url}/contacts/${member.ID}">${_.escape(member.post_title)}</a>
+              <a href="${_.escape(window.wpApiShare.site_url)}/contacts/${_.escape( member.ID )}">${_.escape(member.post_title)}</a>
               ${leaderHTML}
           </div>
-          <button class="button clear make-leader member-row-actions" data-id="${member.ID}">
+          <button class="button clear make-leader member-row-actions" data-id="${_.escape( member.ID )}">
             <i class="fi-foot small"></i>
           </button>
-          <button class="button clear delete-member member-row-actions" data-id="${member.ID}">
+          <button class="button clear delete-member member-row-actions" data-id="${_.escape( member.ID )}">
             <i class="fi-x small"></i>
           </button>
         </div>`
@@ -832,9 +832,9 @@ jQuery(document).ready(function($) {
       overall_status: "active"
     }).then((newContact)=>{
         $(".reveal-after-contact-create").show()
-        $("#new-contact-link").html(`<a href="${newContact.permalink}">${title}</a>`)
+        $("#new-contact-link").html(`<a href="${_.escape( newContact.permalink )}">${_.escape( title )}</a>`)
         $(".hide-after-contact-create").hide()
-        $('#go-to-contact').attr('href', newContact.permalink);
+        $('#go-to-contact').attr('href', _.escape( newContact.permalink ));
         group.members.push({post_title:title, ID:newContact.post_id})
         if ( group.members.length > group.member_count ){
           group.member_count = group.members.length

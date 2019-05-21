@@ -15,7 +15,14 @@ class Disciple_Tools_Migration_0020 extends Disciple_Tools_Migration
     public function up() {
         global $wpdb;
         // get get posts
-        $wpdb->query( "ALTER TABLE $wpdb->dt_activity_log ADD INDEX object_id_index (object_id)" );
+        $wpdb->query( $wpdb->prepare("
+            IF ( SELECT 1 FROM INFORMATION_SCHEMA.STATISTICS
+                WHERE `TABLE_SCHEMA` = %s
+                AND `TABLE_NAME` = '$wpdb->dt_activity_log'
+                AND `INDEX_NAME` = 'object_id_index') IS NULL THEN
+            ALTER TABLE $wpdb->dt_activity_log ADD INDEX object_id_index (object_id);
+            END IF
+        ", DB_NAME ));
         $posts = $wpdb->get_results( "
             SELECT ID, post_title, post_date, post_type, log.object_id, log.hist_time
             FROM $wpdb->posts post

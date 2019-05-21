@@ -71,6 +71,13 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
                 'current_user_id'    => get_current_user_id(),
                 'map_key'            => dt_get_option( 'map_key' ),
                 'data'               => $this->data(),
+                'translations'       => [
+                    'title_follow_up' => __( 'Follow Up', 'disciple_tools' ),
+                    'title_outreach' => __( 'Outreach', 'disciple_tools' ),
+                    'title_critical_path' => __( 'Critical Path', 'disciple_tools' ),
+                    'filter_critical_path' => __( 'Filter Critical Path fields', 'disciple_tools' ),
+                    'movement_training' => __( 'Movement Tracking', 'disciple_tools' ),
+                ]
             ]
         );
     }

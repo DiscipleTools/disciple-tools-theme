@@ -21,24 +21,28 @@ class Disciple_Tools_Users
      * Disciple_Tools_Users constructor.
      */
     public function __construct() {
-        add_action( 'wp_login', [ &$this, 'user_login_hook' ], 10, 2 );
-        add_action( 'user_register', [ &$this, 'user_register_hook' ] );
-        add_action( 'wpmu_new_user', [ &$this, 'user_register_hook' ] );
-        add_action( 'add_user_to_blog', [ &$this, 'user_register_hook' ] );
-        add_action( 'profile_update', [ &$this, 'profile_update_hook' ], 99 );
-        add_action( "after_switch_theme", [ &$this, "create_contacts_for_existing_users" ] );
-        add_action( "wpmu_new_blog", [ &$this, "create_contacts_for_existing_users" ] );
+        add_action( "dt_contact_merged", [ $this, "dt_contact_merged" ], 10, 2 );
 
+        //Make sure a contact exists for users
+        add_action( "wpmu_new_blog", [ &$this, "create_contacts_for_existing_users" ] );
+        add_action( "after_switch_theme", [ &$this, "create_contacts_for_existing_users" ] );
+        add_action( "invite_user", [ $this, "user_register_hook" ], 10, 1 );
+        add_action( "after_signup_user", [ $this, "after_signup_user" ], 10, 2 );
+        add_action( 'wp_login', [ &$this, 'user_login_hook' ], 10, 2 );
+        add_action( 'add_user_to_blog', [ &$this, 'user_register_hook' ] );
+        add_action( 'user_register', [ &$this, 'user_register_hook' ] ); // used on non multisite?
+        add_action( 'profile_update', [ &$this, 'profile_update_hook' ], 99 );
+
+        //invite user and edit user page modifications
         add_action( "user_new_form", [ &$this, "custom_user_profile_fields" ] );
         add_action( "show_user_profile", [ &$this, "custom_user_profile_fields" ] );
         add_action( "edit_user_profile", [ &$this, "custom_user_profile_fields" ] );
-//        add_action( "edit_user_created_user", [ $this, "edit_user_created_user" ] );
-        add_action( "dt_contact_merged", [ $this, "dt_contact_merged" ], 10, 2 );
+
+
+        //wp admin user list customization
         add_filter( 'user_row_actions', [ $this, 'dt_edit_user_row_actions' ], 10, 2 );
         add_filter( 'manage_users_columns', [ $this, 'new_modify_user_table' ] );
         add_filter( 'manage_users_custom_column', [ $this, 'new_modify_user_table_row' ], 10, 3 );
-        add_action( 'delete_user', [ $this, 'user_deleted' ], 10, 1 );
-        add_action( 'remove_user_from_blog', [ $this, 'user_deleted' ], 10, 2 );
 
     }
 
@@ -319,6 +323,24 @@ class Disciple_Tools_Users
                     update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
                 }
             }
+            if ( empty( $corresponds_to_contact )){
+                $args = [
+                    'post_type'  => 'contacts',
+                    'relation'   => 'AND',
+                    'meta_query' => [
+                        [
+                            'key' => "corresponds_to_user_name",
+                            "value" => $user->user_login
+                        ]
+                    ],
+                ];
+                $contacts = new WP_Query( $args );
+                if ( isset( $contacts->post->ID ) ){
+                    $corresponds_to_contact = $contacts->post->ID;
+                    update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
+                    update_post_meta( $corresponds_to_contact, "corresponds_to_user", $user_id );
+                }
+            }
 
             if ( empty( $corresponds_to_contact ) ) {
                 $new_id = Disciple_Tools_Contacts::create_contact( [
@@ -333,7 +355,7 @@ class Disciple_Tools_Users
                 }
             } else {
                 $contact = get_post( $corresponds_to_contact );
-                if ( $contact && $contact->post_title != $user->display_name ){
+                if ( $contact && $contact->post_title != $user->display_name && $user->display_name != $user->user_login ){
                     Disciple_Tools_Contacts::update_contact( $corresponds_to_contact, [
                         "title" => $user->display_name
                     ], false, true );
@@ -343,7 +365,32 @@ class Disciple_Tools_Users
     }
 
     /**
+     * When a new user is invited to a multisite and the "corresponds_to_contact" field is filled out
+     * save the username to the contact to be linked to the user when they activate their account.
+     *
+     * @param $user_name
+     * @param $user_email
+     */
+    public function after_signup_user( $user_name, $user_email ){
+        if ( isset( $_REQUEST['action'] ) && 'createuser' == $_REQUEST['action'] ) {
+            check_admin_referer( 'create-user', '_wpnonce_create-user' );
+        }
+        if ( isset( $_REQUEST['action'] ) && 'adduser' == $_REQUEST['action'] ) {
+            check_admin_referer( 'add-user', '_wpnonce_add-user' );
+        }
+        if ( isset( $_POST["corresponds_to_contact_id"] ) && !empty( $_POST["corresponds_to_contact_id"] ) ) {
+            $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
+            update_post_meta( $corresponds_to_contact, 'corresponds_to_user_name', $user_name );
+        }
+    }
+
+
+    /**
      * User register hook
+     * Check to see if the user is linked to a contact.
+     *
+     *  When adding an existing multisite to the D.T instance.
+     *  Link the user with the existing contact or create a contact for the user.
      *
      * @param $user_id
      */
@@ -353,6 +400,16 @@ class Disciple_Tools_Users
         }
         if ( isset( $_REQUEST['action'] ) && 'adduser' == $_REQUEST['action'] ) {
             check_admin_referer( 'add-user', '_wpnonce_add-user' );
+        }
+        if ( dt_is_rest() ){
+            $data = json_decode( WP_REST_Server::get_raw_data(), true );
+            if ( isset( $data["corresponds_to_contact"] ) ){
+                $corresponds_to_contact = $data["corresponds_to_contact"];
+                update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
+                Disciple_Tools_Contacts::update_contact( (int) $corresponds_to_contact, [
+                    "corresponds_to_user" => $user_id
+                ], false, true );
+            }
         }
         if ( isset( $_POST["corresponds_to_contact_id"] ) ) {
             $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
@@ -367,6 +424,11 @@ class Disciple_Tools_Users
         }
     }
 
+    /**
+     * Makes sure a user is linked to a contact when logging in.
+     * @param $user_name
+     * @param $user
+     */
     public static function user_login_hook( $user_name, $user ){
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user->ID );
         if ( empty( $corresponds_to_contact ) ){
@@ -391,8 +453,6 @@ class Disciple_Tools_Users
             }
         }
     }
-
-
 
     /**
      * Get the base user for the system
@@ -453,23 +513,11 @@ class Disciple_Tools_Users
         return $filters;
     }
 
-
-    //@todo remove. Moved to user_register hook
-    public function edit_user_created_user( $user_id ){
-        if ( isset( $_REQUEST['action'] ) && 'createuser' == $_REQUEST['action'] ) {
-            check_admin_referer( 'create-user', '_wpnonce_create-user' );
-        } else {
-            check_admin_referer( 'update-user_' . $user_id );
-        }
-        if ( isset( $_POST["corresponds_to_contact_id"] )){
-            $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
-            update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
-            Disciple_Tools_Contacts::update_contact( (int) $corresponds_to_contact, [
-                "corresponds_to_user" => $user_id
-            ], false, true );
-        }
-    }
-
+    /**
+     * Modifies the add user wp-admin page to add the 'corresponds to contact' field.
+     *
+     * @param $user
+     */
     public function custom_user_profile_fields( $user ){
         $contact_id = "";
         $contact_title = "";
@@ -529,7 +577,9 @@ class Disciple_Tools_Users
                         <?php if ( $contact_id ) : ?>
                             <span class="description"><a href="<?php echo esc_html( get_site_url() . '/contacts/' . $contact_id )?>" target="_blank"><?php esc_html_e( "View contact", 'disciple_tools' ) ?></a></span>
                         <?php else :?>
-                            <span class="description"><?php esc_html_e( "Is this user already a contact in Disciple.Tools?", 'disciple_tools' ) ?></span>
+                            <span class="description"><?php esc_html_e( "Add the name of the contact record this user corresponds to.", 'disciple_tools' ) ?>
+                                <a target="_blank" href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/users.html#inviting-users"><?php esc_html_e( "Learn more.", "disciple_tools" ) ?></a>
+                            </span>
                         <?php endif; ?>
                     <?php endif; ?>
                 </td>
@@ -563,6 +613,54 @@ class Disciple_Tools_Users
         }
     }
 
+    private static function invite_existing_user_to_site( $user_id, $user_email, $role ){
+        $user_details = get_user_by( "ID", $user_id );
+        $newuser_key = wp_generate_password( 20, false );
+        add_option(
+            'new_user_' . $newuser_key,
+            array(
+                'user_id' => $user_id,
+                'email'   => $user_details->user_email,
+                'role'    => $role,
+            )
+        );
+
+        $all_roles = wp_roles()->roles;
+        $roles = apply_filters( 'editable_roles', $all_roles );
+        $role  = $roles[ $role ];
+
+        /**
+         * Fires immediately after a user is invited to join a site, but before the notification is sent.
+         *
+         * @since 4.4.0
+         *
+         * @param int    $user_id     The invited user's ID.
+         * @param array  $role        The role of invited user.
+         * @param string $newuser_key The key of the invitation.
+         */
+        do_action( 'invite_user', $user_id, $role, $newuser_key );
+
+        $switched_locale = switch_to_locale( get_user_locale( $user_details ) );
+
+        /* translators: 1: Site name, 2: site URL, 3: role, 4: activation URL */
+        $message = __(
+            'Hi,
+
+You\'ve been invited to join \'%1$s\' at
+%2$s with the role of %3$s.
+
+Please click the following link to confirm the invite:
+%4$s'
+        );
+
+        /* translators: Joining confirmation notification email subject. %s: Site title */
+        wp_mail( $user_email, sprintf( __( '[%s] Joining Confirmation' ), wp_specialchars_decode( get_option( 'blogname' ) ) ), sprintf( $message, get_option( 'blogname' ), home_url(), wp_specialchars_decode( translate_user_role( $role['name'] ) ), home_url( "/newbloguser/$newuser_key/" ) ) );
+
+        if ( $switched_locale ) {
+            restore_previous_locale();
+        }
+        return $user_id;
+    }
 
     public static function create_user( $user_name, $user_email, $display_name, $corresponds_to_contact = null ){
         if ( !current_user_can( "create_users" ) ){
@@ -577,11 +675,7 @@ class Disciple_Tools_Users
             //check to see if the user is on the server, but not part of this D.T instance
             $user = get_user_by( "email", $user_email );
             if ( !is_user_member_of_blog( $user->ID ) ){
-                $added = add_user_to_blog( get_current_blog_id(), $user->ID, 'multiplier' );
-                if ( is_wp_error( $added ) ){
-                    return $added;
-                }
-                $user_id = $user->ID;
+                $user_id = self::invite_existing_user_to_site( $user->ID, $user_email, 'multiplier' );
             } else {
                 return new WP_Error( "create_user", __( "Email already exists", 'disciple_tools' ), [ 'status', 403 ] );
             }
@@ -593,9 +687,8 @@ class Disciple_Tools_Users
         }
 
         if ( !$user_id ){
-            $random_password = wp_generate_password( $length = 12, $include_standard_special_chars = false );
-            $user_id = wp_create_user( $user_name, $random_password, $user_email );
-            if ( is_wp_error( $user_id )){
+            $user_id = register_new_user( $user_name, $user_email );
+            if ( is_wp_error( $user_id ) ){
                 return $user_id;
             }
             $user = get_user_by( 'id', $user_id );
@@ -603,14 +696,18 @@ class Disciple_Tools_Users
             $user->set_role( "multiplier" );
             wp_update_user( $user );
         }
-        if ( $corresponds_to_contact ){
-            update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
-            update_post_meta( $corresponds_to_contact, "corresponds_to_user", $user_id );
-        }
         return $user_id;
     }
 
 
+    /**
+     * Modifies the wp-admin users list table to add a link to the users's contact
+     *
+     * @param $actions
+     * @param $user
+     *
+     * @return mixed
+     */
     public function dt_edit_user_row_actions( $actions, $user ){
         $contact_id = self::get_contact_for_user( $user->ID );
         if ( $contact_id ){
@@ -619,6 +716,14 @@ class Disciple_Tools_Users
         }
         return $actions;
     }
+
+    /**
+     * Modifies the wp-admin users list table to add the display name column
+     *
+     * @param $column
+     *
+     * @return array
+     */
     public function new_modify_user_table( $column ) {
         $column = array_slice( $column, 0, 3, true ) +
         array( "display_name" => "Display Name" ) +
@@ -637,10 +742,4 @@ class Disciple_Tools_Users
     }
 
 
-    public function user_deleted( $user_id, $blog_id = null ){
-        $corresponds_to_contact = self::get_contact_for_user( $user_id );
-        if ( $corresponds_to_contact ){
-            delete_post_meta( $corresponds_to_contact, "corresponds_to_user" );
-        }
-    }
 }

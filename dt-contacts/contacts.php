@@ -919,7 +919,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         ",
                 [
                     esc_sql( $field ) .'%',
-                    $exact_match ? esc_sql( $value ) : ( '%' . esc_sql( $value ) . '%' ),
+                    $exact_match ? esc_sql( $value ) : ( '%' . trim( esc_sql( $value ) ) . '%' ),
                     esc_sql( $exclude_id )
                 ]
             ),

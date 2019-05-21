@@ -19,50 +19,50 @@ function workers_activity() {
     let sourceData = dtMetricsUsers.data
     chartDiv.empty().html(`
         <span style="float:right;"><i class="fi-info primary-color"></i> </span>
-        <span class="section-header">${ __( 'Workers Activity', 'disciple_tools' ) }</span>
+        <span class="section-header">${ sourceData.translations.title_activity }</span>
         
         <br><br>
         <div class="grid-x grid-padding-x grid-padding-y">
             <div class="cell center callout">
                 <div class="grid-x">
                     <div class="medium-3 cell center">
-                        <h4>${ __( 'Total Workers', 'disciple_tools' ) }<br><span id="total_workers">0</span></h4>
+                        <h4>${sourceData.translations.label_total_workers}<br><span id="total_workers">0</span></h4>
                     </div>
                     <div class="medium-2 cell left-border-grey">
-                        <h4>${ __( 'Multipliers', 'disciple_tools' ) }<br><span id="total_multipliers">0</span></h4>
+                        <h4>${sourceData.translations.label_total_multipliers}<br><span id="total_multipliers">0</span></h4>
                     </div>
                     <div class="medium-2 cell center">
-                        <h4>${ __( 'Dispatchers', 'disciple_tools' ) }<br><span id="total_dispatchers">0</span></h4>
+                        <h4>${sourceData.translations.label_total_dispatchers}<br><span id="total_dispatchers">0</span></h4>
                     </div>
                     <div class="medium-2 cell center">
-                        <h4>${ __( 'Admins', 'disciple_tools' ) }<br><span id="total_administrators">0</span></h4>
+                        <h4>${sourceData.translations.label_total_administrators}<br><span id="total_administrators">0</span></h4>
                     </div>
                     <div class="medium-2 cell center">
-                        <h4>${ __( 'Strategists', 'disciple_tools' ) }<br><span id="total_strategists">0</span>
+                        <h4>${sourceData.translations.label_total_strategists}<br><span id="total_strategists">0</span>
                         </h4>
                     </div>
                     
                 </div>
             </div>
             <div class="cell">
-                <span class="section-subheader">${ __( 'Worker System Engagement for the Last 30 Days', 'disciple_tools' ) }</span>
+                <span class="section-subheader">${sourceData.translations.title_recent_activity}</span>
                 <div id="chart_line_logins" style="height:300px"><img src="${dtMetricsUsers.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
             </div>
             <div class="cell" style="display:none;">
                 <div class="grid-x grid-padding-x">
                 <div class="cell medium-6">
-                        <span class="section-subheader">${ __( 'Most Active', 'disciple_tools' ) }</span>
+                        <span class="section-subheader">${sourceData.translations.label_most_active}</span>
                         <div id="most_active"><img src="${dtMetricsUsers.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
                     </div>
                     <div class="cell medium-6">
-                        <span class="section-subheader">${ __( 'Least Active', 'disciple_tools' ) }</span>
+                        <span class="section-subheader">${sourceData.translations.label_least_active}</span>
                         <div id="least_active"><img src="${dtMetricsUsers.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
                     </div>
                 </div>
             </div>
             <div class="cell">
                 <hr>
-                <p><span class="section-subheader">${ __( 'Contact Progress per Worker', 'disciple_tools' ) }</span></p>
+                <p><span class="section-subheader">${sourceData.translations.label_contacts_per_user}</span></p>
                 <div id="contact_progress_per_worker" ><img src="${dtMetricsUsers.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
             </div>
             
@@ -150,7 +150,7 @@ function contact_follow_up_pace(){
 
     chartDiv.empty().html(`
       <span class="text-small" style="float:right; font-size:.6em; color: gray;">data as of <span id="pace-timestamp"></span> - <a onclick="refresh_follow_up_pace( 1 )">refresh</a></span>
-      <span class="section-header">${ __( 'Follow-up Pace', 'disciple_tools' ) }</span>
+      <span class="section-header">${ localizedObject.data.translations.title_response }</span>
       
       <hr style="max-width:100%;">
       <span><a onclick="jQuery('.notes').toggle();" style="float:right; font-size:.6em;">Show Chart Notes</a> </span>
@@ -185,7 +185,7 @@ function year_list() {
     let fullDate = new Date()
     let date = fullDate.getFullYear()
     let currentYear = fullDate.getFullYear()
-    let options = `<option value="all">${ __( 'All time', 'disciple_tools' ) }</option>`
+    let options = `<option value="all">${ dtMetricsUsers.data.translations.label_all_time }</option>`
     while (i < 15) {
         options += `<option value="${date}" ${ date === currentYear && 'selected'}>${date}</option>`;
         i++;
@@ -261,7 +261,7 @@ window.show_follow_up_pace = function show_follow_up_pace(){
     // TODO: escape this properly
     chartDiv.empty().html(`
       <span class="text-small" style="float:right; font-size:.6em; color: gray;">data as of <span id="pace-timestamp"></span> - <a onclick="refresh_worker_pace_data()">refresh</a></span>
-      <span class="section-header">${ __( 'Follow-up Pace', 'disciple_tools' ) }</span>
+      <span class="section-header">${ localizedObject.data.translations.title_response }</span>
       
       <hr style="max-width:100%;">
       <span><a onclick="jQuery('.notes').toggle();" style="float:right; font-size:.6em;">Show Chart Notes</a> </span>

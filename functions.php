@@ -141,7 +141,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '0.19.2';
+            $this->version = '0.20.0';
             $this->migration_number = 22;
 
 
@@ -340,6 +340,7 @@ else {
             require_once( get_template_directory() . '/dt-notifications/notifications-endpoints.php' );
             $this->endpoints['notifications'] = Disciple_Tools_Notifications_Endpoints::instance();
             require_once( get_template_directory() . '/dt-notifications/notifications-email.php' ); // sends notification emails through the async task process
+            require_once( get_template_directory() . '/dt-core/logging/usage.php' );
 
             /**
              * Post-to-Post configuration

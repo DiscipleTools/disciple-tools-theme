@@ -28,11 +28,11 @@ function project_seeker_path() {
   let sourceData = dtMetricsProject.data
 
   chartDiv.empty().html(`
-    <div class="section-header">${ __( 'Seeker path', 'disciple_tools' ) }</div>
-    <div class="section-subheader">${ __( 'Filter contacts to date range:', 'disciple_tools' ) }</div>
+    <div class="section-header">${_.escape(window.dtMetricsProject.translations.seeker_path) }</div>
+    <div class="section-subheader">${ _.escape(window.dtMetricsProject.translations.filter_contacts_to_date_range) }</div>
     <div class="date_range_picker">
         <i class="fi-calendar"></i>&nbsp;
-        <span>${ __( 'All time', 'disciple_tools' ) }</span> 
+        <span>${ _.escape(window.dtMetricsProject.translations.all_time) }</span> 
         <i class="dt_caret down"></i>
     </div>
     <div style="display: inline-block" class="loading-spinner"></div>
@@ -85,11 +85,11 @@ function project_milestones() {
   let sourceData = dtMetricsProject.data
 
   chartDiv.empty().html(`
-    <div class="section-header">${ __( 'Milestones', 'disciple_tools' ) }</div>
-    <div class="section-subheader">${ __( 'Filter to date range', 'disciple_tools' ) }:</div>
+    <div class="section-header">${ _.escape(window.dtMetricsProject.translations.milestones) }</div>
+    <div class="section-subheader">${ _.escape(window.dtMetricsProject.translations.filter_to_date_range) }:</div>
     <div class="date_range_picker">
         <i class="fi-calendar"></i>&nbsp;
-        <span>${ __( 'All time', 'disciple_tools' ) }</span> 
+        <span>${ _.escape(window.dtMetricsProject.translations.all_time) }</span> 
         <i class="dt_caret down"></i>
     </div>
     <div style="display: inline-block" class="loading-spinner"></div>
@@ -141,11 +141,11 @@ function show_sources_overview() {
   let chartDiv = jQuery('#chart')
 
   chartDiv.empty().html(`
-      <span class="section-header">${__( 'Sources', 'disciple_tools' )}</span>
-      <div class="section-subheader">${ __( 'Filter contacts to date range:', 'disciple_tools' ) }</div>
+      <span class="section-header">${ _.escape(window.dtMetricsProject.translations.sources) }</span>
+      <div class="section-subheader">${ _.escape(window.dtMetricsProject.translations.filter_contacts_to_date_range) }</div>
       <div class="date_range_picker">
           <i class="fi-calendar"></i>&nbsp;
-          <span>${ __( 'All time', 'disciple_tools' ) }</span> 
+          <span>${ _.escape(window.dtMetricsProject.translations.all_time) }</span> 
           <i class="dt_caret down"></i>
       </div>
       <div style="display: inline-block" class="loading-spinner"></div>
@@ -177,36 +177,36 @@ function show_sources_overview() {
 
     chartDiv.find(".js-loading").remove()
 
-    let filteringOutText = `${__( "Showing contacts created during", 'disciple_tools' )} ${label}.`;
+    let filteringOutText = `${_.escape(window.dtMetricsProject.translations.milestones)} ${label}.`;
 
     chartsDiv.append($("<div>").html(`
 
-        <h1>${__("All contacts, by source and status", "disciple_tools")}</h1>
+        <h1>${_.escape(window.dtMetricsProject.translations.sources_all_contacts_by_source_and_status)}</h1>
   
-        <p>${filteringOutText} ${__( "A contact can come from more than one source.", 'disciple_tools' )}</p>
+        <p>${filteringOutText} ${_.escape(window.dtMetricsProject.translations.sources_contacts_warning)}</p>
   
         <div id="chartdiv1" style="min-height: ${height}"></div>
   
         <hr>
   
-        <h1>${__( "Active contacts, by source and seeker path", 'disciple_tools' )}</h1>
+        <h1>${_.escape(window.dtMetricsProject.translations.sources_active_by_seeker_path)}</h1>
   
-        <p>${ __( 'This is displaying only the contacts with an active status right now.', 'disciple_tools' ) } 
+        <p>${ _.escape(window.dtMetricsProject.translations.sources_only_active) } 
         ${filteringOutText} 
-        ${__( "A contact can come from more than one source.", 'disciple_tools' )}
+        ${_.escape(window.dtMetricsProject.translations.sources_contacts_warning)}
         </p>
   
         <div id="chartdiv2" style="min-height: ${height}"></div>
   
         <hr>
   
-        <h1>${__( "Active contacts, by source and faith milestone", 'disciple_tools' )}</h1>
+        <h1>${_.escape(window.dtMetricsProject.translations.sources_active_milestone)}</h1>
   
-        <p>${__( "This is displaying only the contacts with an \"active\" status right now.", 'disciple_tools' )}
+        <p>${_.escape(window.dtMetricsProject.translations.sources_active_status_warning)}
         ${filteringOutText} 
-        ${__( "A contact can come from more than one source, and it can have more than one faith milestone at the same time.", 'disciple_tools' )}</p>
+        ${_.escape(window.dtMetricsProject.translations.sources_contacts_warning_milestones)}</p>
          
-        <p><b>${ __( 'Faith milestone', 'disciple_tools' ) }:</b> <select class="js-milestone"></select></p>
+        <p><b>${ _.escape(window.dtMetricsProject.translations.faith_milestone) }:</b> <select class="js-milestone"></select></p>
   
         <div id="chartdiv3" style="min-height: ${height}"></div>
       `))
@@ -311,7 +311,7 @@ function show_sources_overview() {
         series.dataFields.valueX = "active_seeker_path_" + seeker_path;
         series.dataFields.categoryY = "translated_source";
         series.stroke = am4core.color("#000");
-        series.name = localizedObject.seeker_path_settings.default[seeker_path].label || seeker_path;
+        series.name = _.get( localizedObject, `seeker_path_settings.default[${seeker_path}].label`, seeker_path );
         series.tooltipText = "{name}: [bold]{valueX}[/]";
         series.stacked = true;
       }
