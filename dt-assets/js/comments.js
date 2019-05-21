@@ -452,7 +452,7 @@ jQuery(document).ready(function($) {
     let id = $(this).data('id')
     $("#revert-modal").foundation('open')
     $("#confirm-revert").data("id", id)
-    API.get_single_activity(postType, postId, id).then(a => {
+    APIV2.get_single_activity(postType, postId, id).then(a => {
       let field = a.meta_key
       if (contactsDetailsWpApiSettings){
         field = _.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings[${a.meta_key}].name`)

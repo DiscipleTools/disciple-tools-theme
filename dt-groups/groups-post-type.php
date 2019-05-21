@@ -408,6 +408,12 @@ class Disciple_Tools_Groups_Post_Type
             "p2p_direction" => "from",
             "p2p_key" => "groups_to_peoplegroups"
         ];
+        $fields["leaders"] = [
+            "name" => __( "Leaders", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "groups_to_leaders"
+        ];
         $fields["requires_update"] = [
             'name'        => __( 'Requires Update', 'disciple_tools' ),
             'type'        => 'boolean',

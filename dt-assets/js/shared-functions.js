@@ -108,25 +108,14 @@ window.APIV2 = {
 
   get_single_activity: (post_type, postId, activityId) => makeRequest_v2('get', `${post_type}/${postId}/activity/${activityId}`),
 
-  revert_activity: (post_type, postId, activityId) => makeRequest_v2('get', `${post_type}/${postId}/revert/${activityId}`),
-
   get_shared: (post_type, postId)=> makeRequest_v2('get', `${post_type}/${postId}/shares`),
 
   add_shared: (post_type, postId, userId) => makeRequest_v2('post', `${post_type}/${postId}/shares`, { user_id: userId }),
 
   remove_shared: (post_type, postId, userId)=> makeRequest_v2('DELETE', `${post_type}/${postId}/shares`, { user_id: userId }),
 
-  search_users: query => makeRequest_v2('get', `users/get_users?s=${query}`),
-
-  get_filters: () => makeRequest_v2('get', 'users/get_filters'),
-
-  save_filters: filters => makeRequest_v2('post', 'users/save_filters', { filters }),
-
-  get_duplicates_on_post: (post_type, postId) => makeRequest_v2('get', `${post_type}/${postId}/duplicates`),
-
   create_user: user => makeRequest('post', 'users/create', user),
 
-  transfer_contact: (contactId, siteId) => makeRequest('post', 'contact/transfer', { contact_id: contactId, site_post_id: siteId }),
 }
 
 function handleAjaxError (err) {
@@ -260,9 +249,7 @@ window.TYPEAHEADS = {
   },
 
 
-  share(type, id, v2){
-    let api = v2 ? window.APIV2 : window.API
-
+  share(post_type, id, v2){
     return $.typeahead({
       input: '.js-typeahead-share',
       minLength: 0,
@@ -276,7 +263,7 @@ window.TYPEAHEADS = {
         matchOn: ["ID"],
         data: function () {
           var deferred = $.Deferred();
-          return api.get_shared(type, id).then(sharedResult => {
+          return window.APIV2.get_shared(post_type, id).then(sharedResult => {
             return deferred.resolve(sharedResult.map(g => {
               return {ID: g.user_id, name: g.display_name}
             }))
@@ -285,7 +272,7 @@ window.TYPEAHEADS = {
         callback: {
           onCancel: function (node, item) {
             $('#share-result-container').html("");
-            api.remove_shared(type, id, item.ID).catch(err=>{
+            window.APIV2.remove_shared(post_type, id, item.ID).catch(err=>{
               Typeahead['.js-typeahead-share'].addMultiselectItemLayout(
                 {ID:item.ID, name:item.name}
               )
@@ -296,7 +283,7 @@ window.TYPEAHEADS = {
       },
       callback: {
         onClick: function (node, a, item, event) {
-          api.add_shared(type, id, item.ID)
+          window.APIV2.add_shared(post_type, id, item.ID)
         },
         onResult: function (node, query, result, resultCount) {
           if (query) {
