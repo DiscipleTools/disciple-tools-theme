@@ -378,6 +378,36 @@ class Disciple_Tools_Groups_Post_Type
             "p2p_key" => "contacts_to_locations",
             'icon' => get_template_directory_uri() .'/dt-assets/images/location.svg',
         ];
+        $fields["parent_groups"] = [
+            "name" => __( "Parents", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "groups_to_groups"
+        ];
+        $fields["child_groups"] = [
+            "name" => __( "Child", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "to",
+            "p2p_key" => "groups_to_groups"
+        ];
+        $fields["peer_groups"] = [
+            "name" => __( "Peer Groups", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "any", //@todo
+            "p2p_key" => "groups_to_peers"
+        ];
+        $fields["members"] = [
+            "name" => __( "Members", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "to",
+            "p2p_key" => "contacts_to_groups"
+        ];
+        $fields["people_groups"] = [
+            "name" => __( "People Groups", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "groups_to_peoplegroups"
+        ];
         $fields["requires_update"] = [
             'name'        => __( 'Requires Update', 'disciple_tools' ),
             'type'        => 'boolean',

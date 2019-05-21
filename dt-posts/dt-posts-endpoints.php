@@ -45,6 +45,27 @@ class Disciple_Tools_Posts_Endpoints {
      * Add the api routes
      */
     public function add_api_routes() {
+        $arg_schemas = [
+            "post_type" => [
+                "description" => "The post type",
+                "type" => 'post_type',
+                "required" => true,
+                "validate_callback" => [ $this, "prefix_validate_args" ]
+            ],
+            "id" => [
+                "description" => "The id of the post",
+                "type" => 'integer',
+                "required" => true,
+                "validate_callback" => [ $this, "prefix_validate_args" ]
+            ],
+            "comment_id" => [
+                "description" => "The id of the comment",
+                "type" => 'integer',
+                "required" => true,
+                "validate_callback" => [ $this, "prefix_validate_args" ]
+            ]
+        ];
+
         //create_post
         register_rest_route(
             $this->namespace, '/(?P<post_type>\w+)/', [
@@ -52,12 +73,7 @@ class Disciple_Tools_Posts_Endpoints {
                     "methods"  => "POST",
                     "callback" => [ $this, 'create_post' ],
                     "args" => [
-                        "post_type" => [
-                            "description" => "The post type",
-                            "type" => 'post_type',
-                            "required" => true,
-                            "validate_callback" => [ $this, "prefix_validate_args" ]
-                        ],
+                        "post_type" => $arg_schemas["post_type"],
                     ]
                 ]
             ]
@@ -69,12 +85,8 @@ class Disciple_Tools_Posts_Endpoints {
                     "methods"  => "GET",
                     "callback" => [ $this, 'get_post' ],
                     "args" => [
-                        "post_type" => [
-                            "description" => "The post type",
-                            "type" => 'post_type',
-                            "required" => true,
-                            "validate_callback" => [ $this, "prefix_validate_args" ]
-                        ],
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
                     ]
                 ]
             ]
@@ -86,12 +98,8 @@ class Disciple_Tools_Posts_Endpoints {
                     "methods"  => "POST",
                     "callback" => [ $this, 'update_post' ],
                     "args" => [
-                        "post_type" => [
-                            "description" => "The post type",
-                            "type" => 'post_type',
-                            "required" => true,
-                            "validate_callback" => [ $this, "prefix_validate_args" ]
-                        ],
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
                     ]
                 ]
             ]
@@ -99,17 +107,12 @@ class Disciple_Tools_Posts_Endpoints {
 
         //get_posts
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/list', [
+            $this->namespace, '/(?P<post_type>\w+)', [
                 [
                     "methods"  => "GET",
                     "callback" => [ $this, 'get_list' ],
                     "args" => [
-                        "post_type" => [
-                            "description" => "The post type",
-                            "type" => 'post_type',
-                            "required" => true,
-                            "validate_callback" => [ $this, "prefix_validate_args" ]
-                        ],
+                        "post_type" => $arg_schemas["post_type"],
                     ]
                 ]
             ]
@@ -127,12 +130,7 @@ class Disciple_Tools_Posts_Endpoints {
                             "required" => false,
                             "validate_callback" => [ $this, "prefix_validate_args" ]
                         ],
-                        "post_type" => [
-                            "description" => "The post type",
-                            "type" => 'post_type',
-                            "required" => true,
-                            "validate_callback" => [ $this, "prefix_validate_args" ]
-                        ],
+                        "post_type" => $arg_schemas["post_type"],
                     ]
                 ]
             ]
@@ -145,19 +143,15 @@ class Disciple_Tools_Posts_Endpoints {
                     "methods"  => "GET",
                     "callback" => [ $this, 'get_comments' ],
                     "args" => [
-                        "post_type" => [
-                            "description" => "The post type",
-                            "type" => 'post_type',
-                            "required" => true,
-                            "validate_callback" => [ $this, "prefix_validate_args" ]
-                        ],
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
                     ]
                 ]
             ]
         );
         //add_comment
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comment', [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comments', [
                 [
                     "methods"  => "POST",
                     "callback" => [ $this, 'add_comment' ],
@@ -168,19 +162,15 @@ class Disciple_Tools_Posts_Endpoints {
                             "required" => true,
                             "validate_callback" => [ $this, "prefix_validate_args" ]
                         ],
-                        "post_type" => [
-                            "description" => "The post type",
-                            "type" => 'post_type',
-                            "required" => true,
-                            "validate_callback" => [ $this, "prefix_validate_args" ]
-                        ],
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
                     ]
                 ]
             ]
         );
         //update_comment
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comment/(?P<comment_id>\d+)', [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comments/(?P<comment_id>\d+)', [
                 [
                     "methods"  => "POST",
                     "callback" => [ $this, 'update_comment' ],
@@ -191,29 +181,23 @@ class Disciple_Tools_Posts_Endpoints {
                             "required" => true,
                             "validate_callback" => [ $this, "prefix_validate_args" ]
                         ],
-                        "post_type" => [
-                            "description" => "The post type",
-                            "type" => 'post_type',
-                            "required" => true,
-                            "validate_callback" => [ $this, "prefix_validate_args" ]
-                        ],
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
+                        "comment_id" => $arg_schemas["comment_id"],
                     ]
                 ]
             ]
         );
         //delete_comment
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comment/(?P<comment_id>\d+)', [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comments/(?P<comment_id>\d+)', [
                 [
                     "methods"  => "DELETE",
                     "callback" => [ $this, 'delete_comment' ],
                     "args" => [
-                        "post_type" => [
-                            "description" => "The post type",
-                            "type" => 'post_type',
-                            "required" => true,
-                            "validate_callback" => [ $this, "prefix_validate_args" ]
-                        ],
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
+                        "comment_id" => $arg_schemas["comment_id"],
                     ]
                 ]
             ]
@@ -225,12 +209,27 @@ class Disciple_Tools_Posts_Endpoints {
                     "methods"  => "GET",
                     "callback" => [ $this, 'get_activity' ],
                     "args" => [
-                        "post_type" => [
-                            "description" => "The post type",
-                            "type" => 'post_type',
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
+                    ]
+                ]
+            ]
+        );
+        //get_single_activity
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/activity/(?P<activity_id>\d+)', [
+                [
+                    "methods"  => "GET",
+                    "callback" => [ $this, 'get_single_activity' ],
+                    "args" => [
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
+                        "activity_id" => [
+                            "description" => "The id of the activity",
+                            "type" => 'integer',
                             "required" => true,
                             "validate_callback" => [ $this, "prefix_validate_args" ]
-                        ],
+                        ]
                     ]
                 ]
             ]
@@ -242,12 +241,8 @@ class Disciple_Tools_Posts_Endpoints {
                     "methods"  => "GET",
                     "callback" => [ $this, 'get_shares' ],
                     "args" => [
-                        "post_type" => [
-                            "description" => "The post type",
-                            "type" => 'post_type',
-                            "required" => true,
-                            "validate_callback" => [ $this, "prefix_validate_args" ]
-                        ],
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
                     ]
                 ]
             ]
@@ -265,17 +260,45 @@ class Disciple_Tools_Posts_Endpoints {
                             "required" => true,
                             "validate_callback" => [ $this, "prefix_validate_args" ]
                         ],
-                        "post_type" => [
-                            "description" => "The post type",
-                            "type" => 'post_type',
-                            "required" => true,
-                            "validate_callback" => [ $this, "prefix_validate_args" ]
-                        ],
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
                     ]
                 ]
             ]
         );
 
+        //add_share
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/shares', [
+                [
+                    "methods"  => "DELETE",
+                    "callback" => [ $this, 'remove_share' ],
+                    "args" => [
+                        "user_id" => [
+                            "description" => "The ID of the user to unshared the record with",
+                            "type" => 'integer',
+                            "required" => true,
+                            "validate_callback" => [ $this, "prefix_validate_args" ]
+                        ],
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
+                    ]
+                ]
+            ]
+        );
+        //get_following
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/following', [
+                [
+                    "methods"  => "GET",
+                    "callback" => [ $this, 'get_following' ],
+                    "args" => [
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
+                    ]
+                ]
+            ]
+        );
 
     }
 
@@ -347,29 +370,40 @@ class Disciple_Tools_Posts_Endpoints {
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
         $search = isset( $get_params['s'] ) ? $get_params['s'] : '';
-        return Disciple_Tools_Posts::get_viewable_compact( $url_params["post_type"], $search );
+        return DT_Posts::get_viewable_compact( $url_params["post_type"], $search );
     }
 
-    public function get_comments( WP_REST_Request $request ){
-        $url_params = $request->get_url_params();
-        return Disciple_Tools_Posts::get_post_comments( $url_params["post_type"], $url_params["id"] );
-    }
 
     public function get_activity( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], $url_params["post_type"] );
-        return Disciple_Tools_Posts::get_post_activity( $url_params["post_type"], $url_params["id"], $post_settings["fields"] );
+        return DT_Posts::get_post_activity( $url_params["post_type"], $url_params["id"] );
+    }
+
+    public function get_single_activity( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+        return DT_Posts::get_post_single_activity( $url_params["post_type"], $url_params["id"], $url_params["activity_id"] );
     }
 
     public function get_shares( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
-        return Disciple_Tools_Posts::get_shared_with( $url_params["post_type"], $url_params["id"] );
+        return DT_Posts::get_shared_with( $url_params["post_type"], $url_params["id"] );
     }
 
     public function add_share( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
         $body = $request->get_json_params();
-        return Disciple_Tools_Posts::add_shared( $url_params["post_type"], $url_params["id"], $body['user_id'] );
+        return DT_Posts::add_shared( $url_params["post_type"], $url_params["id"], $body['user_id'] );
+    }
+
+    public function remove_share( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+        $body = $request->get_json_params();
+        return DT_Posts::remove_shared( $url_params["post_type"], $url_params["id"], $body['user_id'] );
+    }
+
+    public function get_comments( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+        return DT_Posts::get_post_comments( $url_params["post_type"], $url_params["id"] );
     }
 
     public function add_comment( WP_REST_Request $request ){
@@ -377,7 +411,7 @@ class Disciple_Tools_Posts_Endpoints {
         $get_params = $request->get_query_params();
         $body = $request->get_json_params();
         $silent = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
-        $result = Disciple_Tools_Posts::add_post_comment( $url_params["post_type"], $url_params["id"], $body["comment"], 'comment', [], true, $silent );
+        $result = DT_Posts::add_post_comment( $url_params["post_type"], $url_params["id"], $body["comment"], 'comment', [], true, $silent );
         if ( is_wp_error( $result ) ) {
             return $result;
         } else {
@@ -388,7 +422,7 @@ class Disciple_Tools_Posts_Endpoints {
     public function update_comment( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
         $body = $request->get_json_params();
-        $result = Disciple_Tools_Posts::update_post_comment( $url_params["comment_id"], $body["comment"] );
+        $result = DT_Posts::update_post_comment( $url_params["comment_id"], $body["comment"] );
         if ( is_wp_error( $result ) ) {
             return $result;
         } else {
@@ -398,8 +432,13 @@ class Disciple_Tools_Posts_Endpoints {
 
     public function delete_comment( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
-        $result = Disciple_Tools_Posts::delete_post_comment( $url_params["comment_id"] );
+        $result = DT_Posts::delete_post_comment( $url_params["comment_id"] );
         return $result;
+    }
+
+    public function get_following( WP_REST_Request $request ) {
+        $url_params = $request->get_url_params();
+        return DT_Posts::get_users_following_post( $url_params["post_type"], $url_params["id"] );
     }
 
 }

@@ -2,7 +2,7 @@
   "use strict";
   let listSettings = window.listSettings
 
-  window.makeRequest_v2( 'GET', `${listSettings.post_type}/list`).then(response=>{
+  window.makeRequest_v2( 'GET', `${listSettings.post_type}`).then(response=>{
 
     let records = response.posts
     let header_fields = '<th>Name</th>'

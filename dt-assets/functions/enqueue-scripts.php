@@ -164,8 +164,8 @@ function dt_site_scripts() {
                     ],
                     'current_user_id' => get_current_user_id(),
                     'additional_sections' => apply_filters( 'dt_comments_additional_sections', [], $post_type ),
-                    'comments' => Disciple_Tools_Posts::get_post_comments( $post_type, $post["ID"], true ),
-                    'activity' => Disciple_Tools_Posts::get_post_activity( $post_type, $post["ID"], $post_settings["fields"] )
+                    'comments' => DT_Posts::get_post_comments( $post_type, $post["ID"] ),
+                    'activity' => DT_Posts::get_post_activity( $post_type, $post["ID"] )
                 ]
             );
             dt_theme_enqueue_script( 'details', 'dt-assets/js/details.js', array(

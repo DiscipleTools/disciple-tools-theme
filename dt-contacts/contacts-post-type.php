@@ -550,13 +550,13 @@ class Disciple_Tools_Contact_Post_Type
         $fields["coached_by"] = [
             "name" => __( "Coached_by", "disciple_tools" ),
             "type" => "connection",
-            "p2p_direction" => "to",
+            "p2p_direction" => "from",
             "p2p_key" => "contacts_to_contacts"
         ];
-        $fields["coached"] = [
+        $fields["coaching"] = [
             "name" => __( "Coached", "disciple_tools" ),
             "type" => "connection",
-            "p2p_direction" => "from",
+            "p2p_direction" => "to",
             "p2p_key" => "contacts_to_contacts"
         ];
         $fields["baptized"] = [

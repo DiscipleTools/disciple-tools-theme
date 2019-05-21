@@ -237,4 +237,11 @@ class Disciple_Tools_Post_Type_Template {
         $post_types[] = $this->post_type;
         return $post_types;
     }
+
+    public function dt_details_additional_section_ids( $sections, $post_type ){
+//        if ( $post_type === $this->post_type ) {
+//            $sections[] = 'details';
+//        }
+        return $sections;
+    }
 }

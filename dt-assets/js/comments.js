@@ -7,10 +7,6 @@ jQuery(document).ready(function($) {
   let postId = window.detailsSettings.post_id
   let postType = window.detailsSettings.post_type
   let rest_api = window.APIV2
-  if ( ['contacts', 'groups'].includes(detailsSettings.post_type ) ){
-    postType = postType.substring(0, detailsSettings.post_type.length - 1);
-    rest_api = window.API
-  }
 
   let comments = []
   let activity = [] // not guaranteed to be in any particular order

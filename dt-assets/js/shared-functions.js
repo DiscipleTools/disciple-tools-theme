@@ -96,11 +96,11 @@ window.APIV2 = {
 
   update_post: (post_type, postId, postData) => makeRequest_v2('post', `${post_type}/${postId}`, postData),
 
-  post_comment: (post_type, postId, comment) => makeRequest_v2('post', `${post_type}/${postId}/comment`, { comment }),
+  post_comment: (post_type, postId, comment) => makeRequest_v2('post', `${post_type}/${postId}/comments`, { comment }),
 
-  delete_comment: (post_type, postId, comment_ID) => makeRequest_v2('delete', `${post_type}/${postId}/comment/${comment_ID}`),
+  delete_comment: (post_type, postId, comment_ID) => makeRequest_v2('delete', `${post_type}/${postId}/comments/${comment_ID}`),
 
-  update_comment: (post_type, postId, comment_ID, comment_content) => makeRequest_v2('post', `${post_type}/${postId}/comment/${comment_ID}`, {  comment: comment_content }),
+  update_comment: (post_type, postId, comment_ID, comment_content) => makeRequest_v2('post', `${post_type}/${postId}/comments/${comment_ID}`, {  comment: comment_content }),
 
   get_comments: (post_type, postId) => makeRequest_v2('get', `${post_type}/${postId}/comments`),
 
@@ -114,7 +114,7 @@ window.APIV2 = {
 
   add_shared: (post_type, postId, userId) => makeRequest_v2('post', `${post_type}/${postId}/shares`, { user_id: userId }),
 
-  remove_shared: (post_type, postId, userId)=> makeRequest_v2('post', `${post_type}/${postId}/remove-shared`, { user_id: userId }),
+  remove_shared: (post_type, postId, userId)=> makeRequest_v2('DELETE', `${post_type}/${postId}/shares`, { user_id: userId }),
 
   search_users: query => makeRequest_v2('get', `users/get_users?s=${query}`),
 
@@ -124,9 +124,9 @@ window.APIV2 = {
 
   get_duplicates_on_post: (post_type, postId) => makeRequest_v2('get', `${post_type}/${postId}/duplicates`),
 
-  create_user: user => makeRequest_v2('post', 'users/create', user),
+  create_user: user => makeRequest('post', 'users/create', user),
 
-  transfer_contact: (contactId, siteId) => makeRequest_v2('post', 'contact/transfer', { contact_id: contactId, site_post_id: siteId }),
+  transfer_contact: (contactId, siteId) => makeRequest('post', 'contact/transfer', { contact_id: contactId, site_post_id: siteId }),
 }
 
 function handleAjaxError (err) {

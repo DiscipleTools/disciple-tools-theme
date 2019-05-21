@@ -37,7 +37,7 @@ class Disciple_Tools_Notifications_Comments
             $date_notified            = $comment->comment_date;
             $post_type                = get_post_type( $post_id );
 
-            $followers = Disciple_Tools_Posts::get_users_following_post( $post_type, $post_id, false );
+            $followers = DT_Posts::get_users_following_post( $post_type, $post_id, false );
             if ( is_wp_error( $followers ) ){
                 return $followers;
             }

@@ -402,7 +402,7 @@ jQuery(document).ready(function($) {
   $(".js-create-group").on("submit", function(e) {
     e.preventDefault();
     let title = $(".js-create-group input[name=title]").val()
-    API.create_group({title, parent_group_id: groupId, group_type:"group"})
+    APIV2.create_post('groups', {title, parent_groups: {values:[{ value:groupId }]}, group_type:"group"})
       .then((newGroup)=>{
         $(".reveal-after-group-create").show()
         $("#new-group-link").html(`<a href="${newGroup.permalink}">${title}</a>`)
