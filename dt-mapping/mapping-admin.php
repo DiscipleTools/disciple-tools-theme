@@ -872,13 +872,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php else : ?>
 
 
-
+            <h3>Instructions</h3>
             <p>Thank you for completing this important step in using D.T.</p>
-            <p>This tool is to help you migrate from the old locations system, to the new one that uses <a href="https://www.geonames.org/about.html">GeoNames</a>  as it's base. GeoNames is a free database of countries and regions and will help us achieve better collaborate across instances. </p>
-            <p>To explore what geonames are available, click <a target="_blank" href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=explore' ) ) ?>">here</a>.</p>
-
-<!--            <p>Below, for each of the old locations, select to convert it to an geoname location or to create it as a sub-location under a geoname location. You can also create sub-locations first by going to the "Sub-Locations" tab.</p>-->
-            <p>Below, we need to select the corresponding GeoNames location for each of the old locations. You can also add the old location as a sublocation under one of the GeoNames locations.</p>
+            <p>This tool is to help you migrate from the old locations system, to the new one that uses <a target="_blank" href="https://www.geonames.org/about.html">GeoNames</a>  as it's base. GeoNames is a free database of countries and regions and will help us achieve better collaborate across instances. </p>
+            <p>You may wish to select a <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=focus' ) ) ?>">mapping focus</a> to narrow the options given.</p>
+            <p>Select the corresponding GeoNames location for the old location. Then click click one of the 2 options:</p>
+            <ul style="list-style: disc; padding-inline-start: 40px">
+                <li><strong>Convert</strong> means the selected new location is the same as the old location.</li>
+                <li><strong>Create as a sub-location</strong> means that the old location is found within the selected new location.</li>
+            </ul>
 
             <form method="post" action="">
                 <?php wp_nonce_field( 'save', 'location_migrate_nonce', true, true ) ?>
