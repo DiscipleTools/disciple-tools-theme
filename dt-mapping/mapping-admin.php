@@ -284,6 +284,19 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             if ( ! current_user_can( 'manage_dt' ) ) { // manage dt is a permission that is specific to Disciple Tools and allows admins, strategists and dispatchers into the wp-admin
                 wp_die( esc_attr__( 'You do not have sufficient permissions to access this page.' ) );
             }
+            if ( (int) get_option( 'dt_mapping_module_migration_lock', 0 ) ) {
+                $last_migration_error = get_option( 'dt_mapping_module_migrate_last_error', false );
+                ?>
+                <h3>Something is wrong with the mapping system.</h3>
+                <?php if ( !empty( $last_migration_error ) ) {
+                    if ( isset( $last_migration_error["message"] ) ) : ?>
+                        <p>Cannot migrate, as migration lock is held. This is the last error: <strong><?php echo esc_html( $last_migration_error["message"] ); ?></strong></p>
+                    <?php else :
+                        var_dump( "Cannot migrate, as migration lock is held. This is the previous stored migration error: " . var_export( $last_migration_error, true ) );
+                    endif;
+                }
+                die();
+            }
 
             if ( isset( $_GET['tab'] ) ) {
                 $tab = sanitize_key( wp_unslash( $_GET['tab'] ) );
@@ -2226,6 +2239,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function dt_locations_migration_admin_notice() {
+            $current_migration_number = get_option( 'dt_mapping_module_migration_number' );
+            if ( $current_migration_number < 3 ){ ?>
+                <div class="notice notice-error notice-dt-locations-migration is-dismissible" data-notice="dt-locations-migration">
+                    <p>We tried upgrading the locations system to the new version, but something went wrong. Please contact your system administrator</p>
+                </div>
+            <?php }
             if ( ! get_option( 'dt_locations_migrated_to_geonames', false ) ) { ?>
                 <div class="notice notice-error notice-dt-locations-migration is-dismissible" data-notice="dt-locations-migration">
                     <p>We have updated Disciple.Tools locations system. Please use the migration tool to make sure all you locations are carried over:

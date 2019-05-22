@@ -50,6 +50,10 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
         }
         curl_close( $ch_start );
 
+        if ( !class_exists( 'ZipArchive' )){
+            error_log( "PHP ZipArchive is not installed or enabled." );
+            throw new Exception( 'PHP ZipArchive is not installed or enabled.' );
+        }
         $zip = new ZipArchive();
         $extract_path = $uploads_dir . 'geonames';
         if ($zip->open( $zip_file ) != "true")
