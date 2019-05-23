@@ -128,7 +128,7 @@ jQuery(document).ready(function($) {
       },
       href: function(item){
         if (item){
-          return `${window.wpApiShare.site_url}/groups/${item.ID}`
+          return `${_.escape( window.wpApiShare.site_url )}/groups/${item.ID}`
         }
       }
     },
@@ -173,7 +173,7 @@ jQuery(document).ready(function($) {
     API.create_group({title,created_from_contact_id:contactId})
       .then((newGroup)=>{
         $(".reveal-after-group-create").show()
-        $("#new-group-link").html(`<a href="${newGroup.permalink}">${_.escape(title)}</a>`)
+        $("#new-group-link").html(`<a href="${_.escape( newGroup.permalink )}">${_.escape(title)}</a>`)
         $(".hide-after-group-create").hide()
         $('#go-to-group').attr('href', newGroup.permalink);
         Typeahead['.js-typeahead-groups'].addMultiselectItemLayout({ID:newGroup.post_id.toString(), name:title})
@@ -499,7 +499,7 @@ jQuery(document).ready(function($) {
     template: function (query, item) {
       return `<span class="row" dir="auto">
         <span class="avatar"><img src="{{avatar}}"/> </span>
-        <span>${item.name}</span>
+        <span>${_.escape( item.name )}</span>
       </span>`
     },
     dynamic: true,
@@ -579,14 +579,14 @@ jQuery(document).ready(function($) {
                 $(`.${field_id}-list .${item.ID}`).remove()
                 let listItems = $(`.${field_id}-list li`)
                 if (listItems.length === 0){
-                  $(`.${field_id}-list.details-list`).append(`<li id="no-${field_id}">${contactsDetailsWpApiSettings.translations["not-set"][field_id]}</li>`)
+                  $(`.${field_id}-list.details-list`).append(`<li id="no-${_.escape( field_id )}">${_.escape( contactsDetailsWpApiSettings.translations["not-set"][field_id] )}</li>`)
                 }
 
               }
             }).catch(err => { console.error(err) })
           }
         },
-        href: window.wpApiShare.site_url + "/contacts/{{ID}}"
+        href: _.escape( window.wpApiShare.site_url ) + "/contacts/{{ID}}"
       },
       callback: {
         onClick: function(node, a, item, event){
@@ -730,6 +730,18 @@ jQuery(document).ready(function($) {
 
 
 
+  // Clicking plus sign for new address
+  $('button#add-new-address').on('click', () => {
+    $('#edit-contact_address').append(`
+      <li style="display: flex">
+        <textarea rows="3" class="contact-input" data-type="contact_address" dir="auto"></textarea>
+        <button class="button clear delete-button" data-id="new">
+          <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
+        </button>
+    </li>`)
+  })
+
+
   let idOfNextNewField = 1
   $('button#add-new-social-media').on('click', ()=>{
     let channelOptions = ``
@@ -749,7 +761,7 @@ jQuery(document).ready(function($) {
         <div class="cell small-8" style="display:flex">
           <input type="text" class="new-social-text" data-id="${idOfNextNewField}">
           <button class="button clear delete-social-media" data-id="${idOfNextNewField}">
-              <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+              <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
           </button>
         </div>
       </div>
@@ -766,9 +778,9 @@ jQuery(document).ready(function($) {
     const $list = $(`#edit-${listClass}`)
 
     $list.append(`<li style="display: flex">
-      <input type="text" class="contact-input" data-type="${listClass}"/>
-      <button class="button clear delete-button new-${listClass}" data-id="new">
-          <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+      <input type="text" class="contact-input" data-type="${_.escape( listClass )}"/>
+      <button class="button clear delete-button new-${_.escape( listClass )}" data-id="new">
+          <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
       </button>
     </li>`)
   })
@@ -866,7 +878,7 @@ jQuery(document).ready(function($) {
       phoneHTML += `<li style="display: flex">
           <input type="tel" id="${_.escape(field.key)}" value="${_.escape(field.value)}" data-type="contact_phone" class="contact-input"/>
           <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_phone" style="color: red">
-            <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+            <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
           </button>
       </li>`
     })
@@ -876,7 +888,7 @@ jQuery(document).ready(function($) {
       emailHTML += `<li style="display: flex">
         <input class="contact-input" type="email" id="${_.escape(field.key)}" value="${_.escape(field.value)}" data-type="contact_email"/>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_email">
-            <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+            <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
         </button>
       </li>`
     })
@@ -886,7 +898,7 @@ jQuery(document).ready(function($) {
       addressHTML += `<li style="display: flex">
         <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${_.escape(field.value)}</textarea>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
-            <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+            <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
         </button>
       </li>`
     })
@@ -899,12 +911,12 @@ jQuery(document).ready(function($) {
         contact[field].forEach(socialField=>{
           html += `<div class="grid-x grid-margin-x social-media-row" data-id="${_.escape(socialField.key)}">
               <div class="cell small-4">
-                  ${_.get(contactsDetailsWpApiSettings, 'channels[' + channel + '].label' ,field)}
+                  ${_.escape( _.get(contactsDetailsWpApiSettings, 'channels[' + channel + '].label' ,field) )}
               </div>
               <div class="cell small-8" style="display: flex">
-                <input class="contact-input" type="text" id="${_.escape(socialField.key)}" value="${_.escape(socialField.value)}" data-type="${field}"/>
-                <button class="button clear delete-social-media delete-button" data-id="${_.escape(socialField.key)}" data-type="${field}">
-                    <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+                <input class="contact-input" type="text" id="${_.escape(socialField.key)}" value="${_.escape(socialField.value)}" data-type="${_.escape( field )}"/>
+                <button class="button clear delete-social-media delete-button" data-id="${_.escape(socialField.key)}" data-type="${_.escape( field )}">
+                    <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
                 </button>
               </div>
           </div>
@@ -941,7 +953,7 @@ jQuery(document).ready(function($) {
       phoneHTML += `<li style="display: flex">
           <input type="tel" id="${_.escape(field.key)}" value="${_.escape(field.value)}" data-type="contact_phone" class="contact-input"/>
           <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_phone" style="color: red">
-            <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+            <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
           </button>
       </li>`
     })
@@ -951,7 +963,7 @@ jQuery(document).ready(function($) {
       emailHTML += `<li style="display: flex">
         <input class="contact-input" type="email" id="${_.escape(field.key)}" value="${_.escape(field.value)}" data-type="contact_email"/>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_email">
-            <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+            <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
         </button>
       </li>`
     })
@@ -961,7 +973,7 @@ jQuery(document).ready(function($) {
       addressHTML += `<li style="display: flex">
         <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${_.escape(field.value)}</textarea>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
-            <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+            <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
         </button>
       </li>`
     })
@@ -972,9 +984,9 @@ jQuery(document).ready(function($) {
       if (field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field)) {
         contact[field].forEach(socialField => {
           html += `<li style="display: flex">
-            <input class="contact-input" type="text" id="${_.escape(socialField.key)}" value="${_.escape(socialField.value)}" data-type="${field}"/>
-            <button class="button clear delete-button" data-id="${_.escape(socialField.key)}" data-type="${field}">
-                <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+            <input class="contact-input" type="text" id="${_.escape(socialField.key)}" value="${_.escape(socialField.value)}" data-type="${_.escape( field )}"/>
+            <button class="button clear delete-button" data-id="${_.escape(socialField.key)}" data-type="${_.escape( field )}">
+                <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
             </button>
           </li>`
         })
@@ -1103,13 +1115,13 @@ jQuery(document).ready(function($) {
         }
         htmlField.append(`<li class="details-list ${_.escape(field.key)}">
               ${link}
-              <img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
-              <img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
+              <img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/verified.svg"/>
+              <img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/broken.svg"/>
             </li>
           `)
       })
       if (!fields || fields.length === 0 || allEmptyValues){
-        htmlField.append(`<li id="no-${fieldDesignator}">${contactsDetailsWpApiSettings.translations["not-set"][fieldDesignator]}</li>`)
+        htmlField.append(`<li id="no-${_.escape( fieldDesignator )}">${_.escape( contactsDetailsWpApiSettings.translations["not-set"][fieldDesignator] )}</li>`)
       }
     })
     let socialHTMLField = $(`ul.social`).empty()
@@ -1132,38 +1144,39 @@ jQuery(document).ready(function($) {
               urlToDisplay = value.replace(prefix[0], "")
             }
             value = upgradeUrl( value )
-            value = `<a href="${value}" target="_blank" >${_.escape(urlToDisplay)}</a>`
+            value = `<a href="${_.escape( value )}" target="_blank" >${_.escape(urlToDisplay)}</a>`
           }
           let label = _.get( channel, "label", fieldDesignator ) + ": "
           if ( channel.icon ){
             channel.icon = upgradeUrl( channel.icon )
-            label = `<object data="${channel.icon}" height="10px" width="10px"
-              type="image/jpg">${label}</object>`
+            label = `<object data="${_.escape( channel.icon )}" height="10px" width="10px"
+              type="image/jpg">${_.escape( label )}</object>`
           }
           socialHTMLField.append(`<li class="details-list ${_.escape(field.key)}">
             ${label}
-              ${value}
-              <!--<img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>-->
-              <!--<img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>-->
+              ${_.escape( value )}
+              <!--<img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/verified.svg"/>-->
+              <!--<img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/broken.svg"/>-->
             </li>
           `)
         })
       }
     })
     if ( socialIsEmpty ){
-      socialHTMLField.append(`<li id="no-social">${contactsDetailsWpApiSettings.translations["not-set"]["social"]}</li>`)
+      socialHTMLField.append(`<li id="no-social">${_.escape( contactsDetailsWpApiSettings.translations["not-set"]["social"] )}</li>`)
     }
     let connections = [ "people_groups", "geonames" ]
     connections.forEach(connection=>{
       let htmlField = $(`.${connection}-list`).empty()
       if ( !contact[connection] || contact[connection].length === 0 ){
-        htmlField.append(`<li id="no-${connection}">${contactsDetailsWpApiSettings.translations["not-set"][connection]}</li>`)
+        htmlField.append(`<li id="no-${connection}">${_.escape( contactsDetailsWpApiSettings.translations["not-set"][connection] )}</li>`)
       } else {
         contact[connection].forEach(field=>{
-          htmlField.append(`<li class="details-list ${_.escape(field.key || field.id)}">
-            ${_.escape(field.post_title || field.label)}
-              <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
-              <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
+          htmlField.append(`<li class="details-list ${_.escape(field.key)}">
+            ${_.escape(field.post_title)}
+              <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/verified.svg"/>
+              <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/broken.svg"/>
+
             </li>
           `)
         })
@@ -1188,7 +1201,7 @@ jQuery(document).ready(function($) {
         sourceHTML.append(`<li>${translatedSourceHTML}</li>`)
       })
     } else {
-      sourceHTML.append(`<li id="no-source">${contactsDetailsWpApiSettings.translations["not-set"]["source"]}</li>`)
+      sourceHTML.append(`<li id="no-source">${_.escape( contactsDetailsWpApiSettings.translations["not-set"]["source"] )}</li>`)
     }
 
     contactDetailsEvents.publish('resetDetails', {
@@ -1260,7 +1273,7 @@ jQuery(document).ready(function($) {
       template: function (query, item) {
         return `<span class="row">
           <span class="avatar"><img src="{{avatar}}"/> </span>
-          <span>${item.name}</span>
+          <span>${_.escape( item.name )}</span>
         </span>`
       },
       dynamic: true,
@@ -1399,7 +1412,7 @@ jQuery(document).ready(function($) {
                   .catch(err => { console.error(err) })
               }
             },
-            href: window.wpApiShare.site_url + "/contacts/{{ID}}"
+            href: _.escape( window.wpApiShare.site_url ) + "/contacts/{{ID}}"
           },
           callback: {
             onClick: function (node, a, item) {

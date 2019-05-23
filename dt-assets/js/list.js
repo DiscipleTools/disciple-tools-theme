@@ -111,21 +111,21 @@
     savedFiltersList.empty()
     filters.forEach(filter=>{
       if (filter){
-        let deleteFilter = $(`<span style="float:right" data-filter="${filter.ID}">
+        let deleteFilter = $(`<span style="float:right" data-filter="${_.escape( filter.ID )}">
             <img style="padding: 0 4px" src="${wpApiShare.template_dir}/dt-assets/images/trash.svg">
         </span>`).on("click", function () {
           $(`.delete-filter-name`).html(filter.name)
           $('#delete-filter-modal').foundation('open');
           filterToDelete = filter.ID;
         })
-        let editFilter = $(`<span style="float:right" data-filter="${filter.ID}">
+        let editFilter = $(`<span style="float:right" data-filter="${_.escape( filter.ID )}">
             <img style="padding: 0 4px" src="${wpApiShare.template_dir}/dt-assets/images/edit.svg">
         </span>`).on("click", function () {
           editSavedFilter( filter )
           filterToEdit = filter.ID;
         })
-        let filterName =  `<span class="filter-list-name" data-filter="${filter.ID}">${filter.name}</span>`
-        const radio = $(`<input name='view' class='js-list-view' autocomplete='off' data-id="${filter.ID}" >`)
+        let filterName =  `<span class="filter-list-name" data-filter="${_.escape( filter.ID )}">${_.escape( filter.name )}</span>`
+        const radio = $(`<input name='view' class='js-list-view' autocomplete='off' data-id="${_.escape( filter.ID )}" >`)
           .attr("type", "radio")
           .val("saved-filters")
           .on("change", function() {
@@ -158,7 +158,7 @@
   if ( cachedFilter && !_.isEmpty(cachedFilter)){
     if (cachedFilter.type==="saved-filters"){
       if ( _.find(savedFilters[wpApiListSettings.current_post_type], {ID: cachedFilter.ID})){
-        $(`input[name=view][value=saved-filters][data-id='${cachedFilter.ID}']`).prop('checked', true);
+        $(`input[name=view][value=saved-filters][data-id='${_.escape( cachedFilter.ID )}']`).prop('checked', true);
       }
     } else if ( cachedFilter.type==="default" ){
       if ( cachedFilter.tab ){
@@ -171,9 +171,9 @@
   } else {
     selectedFilter = "no_filter"
   }
-  $(`#list-filter-tabs [data-id='${selectedFilterTab}'] a`).click()
+  $(`#list-filter-tabs [data-id='${_.escape( selectedFilterTab )}'] a`).click()
   if ( selectedFilter ){
-    $(`.is-active input[name=view][value="${selectedFilter}"].js-list-view`).prop('checked', true);
+    $(`.is-active input[name=view][value="${_.escape( selectedFilter )}"].js-list-view`).prop('checked', true);
   }
 
 
@@ -287,18 +287,18 @@
     const ccfs = wpApiListSettings.custom_fields_settings;
     const access_milestone_key = _.find(
       ["has_bible", "reading_bible"],
-      function (key) { return (contact["milestones"] || []).includes(`milestone_${key}`); }
+      function (key) { return (contact["milestones"] || []).includes(`milestone_${_.escape( key )}`); }
     )
     const belief_milestone_key = _.find(
       ['baptizing', 'baptized', 'belief'],
-      function(key) { return (contact["milestones"] || []).includes(`milestone_${key}`); }
+      function(key) { return (contact["milestones"] || []).includes(`milestone_${_.escape( key )}`); }
     );
     const sharing_milestone_key = _.find(
       ['planting', 'in_group', 'sharing', 'can_share'],
-      function(key) { return (contact["milestones"] || []).includes(`milestone_${key}`); }
+      function(key) { return (contact["milestones"] || []).includes(`milestone_${_.escape( key )}`); }
     );
-    let status = _.get( ccfs, `overall_status.default[${contact.overall_status}]["label"]`, contact.overall_status )
-    let seeker_path = _.get( ccfs, `seeker_path.default[${contact.seeker_path}]["label"]`, contact.seeker_path )
+    let status = _.get( ccfs, `overall_status.default[${_.escape( contact.overall_status )}]["label"]`, contact.overall_status )
+    let seeker_path = _.get( ccfs, `seeker_path.default[${_.escape( contact.seeker_path )}]["label"]`, contact.seeker_path )
     // if (contact.overall_status === "active") {
     //   status = ccfs.seeker_path.default[contact.seeker_path];
     // } else {
@@ -348,7 +348,7 @@
     let filter = currentFilter
     if (filter && filter.labels){
       filter.labels.forEach(label=>{
-        html+= `<span class="current-filter ${label.field}">${label.name}</span>`
+        html+= `<span class="current-filter ${_.escape( label.field )}">${_.escape( label.name )}</span>`
       })
     } else {
       let query = filter.query
@@ -357,10 +357,10 @@
 
           query[query_key].forEach(q => {
 
-            html += `<span class="current-filter ${query_key}">${q}</span>`
+            html += `<span class="current-filter ${_.escape( query_key )}">${_.escape( q )}</span>`
           })
         } else {
-          html += `<span class="current-filter search">${query[query_key]}</span>`
+          html += `<span class="current-filter search">${_.escape( query[query_key] )}</span>`
         }
       })
     }
@@ -373,10 +373,10 @@
         sortLabel = wpApiListSettings.translations.creation_date
       } else  {
         //get label for table header
-        sortLabel = $(`.sortable [data-id="${sortLabel.replace('-', '')}"]`).text()
+        sortLabel = $(`.sortable [data-id="${_.escape( sortLabel.replace('-', '') )}"]`).text()
       }
       html += `<span class="current-filter" data-id="sort">
-          ${wpApiListSettings.translations.sorting_by}: ${sortLabel}
+          ${_.escape( wpApiListSettings.translations.sorting_by )}: ${_.escape( sortLabel )}
       </span>`
     }
     currentFilters.html(html)
@@ -458,7 +458,7 @@
     //reset sorting in table header
     tableHeaderRow.removeClass("sorting_asc")
     tableHeaderRow.removeClass("sorting_desc")
-    let headerCell = $(`.js-list thead .sortable th[data-id="${sortField}"]`)
+    let headerCell = $(`.js-list thead .sortable th[data-id="${_.escape( sortField )}"]`)
     headerCell.addClass("sorting_asc")
     tableHeaderRow.data("sort", '')
     headerCell.data("sort", 'asc')
@@ -529,16 +529,16 @@
     currentFilter = {ID, type, name: _.escape( name ), query:JSON.parse(JSON.stringify(query)), labels:labels}
     customFilters.push(JSON.parse(JSON.stringify(currentFilter)))
 
-    let saveFilter = $(`<a style="float:right" data-filter="${ID}">
-        ${wpApiListSettings.translations.save}
+    let saveFilter = $(`<a style="float:right" data-filter="${_.escape( ID )}">
+        ${_.escape( wpApiListSettings.translations.save )}
     </a>`).on("click", function () {
       $("#filter-name").val(name)
       $('#save-filter-modal').foundation('open');
       filterToSave = ID;
     })
-    let filterRow = $(`<label class='list-view ${ID}'>`).append(`
-      <input type="radio" name="view" value="custom_filter" data-id="${ID}" class="js-list-view" checked autocomplete="off">
-        ${name}
+    let filterRow = $(`<label class='list-view ${_.escape( ID )}'>`).append(`
+      <input type="radio" name="view" value="custom_filter" data-id="${_.escape( ID )}" class="js-list-view" checked autocomplete="off">
+        ${_.escape( name )}
     `).append(saveFilter)
     $(".custom-filters").append(filterRow)
     $(".custom-filters input").on("change", function () {
@@ -551,7 +551,7 @@
   $(`#confirm-filter-save`).on('click', function () {
     let filterName = $('#filter-name').val()
     let filter = _.find(customFilters, {ID:filterToSave})
-    filter.name = filterName
+    filter.name = _.escape( filterName )
     if (filter.query){
       savedFilters[wpApiListSettings.current_post_type].push(filter)
       API.save_filters(savedFilters).then(()=>{
@@ -721,9 +721,9 @@
             $('#geonames-result-container').html("");
           },
           onClick: function (node, a, item) {
-            let name = _.get(wpApiListSettings, `custom_fields_settings.geonames.name`, 'geonames')
-            newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "geonames"})
-            selectedFilters.append(`<span class="current-filter geonames" data-id="${item.ID}">${name}:${item.name}</span>`)
+            let name = _.get(wpApiListSettings, `custom_fields_settings.locations.name`, 'locations')
+            newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "locations"})
+            selectedFilters.append(`<span class="current-filter locations" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
           }
         }
       });
@@ -766,7 +766,7 @@
           },
           onClick: function (node, a, item, event) {
             newFilterLabels.push({id: item.ID, name: item.name, field: "leaders"})
-            selectedFilters.append(`<span class="current-filter leaders" data-id="${item.ID}">${item.name}</span>`)
+            selectedFilters.append(`<span class="current-filter leaders" data-id="${_.escape( item.ID )}">${_.escape( item.name )}</span>`)
           }
         }
       });
@@ -794,7 +794,7 @@
           data: [],
           callback: {
             onCancel: function (node, item) {
-              $(`.current-filter[data-id="${item.ID}"].subassigned`).remove()
+              $(`.current-filter[data-id="${_.escape( item.ID )}"].subassigned`).remove()
               _.pullAllBy(newFilterLabels, [{id: item.ID}], "id")
             }
           }
@@ -810,7 +810,7 @@
           onClick: function (node, a, item, event) {
             let name = _.get(wpApiListSettings, `custom_fields_settings.subassigned.name`, 'subassigned')
             newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "subassigned"})
-            selectedFilters.append(`<span class="current-filter subassigned" data-id="${item.ID}">${name}:${item.name}</span>`)
+            selectedFilters.append(`<span class="current-filter subassigned" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
           }
         }
       });
@@ -856,7 +856,7 @@
         template: function (query, item) {
           return `<span class="row">
             <span class="avatar"><img src="{{avatar}}"/> </span>
-            <span>${item.name}</span>
+            <span>${_.escape( item.name )}</span>
           </span>`
         },
         dynamic: true,
@@ -869,7 +869,7 @@
           },
           onClick: function(node, a, item, event) {
             let name = _.get(wpApiListSettings, `custom_fields_settings.assigned_to.name`, 'assigned_to')
-            selectedFilters.append(`<span class="current-filter assigned_to" data-id="${item.ID}">${name}:${item.name}</span>`)
+            selectedFilters.append(`<span class="current-filter assigned_to" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
             newFilterLabels.push({id:item.ID, name:`${name}:${item.name}`, field:"assigned_to"})
 
           }
@@ -964,7 +964,7 @@
         callback: {
           onClick: function(node, a, item, event){
             let name = _.get(wpApiListSettings, `custom_fields_settings.${field}.name`, field)
-            selectedFilters.append(`<span class="current-filter ${field}" data-id="${item.key}">${name}:${item.value}</span>`)
+            selectedFilters.append(`<span class="current-filter ${_.escape( field )}" data-id="${_.escape( item.key )}">${_.escape( name )}:${_.escape( item.value )}</span>`)
             newFilterLabels.push({id:item.key, name:`${name}:${item.value}`, field})
           },
           onResult: function (node, query, result, resultCount) {
@@ -1025,7 +1025,7 @@
       connectionTypeKeys.push("assigned_to")
       connectionTypeKeys.push("geonames")
       newFilterLabels.forEach(label=>{
-        selectedFilters.append(`<span class="current-filter ${label.field}" data-id="${label.id}">${label.name}</span>`)
+        selectedFilters.append(`<span class="current-filter ${_.escape( label.field )}" data-id="${_.escape( label.id )}">${_.escape( label.name )}</span>`)
         let type = _.get(wpApiListSettings, `custom_fields_settings.${label.field}.type`)
         if ( type === "key_select" || type === "boolean" ){
           $(`#filter-modal #${label.field}-options input[value="${label.id}"]`).prop('checked', true)
@@ -1075,7 +1075,7 @@
       let optionName = field_options[optionId]["label"]
       let name = _.get(wpApiListSettings, `custom_fields_settings.${field_key}.name`, field_key)
       newFilterLabels.push({id:$(this).val(), name:`${name}:${optionName}`, field:field_key})
-      selectedFilters.append(`<span class="current-filter ${field_key}" data-id="${optionId}">${name}:${optionName}</span>`)
+      selectedFilters.append(`<span class="current-filter ${_.escape( field_key )}" data-id="${_.escape( optionId )}">${_.escape( name )}:${_.escape( optionName )}</span>`)
     } else {
       $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
       _.pullAllBy(newFilterLabels, [{id:optionId}], "id")
@@ -1089,7 +1089,7 @@
     if ($(this).is(":checked")){
       let field = _.get( wpApiListSettings, `custom_fields_settings.${field_key}` )
       newFilterLabels.push({id:$(this).val(), name:`${field.name}:${label}`, field:field_key})
-      selectedFilters.append(`<span class="current-filter ${field_key}" data-id="${optionId}">${field.name}:${label}</span>`)
+      selectedFilters.append(`<span class="current-filter ${_.escape( field_key )}" data-id="${_.escape( optionId )}">${_.escape( field.name )}:${_.escape( label )}</span>`)
     } else {
       $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
       _.pullAllBy(newFilterLabels, [{id:optionId}], "id")

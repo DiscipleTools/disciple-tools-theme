@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="46" height="40.975" viewBox="0 0 46 40.975">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="46" height="40.975" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="fellowship-2" clip-path="url(#clip-path)">
+    <g id="favorite" transform="translate(-1.006 -3.006)">
+      <path id="Path_804" data-name="Path 804" d="M43.2,6.809a13.02,13.02,0,0,0-18.39,0q-.422.422-.807.887c-.257-.311-.526-.606-.808-.888A13,13,0,0,0,4.808,25.2L23.3,43.688a1,1,0,0,0,1.414,0L43.2,25.2A13.016,13.016,0,0,0,43.2,6.809Z" transform="translate(0 0)" fill="#e86c60"/>
+    </g>
+  </g>
+</svg>
