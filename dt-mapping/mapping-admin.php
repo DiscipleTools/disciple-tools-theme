@@ -898,26 +898,28 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php else : ?>
 
 
-            <h1>Instructions</h1>
+            <h1>About</h1>
             <p>Thank you for completing this important step in using D.T.</p>
             <p>This tool is to help you migrate from the old locations system, to the new one that uses <a target="_blank" href="https://www.geonames.org/about.html">GeoNames</a>  as it's base. GeoNames is a free database of countries and regions and will help us achieve better collaborate across instances. </p>
             <p>You may wish to select a <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=focus' ) ) ?>">mapping focus</a> to narrow the options given.</p>
-            <p>Select the corresponding GeoNames location for the old location. Then click click one of the 2 options:</p>
+            <h1>Instructions</h1>
+            <p>1. Select the corresponding GeoNames location for the old location. If you choose a wrong location, click "World" to undo it.</p>
+            <p>2. Then click click one of the two options:</p>
             <ul style="list-style: disc; padding-inline-start: 40px">
                 <li><strong style="color: green;" >Convert (recommended)</strong> means the selected new location is the same as the old location.</li>
                 <li><strong style="color: orange;">Create as a sub-location</strong> means that the old location is found within the selected new location.</li>
             </ul>
+            <p>3. Click the "Run migration" button. Hint: You can select a few location and run the migration.</p>
 
             <form method="post" action="">
                 <?php wp_nonce_field( 'save', 'location_migrate_nonce', true, true ) ?>
                 <h3>Locations to Migrate ( <?php echo esc_html( sizeof( $locations_with_records ) ) ?> )</h3>
 
                 <p>
-                    <strong>Run migration for selected locations.</strong>
-                    <button style="background-color: red; color: white; border-radius: 5px; margin-left: 10px" type="submit" class="button" name="run-migration">
+                    <button style="background-color: red; color: white; border-radius: 5px;" type="submit" class="button" name="run-migration">
                         <strong>Run migration</strong>
                     </button>
-                    <strong>Careful, This cannot be undone.</strong>
+                    <strong>Careful, this cannot be undone.</strong>
                 </p>
 
                 <table class="widefat striped">
@@ -957,11 +959,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     </tbody>
                 </table>
                 <p>
-                    <strong>Run migration for selected locations.</strong>
-                    <button style="background-color: red; color: white; border-radius: 5px; margin-left: 10px" type="submit" class="button" name="run-migration">
+                    <button style="background-color: red; color: white; border-radius: 5px;" type="submit" class="button" name="run-migration">
                         <strong>Run migration</strong>
                     </button>
-                    <strong>Careful, This cannot be undone.</strong>
+                    <strong>Careful, this cannot be undone.</strong>
                 </p>
             </form>
             <script>
