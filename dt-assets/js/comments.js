@@ -70,9 +70,9 @@ jQuery(document).ready(function($) {
         if (contactsDetailsWpApiSettings){
           field = _.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings[${item.meta_key}].name`)
         }
-        item.action = `<a class="revert-activity dt_tooltip" data-id="${item.histid}">
+        item.action = `<a class="revert-activity dt_tooltip" data-id="${_.escape( item.histid )}">
           <img class="revert-arrow-img" src="${commentsSettings.template_dir}/dt-assets/images/undo.svg">
-          <span class="tooltiptext">${field || item.meta_key} </span>
+          <span class="tooltiptext">${_.escape( field || item.meta_key )} </span>
         </a>`
       } else {
         item.action = ''
