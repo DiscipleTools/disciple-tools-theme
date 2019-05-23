@@ -275,7 +275,7 @@ class Disciple_Tools_People_Groups_Post_Type
     } // End meta_box_setup()
 
     public function load_add_update_meta_box( $post ) {
-//        $names = Disciple_Tools_People_Groups::get_country_dropdown(); // @todo throwing error.
+        $names = Disciple_Tools_People_Groups::get_country_dropdown(); // @todo throwing error.
         ?>
         <input type="hidden" id="post_id" value="<?php echo esc_attr( $post->ID ) ?>" />
 

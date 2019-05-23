@@ -158,9 +158,6 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             case 'groups':
                 $fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
                 break;
-            case 'locations':
-                $fields = Disciple_Tools_Location_Post_Type::instance()->get_custom_fields_settings();
-                break;
             default:
                 $fields = '';
                 break;
