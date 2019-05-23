@@ -292,12 +292,6 @@ else {
             require_once( get_template_directory() . '/dt-mapping/mapping.php' ); // load for mapping module
 
 
-            // dt-locations
-            require_once( get_template_directory() . '/dt-locations/locations.php' ); // serves the locations rest endpoints
-            require_once( get_template_directory() . '/dt-locations/locations-endpoints.php' ); // builds rest endpoints
-            $this->endpoints['locations'] = Disciple_Tools_Locations_Endpoints::instance();
-
-
 
             /**
              * dt-people-groups
