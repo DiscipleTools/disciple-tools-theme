@@ -903,8 +903,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <p>You may wish to select a <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=focus' ) ) ?>">mapping focus</a> to narrow the options given.</p>
             <p>Select the corresponding GeoNames location for the old location. Then click click one of the 2 options:</p>
             <ul style="list-style: disc; padding-inline-start: 40px">
-                <li><strong>Convert</strong> means the selected new location is the same as the old location.</li>
-                <li><strong>Create as a sub-location</strong> means that the old location is found within the selected new location.</li>
+                <li><strong style="color: green;" >Convert (recommended)</strong> means the selected new location is the same as the old location.</li>
+                <li><strong style="color: orange;">Create as a sub-location</strong> means that the old location is found within the selected new location.</li>
             </ul>
 
             <form method="post" action="">
@@ -912,10 +912,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <h3>Locations to Migrate ( <?php echo esc_html( sizeof( $locations_with_records ) ) ?> )</h3>
 
                 <p>
-                    <strong>Run migration for selected locations. Careful, This cannot be undone. </strong>
+                    <strong>Run migration for selected locations.</strong>
                     <button style="background-color: red; color: white; border-radius: 5px; margin-left: 10px" type="submit" class="button" name="run-migration">
                         <strong>Run migration</strong>
                     </button>
+                    <strong>Careful, This cannot be undone.</strong>
                 </p>
 
                 <table class="widefat striped">
@@ -942,23 +943,24 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <td id="<?php echo esc_html( $location["ID"] ) ?>_buttons">
                                 <select name="selected_geonames[<?php echo esc_html( $location["ID"] ) ?>][migration_type]" data-location_id="<?php echo esc_html( $location["ID"] ) ?>" class="migration-type">
                                     <option></option>
-                                    <option value="convert">Convert</option>
+                                    <option value="convert">Convert (recommended) </option>
                                     <option value="sublocation">Create as a sub-location</option>
                                 </select>
                             </td>
                             <td id="<?php echo esc_html( $location["ID"] ) ?>_actions">
-                                <span class="convert" style="display: none;">Convert <?php echo esc_html( $location["post_title"] ) ?> to <span class="selected-geoname-label">World</span></span>
-                                <span class="sublocation" style="display: none;">Create <?php echo esc_html( $location["post_title"] ) ?> as a sub-location under <span class="selected-geoname-label">World</span></span>
+                                <span class="convert" style="display: none;"><strong style="color: green;">Convert</strong> <?php echo esc_html( $location["post_title"] ) ?> to <span class="selected-geoname-label">World</span></span>
+                                <span class="sublocation" style="display: none;"><strong style="color: orange">Create</strong> <?php echo esc_html( $location["post_title"] ) ?> <strong style="color: orange">as a sub-location</strong> under <span class="selected-geoname-label">World</span></span>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
                 </table>
                 <p>
-                    <strong>Run migration for selected locations. Careful, This cannot be undone. </strong>
+                    <strong>Run migration for selected locations.</strong>
                     <button style="background-color: red; color: white; border-radius: 5px; margin-left: 10px" type="submit" class="button" name="run-migration">
                         <strong>Run migration</strong>
                     </button>
+                    <strong>Careful, This cannot be undone.</strong>
                 </p>
             </form>
             <script>
