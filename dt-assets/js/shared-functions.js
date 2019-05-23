@@ -4,13 +4,13 @@ const { __, _x, _n, _nx } = wp.i18n;
 
 jQuery(document).ready(function($) {
 // Adds an active state to the top bar navigation
-  let ref = "";
-  if (wpApiShare && wpApiShare.site_url) {
-    ref = window.location.href.replace(wpApiShare.site_url + '/', "");
-  } else {
-    ref = window.location.pathname
-  }
-  $(`div.top-bar-left ul.menu [href*=${ref.split('/')[0]}]`).parent().addClass('active');
+    let ref = "";
+    if (wpApiShare && wpApiShare.site_url) {
+        ref = window.location.href.replace(wpApiShare.site_url + '/', "");
+    } else {
+        ref = window.location.pathname
+    }
+    $(`div.top-bar-left ul.menu [href*=${ref.replace(wpApiShare.site_url, '').split('/')[0]}]`).parent().addClass('active');
 })
 
 function makeRequest (type, url, data) {
