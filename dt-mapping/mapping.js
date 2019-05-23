@@ -257,7 +257,7 @@ function top_level_map( div ) {
               let new_geojson = jQuery.extend({}, geoJSON )
               new_geojson.features = []
 
-              jQuery.each(data.features, function(i,v) {
+              jQuery.each(geoJSON.features, function(i,v) {
                 if ( top_map_list[ v.properties.geonameid ] ) {
                   new_geojson.features.push(v)
                 }
