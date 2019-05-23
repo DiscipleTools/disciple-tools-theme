@@ -33,7 +33,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         public $spinner;
         public $nonce;
         public $current_user_id;
-        public $map_key;
 
         public function __construct() {
             /**

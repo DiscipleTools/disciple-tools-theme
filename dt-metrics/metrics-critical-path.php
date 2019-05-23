@@ -69,7 +69,6 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
                 'nonce'              => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id'    => get_current_user_id(),
-                'map_key'            => dt_get_option( 'map_key' ),
                 'data'               => $this->data(),
                 'translations'       => [
                     'title_follow_up' => __( 'Follow Up', 'disciple_tools' ),
