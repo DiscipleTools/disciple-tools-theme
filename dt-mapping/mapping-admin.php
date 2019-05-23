@@ -57,7 +57,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             add_action( "admin_menu", [ $this, 'register_menu' ] );
             add_action( 'admin_notices', [ $this, 'dt_locations_migration_admin_notice' ] );
             if ( is_admin() && isset( $_GET['page'] ) && 'dt_mapping_module' === $_GET['page'] ) {
-                $this->spinner = spinner();
+                if ( function_exists( "spinner" ) ){
+                    $this->spinner = spinner();
+                }
                 $this->nonce = wp_create_nonce( 'wp_rest' );
                 $this->current_user_id = get_current_user_id();
 
@@ -896,26 +898,28 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php else : ?>
 
 
-            <h1>Instructions</h1>
+            <h1>About</h1>
             <p>Thank you for completing this important step in using D.T.</p>
             <p>This tool is to help you migrate from the old locations system, to the new one that uses <a target="_blank" href="https://www.geonames.org/about.html">GeoNames</a>  as it's base. GeoNames is a free database of countries and regions and will help us achieve better collaborate across instances. </p>
             <p>You may wish to select a <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=focus' ) ) ?>">mapping focus</a> to narrow the options given.</p>
-            <p>Select the corresponding GeoNames location for the old location. Then click click one of the 2 options:</p>
+            <h1>Instructions</h1>
+            <p>1. Select the corresponding GeoNames location for the old location. If you choose a wrong location, click "World" to undo it.</p>
+            <p>2. Then click click one of the two options:</p>
             <ul style="list-style: disc; padding-inline-start: 40px">
                 <li><strong style="color: green;" >Convert (recommended)</strong> means the selected new location is the same as the old location.</li>
                 <li><strong style="color: orange;">Create as a sub-location</strong> means that the old location is found within the selected new location.</li>
             </ul>
+            <p>3. Click the "Run migration" button. Hint: You can select a few location and run the migration.</p>
 
             <form method="post" action="">
                 <?php wp_nonce_field( 'save', 'location_migrate_nonce', true, true ) ?>
                 <h3>Locations to Migrate ( <?php echo esc_html( sizeof( $locations_with_records ) ) ?> )</h3>
 
                 <p>
-                    <strong>Run migration for selected locations.</strong>
-                    <button style="background-color: red; color: white; border-radius: 5px; margin-left: 10px" type="submit" class="button" name="run-migration">
+                    <button style="background-color: red; color: white; border-radius: 5px;" type="submit" class="button" name="run-migration">
                         <strong>Run migration</strong>
                     </button>
-                    <strong>Careful, This cannot be undone.</strong>
+                    <strong>Careful, this cannot be undone.</strong>
                 </p>
 
                 <table class="widefat striped">
@@ -955,11 +959,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     </tbody>
                 </table>
                 <p>
-                    <strong>Run migration for selected locations.</strong>
-                    <button style="background-color: red; color: white; border-radius: 5px; margin-left: 10px" type="submit" class="button" name="run-migration">
+                    <button style="background-color: red; color: white; border-radius: 5px;" type="submit" class="button" name="run-migration">
                         <strong>Run migration</strong>
                     </button>
-                    <strong>Careful, This cannot be undone.</strong>
+                    <strong>Careful, this cannot be undone.</strong>
                 </p>
             </form>
             <script>
@@ -2059,53 +2062,30 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             dt_write_log( 'begin geonames install: ' . microtime() );
 
             $fp = fopen( $file_location, 'r' );
+
+            $query = "INSERT IGNORE INTO $wpdb->dt_geonames VALUES";
+            $count = 0;
             while ( ! feof( $fp ) ) {
                 $line = fgets( $fp, 2048 );
+                $count++;
 
                 $data = str_getcsv( $line, "\t" );
-
+                $data_sql = dt_array_to_sql( $data );
                 if ( isset( $data[29] ) ) {
-                    $wpdb->query( $wpdb->prepare( "
-                        INSERT IGNORE INTO $wpdb->dt_geonames
-                        VALUES (%d,%s,%s,%s,%d,%d,%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%s,%d,%d,%d,%d,%d,%s,%d,%d,%d,%d,%s,%d,%d,%d,%d,%d)",
-                        $data[0], // geonameid
-                        $data[1],
-                        $data[2],
-                        $data[3],
-                        $data[4], // latitude
-                        $data[5], // longitude
-                        $data[6],
-                        $data[7],
-                        $data[8],
-                        $data[9],
-                        $data[10],
-                        $data[11],
-                        $data[12],
-                        $data[13],
-                        $data[14], // population
-                        $data[15],
-                        $data[16],
-                        $data[17],
-                        $data[18], // modification date
-                        $data[19], // parent id
-                        $data[20],
-                        $data[21],
-                        $data[22],
-                        $data[23],
-                        $data[24], // level
-                        $data[25], //n
-                        $data[26], //s
-                        $data[27], //w
-                        $data[28], //e
-                        $data[29], // alt name
-                        $data[30], // alt_population
-                        $data[31], // is_custom_location
-                        $data[32], // alt_name_changed
-                        $data[33], // has single polygon
-                        $data[34]  // has polygon collection
-                    ) );
+                    $query .= " ( $data_sql ), ";
+                }
+                if ( $count === 500 ) {
+                    $query .= ';';
+                    $query = str_replace( ", ;", ";", $query ); //remove last comma
+                    $wpdb->query( $query );  //phpcs:ignore
+                    $query = "INSERT IGNORE INTO $wpdb->dt_geonames VALUES";
+                    $count = 0;
                 }
             }
+            //add the last queries
+            $query .= ';';
+            $query = str_replace( ", ;", ";", $query ); //remove last comma
+            $wpdb->query( $query );  //phpcs:ignore
 
             dt_write_log( 'end geonames install: ' . microtime() );
 
