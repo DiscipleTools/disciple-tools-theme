@@ -57,7 +57,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             add_action( "admin_menu", [ $this, 'register_menu' ] );
             add_action( 'admin_notices', [ $this, 'dt_locations_migration_admin_notice' ] );
             if ( is_admin() && isset( $_GET['page'] ) && 'dt_mapping_module' === $_GET['page'] ) {
-                $this->spinner = spinner();
+                if ( function_exists( "spinner" ) ){
+                    $this->spinner = spinner();
+                }
                 $this->nonce = wp_create_nonce( 'wp_rest' );
                 $this->current_user_id = get_current_user_id();
 
@@ -2059,53 +2061,30 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             dt_write_log( 'begin geonames install: ' . microtime() );
 
             $fp = fopen( $file_location, 'r' );
+
+            $query = "INSERT IGNORE INTO $wpdb->dt_geonames VALUES";
+            $count = 0;
             while ( ! feof( $fp ) ) {
                 $line = fgets( $fp, 2048 );
+                $count++;
 
                 $data = str_getcsv( $line, "\t" );
-
+                $data_sql = dt_array_to_sql( $data );
                 if ( isset( $data[29] ) ) {
-                    $wpdb->query( $wpdb->prepare( "
-                        INSERT IGNORE INTO $wpdb->dt_geonames
-                        VALUES (%d,%s,%s,%s,%d,%d,%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%s,%d,%d,%d,%d,%d,%s,%d,%d,%d,%d,%s,%d,%d,%d,%d,%d)",
-                        $data[0], // geonameid
-                        $data[1],
-                        $data[2],
-                        $data[3],
-                        $data[4], // latitude
-                        $data[5], // longitude
-                        $data[6],
-                        $data[7],
-                        $data[8],
-                        $data[9],
-                        $data[10],
-                        $data[11],
-                        $data[12],
-                        $data[13],
-                        $data[14], // population
-                        $data[15],
-                        $data[16],
-                        $data[17],
-                        $data[18], // modification date
-                        $data[19], // parent id
-                        $data[20],
-                        $data[21],
-                        $data[22],
-                        $data[23],
-                        $data[24], // level
-                        $data[25], //n
-                        $data[26], //s
-                        $data[27], //w
-                        $data[28], //e
-                        $data[29], // alt name
-                        $data[30], // alt_population
-                        $data[31], // is_custom_location
-                        $data[32], // alt_name_changed
-                        $data[33], // has single polygon
-                        $data[34]  // has polygon collection
-                    ) );
+                    $query .= " ( $data_sql ), ";
+                }
+                if ( $count === 500 ) {
+                    $query .= ';';
+                    $query = str_replace( ", ;", ";", $query ); //remove last comma
+                    $wpdb->query( $query );  //phpcs:ignore
+                    $query = "INSERT IGNORE INTO $wpdb->dt_geonames VALUES";
+                    $count = 0;
                 }
             }
+            //add the last queries
+            $query .= ';';
+            $query = str_replace( ", ;", ";", $query ); //remove last comma
+            $wpdb->query( $query );  //phpcs:ignore
 
             dt_write_log( 'end geonames install: ' . microtime() );
 
