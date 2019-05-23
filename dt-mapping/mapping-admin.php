@@ -317,19 +317,18 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <?php esc_attr_e( 'General Settings', 'disciple_tools' ) ?>
                     </a>
 
-<!--                    --><?php //if ( !get_option( "dt_locations_migrated_to_geonames" ) ) : ?>
-                        <!-- Location Migration Tab -->
-                        <a href="<?php echo esc_attr( $link ) . 'location-migration' ?>" class="nav-tab
-                            <?php ( $tab == 'location-migration' || ! isset( $tab ) ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
-                            <?php esc_attr_e( 'Migrating From Locations', 'disciple_tools' ) ?>
-                        </a>
-<!--                    --><?php //endif; ?>
-
                     <!-- Starting Map -->
                     <a href="<?php echo esc_attr( $link ) . 'focus' ?>" class="nav-tab
                         <?php ( $tab == 'focus' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
                         <?php esc_attr_e( 'Mapping Focus', 'disciple_tools' ) ?>
                     </a>
+                        <!-- Location Migration Tab -->
+<!--                    --><?php //if ( !get_option( "dt_locations_migrated_to_geonames" ) ) : ?>
+                        <a href="<?php echo esc_attr( $link ) . 'location-migration' ?>" class="nav-tab
+                            <?php ( $tab == 'location-migration' || ! isset( $tab ) ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                            <?php esc_attr_e( 'Migrating From Locations', 'disciple_tools' ) ?>
+                        </a>
+<!--                    --><?php //endif; ?>
                     <!-- Polygon -->
                     <a href="<?php echo esc_attr( $link ) . 'polygons' ?>" class="nav-tab
                         <?php ( $tab == 'polygons' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
@@ -2020,7 +2019,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             $dir = wp_upload_dir();
             $uploads_dir = trailingslashit( $dir['basedir'] );
-            $file = 'dt_geonames.tsv';
+            $file = 'geonames.tsv';
             $file_location = $uploads_dir . "geonames/" . $file;
 
             // TEST for presence of source files
