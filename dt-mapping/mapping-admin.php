@@ -842,52 +842,41 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
         public function migration_from_locations_meta_box(){
             if ( isset( $_POST["location_migrate_nonce"] ) && wp_verify_nonce( sanitize_key( $_POST['location_migrate_nonce'] ), 'save' ) ) {
-                $location_id = null;
-
-                if ( isset( $_POST["save_as_sublocation"] ) ){
-                    $location_id = sanitize_text_field( wp_unslash( $_POST["save_as_sublocation"] ) );
-                } elseif ( isset( $_POST["save_as_geoname"] ) ){
-                    $location_id = sanitize_text_field( wp_unslash( $_POST["save_as_geoname"] ) );
-                }
-                $location = get_post( $location_id );
-                if ( isset( $_POST[$location_id . "_selected_geoname"] ) && $location ){
-                    $selected_geoname = sanitize_text_field( wp_unslash( $_POST[$location_id . "_selected_geoname"] ) );
-                    if ( empty( $selected_geoname )){
-                        $selected_geoname = '6295630';
-                    }
-                    if ( isset( $_POST["save_as_sublocation"] ) ){
-                        $selected_geoname = $this->add_sublocation_under_geoname( $selected_geoname, $location->post_title, 0 );
-                    }
+                if ( isset( $_POST["run-migration"], $_POST["selected_geonames"] ) ){
+                    $select_geonames = dt_sanitize_array_html( $_POST["selected_geonames"] ); //phpcs:ignore
                     $saved_for_migration = get_option( "dt_mapping_migration_list", [] );
-                    $geoname = Disciple_Tools_Mapping_Queries::get_by_geonameid( $selected_geoname );
-                    $message = !isset( $_POST["save_as_sublocation"] ) ?
-                        "Convert $location->post_title to " . $geoname["name"] :
-                        "Create $location->post_title as sub-location under " . $geoname["name"];
-                    $saved_for_migration[$location_id] = [
-                        "message" => $message,
-                        "sublocation" => isset( $_POST["save_as_sublocation"] ),
-                        "location_id" => $location_id,
-                        "selected_geoname" => $selected_geoname
-                    ];
-                    update_option( "dt_mapping_migration_list", $saved_for_migration, false );
+                    foreach ( $select_geonames as $location_id => $migration_values ){
+                        if ( !empty( $location_id ) && !empty( $migration_values["migration_type"] ) ) {
+                            $location_id = sanitize_text_field( wp_unslash( $location_id ) );
+                            $selected_geoname = sanitize_text_field( wp_unslash( $migration_values["geoid"] ) );
+                            $migration_type = sanitize_text_field( wp_unslash( $migration_values["migration_type"] ) );
+                            $location = get_post( $location_id );
+                            if ( empty( $selected_geoname )){
+                                $selected_geoname = '6295630';
+                            }
+                            $geoname = Disciple_Tools_Mapping_Queries::get_by_geonameid( $selected_geoname );
+                            if ( $migration_type === "sublocation" ){
+                                $selected_geoname = $this->add_sublocation_under_geoname( $selected_geoname, $location->post_title, 0 );
+                            }
+                            $this->convert_location_to_geoname( $location_id, $selected_geoname );
 
-                }
-
-                if ( isset( $_POST["run-migration"] ) ){
-                    $saved_for_migration = get_option( "dt_mapping_migration_list", [] );
-                    foreach ( $saved_for_migration as $location_id => $migration_values ){
-                        if ( empty( $migration_values["converted"] ) ){
-                            $selected_geoname = $migration_values["selected_geoname"];
-                            $this->convert_location_to_geoname( $migration_values["location_id"], $selected_geoname );
+                            $message = $migration_type === "convert" ?
+                                "Converted $location->post_title to " . $geoname["name"] :
+                                "Created $location->post_title as sub-location under " . $geoname["name"];
                             ?>
                             <div class="notice notice-success is-dismissible">
-                                <p>Successfully ran action: <?php echo esc_html( $migration_values["message"] )?></p>
+                                <p>Successfully ran action: <?php echo esc_html( $message )?></p>
                             </div>
                             <?php
-                            $saved_for_migration[$location_id]["converted"] = true;
+                            $saved_for_migration[$location_id] = [
+                                "message" => $message,
+                                "migration_type" => $migration_type,
+                                "location_id" => $location_id,
+                                "selected_geoname" => $selected_geoname
+                            ];
                         }
                     }
-                    update_option( "dt_mapping_migration_list", $saved_for_migration );
+                    update_option( "dt_mapping_migration_list", $saved_for_migration, false );
                 }
             }
 
@@ -945,28 +934,21 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 ( <?php echo esc_html( $location["count"] ) ?> )
                             </td>
                             <td id="<?php echo esc_html( $location["ID"] ) ?>_sublocation" class="to-location">
-                                <input name="<?php echo esc_html( $location["ID"] ) ?>_selected_geoname" class="convert-input" type="hidden">
+                                <input name="selected_geonames[<?php echo esc_html( $location["ID"] ) ?>][geoid]" class="convert-input" type="hidden">
                                 <div class="drilldown">
                                     <?php DT_Mapping_Module::instance()->drill_down_widget( esc_html( $location["ID"] ) . "_sublocation .drilldown" ) ?>
                                 </div>
                             </td>
                             <td id="<?php echo esc_html( $location["ID"] ) ?>_buttons">
-                                <button type="submit" value="<?php echo esc_html( $location["ID"] ) ?>" class="button primary"
-                                        name="save_as_geoname">Convert <?php echo esc_html( $location["post_title"] ) ?> to <span class="selected-geoname-label">World</span>
-                                </button>
-                                <br>
-                                Or
-                                <br>
-                                <button type="submit" value="<?php echo esc_html( $location["ID"] ) ?>" class="button"
-                                        name="save_as_sublocation">Create <?php echo esc_html( $location["post_title"] ) ?> as a sub-location under <span class="selected-geoname-label">World</span>
-                                </button>
+                                <select name="selected_geonames[<?php echo esc_html( $location["ID"] ) ?>][migration_type]" data-location_id="<?php echo esc_html( $location["ID"] ) ?>" class="migration-type">
+                                    <option></option>
+                                    <option value="convert">Convert</option>
+                                    <option value="sublocation">Create as a sub-location</option>
+                                </select>
                             </td>
-                            <td>
-                                <?php echo esc_html( isset( $saved_for_migration[ $location["ID"] ] ) ? $saved_for_migration[ $location["ID"] ]["message"] : '' ) ?>
-                                <?php if ( isset( $saved_for_migration[ $location["ID"] ] ) ){
-                                    $test = "";
-                                }
-                                ?>
+                            <td id="<?php echo esc_html( $location["ID"] ) ?>_actions">
+                                <span class="convert" style="display: none;">Convert <?php echo esc_html( $location["post_title"] ) ?> to <span class="selected-geoname-label">World</span></span>
+                                <span class="sublocation" style="display: none;">Create <?php echo esc_html( $location["post_title"] ) ?> as a sub-location under <span class="selected-geoname-label">World</span></span>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -984,19 +966,23 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     let id = jQuery(b).attr('id')
                     window.DRILLDOWN[`${ id } .drilldown`] = function (geonameid, label) {
                         jQuery(`#${id} .convert-input`).val(geonameid)
-                        jQuery(`#${id.replace("sublocation", "buttons")} .selected-geoname-label`).text(label)
+                        console.log(id);
+                        jQuery(`#${id.replace("sublocation", "actions")} .selected-geoname-label`).text(label)
                     }
                 })
-
+                jQuery('.migration-type').on( "change", function () {
+                    let val = this.value
+                    let location_id = jQuery(this).data('location_id')
+                    jQuery(`#${location_id}_actions .${ val === 'convert' ? 'sublocation' : 'convert' }`).hide()
+                    jQuery(`#${location_id}_actions .${val}`).show()
+                })
             </script>
             <?php endif; ?>
-            <h3>Migrated Locations</h3>
+            <h3>Migrated Locations ( <?php echo esc_html( sizeof( $saved_for_migration ) ) ?>)</h3>
             <ul style="list-style: disc">
-                <?php foreach ( $saved_for_migration as $location_id => $migration_values ) {
-                    if ( !empty( $migration_values["converted"] ) ) : ?>
-                        <li style="margin-inline-start: 40px"><?php echo esc_html( $migration_values["message"] ) ?></li>
-                    <?php endif;
-                } ?>
+                <?php foreach ( $saved_for_migration as $location_id => $migration_values ) : ?>
+                    <li style="margin-inline-start: 40px"><?php echo esc_html( $migration_values["message"] ) ?></li>
+                <?php endforeach; ?>
             </ul>
             <?php
         }
