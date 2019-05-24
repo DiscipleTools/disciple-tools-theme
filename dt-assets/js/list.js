@@ -721,9 +721,9 @@
             $('#geonames-result-container').html("");
           },
           onClick: function (node, a, item) {
-            let name = _.get(wpApiListSettings, `custom_fields_settings.locations.name`, 'locations')
-            newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "locations"})
-            selectedFilters.append(`<span class="current-filter locations" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
+            let name = _.get(wpApiListSettings, `custom_fields_settings.geonames.name`, 'geonames')
+            newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "geonames"})
+            selectedFilters.append(`<span class="current-filter geonames" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
           }
         }
       });
