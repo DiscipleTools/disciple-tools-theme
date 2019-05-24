@@ -10,7 +10,7 @@ jQuery(document).ready(function($) {
     } else {
         ref = window.location.pathname
     }
-    $(`div.top-bar-left ul.menu [href*=${ref.split('/')[0]}]`).parent().addClass('active');
+    $(`div.top-bar-left ul.menu [href*=${ref.replace(wpApiShare.site_url, '').split('/')[0]}]`).parent().addClass('active');
 })
 
 function makeRequest (type, url, data) {
