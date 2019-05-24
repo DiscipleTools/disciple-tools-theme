@@ -67,11 +67,11 @@ function notification_template (id, note, is_new, pretty_time) {
       <div class="grid-x grid-margin-x grid-padding-y bottom-border notification-row ${is_new ==='1' ? 'unread-notification-row' : ''} ">
 
         <div class="auto cell">
-           ${_.escape( note )}<br>
+           ${note}<br>
            <span class="grey">${_.escape( pretty_time )}</span>
         </div>
         <div class="small-2 medium-1 cell padding-5 ${_.escape( label )}" id="toggle-area-${_.escape( id )}">
-            ${_.escape( button )}
+            ${button}
         </div>
       </div>
     </div>`
