@@ -65,6 +65,18 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
 
             /**
+             * LOAD REST ENDPOINTS
+             *
+             * Endpoints can be modified when included into other metrics locations. Just add a filter for
+             * dt_mapping_module_endpoints and modify the route
+             */
+            $this->namespace = "dt/v1";
+            $this->public_namespace = "dt-public/v1";
+            $this->endpoints = apply_filters( 'dt_mapping_module_endpoints', $this->default_endpoints() );
+            add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+            /** End LOAD REST ENDPOINTS */
+
+            /**
              * PERMISSION CHECK
              *
              * Themes or plugins implementing the module need to add a simple filter to check
@@ -100,17 +112,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
             /** END SET FILE LOCATIONS */
 
-            /**
-             * LOAD REST ENDPOINTS
-             *
-             * Endpoints can be modified when included into other metrics locations. Just add a filter for
-             * dt_mapping_module_endpoints and modify the route
-             */
-            $this->namespace = "dt/v1";
-            $this->public_namespace = "dt-public/v1";
-            $this->endpoints = apply_filters( 'dt_mapping_module_endpoints', $this->default_endpoints() );
-            add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
-            /** End LOAD REST ENDPOINTS */
 
             /**
              * DEFAULT MAPPING NAVIGATION
@@ -433,6 +434,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function get_drilldown_endpoint( WP_REST_Request $request ) {
+            if ( ! $this->permissions ) {
+                return new WP_Error( __METHOD__, 'No permission', [ 'status' => 101 ] );
+            }
             $params = $request->get_params();
 
             if ( isset( $params['geonameid'] ) ) {
@@ -444,6 +448,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
         }
         public function delete_transient_endpoint( WP_REST_Request $request ) {
+            if ( ! $this->permissions ) {
+                return new WP_Error( __METHOD__, 'No permission', [ 'status' => 101 ] );
+            }
             $params = $request->get_params();
 
             if ( isset( $params['key'] ) && $params['key'] === 'counter' ) {

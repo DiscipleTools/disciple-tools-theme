@@ -301,7 +301,7 @@ class Disciple_Tools_Posts
                 $object_note_from = sprintf( esc_html_x( 'Added to group %s', 'Added to group group1', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( 'Removed %s from group', 'Removed contact1 from group', 'disciple_tools' ), $from_title );
-                $object_note_from = sprintf( esc_html_x( 'Removed from group %s', 'Removed from group group1', 'disciple_tools' ), $from_title );
+                $object_note_from = sprintf( esc_html_x( 'Removed from group %s', 'Removed from group group1', 'disciple_tools' ), $to_title );
             }
         }
         else if ( $p2p_type === "contacts_to_contacts"){
@@ -1031,19 +1031,15 @@ class Disciple_Tools_Posts
         }
 
         foreach ( $query as $query_key => $query_value ) {
-            //skip if "world" is selected
-            if ( $query_key === "geonames" && !in_array( '6295630', $query_value )) {
+            if ( $query_key === "geonames" ) {
                 $geoname_ids = dt_array_to_sql( $query_value );
                 $location_sql .= "
-                    AND ( 
-                        geonames_counter.type = '" . esc_sql( $post_type ) . "' 
-                        AND (
-                            geonames_counter.country_geonameid IN (" . $geoname_ids .") 
-                            OR geonames_counter.admin1_geonameid IN (" . $geoname_ids .")
-                            OR geonames_counter.admin2_geonameid IN (" . $geoname_ids .")
-                            OR geonames_counter.admin3_geonameid IN (" . $geoname_ids .")
-                            OR geonames_counter.geonameid IN (" . $geoname_ids .")
-                        ) 
+                    AND (
+                        geonames_counter.country_geonameid IN (" . $geoname_ids .") 
+                        OR geonames_counter.admin1_geonameid IN (" . $geoname_ids .")
+                        OR geonames_counter.admin2_geonameid IN (" . $geoname_ids .")
+                        OR geonames_counter.admin3_geonameid IN (" . $geoname_ids .")
+                        OR geonames_counter.geonameid IN (" . $geoname_ids .")
                     )";
             }
             if ( in_array( $query_key, array_keys( self::$connection_types ) ) ) {
@@ -1081,13 +1077,9 @@ class Disciple_Tools_Posts
                         g.admin3_geonameid,
                         g.geonameid,
                         g.level,
-                        p.post_id,
-                        IF (cu.meta_value IS NULL, pp.post_type, 'users' ) as type, 
+                        p.post_id
                     FROM $wpdb->postmeta as p
-                        JOIN $wpdb->posts as pp ON p.post_id=pp.ID
-                        LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
-                        LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
-                        LEFT JOIN $wpdb->postmeta as cs ON cs.post_id=p.post_id AND cs.meta_key = 'overall_status'
+                        LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value
                     WHERE p.meta_key = 'geonames'
             ) as geonames_counter ON ( geonames_counter.post_id = $wpdb->posts.ID )";
         }

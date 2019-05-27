@@ -1176,19 +1176,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( $contact ) {
             $fields = [];
 
-            $locations = get_posts(
-                [
-                    'connected_type'   => 'contacts_to_locations',
-                    'connected_items'  => $contact,
-                    'nopaging'         => true,
-                    'suppress_filters' => false,
-                ]
-            );
-            foreach ( $locations as $l ) {
-                $l->permalink = get_permalink( $l->ID );
-            }
-            $fields["locations"] = $locations;
-
             $groups = get_posts(
                 [
                     'connected_type'   => 'contacts_to_groups',

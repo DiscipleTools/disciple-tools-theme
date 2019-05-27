@@ -279,60 +279,6 @@ jQuery(document).ready(function($) {
   }
 
 
-  /**
-   * Locations
-   */
-  let loadLocationTypeahead = ()=>{
-    if (!window.Typeahead['.js-typeahead-locations']){
-      $.typeahead({
-        input: '.js-typeahead-locations',
-        minLength: 0,
-        accent: true,
-        searchOnFocus: true,
-        maxItem: 20,
-        template: function (query, item) {
-          return `<span>${_.escape(item.name)}</span>`
-        },
-        source: TYPEAHEADS.typeaheadSource('locations', 'dt/v1/locations/compact/'),
-        display: "name",
-        templateValue: "{{name}}",
-        dynamic: true,
-        multiselect: {
-          matchOn: ["ID"],
-          data: function () {
-            return contact.locations.map(g=>{
-              return {ID:g.ID, name:g.post_title}
-            })
-          }, callback: {
-            onCancel: function (node, item) {
-              _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
-              editFieldsUpdate.locations.values.push({value:item.ID, delete:true})
-            }
-          }
-        },
-        callback: {
-          onClick: function(node, a, item, event){
-            if (!editFieldsUpdate.locations){
-              editFieldsUpdate.locations = { "values": [] }
-            }
-            _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
-            editFieldsUpdate.locations.values.push({value:item.ID})
-            this.addMultiselectItemLayout(item)
-            event.preventDefault()
-            this.hideLayout();
-            this.resetInput();
-          },
-          onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#locations-result-container').html(text);
-          },
-          onHideLayout: function () {
-            $('#locations-result-container').html("");
-          }
-        }
-      });
-    }
-  }
 
 
   /**
@@ -1067,7 +1013,6 @@ jQuery(document).ready(function($) {
         editFieldsUpdate[`contact_${channelType}`].values.push({value:val})
       }
     })
-    console.log(editFieldsUpdate)
     API.save_field_api( "contact", contactId, editFieldsUpdate).then((updatedContact)=>{
       contact = updatedContact
       $(this).toggleClass("loading")
@@ -1154,7 +1099,7 @@ jQuery(document).ready(function($) {
           }
           socialHTMLField.append(`<li class="details-list ${_.escape(field.key)}">
             ${label}
-              ${_.escape( value )}
+              ${ value }
               <!--<img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/verified.svg"/>-->
               <!--<img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/broken.svg"/>-->
             </li>
@@ -1172,11 +1117,10 @@ jQuery(document).ready(function($) {
         htmlField.append(`<li id="no-${connection}">${_.escape( contactsDetailsWpApiSettings.translations["not-set"][connection] )}</li>`)
       } else {
         contact[connection].forEach(field=>{
-          htmlField.append(`<li class="details-list ${_.escape(field.key)}">
-            ${_.escape(field.post_title)}
+          htmlField.append(`<li class="details-list ${_.escape(field.key || field.id)}">
+            ${_.escape(field.post_title || field.label)}
               <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/verified.svg"/>
               <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/broken.svg"/>
-
             </li>
           `)
         })
