@@ -33,7 +33,7 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
         $gn_source_url = $mirror_source . 'geonames/geonames.tsv.zip';
 
         $zip_file = $uploads_dir . "geonames/geonames.tsv.zip";
-        // @todo add delete current files if exist.
+
 
         $zip_resource = fopen( $zip_file, "w" );
 

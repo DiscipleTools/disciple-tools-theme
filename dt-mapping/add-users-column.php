@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 function dt_mm_add_workers_column( $data ) {
 

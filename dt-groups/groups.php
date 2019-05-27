@@ -38,7 +38,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     "parent_groups",
                     "child_groups",
                     "peer_groups",
-                    "locations",
+                    "locations", // @todo remove or rewrite? Because of geonames upgrade.
                     "people_groups",
                     "leaders",
                     "coaches"
@@ -104,7 +104,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $fields = [];
 
             $connection_types = [
-                [ "groups_to_locations", "locations", "any" ],
+                [ "groups_to_locations", "locations", "any" ], // @todo remove or rewrite? Because of geonames upgrade.
                 [ "groups_to_peoplegroups", "people_groups", "any" ],
                 [ "contacts_to_groups", "members", "to" ],
                 [ "groups_to_leaders", "leaders", "any" ],
@@ -543,7 +543,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function add_location_to_group( int $group_id, int $location_id ) {
+    public static function add_location_to_group( int $group_id, int $location_id ) { // @todo remove or rewrite? Because of geonames upgrade.
         return p2p_type( 'groups_to_locations' )->connect(
             $location_id, $group_id,
             [ 'date' => current_time( 'mysql' ) ]
@@ -672,7 +672,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_location_from_group( int $group_id, int $location_id ) {
+    public static function remove_location_from_group( int $group_id, int $location_id ) { // @todo remove or rewrite? Because of geonames upgrade.
         return p2p_type( 'groups_to_locations' )->disconnect( $location_id, $group_id );
     }
 
@@ -766,7 +766,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             return $new_meta_key;
         }
         $connect = null;
-        if ( $key === "locations" ) {
+        if ( $key === "locations" ) { // @todo remove or rewrite? Because of geonames upgrade.
             $connect = self::add_location_to_group( $group_id, $value );
         } elseif ( $key === "members" ) {
             $connect = self::add_member_to_group( $group_id, $value );
@@ -852,7 +852,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have have permission for this", [ 'status' => 403 ] );
         }
-        if ( $key === "locations" ) {
+        if ( $key === "locations" ) { // @todo remove or rewrite? Because of geonames upgrade.
             return self::remove_location_from_group( $group_id, $value );
         } elseif ( $key === "members" ) {
             return self::remove_member_from_group( $group_id, $value );

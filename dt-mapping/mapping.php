@@ -61,7 +61,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         public function __construct() {
 
             require_once( 'mapping-queries.php' );
-            require_once( 'google-geocode-api.php' );
             require_once( 'mapping-admin.php' ); // can't filter for is_admin because of REST dependencies
 
 
