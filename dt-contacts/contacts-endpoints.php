@@ -392,9 +392,9 @@ class Disciple_Tools_Contacts_Endpoints
             $contact_array["is_team_contact"] = $contact->is_team_contact ?? false;
             $contact_array['permalink'] = get_post_permalink( $contact->ID );
             $contact_array['overall_status'] = get_post_meta( $contact->ID, 'overall_status', true );
-            $contact_array['locations'] = [];
+            $contact_array['locations'] = []; // @todo remove or rewrite? Because of geonames upgrade.
             foreach ( $geonames[$contact->ID] as $location ) {
-                $contact_array['locations'][] = $location["name"];
+                $contact_array['locations'][] = $location["name"]; // @todo remove or rewrite? Because of geonames upgrade.
             }
             $contact_array['groups'] = [];
             foreach ( $contact->groups as $group ) {

@@ -6,9 +6,7 @@
  *      DT_Mapping_Module_Admin::instance()->population_metabox();
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-    exit;
-} // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
@@ -33,7 +31,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         public $spinner;
         public $nonce;
         public $current_user_id;
-        public $map_key;
 
         public function __construct() {
             /**
