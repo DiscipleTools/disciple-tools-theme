@@ -6,9 +6,7 @@
  *      DT_Mapping_Module_Admin::instance()->population_metabox();
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-    exit;
-} // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
