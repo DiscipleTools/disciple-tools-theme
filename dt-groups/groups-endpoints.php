@@ -190,7 +190,11 @@ class Disciple_Tools_Groups_Endpoints
      * @return array
      */
     private function add_related_info_to_groups( array $groups ) {
-        p2p_type( 'groups_to_locations' )->each_connected( $groups, [], 'locations' );
+        $group_ids = array_map(
+            function( $g ){ return $g->ID; },
+            $groups
+        );
+        $geonames = Disciple_Tools_Mapping_Queries::get_geoname_ids_and_names_for_post_ids( $group_ids );
         p2p_type( 'contacts_to_groups' )->each_connected( $groups, [], 'members' );
         p2p_type( 'groups_to_leaders' )->each_connected( $groups, [], 'leaders' );
         $rv = [];
@@ -201,8 +205,8 @@ class Disciple_Tools_Groups_Endpoints
             $group_array["post_title"] = $group->post_title;
             $group_array['permalink'] = get_post_permalink( $group->ID );
             $group_array['locations'] = [];
-            foreach ( $group->locations as $location ) {
-                $group_array['locations'][] = $location->post_title;
+            foreach ( $geonames[$group->ID] as $location ) {
+                $group_array['locations'][] = $location["name"];
             }
             $group_array['leaders'] = [];
             $group_array['member_count'] = $meta_fields["member_count"] ?? 0;

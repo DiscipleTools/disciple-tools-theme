@@ -58,7 +58,6 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
             if ( get_option( 'dt_network_enabled' ) ) {
                 $this->partner_profile_metabox();
                 $this->admin_site_link_box();
-                $this->admin_locations_gname_installed_box();
             }
 
 
@@ -95,16 +94,6 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
         $this->box( 'bottom' );
     }
 
-    /**
-     * This box displays location list and the gname coded elements
-     */
-    public function admin_locations_gname_installed_box() {
-        $this->box( 'top', 'Locations Status' );
-
-        Disciple_Tools_Network::admin_locations_gname_installed_box();
-
-        $this->box( 'bottom' );
-    }
 
     public function partner_profile_metabox() {
         Disciple_Tools_Network::admin_partner_profile_box();

@@ -778,6 +778,18 @@ html[dir='rtl'] {
 /* End Metrics section */
 
 
+.drill_down {
+    margin-bottom: 0;
+    list-style-type: none;
+}
+.drill_down li {
+    display:inline;
+    margin-right: 3px;
+}
+.drill_down li select {
+    width: 150px;
+}
+
 /**
  * Switch
  */
@@ -821,4 +833,8 @@ input.dt-switch:checked + label:after {
 
 label.dt-switch:active:after {
     width: 20px;
+}
+
+.geocode-link {
+    margin-top:.7rem;
 }

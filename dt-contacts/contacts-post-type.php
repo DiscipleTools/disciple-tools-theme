@@ -589,6 +589,11 @@ class Disciple_Tools_Contact_Post_Type
             "p2p_direction" => "from",
             "p2p_key" => "contacts_to_subassigned"
         ];
+        $fields['geonames'] = [
+            'name'        => __( 'Locations', 'disciple_tools' ),
+            'type'        => 'location',
+            'default'     => [],
+        ];
 
         return $fields;
     }

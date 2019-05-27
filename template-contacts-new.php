@@ -44,16 +44,16 @@ get_header();
                 <?php endif; ?>
 
                 <?php esc_html_e( "Location", "disciple_tools" ); ?>
-                <div class="locations">
-                    <var id="locations-result-container" class="result-container"></var>
-                    <div id="locations_t" name="form-locations" class="scrollable-typeahead">
+                <div class="geonames">
+                    <var id="geonames-result-container" class="result-container"></var>
+                    <div id="geonames_t" name="form-geonames" class="scrollable-typeahead typeahead-margin-when-active">
                         <div class="typeahead__container">
                             <div class="typeahead__field">
-                                    <span class="typeahead__query">
-                                        <input class="js-typeahead-locations input-height"
-                                               name="locations[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
-                                               autocomplete="off">
-                                    </span>
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-geonames"
+                                           name="geonames[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                           autocomplete="off">
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -94,7 +94,7 @@ get_header();
             contact_phone: [{value:$(".js-create-contact input[name=phone]").val()}],
             contact_email: [{value:$(".js-create-contact input[name=email]").val()}],
             sources: {values:[{value:source || "personal"}]},
-            locations: {values:selectedLocations.map(i=>{return {value:i}})},
+            geonames: {values:selectedLocations.map(i=>{return {value:i}})},
             initial_comment: $(".js-create-contact textarea[name=initial_comment]").val(),
         }).then(function(data) {
             window.location = data.permalink;
@@ -111,29 +111,42 @@ get_header();
     /**
      * Locations
      */
+    typeaheadTotals = {}
     $.typeahead({
-        input: '.js-typeahead-locations',
+        input: '.js-typeahead-geonames',
         minLength: 0,
         accent: true,
         searchOnFocus: true,
         maxItem: 20,
-        // maxItemPerGroup: 6,
         template: function (query, item) {
             return `<span>${_.escape(item.name)}</span>`
         },
+        dropdownFilter: [{
+            key: 'group',
+            value: 'focus',
+            template: 'Regions of Focus',
+            all: 'All Locations'
+        }],
         source: {
-            contacts: {
+            focus: {
                 display: "name",
                 ajax: {
-                    url: wpApiShare.root + "dt/v1/locations/grouped/",
+                    url: wpApiShare.root + 'dt/v1/mapping_module/search_geonames_by_name',
                     data: {
-                        s: "{{query}}"
+                        s: "{{query}}",
+                        filter: function () {
+                            return _.get(window.Typeahead['.js-typeahead-geonames'].filters.dropdown, 'value', 'all')
+                        }
                     },
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
                     },
                     callback: {
                         done: function (data) {
+                            console.log("hu");
+                            if (typeof typeaheadTotals !== "undefined") {
+                                typeaheadTotals.field = data.total
+                            }
                             return data.posts
                         }
                     }
@@ -142,35 +155,39 @@ get_header();
         },
         display: "name",
         templateValue: "{{name}}",
-        // dynamic: true,
-        dropdownFilter: [{
-            key: 'filter',
-            // template: '<strong>{{region}}</strong> region',
-            all: 'All Regions'
-        }],
-        group: {
-            key: "region",
-        },
+        dynamic: true,
         multiselect: {
             matchOn: ["ID"],
+            data: [],
             callback: {
                 onCancel: function (node, item) {
-                    $('#share-result-container').html("");
                     _.pull(selectedLocations, item.ID)
                 }
-            },
+            }
         },
         callback: {
             onClick: function(node, a, item, event){
                 selectedLocations.push(item.ID)
+                this.addMultiselectItemLayout(item)
+                event.preventDefault()
+                this.hideLayout();
+                this.resetInput();
+            },
+            onReady(){
+                this.filters.dropdown = {key: "group", value: "focus", template: "Regions of Focus"}
+                this.container
+                    .removeClass("filter")
+                    .find("." + this.options.selector.filterButton)
+                    .html("Regions of Focus");
             },
             onResult: function (node, query, result, resultCount) {
+                resultCount = typeaheadTotals.geonames
                 let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-                $('#locations-result-container').html(text);
+                $('#geonames-result-container').html(text);
             },
             onHideLayout: function () {
-                $('#locations-result-container').html("");
-            },
+                $('#geonames-result-container').html("");
+            }
         }
     });
 });

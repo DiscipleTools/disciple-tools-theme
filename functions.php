@@ -289,25 +289,28 @@ else {
                 $this->endpoints['groups'] = Disciple_Tools_Groups_Endpoints::instance();
             }
             /**
-             * dt-locations
+             * dt-mapping
              */
-            require_once( get_template_directory() . '/dt-locations/locations-post-type.php' );
-            $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
-            require_once( get_template_directory() . '/dt-locations/geocoding-api.php' );
-            require_once( get_template_directory() . '/dt-locations/locations-template.php' );
+            require_once( get_template_directory() . '/dt-mapping/mapping-module-config.php' ); // configuration file for mapping module
+            DT_Mapping_Module_Config::instance();
+            require_once( get_template_directory() . '/dt-mapping/mapping.php' ); // load for mapping module
+
+
+            // dt-locations
             require_once( get_template_directory() . '/dt-locations/locations.php' ); // serves the locations rest endpoints
-            if ( strpos( $url_path, 'location' ) !== false ){
-                require_once( get_template_directory() . '/dt-locations/locations-endpoints.php' ); // builds rest endpoints
-                $this->endpoints['locations'] = Disciple_Tools_Locations_Endpoints::instance();
-            }
+            require_once( get_template_directory() . '/dt-locations/locations-endpoints.php' ); // builds rest endpoints
+            $this->endpoints['locations'] = Disciple_Tools_Locations_Endpoints::instance();
+
+
+
             /**
              * dt-people-groups
              */
             require_once( get_template_directory() . '/dt-people-groups/people-groups-post-type.php' );
             $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
+            require_once( get_template_directory() . '/dt-people-groups/people-groups.php' );
             if ( strpos( $url_path, 'people-groups' ) !== false ){
                 require_once( get_template_directory() . '/dt-people-groups/people-groups-template.php' );
-                require_once( get_template_directory() . '/dt-people-groups/people-groups.php' );
                 require_once( get_template_directory() . '/dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
                 $this->endpoints['peoplegroups'] = Disciple_Tools_People_Groups_Endpoints::instance();
             }
@@ -373,6 +376,7 @@ else {
                 require_once( get_template_directory() . '/dt-network/network-endpoints.php' );
             }
             require_once( get_template_directory() . '/dt-network/network.php' );
+            require_once( get_template_directory() . '/dt-network/network-queries.php' );
 
             require_once( get_template_directory() . '/dt-core/admin/gdpr.php' );
             require_once( get_template_directory() . '/dt-core/multisite.php' );
@@ -408,7 +412,6 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-featured-extensions.php' );
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-utilities.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-locations.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-people-groups.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-utilities-overview.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-fields.php' );
@@ -417,7 +420,6 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr-export.php' );
                 /* End menu tab section */
 
-                require_once( get_template_directory() . '/dt-locations/utilities/locations-async-insert.php' ); // required to load for async listening
 
                 // Contacts
                 require_once( get_template_directory() . '/dt-contacts/contacts-config.php' );
