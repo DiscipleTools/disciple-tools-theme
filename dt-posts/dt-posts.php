@@ -83,7 +83,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 unset( $fields[$field_key] );
             }
             $field_type = $post_settings["fields"][$field_key]["type"] ?? '';
-            if ( $field_type === "multi_select" ){
+            if ( $field_type === "multi_select" || $field_type === "location" ){
                 $multi_select_fields[$field_key] = $field_value;
                 unset( $fields[$field_key] );
             }
@@ -239,7 +239,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 if ( $field_type === 'date' && !is_numeric( $field_value ) ) {
                     $field_value = strtotime( $field_value );
                 }
-                if ( $field_type && $field_type !== "multi_select" ){
+                if ( $field_type && $field_type !== "multi_select" && $field_type !== "location" ){
                     update_post_meta( $post_id, $field_key, $field_value );
                 }
             }

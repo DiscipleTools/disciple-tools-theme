@@ -1042,7 +1042,7 @@ class Disciple_Tools_Posts
 
     public static function update_multi_select_fields( array $field_settings, int $post_id, array $fields, array $existing_contact = null ){
         foreach ( $fields as $field_key => $field ){
-            if ( isset( $field_settings[$field_key] ) && $field_settings[$field_key]["type"] === "multi_select" ){
+            if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "multi_select" || $field_settings[$field_key]["type"] === "location" ) ){
                 if ( !isset( $field["values"] )){
                     return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key );
                 }
@@ -1400,6 +1400,15 @@ class Disciple_Tools_Posts
                     "timestamp" => $value[0],
                     "formatted" => dt_format_date( $value[0] ),
                 ];
+            } else if ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]['type'] === 'location' ){
+                $names = Disciple_Tools_Mapping_Queries::get_names_from_ids( $value );
+                $fields[ $key ] = [];
+                foreach ( $names as $id => $name ){
+                    $fields[ $key ][] = [
+                        "id" => $id,
+                        "label" => $name
+                    ];
+                }
             } else {
                 $fields[ $key ] = $value[0];
             }
