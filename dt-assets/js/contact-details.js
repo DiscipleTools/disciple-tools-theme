@@ -1099,7 +1099,7 @@ jQuery(document).ready(function($) {
           }
           socialHTMLField.append(`<li class="details-list ${_.escape(field.key)}">
             ${label}
-              ${_.escape( value )}
+              ${ value }
               <!--<img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/verified.svg"/>-->
               <!--<img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/broken.svg"/>-->
             </li>
