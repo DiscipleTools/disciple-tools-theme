@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /** This class was built following the example of one-page-chart-template.php */
 
 
-class Disciple_Cools_Metrics_Chart_Sources extends Disciple_Tools_Metrics_Hooks_Base {
+class Disciple_Tools_Metrics_Chart_Sources extends Disciple_Tools_Metrics_Hooks_Base {
 
     public $title = 'Sources';
     public $slug = 'sources'; // lowercase

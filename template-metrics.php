@@ -13,7 +13,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
-            <div class="large-2 medium-3 small-12 cell ">
+            <div class="large-2 medium-3 small-12 cell" id="side-nav-container">
 
                 <section id="metrics-side-section" class="medium-12 cell">
 

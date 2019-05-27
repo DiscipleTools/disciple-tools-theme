@@ -53,6 +53,7 @@ function contactUpdated(updateNeeded) {
 /* The `contact` variable can be accessed outside this script, but not through
  * `window.` because `let` was used */
 let contact = {}
+let typeaheadTotals = {}
 
 window.contactDetailsEvents = (function() {
   /* Simple publish/subscribe, based on https://davidwalsh.name/pubsub-javascript */
@@ -278,13 +279,15 @@ jQuery(document).ready(function($) {
   }
 
 
-    /**
-   * Locations
+
+
+  /**
+   * Geonames
    */
-  let loadLocationTypeahead = ()=>{
-    if (!window.Typeahead['.js-typeahead-locations']){
+  let loadGeonameTypeahead = ()=>{
+    if (!window.Typeahead['.js-typeahead-geonames']){
       $.typeahead({
-        input: '.js-typeahead-locations',
+        input: '.js-typeahead-geonames',
         minLength: 0,
         accent: true,
         searchOnFocus: true,
@@ -292,46 +295,86 @@ jQuery(document).ready(function($) {
         template: function (query, item) {
           return `<span>${_.escape(item.name)}</span>`
         },
-        source: TYPEAHEADS.typeaheadSource('locations', 'dt/v1/locations/compact/'),
+        dropdownFilter: [{
+          key: 'group',
+          value: 'focus',
+          template: 'Regions of Focus',
+          all: 'All Locations'
+        }],
+        source: {
+          focus: {
+            display: "name",
+            ajax: {
+              url: wpApiShare.root + 'dt/v1/mapping_module/search_geonames_by_name',
+              data: {
+                s: "{{query}}",
+                filter: function () {
+                  return _.get(window.Typeahead['.js-typeahead-geonames'].filters.dropdown, 'value', 'all')
+                }
+              },
+              beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+              },
+              callback: {
+                done: function (data) {
+                  if (typeof typeaheadTotals !== "undefined") {
+                    typeaheadTotals.field = data.total
+                  }
+                  return data.posts
+                }
+              }
+            }
+          }
+        },
         display: "name",
         templateValue: "{{name}}",
         dynamic: true,
         multiselect: {
           matchOn: ["ID"],
           data: function () {
-            return contact.locations.map(g=>{
-              return {ID:g.ID, name:g.post_title}
+            return (contact.geonames || []).map(g=>{
+              return {ID:g.id, name:g.label}
             })
+
           }, callback: {
             onCancel: function (node, item) {
-              _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
-              editFieldsUpdate.locations.values.push({value:item.ID, delete:true})
+              _.pullAllBy(editFieldsUpdate.geonames.values, [{value:item.ID}], "value")
+              editFieldsUpdate.geonames.values.push({value:item.ID, delete:true})
             }
           }
         },
         callback: {
           onClick: function(node, a, item, event){
-            if (!editFieldsUpdate.locations){
-              editFieldsUpdate.locations = { "values": [] }
+            if (!editFieldsUpdate.geonames){
+              editFieldsUpdate.geonames = { "values": [] }
             }
-            _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
-            editFieldsUpdate.locations.values.push({value:item.ID})
+            _.pullAllBy(editFieldsUpdate.geonames.values, [{value:item.ID}], "value")
+            editFieldsUpdate.geonames.values.push({value:item.ID})
             this.addMultiselectItemLayout(item)
             event.preventDefault()
             this.hideLayout();
             this.resetInput();
           },
+          onReady(){
+            this.filters.dropdown = {key: "group", value: "focus", template: "Regions of Focus"}
+            this.container
+              .removeClass("filter")
+              .find("." + this.options.selector.filterButton)
+              .html("Regions of Focus");
+          },
           onResult: function (node, query, result, resultCount) {
+            resultCount = typeaheadTotals.geonames
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#locations-result-container').html(text);
+            $('#geonames-result-container').html(text);
           },
           onHideLayout: function () {
-            $('#locations-result-container').html("");
+            $('#geonames-result-container').html("");
           }
         }
       });
     }
   }
+
 
 
   /**
@@ -644,6 +687,7 @@ jQuery(document).ready(function($) {
     </li>`)
   })
 
+
   let idOfNextNewField = 1
   $('button#add-new-social-media').on('click', ()=>{
     let channelOptions = ``
@@ -767,12 +811,13 @@ jQuery(document).ready(function($) {
 
 
 
+
   $("#open-edit").on("click", function () {
 
     editFieldsUpdate = {
-      locations : { values: [] },
       people_groups : { values: [] },
-      sources : { values: [] }
+      sources : { values: [] },
+      geonames : { values: [] }
     }
     let phoneHTML = "";
     (contact.contact_phone|| []).forEach(field=>{
@@ -829,7 +874,7 @@ jQuery(document).ready(function($) {
     $('#edit-social').html(html)
 
     $('#contact-details-edit').foundation('open');
-    loadLocationTypeahead()
+    loadGeonameTypeahead()
     loadPeopleGroupTypeahead()
     leadSourcesTypeahead().catch(err => { console.log(err) })
   })
@@ -838,15 +883,16 @@ jQuery(document).ready(function($) {
   $("#merge-dupe-modal").on("click", function() {
 
     editFieldsUpdate = {
-      locations: {
-        values: []
-      },
+      // locations: {
+      //   values: []
+      // },
       people_groups: {
         values: []
       },
       sources: {
         values: []
-      }
+      },
+      geonames: { values: [] }
     }
     let phoneHTML = "";
     (contact.contact_phone || []).forEach(field => {
@@ -896,9 +942,10 @@ jQuery(document).ready(function($) {
     $('#edit-social').html(html)
 
     $('#merge-dupe-edit').foundation('open');
-    loadLocationTypeahead()
+    // loadLocationTypeahead()
     loadPeopleGroupTypeahead()
     leadSourcesTypeahead()
+    loadGeonameTypeahead()
   })
 
   $('.select-input').on("change", function () {
@@ -938,7 +985,7 @@ jQuery(document).ready(function($) {
   })
 
   /**
-   * Save contact details updates
+   * Save contact details
    */
   $('#save-edit-details').on('click', function () {
     $(this).toggleClass("loading")
@@ -1008,7 +1055,7 @@ jQuery(document).ready(function($) {
           link = `<a href="mailto:${_.escape(field.value)}">${_.escape(field.value)}</a>`
         } else if (contact_method === "contact_phone") {
           link = `<a href="tel:${_.escape(field.value)}">${_.escape(field.value)}</a>`
-        } else if (contact_method == "contact_address") {
+        } else if (contact_method === "contact_address") {
           link = `<span dir="auto">${_.escape(field.value).replace(/\n+/g, "<br>\n")}</span>`
         }
         htmlField.append(`<li class="details-list ${_.escape(field.key)}">
@@ -1063,15 +1110,15 @@ jQuery(document).ready(function($) {
     if ( socialIsEmpty ){
       socialHTMLField.append(`<li id="no-social">${_.escape( contactsDetailsWpApiSettings.translations["not-set"]["social"] )}</li>`)
     }
-    let connections = [ "locations", "people_groups" ]
+    let connections = [ "people_groups", "geonames" ]
     connections.forEach(connection=>{
       let htmlField = $(`.${connection}-list`).empty()
       if ( !contact[connection] || contact[connection].length === 0 ){
         htmlField.append(`<li id="no-${connection}">${_.escape( contactsDetailsWpApiSettings.translations["not-set"][connection] )}</li>`)
       } else {
         contact[connection].forEach(field=>{
-          htmlField.append(`<li class="details-list ${_.escape(field.key)}">
-            ${_.escape(field.post_title)}
+          htmlField.append(`<li class="details-list ${_.escape(field.key || field.id)}">
+            ${_.escape(field.post_title || field.label)}
               <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/verified.svg"/>
               <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/broken.svg"/>
             </li>
@@ -1358,5 +1405,4 @@ jQuery(document).ready(function($) {
   });
   //leave at the end of this file
 })
-
 

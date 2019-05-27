@@ -379,6 +379,11 @@ class Disciple_Tools_Groups_Post_Type
             'type'        => 'boolean',
             'default'     => false,
         ];
+        $fields['geonames'] = [
+            'name'        => __( 'Locations', 'disciple_tools' ),
+            'type'        => 'location',
+            'default'     => [],
+        ];
 
 
         $id = isset( $post->ID ) ? $post->ID : $post_id;

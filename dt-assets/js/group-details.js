@@ -1,5 +1,6 @@
 /* global jQuery:false, wpApiGroupsSettings:false, _:false */
 
+let typeaheadTotals = {}
 jQuery(document).ready(function($) {
 
   let group = wpApiGroupsSettings.group
@@ -109,52 +110,101 @@ jQuery(document).ready(function($) {
     $('#update-needed').prop("checked", updateNeeded)
   }
   /**
-   * Locations
+   * Geonames
    */
-  $.typeahead({
-    input: '.js-typeahead-locations',
-    minLength: 0,
-    accent: true,
-    searchOnFocus: true,
-    maxItem: 20,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
-    source: TYPEAHEADS.typeaheadSource('locations', 'dt/v1/locations/compact/'),
-    display: "name",
-    templateValue: "{{name}}",
-    dynamic: true,
-    multiselect: {
-      matchOn: ["ID"],
-      data: function () {
-        return group.locations.map(g=>{
-          return {ID:g.ID, name:g.post_title}
-        })
-      }, callback: {
-        onCancel: function (node, item) {
-          _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
-          editFieldsUpdate.locations.values.push({value:item.ID, delete:true})
+  // let loadGeonameTypeahead = ()=>{
+  //   if (!window.Typeahead['.js-typeahead-geonames']){
+      $.typeahead({
+        input: '.js-typeahead-geonames',
+        minLength: 0,
+        accent: true,
+        searchOnFocus: true,
+        maxItem: 20,
+        template: function (query, item) {
+          return `<span>${_.escape(item.name)}</span>`
+        },
+        dropdownFilter: [{
+          key: 'group',
+          value: 'focus',
+          template: 'Regions of Focus',
+          all: 'All Locations'
+        }],
+        source: {
+          focus: {
+            display: "name",
+            ajax: {
+              url: wpApiShare.root + 'dt/v1/mapping_module/search_geonames_by_name',
+              data: {
+                s: "{{query}}",
+                filter: function () {
+                  return _.get(window.Typeahead['.js-typeahead-geonames'].filters.dropdown, 'value', 'all')
+                }
+              },
+              beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+              },
+              callback: {
+                done: function (data) {
+                  if (typeof typeaheadTotals !== "undefined") {
+                    typeaheadTotals.field = data.total
+                  }
+                  return data.posts
+                }
+              }
+            }
+          }
+        },
+        display: "name",
+        templateValue: "{{name}}",
+        dynamic: true,
+        multiselect: {
+          matchOn: ["ID"],
+          data: function () {
+            return (group.geonames || []).map(g=>{
+              return {ID:g.id, name:g.label}
+            })
+
+          }, callback: {
+            onCancel: function (node, item) {
+              _.pullAllBy(editFieldsUpdate.geonames.values, [{value:item.ID}], "value")
+              editFieldsUpdate.geonames.values.push({value:item.ID, delete:true})
+            }
+          }
+        },
+        callback: {
+          onClick: function(node, a, item, event){
+            if (!editFieldsUpdate.geonames){
+              editFieldsUpdate.geonames = { "values": [] }
+            }
+            _.pullAllBy(editFieldsUpdate.geonames.values, [{value:item.ID}], "value")
+            editFieldsUpdate.geonames.values.push({value:item.ID})
+            this.addMultiselectItemLayout(item)
+            event.preventDefault()
+            this.hideLayout();
+            this.resetInput();
+          },
+          onReady(){
+            this.filters.dropdown = {key: "group", value: "focus", template: "Regions of Focus"}
+            this.container
+              .removeClass("filter")
+              .find("." + this.options.selector.filterButton)
+              .html("Regions of Focus");
+          },
+          onResult: function (node, query, result, resultCount) {
+            resultCount = typeaheadTotals.geonames
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $('#geonames-result-container').html(text);
+          },
+          onHideLayout: function () {
+            $('#geonames-result-container').html("");
+          }
         }
-      }
-    },
-    callback: {
-      onClick: function(node, a, item, event){
-        _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
-        editFieldsUpdate.locations.values.push({value:item.ID})
-        this.addMultiselectItemLayout(item)
-        event.preventDefault()
-        this.hideLayout();
-        this.resetInput();
-      },
-      onResult: function (node, query, result, resultCount) {
-        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-        $('#locations-result-container').html(text);
-      },
-      onHideLayout: function () {
-        $('#locations-result-container').html("");
-      }
-    }
-  });
+      });
+  //   }
+  // }
+
+
+
 
   let peopleGroupList = $('.people_groups-list')
   /**
@@ -541,8 +591,8 @@ jQuery(document).ready(function($) {
 
   $("#open-edit").on("click", function () {
     editFieldsUpdate = {
-      locations : { values: [] },
       people_groups : { values: [] },
+      geonames : { values: [] }
     }
     $('#group-details-edit #title').html( _.escape(group.name) );
     let addressHTML = "";
@@ -558,7 +608,7 @@ jQuery(document).ready(function($) {
 
 
     $('#group-details-edit').foundation('open');
-    ["locations", "people_groups"].forEach(t=>{
+    ["geonames", "people_groups"].forEach(t=>{
       Typeahead[`.js-typeahead-${t}`].adjustInputSize()
     })
   })
@@ -644,18 +694,18 @@ jQuery(document).ready(function($) {
       }
     })
 
-    let connections = [ "locations", "people_groups", "leaders" ]
+    let connections = [ "geonames", "people_groups", "leaders" ]
     connections.forEach(connection=>{
       let htmlField = $(`.${connection}-list`).empty()
       if ( !group[connection] || group[connection].length === 0 ){
         htmlField.append(`<li id="no-${_.escape( connection )}">${_.escape( wpApiGroupsSettings.translations["not-set"][connection] )}</li>`)
       } else {
         group[connection].forEach(field=>{
-          let title = `${_.escape(field.post_title)}`
+          let title = `${_.escape(field.post_title||field.label)}`
           if ( connection === "leaders" ){
             title = `<a href="${_.escape(field.permalink)}">${_.escape( title )}</a>`
           }
-          htmlField.append(`<li class="details-list ${_.escape(field.key)}">
+          htmlField.append(`<li class="details-list ${_.escape(field.key || field.id)}">
             ${title}
               <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/verified.svg"/>
               <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/broken.svg"/>

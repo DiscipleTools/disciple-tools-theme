@@ -441,8 +441,17 @@ class Disciple_Tools_Posts
                 if ($fields[$activity->meta_key]["type"] === "number"){
                     $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
                 }
-                if ($fields[$activity->meta_key]["type"] === "date" ){
+                if ( $fields[$activity->meta_key]["type"] === "date" ){
                     $message = $fields[$activity->meta_key]["name"] . ": " . dt_format_date( $activity->meta_value );
+                }
+                if ( $fields[$activity->meta_key]["type"] === "location" ){
+                    if ( $activity->meta_value === "value_deleted" ){
+                        $geoname = Disciple_Tools_Mapping_Queries::get_by_geonameid( (int) $activity->old_value );
+                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 added to locations', 'disciple_tools' ), $geoname ? $geoname["name"] : $activity->old_value );
+                    } else {
+                        $geoname = Disciple_Tools_Mapping_Queries::get_by_geonameid( (int) $activity->meta_value );
+                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $geoname ? $geoname["name"] : $activity->meta_value );
+                    }
                 }
             } else {
                 if ( strpos( $activity->meta_key, "_details" ) !== false ) {
@@ -878,6 +887,7 @@ class Disciple_Tools_Posts
         $inner_joins = "";
         $connections_sql_to = "";
         $connections_sql_from = "";
+        $location_sql = "";
 
         $meta_query = "";
         $includes_query = "";
@@ -931,7 +941,7 @@ class Disciple_Tools_Posts
             if ( !is_array( $query_value )){
                 return new WP_Error( __FUNCTION__, "Filter queries must be arrays", [ 'status' => 403 ] );
             }
-            if ( !in_array( $query_key, array_keys( self::$connection_types ) ) && strpos( $query_key, "contact_" ) !== 0 ){
+            if ( !in_array( $query_key, array_keys( self::$connection_types ) ) && strpos( $query_key, "contact_" ) !== 0 && $query_key !== "geonames" ){
                 if ( $query_key == "assigned_to" ){
                     foreach ( $query_value as $assigned_to ){
                         $connector = "OR";
@@ -1021,19 +1031,18 @@ class Disciple_Tools_Posts
         }
 
         foreach ( $query as $query_key => $query_value ) {
+            if ( $query_key === "geonames" ) {
+                $geoname_ids = dt_array_to_sql( $query_value );
+                $location_sql .= "
+                    AND (
+                        geonames_counter.country_geonameid IN (" . $geoname_ids .") 
+                        OR geonames_counter.admin1_geonameid IN (" . $geoname_ids .")
+                        OR geonames_counter.admin2_geonameid IN (" . $geoname_ids .")
+                        OR geonames_counter.admin3_geonameid IN (" . $geoname_ids .")
+                        OR geonames_counter.geonameid IN (" . $geoname_ids .")
+                    )";
+            }
             if ( in_array( $query_key, array_keys( self::$connection_types ) ) ) {
-                if ( $query_key === "locations" ) {
-                    $location_sql = "";
-                    foreach ( $query_value as $location ) {
-                        $l = get_post( $location );
-                        if ( $l && $l->post_type === "locations" ){
-                            $location_sql .= empty( $location_sql ) ? $l->ID : ( ",".$l->ID );
-                        }
-                    }
-                    if ( !empty( $location_sql ) ){
-                        $connections_sql_to .= "AND ( to_p2p.p2p_type = '" . esc_sql( $post_type ) . "_to_locations' AND to_p2p.p2p_to in (" . esc_sql( $location_sql ) .") )";
-                    }
-                }
                 if ( $query_key === "subassigned" ) {
                     $subassigned_sql = "";
                     foreach ( $query_value as $subassigned ) {
@@ -1059,6 +1068,21 @@ class Disciple_Tools_Posts
         if ( !empty( $connections_sql_from )){
             $inner_joins .= " LEFT JOIN $wpdb->p2p as from_p2p ON ( from_p2p.p2p_to = $wpdb->posts.ID )";
         }
+        if ( !empty( $location_sql )){
+            $inner_joins .= " INNER JOIN (
+                    SELECT
+                        g.country_geonameid,
+                        g.admin1_geonameid,
+                        g.admin2_geonameid,
+                        g.admin3_geonameid,
+                        g.geonameid,
+                        g.level,
+                        p.post_id
+                    FROM $wpdb->postmeta as p
+                        LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value
+                    WHERE p.meta_key = 'geonames'
+            ) as geonames_counter ON ( geonames_counter.post_id = $wpdb->posts.ID )";
+        }
 
         $access_query = $access_query ? ( "AND ( " . $access_query . " ) " ) : "";
 
@@ -1066,7 +1090,7 @@ class Disciple_Tools_Posts
         $sort_join = "";
         $post_type_check = "";
         if ( $post_type == "contacts" ){
-            $inner_joins .= "LEFT JOIN $wpdb->postmeta as contact_type ON ( $wpdb->posts.ID = contact_type.post_id AND contact_type.meta_key = 'type' ) ";
+            $inner_joins .= " LEFT JOIN $wpdb->postmeta as contact_type ON ( $wpdb->posts.ID = contact_type.post_id AND contact_type.meta_key = 'type' ) ";
             $post_type_check = " AND (
                 ( contact_type.meta_key = 'type' AND contact_type.meta_value = 'media' )
                 OR
@@ -1125,6 +1149,9 @@ class Disciple_Tools_Posts
             $sort_sql = "ISNULL(p2p_post.post_name), p2p_post.post_name $sort_dir";
         } elseif ( $sort === "post_date" ){
             $sort_sql = "$wpdb->posts.post_date  " . $sort_dir;
+        } elseif ( $sort === "geonames" ){
+            $sort_join = "LEFT JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
+            $sort_sql = "sort.meta_value $sort_dir";
         }
 
 
@@ -1134,7 +1161,7 @@ class Disciple_Tools_Posts
             SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, $wpdb->posts.post_title, $wpdb->posts.post_type FROM $wpdb->posts
             " . $sort_join . " " . $inner_joins . " " . $share_joins . " " . $access_joins . "
             WHERE 1=1
-            " . $post_type_check . " " . $connections_sql_to . " ". $connections_sql_from . " " . $meta_query . " " . $includes_query . " " . $access_query . "
+            " . $post_type_check . " " . $connections_sql_to . " ". $connections_sql_from . " " . $location_sql . " " . $meta_query . " " . $includes_query . " " . $access_query . "
             AND $wpdb->posts.post_type = %s
             AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
             GROUP BY $wpdb->posts.ID

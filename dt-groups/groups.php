@@ -189,7 +189,16 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                         "timestamp" => $value[0],
                         "formatted" => dt_format_date( $value[0] ),
                     ];
-                } else {
+                } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'location' ) {
+                    $names = Disciple_Tools_Mapping_Queries::get_names_from_ids( $value );
+                    $fields[ $key ] = [];
+                    foreach ( $names as $id => $name ) {
+                        $fields[ $key ][] = [
+                            "id"    => $id,
+                            "label" => $name
+                        ];
+                    }
+                }    else {
                     $fields[ $key ] = $value[0];
                 }
             }
@@ -239,7 +248,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
     private static function parse_multi_select_fields( $contact_id, $fields, $existing_contact = null ){
         foreach ( $fields as $field_key => $field ){
-            if ( isset( self::$group_fields[$field_key] ) && self::$group_fields[$field_key]["type"] === "multi_select" ){
+            if ( isset( self::$group_fields[$field_key] ) && self::$group_fields[$field_key]["type"] === "multi_select" || self::$group_fields[$field_key]["type"] === "location"){
                 if ( !isset( $field["values"] )){
                     return new WP_Error( __FUNCTION__, "missing values field on:" . $field_key );
                 }
@@ -478,7 +487,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 if ( $field_type === 'date' && !is_numeric( $value )){
                     $value = strtotime( $value );
                 }
-                if ( $field_type && $field_type !== "multi_select" ){
+                if ( $field_type && $field_type !== "multi_select" && $field_type !== "location" ){
                     update_post_meta( $group_id, $field_id, $value );
                 }
             }

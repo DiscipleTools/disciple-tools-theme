@@ -44,6 +44,8 @@ class Disciple_Tools_Users
         add_filter( 'manage_users_columns', [ $this, 'new_modify_user_table' ] );
         add_filter( 'manage_users_custom_column', [ $this, 'new_modify_user_table_row' ], 10, 3 );
 
+        add_filter( 'dt_settings_js_data', [ $this, 'add_current_locations_list' ], 10, 1 );
+
     }
 
     /**
@@ -53,7 +55,6 @@ class Disciple_Tools_Users
      *
      * @return array|\WP_Error
      */
-
     public static function get_assignable_users_compact( string $search_string = null ) {
         if ( !current_user_can( "access_contacts" ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to assign" ), [ 'status' => 403 ] );
@@ -252,7 +253,7 @@ class Disciple_Tools_Users
         if ( !empty( $args['nickname'] ) && $current_user->display_name != $args['nickname'] ) {
             //set display name to nickname
             $user_id = wp_update_user( array(
-                'ID' => $args['ID'],
+                'ID' => (int) $args['ID'],
                 'display_name' => $args['nickname']
                 )
             );
@@ -742,4 +743,42 @@ Please click the following link to confirm the invite:
     }
 
 
+    public function user_deleted( $user_id, $blog_id = null ){
+        $corresponds_to_contact = self::get_contact_for_user( $user_id );
+        if ( $corresponds_to_contact ){
+            delete_post_meta( $corresponds_to_contact, "corresponds_to_user" );
+        }
+    }
+
+    public function add_current_locations_list( $custom_data ) {
+        $custom_data['current_locations'] = DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( get_current_user_id() ) );
+        return $custom_data;
+    }
+
+    public static function add_user_location( $geonameid, $user_id = null ) {
+        if ( empty( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+        $corresponds_to_contact = self::get_contact_for_user( $user_id );
+        if ( $corresponds_to_contact ){
+            $other_values = get_post_meta( $corresponds_to_contact, 'geonames' );
+            if ( array_search( $geonameid, $other_values ) === false ) {
+                add_post_meta( $corresponds_to_contact, 'geonames', $geonameid, false );
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static function delete_user_location( $geonameid, $user_id = null ) {
+        if ( empty( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+        $corresponds_to_contact = self::get_contact_for_user( $user_id );
+        if ( $corresponds_to_contact ){
+            delete_post_meta( $corresponds_to_contact, 'geonames', $geonameid );
+            return true;
+        }
+        return false;
+    }
 }

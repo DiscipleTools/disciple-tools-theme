@@ -24,7 +24,7 @@ class Disciple_Tools_Usage {
         ];
 
         wp_remote_post( $url, $args );
-
+        dt_write_log( 'ran' );
     }
 
     public function telemetry() {
@@ -52,16 +52,16 @@ class Disciple_Tools_Usage {
                 'theme_version' => disciple_tools()->version,
 
                 // SYSTEM USAGE
-                'active_contacts' => $system_usage['active_contacts'],
-                'total_contacts' => $system_usage['total_contacts'],
-                'active_groups' => $system_usage['active_groups'],
-                'total_groups' => $system_usage['total_groups'],
-                'active_churches' => $system_usage['active_churches'],
-                'total_churches' => $system_usage['total_churches'],
-                'active_users' => $activity['active_users'],
-                'total_users' => $users->get_total(),
+                'active_contacts' => (string) $system_usage['active_contacts'] ?: '0',
+                'total_contacts' => (string) $system_usage['total_contacts'] ?: '0',
+                'active_groups' => (string) $system_usage['active_groups'] ?: '0',
+                'total_groups' => (string) $system_usage['total_groups'] ?: '0',
+                'active_churches' => (string) $system_usage['active_churches'] ?: '0',
+                'total_churches' => (string) $system_usage['total_churches'] ?: '0',
+                'active_users' => (string) $activity['active_users'] ?: '0',
+                'total_users' => (string) $users->get_total() ?: '0',
 
-                'regions' => $regions,
+                'regions' => $regions ?: '0',
                 'timestamp' => date( 'Y-m-d' ),
 
             ],

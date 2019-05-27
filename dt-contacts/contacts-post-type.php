@@ -542,6 +542,11 @@ class Disciple_Tools_Contact_Post_Type
             "name" => __( "Sub-assigned to", "disciple_tools" ),
             "type" => "connection"
         ];
+        $fields['geonames'] = [
+            'name'        => __( 'Locations', 'disciple_tools' ),
+            'type'        => 'location',
+            'default'     => [],
+        ];
 
         return $fields;
     }
