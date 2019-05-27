@@ -72,10 +72,12 @@ class DT_Mapping_Module_Config
      * Set a link in the top bar of the site
      */
     public function top_nav_desktop() {
-        ?>
-        <li><a
-            href="<?php echo esc_url( site_url( '/mapping/' ) ) . '#mapping_view'; ?>"><?php esc_html_e( "Mapping" ); ?></a>
-        </li><?php
+        if ( $this->custom_permission_check() ){
+            ?>
+            <li><a
+                href="<?php echo esc_url( site_url( '/mapping/' ) ) . '#mapping_view'; ?>"><?php esc_html_e( "Mapping" ); ?></a>
+            </li><?php
+        }
     }
 
     /**
