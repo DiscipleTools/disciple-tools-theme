@@ -285,8 +285,16 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             }
             if ( (int) get_option( 'dt_mapping_module_migration_lock', 0 ) ) {
                 $last_migration_error = get_option( 'dt_mapping_module_migrate_last_error', false );
+                if ( isset( $_POST['reset_mapping_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['reset_mapping_nonce'] ) ), 'reset_mapping' ) ) {
+                    $this->migrations_reset_and_rerun();
+                }
                 ?>
                 <h3>Something is wrong with the mapping system.</h3>
+                <form method="post">
+                    <?php wp_nonce_field( 'reset_mapping', 'reset_mapping_nonce' ) ?>
+                    <button type="submit" name="reset" value="1">Reset</button>
+                </form>
+
                 <?php if ( !empty( $last_migration_error ) ) {
                     if ( isset( $last_migration_error["message"] ) ) : ?>
                         <p>Cannot migrate, as migration lock is held. This is the last error: <strong><?php echo esc_html( $last_migration_error["message"] ); ?></strong></p>
@@ -1036,7 +1044,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 echo 'Not Locked';
                             }
                             ?><br>
-
+                            Current Geoname
+                            Records: <?php echo esc_attr( Disciple_Tools_Mapping_Queries::get_total_record_count_in_geonames_database() ) ?>
                         </td>
                     </tr>
                     </tbody>
@@ -1955,18 +1964,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function migration_rebuild_geonames() {
-            if ( isset( $_POST['rebuild_geonames'] )
-                && ( isset( $_POST['_wpnonce'] )
-                    && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'rebuild_geonames' . get_current_user_id() ) ) ) {
-
-                $this->rebuild_geonames();
-            }
-
             if ( isset( $_POST['reset_geonames'] )
                 && ( isset( $_POST['_wpnonce'] )
                     && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'rebuild_geonames' . get_current_user_id() ) ) ) {
 
-                $this->rebuild_geonames( true );
+                $this->migrations_reset_and_rerun();
             }
             ?>
             <!-- Box -->
@@ -1974,28 +1976,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <?php wp_nonce_field( 'rebuild_geonames' . get_current_user_id() ); ?>
                 <table class="widefat striped">
                     <thead>
-                    <th>Alternative Install for Geonames</th>
+                    <th>Clean and Reinstall Mapping Resources (does not effect Contacts or Group data.)</th>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>
-                            Current Geoname
-                            Records: <?php echo esc_attr( Disciple_Tools_Mapping_Queries::get_total_record_count_in_geonames_database() ) ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>
-                                <button type="button" class="button"
-                                        onclick="jQuery('#check_rebuild').show();jQuery(this).prop('disabled', 'disabled')">
-                                    Add Geonames
-                                </button>
-                            </p>
-                            <span id="check_rebuild" style="display:none;">
-                                <button type="submit" class="button" name="rebuild_geonames" value="1">Are you sure you want to add geonames?</button>
-                            </span>
-                        </td>
-                    </tr>
+
                     <tr>
                         <td>
                             <p>
@@ -2015,9 +1999,41 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
+        public function migrations_reset_and_rerun() {
+            global $wpdb;
+            // drop tables
+            $wpdb->dt_geonames = $wpdb->prefix . 'dt_geonames';
+            $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_geonames" );
+
+            // delete
+            delete_option( 'dt_mapping_module_migration_lock' );
+            delete_option( 'dt_mapping_module_migrate_last_error' );
+            delete_option( 'dt_mapping_module_migration_number' );
+
+            // delete folder and downloads
+            $dir = wp_upload_dir();
+            $uploads_dir = trailingslashit( $dir['basedir'] );
+            if ( file_exists( $uploads_dir . 'geonames/geonames.tsv.zip' ) ) {
+                unlink( $uploads_dir . 'geonames/geonames.tsv.zip' );
+            }
+            if ( file_exists( $uploads_dir . 'geonames/geonames.tsv' ) ) {
+                unlink( $uploads_dir . 'geonames/geonames.tsv' );
+            }
+
+            // trigger migration engine
+            require_once( 'class-migration-engine.php' );
+            try {
+                DT_Mapping_Module_Migration_Engine::migrate( DT_Mapping_Module_Migration_Engine::$migration_number );
+            } catch ( Throwable $e ) {
+                $migration_error = new WP_Error( 'migration_error', 'Migration engine for mapping module failed to migrate.', [ 'error' => $e ] );
+                dt_write_log( $migration_error );
+            }
+        }
+
         public function rebuild_geonames( $reset = false ) {
             global $wpdb;
 
+            // clear previous installation
             $dir = wp_upload_dir();
             $uploads_dir = trailingslashit( $dir['basedir'] );
             $file = 'geonames.tsv';
