@@ -1675,7 +1675,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             ];
 
             $results['self'] = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_earth() );
-            $results['self']['population_formatted'] = number_format( $results['self']['population'] );
+            $results['self']['population_formatted'] = number_format( $results['self']['population'] ?? 0 );
 
             $results['children'] = $this->get_countries_map_data();
             $results['deeper_levels'] = $this->get_deeper_levels( $results['children'] );

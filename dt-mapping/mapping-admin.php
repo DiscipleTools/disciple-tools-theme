@@ -288,12 +288,17 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 if ( isset( $_POST['reset_mapping_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['reset_mapping_nonce'] ) ), 'reset_mapping' ) ) {
                     $this->migrations_reset_and_rerun();
                 }
+            }
+            if ( (int) get_option( 'dt_mapping_module_migration_lock', 0 ) ) {
                 ?>
-                <h3>Something is wrong with the mapping system.</h3>
+                <h3>Something went wrong with the mapping system.</h3>
                 <form method="post">
                     <?php wp_nonce_field( 'reset_mapping', 'reset_mapping_nonce' ) ?>
-                    <button type="submit" name="reset" value="1">Reset</button>
+                    Retry setting up the mapping system:
+                    <button type="submit" name="reset" value="1">Retry</button>
                 </form>
+                <br>
+                <strong>Error message:</strong>
 
                 <?php if ( !empty( $last_migration_error ) ) {
                     if ( isset( $last_migration_error["message"] ) ) : ?>
