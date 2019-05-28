@@ -19,10 +19,10 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
         if ( ! file_exists( $uploads_dir . 'geonames' ) ) {
             mkdir( $uploads_dir . 'geonames' );
         }
-        if ( ! file_exists( $uploads_dir . "geonames/geonames.tsv.zip" ) ) {
+        if ( file_exists( $uploads_dir . "geonames/geonames.tsv.zip" ) ) {
             unlink( $uploads_dir . "geonames/geonames.tsv.zip" );
         }
-        if ( ! file_exists( $uploads_dir . "geonames/geonames.tsv" ) ) {
+        if ( file_exists( $uploads_dir . "geonames/geonames.tsv" ) ) {
             unlink( $uploads_dir . "geonames/geonames.tsv" );
         }
 
@@ -33,7 +33,7 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
         $gn_source_url = $mirror_source . 'geonames/geonames.tsv.zip';
 
         $zip_file = $uploads_dir . "geonames/geonames.tsv.zip";
-        // @todo add delete current files if exist.
+
 
         $zip_resource = fopen( $zip_file, "w" );
 

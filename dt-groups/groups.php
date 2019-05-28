@@ -38,7 +38,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     "parent_groups",
                     "child_groups",
                     "peer_groups",
-                    "locations",
+                    "locations", // @todo remove or rewrite? Because of geonames upgrade.
                     "people_groups",
                     "leaders",
                     "coaches"

@@ -6,9 +6,7 @@
  *      DT_Mapping_Module_Admin::instance()->population_metabox();
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-    exit;
-} // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
@@ -33,7 +31,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         public $spinner;
         public $nonce;
         public $current_user_id;
-        public $map_key;
 
         public function __construct() {
             /**
@@ -288,8 +285,21 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             }
             if ( (int) get_option( 'dt_mapping_module_migration_lock', 0 ) ) {
                 $last_migration_error = get_option( 'dt_mapping_module_migrate_last_error', false );
+                if ( isset( $_POST['reset_mapping_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['reset_mapping_nonce'] ) ), 'reset_mapping' ) ) {
+                    $this->migrations_reset_and_rerun();
+                }
+            }
+            if ( (int) get_option( 'dt_mapping_module_migration_lock', 0 ) ) {
                 ?>
-                <h3>Something is wrong with the mapping system.</h3>
+                <h3>Something went wrong with the mapping system.</h3>
+                <form method="post">
+                    <?php wp_nonce_field( 'reset_mapping', 'reset_mapping_nonce' ) ?>
+                    Retry setting up the mapping system:
+                    <button type="submit" name="reset" value="1">Retry</button>
+                </form>
+                <br>
+                <strong>Error message:</strong>
+
                 <?php if ( !empty( $last_migration_error ) ) {
                     if ( isset( $last_migration_error["message"] ) ) : ?>
                         <p>Cannot migrate, as migration lock is held. This is the last error: <strong><?php echo esc_html( $last_migration_error["message"] ); ?></strong></p>
@@ -890,99 +900,100 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 GROUP BY posts.ID
             ", ARRAY_A );
             $saved_for_migration = get_option( "dt_mapping_migration_list", [] );
-            if ( sizeof( $locations_with_records ) === 0 ) :
-                update_option( "dt_locations_migrated_to_geonames", true )
+            if ( sizeof( $locations_with_records ) === 0 ) {
+                $migration_done = get_option( "dt_locations_migrated_to_geonames", false );
+                if ( !$migration_done ){
+                    $this->migrate_user_filters_to_geonames();
+                    update_option( "dt_locations_migrated_to_geonames", true );
+                }
+            } else {
                 ?>
-<!--                <p>Awesome, you are all migrated! this tab will no longer appear on this page</p>-->
 
-            <?php else : ?>
+                <h1>About</h1>
+                <p>Thank you for completing this important step in using D.T.</p>
+                <p>This tool is to help you migrate from the old locations system, to the new one that uses <a target="_blank" href="https://www.geonames.org/about.html">GeoNames</a>  as it's base. GeoNames is a free database of countries and regions and will help us achieve better collaborate across instances. </p>
+                <p>You may wish to select a <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=focus' ) ) ?>">mapping focus</a> to narrow the options given.</p>
+                <p>Click <a target="_blank" href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/admin.html#mapping">here</a> for a detailed explanation on the locations system and instructions on how to use this tool</p>
+                <h1>Instructions</h1>
+                <p>1. Select the corresponding GeoNames location for the old location. If you choose a wrong location, click "World" to undo it.</p>
+                <p>2. Then click click one of the two options:</p>
+                <ul style="list-style: disc; padding-inline-start: 40px">
+                    <li><strong style="color: green;" >Convert (recommended)</strong> means the selected new location is the same as the old location.</li>
+                    <li><strong style="color: orange;">Create as a sub-location</strong> means that the old location is found within the selected new location.</li>
+                </ul>
+                <p>3. Click the "Run migration" button. Hint: You can select a few location and run the migration.</p>
 
+                <form method="post" action="">
+                    <?php wp_nonce_field( 'save', 'location_migrate_nonce', true, true ) ?>
+                    <h3>Locations to Migrate ( <?php echo esc_html( sizeof( $locations_with_records ) ) ?> )</h3>
 
-            <h1>About</h1>
-            <p>Thank you for completing this important step in using D.T.</p>
-            <p>This tool is to help you migrate from the old locations system, to the new one that uses <a target="_blank" href="https://www.geonames.org/about.html">GeoNames</a>  as it's base. GeoNames is a free database of countries and regions and will help us achieve better collaborate across instances. </p>
-            <p>You may wish to select a <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=focus' ) ) ?>">mapping focus</a> to narrow the options given.</p>
-            <p>Click <a target="_blank" href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/admin.html#mapping">here</a> for a detailed explanation on the locations system and instructions on how to use this tool</p>
-            <h1>Instructions</h1>
-            <p>1. Select the corresponding GeoNames location for the old location. If you choose a wrong location, click "World" to undo it.</p>
-            <p>2. Then click click one of the two options:</p>
-            <ul style="list-style: disc; padding-inline-start: 40px">
-                <li><strong style="color: green;" >Convert (recommended)</strong> means the selected new location is the same as the old location.</li>
-                <li><strong style="color: orange;">Create as a sub-location</strong> means that the old location is found within the selected new location.</li>
-            </ul>
-            <p>3. Click the "Run migration" button. Hint: You can select a few location and run the migration.</p>
+                    <p>
+                        <button style="background-color: red; color: white; border-radius: 5px;" type="submit" class="button" name="run-migration">
+                            <strong>Run migration</strong>
+                        </button>
+                        <strong>Careful, this cannot be undone.</strong>
+                    </p>
 
-            <form method="post" action="">
-                <?php wp_nonce_field( 'save', 'location_migrate_nonce', true, true ) ?>
-                <h3>Locations to Migrate ( <?php echo esc_html( sizeof( $locations_with_records ) ) ?> )</h3>
-
-                <p>
-                    <button style="background-color: red; color: white; border-radius: 5px;" type="submit" class="button" name="run-migration">
-                        <strong>Run migration</strong>
-                    </button>
-                    <strong>Careful, this cannot be undone.</strong>
-                </p>
-
-                <table class="widefat striped">
-                    <thead>
-                    <tr>
-                        <th>Old Location Name</th>
-                        <th>Select a Location</th>
-                        <th>Select option</th>
-                        <th>Selected Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ( $locations_with_records as $location ) : ?>
+                    <table class="widefat striped">
+                        <thead>
                         <tr>
-                            <td> <?php echo esc_html( $location["post_title"] ) ?>
-                                ( <?php echo esc_html( $location["count"] ) ?> )
-                            </td>
-                            <td id="<?php echo esc_html( $location["ID"] ) ?>_sublocation" class="to-location">
-                                <input name="selected_geonames[<?php echo esc_html( $location["ID"] ) ?>][geoid]" class="convert-input" type="hidden">
-                                <div class="drilldown">
-                                    <?php DT_Mapping_Module::instance()->drill_down_widget( esc_html( $location["ID"] ) . "_sublocation .drilldown" ) ?>
-                                </div>
-                            </td>
-                            <td id="<?php echo esc_html( $location["ID"] ) ?>_buttons">
-                                <select name="selected_geonames[<?php echo esc_html( $location["ID"] ) ?>][migration_type]" data-location_id="<?php echo esc_html( $location["ID"] ) ?>" class="migration-type">
-                                    <option></option>
-                                    <option value="convert">Convert (recommended) </option>
-                                    <option value="sublocation">Create as a sub-location</option>
-                                </select>
-                            </td>
-                            <td id="<?php echo esc_html( $location["ID"] ) ?>_actions">
-                                <span class="convert" style="display: none;"><strong style="color: green;">Convert</strong> <?php echo esc_html( $location["post_title"] ) ?> to <span class="selected-geoname-label">World</span></span>
-                                <span class="sublocation" style="display: none;"><strong style="color: orange">Create</strong> <?php echo esc_html( $location["post_title"] ) ?> <strong style="color: orange">as a sub-location</strong> under <span class="selected-geoname-label">World</span></span>
-                            </td>
+                            <th>Old Location Name</th>
+                            <th>Select a Location</th>
+                            <th>Select option</th>
+                            <th>Selected Action</th>
                         </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <p>
-                    <button style="background-color: red; color: white; border-radius: 5px;" type="submit" class="button" name="run-migration">
-                        <strong>Run migration</strong>
-                    </button>
-                    <strong>Careful, this cannot be undone.</strong>
-                </p>
-            </form>
-            <script>
-                jQuery(".to-location").each((a, b)=>{
-                    let id = jQuery(b).attr('id')
-                    window.DRILLDOWN[`${ id } .drilldown`] = function (geonameid, label) {
-                        jQuery(`#${id} .convert-input`).val(geonameid)
-                        console.log(id);
-                        jQuery(`#${id.replace("sublocation", "actions")} .selected-geoname-label`).text(label)
-                    }
-                })
-                jQuery('.migration-type').on( "change", function () {
-                    let val = this.value
-                    let location_id = jQuery(this).data('location_id')
-                    jQuery(`#${location_id}_actions .${ val === 'convert' ? 'sublocation' : 'convert' }`).hide()
-                    jQuery(`#${location_id}_actions .${val}`).show()
-                })
-            </script>
-            <?php endif; ?>
+                        </thead>
+                        <tbody>
+                        <?php foreach ( $locations_with_records as $location ) : ?>
+                            <tr>
+                                <td> <?php echo esc_html( $location["post_title"] ) ?>
+                                    ( <?php echo esc_html( $location["count"] ) ?> )
+                                </td>
+                                <td id="<?php echo esc_html( $location["ID"] ) ?>_sublocation" class="to-location">
+                                    <input name="selected_geonames[<?php echo esc_html( $location["ID"] ) ?>][geoid]" class="convert-input" type="hidden">
+                                    <div class="drilldown">
+                                        <?php DT_Mapping_Module::instance()->drill_down_widget( esc_html( $location["ID"] ) . "_sublocation .drilldown" ) ?>
+                                    </div>
+                                </td>
+                                <td id="<?php echo esc_html( $location["ID"] ) ?>_buttons">
+                                    <select name="selected_geonames[<?php echo esc_html( $location["ID"] ) ?>][migration_type]" data-location_id="<?php echo esc_html( $location["ID"] ) ?>" class="migration-type">
+                                        <option></option>
+                                        <option value="convert">Convert (recommended) </option>
+                                        <option value="sublocation">Create as a sub-location</option>
+                                    </select>
+                                </td>
+                                <td id="<?php echo esc_html( $location["ID"] ) ?>_actions">
+                                    <span class="convert" style="display: none;"><strong style="color: green;">Convert</strong> <?php echo esc_html( $location["post_title"] ) ?> to <span class="selected-geoname-label">World</span></span>
+                                    <span class="sublocation" style="display: none;"><strong style="color: orange">Create</strong> <?php echo esc_html( $location["post_title"] ) ?> <strong style="color: orange">as a sub-location</strong> under <span class="selected-geoname-label">World</span></span>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <p>
+                        <button style="background-color: red; color: white; border-radius: 5px;" type="submit" class="button" name="run-migration">
+                            <strong>Run migration</strong>
+                        </button>
+                        <strong>Careful, this cannot be undone.</strong>
+                    </p>
+                </form>
+                <script>
+                    jQuery(".to-location").each((a, b)=>{
+                        let id = jQuery(b).attr('id')
+                        window.DRILLDOWN[`${ id } .drilldown`] = function (geonameid, label) {
+                            jQuery(`#${id} .convert-input`).val(geonameid)
+                            console.log(id);
+                            jQuery(`#${id.replace("sublocation", "actions")} .selected-geoname-label`).text(label)
+                        }
+                    })
+                    jQuery('.migration-type').on( "change", function () {
+                        let val = this.value
+                        let location_id = jQuery(this).data('location_id')
+                        jQuery(`#${location_id}_actions .${ val === 'convert' ? 'sublocation' : 'convert' }`).hide()
+                        jQuery(`#${location_id}_actions .${val}`).show()
+                    })
+                </script>
+            <?php } ?>
             <h3>Migrated Locations ( <?php echo esc_html( sizeof( $saved_for_migration ) ) ?>)</h3>
             <ul style="list-style: disc">
                 <?php foreach ( $saved_for_migration as $location_id => $migration_values ) : ?>
@@ -1039,7 +1050,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 echo 'Not Locked';
                             }
                             ?><br>
-
+                            Current Geoname
+                            Records: <?php echo esc_attr( Disciple_Tools_Mapping_Queries::get_total_record_count_in_geonames_database() ) ?>
                         </td>
                     </tr>
                     </tbody>
@@ -1958,18 +1970,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function migration_rebuild_geonames() {
-            if ( isset( $_POST['rebuild_geonames'] )
-                && ( isset( $_POST['_wpnonce'] )
-                    && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'rebuild_geonames' . get_current_user_id() ) ) ) {
-
-                $this->rebuild_geonames();
-            }
-
             if ( isset( $_POST['reset_geonames'] )
                 && ( isset( $_POST['_wpnonce'] )
                     && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'rebuild_geonames' . get_current_user_id() ) ) ) {
 
-                $this->rebuild_geonames( true );
+                $this->migrations_reset_and_rerun();
             }
             ?>
             <!-- Box -->
@@ -1977,28 +1982,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <?php wp_nonce_field( 'rebuild_geonames' . get_current_user_id() ); ?>
                 <table class="widefat striped">
                     <thead>
-                    <th>Alternative Install for Geonames</th>
+                    <th>Clean and Reinstall Mapping Resources (does not effect Contacts or Group data.)</th>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>
-                            Current Geoname
-                            Records: <?php echo esc_attr( Disciple_Tools_Mapping_Queries::get_total_record_count_in_geonames_database() ) ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>
-                                <button type="button" class="button"
-                                        onclick="jQuery('#check_rebuild').show();jQuery(this).prop('disabled', 'disabled')">
-                                    Add Geonames
-                                </button>
-                            </p>
-                            <span id="check_rebuild" style="display:none;">
-                                <button type="submit" class="button" name="rebuild_geonames" value="1">Are you sure you want to add geonames?</button>
-                            </span>
-                        </td>
-                    </tr>
+
                     <tr>
                         <td>
                             <p>
@@ -2018,9 +2005,41 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
+        public function migrations_reset_and_rerun() {
+            global $wpdb;
+            // drop tables
+            $wpdb->dt_geonames = $wpdb->prefix . 'dt_geonames';
+            $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_geonames" );
+
+            // delete
+            delete_option( 'dt_mapping_module_migration_lock' );
+            delete_option( 'dt_mapping_module_migrate_last_error' );
+            delete_option( 'dt_mapping_module_migration_number' );
+
+            // delete folder and downloads
+            $dir = wp_upload_dir();
+            $uploads_dir = trailingslashit( $dir['basedir'] );
+            if ( file_exists( $uploads_dir . 'geonames/geonames.tsv.zip' ) ) {
+                unlink( $uploads_dir . 'geonames/geonames.tsv.zip' );
+            }
+            if ( file_exists( $uploads_dir . 'geonames/geonames.tsv' ) ) {
+                unlink( $uploads_dir . 'geonames/geonames.tsv' );
+            }
+
+            // trigger migration engine
+            require_once( 'class-migration-engine.php' );
+            try {
+                DT_Mapping_Module_Migration_Engine::migrate( DT_Mapping_Module_Migration_Engine::$migration_number );
+            } catch ( Throwable $e ) {
+                $migration_error = new WP_Error( 'migration_error', 'Migration engine for mapping module failed to migrate.', [ 'error' => $e ] );
+                dt_write_log( $migration_error );
+            }
+        }
+
         public function rebuild_geonames( $reset = false ) {
             global $wpdb;
 
+            // clear previous installation
             $dir = wp_upload_dir();
             $uploads_dir = trailingslashit( $dir['basedir'] );
             $file = 'geonames.tsv';
@@ -2258,6 +2277,43 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 $geoname_id,
                 $location_id
             ));
+        }
+
+        public function migrate_user_filters_to_geonames(){
+            //get migrations
+            $migrated = get_option( "dt_mapping_migration_list", [] );
+//            get users with that have filters
+//            check for locations
+//            try converting to geonames
+            global $wpdb;
+
+            $users = get_users( [ "meta_key" => $wpdb->get_blog_prefix() . "saved_filters" ] );
+            foreach ( $users as $user ){
+                $save_filters = get_user_option( "saved_filters", $user->ID );
+                foreach ( $save_filters as $post_type => &$filters ){
+                    foreach ( $filters as &$filter ){
+                        if ( !empty( $filter["query"]["locations"] ) ){
+                            $geonames = [];
+                            foreach ( $filter["query"]["locations"] as $location ){
+                                if ( isset( $migrated[$location]["selected_geoname"] ) ){
+                                    $geonames[] = $migrated[$location]["selected_geoname"];
+                                }
+                            }
+                            $filter['query']['geonames'] = $geonames;
+                            unset( $filter["query"]["locations"] );
+                            foreach ( $filter["labels"] as &$label ){
+                                if ( $label["field"] === "locations" ){
+                                    if ( isset( $migrated[$label["id"]]["selected_geoname"] )){
+                                        $label["field"] = "geonames";
+                                        $label["id"] = $migrated[$label["id"]]["selected_geoname"];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                update_user_option( $user->ID, "saved_filters", $save_filters );
+            }
         }
 
         public function dt_locations_migration_admin_notice() {

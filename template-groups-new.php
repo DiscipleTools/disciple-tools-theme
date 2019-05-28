@@ -49,19 +49,11 @@ $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_s
         $(".js-create-group-button")
             .attr("disabled", true)
             .addClass("loading");
-        $.ajax({
-            url: wpApiShare.root + 'dt/v1/group/create',
-            type: "POST",
-            contentType: "application/json; charset=UTF-8",
-            dataType: "json",
-            data: JSON.stringify({
-                title: $(".js-create-group input[name=title]").val(),
-                group_type: $(`.js-create-group #group_type`).val()
-            }),
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-            }
-        }).promise().then(function(data) {
+        APIV2.create_post( 'groups', {
+            title: $(".js-create-group input[name=title]").val(),
+            group_type: $(`.js-create-group #group_type`).val()
+        })
+        .then(function(data) {
             window.location = data.permalink;
         }).catch(function(error) {
             $(".js-create-group-button").removeClass("loading").addClass("alert");

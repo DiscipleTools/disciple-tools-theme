@@ -254,7 +254,7 @@ class Disciple_Tools_Posts
                 $object_note_from = sprintf( esc_html_x( 'Added to group %s', 'Added to group group1', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( 'Removed %s from group', 'Removed contact1 from group', 'disciple_tools' ), $from_title );
-                $object_note_from = sprintf( esc_html_x( 'Removed from group %s', 'Removed from group group1', 'disciple_tools' ), $from_title );
+                $object_note_from = sprintf( esc_html_x( 'Removed from group %s', 'Removed from group group1', 'disciple_tools' ), $to_title );
             }
         }
         else if ( $p2p_type === "contacts_to_contacts"){

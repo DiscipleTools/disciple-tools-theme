@@ -61,9 +61,20 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         public function __construct() {
 
             require_once( 'mapping-queries.php' );
-            require_once( 'google-geocode-api.php' );
             require_once( 'mapping-admin.php' ); // can't filter for is_admin because of REST dependencies
 
+
+            /**
+             * LOAD REST ENDPOINTS
+             *
+             * Endpoints can be modified when included into other metrics locations. Just add a filter for
+             * dt_mapping_module_endpoints and modify the route
+             */
+            $this->namespace = "dt/v1";
+            $this->public_namespace = "dt-public/v1";
+            $this->endpoints = apply_filters( 'dt_mapping_module_endpoints', $this->default_endpoints() );
+            add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+            /** End LOAD REST ENDPOINTS */
 
             /**
              * PERMISSION CHECK
@@ -101,17 +112,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
             /** END SET FILE LOCATIONS */
 
-            /**
-             * LOAD REST ENDPOINTS
-             *
-             * Endpoints can be modified when included into other metrics locations. Just add a filter for
-             * dt_mapping_module_endpoints and modify the route
-             */
-            $this->namespace = "dt/v1";
-            $this->public_namespace = "dt-public/v1";
-            $this->endpoints = apply_filters( 'dt_mapping_module_endpoints', $this->default_endpoints() );
-            add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
-            /** End LOAD REST ENDPOINTS */
 
             /**
              * DEFAULT MAPPING NAVIGATION
@@ -434,6 +434,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function get_drilldown_endpoint( WP_REST_Request $request ) {
+            if ( ! $this->permissions ) {
+                return new WP_Error( __METHOD__, 'No permission', [ 'status' => 101 ] );
+            }
             $params = $request->get_params();
 
             if ( isset( $params['geonameid'] ) ) {
@@ -445,6 +448,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
         }
         public function delete_transient_endpoint( WP_REST_Request $request ) {
+            if ( ! $this->permissions ) {
+                return new WP_Error( __METHOD__, 'No permission', [ 'status' => 101 ] );
+            }
             $params = $request->get_params();
 
             if ( isset( $params['key'] ) && $params['key'] === 'counter' ) {
@@ -1669,7 +1675,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             ];
 
             $results['self'] = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_earth() );
-            $results['self']['population_formatted'] = number_format( $results['self']['population'] );
+            $results['self']['population_formatted'] = number_format( $results['self']['population'] ?? 0 );
 
             $results['children'] = $this->get_countries_map_data();
             $results['deeper_levels'] = $this->get_deeper_levels( $results['children'] );

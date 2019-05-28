@@ -497,7 +497,7 @@ class Disciple_Tools_Users
         $current_user_id = get_current_user_id();
         $filters = [];
         if ( $current_user_id ){
-            $filters = maybe_unserialize( get_user_meta( $current_user_id, "saved_filters", true ) );
+            $filters = maybe_unserialize( get_user_option( "saved_filters", $current_user_id ) );
             if ( empty( $filters )){
                 $filters = [];
             }
@@ -509,7 +509,7 @@ class Disciple_Tools_Users
         $current_user_id = get_current_user_id();
         if ( $current_user_id ){
             $filters = filter_var_array( $filters, FILTER_SANITIZE_STRING );
-            $filters = update_user_meta( $current_user_id, "saved_filters", $filters );
+            $filters = update_user_option( $current_user_id, "saved_filters", $filters );
         }
         return $filters;
     }

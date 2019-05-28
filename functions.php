@@ -142,7 +142,7 @@ else {
              */
             $this->token = 'disciple_tools';
             $this->version = '0.20.0';
-            $this->migration_number = 22;
+            $this->migration_number = 24;
 
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -256,7 +256,7 @@ else {
             /**
              * dt-posts
              */
-            require_once( get_template_directory() . '/dt-core/posts.php' );
+            require_once( get_template_directory() . '/dt-posts/posts.php' );
             require_once( get_template_directory() . '/dt-posts/custom-post-type.php' );
             require_once( get_template_directory() . '/dt-posts/dt-posts.php' );
             require_once( get_template_directory() . '/dt-posts/dt-posts-endpoints.php' );
@@ -294,12 +294,6 @@ else {
             require_once( get_template_directory() . '/dt-mapping/mapping-module-config.php' ); // configuration file for mapping module
             DT_Mapping_Module_Config::instance();
             require_once( get_template_directory() . '/dt-mapping/mapping.php' ); // load for mapping module
-
-
-            // dt-locations
-            require_once( get_template_directory() . '/dt-locations/locations.php' ); // serves the locations rest endpoints
-            require_once( get_template_directory() . '/dt-locations/locations-endpoints.php' ); // builds rest endpoints
-            $this->endpoints['locations'] = Disciple_Tools_Locations_Endpoints::instance();
 
 
 

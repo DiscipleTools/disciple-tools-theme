@@ -204,9 +204,9 @@ class Disciple_Tools_Groups_Endpoints
             $group_array["ID"] = $group->ID;
             $group_array["post_title"] = $group->post_title;
             $group_array['permalink'] = get_post_permalink( $group->ID );
-            $group_array['locations'] = [];
+            $group_array['locations'] = []; // @todo remove or rewrite? Because of geonames upgrade.
             foreach ( $geonames[$group->ID] as $location ) {
-                $group_array['locations'][] = $location["name"];
+                $group_array['locations'][] = $location["name"]; // @todo remove or rewrite? Because of geonames upgrade.
             }
             $group_array['leaders'] = [];
             $group_array['member_count'] = $meta_fields["member_count"] ?? 0;
