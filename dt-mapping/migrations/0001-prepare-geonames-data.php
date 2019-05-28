@@ -19,10 +19,10 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
         if ( ! file_exists( $uploads_dir . 'geonames' ) ) {
             mkdir( $uploads_dir . 'geonames' );
         }
-        if ( ! file_exists( $uploads_dir . "geonames/geonames.tsv.zip" ) ) {
+        if ( file_exists( $uploads_dir . "geonames/geonames.tsv.zip" ) ) {
             unlink( $uploads_dir . "geonames/geonames.tsv.zip" );
         }
-        if ( ! file_exists( $uploads_dir . "geonames/geonames.tsv" ) ) {
+        if ( file_exists( $uploads_dir . "geonames/geonames.tsv" ) ) {
             unlink( $uploads_dir . "geonames/geonames.tsv" );
         }
 
