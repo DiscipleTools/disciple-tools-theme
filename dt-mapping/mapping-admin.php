@@ -1208,15 +1208,19 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             <table class="widefat striped">
                 <thead>
-                <th>Name</th>
-                <th>New Name</th>
-                <th></th>
-                <th></th>
+                    <tr>
+                        <th>Name</th>
+                        <th>New Name</th>
+                        <th></th>
+                        <th></th>
+                        <th>ID</th>
+                    </tr>
                 </thead>
                 <tbody id="list_results"></tbody>
             </table>
 
             <script>
+                let _ = window.lodash
                 window.DRILLDOWNDATA.settings.hide_final_drill_down = false
                 window.DRILLDOWN.get_drill_down('name_select')
                 window.DRILLDOWN.name_select = function (geonameid) {
@@ -1266,10 +1270,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     function build_list(div, map_data) {
                         list_results.empty()
                         jQuery.each(map_data.children, function (i, v) {
-                            list_results.append(`<tr><td id="label-${v.geonameid}">${v.name}</td><td><input type="text" id="input-${v.geonameid}" value=""></td>
-                                    <td id="button-${v.geonameid}"><a class="button" onclick="update( ${v.geonameid}, jQuery('#input-'+${v.geonameid}).val(), 'name' )">Update</a></td>
-                                    <td id="reset-${v.geonameid}"><a class="button" onclick="reset( ${v.geonameid}, 'name' )">Reset</a></td>
-                                    </tr>`)
+                            list_results.append(`<tr>
+                                <td id="label-${_.escape( v.geonameid )}">${_.escape( v.name )}</td>
+                                <td><input type="text" id="input-${_.escape( v.geonameid )}" value=""></td>
+                                <td id="button-${_.escape( v.geonameid )}"><a class="button" onclick="update( ${_.escape( v.geonameid )}, jQuery('#input-'+${_.escape( v.geonameid )}).val(), 'name' )">Update</a></td>
+                                <td id="reset-${_.escape( v.geonameid )}"><a class="button" onclick="reset( ${_.escape( v.geonameid )}, 'name' )">Reset</a></td>
+                                <td>${_.escape( v.geonameid )}</td>
+                            </tr>`)
                         })
                     }
                 }
