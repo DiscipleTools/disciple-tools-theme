@@ -1421,7 +1421,7 @@ class Disciple_Tools_Posts
      * @param object $post
      * @return array
      */
-    public static function filter_wp_post_object_fields( object $post ){
+    public static function filter_wp_post_object_fields( $post ){
         return [
             "ID" => $post->ID,
             "post_type" => $post->post_type,
