@@ -428,7 +428,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
 
             return [
-                'posts' => $prepared,
+                'geonames' => $prepared,
                 'total' => $locations["total"]
             ];
         }

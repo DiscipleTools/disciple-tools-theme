@@ -686,7 +686,7 @@
                   if (typeof typeaheadTotals !== "undefined") {
                     typeaheadTotals.field = data.total
                   }
-                  return data.posts
+                  return data.geonames
                 }
               }
             }
