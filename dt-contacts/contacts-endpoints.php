@@ -34,6 +34,8 @@ class Disciple_Tools_Contacts_Endpoints
     private $context = "dt";
     private $namespace;
     private $public_namespace;
+    private $namespace_v2 = 'dt-posts/v2';
+
 
     /**
      * Disciple_Tools_Contacts_Endpoints constructor.
@@ -48,6 +50,14 @@ class Disciple_Tools_Contacts_Endpoints
      * Add the api routes
      */
     public function add_api_routes() {
+        //setup v2
+        $this->setup_contacts_specific_endpoints( $this->namespace_v2 );
+        //setup v1
+        $this->setup_contacts_specific_endpoints( $this->namespace );
+
+        /**
+         * Deprecated v1 endpoints
+         */
         register_rest_route(
             $this->namespace, '/dt-public/contact/create', [
                 'methods'  => 'POST',
@@ -133,33 +143,17 @@ class Disciple_Tools_Contacts_Endpoints
             ]
         );
         register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/revert/(?P<activity_id>\d+)', [
-                "methods"  => "GET",
-                "callback" => [ $this, 'revert_activity' ],
-            ]
-        );
-
-        register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/accept', [
-                "methods"  => "POST",
-                "callback" => [ $this, 'accept_contact' ],
-            ]
-        );
-
-        register_rest_route(
             $this->namespace, '/contact/(?P<id>\d+)/shared-with', [
                 "methods"  => "GET",
                 "callback" => [ $this, 'shared_with' ],
             ]
         );
-
         register_rest_route(
             $this->namespace, '/contact/(?P<id>\d+)/remove-shared', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'remove_shared' ],
             ]
         );
-
         register_rest_route(
             $this->namespace, '/contact/(?P<id>\d+)/add-shared', [
                 "methods"  => "POST",
@@ -167,40 +161,15 @@ class Disciple_Tools_Contacts_Endpoints
             ]
         );
         register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/following', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_following' ],
+            ]
+        );
+        register_rest_route(
             $this->namespace, '/contact/multi-select-options', [
                 "methods" => "GET",
                 "callback" => [ $this, 'get_multi_select_options' ]
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/contacts/mergedetails', [
-                "methods" => "GET",
-                "callback" => [ $this, 'get_viewable_contacts' ]
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/contact/counts', [
-                "methods" => "GET",
-                "callback" => [ $this, 'get_contact_counts' ]
-            ]
-        );
-
-        register_rest_route(
-            $this->namespace, '/contact/list-sources', [
-                "methods" => "GET",
-                "callback" => [ $this, 'list_sources' ],
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/duplicates', [
-                "methods"  => "GET",
-                "callback" => [ $this, 'get_duplicates_on_contact' ],
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/contact/transfer', [
-                "methods"  => "POST",
-                "callback" => [ $this, 'contact_transfer' ],
             ]
         );
         register_rest_route(
@@ -215,10 +184,51 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'get_settings' ],
             ]
         );
+
+    }
+
+    private function setup_contacts_specific_endpoints( string $namespace ){
         register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/following', [
+            $namespace, '/contacts/mergedetails', [
+                "methods" => "GET",
+                "callback" => [ $this, 'get_viewable_contacts' ]
+            ]
+        );
+        register_rest_route(
+            $namespace, '/contact/counts', [
+                "methods" => "GET",
+                "callback" => [ $this, 'get_contact_counts' ]
+            ]
+        );
+
+        register_rest_route(
+            $namespace, '/contact/list-sources', [
+                "methods" => "GET",
+                "callback" => [ $this, 'list_sources' ],
+            ]
+        );
+        register_rest_route(
+            $namespace, '/contacts/(?P<id>\d+)/duplicates', [
                 "methods"  => "GET",
-                "callback" => [ $this, 'get_following' ],
+                "callback" => [ $this, 'get_duplicates_on_contact' ],
+            ]
+        );
+        register_rest_route(
+            $namespace, '/contact/transfer', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'contact_transfer' ],
+            ]
+        );
+        register_rest_route(
+            $namespace, '/contacts/(?P<id>\d+)/revert/(?P<activity_id>\d+)', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'revert_activity' ],
+            ]
+        );
+        register_rest_route(
+            $namespace, '/contacts/(?P<id>\d+)/accept', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'accept_contact' ],
             ]
         );
     }

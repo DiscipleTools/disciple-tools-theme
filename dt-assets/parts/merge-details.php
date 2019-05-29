@@ -103,7 +103,7 @@
                 }
             });
 
-            window.API.get_duplicates_on_post("contact", contact.ID).done(dups_with_data=> {
+            window.API.get_duplicates_on_post("contacts", contact.ID).done(dups_with_data=> {
                 $("#duplicates-spinner").removeClass("active")
                 if (dupes.length) {
                     $duplicates = $display_fields.find('#duplicates_list');

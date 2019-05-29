@@ -41,7 +41,7 @@ get_header();
             $(".js-create-post-button")
                 .attr("disabled", true)
                 .addClass("loading");
-            APIV2.create_post( '<?php echo esc_html( $dt_post_type ) ?>', {
+            API.create_post( '<?php echo esc_html( $dt_post_type ) ?>', {
                 title: $(".js-create-post input[name=title]").val(),
             }).promise().then(function(data) {
                 window.location = data.permalink;

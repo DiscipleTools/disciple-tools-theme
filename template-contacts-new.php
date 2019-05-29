@@ -88,7 +88,7 @@ get_header();
             status = "active"
         }
 
-        APIV2.create_post( 'contacts', {
+        API.create_post( 'contacts', {
             overall_status: status,
             title: $(".js-create-contact input[name=title]").val(),
             contact_phone: [{value:$(".js-create-contact input[name=phone]").val()}],

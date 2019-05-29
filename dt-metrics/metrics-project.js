@@ -304,7 +304,7 @@ function open_modal_details( id ) {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: dtMetricsProject.root + 'dt/v1/group/'+id,
+        url: dtMetricsProject.root + 'dt-posts/v2/groups/'+id,
         beforeSend: function(xhr) {
             xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
         },

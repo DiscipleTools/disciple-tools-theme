@@ -299,7 +299,42 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
-
+        //Get multiselect values
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/multi-select-values', [
+                [
+                    "methods"  => "GET",
+                    "callback" => [ $this, 'get_multi_select_values' ],
+                    "args" => [
+                        "post_type" => $arg_schemas["post_type"],
+                        "field" => [
+                            "description" => "The field key",
+                            "type" => 'string',
+                            "required" => true,
+                            "validate_callback" => [ $this, "prefix_validate_args" ]
+                        ],
+                        "s" => [
+                            "description" => "Filter values to this query",
+                            "type" => 'string',
+                            "required" => false,
+                            "validate_callback" => [ $this, "prefix_validate_args" ]
+                        ],
+                    ]
+                ]
+            ]
+        );
+        //Get Post Settings
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/settings', [
+                [
+                    "methods"  => "GET",
+                    "callback" => [ $this, 'get_post_settings' ],
+                    "args" => [
+                        "post_type" => $arg_schemas["post_type"],
+                    ]
+                ]
+            ]
+        );
     }
 
     /**
@@ -439,6 +474,18 @@ class Disciple_Tools_Posts_Endpoints {
     public function get_following( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
         return DT_Posts::get_users_following_post( $url_params["post_type"], $url_params["id"] );
+    }
+
+    public function get_multi_select_values( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+        $get_params = $request->get_query_params();
+        $search = isset( $get_params['s'] ) ? $get_params['s'] : '';
+        return DT_Posts::get_multi_select_options( $url_params["post_type"], $get_params["field"], $search );
+    }
+
+    public function get_post_settings( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+        return DT_Posts::get_post_settings( $url_params["post_type"] );
     }
 
 }

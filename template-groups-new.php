@@ -49,7 +49,7 @@ $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_s
         $(".js-create-group-button")
             .attr("disabled", true)
             .addClass("loading");
-        APIV2.create_post( 'groups', {
+        API.create_post( 'groups', {
             title: $(".js-create-group input[name=title]").val(),
             group_type: $(`.js-create-group #group_type`).val()
         })

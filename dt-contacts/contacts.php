@@ -34,7 +34,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         add_action( "dt_contact_updated", [ $this, "check_for_duplicates" ], 10, 2 );
         add_action( "dt_contact_updated", [ $this, "check_seeker_path" ], 10, 4 );
         add_filter( "dt_post_create_fields", [ $this, "create_post_field_hook" ], 10, 2 );
-        add_filter( "dt_post_created", [ $this, "post_created_hook" ], 10, 3 );
+        add_action( "dt_post_created", [ $this, "post_created_hook" ], 10, 3 );
         add_filter( "dt_post_update_fields", [ $this, "update_post_field_hook" ], 10, 3 );
         add_filter( "dt_post_updated", [ $this, "post_updated_hook" ], 10, 4 );
         add_filter( "dt_get_post_fields_filter", [ $this, "dt_get_post_fields_filter" ], 10, 2 );
@@ -164,7 +164,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     //add the required fields to the DT_Post::create_contact() function
-    public function create_post_field_hook( $post_type, $fields ){
+    public function create_post_field_hook( $fields, $post_type ){
         if ( $post_type === "contacts" ) {
             if ( !isset( $fields["seeker_path"] ) ){
                 $fields["seeker_path"] = "none";
@@ -207,6 +207,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     public function post_created_hook( $post_type, $post_id, $initial_fields ){
         if ( $post_type === "contacts" ){
+            do_action( "dt_contact_created", $post_id, $initial_fields );
             $contact = DT_Posts::get_post( 'contacts', $post_id );
             if ( isset( $contact["assigned_to"] )) {
                 if ( $contact["assigned_to"]["id"] ) {

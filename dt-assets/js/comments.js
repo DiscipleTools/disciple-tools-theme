@@ -6,7 +6,7 @@ jQuery(document).ready(function($) {
 
   let postId = window.detailsSettings.post_id
   let postType = window.detailsSettings.post_type
-  let rest_api = window.APIV2
+  let rest_api = window.API
 
   let comments = []
   let activity = [] // not guaranteed to be in any particular order
@@ -452,7 +452,7 @@ jQuery(document).ready(function($) {
     let id = $(this).data('id')
     $("#revert-modal").foundation('open')
     $("#confirm-revert").data("id", id)
-    APIV2.get_single_activity(postType, postId, id).then(a => {
+    API.get_single_activity(postType, postId, id).then(a => {
       let field = a.meta_key
       if (contactsDetailsWpApiSettings){
         field = _.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings[${a.meta_key}].name`)

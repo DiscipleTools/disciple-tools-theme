@@ -2,7 +2,7 @@ jQuery(document).ready(function($) {
   let post_id = detailsSettings.post_id
   let post_type = detailsSettings.post_type
   let post = detailsSettings.post_fields
-  let rest_api = window.APIV2
+  let rest_api = window.API
   // if ( ['contacts', 'groups'].includes(detailsSettings.post_type ) ){
   //   post_type = post_type.substring(0, detailsSettings.post_type.length - 1);
   //   rest_api = window.API
@@ -103,7 +103,7 @@ jQuery(document).ready(function($) {
           })
         }, callback: {
           onCancel: function (node, item) {
-            APIV2.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}})
+            API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}})
               .catch(err => { console.error(err) })
           }
         },
@@ -111,7 +111,7 @@ jQuery(document).ready(function($) {
       },
       callback: {
         onClick: function(node, a, item, event){
-          APIV2.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).catch(err => { console.error(err) })
+          API.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).catch(err => { console.error(err) })
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();

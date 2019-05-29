@@ -255,7 +255,7 @@ $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                         }
                         var id = o.index() === 1 ? '<?php echo esc_html( $dt_current_id ); ?>' : o.index() === 2 ? '<?php echo esc_html( $dt_dupe_id ); ?>' : null;
                         if(id) {
-                            var post = APIV2.get_post('contacts', id);
+                            var post = API.get_post('contacts', id);
                             post.done(function(res) {
                                 if(key !== 'title') {
                                     $.each(res[key], function(idx, val) {
@@ -268,7 +268,7 @@ $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                                 } else {
                                     postData[key] = o.find('input').val();
                                 }
-                                var save = APIv2.update_post( 'contacts', id, postData);
+                                var save = API.update_post( 'contacts', id, postData);
                                 save.done(function(res) {
                                     o.find('input').attr({
                                         type : 'checkbox',

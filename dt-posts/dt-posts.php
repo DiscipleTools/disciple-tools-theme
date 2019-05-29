@@ -9,6 +9,20 @@ class DT_Posts extends Disciple_Tools_Posts {
     }
 
     /**
+     * Get settings on the post type
+     *
+     * @param string $post_type
+     *
+     * @return array|WP_Error
+     */
+    public static function get_post_settings( string $post_type ){
+        if ( !self::can_access( $post_type ) ){
+            return new WP_Error( __FUNCTION__, "No permissions to read " . $post_type, [ 'status' => 403 ] );
+        }
+        return apply_filters( "dt_get_post_type_settings", [], $post_type );
+    }
+
+    /**
      * CRUD
      */
 
@@ -64,7 +78,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         //get extra fields and defaults
-        $fields = apply_filters( "dt_post_create_fields", $post_type, $fields );
+        $fields = apply_filters( "dt_post_create_fields", $fields, $post_type );
 
         $allowed_fields = apply_filters( "dt_post_create_allow_fields", [], $post_type );
         $bad_fields = self::check_for_invalid_post_fields( $post_settings, $fields, $allowed_fields );

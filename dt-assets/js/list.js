@@ -919,7 +919,7 @@
           [field]: {
             display: ["value"],
             ajax: {
-              url: `${wpApiListSettings.root}dt/v1/contact/multi-select-options`,
+              url: `${wpApiListSettings.root}dt-posts/v2/contacts/multi-select-values`,
               data: {
                 s: "{{query}}",
                 field

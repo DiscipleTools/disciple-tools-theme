@@ -33,6 +33,7 @@ class Disciple_Tools_Groups_Endpoints
     private $version = 1;
     private $context = "dt";
     private $namespace;
+    private $namespace_v2 = 'dt-posts/v2';
 
     /**
      * Disciple_Tools_Groups_Endpoints constructor.
@@ -43,6 +44,23 @@ class Disciple_Tools_Groups_Endpoints
     }
 
     public function add_api_routes() {
+        //setup v2
+        register_rest_route(
+            $this->namespace_v2, '/groups/counts', [
+                "methods" => "GET",
+                "callback" => [ $this, 'get_group_default_filter_counts' ],
+            ]
+        );
+        //setup v1
+        register_rest_route(
+            $this->namespace, '/group/counts', [
+                "methods" => "GET",
+                "callback" => [ $this, 'get_group_default_filter_counts' ],
+            ]
+        );
+        /**
+         * Deprecated v1 endpoints
+         */
         register_rest_route(
             $this->namespace, '/groups', [
                 "methods"  => "GET",
@@ -109,37 +127,22 @@ class Disciple_Tools_Groups_Endpoints
                 "callback" => [ $this, 'shared_with' ],
             ]
         );
-
         register_rest_route(
             $this->namespace, '/group/(?P<id>\d+)/remove-shared', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'remove_shared' ],
             ]
         );
-
         register_rest_route(
             $this->namespace, '/group/(?P<id>\d+)/add-shared', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'add_shared' ],
             ]
         );
-
         register_rest_route(
             $this->namespace, '/group/create', [
                 "methods" => "POST",
                 "callback" => [ $this, 'create_group' ],
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/group/counts', [
-                "methods" => "GET",
-                "callback" => [ $this, 'get_group_default_filter_counts' ],
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/groups/settings', [
-                "methods"  => "GET",
-                "callback" => [ $this, 'get_settings' ],
             ]
         );
         register_rest_route(
@@ -148,6 +151,14 @@ class Disciple_Tools_Groups_Endpoints
                 "callback" => [ $this, 'get_following' ],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/groups/settings', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_settings' ],
+            ]
+        );
+
+
     }
 
     /**
