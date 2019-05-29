@@ -71,6 +71,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         public function scripts() {
             ?>
             <script>
+                let _ = window.lodash
                 function send_update(data) {
                     let options = {
                         type: 'POST',
@@ -96,7 +97,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         let update = send_update({key: key, value: value, geonameid: geonameid})
 
                         update.done(function (data) {
-                            console.log(data)
                             if (data) {
                                 jQuery('#label-' + geonameid).html(`${value}`)
                                 jQuery('#input-' + geonameid).val('')
@@ -112,7 +112,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     let update = send_update({key: key, reset: true, geonameid: geonameid})
 
                     update.done(function (data) {
-                        console.log(data)
                         if (data.status === 'OK') {
                             jQuery('#label-' + geonameid).html(`${data.value}`)
                             jQuery('#input-' + geonameid).val('')
@@ -1128,6 +1127,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             </table>
 
             <script>
+                let _ = window.lodash
                 window.DRILLDOWNDATA.settings.hide_final_drill_down = false
                 window.DRILLDOWN.get_drill_down('population_edit')
                 window.DRILLDOWN.population_edit = function (geonameid) {
@@ -1178,12 +1178,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         list_results.empty()
                         jQuery.each( map_data.children, function (i, v) {
                             list_results.append(`<tr>
-                                        <td>${v.name}</td>
-                                        <td id="label-${v.geonameid}">${v.population_formatted}</td>
-                                        <td><input type="number" id="input-${v.geonameid}" value=""></td>
-                                        <td id="button-${v.geonameid}"><a class="button" onclick="update( ${v.geonameid}, jQuery('#input-'+${v.geonameid}).val(), 'population' )">Update</a></td>
-                                        <td id="reset-${v.geonameid}"><a class="button" onclick="reset( ${v.geonameid}, 'population' )">Reset</a></td>
-                                        </tr>`)
+                                <td>${_.escape( v.name )}</td>
+                                <td id="label-${_.escape( v.geonameid )}">${_.escape( v.population_formatted )}</td>
+                                <td><input type="number" id="input-${_.escape( v.geonameid )}" value=""></td>
+                                <td id="button-${_.escape( v.geonameid )}"><a class="button" onclick="update( ${_.escape( v.geonameid )}, jQuery('#input-'+${_.escape( v.geonameid )}).val(), 'population' )">Update</a></td>
+                                <td id="reset-${_.escape( v.geonameid )}"><a class="button" onclick="reset( ${_.escape( v.geonameid )}, 'population' )">Reset</a></td>
+                            </tr>`)
                         })
                     }
                 }
@@ -1312,6 +1312,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             </table>
 
             <script>
+                let _ = window.lodash
                 jQuery(document).on('click', '.open_next_drilldown', function(){
                     let gnid = jQuery(this).data('geonameid')
                     DRILLDOWN.get_drill_down( 'sublocation', gnid  );
@@ -1377,17 +1378,17 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             jQuery.each(map_data.children, function (gnid, data) {
                                 other_list.append(`
                                     <tr><td>
-                                        <a class="open_next_drilldown" data-parent="${data.parent_id}" data-geonameid="${data.geonameid}" style="cursor: pointer;">${data.name}</a>
+                                        <a class="open_next_drilldown" data-parent="${_.escape( data.parent_id )}" data-geonameid="${_.escape( data.geonameid )}" style="cursor: pointer;">${_.escape( data.name )}</a>
                                     </td><td></td></tr>`)
                             })
                             current_subs.show()
                         }
 
                         list_results.empty().append(`
-                                <tr><td colspan="2">Add New Location under ${map_data.self.name}</td></tr>
+                                <tr><td colspan="2">Add New Location under ${_.escape( map_data.self.name )}</td></tr>
                                 <tr><td style="width:150px;">Name</td><td><input id="new_name" value="" /></td></tr>
                                 <tr><td>Population</td><td><input id="new_population" value="" /></td></tr>
-                                <tr><td colspan="2"><button type="button" id="save-button" class="button" onclick="update_location( ${map_data.self.geonameid} )" >Save</a></td></tr>`)
+                                <tr><td colspan="2"><button type="button" id="save-button" class="button" onclick="update_location( ${_.escape( map_data.self.geonameid )} )" >Save</a></td></tr>`)
                     }
                 }
 
@@ -1409,7 +1410,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         console.log(data)
                         if (data) {
                             jQuery('#other_list').append(`
-                                <tr><td><a class="open_next_drilldown" data-parent="${geonameid}" data-geonameid="${data.geonameid}" style="cursor: pointer;">${_.escape(data.name)}</a></td></tr>`)
+                                <tr><td><a class="open_next_drilldown" data-parent="${_.escape( geonameid )}" data-geonameid="${_.escape( data.geonameid )}" style="cursor: pointer;">${_.escape(data.name)}</a></td></tr>`)
                             jQuery('#new_name').val('')
                             jQuery('#new_population').val('')
                             jQuery('#current_subs').show()
