@@ -141,11 +141,10 @@ get_header();
                     },
                     callback: {
                         done: function (data) {
-                            console.log("hu");
                             if (typeof typeaheadTotals !== "undefined") {
                                 typeaheadTotals.field = data.total
                             }
-                            return data.posts
+                            return data.geonames
                         }
                     }
                 }
