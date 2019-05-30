@@ -337,7 +337,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return array| WP_Error, On success: the contact, else: the error message
      */
     public static function get_contact( int $contact_id, $check_permissions = true, $load_cache = false ) {
-        return DT_Posts::get_post( 'contacts', $contact_id, $load_cache );
+        return DT_Posts::get_post( 'contacts', $contact_id, $load_cache, $check_permissions );
     }
     public function dt_get_post_fields_filter( $fields, $post_type ) {
         if ( $post_type === 'contacts' ){
