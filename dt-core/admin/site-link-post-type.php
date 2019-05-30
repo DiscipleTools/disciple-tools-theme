@@ -438,7 +438,10 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     break;
 
                 case 'type':
-                    echo esc_html( ucwords( str_replace( '_', ' ', get_post_meta( $post->ID, 'type', true ) ) ) );
+                    $link_type = get_post_meta( $post->ID, 'type', true );
+                    $options = apply_filters( 'site_link_type', [] );
+                    $link_type_name = isset( $options[ $link_type ] ) ? $options[ $link_type ] : ucwords( str_replace( '_', ' ', $link_type ) );
+                    echo esc_html( $link_type_name );
                     break;
 
                 default:
@@ -1281,7 +1284,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             }
             if ( 'create_update_contacts' === $args['connection_type'] ) {
                 $args['capabilities'][] = 'create_contacts';
-                $args['capabilities'][] = 'update_contacts';
+                $args['capabilities'][] = 'update_any_contacts';
             }
 
             return $args;
