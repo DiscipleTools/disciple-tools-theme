@@ -208,7 +208,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public function post_created_hook( $post_type, $post_id, $initial_fields ){
         if ( $post_type === "contacts" ){
             do_action( "dt_contact_created", $post_id, $initial_fields );
-            $contact = DT_Posts::get_post( 'contacts', $post_id );
+            $contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
             if ( isset( $contact["assigned_to"] )) {
                 if ( $contact["assigned_to"]["id"] ) {
                     DT_Posts::add_shared( "contacts", $post_id, $contact["assigned_to"]["id"], null, false, false, false );
@@ -250,7 +250,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                      strpos( $fields["assigned_to"], "user" ) === false ){
                     $fields["assigned_to"] = "user-" . $fields["assigned_to"];
                 }
-                $existing_contact = DT_Posts::get_post( 'contacts', $post_id );
+                $existing_contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
                 if ( !isset( $existing_contact["assigned_to"] ) || $fields["assigned_to"] !== $existing_contact["assigned_to"]["assigned-to"] ){
                     if ( current_user_can( "assign_any_contacts" ) ) {
                         $fields["overall_status"] = 'assigned';
@@ -279,7 +279,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     public function post_updated_hook( $post_type, $post_id, $initial_fields, $previous_values ){
         if ( $post_type === 'contacts' ){
-            $contact = DT_Posts::get_post( 'contacts', $post_id );
+            $contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
             do_action( "dt_contact_updated", $post_id, $initial_fields, $contact, $previous_values );
         }
     }

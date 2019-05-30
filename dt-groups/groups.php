@@ -136,7 +136,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     DT_Posts::add_shared( "groups", $post_id, $user_id, null, false, false, false );
                 }
             }
-            $existing_group = DT_Posts::get_post( 'groups', $post_id );
+            $existing_group = DT_Posts::get_post( 'groups', $post_id, true, false );
             if ( isset( $fields["group_type"] ) && empty( $fields["church_start_date"] ) && empty( $existing_group["church_start_date"] ) && $fields["group_type"] === 'church' ){
                 $fields["church_start_date"] = time();
             }
@@ -149,7 +149,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
     public function post_updated_hook( $post_type, $post_id, $initial_fields ){
         if ( $post_type === 'groups' ){
-            $group = DT_Posts::get_post( 'groups', $post_id );
+            $group = DT_Posts::get_post( 'groups', $post_id, true, false );
             do_action( "dt_group_updated", array_keys( $initial_fields ), $group );
         }
     }
@@ -313,7 +313,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     public function post_created_hook( $post_type, $post_id, $initial_fields ){
         if ( $post_type === "groups" ){
             do_action( "dt_group_created", $post_id, $initial_fields );
-            $group = DT_Posts::get_post( 'groups', $post_id );
+            $group = DT_Posts::get_post( 'groups', $post_id, true, false );
             if ( isset( $group["assigned_to"] )) {
                 if ( $group["assigned_to"]["id"] ) {
                     DT_Posts::add_shared( "groups", $post_id, $group["assigned_to"]["id"], null, false, false, false );
