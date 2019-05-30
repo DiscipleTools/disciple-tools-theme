@@ -661,7 +661,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <!-- Main Column -->
                             <table class="widefat striped">
                                 <thead>
-                                <th>Mapping Data Credits</th>
+                                    <tr><th>Mapping Data Credits</th></tr>
                                 </thead>
                                 <tbody>
                                     <tr>
@@ -1018,7 +1018,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <?php wp_nonce_field( 'migration_status' . get_current_user_id() ); ?>
                 <table class="widefat striped">
                     <thead>
-                    <th>Migration Status</th>
+                    <tr><th>Migration Status</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -1078,7 +1078,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <form method="post">
                 <table class="widefat striped">
                     <thead>
-                    <th>Groups Per Population</th>
+                    <tr><th>Groups Per Population</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -1105,7 +1105,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             ?>
             <table class="widefat striped">
                 <thead>
-                <th>Select Population List to Edit</th>
+                    <tr><th>Select Population List to Edit</th></tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -1116,18 +1116,19 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             <table class="widefat striped">
                 <thead>
-                <th>Name</th>
-                <th>Population</th>
-                <th>New Population (no commas)</th>
-                <th></th>
-                <th></th>
+                    <tr>
+                        <th>Name</th>
+                        <th>Population</th>
+                        <th>New Population (no commas)</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
                 </thead>
                 <tbody id="list_results">
                 </tbody>
             </table>
 
             <script>
-                let _ = window.lodash
                 window.DRILLDOWNDATA.settings.hide_final_drill_down = false
                 window.DRILLDOWN.get_drill_down('population_edit')
                 window.DRILLDOWN.population_edit = function (geonameid) {
@@ -1197,7 +1198,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             ?>
             <table class="widefat striped">
                 <thead>
-                <th>Edit Default Location Names</th>
+                    <tr><th>Edit Default Location Names</th></tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -1220,7 +1221,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             </table>
 
             <script>
-                let _ = window.lodash
                 window.DRILLDOWNDATA.settings.hide_final_drill_down = false
                 window.DRILLDOWN.get_drill_down('name_select')
                 window.DRILLDOWN.name_select = function (geonameid) {
@@ -1290,7 +1290,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             ?>
             <table class="widefat striped">
                 <thead>
-                <th>Select the Location</th>
+                <tr><th>Select the Location</th></tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -1300,8 +1300,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             </table>
             <table class="widefat striped" style="display:none;" id="current_subs">
                 <thead>
+                <tr>
                 <th>Current Sub-Locations (use these if possible):</th>
                 <th style="width:20px;"></th>
+                </tr>
                 </thead>
                 <tbody id="other_list">
                 </tbody>
@@ -1312,7 +1314,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             </table>
 
             <script>
-                let _ = window.lodash
                 jQuery(document).on('click', '.open_next_drilldown', function(){
                     let gnid = jQuery(this).data('geonameid')
                     DRILLDOWN.get_drill_down( 'sublocation', gnid  );
@@ -1498,7 +1499,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <!-- Box -->
             <table class="widefat striped">
                 <thead>
-                <th>Starting Map Level</th>
+                <tr><th>Starting Map Level</th></tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -1550,7 +1551,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <!-- Box -->
                 <table class="widefat striped">
                     <thead>
-                    <th colspan="2">Select Country or Countries of Focus</th>
+                    <tr><th colspan="2">Select Country or Countries of Focus</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -1628,7 +1629,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 ?>
                 <table class="widefat striped">
                     <thead>
-                    <th colspan="2">Select Country</th>
+                    <tr><th colspan="2">Select Country</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -1664,6 +1665,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <!-- Box -->
                     <table class="widefat striped">
                         <thead>
+                        <tr>
                         <th colspan="2">
                             <strong>Select States for <?php echo esc_html( $parent['name'] ) ?? '?' ?></strong>
                             <span style="float: right;">
@@ -1672,6 +1674,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 <button type="submit" class="button">Save</button>
                             </span>
                         </th>
+                        </tr>
                         </thead>
                         <tbody>
                         <tr>
@@ -1715,7 +1718,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <!-- Box -->
             <table class="widefat striped">
                 <thead>
-                <th>Current Selection</th>
+                <tr><th>Current Selection</th></tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -1736,7 +1739,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <!-- Box -->
             <table class="widefat striped">
                 <thead>
-                <th>Instructions</th>
+                <tr><th>Instructions</th></tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -1920,7 +1923,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <form method="post">
                 <table class="widefat striped">
                     <thead>
-                    <th>Geocoding Provider Setup</th>
+                    <tr><th>Geocoding Provider Setup</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -1990,7 +1993,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <?php wp_nonce_field( 'rebuild_geonames' . get_current_user_id() ); ?>
                 <table class="widefat striped">
                     <thead>
-                    <th>Clean and Reinstall Mapping Resources (does not effect Contacts or Group data.)</th>
+                    <tr><th>Clean and Reinstall Mapping Resources (does not effect Contacts or Group data.)</th></tr>
                     </thead>
                     <tbody>
 
