@@ -44,7 +44,7 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
         curl_setopt( $ch_start, CURLOPT_FOLLOWLOCATION, true );
         curl_setopt( $ch_start, CURLOPT_AUTOREFERER, true );
         curl_setopt( $ch_start, CURLOPT_BINARYTRANSFER, true );
-        curl_setopt( $ch_start, CURLOPT_TIMEOUT, 10 );
+        curl_setopt( $ch_start, CURLOPT_TIMEOUT, 30 );
         curl_setopt( $ch_start, CURLOPT_SSL_VERIFYHOST, 0 );
         curl_setopt( $ch_start, CURLOPT_SSL_VERIFYPEER, 0 );
         curl_setopt( $ch_start, CURLOPT_FILE, $zip_resource );
