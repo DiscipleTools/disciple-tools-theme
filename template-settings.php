@@ -18,6 +18,7 @@ $dt_user_contact_id = dt_get_associated_user_id( $dt_user->ID, 'user' );
 $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the site settings in the config area with the fields available in the user meta table.
 $dt_site_notification_defaults = dt_get_site_notification_defaults(); // Array of site default settings
 $dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' )
+
 ?>
 
 <?php get_header(); ?>
@@ -34,6 +35,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 
                     <ul class="menu vertical expanded" data-smooth-scroll data-offset="100">
                         <li><a href="#profile"><?php esc_html_e( 'Profile', 'disciple_tools' )?></a></li>
+                        <li><a href="#locations"><?php esc_html_e( 'Locations', 'disciple_tools' )?></a></li>
                         <li><a href="#notifications"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></a></li>
                         <li><a href="#availability"><?php esc_html_e( 'Availability', 'disciple_tools' )?></a></li>
                     </ul>
@@ -153,27 +155,14 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                             <div class="small-12 medium-4 cell" style="border-left: 1px solid lightgrey; padding-left: 1em;">
 
                                 <strong><?php esc_html_e( 'Language', 'disciple_tools' )?></strong>
-                                <br>
+                                <p>
                                 <?php
                                 if ( !empty( $dt_user->locale ) ){
                                     echo esc_html( $dt_user->locale );
                                 } else {
                                     echo esc_html__( 'English', 'disciple_tools' );
                                 }
-                                ?>
-
-                                <p><strong><?php esc_html_e( 'Locations', 'disciple_tools' )?></strong></p>
-                                <?php
-                                $dt_user_locations_list = dt_get_user_locations_list( $dt_user->ID, true );
-                                if ( $dt_user_locations_list ) {
-                                    echo '<ul>';
-                                    foreach ( $dt_user_locations_list as $dt_locations_list ) {
-                                        echo '<li>' . esc_html( $dt_locations_list['post_title'] ) . '</li>';
-                                    }
-                                    echo '</ul>';
-                                }
-                                ?>
-
+                                ?></p>
 
                                 <strong><?php esc_html_e( 'Biography', 'disciple_tools' )?></strong>
                                 <p><?php echo esc_html( $dt_user->user_description ); ?></p>
@@ -182,7 +171,17 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                         </div>
 
                     </div> <!-- End Profile -->
+                </div>
 
+                <div class="small-12 cell">
+                    <div class="bordered-box cell" id="locations" data-magellan-target="locations">
+                        <span class="section-header"><?php esc_html_e( 'Locations', 'disciple_tools' )?></span>
+                        <hr size="1" style="max-width:100%"/>
+                        <!-- Geocoding -->
+
+                        <div id="manage_locations_section"></div>
+
+                    </div>
                 </div>
 
                 <!-- Begin Notification-->
@@ -479,13 +478,28 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                             <td><label for="description"><?php esc_html_e( 'Language', 'disciple_tools' )?></label></td>
                                             <td dir="auto">
                                                 <?php
+                                                require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
+                                                $translations = wp_get_available_translations();
+                                                $translations["ar_MA"] = [
+                                                    "language" => "ar_MA",
+                                                    "native_name" => "العربية (المغرب)",
+                                                    "english_name" => "Arabic (Morocco)",
+                                                    "iso" => [ "ar" ]
+                                                ];
+                                                $translations["sw"] = [
+                                                    "language" => "sw",
+                                                    "native_name" => "Kiswahili",
+                                                    "english_name" => "Swahili",
+                                                    "iso" => [ "sw" ]
+                                                ];
                                                 wp_dropdown_languages( array(
                                                     'name'                        => 'locale',
                                                     'id'                          => 'locale',
                                                     'selected'                    => esc_html( $dt_user->locale ),
                                                     'languages'                   => $dt_available_languages,
                                                     'show_available_translations' => false,
-                                                    'show_option_site_default'    => false
+                                                    'show_option_site_default'    => false,
+                                                    'translations'                => $translations
                                                 ) );
                                                 ?>
                                             </td>

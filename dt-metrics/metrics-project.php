@@ -44,7 +44,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                     <li><a href="'. site_url( '/metrics/project/' ) .'#group_tree" onclick="project_group_tree()">'. esc_html__( 'Group Tree', 'disciple_tools' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#baptism_tree" onclick="project_baptism_tree()">'. esc_html__( 'Baptism Tree', 'disciple_tools' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#coaching_tree" onclick="project_coaching_tree()">'. esc_html__( 'Coaching Tree', 'disciple_tools' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_locations" onclick="project_locations()">'. esc_html__( 'Locations' ) .'</a></li>
                 </ul>
             </li>
             ';
@@ -68,26 +67,15 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
-                'map_key' => dt_get_option( 'map_key' ),
                 'data' => $this->data(),
             ]
         );
     }
 
     public function data() {
-
-        /**
-         * Apply Filters before final enqueue. This provides opportunity for complete override or modification of chart.
-         */
-
         return [
             'translations' => [
                 'title_overview' => __( 'Project Overview', 'disciple_tools' ),
-                'title_timeline' => __( 'Timeline Activity', 'disciple_tools' ),
-                'title_critical_path' => __( 'Critical Path', 'disciple_tools' ),
-                'title_outreach' => __( 'Outreach', 'disciple_tools' ),
-                'title_follow_up' => __( 'Follow Up', 'disciple_tools' ),
-                'title_training' => __( 'Training', 'disciple_tools' ),
                 'title_contacts' => __( 'Contacts', 'disciple_tools' ),
                 'title_groups' => __( 'Groups', 'disciple_tools' ),
                 'title_multiplication' => __( 'Multiplication', 'disciple_tools' ),
@@ -108,10 +96,11 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'title_locations_tree' => __( 'Location Tree', 'disciple_tools' ),
                 'title_teams' => __( 'Teams', 'disciple_tools' ),
                 'label_number_of_contacts' => strtolower( __( 'number of contacts', 'disciple_tools' ) ),
-                'label_follow_up_progress' => __( 'Follow-up progress of current active contacts', 'disciple_tools' ),
-                'label_group_needs_training' => __( 'Active Group and Church Health Metrics', 'disciple_tools' ),
+                'label_follow_up_progress' => __( 'Follow-up of my active contacts', 'disciple_tools' ),
+                'label_group_needs_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
                 'label_groups' => strtolower( __( 'groups', 'disciple_tools' ) ),
                 'label_generations' => strtolower( __( 'generations', 'disciple_tools' ) ),
+                'label_generation' => strtolower( __( 'Generation', 'disciple_tools' ) ),
                 'label_groups_by_type' => strtolower( __( 'groups by type', 'disciple_tools' ) ),
                 'label_group_types' => __( 'Group Types', 'disciple_tools' ),
                 'label_total_locations' => __( 'Total Locations', 'disciple_tools' ),
@@ -120,6 +109,9 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'label_countries' => __( 'Countries', 'disciple_tools' ),
                 'label_states' => __( 'States', 'disciple_tools' ),
                 'label_counties' => __( 'Counties', 'disciple_tools' ),
+                'label_pre_group' => __( 'Pre-Group', 'disciple_tools' ),
+                'label_group' => __( 'Group', 'disciple_tools' ),
+                'label_church' => __( 'Church', 'disciple_tools' ),
             ],
             'hero_stats' => self::chart_project_hero_stats(),
             'contacts_progress' => self::chart_contacts_progress( 'project' ),
@@ -129,7 +121,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             'group_generation_tree' => $this->get_group_generations_tree(),
             'baptism_generation_tree' => $this->get_baptism_generations_tree(),
             'coaching_generation_tree' => $this->get_coaching_generations_tree(),
-            'location_hero_stats' => Disciple_Tools_Queries::instance()->tree( 'locations_hero_stats' ),
 
         ];
     }
@@ -168,9 +159,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 case 'coaching':
                     return $this->get_coaching_generations_tree();
                     break;
-                case 'location':
-                    return $this->get_locations_tree();
-                    break;
                 default:
                     return new WP_Error( __METHOD__, "No matching type set.", [ 'status' => 400 ] );
                     break;
@@ -205,15 +193,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
         }
         $menu_data = $this->prepare_menu_array( $query );
         return $this->build_menu( 0, $menu_data, -1 );
-    }
-
-    public function get_locations_tree() {
-        $query = dt_queries()->tree( 'locations' );
-        if ( empty( $query ) ) {
-            return $this->_no_results();
-        }
-        $menu_data = $this->prepare_menu_array( $query );
-        return $this->build_location_tree( 0, $menu_data, 0 );
     }
 
     public function _no_results() {
@@ -266,9 +245,9 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             $html = '<ul class="ul-gen-'.$gen.'">';
             foreach ($menu_data['parents'][$parent_id] as $item_id)
             {
-                $html .= '<li class="gen-node li-gen-'.$gen.' '.$first_section.'">';
-                $html .= '('.$gen.') ';
-                $html .= '<strong><a href="'. site_url( "/groups/" ).$item_id.'">'. $menu_data['items'][$item_id]['name'] . '</a></strong><br>';
+                $html .= '<li class="gen-node li-gen-' . $gen . ' ' . $first_section . '">';
+                $html .= '(' . $gen . ') ';
+                $html .= '<strong><a href="' . site_url( "/groups/" ) . esc_html( $item_id ) . '">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></strong><br>';
 
                 // find childitems recursively
                 $html .= $this->build_menu( $item_id, $menu_data, $gen );
@@ -295,9 +274,9 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             $gen++;
             foreach ($menu_data['parents'][$parent_id] as $item_id)
             {
-                $html .= '<li class="gen-node li-gen-'.$gen.' '.$first_section.'">';
-                $html .= '<span class="'.$menu_data['items'][$item_id]['group_status'].' '.$menu_data['items'][$item_id]['group_type'].'">('.$gen.') ';
-                $html .= '<a onclick="open_modal_details('.$item_id.');">'. $menu_data['items'][$item_id]['name'] . '</a></span>';
+                $html .= '<li class="gen-node li-gen-' . $gen . ' ' . $first_section . '">';
+                $html .= '<span class="' . esc_html( $menu_data['items'][ $item_id ]['group_status'] ) . ' ' . esc_html( $menu_data['items'][ $item_id ]['group_type'] ) . '">(' . $gen . ') ';
+                $html .= '<a onclick="open_modal_details(' . esc_html( $item_id ) . ');">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></span>';
 
                 $html .= $this->build_group_tree( $item_id, $menu_data, $gen );
 
@@ -309,30 +288,4 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
         return $html;
     }
 
-    public function build_location_tree( $parent_id, $menu_data, $gen) {
-        $html = '';
-
-        if (isset( $menu_data['parents'][$parent_id] ))
-        {
-            $first_section = '';
-            if ( $gen === 0 ) {
-                $first_section = 'first-section';
-            }
-
-            $html = '<ul class="ul-gen-'.$gen.'">';
-            $gen++;
-            foreach ($menu_data['parents'][$parent_id] as $item_id)
-            {
-                $html .= '<li class="gen-node li-gen-'.$gen.' '.$first_section.'">';
-                $html .= '<a onclick="open_location_modal_details('.$item_id.');">'. $menu_data['items'][$item_id]['name'] . '</a>';
-
-                $html .= $this->build_location_tree( $item_id, $menu_data, $gen );
-
-                $html .= '</li>';
-            }
-            $html .= '</ul>';
-
-        }
-        return $html;
-    }
 }

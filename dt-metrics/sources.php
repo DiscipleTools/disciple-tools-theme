@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /** This class was built following the example of one-page-chart-template.php */
 
 
-class Disciple_Cools_Metrics_Chart_Sources extends Disciple_Tools_Metrics_Hooks_Base {
+class Disciple_Tools_Metrics_Chart_Sources extends Disciple_Tools_Metrics_Hooks_Base {
 
     public $title = 'Sources';
     public $slug = 'sources'; // lowercase
@@ -68,9 +68,6 @@ class Disciple_Cools_Metrics_Chart_Sources extends Disciple_Tools_Metrics_Hooks_
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
                 'spinner' => '<img src="' .trailingslashit( plugin_dir_url( __DIR__ ) ) . 'ajax-loader.gif" style="height:1em;" />',
-                'translations' => [
-                    "title" => $this->title,
-                ],
                 'sources' => Disciple_Tools_Contacts::list_sources(),
                 'source_names' => $contacts_custom_field_settings['sources']['default'],
                 'overall_status_settings' => $overall_status_settings,

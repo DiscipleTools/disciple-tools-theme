@@ -14,7 +14,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
     Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
     $following = Disciple_Tools_Posts::get_users_following_post( "groups", get_the_ID() );
-    $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
+    $group = Disciple_Tools_Groups::get_group( get_the_ID(), true, true );
     $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
     $current_user_id = get_current_user_id();
     get_header();?>
@@ -25,7 +25,8 @@ if ( ! current_user_can( 'access_groups' ) ) {
         true,
         true,
         isset( $group["requires_update"] ) && $group["requires_update"] === true,
-        in_array( $current_user_id, $following )
+        in_array( $current_user_id, $following ),
+        isset( $group["assigned_to"]["id"] ) ? $group["assigned_to"]["id"] == $current_user_id : false
     ); ?>
 
 <div id="errors"> </div>
@@ -39,16 +40,15 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
         <main id="main" class="large-7 medium-12 small-12 cell" role="main" style="padding:0">
             <div class="cell grid-y grid-margin-y" style="display: block">
-                <?php
-                //    <!-- Requires update block -->
-                if ( isset( $group['requires_update'] ) && $group['requires_update'] === true ) { ?>
-                    <section class="cell small-12 update-needed-notification">
-                        <div class="bordered-box detail-notification-box" style="background-color:#F43636">
-                            <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This group needs an update', 'disciple_tools' ) ?>.</h4>
-                            <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?>.</p>
-                        </div>
-                    </section>
-                <?php } ?>
+                
+                <!-- Requires update block -->
+                <section class="cell small-12 update-needed-notification"
+                         style="display: <?php echo esc_html( ( isset( $group['requires_update'] ) && $group['requires_update'] === true ) ? "block" : "none" ) ?> ">
+                    <div class="bordered-box detail-notification-box" style="background-color:#F43636">
+                        <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This group needs an update', 'disciple_tools' ) ?>.</h4>
+                        <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?>.</p>
+                    </div>
+                </section>
                 <section id="contact-details" class="cell small-12 grid-margin-y">
                     <div class="cell">
                         <?php get_template_part( 'dt-assets/parts/group', 'details' ); ?>

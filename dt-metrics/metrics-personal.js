@@ -56,7 +56,6 @@ function my_stats() {
             <hr>
                 <div class="grid-x">
                     <div class="cell medium-6 center">
-                        <span class="section-subheader">${ translations.title_group_types }</span>
                         <div id="group_types" style="height: 400px;"></div>
                     </div>
                     <div class="cell medium-6">
@@ -78,127 +77,140 @@ function my_stats() {
     // jQuery('#fully_practicing').html( numberWithCommas( hero.fully_practicing ) )
     jQuery('#teams').html( numberWithCommas( hero.teams ) )
 
-    // build charts
-    google.charts.load('current', {'packages':['corechart', 'bar']});
 
-    google.charts.setOnLoadCallback(drawMyContactsProgress);
-    google.charts.setOnLoadCallback(drawMyGroupHealth);
-    google.charts.setOnLoadCallback(drawGroupTypes);
-    google.charts.setOnLoadCallback(drawGroupGenerations);
+
+    // build charts
+
+    drawMyContactsProgress()
+    drawMyGroupHealth();
+    drawGroupTypes();
+    drawGroupGenerations();
 
     function drawMyContactsProgress() {
+      let chart = am4core.create("my_contacts_progress", am4charts.XYChart)
+      let title = chart.titles.create()
+      title.text = `[bold]${ translations.label_my_follow_up_progress }[/]`
+      chart.data = sourceData.contacts_progress.reverse()
 
-        let data = google.visualization.arrayToDataTable( sourceData.contacts_progress );
+      let categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+      categoryAxis.dataFields.category = "label";
+      categoryAxis.renderer.grid.template.location = 0;
+      categoryAxis.renderer.minGridDistance = 30;
 
-        let options = {
-            bars: 'horizontal',
-            chartArea: {
-                left: '20%',
-                top: '7%',
-                width: "75%",
-                height: "85%" },
-            hAxis: {
-                title: translations.label_number_of_contacts,
-            },
-            title: translations.label_my_follow_up_progress,
-            legend: {position: "none"},
-        };
+      let valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+      valueAxis.title.text = "Number of contacts"
 
-        let chart = new google.visualization.BarChart(document.getElementById('my_contacts_progress'));
-        chart.draw(data, options);
+      let series = chart.series.push(new am4charts.ColumnSeries());
+      series.dataFields.valueX = "value";
+      series.dataFields.categoryY = "label";
+      series.columns.template.tooltipText = "Total: [bold]{valueX}[/]";
+
+      // field value label
+      let valueLabel = series.bullets.push(new am4charts.LabelBullet());
+      valueLabel.label.text = "{valueX}";
+      valueLabel.label.horizontalCenter = "left";
+      valueLabel.label.dx = 10;
+      valueLabel.label.hideOversized = false;
+      valueLabel.label.truncate = false;
+
     }
 
     function drawMyGroupHealth() {
-        let data = google.visualization.arrayToDataTable( sourceData.group_health );
+      let chart = am4core.create("my_groups_health", am4charts.XYChart);
+      chart.data = sourceData.group_health
+      let title = chart.titles.create()
+      title.text = `[bold]${ translations.label_group_needing_training }[/]`
+      let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+      categoryAxis.dataFields.category = "label";
+      categoryAxis.renderer.grid.template.location = 0;
 
-        let options = {
-            chartArea: {
-                left: '10%',
-                top: '10%',
-                width: "85%",
-                height: "75%" },
-            vAxis: {
-                format: 'decimal',
-            },
-            hAxis: {
-                format: 'decimal',
-            },
-            title: translations.label_group_needing_training,
-          legend: {position: "bottom"},
-          isStacked: true
-        };
+      let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+      valueAxis.min = 0;
+      valueAxis.max = 100;
+      valueAxis.strictMinMax = true;
+      valueAxis.calculateTotals = true;
+      valueAxis.renderer.minWidth = 50;
+      valueAxis.renderer.labels.template.adapter.add("text", function(text) {
+        return text + "%";
+      });
 
-        let chart = new google.visualization.ColumnChart(document.getElementById('my_groups_health'));
+      let series1 = chart.series.push(new am4charts.ColumnSeries());
+      series1.columns.template.width = am4core.percent(80);
+      series1.columns.template.tooltipText = "{name}: {valueY}";
+      series1.name = "Practicing";
+      series1.dataFields.categoryX = "label";
+      series1.dataFields.valueY = "practicing";
+      series1.dataFields.valueYShow = "totalPercent";
+      series1.dataItems.template.locations.categoryX = 0.5;
+      series1.stacked = true;
+      series1.tooltip.pointerOrientation = "vertical";
+      
+      let series2 = chart.series.push(new am4charts.ColumnSeries());
+      series2.stroke = am4core.color("#da7070"); // red
+      series2.fill = am4core.color("#da7070"); // red
+      series2.columns.template.width = am4core.percent(80);
+      series2.columns.template.tooltipText =
+        "{name}: {valueY}";
+      series2.name = "Not Practicing";
+      series2.dataFields.categoryX = "label";
+      series2.dataFields.valueY = "remaining";
+      series2.dataFields.valueYShow = "totalPercent";
+      series2.dataItems.template.locations.categoryX = 0.5;
+      series2.stacked = true;
+      series2.tooltip.pointerOrientation = "vertical";
+      chart.legend = new am4charts.Legend();
 
-        function selectHandler() {
-            let selectedItem = chart.getSelection()[0];
-            if (selectedItem) {
-                let topping = data.getValue(selectedItem.row, 0);
-                alert('You selected ' + topping);
-            }
-        }
-
-        google.visualization.events.addListener(chart, 'select', selectHandler);
-
-        chart.draw(data, options);
     }
 
     function drawGroupTypes() {
-        let data = google.visualization.arrayToDataTable( sourceData.group_types );
+      let chart = am4core.create("group_types", am4charts.PieChart);
+      let title = chart.titles.create()
+      title.text = `[bold]${ translations.title_group_types }[/]`
+      chart.data = sourceData.group_types
+      let pieSeries = chart.series.push(new am4charts.PieSeries());
+      pieSeries.dataFields.value = "count";
+      pieSeries.dataFields.category = "label";
 
-        let options = {
-            legend: 'bottom',
-            pieSliceText: 'label',
-            pieStartAngle: 135,
-            slices: {
-                0: { color: 'lightgreen' },
-                1: { color: 'limegreen' },
-                2: { color: 'darkgreen' },
-            },
-            pieHole: 0.4,
-            chartArea: {
-                left: '0%',
-                top: '7%',
-                width: "100%",
-                height: "80%" },
-        };
-
-        let chart = new google.visualization.PieChart(document.getElementById('group_types'));
-        chart.draw(data, options);
+      chart.innerRadius = am4core.percent(30);
     }
 
     function drawGroupGenerations() {
+      let chart = am4core.create("group_generations", am4charts.XYChart);
+      let title = chart.titles.create()
+      title.text = `[bold]${ translations.title_generations }[/]`
 
-      let formattedData = [sourceData.group_generations[0]]
-      sourceData.group_generations.forEach( (row, index)=>{
-        if ( index !== 0 ){
-          formattedData.push( [row["generation"], row["pre-group"], row["group"], row["church"], ''] )
-        }
-      })
-      let data = google.visualization.arrayToDataTable( formattedData );
+      chart.data = sourceData.group_generations.reverse()
 
-        let options = {
-            bars: 'horizontal',
-            chartArea: {
-                left: '20%',
-                top: '7%',
-                width: "75%",
-                height: "85%", },
-            title: translations.title_generations,
-            vAxis: {
-                format: '0'
-            },
-            hAxis: {
-                title: translations.label_groups_by_type,
-                format: '0'
-            },
-            legend: { position: 'bottom', maxLines: 3 },
-            isStacked: true,
-            colors: [ 'lightgreen', 'limegreen', 'darkgreen' ],
-        };
+      let categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+      categoryAxis.dataFields.category = "generation";
+      categoryAxis.renderer.grid.template.location = 0;
+      categoryAxis.renderer.labels.template.adapter.add("text", function(text) {
+        return translations.generation + ' ' + text;
+      });
 
-        let chart = new google.visualization.BarChart(document.getElementById('group_generations'));
-        chart.draw(data, options);
+      let valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+      valueAxis.renderer.inside = true;
+      valueAxis.renderer.labels.template.disabled = true;
+      valueAxis.min = 0;
+
+      function createSeries(field, name) {
+        let series = chart.series.push(new am4charts.ColumnSeries());
+        series.name = name;
+        series.dataFields.valueX = field;
+        series.dataFields.categoryY = "generation";
+        series.stacked = true;
+        series.columns.template.width = am4core.percent(60);
+        series.columns.template.tooltipText = "[bold]{name}[/]\n {valueX}";
+        let labelBullet = series.bullets.push(new am4charts.LabelBullet());
+        labelBullet.label.text = "{valueX}";
+        labelBullet.locationX = 0.5;
+        return series;
+      }
+
+      createSeries("pre-group", translations.label_pre_group );
+      createSeries("group", translations.label_group );
+      createSeries("church", translations.label_church );
+      chart.legend = new am4charts.Legend();
     }
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));

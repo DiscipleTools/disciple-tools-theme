@@ -2,7 +2,7 @@
 ( function() {
     ?>
     <?php
-    $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
+    $group = Disciple_Tools_Groups::get_group( get_the_ID(), true, true );
 
     $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
 
@@ -100,26 +100,13 @@
     <hr />
 
     <div class="display-fields grid-x grid-margin-x">
+        <!-- Geonames -->
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
-
             <div class="section-subheader">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                <?php esc_html_e( 'Locations', 'disciple_tools' )?>
+                <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
             </div>
-            <ul class="locations-list details-list">
-                <?php
-                foreach ($group["locations"] ?? [] as $value){
-                    ?>
-                    <li class="<?php echo intval( $value->ID ); ?>">
-                        <?php echo esc_html( $value->post_title ); ?>
-                    </li>
-                    <?php
-                }
-                if (sizeof( $group["locations"] ) === 0){
-                    ?> <li id="no-locations"><?php esc_html_e( "No location set", 'disciple_tools' ) ?></li><?php
-                }
-                ?>
-            </ul>
+            <ul class="geonames-list"></ul>
         </div>
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
             <div class="section-subheader">
@@ -158,7 +145,7 @@
                     $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                     ?>
                     <li class="<?php echo esc_html( $value["key"] ) ?> address-row">
-                        <div class="address-text"><?php echo esc_html( $value["value"] );?></div>
+                        <div class="address-text" dir="auto"><?php echo esc_html( $value["value"] );?></div>
                         <?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
                     </li>
                 <?php } ?>
@@ -201,7 +188,7 @@
 
 </section> <!-- end article -->
 
-<div class="reveal" id="group-details-edit" data-reveal>
+<div class="reveal" id="group-details-edit" data-reveal data-close-on-click="false">
     <h1><?php esc_html_e( "Edit Group", 'disciple_tools' ) ?></h1>
     <div class="display-fields">
         <div class="grid-x">
@@ -211,6 +198,7 @@
             <input type="text" id="title" class="edit-text-input" value="<?php the_title_attribute(); ?>">
         </div>
 
+        <!-- Address -->
         <div class="grix-x">
             <div class="section-subheader cell">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
@@ -223,6 +211,28 @@
             </ul>
         </div>
 
+        <div class="grix-x">
+            <div class="section-subheader cell">
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
+                <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
+            </div>
+            <div class="geonames">
+                <var id="geonames-result-container" class="result-container"></var>
+                <div id="geonames_t" name="form-geonames" class="scrollable-typeahead typeahead-margin-when-active">
+                    <div class="typeahead__container">
+                        <div class="typeahead__field">
+                            <span class="typeahead__query">
+                                <input class="js-typeahead-geonames"
+                                       name="geonames[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                       autocomplete="off">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dates -->
         <div class="grix-x">
             <div class="section-subheader cell">
                 <?php esc_html_e( 'Start Date', 'disciple_tools' )?>
@@ -244,7 +254,7 @@
             <div class="end_date"><input type="text" class="date-picker" id="end_date"></div>
         </div>
 
-
+        <!-- People Groups -->
         <div class="grix-x">
             <div class="section-subheader cell">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
@@ -257,7 +267,7 @@
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-people_groups"
-                                       name="people_groups[query]" placeholder="<?php esc_html_e( "Search People groups", 'disciple_tools' ) ?>"
+                                       name="people_groups[query]" placeholder="<?php esc_html_e( "Search People Groups", 'disciple_tools' ) ?>"
                                        autocomplete="off">
                             </span>
                         </div>
@@ -266,29 +276,6 @@
             </div>
         </div>
 
-
-
-
-        <div class="grix-x">
-            <div class="section-subheader cell">
-                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
-            </div>
-            <div class="locations">
-                <var id="locations-result-container" class="result-container"></var>
-                <div id="locations_t" name="form-locations" class="scrollable-typeahead typeahead-margin-when-active">
-                    <div class="typeahead__container">
-                        <div class="typeahead__field">
-                            <span class="typeahead__query">
-                                <input class="js-typeahead-locations"
-                                       name="locations[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
-                                       autocomplete="off">
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <div>
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">

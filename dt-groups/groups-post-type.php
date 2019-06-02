@@ -379,6 +379,11 @@ class Disciple_Tools_Groups_Post_Type
             'type'        => 'boolean',
             'default'     => false,
         ];
+        $fields['geonames'] = [
+            'name'        => __( 'Locations', 'disciple_tools' ),
+            'type'        => 'location',
+            'default'     => [],
+        ];
 
 
         $id = isset( $post->ID ) ? $post->ID : $post_id;
@@ -407,10 +412,16 @@ class Disciple_Tools_Groups_Post_Type
      * @param bool $include_current_post
      * @param int|null $post_id
      * @param bool $with_deleted_options
+     * @param bool $load_from_cache
      *
      * @return mixed
      */
-    public function get_custom_fields_settings( $include_current_post = true, int $post_id = null, $with_deleted_options = false ) {
+    public function get_custom_fields_settings( $include_current_post = true, int $post_id = null, $with_deleted_options = false, $load_from_cache = true ) {
+        $cached = wp_cache_get( "group_fields_settings" );
+        if ( $load_from_cache && $cached ){
+            return $cached;
+        }
+
         $fields = $this->get_group_field_defaults( $post_id, $include_current_post );
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, "groups" );
         foreach ( $fields as $field_key => $field ){
@@ -438,7 +449,7 @@ class Disciple_Tools_Groups_Post_Type
                         }
                         if ( $field_type === "key_select" || $field_type === "multi_select" ){
                             if ( isset( $field["default"] )){
-                                $fields[$key]["default"] = array_merge( $fields[$key]["default"], $field["default"] );
+                                $fields[$key]["default"] = array_replace_recursive( $fields[$key]["default"], $field["default"] );
                             }
                         }
                     }
@@ -461,14 +472,14 @@ class Disciple_Tools_Groups_Post_Type
             foreach ( $fields as $field_key => $field ){
                 if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
                     foreach ( $field["default"] as $option_key => $option_value ){
-                        if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ){
+                        if ( isset( $option_value["deleted"] ) && $option_value["deleted"] == true ){
                             unset( $fields[$field_key]["default"][$option_key] );
                         }
                     }
                 }
             }
         }
-
+        wp_cache_set( "group_fields_settings", $fields );
         return $fields;
     } // End get_custom_fields_settings()
 

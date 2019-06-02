@@ -209,12 +209,12 @@ class Disciple_Tools_Contact_Post_Type
                 ],
                 'assigned'     => [
                     "color" => "#FF9800",
-                    "label" => _X( "Waiting to be accepted", 'Contact Status', 'disciple_tools' ),
+                    "label" => _x( "Waiting to be accepted", 'Contact Status', 'disciple_tools' ),
                     "description" => _x( "The contact has been assigned to someone, but has not yet been accepted by that person.", "Contact Status", 'disciple_tools' )
                 ],
                 'active'       => [
                     "color" => "#4CAF50",
-                    "label" => _X( 'Active', 'Contact Status', 'disciple_tools' ),
+                    "label" => _x( 'Active', 'Contact Status', 'disciple_tools' ),
                     "description" => _x( "The contact is progressing and/or continually being updated.", "Contact Status", 'disciple_tools' )
                 ],
                 'paused'       => [
@@ -542,6 +542,11 @@ class Disciple_Tools_Contact_Post_Type
             "name" => __( "Sub-assigned to", "disciple_tools" ),
             "type" => "connection"
         ];
+        $fields['geonames'] = [
+            'name'        => __( 'Locations', 'disciple_tools' ),
+            'type'        => 'location',
+            'default'     => [],
+        ];
 
         return $fields;
     }
@@ -552,11 +557,16 @@ class Disciple_Tools_Contact_Post_Type
      * @param bool $include_current_post
      * @param int|null $post_id
      * @param bool $with_deleted_options
+     * @param bool $load_from_cache
      *
      * @return mixed
      */
-    public function get_custom_fields_settings( $include_current_post = true, int $post_id = null, $with_deleted_options = false ) {
+    public function get_custom_fields_settings( $include_current_post = true, int $post_id = null, $with_deleted_options = false, $load_from_cache = true ) {
 
+        $cached = wp_cache_get( "contact_field_settings" );
+        if ( $load_from_cache && $cached ){
+            return $cached;
+        }
         $fields = $this->get_contact_field_defaults( $post_id, $include_current_post );
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
         foreach ( $fields as $field_key => $field ){
@@ -584,7 +594,7 @@ class Disciple_Tools_Contact_Post_Type
                         }
                         if ( $field_type === "key_select" || $field_type === "multi_select" ) {
                             if ( isset( $field["default"] ) ) {
-                                $fields[ $key ]["default"] = array_merge( $fields[ $key ]["default"], $field["default"] );
+                                $fields[ $key ]["default"] = array_replace_recursive( $fields[ $key ]["default"], $field["default"] );
                             }
                         }
                     }
@@ -607,7 +617,7 @@ class Disciple_Tools_Contact_Post_Type
             foreach ( $fields as $field_key => $field ){
                 if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
                     foreach ( $field["default"] as $option_key => $option_value ){
-                        if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ){
+                        if ( isset( $option_value["deleted"] ) && $option_value["deleted"] == true ){
                             unset( $fields[$field_key]["default"][$option_key] );
                         }
                     }
@@ -615,6 +625,7 @@ class Disciple_Tools_Contact_Post_Type
             }
         }
 
+        wp_cache_set( "contact_field_settings", $fields );
         return $fields;
     } // End get_custom_fields_settings()
 

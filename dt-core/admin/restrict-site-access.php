@@ -65,6 +65,7 @@ function dt_block_xmlrpc_attacks( $methods ) {
     return $methods;
 }
 add_filter( 'xmlrpc_methods', 'dt_block_xmlrpc_attacks' );
+add_filter( 'xmlrpc_enabled', '__return_false' );
 
 /**
  * Removes header clutter

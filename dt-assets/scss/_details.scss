@@ -414,7 +414,7 @@ select.color-select {
         background-color: white;
         color: black;
     }
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: #FFFFFF'></polygon></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: white'></polygon></svg>");
     border:none;
 }
 
@@ -425,4 +425,34 @@ select.color-select {
 //make sure the blue boxes around the @mentions in the textarea are the right sizes
 .mentions-input-box .mentions strong span {
     font-weight: 300;
+}
+
+
+.bordered-box{
+    .section-header {
+        display: flex; justify-content: space-between
+    }
+    .section-chevron {
+        margin-left:auto;
+        margin-right:0;
+        img {
+            vertical-align: middle; width:20px
+        }
+    }
+    .chevron_down {
+        display: none;
+    }
+
+    &.collapsed {
+        .chevron_up {
+            display: none;
+        }
+        .chevron_down {
+            display: block;
+        }
+        .section-body {
+            display: none;
+        }
+    }
+
 }

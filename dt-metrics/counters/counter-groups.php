@@ -268,6 +268,7 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
             )
             JOIN $wpdb->p2p p2p ON (
                 p2p.p2p_from = p.ID
+                AND p2p.p2p_type = 'groups_to_coaches'
             )
             WHERE p.post_type = 'groups'
         ", $start, $end ));

@@ -776,3 +776,65 @@ html[dir='rtl'] {
     }
 }
 /* End Metrics section */
+
+
+.drill_down {
+    margin-bottom: 0;
+    list-style-type: none;
+}
+.drill_down li {
+    display:inline;
+    margin-right: 3px;
+}
+.drill_down li select {
+    width: 150px;
+}
+
+/**
+ * Switch
+ */
+input.dt-switch[type=checkbox] {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+    display: none;
+}
+label.dt-switch {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 41px;
+    height: 20px;
+    background: grey;
+    display: inline-block;
+    border-radius: 100px;
+    position: relative;
+    margin: 0;
+}
+label.dt-switch:after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 90px;
+    transition: 0.3s;
+}
+
+input.dt-switch:checked + label {
+    background: #3f729b;
+}
+
+input.dt-switch:checked + label:after {
+    left: calc(100% - 3px);
+    transform: translateX(-100%);
+}
+
+label.dt-switch:active:after {
+    width: 20px;
+}
+
+.geocode-link {
+    margin-top:.7rem;
+}

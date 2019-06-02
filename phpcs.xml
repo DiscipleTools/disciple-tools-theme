@@ -165,6 +165,7 @@
     <!-- <exclude name="WordPress.WhiteSpace.OperatorSpacing.SpacingAfter" /> -->
     <!-- <exclude name="WordPress.WhiteSpace.OperatorSpacing.SpacingBefore" /> -->
     <exclude name="WordPress.WP.EnqueuedResourceParameters.MissingVersion" />
+    <exclude name="WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion" />
 
   </rule>
 

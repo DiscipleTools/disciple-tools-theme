@@ -1,5 +1,4 @@
 jQuery(document).ready(function() {
-    console.log( dtMetricsPrayer )
     if( ! window.location.hash || '#prayer_overview' === window.location.hash  ) {
         prayer_overview()
     }
@@ -10,14 +9,14 @@ function prayer_overview() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#prayer-menu'));
     let chartDiv = jQuery('#chart')
     let dt = dtMetricsPrayer
-    let translations = dt.data.translations
+    let translations = dtMetricsPrayer.data.translations
 
 
     chartDiv.empty().html(`
         <span style="float:right;"><i class="fi-info primary-color"></i> </span>
         
         <div class="grid-x grid-padding-x grid-padding-y">
-            <div class="cell medium-2"><span class="section-header">${translations.title_1}</span> </div>
+            <div class="cell medium-2"><span class="section-header">${ _.escape( translations.title_1 ) }</span> </div>
             <div class="cell medium-2">
                 <span><select id="days">
                     <option value="7">Last 7 Days</option>
@@ -48,13 +47,13 @@ function prayer_overview() {
                     <div class="cell center callout" style="display:none;">
                         <div class="grid-x">
                             <div class="medium-4 cell center">
-                                <h5>${ translations.title_waiting_on_accept }<br><span id="needs_accepted">0</span></h5>
+                                <h5>title_waiting_on_accept<br><span id="needs_accepted">0</span></h5>
                             </div>
                             <div class="medium-4 cell center left-border-grey">
-                                <h5>${ translations.title_waiting_on_update }<br><span id="updates_needed">0</span></h5>
+                                <h5>title_waiting_on_update<br><span id="updates_needed">0</span></h5>
                             </div>
                             <div class="medium-4 cell center left-border-grey">
-                                <h5>${ translations.title_active_contacts }<br><span id="active_contacts">0</span></h5>
+                                <h5>title_active_contacts<br><span id="active_contacts">0</span></h5>
                             </div>
                             
                         </div>
@@ -84,13 +83,13 @@ function prayer_overview() {
                     <div class="cell center callout" style="display:none;">
                         <div class="grid-x">
                             <div class="medium-4 cell center">
-                                <h5>${ translations.title_waiting_on_accept }<br><span id="needs_accepted">0</span></h5>
+                                <h5>title_waiting_on_accept<br><span id="needs_accepted">0</span></h5>
                             </div>
                             <div class="medium-4 cell center left-border-grey">
-                                <h5>${ translations.title_waiting_on_update }<br><span id="updates_needed">0</span></h5>
+                                <h5>title_waiting_on_update<br><span id="updates_needed">0</span></h5>
                             </div>
                             <div class="medium-4 cell center left-border-grey">
-                                <h5>${ translations.title_active_contacts }<br><span id="active_contacts">0</span></h5>
+                                <h5>title_active_contacts<br><span id="active_contacts">0</span></h5>
                             </div>
                         </div>
                     </div>
@@ -153,9 +152,9 @@ function prayer_overview() {
 
                 let location = ''
                 if ( v.location_name ) {
-                    location = `(${v.location_name})`
+                    location = `(${ _.escape(v.location_name) })`
                 }
-                list1 += `<a href="/contacts/${v.id}">${v.text}</a> ${message} ${location}<br>`
+                list1 += `<a href="${window.wpApiShare.site_url}/contacts/${_.escape(v.id)}">${_.escape(v.text)}</a> ${message} ${location}<br>`
             })
             jQuery('#list-1').empty().html(list1)
         } else {
@@ -173,9 +172,9 @@ function prayer_overview() {
 
                 let location = ''
                 if (v.location_name) {
-                    location = `(${v.location_name})`
+                    location = `(${ _.escape(v.location_name)})`
                 }
-                list2 += `<a href="/contacts/${v.id}">${v.text}</a> ${message} ${location}<br>`
+                list2 += `<a href="${window.wpApiShare.site_url}/contacts/${_.escape(v.id)}">${_.escape(v.text)}</a> ${message} ${location}<br>`
             })
             jQuery('#list-2').empty().html(list2)
         } else {
@@ -187,9 +186,9 @@ function prayer_overview() {
 
                 let location = ''
                 if (v.location_name) {
-                    location = `(${v.location_name})`
+                    location = `(${ _.escape(v.location_name) })`
                 }
-                list3 += `<a href="/contacts/${v.id}">${v.text}</a> was baptized. ${location}<br>`
+                list3 += `<a href="${window.wpApiShare.site_url}/contacts/${_.escape(v.id)}">${_.escape(v.text)}</a> was baptized. ${location}<br>`
             })
             jQuery('#list-3').empty().html(list3)
         } else {
@@ -202,9 +201,9 @@ function prayer_overview() {
 
                 let location = ''
                 if (v.location_name) {
-                    location = ` in ${v.location_name}`
+                    location = ` in ${ _.escape(v.location_name) }`
                 }
-                list4 += `We have a new contact named <a href="/contacts/${v.id}">${v.text}</a>${location}!<br>`
+                list4 += `We have a new contact named <a href="${window.wpApiShare.site_url}/contacts/${ _.escape(v.id) }">${ _.escape(v.text) }</a>${location}!<br>`
             })
             jQuery('#list-4').empty().html(list4)
         } else {
@@ -219,7 +218,7 @@ function prayer_overview() {
                 if (v.location_name) {
                     location = ` in ${v.location_name}`
                 }
-                list5 += `We formed a new group named <a href="/groups/${v.id}">${v.text}</a>${location}!<br>`
+                list5 += `We formed a new group named <a href="${window.wpApiShare.site_url}/groups/${ _.escape(v.id) }">${ _.escape( v.text) }</a>${location}!<br>`
             })
             jQuery('#list-5').empty().html(list5)
         } else {

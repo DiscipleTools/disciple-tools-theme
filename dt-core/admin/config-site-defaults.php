@@ -25,7 +25,16 @@ add_filter( 'comment_notification_recipients', 'dt_override_comment_notice_recip
 add_filter( 'language_attributes', 'dt_custom_dir_attr' );
 add_filter( 'retrieve_password_message', 'dt_custom_password_reset', 99, 4 );
 add_filter( 'wpmu_signup_blog_notification_email', 'dt_wpmu_signup_blog_notification_email', 10, 8 );
-
+add_filter( 'login_errors', 'login_error_messages' );
+remove_action( 'plugins_loaded', 'wp_maybe_load_widgets', 0 );  //don't load widgets as we don't use them
+remove_action( "init", "wp_widgets_init", 1 );
+//set security headers
+add_action( 'send_headers', 'dt_security_headers_insert' );
+// admin section doesn't have a send_headers action so we abuse init
+add_action( 'admin_init', 'dt_security_headers_insert' );
+// wp-login.php doesn't have a send_headers action so we abuse init
+add_action( 'login_init', 'dt_security_headers_insert' );
+add_filter( 'wp_handle_upload_prefilter', 'dt_disable_file_upload' );
 
 /*********************************************************************************************
  * Functions
@@ -165,9 +174,6 @@ function dt_get_option( string $name ) {
             }
             break;
 
-        case 'map_key':
-            return Disciple_Tools_Google_Geocode_API::get_map_key();
-            break;
 
         case 'location_levels':
             $default_levels = dt_get_location_levels();
@@ -701,74 +707,55 @@ function dt_custom_password_reset( $message, $key, $user_login, $user_data ){
 
 }
 
-
-/**
- * The the base site url with, including the subfolder if wp is installed in a subfolder.
- * @return string
- */
-function dt_get_url_path() {
-    if ( isset( $_SERVER["HTTP_HOST"] ) ) {
-        $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
-        if ( isset( $_SERVER["REQUEST_URI"] ) ) {
-            $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
-        }
-    }
-    return trim( str_replace( get_site_url(), "", $url ), '/' );
-}
-
-/**
- * check is the current url is a rest api request
- * @return bool
- */
-function dt_is_rest_url() {
-    $is_rest = false;
-    if ( function_exists( 'rest_url' ) && !empty( $_SERVER['REQUEST_URI'] ) ) {
-        $rest_url_base = get_rest_url( get_current_blog_id(), '/' );
-        $rest_path = trim( parse_url( $rest_url_base, PHP_URL_PATH ), '/' );
-        $request_path = trim( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/' );
-        $is_rest = ( strpos( $request_path, $rest_path ) === 0 );
-    }
-    return $is_rest;
-}
-
-/**
- * @param $date
- * @param string $format  options are short, long, or [custom]
- *
- * @return bool|int|string
- */
-
-function dt_format_date( $date, $format = 'short' ){
-    $date_format = get_option( 'date_format' );
-    $time_format = get_option( 'time_format' );
-    if ( $format === 'short' ){
-        $format = $date_format;
-    } else if ( $format === 'long') {
-        $format = $date_format . ' ' . $time_format;
-    }
-    if ( is_numeric( $date ) ){
-        $formatted = date_i18n( $format, $date );
-    } else {
-        $formatted = mysql2date( $format, $date );
-    }
-    return $formatted;
-}
-
-function dt_date_start_of_year(){
-    $this_year = date( 'Y' );
-    $timestamp = strtotime( $this_year . '-01-01' );
-    return $timestamp;
-}
-function dt_date_end_of_year(){
-    $this_year = (int) date( 'Y' );
-    return strtotime( ( $this_year + 1 ) . '-01-01' );
-}
-
-function dt_get_year_from_timestamp( int $time ){
-    return date( "Y", $time );
-}
-
-
 function dt_wpmu_signup_blog_notification_email( $message, $domain, $path, $title, $user, $user_email, $key, $meta ){
     return str_replace( "blog", "site", $message );
+}
+
+/**
+ * change the error message if it is invalid_username or incorrect password
+ *
+ * @param $message string Error string provided by WordPress
+ * @return $message string Modified error string
+*/
+function login_error_messages( $message ){
+    global $errors;
+    if ( isset( $errors->errors['invalid_username'] ) || isset( $errors->errors['incorrect_password'] ) ) {
+        $message = __( '<strong>ERROR</strong>: Invalid username/password combination.', 'disciple_tools' ) . ' ' .
+        sprintf(
+            ( '<a href="%1$s" title="%2$s">%3$s</a>?' ),
+            site_url( 'wp-login.php?action=lostpassword', 'login' ),
+            __( 'Reset password', 'disciple_tools' ),
+            __( 'Lost your password', 'disciple_tools' )
+        );
+    }
+    return $message;
+}
+
+
+/*
+ * Add security headers
+ */
+function dt_security_headers_insert() {
+    $xss_disabled = get_option( "dt_disable_header_xss" );
+    $referer_disabled = get_option( "dt_disable_header_referer" );
+    $content_type_disabled = get_option( "dt_disable_header_content_type" );
+    $strict_transport_disabled = get_option( "dt_disable_header_strict_transport" );
+    if ( !$xss_disabled ){
+        header( "X-XSS-Protection: 1; mode=block" );
+    }
+    if ( !$referer_disabled ){
+        header( "Referrer-Policy: same-origin" );
+    }
+    if ( !$content_type_disabled ){
+        header( "X-Content-Type-Options: nosniff" );
+    }
+    if ( !$strict_transport_disabled && is_ssl() ){
+        header( "Strict-Transport-Security: max-age=2592000" );
+    }
+//    header( "Content-Security-Policy: default-src 'self' https:; img-src 'self' https: data:; script-src https: 'self' 'unsafe-inline' 'unsafe-eval'; style-src  https: 'self' 'unsafe-inline'" );
+}
+
+function dt_disable_file_upload( $file ) {
+    $file['error'] = 'Uploading has been disabled';
+    return $file;
 }

@@ -75,6 +75,24 @@ class Disciple_Tools_Users_Endpoints
                 'callback' => [ $this, 'get_user_contact_id' ]
             ]
         );
+        register_rest_route(
+            $this->namespace, '/users/current_locations', [
+                'methods' => "GET",
+                'callback' => [ $this, 'get_current_locations' ]
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/users/user_location', [
+                'methods' => "POST",
+                'callback' => [ $this, 'add_user_location' ]
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/users/user_location', [
+                'methods' => "DELETE",
+                'callback' => [ $this, 'delete_user_location' ]
+            ]
+        );
     }
 
     /**
@@ -163,6 +181,28 @@ class Disciple_Tools_Users_Endpoints
         $params = $request->get_params();
         if ( isset( $params["user_id"] ) ){
             return Disciple_Tools_Users::get_contact_for_user( $params["user_id"] );
+        } else {
+            return new WP_Error( "missing_error", "Missing fields", [ 'status', 400 ] );
+        }
+    }
+
+    public function get_current_locations(){
+        return DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( get_current_user_id(), 'user' ) );
+    }
+
+    public function add_user_location( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params["geonameid"] ) ){
+            return Disciple_Tools_Users::add_user_location( $params["geonameid"] );
+        } else {
+            return new WP_Error( "missing_error", "Missing fields", [ 'status', 400 ] );
+        }
+    }
+
+    public function delete_user_location( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params["geonameid"] ) ){
+            return Disciple_Tools_Users::delete_user_location( $params["geonameid"] );
         } else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status', 400 ] );
         }

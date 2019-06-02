@@ -38,7 +38,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     "parent_groups",
                     "child_groups",
                     "peer_groups",
-                    "locations",
+                    "locations", // @todo remove or rewrite? Because of geonames upgrade.
                     "people_groups",
                     "leaders",
                     "coaches"
@@ -84,14 +84,19 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
 
     /**
-     * @param  int  $group_id
-     * @param  bool $check_permissions
+     * @param int $group_id
+     * @param bool $check_permissions
+     * @param bool $load_cache
      *
      * @return array|\WP_Error
      */
-    public static function get_group( int $group_id, bool $check_permissions = true ) {
+    public static function get_group( int $group_id, bool $check_permissions = true, $load_cache = false ) {
         if ( $check_permissions && !self::can_view( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read group", [ 'status' => 403 ] );
+        }
+        $cached = wp_cache_get( "group_" . $group_id );
+        if ( $cached && $load_cache ){
+            return $cached;
         }
 
         $group = get_post( $group_id );
@@ -99,7 +104,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $fields = [];
 
             $connection_types = [
-                [ "groups_to_locations", "locations", "any" ],
+                [ "groups_to_locations", "locations", "any" ], // @todo remove or rewrite? Because of geonames upgrade.
                 [ "groups_to_peoplegroups", "people_groups", "any" ],
                 [ "contacts_to_groups", "members", "to" ],
                 [ "groups_to_leaders", "leaders", "any" ],
@@ -184,7 +189,16 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                         "timestamp" => $value[0],
                         "formatted" => dt_format_date( $value[0] ),
                     ];
-                } else {
+                } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'location' ) {
+                    $names = Disciple_Tools_Mapping_Queries::get_names_from_ids( $value );
+                    $fields[ $key ] = [];
+                    foreach ( $names as $id => $name ) {
+                        $fields[ $key ][] = [
+                            "id"    => $id,
+                            "label" => $name
+                        ];
+                    }
+                }    else {
                     $fields[ $key ] = $value[0];
                 }
             }
@@ -192,7 +206,9 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $fields["name"] = $group->post_title;
             $fields["title"] = $group->post_title;
 
-            return apply_filters( 'dt_groups_fields_post_filter', $fields );
+            $group = apply_filters( 'dt_groups_fields_post_filter', $fields );
+            wp_cache_set( "group_" . $group_id, $group );
+            return $group;
         } else {
             return new WP_Error( __FUNCTION__, "No group found with ID", [ 'contact_id' => $group_id ] );
         }
@@ -232,11 +248,11 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
     private static function parse_multi_select_fields( $contact_id, $fields, $existing_contact = null ){
         foreach ( $fields as $field_key => $field ){
-            if ( isset( self::$group_fields[$field_key] ) && self::$group_fields[$field_key]["type"] === "multi_select" ){
+            if ( isset( self::$group_fields[$field_key] ) && self::$group_fields[$field_key]["type"] === "multi_select" || self::$group_fields[$field_key]["type"] === "location"){
                 if ( !isset( $field["values"] )){
                     return new WP_Error( __FUNCTION__, "missing values field on:" . $field_key );
                 }
-                if ( isset( $field["force_values"] ) && $field["force_values"] === true ){
+                if ( isset( $field["force_values"] ) && $field["force_values"] == true ){
                     delete_post_meta( $contact_id, $field_key );
                 }
                 foreach ( $field["values"] as $value ){
@@ -271,7 +287,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             }
             if ( $existing_group && isset( $fields[$details_key] ) &&
                  isset( $fields[$details_key]["force_values"] ) &&
-                 $fields[$details_key]["force_values"] === true ){
+                 $fields[$details_key]["force_values"] == true ){
                 foreach ( $existing_group[$details_key] as $contact_value ){
                     $potential_error = self::delete_group_field( $group_id, $contact_value["key"], false );
                     if ( is_wp_error( $potential_error ) ){
@@ -331,7 +347,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                         }
                     }
                     if ( isset( $connection_value["value"] ) && is_numeric( $connection_value["value"] )){
-                        if ( isset( $connection_value["delete"] ) && $connection_value["delete"] === true ){
+                        if ( isset( $connection_value["delete"] ) && $connection_value["delete"] == true ){
                             if ( in_array( $connection_value["value"], $existing_connections )){
                                 $potential_error = self::remove_group_connection( $group_id, $connection_type, $connection_value["value"], false );
                                 if ( is_wp_error( $potential_error ) ) {
@@ -353,7 +369,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     }
                 }
                 //check for deleted connections
-                if ( isset( $connection_field["force_values"] ) && $connection_field["force_values"] === true ){
+                if ( isset( $connection_field["force_values"] ) && $connection_field["force_values"] == true ){
                     foreach ($existing_connections as $connection_value ){
                         if ( !in_array( $connection_value, $new_connections )){
                             $potential_error = self::remove_group_connection( $group_id, $connection_type, $connection_value, false );
@@ -385,7 +401,6 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
-
         $field_keys = array_keys( $fields );
         $post = get_post( $group_id );
         if ( isset( $fields['id'] ) ) {
@@ -406,7 +421,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         $existing_group = self::get_group( $group_id, false );
         $added_fields = [];
 
-        if ( isset( $fields['title'] ) ) {
+        if ( isset( $fields['title'] ) && $existing_group["title"] != $fields['title']) {
             wp_update_post( [
                 'ID' => $group_id,
                 'post_title' => $fields['title']
@@ -472,7 +487,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 if ( $field_type === 'date' && !is_numeric( $value )){
                     $value = strtotime( $value );
                 }
-                if ( $field_type && $field_type !== "multi_select" ){
+                if ( $field_type && $field_type !== "multi_select" && $field_type !== "location" ){
                     update_post_meta( $group_id, $field_id, $value );
                 }
             }
@@ -528,7 +543,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function add_location_to_group( int $group_id, int $location_id ) {
+    public static function add_location_to_group( int $group_id, int $location_id ) { // @todo remove or rewrite? Because of geonames upgrade.
         return p2p_type( 'groups_to_locations' )->connect(
             $location_id, $group_id,
             [ 'date' => current_time( 'mysql' ) ]
@@ -657,7 +672,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_location_from_group( int $group_id, int $location_id ) {
+    public static function remove_location_from_group( int $group_id, int $location_id ) { // @todo remove or rewrite? Because of geonames upgrade.
         return p2p_type( 'groups_to_locations' )->disconnect( $location_id, $group_id );
     }
 
@@ -751,7 +766,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             return $new_meta_key;
         }
         $connect = null;
-        if ( $key === "locations" ) {
+        if ( $key === "locations" ) { // @todo remove or rewrite? Because of geonames upgrade.
             $connect = self::add_location_to_group( $group_id, $value );
         } elseif ( $key === "members" ) {
             $connect = self::add_member_to_group( $group_id, $value );
@@ -837,7 +852,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have have permission for this", [ 'status' => 403 ] );
         }
-        if ( $key === "locations" ) {
+        if ( $key === "locations" ) { // @todo remove or rewrite? Because of geonames upgrade.
             return self::remove_location_from_group( $group_id, $value );
         } elseif ( $key === "members" ) {
             return self::remove_member_from_group( $group_id, $value );
@@ -1157,5 +1172,23 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
         return $personal_counts[0] ?? [];
 
+    }
+
+
+    /**
+     * Get settings related to contacts
+     * @return array|WP_Error
+     */
+    public static function get_settings(){
+        if ( !self::can_access( "groups" ) ) {
+            return new WP_Error( __FUNCTION__, "Permission denied.", [ 'status' => 403 ] );
+        }
+
+        return [
+            'fields' => self::$group_fields,
+            'address_types' => self::$address_types,
+            'channels' => self::$channel_list,
+            'connection_types' => self::$group_connection_types
+        ];
     }
 }

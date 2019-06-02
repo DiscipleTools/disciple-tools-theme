@@ -95,7 +95,7 @@ declare(strict_types=1);
             <span class="hide-for-small-only"><?php esc_html_e( "Filter contacts", 'disciple_tools' ) ?></span>
         </a>
         <a class="button" style="margin-bottom:0" id="open-search">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
+            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
             <span class="hide-for-small-only"><?php esc_html_e( "Search contacts", 'disciple_tools' ) ?></span>
         </a>
         <div class="hideable-search" style="display: none; margin-top:5px">
@@ -207,8 +207,8 @@ declare(strict_types=1);
 
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
-                    <?php $fields = [ "assigned_to", "subassigned",  "created_on", "locations", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
-                    $allowed_types = [ "multi_select", "key_select", "boolean", "date" ];
+                    <?php $fields = [ "assigned_to", "subassigned",  "created_on", "geonames", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
+                    $allowed_types = [ "multi_select", "key_select", "boolean", "date", "location" ];
                     foreach ( $dt_contact_field_options as $field_key => $field){
                         if ( in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
                             $fields[] = $field_key;
@@ -217,6 +217,7 @@ declare(strict_types=1);
                     $fields = apply_filters( 'dt_filters_additional_fields', $fields, "contacts" ) ?? [];
                     $connections = Disciple_Tools_Posts::$connection_types;
                     $connections["assigned_to"] = [ "name" => __( "Assigned To", 'disciple_tools' ) ];
+                    $connections["geonames"] = [ "name" => __( "Locations", 'disciple_tools' ) ];
                     ?>
                     <ul class="vertical tabs" data-tabs id="filter-tabs">
                         <?php foreach ( $fields as $index => $field ) :
@@ -275,7 +276,7 @@ declare(strict_types=1);
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $dt_contact_field_options[$field] ) && $dt_contact_field_options[$field]["type"] == "key_select" ) :
                                         foreach ( $dt_contact_field_options[$field]["default"] as $option_key => $option_value ) :
-                                            $label = $option_value["label"]?>
+                                            $label = $option_value["label"] ?? ""?>
                                             <div class="key_select_options">
                                                 <label style="cursor: pointer">
                                                     <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"

@@ -34,7 +34,6 @@ class Disciple_Tools_Contacts_Endpoints
     private $context = "dt";
     private $namespace;
     private $public_namespace;
-    private $contacts_instance;
 
     /**
      * Disciple_Tools_Contacts_Endpoints constructor.
@@ -43,9 +42,6 @@ class Disciple_Tools_Contacts_Endpoints
         $this->namespace = $this->context . "/v" . intval( $this->version );
         $this->public_namespace = 'dt-public/v1';
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
-
-        require_once( 'contacts.php' );
-        $this->contacts_instance = new Disciple_Tools_Contacts();
     }
 
     /**
@@ -226,6 +222,18 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'public_contact_transfer' ],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/contacts/settings', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_settings' ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/following', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_following' ],
+            ]
+        );
     }
 
 
@@ -241,7 +249,7 @@ class Disciple_Tools_Contacts_Endpoints
     public function public_create_contact( WP_REST_Request $request ) {
         $params = $request->get_params();
         $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
-        $silent = isset( $params["silent"] ) && ( $params["silent"] === "true" || $params["silent"] === true );
+        $silent = isset( $params["silent"] ) && ( $params["silent"] === "true" || $params["silent"] == true );
         if ( !$site_key ){
             return new WP_Error(
                 "contact_creation_error",
@@ -270,7 +278,7 @@ class Disciple_Tools_Contacts_Endpoints
      * @return string|array The contact on success
      */
     public function create_contact( WP_REST_Request $request ) {
-        $fields = $request->get_json_params();
+        $fields = $request->get_json_params() ?? $request->get_params();
         $get_params = $request->get_query_params();
         $silent = false;
         if ( isset( $get_params["silent"] ) && $get_params["silent"] === "true" ){
@@ -318,7 +326,7 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function update_contact( WP_REST_Request $request ) {
         $params = $request->get_params();
-        $body = $request->get_json_params();
+        $body = $request->get_json_params() ?? $request->get_params();
         if ( isset( $params['id'] ) ) {
             $result = Disciple_Tools_Contacts::update_contact( $params['id'], $body, true );
             if ( is_wp_error( $result ) ) {
@@ -369,7 +377,11 @@ class Disciple_Tools_Contacts_Endpoints
      */
     private function add_related_info_to_contacts( array $contacts ): array
     {
-        p2p_type( 'contacts_to_locations' )->each_connected( $contacts, [], 'locations' );
+        $contact_ids = array_map(
+            function( $c ){ return $c->ID; },
+            $contacts
+        );
+        $geonames = Disciple_Tools_Mapping_Queries::get_geoname_ids_and_names_for_post_ids( $contact_ids );
         p2p_type( 'contacts_to_groups' )->each_connected( $contacts, [], 'groups' );
         $rv = [];
         foreach ( $contacts as $contact ) {
@@ -380,9 +392,9 @@ class Disciple_Tools_Contacts_Endpoints
             $contact_array["is_team_contact"] = $contact->is_team_contact ?? false;
             $contact_array['permalink'] = get_post_permalink( $contact->ID );
             $contact_array['overall_status'] = get_post_meta( $contact->ID, 'overall_status', true );
-            $contact_array['locations'] = [];
-            foreach ( $contact->locations as $location ) {
-                $contact_array['locations'][] = $location->post_title;
+            $contact_array['locations'] = []; // @todo remove or rewrite? Because of geonames upgrade.
+            foreach ( $geonames[$contact->ID] as $location ) {
+                $contact_array['locations'][] = $location["name"]; // @todo remove or rewrite? Because of geonames upgrade.
             }
             $contact_array['groups'] = [];
             foreach ( $contact->groups as $group ) {
@@ -525,9 +537,10 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function post_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
-        $body = $request->get_json_params();
+        $body = $request->get_json_params() ?? $request->get_params();
+        $silent = isset( $params["silent"] ) && ( $params["silent"] === "true" || $params["silent"] == true );
         if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
-            $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"] );
+            $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"], "comment", [ "comment_date" => $body["date"] ?? null ], false, $silent );
 
             if ( is_wp_error( $result ) ) {
                 return $result;
@@ -549,9 +562,9 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function public_post_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
-        $body = $request->get_json_params();
+        $body = $request->get_json_params() ?? $request->get_params();
         $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
-        $silent = isset( $params["silent"] ) && $params["silent"] === true;
+        $silent = isset( $params["silent"] ) && ( $params["silent"] === "true" || $params["silent"] == true );
         if ( !$site_key ){
             return new WP_Error(
                 "contact_creation_error",
@@ -583,7 +596,7 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function update_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
-        $body = $request->get_json_params();
+        $body = $request->get_json_params() ?? $request->get_params();
         if ( isset( $params['id'] ) && isset( $body['comment_ID'] ) && isset( $body['comment_content'] ) ) {
             return Disciple_Tools_Contacts::update_comment( $params['id'], $body["comment_ID"], $body["comment_content"], true );
         } else {
@@ -598,7 +611,7 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function delete_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
-        $body = $request->get_json_params();
+        $body = $request->get_json_params() ?? $request->get_params();
         if ( isset( $params['id'] ) && isset( $body['comment_ID'] ) ) {
             return Disciple_Tools_Contacts::delete_comment( $params['id'], $body["comment_ID"], true );
         } else {
@@ -690,7 +703,7 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function accept_contact( WP_REST_Request $request ) {
         $params = $request->get_params();
-        $body = $request->get_json_params();
+        $body = $request->get_json_params() ?? $request->get_params();
         if ( isset( $params['id'] ) ) {
             $result = Disciple_Tools_Contacts::accept_contact( $params['id'], $body["accept"] );
 
@@ -890,5 +903,18 @@ class Disciple_Tools_Contacts_Endpoints
         }
 
         return $params;
+    }
+
+    public function get_settings(){
+        return Disciple_Tools_Contacts::get_settings();
+    }
+
+    public function get_following( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params['id'] ) ) {
+            return Disciple_Tools_Posts::get_users_following_post( "contacts", $params['id'] );
+        } else {
+            return new WP_Error( __FUNCTION__, "Missing a valid group id", [ 'status' => 400 ] );
+        }
     }
 }

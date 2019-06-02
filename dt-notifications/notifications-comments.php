@@ -20,6 +20,8 @@ class Disciple_Tools_Notifications_Comments
      *
      * @param      $comment_id
      * @param null $comment
+     *
+     * @return array|WP_Error
      */
     public static function insert_notification_for_comment( $comment_id, $comment = null ) {
 
@@ -35,7 +37,10 @@ class Disciple_Tools_Notifications_Comments
             $date_notified            = $comment->comment_date;
             $post_type                = get_post_type( $post_id );
 
-            $followers = Disciple_Tools_Posts::get_users_following_post( $post_type, $post_id );
+            $followers = Disciple_Tools_Posts::get_users_following_post( $post_type, $post_id, false );
+            if ( is_wp_error( $followers ) ){
+                return $followers;
+            }
             $following_all = get_users( [
                 'meta_key' => 'dt_follow_all',
                 'meta_value' => true

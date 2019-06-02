@@ -163,7 +163,7 @@ class Disciple_Tools_Contacts_Transfer
                     'post' => $post_data,
                     'postmeta' => $postmeta_data,
                     'comments' => dt_get_comments_with_redacted_user_data( $contact_id ),
-                    'locations' => $contact['locations'],
+                    'locations' => $contact['locations'], // @todo remove or rewrite? Because of geonames upgrade.
                     'people_groups' => $contact['people_groups'],
                     'transfer_foreign_key' => $contact['transfer_foreign_key'] ?? 0,
                 ],
@@ -171,6 +171,9 @@ class Disciple_Tools_Contacts_Transfer
         ];
 
         $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/contact/transfer', $args );
+        if ( is_wp_error( $result ) ){
+            return $result;
+        }
         $result_body = json_decode( $result['body'] );
 
         if ( ! ( isset( $result_body->status ) && 'OK' === $result_body->status ) ) {
@@ -255,7 +258,7 @@ class Disciple_Tools_Contacts_Transfer
         // set variables
         $contact_data = $params['contact_data'];
         $post_args = $contact_data['post'];
-        $comment_data = $contact_data['comments'];
+        $comment_data = $contact_data['comments'] ?? [];
         $meta_input = [];
         $lagging_meta_input = [];
         $errors = new WP_Error();

@@ -33,7 +33,6 @@ class Disciple_Tools_Groups_Endpoints
     private $version = 1;
     private $context = "dt";
     private $namespace;
-    private $groups_instance;
 
     /**
      * Disciple_Tools_Groups_Endpoints constructor.
@@ -41,10 +40,6 @@ class Disciple_Tools_Groups_Endpoints
     public function __construct() {
         $this->namespace = $this->context . "/v" . intval( $this->version );
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
-
-        require_once( 'groups.php' );
-        $this->groups_instance = new Disciple_Tools_Groups();
-
     }
 
     public function add_api_routes() {
@@ -141,6 +136,18 @@ class Disciple_Tools_Groups_Endpoints
                 "callback" => [ $this, 'get_group_default_filter_counts' ],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/groups/settings', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_settings' ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/group/(?P<id>\d+)/following', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_following' ],
+            ]
+        );
     }
 
     /**
@@ -183,7 +190,11 @@ class Disciple_Tools_Groups_Endpoints
      * @return array
      */
     private function add_related_info_to_groups( array $groups ) {
-        p2p_type( 'groups_to_locations' )->each_connected( $groups, [], 'locations' );
+        $group_ids = array_map(
+            function( $g ){ return $g->ID; },
+            $groups
+        );
+        $geonames = Disciple_Tools_Mapping_Queries::get_geoname_ids_and_names_for_post_ids( $group_ids );
         p2p_type( 'contacts_to_groups' )->each_connected( $groups, [], 'members' );
         p2p_type( 'groups_to_leaders' )->each_connected( $groups, [], 'leaders' );
         $rv = [];
@@ -193,9 +204,9 @@ class Disciple_Tools_Groups_Endpoints
             $group_array["ID"] = $group->ID;
             $group_array["post_title"] = $group->post_title;
             $group_array['permalink'] = get_post_permalink( $group->ID );
-            $group_array['locations'] = [];
-            foreach ( $group->locations as $location ) {
-                $group_array['locations'][] = $location->post_title;
+            $group_array['locations'] = []; // @todo remove or rewrite? Because of geonames upgrade.
+            foreach ( $geonames[$group->ID] as $location ) {
+                $group_array['locations'][] = $location["name"]; // @todo remove or rewrite? Because of geonames upgrade.
             }
             $group_array['leaders'] = [];
             $group_array['member_count'] = $meta_fields["member_count"] ?? 0;
@@ -283,9 +294,10 @@ class Disciple_Tools_Groups_Endpoints
      */
     public function post_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
-        $body = $request->get_json_params();
+        $body = $request->get_json_params() ?? $request->get_params();
+        $silent = isset( $params["silent"] ) && $params["silent"] == true;
         if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
-            $result = Disciple_Tools_Groups::add_comment( $params['id'], $body["comment"] );
+            $result = Disciple_Tools_Groups::add_comment( $params['id'], $body["comment"], "comment", [ "comment_date" => $body["date"] ?? null ], false, $silent );
 
             if ( is_wp_error( $result ) ) {
                 return $result;
@@ -443,6 +455,19 @@ class Disciple_Tools_Groups_Endpoints
         $tab = $params["tab"] ?? null;
         $show_closed = isset( $params["closed"] ) && $params["closed"] == "true";
         return Disciple_Tools_Groups::get_group_default_filter_counts( $tab, $show_closed );
+    }
+
+    public function get_settings(){
+        return Disciple_Tools_Groups::get_settings();
+    }
+
+    public function get_following( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params['id'] ) ) {
+            return Disciple_Tools_Posts::get_users_following_post( "groups", $params['id'] );
+        } else {
+            return new WP_Error( __FUNCTION__, "Missing a valid group id", [ 'status' => 400 ] );
+        }
     }
 
 }

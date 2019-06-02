@@ -57,9 +57,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
     private function get_post_fields( $post_type ){
         if ( $post_type === "groups" ){
-            return Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( null, null, true );
+            return Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( null, null, true, false );
         } elseif ( $post_type === "contacts" ){
-            return Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( null, null, true );
+            return Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( null, null, true, false );
         }
         return null;
     }
@@ -296,7 +296,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     </thead>
                     <tbody>
                     <?php foreach ( $field_options as $key => $option ) :
-                        if ( !( isset( $option["deleted"] ) && $option["deleted"] === true ) ):
+                        if ( !( isset( $option["deleted"] ) && $option["deleted"] == true ) ):
                             $label = $option["label"] ?? ""; ?>
                             <tr>
                                 <td>
@@ -311,12 +311,12 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                         <button type="submit" name="move_down" value="<?php echo esc_html( $key ) ?>" class="button small" >↓</button>
                                     <?php endif; ?>
                                 </td>
-                                    <td>
-                                        <?php if ( ( isset( $defaults[$field_key]["customizable"] ) && $defaults[$field_key]["customizable"] === "all" )
-                                            || !isset( $defaults[$field_key]["default"][$key] )) : ?>
-                                        <button type="submit" name="delete_option" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "Hide", 'disciple_tools' ) ?></button>
-                                        <?php endif; ?>
-                                    </td>
+                                <td>
+                                    <?php if ( ( isset( $field["customizable"] ) && $field["customizable"] === "all" )
+                                        || !isset( $field["default"][$key] )) : ?>
+                                    <button type="submit" name="delete_option" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "Hide", 'disciple_tools' ) ?></button>
+                                    <?php endif; ?>
+                                </td>
                             </tr>
                             <?php $first = false;
                         endif;
@@ -324,7 +324,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     <!--                <tr style="padding-top:10px; border-top:solid black;"><td>Deleted options:</td></tr>-->
                     <?php foreach ( $field_options as $key => $option ) :
                         $label = $option["label"] ?? "";
-                        if ( isset( $option["deleted"] ) && $option["deleted"] === true ): ?>
+                        if ( isset( $option["deleted"] ) && $option["deleted"] == true ): ?>
                             <tr style="background-color: #eee">
                                 <td><?php echo esc_html( $key ) ?></td>
                                 <td><?php echo esc_html( $label ) ?></td>

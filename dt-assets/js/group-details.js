@@ -1,5 +1,6 @@
 /* global jQuery:false, wpApiGroupsSettings:false, _:false */
 
+let typeaheadTotals = {}
 jQuery(document).ready(function($) {
 
   let group = wpApiGroupsSettings.group
@@ -38,7 +39,7 @@ jQuery(document).ready(function($) {
     template: function (query, item) {
       return `<span class="row">
         <span class="avatar"><img src="{{avatar}}"/> </span>
-        <span>${item.name}</span>
+        <span>${_.escape( item.name )}</span>
       </span>`
     },
     dynamic: true,
@@ -82,87 +83,128 @@ jQuery(document).ready(function($) {
       shareTypeahead = TYPEAHEADS.share("group", groupId)
     }
   })
-
-  /**
-   * Follow
-   */
-  $('.follow.switch-input').change(function () {
-    let follow = $(this).is(':checked')
-    let update = {
-      follow: {values:[{value:wpApiGroupsSettings.current_user_id, delete:!follow}]},
-      unfollow: {values:[{value:wpApiGroupsSettings.current_user_id, delete:follow}]}
-    }
-    API.save_field_api( "group", groupId, update)
-  })
+  
 
 
   /**
    * Update Needed
    */
-  $('.update-needed.switch-input').change(function () {
+  $('#update-needed.dt-switch').change(function () {
     let updateNeeded = $(this).is(':checked')
     $('.update-needed-notification').toggle(updateNeeded)
-    API.save_field_api( "group", groupId, {"requires_update":updateNeeded})
+    API.save_field_api( "group", groupId, {"requires_update":updateNeeded}).then(resp=>{
+      group = resp
+    })
   })
-  $('#update-needed')[0].addEventListener('comment_posted', function (e) {
-    if ( $(e.target).prop('checked') ){
-      API.get_post("group",  groupId ).then(g=>{
-        group = g
-        $('.update-needed-notification').toggle(group.requires_update === true)
-        $('#update-needed').prop("checked", group.requires_update === true)
-
+  $('#content')[0].addEventListener('comment_posted', function (e) {
+    if ( _.get(group, "requires_update") === true ){
+      API.get_post("group",  groupId ).then(resp=>{
+        group = resp
+        groupUpdated(_.get(group, "requires_update") === true )
       }).catch(err => { console.error(err) })
     }
   }, false);
 
-
+  function groupUpdated(updateNeeded) {
+    $('.update-needed-notification').toggle(updateNeeded)
+    $('#update-needed').prop("checked", updateNeeded)
+  }
   /**
-   * Locations
+   * Geonames
    */
-  $.typeahead({
-    input: '.js-typeahead-locations',
-    minLength: 0,
-    accent: true,
-    searchOnFocus: true,
-    maxItem: 20,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
-    source: TYPEAHEADS.typeaheadSource('locations', 'dt/v1/locations/compact/'),
-    display: "name",
-    templateValue: "{{name}}",
-    dynamic: true,
-    multiselect: {
-      matchOn: ["ID"],
-      data: function () {
-        return group.locations.map(g=>{
-          return {ID:g.ID, name:g.post_title}
-        })
-      }, callback: {
-        onCancel: function (node, item) {
-          _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
-          editFieldsUpdate.locations.values.push({value:item.ID, delete:true})
+  // let loadGeonameTypeahead = ()=>{
+  //   if (!window.Typeahead['.js-typeahead-geonames']){
+      $.typeahead({
+        input: '.js-typeahead-geonames',
+        minLength: 0,
+        accent: true,
+        searchOnFocus: true,
+        maxItem: 20,
+        template: function (query, item) {
+          return `<span>${_.escape(item.name)}</span>`
+        },
+        dropdownFilter: [{
+          key: 'group',
+          value: 'focus',
+          template: 'Regions of Focus',
+          all: 'All Locations'
+        }],
+        source: {
+          focus: {
+            display: "name",
+            ajax: {
+              url: wpApiShare.root + 'dt/v1/mapping_module/search_geonames_by_name',
+              data: {
+                s: "{{query}}",
+                filter: function () {
+                  return _.get(window.Typeahead['.js-typeahead-geonames'].filters.dropdown, 'value', 'all')
+                }
+              },
+              beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+              },
+              callback: {
+                done: function (data) {
+                  if (typeof typeaheadTotals !== "undefined") {
+                    typeaheadTotals.field = data.total
+                  }
+                  return data.geonames
+                }
+              }
+            }
+          }
+        },
+        display: "name",
+        templateValue: "{{name}}",
+        dynamic: true,
+        multiselect: {
+          matchOn: ["ID"],
+          data: function () {
+            return (group.geonames || []).map(g=>{
+              return {ID:g.id, name:g.label}
+            })
+
+          }, callback: {
+            onCancel: function (node, item) {
+              _.pullAllBy(editFieldsUpdate.geonames.values, [{value:item.ID}], "value")
+              editFieldsUpdate.geonames.values.push({value:item.ID, delete:true})
+            }
+          }
+        },
+        callback: {
+          onClick: function(node, a, item, event){
+            if (!editFieldsUpdate.geonames){
+              editFieldsUpdate.geonames = { "values": [] }
+            }
+            _.pullAllBy(editFieldsUpdate.geonames.values, [{value:item.ID}], "value")
+            editFieldsUpdate.geonames.values.push({value:item.ID})
+            this.addMultiselectItemLayout(item)
+            event.preventDefault()
+            this.hideLayout();
+            this.resetInput();
+          },
+          onReady(){
+            this.filters.dropdown = {key: "group", value: "focus", template: "Regions of Focus"}
+            this.container
+              .removeClass("filter")
+              .find("." + this.options.selector.filterButton)
+              .html("Regions of Focus");
+          },
+          onResult: function (node, query, result, resultCount) {
+            resultCount = typeaheadTotals.geonames
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $('#geonames-result-container').html(text);
+          },
+          onHideLayout: function () {
+            $('#geonames-result-container').html("");
+          }
         }
-      }
-    },
-    callback: {
-      onClick: function(node, a, item, event){
-        _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
-        editFieldsUpdate.locations.values.push({value:item.ID})
-        this.addMultiselectItemLayout(item)
-        event.preventDefault()
-        this.hideLayout();
-        this.resetInput();
-      },
-      onResult: function (node, query, result, resultCount) {
-        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-        $('#locations-result-container').html(text);
-      },
-      onHideLayout: function () {
-        $('#locations-result-container').html("");
-      }
-    }
-  });
+      });
+  //   }
+  // }
+
+
+
 
   let peopleGroupList = $('.people_groups-list')
   /**
@@ -246,7 +288,7 @@ jQuery(document).ready(function($) {
       },
       href: function(item){
         if (item){
-          return `${window.wpApiShare.site_url}/groups/${item.ID}`
+          return `${_.escape(window.wpApiShare.site_url)}/groups/${_.escape( item.ID )}`
         }
       }
     },
@@ -310,7 +352,7 @@ jQuery(document).ready(function($) {
       },
       href: function(item){
         if (item){
-          return `${window.wpApiShare.site_url}/groups/${item.ID}`
+          return `${_.escape(window.wpApiShare.site_url)}/groups/${_.escape( item.ID )}`
         }
       }
     },
@@ -373,7 +415,7 @@ jQuery(document).ready(function($) {
       },
       href: function(item){
         if (item){
-          return `${window.wpApiShare.site_url}/groups/${item.ID}`
+          return `${_.escape(window.wpApiShare.site_url)}/groups/${item.ID}`
         }
       }
     },
@@ -423,7 +465,7 @@ jQuery(document).ready(function($) {
     API.create_group({title, parent_group_id: groupId, group_type:"group"})
       .then((newGroup)=>{
         $(".reveal-after-group-create").show()
-        $("#new-group-link").html(`<a href="${newGroup.permalink}">${title}</a>`)
+        $("#new-group-link").html(`<a href="${_.escape( newGroup.permalink )}">${_.escape( title )}</a>`)
         $(".hide-after-group-create").hide()
         $('#go-to-group').attr('href', newGroup.permalink);
         Typeahead['.js-typeahead-child_groups'].addMultiselectItemLayout({ID:newGroup.post_id.toString(), name:title})
@@ -440,9 +482,9 @@ jQuery(document).ready(function($) {
   $("#add-new-address").on("click", function () {
     $('#edit-contact_address').append(`
       <li style="display: flex">
-        <textarea rows="3" class="contact-input" data-type="contact_address"></textarea>
+        <textarea rows="3" class="contact-input" data-type="contact_address" dir="auto"></textarea>
         <button class="button clear delete-button" data-id="new">
-          <img src="${wpApiGroupsSettings.template_dir}/dt-assets/images/invalid.svg">
+          <img src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/invalid.svg">
         </button>
     </li>`)
   })
@@ -496,7 +538,7 @@ jQuery(document).ready(function($) {
       }
     }
   });
-  
+
   /**
    * coaches
    */
@@ -549,16 +591,16 @@ jQuery(document).ready(function($) {
 
   $("#open-edit").on("click", function () {
     editFieldsUpdate = {
-      locations : { values: [] },
       people_groups : { values: [] },
+      geonames : { values: [] }
     }
-    $('#group-details-edit #title').val( group.name );
+    $('#group-details-edit #title').html( _.escape(group.name) );
     let addressHTML = "";
     (group.contact_address|| []).forEach(field=>{
       addressHTML += `<li style="display: flex">
-        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address">${field.value}</textarea>
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${_.escape(field.value)}</textarea>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
-            <img src="${wpApiGroupsSettings.template_dir}/dt-assets/images/invalid.svg">
+            <img src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/invalid.svg">
         </button>
       </li>`
     })
@@ -566,7 +608,7 @@ jQuery(document).ready(function($) {
 
 
     $('#group-details-edit').foundation('open');
-    ["locations", "people_groups"].forEach(t=>{
+    ["geonames", "people_groups"].forEach(t=>{
       Typeahead[`.js-typeahead-${t}`].adjustInputSize()
     })
   })
@@ -576,27 +618,40 @@ jQuery(document).ready(function($) {
    * Save group details updates
    */
   $('#save-edit-details').on('click', function () {
+    let contactInput = $(".contact-input")
+    contactInput.each((index, entry)=>{
+      if ( !$(entry).attr("id") ){
+        let val = $(entry).val()
+        let channelType = $(entry).data("type")
+        if ( !editFieldsUpdate[channelType]){
+          editFieldsUpdate[channelType] = {values:[]}
+        }
+        editFieldsUpdate[channelType].values.push({value:val})
+      }
+    })
     $(this).toggleClass("loading")
       API.save_field_api( "group", groupId, editFieldsUpdate).then((updatedGroup)=>{
       group = updatedGroup
       $(this).toggleClass("loading")
       resetDetailsFields(group)
       $(`#group-details-edit`).foundation('close')
-    }).catch(handelAjaxError)
+    }).catch(handleAjaxError)
   })
 
   $("#group-details-edit").on('change', '.contact-input', function() {
     let value = $(this).val()
     let field = $(this).data("type")
     let key = $(this).attr('id')
-    if (!editFieldsUpdate[field]){
-      editFieldsUpdate[field] = { values: [] }
-    }
-    let existing = _.find(editFieldsUpdate[field].values, {key})
-    if (existing){
-      existing.value = value
-    } else {
-      editFieldsUpdate[field].values.push({ key, value })
+    if ( key ){
+      if (!editFieldsUpdate[field]){
+        editFieldsUpdate[field] = { values: [] }
+      }
+      let existing = _.find(editFieldsUpdate[field].values, {key})
+      if (existing){
+        existing.value = value
+      } else {
+        editFieldsUpdate[field].values.push({ key, value })
+      }
     }
   }).on('click', '.delete-button', function () {
     let field = $(this).data('type')
@@ -629,31 +684,31 @@ jQuery(document).ready(function($) {
         }
         htmlField.append(`<li class="details-list ${_.escape(field.key)}">
             ${_.escape(field.value)}
-              <img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${wpApiGroupsSettings.template_dir}/dt-assets/images/verified.svg"/>
-              <img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${wpApiGroupsSettings.template_dir}/dt-assets/images/broken.svg"/>
+              <img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/verified.svg"/>
+              <img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/broken.svg"/>
             </li>
           `)
       })
       if (!fields || fields.length === 0 || allEmptyValues){
-        htmlField.append(`<li id="no-${fieldDesignator}">${wpApiGroupsSettings.translations["not-set"][fieldDesignator]}</li>`)
+        htmlField.append(`<li id="no-${_.escape( fieldDesignator )}">${_.escape( wpApiGroupsSettings.translations["not-set"][fieldDesignator] )}</li>`)
       }
     })
 
-    let connections = [ "locations", "people_groups", "leaders" ]
+    let connections = [ "geonames", "people_groups", "leaders" ]
     connections.forEach(connection=>{
       let htmlField = $(`.${connection}-list`).empty()
       if ( !group[connection] || group[connection].length === 0 ){
-        htmlField.append(`<li id="no-${connection}">${wpApiGroupsSettings.translations["not-set"][connection]}</li>`)
+        htmlField.append(`<li id="no-${_.escape( connection )}">${_.escape( wpApiGroupsSettings.translations["not-set"][connection] )}</li>`)
       } else {
         group[connection].forEach(field=>{
-          let title = `${_.escape(field.post_title)}`
+          let title = `${_.escape(field.post_title||field.label)}`
           if ( connection === "leaders" ){
-            title = `<a href="${_.escape(field.permalink)}">${title}</a>`
+            title = `<a href="${_.escape(field.permalink)}">${_.escape( title )}</a>`
           }
-          htmlField.append(`<li class="details-list ${_.escape(field.key)}">
+          htmlField.append(`<li class="details-list ${_.escape(field.key || field.id)}">
             ${title}
-              <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${wpApiGroupsSettings.template_dir}/dt-assets/images/verified.svg"/>
-              <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${wpApiGroupsSettings.template_dir}/dt-assets/images/broken.svg"/>
+              <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/verified.svg"/>
+              <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/broken.svg"/>
             </li>
           `)
         })
@@ -677,39 +732,21 @@ jQuery(document).ready(function($) {
    * Group Status
    */
 
-  let selectFiled = $('select.select-field')
-  selectFiled.on('change', function () {
-    let id = $(this).attr('id')
-    let val = $(this).val()
-    API.save_field_api(
-      'group',
-      groupId,
-      {[id]:val}
-    ).then(resp=>{
-      group = resp
-      resetDetailsFields(group);
-      if ( id === 'group_status' ){
-        statusChanged()
-      }
-    }).catch(err=>{
-      console.log(err)
-    })
+  $( document ).on( 'select-field-updated', function (e, newGroup, id, val) {
+    group = newGroup
+    resetDetailsFields(group);
+    if ( id === 'group_status' ){
+      statusChanged()
+    }
   })
-  $('input.text-input').change(function(){
-    const id = $(this).attr('id')
-    const val = $(this).val()
 
-    API.save_field_api('group', groupId, { [id]: val })
-      .catch(handelAjaxError)
-  })
-  $('input.number-input').on("blur", function(){
-    const id = $(this).attr('id')
-    const val = $(this).val()
+  $( document ).on( 'text-input-updated', function (e, newGroup, id, val){})
 
-    API.save_field_api('group', groupId, { [id]: val }).then((groupResp)=>{
-      group = groupResp
-    }).catch(handelAjaxError)
-  })
+  $( document ).on( 'number-input-updated', function (e, newGroup, id, val ){})
+
+  $( document ).on( 'dt_date_picker-updated', function (e, newGroup, id, date){})
+
+  $( document ).on( 'dt_multi_select-updated', function (e, newGroup, fieldKey, optionKey, action){})
 
   let statusChanged = ()=>{
     let statusSelect = $('#group_status')
@@ -718,7 +755,7 @@ jQuery(document).ready(function($) {
       `groups_custom_fields_settings.group_status.default.${status}.color`
     )
     if (statusColor){
-      statusSelect.css("background-color", statusColor)
+      statusSelect.css("background-color", _.escape( statusColor ))
     } else {
       statusSelect.css("background-color", "#4CAF50")
     }
@@ -774,44 +811,6 @@ jQuery(document).ready(function($) {
     })
   })
 
-  $('button.dt_multi_select').on('click',function () {
-    let fieldKey = $(this).data("field-key")
-    let optionKey = $(this).attr('id')
-    let fieldValue = {}
-    let data = {}
-    let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`)
-    field.addClass("submitting-select-button")
-    let action = "add"
-    if (field.hasClass("selected-select-button")){
-      fieldValue = {values:[{value:optionKey,delete:true}]}
-      action = "delete"
-    } else {
-      field.removeClass("empty-select-button")
-      field.addClass("selected-select-button")
-      fieldValue = {values:[{value:optionKey}]}
-    }
-    data[optionKey] = fieldValue
-    API.save_field_api('group', groupId, {[fieldKey]: fieldValue}).then((resp)=>{
-      field.removeClass("submitting-select-button selected-select-button")
-      field.blur();
-      field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
-    }).catch(err=>{
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").text(err.responseText)
-      field.removeClass("submitting-select-button selected-select-button")
-      field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
-    })
-  })
-  $('.dt_date_picker').datepicker({
-    dateFormat: 'yy-mm-dd',
-    onSelect: function (date) {
-      let id = $(this).attr('id')
-      API.save_field_api('group', groupId, { [id]: date }).catch(handelAjaxError)
-    },
-    changeMonth: true,
-    changeYear: true
-  })
 
   let memberList = $('.member-list')
   let memberCountInput = $('#member_count')
@@ -829,16 +828,16 @@ jQuery(document).ready(function($) {
       if( member.leader ){
         leaderHTML = `<i class="fi-foot small leader"></i>`
       }
-      let memberHTML = `<div class="member-row" style="" data-id="${member.ID}">
+      let memberHTML = `<div class="member-row" style="" data-id="${_.escape( member.ID )}">
           <div style="flex-grow: 1" class="member-status">
               <i class="fi-torso small"></i>
-              <a href="${window.wpApiShare.site_url}/contacts/${member.ID}">${_.escape(member.post_title)}</a>
+              <a href="${_.escape(window.wpApiShare.site_url)}/contacts/${_.escape( member.ID )}">${_.escape(member.post_title)}</a>
               ${leaderHTML}
           </div>
-          <button class="button clear make-leader member-row-actions" data-id="${member.ID}">
+          <button class="button clear make-leader member-row-actions" data-id="${_.escape( member.ID )}">
             <i class="fi-foot small"></i>
           </button>
-          <button class="button clear delete-member member-row-actions" data-id="${member.ID}">
+          <button class="button clear delete-member member-row-actions" data-id="${_.escape( member.ID )}">
             <i class="fi-x small"></i>
           </button>
         </div>`
@@ -893,9 +892,9 @@ jQuery(document).ready(function($) {
       overall_status: "active"
     }).then((newContact)=>{
         $(".reveal-after-contact-create").show()
-        $("#new-contact-link").html(`<a href="${newContact.permalink}">${title}</a>`)
+        $("#new-contact-link").html(`<a href="${_.escape( newContact.permalink )}">${_.escape( title )}</a>`)
         $(".hide-after-contact-create").hide()
-        $('#go-to-contact').attr('href', newContact.permalink);
+        $('#go-to-contact').attr('href', _.escape( newContact.permalink ));
         group.members.push({post_title:title, ID:newContact.post_id})
         if ( group.members.length > group.member_count ){
           group.member_count = group.members.length

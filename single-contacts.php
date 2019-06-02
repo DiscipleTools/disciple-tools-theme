@@ -6,7 +6,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 }
 
 ( function () {
-    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
+    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true, true );
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 
     if (isset( $_POST['unsure_all'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
@@ -62,16 +62,15 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             );
 
             foreach ( $contact as $key => $fields ) {
-                if ( strpos( $key, "contact_" ) === false ) {
-                    continue;
-                }
-                $split = explode( "_", $key );
-                if ( !isset( $split[1] ) ) {
-                    continue;
-                }
-                $new_key = $split[0] . "_" . $split[1];
-                foreach ( $contact[ $new_key ] ?? array() as $values ) {
-                    $current[ $new_key ][ $values['key'] ] = $values['value'];
+                if ( strpos( $key, "contact_" ) === 0 ) {
+                    $split = explode( "_", $key );
+                    if ( !isset( $split[1] ) ) {
+                        continue;
+                    }
+                    $new_key = $split[0] . "_" . $split[1];
+                    foreach ( $contact[ $new_key ] ?? array() as $values ) {
+                        $current[ $new_key ][ $values['key'] ] = $values['value'];
+                    }
                 }
             }
 
@@ -113,7 +112,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                         $update[$key]["values"][] = [ "value" => $field_value ];
                     }
                 }
-                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "key_select" && !isset( $contact[$key] )){
+                if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]["type"] === "key_select" && ( !isset( $contact[ $key ] ) || $key === "none" || $key === "" ) ) {
                     $update[$key] = $fields["key"];
                 }
                 if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "text" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
@@ -131,29 +130,28 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                     }
                 }
 
-                if ( strpos( $key, "contact_" ) === false ) {
-                    continue;
-                }
-                $split = explode( "_", $key );
-                if ( !isset( $split[1] ) ) {
-                    continue;
-                }
-                $new_key = $split[0] . "_" . $split[1];
-                if ( in_array( $new_key, array_keys( $update ) ) ) {
-                    continue;
-                }
-                $update[ $new_key ] = array(
-                    'values' => array()
-                );
-                foreach ( $non_master[ $new_key ] ?? array() as $values ) {
-                    $index = array_search( $values['value'], $current[ $new_key ] ?? array() );
-                    if ( $index !== false ) {
-                        $ignore_keys[] = $index;
+                if ( strpos( $key, "contact_" ) === 0 ) {
+                    $split = explode( "_", $key );
+                    if ( !isset( $split[1] ) ) {
                         continue;
                     }
-                    array_push( $update[ $new_key ]['values'], array(
-                        'value' => $values['value']
-                    ) );
+                    $new_key = $split[0] . "_" . $split[1];
+                    if ( in_array( $new_key, array_keys( $update ) ) ) {
+                        continue;
+                    }
+                    $update[ $new_key ] = array(
+                        'values' => array()
+                    );
+                    foreach ( $non_master[ $new_key ] ?? array() as $values ) {
+                        $index = array_search( $values['value'], $current[ $new_key ] ?? array() );
+                        if ( $index !== false ) {
+                            $ignore_keys[] = $index;
+                            continue;
+                        }
+                        array_push( $update[ $new_key ]['values'], array(
+                            'value' => $values['value']
+                        ) );
+                    }
                 }
             }
 
@@ -166,6 +164,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                 Disciple_Tools_Contacts::remove_fields( $master_id, $delete_fields, $ignore_keys );
             }
 
+//            @todo return error if update fails
             Disciple_Tools_Contacts::update_contact( $master_id, $update, true );
             Disciple_Tools_Contacts::merge_p2p( $master_id, $non_master_id );
             Disciple_Tools_Contacts::copy_comments( $master_id, $non_master_id );
@@ -377,12 +376,82 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                     <div class="baptism_date">
                                         <div class="section-subheader"><?php esc_html_e( 'Baptism Date', 'disciple_tools' )?></div>
                                         <div class="baptism_date">
-                                            <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" id="baptism-date-picker">
+                                            <input type="text" class="dt_date_picker"
+                                                   value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>"
+                                                   id="baptism_date">
                                         </div>
                                     </div>
 
                                 </div>
                             </section>
+
+                            <?php
+                            //get sections added by plugins
+                            $sections = apply_filters( 'dt_details_additional_section_ids', [], "contacts" );
+                            //get custom sections
+                            $custom_tiles = dt_get_option( "dt_custom_tiles" );
+                            foreach ( $custom_tiles["contacts"] as $tile_key => $tile_options ){
+                                if ( !in_array( $tile_key, $sections ) ){
+                                    $sections[] = $tile_key;
+                                }
+                                //remove section if hidden
+                                if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
+                                    if ( ( $index = array_search( $tile_key, $sections ) ) !== false) {
+                                        unset( $sections[ $index ] );
+                                    }
+                                }
+                            }
+
+                            foreach ( $sections as $section ){
+                                ?>
+                                <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
+                                    <div class="bordered-box">
+                                        <?php
+                                        //setup tile label if see by customizations
+                                        if ( isset( $custom_tiles["contacts"][$section]["label"] ) ){ ?>
+                                            <h3 class="section-header">
+                                                <?php echo esc_html( $custom_tiles["contacts"][$section]["label"] )?>
+                                                <button class="section-chevron chevron_down">
+                                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                                </button>
+                                                <button class="section-chevron chevron_up">
+                                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                                </button>
+
+                                            </h3>
+                                        <?php }
+                                        // let the plugin add section content
+                                        do_action( "dt_details_additional_section", $section, "contacts" );
+
+                                        ?>
+                                        <div class="section-body">
+                                            <?php
+                                            //setup the order of the tile fields
+                                            $order = $custom_tiles["contacts"][$section]["order"] ?? [];
+                                            foreach ( $contact_fields as $key => $option ){
+                                                if ( isset( $option["tile"] ) && $option["tile"] === $section ){
+                                                    if ( !in_array( $key, $order )){
+                                                        $order[] = $key;
+                                                    }
+                                                }
+                                            }
+                                            foreach ( $order as $field_key ) {
+                                                if ( !isset( $contact_fields[$field_key] ) ){
+                                                    continue;
+                                                }
+
+                                                $field = $contact_fields[$field_key];
+                                                if ( isset( $field["tile"] ) && $field["tile"] === $section){
+                                                    render_field_for_display( $field_key, $contact_fields, $contact );
+                                                }
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                </section>
+                                <?php
+                            }
+                            ?>
 
                             <section id="other" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box">
@@ -413,98 +482,6 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                 </div>
 
                             </section>
-
-                            <?php
-                            //get sections added by plugins
-                            $sections = apply_filters( 'dt_details_additional_section_ids', [], "contacts" );
-                            //get custom sections
-                            $custom_tiles = dt_get_option( "dt_custom_tiles" );
-                            foreach ( $custom_tiles["contacts"] as $tile_key => $tile_options ){
-                                if ( !in_array( $tile_key, $sections ) ){
-                                    $sections[] = $tile_key;
-                                }
-                                //remove section if hidden
-                                if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
-                                    if ( ( $index = array_search( $tile_key, $sections ) ) !== false) {
-                                        unset( $sections[ $index ] );
-                                    }
-                                }
-                            }
-
-                            foreach ( $sections as $section ){
-                                ?>
-                                <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                    <div class="bordered-box">
-                                        <?php
-                                        // let the plugin add section content
-                                        do_action( "dt_details_additional_section", $section, "contacts" );
-                                        //setup tile label if see by customizations
-                                        if ( isset( $custom_tiles["contacts"][$section]["label"] ) ){ ?>
-                                            <label class="section-header">
-                                                <?php echo esc_html( $custom_tiles["contacts"][$section]["label"] )?>
-                                            </label>
-                                        <?php }
-                                        //setup the order of the tile fields
-                                        $order = $custom_tiles["contacts"][$section]["order"] ?? [];
-                                        foreach ( $contact_fields as $key => $option ){
-                                            if ( isset( $option["tile"] ) && $option["tile"] === $section ){
-                                                if ( !in_array( $key, $order )){
-                                                    $order[] = $key;
-                                                }
-                                            }
-                                        }
-                                        foreach ( $order as $field_key ) {
-                                            if ( !isset( $contact_fields[$field_key] ) ){
-                                                continue;
-                                            }
-                                            $field = $contact_fields[$field_key];
-                                            if ( isset( $field["tile"] ) && $field["tile"] === $section){ ?>
-                                                <div class="section-subheader">
-                                                    <?php echo esc_html( $field["name"] )?>
-                                                </div>
-                                                <?php
-                                                /**
-                                                 * Key Select
-                                                 */
-                                                if ( $field["type"] === "key_select" ) : ?>
-                                                    <select class="select-field" id="<?php echo esc_html( $field_key ); ?>">
-                                                    <?php foreach ($field["default"] as $option_key => $option_value):
-                                                        $selected = isset( $contact[$field_key]["key"] ) && $contact[$field_key]["key"] === $option_key; ?>
-                                                        <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
-                                                            <?php echo esc_html( $option_value["label"] ) ?>
-                                                        </option>
-                                                    <?php endforeach; ?>
-                                                    </select>
-                                                <?php elseif ( $field["type"] === "multi_select" ) : ?>
-                                                    <div class="small button-group" style="display: inline-block">
-                                                        <?php foreach ( $contact_fields[$field_key]["default"] as $option_key => $option_value ): ?>
-                                                            <?php
-                                                                $class = ( in_array( $option_key, $contact[$field_key] ?? [] ) ) ?
-                                                                    "selected-select-button" : "empty-select-button"; ?>
-                                                                <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( $field_key ) ?>"
-                                                                        class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
-                                                                    <?php echo esc_html( $contact_fields[$field_key]["default"][$option_key]["label"] ) ?>
-                                                                </button>
-                                                        <?php endforeach; ?>
-                                                    </div>
-                                                <?php elseif ( $field["type"] === "text" ) :?>
-                                                    <input id="<?php echo esc_html( $field_key ) ?>" type="text"
-                                                           class="text-input"
-                                                           value="<?php echo esc_html( $contact[$field_key] ?? "" ) ?>"/>
-                                                <?php elseif ( $field["type"] === "date" ) :?>
-                                                    <input type="text" class="date-picker dt_date_picker"
-                                                           id="<?php echo esc_html( $field_key ) ?>"
-                                                           value="<?php echo esc_html( $contact[$field_key]["formatted"] ?? '' )?>">
-                                                <?php endif;
-                                            }
-                                        }
-                                        ?>
-
-                                    </div>
-                                </section>
-                                <?php
-                            }
-                            ?>
                         </div>
                     </div>
                 </div>
@@ -603,43 +580,6 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
-    </div>
-
-    <div class="reveal" id="edit-reason-modal" data-reveal>
-
-
-        <div class="medium-6 cell reason-field">
-            <?php
-            $status = $contact['overall_status']['key'] ?? '';
-            $has_status = isset( $contact_fields["reason_$status"]['name'] );
-            ?>
-            <div class="section-subheader">
-                <?php
-                if ( $has_status ) {
-                    echo esc_html( $contact_fields["reason_$status"]['name'] );
-                }
-                ?>
-            </div>
-            <?php
-            $status_style = !$has_status ? 'display:none;' : '';
-            $reason_field = $has_status ? "reason_$status" : '';
-            ?>
-            <select class="status-reason" style="<?php echo esc_html( $status_style ); ?>" data-field="<?php echo esc_html( $reason_field ) ?>">
-                <?php
-                if ( $has_status ) {
-                    foreach ( $contact_fields["reason_$status"]['default'] as $reason_key => $reason_label ) { ?>
-                        <option value="<?php echo esc_attr( $reason_key ) ?>"
-                            <?php
-                            $selected = $contact["reason_$status"]['key'] ?? '' === $reason_key ? 'selected' : '';
-                            echo esc_html( $selected ); ?>>
-                            <?php echo esc_html( $reason_label['label'] ); ?>
-                        </option>
-                        <?php
-                    }
-                }
-                ?>
-            </select>
-        </div>
     </div>
 
     <div class="reveal" id="create-tag-modal" data-reveal data-reset-on-close>
@@ -859,7 +799,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     <?php
 } )();
 
-if (isset( $_POST['merge'] ) && wp_verify_nonce( $_POST['dt_contact_nonce'] ?? null ) ) {
+if ( isset( $_POST['merge'], $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_contact_nonce'] ) ) ?? null ) ) {
     echo "<script type='text/javascript'>$(document).ready(function() { $('#merge-dupe-modal').click(); });</script>";
 }
 

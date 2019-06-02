@@ -1,5 +1,4 @@
 /* global jQuery:false, moment:false, _:false, commentsSettings:false */
-
 jQuery(document).ready(function($) {
 
   let commentPostedEvent = document.createEvent('Event');
@@ -71,9 +70,9 @@ jQuery(document).ready(function($) {
         if (contactsDetailsWpApiSettings){
           field = _.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings[${item.meta_key}].name`)
         }
-        item.action = `<a class="revert-activity dt_tooltip" data-id="${item.histid}">
+        item.action = `<a class="revert-activity dt_tooltip" data-id="${_.escape( item.histid )}">
           <img class="revert-arrow-img" src="${commentsSettings.template_dir}/dt-assets/images/undo.svg">
-          <span class="tooltiptext">${field || item.meta_key} </span>
+          <span class="tooltiptext">${_.escape( field || item.meta_key )} </span>
         </a>`
       } else {
         item.action = ''
@@ -92,6 +91,10 @@ jQuery(document).ready(function($) {
     saveTabs()
   })
 
+  /* We use the CSS 'white-space:pre-wrap' and '<div dir=auto>' HTML elements
+   * to match the behaviour that the user sees when editing the comment in an
+   * input with dir=auto set, especially when using a right-to-left language
+   * with multiple paragraphs. */
   let commentTemplate = _.template(`
   <div class="activity-block">
     <div>
@@ -102,7 +105,7 @@ jQuery(document).ready(function($) {
     <div class="activity-text">
     <% _.forEach(activity, function(a){
         if (a.comment){ %>
-            <div dir="auto" class="comment-bubble <%- a.comment_ID %>" style="white-space: pre-line"> <%= a.text /* not escaped on purpose */ %> </div>
+            <div dir="auto" class="comment-bubble <%- a.comment_ID %>" style="white-space: pre-wrap"><div dir=auto><%= a.text.replace(/\\n/g, '</div><div dir=auto>') /* not escaped on purpose */ %></div></div>
             <p class="comment-controls">
                <% if ( a.comment_ID ) { %>
                   <a class="open-edit-comment" data-id="<%- a.comment_ID %>" style="margin-right:5px">

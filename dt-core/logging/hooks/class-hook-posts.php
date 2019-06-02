@@ -47,11 +47,12 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                     'object_subtype' => '',
                     'object_id' => $post->ID,
                     'object_name' => $this->_draft_or_post_title( $post->ID ),
-                    'meta_id'           => ' ',
-                    'meta_key'          => ' ',
-                    'meta_value'        => ' ',
-                    'meta_parent'        => ' ',
-                    'object_note'       => ' ',
+                    'meta_id'           => '',
+                    'meta_key'          => '',
+                    'meta_value'        => '',
+                    'meta_parent'        => '',
+                    'object_note'       => '',
+                    'hist_time'         => time() - 1,
                 ]
             );
         }
@@ -156,9 +157,6 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 break;
             case 'groups':
                 $fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
-                break;
-            case 'locations':
-                $fields = Disciple_Tools_Location_Post_Type::instance()->get_custom_fields_settings();
                 break;
             default:
                 $fields = '';

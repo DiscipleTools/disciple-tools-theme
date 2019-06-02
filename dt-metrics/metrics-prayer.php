@@ -56,7 +56,6 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
-                'map_key' => dt_get_option( 'map_key' ),
                 'data' => $this->data(),
             ]
         );
@@ -68,7 +67,6 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
                 'title_1' => __( 'Prayer Lists', 'disciple_tools' ),
                 'title_2' => __( 'Praises for Steps Taken', 'disciple_tools' ),
                 'title_3' => __( 'Requests for Next Steps Needed', 'disciple_tools' ),
-                'label_counties' => __( 'Counties', 'disciple_tools' ),
             ],
         ];
     }

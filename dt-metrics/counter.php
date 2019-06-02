@@ -598,84 +598,6 @@ class Disciple_Tools_Queries
                 return $query;
                 break;
 
-            case 'locations':
-                $query = $wpdb->get_results("
-                    SELECT
-                      a.ID as id,
-                      a.post_parent  as parent_id,
-                      a.post_title as name
-                    FROM $wpdb->posts as a
-                    WHERE a.post_status = 'publish'
-                    AND a.post_type = 'locations'
-                ", ARRAY_A );
-                return $query;
-                break;
-
-            case 'total_locations':
-                $query = $wpdb->get_var("
-                    SELECT
-                      COUNT( a.ID )
-                    FROM $wpdb->posts as a
-                    WHERE a.post_status = 'publish'
-                    AND a.post_type = 'locations'
-                ");
-                return $query;
-                break;
-
-            case 'locations_hero_stats':
-                $query = $wpdb->get_row("
-                    SELECT
-                      (
-                        SELECT
-                          COUNT( a.ID )
-                        FROM $wpdb->posts as a
-                                    WHERE a.post_status = 'publish'
-                                    AND a.post_type = 'locations'
-                      ) as total_locations,
-                      (
-                        SELECT
-                          COUNT( DISTINCT a.ID )
-                        FROM $wpdb->posts as a
-                        WHERE a.post_status = 'publish'
-                              AND a.ID IN ( SELECT p2p_to FROM $wpdb->p2p WHERE p2p_type = 'contacts_to_locations' OR p2p_type = 'groups_to_locations' )
-                              AND a.post_type = 'locations'
-                      ) as total_active_locations,
-                      (
-                        SELECT
-                          COUNT( DISTINCT a.ID )
-                        FROM $wpdb->posts as a
-                        WHERE a.post_status = 'publish'
-                              AND a.ID NOT IN ( SELECT p2p_to FROM $wpdb->p2p WHERE p2p_type = 'contacts_to_locations' OR p2p_type = 'groups_to_locations' )
-                              AND a.post_type = 'locations'
-                      ) as total_inactive_locations,
-                      (
-                        SELECT
-                          COUNT( DISTINCT a.ID )
-                        FROM $wpdb->posts as a
-                        WHERE a.post_status = 'publish'
-                              AND a.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'types' AND meta_value = 'country' )
-                              AND a.post_type = 'locations'
-                      ) as total_countries,
-                      (
-                        SELECT
-                          COUNT( DISTINCT a.ID )
-                        FROM $wpdb->posts as a
-                        WHERE a.post_status = 'publish'
-                              AND a.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'types' AND meta_value = 'administrative_area_level_1' )
-                              AND a.post_type = 'locations'
-                      ) as total_states,
-                      (
-                        SELECT
-                          COUNT( DISTINCT a.ID )
-                        FROM $wpdb->posts as a
-                        WHERE a.post_status = 'publish'
-                              AND a.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'types' AND meta_value = 'administrative_area_level_2' )
-                              AND a.post_type = 'locations'
-                      ) as total_counties;
-                ");
-                return $query;
-                break;
-
             case 'user_hero_stats':
                 $query = $wpdb->get_row("
                     SELECT
@@ -830,6 +752,21 @@ class Disciple_Tools_Queries
                 return $query;
                 break;
 
+            case 'last_update_per_worker':
+                /**
+                 * Returns the date of last update for each user
+                 */
+                $query = $wpdb->get_results("
+                    SELECT
+                      MAX(hist_time) AS last_update,
+                      user_id
+                    FROM $wpdb->dt_activity_log
+                    WHERE 1=1
+                    GROUP BY user_id DESC;
+                ", ARRAY_A);
+                return $query;
+                break;
+
             case 'recent_seeker_path':
                 $days = 30;
                 if ( ! empty( $args['days'] ) ) {
@@ -838,7 +775,7 @@ class Disciple_Tools_Queries
                 $query = $wpdb->get_results( $wpdb->prepare( "
                     SELECT
                       object_id as id,
-                      object_name as name,
+                      posts.post_title as name,
                       meta_value as type,
                       p.p2p_to as location_id,
                       ( SELECT post_title FROM $wpdb->posts WHERE ID = p.p2p_to) as location_name,
@@ -847,6 +784,8 @@ class Disciple_Tools_Queries
                     LEFT JOIN $wpdb->p2p as p
                           ON l.object_id=p.p2p_from
                           AND p.p2p_type = 'contacts_to_locations'
+                    LEFT JOIN $wpdb->posts as posts
+                          ON posts.ID = l.object_id
                     WHERE action = 'field_update'
                           AND object_type = 'contacts'
                           AND object_subtype = 'seeker_path'
@@ -865,7 +804,7 @@ class Disciple_Tools_Queries
                 $query = $wpdb->get_results( $wpdb->prepare( "
                     SELECT
                       object_id as id,
-                      object_name as name,
+                      posts.post_title as name,
                       p.p2p_to as location_id,
                       ( SELECT post_title FROM $wpdb->posts WHERE ID = p.p2p_to) as location_name,
                       hist_time
@@ -873,6 +812,8 @@ class Disciple_Tools_Queries
                       LEFT JOIN $wpdb->p2p as p
                         ON l.object_id=p.p2p_from
                            AND p.p2p_type = 'contacts_to_locations'
+                      LEFT JOIN $wpdb->posts as posts
+                        ON posts.ID = l.object_id
                     WHERE meta_key = 'baptism_date'
                           AND meta_value > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL %d DAY ))
                     ORDER BY meta_value DESC
@@ -888,15 +829,17 @@ class Disciple_Tools_Queries
                 $query = $wpdb->get_results( $wpdb->prepare( "
                     SELECT
                       object_id as id,
-                      object_name as name,
+                      posts.post_title as name,
                       object_type as type,
                       p.p2p_to as location_id,
                       ( SELECT post_title FROM $wpdb->posts WHERE ID = p.p2p_to) as location_name,
                       hist_time
                     FROM $wpdb->dt_activity_log as l
                       LEFT JOIN $wpdb->p2p as p
-                      ON l.object_id=p.p2p_from
-                      AND ( p.p2p_type = 'groups_to_locations' OR p.p2p_type = 'contacts_to_locations' )
+                        ON l.object_id=p.p2p_from
+                        AND ( p.p2p_type = 'groups_to_locations' OR p.p2p_type = 'contacts_to_locations' )
+                      LEFT JOIN $wpdb->posts as posts
+                        ON posts.ID = l.object_id
                     WHERE action = 'created'
                       AND hist_time > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL %d DAY ))
                     ORDER BY hist_time DESC

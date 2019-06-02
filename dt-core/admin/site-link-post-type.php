@@ -1267,6 +1267,26 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             delete_option( $prefix . '_api_keys' );
         }
 
+        // Adds the type of connection to the site link system
+        public function default_site_link_type( $type ) {
+            $type['create_contacts'] = __( 'Create Contacts', 'disciple_tools' );
+            $type['create_update_contacts'] = __( 'Create and Update contacts', 'disciple_tools' );
+            return $type;
+        }
+
+        // Add the specific capabilities needed for the site to site linking.
+        public function default_site_link_capabilities( $args ) {
+            if ( 'create_contacts' === $args['connection_type'] ) {
+                $args['capabilities'][] = 'create_contacts';
+            }
+            if ( 'create_update_contacts' === $args['connection_type'] ) {
+                $args['capabilities'][] = 'create_contacts';
+                $args['capabilities'][] = 'update_contacts';
+            }
+
+            return $args;
+        }
+
         /**
          * Variables and Singleton
          */
@@ -1316,6 +1336,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     }
                 }
             }
+
+            add_filter( 'site_link_type', [ $this, 'default_site_link_type' ], 10, 1 );
+            add_filter( 'site_link_type_capabilities', [ $this, 'default_site_link_capabilities' ], 10, 1 );
         } // End __construct()
 
     } // End Class

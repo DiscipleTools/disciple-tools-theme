@@ -1,7 +1,7 @@
 <?php
 
 ( function () {
-    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
+    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true, true );
     $channel_list = Disciple_Tools_Contacts::get_channel_list();
     $current_user = wp_get_current_user();
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
@@ -13,16 +13,14 @@
     } ?>
 
 
-    <?php
-//    <!-- Requires update block -->
-    if ( isset( $contact['requires_update'] ) && $contact['requires_update'] === true ) { ?>
-    <section class="cell small-12 update-needed-notification">
+    <!-- Requires update block -->
+    <section class="cell small-12 update-needed-notification"
+             style="display: <?php echo esc_html( ( isset( $contact['requires_update'] ) && $contact['requires_update'] === true ) ? "block" : "none" ) ?> ">
         <div class="bordered-box detail-notification-box" style="background-color:#F43636">
             <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This contact needs an update', 'disciple_tools' ) ?>.</h4>
             <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?>.</p>
         </div>
     </section>
-    <?php } ?>
 
     <!-- Assigned to block -->
     <?php
@@ -198,13 +196,13 @@
                 <ul class="address"></ul>
             </div>
 
-            <!-- Locations -->
+            <!-- Geonames -->
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
                     <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
                 </div>
-                <ul class="locations-list"></ul>
+                <ul class="geonames-list"></ul>
             </div>
 
             <!-- People Groups -->
@@ -277,7 +275,7 @@
         </div>
     </section>
 
-    <div class="reveal" id="contact-details-edit" data-reveal>
+    <div class="reveal" id="contact-details-edit" data-reveal data-close-on-click="false">
         <h1><?php esc_html_e( "Edit Contact", 'disciple_tools' ) ?></h1>
         <div class="display-fields details-edit-fields">
             <div class="grid-x">
@@ -288,6 +286,7 @@
 
             </div>
 
+            <!-- Phone -->
             <div class="grid-x">
                 <div class="cell section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/phone.svg' ?>">
@@ -302,6 +301,7 @@
                 </ul>
             </div>
 
+            <!-- Email -->
             <div class="grid-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/email.svg' ?>">
@@ -310,36 +310,56 @@
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 </div>
-                <ul id="edit-contact_email" class="cell">
-
-                </ul>
+                <ul id="edit-contact_email" class="cell"></ul>
             </div>
 
+            <!-- Address -->
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
                     <?php esc_html_e( 'Address', 'disciple_tools' )?>
-                    <button id="add-new-address">
+                    <button id="add-new-address" data-open="geocode-address" >
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 </div>
-                <ul id="edit-contact_address" class="cell">
-                </ul>
+                <!-- list of addresses -->
+                <ul id="edit-contact_address" class="cell"></ul>
             </div>
 
             <div class="grix-x">
                 <div class="section-subheader cell">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
+                    <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
+                </div>
+                <div class="geonames">
+                    <var id="geonames-result-container" class="result-container"></var>
+                    <div id="geonames_t" name="form-geonames" class="scrollable-typeahead typeahead-margin-when-active">
+                        <div class="typeahead__container">
+                            <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-geonames"
+                                           name="geonames[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                           autocomplete="off">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Media -->
+            <div class="grix-x">
+                <div class="section-subheader cell">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
                     <?php esc_html_e( 'Social Media', 'disciple_tools' ) ?>
                     <button id="add-new-social-media">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 </div>
-                <ul id="edit-social" class="cell">
-
-                </ul>
+                <ul id="edit-social" class="cell"></ul>
             </div>
 
-
+            <!-- Sources -->
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
@@ -350,11 +370,11 @@
                     <div id="sources_t" name="form-sources" class="scrollable-typeahead">
                         <div class="typeahead__container">
                             <div class="typeahead__field">
-                                            <span class="typeahead__query">
-                                                <input class="js-typeahead-sources"
-                                                       name="sources[query]" placeholder="<?php esc_html_e( "Search sources", 'disciple_tools' ) ?>"
-                                                       autocomplete="off">
-                                            </span>
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-sources"
+                                           name="sources[query]" placeholder="<?php esc_html_e( "Search sources", 'disciple_tools' ) ?>"
+                                           autocomplete="off">
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -374,6 +394,8 @@
                     </ul>
                 <?php endif; ?>
             </div>
+
+            <!-- Gender -->
             <div class="grid-x grid-margin-x">
                 <div class="cell small-6">
                     <div class="section-subheader cell">
@@ -384,7 +406,7 @@
                         <?php
                         foreach ( $contact_fields['gender']['default'] as $gender_key => $option ) {
                             $gender_value = $option["label"] ?? "";
-                            if ( isset( $contact['gender'] ) &&
+                            if ( isset( $contact['gender']['key'] ) &&
                                  $contact['gender']['key'] === $gender_key){
                                 echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
                             } else {
@@ -394,6 +416,8 @@
                         ?>
                     </select>
                 </div>
+
+                <!-- Age -->
                 <div class="cell small-6">
                     <div class="section-subheader cell">
                         <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/contact-age.svg" ?>">
@@ -414,6 +438,8 @@
                     </select>
                 </div>
             </div>
+
+            <!-- People Groups -->
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
@@ -435,28 +461,9 @@
                 </div>
             </div>
 
-
-            <div class="grix-x">
-                <div class="section-subheader cell">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                    <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
-                </div>
-                <div class="locations">
-                    <var id="locations-result-container" class="result-container"></var>
-                    <div id="locations_t" name="form-locations" class="scrollable-typeahead typeahead-margin-when-active">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-locations"
-                                           name="locations[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
-                                           autocomplete="off">
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
+
+        <!-- Buttons -->
         <div>
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
                 <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
@@ -469,4 +476,46 @@
             </button>
         </div>
     </div>
+
+    <!-- Address Reveal -->
+    <div class="medium reveal geocode-address" id="geocode-address" data-reveal>
+        <h1>Add Address</h1>
+
+        <!-- address and validation-->
+        <label for="validate_addressnew">Address</label>
+        <div class="input-group">
+            <input type="text"
+                   placeholder="example: 1000 Broadway, Denver, CO 80126"
+                   class="profile-input input-group-field contact-input"
+                   name="validate_address"
+                   id="validate_addressnew"
+                   data-type="contact_address"
+                   value=""
+            />
+            <div class="input-group-button">
+                <input type="button" class="button"
+                       onclick="validate_group_address( jQuery('#validate_addressnew').val(), 'new')"
+                       value="Validate"
+                       id="validate_address_buttonnew">
+            </div>
+        </div>
+        <div id="possible-resultsnew">
+            <input type="hidden" name="address" id="address_new" value=""/>
+        </div>
+
+        <!-- drill down -->
+        <div id="geoname-encode-contact">
+
+        </div>
+
+        <!-- map -->
+        <div id="address-click-map"></div>
+        <p>
+            <button class="button" data-open="contact-details-edit" onclick="window.GEOCODEFUNCTIONS.getAddressInput()">Select</button>
+            <button class="button" data-open="contact-details-edit" data-close>Cancel</button>
+        </p>
+    </div>
+
+
+
 <?php } )(); ?>

@@ -1,5 +1,4 @@
 jQuery(document).ready(function() {
-    console.log( dtMetricsUsers )
 
     if( ! window.location.hash || '#workers_activity' === window.location.hash  ) {
         workers_activity()
@@ -20,7 +19,7 @@ function workers_activity() {
     let sourceData = dtMetricsUsers.data
     chartDiv.empty().html(`
         <span style="float:right;"><i class="fi-info primary-color"></i> </span>
-        <span class="section-header">${sourceData.translations.title_activity}</span>
+        <span class="section-header">${ sourceData.translations.title_activity }</span>
         
         <br><br>
         <div class="grid-x grid-padding-x grid-padding-y">
@@ -78,67 +77,67 @@ function workers_activity() {
     jQuery('#total_strategists').html( numberWithCommas( hero.total_strategists ) )
 
     // build charts
-    google.charts.load('current', {'packages':['corechart', 'line', 'table']});
+    drawLineChartLogins();
+    contact_progress_per_worker();
 
-    google.charts.setOnLoadCallback(drawLineChartLogins);
-    google.charts.setOnLoadCallback(contact_progress_per_worker);
+
 
     function drawLineChartLogins() {
-        let chartData = google.visualization.arrayToDataTable( sourceData.recent_activity );
-        let options = {
-            vAxis: {title: 'logins'},
-            chartArea: {
-                left: '5%',
-                width: "100%"
-                 },
-            legend: { position: 'bottom' }
-        };
-        let chart = new google.visualization.LineChart( document.getElementById('chart_line_logins') );
-
-        chart.draw(chartData, options);
+      let chart = am4core.create("chart_line_logins", am4charts.XYChart);
+      chart.data = sourceData.recent_activity
+      let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+      dateAxis.renderer.minGridDistance = 60;
+      let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+      let series = chart.series.push(new am4charts.LineSeries());
+      series.dataFields.valueY = "value";
+      series.dataFields.dateX = "date";
+      series.tooltipText = "{value}"
+      series.tooltip.pointerOrientation = "vertical";
     }
 
     function contact_progress_per_worker() {
-
-        jQuery.ajax({
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            url: dtMetricsUsers.root + 'dt/v1/metrics/workers/contact_progress_per_worker',
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', dtMetricsUsers.nonce);
-            },
+      jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: dtMetricsUsers.root + 'dt/v1/metrics/workers/contact_progress_per_worker',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtMetricsUsers.nonce);
+        },
+      })
+      .fail(function (err) {
+        console.log("error")
+        console.log(err)
+        jQuery("#errors").append(err.responseText)
+      })
+      .done(function (response) {
+        let headerArray = response.splice(0,1)[0]
+        let headerRows = ``
+        headerArray.forEach( (header, index) =>{
+          headerRows += `<th onclick="sortTable( ${index} )">${_.escape(header)}</th>`
         })
-            .done(function (response) {
-                let chartData = google.visualization.arrayToDataTable( response );
-                let options = {
-                    chartArea: {
-                        left: '5%',
-                        top: '7%',
-                        width: "100%",
-                        height: "85%" },
-                    legend: { position: 'bottom' },
-                    alternatingRowStyle: true,
-                    sort: 'enable',
-                    // showRowNumber: true,
-                    sortColumn: 0,
-                    width: '100%',
+        let tableBody = ``
+        response.forEach( row=>{
+          tableBody += `<tr>`
+          row.forEach( cell =>{
+            tableBody += `<td>${_.escape(cell)}</td>`
+          })
+          tableBody += `</tr>`
+        })
 
-                };
-                let chart = new google.visualization.Table( document.getElementById('contact_progress_per_worker') );
-
-                chart.draw(chartData, options);
-
-                jQuery('.google-visualization-table-td:contains(0)').filter(function() {
-                    return jQuery(this).text() === "0";
-                }).addClass("grey");
-
-            })
-            .fail(function (err) {
-                console.log("error")
-                console.log(err)
-                jQuery("#errors").append(err.responseText)
-            })
+        $('#contact_progress_per_worker').empty().html(`
+          <div class="scrolling-wrapper">
+          <table id="workers" class="hover table-scroll striped">
+            <thead style="background-color: lightgrey;">
+              ${headerRows}
+            </thead>
+            <tbody id="workers_table_body">
+                ${tableBody}
+            </tbody>
+          </table>
+          </div>
+        `)
+    })
     }
 
 }
@@ -151,7 +150,7 @@ function contact_follow_up_pace(){
 
     chartDiv.empty().html(`
       <span class="text-small" style="float:right; font-size:.6em; color: gray;">data as of <span id="pace-timestamp"></span> - <a onclick="refresh_follow_up_pace( 1 )">refresh</a></span>
-      <span class="section-header">`+ localizedObject.data.translations.title_response +`</span>
+      <span class="section-header">${ localizedObject.data.translations.title_response }</span>
       
       <hr style="max-width:100%;">
       <span><a onclick="jQuery('.notes').toggle();" style="float:right; font-size:.6em;">Show Chart Notes</a> </span>
@@ -173,8 +172,6 @@ function contact_follow_up_pace(){
       
     `)
 
-    google.charts.load('current', {'packages':['corechart', 'table']});
-
     refresh_follow_up_pace()
 
     // re-initialize foundation objects
@@ -188,7 +185,7 @@ function year_list() {
     let fullDate = new Date()
     let date = fullDate.getFullYear()
     let currentYear = fullDate.getFullYear()
-    let options = `<option value="all">${dtMetricsUsers.data.translations.label_all_time}</option>`
+    let options = `<option value="all">${ dtMetricsUsers.data.translations.label_all_time }</option>`
     while (i < 15) {
         options += `<option value="${date}" ${ date === currentYear && 'selected'}>${date}</option>`;
         i++;
@@ -212,7 +209,6 @@ function refresh_follow_up_pace( force = 0 ) {
         },
     })
         .done(function (response) {
-            console.log(response)
             jQuery('#coalition_assigned_to_accepted').html(response['acp'])
 
             let date = new Date(response['timestamp']*1000);
@@ -227,26 +223,32 @@ function refresh_follow_up_pace( force = 0 ) {
         })
 }
 function drawContactsProgressPerUser( data ) {
-    let chartData = google.visualization.arrayToDataTable( data );
+  let headerArray = data.splice(0,1)[0]
+  let headerRows = ``
+  headerArray.forEach( (header, index) =>{
+    headerRows += `<th onclick="sortTable( ${index} )">${_.escape(header)}</th>`
+  })
+  let tableBody = ``
+  data.forEach( row=>{
+    tableBody += `<tr>`
+    row.forEach( cell =>{
+      tableBody += `<td>${cell}</td>`
+    })
+    tableBody += `</tr>`
+  })
 
-    let options = {
-        chartArea: {
-            left: '5%',
-            top: '7%',
-            width: "100%",
-            height: "85%" },
-        legend: { position: 'bottom' },
-        alternatingRowStyle: true,
-        allowHtml: true,
-        sortColumn: 0,
-        sort: 'enable',
-        // showRowNumber: true,
-        width: '100%',
-
-    };
-    let chart = new google.visualization.Table( document.getElementById('followup-pace') );
-
-    chart.draw(chartData, options);
+  $('#followup-pace').empty().html(`
+    <div class="scrolling-wrapper">
+    <table id="workers" class="hover table-scroll striped">
+      <thead style="background-color: lightgrey;">
+        ${headerRows}
+      </thead>
+      <tbody id="workers_table_body">
+          ${tableBody}
+      </tbody>
+    </table>
+    </div>
+  `)
 }
 
 
@@ -259,7 +261,7 @@ window.show_follow_up_pace = function show_follow_up_pace(){
     // TODO: escape this properly
     chartDiv.empty().html(`
       <span class="text-small" style="float:right; font-size:.6em; color: gray;">data as of <span id="pace-timestamp"></span> - <a onclick="refresh_worker_pace_data()">refresh</a></span>
-      <span class="section-header">`+ localizedObject.data.translations.title_response +`</span>
+      <span class="section-header">${ localizedObject.data.translations.title_response }</span>
       
       <hr style="max-width:100%;">
       <span><a onclick="jQuery('.notes').toggle();" style="float:right; font-size:.6em;">Show Chart Notes</a> </span>
@@ -333,7 +335,6 @@ function refresh_worker_pace_data() {
         },
     })
         .done(function (response) {
-            console.log(response)
             jQuery("#coalition_time_to_attempt").html(response.coalition_time_to_attempt)
             jQuery("#pace-timestamp").html(response.timestamp)
             add_worker_pace_table( response.data )

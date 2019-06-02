@@ -40,6 +40,8 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
         wp_enqueue_script( 'dt_metrics_personal_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-personal.js', [
             'jquery',
             'jquery-ui-core',
+            'amcharts-core',
+            'amcharts-charts'
         ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-personal.js' ), true );
 
         wp_localize_script(
@@ -49,7 +51,6 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
-                'map_key' => dt_get_option( 'map_key' ),
                 'data' => $this->overview(),
             ]
         );
@@ -78,6 +79,10 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
                 'label_my_follow_up_progress' => __( 'Follow-up of my active contacts', 'disciple_tools' ),
                 'label_group_needing_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
                 'label_stats_as_of' => strtolower( __( 'stats as of', 'disciple_tools' ) ),
+                'label_pre_group' => __( 'Pre-Group', 'disciple_tools' ),
+                'label_group' => __( 'Group', 'disciple_tools' ),
+                'label_church' => __( 'Church', 'disciple_tools' ),
+                'label_generation' => __( 'Generation', 'disciple_tools' ),
             ],
             'hero_stats'        => self::chart_my_hero_stats(),
             'contacts_progress' => self::chart_contacts_progress(),
