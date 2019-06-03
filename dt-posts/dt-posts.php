@@ -216,7 +216,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'status' => 400
             ] );
         }
-        $existing_contact = self::get_post( $post_type, $post_id );
+        $existing_contact = self::get_post( $post_type, $post_id, false, false );
 
         if ( isset( $fields['title'] ) && $existing_contact["title"] != $fields['title'] ) {
             wp_update_post( [
