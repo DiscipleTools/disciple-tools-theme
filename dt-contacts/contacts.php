@@ -230,7 +230,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @since  0.1.0
      */
     public static function update_contact( int $contact_id, array $fields, $check_permissions = true, bool $silent = false ) {
-        return DT_Posts::update_post( 'contacts', $contact_id, $fields, $silent );
+        return DT_Posts::update_post( 'contacts', $contact_id, $fields, $silent, $check_permissions );
     }
 
     //add the required fields to the DT_Post::create_contact() function
