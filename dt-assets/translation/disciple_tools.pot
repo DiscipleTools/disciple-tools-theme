@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Disciple Tools\n"
-"POT-Creation-Date: 2019-06-03 10:18+0100\n"
+"POT-Creation-Date: 2019-06-03 21:17+0100\n"
 "PO-Revision-Date: 2018-01-09 14:10-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -32,6 +32,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-10: node_modules\n"
 "X-Poedit-SearchPathExcluded-11: dt-locations/utilities\n"
 "X-Poedit-SearchPathExcluded-12: *.js\n"
+"X-Poedit-SearchPathExcluded-13: dt-mapping/mapping-admin.php\n"
 
 #: 403.php:9
 msgid "Permission denied"
@@ -1424,7 +1425,7 @@ msgid "Coached"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:569
-msgid "Baptized_by"
+msgid "Baptized by"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:782 template-settings.php:110
@@ -1844,66 +1845,8 @@ msgstr ""
 msgid "Workers"
 msgstr ""
 
-#: dt-mapping/mapping-admin.php:150 dt-mapping/mapping-admin.php:151
-#: dt-mapping/mapping-admin.php:322 dt-mapping/mapping-module-config.php:79
-#: dt-mapping/mapping.php:303
+#: dt-mapping/mapping-module-config.php:79 dt-mapping/mapping.php:303
 msgid "Mapping"
-msgstr ""
-
-#: dt-mapping/mapping-admin.php:283
-msgid "You do not have sufficient permissions to access this page."
-msgstr ""
-
-#: dt-mapping/mapping-admin.php:327 dt-mapping/mapping-admin.php:333
-#: dt-mapping/mapping-admin.php:339 dt-mapping/mapping-admin.php:345
-#: dt-mapping/mapping-admin.php:350 dt-mapping/mapping-admin.php:355
-#: dt-mapping/mapping-admin.php:360 dt-mapping/mapping-admin.php:365
-#: dt-mapping/mapping-admin.php:370 dt-mapping/mapping-admin.php:375
-msgid "nav-tab-active"
-msgstr ""
-
-#: dt-mapping/mapping-admin.php:328
-msgid "General Settings"
-msgstr ""
-
-#: dt-mapping/mapping-admin.php:334
-msgid "Mapping Focus"
-msgstr ""
-
-#: dt-mapping/mapping-admin.php:340
-msgid "Migrating From Locations"
-msgstr ""
-
-#: dt-mapping/mapping-admin.php:346
-msgid "Polygons"
-msgstr ""
-
-#: dt-mapping/mapping-admin.php:351
-msgid "Geocoding"
-msgstr ""
-
-#: dt-mapping/mapping-admin.php:356
-msgid "Names"
-msgstr ""
-
-#: dt-mapping/mapping-admin.php:361
-msgid "Population"
-msgstr ""
-
-#: dt-mapping/mapping-admin.php:366
-msgid "Sub-Locations"
-msgstr ""
-
-#: dt-mapping/mapping-admin.php:371
-msgid "Migration"
-msgstr ""
-
-#: dt-mapping/mapping-admin.php:376
-msgid "Credits"
-msgstr ""
-
-#: dt-mapping/mapping-admin.php:1970
-msgid "You must save post before geocoding."
 msgstr ""
 
 #: dt-mapping/mapping.php:172

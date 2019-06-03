@@ -566,7 +566,7 @@ class Disciple_Tools_Contact_Post_Type
             "p2p_key" => "baptizer_to_baptized"
         ];
         $fields["baptized_by"] = [
-            "name" => __( "Baptized_by", "disciple_tools" ),
+            "name" => __( "Baptized by", "disciple_tools" ),
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "baptizer_to_baptized"
