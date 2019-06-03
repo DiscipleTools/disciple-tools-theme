@@ -159,7 +159,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return int | WP_Error
      */
     public static function create_contact( array $fields = [], $check_permissions = true, $silent = false ) {
-        $contact = DT_Posts::create_post( 'contacts', $fields, $silent );
+        $contact = DT_Posts::create_post( 'contacts', $fields, $silent, $check_permissions );
         return is_wp_error( $contact ) ? $contact : $contact["ID"];
     }
 
