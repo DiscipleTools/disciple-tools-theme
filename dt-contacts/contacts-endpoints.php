@@ -34,6 +34,8 @@ class Disciple_Tools_Contacts_Endpoints
     private $context = "dt";
     private $namespace;
     private $public_namespace;
+    private $namespace_v2 = 'dt-posts/v2';
+
 
     /**
      * Disciple_Tools_Contacts_Endpoints constructor.
@@ -48,6 +50,14 @@ class Disciple_Tools_Contacts_Endpoints
      * Add the api routes
      */
     public function add_api_routes() {
+        //setup v2
+        $this->setup_contacts_specific_endpoints( $this->namespace_v2 );
+        //setup v1
+        $this->setup_contacts_specific_endpoints( $this->namespace );
+
+        /**
+         * Deprecated v1 endpoints
+         */
         register_rest_route(
             $this->namespace, '/dt-public/contact/create', [
                 'methods'  => 'POST',
@@ -73,13 +83,6 @@ class Disciple_Tools_Contacts_Endpoints
             ]
         );
         register_rest_route(
-            $this->namespace, '/dt-public/contact/update', [
-                'methods'  => 'POST',
-                'callback' => [ $this, 'public_update_contact' ],
-            ]
-        );
-
-        register_rest_route(
             $this->namespace, '/contacts', [
                 "methods"  => "GET",
                 "callback" => [ $this, 'get_viewable_contacts' ],
@@ -97,12 +100,6 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'get_contacts_compact' ],
             ]
         );
-//        register_rest_route(
-//            $this->namespace, '/user/(?P<user_id>\d+)/team/contacts', [
-//                "methods"  => "GET",
-//                "callback" => [ $this, 'get_team_contacts' ],
-//            ]
-//        );
         register_rest_route(
             $this->namespace, '/contact/(?P<id>\d+)/comments', [
                 "methods"  => "GET",
@@ -146,33 +143,17 @@ class Disciple_Tools_Contacts_Endpoints
             ]
         );
         register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/revert/(?P<activity_id>\d+)', [
-                "methods"  => "GET",
-                "callback" => [ $this, 'revert_activity' ],
-            ]
-        );
-
-        register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/accept', [
-                "methods"  => "POST",
-                "callback" => [ $this, 'accept_contact' ],
-            ]
-        );
-
-        register_rest_route(
             $this->namespace, '/contact/(?P<id>\d+)/shared-with', [
                 "methods"  => "GET",
                 "callback" => [ $this, 'shared_with' ],
             ]
         );
-
         register_rest_route(
             $this->namespace, '/contact/(?P<id>\d+)/remove-shared', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'remove_shared' ],
             ]
         );
-
         register_rest_route(
             $this->namespace, '/contact/(?P<id>\d+)/add-shared', [
                 "methods"  => "POST",
@@ -180,40 +161,15 @@ class Disciple_Tools_Contacts_Endpoints
             ]
         );
         register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/following', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_following' ],
+            ]
+        );
+        register_rest_route(
             $this->namespace, '/contact/multi-select-options', [
                 "methods" => "GET",
                 "callback" => [ $this, 'get_multi_select_options' ]
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/contacts/mergedetails', [
-                "methods" => "GET",
-                "callback" => [ $this, 'get_viewable_contacts' ]
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/contact/counts', [
-                "methods" => "GET",
-                "callback" => [ $this, 'get_contact_counts' ]
-            ]
-        );
-
-        register_rest_route(
-            $this->namespace, '/contact/list-sources', [
-                "methods" => "GET",
-                "callback" => [ $this, 'list_sources' ],
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/duplicates', [
-                "methods"  => "GET",
-                "callback" => [ $this, 'get_duplicates_on_contact' ],
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/contact/transfer', [
-                "methods"  => "POST",
-                "callback" => [ $this, 'contact_transfer' ],
             ]
         );
         register_rest_route(
@@ -228,10 +184,51 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'get_settings' ],
             ]
         );
+
+    }
+
+    private function setup_contacts_specific_endpoints( string $namespace ){
         register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/following', [
+            $namespace, '/contacts/mergedetails', [
+                "methods" => "GET",
+                "callback" => [ $this, 'get_viewable_contacts' ]
+            ]
+        );
+        register_rest_route(
+            $namespace, '/contact/counts', [
+                "methods" => "GET",
+                "callback" => [ $this, 'get_contact_counts' ]
+            ]
+        );
+
+        register_rest_route(
+            $namespace, '/contact/list-sources', [
+                "methods" => "GET",
+                "callback" => [ $this, 'list_sources' ],
+            ]
+        );
+        register_rest_route(
+            $namespace, '/contacts/(?P<id>\d+)/duplicates', [
                 "methods"  => "GET",
-                "callback" => [ $this, 'get_following' ],
+                "callback" => [ $this, 'get_duplicates_on_contact' ],
+            ]
+        );
+        register_rest_route(
+            $namespace, '/contact/transfer', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'contact_transfer' ],
+            ]
+        );
+        register_rest_route(
+            $namespace, '/contacts/(?P<id>\d+)/revert/(?P<activity_id>\d+)', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'revert_activity' ],
+            ]
+        );
+        register_rest_route(
+            $namespace, '/contacts/(?P<id>\d+)/accept', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'accept_contact' ],
             ]
         );
     }
@@ -307,7 +304,7 @@ class Disciple_Tools_Contacts_Endpoints
     public function get_contact( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['id'] ) ) {
-            $result = Disciple_Tools_Contacts::get_contact( $params['id'], true );
+            $result = DT_Posts::create_post( 'contacts', $params['id'], true );
 
             return $result; // Could be permission WP_Error
         } else {
@@ -328,46 +325,12 @@ class Disciple_Tools_Contacts_Endpoints
         $params = $request->get_params();
         $body = $request->get_json_params() ?? $request->get_params();
         if ( isset( $params['id'] ) ) {
-            $result = Disciple_Tools_Contacts::update_contact( $params['id'], $body, true );
-            if ( is_wp_error( $result ) ) {
-                return $result;
-            } else {
-                return new WP_REST_Response( $result );
-            }
+            return DT_Posts::update_post( 'contacts', $params['id'], $body, true );
         } else {
             return new WP_Error( "update_contact", "Missing a valid contact id", [ 'status' => 400 ] );
         }
     }
 
-    /**
-     * Update a contact from the PUBLIC api.
-     *
-     * @param  WP_REST_Request $request as application/json
-     *
-     * @access public
-     * @since  0.1.0
-     * @return array|WP_Error The new contact Id on success, an error on failure
-     */
-    public function public_update_contact( WP_REST_Request $request ) {
-        $params = $request->get_params();
-        $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
-        if ( !$site_key ){
-            return new WP_Error(
-                "contact_creation_error",
-                "Invalid or missing transfer_token", [ 'status' => 401 ]
-            );
-        }
-        if ( isset( $params["fields"] ) && isset( $params["contact_id"] ) ) {
-            $result = Disciple_Tools_Contacts::update_contact( $params["contact_id"], $params["fields"], false );
-
-            return $result; // Could be permission WP_Error
-        } else {
-            return new WP_Error(
-                "contact_creation_error",
-                "Invalid or missing fields or contact_id", [ 'status' => 401 ]
-            );
-        }
-    }
 
 
     /**
@@ -438,18 +401,6 @@ class Disciple_Tools_Contacts_Endpoints
             }
             $rv[] = $contact_array;
         }
-        if (get_current_user_id()) {
-            $contacts_shared_with_user = Disciple_Tools_Contacts::get_posts_shared_with_user(
-                "contacts", get_current_user_id()
-            );
-            $ids_shared_with_user = [];
-            foreach ( $contacts_shared_with_user as $contact ) {
-                $ids_shared_with_user[$contact->ID] = true;
-            }
-            foreach ($rv as $index => $_) {
-                $rv[$index]["shared_with_user"] = isset( $ids_shared_with_user[$rv[$index]["ID"]] );
-            }
-        }
         return $rv;
     }
 
@@ -509,38 +460,18 @@ class Disciple_Tools_Contacts_Endpoints
         ];
     }
 
-    /**
-     * Get Contact assigned to a user's team
-     *
-     * @param  WP_REST_Request $request
-     *
-     * @access public
-     * @since  0.1.0
-     * @return array|WP_Error return the user's team's contacts
-     */
-//    public function get_team_contacts( WP_REST_Request $request ) {
-//        $params = $request->get_params();
-//        if ( isset( $params['user_id'] ) ) {
-//            $result = Disciple_Tools_Contacts::get_team_contacts( $params['user_id'], true );
-//
-//            return $result; // Could be permission WP_Error
-//        } else {
-//            return new WP_Error( "get_team_contacts", "Missing a valid user id", [ 'status' => 400 ] );
-//        }
-//    }
-
 
     /**
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return false|int|\WP_Error|\WP_REST_Response
+     * @return false|int|WP_Error|WP_REST_Response
      */
     public function post_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
         $body = $request->get_json_params() ?? $request->get_params();
         $silent = isset( $params["silent"] ) && ( $params["silent"] === "true" || $params["silent"] == true );
         if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
-            $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"], "comment", [ "comment_date" => $body["date"] ?? null ], false, $silent );
+            $result = DT_Posts::add_post_comment( 'contacts', $params['id'], $body["comment"], 'comment', [ "comment_date" => $body["date"] ?? null ], true, $silent );
 
             if ( is_wp_error( $result ) ) {
                 return $result;
@@ -558,7 +489,7 @@ class Disciple_Tools_Contacts_Endpoints
     }
 
     /*
-     * @return false|int|\WP_Error|\WP_REST_Response
+     * @return false|int|WP_Error|WP_REST_Response
      */
     public function public_post_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
@@ -572,7 +503,7 @@ class Disciple_Tools_Contacts_Endpoints
             );
         }
         if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
-            $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"], "comment", [ "comment_date" => $body["date"] ?? null ], false, $silent );
+            $result = DT_Posts::add_post_comment( 'contacts', $params['id'], $body["comment"], "comment", [ "comment_date" => $body["date"] ?? null ], false, $silent );
 
             if ( is_wp_error( $result ) ) {
                 return $result;
@@ -590,44 +521,44 @@ class Disciple_Tools_Contacts_Endpoints
     }
 
     /**
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return false|int|\WP_Error|\WP_REST_Response
+     * @return false|int|WP_Error|WP_REST_Response
      */
     public function update_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
         $body = $request->get_json_params() ?? $request->get_params();
         if ( isset( $params['id'] ) && isset( $body['comment_ID'] ) && isset( $body['comment_content'] ) ) {
-            return Disciple_Tools_Contacts::update_comment( $params['id'], $body["comment_ID"], $body["comment_content"], true );
+            return DT_Posts::update_post_comment( $body["comment_ID"], $body["comment_content"], true );
         } else {
             return new WP_Error( "post_comment", "Missing a valid contact id, comment id or missing new comment.", [ 'status' => 400 ] );
         }
     }
 
     /**
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return false|int|\WP_Error|\WP_REST_Response
+     * @return false|int|WP_Error|WP_REST_Response
      */
     public function delete_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
         $body = $request->get_json_params() ?? $request->get_params();
         if ( isset( $params['id'] ) && isset( $body['comment_ID'] ) ) {
-            return Disciple_Tools_Contacts::delete_comment( $params['id'], $body["comment_ID"], true );
+            return DT_Posts::delete_post_comment( $body["comment_ID"], true );
         } else {
             return new WP_Error( "post_comment", "Missing a valid contact id or comment id", [ 'status' => 400 ] );
         }
     }
 
     /**
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return array|int|\WP_Error|\WP_REST_Response
+     * @return array|int|WP_Error|WP_REST_Response
      */
     public function get_comments( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['id'] ) ) {
-            $result = Disciple_Tools_Contacts::get_comments( $params['id'], true );
+            $result = DT_Posts::get_post_comments( 'contacts', $params['id'] );
 
             if ( is_wp_error( $result ) ) {
                 return $result;
@@ -640,14 +571,14 @@ class Disciple_Tools_Contacts_Endpoints
     }
 
     /**
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return array|null|object|\WP_Error|\WP_REST_Response
+     * @return array|null|object|WP_Error|WP_REST_Response
      */
     public function get_activity( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['id'] ) ) {
-            $result = Disciple_Tools_Contacts::get_activity( $params['id'] );
+            $result = DT_Posts::get_post_activity( 'contacts', $params['id'] );
             if ( is_wp_error( $result ) ) {
                 return $result;
             } else {
@@ -659,14 +590,14 @@ class Disciple_Tools_Contacts_Endpoints
     }
 
     /**
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return array|null|object|\WP_Error|\WP_REST_Response
+     * @return array|null|object|WP_Error|WP_REST_Response
      */
     public function get_single_activity( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['id'] ) && isset( $params["activity_id"] ) ) {
-            $result = Disciple_Tools_Contacts::get_single_activity( $params['id'], $params["activity_id"] );
+            $result = DT_Posts::get_post_single_activity( 'contacts', $params['id'], $params["activity_id"] );
             if ( is_wp_error( $result ) ) {
                 return $result;
             } else {
@@ -678,9 +609,9 @@ class Disciple_Tools_Contacts_Endpoints
     }
 
     /**
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return array|null|object|\WP_Error|\WP_REST_Response
+     * @return array|null|object|WP_Error|WP_REST_Response
      */
     public function revert_activity( WP_REST_Request $request ) {
         $params = $request->get_params();
@@ -697,9 +628,9 @@ class Disciple_Tools_Contacts_Endpoints
     }
 
     /**
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return array|\WP_Error|\WP_REST_Response
+     * @return array|WP_Error|WP_REST_Response
      */
     public function accept_contact( WP_REST_Request $request ) {
         $params = $request->get_params();
@@ -718,14 +649,14 @@ class Disciple_Tools_Contacts_Endpoints
     }
 
     /**
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return array|mixed|\WP_Error|\WP_REST_Response
+     * @return array|mixed|WP_Error|WP_REST_Response
      */
     public function shared_with( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['id'] ) ) {
-            $result = Disciple_Tools_Contacts::get_shared_with_on_contact( $params['id'] );
+            $result = DT_Posts::get_shared_with( 'contacts', $params['id'] );
 
             if ( is_wp_error( $result ) ) {
                 return $result;
@@ -738,14 +669,14 @@ class Disciple_Tools_Contacts_Endpoints
     }
 
     /**
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return false|int|\WP_Error|\WP_REST_Response
+     * @return false|int|WP_Error|WP_REST_Response
      */
     public function remove_shared( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['id'] ) ) {
-            $result = Disciple_Tools_Contacts::remove_shared_on_contact( $params['id'], $params['user_id'] );
+            $result = DT_Posts::remove_shared( 'contacts', $params['id'], $params['user_id'] );
 
             if ( is_wp_error( $result ) ) {
                 return $result;
@@ -758,14 +689,14 @@ class Disciple_Tools_Contacts_Endpoints
     }
 
     /**
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return false|int|\WP_Error|\WP_REST_Response
+     * @return false|int|WP_Error|WP_REST_Response
      */
     public function add_shared( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['id'] ) && isset( $params['user_id'] ) ) {
-            $result = Disciple_Tools_Contacts::add_shared_on_contact( (int) $params['id'], (int) $params['user_id'] );
+            $result = DT_Posts::add_shared( 'contacts', (int) $params['id'], (int) $params['user_id'] );
 
             if ( is_wp_error( $result ) ) {
                 return $result;
@@ -778,9 +709,9 @@ class Disciple_Tools_Contacts_Endpoints
     }
 
     /**
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return array|\WP_Query
+     * @return array|WP_Query
      */
     public function get_contacts_compact( WP_REST_Request $request ) {
         $params = $request->get_params();
@@ -788,7 +719,7 @@ class Disciple_Tools_Contacts_Endpoints
         if ( isset( $params['s'] ) ) {
             $search = $params['s'];
         }
-        $contacts = Disciple_Tools_Contacts::get_viewable_contacts_compact( $search );
+        $contacts = DT_Posts::get_viewable_compact( 'contacts', $search );
 
         return $contacts;
     }
@@ -881,9 +812,9 @@ class Disciple_Tools_Contacts_Endpoints
     /**
      * Public key processing utility. Use this at the beginning of public endpoints
      *
-     * @param \WP_REST_Request $request
+     * @param WP_REST_Request $request
      *
-     * @return array|\WP_Error
+     * @return array|WP_Error
      */
     public function process_token( WP_REST_Request $request ) {
 
@@ -912,7 +843,7 @@ class Disciple_Tools_Contacts_Endpoints
     public function get_following( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['id'] ) ) {
-            return Disciple_Tools_Posts::get_users_following_post( "contacts", $params['id'] );
+            return DT_Posts::get_users_following_post( "contacts", $params['id'] );
         } else {
             return new WP_Error( __FUNCTION__, "Missing a valid group id", [ 'status' => 400 ] );
         }

@@ -47,7 +47,7 @@ jQuery(document).ready(function($) {
     emptyTemplate: 'No users found "{{query}}"',
     callback: {
       onClick: function(node, a, item){
-        API.save_field_api('group', groupId, {assigned_to: 'user-' + item.ID}).then(function (response) {
+        API.update_post( 'groups', groupId, {assigned_to: 'user-' + item.ID}).then(function (response) {
           group = response
           assigned_to_input.val(contact.assigned_to.display)
           assigned_to_input.blur()
@@ -73,16 +73,6 @@ jQuery(document).ready(function($) {
     assignedToInput.trigger('input.typeahead')
   })
 
-  /**
-   * Share
-   */
-  let shareTypeahead = null
-  $('.open-share').on("click", function(){
-    $('#share-contact-modal').foundation('open');
-    if  (!shareTypeahead) {
-      shareTypeahead = TYPEAHEADS.share("group", groupId)
-    }
-  })
   
 
 
@@ -92,13 +82,13 @@ jQuery(document).ready(function($) {
   $('#update-needed.dt-switch').change(function () {
     let updateNeeded = $(this).is(':checked')
     $('.update-needed-notification').toggle(updateNeeded)
-    API.save_field_api( "group", groupId, {"requires_update":updateNeeded}).then(resp=>{
+    API.update_post( 'groups', groupId, {"requires_update":updateNeeded}).then(resp=>{
       group = resp
     })
   })
   $('#content')[0].addEventListener('comment_posted', function (e) {
     if ( _.get(group, "requires_update") === true ){
-      API.get_post("group",  groupId ).then(resp=>{
+      API.get_post("groups", groupId ).then(resp=>{
         group = resp
         groupUpdated(_.get(group, "requires_update") === true )
       }).catch(err => { console.error(err) })
@@ -271,7 +261,7 @@ jQuery(document).ready(function($) {
       }
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: TYPEAHEADS.typeaheadSource('groups', 'dt/v1/groups/compact/'),
+    source: TYPEAHEADS.typeaheadSource('groups', 'dt-posts/v2/groups/compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -283,7 +273,7 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.save_field_api('group', groupId, {'parent_groups': {values:[{value:item.ID, delete:true}]}})
+          API.update_post( 'groups', groupId, {'parent_groups': {values:[{value:item.ID, delete:true}]}})
         }
       },
       href: function(item){
@@ -298,7 +288,7 @@ jQuery(document).ready(function($) {
           event.preventDefault();
           $('#create-group-modal').foundation('open');
         } else {
-          API.save_field_api('group', groupId, {'parent_groups': {values:[{value:item.ID}]}})
+          API.update_post( 'groups', groupId, {'parent_groups': {values:[{value:item.ID}]}})
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();
@@ -335,7 +325,7 @@ jQuery(document).ready(function($) {
       }
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: TYPEAHEADS.typeaheadSource('groups', 'dt/v1/groups/compact/'),
+    source: TYPEAHEADS.typeaheadSource('groups', 'dt-posts/v2/groups/compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -347,7 +337,7 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.save_field_api('group', groupId, {'peer_groups': {values:[{value:item.ID, delete:true}]}})
+          API.update_post( 'groups', groupId, {'peer_groups': {values:[{value:item.ID, delete:true}]}})
         }
       },
       href: function(item){
@@ -362,7 +352,7 @@ jQuery(document).ready(function($) {
           event.preventDefault();
           $('#create-group-modal').foundation('open');
         } else {
-          API.save_field_api('group', groupId, {'peer_groups': {values:[{value:item.ID}]}})
+          API.update_post( 'groups', groupId, {'peer_groups': {values:[{value:item.ID}]}})
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();
@@ -398,7 +388,7 @@ jQuery(document).ready(function($) {
       }
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: TYPEAHEADS.typeaheadSource('groups', 'dt/v1/groups/compact/'),
+    source: TYPEAHEADS.typeaheadSource('groups', 'dt-posts/v2/groups/compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -410,7 +400,7 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-            API.save_field_api('group', groupId, {'child_groups': {values:[{value:item.ID, delete:true}]}})
+            API.update_post( 'groups', groupId, {'child_groups': {values:[{value:item.ID, delete:true}]}})
           }
       },
       href: function(item){
@@ -425,7 +415,7 @@ jQuery(document).ready(function($) {
           event.preventDefault();
           $('#create-group-modal').foundation('open');
         } else {
-          API.save_field_api('group', groupId, {'child_groups': {values:[{value:item.ID}]}})
+          API.update_post( 'groups', groupId, {'child_groups': {values:[{value:item.ID}]}})
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();
@@ -462,7 +452,7 @@ jQuery(document).ready(function($) {
   $(".js-create-group").on("submit", function(e) {
     e.preventDefault();
     let title = $(".js-create-group input[name=title]").val()
-    API.create_group({title, parent_group_id: groupId, group_type:"group"})
+    API.create_post('groups', {title, parent_groups: {values:[{ value:groupId }]}, group_type:"group"})
       .then((newGroup)=>{
         $(".reveal-after-group-create").show()
         $("#new-group-link").html(`<a href="${_.escape( newGroup.permalink )}">${_.escape( title )}</a>`)
@@ -511,7 +501,7 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.save_field_api('group', groupId, {'members': {values:[{value:item.ID, delete:true}]}}).then((g)=>{
+          API.update_post( 'groups', groupId, {'members': {values:[{value:item.ID, delete:true}]}}).then((g)=>{
             group = g
             populateMembersList()
             masonGrid.masonry('layout')
@@ -522,7 +512,7 @@ jQuery(document).ready(function($) {
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.save_field_api('group', groupId, {'members': {values:[{value:item.ID}]}}).then((addedItem)=>{
+        API.update_post( 'groups', groupId, {'members': {values:[{value:item.ID}]}}).then((addedItem)=>{
           group = addedItem
           populateMembersList()
           masonGrid.masonry('layout')
@@ -561,7 +551,7 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.save_field_api('group', groupId, {'coaches': {values:[{value:item.ID, delete:true}]}}).then(()=>{
+          API.update_post( 'groups', groupId, {'coaches': {values:[{value:item.ID, delete:true}]}}).then(()=>{
           }).catch(err => { console.error(err) })
         }
       },
@@ -569,7 +559,7 @@ jQuery(document).ready(function($) {
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.save_field_api('group', groupId, {'coaches': {values:[{value:item.ID}]}}).then((addedItem)=>{
+        API.update_post( 'groups', groupId, {'coaches': {values:[{value:item.ID}]}}).then((addedItem)=>{
         }).catch(err => { console.error(err) })
         masonGrid.masonry('layout')
       },
@@ -630,7 +620,7 @@ jQuery(document).ready(function($) {
       }
     })
     $(this).toggleClass("loading")
-      API.save_field_api( "group", groupId, editFieldsUpdate).then((updatedGroup)=>{
+      API.update_post( 'groups', groupId, editFieldsUpdate).then((updatedGroup)=>{
       group = updatedGroup
       $(this).toggleClass("loading")
       resetDetailsFields(group)
@@ -802,7 +792,7 @@ jQuery(document).ready(function($) {
     if ( already_set ){
       update.values[0].delete = true;
     }
-    API.save_field_api('group', groupId, {"health_metrics": update })
+    API.update_post( 'groups', groupId, {"health_metrics": update })
       .then(groupData=>{
         group = groupData
         fillOutChurchHealthMetrics()
@@ -850,13 +840,13 @@ jQuery(document).ready(function($) {
   $(document).on("click", ".delete-member", function () {
     let id = $(this).data('id')
     $(`.member-row[data-id="${id}"]`).remove()
-    window.API.save_field_api("group", groupId, {'members': {values:[{value:id, delete:true}]}}).then(groupRes=>{
+    API.update_post( 'groups', groupId, {'members': {values:[{value:id, delete:true}]}}).then(groupRes=>{
       group=groupRes
       populateMembersList()
       masonGrid.masonry('layout')
     })
     if( _.find( group.leaders || [], {ID: id}) ) {
-      window.API.save_field_api("group", groupId, {'leaders': {values: [{value: id, delete: true}]}})
+      API.update_post( 'groups', groupId, {'leaders': {values: [{value: id, delete: true}]}})
     }
   })
   $(document).on("click", ".make-leader", function () {
@@ -869,7 +859,7 @@ jQuery(document).ready(function($) {
     } else {
       $(`.member-row[data-id="${id}"] .member-status`).append(`<i class="fi-foot small leader"></i>`)
     }
-    window.API.save_field_api("group", groupId, {'leaders': {values:[{value:id, delete:remove}]}}).then(groupRes=>{
+    API.update_post( 'groups', groupId, {'leaders': {values:[{value:id, delete:remove}]}}).then(groupRes=>{
       group=groupRes
       populateMembersList()
       masonGrid.masonry('layout')
@@ -885,7 +875,7 @@ jQuery(document).ready(function($) {
   $(".js-create-contact").on("submit", function(e) {
     e.preventDefault();
     let title = $(".js-create-contact input[name=title]").val()
-    API.create_contact({
+    API.create_post( 'contacts', {
       title,
       groups:{values:[{value:groupId}]},
       requires_update: true,

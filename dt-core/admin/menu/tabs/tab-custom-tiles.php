@@ -60,8 +60,10 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             return Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( null, null, true );
         } elseif ( $post_type === "contacts" ){
             return Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( null, null, true );
+        } else {
+            $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+            return isset( $post_settings["fields"] ) ? $post_settings["fields"] : null;
         }
-        return null;
     }
 
     /**
@@ -147,14 +149,17 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
     }
 
     private function tile_select(){
+        global $wp_post_types;
         $tile_options = dt_get_option( "dt_custom_tiles" );
-        $sections = apply_filters( 'dt_details_additional_section_ids', [], "contacts" );
-        foreach ( $sections as $section_id ){
-            $tile_options["contacts"][$section_id] = [];
-        }
-        $sections = apply_filters( 'dt_details_additional_section_ids', [], "groups" );
-        foreach ( $sections as $section_id ){
-            $tile_options["groups"][$section_id] = [];
+        $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
+        foreach ( $post_types as $post_type ){
+            $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type );
+            if ( !isset( $tile_options[$post_type] ) ){
+                $tile_options[$post_type] = [];
+            }
+            foreach ( $sections as $section_id ){
+                $tile_options[$post_type][$section_id] = [];
+            }
         }
 
         ?>
@@ -168,17 +173,13 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     <td>
                         <select id="tile-select" name="tile-select">
                             <option></option>
-                            <option disabled>---Contact tiles---</option>
-                            <?php foreach ( $tile_options["contacts"] as $option_key => $option_value ) : ?>
-                                <option value="contacts_<?php echo esc_html( $option_key ) ?>">
-                                    <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
-                                </option>
-                            <?php endforeach; ?>
-                            <option disabled>---Group Tiles---</option>
-                            <?php foreach ( $tile_options["groups"] as $option_key => $option_value ) : ?>
-                                <option value="groups_<?php echo esc_html( $option_key ) ?>">
-                                    <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
-                                </option>
+                            <?php foreach ( $post_types as $post_type ) : ?>
+                                <option disabled>---<?php echo esc_html( $wp_post_types[$post_type]->label ); ?> tiles---</option>
+                                <?php foreach ( $tile_options[$post_type] as $option_key => $option_value ) : ?>
+                                    <option value="<?php echo esc_html( $post_type . '_' . $option_key ) ?>">
+                                        <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
+                                    </option>
+                                <?php endforeach; ?>
                             <?php endforeach; ?>
                         </select>
                         <button type="submit" class="button" name="tile_selected"><?php esc_html_e( "Select", 'disciple_tools' ) ?></button>
@@ -378,16 +379,8 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
 
     private function add_tile(){
-        $tile_options = dt_get_option( "dt_custom_tiles" );
-        $sections = apply_filters( 'dt_details_additional_section_ids', [], "contacts" );
-        foreach ( $sections as $section_id ){
-            $tile_options["contacts"][$section_id] = [];
-        }
-        $sections = apply_filters( 'dt_details_additional_section_ids', [], "groups" );
-        foreach ( $sections as $section_id ){
-            $tile_options["groups"][$section_id] = [];
-        }
-
+        global $wp_post_types;
+        $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
         ?>
         <form method="post">
             <input type="hidden" name="tile_add_nonce" id="tile_add_nonce" value="<?php echo esc_attr( wp_create_nonce( 'tile_add' ) ) ?>" />
@@ -398,8 +391,9 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <select name="post_type">
-                            <option value="contacts"><?php esc_html_e( "Contacts", 'disciple_tools' ) ?></option>
-                            <option value="groups"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></option>
+                            <?php foreach ( $post_types as $post_type ) : ?>
+                                <option value="<?php echo esc_html( $post_type ); ?>"><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </td>
                 </tr>
@@ -434,6 +428,9 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 self::admin_notice( __( "tile already exists", 'disciple_tools' ), "error" );
                 return false;
             }
+            if ( !isset( $tile_options[$post_type] ) ){
+                $tile_options[$post_type] = [];
+            }
             $tile_options[$post_type][$tile_key] = [ "label" => $post_submission["new_tile_name"] ];
 
             update_option( "dt_custom_tiles", $tile_options );
@@ -445,6 +442,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
     /**
      * Display admin notice
+     *
      * @param $notice string
      * @param $type string error|success|warning
      */

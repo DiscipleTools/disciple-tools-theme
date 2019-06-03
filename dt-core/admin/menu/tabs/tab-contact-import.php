@@ -290,7 +290,7 @@ class Disciple_Tools_Contact_Import_Tab extends Disciple_Tools_Abstract_Menu_Bas
             $pos = 1;
         }
         ?>
-        <h3><?php echo esc_html_e( "Is This Data In The Correct Fields?", 'disciple_tools' ); ?> </h3>
+        <h3><?php esc_html_e( "Is This Data In The Correct Fields?", 'disciple_tools' ); ?> </h3>
         <p><?php esc_html_e( "Name", 'disciple_tools' ) ?>: <?php echo esc_html( $people[$pos][0]['title'] ) ?></p>
         <p><?php esc_html_e( "Source", 'disciple_tools' ) ?>: <?php echo esc_html( $people[$pos][0]['sources']["values"][0]["value"] ) ?></p>
         <p><?php esc_html_e( "Assigned To", 'disciple_tools' ) ?>: <?php echo ( isset( $people[$pos][0]['assigned_to'] ) && $people[$pos][0]['assigned_to'] != '' ) ? esc_html( get_user_by( 'id', $people[$pos][0]['assigned_to'] )->data->display_name ) : "Not Set" ?></p>

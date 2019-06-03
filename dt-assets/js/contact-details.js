@@ -17,7 +17,7 @@ function save_quick_action(contactId, fieldKey){
   let numberIndicator = jQuery("." + fieldKey +  " span")
   let newNumber = parseInt(numberIndicator.first().text() || "0" ) + 1
   data[fieldKey] = newNumber
-  API.save_field_api("contact", contactId, data)
+  API.update_post('contacts', contactId, data)
   .then(data=>{
     console.log("updated " + fieldKey + " to: " + newNumber)
     if (fieldKey.indexOf("quick_button")>-1){
@@ -111,7 +111,7 @@ jQuery(document).ready(function($) {
       }
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: TYPEAHEADS.typeaheadSource('groups', 'dt/v1/groups/compact/'),
+    source: TYPEAHEADS.typeaheadSource('groups', 'dt-posts/v2/groups/compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -123,7 +123,7 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.save_field_api('contact', contactId, {groups: {values:[{value:item.ID, delete:true}]}})
+          API.update_post('contacts', contactId, {groups: {values:[{value:item.ID, delete:true}]}})
         }
       },
       href: function(item){
@@ -138,7 +138,7 @@ jQuery(document).ready(function($) {
           event.preventDefault();
           $('#create-group-modal').foundation('open');
         } else {
-          API.save_field_api('contact', contactId, {groups: {values:[{value:item.ID}]}})
+          API.update_post('contacts', contactId, {groups: {values:[{value:item.ID}]}})
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();
@@ -170,7 +170,7 @@ jQuery(document).ready(function($) {
   $(".js-create-group").on("submit", function(e) {
     e.preventDefault();
     let title = $("#create-group-modal .js-create-group input[name=title]").val()
-    API.create_group({title,created_from_contact_id:contactId})
+    API.create_post('groups', {title, members: {values: [{value: contactId}]}})
       .then((newGroup)=>{
         $(".reveal-after-group-create").show()
         $("#new-group-link").html(`<a href="${_.escape( newGroup.permalink )}">${_.escape(title)}</a>`)
@@ -198,7 +198,7 @@ jQuery(document).ready(function($) {
       data: JSON.stringify(data),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: contactsDetailsWpApiSettings.root + 'dt/v1/contact/' + contactId + "/accept",
+      url: contactsDetailsWpApiSettings.root + 'dt-posts/v2/contacts/' + contactId + "/accept",
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', contactsDetailsWpApiSettings.nonce);
       }
@@ -453,7 +453,7 @@ jQuery(document).ready(function($) {
     emptyTemplate: 'No users found "{{query}}"',
     callback: {
       onClick: function(node, a, item){
-        API.save_field_api('contact', contactId, {assigned_to: 'user-' + item.ID}).then(function (response) {
+        API.update_post('contacts', contactId, {assigned_to: 'user-' + item.ID}).then(function (response) {
           _.set(contact, "assigned_to", response.assigned_to)
           setStatus(response)
           assigned_to_input.val(contact.assigned_to.display)
@@ -482,16 +482,6 @@ jQuery(document).ready(function($) {
     assigned_to_input.focus()
   })
 
-  /**
-   * Share
-   */
-  let shareTypeahead = null
-  $('.open-share').on("click", function(){
-    $('#share-contact-modal').foundation('open');
-    if  (!shareTypeahead) {
-      shareTypeahead = TYPEAHEADS.share("contact", contactId)
-    }
-  })
 
 
   /**
@@ -520,7 +510,7 @@ jQuery(document).ready(function($) {
           })
         }, callback: {
           onCancel: function (node, item) {
-            API.save_field_api('contact', contactId, {[field_id]: {values:[{value:item.ID, delete:true}]}}).then(()=>{
+            API.update_post('contacts', contactId, {[field_id]: {values:[{value:item.ID, delete:true}]}}).then(()=>{
               if(field_id === "subassigned"){
                 $(`.${field_id}-list .${item.ID}`).remove()
                 let listItems = $(`.${field_id}-list li`)
@@ -536,7 +526,7 @@ jQuery(document).ready(function($) {
       },
       callback: {
         onClick: function(node, a, item, event){
-          API.save_field_api('contact', contactId, {[field_id]: {values:[{"value":item.ID}]}}).then((addedItem)=>{
+          API.update_post('contacts', contactId, {[field_id]: {values:[{"value":item.ID}]}}).then((addedItem)=>{
             if (field_id === "baptized_by"){
               openBaptismModal(addedItem)
             }
@@ -581,7 +571,7 @@ jQuery(document).ready(function($) {
       tags: {
         display: ["name"],
         ajax: {
-          url: contactsDetailsWpApiSettings.root  + 'dt/v1/contact/multi-select-options',
+          url: contactsDetailsWpApiSettings.root  + 'dt-posts/v2/contacts/multi-select-values',
           data: {
             s: "{{query}}",
             field: "tags"
@@ -610,13 +600,13 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.save_field_api('contact', contactId, {'tags': {values:[{value:item.name, delete:true}]}})
+          API.update_post('contacts', contactId, {'tags': {values:[{value:item.name, delete:true}]}})
         }
       }
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.save_field_api('contact', contactId, {tags: {values:[{value:item.name}]}})
+        API.update_post('contacts', contactId, {tags: {values:[{value:item.name}]}})
         this.addMultiselectItemLayout(item)
         event.preventDefault()
         this.hideLayout();
@@ -641,7 +631,7 @@ jQuery(document).ready(function($) {
   $("#create-tag-return").on("click", function () {
     let tag = $("#new-tag").val()
     Typeahead['.js-typeahead-tags'].addMultiselectItemLayout({name:tag})
-    API.save_field_api('contact', contactId, {tags: {values:[{value:tag}]}})
+    API.update_post('contacts', contactId, {tags: {values:[{value:tag}]}})
 
   })
 
@@ -737,13 +727,13 @@ jQuery(document).ready(function($) {
    */
   $('#update-needed.dt-switch').change(function () {
     let updateNeeded = $(this).is(':checked')
-    API.save_field_api( "contact", contactId, {"requires_update":updateNeeded}).then(resp=>{
+    API.update_post('contacts', contactId, {"requires_update":updateNeeded}).then(resp=>{
       contact = resp
     })
   })
   $('#content')[0].addEventListener('comment_posted', function (e) {
     if ( _.get(contact, "requires_update") === true ){
-      API.get_post("contact",  contactId ).then(resp=>{
+      API.get_post("contacts",  contactId ).then(resp=>{
         contact = resp
         contactUpdated(_.get(resp, "requires_update") === true )
       }).catch(err => { console.error(err) })
@@ -755,7 +745,7 @@ jQuery(document).ready(function($) {
    */
   $('.make-active').on('click', function () {
     let data = {overall_status:"active"}
-    API.save_field_api('contact', contactId, data).then((contact)=>{
+    API.update_post('contacts', contactId, data).then((contact)=>{
       setStatus(contact)
     }).catch(err => { console.error(err) })
   })
@@ -802,7 +792,7 @@ jQuery(document).ready(function($) {
     $(this).toggleClass('loading')
     let data = {overall_status:field}
     data[`reason_${field}`] = select.val()
-    API.save_field_api('contact', contactId, data).then(contactData=>{
+    API.update_post('contacts', contactId, data).then(contactData=>{
       $(this).toggleClass('loading')
       $(`#${field}-contact-modal`).foundation('close')
       setStatus(contactData)
@@ -1013,7 +1003,7 @@ jQuery(document).ready(function($) {
         editFieldsUpdate[`contact_${channelType}`].values.push({value:val})
       }
     })
-    API.save_field_api( "contact", contactId, editFieldsUpdate).then((updatedContact)=>{
+    API.update_post('contacts', contactId, editFieldsUpdate).then((updatedContact)=>{
       contact = updatedContact
       $(this).toggleClass("loading")
       resetDetailsFields(contact)
@@ -1162,7 +1152,7 @@ jQuery(document).ready(function($) {
     let numberIndicator = $(`span.${fieldKey}`)
     let newNumber = parseInt(numberIndicator.first().text() || "0" ) + 1
     data[fieldKey] = newNumber
-    API.save_field_api("contact", contactId, data)
+    API.update_post('contacts', contactId, data)
       .then(data=>{
         console.log(data);
         console.log("updated " + fieldKey + " to: " + newNumber)
@@ -1320,7 +1310,7 @@ jQuery(document).ready(function($) {
   modalBaptismDatePicker.datepicker({
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
-      API.save_field_api('contact', contactId, { baptism_date: date }).catch(handleAjaxError)
+      API.update_post('contacts', contactId, { baptism_date: date }).catch(handleAjaxError)
     },
     changeMonth: true,
     changeYear: true
@@ -1352,7 +1342,7 @@ jQuery(document).ready(function($) {
               })
             }, callback: {
               onCancel: function (node, item) {
-                API.save_field_api('contact', contactId, {"baptized_by": {values:[{value:item.ID, delete:true}]}})
+                API.update_post('contacts', contactId, {"baptized_by": {values:[{value:item.ID, delete:true}]}})
                   .catch(err => { console.error(err) })
               }
             },
@@ -1360,7 +1350,7 @@ jQuery(document).ready(function($) {
           },
           callback: {
             onClick: function (node, a, item) {
-              API.save_field_api('contact', contactId, {"baptized_by": {values:[{"value":item.ID}]}})
+              API.update_post('contacts', contactId, {"baptized_by": {values:[{"value":item.ID}]}})
                 .catch(err => { console.error(err) })
               console.log(item);
               this.addMultiselectItemLayout(item)
@@ -1390,7 +1380,7 @@ jQuery(document).ready(function($) {
   })
   $('#modal-baptism_generation').change(function () {
     console.log($(this).val());
-    API.save_field_api( "contact", contactId, {
+    API.update_post('contacts', contactId, {
       baptism_generation: $(this).val(),
       fixed_baptism_generation: true
     })

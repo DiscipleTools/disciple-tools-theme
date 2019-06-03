@@ -102,6 +102,7 @@ class Disciple_Tools_Groups_Post_Type
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'groups_rewrites_init' ] );
         add_filter( 'post_type_link', [ $this, 'groups_permalink' ], 1, 3 );
+        add_filter( 'dt_get_post_type_settings', [ $this, 'get_post_type_settings_hook' ], 10, 2 );
 
         if ( is_admin() ) {
             global $pagenow;
@@ -372,7 +373,46 @@ class Disciple_Tools_Groups_Post_Type
         ];
         $fields["locations"] = [
             "name" => __( "Locations", "disciple_tools" ),
-            "type" => "connection"
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "contacts_to_locations",
+            'icon' => get_template_directory_uri() .'/dt-assets/images/location.svg',
+        ];
+        $fields["parent_groups"] = [
+            "name" => __( "Parents", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "groups_to_groups"
+        ];
+        $fields["child_groups"] = [
+            "name" => __( "Child", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "to",
+            "p2p_key" => "groups_to_groups"
+        ];
+        $fields["peer_groups"] = [
+            "name" => __( "Peer Groups", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "any", //@todo
+            "p2p_key" => "groups_to_peers"
+        ];
+        $fields["members"] = [
+            "name" => __( "Members", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "to",
+            "p2p_key" => "contacts_to_groups"
+        ];
+        $fields["people_groups"] = [
+            "name" => __( "People Groups", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "groups_to_peoplegroups"
+        ];
+        $fields["leaders"] = [
+            "name" => __( "Leaders", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "groups_to_leaders"
         ];
         $fields["requires_update"] = [
             'name'        => __( 'Requires Update', 'disciple_tools' ),
@@ -538,6 +578,25 @@ class Disciple_Tools_Groups_Post_Type
 
     public function groups_rewrites_init() {
         add_rewrite_rule( 'groups/([0-9]+)?$', 'index.php?post_type=groups&p=$matches[1]', 'top' );
+    }
+
+    public function get_post_type_settings_hook( $settings, $post_type ){
+        if ( $post_type === "groups" ){
+            $fields = $this->get_custom_fields_settings();
+//            @todo connections types
+            $settings = [
+                'fields' => $fields,
+                'address_types' => dt_address_metabox()->get_address_type_list( "groups" ),
+                'channels' => [],
+                'connection_types' => array_keys( array_filter( $fields, function ( $a ) {
+                    return $a["type"] === "connection";
+                } ) ),
+                'label_singular' => $this->singular,
+                'label_plural' => $this->plural,
+                'post_type' => 'groups'
+            ];
+        }
+        return $settings;
     }
 
 

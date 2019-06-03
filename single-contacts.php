@@ -190,7 +190,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
     <?php
     $current_user_id = get_current_user_id();
-    $following = Disciple_Tools_Posts::get_users_following_post( "contacts", get_the_ID() );
+    $following = DT_Posts::get_users_following_post( "contacts", get_the_ID() );
     $dispatcher_actions = [];
     if ( current_user_can( "create_users" )){
         $dispatcher_actions[] = "make_user_from_contact";
@@ -334,7 +334,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         </button>
                                     </div>
 
-                                    <select class="select-field" id="seeker_path" style="margin-bottom: 0px">
+                                    <select class="select-field" id="seeker_path" style="margin-bottom: 0">
                                     <?php
 
                                     foreach ($contact_fields["seeker_path"]["default"] as $key => $option){
