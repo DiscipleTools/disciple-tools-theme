@@ -71,6 +71,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         public function scripts() {
             ?>
             <script>
+                let _ = window.lodash
                 function send_update(data) {
                     let options = {
                         type: 'POST',
@@ -96,7 +97,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         let update = send_update({key: key, value: value, geonameid: geonameid})
 
                         update.done(function (data) {
-                            console.log(data)
                             if (data) {
                                 jQuery('#label-' + geonameid).html(`${value}`)
                                 jQuery('#input-' + geonameid).val('')
@@ -112,7 +112,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     let update = send_update({key: key, reset: true, geonameid: geonameid})
 
                     update.done(function (data) {
-                        console.log(data)
                         if (data.status === 'OK') {
                             jQuery('#label-' + geonameid).html(`${data.value}`)
                             jQuery('#input-' + geonameid).val('')
@@ -662,7 +661,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <!-- Main Column -->
                             <table class="widefat striped">
                                 <thead>
-                                <th>Mapping Data Credits</th>
+                                    <tr><th>Mapping Data Credits</th></tr>
                                 </thead>
                                 <tbody>
                                     <tr>
@@ -1019,7 +1018,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <?php wp_nonce_field( 'migration_status' . get_current_user_id() ); ?>
                 <table class="widefat striped">
                     <thead>
-                    <th>Migration Status</th>
+                    <tr><th>Migration Status</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -1079,7 +1078,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <form method="post">
                 <table class="widefat striped">
                     <thead>
-                    <th>Groups Per Population</th>
+                    <tr><th>Groups Per Population</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -1106,7 +1105,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             ?>
             <table class="widefat striped">
                 <thead>
-                <th>Select Population List to Edit</th>
+                    <tr><th>Select Population List to Edit</th></tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -1117,11 +1116,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             <table class="widefat striped">
                 <thead>
-                <th>Name</th>
-                <th>Population</th>
-                <th>New Population (no commas)</th>
-                <th></th>
-                <th></th>
+                    <tr>
+                        <th>Name</th>
+                        <th>Population</th>
+                        <th>New Population (no commas)</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
                 </thead>
                 <tbody id="list_results">
                 </tbody>
@@ -1178,12 +1179,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         list_results.empty()
                         jQuery.each( map_data.children, function (i, v) {
                             list_results.append(`<tr>
-                                        <td>${v.name}</td>
-                                        <td id="label-${v.geonameid}">${v.population_formatted}</td>
-                                        <td><input type="number" id="input-${v.geonameid}" value=""></td>
-                                        <td id="button-${v.geonameid}"><a class="button" onclick="update( ${v.geonameid}, jQuery('#input-'+${v.geonameid}).val(), 'population' )">Update</a></td>
-                                        <td id="reset-${v.geonameid}"><a class="button" onclick="reset( ${v.geonameid}, 'population' )">Reset</a></td>
-                                        </tr>`)
+                                <td>${_.escape( v.name )}</td>
+                                <td id="label-${_.escape( v.geonameid )}">${_.escape( v.population_formatted )}</td>
+                                <td><input type="number" id="input-${_.escape( v.geonameid )}" value=""></td>
+                                <td id="button-${_.escape( v.geonameid )}"><a class="button" onclick="update( ${_.escape( v.geonameid )}, jQuery('#input-'+${_.escape( v.geonameid )}).val(), 'population' )">Update</a></td>
+                                <td id="reset-${_.escape( v.geonameid )}"><a class="button" onclick="reset( ${_.escape( v.geonameid )}, 'population' )">Reset</a></td>
+                            </tr>`)
                         })
                     }
                 }
@@ -1197,7 +1198,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             ?>
             <table class="widefat striped">
                 <thead>
-                <th>Edit Default Location Names</th>
+                    <tr><th>Edit Default Location Names</th></tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -1208,10 +1209,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             <table class="widefat striped">
                 <thead>
-                <th>Name</th>
-                <th>New Name</th>
-                <th></th>
-                <th></th>
+                    <tr>
+                        <th>Name</th>
+                        <th>New Name</th>
+                        <th></th>
+                        <th></th>
+                        <th>ID</th>
+                    </tr>
                 </thead>
                 <tbody id="list_results"></tbody>
             </table>
@@ -1266,10 +1270,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     function build_list(div, map_data) {
                         list_results.empty()
                         jQuery.each(map_data.children, function (i, v) {
-                            list_results.append(`<tr><td id="label-${v.geonameid}">${v.name}</td><td><input type="text" id="input-${v.geonameid}" value=""></td>
-                                    <td id="button-${v.geonameid}"><a class="button" onclick="update( ${v.geonameid}, jQuery('#input-'+${v.geonameid}).val(), 'name' )">Update</a></td>
-                                    <td id="reset-${v.geonameid}"><a class="button" onclick="reset( ${v.geonameid}, 'name' )">Reset</a></td>
-                                    </tr>`)
+                            list_results.append(`<tr>
+                                <td id="label-${_.escape( v.geonameid )}">${_.escape( v.name )}</td>
+                                <td><input type="text" id="input-${_.escape( v.geonameid )}" value=""></td>
+                                <td id="button-${_.escape( v.geonameid )}"><a class="button" onclick="update( ${_.escape( v.geonameid )}, jQuery('#input-'+${_.escape( v.geonameid )}).val(), 'name' )">Update</a></td>
+                                <td id="reset-${_.escape( v.geonameid )}"><a class="button" onclick="reset( ${_.escape( v.geonameid )}, 'name' )">Reset</a></td>
+                                <td>${_.escape( v.geonameid )}</td>
+                            </tr>`)
                         })
                     }
                 }
@@ -1283,7 +1290,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             ?>
             <table class="widefat striped">
                 <thead>
-                <th>Select the Location</th>
+                <tr><th>Select the Location</th></tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -1293,8 +1300,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             </table>
             <table class="widefat striped" style="display:none;" id="current_subs">
                 <thead>
+                <tr>
                 <th>Current Sub-Locations (use these if possible):</th>
                 <th style="width:20px;"></th>
+                </tr>
                 </thead>
                 <tbody id="other_list">
                 </tbody>
@@ -1370,17 +1379,17 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             jQuery.each(map_data.children, function (gnid, data) {
                                 other_list.append(`
                                     <tr><td>
-                                        <a class="open_next_drilldown" data-parent="${data.parent_id}" data-geonameid="${data.geonameid}" style="cursor: pointer;">${data.name}</a>
+                                        <a class="open_next_drilldown" data-parent="${_.escape( data.parent_id )}" data-geonameid="${_.escape( data.geonameid )}" style="cursor: pointer;">${_.escape( data.name )}</a>
                                     </td><td></td></tr>`)
                             })
                             current_subs.show()
                         }
 
                         list_results.empty().append(`
-                                <tr><td colspan="2">Add New Location under ${map_data.self.name}</td></tr>
+                                <tr><td colspan="2">Add New Location under ${_.escape( map_data.self.name )}</td></tr>
                                 <tr><td style="width:150px;">Name</td><td><input id="new_name" value="" /></td></tr>
                                 <tr><td>Population</td><td><input id="new_population" value="" /></td></tr>
-                                <tr><td colspan="2"><button type="button" id="save-button" class="button" onclick="update_location( ${map_data.self.geonameid} )" >Save</a></td></tr>`)
+                                <tr><td colspan="2"><button type="button" id="save-button" class="button" onclick="update_location( ${_.escape( map_data.self.geonameid )} )" >Save</a></td></tr>`)
                     }
                 }
 
@@ -1402,7 +1411,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         console.log(data)
                         if (data) {
                             jQuery('#other_list').append(`
-                                <tr><td><a class="open_next_drilldown" data-parent="${geonameid}" data-geonameid="${data.geonameid}" style="cursor: pointer;">${_.escape(data.name)}</a></td></tr>`)
+                                <tr><td><a class="open_next_drilldown" data-parent="${_.escape( geonameid )}" data-geonameid="${_.escape( data.geonameid )}" style="cursor: pointer;">${_.escape(data.name)}</a></td></tr>`)
                             jQuery('#new_name').val('')
                             jQuery('#new_population').val('')
                             jQuery('#current_subs').show()
@@ -1490,7 +1499,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <!-- Box -->
             <table class="widefat striped">
                 <thead>
-                <th>Starting Map Level</th>
+                <tr><th>Starting Map Level</th></tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -1542,7 +1551,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <!-- Box -->
                 <table class="widefat striped">
                     <thead>
-                    <th colspan="2">Select Country or Countries of Focus</th>
+                    <tr><th colspan="2">Select Country or Countries of Focus</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -1620,7 +1629,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 ?>
                 <table class="widefat striped">
                     <thead>
-                    <th colspan="2">Select Country</th>
+                    <tr><th colspan="2">Select Country</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -1656,6 +1665,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <!-- Box -->
                     <table class="widefat striped">
                         <thead>
+                        <tr>
                         <th colspan="2">
                             <strong>Select States for <?php echo esc_html( $parent['name'] ) ?? '?' ?></strong>
                             <span style="float: right;">
@@ -1664,6 +1674,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 <button type="submit" class="button">Save</button>
                             </span>
                         </th>
+                        </tr>
                         </thead>
                         <tbody>
                         <tr>
@@ -1707,7 +1718,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <!-- Box -->
             <table class="widefat striped">
                 <thead>
-                <th>Current Selection</th>
+                <tr><th>Current Selection</th></tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -1728,7 +1739,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <!-- Box -->
             <table class="widefat striped">
                 <thead>
-                <th>Instructions</th>
+                <tr><th>Instructions</th></tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -1912,7 +1923,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <form method="post">
                 <table class="widefat striped">
                     <thead>
-                    <th>Geocoding Provider Setup</th>
+                    <tr><th>Geocoding Provider Setup</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -1982,7 +1993,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <?php wp_nonce_field( 'rebuild_geonames' . get_current_user_id() ); ?>
                 <table class="widefat striped">
                     <thead>
-                    <th>Clean and Reinstall Mapping Resources (does not effect Contacts or Group data.)</th>
+                    <tr><th>Clean and Reinstall Mapping Resources (does not effect Contacts or Group data.)</th></tr>
                     </thead>
                     <tbody>
 

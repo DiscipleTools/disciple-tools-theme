@@ -603,7 +603,7 @@ class Disciple_Tools_Notifications
 
         if ( sizeof( $notification_on_fields ) > 0 ){
             $source_user_id = get_current_user_id();
-            $followers = Disciple_Tools_Posts::get_users_following_post( $post_type, $fields["ID"] );
+            $followers = DT_Posts::get_users_following_post( $post_type, $fields["ID"] );
             $subassigned = $post_type === "contacts" ? Disciple_Tools_Posts::get_subassigned_users( $fields["ID"] ) : [];
             $assigned_to = isset( $fields["assigned_to"]["id"] ) ? $fields["assigned_to"]["id"] : false;
             foreach ( $followers as $follower ){

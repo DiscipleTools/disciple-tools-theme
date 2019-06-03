@@ -141,7 +141,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '0.20.0';
+            $this->version = '0.21.0';
             $this->migration_number = 24;
 
 
@@ -256,7 +256,11 @@ else {
             /**
              * dt-posts
              */
-            require_once( get_template_directory() . '/dt-core/posts.php' );
+            require_once( get_template_directory() . '/dt-posts/posts.php' );
+            require_once( get_template_directory() . '/dt-posts/custom-post-type.php' );
+            require_once( get_template_directory() . '/dt-posts/dt-posts.php' );
+            require_once( get_template_directory() . '/dt-posts/dt-posts-endpoints.php' );
+            Disciple_Tools_Posts_Endpoints::instance();
 
             /**
              * dt-contacts

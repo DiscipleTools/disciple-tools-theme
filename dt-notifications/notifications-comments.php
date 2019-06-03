@@ -37,7 +37,7 @@ class Disciple_Tools_Notifications_Comments
             $date_notified            = $comment->comment_date;
             $post_type                = get_post_type( $post_id );
 
-            $followers = Disciple_Tools_Posts::get_users_following_post( $post_type, $post_id, false );
+            $followers = DT_Posts::get_users_following_post( $post_type, $post_id, false );
             if ( is_wp_error( $followers ) ){
                 return $followers;
             }
@@ -80,7 +80,7 @@ class Disciple_Tools_Notifications_Comments
                             $notification["notification_name"]   = 'mention';
                             $notification["notification_action"] = 'mentioned';
                             // share record with mentioned individual
-                            Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $user_to_notify, null, false );
+                            DT_Posts::add_shared( $post_type, $post_id, $user_to_notify, null, false );
                         } else {
                             $notification["notification_name"]   = 'comment';
                             $notification["notification_action"] = 'comment';

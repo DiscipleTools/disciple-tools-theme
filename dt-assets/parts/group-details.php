@@ -117,8 +117,8 @@
                 <?php
                 foreach ($group["people_groups"] ?? [] as $value){
                     ?>
-                    <li class="<?php echo esc_html( $value->ID )?>">
-                        <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
+                    <li class="<?php echo esc_html( $value["ID"] )?>">
+                        <a href="<?php echo esc_url( $value["permalink"] ) ?>"><?php echo esc_html( $value["post_title"] ) ?></a>
                     </li>
                 <?php }
                 if (sizeof( $group["people_groups"] ) === 0){

@@ -538,7 +538,7 @@ class Disciple_Tools_Users
                         $(this).autocomplete({
                             source: function (request, response) {
                                 jQuery.ajax({
-                                    url: '<?php echo esc_html( rest_url() ) ?>dt/v1/contacts/compact',
+                                    url: '<?php echo esc_html( rest_url() ) ?>dt-posts/v2/contacts/compact',
                                     data: {
                                         s: request.term
                                     },

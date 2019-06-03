@@ -77,7 +77,8 @@ get_header();
 <script>jQuery(function($) {
     $(".js-create-contact-button").removeAttr("disabled");
     let selectedLocations = []
-    $(".js-create-contact").on("submit", function() {
+    $(".js-create-contact").on("submit", function(event) {
+        event.preventDefault();
         $(".js-create-contact-button")
             .attr("disabled", true)
             .addClass("loading");
@@ -86,7 +87,8 @@ get_header();
         if ( source === "personal" ){
             status = "active"
         }
-        API.create_contact({
+
+        API.create_post( 'contacts', {
             overall_status: status,
             title: $(".js-create-contact input[name=title]").val(),
             contact_phone: [{value:$(".js-create-contact input[name=phone]").val()}],
