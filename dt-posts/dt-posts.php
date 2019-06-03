@@ -165,7 +165,13 @@ class DT_Posts extends Disciple_Tools_Posts {
                 Disciple_Tools_Notifications::insert_notification_for_new_post( $post_type, $fields, $post_id );
             }
         }
-        return self::get_post( $post_type, $post_id );
+
+
+        if ( !self::can_view( $post_type, $post_id ) ){
+            return [ "ID" => $post_id ];
+        } else {
+            return self::get_post( $post_type, $post_id );
+        }
     }
 
 
@@ -244,8 +250,6 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $potential_error;
         }
 
-//        @todo assigned to
-
         $fields["last_modified"] = time(); //make sure the last modified field is updated.
         foreach ( $fields as $field_key => $field_value ){
             if ( !self::is_post_key_contact_method_or_connection( $post_settings, $field_key ) ) {
@@ -259,15 +263,16 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        $post = self::get_post( $post_type, $post_id, false );
-        if ( !is_wp_error( $post )){
-            do_action( "dt_post_updated", $post_type, $post_id, $initial_fields, $existing_contact );
-            if ( !$silent ){
-                Disciple_Tools_Notifications::insert_notification_for_new_post( $post_type, $fields, $post_id );
-            }
+        do_action( "dt_post_updated", $post_type, $post_id, $initial_fields, $existing_contact );
+        if ( !$silent ){
+            Disciple_Tools_Notifications::insert_notification_for_new_post( $post_type, $fields, $post_id );
         }
 
-        return $post;
+        if ( !self::can_view( $post_type, $post_id ) ){
+            return [ "ID" => $post_id ];
+        } else {
+            return self::get_post( $post_type, $post_id, false );
+        }
     }
 
 
@@ -705,7 +710,7 @@ class DT_Posts extends Disciple_Tools_Posts {
     public static function get_shared_with( string $post_type, int $post_id, bool $check_permissions = true ) {
         global $wpdb;
 
-        if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
+        if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( 'no_permission', "You do not have permission for this", [ 'status' => 403 ] );
         }
 
@@ -891,7 +896,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         $shared_with = self::get_shared_with( $post_type, $post_id, false );
         foreach ( $shared_with as $shared ){
-            $users[] = $shared["user_id"];
+            $users[] = (int) $shared["user_id"];
         }
         $users_follow = get_post_meta( $post_id, "follow", false );
         foreach ( $users_follow as $follow ){

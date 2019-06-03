@@ -159,7 +159,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return int | WP_Error
      */
     public static function create_contact( array $fields = [], $check_permissions = true, $silent = false ) {
-        $contact = DT_Posts::create_post( 'contacts', $fields, $silent );
+        $contact = DT_Posts::create_post( 'contacts', $fields, $silent, $check_permissions );
         return is_wp_error( $contact ) ? $contact : $contact["ID"];
     }
 
@@ -208,7 +208,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public function post_created_hook( $post_type, $post_id, $initial_fields ){
         if ( $post_type === "contacts" ){
             do_action( "dt_contact_created", $post_id, $initial_fields );
-            $contact = DT_Posts::get_post( 'contacts', $post_id );
+            $contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
             if ( isset( $contact["assigned_to"] )) {
                 if ( $contact["assigned_to"]["id"] ) {
                     DT_Posts::add_shared( "contacts", $post_id, $contact["assigned_to"]["id"], null, false, false, false );
@@ -230,7 +230,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @since  0.1.0
      */
     public static function update_contact( int $contact_id, array $fields, $check_permissions = true, bool $silent = false ) {
-        return DT_Posts::update_post( 'contacts', $contact_id, $fields, $silent );
+        return DT_Posts::update_post( 'contacts', $contact_id, $fields, $silent, $check_permissions );
     }
 
     //add the required fields to the DT_Post::create_contact() function
@@ -250,7 +250,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                      strpos( $fields["assigned_to"], "user" ) === false ){
                     $fields["assigned_to"] = "user-" . $fields["assigned_to"];
                 }
-                $existing_contact = DT_Posts::get_post( 'contacts', $post_id );
+                $existing_contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
                 if ( !isset( $existing_contact["assigned_to"] ) || $fields["assigned_to"] !== $existing_contact["assigned_to"]["assigned-to"] ){
                     if ( current_user_can( "assign_any_contacts" ) ) {
                         $fields["overall_status"] = 'assigned';
@@ -279,7 +279,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     public function post_updated_hook( $post_type, $post_id, $initial_fields, $previous_values ){
         if ( $post_type === 'contacts' ){
-            $contact = DT_Posts::get_post( 'contacts', $post_id );
+            $contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
             do_action( "dt_contact_updated", $post_id, $initial_fields, $contact, $previous_values );
         }
     }
@@ -337,7 +337,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return array| WP_Error, On success: the contact, else: the error message
      */
     public static function get_contact( int $contact_id, $check_permissions = true, $load_cache = false ) {
-        return DT_Posts::get_post( 'contacts', $contact_id, $load_cache );
+        return DT_Posts::get_post( 'contacts', $contact_id, $load_cache, $check_permissions );
     }
     public function dt_get_post_fields_filter( $fields, $post_type ) {
         if ( $post_type === 'contacts' ){

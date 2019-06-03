@@ -393,7 +393,7 @@ class Disciple_Tools_Groups_Post_Type
         $fields["peer_groups"] = [
             "name" => __( "Peer Groups", "disciple_tools" ),
             "type" => "connection",
-            "p2p_direction" => "any", //@todo
+            "p2p_direction" => "any",
             "p2p_key" => "groups_to_peers"
         ];
         $fields["members"] = [

@@ -304,7 +304,7 @@ class Disciple_Tools_Contacts_Endpoints
     public function get_contact( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['id'] ) ) {
-            $result = DT_Posts::create_post( 'contacts', $params['id'], true );
+            $result = DT_Posts::get_post( 'contacts', $params['id'], true );
 
             return $result; // Could be permission WP_Error
         } else {
