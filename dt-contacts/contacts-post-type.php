@@ -562,13 +562,13 @@ class Disciple_Tools_Contact_Post_Type
         $fields["baptized"] = [
             "name" => __( "Baptized", "disciple_tools" ),
             "type" => "connection",
-            "p2p_direction" => "from",
+            "p2p_direction" => "to",
             "p2p_key" => "baptizer_to_baptized"
         ];
         $fields["baptized_by"] = [
             "name" => __( "Baptized_by", "disciple_tools" ),
             "type" => "connection",
-            "p2p_direction" => "to",
+            "p2p_direction" => "from",
             "p2p_key" => "baptizer_to_baptized"
         ];
         $fields["people_groups"] = [
@@ -586,7 +586,7 @@ class Disciple_Tools_Contact_Post_Type
         $fields["subassigned"] = [
             "name" => __( "Sub-assigned to", "disciple_tools" ),
             "type" => "connection",
-            "p2p_direction" => "from",
+            "p2p_direction" => "to",
             "p2p_key" => "contacts_to_subassigned"
         ];
         $fields['geonames'] = [
