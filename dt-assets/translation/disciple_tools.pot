@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Disciple Tools\n"
-"POT-Creation-Date: 2019-06-03 21:17+0100\n"
+"POT-Creation-Date: 2019-06-04 14:05+0100\n"
 "PO-Revision-Date: 2018-01-09 14:10-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -168,7 +168,7 @@ msgstr ""
 #: dt-assets/parts/group-details.php:107 dt-assets/parts/group-details.php:217
 #: dt-contacts/contacts-post-type.php:537
 #: dt-contacts/contacts-post-type.php:593 dt-groups/groups-post-type.php:375
-#: dt-groups/groups-post-type.php:423 dt-metrics/metrics-project.php:95
+#: dt-groups/groups-post-type.php:429 dt-metrics/metrics-project.php:95
 #: dt-posts/posts.php:28 template-settings.php:38 template-settings.php:178
 #: template-settings.php:446
 msgid "Locations"
@@ -561,7 +561,8 @@ msgstr ""
 #: dt-assets/parts/contact-details.php:194
 #: dt-assets/parts/contact-details.php:320
 #: dt-assets/parts/group-details.php:136 dt-assets/parts/group-details.php:205
-#: dt-contacts/contacts-post-type.php:800 template-settings.php:121
+#: dt-contacts/contacts-post-type.php:800 dt-groups/groups-post-type.php:592
+#: template-settings.php:121
 msgid "Address"
 msgstr ""
 
@@ -701,7 +702,7 @@ msgstr ""
 msgid "Load more groups"
 msgstr ""
 
-#: dt-assets/parts/group-details.php:82
+#: dt-assets/parts/group-details.php:82 dt-groups/groups-post-type.php:418
 msgid "Group Coach / Church Planter"
 msgstr ""
 
@@ -1139,7 +1140,7 @@ msgstr ""
 msgid "Being Coached"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:252 dt-groups/groups-post-type.php:418
+#: dt-contacts/contacts-post-type.php:252 dt-groups/groups-post-type.php:424
 msgid "Requires Update"
 msgstr ""
 
@@ -1417,7 +1418,7 @@ msgid "Relation"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:551
-msgid "Coached_by"
+msgid "Coached by"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:557
@@ -1833,7 +1834,7 @@ msgstr ""
 msgid "Peer Groups"
 msgstr ""
 
-#: dt-groups/groups-post-type.php:538
+#: dt-groups/groups-post-type.php:544
 msgid "Enter the group here"
 msgstr ""
 
