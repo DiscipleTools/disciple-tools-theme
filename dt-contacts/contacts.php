@@ -412,8 +412,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( !$master_id || !$non_master_id) { return; }
         $master = self::get_contact( $master_id );
         $non_master = self::get_contact( $non_master_id );
-        $keys = self::$contact_connection_types;
 
+        $post_settings = DT_Posts::get_post_settings( 'contacts' );
+        $keys = $post_settings["connection_types"];
         $update = [];
         $to_remove = [];
 
@@ -428,23 +429,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     $to_remove[$key] = array();
                     $to_remove[$key]['values'] = array();
                 }
-                if ( in_array( $key, [ "baptized", "coaching", "subassigned" ] ) ){
-                    array_push($update[$key]['values'], array(
-                        'value' => $result->p2p_from
-                    ));
-                    array_push($to_remove[$key]['values'], array(
-                        'value' => $result->p2p_from,
-                        'delete' => true
-                    ));
-                } else {
-                    array_push($update[$key]['values'], array(
-                        'value' => $result->p2p_to
-                    ));
-                    array_push($to_remove[$key]['values'], array(
-                        'value' => $result->p2p_to,
-                        'delete' => true
-                    ));
-                }
+                array_push($update[$key]['values'], array(
+                    'value' => $result["ID"]
+                ));
+                array_push($to_remove[$key]['values'], array(
+                    'value' => $result["ID"],
+                    'delete' => true
+                ));
             }
         }
 
@@ -1255,6 +1246,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $comment = sprintf( esc_html_x( '%1$s is a duplicate and was merged into %2$s', 'Contact1 is a duplicated and was merged into Contact2', 'disciple_tools' ), $duplicate['title'], $link );
 
         self::add_comment( $duplicate_id, $comment, "duplicate", [], true, true );
+        self::dismiss_all( $duplicate_id );
 
         //comment on master
         $link = "<a href='" . get_permalink( $duplicate_id ) . "'>{$duplicate['title']}</a>";
