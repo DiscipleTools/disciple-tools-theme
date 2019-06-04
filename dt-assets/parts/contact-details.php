@@ -318,7 +318,7 @@
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
                     <?php esc_html_e( 'Address', 'disciple_tools' )?>
-                    <button id="add-new-address" data-open="geocode-address" >
+                    <button id="add-new-address">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 </div>
