@@ -324,55 +324,55 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                     <!-- General Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'general' ?>" class="nav-tab
-                        <?php ( $tab == 'general' || ! isset( $tab ) ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php echo esc_attr( ( $tab == 'general' || ! isset( $tab ) ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'General Settings', 'disciple_tools' ) ?>
                     </a>
 
                     <!-- Starting Map -->
                     <a href="<?php echo esc_attr( $link ) . 'focus' ?>" class="nav-tab
-                        <?php ( $tab == 'focus' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php echo esc_attr( ( $tab == 'focus' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Mapping Focus', 'disciple_tools' ) ?>
                     </a>
                         <!-- Location Migration Tab -->
 <!--                    --><?php //if ( !get_option( "dt_locations_migrated_to_geonames" ) ) : ?>
                         <a href="<?php echo esc_attr( $link ) . 'location-migration' ?>" class="nav-tab
-                            <?php ( $tab == 'location-migration' || ! isset( $tab ) ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                            <?php echo esc_attr( ( $tab == 'location-migration' || ! isset( $tab ) ) ? 'nav-tab-active' : '' ); ?>">
                             <?php esc_attr_e( 'Migrating From Locations', 'disciple_tools' ) ?>
                         </a>
 <!--                    --><?php //endif; ?>
                     <!-- Polygon -->
                     <a href="<?php echo esc_attr( $link ) . 'polygons' ?>" class="nav-tab
-                        <?php ( $tab == 'polygons' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php echo esc_attr( ( $tab == 'polygons' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Polygons', 'disciple_tools' ) ?>
                     </a>
                     <!-- Geocoding -->
                     <a href="<?php echo esc_attr( $link ) . 'geocoding' ?>" class="nav-tab
-                        <?php ( $tab == 'geocoding' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php echo esc_attr( ( $tab == 'geocoding' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Geocoding', 'disciple_tools' ) ?>
                     </a>
                     <!-- Names Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'names' ?>" class="nav-tab
-                        <?php ( $tab == 'names' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php echo esc_attr( ( $tab == 'names' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Names', 'disciple_tools' ) ?>
                     </a>
                     <!-- Population Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'population' ?>" class="nav-tab
-                        <?php ( $tab == 'population' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php echo esc_attr( ( $tab == 'population' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Population', 'disciple_tools' ) ?>
                     </a>
                     <!-- Add Sub-Locations -->
                     <a href="<?php echo esc_attr( $link ) . 'sub_locations' ?>" class="nav-tab
-                        <?php ( $tab == 'sub_locations' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php echo esc_attr( ( $tab == 'sub_locations' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Sub-Locations', 'disciple_tools' ) ?>
                     </a>
                     <!-- Add Migration -->
                     <a href="<?php echo esc_attr( $link ) . 'migration' ?>" class="nav-tab
-                        <?php ( $tab == 'migration' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php echo esc_attr( ( $tab == 'migration' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Migration', 'disciple_tools' ) ?>
                     </a>
                     <!-- Add Locations Explorer -->
                     <a href="<?php echo esc_attr( $link ) . 'explore' ?>" class="nav-tab
-                        <?php ( $tab == 'explore' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php echo esc_attr( ( $tab == 'explore' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Credits', 'disciple_tools' ) ?>
                     </a>
 
