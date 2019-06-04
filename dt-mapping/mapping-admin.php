@@ -2282,7 +2282,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     meta_key = 'geonames',
                     meta_value = %s,
                     field_type = 'location'
-                WHERE meta_key = ( 'contacts_to_locations' OR meta_key = 'groups_to_locations' )
+                WHERE meta_key = 'contacts_to_locations' OR meta_key = 'groups_to_locations'
                 AND meta_value = %s
                 ",
                 $geoname_id,
