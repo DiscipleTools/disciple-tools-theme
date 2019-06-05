@@ -913,14 +913,14 @@ class Disciple_Tools_Mapping_Queries {
         $geoname_ids = array_map( function( $g ){ return $g["meta_value"]; }, $geonames );
         $joined_geoname_ids = dt_array_to_sql( $geoname_ids );
         $geoname_id_names = $wpdb->get_results("
-                            SELECT geonameid, name 
+                            SELECT geonameid, alt_name 
                             FROM $wpdb->dt_geonames
                             WHERE geonameid IN ( $joined_geoname_ids ) 
                         ", ARRAY_A );
         // phpcs:enable
         $mapped_geoname_id_to_name = [];
         foreach ( $geoname_id_names as $geoname ){
-            $mapped_geoname_id_to_name[$geoname["geonameid"]] = $geoname["name"];
+            $mapped_geoname_id_to_name[$geoname["geonameid"]] = $geoname["alt_name"];
         }
         foreach ( $geonames as $geoname ){
             if ( isset( $mapped_geoname_id_to_name[$geoname["meta_value"]] ) ){
