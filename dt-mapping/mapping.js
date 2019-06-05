@@ -113,6 +113,7 @@ function top_level_map( div ) {
     switch ( default_map_settings.type ) {
 
         case 'world': {
+          console.log('top_level_map: world')
           let map_data = DRILLDOWNDATA.data.world
           let geoJSON = window.am4geodata_worldLow
 
@@ -168,7 +169,7 @@ function top_level_map( div ) {
                             ${_.escape(translations.population)}: {population}<br>
                             `;
           jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
-            toolTipContent += `${_.escape(vc.label)}: ${_.escape( vc.key )}<br>`
+            toolTipContent += `${_.escape(vc.label)}: {${_.escape( vc.key )}}<br>`
           })
 
           template.tooltipHTML = toolTipContent
@@ -222,8 +223,6 @@ function top_level_map( div ) {
 
           /* Click navigation */
           template.events.on("hit", function(ev) {
-            console.log(ev.target.dataItem.dataContext.name)
-            console.log(ev.target.dataItem.dataContext.geonameid)
             return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
           }, this);
 
@@ -331,7 +330,7 @@ function top_level_map( div ) {
                             ${_.escape(translations.population)}: {population}<br>
                             `;
               jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
-                toolTipContent += `${_.escape(vc.label)}: ${_.escape( vc.key )}<br>`
+                toolTipContent += `${_.escape(vc.label)}: {${_.escape( vc.key )}}<br>`
               })
               template.tooltipHTML = toolTipContent
 
@@ -370,9 +369,6 @@ function top_level_map( div ) {
 
               /* Click navigation */
               template.events.on("hit", function(ev) {
-                console.log(ev.target.dataItem.dataContext.name)
-                console.log(ev.target.dataItem.dataContext.geonameid)
-
                 if( DRILLDOWNDATA.data[ev.target.dataItem.dataContext.geonameid] )
                 {
                   return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
@@ -473,7 +469,7 @@ function top_level_map( div ) {
                             ${_.escape(translations.population)}: {population}<br>
                             `;
                     jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
-                        toolTipContent += `${_.escape(vc.label)}: ${_.escape( vc.key )}<br>`
+                        toolTipContent += `${_.escape(vc.label)}: {${_.escape( vc.key )}}<br>`
                     })
                     template.tooltipHTML = toolTipContent
 
@@ -512,9 +508,6 @@ function top_level_map( div ) {
 
                     /* Click navigation */
                     template.events.on("hit", function(ev) {
-                        console.log(ev.target.dataItem.dataContext.name)
-                        console.log(ev.target.dataItem.dataContext.geonameid)
-
                         if( DRILLDOWNDATA.data[ev.target.dataItem.dataContext.geonameid] )
                         {
                             return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
@@ -622,7 +615,7 @@ function geoname_map( div, geonameid ) {
                             ${_.escape(translations.population)}: {population}<br>
                             `;
         jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
-          toolTipContent += `${_.escape(vc.label)}: ${_.escape( vc.key )}<br>`
+          toolTipContent += `${_.escape(vc.label)}: {${_.escape( vc.key )}}<br>`
         })
         template.tooltipHTML = toolTipContent
 
@@ -660,8 +653,6 @@ function geoname_map( div, geonameid ) {
 
         /* Click navigation */
         template.events.on("hit", function(ev) {
-          console.log(ev.target.dataItem.dataContext.geonameid)
-          console.log(ev.target.dataItem.dataContext.name)
           return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
         }, this);
 
@@ -734,8 +725,6 @@ function geoname_map( div, geonameid ) {
 
             // Click navigation
             circle.events.on("hit", function (ev) {
-              console.log(ev.target.dataItem.dataContext.name)
-              console.log(ev.target.dataItem.dataContext.geonameid)
 
               return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
 
@@ -746,7 +735,7 @@ function geoname_map( div, geonameid ) {
                             ${_.escape(translations.population)}: {population}<br>
                             `;
             jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
-              circleTipContent += `${_.escape(vc.label)}: ${_.escape( vc.key )}<br>`
+              circleTipContent += `${_.escape(vc.label)}: {${_.escape( vc.key )}}<br>`
             })
             circle.tooltipHTML = circleTipContent
 

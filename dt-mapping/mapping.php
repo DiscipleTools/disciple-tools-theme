@@ -144,7 +144,18 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
                 }
             }
+
             $url_path = trim( str_replace( get_site_url(), "", $url ), '/' );
+
+            if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
+                add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
+                add_filter( 'dt_metrics_menu', [ $this, 'menu' ], 99 );
+
+                if ( 'metrics/mapping' === $url_path ){
+                    add_action( 'wp_enqueue_scripts', [ $this, 'drilldown_script' ], 89 );
+                    add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+                }
+            }
             if ( 'mapping' === $url_base ) {
                 if ( 'mapping' === substr( $url_path, '0', $url_base_length ) ) {
 
@@ -165,20 +176,26 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
          */
 
         public function add_url( $template_for_url ) {
-            $template_for_url['mapping'] = 'template-metrics.php';
+            $template_for_url['metrics/mapping'] = 'template-metrics.php';
             return $template_for_url;
         }
         public function menu( $content ) {
-            $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_view" onclick="page_mapping_view()">' .  esc_html__( 'Map', 'disciple_tools' ) . '</a></li>';
-            $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_list" onclick="page_mapping_list()">' .  esc_html__( 'List', 'disciple_tools' ) . '</a></li>';
+            $content .= '
+            <li><a href="">' . esc_html__( 'Mapping', 'disciple_tools' ) . '</a>
+                <ul class="menu vertical nested" id="mapping-menu" aria-expanded="true">
+                    <li><a href="'. esc_url( site_url( '/metrics/mapping/' ) ) .'#mapping_view" onclick="page_mapping_view()">' .  esc_html__( 'Map', 'disciple_tools' ) . '</a></li>
+                    <li><a href="'. esc_url( site_url( '/metrics/mapping/' ) ) .'#mapping_list" onclick="page_mapping_list()">' .  esc_html__( 'List', 'disciple_tools' ) . '</a></li>
+                </ul>
+            </li>
+            ';
             return $content;
         }
         public function scripts() {
             // Amcharts
-            wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
-            wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
-            wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', false, '4' );
-            wp_register_script( 'amcharts-maps', 'https://www.amcharts.com/lib/4/maps.js', false, '4' );
+            wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, false, true );
+            wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, false, true );
+            wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', false, false, true );
+            wp_register_script( 'amcharts-maps', 'https://www.amcharts.com/lib/4/maps.js', false, false, true );
 
 
             // Datatable

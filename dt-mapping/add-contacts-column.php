@@ -14,7 +14,7 @@ function dt_mm_add_contacts_column( $data ) {
         }
     }
     $url_path = trim( str_replace( get_site_url(), "", $url ), '/' );
-    if ( 'mapping' === substr( $url_path, '0', 7 ) ) {
+    if ( 'mapping' === substr( $url_path, '0', 7 ) || strpos( $url_path, "metrics/mapping" ) === 0 ) {
 
 
         /**

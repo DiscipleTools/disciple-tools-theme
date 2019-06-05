@@ -13,7 +13,7 @@ class DT_Mapping_Module_Config
 
     public function __construct() {
 
-        add_action( 'dt_top_nav_desktop', [ $this, 'top_nav_desktop' ], 5 ); // add menu bar before checking for page
+//        add_action( 'dt_top_nav_desktop', [ $this, 'top_nav_desktop' ], 5 ); // add menu bar before checking for page
 
         /**
          * Load custom columns or remove these and replace with your own.
