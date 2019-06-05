@@ -875,14 +875,14 @@ class Disciple_Tools_Mapping_Queries {
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
         $results = $wpdb->get_results("
-                            SELECT geonameid, name 
+                            SELECT geonameid, alt_name
                             FROM $wpdb->dt_geonames
                             WHERE geonameid IN ( $ids ) 
                         ", ARRAY_A );
         // phpcs:enable
         $prepared = [];
         foreach ( $results as $row ){
-            $prepared[$row["geonameid"]] = $row["name"];
+            $prepared[$row["geonameid"]] = $row["alt_name"];
         }
         return $prepared;
     }

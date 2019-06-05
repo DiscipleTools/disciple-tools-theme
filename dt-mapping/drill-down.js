@@ -7,7 +7,6 @@ window.DRILLDOWN = {
         if ( ! geonameid ) {
             geonameid = 'top_map_level'
         }
-        console.log(geonameid)
 
         let drill_down = jQuery('#'+bindFunction)
         let rest = DRILLDOWNDATA.settings.endpoints.get_drilldown_endpoint
@@ -23,7 +22,6 @@ window.DRILLDOWN = {
             },
         })
         .done( function( response ) {
-            console.log(response)
 
             let html = ``
 

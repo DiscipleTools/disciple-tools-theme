@@ -125,6 +125,7 @@ function top_level_map( div ) {
             if ( map_data.children[v.id] !== undefined ) {
               geoJSON.features[i].properties.geonameid = map_data.children[v.id].geonameid
               geoJSON.features[i].properties.population = map_data.children[v.id].population
+              geoJSON.features[i].properties.name = map_data.children[v.id].name
 
 
               /* custom columns */
@@ -269,6 +270,7 @@ function top_level_map( div ) {
                 if ( DRILLDOWNDATA.data[v.properties.geonameid] !== undefined ) {
                   mapData.features[i].properties.geonameid = v.properties.geonameid
                   mapData.features[i].properties.population = DRILLDOWNDATA.data[v.properties.geonameid].self.population
+                  mapData.features[i].properties.name = DRILLDOWNDATA.data[v.properties.geonameid].self.name
 
 
                   /* custom columns */
@@ -419,6 +421,7 @@ function top_level_map( div ) {
                         if ( DRILLDOWNDATA.data[v.properties.geonameid] !== undefined ) {
                             mapData.features[i].properties.geonameid = v.properties.geonameid
                             mapData.features[i].properties.population = DRILLDOWNDATA.data[v.properties.geonameid].self.population
+                            mapData.features[i].properties.name = DRILLDOWNDATA.data[v.properties.geonameid].self.name
 
 
                             /* custom columns */
@@ -573,6 +576,7 @@ function geoname_map( div, geonameid ) {
           if ( response.children[mapData.features[i].properties.geonameid] !== undefined ) {
 
             mapData.features[i].properties.population = response.children[mapData.features[i].properties.geonameid].population
+            mapData.features[i].properties.name = response.children[mapData.features[i].properties.geonameid].name
 
             /* custom columns */
             if ( DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
