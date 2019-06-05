@@ -39,6 +39,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         add_filter( "dt_post_updated", [ $this, "post_updated_hook" ], 10, 4 );
         add_filter( "dt_get_post_fields_filter", [ $this, "dt_get_post_fields_filter" ], 10, 2 );
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
+        add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
+        add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
 
         parent::__construct();
     }
@@ -277,13 +279,65 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return $fields;
     }
 
-    public function post_updated_hook( $post_type, $post_id, $initial_fields, $previous_values ){
+    public function post_updated_hook( $post_type, $post_id, $updated_fields, $previous_values ){
         if ( $post_type === 'contacts' ){
             $contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
-            do_action( "dt_contact_updated", $post_id, $initial_fields, $contact, $previous_values );
+            do_action( "dt_contact_updated", $post_id, $updated_fields, $contact, $previous_values );
         }
     }
 
+
+    public function post_connection_added( $post_type, $post_id, $post_key, $value ){
+        if ( $post_type === "contacts" ){
+            if ( $post_key === "subassigned" ){
+                $user_id = get_post_meta( $value, "corresponds_to_user", true );
+                if ( $user_id ){
+                    self::add_shared_on_contact( $post_id, $user_id, null, false, false, false );
+                    Disciple_Tools_Notifications::insert_notification_for_subassigned( $user_id, $post_id );
+                }
+            }
+            if ( $post_key === 'baptized' ){
+                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $value );
+                $milestones = get_post_meta( $post_id, 'milestones' );
+                if ( empty( $milestones ) || !in_array( "milestone_baptizing", $milestones ) ){
+                    add_post_meta( $post_id, "milestones", "milestone_baptizing" );
+                }
+                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $post_id );
+            }
+            if ( $post_key === 'baptized_by' ){
+                $milestones = get_post_meta( $post_id, 'milestones' );
+                if ( empty( $milestones ) || !in_array( "milestone_baptized", $milestones ) ){
+                    add_post_meta( $post_id, "milestones", "milestone_baptized" );
+                }
+                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $post_id );
+            }
+            if ( $post_key === "group" ){
+                // share the group with the owner of the contact.
+                $assigned_to = get_post_meta( $post_id, "assigned_to", true );
+                if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){
+                    $user_id = explode( "-", $assigned_to )[1];
+                    if ( $user_id ){
+                        DT_Posts::add_shared( "groups", $value, $user_id, null, false, false );
+                    }
+                }
+                do_action( 'group_member_count', $value, "added" );
+            }
+        }
+    }
+
+    public function post_connection_removed( $post_type, $post_id, $post_key, $value ){
+        if ( $post_type === "contacts" ){
+            if ( $post_key === "groups" ){
+                do_action( 'group_member_count', $value, "removed" );
+            }
+            if ( $post_key === "baptized_by" ){
+                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $post_id );
+            }
+            if ( $post_key === "baptized" ){
+                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $value );
+            }
+        }
+    }
 
 
     //check to see if the contact is marked as needing an update

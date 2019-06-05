@@ -1286,11 +1286,12 @@ class Disciple_Tools_Posts
             return $connect;
         }
         if ( $connect ) {
+            do_action( "post_connection_added", $post_type, $post_id, $field_key, $value );
             $connection = get_post( $value );
             $connection->permalink = get_permalink( $value );
             return $connection;
         } else {
-            return new WP_Error( __FUNCTION__, "Field not parsed or understood: " . $field_key, [ "status" => 400 ] );
+            return new WP_Error( __FUNCTION__, "Error adding connection field on post: " . $field_key, [ "status" => 400 ] );
         }
     }
 
@@ -1299,23 +1300,27 @@ class Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
-        $connect = null;
         $field_setting = $post_settings["fields"][$field_key] ?? [];
         if ( !isset( $field_setting["p2p_key"], $field_setting["p2p_direction"] ) ) {
             return new WP_Error( __FUNCTION__, "Could not remove connection. Field settings missing", [ 'status' => 400 ] );
         }
+        $disconnect = null;
         if ( $field_setting["p2p_direction"] === "to" || $field_setting["p2p_direction"] === "any" ){
-            return p2p_type( $field_setting["p2p_key"] )->disconnect(
-                $value, $post_id,
-                [ 'date' => current_time( 'mysql' ) ]
-            );
+            $disconnect = p2p_type( $field_setting["p2p_key"] )->disconnect( $value, $post_id );
+            if ( $field_setting["p2p_direction"] === "any" && $disconnect === 0 ){
+                $disconnect = p2p_type( $field_setting["p2p_key"] )->disconnect( $post_id, $value );
+            }
         } elseif ( $field_setting["p2p_direction"] === "from" ){
-            return p2p_type( $field_setting["p2p_key"] )->disconnect(
-                $post_id, $value,
-                [ 'date' => current_time( 'mysql' ) ]
-            );
+            $disconnect = p2p_type( $field_setting["p2p_key"] )->disconnect( $post_id, $value );
+        }
+        if ( is_wp_error( $disconnect ) ) {
+            return $disconnect;
+        }
+        if ( $disconnect ){
+            do_action( "post_connection_removed", $post_type, $post_id, $field_key, $value );
+            return $disconnect;
         } else {
-            return false;
+            return new WP_Error( __FUNCTION__, "Error removing connection field on post: " . $field_key, [ "status" => 400 ] );
         }
     }
 

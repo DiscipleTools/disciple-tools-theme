@@ -54,6 +54,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         add_filter( "dt_post_updated", [ $this, "post_updated_hook" ], 10, 3 );
         add_filter( "dt_get_post_fields_filter", [ $this, "dt_get_post_fields_filter" ], 10, 2 );
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
+        add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
+        add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
 
         parent::__construct();
     }
@@ -153,6 +155,30 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         }
     }
 
+
+    public function post_connection_added( $post_type, $post_id, $field_key, $value ){
+        if ( $post_type === "groups" ){
+            if ( $field_key === "members" ){
+                // share the group with the owner of the contact.
+                $assigned_to = get_post_meta( $value, "assigned_to", true );
+                if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){
+                    $user_id = explode( "-", $assigned_to )[1];
+                    if ( $user_id ){
+                        self::add_shared_on_group( $post_id, $user_id, null, false, false );
+                    }
+                }
+                do_action( 'group_member_count', $post_id, "added" );
+            }
+        }
+    }
+
+    public function post_connection_removed( $post_type, $post_id, $field_key, $value ){
+        if ( $post_type === "groups" ){
+            if ( $field_key === "members" ){
+                do_action( 'group_member_count', $value, "removed" );
+            }
+        }
+    }
 
 
     //check to see if the group is marked as needing an update
