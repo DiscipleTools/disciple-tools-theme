@@ -44,9 +44,9 @@ window.DRILLDOWN = {
                     let disabled = !response[i+2]
 
                     // create button
-                    html += `<li><button id="${section.parent}" type="button" ${disabled ? "disabled" : ""}
-                        onclick="DRILLDOWN.get_drill_down( '${bindFunction}', '${section.selected}' )"
-                        class="button ${hollowClass} geocode-link">${section.selected_name}</button></li>`
+                    html += `<li><button id="${_.escape( section.parent )}" type="button" ${disabled ? "disabled" : ""}
+                        onclick="DRILLDOWN.get_drill_down( '${_.escape( bindFunction )}', '${_.escape( section.selected )}' )"
+                        class="button ${hollowClass} geocode-link">${_.escape( section.selected_name )}</button></li>`
 
                 } else { // it is a list
                     // check if list is not empty
@@ -57,20 +57,20 @@ window.DRILLDOWN = {
                             console.log('no additional dropdown triggered')
                         } else {
                             // make select
-                            html += `<li><select id="${section.parent}"
-                            onchange="DRILLDOWN.get_drill_down( '${bindFunction}', this.value )"
+                            html += `<li><select id="${_.escape( section.parent )}"
+                            onchange="DRILLDOWN.get_drill_down( '${_.escape( bindFunction )}', this.value )"
                             class="geocode-select">`
 
                             // make initial option
-                            html += `<option value="${section.parent}"></option>`
+                            html += `<option value="${_.escape( section.parent )}"></option>`
 
                             // make option list
                             jQuery.each(section.list, function (ii, item) {
-                                html += `<option value="${item.geonameid}" `
+                                html += `<option value="${_.escape( item.geonameid )}" `
                                 if (item.geonameid === section.selected) {
                                     html += ` selected`
                                 }
-                                html += `>${item.name}</option>`
+                                html += `>${_.escape( item.name )}</option>`
                             })
 
                             html += `</select></li>`

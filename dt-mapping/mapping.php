@@ -169,8 +169,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             return $template_for_url;
         }
         public function menu( $content ) {
-            $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_view" onclick="page_mapping_view()">' .  esc_html__( 'Map' ) . '</a></li>';
-            $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_list" onclick="page_mapping_list()">' .  esc_html__( 'List' ) . '</a></li>';
+            $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_view" onclick="page_mapping_view()">' .  esc_html__( 'Map', 'disciple_tools' ) . '</a></li>';
+            $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_list" onclick="page_mapping_list()">' .  esc_html__( 'List', 'disciple_tools' ) . '</a></li>';
             return $content;
         }
         public function scripts() {
@@ -300,7 +300,10 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         public function translations() {
             $translations = [];
 
-            $translations['title'] = __( "Mapping", "dt_mapping_module" );
+            $translations['title'] = __( "Mapping", "disciple_tools" );
+            $translations['refresh_data'] = __( "Refresh cached Data", "disciple_tools" );
+            $translations['population'] = __( "Population", "disciple_tools" );
+            $translations['name'] = __( "Name", "disciple_tools" );
 
             return $translations;
         }

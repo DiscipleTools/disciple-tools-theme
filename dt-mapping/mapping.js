@@ -1,7 +1,8 @@
+let translations = window.mappingModule.mapping_module.translations
+
 jQuery(document).ready(function() {
     let mapUrl = ''
     if('#mapping_view' === window.location.hash) {
-        console.log(DRILLDOWNDATA)
         if ( window.am4geodata_worldLow === undefined ) {
           mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'polygon_collection/world.geojson'
           jQuery.getJSON( mapUrl, function( data ) {
@@ -16,7 +17,6 @@ jQuery(document).ready(function() {
         }
     }
     if('#mapping_list' === window.location.hash) {
-        console.log(DRILLDOWNDATA)
         if ( window.am4geodata_worldLow === undefined ) {
           mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'polygon_collection/world.geojson'
           jQuery.getJSON( mapUrl, function( data ) {
@@ -37,13 +37,11 @@ _ = _ || window.lodash
 
 window.DRILLDOWN.map_chart_drilldown = function( geonameid ) {
     if ( geonameid !== 'top_map_level' ) { // make sure this is not a top level continent or world request
-        console.log('map_chart_drilldown: geonameid available ' + geonameid )
         DRILLDOWNDATA.settings.current_map = parseInt(geonameid)
         geoname_map( 'map_chart', parseInt(geonameid) )
         data_type_list( 'data-type-list' )
     }
     else { // top_level maps
-        console.log('map_chart_drilldown: top level ' + geonameid )
         DRILLDOWNDATA.settings.current_map = 'top_map_level'
         top_level_map( 'map_chart' )
         data_type_list( 'data-type-list' )
@@ -70,7 +68,7 @@ function page_mapping_view() {
                 <span id="current_level"></span>
             </div>
         </div>
-        
+        <span style="font-size:.8em; margin-left:20px"><a onclick="refresh_data('get_geoname_totals')">${_.escape( translations.refresh_data )}</a></span>
         <hr style="max-width:100%;">
         
        <!-- Map -->
@@ -91,7 +89,6 @@ function page_mapping_view() {
         
         <hr style="max-width:100%;">
         
-        <span style="float:right;font-size:.8em;"><a onclick="refresh_data('get_geoname_totals')" >refresh data</a></span>
         <br>
         `);
 
@@ -116,7 +113,6 @@ function top_level_map( div ) {
     switch ( default_map_settings.type ) {
 
         case 'world': {
-          console.log('top_level_map: world')
           let map_data = DRILLDOWNDATA.data.world
           let geoJSON = window.am4geodata_worldLow
 
@@ -169,10 +165,10 @@ function top_level_map( div ) {
           // create tool tip
           let toolTipContent = `<strong>{name}</strong><br>
                             ---------<br>
-                            Population: {population}<br>
+                            ${_.escape(translations.population)}: {population}<br>
                             `;
           jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
-            toolTipContent += vc.label + ': {' + vc.key + '}<br>'
+            toolTipContent += `${_.escape(vc.label)}: ${_.escape( vc.key )}<br>`
           })
 
           template.tooltipHTML = toolTipContent
@@ -332,10 +328,10 @@ function top_level_map( div ) {
               // create tool tip
               let toolTipContent = `<strong>{name}</strong><br>
                             ---------<br>
-                            Population: {population}<br>
+                            ${_.escape(translations.population)}: {population}<br>
                             `;
               jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
-                toolTipContent += vc.label + ': {' + vc.key + '}<br>'
+                toolTipContent += `${_.escape(vc.label)}: ${_.escape( vc.key )}<br>`
               })
               template.tooltipHTML = toolTipContent
 
@@ -399,7 +395,7 @@ function top_level_map( div ) {
             } else {
                 // multiple countries selected. So load the world and reduce the polygons
 
-                mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'polygon_collection/' +default_map_settings.parent+ '.geojson'
+                mapUrl = DRILLDOWNDATA.settings.mapping_source_url + `polygon_collection/${_.escape( default_map_settings.parent )}.geojson`
                 jQuery.getJSON( mapUrl, function( data ) {
 
                     // set title
@@ -474,10 +470,10 @@ function top_level_map( div ) {
                     // create tool tip
                     let toolTipContent = `<strong>{name}</strong><br>
                             ---------<br>
-                            Population: {population}<br>
+                            ${_.escape(translations.population)}: {population}<br>
                             `;
                     jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
-                        toolTipContent += vc.label + ': {' + vc.key + '}<br>'
+                        toolTipContent += `${_.escape(vc.label)}: ${_.escape( vc.key )}<br>`
                     })
                     template.tooltipHTML = toolTipContent
 
@@ -623,10 +619,10 @@ function geoname_map( div, geonameid ) {
         // create tool tip
         let toolTipContent = `<strong>{name}</strong><br>
                             ---------<br>
-                            Population: {population}<br>
+                            ${_.escape(translations.population)}: {population}<br>
                             `;
         jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
-          toolTipContent += vc.label + ': {' + vc.key + '}<br>'
+          toolTipContent += `${_.escape(vc.label)}: ${_.escape( vc.key )}<br>`
         })
         template.tooltipHTML = toolTipContent
 
@@ -747,10 +743,10 @@ function geoname_map( div, geonameid ) {
 
             let circleTipContent = `<strong>{name}</strong><br>
                             ---------<br>
-                            Population: {population}<br>
+                            ${_.escape(translations.population)}: {population}<br>
                             `;
             jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
-              circleTipContent += vc.label + ': {' + vc.key + '}<br>'
+              circleTipContent += `${_.escape(vc.label)}: ${_.escape( vc.key )}<br>`
             })
             circle.tooltipHTML = circleTipContent
 
@@ -780,7 +776,7 @@ function data_type_list( div ) {
         if ( i === focus ) {
             hollow = ''
         }
-        list.append(`<a onclick="heatmap_focus_change( ${i}, '${DRILLDOWNDATA.settings.current_map}' )" class="button ${hollow}" id="${v.key}">${v.label}</a>`)
+        list.append(`<a onclick="heatmap_focus_change( ${_.escape( i )}, '${DRILLDOWNDATA.settings.current_map}' )" class="button ${hollow}" id="${_.escape( v.key )}">${_.escape( v.label )}</a>`)
     })
 }
 
@@ -1000,7 +996,7 @@ function geoname_list( div, geonameid ) {
 
         // Self Data
         let self_population = map_data.self.population_formatted
-        jQuery('#current_level').empty().html(`Population: ${self_population}`)
+        jQuery('#current_level').empty().html(`${_.escape(translations.population)}: ${_.escape( self_population )}`)
 
         // Build List
         let locations = jQuery('#location_list')
@@ -1009,12 +1005,12 @@ function geoname_list( div, geonameid ) {
         let html = `<table id="country-list-table" class="display">`
 
         // Header Section
-        html += `<thead><tr><th>Name</th><th>Population</th>`
+        html += `<thead><tr><th>${_.escape(translations.name)}</th><th>${_.escape(translations.population)}</th>`
 
         /* Additional Columns */
         if ( DRILLDOWNDATA.data.custom_column_labels ) {
             jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(i,v) {
-                html += `<th>${v.label}</th>`
+                html += `<th>${_.escape( v.label )}</th>`
             })
         }
         /* End Additional Columns */
@@ -1031,13 +1027,13 @@ function geoname_list( div, geonameid ) {
             let population = v.population_formatted
 
             html += `<tr>
-                        <td><strong><a onclick="DRILLDOWN.get_drill_down('location_list_drilldown', ${v.geonameid} )">${v.name}</a></strong></td>
-                        <td>${population}</td>`
+                        <td><strong><a onclick="DRILLDOWN.get_drill_down('location_list_drilldown', ${_.escape( v.geonameid )} )">${_.escape( v.name )}</a></strong></td>
+                        <td>${_.escape( population )}</td>`
 
             /* Additional Columns */
             if ( DRILLDOWNDATA.data.custom_column_data[v.geonameid] ) {
                 jQuery.each( DRILLDOWNDATA.data.custom_column_data[v.geonameid], function(ii,vv) {
-                    html += `<td><strong>${vv}</strong></td>`
+                    html += `<td><strong>${_.escape( vv )}</strong></td>`
                 })
             } else {
                 jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii,vv) {
