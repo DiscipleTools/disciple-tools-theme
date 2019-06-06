@@ -1,6 +1,7 @@
 let translations = window.mappingModule.mapping_module.translations
 
 jQuery(document).ready(function() {
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#mapping-menu'));
     let mapUrl = ''
     if('#mapping_view' === window.location.hash) {
         if ( window.am4geodata_worldLow === undefined ) {
@@ -33,6 +34,7 @@ jQuery(document).ready(function() {
 })
 
 _ = _ || window.lodash
+let mapFillColor = "rgb(217, 217, 217)"
 
 
 window.DRILLDOWN.map_chart_drilldown = function( geonameid ) {
@@ -99,6 +101,107 @@ function page_mapping_view() {
 
 }
 
+function setCommonMapSettings( chart ) {
+  let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+  polygonSeries.exclude = ["AQ","GL"];
+  polygonSeries.useGeodata = true;
+  let template = polygonSeries.mapPolygons.template;
+
+  // create tool tip
+  let toolTipContent = `<strong>{name}</strong><br>
+                            ---------<br>
+                            ${_.escape(translations.population)}: {population}<br>
+                            `;
+  jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
+    toolTipContent += `${_.escape(vc.label)}: {${_.escape( vc.key )}}<br>`
+  })
+
+  template.tooltipHTML = toolTipContent
+
+  // Create hover state and set alternative fill color
+  let hs = template.states.create("hover");
+  hs.properties.fill = am4core.color("#3c5bdc");
+
+  template.propertyFields.fill = "fill";
+  polygonSeries.tooltip.label.interactionsEnabled = true;
+  polygonSeries.tooltip.pointerOrientation = "vertical";
+  template.fill = am4core.color("#FFFFFF");
+  // template.stroke = am4core.color("rgba(89,89,89,0.51)");
+
+  polygonSeries.heatRules.push({
+    property: "fill",
+    target: template,
+    min: chart.colors.getIndex(1).brighten(1.5),
+    max: chart.colors.getIndex(1).brighten(-0.3)
+  });
+  // Zoom control
+  chart.zoomControl = new am4maps.ZoomControl();
+
+  let homeButton = new am4core.Button();
+  homeButton.events.on("hit", function(){
+    chart.goHome();
+  });
+
+  homeButton.icon = new am4core.Sprite();
+  homeButton.padding(7, 5, 7, 5);
+  homeButton.width = 30;
+  homeButton.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
+  homeButton.marginBottom = 10;
+  homeButton.parent = chart.zoomControl;
+  homeButton.insertBefore(chart.zoomControl.plusButton);
+
+
+ /* Click navigation */
+  template.events.on("hit", function(ev) {
+    // if (DRILLDOWNDATA.data[ev.target.dataItem.dataContext.geonameid]) {
+      return DRILLDOWN.get_drill_down('map_chart_drilldown', ev.target.dataItem.dataContext.geonameid)
+    // }
+  }, this);
+}
+
+function setUpData( features, map_data ){
+  jQuery.each( features, function(i, mapFeature ) {
+    let geonameid =  mapFeature.properties.geonameid
+    let locationData =  _.get( map_data, `children[${geonameid}]` ) || _.get(map_data, `children[${mapFeature.id}]`)  || _.get( map_data, `${geonameid}.self` );
+    if ( locationData ) {
+      mapFeature.properties.geonameid = locationData.geonameid
+      mapFeature.properties.population = locationData.population
+      mapFeature.properties.name = locationData.name
+
+      /* custom columns */
+      if ( DRILLDOWNDATA.data.custom_column_data[geonameid] ) {
+        /* Note: Amcharts calculates heatmap off last variable. So this section moves selected
+        * heatmap variable to the end of the array */
+        let focus = DRILLDOWNDATA.settings.heatmap_focus
+        jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
+
+          if ( ii !== focus ) {
+            mapFeature.properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[geonameid][ii]
+            mapFeature.properties.value = mapFeature.properties[vv.key]
+          }
+        })
+        jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
+          if ( ii === focus ) {
+            mapFeature.properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[geonameid][ii]
+            mapFeature.properties.value = mapFeature.properties[vv.key]
+            if ( mapFeature.properties.value === 0 ){
+              mapFeature.properties.fill = am4core.color(mapFillColor);
+            }
+          }
+        })
+      } else {
+        jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
+          mapFeature.properties[vv.key] = 0
+          mapFeature.properties.value = 0
+          mapFeature.properties.fill = am4core.color(mapFillColor);
+        })
+      }
+      /* end custom column */
+    }
+  })
+  return features
+}
+
 
 function top_level_map( div ) {
     am4core.useTheme(am4themes_animated);
@@ -121,76 +224,15 @@ function top_level_map( div ) {
           title.empty().html(map_data.self.name)
 
           // prepare country/child data
-          jQuery.each( geoJSON.features, function(i, v ) {
-            if ( map_data.children[v.id] !== undefined ) {
-              geoJSON.features[i].properties.geonameid = map_data.children[v.id].geonameid
-              geoJSON.features[i].properties.population = map_data.children[v.id].population
-              geoJSON.features[i].properties.name = map_data.children[v.id].name
-
-
-              /* custom columns */
-              if ( DRILLDOWNDATA.data.custom_column_data[geoJSON.features[i].properties.geonameid] ) {
-                /* Note: Amcharts calculates heatmap off last variable. So this section moves selected
-                * heatmap variable to the end of the array */
-                let focus = DRILLDOWNDATA.settings.heatmap_focus
-                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                  if ( ii !== focus ) {
-                    geoJSON.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[geoJSON.features[i].properties.geonameid][ii]
-                    geoJSON.features[i].properties.value = geoJSON.features[i].properties[vv.key]
-                  }
-                })
-                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                  if ( ii === focus ) {
-                    geoJSON.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[geoJSON.features[i].properties.geonameid][ii]
-                    geoJSON.features[i].properties.value = geoJSON.features[i].properties[vv.key]
-                  }
-                })
-              } else {
-                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                  geoJSON.features[i].properties[vv.key] = 0
-                  geoJSON.features[i].properties.value = 0
-                })
-              }
-              /* end custom column */
-            }
-          })
+          geoJSON.features = setUpData( geoJSON.features, map_data )
 
           chart.geodata = geoJSON;
 
           // initialize polygonseries
-          let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
-          polygonSeries.exclude = ["AQ","GL"];
-          polygonSeries.useGeodata = true;
 
-          let template = polygonSeries.mapPolygons.template;
+          // polygonSeries.exclude = ["AQ","GL"];
 
-          // create tool tip
-          let toolTipContent = `<strong>{name}</strong><br>
-                            ---------<br>
-                            ${_.escape(translations.population)}: {population}<br>
-                            `;
-          jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
-            toolTipContent += `${_.escape(vc.label)}: {${_.escape( vc.key )}}<br>`
-          })
-
-          template.tooltipHTML = toolTipContent
-
-          // Create hover state and set alternative fill color
-          let hs = template.states.create("hover");
-          hs.properties.fill = am4core.color("#3c5bdc");
-
-
-          template.propertyFields.fill = "fill";
-          polygonSeries.tooltip.label.interactionsEnabled = true;
-          polygonSeries.tooltip.pointerOrientation = "vertical";
-
-          polygonSeries.heatRules.push({
-            property: "fill",
-            target: template,
-            min: chart.colors.getIndex(1).brighten(1.5),
-            max: chart.colors.getIndex(1).brighten(-0.3)
-          });
-
+          setCommonMapSettings( chart )
 
           // add slider to chart container in order not to occupy space
           let slider = chart.chartContainer.createChild(am4core.Slider);
@@ -204,28 +246,6 @@ function top_level_map( div ) {
             chart.deltaLongitude = 720 * slider.start;
           })
 
-
-          // Zoom control
-          chart.zoomControl = new am4maps.ZoomControl();
-
-          let homeButton = new am4core.Button();
-          homeButton.events.on("hit", function(){
-            chart.goHome();
-          });
-
-          homeButton.icon = new am4core.Sprite();
-          homeButton.padding(7, 5, 7, 5);
-          homeButton.width = 30;
-          homeButton.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
-          homeButton.marginBottom = 10;
-          homeButton.parent = chart.zoomControl;
-          homeButton.insertBefore(chart.zoomControl.plusButton);
-
-
-          /* Click navigation */
-          template.events.on("hit", function(ev) {
-            return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
-          }, this);
 
           let coordinates = []
           coordinates[0] = {
@@ -265,39 +285,14 @@ function top_level_map( div ) {
               title.empty()
 
               // prepare country/child data
+              mapData.features = setUpData( mapData.features, DRILLDOWNDATA.data )
               jQuery.each( mapData.features, function(i, v ) {
-
                 if ( DRILLDOWNDATA.data[v.properties.geonameid] !== undefined ) {
-                  mapData.features[i].properties.geonameid = v.properties.geonameid
-                  mapData.features[i].properties.population = DRILLDOWNDATA.data[v.properties.geonameid].self.population
-                  mapData.features[i].properties.name = DRILLDOWNDATA.data[v.properties.geonameid].self.name
-
-
-                  /* custom columns */
-                  if ( DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
-                    /* Note: Amcharts calculates heatmap off last variable. So this section moves selected
-                    * heatmap variable to the end of the array */
-                    let focus = DRILLDOWNDATA.settings.heatmap_focus
-                    jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                      if ( ii !== focus ) {
-                        mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
-                        mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
-                      }
-                    })
-                    jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                      if ( ii === focus ) {
-                        mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
-                        mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
-                      }
-                    })
-                  } else {
-                    jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                      mapData.features[i].properties[vv.key] = 0
-                      mapData.features[i].properties.value = 0
-                    })
+                  coordinates[i] = {
+                    "latitude": DRILLDOWNDATA.data[v.properties.geonameid].self.latitude,
+                    "longitude": DRILLDOWNDATA.data[v.properties.geonameid].self.longitude,
+                    "title": DRILLDOWNDATA.data[v.properties.geonameid].self.name
                   }
-                  /* end custom column */
-
                   if ( mapData.features.length > 3 ) {
                     // set title
                     title.empty().html('Multiple Countries')
@@ -307,75 +302,12 @@ function top_level_map( div ) {
                       title.append(', ')
                     }
                   }
-
-
-                  coordinates[i] = {
-                    "latitude": DRILLDOWNDATA.data[v.properties.geonameid].self.latitude,
-                    "longitude": DRILLDOWNDATA.data[v.properties.geonameid].self.longitude,
-                    "title": DRILLDOWNDATA.data[v.properties.geonameid].self.name
-                  }
-
                 }
               })
 
               chart.geodata = mapData;
 
-              // initialize polygonseries
-              let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
-              polygonSeries.useGeodata = true;
-
-              let template = polygonSeries.mapPolygons.template;
-
-              // create tool tip
-              let toolTipContent = `<strong>{name}</strong><br>
-                            ---------<br>
-                            ${_.escape(translations.population)}: {population}<br>
-                            `;
-              jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
-                toolTipContent += `${_.escape(vc.label)}: {${_.escape( vc.key )}}<br>`
-              })
-              template.tooltipHTML = toolTipContent
-
-              // Create hover state and set alternative fill color
-              let hs = template.states.create("hover");
-              hs.properties.fill = am4core.color("#3c5bdc");
-
-
-              template.propertyFields.fill = "fill";
-              polygonSeries.tooltip.label.interactionsEnabled = true;
-              polygonSeries.tooltip.pointerOrientation = "vertical";
-
-              polygonSeries.heatRules.push({
-                property: "fill",
-                target: template,
-                min: chart.colors.getIndex(1).brighten(1.5),
-                max: chart.colors.getIndex(1).brighten(-0.3)
-              });
-
-              // Zoom control
-              chart.zoomControl = new am4maps.ZoomControl();
-
-              let homeButton = new am4core.Button();
-              homeButton.events.on("hit", function(){
-                chart.goHome();
-              });
-
-              homeButton.icon = new am4core.Sprite();
-              homeButton.padding(7, 5, 7, 5);
-              homeButton.width = 30;
-              homeButton.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
-              homeButton.marginBottom = 10;
-              homeButton.parent = chart.zoomControl;
-              homeButton.insertBefore(chart.zoomControl.plusButton);
-
-
-              /* Click navigation */
-              template.events.on("hit", function(ev) {
-                if( DRILLDOWNDATA.data[ev.target.dataItem.dataContext.geonameid] )
-                {
-                  return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
-                }
-              }, this);
+              setCommonMapSettings( chart )
 
               mini_map( 'minimap', coordinates )
 
@@ -415,39 +347,11 @@ function top_level_map( div ) {
                     let mapData = new_geojson
                     let coordinates = []
 
+                    mapData.features = setUpData( mapData.features,  DRILLDOWNDATA.data)
                     // prepare country/child data
                     jQuery.each( mapData.features, function(i, v ) {
 
                         if ( DRILLDOWNDATA.data[v.properties.geonameid] !== undefined ) {
-                            mapData.features[i].properties.geonameid = v.properties.geonameid
-                            mapData.features[i].properties.population = DRILLDOWNDATA.data[v.properties.geonameid].self.population
-                            mapData.features[i].properties.name = DRILLDOWNDATA.data[v.properties.geonameid].self.name
-
-
-                            /* custom columns */
-                            if ( DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
-                                /* Note: Amcharts calculates heatmap off last variable. So this section moves selected
-                                * heatmap variable to the end of the array */
-                                let focus = DRILLDOWNDATA.settings.heatmap_focus
-                                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                                    if ( ii !== focus ) {
-                                        mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
-                                        mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
-                                    }
-                                })
-                                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                                    if ( ii === focus ) {
-                                        mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
-                                        mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
-                                    }
-                                })
-                            } else {
-                                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                                    mapData.features[i].properties[vv.key] = 0
-                                    mapData.features[i].properties.value = 0
-                                })
-                            }
-                            /* end custom column */
 
                             coordinates[i] = {
                                 "latitude": DRILLDOWNDATA.data[v.properties.geonameid].self.latitude,
@@ -459,63 +363,7 @@ function top_level_map( div ) {
                     })
 
                     chart.geodata = mapData;
-
-                    // initialize polygonseries
-                    let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
-                    polygonSeries.useGeodata = true;
-
-                    let template = polygonSeries.mapPolygons.template;
-
-                    // create tool tip
-                    let toolTipContent = `<strong>{name}</strong><br>
-                            ---------<br>
-                            ${_.escape(translations.population)}: {population}<br>
-                            `;
-                    jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
-                        toolTipContent += `${_.escape(vc.label)}: {${_.escape( vc.key )}}<br>`
-                    })
-                    template.tooltipHTML = toolTipContent
-
-                    // Create hover state and set alternative fill color
-                    let hs = template.states.create("hover");
-                    hs.properties.fill = am4core.color("#3c5bdc");
-
-
-                    template.propertyFields.fill = "fill";
-                    polygonSeries.tooltip.label.interactionsEnabled = true;
-                    polygonSeries.tooltip.pointerOrientation = "vertical";
-
-                    polygonSeries.heatRules.push({
-                        property: "fill",
-                        target: template,
-                        min: chart.colors.getIndex(1).brighten(1.5),
-                        max: chart.colors.getIndex(1).brighten(-0.3)
-                    });
-
-                    // Zoom control
-                    chart.zoomControl = new am4maps.ZoomControl();
-
-                    let homeButton = new am4core.Button();
-                    homeButton.events.on("hit", function(){
-                        chart.goHome();
-                    });
-
-                    homeButton.icon = new am4core.Sprite();
-                    homeButton.padding(7, 5, 7, 5);
-                    homeButton.width = 30;
-                    homeButton.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
-                    homeButton.marginBottom = 10;
-                    homeButton.parent = chart.zoomControl;
-                    homeButton.insertBefore(chart.zoomControl.plusButton);
-
-
-                    /* Click navigation */
-                    template.events.on("hit", function(ev) {
-                        if( DRILLDOWNDATA.data[ev.target.dataItem.dataContext.geonameid] )
-                        {
-                            return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
-                        }
-                    }, this);
+                    setCommonMapSettings(chart)
 
                     mini_map( 'minimap', coordinates )
 
@@ -572,93 +420,11 @@ function geoname_map( div, geonameid ) {
         // load geojson with additional parameters
         let mapData = data
 
-        jQuery.each( mapData.features, function(i, v ) {
-          if ( response.children[mapData.features[i].properties.geonameid] !== undefined ) {
-
-            mapData.features[i].properties.population = response.children[mapData.features[i].properties.geonameid].population
-            mapData.features[i].properties.name = response.children[mapData.features[i].properties.geonameid].name
-
-            /* custom columns */
-            if ( DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
-              /* Note: Amcharts calculates heatmap off last variable. So this section moves selected
-              * heatmap variable to the end of the array */
-              let focus = DRILLDOWNDATA.settings.heatmap_focus
-              jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                if ( ii !== focus ) {
-                  mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
-                  mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
-                }
-              })
-              jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                if ( ii === focus ) {
-                  mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
-                  mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
-                }
-              })
-            } else {
-              jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                mapData.features[i].properties[vv.key] = 0
-                mapData.features[i].properties.value = 0
-              })
-            }
-            /* end custom column */
-          }
-        })
-
-        // create polygon series
-        let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
-        polygonSeries.geodata = mapData
-        polygonSeries.useGeodata = true;
-
-        // Configure series tooltip
-        let template = polygonSeries.mapPolygons.template;
-
-        // create tool tip
-        let toolTipContent = `<strong>{name}</strong><br>
-                            ---------<br>
-                            ${_.escape(translations.population)}: {population}<br>
-                            `;
-        jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
-          toolTipContent += `${_.escape(vc.label)}: {${_.escape( vc.key )}}<br>`
-        })
-        template.tooltipHTML = toolTipContent
-
-        // Create hover state and set alternative fill color
-        let hs = template.states.create("hover");
-        hs.properties.fill = am4core.color("#3c5bdc");
+        mapData.feature = setUpData( mapData.features, response )
 
 
-        template.propertyFields.fill = "fill";
-        polygonSeries.tooltip.label.interactionsEnabled = true;
-        polygonSeries.tooltip.pointerOrientation = "vertical";
-
-        polygonSeries.heatRules.push({
-          property: "fill",
-          target: template,
-          min: chart.colors.getIndex(1).brighten(1.5),
-          max: chart.colors.getIndex(1).brighten(-0.3)
-        });
-
-        // Zoom control
-        chart.zoomControl = new am4maps.ZoomControl();
-
-        let homeButton = new am4core.Button();
-        homeButton.events.on("hit", function(){
-          chart.goHome();
-        });
-
-        homeButton.icon = new am4core.Sprite();
-        homeButton.padding(7, 5, 7, 5);
-        homeButton.width = 30;
-        homeButton.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
-        homeButton.marginBottom = 10;
-        homeButton.parent = chart.zoomControl;
-        homeButton.insertBefore(chart.zoomControl.plusButton);
-
-        /* Click navigation */
-        template.events.on("hit", function(ev) {
-          return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
-        }, this);
+        setCommonMapSettings( chart );
+        chart.geodata = mapData
 
         let coordinates = []
         coordinates.push({
@@ -691,28 +457,11 @@ function geoname_map( div, geonameid ) {
 
             let locations = []
             jQuery.each( DRILLDOWNDATA.data[geonameid].children, function(i, v) {
-
               /* custom columns */
-              if ( DRILLDOWNDATA.data.custom_column_data[v.geonameid] ) {
-                /* Note: Amcharts calculates heatmap off last variable. So this section moves selected
-                * heatmap variable to the end of the array */
-                let focus = DRILLDOWNDATA.settings.heatmap_focus
-                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                  if ( ii !== focus ) {
-                    v[vv.key] = DRILLDOWNDATA.data.custom_column_data[v.geonameid][ii]
-                  }
-                })
-                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                  if ( ii === focus ) {
-                    v[vv.key] = DRILLDOWNDATA.data.custom_column_data[v.geonameid][ii]
-                  }
-                })
-              } else {
-                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                  v[vv.key] = 0
-                })
-              }
-              /* end custom column */
+              let focus = DRILLDOWNDATA.settings.heatmap_focus
+              jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
+                v[vv.key] = _.get( DRILLDOWNDATA.data.custom_column_data, `[${v.geonameid}][${ii}]`, 0 )
+              })
 
               locations.push( v )
             } )
