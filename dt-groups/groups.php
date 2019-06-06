@@ -134,7 +134,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 }
                 $user_id = explode( '-', $fields["assigned_to"] )[1];
                 if ( $user_id ){
-                    DT_Posts::add_shared( "groups", $post_id, $user_id, null, false, false, false );
+                    DT_Posts::add_shared( "groups", $post_id, $user_id, null, false, true, false );
                 }
             }
             $existing_group = DT_Posts::get_post( 'groups', $post_id, true, false );

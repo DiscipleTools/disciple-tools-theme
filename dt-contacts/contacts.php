@@ -259,7 +259,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     }
                     $user_id = explode( '-', $fields["assigned_to"] )[1];
                     if ( $user_id ){
-                        DT_Posts::add_shared( "contacts", $post_id, $user_id, null, false, false, false );
+                        DT_Posts::add_shared( "contacts", $post_id, $user_id, null, false, true, false );
                     }
                     $fields['accepted'] = false;
                 }

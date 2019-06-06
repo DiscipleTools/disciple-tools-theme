@@ -396,21 +396,17 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( is_numeric( $search_string ) ){
             $post = get_post( $search_string );
             if ( $post && self::can_view( $post_type, $post->ID ) ){
-                return [
-                    "total" => "1",
-                    "posts" => [
-                        [
-                            "ID" => (string) $post->ID,
-                            "name" => $post->post_title
-                        ]
-                    ]
+                $compact[] = [
+                    "ID" => (string) $post->ID,
+                    "name" => $post->post_title,
+                    "user" => false,
+                    "status" => null
                 ];
             }
         }
 
         if ( !self::can_view_all( $post_type ) ) {
 //            @todo better way to get the contact records for users my contacts are shared with
-            $users_interacted_with = Disciple_Tools_Users::get_assignable_users_compact( $search_string );
             $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID, $search_string );
             $query_args['meta_key'] = 'assigned_to';
             $query_args['meta_value'] = "user-" . $current_user->ID;
@@ -455,15 +451,18 @@ class DT_Posts extends Disciple_Tools_Posts {
             },
             $posts
         );
-        foreach ( $users_interacted_with as $user ) {
-            $post_id = Disciple_Tools_Users::get_contact_for_user( $user["ID"] );
-            if ( $post_id ){
-                if ( !in_array( $post_id, $post_ids ) ) {
-                    $compact[] = [
-                        "ID" => $post_id,
-                        "name" => $user["name"],
-                        "user" => true
-                    ];
+        if ( $post_type === 'contacts' && !self::can_view_all( $post_type ) ) {
+            $users_interacted_with = Disciple_Tools_Users::get_assignable_users_compact( $search_string );
+            foreach ( $users_interacted_with as $user ) {
+                $post_id = Disciple_Tools_Users::get_contact_for_user( $user["ID"] );
+                if ( $post_id ){
+                    if ( !in_array( $post_id, $post_ids ) ) {
+                        $compact[] = [
+                            "ID" => $post_id,
+                            "name" => $user["name"],
+                            "user" => true
+                        ];
+                    }
                 }
             }
         }

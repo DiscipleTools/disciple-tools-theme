@@ -1283,7 +1283,7 @@ class Disciple_Tools_Posts
             );
         }
         if ( is_wp_error( $connect ) ) {
-            return $connect;
+            return new WP_Error( __FUNCTION__, "Error adding connection on field: " . $field_key, [ "status" => 400 ] );
         }
         if ( $connect ) {
             do_action( "post_connection_added", $post_type, $post_id, $field_key, $value );
@@ -1291,7 +1291,7 @@ class Disciple_Tools_Posts
             $connection->permalink = get_permalink( $value );
             return $connection;
         } else {
-            return new WP_Error( __FUNCTION__, "Error adding connection field on post: " . $field_key, [ "status" => 400 ] );
+            return new WP_Error( __FUNCTION__, "Error adding connection on field: " . $field_key, [ "status" => 400 ] );
         }
     }
 
@@ -1314,13 +1314,13 @@ class Disciple_Tools_Posts
             $disconnect = p2p_type( $field_setting["p2p_key"] )->disconnect( $post_id, $value );
         }
         if ( is_wp_error( $disconnect ) ) {
-            return $disconnect;
+            return new WP_Error( __FUNCTION__, "Error removing connection on field: " . $field_key, [ "status" => 400 ] );
         }
         if ( $disconnect ){
             do_action( "post_connection_removed", $post_type, $post_id, $field_key, $value );
             return $disconnect;
         } else {
-            return new WP_Error( __FUNCTION__, "Error removing connection field on post: " . $field_key, [ "status" => 400 ] );
+            return new WP_Error( __FUNCTION__, "Error removing connection on field: " . $field_key, [ "status" => 400 ] );
         }
     }
 
