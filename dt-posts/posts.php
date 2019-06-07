@@ -1048,6 +1048,7 @@ class Disciple_Tools_Posts
                 }
                 if ( isset( $field["force_values"] ) && $field["force_values"] == true ){
                     delete_post_meta( $post_id, $field_key );
+                    $existing_contact[ $field_key ] = [];
                 }
                 foreach ( $field["values"] as $value ){
                     if ( isset( $value["value"] )){
