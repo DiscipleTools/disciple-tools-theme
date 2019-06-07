@@ -533,14 +533,6 @@ class Disciple_Tools_Contact_Post_Type
             "default" => '',
             "hidden" => true
         ];
-        $fields["locations"] = [
-            "name" => __( "Locations", "disciple_tools" ),
-            "type" => "connection",
-            "p2p_direction" => "from",
-            "p2p_key" => "contacts_to_locations",
-            'icon' => get_template_directory_uri() .'/dt-assets/images/location.svg',
-            'section' => 'details'
-        ];
         $fields["relation"] = [
             "name" => __( "Relation", "disciple_tools" ),
             "type" => "connection",

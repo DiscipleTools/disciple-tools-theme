@@ -545,7 +545,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
     public static function update_post_comment( int $comment_id, string $comment_content, bool $check_permissions = true ){
         $comment = get_comment( $comment_id );
-        if ( $check_permissions && isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) {
+        if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || !self::can_update( 'contacts', $comment->comment_post_ID ?? 0 ) ) ) {
             return new WP_Error( __FUNCTION__, "You don't have permission to edit this comment", [ 'status' => 403 ] );
         }
         if ( !$comment ){
@@ -560,7 +560,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
     public static function delete_post_comment( int $comment_id, bool $check_permissions = true ){
         $comment = get_comment( $comment_id );
-        if ( $check_permissions && isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) {
+        if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || !self::can_update( 'contacts', $comment->comment_post_ID ?? 0 ) ) ) {
             return new WP_Error( __FUNCTION__, "You don't have permission to delete this comment", [ 'status' => 403 ] );
         }
         if ( !$comment ){

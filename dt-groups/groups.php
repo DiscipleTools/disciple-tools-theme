@@ -181,6 +181,25 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
 
+    public function update_group_member_count( $group_id, $action = "added" ){
+        $group = get_post( $group_id );
+        $args = [
+            'connected_type'   => "contacts_to_groups",
+            'connected_direction' => 'to',
+            'connected_items'  => $group,
+            'nopaging'         => true,
+            'suppress_filters' => false,
+        ];
+        $members = get_posts( $args );
+        $member_count = get_post_meta( $group_id, 'member_count', true );
+        if ( sizeof( $members ) > intval( $member_count ) ){
+            update_post_meta( $group_id, 'member_count', sizeof( $members ) );
+        } elseif ( $action === "removed" ){
+            update_post_meta( $group_id, 'member_count', $member_count - 1 );
+        }
+    }
+
+
     //check to see if the group is marked as needing an update
     //if yes: mark as updated
     private static function check_requires_update( $group_id ){
