@@ -23,7 +23,7 @@ while read -d '' js_filename ; do
     # node -c checks the file for syntax errors
     node -c "$js_filename" || found_error=1
 
-done < <(find . -path ./vendor -prune -path ./dt-core/dependencies -prune -o -path ./dependencies -prune -o -name "*.js" -print0)
+done < <(find . -path ./vendor -prune -path ./dt-core/dependencies -prune -o -path ./node_modules -prune -o -path ./dependencies -prune -o -name "*.js" -print0)
 
 
 exit $found_error

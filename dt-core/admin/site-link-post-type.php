@@ -26,10 +26,7 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 if ( ! class_exists( 'Site_Link_System' ) ) {
 
-    // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-    // @codingStandardsIgnoreLine
-    class Site_Link_System
-    {
+    class Site_Link_System {
 
         /*****************************************************************************************************************
          * PRIMARY INTEGRATION SECTION
@@ -201,13 +198,16 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         public static function verify_transfer_token( $transfer_token ): bool
         {
             // challenge https connection
-            if ( ! isset( $_SERVER['HTTPS'] ) ) {
-                dt_write_log( __METHOD__ . ': Server does not have the HTTPS parameter set.' );
-                return false;
-            }
-            elseif ( ! ( 'on' === $_SERVER['HTTPS'] ) ) {
-                dt_write_log( __METHOD__ . ': Failed https challenge' );
-                return false;
+            if ( WP_DEBUG !== true ) {
+                if ( !isset( $_SERVER['HTTPS'] ) ) {
+                    dt_write_log( __METHOD__ . ': Server does not have the HTTPS parameter set.' );
+
+                    return false;
+                } elseif ( !( 'on' === $_SERVER['HTTPS'] ) ) {
+                    dt_write_log( __METHOD__ . ': Failed https challenge' );
+
+                    return false;
+                }
             }
 
             // challenge empty token
@@ -1022,7 +1022,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             return true;
         }
 
-        public function build_cached_option() {
+        public static function build_cached_option() {
             global $wpdb;
 
             $results = $wpdb->get_results(  "

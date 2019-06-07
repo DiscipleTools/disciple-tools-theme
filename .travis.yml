@@ -1,8 +1,5 @@
 language: php
-php:
-  - '7.0'
-  - '7.1'
-  - '7.2'
+
 dist: xenial
 node_js:
   - '8'
@@ -12,7 +9,17 @@ services:
 cache:
   directories:
     - "node_modules"
+    - $HOME/.composer/cache
     - $HOME/.composer/cache/files
+
+matrix:
+  include:
+    - php: 7.2
+      env: WP_VERSION=latest
+    - php: 7.1
+      env: WP_VERSION=latest
+    - php: 7.1
+
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS testdb'
   - mysql -e "GRANT ALL ON testdb.* TO 'travis'@'localhost'"
@@ -22,11 +29,17 @@ before_install:
   - npm install
 before_script:
   - composer install
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - |
+    if [[ ! -z "$WP_VERSION" ]] ; then
+      bash tests/install-wp-tests.sh wordpress_test root '' localhost latest
+      composer global require "phpunit/phpunit=7.5.*"
+    fi
 script:
-  - ./dt-core/test/test_for_syntax_errors.sh
-  - ./dt-core/test/test_installation.sh
-  - ./dt-core/test/test_phpcs.sh
-  - ./dt-core/test/test_eslint.sh
+  - ./tests/test_for_syntax_errors.sh
+  - ./tests/test_installation.sh
+  - ./tests/test_phpcs.sh
+  - ./tests/test_eslint.sh
   - find dt-assets/ -iname "*.min.js" -or -iname "*.map" -or -iname "*.min.css" -delete && rm -rf build/
   - gulp
   - git diff --exit-code -- . ':(exclude)package-lock.json'
@@ -35,3 +48,8 @@ script:
   # should remember to run gulp before committing. (We're excluding
   # package-lock.json, as changes can be caused merely by a different version
   # of npm.)
+  - |
+    if [[ ! -z "$WP_VERSION" ]] ; then
+      phpunit
+      WP_MULTISITE=1 phpunit
+    fi
