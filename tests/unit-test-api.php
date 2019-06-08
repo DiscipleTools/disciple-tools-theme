@@ -1,12 +1,8 @@
 <?php
 /**
- * Class SampleTest
+ * Class SiteLinkTest
  *
  * @package Disciple_Tools_Theme
- */
-
-/**
- * Sample test case.
  */
 
 
@@ -103,6 +99,41 @@ class SiteLinkTest extends WP_UnitTestCase {
         $this->assertWPError( DT_Posts::add_post_comment( 'contacts', $contact_id, "hello" ) );
         $this->assertWPError( DT_Posts::update_post_comment( $comment_id, "hello world" ) );
         $this->assertWPError( DT_Posts::delete_post_comment( $comment_id ) );
+    }
+
+    public function test_cross_post_type_scripting(){
+        $user_id = wp_create_user( "user1", "test", "test@example.com" );
+        wp_set_current_user( $user_id );
+        $current_user = wp_get_current_user();
+        $current_user->set_role( 'multiplier' );
+        $contact1 = DT_Posts::create_post( 'contacts', $this->sample_contact );
+        $group1 = DT_Posts::create_post( 'groups', [ "title" => "group1" ] );
+
+        //try getting a comment but with post type: group
+        $view_contact_as_group = DT_Posts::get_post( 'groups', $contact1["ID"] );
+        $this->assertWPError( $view_contact_as_group );
+
+        // try update contacts and groups with the wrong post type
+        $update_contact_as_group = DT_Posts::update_post( 'groups', $contact1["ID"], [ "title" => "hacker" ] );
+        $this->assertWPError( $update_contact_as_group );
+        $update_group_as_contact = DT_Posts::update_post( 'contacts', $group1["ID"], [ "title" => "hacker" ] );
+        $this->assertWPError( $update_group_as_contact );
+
+        // try adding a comment with the wrong post type
+        $comment_on_group_as_contact = DT_Posts::add_post_comment( 'contacts', $group1["ID"], "hacker" );
+        $this->assertWPError( $comment_on_group_as_contact );
+
+        //try using a connection with the wrong post type
+        $contact2 = DT_Posts::create_post( 'contacts', $this->sample_contact );
+        $wrong_connection = DT_Posts::update_post( 'contacts', $contact1["ID"], [
+            'groups' => [ "values" => [ [ "value" => $contact2["ID"] ] ] ]
+        ] );
+        $shared_with = DT_Posts::get_shared_with( 'contacts', $contact1["ID"] );
+        $good_connection = DT_Posts::update_post( 'contacts', $contact1["ID"], [
+            'groups' => [ "values" => [ [ "value" => $group1["ID"] ] ] ]
+        ] );
+        $this->assertWPError( $wrong_connection );
+        $this->assertNotWPError( $good_connection );
     }
 
 

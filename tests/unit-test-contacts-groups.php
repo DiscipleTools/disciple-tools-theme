@@ -1,12 +1,8 @@
 <?php
 /**
- * Class SampleTest
+ * Class PostsTest
  *
  * @package Disciple_Tools_Theme
- */
-
-/**
- * Sample test case.
  */
 
 
@@ -111,5 +107,54 @@ class PostsTest extends WP_UnitTestCase {
         ] );
         $this->assertSame( $group1["member_count"], '9' );
     }
+
+    public function test_force_values() {
+        //create values for multi_select, connection, location and details fields
+        $group1 = DT_Posts::create_post( 'groups', [ "title" => "group1" ] );
+        $group2 = DT_Posts::create_post( 'groups', [ "title" => "group2" ] );
+        $group3 = DT_Posts::create_post( 'groups', [ "title" => "group3" ] );
+        $contact1 = DT_Posts::create_post( "contacts", [
+            "title" => "bob",
+            'milestones' => [ "values" => [ [ "value" => 'milestone_has_bible' ], [ "value" => "milestone_baptizing" ] ] ],
+            'groups' => [ "values" => [ [ "value" => $group1["ID"] ], [ "value" => $group2["ID"] ] ] ],
+            'geonames' => [ "values" => [ [ "value" => 3017382 ], [ "value" => 2921044 ] ] ],
+            'contact_phone' => [ "values" => [ [ "value" => '123', "verified" => true ], [ "value" => "321" ] ] ]//@phpcs:ignore
+        ] );
+        $this->assertNotWPError( $contact1 );
+        $this->assertSame( sizeof( $contact1["milestones"] ), 2 );
+        $this->assertSame( sizeof( $contact1["groups"] ), 2 );
+        $this->assertSame( sizeof( $contact1["geonames"] ), 2 );
+        $this->assertSame( sizeof( $contact1["contact_phone"] ), 2 );
+
+        //force values with update
+        $phone_key = $contact1['contact_phone'][0]["key"];
+        $contact1 = DT_Posts::update_post( 'contacts', $contact1["ID"], [
+            'milestones' => [ "values" => [ [ "value" => 'milestone_has_bible' ], [ "value" => "milestone_sharing" ] ], "force_values" => true ], //@phpcs:ignore
+            'groups' => [ "values" => [ [ "value" => $group1["ID"] ], [ "value" => $group3["ID"] ] ], "force_values" => true ], //@phpcs:ignore
+            'geonames' => [ "values" => [ [ "value" => 3017382 ] ], "force_values" => true ], //@phpcs:ignore
+            'contact_phone' => [ "values" => [ [ "key" => $phone_key, "value" => '456' ] ], "force_values" => true ], //@phpcs:ignore
+        ] );
+        $this->assertNotWPError( $contact1 );
+        $this->assertSame( sizeof( $contact1["milestones"] ), 2 );
+        $this->assertSame( sizeof( $contact1["groups"] ), 2 );
+        $this->assertSame( sizeof( $contact1["geonames"] ), 1 );
+        $this->assertSame( sizeof( $contact1["contact_phone"] ), 1 );
+        $this->assertSame( $phone_key, $contact1['contact_phone'][0]["key"] );
+        $this->assertSame( true, $contact1['contact_phone'][0]["verified"] ?? false );
+
+        //remove all values with force_values
+        $contact1 = DT_Posts::update_post( 'contacts', $contact1["ID"], [
+            'milestones' => [ "values" => [], "force_values" => true ], //@phpcs:ignore
+            'groups' => [ "values" => [], "force_values" => true ], //@phpcs:ignore
+            'geonames' => [ "values" => [], "force_values" => true ], //@phpcs:ignore
+            'contact_phone' => [ "values" => [], "force_values" => true ], //@phpcs:ignore
+        ] );
+        $this->assertNotWPError( $contact1 );
+        $this->assertSame( sizeof( $contact1["milestones"] ?? [] ), 0 );
+        $this->assertSame( sizeof( $contact1["groups"] ?? [] ), 0 );
+        $this->assertSame( sizeof( $contact1["geonames"] ?? [] ), 0 );
+        $this->assertSame( sizeof( $contact1["contact_phone"] ?? [] ), 0 );
+    }
+
 
 }

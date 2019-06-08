@@ -100,6 +100,9 @@ class Disciple_Tools_Posts
      */
     public static function can_view( string $post_type, int $post_id ) {
         global $wpdb;
+        if ( $post_type !== get_post_type( $post_id ) ){
+            return false;
+        }
         if ( current_user_can( 'view_any_' . $post_type ) ) {
             return true;
         } else {
@@ -138,6 +141,9 @@ class Disciple_Tools_Posts
      * @return bool
      */
     public static function can_update( string $post_type, int $post_id ) {
+        if ( $post_type !== get_post_type( $post_id ) ){
+            return false;
+        }
         global $wpdb;
         if ( current_user_can( 'update_any_' . $post_type ) ) {
             return true;
@@ -1083,9 +1089,22 @@ class Disciple_Tools_Posts
                  isset( $fields[$details_key]["force_values"] ) &&
                  $fields[$details_key]["force_values"] == true ){
                 foreach ( $existing_contact[$details_key] as $contact_value ){
-                    $potential_error = delete_post_meta( $post_id, $contact_value["key"] . '_details' );
-                    if ( is_wp_error( $potential_error ) ){
-                        return $potential_error;
+                    //don't delete the value if it will be updated later.
+                    $continue = true;
+                    foreach ( $values as $field ){
+                        if ( isset( $field["key"] ) && $field["key"] === $contact_value["key"] ){
+                            $continue = false;
+                        }
+                    }
+                    if ( $continue ){
+                        $potential_error = delete_post_meta( $post_id, $contact_value["key"] );
+                        if ( is_wp_error( $potential_error ) ){
+                            return $potential_error;
+                        }
+                        $potential_error = delete_post_meta( $post_id, $contact_value["key"] . '_details' );
+                        if ( is_wp_error( $potential_error ) ){
+                            return $potential_error;
+                        }
                     }
                 }
             }
