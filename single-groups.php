@@ -46,7 +46,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                          style="display: <?php echo esc_html( ( isset( $group['requires_update'] ) && $group['requires_update'] === true ) ? "block" : "none" ) ?> ">
                     <div class="bordered-box detail-notification-box" style="background-color:#F43636">
                         <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This group needs an update', 'disciple_tools' ) ?>.</h4>
-                        <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?>.</p>
+                        <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?></p>
                     </div>
                 </section>
                 <section id="contact-details" class="cell small-12 grid-margin-y">
