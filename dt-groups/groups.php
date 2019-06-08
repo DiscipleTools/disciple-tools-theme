@@ -175,7 +175,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     public function post_connection_removed( $post_type, $post_id, $field_key, $value ){
         if ( $post_type === "groups" ){
             if ( $field_key === "members" ){
-                do_action( 'group_member_count', $value, "removed" );
+                do_action( 'group_member_count', $post_id, "removed" );
             }
         }
     }
@@ -195,7 +195,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         if ( sizeof( $members ) > intval( $member_count ) ){
             update_post_meta( $group_id, 'member_count', sizeof( $members ) );
         } elseif ( $action === "removed" ){
-            update_post_meta( $group_id, 'member_count', $member_count - 1 );
+            update_post_meta( $group_id, 'member_count', intval( $member_count ) - 1 );
         }
     }
 

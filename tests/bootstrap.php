@@ -12,7 +12,7 @@ if ( !$_tests_dir ) {
 }
 
 if ( !file_exists( $_tests_dir . '/includes/functions.php' ) ) {
-    echo "Could not find " . esc_html( $_tests_dir ) . " /includes/functions.php, have you run bin/install-wp-tests.sh ?" . PHP_EOL;
+    echo "Could not find " .  $_tests_dir  . " /includes/functions.php, have you run tests/install-wp-tests.sh ?" . PHP_EOL; //@phpcs:ignore
     exit( 1 );
 }
 

@@ -311,7 +311,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 }
                 Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $post_id );
             }
-            if ( $post_key === "group" ){
+            if ( $post_key === "groups" ){
                 // share the group with the owner of the contact.
                 $assigned_to = get_post_meta( $post_id, "assigned_to", true );
                 if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){

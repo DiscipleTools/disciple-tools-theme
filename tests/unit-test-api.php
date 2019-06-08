@@ -15,11 +15,35 @@ class SiteLinkTest extends WP_UnitTestCase {
     public $sample_contact = [
         'title' => 'Bob',
         'overall_status' => 'active',
+        'milestones' => [ "values" => [ [ "value" => 'milestone_has_bible' ], [ "value" => "milestone_baptizing" ] ] ],
+        'baptism_date' => "2018-12-31",
+        "geonames" => [ "values" => [ [ "value" => '3017382' ] ] ]
     ];
 
-    /**
-     * A single example test.
-     */
+
+
+    public function test_create(){
+        //set up site link with create permissions
+        $site_link_id = self::create_site_link( 'create_contacts' );
+        $site_link = get_post_custom( $site_link_id );
+        $key = Site_Link_System::create_transfer_token_for_site( $site_link["site_key"][0] );
+        $verified = Site_Link_System::verify_transfer_token( $key );
+        //test site link permissions
+        $this->assertTrue( current_user_can( "create_contacts" ) );
+        $this->assertFalse( current_user_can( "update_any_contacts" ) );
+        $this->assertFalse( current_user_can( "view_any_contacts" ) );
+
+        // try creating a contact
+        $create_with_permissions = DT_Posts::create_post( 'contacts', $this->sample_contact );
+        $this->assertNotWPError( $create_with_permissions );
+        $this->assertArrayHasKey( "ID", $create_with_permissions );
+        $this->assertCount( 1, array_keys( $create_with_permissions ) );
+
+        // test to make sure we can't updated the contact
+        $update_contact = DT_Posts::update_post( 'contacts', $create_with_permissions["ID"], [ "title" => "test" ] );
+        $this->assertWPError( $update_contact );
+    }
+
     public function test_create_and_update() {
 
         //create a site link with create_update_contacts permission
@@ -51,38 +75,34 @@ class SiteLinkTest extends WP_UnitTestCase {
         }
     }
 
-    public function test_create(){
+    public function test_no_permissions(){
         $current_user = wp_get_current_user();
         $current_user->remove_all_caps();
+        $this->assertFalse( current_user_can( "create_contacts" ) );
 
         // try creating a contact with no permissions
         $create_with_no_permissions = DT_Posts::create_post( 'contacts', $this->sample_contact );
         $this->assertWPError( $create_with_no_permissions );
 
-        //set up site link with create permissions
-        $site_link_id = self::create_site_link( 'create_contacts' );
-        $site_link = get_post_custom( $site_link_id );
-        $key = Site_Link_System::create_transfer_token_for_site( $site_link["site_key"][0] );
-        $verified = Site_Link_System::verify_transfer_token( $key );
-        //test site link permissions
-        $this->assertTrue( current_user_can( "create_contacts" ) );
-        $this->assertFalse( current_user_can( "update_any_contacts" ) );
-        $this->assertFalse( current_user_can( "view_any_contacts" ) );
+        $contact = DT_Posts::create_post( 'contacts', $this->sample_contact, true, false );
+        $contact_id = $contact["ID"];
 
-        // try creating a contact
-        $create_with_permissions = DT_Posts::create_post( 'contacts', $this->sample_contact );
-        $this->assertNotWPError( $create_with_permissions );
-        $this->assertArrayHasKey( "ID", $create_with_permissions );
-        $this->assertCount( 1, array_keys( $create_with_permissions ) );
+        $contact = DT_Posts::get_post( 'contacts', $contact_id, false, false );
 
-        // test to make sure we can't updated the contact
-        $update_contact = DT_Posts::update_post( 'contacts', $create_with_permissions["ID"], [ "title" => "test" ] );
-        $this->assertWPError( $update_contact );
-    }
+        //updating
+        $update_with_no_permissions = DT_Posts::update_post( 'contacts', $contact_id, [ "title" => "test" ] );
+        $this->assertWPError( $update_with_no_permissions );
 
-    public function test_no_permissions(){
-        $this->assertSame( true, true );
+        //listing
+        $list_contacts = DT_Posts::search_viewable_post( 'contacts', [ 'text' => 'test' ] );
+        $this->assertWPError( $list_contacts );
 
+        //comments
+        $comment_id = DT_Posts::add_post_comment( 'contacts', $contact_id, "hello", "comment", [], false );
+        $this->assertFalse( DT_Posts::can_update( 'contacts', $contact_id ) );
+        $this->assertWPError( DT_Posts::add_post_comment( 'contacts', $contact_id, "hello" ) );
+        $this->assertWPError( DT_Posts::update_post_comment( $comment_id, "hello world" ) );
+        $this->assertWPError( DT_Posts::delete_post_comment( $comment_id ) );
     }
 
 
@@ -114,16 +134,5 @@ class SiteLinkTest extends WP_UnitTestCase {
 
     public static function setUpBeforeClass(){
         self::create_site_link();
-    }
-
-    public static function tearDownAfterClass(){
-        global $wpdb;
-        $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_activity_log" );
-        $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_geonames" );
-        $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_notifications" );
-        $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_reports" );
-        $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_reportmeta" );
-        $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_reportmeta" );
-        $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_share" );
     }
 }
