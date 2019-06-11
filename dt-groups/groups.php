@@ -314,7 +314,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @return int | WP_Error
      */
     public static function create_group( array $fields = [], $check_permissions = true ) {
-        return DT_Posts::create_post( 'groups', $fields, false, $check_permissions );
+        $group = DT_Posts::create_post( 'groups', $fields, false, $check_permissions );
+        return is_wp_error( $group ) ? $group : $group["ID"];
     }
 
     //add the required fields to the DT_Post::create_contact() function
