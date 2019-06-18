@@ -353,7 +353,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <!-- Names Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'names' ?>" class="nav-tab
                         <?php echo esc_attr( ( $tab == 'names' ) ? 'nav-tab-active' : '' ); ?>">
-                        <?php esc_attr_e( 'Names', 'disciple_tools' ) ?>
+                        <?php esc_attr_e( 'Names and Geoname IDs', 'disciple_tools' ) ?>
                     </a>
                     <!-- Population Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'population' ?>" class="nav-tab
