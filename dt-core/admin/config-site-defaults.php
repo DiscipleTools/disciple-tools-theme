@@ -35,7 +35,7 @@ add_action( 'admin_init', 'dt_security_headers_insert' );
 // wp-login.php doesn't have a send_headers action so we abuse init
 add_action( 'login_init', 'dt_security_headers_insert' );
 //add_filter( 'wp_handle_upload_prefilter', 'dt_disable_file_upload' ); //this breaks uploading plugins and themes
-
+add_filter( 'cron_schedules', 'dt_cron_schedules' );
 /*********************************************************************************************
  * Functions
  */
@@ -759,3 +759,12 @@ function dt_security_headers_insert() {
 //    $file['error'] = 'Uploading has been disabled';
 //    return $file;
 //}
+
+
+function dt_cron_schedules( $schedules ) {
+    $schedules['weekly'] = array(
+        'interval' => 60 * 60 * 24 * 7, # 604,800, seconds in a week
+        'display'  => __( 'Weekly' )
+    );
+    return $schedules;
+}
