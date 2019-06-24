@@ -196,11 +196,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             if ( !isset( $fields["overall_status"] ) ){
                 $current_roles = wp_get_current_user()->roles;
                 if (in_array( "dispatcher", $current_roles, true ) || in_array( "marketer", $current_roles, true )) {
-                    $fields["overall_status"] = "unassigned";
+                    $fields["overall_status"] = "new";
                 } else if (in_array( "multiplier", $current_roles, true ) ) {
                     $fields["overall_status"] = "active";
                 } else {
-                    $fields["overall_status"] = "unassigned";
+                    $fields["overall_status"] = "new";
                 }
             }
         }
