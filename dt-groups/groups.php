@@ -116,7 +116,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     //add the required fields to the DT_Post::create_group() function
-    public function update_post_field_hook( $post_type, $post_id, $fields ){
+    public function update_post_field_hook( $fields, $post_type, $post_id ){
         if ( $post_type === "groups" ){
             if ( isset( $fields["assigned_to"] ) ) {
                 if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){

@@ -203,7 +203,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         //get extra fields and defaults
-        $fields = apply_filters( "dt_post_update_fields", $post_type, $post_id, $fields );
+        $fields = apply_filters( "dt_post_update_fields", $fields, $post_type, $post_id );
         if ( is_wp_error( $fields ) ){
             return $fields;
         }
