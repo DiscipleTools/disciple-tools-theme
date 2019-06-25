@@ -95,6 +95,47 @@ jQuery(document).on('click', '.help-button', function () {
   jQuery(`#${section}`).show()
 })
 
+// Search
+jQuery(document).on('submit', 'div#search-modal form', e => {
+  e.preventDefault()
+  const searchText = $(e.currentTarget).find('input#s').val()
+
+  // Perform search, hit endpoint
+  // makeRequest('get', `search?text=${searchText}`).then(results => {})
+
+  const $results = $(`<div></div>`)
+
+  // Attach contact results
+  $results.append(`Contacts:
+    <ul>
+      <li><a href="/contacts/1">Result</a></li>
+      <li><a href="/contacts/1">Result</a></li>
+      <li><a href="/contacts/1">Result</a></li>
+      <li><a href="/contacts/1">Result</a></li>
+    </ul>`)
+
+  // Attach group results
+  $results.append(`Groups:
+    <ul>
+      <li><a href="/groups/1">Result</a></li>
+      <li><a href="/groups/1">Result</a></li>
+      <li><a href="/groups/1">Result</a></li>
+      <li><a href="/groups/1">Result</a></li>
+    </ul>`)
+
+  // Populate the results
+  $(`div#search-results-grid`).html($results)
+})
+
+// Search modal close, reset the form and results
+jQuery(document).on(`closed.zf.reveal`, `div#search-modal`, e => {
+  const $modal = $(e.currentTarget)
+
+  $modal.find(`input#s`).val(``)
+  $modal.find(`div#search-results-grid`).html(``)
+})
+
+
 window.TYPEAHEADS = {
   typeaheadSource : function (field, url) {
     return {

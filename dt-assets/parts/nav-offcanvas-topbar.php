@@ -40,6 +40,10 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
             <span class="badge alert notification-count" style="display:none"></span>
         </a>
 
+        <a href="#" class="search-trigger" data-open="search-modal">
+            <img title="<?php esc_html_e( "Search", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/search-white.svg" ?>">
+        </a>
+
         <a href="<?php echo esc_url( site_url( '/' ) ) . 'settings/'; ?>">
             <img title="<?php esc_html_e( "Settings", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/gear.svg" ?>">
         </a>
@@ -65,6 +69,11 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
                     <a href="<?php echo esc_url( site_url( '/' ) ) . 'settings/'; ?>">
                         <img title="<?php esc_html_e( "Profile", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/profile.svg" ?>">
                         <span dir="auto"><?php echo esc_html( wp_get_current_user()->display_name ); ?></span>
+                    </a>
+                </li>
+                <li class="image-menu-nav">
+                    <a href="#" class="search-trigger" data-open="search-modal">
+                        <img title="<?php esc_html_e( "Search", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/search-white.svg" ?>">
                     </a>
                 </li>
                 <li class="has-submenu center-items">

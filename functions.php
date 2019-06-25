@@ -60,6 +60,27 @@ else {
     add_action( 'after_setup_theme', 'dt_theme_loaded' );
 
     /**
+     * Generate custom search form
+     *
+     * @param string $form Form HTML.
+     * @return string Modified form HTML.
+     */
+    function dt_search_form( $form ) {
+        $form = '<div class="cell">
+        <form role="search" method="get" id="searchform" class="searchform" action="' . home_url( '/search' ) . '" >
+            <div>
+                <label class="screen-reader-text" for="s">' . __( 'Search for contacts and groups' ) . '</label>
+                <input type="text" value="' . get_search_query() . '" name="s" id="s" />
+                <button type="submit" class="button">' . esc_attr__( 'Search' ) . '</button>
+            </div>
+        </div></form>';
+
+        return $form;
+    }
+    add_filter( 'get_search_form', 'dt_search_form' );
+
+
+    /**
      * Returns the main instance of Disciple_Tools to prevent the need to use globals.
      *
      * @since  0.1.0
@@ -193,6 +214,7 @@ else {
              */
             add_action( 'init', function() {
                 $template_for_url = [
+                    'search'                => 'template-search.php',
                     'metrics'               => 'template-metrics.php',
                     'settings'              => 'template-settings.php',
                     'notifications'         => 'template-notifications.php',
@@ -204,7 +226,7 @@ else {
 
                 $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
 
-                $url_path = dt_get_url_path();
+                $url_path = strtok(dt_get_url_path(), '?');
 
                 if ( isset( $template_for_url[ $url_path ] ) ) {
                     $template_filename = locate_template( $template_for_url[ $url_path ], true );

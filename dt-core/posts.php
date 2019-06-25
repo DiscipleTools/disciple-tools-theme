@@ -192,7 +192,7 @@ class Disciple_Tools_Posts
         global $wpdb;
         $shares = $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT * 
+                "SELECT *
                 FROM $wpdb->dt_share as shares
                 INNER JOIN $wpdb->posts as posts
                 WHERE user_id = %d
@@ -688,9 +688,9 @@ class Disciple_Tools_Posts
             ), OBJECT );
         } else {
             $posts = $wpdb->get_results( $wpdb->prepare( "
-                SELECT ID, post_title, pm.meta_value as corresponds_to_user 
+                SELECT ID, post_title, pm.meta_value as corresponds_to_user
                 FROM $wpdb->posts
-                LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = $wpdb->posts.ID AND pm.meta_key = 'corresponds_to_user' ) 
+                LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = $wpdb->posts.ID AND pm.meta_key = 'corresponds_to_user' )
                 WHERE INSTR( $wpdb->posts.post_title, %s ) > 0
                 AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
                 ORDER BY  CASE
