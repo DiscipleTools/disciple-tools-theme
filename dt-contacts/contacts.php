@@ -1481,11 +1481,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             as active,
             (SELECT count(a.ID)
               FROM $wpdb->posts as a
-                INNER JOIN $wpdb->postmeta as b
-                  ON a.ID=b.post_id
-                    AND b.meta_key = 'accepted'
-                    AND b.meta_value = ''
-                " . $access_sql . $closed . "
+                " . $access_sql . "
                 INNER JOIN $wpdb->postmeta as d
                   ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
