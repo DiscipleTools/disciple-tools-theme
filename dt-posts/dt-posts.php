@@ -264,15 +264,15 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         do_action( "dt_post_updated", $post_type, $post_id, $initial_fields, $existing_post );
+        $post = self::get_post( $post_type, $post_id, false, false );
         if ( !$silent ){
-            $post = self::get_post( $post_type, $post_id, false );
             Disciple_Tools_Notifications::insert_notification_for_post_update( $post_type, $post, $existing_post, array_keys( $initial_fields ) );
         }
 
         if ( !self::can_view( $post_type, $post_id ) ){
             return [ "ID" => $post_id ];
         } else {
-            return $post ?? self::get_post( $post_type, $post_id, false );
+            return $post;
         }
     }
 
