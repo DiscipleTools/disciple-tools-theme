@@ -216,9 +216,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'status' => 400
             ] );
         }
-        $existing_contact = self::get_post( $post_type, $post_id, false, false );
+        $existing_post = self::get_post( $post_type, $post_id, false, false );
 
-        if ( isset( $fields['title'] ) && $existing_contact["title"] != $fields['title'] ) {
+        if ( isset( $fields['title'] ) && $existing_post["title"] != $fields['title'] ) {
             wp_update_post( [
                 'ID' => $post_id,
                 'post_title' => $fields['title']
@@ -231,21 +231,21 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'object_name'       => $fields['title'],
                 'meta_key'          => 'title',
                 'meta_value'        => $fields['title'],
-                'old_value'         => $existing_contact['title'],
+                'old_value'         => $existing_post['title'],
             ] );
         }
 
-        $potential_error = self::update_post_contact_methods( $post_settings, $post_id, $fields, $existing_contact );
+        $potential_error = self::update_post_contact_methods( $post_settings, $post_id, $fields, $existing_post );
         if ( is_wp_error( $potential_error )){
             return $potential_error;
         }
 
-        $potential_error = self::update_connections( $post_settings, $post_id, $fields, $existing_contact );
+        $potential_error = self::update_connections( $post_settings, $post_id, $fields, $existing_post );
         if ( is_wp_error( $potential_error )){
             return $potential_error;
         }
 
-        $potential_error = self::update_multi_select_fields( $post_settings["fields"], $post_id, $fields, $existing_contact );
+        $potential_error = self::update_multi_select_fields( $post_settings["fields"], $post_id, $fields, $existing_post );
         if ( is_wp_error( $potential_error )){
             return $potential_error;
         }
@@ -263,15 +263,16 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        do_action( "dt_post_updated", $post_type, $post_id, $initial_fields, $existing_contact );
+        do_action( "dt_post_updated", $post_type, $post_id, $initial_fields, $existing_post );
         if ( !$silent ){
-            Disciple_Tools_Notifications::insert_notification_for_new_post( $post_type, $fields, $post_id );
+            $post = self::get_post( $post_type, $post_id, false );
+            Disciple_Tools_Notifications::insert_notification_for_post_update( $post_type, $post, $existing_post, array_keys( $initial_fields ) );
         }
 
         if ( !self::can_view( $post_type, $post_id ) ){
             return [ "ID" => $post_id ];
         } else {
-            return self::get_post( $post_type, $post_id, false );
+            return $post ?? self::get_post( $post_type, $post_id, false );
         }
     }
 
