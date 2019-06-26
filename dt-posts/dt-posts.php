@@ -415,14 +415,14 @@ class DT_Posts extends Disciple_Tools_Posts {
                 INNER JOIN $wpdb->postmeta as assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id AND assigned_to.meta_key = 'assigned_to')
                 LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = $wpdb->posts.ID AND statusReport.meta_key = 'overall_status')
                 WHERE assigned_to.meta_value = %s
-                AND INSTR( $wpdb->posts.post_title, %s ) > 0
+                AND $wpdb->posts.post_title LIKE %s
                 AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
                 ORDER BY CASE
-                    WHEN INSTR( $wpdb->posts.post_title, %s ) = 1 then 1
+                    WHEN $wpdb->posts.post_title LIKE %s then 1
                     ELSE 2
                 END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
                 LIMIT 0, 30
-            ", "user-". $current_user->ID, $search_string, $post_type, $search_string
+            ", "user-". $current_user->ID, '%' . $search_string . '%', $post_type, '%' . $search_string . '%'
             ), OBJECT );
         } else {
             $posts = $wpdb->get_results( $wpdb->prepare( "
@@ -430,15 +430,15 @@ class DT_Posts extends Disciple_Tools_Posts {
                 FROM $wpdb->posts
                 LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = $wpdb->posts.ID AND pm.meta_key = 'corresponds_to_user' )
                 LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = $wpdb->posts.ID AND statusReport.meta_key = 'overall_status')
-                WHERE INSTR( $wpdb->posts.post_title, %s ) > 0
+                WHERE $wpdb->posts.post_title LIKE %s
                 AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
                 ORDER BY  CASE
                     WHEN pm.meta_value > 0 then 1
-                    WHEN CHAR_LENGTH(%s) > 0 && INSTR( $wpdb->posts.post_title, %s ) = 1 then 2
+                    WHEN CHAR_LENGTH(%s) > 0 && $wpdb->posts.post_title LIKE %s then 2
                     ELSE 3
                 END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
                 LIMIT 0, 30
-            ", $search_string, $post_type, $search_string, $search_string
+            ", '%' . $search_string . '%', $post_type, $search_string, '%' . $search_string . '%'
             ), OBJECT );
         }
         if ( is_wp_error( $posts ) ) {
