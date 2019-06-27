@@ -1447,6 +1447,27 @@ class Disciple_Tools_Posts
                 $fields[ $key ] = $value[0];
             }
         }
+
+        global $wpdb;
+        $user_id = get_current_user_id();
+        if ( $user_id ){
+            $post_user_meta = $wpdb->get_results( $wpdb->prepare(
+                "
+                    SELECT * FROM $wpdb->dt_post_user_meta
+                    WHERE post_id = %s
+                    AND user_id = %s
+                ", $post_id, $user_id
+            ), ARRAY_A );
+            foreach ( $post_user_meta as $m ){
+                if ( !isset( $fields[ $m["meta_key"] ] ) ) {
+                    $fields[$m["meta_key"]] = [];
+                }
+                $fields[$m["meta_key"]][] = [
+                    "value" => $m["meta_value"],
+                    "date" => $m["date"]
+                ];
+            }
+        }
     }
 
     /**
