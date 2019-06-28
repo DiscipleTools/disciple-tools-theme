@@ -318,7 +318,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $translations = [];
 
             $translations['title'] = __( "Mapping", "disciple_tools" );
-            $translations['refresh_data'] = __( "Refresh cached Data", "disciple_tools" );
+            $translations['refresh_data'] = __( "Refresh Cached Data", "disciple_tools" );
             $translations['population'] = __( "Population", "disciple_tools" );
             $translations['name'] = __( "Name", "disciple_tools" );
 
