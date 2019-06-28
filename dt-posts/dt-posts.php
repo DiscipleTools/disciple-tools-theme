@@ -203,7 +203,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         //get extra fields and defaults
-        $fields = apply_filters( "dt_post_update_fields", $post_type, $post_id, $fields );
+        $fields = apply_filters( "dt_post_update_fields", $fields, $post_type, $post_id );
         if ( is_wp_error( $fields ) ){
             return $fields;
         }
@@ -216,9 +216,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'status' => 400
             ] );
         }
-        $existing_contact = self::get_post( $post_type, $post_id, false, false );
+        $existing_post = self::get_post( $post_type, $post_id, false, false );
 
-        if ( isset( $fields['title'] ) && $existing_contact["title"] != $fields['title'] ) {
+        if ( isset( $fields['title'] ) && $existing_post["title"] != $fields['title'] ) {
             wp_update_post( [
                 'ID' => $post_id,
                 'post_title' => $fields['title']
@@ -231,21 +231,21 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'object_name'       => $fields['title'],
                 'meta_key'          => 'title',
                 'meta_value'        => $fields['title'],
-                'old_value'         => $existing_contact['title'],
+                'old_value'         => $existing_post['title'],
             ] );
         }
 
-        $potential_error = self::update_post_contact_methods( $post_settings, $post_id, $fields, $existing_contact );
+        $potential_error = self::update_post_contact_methods( $post_settings, $post_id, $fields, $existing_post );
         if ( is_wp_error( $potential_error )){
             return $potential_error;
         }
 
-        $potential_error = self::update_connections( $post_settings, $post_id, $fields, $existing_contact );
+        $potential_error = self::update_connections( $post_settings, $post_id, $fields, $existing_post );
         if ( is_wp_error( $potential_error )){
             return $potential_error;
         }
 
-        $potential_error = self::update_multi_select_fields( $post_settings["fields"], $post_id, $fields, $existing_contact );
+        $potential_error = self::update_multi_select_fields( $post_settings["fields"], $post_id, $fields, $existing_post );
         if ( is_wp_error( $potential_error )){
             return $potential_error;
         }
@@ -263,15 +263,16 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        do_action( "dt_post_updated", $post_type, $post_id, $initial_fields, $existing_contact );
+        do_action( "dt_post_updated", $post_type, $post_id, $initial_fields, $existing_post );
+        $post = self::get_post( $post_type, $post_id, false, false );
         if ( !$silent ){
-            Disciple_Tools_Notifications::insert_notification_for_new_post( $post_type, $fields, $post_id );
+            Disciple_Tools_Notifications::insert_notification_for_post_update( $post_type, $post, $existing_post, array_keys( $initial_fields ) );
         }
 
         if ( !self::can_view( $post_type, $post_id ) ){
             return [ "ID" => $post_id ];
         } else {
-            return self::get_post( $post_type, $post_id, false );
+            return $post;
         }
     }
 
@@ -415,14 +416,14 @@ class DT_Posts extends Disciple_Tools_Posts {
                 INNER JOIN $wpdb->postmeta as assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id AND assigned_to.meta_key = 'assigned_to')
                 LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = $wpdb->posts.ID AND statusReport.meta_key = 'overall_status')
                 WHERE assigned_to.meta_value = %s
-                AND INSTR( $wpdb->posts.post_title, %s ) > 0
+                AND $wpdb->posts.post_title LIKE %s
                 AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
                 ORDER BY CASE
-                    WHEN INSTR( $wpdb->posts.post_title, %s ) = 1 then 1
+                    WHEN $wpdb->posts.post_title LIKE %s then 1
                     ELSE 2
                 END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
                 LIMIT 0, 30
-            ", "user-". $current_user->ID, $search_string, $post_type, $search_string
+            ", "user-". $current_user->ID, '%' . $search_string . '%', $post_type, '%' . $search_string . '%'
             ), OBJECT );
         } else {
             $posts = $wpdb->get_results( $wpdb->prepare( "
@@ -430,15 +431,15 @@ class DT_Posts extends Disciple_Tools_Posts {
                 FROM $wpdb->posts
                 LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = $wpdb->posts.ID AND pm.meta_key = 'corresponds_to_user' )
                 LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = $wpdb->posts.ID AND statusReport.meta_key = 'overall_status')
-                WHERE INSTR( $wpdb->posts.post_title, %s ) > 0
+                WHERE $wpdb->posts.post_title LIKE %s
                 AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
                 ORDER BY  CASE
                     WHEN pm.meta_value > 0 then 1
-                    WHEN CHAR_LENGTH(%s) > 0 && INSTR( $wpdb->posts.post_title, %s ) = 1 then 2
+                    WHEN CHAR_LENGTH(%s) > 0 && $wpdb->posts.post_title LIKE %s then 2
                     ELSE 3
                 END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
                 LIMIT 0, 30
-            ", $search_string, $post_type, $search_string, $search_string
+            ", '%' . $search_string . '%', $post_type, $search_string, '%' . $search_string . '%'
             ), OBJECT );
         }
         if ( is_wp_error( $posts ) ) {
@@ -545,7 +546,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
     public static function update_post_comment( int $comment_id, string $comment_content, bool $check_permissions = true ){
         $comment = get_comment( $comment_id );
-        if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || !self::can_update( 'contacts', $comment->comment_post_ID ?? 0 ) ) ) {
+        if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || !self::can_update( get_post_type( $comment->comment_post_ID ), $comment->comment_post_ID ?? 0 ) ) ) {
             return new WP_Error( __FUNCTION__, "You don't have permission to edit this comment", [ 'status' => 403 ] );
         }
         if ( !$comment ){
@@ -560,7 +561,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
     public static function delete_post_comment( int $comment_id, bool $check_permissions = true ){
         $comment = get_comment( $comment_id );
-        if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || !self::can_update( 'contacts', $comment->comment_post_ID ?? 0 ) ) ) {
+        if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || !self::can_update( get_post_type( $comment->comment_post_ID ), $comment->comment_post_ID ?? 0 ) ) ) {
             return new WP_Error( __FUNCTION__, "You don't have permission to delete this comment", [ 'status' => 403 ] );
         }
         if ( !$comment ){

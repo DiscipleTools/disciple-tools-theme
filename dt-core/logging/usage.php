@@ -167,7 +167,7 @@ class Disciple_Tools_Usage_Scheduler {
 
     public function __construct() {
         if ( ! wp_next_scheduled( 'usage' ) ) {
-            wp_schedule_event( strtotime( 'next week 1am' ), 'weekly', 'usage' );
+            wp_schedule_event( strtotime( 'today 1am' ), 'weekly', 'usage' );
         }
         add_action( 'usage', [ $this, 'action' ] );
     }

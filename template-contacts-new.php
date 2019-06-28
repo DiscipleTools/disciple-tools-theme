@@ -83,13 +83,7 @@ get_header();
             .attr("disabled", true)
             .addClass("loading");
         let source = $(".js-create-contact select[name=sources]").val()
-        let status = 'new'
-        if ( source === "personal" ){
-            status = "active"
-        }
-
         API.create_post( 'contacts', {
-            overall_status: status,
             title: $(".js-create-contact input[name=title]").val(),
             contact_phone: [{value:$(".js-create-contact input[name=phone]").val()}],
             contact_email: [{value:$(".js-create-contact input[name=email]").val()}],

@@ -196,11 +196,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             if ( !isset( $fields["overall_status"] ) ){
                 $current_roles = wp_get_current_user()->roles;
                 if (in_array( "dispatcher", $current_roles, true ) || in_array( "marketer", $current_roles, true )) {
-                    $fields["overall_status"] = "unassigned";
+                    $fields["overall_status"] = "new";
                 } else if (in_array( "multiplier", $current_roles, true ) ) {
                     $fields["overall_status"] = "active";
                 } else {
-                    $fields["overall_status"] = "unassigned";
+                    $fields["overall_status"] = "new";
                 }
             }
         }
@@ -236,7 +236,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     //add the required fields to the DT_Post::create_contact() function
-    public function update_post_field_hook( $post_type, $post_id, $fields ){
+    public function update_post_field_hook( $fields, $post_type, $post_id ){
         if ( $post_type === "contacts" ){
             if ( isset( $fields["assigned_to"] ) ) {
                 if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
@@ -1481,11 +1481,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             as active,
             (SELECT count(a.ID)
               FROM $wpdb->posts as a
-                INNER JOIN $wpdb->postmeta as b
-                  ON a.ID=b.post_id
-                    AND b.meta_key = 'accepted'
-                    AND b.meta_value = ''
-                " . $access_sql . $closed . "
+                " . $access_sql . "
                 INNER JOIN $wpdb->postmeta as d
                   ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'

@@ -1,4 +1,4 @@
-/* global jQuery:false, moment:false, _:false, commentsSettings:false */
+/* global moment:false, _:false, commentsSettings:false */
 jQuery(document).ready(function($) {
 
   let commentPostedEvent = document.createEvent('Event');

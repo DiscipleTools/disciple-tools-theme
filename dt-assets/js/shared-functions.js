@@ -1,4 +1,4 @@
-/* global jQuery:false, wpApiShare:false */
+/* global wpApiShare:false */
 _ = _ || window.lodash // make sure lodash is defined so plugins like gutenberg don't break it.
 const { __, _x, _n, _nx } = wp.i18n;
 
@@ -354,6 +354,6 @@ setInterval(function() {
     //check if timed out
     get_new_notification_count()
         .fail(function(x) {
-            window.location.href = wpApiShare.site_url;
+            window.location.reload()
         });
 }, 300000); //300000 = five minutes

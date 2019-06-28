@@ -1,4 +1,4 @@
-/* global jQuery:false, contactsDetailsWpApiSettings:false, moment:false, _:false */
+/*global contactsDetailsWpApiSettings:false, moment:false, _:false */
 
 
 
@@ -60,7 +60,7 @@ window.contactDetailsEvents = (function() {
   let topics = {}
   return {
     subscribe(topic, listener) {
-      if (! topics.hasOwnProperty(topic)) {
+      if (! Object.prototype.hasOwnProperty.call( topics, topic ) ) {
         topics[topic] = []
       }
       let index = topics[topic].push(listener) - 1;
@@ -71,7 +71,7 @@ window.contactDetailsEvents = (function() {
       }
     },
     publish(topic, info) {
-      if (! topics.hasOwnProperty(topic)) {
+      if (! Object.prototype.hasOwnProperty.call( topics, topic )) {
         return
       }
       topics[topic].forEach(listener => listener(info))
@@ -176,7 +176,7 @@ jQuery(document).ready(function($) {
         $("#new-group-link").html(`<a href="${_.escape( newGroup.permalink )}">${_.escape(title)}</a>`)
         $(".hide-after-group-create").hide()
         $('#go-to-group').attr('href', newGroup.permalink);
-        Typeahead['.js-typeahead-groups'].addMultiselectItemLayout({ID:newGroup.post_id.toString(), name:title})
+        Typeahead['.js-typeahead-groups'].addMultiselectItemLayout({ID:newGroup.ID.toString(), name:title})
       })
       .catch(function(error) {
         $(".js-create-group-button").removeClass("loading").addClass("alert");

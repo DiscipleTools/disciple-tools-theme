@@ -812,9 +812,12 @@ class Disciple_Tools_Mapping_Queries {
             FROM $wpdb->dt_geonames as g
             WHERE g.alt_name LIKE %s
             $focus_search_sql
-            ORDER BY g.country_code, CHAR_LENGTH(label)
+            ORDER BY CASE
+                WHEN g.alt_name LIKE %s then 1
+                ELSE 2
+            END, g.country_code, CHAR_LENGTH(label)
             LIMIT 30;
-            ", '%' . $search_query . '%' ),
+            ", '%' . $search_query . '%', $search_query ),
             ARRAY_A
         );
         // phpcs:enable

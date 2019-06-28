@@ -451,7 +451,7 @@ class Disciple_Tools_Groups_Endpoints
      */
     public function create_group( WP_REST_Request $request ) {
         $fields = $request->get_json_params();
-        $result = DT_Posts::create_post( 'groups', $fields );
+        $result = Disciple_Tools_Groups::create_group( $fields );
         if ( is_wp_error( $result ) ) {
             return $result;
         }

@@ -1,4 +1,4 @@
-/* global jQuery:false, wpApiGroupsSettings:false, _:false */
+/* global wpApiGroupsSettings:false, _:false */
 
 let typeaheadTotals = {}
 jQuery(document).ready(function($) {

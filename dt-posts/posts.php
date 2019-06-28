@@ -745,9 +745,9 @@ class Disciple_Tools_Posts
         if ( !empty( $search )){
             $inner_joins .= "INNER JOIN $wpdb->postmeta AS search ON ( $wpdb->posts.ID = search.post_id ) ";
             $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
-            $meta_query .= "AND ( ( INSTR( $wpdb->posts.post_title ,'" . esc_sql( $search ) . "' ) > 0 ) OR ( search.meta_key LIKE 'contact_%' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0 )  ";
+            $meta_query .= "AND ( ( $wpdb->posts.post_title LIKE '%" . esc_sql( $search ) . "%' ) OR ( search.meta_key LIKE 'contact_%' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0 )  ";
             foreach ( $other_search_fields as $field ){
-                $meta_query .= " OR ( search.meta_key LIKE '" . esc_sql( $field ) . "' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0  ) ";
+                $meta_query .= " OR ( search.meta_key LIKE '" . esc_sql( $field ) . "' AND search.meta_value LIKE '%" . esc_sql( $search ) . "%'   ) ";
             }
             $meta_query .= " ) ";
 
@@ -894,9 +894,18 @@ class Disciple_Tools_Posts
             $offset
         );
         $posts = $wpdb->get_results( $prepared_sql, OBJECT );
+
         // phpcs:enable
         $total_rows = $wpdb->get_var( "SELECT found_rows();" );
 
+        //search by post_id
+        if ( is_numeric( $search ) ){
+            $post = get_post( $search );
+            if ( $post && self::can_view( $post_type, $post->ID ) ){
+                $posts[] = $post;
+                $total_rows++;
+            }
+        }
         return [
             "posts" => $posts,
             "total" => $total_rows,
