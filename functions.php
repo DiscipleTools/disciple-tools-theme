@@ -142,7 +142,7 @@ else {
              */
             $this->token = 'disciple_tools';
             $this->version = '0.21.3';
-            $this->migration_number = 24;
+            $this->migration_number = 25;
 
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -161,6 +161,7 @@ else {
             $wpdb->dt_reportmeta = $wpdb->prefix . 'dt_reportmeta';
             $wpdb->dt_share = $wpdb->prefix . 'dt_share';
             $wpdb->dt_notifications = $wpdb->prefix . 'dt_notifications';
+            $wpdb->dt_post_user_meta = $wpdb->prefix . 'dt_post_user_meta';
 
             /**
              * Load first files

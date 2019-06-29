@@ -22,7 +22,7 @@ class Cleanup extends WP_UnitTestCase {
         $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_notifications" );
         $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_reports" );
         $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_reportmeta" );
-        $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_reportmeta" );
         $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_share" );
+        $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_post_user_meta" );
     }
 }
