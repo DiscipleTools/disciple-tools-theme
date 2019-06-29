@@ -586,6 +586,10 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'location',
             'default'     => [],
         ];
+        $fields['reminders'] = [
+            'name' => __( 'Reminders', 'disciple_tools' ),
+            'type' => 'post_user_meta',
+        ];
 
         return $fields;
     }

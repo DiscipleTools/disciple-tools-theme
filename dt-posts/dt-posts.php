@@ -91,6 +91,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $contact_methods_and_connections = [];
         $multi_select_fields = [];
+        $post_user_meta = [];
         foreach ( $fields as $field_key => $field_value ){
             if ( self::is_post_key_contact_method_or_connection( $post_settings, $field_key ) ) {
                 $contact_methods_and_connections[$field_key] = $field_value;
@@ -100,6 +101,10 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( $field_type === "multi_select" || $field_type === "location" ){
                 $multi_select_fields[$field_key] = $field_value;
                 unset( $fields[$field_key] );
+            }
+            if ( $field_type === "post_user_meta" ){
+                $post_user_meta[$field_key] = $field_value;
+                unset( $fields[ $field_key ] );
             }
             if ( $field_type === 'date' && !is_numeric( $field_value )){
                 $fields[$field_value] = strtotime( $field_value );
@@ -130,6 +135,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         $potential_error = self::update_multi_select_fields( $post_settings["fields"], $post_id, $multi_select_fields, null );
+        if ( is_wp_error( $potential_error )){
+            return $potential_error;
+        }
+
+        $potential_error = self::update_post_user_meta_fields( $post_settings["fields"], $post_id, $post_user_meta, [] );
         if ( is_wp_error( $potential_error )){
             return $potential_error;
         }
@@ -250,6 +260,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $potential_error;
         }
 
+        $potential_error = self::update_post_user_meta_fields( $post_settings["fields"], $post_id, $fields, $existing_post );
+        if ( is_wp_error( $potential_error )){
+            return $potential_error;
+        }
+
         $fields["last_modified"] = time(); //make sure the last modified field is updated.
         foreach ( $fields as $field_key => $field_value ){
             if ( !self::is_post_key_contact_method_or_connection( $post_settings, $field_key ) ) {
@@ -257,7 +272,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 if ( $field_type === 'date' && !is_numeric( $field_value ) ) {
                     $field_value = strtotime( $field_value );
                 }
-                if ( $field_type && $field_type !== "multi_select" && $field_type !== "location" ){
+                $already_handled = [ "multi_select", "post_user_meta", "location" ];
+                if ( $field_type && !in_array( $field_type, $already_handled ) ) {
                     update_post_meta( $post_id, $field_key, $field_value );
                 }
             }
@@ -291,7 +307,8 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read " . $post_type, [ 'status' => 403 ] );
         }
-        $cached = wp_cache_get( "post_" . $post_id );
+        $current_user_id = get_current_user_id();
+        $cached = wp_cache_get( "post_" . $current_user_id . '_' . $post_id );
         if ( $cached && $use_cache ){
             return $cached;
         }
@@ -331,7 +348,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $fields["permalink"] = get_permalink( $post_id );
 
         $fields = apply_filters( 'dt_after_get_post_fields_filter', $fields, $post_type );
-        wp_cache_set( "post_" . $post_id, $fields );
+        wp_cache_set( "post_" . $current_user_id . '_' . $post_id, $fields );
         return $fields;
 
     }

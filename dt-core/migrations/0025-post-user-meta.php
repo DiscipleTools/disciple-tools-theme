@@ -39,9 +39,9 @@ class Disciple_Tools_Migration_0025 extends Disciple_Tools_Migration {
                     `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
                     `user_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
                     `post_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
-                    `meta_key` varchar(255),
+                    `meta_key` varchar(255) default null,
                     `meta_value` LONGTEXT,
-                    `date` datetime,
+                    `date` datetime default null,
                     PRIMARY KEY (`id`)
             ) $charset_collate;",
         );
