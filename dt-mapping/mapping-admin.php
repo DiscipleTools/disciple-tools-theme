@@ -2017,34 +2017,109 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function migrations_reset_and_rerun() {
+            dt_write_log(__METHOD__);
             global $wpdb;
-            // drop tables
-            $wpdb->dt_geonames = $wpdb->prefix . 'dt_geonames';
-            $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_geonames" );
-
-            // delete
-            delete_option( 'dt_mapping_module_migration_lock' );
-            delete_option( 'dt_mapping_module_migrate_last_error' );
-            delete_option( 'dt_mapping_module_migration_number' );
-
-            // delete folder and downloads
-            $dir = wp_upload_dir();
-            $uploads_dir = trailingslashit( $dir['basedir'] );
-            if ( file_exists( $uploads_dir . 'geonames/geonames.tsv.zip' ) ) {
-                unlink( $uploads_dir . 'geonames/geonames.tsv.zip' );
-            }
-            if ( file_exists( $uploads_dir . 'geonames/geonames.tsv' ) ) {
-                unlink( $uploads_dir . 'geonames/geonames.tsv' );
+            if ( ! isset( $wpdb->dt_location_grid ) ) {
+                $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
             }
 
-            // trigger migration engine
-            require_once( 'class-migration-engine.php' );
-            try {
-                DT_Mapping_Module_Migration_Engine::migrate( DT_Mapping_Module_Migration_Engine::$migration_number );
-            } catch ( Throwable $e ) {
-                $migration_error = new WP_Error( 'migration_error', 'Migration engine for mapping module failed to migrate.', [ 'error' => $e ] );
-                dt_write_log( $migration_error );
+            $file = 'dt_location_grid.tsv';
+            $expected = 48000;
+
+            // TEST for expected tables\
+            $wpdb->query( "SHOW TABLES LIKE '$wpdb->dt_location_grid'" );
+            if ( $wpdb->num_rows < 1 ) {
+                error_log( 'Failed to find ' . $wpdb->dt_location_grid );
+                dt_write_log( $wpdb->num_rows );
+                dt_write_log( $wpdb );
+                throw new Exception( 'Failed to find ' . $wpdb->dt_location_grid );
             }
+
+            // CHECK IF DB INSTALLED
+            $rows = (int) $wpdb->get_var( "SELECT count(*) FROM $wpdb->dt_location_grid" );
+            if ( $rows >= $expected ) {
+                /* Test if database is already created */
+                error_log( 'database already installed' );
+            } elseif ( $rows < $expected ) {
+                $wpdb->query( "TRUNCATE $wpdb->dt_location_grid" );
+
+                // TEST for presence of source files
+                $dir = wp_upload_dir();
+                $uploads_dir = trailingslashit( $dir['basedir'] );
+                if ( ! file_exists( $uploads_dir . "location_grid_download/" . $file ) ) {
+                    error_log( 'Failed to find ' . $file );
+                    throw new Exception( 'Failed to find ' . $file );
+                }
+
+                $file_location = $uploads_dir . 'location_grid_download/' . $file;
+
+                // LOAD location_grid data
+
+                $fp = fopen( $file_location, 'r' );
+                dt_write_log('pre-insert');
+
+                $query = "INSERT IGNORE INTO $wpdb->dt_location_grid VALUES ";
+
+                $count = 0;
+                while ( ! feof( $fp ) ) {
+                    dt_write_log('inside loop');
+                    $line = fgets( $fp, 2048 );
+                    $count++;
+
+                    $data = str_getcsv( $line, "\t" );
+                    $data_sql = dt_array_to_sql( $data );
+
+                    if ( isset( $data[24] ) ) {
+                        $query .= " ( $data_sql ), ";
+                    }
+                    if ( $count === 500 ) {
+                        $query .= ';';
+                        $query = str_replace( ", ;", ";", $query ); //remove last comma
+
+                        dt_write_log('query');
+                        dt_write_log($query);
+                        $wpdb->query( $query );  //phpcs:ignore
+                        $query = "INSERT IGNORE INTO $wpdb->dt_location_grid VALUES ";
+                        $count = 0;
+                    }
+                }
+                //add the last queries
+                $query .= ';';
+                $query = str_replace( ", ;", ";", $query ); //remove last comma
+                $wpdb->query( $query );  //phpcs:ignore
+
+                dt_write_log( 'end location_grid install: ' . microtime() );
+
+            }
+
+//            global $wpdb;
+//            // drop tables
+//            $wpdb->dt_geonames = $wpdb->prefix . 'dt_geonames';
+//            $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_geonames" );
+//
+//            // delete
+//            delete_option( 'dt_mapping_module_migration_lock' );
+//            delete_option( 'dt_mapping_module_migrate_last_error' );
+//            delete_option( 'dt_mapping_module_migration_number' );
+//
+//            // delete folder and downloads
+//            $dir = wp_upload_dir();
+//            $uploads_dir = trailingslashit( $dir['basedir'] );
+//            if ( file_exists( $uploads_dir . 'geonames/geonames.tsv.zip' ) ) {
+//                unlink( $uploads_dir . 'geonames/geonames.tsv.zip' );
+//            }
+//            if ( file_exists( $uploads_dir . 'geonames/geonames.tsv' ) ) {
+//                unlink( $uploads_dir . 'geonames/geonames.tsv' );
+//            }
+//
+//            // trigger migration engine
+//            require_once( 'class-migration-engine.php' );
+//            try {
+//                DT_Mapping_Module_Migration_Engine::migrate( DT_Mapping_Module_Migration_Engine::$migration_number );
+//            } catch ( Throwable $e ) {
+//                $migration_error = new WP_Error( 'migration_error', 'Migration engine for mapping module failed to migrate.', [ 'error' => $e ] );
+//                dt_write_log( $migration_error );
+//            }
         }
 
         public function rebuild_geonames( $reset = false ) {

@@ -1,101 +1,18 @@
 <?php
 
 /**
- * Class DT_Mapping_Module_Migration_0001
- *
- * @note    This migration gets, unzips, and prepares the geonames source data for installation in the next two
- *          migrations.
- *
+ * Legacy migration placeholder.
  */
 class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
 
     public function up() {
-
-        // get uploads director
-        $dir = wp_upload_dir();
-        $uploads_dir = trailingslashit( $dir['basedir'] );
-
-        // make folder
-        if ( ! file_exists( $uploads_dir . 'geonames' ) ) {
-            mkdir( $uploads_dir . 'geonames' );
-        }
-        if ( file_exists( $uploads_dir . "geonames/geonames.tsv.zip" ) ) {
-            unlink( $uploads_dir . "geonames/geonames.tsv.zip" );
-        }
-        if ( file_exists( $uploads_dir . "geonames/geonames.tsv" ) ) {
-            unlink( $uploads_dir . "geonames/geonames.tsv" );
-        }
-
-        // get mirror source file url
-        require_once( get_template_directory() . '/dt-core/global-functions.php' );
-        $mirror_source = dt_get_theme_data_url();
-
-        $gn_source_url = $mirror_source . 'geonames/geonames.tsv.zip';
-
-        $zip_file = $uploads_dir . "geonames/geonames.tsv.zip";
-
-
-        $zip_resource = fopen( $zip_file, "w" );
-
-        $ch_start = curl_init();
-        curl_setopt( $ch_start, CURLOPT_URL, $gn_source_url );
-        curl_setopt( $ch_start, CURLOPT_FAILONERROR, true );
-        curl_setopt( $ch_start, CURLOPT_HEADER, 0 );
-        curl_setopt( $ch_start, CURLOPT_FOLLOWLOCATION, true );
-        curl_setopt( $ch_start, CURLOPT_AUTOREFERER, true );
-        curl_setopt( $ch_start, CURLOPT_BINARYTRANSFER, true );
-        curl_setopt( $ch_start, CURLOPT_TIMEOUT, 30 );
-        curl_setopt( $ch_start, CURLOPT_SSL_VERIFYHOST, 0 );
-        curl_setopt( $ch_start, CURLOPT_SSL_VERIFYPEER, 0 );
-        curl_setopt( $ch_start, CURLOPT_FILE, $zip_resource );
-        $page = curl_exec( $ch_start );
-        if ( !$page)
-        {
-            error_log( "Error :- ".curl_error( $ch_start ) );
-        }
-        curl_close( $ch_start );
-
-        if ( !class_exists( 'ZipArchive' )){
-            error_log( "PHP ZipArchive is not installed or enabled." );
-            throw new Exception( 'PHP ZipArchive is not installed or enabled.' );
-        }
-        $zip = new ZipArchive();
-        $extract_path = $uploads_dir . 'geonames';
-        if ($zip->open( $zip_file ) != "true")
-        {
-            error_log( "Error :- Unable to open the Zip File" );
-        }
-
-        $zip->extractTo( $extract_path );
-        $zip->close();
-
-        try {
-            $this->test();
-        } catch ( Exception $e ) {
-            dt_write_log( $e );
-        }
     }
 
     public function down() {
         return;
     }
 
-    /**
-     * Testing
-     * @throws \Exception Did not find files.
-     */
     public function test() {
-        $dir = wp_upload_dir();
-        $uploads_dir = trailingslashit( $dir['basedir'] );
-
-        if ( ! file_exists( $uploads_dir . "geonames/geonames.tsv.zip" ) ) {
-            error_log( 'Failed to find geonames.tsv.zip' );
-            throw new Exception( 'Failed to find geonames.tsv.zip' );
-        }
-        if ( ! file_exists( $uploads_dir . "geonames/geonames.tsv" ) ) {
-            error_log( 'Failed to find geonames.tsv' );
-            throw new Exception( 'Failed to find geonames.tsv' );
-        }
     }
 
     public function get_expected_tables(): array {

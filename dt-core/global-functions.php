@@ -107,7 +107,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             return 'NULL';
         }
         foreach ( $values as &$val ) {
-            $val = "'" . esc_sql( trim( $val ) ) . "'";
+            if ( '\N' === $val ) {
+                $val = 'NULL';
+            } else {
+                $val = "'" . esc_sql( trim( $val ) ) . "'";
+            }
         }
         return implode( ',', $values );
     }
