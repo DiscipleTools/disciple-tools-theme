@@ -245,7 +245,7 @@ class Disciple_Tools_Network {
         }
 
         // @todo finish response
-        // $collection is a list of location ids with updated geonameids and populations.
+        // $collection is a list of location ids with updated grid_ids and populations.
 
 
         if ( true ) {
@@ -1072,19 +1072,19 @@ class Disciple_Tools_Snapshot_Report {
 
         if ( ! empty( $results ) ) {
             foreach ( $results as $item ) {
-                // skip custom geonames. Their totals are represented in the standard parents.
-                if ( $item['geonameid'] > 1000000000 ) {
+                // skip custom location_grid. Their totals are represented in the standard parents.
+                if ( $item['grid_id'] > 1000000000 ) {
                     continue;
                 }
                 // set array, if not set
-                if ( ! isset( $data[ $item['geonameid'] ] ) ) {
-                    $data[ $item['geonameid'] ] = self::location_data_types( true );
+                if ( ! isset( $data[ $item['grid_id'] ] ) ) {
+                    $data[ $item['grid_id'] ] = self::location_data_types( true );
                 }
                 // increment existing item type or add new
-                if ( isset( $data[ $item['geonameid'] ][ $item['type'] ] ) ) {
-                    $data[ $item['geonameid'] ][ $item['type'] ] = (int) $data[ $item['geonameid'] ][ $item['type'] ] + (int) $item['count'];
+                if ( isset( $data[ $item['grid_id'] ][ $item['type'] ] ) ) {
+                    $data[ $item['grid_id'] ][ $item['type'] ] = (int) $data[ $item['grid_id'] ][ $item['type'] ] + (int) $item['count'];
                 } else {
-                    $data[ $item['geonameid'] ][ $item['type'] ] = (int) $item['count'];
+                    $data[ $item['grid_id'] ][ $item['type'] ] = (int) $item['count'];
                 }
             }
         }
@@ -1095,11 +1095,11 @@ class Disciple_Tools_Snapshot_Report {
     public static function get_locations_current_state() {
         $data = [
             'active_countries'          => 0,
-            'active_countries_geonames' => [],
+            'active_countries_location_grid' => [],
             'active_admin1'             => 0,
-            'active_admin1_geonames'    => [],
+            'active_admin1_location_grid'    => [],
             'active_admin2'             => 0,
-            'active_admin2_geonames'    => [],
+            'active_admin2_location_grid'    => [],
         ];
 
         $results = Disciple_Tools_Network_Queries::locations_current_state();
@@ -1113,22 +1113,22 @@ class Disciple_Tools_Snapshot_Report {
             $data['active_admin2'] = (int) $results['active_admin2'];
         }
 
-        $active_countries_geonames = Disciple_Tools_Mapping_Queries::active_countries_geonames();
-        if ( ! empty( $active_countries_geonames ) ) {
-            foreach ( $active_countries_geonames as $geonameid ) {
-                $data['active_countries_geonames'][] = (int) $geonameid;
+        $active_countries_location_grid = Disciple_Tools_Mapping_Queries::active_countries_location_grid();
+        if ( ! empty( $active_countries_location_grid ) ) {
+            foreach ( $active_countries_location_grid as $grid_id ) {
+                $data['active_countries_location_grid'][] = (int) $grid_id;
             }
         }
-        $active_admin1_geonames = Disciple_Tools_Mapping_Queries::active_admin1_geonames();
-        if ( ! empty( $active_admin1_geonames ) ) {
-            foreach ( $active_admin1_geonames as $geonameid ) {
-                $data['active_admin1_geonames'][] = (int) $geonameid;
+        $active_admin1_location_grid = Disciple_Tools_Mapping_Queries::active_admin1_location_grid();
+        if ( ! empty( $active_admin1_location_grid ) ) {
+            foreach ( $active_admin1_location_grid as $grid_id ) {
+                $data['active_admin1_location_grid'][] = (int) $grid_id;
             }
         }
-        $active_admin2_geonames = Disciple_Tools_Mapping_Queries::active_admin2_geonames();
-        if ( ! empty( $active_admin2_geonames ) ) {
-            foreach ( $active_admin2_geonames as $geonameid ) {
-                $data['active_admin2_geonames'][] = (int) $geonameid;
+        $active_admin2_location_grid = Disciple_Tools_Mapping_Queries::active_admin2_location_grid();
+        if ( ! empty( $active_admin2_location_grid ) ) {
+            foreach ( $active_admin2_location_grid as $grid_id ) {
+                $data['active_admin2_location_grid'][] = (int) $grid_id;
             }
         }
 

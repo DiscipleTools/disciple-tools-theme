@@ -418,7 +418,7 @@ class Disciple_Tools_Groups_Post_Type
             'type'        => 'boolean',
             'default'     => false,
         ];
-        $fields['geonames'] = [
+        $fields['location_grid'] = [
             'name'        => __( 'Locations', 'disciple_tools' ),
             'type'        => 'location',
             'default'     => [],

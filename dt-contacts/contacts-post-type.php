@@ -581,7 +581,7 @@ class Disciple_Tools_Contact_Post_Type
             "p2p_direction" => "to",
             "p2p_key" => "contacts_to_subassigned"
         ];
-        $fields['geonames'] = [
+        $fields['location_grid'] = [
             'name'        => __( 'Locations', 'disciple_tools' ),
             'type'        => 'location',
             'default'     => [],

@@ -185,7 +185,7 @@ function dt_site_scripts() {
             $translations = [
                 "not-set"     => [
                     "source"     => __( 'No source set', 'disciple_tools' ),
-                    "geonames"     => __( 'No location set', 'disciple_tools' ),
+                    "location_grid"     => __( 'No location set', 'disciple_tools' ),
                     "leaders"     => __( 'No leaders set', 'disciple_tools' ),
                     "people_groups" => __( 'No people group set', 'disciple_tools' ),
                     "email"        => __( 'No email set', 'disciple_tools' ),

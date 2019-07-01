@@ -73,7 +73,7 @@ jQuery(document).ready(function($) {
     assignedToInput.trigger('input.typeahead')
   })
 
-  
+
 
 
   /**
@@ -103,9 +103,9 @@ jQuery(document).ready(function($) {
    * Geonames
    */
   // let loadGeonameTypeahead = ()=>{
-  //   if (!window.Typeahead['.js-typeahead-geonames']){
+  //   if (!window.Typeahead['.js-typeahead-location_grid']){
       $.typeahead({
-        input: '.js-typeahead-geonames',
+        input: '.js-typeahead-location_grid',
         minLength: 0,
         accent: true,
         searchOnFocus: true,
@@ -123,11 +123,11 @@ jQuery(document).ready(function($) {
           focus: {
             display: "name",
             ajax: {
-              url: wpApiShare.root + 'dt/v1/mapping_module/search_geonames_by_name',
+              url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
               data: {
                 s: "{{query}}",
                 filter: function () {
-                  return _.get(window.Typeahead['.js-typeahead-geonames'].filters.dropdown, 'value', 'all')
+                  return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
                 }
               },
               beforeSend: function (xhr) {
@@ -138,7 +138,7 @@ jQuery(document).ready(function($) {
                   if (typeof typeaheadTotals !== "undefined") {
                     typeaheadTotals.field = data.total
                   }
-                  return data.geonames
+                  return data.location_grid
                 }
               }
             }
@@ -150,24 +150,24 @@ jQuery(document).ready(function($) {
         multiselect: {
           matchOn: ["ID"],
           data: function () {
-            return (group.geonames || []).map(g=>{
+            return (group.location_grid || []).map(g=>{
               return {ID:g.id, name:g.label}
             })
 
           }, callback: {
             onCancel: function (node, item) {
-              _.pullAllBy(editFieldsUpdate.geonames.values, [{value:item.ID}], "value")
-              editFieldsUpdate.geonames.values.push({value:item.ID, delete:true})
+              _.pullAllBy(editFieldsUpdate.location_grid.values, [{value:item.ID}], "value")
+              editFieldsUpdate.location_grid.values.push({value:item.ID, delete:true})
             }
           }
         },
         callback: {
           onClick: function(node, a, item, event){
-            if (!editFieldsUpdate.geonames){
-              editFieldsUpdate.geonames = { "values": [] }
+            if (!editFieldsUpdate.location_grid){
+              editFieldsUpdate.location_grid = { "values": [] }
             }
-            _.pullAllBy(editFieldsUpdate.geonames.values, [{value:item.ID}], "value")
-            editFieldsUpdate.geonames.values.push({value:item.ID})
+            _.pullAllBy(editFieldsUpdate.location_grid.values, [{value:item.ID}], "value")
+            editFieldsUpdate.location_grid.values.push({value:item.ID})
             this.addMultiselectItemLayout(item)
             event.preventDefault()
             this.hideLayout();
@@ -181,12 +181,12 @@ jQuery(document).ready(function($) {
               .html("Regions of Focus");
           },
           onResult: function (node, query, result, resultCount) {
-            resultCount = typeaheadTotals.geonames
+            resultCount = typeaheadTotals.location_grid
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#geonames-result-container').html(text);
+            $('#location_grid-result-container').html(text);
           },
           onHideLayout: function () {
-            $('#geonames-result-container').html("");
+            $('#location_grid-result-container').html("");
           }
         }
       });
@@ -582,7 +582,7 @@ jQuery(document).ready(function($) {
   $("#open-edit").on("click", function () {
     editFieldsUpdate = {
       people_groups : { values: [] },
-      geonames : { values: [] }
+      location_grid : { values: [] }
     }
     $('#group-details-edit #title').html( _.escape(group.name) );
     let addressHTML = "";
@@ -598,7 +598,7 @@ jQuery(document).ready(function($) {
 
 
     $('#group-details-edit').foundation('open');
-    ["geonames", "people_groups"].forEach(t=>{
+    ["location_grid", "people_groups"].forEach(t=>{
       Typeahead[`.js-typeahead-${t}`].adjustInputSize()
     })
   })
@@ -684,7 +684,7 @@ jQuery(document).ready(function($) {
       }
     })
 
-    let connections = [ "geonames", "people_groups", "leaders" ]
+    let connections = [ "location_grid", "people_groups", "leaders" ]
     connections.forEach(connection=>{
       let htmlField = $(`.${connection}-list`).empty()
       if ( !group[connection] || group[connection].length === 0 ){

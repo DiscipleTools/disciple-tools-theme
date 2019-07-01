@@ -285,9 +285,9 @@ jQuery(document).ready(function($) {
    * Geonames
    */
   let loadGeonameTypeahead = ()=>{
-    if (!window.Typeahead['.js-typeahead-geonames']){
+    if (!window.Typeahead['.js-typeahead-location_grid']){
       $.typeahead({
-        input: '.js-typeahead-geonames',
+        input: '.js-typeahead-location_grid',
         minLength: 0,
         accent: true,
         searchOnFocus: true,
@@ -305,11 +305,11 @@ jQuery(document).ready(function($) {
           focus: {
             display: "name",
             ajax: {
-              url: wpApiShare.root + 'dt/v1/mapping_module/search_geonames_by_name',
+              url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
               data: {
                 s: "{{query}}",
                 filter: function () {
-                  return _.get(window.Typeahead['.js-typeahead-geonames'].filters.dropdown, 'value', 'all')
+                  return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
                 }
               },
               beforeSend: function (xhr) {
@@ -320,7 +320,7 @@ jQuery(document).ready(function($) {
                   if (typeof typeaheadTotals !== "undefined") {
                     typeaheadTotals.field = data.total
                   }
-                  return data.geonames
+                  return data.location_grid
                 }
               }
             }
@@ -332,24 +332,24 @@ jQuery(document).ready(function($) {
         multiselect: {
           matchOn: ["ID"],
           data: function () {
-            return (contact.geonames || []).map(g=>{
+            return (contact.location_grid || []).map(g=>{
               return {ID:g.id, name:g.label}
             })
 
           }, callback: {
             onCancel: function (node, item) {
-              _.pullAllBy(editFieldsUpdate.geonames.values, [{value:item.ID}], "value")
-              editFieldsUpdate.geonames.values.push({value:item.ID, delete:true})
+              _.pullAllBy(editFieldsUpdate.location_grid.values, [{value:item.ID}], "value")
+              editFieldsUpdate.location_grid.values.push({value:item.ID, delete:true})
             }
           }
         },
         callback: {
           onClick: function(node, a, item, event){
-            if (!editFieldsUpdate.geonames){
-              editFieldsUpdate.geonames = { "values": [] }
+            if (!editFieldsUpdate.location_grid){
+              editFieldsUpdate.location_grid = { "values": [] }
             }
-            _.pullAllBy(editFieldsUpdate.geonames.values, [{value:item.ID}], "value")
-            editFieldsUpdate.geonames.values.push({value:item.ID})
+            _.pullAllBy(editFieldsUpdate.location_grid.values, [{value:item.ID}], "value")
+            editFieldsUpdate.location_grid.values.push({value:item.ID})
             this.addMultiselectItemLayout(item)
             event.preventDefault()
             this.hideLayout();
@@ -363,12 +363,12 @@ jQuery(document).ready(function($) {
               .html("Regions of Focus");
           },
           onResult: function (node, query, result, resultCount) {
-            resultCount = typeaheadTotals.geonames
+            resultCount = typeaheadTotals.location_grid
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#geonames-result-container').html(text);
+            $('#location_grid-result-container').html(text);
           },
           onHideLayout: function () {
-            $('#geonames-result-container').html("");
+            $('#location_grid-result-container').html("");
           }
         }
       });
@@ -807,7 +807,7 @@ jQuery(document).ready(function($) {
     editFieldsUpdate = {
       people_groups : { values: [] },
       sources : { values: [] },
-      geonames : { values: [] }
+      location_grid : { values: [] }
     }
     let phoneHTML = "";
     (contact.contact_phone|| []).forEach(field=>{
@@ -882,7 +882,7 @@ jQuery(document).ready(function($) {
       sources: {
         values: []
       },
-      geonames: { values: [] }
+      location_grid: { values: [] }
     }
     let phoneHTML = "";
     (contact.contact_phone || []).forEach(field => {
@@ -1100,7 +1100,7 @@ jQuery(document).ready(function($) {
     if ( socialIsEmpty ){
       socialHTMLField.append(`<li id="no-social">${_.escape( contactsDetailsWpApiSettings.translations["not-set"]["social"] )}</li>`)
     }
-    let connections = [ "people_groups", "geonames" ]
+    let connections = [ "people_groups", "location_grid" ]
     connections.forEach(connection=>{
       let htmlField = $(`.${connection}-list`).empty()
       if ( !contact[connection] || contact[connection].length === 0 ){
