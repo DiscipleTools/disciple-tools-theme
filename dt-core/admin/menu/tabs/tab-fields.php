@@ -125,7 +125,7 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
         }
 
 
-        $types = [ "text", "date", 'boolean', 'key_select', 'multi_select', 'array' ];
+        $types = [ "text", "date", 'boolean', 'key_select', 'multi_select', 'array', 'connection', 'post_user_meta' ];
         foreach ( $types as $type ){
             ?>
             <h3>Fields: <?php echo esc_html( $type ) ?></h3>
@@ -153,6 +153,9 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
                                     <li><?php echo esc_html( $option_key ) ?> => <?php echo esc_html( $option_value["label"] ) ?></li>
                                 <?php endforeach; ?>
                             </ul>
+                            <?php elseif ( $field_value['type'] === 'connection' ): ?>
+                                p2p_key: <?php echo esc_html( $field_value["p2p_key"] ) ?> <br>
+                                p2p_direction: <?php echo esc_html( $field_value["p2p_direction"] ) ?>
                             <?php endif; ?>
                         </td>
                     </tr>

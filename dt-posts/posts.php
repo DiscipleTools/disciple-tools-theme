@@ -624,7 +624,7 @@ class Disciple_Tools_Posts
         }
         if ( !isset( $query["assigned_to"] ) || in_array( "all", $query["assigned_to"] ) ){
             $query["assigned_to"] = [ "all" ];
-            if ( !self::can_view_all( 'contacts' ) && $check_permissions ){
+            if ( !self::can_view_all( $post_type ) && $check_permissions ){
                 $query["assigned_to"] = [ "me" ];
                 if ( !in_array( "shared", $include )){
                     $include[] = "shared";
@@ -671,7 +671,7 @@ class Disciple_Tools_Posts
                         if ( $assigned_to == "me" ){
                             $assigned_to = "user-" . $current_user->ID;
                         } else if ( $assigned_to != "all" && $assigned_to != "shared" ) {
-                            if ( self::can_view_all( 'contacts' ) || !$check_permissions ){
+                            if ( self::can_view_all( $post_type ) || !$check_permissions ){
                                 $assigned_to = "user-" . $assigned_to;
                             } else {
                                 $assigned_to = "user-" . $assigned_to;
@@ -745,9 +745,9 @@ class Disciple_Tools_Posts
         if ( !empty( $search )){
             $inner_joins .= "INNER JOIN $wpdb->postmeta AS search ON ( $wpdb->posts.ID = search.post_id ) ";
             $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
-            $meta_query .= "AND ( ( $wpdb->posts.post_title LIKE '%" . esc_sql( $search ) . "%' ) OR ( search.meta_key LIKE 'contact_%' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0 )  ";
+            $meta_query .= "AND ( ( $wpdb->posts.post_title LIKE '%%" . esc_sql( $search ) . "%%' ) OR ( search.meta_key LIKE 'contact_%' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0 )  ";
             foreach ( $other_search_fields as $field ){
-                $meta_query .= " OR ( search.meta_key LIKE '" . esc_sql( $field ) . "' AND search.meta_value LIKE '%" . esc_sql( $search ) . "%'   ) ";
+                $meta_query .= " OR ( search.meta_key LIKE '" . esc_sql( $field ) . "' AND search.meta_value LIKE '%%" . esc_sql( $search ) . "%%'   ) ";
             }
             $meta_query .= " ) ";
 
