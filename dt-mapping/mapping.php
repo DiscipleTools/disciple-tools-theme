@@ -283,10 +283,10 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $data['world'] = $this->get_world_map_data();
             } else {
                 foreach ( $data['top_map_list'] as $grid_id => $name ) {
-                    $data[$grid_id] = $this->map_level_by_geoname( $grid_id );
+                    $data[$grid_id] = $this->map_level_by_grid_id( $grid_id );
                 }
                 $default_map_settings = $this->default_map_settings();
-                $data[$default_map_settings['parent']] = $this->map_level_by_geoname( $default_map_settings['parent'] );
+                $data[$default_map_settings['parent']] = $this->map_level_by_grid_id( $default_map_settings['parent'] );
             }
 
             // set custom columns
@@ -399,7 +399,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             $params = $request->get_params();
             if ( isset( $params['grid_id'] ) ) {
-                return $this->map_level_by_geoname( $params['grid_id'] );
+                return $this->map_level_by_grid_id( $params['grid_id'] );
             } else {
                 return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
             }
@@ -1250,6 +1250,61 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         // build array according to level
                         switch ( $reference['level'] ) {
 
+                            case '10': // place
+                                // @todo find out the parent level
+                                // @todo finish
+
+                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin3_grid_id'] ) );
+                                $deeper_levels = $this->get_deeper_levels( $child_list );
+                                $preset_array = [
+                                    0 => [
+                                        'parent' => 'top_map_level',
+                                        'selected' => 'top_map_level',
+                                        'selected_name' => __( 'World', 'disciple_tools' ),
+                                        'link' => true,
+                                        'active' => false,
+                                    ],
+                                    1 => [
+                                        'parent' => 'top_map_level',
+                                        'selected' => (int) $reference['admin0_grid_id'],
+                                        'selected_name' => $reference['admin0_name'],
+                                        'link' => true,
+                                        'active' => false,
+                                    ],
+                                    2 => [
+                                        'parent' => (int) $reference['admin0_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin1_grid_id'],
+                                        'selected_name' => $reference['admin1_name'],
+                                        'link' => true,
+                                        'active' => false,
+                                    ],
+                                    3 => [
+                                        'parent' => (int) $reference['admin1_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin2_grid_id'],
+                                        'selected_name' => $reference['admin2_name'],
+                                        'link' => true,
+                                        'active' => true,
+                                    ],
+                                    4 => [
+                                        'parent' => (int) $reference['admin2_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin3_grid_id'],
+                                        'selected_name' => $reference['admin3_name'],
+                                        'link' => true,
+                                        'active' => true,
+                                    ],
+                                    5 => [
+                                        'parent' => (int) $reference['admin2_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin3_grid_id'] ?? 0,
+                                        'selected_name' => $reference['admin3_name'],
+                                        'list' => $child_list,
+                                        'link' => false,
+                                        'active' => false,
+                                        'deeper_levels' => $deeper_levels,
+                                    ],
+
+                                ];
+                                break;
+
                             case '3':
                                 $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin3_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
@@ -1421,7 +1476,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         break;
                 }
             }
-        }
+        } // END drill_down_array()
+
 
         public function get_default_map_data() {
 
@@ -1593,7 +1649,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             return $list;
         }
 
-        public function map_level_by_geoname( $grid_id ) {
+        public function map_level_by_grid_id( $grid_id ) {
             $results = [
                 'parent' => [],
                 'self' => [],
@@ -1674,7 +1730,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 }
             }
 
-            return apply_filters( 'dt_mapping_module_map_level_by_geoname', $results );
+            return apply_filters( 'dt_mapping_module_map_level_by_grid_id', $results );
         }
 
 
@@ -1745,33 +1801,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             return $result['name'] ?? '';
         }
 
-//        public function get_available_geojson() { // @todo needs upgrade. Now polygon, polygon_collection are both folders to check
-//
-//            if ( get_transient( 'dt_mapping_module_available_geojson' ) ) {
-//                return get_transient( 'dt_mapping_module_available_geojson' );
-//            }
-//
-//            // get mirror source
-//            $mirror_source = dt_get_saturation_mapping_mirror( true );
-//            // get new array
-//            $list = file_get_contents( $mirror_source . 'polygon/available_polygons.json' );
-//            if ( ! $list ) {
-//                dt_write_log( 'Failed to retrieve available locations list. Check Mapping admin configuration.' );
-//                dt_write_log( $list );
-//
-//                return [];
-//            }
-//            $list = json_decode( $list, true );
-//
-//            // cache new response
-//            set_transient( 'dt_mapping_module_available_geojson', $list, strtotime( 'today midnight' ) );
-//
-//            return $list;
-//        }
-
-//        public static function reset_available_geojson() {
-//            return delete_option( 'dt_mapping_module_available_geojson' );
-//        }
 
         public function get_population_division() {
             $data = [];

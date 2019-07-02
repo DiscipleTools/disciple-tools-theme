@@ -229,10 +229,6 @@ function top_level_map( div ) {
 
           chart.geodata = geoJSON;
 
-          // initialize polygonseries
-
-          // polygonSeries.exclude = ["AQ","GL"];
-
           setCommonMapSettings( chart )
 
           // add slider to chart container in order not to occupy space
@@ -247,7 +243,7 @@ function top_level_map( div ) {
             chart.deltaLongitude = 720 * slider.start;
           })
 
-
+          // add mini map
           let coordinates = []
           coordinates[0] = {
             "latitude": 0,
@@ -265,8 +261,7 @@ function top_level_map( div ) {
                 jQuery.each(top_map_list, function(i,v) {
                     geoname_map( div, i )
                 })
-            } else {
-                // multiple countries selected. So load the world and reduce the polygons
+            } else { // multiple countries selected. So load the world and reduce the polygons
 
               let geoJSON = window.am4geodata_worldLow
 
@@ -310,6 +305,7 @@ function top_level_map( div ) {
 
               setCommonMapSettings( chart )
 
+              // add mini map
               mini_map( 'minimap', coordinates )
 
             }
@@ -366,6 +362,7 @@ function top_level_map( div ) {
                     chart.geodata = mapData;
                     setCommonMapSettings(chart)
 
+                  // add mini map
                     mini_map( 'minimap', coordinates )
 
                 }).fail(function (err) {

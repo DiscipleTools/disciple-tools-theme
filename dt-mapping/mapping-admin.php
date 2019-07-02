@@ -128,7 +128,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 a.pointer {
                     cursor: pointer;
                 }
-
                 .drill_down {
                     margin-bottom: 0;
                     list-style-type: none;
@@ -141,6 +140,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                 .drill_down li select {
                     width: 150px;
+                }
+                /* used in connection boxes, Polygons and Geocoding tabs */
+                .connected {
+                    padding: 10px;
+                    background-color: lightgreen;
+                }
+                .not-connected {
+                    padding: 10px;
+                    background-color: red;
                 }
             </style>
             <?php
@@ -249,13 +257,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                     case 'sub_location':
 
-                        if ( isset( $params['value']['name'] ) ) {
+                        dt_write_log($params);
+
+                        if ( isset( $params['value']['name'] ) && ! empty( $params['value']['name'] ) ) {
                             $name = sanitize_text_field( wp_unslash( $params['value']['name'] ) );
                         } else {
                             return new WP_Error( 'missing_param', 'Missing name parameter' );
                         }
 
-                        if ( !empty( $params['value']['population'] ) ) {
+                        if ( ! empty( $params['value']['population'] ) ) {
                             $population = sanitize_text_field( wp_unslash( $params['value']['population'] ) );
                         } else {
                             $population = 0;
@@ -353,7 +363,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <!-- Names Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'names' ?>" class="nav-tab
                         <?php echo esc_attr( ( $tab == 'names' ) ? 'nav-tab-active' : '' ); ?>">
-                        <?php esc_attr_e( 'Names and Geoname IDs', 'disciple_tools' ) ?>
+                        <?php esc_attr_e( 'Names and IDs', 'disciple_tools' ) ?>
                     </a>
                     <!-- Population Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'population' ?>" class="nav-tab
@@ -371,8 +381,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <?php esc_attr_e( 'Migration', 'disciple_tools' ) ?>
                     </a>
                     <!-- Add Locations Explorer -->
-                    <a href="<?php echo esc_attr( $link ) . 'explore' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab == 'explore' ) ? 'nav-tab-active' : '' ); ?>">
+                    <a href="<?php echo esc_attr( $link ) . 'credits' ?>" class="nav-tab
+                        <?php echo esc_attr( ( $tab == 'credits' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Credits', 'disciple_tools' ) ?>
                     </a>
 
@@ -381,34 +391,34 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <?php
                 switch ( $tab ) {
                     case "general":
-                        $this->general_tab();
+                        $this->tab_general_settings();
                         break;
                     case "location-migration":
-                        $this->migration_from_locations_tab();
+                        $this->tab_migration_from_locations();
                         break;
                     case "focus":
-                        $this->focus_tab();
+                        $this->tab_mapping_focus();
                         break;
                     case "polygons":
-                        $this->polygon_tab();
+                        $this->tab_polygons();
                         break;
                     case "geocoding":
-                        $this->geocoding_tab();
+                        $this->tab_geocoding();
                         break;
                     case "names":
-                        $this->alternate_name_tab();
+                        $this->tab_names();
                         break;
                     case "population":
-                        $this->population_tab();
+                        $this->tab_population();
                         break;
                     case "sub_locations":
-                        $this->sub_locations_tab();
+                        $this->tab_sub_locations();
                         break;
                     case "migration":
-                        $this->migration_tab();
+                        $this->tab_migration();
                         break;
-                    case "explore":
-                        $this->explore_tab();
+                    case "credits":
+                        $this->tab_credits();
                         break;
                     default:
                         break;
@@ -418,7 +428,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function general_tab() {
+        public function tab_general_settings() {
             ?>
             <div class="wrap">
                 <div id="poststuff">
@@ -426,7 +436,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <div id="post-body-content">
                             <!-- Main Column -->
 
-                            <?php $this->summary_metabox() ?>
+                            <?php $this->box_general_settings() ?>
 
 
                             <!-- End Main Column -->
@@ -444,7 +454,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function migration_from_locations_tab() {
+        public function tab_migration_from_locations() {
             ?>
             <div class="wrap">
                 <div id="poststuff">
@@ -452,7 +462,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <div id="post-body-content">
                             <!-- Main Column -->
 
-                            <?php $this->migration_from_locations_meta_box() ?>
+                            <?php $this->box_migration_from_locations() ?>
 
 
                             <!-- End Main Column -->
@@ -470,7 +480,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function focus_tab() {
+        public function tab_mapping_focus() {
             ?>
             <div class="wrap">
                 <div id="poststuff">
@@ -478,14 +488,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <div id="post-body-content">
                             <!-- Main Column -->
 
-                            <?php $this->starting_map_level_metabox(); ?>
+                            <?php $this->box_starting_map_level(); ?>
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
                         <div id="postbox-container-1" class="postbox-container">
                             <!-- Right Column -->
 
-                            <?php $this->mapping_focus_instructions_metabox() ?>
+                            <?php $this->box_mapping_focus_instructions() ?>
 
                             <!-- End Right Column -->
                         </div><!-- postbox-container 1 -->
@@ -497,7 +507,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function polygon_tab() {
+        public function tab_polygons() {
             ?>
             <div class="wrap">
                 <div id="poststuff">
@@ -505,32 +515,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <div id="post-body-content">
                             <!-- Main Column -->
 
-                            <?php $this->set_polygon_mirror_metabox(); ?>
-
-                            <!-- End Main Column -->
-                        </div><!-- end post-body-content -->
-                        <div id="postbox-container-1" class="postbox-container">
-                            <!-- Right Column -->
-
-                            <!-- End Right Column -->
-                        </div><!-- postbox-container 1 -->
-                        <div id="postbox-container-2" class="postbox-container">
-                        </div><!-- postbox-container 2 -->
-                    </div><!-- post-body meta box container -->
-                </div><!--poststuff end -->
-            </div><!-- wrap end -->
-            <?php
-        }
-
-        public function geocoding_tab() {
-            ?>
-            <div class="wrap">
-                <div id="poststuff">
-                    <div id="post-body" class="metabox-holder columns-1">
-                        <div id="post-body-content">
-                            <!-- Main Column -->
-
-                            <?php $this->set_geocoding_source_metabox(); ?>
+                            <?php $this->box_polygon_mirror(); ?>
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
@@ -547,7 +532,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function alternate_name_tab() {
+        public function tab_geocoding() {
             ?>
             <div class="wrap">
                 <div id="poststuff">
@@ -555,7 +540,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <div id="post-body-content">
                             <!-- Main Column -->
 
-                            <?php $this->alternate_name_metabox() ?>
+                            <?php $this->box_geocoding_source(); ?>
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
@@ -572,7 +557,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function population_tab() {
+        public function tab_names() {
             ?>
             <div class="wrap">
                 <div id="poststuff">
@@ -580,9 +565,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <div id="post-body-content">
                             <!-- Main Column -->
 
-                            <?php $this->global_population_division_metabox(); ?>
-
-                            <?php $this->edit_populations_metabox(); ?>
+                            <?php $this->box_names_editor() ?>
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
@@ -599,7 +582,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function sub_locations_tab() {
+        public function tab_population() {
             ?>
             <div class="wrap">
                 <div id="poststuff">
@@ -607,7 +590,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <div id="post-body-content">
                             <!-- Main Column -->
 
-                            <?php $this->sub_locations_metabox() ?>
+                            <?php $this->box_population_division(); ?>
+
+                            <?php $this->box_population_edit(); ?>
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
@@ -624,7 +609,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function migration_tab() {
+        public function tab_sub_locations() {
             ?>
             <div class="wrap">
                 <div id="poststuff">
@@ -632,9 +617,34 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <div id="post-body-content">
                             <!-- Main Column -->
 
-                            <?php $this->migration_status_metabox() ?>
+                            <?php $this->box_sub_locations_editor() ?>
+
+                            <!-- End Main Column -->
+                        </div><!-- end post-body-content -->
+                        <div id="postbox-container-1" class="postbox-container">
+                            <!-- Right Column -->
+
+                            <!-- End Right Column -->
+                        </div><!-- postbox-container 1 -->
+                        <div id="postbox-container-2" class="postbox-container">
+                        </div><!-- postbox-container 2 -->
+                    </div><!-- post-body meta box container -->
+                </div><!--poststuff end -->
+            </div><!-- wrap end -->
+            <?php
+        }
+
+        public function tab_migration() {
+            ?>
+            <div class="wrap">
+                <div id="poststuff">
+                    <div id="post-body" class="metabox-holder columns-1">
+                        <div id="post-body-content">
+                            <!-- Main Column -->
+
+                            <?php $this->box_migration_status() ?>
                             <br>
-                            <?php $this->migration_rebuild_location_grid() ?>
+                            <?php $this->box_migration_rebuild_location() ?>
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
@@ -651,7 +661,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function explore_tab() {
+        public function tab_credits() {
             ?>
             <div class="wrap">
                 <div id="poststuff">
@@ -778,7 +788,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
          * Admin Page Metaboxes
          */
 
-        public function summary_metabox() {
+        public function box_general_settings() {
             ?>
             <!-- Box -->
             <table class="widefat striped">
@@ -850,7 +860,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function migration_from_locations_meta_box(){
+        public function box_migration_from_locations(){
             if ( isset( $_POST["location_migrate_nonce"] ) && wp_verify_nonce( sanitize_key( $_POST['location_migrate_nonce'] ), 'save' ) ) {
                 if ( isset( $_POST["run-migration"], $_POST["selected_location_grid"] ) ){
                     $select_location_grid = dt_sanitize_array_html( $_POST["selected_location_grid"] ); //phpcs:ignore
@@ -1002,7 +1012,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function migration_status_metabox() {
+        public function box_migration_status() {
             if ( isset( $_POST['unlock'] )
                 && ( isset( $_POST['_wpnonce'] )
                     && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'migration_status' . get_current_user_id() ) ) ) {
@@ -1060,7 +1070,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
         }
 
-        public function global_population_division_metabox() {
+        public function box_population_division() {
             // process post action
             if ( isset( $_POST['population_division'] )
                 && ( isset( $_POST['_wpnonce'] )
@@ -1101,7 +1111,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function edit_populations_metabox() {
+        public function box_population_edit() {
             ?>
             <table class="widefat striped">
                 <thead>
@@ -1194,7 +1204,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function alternate_name_metabox() {
+        public function box_names_editor() {
             ?>
             <table class="widefat striped">
                 <thead>
@@ -1286,7 +1296,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
         }
 
-        public function sub_locations_metabox() {
+        public function box_sub_locations_editor() {
             ?>
             <table class="widefat striped">
                 <thead>
@@ -1316,8 +1326,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <script>
                 jQuery(document).on('click', '.open_next_drilldown', function(){
                     let gnid = jQuery(this).data('grid_id')
+                    console.log(gnid)
                     DRILLDOWN.get_drill_down( 'sublocation', gnid  );
-
                 })
 
                 window.DRILLDOWNDATA.settings.hide_final_drill_down = false
@@ -1388,6 +1398,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         list_results.empty().append(`
                                 <tr><td colspan="2">Add New Location under ${_.escape( map_data.self.name )}</td></tr>
                                 <tr><td style="width:150px;">Name</td><td><input id="new_name" value="" /></td></tr>
+                                <tr><td>Longitude</td><td><input id="new_longitude" value="" /></td></tr>
+                                <tr><td>Latitude</td><td><input id="new_latitude" value="" /></td></tr>
                                 <tr><td>Population</td><td><input id="new_population" value="" /></td></tr>
                                 <tr><td colspan="2"><button type="button" id="save-button" class="button" onclick="update_location( ${_.escape( map_data.self.grid_id )} )" >Save</a></td></tr>`)
                     }
@@ -1427,7 +1439,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
         }
 
-        public function starting_map_level_metabox() {
+        public function box_starting_map_level() {
             dt_write_log( 'BEGIN' );
 
             // load mapping class
@@ -1710,7 +1722,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             dt_write_log( 'END' );
         }
 
-        public function mapping_focus_instructions_metabox() {
+        public function box_mapping_focus_instructions() {
 
             $list = DT_Mapping_Module::instance()->default_map_short_list();
 
@@ -1759,7 +1771,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function set_polygon_mirror_metabox() {
+        public function box_polygon_mirror() {
 
             /**
              * https://storage.googleapis.com/disciple-tools-maps/
@@ -1828,17 +1840,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             ?>
             <!-- Box -->
-            <style>
-                .connected {
-                    padding: 10px;
-                    background-color: lightgreen;
-                }
 
-                .not-connected {
-                    padding: 10px;
-                    background-color: red;
-                }
-            </style>
             <form method="post">
                 <table class="widefat striped">
                     <thead>
@@ -1878,24 +1880,18 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 <strong>Custom Mirror Note:</strong>
                                 <em>
                                     Note: The custom mirror option allows you to download the polygon source repo (<a
-                                            href="https://github.com/DiscipleTools/location-grid-project/archive/master.zip">Download
-                                        source</a>) and install
+                                            href="https://github.com/DiscipleTools/location-grid-project/">GitHumb Location Grid Project</a>) and install
                                     this folder to your own mirror. You will be responsible for syncing occasional
-                                    updates to
-                                    the folder. But this allows you to obscure traffic to these default mirrors, if you
-                                    have
-                                    security concerns with from your country.
+                                    updates to the folder. But this allows you to obscure traffic to these default mirrors, if you
+                                    have security concerns with from your country.
                                 </em>
                             </p>
                             <p>
                                 <strong>Other Notes:</strong><br>
                                 <em>The polygons that make up of the boarders for each country, state, and county are a
-                                    significant
-                                    amount of data. Mapping has broken these up into individual files that are stored at
-                                    various
-                                    mirror locations. You can choose the mirror that works for you and your country, or
-                                    you can host your own mirror
-                                    for security reasons.
+                                    significant amount of data. Mapping has broken these up into individual files that are stored at
+                                    various mirror locations. You can choose the mirror that works for you and your country, or
+                                    you can host your own mirror for security reasons.
                                 </em>
                             </p>
 
@@ -1909,73 +1905,76 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function set_geocoding_source_metabox() {
+        public function box_geocoding_source() {
+            if ( isset( $_POST['mapbox_key'] )
+                 && ( isset( $_POST['geocoding_key_nonce'] )
+                      && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['geocoding_key_nonce'] ) ), 'geocoding_key' . get_current_user_id() ) ) ) {
+
+                $key = sanitize_text_field( wp_unslash( $_POST['mapbox_key'] ) );
+                if ( empty( $key ) ) {
+                    delete_option( 'dt_mapbox_api_key' );
+                } else {
+                    update_option('dt_mapbox_api_key', $key, true );
+                }
+
+            }
+            $key = get_option( 'dt_mapbox_api_key' );
+            $hidden_key = '**************' . substr( $key, -5, 5 );
+
+            set_error_handler( [ $this, "warning_handler" ], E_WARNING );
+            $list = file_get_contents( 'https://api.mapbox.com/geocoding/v5/mapbox.places/Denver.json?access_token=' . $key );
+            restore_error_handler();
+
+            if ( $list ) {
+                $status_class = 'connected';
+                $message = 'Successfully connected to selected source.';
+            } else {
+                $status_class = 'not-connected';
+                $message = 'API NOT AVAILABLE';
+            }
             ?>
             <form method="post">
                 <table class="widefat striped">
                     <thead>
-                    <tr><th>Geocoding Provider Setup</th></tr>
+                    <tr><th>MapBox.com</th></tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>
-                            <?php wp_nonce_field( 'geocoding_key' . get_current_user_id() ); ?>
-                            Mapbox API Key: <input type="text" class="text" name="mapbox_key" /> <button type="submit">Add</button>
+                            <?php wp_nonce_field( 'geocoding_key' . get_current_user_id(), 'geocoding_key_nonce' ); ?>
+                            Mapbox API Key: <input type="text" class="regular-text" name="mapbox_key" value="<?php echo ($key) ? esc_attr( $hidden_key ) : ''; ?>" /> <button type="submit" class="button">Add</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p id="reachable_source" class="<?php echo esc_attr( $status_class ) ?>">
+                                <?php echo esc_html( $message ); ?>
+                            </p>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </form>
+            <br>
+            <table class="widefat striped">
+                <thead>
+                <tr><th>MapBox.com Instructions</th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
             <?php
         }
 
-        public function geocode_metabox() {
-
-            global $post, $pagenow;
-            if ( ! ( 'post-new.php' == $pagenow ) ) :
-                $post_meta = get_post_meta( $post->ID );
-
-                echo '<input type="hidden" name="dt_locations_noonce" id="dt_locations_noonce" value="' . esc_attr( wp_create_nonce( 'update_location_info' ) ) . '" />';
-                ?>
-                <table class="widefat striped">
-                    <tr>
-                        <td><label for="search_location_address">Address:</label></td>
-                        <td><input type="text" id="search_location_address"
-                                   value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>"/>
-                            <button type="button" class="button" name="validate_address_button"
-                                    id="validate_address_button"
-                                    onclick="validate_address( jQuery('#search_location_address').val() );">Validate
-                            </button>
-                            <button type="submit" name="delete" value="1" class="button">Delete</button>
-                            <br>
-                            <span id="errors"><?php echo ( ! empty( $this->error ) ) ? esc_html( $this->error ) : ''; ?></span>
-                            <p id="possible-results">
-
-                                <input type="hidden" id="location_address" name="location_address"
-                                       value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>"/>
-                            </p>
-                        </td>
-                    </tr>
-                </table>
-
-            <?php else :
-                echo esc_html__( 'You must save post before geocoding.' );
-            endif;
-        }
-
-        public function warning_handler( $errno, $errstr ) {
-            ?>
-            <div class="notice notice-error notice-dt-mapping-source" data-notice="dt-demo">
-                <p><?php echo "MIRROR SOURCE NOT AVAILABLE" ?></p>
-                <p><?php echo "Error Message: " . esc_attr( $errstr ) ?></p>
-            </div>
-            <?php
-        }
-
-        public function migration_rebuild_location_grid() {
+        public function box_migration_rebuild_location() {
             if ( isset( $_POST['reset_location_grid'] )
-                && ( isset( $_POST['_wpnonce'] )
-                    && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'rebuild_location_grid' . get_current_user_id() ) ) ) {
+                 && ( isset( $_POST['_wpnonce'] )
+                      && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'rebuild_location_grid' . get_current_user_id() ) ) ) {
 
                 $this->migrations_reset_and_rerun();
             }
@@ -2005,6 +2004,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     </tbody>
                 </table>
             </form>
+            <?php
+        }
+
+        public function warning_handler( $errno, $errstr ) {
+            ?>
+            <div class="notice notice-error notice-dt-mapping-source" data-notice="dt-demo">
+                <p><?php echo "MIRROR SOURCE NOT AVAILABLE" ?></p>
+                <p><?php echo "Error Message: " . esc_attr( $errstr ) ?></p>
+            </div>
             <?php
         }
 
@@ -2093,15 +2101,18 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 $count++;
 
                 $data = str_getcsv( $line, "\t" );
+
                 $data_sql = dt_array_to_sql( $data );
-                if ( isset( $data[29] ) ) {
+
+                if ( isset( $data[24] ) ) {
                     $query .= " ( $data_sql ), ";
                 }
                 if ( $count === 500 ) {
                     $query .= ';';
                     $query = str_replace( ", ;", ";", $query ); //remove last comma
+
                     $wpdb->query( $query );  //phpcs:ignore
-                    $query = "INSERT IGNORE INTO $wpdb->dt_location_grid VALUES";
+                    $query = "INSERT IGNORE INTO $wpdb->dt_location_grid VALUES ";
                     $count = 0;
                 }
             }
@@ -2128,10 +2139,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
          */
         public function add_sublocation_under_geoname( $parent_location_grid_id, $name, $population ){
             global $wpdb;
-            $parent_geoname = $wpdb->get_row( $wpdb->prepare( "
+            $parent_grid_id = $wpdb->get_row( $wpdb->prepare( "
                 SELECT * FROM $wpdb->dt_location_grid WHERE grid_id = %d
             ", $parent_location_grid_id ), ARRAY_A );
-            if ( empty( $parent_geoname ) ) {
+            if ( empty( $parent_grid_id ) ) {
                 return new WP_Error( 'missing_param', 'Missing or incorrect geoname parent.' );
             }
 
@@ -2139,42 +2150,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $max_id = max( $max_id, 1000000000 );
             $custom_grid_id = $max_id + 1;
 
-
             // get level
-            if ( isset( $parent_geoname['level'] ) ) {
-                switch ( $parent_geoname['level'] ) {
-                    case 'country':
-                        $level = 'admin1c';
-                        $parent_geoname['admin1_grid_id'] = $custom_grid_id;
-                        $parent_geoname['feature_code'] = 'ADM1';
-                        break;
-                    case 'admin1':
-                        $level = 'admin2c';
-                        $parent_geoname['admin2_grid_id'] = $custom_grid_id;
-                        $parent_geoname['feature_code'] = 'ADM2';
-                        break;
-                    case 'admin2':
-                        $level = 'admin3c';
-                        $parent_geoname['admin3_grid_id'] = $custom_grid_id;
-                        $parent_geoname['feature_code'] = 'ADM3';
-                        break;
-                    case 'admin3':
-                        $level = 'admin4c';
-                        $parent_geoname['admin4_grid_id'] = $custom_grid_id;
-                        $parent_geoname['feature_code'] = 'ADM4';
-                        break;
-                    case 'admin4':
-                    default:
-                        $level = 'place';
-                        $parent_geoname['feature_class'] = 'P';
-                        $parent_geoname['feature_code'] = 'PPL';
-                        break;
-                }
-            } else {
-                $level = 'place';
-                $parent_geoname['feature_class'] = 'P';
-                $parent_geoname['feature_code'] = 'PPL';
-            }
+            $level = 10;
+            $level_name = 'place';
 
             // save new record
             $result = $wpdb->insert(
@@ -2182,59 +2160,51 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 [
                     'grid_id' => $custom_grid_id,
                     'name' => $name,
-                    'latitude' => $parent_geoname['latitude'],
-                    'longitude' => $parent_geoname['longitude'],
-                    'feature_class' => $parent_geoname['feature_class'],
-                    'feature_code' => $parent_geoname['feature_code'],
-                    'country_code' => $parent_geoname['country_code'],
-                    'cc2' => $parent_geoname['cc2'],
-                    'admin1_code' => $parent_geoname['admin1_code'],
-                    'admin2_code' => $parent_geoname['admin2_code'],
-                    'admin3_code' => $parent_geoname['admin3_code'],
-                    'admin4_code' => $parent_geoname['admin4_code'],
-                    'population' => $population,
-                    'elevation' => $parent_geoname['elevation'],
-                    'dem' => $parent_geoname['dem'],
-                    'timezone' => $parent_geoname['timezone'],
-                    'modification_date' => current_time( 'mysql' ),
-                    'parent_id' => $parent_location_grid_id,
-                    'admin0_grid_id' => $parent_geoname['admin0_grid_id'],
-                    'admin1_grid_id' => $parent_geoname['admin1_grid_id'],
-                    'admin2_grid_id' => $parent_geoname['admin2_grid_id'],
-                    'admin3_grid_id' => $parent_geoname['admin3_grid_id'],
                     'level' => $level,
+                    'level_name' => $level_name,
+                    'country_code' => $parent_grid_id['country_code'],
+                    'admin0_code' => $parent_grid_id['admin0_code'],
+                    'parent_id' => $parent_location_grid_id,
+                    'admin0_grid_id' => $parent_grid_id['admin0_grid_id'],
+                    'admin1_grid_id' => $parent_grid_id['admin1_grid_id'],
+                    'admin2_grid_id' => $parent_grid_id['admin2_grid_id'],
+                    'admin3_grid_id' => $parent_grid_id['admin3_grid_id'],
+                    'admin4_grid_id' => $parent_grid_id['admin4_grid_id'],
+                    'admin5_grid_id' => $parent_grid_id['admin5_grid_id'],
+                    'longitude' => $parent_grid_id['longitude'],
+                    'latitude' => $parent_grid_id['latitude'],
+                    'population' => $population,
+                    'modification_date' => current_time( 'mysql' ),
                     'alt_name' => $name,
+                    'alt_population' => $population,
                     'is_custom_location' => 1,
                 ],
                 [
                     '%d', // grid_id
-                    '%s',
-                    '%d', // latitude
-                    '%d', // longitude
-                    '%s',
-                    '%s',
-                    '%s', // country code
-                    '%s',
-                    '%s', // admin1 code
-                    '%s',
-                    '%s',
-                    '%s',
-                    '%d', // population
-                    '%d',
-                    '%d',
-                    '%s', // timezone
-                    '%s', // modification date
-                    '%d', // parent id
-                    '%d',
-                    '%d',
-                    '%d',
-                    '%d',
+                    '%s', // name
                     '%s', // level
-                    '%s',
+                    '%s', // level_name
+                    '%s', // country code
+                    '%s', // admin0_code
+                    '%d', // parent_id
+                    '%d', // admin0_grid_id
+                    '%d', // admin1_grid_id
+                    '%d', // admin2_grid_id
+                    '%d', // admin3_grid_id
+                    '%d', // admin4_grid_id
+                    '%d', // admin5_grid_id
+                    '%s', // longitude
+                    '%s', // latitude
+                    '%d', // population
+                    '%s', // modification_date
+                    '%s', // alt_name
+                    '%d', // alt_population
                     '%d' //is custom location
                 ]
             );
-            if ( !$result ){
+            if ( ! $result ){
+                dt_write_log($wpdb->last_error);
+                dt_write_log($wpdb->last_query);
                 return new WP_Error( __FUNCTION__, 'Error creating sublocation' );
             } else {
                 return $custom_grid_id;
