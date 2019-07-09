@@ -1,47 +1,20 @@
 <?php
+
 /**
- * Location Grid Geocoder
+ * Class Location_Grid_Geocoder
  */
-
-// geocodes longitude and latitude and returns json array of geoname record
-if ( isset( $_GET['type'] ) && isset( $_GET['longitude'] ) && isset( $_GET['latitude'] ) ) :
-
-    // return json grid_id result from longitude/latitude
-    if ( $_GET['type'] === 'geocode' ) {
-
-        $level = null;
-        if ( isset( $_GET['level'] ) ) {
-            $level = $_GET['level'];
-        }
-        $longitude = $_GET['longitude'];
-        $latitude =  $_GET['latitude'];
-
-        $geocoder = new Location_Grid_Geocoder();
-
-        $response =  $geocoder->get_grid_id_by_lnglat( $longitude, $latitude, $level );
-
-        header('Content-type: application/json');
-
-        echo json_encode($response);
-
-        return;
-    }
-
-    return;
-endif; // html
-
-
-
 class Location_Grid_Geocoder {
 
     public $geojson;
+    public $geometry_folder = '';
     public $con;
-    public $geonames_table = 'locations_grid';
+    public $dt_location_grid = 'locations_grid';
     public $mirror_source;
 
     public function __construct() {
-        $this->geojson       = [];
-        $this->mirror_source = 'https://storage.googleapis.com/location-grid-mirror/';
+        $this->geojson         = [];
+        $this->geometry_folder = $this->geometry_folder();
+        $this->mirror_source   = dt_get_saturation_mapping_mirror();
 
         $params    = json_decode( file_get_contents( "connect_params.json" ), true );
         $this->con = mysqli_connect( $params[ 'host' ], $params[ 'username' ], $params[ 'password' ], $params[ 'database' ] );
@@ -57,29 +30,20 @@ class Location_Grid_Geocoder {
     public function get_grid_id_by_lnglat( $longitude, $latitude, $level = null ) {
 
         // get results
-        if ( $level === 'admin5' ) { // get admin2 only
-            $results = $this->query_admin5_by_lnglat( $longitude, $latitude );
-        }
-        else if ( $level === 'admin4' ) { // get admin2 only
-            $results = $this->query_admin4_by_lnglat( $longitude, $latitude );
-        }
-        else if ( $level === 'admin3' ) { // get admin2 only
-            $results = $this->query_admin3_by_lnglat( $longitude, $latitude );
-        }
-        else if ( $level === 'admin2' ) { // get admin2 only
-            $results = $this->query_admin2_by_lnglat( $longitude, $latitude );
-        }
-        else if ( $level === 'admin1' ) { // get admin1 only
-            $results = $this->query_admin1_by_lnglat( $longitude, $latitude );
-        }
-        else if ( $level === 'admin0' ) { // get country only
-            $results = $this->query_country_by_lnglat( $longitude, $latitude );
-        }
-        else { // get nearest match
-            $results = $this->query_admin2_by_lnglat( $longitude, $latitude ); // Query Admin2 Level first
-            if ( empty( $results ) ) { // Escalate Query to Admin1 Level, if Admin2 is missing
-                $results = $this->query_admin1_by_lnglat( $longitude, $latitude );
-            }
+        if ( $level === 'admin5') { // get admin2 only
+            $results = $this->query_level_by_lnglat( $longitude, $latitude, 5 );
+        } else if ( $level === 'admin4') { // get admin2 only
+            $results = $this->query_level_by_lnglat( $longitude, $latitude, 4 );
+        } else if ( $level === 'admin3') { // get admin2 only
+            $results = $this->query_level_by_lnglat( $longitude, $latitude, 3 );
+        } else if ( $level === 'admin2') { // get admin2 only
+            $results = $this->query_level_by_lnglat( $longitude, $latitude, 2 );
+        } else if ( $level === 'admin1') { // get admin1 only
+            $results = $this->query_level_by_lnglat( $longitude, $latitude, 1 );
+        } else if ( $level === 'admin0') { // get country only
+            $results = $this->query_level_by_lnglat( $longitude, $latitude, 0 );
+        } else { // get lowest match
+            $results = $this->query_lowest_level_by_lnglat( $longitude, $latitude );
         }
 
         // test results
@@ -120,7 +84,7 @@ class Location_Grid_Geocoder {
      */
     public function lnglat_test1( $results ) {
         if ( count( $results ) === 1 && ! empty( $results ) ) {
-//            error_log( '1' );
+            dt_write_log('1');
             // return test 1 results
             foreach ( $results as $result ) {
                 if ( ! isset( $result[ 'grid_id' ] ) ) {
@@ -145,7 +109,7 @@ class Location_Grid_Geocoder {
      */
     public function lnglat_test2( $results, $longitude, $latitude ) {
         if ( count( $results ) > 1 && ! empty( $results ) ) {
-//            error_log( '2' );
+            dt_write_log('2');
             foreach ( $results as $result ) {
                 if ( $this->_this_grid_id( (int) $result[ 'grid_id' ], $longitude, $latitude ) ) {
                     // return test 2 results
@@ -174,7 +138,8 @@ class Location_Grid_Geocoder {
      */
     public function lnglat_test3( $results, $longitude, $latitude ) {
         if ( ! empty( $this->geojson ) && ! empty( $results ) ) {
-//            error_log( '3' );
+            dt_write_log('3');
+
             $grid_id = $this->grid_id_from_nearest_polygon_line( $results, $longitude, $latitude );
 
             // return test 3 results
@@ -203,8 +168,9 @@ class Location_Grid_Geocoder {
      * @return array|bool|null
      */
     public function lnglat_test4( $results, $longitude, $latitude ) {
-        $con = $this->con;
-//        error_log( '4' );
+        global $wpdb;
+
+        dt_write_log('4');
         /**
          * No bounding set results,
          * Lng/Lat is outside all boundingboxes for administrative units
@@ -217,28 +183,23 @@ class Location_Grid_Geocoder {
         }
 
         // Return
-        $query  = mysqli_query( $con, "
-            SELECT g.*, c.name as country_name, a1.name as admin1_name, a2.name as admin2_name, a3.name as admin3_name
-            FROM {$this->geonames_table} as g
-            LEFT JOIN {$this->geonames_table} as c ON g.country_grid_id=c.grid_id
-            LEFT JOIN {$this->geonames_table} as a1 ON g.admin1_grid_id=a1.grid_id
-            LEFT JOIN {$this->geonames_table} as a2 ON g.admin2_grid_id=a2.grid_id
-            LEFT JOIN {$this->geonames_table} as a3 ON g.admin3_grid_id=a3.grid_id
-            WHERE g.grid_id = {$grid_id};
-        " );
-        $result = mysqli_fetch_all( $query, MYSQLI_ASSOC );
+        $result = $wpdb->get_results( $wpdb->prepare( "
+            SELECT g.*, c.name as country_name, a1.name as admin1_name, a2.name as admin2_name, a3.name as admin3_name, a4.name as admin4_name, a5.name as admin5_name
+                FROM $wpdb->dt_location_grid as g
+                LEFT JOIN $wpdb->dt_location_grid as c ON g.country_grid_id=c.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a1 ON g.admin1_grid_id=a1.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a2 ON g.admin2_grid_id=a2.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a3 ON g.admin3_grid_id=a3.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a4 ON g.admin3_grid_id=a4.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a5 ON g.admin3_grid_id=a5.grid_id
+                WHERE g.grid_id = %d;
+            ", $grid_id ), ARRAY_A );
         if ( $result ) {
-            if ( ! isset( $result[ 'grid_id' ] ) ) {
-                $result = $result[ 0 ];
-            }
-
             return $result;
         }
 
         return false;
     }
-
-
 
     /**
      * @param $results
@@ -255,19 +216,19 @@ class Location_Grid_Geocoder {
 
         // build flat associative array of all coordinates
         foreach ( $results as $result ) {
-            $grid_id = $result[ 'grid_id' ];
-            $features  = $geojson[ $grid_id ][ 'features' ];
+            $grid_id  = $result[ 'grid_id' ];
+            $features = $geojson[ $grid_id ][ 'features' ];
 
             // handle Polygon and MultiPolygon geometries
             foreach ( $features as $feature ) {
-                if ( $feature[ 'geometry' ][ 'type' ] === 'Polygon' ) {
+                if ( $feature[ 'geometry' ][ 'type' ] === 'Polygon') {
                     foreach ( $feature[ 'geometry' ][ 'coordinates' ] as $coordinates ) { // select out the coordinate list
 
                         foreach ( $coordinates as $coordinate ) { // build flat associate array of $coordinates
                             $coordinate_list[ $grid_id ] = $coordinate;
                         }
                     }
-                } else if ( $feature[ 'geometry' ][ 'type' ] === 'MultiPolygon' ) {
+                } else if ( $feature[ 'geometry' ][ 'type' ] === 'MultiPolygon') {
                     foreach ( $feature[ 'geometry' ][ 'coordinates' ] as $top_coordinates ) { // select out the multi polygons
                         foreach ( $top_coordinates as $coordinates ) { // select out the coordinate list
 
@@ -301,8 +262,7 @@ class Location_Grid_Geocoder {
      * @return bool
      */
     public function grid_id_by_nearest_centerpoint( $longitude, $latitude ) {
-
-        $con = $this->con;
+        global $wpdb;
 
         // create bounding box from longitude/latitude
         $north_latitude = ceil( $latitude ) + 1;
@@ -311,16 +271,15 @@ class Location_Grid_Geocoder {
         $east_longitude = ceil( $longitude ) + 1;
 
         // calculate the nearest admin2 centerpoint.
-        $query   = mysqli_query( $con, "
-        SELECT grid_id, longitude, latitude
-        FROM {$this->geonames_table}
-        WHERE longitude < $east_longitude
-        AND longitude > $west_longitude
-        AND latitude < $north_latitude
-        AND latitude > $south_latitude
-        AND ( level = 'admin1' OR level = 'admin2' OR level = 'admin3' );
-    " );
-        $results = mysqli_fetch_all( $query, MYSQLI_ASSOC );
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT grid_id, longitude, latitude
+            FROM $wpdb->dt_location_grid
+            WHERE longitude < %f
+            AND longitude > %f
+            AND latitude < %f
+            AND latitude > %f
+            AND level > 1;
+        ", $east_longitude, $west_longitude, $north_latitude, $south_latitude ), ARRAY_A );
 
         if ( ! empty( $results ) ) {
 
@@ -349,18 +308,20 @@ class Location_Grid_Geocoder {
     public function _this_grid_id( $grid_id, $longitude_x, $latitude_y ) {
 
         // get geoname geojson
-        // @todo potentially cache geojson to database and check first in db then call remotely.
-        $raw_geojson = @file_get_contents( $this->mirror_source . $grid_id . '.geojson' );
+        $raw_geojson = @file_get_contents( $this->geometry_folder . $grid_id . '.geojson');
         if ( $raw_geojson === false ) {
-            return false;
+            $raw_geojson = @file_get_contents( $this->mirror_source . 'low/' . $grid_id . '.geojson');
+            if ( $raw_geojson === false ) {
+                return false;
+            }
         }
-        $geojson                     = json_decode( $raw_geojson, true );
+        $geojson                   = json_decode( $raw_geojson, true );
         $this->geojson[ $grid_id ] = $geojson; // save for 3 test if necessary
-        $features                    = $geojson[ 'features' ];
+        $features                  = $geojson[ 'features' ];
 
         // handle Polygon and MultiPolygon geometries
         foreach ( $features as $feature ) {
-            if ( $feature[ 'geometry' ][ 'type' ] === 'Polygon' ) {
+            if ( $feature[ 'geometry' ][ 'type' ] === 'Polygon') {
                 foreach ( $feature[ 'geometry' ][ 'coordinates' ] as $coordinates ) {
 
                     $data = $this->_split_polygon( $coordinates );
@@ -373,7 +334,7 @@ class Location_Grid_Geocoder {
                         return $grid_id;
                     }
                 }
-            } else if ( $feature[ 'geometry' ][ 'type' ] === 'MultiPolygon' ) {
+            } else if ( $feature[ 'geometry' ][ 'type' ] === 'MultiPolygon') {
                 foreach ( $feature[ 'geometry' ][ 'coordinates' ] as $top_coordinates ) {
                     foreach ( $top_coordinates as $coordinates ) {
 
@@ -400,19 +361,19 @@ class Location_Grid_Geocoder {
      *
      * @return bool
      */
-    public function _polygon_exists( $grid_id, $type = 'polygon' ) {
-        if ( $type === 'polygon' ) {
-            $ch = curl_init( $this->mirror_source . 'low/' . $grid_id . '.geojson' );
-        } else if ( $type === 'polygon_collection' ) {
-            $ch = curl_init( $this->mirror_source . 'collection/' . $grid_id . '.geojson' );
+    public function _polygon_exists( $grid_id, $type = 'polygon') {
+        if ( $type === 'polygon') {
+            $ch = curl_init( $this->mirror_source . 'low/' . $grid_id . '.geojson');
+        } else if ( $type === 'polygon_collection') {
+            $ch = curl_init( $this->mirror_source . 'collection/' . $grid_id . '.geojson');
         } else {
-            error_log( '_polygons_exists:: missing correct $type' );
+            dt_write_log('_polygons_exists:: missing correct $type');
 
             return false;
         }
 
         curl_setopt( $ch, CURLOPT_NOBODY, true );
-        curl_setopt( $ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13' );
+        curl_setopt( $ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
         curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
         curl_exec( $ch );
         $retcode = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
@@ -464,7 +425,7 @@ class Location_Grid_Geocoder {
         }
         $data = [
             'longitude' => $longitude,
-            'latitude'  => $latitude
+            'latitude'  => $latitude,
         ];
 
         return $data;
@@ -488,172 +449,70 @@ class Location_Grid_Geocoder {
         return $miles;
     }
 
-	public function query_admin5_by_lnglat( $longitude, $latitude ) {
-		$con   = $this->con;
-		$query = mysqli_query( $con, "
-        SELECT g.*, c.name as country_name, a1.name as admin1_name, a2.name as admin2_name, a3.name as admin3_name, a4.name as admin4_name
-        FROM {$this->geonames_table} as g
-        LEFT JOIN {$this->geonames_table} as c ON g.country_grid_id=c.grid_id
-        LEFT JOIN {$this->geonames_table} as a1 ON g.admin1_grid_id=a1.grid_id
-        LEFT JOIN {$this->geonames_table} as a2 ON g.admin2_grid_id=a2.grid_id
-        LEFT JOIN {$this->geonames_table} as a2 ON g.admin3_grid_id=a3.grid_id
-        LEFT JOIN {$this->geonames_table} as a2 ON g.admin4_grid_id=a4.grid_id
-        WHERE 
-        g.north_latitude >= {$latitude} AND
-        g.south_latitude <= {$latitude} AND
-        g.west_longitude >= {$longitude} AND
-        g.east_longitude <= {$longitude} AND
-        g.level = 'admin5';
-    " );
-		if ( $query === false ) {
-			return [];
-		}
+    public function query_level_by_lnglat( float $longitude, float $latitude, int $level ): array {
+        global $wpdb;
 
-		return mysqli_fetch_all( $query, MYSQLI_ASSOC );
-	}
-
-	public function query_admin4_by_lnglat( $longitude, $latitude ) {
-		$con   = $this->con;
-		$query = mysqli_query( $con, "
-        SELECT g.*, c.name as country_name, a1.name as admin1_name, a2.name as admin2_name, a3.name as admin3_name
-        FROM {$this->geonames_table} as g
-        LEFT JOIN {$this->geonames_table} as c ON g.country_grid_id=c.grid_id
-        LEFT JOIN {$this->geonames_table} as a1 ON g.admin1_grid_id=a1.grid_id
-        LEFT JOIN {$this->geonames_table} as a2 ON g.admin2_grid_id=a2.grid_id
-        LEFT JOIN {$this->geonames_table} as a2 ON g.admin3_grid_id=a3.grid_id
-        WHERE 
-        g.north_latitude >= {$latitude} AND
-        g.south_latitude <= {$latitude} AND
-        g.west_longitude >= {$longitude} AND
-        g.east_longitude <= {$longitude} AND
-        g.level = 'admin4';
-    " );
-		if ( $query === false ) {
-			return [];
-		}
-
-		return mysqli_fetch_all( $query, MYSQLI_ASSOC );
-	}
-
-    public function query_admin3_by_lnglat( $longitude, $latitude ) {
-        $con   = $this->con;
-        $query = mysqli_query( $con, "
-        SELECT g.*, c.name as country_name, a1.name as admin1_name, a2.name as admin2_name
-        FROM {$this->geonames_table} as g
-        LEFT JOIN {$this->geonames_table} as c ON g.country_grid_id=c.grid_id
-        LEFT JOIN {$this->geonames_table} as a1 ON g.admin1_grid_id=a1.grid_id
-        LEFT JOIN {$this->geonames_table} as a2 ON g.admin2_grid_id=a2.grid_id
-        WHERE 
-        g.north_latitude >= {$latitude} AND
-        g.south_latitude <= {$latitude} AND
-        g.west_longitude >= {$longitude} AND
-        g.east_longitude <= {$longitude} AND
-        g.level = 'admin3';
-    " );
-        if ( $query === false ) {
-            return [];
-        }
-
-        return mysqli_fetch_all( $query, MYSQLI_ASSOC );
-    }
-
-    public function query_admin2_by_lnglat( $longitude, $latitude ) {
-        $con   = $this->con;
-        $query = mysqli_query( $con, "
-        SELECT g.*, c.name as country_name, a1.name as admin1_name
-        FROM {$this->geonames_table} as g
-        LEFT JOIN {$this->geonames_table} as c ON g.country_grid_id=c.grid_id
-        LEFT JOIN {$this->geonames_table} as a1 ON g.admin1_grid_id=a1.grid_id
-        WHERE 
-        g.north_latitude >= {$latitude} AND
-        g.south_latitude <= {$latitude} AND
-        g.west_longitude >= {$longitude} AND
-        g.east_longitude <= {$longitude} AND
-        g.level = 'admin2';
-    " );
-        if ( $query === false ) {
-            return [];
-        }
-
-        return mysqli_fetch_all( $query, MYSQLI_ASSOC );
-    }
-
-    public function query_admin1_by_lnglat( $longitude, $latitude ) {
-        $con   = $this->con;
-        $query = mysqli_query( $con, "
-            SELECT g.*, c.name as country_name
-            FROM {$this->geonames_table} as g
-            LEFT JOIN {$this->geonames_table} as c ON g.country_grid_id=c.grid_id
+        $query = $wpdb->get_results( $wpdb->prepare( "
+            SELECT g.*, a0.name as admin0_name, a1.name as admin1_name, a2.name as admin2_name, a3.name as admin3_name, a4.name as admin4_name, a5.name as admin5_name
+            FROM $wpdb->dt_location_grid as g
+            LEFT JOIN $wpdb->dt_location_grid as a0 ON g.admin0_grid_id=a0.grid_id
+            LEFT JOIN $wpdb->dt_location_grid as a1 ON g.admin1_grid_id=a1.grid_id
+            LEFT JOIN $wpdb->dt_location_grid as a2 ON g.admin2_grid_id=a2.grid_id
+            LEFT JOIN $wpdb->dt_location_grid as a3 ON g.admin3_grid_id=a3.grid_id
+            LEFT JOIN $wpdb->dt_location_grid as a4 ON g.admin4_grid_id=a4.grid_id
+            LEFT JOIN $wpdb->dt_location_grid as a5 ON g.admin4_grid_id=a5.grid_id
             WHERE 
-            g.north_latitude >= {$latitude} AND
-            g.south_latitude <= {$latitude} AND
-            g.west_longitude >= {$longitude} AND
-            g.east_longitude <= {$longitude} AND
-            g.level = 'admin1';
-        " );
+            g.north_latitude >= %f AND
+            g.south_latitude <= %f AND
+            g.west_longitude >= %f AND
+            g.east_longitude <= %f AND
+            g.level = %d
+            LIMIT 10;
+		", $latitude, $latitude, $longitude, $longitude, $level ), ARRAY_A );
+
         if ( $query === false ) {
             return [];
         }
 
-        return mysqli_fetch_all( $query, MYSQLI_ASSOC );
+        return $query;
     }
 
-    public function query_country_by_lnglat( $longitude, $latitude ) {
-        $con   = $this->con;
-        $query = mysqli_query( $con, "
-            SELECT g.*
-            FROM {$this->geonames_table} as g
+    public function query_lowest_level_by_lnglat( float $longitude, float $latitude ): array {
+        global $wpdb;
+
+        $query = $wpdb->get_results( $wpdb->prepare( "
+            SELECT g.*, a0.name as admin0_name, a1.name as admin1_name, a2.name as admin2_name, a3.name as admin3_name, a4.name as admin4_name, a5.name as admin5_name
+            FROM $wpdb->dt_location_grid as g
+            LEFT JOIN $wpdb->dt_location_grid as a0 ON g.admin0_grid_id=a0.grid_id
+            LEFT JOIN $wpdb->dt_location_grid as a1 ON g.admin1_grid_id=a1.grid_id
+            LEFT JOIN $wpdb->dt_location_grid as a2 ON g.admin2_grid_id=a2.grid_id
+            LEFT JOIN $wpdb->dt_location_grid as a3 ON g.admin3_grid_id=a3.grid_id
+            LEFT JOIN $wpdb->dt_location_grid as a4 ON g.admin4_grid_id=a4.grid_id
+            LEFT JOIN $wpdb->dt_location_grid as a5 ON g.admin4_grid_id=a5.grid_id
             WHERE 
-            g.north_latitude >= {$latitude} AND
-            g.south_latitude <= {$latitude} AND
-            g.west_longitude >= {$longitude} AND
-            g.east_longitude <= {$longitude} AND
-            g.level = 'country';
-        " );
+            g.north_latitude >= %f AND
+            g.south_latitude <= %f AND
+            g.west_longitude >= %f AND
+            g.east_longitude <= %f
+            ORDER BY level DESC
+            LIMIT 10;
+		", $latitude, $latitude, $longitude, $longitude ), ARRAY_A );
+
         if ( $query === false ) {
             return [];
         }
 
-        return mysqli_fetch_all( $query, MYSQLI_ASSOC );
+        return $query;
     }
-}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-if ( ! function_exists( 'dt_write_log' ) ) {
-    /**
-     * A function to assist development only.
-     * This function allows you to post a string, array, or object to the WP_DEBUG log.
-     * It also prints elapsed time since the last call.
-     *
-     * @param $log
-     */
-    function dt_write_log( $log ) {
-        global $dt_write_log_microtime;
-        $now = microtime( true );
-        if ( $dt_write_log_microtime > 0 ) {
-            $elapsed_log = sprintf( "[elapsed:%5dms]", ( $now - $dt_write_log_microtime ) * 1000 );
-        } else {
-            $elapsed_log = "[elapsed:-------]";
+    public function geometry_folder() {
+        $dir         = wp_upload_dir();
+        $uploads_dir = trailingslashit( $dir[ 'basedir' ] );
+        if ( ! file_exists( $uploads_dir . 'location_grid') ) {
+            mkdir( $uploads_dir . 'location_grid');
         }
-        $dt_write_log_microtime = $now;
-        if ( is_array( $log ) || is_object( $log ) ) {
-            error_log( $elapsed_log . " " . print_r( $log, true ) );
-        } else {
-            error_log( "$elapsed_log $log" );
-        }
+
+        return $uploads_dir . 'location_grid/';
     }
+
 }
