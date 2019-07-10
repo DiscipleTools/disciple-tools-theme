@@ -29,7 +29,7 @@ function save_quick_action(contactId, fieldKey){
   }).catch(err=>{
       console.log("error")
       console.log(err)
-      jQuery("#errors").append(err.responseText)
+      // jQuery("#errors").append(err.responseText)
   })
 
   if (fieldKey.indexOf("quick_button")>-1){
@@ -206,7 +206,9 @@ jQuery(document).ready(function($) {
       setStatus(resp)
       jQuery('#accept-contact').hide()
     }).catch(err=>{
-      jQuery("#errors").append(err.responseText)
+      console.log('error')
+      console.log(err.responseText)
+      // jQuery("#errors").append(err.responseText)
     })
   })
 
@@ -1165,7 +1167,7 @@ jQuery(document).ready(function($) {
       }).catch(err=>{
       console.log("error")
       console.log(err)
-      jQuery("#errors").append(err.responseText)
+      // jQuery("#errors").append(err.responseText)
     })
 
     if (fieldKey.indexOf("quick_button")>-1){
@@ -1299,7 +1301,7 @@ jQuery(document).ready(function($) {
         }
       }).catch(err=>{
         jQuery('#transfer_spinner').empty().append(err.responseJSON.message).append('&nbsp;' + contactsDetailsWpApiSettings.translations.transfer_error )
-        jQuery("#errors").empty()
+        // jQuery("#errors").empty()
         console.log("error")
         console.log(err)
       })
