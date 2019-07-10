@@ -29,7 +29,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
         isset( $group["assigned_to"]["id"] ) ? $group["assigned_to"]["id"] == $current_user_id : false
     ); ?>
 
-<div id="errors"> </div>
+<!--<div id="errors"> </div>-->
 
 <div id="content">
     <span id="group-id" style="display: none"><?php echo get_the_ID()?></span>
@@ -40,7 +40,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
         <main id="main" class="large-7 medium-12 small-12 cell" role="main" style="padding:0">
             <div class="cell grid-y grid-margin-y" style="display: block">
-                
+
                 <!-- Requires update block -->
                 <section class="cell small-12 update-needed-notification"
                          style="display: <?php echo esc_html( ( isset( $group['requires_update'] ) && $group['requires_update'] === true ) ? "block" : "none" ) ?> ">
