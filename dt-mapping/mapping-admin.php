@@ -260,7 +260,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                     case 'sub_location':
 
-                        dt_write_log($params);
+                        dt_write_log( $params );
 
                         if ( isset( $params['value']['name'] ) && ! empty( $params['value']['name'] ) ) {
                             $name = sanitize_text_field( wp_unslash( $params['value']['name'] ) );
@@ -1404,18 +1404,17 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 }
 
                 if ( isset( $_POST['remove'] ) && ! empty( $_POST['remove'] ) ) {
-                    $concat = explode( '-', sanitize_text_field( wp_unslash( $_POST['remove'] ) )  ) ;
+                    $concat = explode( '-', sanitize_text_field( wp_unslash( $_POST['remove'] ) ) );
                     $admin0_code = $concat[0];
                     $level = $concat[1];
                     if ( ! empty( $admin0_code ) && ! empty( $level ) ) {
                         $this->remove_additional_levels( $admin0_code, $level );
                     }
                 }
-
             }
 
             $theme_data = dt_get_theme_data_url();
-            $json = json_decode( file_get_contents( $theme_data . 'location_grid/countries_with_extended_levels.json'), true);
+            $json = json_decode( file_get_contents( $theme_data . 'location_grid/countries_with_extended_levels.json' ), true );
             if ( empty( $json ) ) {
                 ?>
                 <div class="notice notice-error notice-dt-locations-migration is-dismissible" data-notice="dt-locations-migration">
@@ -1438,8 +1437,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             // trim list
             $list = [];
-            foreach( $installed_levels as $installed_level ) {
-               $list[$installed_level['admin0_code']] = $installed_level['admin0_code'];
+            foreach ( $installed_levels as $installed_level ) {
+                $list[$installed_level['admin0_code']] = $installed_level['admin0_code'];
             }
 
             ?>
@@ -1455,7 +1454,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 <select name="country_select">
                                     <option></option>
                                     <?php
-                                    foreach( $json as $index => $name ) {
+                                    foreach ( $json as $index => $name ) {
                                         if ( array_search( $index, $list ) !== false ) {
                                             continue; // skip already installed countries
                                         }
@@ -1475,9 +1474,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <tbody>
                     <?php
                     if ( ! empty( $installed_levels ) ) :
-                        foreach( $installed_levels as $level ) :
+                        foreach ( $installed_levels as $level ) :
 
-                        ?>
+                            ?>
                         <tr>
                             <td>
                                 <?php echo '<span style="font-size:1.2em;">' . $level['name'] . '</span> ' ?>
@@ -1488,10 +1487,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             </td>
                         </tr>
 
-                    <?php
+                            <?php
                         endforeach;
                         endif;
-                        ?>
+                    ?>
                     </tbody>
                 </table>
             </form>
@@ -1904,9 +1903,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 if ( empty( $key ) ) {
                     delete_option( 'dt_mapbox_api_key' );
                 } else {
-                    update_option('dt_mapbox_api_key', $key, true );
+                    update_option( 'dt_mapbox_api_key', $key, true );
                 }
-
             }
             $key = get_option( 'dt_mapbox_api_key' );
             $hidden_key = '**************' . substr( $key, -5, 5 );
@@ -1932,7 +1930,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <tr>
                         <td>
                             <?php wp_nonce_field( 'geocoding_key' . get_current_user_id(), 'geocoding_key_nonce' ); ?>
-                            Mapbox API Token: <input type="text" class="regular-text" name="mapbox_key" value="<?php echo ($key) ? esc_attr( $hidden_key ) : ''; ?>" /> <button type="submit" class="button">Update</button>
+                            Mapbox API Token: <input type="text" class="regular-text" name="mapbox_key" value="<?php echo ( $key ) ? esc_attr( $hidden_key ) : ''; ?>" /> <button type="submit" class="button">Update</button>
                         </td>
                     </tr>
                     <tr>
@@ -2025,37 +2023,82 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                             geocoder.on('result', function(e) { // respond to search
                                 console.log(e)
-                                jQuery('#list').html(e.result.place_name)
 
-                                // add info box
-                                // jQuery.get('https://dt-mapping-builder/geocode-info-box.php', { type: 'info', longitude: e.result.center[0], latitude:  e.result.center[1] }, null, 'html' ).done(function(data) {
-                                //     jQuery('#info_box').empty().append( data )
-                                // })
+                                // parse out country code
+                                let country_code = ''
+                                if ( e.result.context !== undefined ) {
+                                    jQuery.each(e.result.context, function(i,v) {
+                                        if (v.id.substring(0,7) === 'country'){
+                                            country_code = v.short_code
+                                        }
+                                    })
+                                }
 
-                                // add polygon
-                                //jQuery.get('https://dt-mapping-builder/<?php //echo basename(__FILE__) ?>//', { type: 'geonameid', longitude: e.result.center[0], latitude: e.result.center[1] }, null, 'json' ).done(function(data) {
-                                //    console.log(data)
-                                //    jQuery.each( data, function(i,v) {
-                                //
-                                //        let unique_source = v + Date.now()
-                                //        map.addSource(unique_source, {
-                                //            type: 'geojson',
-                                //            data: 'https://dt-mapping-builder/saturation-grid-project/polygon/' + v + '.geojson'
-                                //        });
-                                //        map.addLayer({
-                                //            "id": v + Date.now() + Math.random(),
-                                //            "type": "fill",
-                                //            "source": unique_source,
-                                //            "paint": {
-                                //                "fill-color": "#888888",
-                                //                "fill-opacity": 0.4
-                                //
-                                //            },
-                                //            "filter": ["==", "$type", "Polygon"]
-                                //        });
-                                //    })
-                                //})
+                                // geocode, load hierarchy, load polygon
+                                jQuery.get('<?php echo trailingslashit( get_template_directory_uri() ) . 'dt-mapping/' ?>location-grid-list-api.php', { type: 'geocode', longitude: e.result.center[0], latitude:  e.result.center[1], country_code: country_code }, null, 'json' ).done(function(data) {
+                                    console.log(data)
+                                    window.MBresponse = data
+                                    let print = jQuery('#list')
 
+                                    print.empty();
+                                    let grid_id = 0
+                                    if ( data[0] === undefined ) {
+                                        grid_id = data.grid_id
+                                        print.append('<br><strong>Location Grid Hierarchy</strong><br>')
+                                        print.append(data.admin0_name + ' (' + data.admin0_grid_id + ')<br>')
+                                        print.append('-- ' + data.admin1_name  + ' (' + data.admin1_grid_id + ')<br>')
+                                        if ( data.admin2_name !== null ) {
+                                            print.append('-- -- ' +data.admin2_name  + ' (' + data.admin2_grid_id + ')<br>')
+                                        }
+                                        if ( data.admin3_name !== null ) {
+                                            print.append('-- -- -- ' +data.admin3_name  + ' (' + data.admin3_grid_id + ')<br>')
+                                        }
+                                        if ( data.admin4_name !== null ) {
+                                            print.append('-- -- -- -- ' +data.admin4_name  + ' (' + data.admin4_grid_id + ')<br>')
+                                        }
+                                        if ( data.admin5_name !== null ) {
+                                            print.append('-- -- -- -- -- ' +data.admin5_name  + ' (' + data.admin5_grid_id + ')<br>')
+                                        }
+                                        print.append(e.result.place_name + '<br>')
+                                        print.append('<br>')
+                                    } else {
+                                        grid_id = data[0].grid_id
+                                        print.append('<br><strong>Location Grid Hierarchy</strong><br>')
+                                        print.append(data[0].admin0_name + ' (' + data[0].admin0_grid_id + ')<br>')
+                                        print.append('-- ' + data[0].admin1_name  + ' (' + data[0].admin1_grid_id + ')<br>')
+                                        if ( data[0].admin2_name !== null ) {
+                                            print.append('-- -- ' +data[0].admin2_name  + ' (' + data[0].admin2_grid_id + ')<br>')
+                                        }
+                                        if ( data[0].admin3_name !== null ) {
+                                            print.append('-- -- -- ' +data[0].admin3_name  + ' (' + data[0].admin3_grid_id + ')<br>')
+                                        }
+                                        if ( data[0].admin4_name !== null ) {
+                                            print.append('-- -- -- -- ' +data[0].admin4_name  + ' (' + data[0].admin4_grid_id + ')<br>')
+                                        }
+                                        if ( data[0].admin5_name !== null ) {
+                                            print.append('-- -- -- -- -- ' +data[0].admin5_name  + ' (' + data[0].admin5_grid_id + ')<br>')
+                                        }
+                                        print.append(e.result.place_name + '<br>')
+                                        print.append('<br>')
+                                    }
+
+                                    let unique_source = grid_id+ Date.now()
+                                    map.addSource(unique_source, {
+                                        type: 'geojson',
+                                        data: '<?php echo dt_get_saturation_mapping_mirror(true) ?>low/' + grid_id + '.geojson'
+                                    });
+                                    map.addLayer({
+                                        "id": grid_id + Date.now() + Math.random(),
+                                        "type": "fill",
+                                        "source": unique_source,
+                                        "paint": {
+                                            "fill-color": "red",
+                                            "fill-opacity": 0.4
+
+                                        },
+                                        "filter": ["==", "$type", "Polygon"]
+                                    });
+                                })
                             })
 
                         </script>
@@ -2402,12 +2445,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         public function remove_additional_levels( $admin0_code, $level ) {
             global $wpdb;
             // drop tables
-             $result = $wpdb->query( $wpdb->prepare( "
+            $result = $wpdb->query( $wpdb->prepare( "
                 DELETE FROM $wpdb->dt_location_grid WHERE admin0_code = %s AND level >= %d
             ",
                 $admin0_code,
-                $level ) );
-            dt_write_log($result);
+            $level ) );
+            dt_write_log( $result );
              return $result;
 
         }
@@ -2599,8 +2642,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 ]
             );
             if ( ! $result ){
-                dt_write_log($wpdb->last_error);
-                dt_write_log($wpdb->last_query);
+                dt_write_log( $wpdb->last_error );
+                dt_write_log( $wpdb->last_query );
                 return new WP_Error( __FUNCTION__, 'Error creating sublocation' );
             } else {
                 return $custom_grid_id;

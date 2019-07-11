@@ -1669,13 +1669,13 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $results['parent']['population_formatted'] = number_format( $parent['population'] );
                 $results['parent']['latitude'] = (float) $parent['latitude'];
                 $results['parent']['longitude'] = (float) $parent['longitude'];
-                $results['parent']['parent_id'] = empty($parent['parent_id']) ? NULL : (int) $parent['parent_id'];
-                $results['parent']['admin0_grid_id'] = empty($parent['admin0_grid_id']) ? NULL : (int) $parent['admin0_grid_id'];
-                $results['parent']['admin1_grid_id'] = empty($parent['admin1_grid_id']) ? NULL : (int) $parent['admin1_grid_id'];
-                $results['parent']['admin2_grid_id'] = empty($parent['admin2_grid_id']) ? NULL : (int) $parent['admin2_grid_id'];
-                $results['parent']['admin3_grid_id'] = empty($parent['admin3_grid_id']) ? NULL : (int) $parent['admin3_grid_id'];
-                $results['parent']['admin4_grid_id'] = empty($parent['admin4_grid_id']) ? NULL : (int) $parent['admin4_grid_id'];
-                $results['parent']['admin5_grid_id'] = empty($parent['admin5_grid_id']) ? NULL : (int) $parent['admin5_grid_id'];
+                $results['parent']['parent_id'] = empty( $parent['parent_id'] ) ? null : (int) $parent['parent_id'];
+                $results['parent']['admin0_grid_id'] = empty( $parent['admin0_grid_id'] ) ? null : (int) $parent['admin0_grid_id'];
+                $results['parent']['admin1_grid_id'] = empty( $parent['admin1_grid_id'] ) ? null : (int) $parent['admin1_grid_id'];
+                $results['parent']['admin2_grid_id'] = empty( $parent['admin2_grid_id'] ) ? null : (int) $parent['admin2_grid_id'];
+                $results['parent']['admin3_grid_id'] = empty( $parent['admin3_grid_id'] ) ? null : (int) $parent['admin3_grid_id'];
+                $results['parent']['admin4_grid_id'] = empty( $parent['admin4_grid_id'] ) ? null : (int) $parent['admin4_grid_id'];
+                $results['parent']['admin5_grid_id'] = empty( $parent['admin5_grid_id'] ) ? null : (int) $parent['admin5_grid_id'];
             }
 
             $self = Disciple_Tools_Mapping_Queries::get_by_grid_id( $grid_id );
@@ -1689,13 +1689,13 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $results['self']['population_formatted'] = number_format( $self['population'] );
                 $results['self']['latitude'] = (float) $self['latitude'];
                 $results['self']['longitude'] = (float) $self['longitude'];
-                $results['self']['parent_id'] = empty($self['parent_id']) ? NULL : (int) $self['parent_id'];
-                $results['self']['admin0_grid_id'] = empty($self['admin0_grid_id']) ? NULL : (int) $self['admin0_grid_id'];
-                $results['self']['admin1_grid_id'] = empty($self['admin1_grid_id']) ? NULL : (int) $self['admin1_grid_id'];
-                $results['self']['admin2_grid_id'] = empty($self['admin2_grid_id']) ? NULL : (int) $self['admin2_grid_id'];
-                $results['self']['admin3_grid_id'] = empty($self['admin3_grid_id']) ? NULL : (int) $self['admin3_grid_id'];
-                $results['self']['admin4_grid_id'] = empty($self['admin4_grid_id']) ? NULL : (int) $self['admin4_grid_id'];
-                $results['self']['admin5_grid_id'] = empty($self['admin5_grid_id']) ? NULL : (int) $self['admin5_grid_id'];
+                $results['self']['parent_id'] = empty( $self['parent_id'] ) ? null : (int) $self['parent_id'];
+                $results['self']['admin0_grid_id'] = empty( $self['admin0_grid_id'] ) ? null : (int) $self['admin0_grid_id'];
+                $results['self']['admin1_grid_id'] = empty( $self['admin1_grid_id'] ) ? null : (int) $self['admin1_grid_id'];
+                $results['self']['admin2_grid_id'] = empty( $self['admin2_grid_id'] ) ? null : (int) $self['admin2_grid_id'];
+                $results['self']['admin3_grid_id'] = empty( $self['admin3_grid_id'] ) ? null : (int) $self['admin3_grid_id'];
+                $results['self']['admin4_grid_id'] = empty( $self['admin4_grid_id'] ) ? null : (int) $self['admin4_grid_id'];
+                $results['self']['admin5_grid_id'] = empty( $self['admin5_grid_id'] ) ? null : (int) $self['admin5_grid_id'];
             }
 
             // get children
@@ -1713,13 +1713,13 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     $results['children'][$index]['population_formatted'] = number_format( $child['population'] );
                     $results['children'][$index]['latitude'] = (float) $child['latitude'];
                     $results['children'][$index]['longitude'] = (float) $child['longitude'];
-                    $results['children'][$index]['parent_id'] = empty($child['parent_id']) ? NULL : (int) $child['parent_id'];
-                    $results['children'][$index]['admin0_grid_id'] = empty($child['admin0_grid_id']) ? NULL : (int) $child['admin0_grid_id'];
-                    $results['children'][$index]['admin1_grid_id'] = empty($child['admin1_grid_id']) ? NULL : (int) $child['admin1_grid_id'];
-                    $results['children'][$index]['admin2_grid_id'] = empty($child['admin2_grid_id']) ? NULL : (int) $child['admin2_grid_id'];
-                    $results['children'][$index]['admin3_grid_id'] = empty($child['admin3_grid_id']) ? NULL : (int) $child['admin3_grid_id'];
-                    $results['children'][$index]['admin4_grid_id'] = empty($child['admin4_grid_id']) ? NULL : (int) $child['admin4_grid_id'];
-                    $results['children'][$index]['admin5_grid_id'] = empty($child['admin5_grid_id']) ? NULL : (int) $child['admin5_grid_id'];
+                    $results['children'][$index]['parent_id'] = empty( $child['parent_id'] ) ? null : (int) $child['parent_id'];
+                    $results['children'][$index]['admin0_grid_id'] = empty( $child['admin0_grid_id'] ) ? null : (int) $child['admin0_grid_id'];
+                    $results['children'][$index]['admin1_grid_id'] = empty( $child['admin1_grid_id'] ) ? null : (int) $child['admin1_grid_id'];
+                    $results['children'][$index]['admin2_grid_id'] = empty( $child['admin2_grid_id'] ) ? null : (int) $child['admin2_grid_id'];
+                    $results['children'][$index]['admin3_grid_id'] = empty( $child['admin3_grid_id'] ) ? null : (int) $child['admin3_grid_id'];
+                    $results['children'][$index]['admin4_grid_id'] = empty( $child['admin4_grid_id'] ) ? null : (int) $child['admin4_grid_id'];
+                    $results['children'][$index]['admin5_grid_id'] = empty( $child['admin5_grid_id'] ) ? null : (int) $child['admin5_grid_id'];
                 }
             }
 
@@ -1773,13 +1773,13 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     $results[$index]['population_formatted'] = number_format( $child['population'] );
                     $results[$index]['latitude'] = (float) $child['latitude'];
                     $results[$index]['longitude'] = (float) $child['longitude'];
-                    $results[$index]['parent_id'] = empty($child['parent_id']) ? NULL : (int)  $child['parent_id'];
-                    $results[$index]['admin0_grid_id'] = empty($child['admin0_grid_id']) ? NULL : (int) $child['admin0_grid_id'];
-                    $results[$index]['admin1_grid_id'] = empty($child['admin1_grid_id']) ? NULL : (int) $child['admin1_grid_id'];
-                    $results[$index]['admin2_grid_id'] = empty($child['admin2_grid_id']) ? NULL : (int) $child['admin2_grid_id'];
-                    $results[$index]['admin3_grid_id'] = empty($child['admin3_grid_id']) ? NULL : (int) $child['admin3_grid_id'];
-                    $results[$index]['admin4_grid_id'] = empty($child['admin4_grid_id']) ? NULL : (int) $child['admin4_grid_id'];
-                    $results[$index]['admin5_grid_id'] = empty($child['admin5_grid_id']) ? NULL : (int) $child['admin5_grid_id'];
+                    $results[$index]['parent_id'] = empty( $child['parent_id'] ) ? null : (int) $child['parent_id'];
+                    $results[$index]['admin0_grid_id'] = empty( $child['admin0_grid_id'] ) ? null : (int) $child['admin0_grid_id'];
+                    $results[$index]['admin1_grid_id'] = empty( $child['admin1_grid_id'] ) ? null : (int) $child['admin1_grid_id'];
+                    $results[$index]['admin2_grid_id'] = empty( $child['admin2_grid_id'] ) ? null : (int) $child['admin2_grid_id'];
+                    $results[$index]['admin3_grid_id'] = empty( $child['admin3_grid_id'] ) ? null : (int) $child['admin3_grid_id'];
+                    $results[$index]['admin4_grid_id'] = empty( $child['admin4_grid_id'] ) ? null : (int) $child['admin4_grid_id'];
+                    $results[$index]['admin5_grid_id'] = empty( $child['admin5_grid_id'] ) ? null : (int) $child['admin5_grid_id'];
                 }
             }
             return $results;
@@ -1840,22 +1840,22 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         $query[$index]['parent_id'] = (int) $value['parent_id'];
                     }
                     if ( isset( $value['admin0_grid_id'] ) ) {
-                        $query[$index]['admin0_grid_id'] = empty($value['admin0_grid_id']) ? NULL : (int) $value['admin0_grid_id'];
+                        $query[$index]['admin0_grid_id'] = empty( $value['admin0_grid_id'] ) ? null : (int) $value['admin0_grid_id'];
                     }
                     if ( isset( $value['admin1_grid_id'] ) ) {
-                        $query[$index]['admin1_grid_id'] = empty($value['admin1_grid_id']) ? NULL : (int) $value['admin1_grid_id'];
+                        $query[$index]['admin1_grid_id'] = empty( $value['admin1_grid_id'] ) ? null : (int) $value['admin1_grid_id'];
                     }
                     if ( isset( $value['admin2_grid_id'] ) ) {
-                        $query[$index]['admin2_grid_id'] = empty($value['admin2_grid_id']) ? NULL : (int) $value['admin2_grid_id'];
+                        $query[$index]['admin2_grid_id'] = empty( $value['admin2_grid_id'] ) ? null : (int) $value['admin2_grid_id'];
                     }
                     if ( isset( $value['admin3_grid_id'] ) ) {
-                        $query[$index]['admin3_grid_id'] = empty($value['admin3_grid_id']) ? NULL : (int) $value['admin3_grid_id'];
+                        $query[$index]['admin3_grid_id'] = empty( $value['admin3_grid_id'] ) ? null : (int) $value['admin3_grid_id'];
                     }
                     if ( isset( $value['admin4_grid_id'] ) ) {
-                        $query[$index]['admin4_grid_id'] = empty($value['admin4_grid_id']) ? NULL : (int) $value['admin4_grid_id'];
+                        $query[$index]['admin4_grid_id'] = empty( $value['admin4_grid_id'] ) ? null : (int) $value['admin4_grid_id'];
                     }
                     if ( isset( $value['admin5_grid_id'] ) ) {
-                        $query[$index]['admin5_grid_id'] = empty($value['admin5_grid_id']) ? NULL : (int) $value['admin5_grid_id'];
+                        $query[$index]['admin5_grid_id'] = empty( $value['admin5_grid_id'] ) ? null : (int) $value['admin5_grid_id'];
                     }
                 }
             }
