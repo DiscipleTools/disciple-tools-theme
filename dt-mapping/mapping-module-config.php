@@ -46,7 +46,7 @@ class DT_Mapping_Module_Config
         add_filter( 'dt_mapping_module_settings', [ $this, 'custom_settings_filter' ] );
 
         /**
-         * Use this filter to add data to sub levels by geoname
+         * Use this filter to add data to sub levels by location_grid
          * dt_mapping_module_map_level_by_grid_id
          *
          * @see     mapping.php:389

@@ -40,7 +40,7 @@ let mapFillColor = "rgb(217, 217, 217)"
 window.DRILLDOWN.map_chart_drilldown = function( grid_id ) {
     if ( grid_id !== 'top_map_level' ) { // make sure this is not a top level continent or world request
         DRILLDOWNDATA.settings.current_map = parseInt(grid_id)
-        geoname_map( 'map_chart', parseInt(grid_id) )
+        location_grid_map( 'map_chart', parseInt(grid_id) )
         data_type_list( 'data-type-list' )
     }
     else { // top_level maps
@@ -70,7 +70,7 @@ function page_mapping_view() {
                 <span id="current_level"></span>
             </div>
         </div>
-        <span style="font-size:.8em; margin-left:20px"><a onclick="refresh_data('get_geoname_totals')">${_.escape( translations.refresh_data )}</a></span>
+        <span style="font-size:.8em; margin-left:20px"><a onclick="refresh_data('get_location_grid_totals')">${_.escape( translations.refresh_data )}</a></span>
         <hr style="max-width:100%;">
         
        <!-- Map -->
@@ -259,7 +259,7 @@ function top_level_map( div ) {
 
             if( Object.keys(top_map_list).length === 1 ) { // if only one country selected
                 jQuery.each(top_map_list, function(i,v) {
-                    geoname_map( div, i )
+                    location_grid_map( div, i )
                 })
             } else { // multiple countries selected. So load the world and reduce the polygons
 
@@ -317,7 +317,7 @@ function top_level_map( div ) {
 
             if( Object.keys(top_map_list).length === 1 ) { // if only one country selected
                 jQuery.each(top_map_list, function(i,v) {
-                    geoname_map( div, i )
+                    location_grid_map( div, i )
                 })
             } else {
                 // multiple countries selected. So load the world and reduce the polygons
@@ -375,7 +375,7 @@ function top_level_map( div ) {
     }
 }
 
-function geoname_map( div, grid_id ) {
+function location_grid_map( div, grid_id ) {
     am4core.useTheme(am4themes_animated);
 
     let chart = am4core.create( div, am4maps.MapChart);
@@ -652,11 +652,11 @@ function page_mapping_list() {
 }
 
 window.DRILLDOWN.location_list_drilldown = function( grid_id ) {
-    geoname_list( 'location_list', grid_id )
+    location_grid_list( 'location_list', grid_id )
 }
 
 
-function geoname_list( div, grid_id ) {
+function location_grid_list( div, grid_id ) {
     DRILLDOWN.show_spinner()
 
     // Find data source before build
@@ -687,7 +687,7 @@ function geoname_list( div, grid_id ) {
             return;
         }
 
-        build_geoname_list( div, map_data )
+        build_location_grid_list( div, map_data )
     }
     else if ( DRILLDOWNDATA.data[grid_id] === undefined ) {
         let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_grid_id_endpoint
@@ -704,7 +704,7 @@ function geoname_list( div, grid_id ) {
         })
             .done( function( response ) {
                 DRILLDOWNDATA.data[grid_id] = response
-                build_geoname_list( div, DRILLDOWNDATA.data[grid_id] )
+                build_location_grid_list( div, DRILLDOWNDATA.data[grid_id] )
             })
             .fail(function (err) {
                 console.log("error")
@@ -713,11 +713,11 @@ function geoname_list( div, grid_id ) {
             })
 
     } else {
-        build_geoname_list( div, DRILLDOWNDATA.data[grid_id] )
+        build_location_grid_list( div, DRILLDOWNDATA.data[grid_id] )
     }
 
     // build list
-    function build_geoname_list( div, map_data ) {
+    function build_location_grid_list( div, map_data ) {
 
         // Place Title
         let title = jQuery('#section-title')

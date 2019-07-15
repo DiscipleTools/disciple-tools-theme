@@ -37,7 +37,7 @@ function change_password() {
  * Locations
  */
 window.DRILLDOWN.add_user_location = function( grid_id ) {
-    jQuery('#add_location_geoname_value').val(grid_id)
+    jQuery('#add_location_location_grid_value').val(grid_id)
 }
 
 function load_settings_locations( reload = false ) {
@@ -79,7 +79,7 @@ function load_settings_locations( reload = false ) {
 function add_drill_down_selector() {
     jQuery('#new_locations').empty().append(
             `<div id="add_user_location"><ul class="drill_down"></ul></div>
-            <input type="hidden" id="add_location_geoname_value" />
+            <input type="hidden" id="add_location_location_grid_value" />
             <button type="button" class="button" onclick="save_new_location()">Save</button>`
     )
     window.DRILLDOWN.get_drill_down( 'add_user_location' )
@@ -87,7 +87,7 @@ function add_drill_down_selector() {
 }
 
 function save_new_location() {
-    let grid_id = jQuery('#add_location_geoname_value').val()
+    let grid_id = jQuery('#add_location_location_grid_value').val()
 
     makeRequest('post', 'users/user_location', { grid_id: grid_id } ).done(data => {
         console.log( data )

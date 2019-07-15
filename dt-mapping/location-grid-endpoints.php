@@ -6,7 +6,7 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * Class Location_Grid_Endpoints
  */
-class Location_Grid_Endpoints
+class Location_Grid_Endpoints // @todo placeholder
 {
 
     private $version = 1;

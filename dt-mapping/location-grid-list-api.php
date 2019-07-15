@@ -31,10 +31,14 @@ $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
 /**
  * @todo nonce check
  */
+if ( ! isset( $_GET['nonce'] ) || empty( $_GET['nonce'] ) ) {
+    die();
+}
+
 
 // return data selected from DB to user
 
-// geocodes longitude and latitude and returns json array of geoname record
+// geocodes longitude and latitude and returns json array of location_grid record
 if ( isset( $_GET['type'] ) && isset( $_GET['longitude'] ) && isset( $_GET['latitude'] ) ) :
 
     // return json grid_id result from longitude/latitude

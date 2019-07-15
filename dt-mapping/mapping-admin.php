@@ -274,7 +274,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             $population = 0;
                         }
 
-                        $custom_grid_id = $this->add_sublocation_under_geoname( $grid_id, $name, $population );
+                        $custom_grid_id = $this->add_sublocation_under_location_grid( $grid_id, $name, $population );
 
                         return [
                                 'name' => $name,
@@ -1117,17 +1117,17 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     foreach ( $select_location_grid as $location_id => $migration_values ){
                         if ( !empty( $location_id ) && !empty( $migration_values["migration_type"] ) ) {
                             $location_id = sanitize_text_field( wp_unslash( $location_id ) );
-                            $selected_geoname = sanitize_text_field( wp_unslash( $migration_values["geoid"] ) );
+                            $selected_location_grid = sanitize_text_field( wp_unslash( $migration_values["geoid"] ) );
                             $migration_type = sanitize_text_field( wp_unslash( $migration_values["migration_type"] ) );
                             $location = get_post( $location_id );
-                            if ( empty( $selected_geoname )){
-                                $selected_geoname = '6295630';
+                            if ( empty( $selected_location_grid )){
+                                $selected_location_grid = '1';
                             }
-                            $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( $selected_geoname );
+                            $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( $selected_location_grid );
                             if ( $migration_type === "sublocation" ){
-                                $selected_geoname = $this->add_sublocation_under_geoname( $selected_geoname, $location->post_title, 0 );
+                                $selected_location_grid = $this->add_sublocation_under_location_grid( $selected_location_grid, $location->post_title, 0 );
                             }
-                            $this->convert_location_to_geoname( $location_id, $selected_geoname );
+                            $this->convert_location_to_location_grid( $location_id, $selected_location_grid );
 
                             $message = $migration_type === "convert" ?
                                 "Converted $location->post_title to " . $location_grid["name"] :
@@ -1141,7 +1141,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 "message" => $message,
                                 "migration_type" => $migration_type,
                                 "location_id" => $location_id,
-                                "selected_geoname" => $selected_geoname
+                                "selected_location_grid" => $selected_location_grid
                             ];
                         }
                     }
@@ -1221,8 +1221,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                     </select>
                                 </td>
                                 <td id="<?php echo esc_html( $location["ID"] ) ?>_actions">
-                                    <span class="convert" style="display: none;"><strong style="color: green;">Convert</strong> <?php echo esc_html( $location["post_title"] ) ?> to <span class="selected-geoname-label">World</span></span>
-                                    <span class="sublocation" style="display: none;"><strong style="color: orange">Create</strong> <?php echo esc_html( $location["post_title"] ) ?> <strong style="color: orange">as a sub-location</strong> under <span class="selected-geoname-label">World</span></span>
+                                    <span class="convert" style="display: none;"><strong style="color: green;">Convert</strong> <?php echo esc_html( $location["post_title"] ) ?> to <span class="selected-location_grid-label">World</span></span>
+                                    <span class="sublocation" style="display: none;"><strong style="color: orange">Create</strong> <?php echo esc_html( $location["post_title"] ) ?> <strong style="color: orange">as a sub-location</strong> under <span class="selected-location_grid-label">World</span></span>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -1241,7 +1241,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         window.DRILLDOWN[`${ id } .drilldown`] = function (grid_id, label) {
                             jQuery(`#${id} .convert-input`).val(grid_id)
                             console.log(id);
-                            jQuery(`#${id.replace("sublocation", "actions")} .selected-geoname-label`).text(label)
+                            jQuery(`#${id.replace("sublocation", "actions")} .selected-location_grid-label`).text(label)
                         }
                     })
                     jQuery('.migration-type').on( "change", function () {
@@ -1891,9 +1891,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
         }
 
-
-
-
         public function box_geocoding_source() {
             if ( isset( $_POST['mapbox_key'] )
                  && ( isset( $_POST['geocoding_key_nonce'] )
@@ -2035,7 +2032,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 }
 
                                 // geocode, load hierarchy, load polygon
-                                jQuery.get('<?php echo trailingslashit( get_template_directory_uri() ) . 'dt-mapping/' ?>location-grid-list-api.php', { type: 'geocode', longitude: e.result.center[0], latitude:  e.result.center[1], country_code: country_code }, null, 'json' ).done(function(data) {
+                                jQuery.get('<?php echo trailingslashit( get_template_directory_uri() ) . 'dt-mapping/' ?>location-grid-list-api.php', { type: 'geocode', longitude: e.result.center[0], latitude: e.result.center[1], country_code: country_code, nonce: '<?php echo wp_create_nonce() ?>' }, null, 'json' ).done(function(data) {
                                     console.log(data)
                                     window.MBresponse = data
                                     let print = jQuery('#list')
@@ -2566,7 +2563,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         /**
-         * Add a sublocation under a geoname (or other sublocation) parent
+         * Add a sublocation under a location_grid (or other sublocation) parent
          */
 
         /**
@@ -2576,13 +2573,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
          *
          * @return int|WP_Error, the id of the new sublocation
          */
-        public function add_sublocation_under_geoname( $parent_location_grid_id, $name, $population ){
+        public function add_sublocation_under_location_grid( $parent_location_grid_id, $name, $population ){
             global $wpdb;
             $parent_grid_id = $wpdb->get_row( $wpdb->prepare( "
                 SELECT * FROM $wpdb->dt_location_grid WHERE grid_id = %d
             ", $parent_location_grid_id ), ARRAY_A );
             if ( empty( $parent_grid_id ) ) {
-                return new WP_Error( 'missing_param', 'Missing or incorrect geoname parent.' );
+                return new WP_Error( 'missing_param', 'Missing or incorrect location_grid parent.' );
             }
 
             $max_id = (int) $wpdb->get_var( "SELECT MAX(grid_id) FROM $wpdb->dt_location_grid" );
@@ -2650,7 +2647,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             }
         }
 
-        public function convert_location_to_geoname( $location_id, $location_grid_id ){
+        public function convert_location_to_location_grid( $location_id, $location_grid_id ){
 
             global $wpdb;
             $wpdb->query( $wpdb->prepare(
@@ -2707,17 +2704,17 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         if ( !empty( $filter["query"]["locations"] ) ){
                             $location_grid = [];
                             foreach ( $filter["query"]["locations"] as $location ){
-                                if ( isset( $migrated[$location]["selected_geoname"] ) ){
-                                    $location_grid[] = $migrated[$location]["selected_geoname"];
+                                if ( isset( $migrated[$location]["selected_location_grid"] ) ){
+                                    $location_grid[] = $migrated[$location]["selected_location_grid"];
                                 }
                             }
                             $filter['query']['location_grid'] = $location_grid;
                             unset( $filter["query"]["locations"] );
                             foreach ( $filter["labels"] as &$label ){
                                 if ( $label["field"] === "locations" ){
-                                    if ( isset( $migrated[$label["id"]]["selected_geoname"] )){
+                                    if ( isset( $migrated[$label["id"]]["selected_location_grid"] )){
                                         $label["field"] = "location_grid";
-                                        $label["id"] = $migrated[$label["id"]]["selected_geoname"];
+                                        $label["id"] = $migrated[$label["id"]]["selected_location_grid"];
                                     }
                                 }
                             }

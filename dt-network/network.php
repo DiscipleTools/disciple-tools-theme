@@ -1065,9 +1065,9 @@ class Disciple_Tools_Snapshot_Report {
         $data = [];
 
         if ( $countries_only ) {
-            $results = Disciple_Tools_Mapping_Queries::get_geoname_totals_for_countries();
+            $results = Disciple_Tools_Mapping_Queries::get_location_grid_totals_for_countries();
         } else {
-            $results = Disciple_Tools_Mapping_Queries::get_geoname_totals();
+            $results = Disciple_Tools_Mapping_Queries::get_location_grid_totals();
         }
 
         if ( ! empty( $results ) ) {
@@ -1094,12 +1094,12 @@ class Disciple_Tools_Snapshot_Report {
 
     public static function get_locations_current_state() {
         $data = [
-            'active_countries'          => 0,
-            'active_countries_location_grid' => [],
+            'active_admin0'          => 0,
+            'active_admin0_grid_ids' => [],
             'active_admin1'             => 0,
-            'active_admin1_location_grid'    => [],
+            'active_admin1_grid_ids'    => [],
             'active_admin2'             => 0,
-            'active_admin2_location_grid'    => [],
+            'active_admin2_grid_ids'    => [],
         ];
 
         $results = Disciple_Tools_Network_Queries::locations_current_state();
@@ -1113,22 +1113,22 @@ class Disciple_Tools_Snapshot_Report {
             $data['active_admin2'] = (int) $results['active_admin2'];
         }
 
-        $active_countries_location_grid = Disciple_Tools_Mapping_Queries::active_countries_location_grid();
-        if ( ! empty( $active_countries_location_grid ) ) {
-            foreach ( $active_countries_location_grid as $grid_id ) {
-                $data['active_countries_location_grid'][] = (int) $grid_id;
+        $active_admin0_grid_ids = Disciple_Tools_Mapping_Queries::active_admin0_grid_ids();
+        if ( ! empty( $active_admin0_grid_ids ) ) {
+            foreach ( $active_admin0_grid_ids as $grid_id ) {
+                $data['active_admin0_grid_ids'][] = (int) $grid_id;
             }
         }
-        $active_admin1_location_grid = Disciple_Tools_Mapping_Queries::active_admin1_location_grid();
-        if ( ! empty( $active_admin1_location_grid ) ) {
-            foreach ( $active_admin1_location_grid as $grid_id ) {
-                $data['active_admin1_location_grid'][] = (int) $grid_id;
+        $active_admin1_grid_ids = Disciple_Tools_Mapping_Queries::active_admin1_grid_ids();
+        if ( ! empty( $active_admin1_grid_ids ) ) {
+            foreach ( $active_admin1_grid_ids as $grid_id ) {
+                $data['active_admin1_grid_ids'][] = (int) $grid_id;
             }
         }
-        $active_admin2_location_grid = Disciple_Tools_Mapping_Queries::active_admin2_location_grid();
-        if ( ! empty( $active_admin2_location_grid ) ) {
-            foreach ( $active_admin2_location_grid as $grid_id ) {
-                $data['active_admin2_location_grid'][] = (int) $grid_id;
+        $active_admin2_grid_ids = Disciple_Tools_Mapping_Queries::active_admin2_grid_ids();
+        if ( ! empty( $active_admin2_grid_ids ) ) {
+            foreach ( $active_admin2_grid_ids as $grid_id ) {
+                $data['active_admin2_grid_ids'][] = (int) $grid_id;
             }
         }
 

@@ -79,7 +79,7 @@ function dt_mm_add_workers_column( $data ) {
          * @note    Don't add 0 values, or you might create unnecessary array and
          *          transfer weight to the mapping javascript file.
          */
-        $results = Disciple_Tools_Mapping_Queries::get_geoname_totals();
+        $results = Disciple_Tools_Mapping_Queries::get_location_grid_totals();
 
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {

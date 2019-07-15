@@ -504,7 +504,7 @@
         </div>
 
         <!-- drill down -->
-        <div id="geoname-encode-contact">
+        <div id="location_grid-encode-contact">
 
         </div>
 

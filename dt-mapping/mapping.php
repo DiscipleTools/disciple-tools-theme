@@ -479,9 +479,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 Disciple_Tools_Mapping_Queries::counter();
                 return true;
             }
-            if ( isset( $params['key'] ) && $params['key'] === 'get_geoname_totals' ) {
-                delete_transient( 'get_geoname_totals' );
-                Disciple_Tools_Mapping_Queries::get_geoname_totals();
+            if ( isset( $params['key'] ) && $params['key'] === 'get_location_grid_totals' ) {
+                delete_transient( 'get_location_grid_totals' );
+                Disciple_Tools_Mapping_Queries::get_location_grid_totals();
                 return true;
             }
 
@@ -586,7 +586,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             foreach ( $list as $index => $item ) {
                                 $selected = $index;
                                 $selected_name = $item;
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $index ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $index ) );
                             }
 
                             $deeper_levels = $this->get_deeper_levels( $child_list );
@@ -615,7 +615,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 $items[] = $index;
                             }
 
-                            $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_grid_id_list( $items ) );
+                            $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id_list( $items ) );
                             $deeper_levels = $this->get_deeper_levels( $child_list );
 
                             $preset_array = [
@@ -649,7 +649,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             foreach ( $list as $index => $item ) {
                                 $selected = $index;
                                 $selected_name = $item;
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $index ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $index ) );
                             }
 
                             $deeper_levels = $this->get_deeper_levels( $child_list );
@@ -678,8 +678,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 $items[] = $index;
                             }
 
-                            $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_grid_id_list( $items ) );
-                            $parent = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $child_list[0]['admin0_grid_id'] ) );
+                            $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id_list( $items ) );
+                            $parent = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $child_list[0]['admin0_grid_id'] ) );
                             $deeper_levels = $this->get_deeper_levels( $child_list );
 
                             $preset_array = [
@@ -708,7 +708,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                     case 'world':
                     default:
-                        $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_countries() );
+                        $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_countries() );
                         $deeper_levels = $this->get_deeper_levels( $child_list );
                         $preset_array = [
                             0 => [
@@ -740,7 +740,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                 $reference = Disciple_Tools_Mapping_Queries::get_drilldown_by_grid_id( $grid_id );
                 if ( empty( $reference ) ) {
-                    return new WP_Error( 'no_geoname', 'Geoname not found.' );
+                    return new WP_Error( 'no_location_grid', 'Geoname not found.' );
                 }
 
                 switch ( $default_level['type'] ) {
@@ -751,7 +751,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         switch ( $reference['level'] ) {
 
                             case '3': // custom
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin3_grid_id'] ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin3_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
@@ -833,7 +833,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             break;
 
                             case '2': // custom
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin2_grid_id'] ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin2_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
@@ -915,7 +915,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 break;
 
                             case '1':
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin1_grid_id'] ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin1_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
@@ -984,7 +984,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case '0':
                             default:
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin0_grid_id'] ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin0_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
@@ -1048,12 +1048,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case '3':
                             case '2':
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['grid_id'] ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
-                                $country = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin0_grid_id'] ) );
-                                $state = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin1_grid_id'] ) );
-                                $county = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin2_grid_id'] ) );
+                                $country = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin0_grid_id'] ) );
+                                $state = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin1_grid_id'] ) );
+                                $county = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin2_grid_id'] ) );
 
                                 if ( $default_select_first_level ) {
 
@@ -1122,11 +1122,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 break;
 
                             case '1':
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['grid_id'] ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
-                                $country = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin0_grid_id'] ) );
-                                $state = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin1_grid_id'] ) );
+                                $country = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin0_grid_id'] ) );
+                                $state = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin1_grid_id'] ) );
 
                                 if ( $default_select_first_level ) {
 
@@ -1190,7 +1190,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case 'country':
                             default:
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['grid_id'] ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
@@ -1215,7 +1215,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                     ];
 
                                 } else {
-                                    $parent = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin0_grid_id'] ) );
+                                    $parent = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin0_grid_id'] ) );
                                     $preset_array = [
                                         0 => [
                                             'parent' => 'top_map_level',
@@ -1254,7 +1254,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 // @todo find out the parent level
                                 // @todo finish
 
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin3_grid_id'] ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin3_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1306,7 +1306,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 break;
 
                             case '3':
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin3_grid_id'] ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin3_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1358,7 +1358,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 break;
 
                             case '2':
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin2_grid_id'] ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin2_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1403,7 +1403,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 break;
 
                             case '1':
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin1_grid_id'] ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin1_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1442,7 +1442,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case '0':
                             default:
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin0_grid_id'] ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin0_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1746,7 +1746,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                  'deeper_levels' => [],
             ];
 
-            $results['self'] = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_earth() );
+            $results['self'] = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_earth() );
             $results['self']['population_formatted'] = number_format( $results['self']['population'] ?? 0 );
 
             $results['children'] = $this->get_countries_map_data();
@@ -1820,7 +1820,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             return $data;
         }
-        public function format_geoname_types( $query ) {
+        public function format_location_grid_types( $query ) {
             if ( ! empty( $query ) || ! is_array( $query ) ) {
                 foreach ( $query as $index => $value ) {
                     if ( isset( $value['grid_id'] ) ) {

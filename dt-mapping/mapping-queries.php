@@ -564,12 +564,12 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
-    public static function get_geoname_totals() : array {
+    public static function get_location_grid_totals() : array {
 
         global $wpdb;
 
-        if ( get_transient( 'get_geoname_totals' ) ) {
-            return get_transient( 'get_geoname_totals' );
+        if ( get_transient( 'get_location_grid_totals' ) ) {
+            return get_transient( 'get_location_grid_totals' );
         }
 
         $results = $wpdb->get_results("
@@ -662,7 +662,7 @@ class Disciple_Tools_Mapping_Queries {
             GROUP BY t4.admin3_grid_id, t4.type;
         ", ARRAY_A );
 
-        set_transient( 'get_geoname_totals', $results, strtotime( 'Tomorrow 1am' ) );
+        set_transient( 'get_location_grid_totals', $results, strtotime( 'Tomorrow 1am' ) );
 
         if ( empty( $results ) ) {
             $results = [];
@@ -671,11 +671,11 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
-    public static function get_geoname_totals_for_countries() {
+    public static function get_location_grid_totals_for_countries() {
         global $wpdb;
 
-        if ( wp_cache_get( 'get_geoname_totals_for_countries' ) ) {
-            return wp_cache_get( 'get_geoname_totals_for_countries' );
+        if ( wp_cache_get( 'get_location_grid_totals_for_countries' ) ) {
+            return wp_cache_get( 'get_location_grid_totals_for_countries' );
         }
 
         $results = $wpdb->get_results("
@@ -706,15 +706,15 @@ class Disciple_Tools_Mapping_Queries {
             $results = [];
         }
 
-        wp_cache_set( 'get_geoname_totals_for_countries', $results );
+        wp_cache_set( 'get_location_grid_totals_for_countries', $results );
 
         return $results;
     }
 
-    public static function active_countries_location_grid() : array {
+    public static function active_admin0_grid_ids() : array {
 
-        if ( wp_cache_get( 'active_countries_location_grid' ) ) {
-            return wp_cache_get( 'active_countries_location_grid' );
+        if ( wp_cache_get( 'active_admin0_grid_ids' ) ) {
+            return wp_cache_get( 'active_admin0_grid_ids' );
         }
 
         global $wpdb;
@@ -731,15 +731,15 @@ class Disciple_Tools_Mapping_Queries {
             $results = [];
         }
 
-        wp_cache_set( 'active_countries_location_grid', $results );
+        wp_cache_set( 'active_admin0_grid_ids', $results );
 
         return $results;
     }
 
-    public static function active_admin1_location_grid() : array {
+    public static function active_admin1_grid_ids() : array {
 
-        if ( wp_cache_get( 'active_admin1_location_grid' ) ) {
-            return wp_cache_get( 'active_admin1_location_grid' );
+        if ( wp_cache_get( 'active_admin1_grid_ids' ) ) {
+            return wp_cache_get( 'active_admin1_grid_ids' );
         }
 
         global $wpdb;
@@ -756,15 +756,15 @@ class Disciple_Tools_Mapping_Queries {
             $results = [];
         }
 
-        wp_cache_set( 'active_admin1_location_grid', $results );
+        wp_cache_set( 'active_admin1_grid_ids', $results );
 
         return $results;
     }
 
-    public static function active_admin2_location_grid() : array {
+    public static function active_admin2_grid_ids() : array {
 
-        if ( wp_cache_get( 'active_admin2_location_grid' ) ) {
-            return wp_cache_get( 'active_admin2_location_grid' );
+        if ( wp_cache_get( 'active_admin2_grid_ids' ) ) {
+            return wp_cache_get( 'active_admin2_grid_ids' );
         }
 
         global $wpdb;
@@ -781,7 +781,7 @@ class Disciple_Tools_Mapping_Queries {
             $results = [];
         }
 
-        wp_cache_set( 'active_admin2_location_grid', $results );
+        wp_cache_set( 'active_admin2_grid_ids', $results );
 
         return $results;
     }

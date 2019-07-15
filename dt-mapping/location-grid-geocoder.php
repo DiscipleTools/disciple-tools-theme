@@ -219,7 +219,7 @@ class Location_Grid_Geocoder {
      */
     public function grid_id_from_nearest_polygon_line( $results, $longitude, $latitude ) {
 
-        // get geoname geojson from test 2
+        // get location_grid geojson from test 2
         $geojson         = $this->geojson;
         $coordinate_list = [];
 
@@ -316,7 +316,7 @@ class Location_Grid_Geocoder {
      */
     public function _this_grid_id( $grid_id, $longitude_x, $latitude_y ) {
 
-        // get geoname geojson
+        // get location_grid geojson
         $raw_geojson = @file_get_contents( $this->geometry_folder . $grid_id . '.geojson' );
         if ( $raw_geojson === false ) {
             $raw_geojson = @file_get_contents( $this->mirror_source . 'low/' . $grid_id . '.geojson' );
