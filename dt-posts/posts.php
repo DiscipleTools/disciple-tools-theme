@@ -1123,7 +1123,14 @@ class Disciple_Tools_Posts
                         return new WP_Error( __FUNCTION__, "missing key on: " . $details_key );
                     }
                     //delete field
+                    $potential_error = delete_post_meta( $post_id, $field["key"] );
+                    if ( is_wp_error( $potential_error ) ){
+                        return $potential_error;
+                    }
                     $potential_error = delete_post_meta( $post_id, $field["key"] . '_details' );
+                    if ( is_wp_error( $potential_error ) ){
+                        return $potential_error;
+                    }
                 } else if ( isset( $field["key"] ) ){
                     //update field
                     $potential_error = self::update_post_contact_method( $post_id, $field["key"], $field );
