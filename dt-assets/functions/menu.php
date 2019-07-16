@@ -9,15 +9,16 @@ register_nav_menus(
 
 // The Top Menu
 function disciple_tools_top_nav_desktop() {
-    if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-        ?><li><a href="<?php echo esc_url( site_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts", "disciple_tools" ); ?></a></li><?php
+
+
+    if ( user_can( get_current_user_id(), 'access_contacts' ) && apply_filters( 'dt_show_default_top_menu', true ) ) {
+        ?>
+        <li id="top-menu-contacts"><a href="<?php echo esc_url( site_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts", "disciple_tools" ); ?></a></li>
+        <li id="top-menu-groups"><a href="<?php echo esc_url( site_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups", "disciple_tools" ); ?></a></li>
+        <li id="top-menu-metrics"><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics", "disciple_tools" ); ?></a></li>
+        <?php
     }
-    if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-        ?><li><a href="<?php echo esc_url( site_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups", "disciple_tools" ); ?></a></li><?php
-    }
-    if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-        ?><li id="metrics-top-bar"><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics", "disciple_tools" ); ?></a></li><?php
-    }
+
     /**
      * Fires after the top menu
      */
@@ -25,12 +26,13 @@ function disciple_tools_top_nav_desktop() {
 }
 
 function disciple_tools_top_nav_mobile() {
-    if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
+    if ( user_can( get_current_user_id(), 'access_contacts' ) && apply_filters( 'dt_show_default_top_menu', true ) ) {
         ?>
         <li><a href="<?php echo esc_url( site_url( '/groups/' ) ); ?>"><i class="fi-torsos-all"></i></a></li>
         <li><a href="<?php echo esc_url( site_url( '/contacts/' ) ); ?>"><i class="fi-address-book"></i></a></li>
         <li><a href="<?php echo esc_url( site_url( '/' ) ); ?>"><i class="fi-graph-pie"></i></a></li>
         <?php
+
         /**
          * Fires after the mobile nav menu
          */
@@ -69,15 +71,13 @@ function disciple_tools_off_canvas_nav() {
         </li>
 
         <?php
-        if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-            ?><li><a href="<?php echo esc_url( site_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li><?php
+        if ( user_can( get_current_user_id(), 'access_contacts' ) ) { ?>
+            <li><a href="<?php echo esc_url( site_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li>
+            <li><a href="<?php echo esc_url( site_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li>
+            <li id="top-menu-metrics"><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li>
+            <?php
         }
-        if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-            ?><li><a href="<?php echo esc_url( site_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li><?php
-        }
-        if ( user_can( get_current_user_id(), 'view_any_contacts' ) || user_can( get_current_user_id(), 'view_project_metrics' ) ) {
-            ?><li id="metrics-top-bar"><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li><?php
-        }
+
         /**
          * Fires at the end of the off canvas menu
          */
