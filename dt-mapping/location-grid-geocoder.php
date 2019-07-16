@@ -12,10 +12,10 @@ class Location_Grid_Geocoder {
     public function __construct() {
         $this->geojson         = [];
         $this->geometry_folder = $this->geometry_folder();
-        if ( function_exists( 'dt_get_saturation_mapping_mirror' ) ) {
-            $this->mirror_source = dt_get_saturation_mapping_mirror();
+        if ( function_exists( 'dt_get_location_grid_mirror' ) ) {
+            $this->mirror_source = dt_get_location_grid_mirror();
         } else {
-            $this->mirror_source = get_option( 'dt_saturation_mapping_mirror' );
+            $this->mirror_source = get_option( 'dt_location_grid_mirror' );
         }
     }
 

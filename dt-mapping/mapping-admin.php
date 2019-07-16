@@ -70,8 +70,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
          */
         public function scripts() {
             ?>
-            <script src='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
-            <link href='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
+            <script src='https://api.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.js'></script>
+            <link href='https://api.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.css' rel='stylesheet' />
 
             <script>
                 let _ = window.lodash
@@ -741,7 +741,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     </td>
                     <td>
                         <?php
-                        $mirror = dt_get_saturation_mapping_mirror();
+                        $mirror = dt_get_location_grid_mirror();
                         echo esc_attr( $mirror['label'] ) ?? '';
                         ?>
                     </td>
@@ -1302,7 +1302,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             'label' => 'Other',
                             'url'   => $url,
                         ];
-                        update_option( 'dt_saturation_mapping_mirror', $array, true );
+                        update_option( 'dt_location_grid_mirror', $array, true );
                     }
                 } elseif ( $selection_key !== 'other' ) {
                     $array = [
@@ -1310,11 +1310,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         'label' => $mirror_list[$selection_key]['label'],
                         'url'   => $mirror_list[$selection_key]['url'],
                     ];
-                    update_option( 'dt_saturation_mapping_mirror', $array, true );
+                    update_option( 'dt_location_grid_mirror', $array, true );
                 }
             }
 
-            $mirror = dt_get_saturation_mapping_mirror();
+            $mirror = dt_get_location_grid_mirror();
 
             set_error_handler( [ $this, "warning_handler" ], E_WARNING );
             $list = file_get_contents( $mirror['url'] . 'low/1.geojson' );
@@ -2082,7 +2082,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                     let unique_source = grid_id+ Date.now()
                                     map.addSource(unique_source, {
                                         type: 'geojson',
-                                        data: '<?php echo dt_get_saturation_mapping_mirror(true) ?>low/' + grid_id + '.geojson'
+                                        data: '<?php echo dt_get_location_grid_mirror(true) ?>low/' + grid_id + '.geojson'
                                     });
                                     map.addLayer({
                                         "id": grid_id + Date.now() + Math.random(),
