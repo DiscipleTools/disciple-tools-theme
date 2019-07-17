@@ -128,6 +128,10 @@ class Disciple_Tools_Mapping_Queries {
     public static function get_by_grid_id_list( $list, $short = false ) {
         global $wpdb;
 
+        if ( empty( $list ) ) {
+            return [];
+        }
+
         $prepared_list = '';
         $i = 0;
         foreach ( $list as $item ) {
