@@ -73,7 +73,7 @@ jQuery(document).ready(function($) {
     const id = $(this).attr('id')
     const val = $(this).val()
 
-    rest_api.update_post('group', groupId, { [id]: val }).then((groupResp)=>{
+    rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
       $( document ).trigger( "number-input-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
   })

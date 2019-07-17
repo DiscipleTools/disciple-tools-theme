@@ -324,6 +324,29 @@ class Disciple_Tools_Groups_Post_Type
             "customizable" => "add_only"
         ];
 
+        $fields['four_fields'] = [
+            "name" => __( 'Four Fields', 'disciple_tools' ),
+            "type" => "multi_select",
+            "default" => [
+                "unbelievers" => [
+                    "label" => __( "Unbelievers", 'disciple_tools' ),
+                ],
+                "believers" => [
+                    "label" => __( "Believers", 'disciple_tools' ),
+                ],
+                "accountable" => [
+                    "label" => __( "Accountable", 'disciple_tools' ),
+                ],
+                "church_commitment" => [
+                    "label" => __( "Church Commitment", 'disciple_tools' ),
+                ],
+                "multiplying" => [
+                    "label" => __( "Multiplying", 'disciple_tools' ),
+                ],
+            ],
+            "customizable" => "add_only"
+        ];
+
         $fields['start_date'] = [
             'name'        => __( 'Start Date', 'disciple_tools' ),
             'description' => '',
