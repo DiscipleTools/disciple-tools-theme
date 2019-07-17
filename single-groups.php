@@ -196,18 +196,18 @@ if ( ! current_user_can( 'access_groups' ) ) {
                         <section id="four-fields" class="xlarge-6 large-12 medium-6 cell grid-item">
                             <div class="bordered-box js-progress-bordered-box half-opacity">
 
-                                <label class="section-header"><?php echo esc_html( $group_fields["four_fields"]["name"] )?>
+                                <label class="section-header"><?php esc_html_e( 'Four Fields', 'disciple_tools' ) ?>
                                     <button class="help-button" data-section="four-fields-help-text">
                                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                     </button>
                                 </label>
 
                                 <div class="grid-x">
-                                    <input type="text" name="unbelievers" style="width:60px; position:absolute; top:120px; left:75px;" />
-                                    <input type="text" name="believers" style="width:60px; position:absolute; top:120px; right:75px;" />
-                                    <input type="text" name="accountable" style="width:60px; position:absolute; bottom:80px; right:75px;" />
-                                    <input type="text" name="church_commitment" style="width:60px; position:absolute; bottom:80px; left:75px;" />
-                                    <input type="text" name="multiplying" style="width:60px; position:absolute; top:220px; left:170px;" />
+                                    <input type="text" name="four_fields_unbelievers" id="four_fields_unbelievers" class="four_fields" style="width:60px; position:absolute; top:120px; left:75px;" />
+                                    <input type="text" name="four_fields_believers" id="four_fields_believers" class="four_fields" style="width:60px; position:absolute; top:120px; right:75px;" />
+                                    <input type="text" name="four_fields_accountable" id="four_fields_accountable" class="four_fields" style="width:60px; position:absolute; bottom:80px; right:75px;" />
+                                    <input type="text" name="four_fields_church_commitment" id="four_fields_church_commitment" class="four_fields" style="width:60px; position:absolute; bottom:80px; left:75px;" />
+                                    <input type="text" name="four_fields_multiplying" id="four_fields_multiplying" class="four_fields" style="width:60px; position:absolute; top:220px; left:170px;" />
                                     <div style="width:100%; height:375px;background-image:url('<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/four-fields.svg', 'disciple_tools' ); ?>');background-repeat:no-repeat;">
                                     </div>
                                 </div>

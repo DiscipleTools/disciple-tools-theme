@@ -837,6 +837,15 @@ jQuery(document).ready(function($) {
   }
   populateMembersList()
 
+  let loadFourFields = ()=>{
+    jQuery('#four_fields_unbelievers').val( group.four_fields_unbelievers )
+    jQuery('#four_fields_believers').val( group.four_fields_believers )
+    jQuery('#four_fields_accountable').val( group.four_fields_accountable )
+    jQuery('#four_fields_church_commitment').val( group.four_fields_church_commitment )
+    jQuery('#four_fields_multiplying').val( group.four_fields_multiplying )
+  }
+  loadFourFields()
+
   $(document).on("click", ".delete-member", function () {
     let id = $(this).data('id')
     $(`.member-row[data-id="${id}"]`).remove()
