@@ -324,6 +324,33 @@ class Disciple_Tools_Groups_Post_Type
             "customizable" => "add_only"
         ];
 
+        /* 4 fields */
+        $fields["four_fields_unbelievers"] = [
+            'name' => __( 'Unbelievers', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => ''
+        ];
+        $fields["four_fields_believers"] = [
+            'name' => __( 'Believers', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => ''
+        ];
+        $fields["four_fields_accountable"] = [
+            'name' => __( 'Accountable', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => ''
+        ];
+        $fields["four_fields_church_commitment"] = [
+            'name' => __( 'Church Commitment', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => ''
+        ];
+        $fields["four_fields_multiplying"] = [
+            'name' => __( 'Multiplying', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => ''
+        ];
+
         $fields['start_date'] = [
             'name'        => __( 'Start Date', 'disciple_tools' ),
             'description' => '',
@@ -418,7 +445,7 @@ class Disciple_Tools_Groups_Post_Type
             'type'        => 'boolean',
             'default'     => false,
         ];
-        $fields['geonames'] = [
+        $fields['location_grid'] = [
             'name'        => __( 'Locations', 'disciple_tools' ),
             'type'        => 'location',
             'default'     => [],

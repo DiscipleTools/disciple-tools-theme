@@ -31,7 +31,7 @@ class Disciple_Tools_Migration_0023 extends Disciple_Tools_Migration
 
         foreach ( $sample_locations as $location ){
             if ( isset( $map[$location["post_name"] ] ) ){
-                DT_Mapping_Module_Admin::instance()->convert_location_to_geoname( $location["ID"], $map[ $location["post_name"] ] );
+                DT_Mapping_Module_Admin::instance()->convert_location_to_location_grid( $location["ID"], $map[ $location["post_name"] ] );
             }
         }
     }

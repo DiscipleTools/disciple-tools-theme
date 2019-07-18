@@ -5,7 +5,7 @@ jQuery(document).ready(function() {
     let mapUrl = ''
     if('#mapping_view' === window.location.hash) {
         if ( window.am4geodata_worldLow === undefined ) {
-          mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'polygon_collection/world.geojson'
+          mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'collection/world.geojson'
           jQuery.getJSON( mapUrl, function( data ) {
             window.am4geodata_worldLow = data
             page_mapping_view()
@@ -19,7 +19,7 @@ jQuery(document).ready(function() {
     }
     if('#mapping_list' === window.location.hash) {
         if ( window.am4geodata_worldLow === undefined ) {
-          mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'polygon_collection/world.geojson'
+          mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'collection/world.geojson'
           jQuery.getJSON( mapUrl, function( data ) {
             window.am4geodata_worldLow = data
             page_mapping_list()
@@ -37,10 +37,10 @@ _ = _ || window.lodash
 let mapFillColor = "rgb(217, 217, 217)"
 
 
-window.DRILLDOWN.map_chart_drilldown = function( geonameid ) {
-    if ( geonameid !== 'top_map_level' ) { // make sure this is not a top level continent or world request
-        DRILLDOWNDATA.settings.current_map = parseInt(geonameid)
-        geoname_map( 'map_chart', parseInt(geonameid) )
+window.DRILLDOWN.map_chart_drilldown = function( grid_id ) {
+    if ( grid_id !== 'top_map_level' ) { // make sure this is not a top level continent or world request
+        DRILLDOWNDATA.settings.current_map = parseInt(grid_id)
+        location_grid_map( 'map_chart', parseInt(grid_id) )
         data_type_list( 'data-type-list' )
     }
     else { // top_level maps
@@ -70,7 +70,7 @@ function page_mapping_view() {
                 <span id="current_level"></span>
             </div>
         </div>
-        <span style="font-size:.8em; margin-left:20px"><a onclick="refresh_data('get_geoname_totals')">${_.escape( translations.refresh_data )}</a></span>
+        <span style="font-size:.8em; margin-left:20px"><a onclick="refresh_data('get_location_grid_totals')">${_.escape( translations.refresh_data )}</a></span>
         <hr style="max-width:100%;">
         
        <!-- Map -->
@@ -153,36 +153,36 @@ function setCommonMapSettings( chart ) {
 
  /* Click navigation */
   template.events.on("hit", function(ev) {
-    // if (DRILLDOWNDATA.data[ev.target.dataItem.dataContext.geonameid]) {
-      return DRILLDOWN.get_drill_down('map_chart_drilldown', ev.target.dataItem.dataContext.geonameid)
+    // if (DRILLDOWNDATA.data[ev.target.dataItem.dataContext.grid_id]) {
+      return DRILLDOWN.get_drill_down('map_chart_drilldown', ev.target.dataItem.dataContext.grid_id)
     // }
   }, this);
 }
 
 function setUpData( features, map_data ){
   jQuery.each( features, function(i, mapFeature ) {
-    let geonameid =  mapFeature.properties.geonameid
-    let locationData =  _.get( map_data, `children[${geonameid}]` ) || _.get(map_data, `children[${mapFeature.id}]`)  || _.get( map_data, `${geonameid}.self` );
+    let grid_id =  mapFeature.properties.grid_id
+    let locationData =  _.get( map_data, `children[${grid_id}]` ) || _.get(map_data, `children[${mapFeature.id}]`)  || _.get( map_data, `${grid_id}.self` );
     if ( locationData ) {
-      mapFeature.properties.geonameid = locationData.geonameid
+      mapFeature.properties.grid_id = locationData.grid_id
       mapFeature.properties.population = locationData.population
       mapFeature.properties.name = locationData.name
 
       /* custom columns */
-      if ( DRILLDOWNDATA.data.custom_column_data[geonameid] ) {
+      if ( DRILLDOWNDATA.data.custom_column_data[grid_id] ) {
         /* Note: Amcharts calculates heatmap off last variable. So this section moves selected
         * heatmap variable to the end of the array */
         let focus = DRILLDOWNDATA.settings.heatmap_focus
         jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
 
           if ( ii !== focus ) {
-            mapFeature.properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[geonameid][ii]
+            mapFeature.properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[grid_id][ii]
             mapFeature.properties.value = mapFeature.properties[vv.key]
           }
         })
         jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
           if ( ii === focus ) {
-            mapFeature.properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[geonameid][ii]
+            mapFeature.properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[grid_id][ii]
             mapFeature.properties.value = mapFeature.properties[vv.key]
             if ( mapFeature.properties.value === 0 ){
               mapFeature.properties.fill = am4core.color(mapFillColor);
@@ -225,12 +225,9 @@ function top_level_map( div ) {
 
           // prepare country/child data
           geoJSON.features = setUpData( geoJSON.features, map_data )
+          console.log(geoJSON)
 
           chart.geodata = geoJSON;
-
-          // initialize polygonseries
-
-          // polygonSeries.exclude = ["AQ","GL"];
 
           setCommonMapSettings( chart )
 
@@ -246,7 +243,7 @@ function top_level_map( div ) {
             chart.deltaLongitude = 720 * slider.start;
           })
 
-
+          // add mini map
           let coordinates = []
           coordinates[0] = {
             "latitude": 0,
@@ -262,10 +259,9 @@ function top_level_map( div ) {
 
             if( Object.keys(top_map_list).length === 1 ) { // if only one country selected
                 jQuery.each(top_map_list, function(i,v) {
-                    geoname_map( div, i )
+                    location_grid_map( div, i )
                 })
-            } else {
-                // multiple countries selected. So load the world and reduce the polygons
+            } else { // multiple countries selected. So load the world and reduce the polygons
 
               let geoJSON = window.am4geodata_worldLow
 
@@ -274,7 +270,7 @@ function top_level_map( div ) {
               new_geojson.features = []
 
               jQuery.each(geoJSON.features, function(i,v) {
-                if ( top_map_list[ v.properties.geonameid ] ) {
+                if ( top_map_list[ v.properties.grid_id ] ) {
                   new_geojson.features.push(v)
                 }
               })
@@ -287,17 +283,17 @@ function top_level_map( div ) {
               // prepare country/child data
               mapData.features = setUpData( mapData.features, DRILLDOWNDATA.data )
               jQuery.each( mapData.features, function(i, v ) {
-                if ( DRILLDOWNDATA.data[v.properties.geonameid] !== undefined ) {
+                if ( DRILLDOWNDATA.data[v.properties.grid_id] !== undefined ) {
                   coordinates[i] = {
-                    "latitude": DRILLDOWNDATA.data[v.properties.geonameid].self.latitude,
-                    "longitude": DRILLDOWNDATA.data[v.properties.geonameid].self.longitude,
-                    "title": DRILLDOWNDATA.data[v.properties.geonameid].self.name
+                    "latitude": DRILLDOWNDATA.data[v.properties.grid_id].self.latitude,
+                    "longitude": DRILLDOWNDATA.data[v.properties.grid_id].self.longitude,
+                    "title": DRILLDOWNDATA.data[v.properties.grid_id].self.name
                   }
                   if ( mapData.features.length > 3 ) {
                     // set title
                     title.empty().html('Multiple Countries')
                   } else {
-                    title.append(DRILLDOWNDATA.data[v.properties.geonameid].self.name)
+                    title.append(DRILLDOWNDATA.data[v.properties.grid_id].self.name)
                     if ( title.html().length !== '' ) {
                       title.append(', ')
                     }
@@ -309,6 +305,7 @@ function top_level_map( div ) {
 
               setCommonMapSettings( chart )
 
+              // add mini map
               mini_map( 'minimap', coordinates )
 
             }
@@ -320,12 +317,12 @@ function top_level_map( div ) {
 
             if( Object.keys(top_map_list).length === 1 ) { // if only one country selected
                 jQuery.each(top_map_list, function(i,v) {
-                    geoname_map( div, i )
+                    location_grid_map( div, i )
                 })
             } else {
                 // multiple countries selected. So load the world and reduce the polygons
 
-                mapUrl = DRILLDOWNDATA.settings.mapping_source_url + `polygon_collection/${_.escape( default_map_settings.parent )}.geojson`
+                mapUrl = DRILLDOWNDATA.settings.mapping_source_url + `collection/${_.escape( default_map_settings.parent )}.geojson`
                 jQuery.getJSON( mapUrl, function( data ) {
 
                     // set title
@@ -337,7 +334,7 @@ function top_level_map( div ) {
                     new_geojson.features = []
 
                     jQuery.each(data.features, function(i,v) {
-                        if ( top_map_list[ v.properties.geonameid ] ) {
+                        if ( top_map_list[ v.properties.grid_id ] ) {
                             new_geojson.features.push(v)
                         }
                     })
@@ -351,12 +348,12 @@ function top_level_map( div ) {
                     // prepare country/child data
                     jQuery.each( mapData.features, function(i, v ) {
 
-                        if ( DRILLDOWNDATA.data[v.properties.geonameid] !== undefined ) {
+                        if ( DRILLDOWNDATA.data[v.properties.grid_id] !== undefined ) {
 
                             coordinates[i] = {
-                                "latitude": DRILLDOWNDATA.data[v.properties.geonameid].self.latitude,
-                                "longitude": DRILLDOWNDATA.data[v.properties.geonameid].self.longitude,
-                                "title": DRILLDOWNDATA.data[v.properties.geonameid].self.name
+                                "latitude": DRILLDOWNDATA.data[v.properties.grid_id].self.latitude,
+                                "longitude": DRILLDOWNDATA.data[v.properties.grid_id].self.longitude,
+                                "title": DRILLDOWNDATA.data[v.properties.grid_id].self.name
                             }
 
                         }
@@ -365,6 +362,7 @@ function top_level_map( div ) {
                     chart.geodata = mapData;
                     setCommonMapSettings(chart)
 
+                  // add mini map
                     mini_map( 'minimap', coordinates )
 
                 }).fail(function (err) {
@@ -377,24 +375,24 @@ function top_level_map( div ) {
     }
 }
 
-function geoname_map( div, geonameid ) {
+function location_grid_map( div, grid_id ) {
     am4core.useTheme(am4themes_animated);
 
     let chart = am4core.create( div, am4maps.MapChart);
     let title = jQuery('#section-title')
-    let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_geonameid_endpoint
+    let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_grid_id_endpoint
 
     chart.projection = new am4maps.projections.Miller(); // Set projection
 
     title.empty()
 
-    if ( DRILLDOWNDATA.data[geonameid] ) {
-        build_map( DRILLDOWNDATA.data[geonameid] )
+    if ( DRILLDOWNDATA.data[grid_id] ) {
+        build_map( DRILLDOWNDATA.data[grid_id] )
     } else {
       jQuery.ajax({
         type: rest.method,
         contentType: "application/json; charset=utf-8",
-        data: JSON.stringify( { 'geonameid': geonameid } ),
+        data: JSON.stringify( { 'grid_id': grid_id } ),
         dataType: "json",
         url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
         beforeSend: function(xhr) {
@@ -402,7 +400,7 @@ function geoname_map( div, geonameid ) {
         },
       })
         .done( function( response ) {
-          DRILLDOWNDATA.data[geonameid] = response
+          DRILLDOWNDATA.data[grid_id] = response
           build_map(response)
 
         }) // end success statement
@@ -415,7 +413,7 @@ function geoname_map( div, geonameid ) {
     function build_map( response ) {
       title.html(response.self.name)
 
-      jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'polygon_collection/' + geonameid+'.geojson', function( data ) { // get geojson data
+      jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'collection/' + grid_id+'.geojson', function( data ) { // get geojson data
 
         // load geojson with additional parameters
         let mapData = data
@@ -441,7 +439,7 @@ function geoname_map( div, geonameid ) {
         .fail(function() {
           // if failed to get multi polygon map, then get boundary map and fill with placemarks
 
-          jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'polygon/' + geonameid+'.geojson', function( data ) {
+          jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'low/' + grid_id+'.geojson', function( data ) {
             // Create map polygon series
 
             let polygon = data
@@ -456,11 +454,11 @@ function geoname_map( div, geonameid ) {
             let imageSeries = chart.series.push(new am4maps.MapImageSeries());
 
             let locations = []
-            jQuery.each( DRILLDOWNDATA.data[geonameid].children, function(i, v) {
+            jQuery.each( DRILLDOWNDATA.data[grid_id].children, function(i, v) {
               /* custom columns */
               let focus = DRILLDOWNDATA.settings.heatmap_focus
               jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                v[vv.key] = _.get( DRILLDOWNDATA.data.custom_column_data, `[${v.geonameid}][${ii}]`, 0 )
+                v[vv.key] = _.get( DRILLDOWNDATA.data.custom_column_data, `[${v.grid_id}][${ii}]`, 0 )
               })
 
               locations.push( v )
@@ -479,7 +477,7 @@ function geoname_map( div, geonameid ) {
             // Click navigation
             circle.events.on("hit", function (ev) {
 
-              return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
+              return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.grid_id )
 
             }, this);
 
@@ -653,16 +651,16 @@ function page_mapping_list() {
     window.DRILLDOWN.get_drill_down('location_list_drilldown')
 }
 
-window.DRILLDOWN.location_list_drilldown = function( geonameid ) {
-    geoname_list( 'location_list', geonameid )
+window.DRILLDOWN.location_list_drilldown = function( grid_id ) {
+    location_grid_list( 'location_list', grid_id )
 }
 
 
-function geoname_list( div, geonameid ) {
+function location_grid_list( div, grid_id ) {
     DRILLDOWN.show_spinner()
 
     // Find data source before build
-    if ( geonameid === 'top_map_level' ) {
+    if ( grid_id === 'top_map_level' ) {
         let map_data = null
         let default_map_settings = DRILLDOWNDATA.settings.default_map_settings
 
@@ -689,15 +687,15 @@ function geoname_list( div, geonameid ) {
             return;
         }
 
-        build_geoname_list( div, map_data )
+        build_location_grid_list( div, map_data )
     }
-    else if ( DRILLDOWNDATA.data[geonameid] === undefined ) {
-        let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_geonameid_endpoint
+    else if ( DRILLDOWNDATA.data[grid_id] === undefined ) {
+        let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_grid_id_endpoint
 
         jQuery.ajax({
             type: rest.method,
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify( { 'geonameid': geonameid } ),
+            data: JSON.stringify( { 'grid_id': grid_id } ),
             dataType: "json",
             url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
             beforeSend: function(xhr) {
@@ -705,8 +703,8 @@ function geoname_list( div, geonameid ) {
             },
         })
             .done( function( response ) {
-                DRILLDOWNDATA.data[geonameid] = response
-                build_geoname_list( div, DRILLDOWNDATA.data[geonameid] )
+                DRILLDOWNDATA.data[grid_id] = response
+                build_location_grid_list( div, DRILLDOWNDATA.data[grid_id] )
             })
             .fail(function (err) {
                 console.log("error")
@@ -715,11 +713,11 @@ function geoname_list( div, geonameid ) {
             })
 
     } else {
-        build_geoname_list( div, DRILLDOWNDATA.data[geonameid] )
+        build_location_grid_list( div, DRILLDOWNDATA.data[grid_id] )
     }
 
     // build list
-    function build_geoname_list( div, map_data ) {
+    function build_location_grid_list( div, map_data ) {
 
         // Place Title
         let title = jQuery('#section-title')
@@ -730,7 +728,7 @@ function geoname_list( div, geonameid ) {
         let population_division = pd_settings.base
         if ( ! DRILLDOWN.isEmpty( pd_settings.custom ) ) {
             jQuery.each( pd_settings.custom, function(i,v) {
-                if ( map_data.self.geonameid === i ) {
+                if ( map_data.self.grid_id === i ) {
                     population_division = v
                 }
             })
@@ -769,12 +767,12 @@ function geoname_list( div, geonameid ) {
             let population = v.population_formatted
 
             html += `<tr>
-                        <td><strong><a onclick="DRILLDOWN.get_drill_down('location_list_drilldown', ${_.escape( v.geonameid )} )">${_.escape( v.name )}</a></strong></td>
+                        <td><strong><a onclick="DRILLDOWN.get_drill_down('location_list_drilldown', ${_.escape( v.grid_id )} )">${_.escape( v.name )}</a></strong></td>
                         <td>${_.escape( population )}</td>`
 
             /* Additional Columns */
-            if ( DRILLDOWNDATA.data.custom_column_data[v.geonameid] ) {
-                jQuery.each( DRILLDOWNDATA.data.custom_column_data[v.geonameid], function(ii,vv) {
+            if ( DRILLDOWNDATA.data.custom_column_data[v.grid_id] ) {
+                jQuery.each( DRILLDOWNDATA.data.custom_column_data[v.grid_id], function(ii,vv) {
                     html += `<td><strong>${_.escape( vv )}</strong></td>`
                 })
             } else {

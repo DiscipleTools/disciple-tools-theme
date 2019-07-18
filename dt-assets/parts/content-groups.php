@@ -42,7 +42,7 @@ declare(strict_types=1);
                 <th data-id="group_type"><?php esc_html_e( "Type", "disciple_tools" ); ?></th>
                 <th data-id="members"><?php esc_html_e( "Members", "disciple_tools" ); ?></th>
                 <th data-id="leaders"><?php esc_html_e( "Leader", "disciple_tools" ); ?></th>
-                <th data-id="geonames"><?php esc_html_e( "Location", "disciple_tools" ); ?></th>
+                <th data-id="location_grid"><?php esc_html_e( "Location", "disciple_tools" ); ?></th>
             </tr>
         </thead>
         <tbody>

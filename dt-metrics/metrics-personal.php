@@ -52,6 +52,7 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
                 'data' => $this->overview(),
+
             ]
         );
     }
@@ -84,6 +85,7 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
                 'label_church' => __( 'Church', 'disciple_tools' ),
                 'label_generation' => __( 'Generation', 'disciple_tools' ),
             ],
+            'preferences'       => $this->preferences(),
             'hero_stats'        => self::chart_my_hero_stats(),
             'contacts_progress' => self::chart_contacts_progress(),
             'group_types'       => self::chart_group_types(),
@@ -92,5 +94,20 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
         ];
 
         return apply_filters( 'dt_my_metrics', $data );
+    }
+
+    public function preferences() {
+        $data = [];
+
+        /* Add group preferences*/
+        $group_preferences = dt_get_option( 'group_preferences' );
+        $data['groups'] = [
+            'church_metrics' => $group_preferences['church_metrics'] ?? false,
+            'four_fields' => $group_preferences['four_fields'] ?? false,
+        ];
+
+        /* Add other preferences. Please, categorize by section, i.e. contacts, groups, etc */
+
+        return $data;
     }
 }

@@ -13,7 +13,7 @@ class PostsTest extends WP_UnitTestCase {
         'overall_status' => 'active',
         'milestones' => [ "values" => [ [ "value" => 'milestone_has_bible' ], [ "value" => "milestone_baptizing" ] ] ],
         'baptism_date' => "2018-12-31",
-        "geonames" => [ "values" => [ [ "value" => '3017382' ] ] ]
+        "location_grid" => [ "values" => [ [ "value" => '100089589' ] ] ]
     ];
 
 
@@ -22,7 +22,7 @@ class PostsTest extends WP_UnitTestCase {
         $current_user->set_role( 'dispatcher' );
         $contact1 = DT_Posts::create_post( 'contacts', $this->sample_contact );
         $this->assertSame( 'Bob', $contact1['title'] );
-        $this->assertSame( 'France', $contact1['geonames'][0]["label"] );
+        $this->assertSame( 'France', $contact1['location_grid'][0]["label"] );
         $this->assertSame( '2018-12-31', $contact1["baptism_date"]["timestamp"] );
 
     }
@@ -117,13 +117,13 @@ class PostsTest extends WP_UnitTestCase {
             "title" => "bob",
             'milestones' => [ "values" => [ [ "value" => 'milestone_has_bible' ], [ "value" => "milestone_baptizing" ] ] ],
             'groups' => [ "values" => [ [ "value" => $group1["ID"] ], [ "value" => $group2["ID"] ] ] ],
-            'geonames' => [ "values" => [ [ "value" => 3017382 ], [ "value" => 2921044 ] ] ],
+            'location_grid' => [ "values" => [ [ "value" => 100089589 ], [ "value" => 100056133 ] ] ],
             'contact_phone' => [ "values" => [ [ "value" => '123', "verified" => true ], [ "value" => "321" ] ] ]//@phpcs:ignore
         ] );
         $this->assertNotWPError( $contact1 );
         $this->assertSame( sizeof( $contact1["milestones"] ), 2 );
         $this->assertSame( sizeof( $contact1["groups"] ), 2 );
-        $this->assertSame( sizeof( $contact1["geonames"] ), 2 );
+        $this->assertSame( sizeof( $contact1["location_grid"] ), 2 );
         $this->assertSame( sizeof( $contact1["contact_phone"] ), 2 );
 
         //force values with update
@@ -131,13 +131,13 @@ class PostsTest extends WP_UnitTestCase {
         $contact1 = DT_Posts::update_post( 'contacts', $contact1["ID"], [
             'milestones' => [ "values" => [ [ "value" => 'milestone_has_bible' ], [ "value" => "milestone_sharing" ] ], "force_values" => true ], //@phpcs:ignore
             'groups' => [ "values" => [ [ "value" => $group1["ID"] ], [ "value" => $group3["ID"] ] ], "force_values" => true ], //@phpcs:ignore
-            'geonames' => [ "values" => [ [ "value" => 3017382 ] ], "force_values" => true ], //@phpcs:ignore
+            'location_grid' => [ "values" => [ [ "value" => 100089589 ] ], "force_values" => true ], //@phpcs:ignore
             'contact_phone' => [ "values" => [ [ "key" => $phone_key, "value" => '456' ] ], "force_values" => true ], //@phpcs:ignore
         ] );
         $this->assertNotWPError( $contact1 );
         $this->assertSame( sizeof( $contact1["milestones"] ), 2 );
         $this->assertSame( sizeof( $contact1["groups"] ), 2 );
-        $this->assertSame( sizeof( $contact1["geonames"] ), 1 );
+        $this->assertSame( sizeof( $contact1["location_grid"] ), 1 );
         $this->assertSame( sizeof( $contact1["contact_phone"] ), 1 );
         $this->assertSame( $phone_key, $contact1['contact_phone'][0]["key"] );
         $this->assertSame( true, $contact1['contact_phone'][0]["verified"] ?? false );
@@ -146,13 +146,13 @@ class PostsTest extends WP_UnitTestCase {
         $contact1 = DT_Posts::update_post( 'contacts', $contact1["ID"], [
             'milestones' => [ "values" => [], "force_values" => true ], //@phpcs:ignore
             'groups' => [ "values" => [], "force_values" => true ], //@phpcs:ignore
-            'geonames' => [ "values" => [], "force_values" => true ], //@phpcs:ignore
+            'location_grid' => [ "values" => [], "force_values" => true ], //@phpcs:ignore
             'contact_phone' => [ "values" => [], "force_values" => true ], //@phpcs:ignore
         ] );
         $this->assertNotWPError( $contact1 );
         $this->assertSame( sizeof( $contact1["milestones"] ?? [] ), 0 );
         $this->assertSame( sizeof( $contact1["groups"] ?? [] ), 0 );
-        $this->assertSame( sizeof( $contact1["geonames"] ?? [] ), 0 );
+        $this->assertSame( sizeof( $contact1["location_grid"] ?? [] ), 0 );
         $this->assertSame( sizeof( $contact1["contact_phone"] ?? [] ), 0 );
     }
 

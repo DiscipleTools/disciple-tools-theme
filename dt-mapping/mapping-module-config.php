@@ -46,12 +46,12 @@ class DT_Mapping_Module_Config
         add_filter( 'dt_mapping_module_settings', [ $this, 'custom_settings_filter' ] );
 
         /**
-         * Use this filter to add data to sub levels by geoname
-         * dt_mapping_module_map_level_by_geoname
+         * Use this filter to add data to sub levels by location_grid
+         * dt_mapping_module_map_level_by_grid_id
          *
          * @see     mapping.php:389
          */
-        add_filter( 'dt_mapping_module_map_level_by_geoname', [ $this, 'map_level_by_geoname_filter' ], 10, 1 );
+        add_filter( 'dt_mapping_module_map_level_by_grid_id', [ $this, 'map_level_by_grid_id_filter' ], 10, 1 );
 
         /**
          * dt_mapping_module_url_base
@@ -125,7 +125,7 @@ class DT_Mapping_Module_Config
      *
      * @return mixed
      */
-    public function map_level_by_geoname_filter( $data ) {
+    public function map_level_by_grid_id_filter( $data ) {
         /**
          * Add filter here
          */

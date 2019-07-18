@@ -18,7 +18,7 @@ class Cleanup extends WP_UnitTestCase {
     public static function tearDownAfterClass(){
         global $wpdb;
         $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_activity_log" );
-        $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_geonames" );
+        $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_location_grid" );
         $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_notifications" );
         $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_reports" );
         $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_reportmeta" );
