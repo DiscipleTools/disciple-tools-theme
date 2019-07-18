@@ -22,6 +22,7 @@ class Location_Grid_Geocoder {
     /**
      * @param      $longitude
      * @param      $latitude
+     * @param       $country_code
      * @param null $level
      *
      * @return array|bool|null
@@ -490,7 +491,7 @@ class Location_Grid_Geocoder {
         global $wpdb;
 
         if ( is_null( $country_code ) ) {
-            dt_write_log('no country code');
+            dt_write_log( 'no country code' );
             $query = $wpdb->get_results( $wpdb->prepare( "
                 SELECT g.*, a0.name as admin0_name, a1.name as admin1_name, a2.name as admin2_name, a3.name as admin3_name, a4.name as admin4_name, a5.name as admin5_name
                 FROM $wpdb->dt_location_grid as g
@@ -532,7 +533,7 @@ class Location_Grid_Geocoder {
 
             // get level
             $country_levels = $this->get_country_levels();
-            $country_code = strtoupper($country_code);
+            $country_code = strtoupper( $country_code );
             $level = $country_levels[$country_code]['level'] ?? 0;
 
             $query = $wpdb->get_results( $wpdb->prepare( "
@@ -579,7 +580,7 @@ class Location_Grid_Geocoder {
                 GROUP BY g.admin0_code, g.country_code;
             ", ARRAY_A );
             if ( empty( $query ) ) {
-                error_log('No location records found. You must install location_grid database.' );
+                error_log( 'No location records found. You must install location_grid database.' );
                 return [];
             }
             $country_levels = [];
@@ -588,7 +589,7 @@ class Location_Grid_Geocoder {
                     $country_levels[$country['country_code']] = $country;
                 }
             }
-            update_option('dt_location_grid_country_levels', $country_levels, false );
+            update_option( 'dt_location_grid_country_levels', $country_levels, false );
         }
 
         return $country_levels;

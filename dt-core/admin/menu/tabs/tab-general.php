@@ -80,6 +80,13 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* Site Notifications */
 
+            /* Update Required */
+            $this->box( 'top', 'Group Tile Preferences' );
+            $this->process_group_preferences();
+            $this->update_group_preferences();
+            $this->box( 'bottom' );
+            /* Site Notifications */
+
             $this->template( 'right_column' );
 
             $this->template( 'end' );
@@ -412,109 +419,52 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         <?php
     }
 
+    /** Group Preferences */
+    public function process_group_preferences(){
 
+        if ( isset( $_POST['group_preferences_nonce'] ) &&
+             wp_verify_nonce( sanitize_key( wp_unslash( $_POST['group_preferences_nonce'] ) ), 'group_preferences' . get_current_user_id() ) ) {
 
-
-
-
-
-
-    // @todo evaluate below and possibly remove
-
-    /**
-     * Print extension module box for options page
-     */
-    public function extension_modules() {
-
-        $site_options = dt_get_option( 'dt_site_options' );
-        $extension_modules = $site_options['extension_modules'];
-
-        echo '<form method="post" name="extension_modules_form">';
-        echo '<button type="submit" class="button-like-link" name="reset_extension_modules" value="1">reset</button>';
-        echo '<p>These are optional modules available in the system.</p>';
-        echo '<input type="hidden" name="extension_modules_nonce" id="extension_modules_nonce" value="' . esc_attr( wp_create_nonce( 'extension_modules' ) ) . '" />';
-
-        echo '<table class="widefat">';
-
-        echo '<tr><td>Add People Groups Module <span style="color:darkred;float:right;">(planned for future)</span></td><td><input name="add_people_groups" type="checkbox" ' . ( $extension_modules['add_people_groups'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Add Asset Mapping <span style="color:darkred;float:right;">(planned for future)</span></td><td><input name="add_assetmapping" type="checkbox" ' . ( $extension_modules['add_assetmapping'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Add Prayer <span style="color:darkred;float:right;">(planned for future)</span></td><td><input name="add_prayer" type="checkbox" ' . ( $extension_modules['add_prayer'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Add Workers Section <span style="color:darkred;float:right;">(planned for future)</span> </td><td><input name="add_worker" type="checkbox" ' . ( $extension_modules['add_worker'] ? "checked" : "" ) . ' /></td></tr>';
-
-        echo '</table><br><span style="float:right;"><button type="submit" class="button float-right">Save</button> </span></form>';
-    }
-
-    /**
-     * Print reports selection box @todo remove?
-     */
-    public function reports() {
-
-        $site_options = dt_get_option( 'dt_site_options' );
-        $daily_reports = $site_options['daily_reports'];
-
-        echo '<form method="post" name="daily_reports_form">';
-        echo '<button type="submit" class="button-like-link" name="reset_reports" value="1">reset</button>';
-        echo '<p>These are regular services that run to check and build reports on integrations and system status.</p>';
-        echo '<input type="hidden" name="daily_reports_nonce" id="daily_reports_nonce" value="' . esc_attr( wp_create_nonce( 'daily_reports' ) ) . '" />';
-
-        echo '<table class="widefat">';
-
-        echo '<tr><td>Build Report for Contacts</td><td><input name="build_report_for_contacts" type="checkbox" ' . ( $daily_reports['build_report_for_contacts'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Groups</td><td><input name="build_report_for_groups" type="checkbox" ' . ( $daily_reports['build_report_for_groups'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Facebook</td><td><input name="build_report_for_facebook" type="checkbox" ' . ( $daily_reports['build_report_for_facebook'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Twitter</td><td><input name="build_report_for_twitter" type="checkbox" ' . ( $daily_reports['build_report_for_twitter'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Analytics</td><td><input name="build_report_for_analytics" type="checkbox" ' . ( $daily_reports['build_report_for_analytics'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Adwords</td><td><input name="build_report_for_adwords" type="checkbox" ' . ( $daily_reports['build_report_for_adwords'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Mailchimp</td><td><input name="build_report_for_mailchimp" type="checkbox" ' . ( $daily_reports['build_report_for_mailchimp'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Youtube</td><td><input name="build_report_for_youtube" type="checkbox" ' . ( $daily_reports['build_report_for_youtube'] ? "checked" : "" ) . ' /></td></tr>';
-
-        echo '</table><br><span style="float:right;"><button type="submit" class="button float-right">Save</button></span>  </form>';
-    }
-
-    /**
-     * Process reports selections from reports box @todo remove?
-     */
-    public function process_reports() {
-
-        if ( isset( $_POST['daily_reports_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['daily_reports_nonce'] ) ), 'daily_reports' ) ) {
-
-            $site_options = dt_get_option( 'dt_site_options' );
-
-            if ( isset( $_POST['reset_reports'] ) ) {
-                unset( $site_options['daily_reports'] );
-                $site_option_defaults = dt_get_site_options_defaults();
-                $site_options['daily_reports'] = $site_option_defaults['daily_reports'];
+            $site_options = dt_get_option( "dt_site_options" );
+            if ( isset( $_POST['church_metrics'] ) && ! empty( $_POST['church_metrics'] ) ) {
+                $site_options["group_preferences"]["church_metrics"] = true;
+            } else {
+                $site_options["group_preferences"]["church_metrics"] = false;
             }
-
-            foreach ( $site_options['daily_reports'] as $key => $value ) {
-                $site_options['daily_reports'][ $key ] = isset( $_POST[ $key ] );
+            if ( isset( $_POST['four_fields'] ) && ! empty( $_POST['four_fields'] ) ) {
+                $site_options["group_preferences"]["four_fields"] = true;
+            } else {
+                $site_options["group_preferences"]["four_fields"] = false;
             }
 
             update_option( 'dt_site_options', $site_options, true );
         }
+
     }
 
-    /**
-     * Process extension module
-     */
-    public function process_extension_modules() {
-        if ( isset( $_POST['extension_modules_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['extension_modules_nonce'] ) ), 'extension_modules' ) ) {
-
-            $site_options = dt_get_option( 'dt_site_options' );
-
-            if ( isset( $_POST['reset_extension_modules'] ) ) {
-                unset( $site_options['extension_modules'] );
-                $site_option_defaults = dt_get_site_options_defaults();
-                $site_options['extension_modules'] = $site_option_defaults['extension_modules'];
-            }
-
-            foreach ( $site_options['extension_modules'] as $key => $value ) {
-                $site_options['extension_modules'][ $key ] = isset( $_POST[ $key ] );
-            }
-
-            update_option( 'dt_site_options', $site_options, true );
-        }
+    public function update_group_preferences(){
+        $group_preferences = dt_get_option( 'group_preferences' );
+        ?>
+        <form method="post" >
+            <table class="widefat">
+                <tr>
+                    <td>
+                        <input type="checkbox" name="church_metrics" <?php echo empty( $group_preferences['church_metrics'] ) ? '' : 'checked' ?> /> Church Metrics
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="four_fields" <?php echo empty( $group_preferences['four_fields'] ) ? '' : 'checked' ?> /> Four Fields
+                    </td>
+                </tr>
+                <?php wp_nonce_field( 'group_preferences' . get_current_user_id(), 'group_preferences_nonce' )?>
+            </table>
+            <br>
+            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
+        </form>
+        <?php
     }
+
 }
 
 

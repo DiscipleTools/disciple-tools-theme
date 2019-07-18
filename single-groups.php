@@ -16,6 +16,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
     $following = DT_Posts::get_users_following_post( "groups", get_the_ID() );
     $group = Disciple_Tools_Groups::get_group( get_the_ID(), true, true );
     $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+    $group_preferences = dt_get_option( 'group_preferences' );
     $current_user_id = get_current_user_id();
     get_header();?>
 
@@ -163,56 +164,55 @@ if ( ! current_user_can( 'access_groups' ) ) {
                         </section>
 
                         <!-- Health Metrics-->
-                        <section id="health-metrics" class="xlarge-6 large-12 medium-6 cell grid-item">
-                            <div class="bordered-box js-progress-bordered-box half-opacity">
+                        <?php if ( ! empty( $group_preferences['church_metrics'] ) ) : ?>
+                            <section id="health-metrics" class="xlarge-6 large-12 medium-6 cell grid-item">
+                                <div class="bordered-box js-progress-bordered-box half-opacity">
 
-                                <label class="section-header"><?php echo esc_html( $group_fields["health_metrics"]["name"] )?>
-                                    <button class="help-button" data-section="health-metrics-help-text">
-                                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                    </button>
-                                </label>
+                                    <label class="section-header"><?php echo esc_html( $group_fields["health_metrics"]["name"] )?>
+                                        <button class="help-button" data-section="health-metrics-help-text">
+                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                        </button>
+                                    </label>
 
-                                <div class="grid-x">
-                                    <div style="margin-right:auto; margin-left:auto;min-height:302px">
-                                        <object id="church-svg-wrapper" type="image/svg+xml" data="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/church-wheel.svg', 'disciple_tools' ); ?>"></object>
-                                    </div>
-                                </div>
-                                <div style="display:flex;flex-wrap:wrap;margin-top:10px">
-                                    <?php foreach ( $group_fields["health_metrics"]["default"] as $key => $option ) : ?>
-                                        <div class="group-progress-button-wrapper">
-                                            <button  class="group-progress-button" id="<?php echo esc_html( $key ) ?>">
-                                                <img src="<?php echo esc_html( $option["image"] ?? "" ) ?>">
-                                            </button>
-                                            <p><?php echo esc_html( $option["label"] ) ?> </p>
+                                    <div class="grid-x">
+                                        <div style="margin-right:auto; margin-left:auto;min-height:302px">
+                                            <object id="church-svg-wrapper" type="image/svg+xml" data="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/church-wheel.svg', 'disciple_tools' ); ?>"></object>
                                         </div>
-                                    <?php endforeach; ?>
+                                    </div>
+                                    <div style="display:flex;flex-wrap:wrap;margin-top:10px">
+                                        <?php foreach ( $group_fields["health_metrics"]["default"] as $key => $option ) : ?>
+                                            <div class="group-progress-button-wrapper">
+                                                <button  class="group-progress-button" id="<?php echo esc_html( $key ) ?>">
+                                                    <img src="<?php echo esc_html( $option["image"] ?? "" ) ?>">
+                                                </button>
+                                                <p><?php echo esc_html( $option["label"] ) ?> </p>
+                                            </div>
+                                        <?php endforeach; ?>
+
+                                    </div>
 
                                 </div>
+                            </section>
+                        <?php endif; ?>
 
-                            </div>
-                        </section>
 
                         <!-- Four Fields -->
-                        <section id="four-fields" class="xlarge-6 large-12 medium-6 cell grid-item">
-                            <div class="bordered-box js-progress-bordered-box half-opacity">
+                        <?php if ( ! empty( $group_preferences['four_fields'] ) ) : ?>
+                            <section id="four-fields" class="xlarge-6 large-12 medium-6 cell grid-item">
+                                <div class="bordered-box js-progress-bordered-box">
 
-                                <label class="section-header"><?php esc_html_e( 'Four Fields', 'disciple_tools' ) ?>
-                                    <button class="help-button" data-section="four-fields-help-text">
-                                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                    </button>
-                                </label>
+                                    <label class="section-header"><?php esc_html_e( 'Four Fields', 'disciple_tools' ) ?>
+                                        <button class="help-button" data-section="four-fields-help-text">
+                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                        </button>
+                                    </label>
 
-                                <div class="grid-x">
-                                    <input type="text" name="four_fields_unbelievers" id="four_fields_unbelievers" class="four_fields" style="width:60px; position:absolute; top:120px; left:75px;" />
-                                    <input type="text" name="four_fields_believers" id="four_fields_believers" class="four_fields" style="width:60px; position:absolute; top:120px; right:75px;" />
-                                    <input type="text" name="four_fields_accountable" id="four_fields_accountable" class="four_fields" style="width:60px; position:absolute; bottom:80px; right:75px;" />
-                                    <input type="text" name="four_fields_church_commitment" id="four_fields_church_commitment" class="four_fields" style="width:60px; position:absolute; bottom:80px; left:75px;" />
-                                    <input type="text" name="four_fields_multiplying" id="four_fields_multiplying" class="four_fields" style="width:60px; position:absolute; top:220px; left:170px;" />
-                                    <div style="width:100%; height:375px;background-image:url('<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/four-fields.svg', 'disciple_tools' ); ?>');background-repeat:no-repeat;">
+                                    <div class="grid-x" id="four-fields-inputs">
+                                        <div style="width:100%; height:375px;background-image:url('<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/four-fields.svg', 'disciple_tools' ); ?>');background-repeat:no-repeat;"></div>
                                     </div>
                                 </div>
-                            </div>
-                        </section>
+                            </section>
+                        <?php endif; ?>
 
 
                         <?php

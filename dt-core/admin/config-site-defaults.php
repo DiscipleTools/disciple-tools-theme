@@ -217,6 +217,10 @@ function dt_get_option( string $name ) {
         case 'group_type':
             $site_options = dt_get_option( "dt_site_custom_lists" );
             return $site_options["group_type"];
+
+        case 'group_preferences':
+            $site_options = dt_get_option( "dt_site_options" );
+            return $site_options["group_preferences"];
         default:
             return false;
             break;
@@ -271,7 +275,7 @@ function dt_update_option( $name, $value, $autoload = false ) {
 function dt_get_site_options_defaults() {
     $fields = [];
 
-    $fields['version'] = '7';
+    $fields['version'] = '8';
 
     $fields['user_notifications'] = [
         'new_web'          => true,
@@ -398,6 +402,10 @@ function dt_get_site_options_defaults() {
             ]
         ]
     ];
+    $fields["group_preferences"] = [
+        "church_metrics" => true,
+        "four_fields" => true,
+    ];
 
     return $fields;
 }
@@ -416,7 +424,7 @@ function dt_get_site_options_defaults() {
 function dt_get_site_custom_lists( string $list_title = null ) {
     $fields = [];
 
-    $fields['version'] = 9;
+    $fields['version'] = 10;
 
     // the prefix dt_user_ assists db meta queries on the user
     $fields['user_fields'] = [
@@ -555,6 +563,10 @@ function dt_get_site_custom_lists( string $list_title = null ) {
         "home"  => [ "label" => __( 'Home', 'disciple_tools' ) ],
         "work"  => [ "label" => __( 'Work', 'disciple_tools' ) ],
         "other" => [ "label" => __( 'Other', 'disciple_tools' ) ],
+    ];
+    $fields["group_preferences"] = [
+        "church_metrics" => true,
+        "four_fields" => true,
     ];
 
 
@@ -755,10 +767,6 @@ function dt_security_headers_insert() {
 //    header( "Content-Security-Policy: default-src 'self' https:; img-src 'self' https: data:; script-src https: 'self' 'unsafe-inline' 'unsafe-eval'; style-src  https: 'self' 'unsafe-inline'" );
 }
 
-//function dt_disable_file_upload( $file ) {
-//    $file['error'] = 'Uploading has been disabled';
-//    return $file;
-//}
 
 
 function dt_cron_schedules( $schedules ) {

@@ -100,7 +100,7 @@ jQuery(document).ready(function($) {
     $('#update-needed').prop("checked", updateNeeded)
   }
   /**
-   * Geonames
+   * Location Grid
    */
   // let loadGeonameTypeahead = ()=>{
   //   if (!window.Typeahead['.js-typeahead-location_grid']){
@@ -750,33 +750,33 @@ jQuery(document).ready(function($) {
       statusSelect.css("background-color", "#4CAF50")
     }
   }
-  /**
-   * Church fields
-   */
+
+  /* Church Metrics */
   let health_keys = Object.keys(wpApiGroupsSettings.groups_custom_fields_settings.health_metrics.default)
-
   function fillOutChurchHealthMetrics() {
-    let svgItem = document.getElementById("church-svg-wrapper").contentDocument
+    if ( $("#health-metrics").length ) {
+      let svgItem = document.getElementById("church-svg-wrapper").contentDocument
 
-    let churchWheel = $(svgItem).find('svg')
-    health_keys.forEach(m=>{
-      if (group[`health_metrics`] && group.health_metrics.includes(m) ){
-        churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", "1")
-        $(`#${m}`).css("opacity", "1")
+      let churchWheel = $(svgItem).find('svg')
+      health_keys.forEach(m=>{
+        if (group[`health_metrics`] && group.health_metrics.includes(m) ){
+          churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", "1")
+          $(`#${m}`).css("opacity", "1")
+        } else {
+          churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", ".1")
+          $(`#${m}`).css("opacity", ".4")
+        }
+      })
+      if ( !(group.health_metrics ||[]).includes("church_commitment") ){
+        churchWheel.find('#group').css("opacity", "1")
+        $(`#church_commitment`).css("opacity", ".4")
       } else {
-        churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", ".1")
-        $(`#${m}`).css("opacity", ".4")
+        churchWheel.find('#group').css("opacity", ".1")
+        $(`#church_commitment`).css("opacity", "1")
       }
-    })
-    if ( !(group.health_metrics ||[]).includes("church_commitment") ){
-      churchWheel.find('#group').css("opacity", "1")
-      $(`#church_commitment`).css("opacity", ".4")
-    } else {
-      churchWheel.find('#group').css("opacity", ".1")
-      $(`#church_commitment`).css("opacity", "1")
-    }
 
-    $(".js-progress-bordered-box").removeClass("half-opacity")
+      $(".js-progress-bordered-box").removeClass("half-opacity")
+    }
   }
 
   $('#church-svg-wrapper').on('load', function() {
@@ -800,8 +800,9 @@ jQuery(document).ready(function($) {
         console.log(err)
     })
   })
+  /* end Church fields*/
 
-
+  /* Member List*/
   let memberList = $('.member-list')
   let memberCountInput = $('#member_count')
   let populateMembersList = ()=>{
@@ -836,15 +837,33 @@ jQuery(document).ready(function($) {
     memberCountInput.val( group.member_count )
   }
   populateMembersList()
+  /* end Member List */
 
+  /* Four Fields */
   let loadFourFields = ()=>{
-    jQuery('#four_fields_unbelievers').val( group.four_fields_unbelievers )
-    jQuery('#four_fields_believers').val( group.four_fields_believers )
-    jQuery('#four_fields_accountable').val( group.four_fields_accountable )
-    jQuery('#four_fields_church_commitment').val( group.four_fields_church_commitment )
-    jQuery('#four_fields_multiplying').val( group.four_fields_multiplying )
+    $(document).ready(function(){
+      if ( jQuery('#four-fields').length ) {
+        jQuery('#four_fields_unbelievers').val( group.four_fields_unbelievers )
+        jQuery('#four_fields_believers').val( group.four_fields_believers )
+        jQuery('#four_fields_accountable').val( group.four_fields_accountable )
+        jQuery('#four_fields_church_commitment').val( group.four_fields_church_commitment )
+        jQuery('#four_fields_multiplying').val( group.four_fields_multiplying )
+      }
+     })
   }
-  loadFourFields()
+
+  $(document).ready( function() {
+    let ffInputs = `
+    <input type="text" name="four_fields_unbelievers" id="four_fields_unbelievers" class="four_fields" style="width:60px; position:absolute; top:120px; left:75px;" />
+    <input type="text" name="four_fields_believers" id="four_fields_believers" class="four_fields" style="width:60px; position:absolute; top:120px; right:75px;" />
+    <input type="text" name="four_fields_accountable" id="four_fields_accountable" class="four_fields" style="width:60px; position:absolute; bottom:80px; right:75px;" />
+    <input type="text" name="four_fields_church_commitment" id="four_fields_church_commitment" class="four_fields" style="width:60px; position:absolute; bottom:80px; left:75px;" />
+    <input type="text" name="four_fields_multiplying" id="four_fields_multiplying" class="four_fields" style="width:60px; position:absolute; top:220px; left:170px;" />
+    `
+    $('#four-fields-inputs').append(ffInputs)
+    loadFourFields()
+  })
+  /* End Four Fields */
 
   $(document).on("click", ".delete-member", function () {
     let id = $(this).data('id')

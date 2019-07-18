@@ -70,9 +70,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
          */
         public function scripts() {
             ?>
-            <script src='https://api.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.js'></script>
-            <link href='https://api.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.css' rel='stylesheet' />
-
             <script>
                 let _ = window.lodash
                 function send_update(data) {
@@ -173,6 +170,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 return;
             }
             // Drill Down Tool
+            wp_enqueue_script( 'mapbox-gl', 'https://api.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.js', [ 'jquery','lodash' ], '1.1.0', false );
+            wp_enqueue_style( 'mapbox-gl-css', 'https://api.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.css', [], '1.1.0' );
+
             wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery','lodash' ], '1.1' );
             wp_localize_script(
                 'mapping-drill-down', 'mappingModule', array(
@@ -1458,8 +1458,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                         if ( array_search( $index, $list ) !== false ) {
                                             continue; // skip already installed countries
                                         }
-                                        echo '<option value="'.$index.'">';
-                                        echo $name;
+                                        echo '<option value="'.esc_attr( $index ).'">';
+                                        echo esc_html( $name );
                                         echo '</option>';
                                     }
                                     ?>
@@ -1479,11 +1479,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             ?>
                         <tr>
                             <td>
-                                <?php echo '<span style="font-size:1.2em;">' . $level['name'] . '</span> ' ?>
+                                <?php echo '<span style="font-size:1.2em;">' . esc_html( $level['name'] ) . '</span> ' ?>
                             </td>
                             <td>
-                                <a onclick="jQuery('#<?php echo $level['admin0_code'].'-'.$level['level'] ?>').show();">Remove Level <?php echo $level['level'] . ' (' . $level['records'] . ' records) ' ?></a>
-                                <?php echo '<br><button type="submit" id="'.$level['admin0_code'].'-'.$level['level'].'" style="display:none;" name="remove" value="'.$level['admin0_code'].'-'.$level['level'].'"> Confirm delete ' . $level['records'] . ' records?</button>' ?>
+                                <a onclick="jQuery('#<?php echo esc_attr( $level['admin0_code'] ).'-'. esc_attr( $level['level'] ) ?>').show();">Remove Level <?php echo esc_attr( $level['level'] ) . ' (' . esc_html( $level['records'] ) . ' records) ' ?></a>
+                                <?php echo '<br><button type="submit" id="'.esc_attr( $level['admin0_code'] ).'-'.esc_attr( $level['level'] ).'" style="display:none;" name="remove" value="'.esc_attr( $level['admin0_code'] ).'-'.esc_attr( $level['level'] ).'"> Confirm delete ' . esc_html( $level['records'] ) . ' records?</button>' ?>
                             </td>
                         </tr>
 
@@ -1984,8 +1984,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <tr>
                     <td>
                         <!-- Geocoder Input Section -->
+                        <?php // @codingStandardsIgnoreStart ?>
                         <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.0/mapbox-gl-geocoder.min.js'></script>
                         <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.0/mapbox-gl-geocoder.css' type='text/css' />
+                        <?php // @codingStandardsIgnoreEnd ?>
                         <style>
                             .mapboxgl-ctrl-geocoder { min-width:100%; }
                         </style>
@@ -1999,7 +2001,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <div id='map' style="width:100%; height:400px;"></div>
                         <div id="list"></div>
                         <script>
-                            mapboxgl.accessToken = '<?php echo get_option( 'dt_mapbox_api_key' ) ?>';
+                            mapboxgl.accessToken = '<?php echo esc_html( get_option( 'dt_mapbox_api_key' ) ) ?>';
                             var map = new mapboxgl.Map({
                                 container: 'map',
                                 style: 'mapbox://styles/mapbox/streets-v11',
@@ -2032,7 +2034,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 }
 
                                 // geocode, load hierarchy, load polygon
-                                jQuery.get('<?php echo trailingslashit( get_template_directory_uri() ) . 'dt-mapping/' ?>location-grid-list-api.php', { type: 'geocode', longitude: e.result.center[0], latitude: e.result.center[1], country_code: country_code, nonce: '<?php echo wp_create_nonce() ?>' }, null, 'json' ).done(function(data) {
+                                jQuery.get('<?php echo esc_url( trailingslashit( get_template_directory_uri() ) ) . 'dt-mapping/' ?>location-grid-list-api.php', { type: 'geocode', longitude: e.result.center[0], latitude: e.result.center[1], country_code: country_code, nonce: '<?php echo esc_html( wp_create_nonce( 'location_grid' ) ) ?>' }, null, 'json' ).done(function(data) {
                                     console.log(data)
                                     window.MBresponse = data
                                     let print = jQuery('#list')
@@ -2082,7 +2084,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                     let unique_source = grid_id+ Date.now()
                                     map.addSource(unique_source, {
                                         type: 'geojson',
-                                        data: '<?php echo dt_get_location_grid_mirror(true) ?>low/' + grid_id + '.geojson'
+                                        data: '<?php echo esc_url( dt_get_location_grid_mirror( true ) ) ?>low/' + grid_id + '.geojson'
                                     });
                                     map.addLayer({
                                         "id": grid_id + Date.now() + Math.random(),
