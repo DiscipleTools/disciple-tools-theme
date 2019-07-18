@@ -13,7 +13,7 @@ class PostsTest extends WP_UnitTestCase {
         'overall_status' => 'active',
         'milestones' => [ "values" => [ [ "value" => 'milestone_has_bible' ], [ "value" => "milestone_baptizing" ] ] ],
         'baptism_date' => "2018-12-31",
-        "location_grid" => [ "values" => [ [ "value" => '3017382' ] ] ]
+        "location_grid" => [ "values" => [ [ "value" => '100089589' ] ] ]
     ];
 
 
@@ -117,7 +117,7 @@ class PostsTest extends WP_UnitTestCase {
             "title" => "bob",
             'milestones' => [ "values" => [ [ "value" => 'milestone_has_bible' ], [ "value" => "milestone_baptizing" ] ] ],
             'groups' => [ "values" => [ [ "value" => $group1["ID"] ], [ "value" => $group2["ID"] ] ] ],
-            'location_grid' => [ "values" => [ [ "value" => 3017382 ], [ "value" => 2921044 ] ] ],
+            'location_grid' => [ "values" => [ [ "value" => 100089589 ], [ "value" => 100056133 ] ] ],
             'contact_phone' => [ "values" => [ [ "value" => '123', "verified" => true ], [ "value" => "321" ] ] ]//@phpcs:ignore
         ] );
         $this->assertNotWPError( $contact1 );
@@ -131,7 +131,7 @@ class PostsTest extends WP_UnitTestCase {
         $contact1 = DT_Posts::update_post( 'contacts', $contact1["ID"], [
             'milestones' => [ "values" => [ [ "value" => 'milestone_has_bible' ], [ "value" => "milestone_sharing" ] ], "force_values" => true ], //@phpcs:ignore
             'groups' => [ "values" => [ [ "value" => $group1["ID"] ], [ "value" => $group3["ID"] ] ], "force_values" => true ], //@phpcs:ignore
-            'location_grid' => [ "values" => [ [ "value" => 3017382 ] ], "force_values" => true ], //@phpcs:ignore
+            'location_grid' => [ "values" => [ [ "value" => 100089589 ] ], "force_values" => true ], //@phpcs:ignore
             'contact_phone' => [ "values" => [ [ "key" => $phone_key, "value" => '456' ] ], "force_values" => true ], //@phpcs:ignore
         ] );
         $this->assertNotWPError( $contact1 );

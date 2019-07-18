@@ -20,8 +20,8 @@ define( 'SHORTINIT', 1 );
 if ( ! isset( $_SERVER['DOCUMENT_ROOT'] ) ) {
     exit();
 }
-// @codingStandardsIgnoreLine
-require_once filter_var( $_SERVER['DOCUMENT_ROOT'], FILTER_SANITIZE_URL ) . '/wp-load.php';
+
+require_once filter_var( $_SERVER['DOCUMENT_ROOT'], FILTER_SANITIZE_URL ) . '/wp-load.php'; //@phpcs:ignore
 
 if ( ! defined( 'WP_CONTENT_URL' ) ) {
     define( 'WP_CONTENT_URL', get_option( 'siteurl' ) . '/wp-content' );
