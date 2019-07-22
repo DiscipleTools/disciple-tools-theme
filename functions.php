@@ -292,7 +292,6 @@ else {
             /**
              * dt-mapping
              */
-            require_once( get_template_directory() . '/dt-mapping/location-grid-geocoder.php' ); // Location grid geocoder
             require_once( get_template_directory() . '/dt-mapping/mapping-module-config.php' ); // configuration file for mapping module
             DT_Mapping_Module_Config::instance();
             require_once( get_template_directory() . '/dt-mapping/mapping.php' ); // load for mapping module
@@ -457,7 +456,7 @@ else {
      */
     function dt_route_front_page() {
         if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-            wp_safe_redirect( apply_filters( 'dt_front_page', home_url( '/contacts' ) ) );
+            wp_safe_redirect( home_url( '/contacts' ) );
         }
         else if ( ! is_user_logged_in() ) {
             dt_please_log_in();

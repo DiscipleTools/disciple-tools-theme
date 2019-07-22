@@ -44,14 +44,14 @@ get_header();
                 <?php endif; ?>
 
                 <?php esc_html_e( "Location", "disciple_tools" ); ?>
-                <div class="location_grid">
-                    <var id="location_grid-result-container" class="result-container"></var>
-                    <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
+                <div class="geonames">
+                    <var id="geonames-result-container" class="result-container"></var>
+                    <div id="geonames_t" name="form-geonames" class="scrollable-typeahead typeahead-margin-when-active">
                         <div class="typeahead__container">
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
-                                    <input class="js-typeahead-location_grid"
-                                           name="location_grid[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                    <input class="js-typeahead-geonames"
+                                           name="geonames[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
                                            autocomplete="off">
                                 </span>
                             </div>
@@ -88,7 +88,7 @@ get_header();
             contact_phone: [{value:$(".js-create-contact input[name=phone]").val()}],
             contact_email: [{value:$(".js-create-contact input[name=email]").val()}],
             sources: {values:[{value:source || "personal"}]},
-            location_grid: {values:selectedLocations.map(i=>{return {value:i}})},
+            geonames: {values:selectedLocations.map(i=>{return {value:i}})},
             initial_comment: $(".js-create-contact textarea[name=initial_comment]").val(),
         }).then(function(data) {
             window.location = data.permalink;
@@ -107,7 +107,7 @@ get_header();
      */
     typeaheadTotals = {}
     $.typeahead({
-        input: '.js-typeahead-location_grid',
+        input: '.js-typeahead-geonames',
         minLength: 0,
         accent: true,
         searchOnFocus: true,
@@ -125,11 +125,11 @@ get_header();
             focus: {
                 display: "name",
                 ajax: {
-                    url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+                    url: wpApiShare.root + 'dt/v1/mapping_module/search_geonames_by_name',
                     data: {
                         s: "{{query}}",
                         filter: function () {
-                            return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                            return _.get(window.Typeahead['.js-typeahead-geonames'].filters.dropdown, 'value', 'all')
                         }
                     },
                     beforeSend: function (xhr) {
@@ -140,7 +140,7 @@ get_header();
                             if (typeof typeaheadTotals !== "undefined") {
                                 typeaheadTotals.field = data.total
                             }
-                            return data.location_grid
+                            return data.geonames
                         }
                     }
                 }
@@ -174,12 +174,12 @@ get_header();
                     .html("Regions of Focus");
             },
             onResult: function (node, query, result, resultCount) {
-                resultCount = typeaheadTotals.location_grid
+                resultCount = typeaheadTotals.geonames
                 let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-                $('#location_grid-result-container').html(text);
+                $('#geonames-result-container').html(text);
             },
             onHideLayout: function () {
-                $('#location_grid-result-container').html("");
+                $('#geonames-result-container').html("");
             }
         }
     });

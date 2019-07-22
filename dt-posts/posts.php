@@ -406,11 +406,11 @@ class Disciple_Tools_Posts
                 }
                 if ( $fields[$activity->meta_key]["type"] === "location" ){
                     if ( $activity->meta_value === "value_deleted" ){
-                        $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $activity->old_value );
-                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 added to locations', 'disciple_tools' ), $location_grid ? $location_grid["name"] : $activity->old_value );
+                        $geoname = Disciple_Tools_Mapping_Queries::get_by_geonameid( (int) $activity->old_value );
+                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 added to locations', 'disciple_tools' ), $geoname ? $geoname["name"] : $activity->old_value );
                     } else {
-                        $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $activity->meta_value );
-                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $location_grid ? $location_grid["name"] : $activity->meta_value );
+                        $geoname = Disciple_Tools_Mapping_Queries::get_by_geonameid( (int) $activity->meta_value );
+                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $geoname ? $geoname["name"] : $activity->meta_value );
                     }
                 }
             } else {
@@ -664,7 +664,7 @@ class Disciple_Tools_Posts
             if ( !is_array( $query_value )){
                 return new WP_Error( __FUNCTION__, "Filter queries must be arrays", [ 'status' => 403 ] );
             }
-            if ( !in_array( $query_key, $post_settings["connection_types"] ) && strpos( $query_key, "contact_" ) !== 0 && $query_key !== "location_grid" ){
+            if ( !in_array( $query_key, $post_settings["connection_types"] ) && strpos( $query_key, "contact_" ) !== 0 && $query_key !== "geonames" ){
                 if ( $query_key == "assigned_to" ){
                     foreach ( $query_value as $assigned_to ){
                         $connector = "OR";
@@ -754,15 +754,15 @@ class Disciple_Tools_Posts
         }
 
         foreach ( $query as $query_key => $query_value ) {
-            if ( $query_key === "location_grid" ) {
-                $location_grid_ids = dt_array_to_sql( $query_value );
+            if ( $query_key === "geonames" ) {
+                $geoname_ids = dt_array_to_sql( $query_value );
                 $location_sql .= "
                     AND (
-                        location_grid_counter.admin0_grid_id IN (" . $location_grid_ids .") 
-                        OR location_grid_counter.admin1_grid_id IN (" . $location_grid_ids .")
-                        OR location_grid_counter.admin2_grid_id IN (" . $location_grid_ids .")
-                        OR location_grid_counter.admin3_grid_id IN (" . $location_grid_ids .")
-                        OR location_grid_counter.grid_id IN (" . $location_grid_ids .")
+                        geonames_counter.country_geonameid IN (" . $geoname_ids .") 
+                        OR geonames_counter.admin1_geonameid IN (" . $geoname_ids .")
+                        OR geonames_counter.admin2_geonameid IN (" . $geoname_ids .")
+                        OR geonames_counter.admin3_geonameid IN (" . $geoname_ids .")
+                        OR geonames_counter.geonameid IN (" . $geoname_ids .")
                     )";
             }
             if ( in_array( $query_key, array_keys( self::$connection_types ) ) ) {
@@ -794,17 +794,17 @@ class Disciple_Tools_Posts
         if ( !empty( $location_sql )){
             $inner_joins .= " INNER JOIN (
                     SELECT
-                        g.admin0_grid_id,
-                        g.admin1_grid_id,
-                        g.admin2_grid_id,
-                        g.admin3_grid_id,
-                        g.grid_id,
+                        g.country_geonameid,
+                        g.admin1_geonameid,
+                        g.admin2_geonameid,
+                        g.admin3_geonameid,
+                        g.geonameid,
                         g.level,
                         p.post_id
                     FROM $wpdb->postmeta as p
-                        LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value
-                    WHERE p.meta_key = 'location_grid'
-            ) as location_grid_counter ON ( location_grid_counter.post_id = $wpdb->posts.ID )";
+                        LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value
+                    WHERE p.meta_key = 'geonames'
+            ) as geonames_counter ON ( geonames_counter.post_id = $wpdb->posts.ID )";
         }
 
         $access_query = $access_query ? ( "AND ( " . $access_query . " ) " ) : "";
@@ -871,7 +871,7 @@ class Disciple_Tools_Posts
             $sort_sql = "ISNULL(p2p_post.post_name), p2p_post.post_name $sort_dir";
         } elseif ( $sort === "post_date" ){
             $sort_sql = "$wpdb->posts.post_date  " . $sort_dir;
-        } elseif ( $sort === "location_grid" ){
+        } elseif ( $sort === "geonames" ){
             $sort_join = "LEFT JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
             $sort_sql = "sort.meta_value $sort_dir";
         }
