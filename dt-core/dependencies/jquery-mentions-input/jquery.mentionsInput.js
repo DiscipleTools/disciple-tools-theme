@@ -331,7 +331,18 @@
 
 		//Takes the input event when users write or delete something
 		function onInputBoxInput(e) {
-			updateValues();
+		  var ua = navigator.userAgent.toLowerCase();
+      var isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");
+      if (isAndroid) {//certain versions of android mobile browser don't trigger the keypress event.
+          if (e.keyCode !== KEY.BACKSPACE) {
+              var typedValue = String.fromCharCode(e.which || e.keyCode); //Takes the string that represent this CharCode
+              if ( ( !typedValue || typedValue == 229 ) && elmInputBox.val().trim().length ) {
+                typedValue = elmInputBox.val()[elmInputBox.val().trim().length-1]
+              }
+              inputBuffer.push( typedValue ); //Push the value pressed into inputBuffer
+          }
+      }
+      updateValues();
 			updateMentionsCollection();
 
 			var triggerCharIndex = inputBuffer.lastIndexOf(settings.triggerChar); //Returns the last match of the triggerChar in the inputBuffer
@@ -344,10 +355,14 @@
 
 		//Takes the keypress event
 		function onInputBoxKeyPress(e) {
-			if(e.keyCode !== KEY.BACKSPACE) { //If the key pressed is not the backspace
-				var typedValue = String.fromCharCode(e.which || e.keyCode); //Takes the string that represent this CharCode
-				inputBuffer.push(typedValue); //Push the value pressed into inputBuffer
-			}
+      var ua = navigator.userAgent.toLowerCase();
+      var isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");
+      if(!isAndroid) {
+        if (e.keyCode !== KEY.BACKSPACE) { //If the key pressed is not the backspace
+          var typedValue = String.fromCharCode(e.which || e.keyCode); //Takes the string that represent this CharCode
+          inputBuffer.push(typedValue); //Push the value pressed into inputBuffer
+        }
+      }
 		}
 
 		//Takes the keydown event
