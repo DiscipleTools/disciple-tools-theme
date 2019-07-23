@@ -331,16 +331,13 @@
 
 		//Takes the input event when users write or delete something
 		function onInputBoxInput(e) {
-		  var ua = navigator.userAgent.toLowerCase();
-      var isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");
+		  let ua = navigator.userAgent.toLowerCase();
+      let isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");
       if (isAndroid) {//certain versions of android mobile browser don't trigger the keypress event.
-          if (e.keyCode !== KEY.BACKSPACE) {
-              var typedValue = String.fromCharCode(e.which || e.keyCode); //Takes the string that represent this CharCode
-              if ( ( !typedValue || typedValue == 229 ) && elmInputBox.val().trim().length ) {
-                typedValue = elmInputBox.val()[elmInputBox.val().trim().length-1]
-              }
-              inputBuffer.push( typedValue ); //Push the value pressed into inputBuffer
-          }
+        if ( elmInputBox.val().trim().length ) {
+          let typedValue = elmInputBox.val()[elmInputBox.val().trim().length - 1]
+          inputBuffer.push(typedValue); //Push the value pressed into inputBuffer
+        }
       }
       updateValues();
 			updateMentionsCollection();
