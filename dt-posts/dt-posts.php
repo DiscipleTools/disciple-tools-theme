@@ -594,18 +594,26 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @param int $post_id
      * @param bool $check_permissions
      * @param string $type
+     * @param array $args
      *
      * @return array|int|WP_Error
      */
-    public static function get_post_comments( string $post_type, int $post_id, bool $check_permissions = true, string $type = "all" ) {
+    public static function get_post_comments( string $post_type, int $post_id, bool $check_permissions = true, string $type = "all", array $args = [] ) {
         if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read post", [ 'status' => 403 ] );
         }
         //setting type to "comment" does not work.
-        $comments = get_comments( [
+        $comments_query = [
             'post_id' => $post_id,
             "type" => $type
-        ]);
+        ];
+        if ( isset( $args["offset"] ) || isset( $args["number"] ) ){
+            $comments_query["offset"] = $args["offset"] ?? 0;
+            $comments_query["number"] = $args["number"] ?? '';
+        }
+        $comments = get_comments( $comments_query );
+
+
 
         foreach ( $comments as $comment ){
             $url = !empty( $comment->comment_author_url ) ? $comment->comment_author_url : get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
@@ -626,16 +634,26 @@ class DT_Posts extends Disciple_Tools_Posts {
     /**
      * @param string $post_type
      * @param int $post_id
+     * @param array $args
      *
      * @return array|null|object|WP_Error
      */
-    public static function get_post_activity( string $post_type, int $post_id ) {
+    public static function get_post_activity( string $post_type, int $post_id, array $args = [] ) {
         global $wpdb;
         if ( !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read: " . $post_type, [ 'status' => 403 ] );
         }
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
         $fields = $post_settings["fields"];
+        $hidden_fields = [];
+        foreach ( $fields as $field_key => $field ){
+            if ( isset( $field["hidden"] ) && $field["hidden"] === true ){
+                $hidden_fields[] = $field_key;
+            }
+        }
+        $hidden_keys = dt_array_to_sql( $hidden_fields );
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
         $activity = $wpdb->get_results( $wpdb->prepare(
             "SELECT
                 *
@@ -643,15 +661,15 @@ class DT_Posts extends Disciple_Tools_Posts {
                 `$wpdb->dt_activity_log`
             WHERE
                 `object_type` = %s
-                AND `object_id` = %s",
+                AND `object_id` = %s
+                AND meta_key NOT IN ( $hidden_keys )
+            ORDER BY hist_time DESC",
             $post_type,
             $post_id
         ) );
+        //@phpcs:enable
         $activity_simple = [];
         foreach ( $activity as $a ) {
-            if ( isset( $a->meta_key, $fields[$a->meta_key]["hidden"] ) && $fields[$a->meta_key]["hidden"] === true ){
-                continue;
-            }
             $a->object_note = self::format_activity_message( $a, $post_settings );
             if ( isset( $a->user_id ) && $a->user_id > 0 ) {
                 $user = get_user_by( "id", $a->user_id );
@@ -673,6 +691,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
+        $activity_simple = array_slice( $activity_simple, $args["offset"] ?? 0, $args["number"] ?? 1000 );
         return $activity_simple;
     }
 
