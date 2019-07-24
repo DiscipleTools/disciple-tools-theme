@@ -614,16 +614,26 @@ class DT_Posts extends Disciple_Tools_Posts {
         $comments = get_comments( $comments_query );
 
 
-
+        $response_body = [];
         foreach ( $comments as $comment ){
             $url = !empty( $comment->comment_author_url ) ? $comment->comment_author_url : get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
-            $comment->gravatar = preg_replace( "/^http:/i", "https:", $url );
-            $display_name = dt_get_user_display_name( $comment->user_id );
-            $comment->comment_author = !empty( $display_name ) ? $display_name : $comment->comment_author;
-            $comment->comment_content = wp_kses_post( $comment->comment_content ); //wp function for escaping unwanted html in comments.
+            $c = [
+                "comment_ID" => $comment->comment_ID,
+                "comment_author" => !empty( $display_name ) ? $display_name : $comment->comment_author,
+                "comment_author_email" => $comment->comment_author_email,
+                "comment_date" => $comment->comment_date,
+                "comment_date_gmt" => $comment->comment_date_gmt,
+                "gravatar" => preg_replace( "/^http:/i", "https:", $url ),
+                "comment_content" => wp_kses_post( $comment->comment_content ),
+                "user_id" => $comment->user_id
+            ];
+            $response_body[] =$c;
         }
 
-        return $comments;
+        return [
+            "comments" => $response_body,
+            "total" => wp_count_comments( $post_id )->total_comments
+        ];
     }
 
 
@@ -691,8 +701,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        $activity_simple = array_slice( $activity_simple, $args["offset"] ?? 0, $args["number"] ?? 1000 );
-        return $activity_simple;
+        $paged = array_slice( $activity_simple, $args["offset"] ?? 0, $args["number"] ?? 1000 );
+        return [
+            "activity" => $paged,
+            "total" => sizeof( $activity_simple )
+        ];
     }
 
     public static function get_post_single_activity( string $post_type, int $post_id, int $activity_id ){

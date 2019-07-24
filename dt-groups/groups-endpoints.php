@@ -364,7 +364,8 @@ class Disciple_Tools_Groups_Endpoints
     public function get_comments( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['id'] ) ) {
-            return DT_Posts::get_post_comments( 'groups', $params['id'] );
+            $resp = DT_Posts::get_post_comments( 'groups', $params['id'] );
+            return is_wp_error( $resp ) ? $resp : $resp["comments"];
         } else {
             return new WP_Error( "get_comments", "Missing a valid group id", [ 'status' => 400 ] );
         }
@@ -378,7 +379,8 @@ class Disciple_Tools_Groups_Endpoints
     public function get_activity( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['id'] ) ) {
-            return DT_Posts::get_post_activity( 'groups', $params['id'] );
+            $resp = DT_Posts::get_post_activity( 'groups', $params['id'] );
+            return is_wp_error( $resp ) ? $resp : $resp["activity"];
         } else {
             return new WP_Error( "get_activity", "Missing a valid group id", [ 'status' => 400 ] );
         }

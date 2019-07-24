@@ -343,8 +343,8 @@ jQuery(document).ready(function($) {
     )
     getAllPromise.then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
       $("#comments-activity-spinner.loading-spinner").removeClass("active")
-      const commentData = commentDataStatusJQXHR[0];
-      const activityData = activityDataStatusJQXHR[0];
+      const commentData = commentDataStatusJQXHR[0].comments;
+      const activityData = activityDataStatusJQXHR[0].activity;
       prepareData(commentData, activityData)
     }).catch(err => {
       if ( !_.get( err, "statusText" ) === "abort" ) {
@@ -387,7 +387,7 @@ jQuery(document).ready(function($) {
     prepareActivityData(activity)
     display_activity_comment("all")
   }
-  prepareData( commentsSettings.comments, commentsSettings.activity )
+  prepareData( commentsSettings.comments.comments, commentsSettings.activity.activity )
 
 
   jQuery('#add-comment-button').on('click', function () {
