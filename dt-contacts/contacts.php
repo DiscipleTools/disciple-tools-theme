@@ -523,7 +523,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return array|null|object
      */
     public static function get_activity( $contact_id ) {
-        return DT_Posts::get_post_activity( "contacts", $contact_id );
+        $resp = DT_Posts::get_post_activity( "contacts", $contact_id );
+        return is_wp_error( $resp ) ? $resp : $resp["activity"];
     }
 
     /**
@@ -834,7 +835,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return array|int|WP_Error
      */
     public static function get_comments( int $contact_id, bool $check_permissions = true, $type = "all" ) {
-        return DT_Posts::get_post_comments( 'contacts', $contact_id, $check_permissions, $type );
+        $resp = DT_Posts::get_post_comments( 'contacts', $contact_id, $check_permissions, $type );
+        return is_wp_error( $resp ) ? $resp : $resp["comments"];
     }
 
 
