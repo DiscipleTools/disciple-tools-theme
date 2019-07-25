@@ -563,7 +563,7 @@ class Disciple_Tools_Contacts_Endpoints
             if ( is_wp_error( $result ) ) {
                 return $result;
             } else {
-                return new WP_REST_Response( $result );
+                return new WP_REST_Response( $result["comments"] );
             }
         } else {
             return new WP_Error( "get_comments", "Missing a valid contact id", [ 'status' => 400 ] );
@@ -582,7 +582,7 @@ class Disciple_Tools_Contacts_Endpoints
             if ( is_wp_error( $result ) ) {
                 return $result;
             } else {
-                return new WP_REST_Response( $result );
+                return new WP_REST_Response( $result["activity"] );
             }
         } else {
             return new WP_Error( "get_activity", "Missing a valid contact id", [ 'status' => 400 ] );
