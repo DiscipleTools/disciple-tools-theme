@@ -14,17 +14,19 @@ class Disciple_Tools_Usage {
     public $version = 1;
 
     public function send_usage() {
-        $url = 'https://disciple.tools/wp-json/dt-usage/v1/telemetry';
-        $args = [
-            'method' => 'POST',
-            'timeout' => 45,
-            'redirection' => 5,
-            'httpversion' => '1.0',
-            'body' => $this->telemetry(),
-        ];
+        $disabled = apply_filters( 'dt_disable_usage_report', false );
+        if ( ! $disabled ) {
+            $url = 'https://disciple.tools/wp-json/dt-usage/v1/telemetry';
+            $args = [
+                'method' => 'POST',
+                'timeout' => 45,
+                'redirection' => 5,
+                'httpversion' => '1.0',
+                'body' => $this->telemetry(),
+            ];
 
-        wp_remote_post( $url, $args );
-        dt_write_log( 'ran' );
+            wp_remote_post( $url, $args );
+        }
     }
 
     public function telemetry() {
