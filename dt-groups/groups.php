@@ -246,7 +246,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @return array|int|WP_Error
      */
     public static function get_comments( int $group_id ) {
-        return DT_Posts::get_post_comments( 'groups', $group_id );
+        $resp = DT_Posts::get_post_comments( 'groups', $group_id );
+        return is_wp_error( $resp ) ? $resp : $resp["comments"];
     }
 
 
@@ -264,7 +265,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @return array|null|object|WP_Error
      */
     public static function get_activity( int $group_id ) {
-        return DT_Posts::get_post_activity( 'groups', $group_id );
+        $resp = DT_Posts::get_post_activity( 'groups', $group_id );
+        return is_wp_error( $resp ) ? $resp : $resp["activity"];
     }
 
     /**

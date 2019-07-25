@@ -411,7 +411,8 @@ class Disciple_Tools_Posts_Endpoints {
 
     public function get_activity( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
-        return DT_Posts::get_post_activity( $url_params["post_type"], $url_params["id"] );
+        $get_params = $request->get_query_params();
+        return DT_Posts::get_post_activity( $url_params["post_type"], $url_params["id"], $get_params );
     }
 
     public function get_single_activity( WP_REST_Request $request ){
@@ -438,7 +439,11 @@ class Disciple_Tools_Posts_Endpoints {
 
     public function get_comments( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
-        return DT_Posts::get_post_comments( $url_params["post_type"], $url_params["id"] );
+        $get_params = $request->get_query_params();
+        return DT_Posts::get_post_comments( $url_params["post_type"], $url_params["id"], true, "all", [
+            "offset" => $get_params['offset'] ?? 0,
+            "number" => $get_params["number"] ?? ''
+        ] );
     }
 
     public function add_comment( WP_REST_Request $request ){
