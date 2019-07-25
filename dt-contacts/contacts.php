@@ -192,6 +192,19 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     }
                     $fields["assigned_to"] = sprintf( "user-%d", $base_id );
                 }
+            } else {
+                if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
+                    $user = get_user_by( "email", $fields["assigned_to"] );
+                    if ( $user ) {
+                        $fields["assigned_to"] = $user->ID;
+                    } else {
+                        return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
+                    }
+                }
+                if ( is_numeric( $fields["assigned_to"] ) ||
+                     strpos( $fields["assigned_to"], "user" ) === false ){
+                    $fields["assigned_to"] = "user-" . $fields["assigned_to"];
+                }
             }
             if ( !isset( $fields["overall_status"] ) ){
                 $current_roles = wp_get_current_user()->roles;
