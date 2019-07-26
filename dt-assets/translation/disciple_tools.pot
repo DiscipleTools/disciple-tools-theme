@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Disciple Tools\n"
-"POT-Creation-Date: 2019-06-26 18:00+0100\n"
+"POT-Creation-Date: 2019-07-26 10:04+0100\n"
 "PO-Revision-Date: 2018-01-09 14:10-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -559,7 +559,7 @@ msgstr ""
 #: dt-assets/parts/contact-details.php:194
 #: dt-assets/parts/contact-details.php:320
 #: dt-assets/parts/group-details.php:136 dt-assets/parts/group-details.php:205
-#: dt-contacts/contacts-post-type.php:792 dt-groups/groups-post-type.php:585
+#: dt-contacts/contacts-post-type.php:796 dt-groups/groups-post-type.php:585
 #: template-settings.php:121
 msgid "Address"
 msgstr ""
@@ -1428,66 +1428,70 @@ msgstr ""
 msgid "Baptized by"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:774 template-settings.php:110
+#: dt-contacts/contacts-post-type.php:590
+msgid "Reminders"
+msgstr ""
+
+#: dt-contacts/contacts-post-type.php:778 template-settings.php:110
 msgid "Phone"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:776
-#: dt-contacts/contacts-post-type.php:786
+#: dt-contacts/contacts-post-type.php:780
+#: dt-contacts/contacts-post-type.php:790
 msgid "Primary"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:777
+#: dt-contacts/contacts-post-type.php:781
 msgid "Mobile"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:778
-#: dt-contacts/contacts-post-type.php:787
-#: dt-core/admin/config-site-defaults.php:556 dt-posts/posts.php:1577
+#: dt-contacts/contacts-post-type.php:782
+#: dt-contacts/contacts-post-type.php:791
+#: dt-core/admin/config-site-defaults.php:556 dt-posts/posts.php:1689
 msgid "Work"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:779
-#: dt-core/admin/config-site-defaults.php:555 dt-posts/posts.php:1576
+#: dt-contacts/contacts-post-type.php:783
+#: dt-core/admin/config-site-defaults.php:555 dt-posts/posts.php:1688
 msgid "Home"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:780
-#: dt-contacts/contacts-post-type.php:788
-#: dt-contacts/contacts-post-type.php:826
-#: dt-contacts/contacts-post-type.php:828
-#: dt-core/admin/config-site-defaults.php:557 dt-posts/posts.php:1578
+#: dt-contacts/contacts-post-type.php:784
+#: dt-contacts/contacts-post-type.php:792
+#: dt-contacts/contacts-post-type.php:830
+#: dt-contacts/contacts-post-type.php:832
+#: dt-core/admin/config-site-defaults.php:557 dt-posts/posts.php:1690
 #: single-contacts.php:458 template-settings.php:143
 msgid "Other"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:784 single-contacts.php:664
+#: dt-contacts/contacts-post-type.php:788 single-contacts.php:664
 #: template-contacts-new.php:29 template-contacts-new.php:30
 #: template-settings.php:98 template-settings.php:199
 msgid "Email"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:796
-#: dt-contacts/contacts-post-type.php:799
+#: dt-contacts/contacts-post-type.php:800
+#: dt-contacts/contacts-post-type.php:803
 msgid "Facebook"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:806
-#: dt-contacts/contacts-post-type.php:808
+#: dt-contacts/contacts-post-type.php:810
+#: dt-contacts/contacts-post-type.php:812
 msgid "Twitter"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:814
-#: dt-contacts/contacts-post-type.php:816
+#: dt-contacts/contacts-post-type.php:818
+#: dt-contacts/contacts-post-type.php:820
 msgid "Instagram"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:820
-#: dt-contacts/contacts-post-type.php:822
+#: dt-contacts/contacts-post-type.php:824
+#: dt-contacts/contacts-post-type.php:826
 msgid "Skype"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:853
+#: dt-contacts/contacts-post-type.php:857
 msgid "Enter the contact name here"
 msgstr ""
 
@@ -1560,27 +1564,27 @@ msgstr ""
 msgid "ALERT: Possible duplicate contact from a previous transfer."
 msgstr ""
 
-#: dt-contacts/contacts.php:508
+#: dt-contacts/contacts.php:525
 #, php-format
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr ""
 
-#: dt-contacts/contacts.php:1085
+#: dt-contacts/contacts.php:1104
 msgid "Possible duplicates on"
 msgstr ""
 
-#: dt-contacts/contacts.php:1088
+#: dt-contacts/contacts.php:1107
 msgid "more duplicates not shown"
 msgstr ""
 
-#: dt-contacts/contacts.php:1300
+#: dt-contacts/contacts.php:1319
 #, php-format
 msgctxt "Contact1 is a duplicated and was merged into Contact2"
 msgid "%1$s is a duplicate and was merged into %2$s"
 msgstr ""
 
-#: dt-contacts/contacts.php:1307
+#: dt-contacts/contacts.php:1326
 #, php-format
 msgctxt "Contact1 was merged into Contact2"
 msgid "%1$s was merged into %2$s"
@@ -1863,7 +1867,7 @@ msgid "List"
 msgstr ""
 
 #: dt-mapping/mapping.php:321
-msgid "Refresh cached Data"
+msgid "Refresh Cached Data"
 msgstr ""
 
 #: dt-mapping/mapping.php:322
@@ -2079,7 +2083,7 @@ msgstr ""
 msgid "number of contacts"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:79 dt-metrics/metrics-project.php:99
+#: dt-metrics/metrics-personal.php:79
 msgid "Follow-up of my active contacts"
 msgstr ""
 
@@ -2165,6 +2169,10 @@ msgstr ""
 
 #: dt-metrics/metrics-project.php:97
 msgid "Teams"
+msgstr ""
+
+#: dt-metrics/metrics-project.php:99
+msgid "Follow-up of all active contacts"
 msgstr ""
 
 #: dt-metrics/metrics-project.php:101
@@ -2376,11 +2384,11 @@ msgstr ""
 msgid "%s was not registered as a request argument."
 msgstr ""
 
-#: dt-posts/dt-posts.php:775
+#: dt-posts/dt-posts.php:824
 msgid "Record not deleted."
 msgstr ""
 
-#: dt-posts/dt-posts.php:872
+#: dt-posts/dt-posts.php:921
 msgid "Post already shared with user."
 msgstr ""
 
@@ -2781,17 +2789,17 @@ msgstr ""
 msgid "Unshared with %s"
 msgstr ""
 
-#: dt-posts/posts.php:1585
+#: dt-posts/posts.php:1697
 msgctxt "Main address"
 msgid "Main"
 msgstr ""
 
-#: dt-posts/posts.php:1586
+#: dt-posts/posts.php:1698
 msgctxt "Alternate address"
 msgid "Alternate"
 msgstr ""
 
-#: dt-posts/posts.php:1593
+#: dt-posts/posts.php:1705
 msgid "Main"
 msgstr ""
 
@@ -2857,13 +2865,13 @@ msgstr ""
 msgid "Updated Needed"
 msgstr ""
 
-#: functions.php:475
+#: functions.php:476
 msgid ""
 "Disciple Tools theme requires PHP version 7.0 or greater. Your current "
 "version is:"
 msgstr ""
 
-#: functions.php:477
+#: functions.php:478
 msgid "Please upgrade PHP or uninstall this theme"
 msgstr ""
 
