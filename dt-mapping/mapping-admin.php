@@ -2147,6 +2147,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function box_migration_status() {
+            $obj = new DT_Mapping_Module_Migration_0007();
+            $obj->up();
+
             if ( isset( $_POST['unlock'] )
                  && ( isset( $_POST['_wpnonce'] )
                       && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'migration_status' . get_current_user_id() ) ) ) {
