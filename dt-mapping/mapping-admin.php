@@ -2147,9 +2147,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function box_migration_status() {
-            require_once ( get_template_directory() . '/dt-mapping/migrations/0007-migrate-geonames-to-location-grid.php' );
-            $obj = new DT_Mapping_Module_Migration_0007();
-            $obj->up();
 
             if ( isset( $_POST['unlock'] )
                  && ( isset( $_POST['_wpnonce'] )
