@@ -457,32 +457,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function tab_migration_from_locations() {
-            ?>
-            <div class="wrap">
-                <div id="poststuff">
-                    <div id="post-body" class="metabox-holder columns-2">
-                        <div id="post-body-content">
-                            <!-- Main Column -->
-
-                            <?php $this->box_migration_from_locations() ?>
-
-
-                            <!-- End Main Column -->
-                        </div><!-- end post-body-content -->
-                        <div id="postbox-container-1" class="postbox-container">
-                            <!-- Right Column -->
-
-                            <!-- End Right Column -->
-                        </div><!-- postbox-container 1 -->
-                        <div id="postbox-container-2" class="postbox-container">
-                        </div><!-- postbox-container 2 -->
-                    </div><!-- post-body meta box container -->
-                </div><!--poststuff end -->
-            </div><!-- wrap end -->
-            <?php
-        }
-
         public function tab_mapping_focus() {
             ?>
             <div class="wrap">
@@ -2772,7 +2746,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             if ( ! get_option( 'dt_locations_migrated_to_location_grid', false ) ) { ?>
                 <div class="notice notice-error notice-dt-locations-migration is-dismissible" data-notice="dt-locations-migration">
                     <p>We have updated Disciple.Tools locations system. Please use the migration tool to make sure all you locations are carried over:
-                        <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=location-migration' ) ) ?>">Migration Tool</a></p>
+                        <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=migration' ) ) ?>">Migration Tool</a></p>
                 </div>
             <?php }
         }
