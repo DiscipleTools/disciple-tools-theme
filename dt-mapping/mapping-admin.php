@@ -346,13 +346,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <?php echo esc_attr( ( $tab == 'focus' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Mapping Focus', 'disciple_tools' ) ?>
                     </a>
-                        <!-- Location Migration Tab -->
-<!--                    --><?php //if ( !get_option( "dt_locations_migrated_to_location_grid" ) ) : ?>
-                        <a href="<?php echo esc_attr( $link ) . 'location-migration' ?>" class="nav-tab
-                            <?php echo esc_attr( ( $tab == 'location-migration' || ! isset( $tab ) ) ? 'nav-tab-active' : '' ); ?>">
-                            <?php esc_attr_e( 'Migrating From Locations', 'disciple_tools' ) ?>
-                        </a>
-<!--                    --><?php //endif; ?>
+
                     <!-- Polygon -->
                     <a href="<?php echo esc_attr( $link ) . 'polygons' ?>" class="nav-tab
                         <?php echo esc_attr( ( $tab == 'polygons' ) ? 'nav-tab-active' : '' ); ?>">
@@ -388,6 +382,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <?php echo esc_attr( ( $tab == 'migration' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Migration', 'disciple_tools' ) ?>
                     </a>
+
                     <!-- Add Locations Explorer -->
                     <a href="<?php echo esc_attr( $link ) . 'credits' ?>" class="nav-tab
                         <?php echo esc_attr( ( $tab == 'credits' ) ? 'nav-tab-active' : '' ); ?>">
@@ -400,9 +395,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 switch ( $tab ) {
                     case "general":
                         $this->tab_general_settings();
-                        break;
-                    case "location-migration":
-                        $this->tab_migration_from_locations();
                         break;
                     case "focus":
                         $this->tab_mapping_focus();
@@ -683,6 +675,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <?php $this->box_migration_status() ?>
                             <br>
                             <?php $this->box_migration_rebuild_location() ?>
+                            <br>
+                            <?php $this->box_migration_from_locations() ?>
+
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
@@ -1106,158 +1101,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <!-- End Box -->
             <br>
 
-            <?php
-        }
-
-        public function box_migration_from_locations(){
-            if ( isset( $_POST["location_migrate_nonce"] ) && wp_verify_nonce( sanitize_key( $_POST['location_migrate_nonce'] ), 'save' ) ) {
-                if ( isset( $_POST["run-migration"], $_POST["selected_location_grid"] ) ){
-                    $select_location_grid = dt_sanitize_array_html( $_POST["selected_location_grid"] ); //phpcs:ignore
-                    $saved_for_migration = get_option( "dt_mapping_migration_list", [] );
-                    foreach ( $select_location_grid as $location_id => $migration_values ){
-                        if ( !empty( $location_id ) && !empty( $migration_values["migration_type"] ) ) {
-                            $location_id = sanitize_text_field( wp_unslash( $location_id ) );
-                            $selected_location_grid = sanitize_text_field( wp_unslash( $migration_values["geoid"] ) );
-                            $migration_type = sanitize_text_field( wp_unslash( $migration_values["migration_type"] ) );
-                            $location = get_post( $location_id );
-                            if ( empty( $selected_location_grid )){
-                                $selected_location_grid = '1';
-                            }
-                            $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( $selected_location_grid );
-                            if ( $migration_type === "sublocation" ){
-                                $selected_location_grid = $this->add_sublocation_under_location_grid( $selected_location_grid, $location->post_title, 0 );
-                            }
-                            $this->convert_location_to_location_grid( $location_id, $selected_location_grid );
-
-                            $message = $migration_type === "convert" ?
-                                "Converted $location->post_title to " . $location_grid["name"] :
-                                "Created $location->post_title as sub-location under " . $location_grid["name"];
-                            ?>
-                            <div class="notice notice-success is-dismissible">
-                                <p>Successfully ran action: <?php echo esc_html( $message )?></p>
-                            </div>
-                            <?php
-                            $saved_for_migration[$location_id] = [
-                                "message" => $message,
-                                "migration_type" => $migration_type,
-                                "location_id" => $location_id,
-                                "selected_location_grid" => $selected_location_grid
-                            ];
-                        }
-                    }
-                    update_option( "dt_mapping_migration_list", $saved_for_migration, false );
-                }
-            }
-
-            global $wpdb;
-            $locations_with_records = $wpdb->get_results( "
-                SELECT DISTINCT( posts.ID ), post_title, post_parent, COUNT( p2p.p2p_from ) as count
-                FROM $wpdb->posts as posts
-                JOIN $wpdb->p2p as p2p on (p2p.p2p_to = posts.ID)
-                WHERE posts.post_type = 'locations' 
-                GROUP BY posts.ID
-            ", ARRAY_A );
-            $saved_for_migration = get_option( "dt_mapping_migration_list", [] );
-            if ( sizeof( $locations_with_records ) === 0 ) {
-                $migration_done = get_option( "dt_locations_migrated_to_location_grid", false );
-                if ( !$migration_done ){
-                    $this->migrate_user_filters_to_location_grid();
-                    update_option( "dt_locations_migrated_to_location_grid", true );
-                }
-            } else {
-                ?>
-
-                <h1>About</h1>
-                <p>Thank you for completing this important step in using D.T.</p>
-                <p>This tool is to help you migrate from the old locations system, to the new one that uses <a target="_blank" href="https://www.location_grid.org/about.html">GeoNames</a>  as it's base. GeoNames is a free database of countries and regions and will help us achieve better collaborate across instances. </p>
-                <p>You may wish to select a <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=focus' ) ) ?>">mapping focus</a> to narrow the options given.</p>
-                <p>Click <a target="_blank" href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/admin.html#mapping">here</a> for a detailed explanation on the locations system and instructions on how to use this tool</p>
-                <h1>Instructions</h1>
-                <p>1. Select the corresponding GeoNames location for the old location. If you choose a wrong location, click "World" to undo it.</p>
-                <p>2. Then click click one of the two options:</p>
-                <ul style="list-style: disc; padding-inline-start: 40px">
-                    <li><strong style="color: green;" >Convert (recommended)</strong> means the selected new location is the same as the old location.</li>
-                    <li><strong style="color: orange;">Create as a sub-location</strong> means that the old location is found within the selected new location.</li>
-                </ul>
-                <p>3. Click the "Run migration" button. Hint: You can select a few location and run the migration.</p>
-
-                <form method="post" action="">
-                    <?php wp_nonce_field( 'save', 'location_migrate_nonce', true, true ) ?>
-                    <h3>Locations to Migrate ( <?php echo esc_html( sizeof( $locations_with_records ) ) ?> )</h3>
-
-                    <p>
-                        <button style="background-color: red; color: white; border-radius: 5px;" type="submit" class="button" name="run-migration">
-                            <strong>Run migration</strong>
-                        </button>
-                        <strong>Careful, this cannot be undone.</strong>
-                    </p>
-
-                    <table class="widefat striped">
-                        <thead>
-                        <tr>
-                            <th>Old Location Name</th>
-                            <th>Select a Location</th>
-                            <th>Select option</th>
-                            <th>Selected Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php foreach ( $locations_with_records as $location ) : ?>
-                            <tr>
-                                <td> <?php echo esc_html( $location["post_title"] ) ?>
-                                    ( <?php echo esc_html( $location["count"] ) ?> )
-                                </td>
-                                <td id="<?php echo esc_html( $location["ID"] ) ?>_sublocation" class="to-location">
-                                    <input name="selected_location_grid[<?php echo esc_html( $location["ID"] ) ?>][geoid]" class="convert-input" type="hidden">
-                                    <div class="drilldown">
-                                        <?php DT_Mapping_Module::instance()->drill_down_widget( esc_html( $location["ID"] ) . "_sublocation .drilldown" ) ?>
-                                    </div>
-                                </td>
-                                <td id="<?php echo esc_html( $location["ID"] ) ?>_buttons">
-                                    <select name="selected_location_grid[<?php echo esc_html( $location["ID"] ) ?>][migration_type]" data-location_id="<?php echo esc_html( $location["ID"] ) ?>" class="migration-type">
-                                        <option></option>
-                                        <option value="convert">Convert (recommended) </option>
-                                        <option value="sublocation">Create as a sub-location</option>
-                                    </select>
-                                </td>
-                                <td id="<?php echo esc_html( $location["ID"] ) ?>_actions">
-                                    <span class="convert" style="display: none;"><strong style="color: green;">Convert</strong> <?php echo esc_html( $location["post_title"] ) ?> to <span class="selected-location_grid-label">World</span></span>
-                                    <span class="sublocation" style="display: none;"><strong style="color: orange">Create</strong> <?php echo esc_html( $location["post_title"] ) ?> <strong style="color: orange">as a sub-location</strong> under <span class="selected-location_grid-label">World</span></span>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                    <p>
-                        <button style="background-color: red; color: white; border-radius: 5px;" type="submit" class="button" name="run-migration">
-                            <strong>Run migration</strong>
-                        </button>
-                        <strong>Careful, this cannot be undone.</strong>
-                    </p>
-                </form>
-                <script>
-                    jQuery(".to-location").each((a, b)=>{
-                        let id = jQuery(b).attr('id')
-                        window.DRILLDOWN[`${ id } .drilldown`] = function (grid_id, label) {
-                            jQuery(`#${id} .convert-input`).val(grid_id)
-                            console.log(id);
-                            jQuery(`#${id.replace("sublocation", "actions")} .selected-location_grid-label`).text(label)
-                        }
-                    })
-                    jQuery('.migration-type').on( "change", function () {
-                        let val = this.value
-                        let location_id = jQuery(this).data('location_id')
-                        jQuery(`#${location_id}_actions .${ val === 'convert' ? 'sublocation' : 'convert' }`).hide()
-                        jQuery(`#${location_id}_actions .${val}`).show()
-                    })
-                </script>
-            <?php } ?>
-            <h3>Migrated Locations ( <?php echo esc_html( sizeof( $saved_for_migration ) ) ?>)</h3>
-            <ul style="list-style: disc">
-                <?php foreach ( $saved_for_migration as $location_id => $migration_values ) : ?>
-                    <li style="margin-inline-start: 40px"><?php echo esc_html( $migration_values["message"] ) ?></li>
-                <?php endforeach; ?>
-            </ul>
             <?php
         }
 
@@ -2110,6 +1953,187 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
+        public function box_migration_from_locations( $return = false ){
+            if ( isset( $_POST["location_migrate_nonce"] ) && wp_verify_nonce( sanitize_key( $_POST['location_migrate_nonce'] ), 'save' ) ) {
+                if ( isset( $_POST["run-migration"], $_POST["selected_location_grid"] ) ){
+                    $select_location_grid = dt_sanitize_array_html( $_POST["selected_location_grid"] ); //phpcs:ignore
+                    $saved_for_migration = get_option( "dt_mapping_migration_list", [] );
+                    foreach ( $select_location_grid as $location_id => $migration_values ){
+                        if ( !empty( $location_id ) && !empty( $migration_values["migration_type"] ) ) {
+                            $location_id = sanitize_text_field( wp_unslash( $location_id ) );
+                            $selected_location_grid = sanitize_text_field( wp_unslash( $migration_values["geoid"] ) );
+                            $migration_type = sanitize_text_field( wp_unslash( $migration_values["migration_type"] ) );
+                            $location = get_post( $location_id );
+                            if ( empty( $selected_location_grid )){
+                                $selected_location_grid = '1';
+                            }
+                            $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( $selected_location_grid );
+                            if ( $migration_type === "sublocation" ){
+                                $selected_location_grid = $this->add_sublocation_under_location_grid( $selected_location_grid, $location->post_title, 0 );
+                            }
+                            $this->convert_location_to_location_grid( $location_id, $selected_location_grid );
+
+                            $message = $migration_type === "convert" ?
+                                "Converted $location->post_title to " . $location_grid["name"] :
+                                "Created $location->post_title as sub-location under " . $location_grid["name"];
+                            ?>
+                            <div class="notice notice-success is-dismissible">
+                                <p>Successfully ran action: <?php echo esc_html( $message )?></p>
+                            </div>
+                            <?php
+                            $saved_for_migration[$location_id] = [
+                                "message" => $message,
+                                "migration_type" => $migration_type,
+                                "location_id" => $location_id,
+                                "selected_location_grid" => $selected_location_grid
+                            ];
+                        }
+                    }
+                    update_option( "dt_mapping_migration_list", $saved_for_migration, false );
+                }
+            }
+
+            global $wpdb;
+            $locations_with_records = $wpdb->get_results( "
+                SELECT DISTINCT( posts.ID ), post_title, post_parent, COUNT( p2p.p2p_from ) as count
+                FROM $wpdb->posts as posts
+                JOIN $wpdb->p2p as p2p on (p2p.p2p_to = posts.ID)
+                WHERE posts.post_type = 'locations' 
+                GROUP BY posts.ID
+            ", ARRAY_A );
+            $saved_for_migration = get_option( "dt_mapping_migration_list", [] );
+
+            if ( $return ) {
+                return [
+                    'locations_with_records' => $locations_with_records ?: [],
+                    'saved_for_migration' => $saved_for_migration ?: [],
+                ];
+            }
+
+
+            if ( sizeof( $locations_with_records ) === 0 ) {
+                $migration_done = get_option( "dt_locations_migrated_to_location_grid", false );
+                if ( !$migration_done ){
+                    $this->migrate_user_filters_to_location_grid();
+                    update_option( "dt_locations_migrated_to_location_grid", true );
+                }
+            } else {
+                ?>
+                <!-- Conversion Report -->
+                <table class="widefat striped" name="locations-completed">
+                    <thead>
+                    <tr>
+                        <th>Migrated Locations ( <?php echo esc_html( sizeof( $saved_for_migration ) ) ?>)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <ul style="list-style: disc">
+                                <?php foreach ( $saved_for_migration as $location_id => $migration_values ) : ?>
+                                    <li style="margin-inline-start: 40px"><?php echo esc_html( $migration_values["message"] ) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tr></tr>
+                </table>
+
+                <!-- Migration Utility -->
+                <span id="locations-remaining" name="locations-remaining"></span>
+                    <div style="display:none;">
+                        <h1>About</h1>
+                        <p>Thank you for completing this important step in using D.T.</p>
+                        <p>This tool is to help you migrate from the old locations system, to the new one that uses <a target="_blank" href="https://www.location_grid.org/about.html">GeoNames</a>  as it's base. GeoNames is a free database of countries and regions and will help us achieve better collaborate across instances. </p>
+                        <p>You may wish to select a <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=focus' ) ) ?>">mapping focus</a> to narrow the options given.</p>
+                        <p>Click <a target="_blank" href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/admin.html#mapping">here</a> for a detailed explanation on the locations system and instructions on how to use this tool</p>
+                        <h1>Instructions</h1>
+                        <p>1. Select the corresponding GeoNames location for the old location. If you choose a wrong location, click "World" to undo it.</p>
+                        <p>2. Then click click one of the two options:</p>
+                        <ul style="list-style: disc; padding-inline-start: 40px">
+                            <li><strong style="color: green;" >Convert (recommended)</strong> means the selected new location is the same as the old location.</li>
+                            <li><strong style="color: orange;">Create as a sub-location</strong> means that the old location is found within the selected new location.</li>
+                        </ul>
+                        <p>3. Click the "Run migration" button. Hint: You can select a few location and run the migration.</p>
+                    </div>
+                    <form method="post" action="">
+                        <?php wp_nonce_field( 'save', 'location_migrate_nonce', true, true ) ?>
+                        <h3>Remaining Locations to Migrate ( <?php echo esc_html( sizeof( $locations_with_records ) ) ?> )</h3>
+
+                        <p>
+                            <button style="background-color: red; color: white; border-radius: 5px;" type="submit" class="button" name="run-migration">
+                                <strong>Run migration</strong>
+                            </button>
+                            <strong>Careful, this cannot be undone.</strong>
+                        </p>
+
+                        <table class="widefat striped">
+                            <thead>
+                            <tr>
+                                <th>Old Location Name</th>
+                                <th>Select a Location</th>
+                                <th>Select option</th>
+                                <th>Selected Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ( $locations_with_records as $location ) : ?>
+                                <tr>
+                                    <td> <?php echo esc_html( $location["post_title"] ) ?>
+                                        ( <?php echo esc_html( $location["count"] ) ?> )
+                                    </td>
+                                    <td id="<?php echo esc_html( $location["ID"] ) ?>_sublocation" class="to-location">
+                                        <input name="selected_location_grid[<?php echo esc_html( $location["ID"] ) ?>][geoid]" class="convert-input" type="hidden">
+                                        <div class="drilldown">
+                                            <?php DT_Mapping_Module::instance()->drill_down_widget( esc_html( $location["ID"] ) . "_sublocation .drilldown" ) ?>
+                                        </div>
+                                    </td>
+                                    <td id="<?php echo esc_html( $location["ID"] ) ?>_buttons">
+                                        <select name="selected_location_grid[<?php echo esc_html( $location["ID"] ) ?>][migration_type]" data-location_id="<?php echo esc_html( $location["ID"] ) ?>" class="migration-type">
+                                            <option></option>
+                                            <option value="convert">Convert (recommended) </option>
+                                            <option value="sublocation">Create as a sub-location</option>
+                                        </select>
+                                    </td>
+                                    <td id="<?php echo esc_html( $location["ID"] ) ?>_actions">
+                                        <span class="convert" style="display: none;"><strong style="color: green;">Convert</strong> <?php echo esc_html( $location["post_title"] ) ?> to <span class="selected-location_grid-label">World</span></span>
+                                        <span class="sublocation" style="display: none;"><strong style="color: orange">Create</strong> <?php echo esc_html( $location["post_title"] ) ?> <strong style="color: orange">as a sub-location</strong> under <span class="selected-location_grid-label">World</span></span>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                        <p>
+                            <button style="background-color: red; color: white; border-radius: 5px;" type="submit" class="button" name="run-migration">
+                                <strong>Run migration</strong>
+                            </button>
+                            <strong>Careful, this cannot be undone.</strong>
+                        </p>
+                    </form>
+
+                <script>
+                    jQuery(".to-location").each((a, b)=>{
+                        let id = jQuery(b).attr('id')
+                        window.DRILLDOWN[`${ id } .drilldown`] = function (grid_id, label) {
+                            jQuery(`#${id} .convert-input`).val(grid_id)
+                            console.log(id);
+                            jQuery(`#${id.replace("sublocation", "actions")} .selected-location_grid-label`).text(label)
+                        }
+                    })
+                    jQuery('.migration-type').on( "change", function () {
+                        let val = this.value
+                        let location_id = jQuery(this).data('location_id')
+                        jQuery(`#${location_id}_actions .${ val === 'convert' ? 'sublocation' : 'convert' }`).hide()
+                        jQuery(`#${location_id}_actions .${val}`).show()
+                    })
+                </script>
+            <?php } ?>
+
+
+            <?php
+        }
+
         public function box_migration_rebuild_location() {
             if ( isset( $_POST['reset_location_grid'] )
                  && ( isset( $_POST['_wpnonce'] )
@@ -2194,8 +2218,18 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 echo 'Not Locked';
                             }
                             ?><br>
-                            Current Geoname
-                            Records: <?php echo esc_attr( Disciple_Tools_Mapping_Queries::get_total_record_count_in_location_grid_database() ) ?>
+                            Current Location Grid  Records: <?php echo esc_attr( Disciple_Tools_Mapping_Queries::get_total_record_count_in_location_grid_database() ) ?>
+                        </td>
+                    </tr>
+                    <!-- Migration -->
+                    <?php
+                    $migration = $this->box_migration_from_locations( $return = true )
+                    ?>
+                    <tr>
+                        <td>
+                            Location System Migration: <a href="#locations-remaining">Remaining Locations to Migrate (
+                                <?php echo esc_html( sizeof( $migration['locations_with_records'] ) ) ?> )</a> |
+                            <a href="#locations-migrated">Migrated Locations ( <?php echo esc_html( sizeof( $migration['saved_for_migration'] ) ) ?> )</a>
                         </td>
                     </tr>
                     </tbody>
