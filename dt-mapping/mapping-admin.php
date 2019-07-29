@@ -2132,7 +2132,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <p>
                                 <button type="button" class="button"
                                         onclick="jQuery('#reset_location_grid').show();jQuery(this).prop('disabled', 'disabled')">
-                                    Reset Geonames Table and Install Geonames
+                                    Reset Location Grid Table and Install Location Grid
                                 </button>
                             </p>
                             <span id="reset_location_grid" style="display:none;">
@@ -2147,6 +2147,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function box_migration_status() {
+            require_once ( get_template_directory() . '/dt-mapping/migrations/0007-migrate-geonames-to-location-grid.php' );
             $obj = new DT_Mapping_Module_Migration_0007();
             $obj->up();
 

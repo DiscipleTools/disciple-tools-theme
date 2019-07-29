@@ -48,7 +48,7 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
                   `grid_id` bigint(20) NOT NULL AUTO_INCREMENT,
                   `name` varchar(200) NOT NULL DEFAULT '',
                   `level` int(1) DEFAULT NULL,
-                  `level_name` varchar(6) DEFAULT NULL,
+                  `level_name` varchar(7) DEFAULT NULL,
                   `country_code` varchar(10) DEFAULT NULL,
                   `admin0_code` varchar(10) DEFAULT NULL,
                   `parent_id` bigint(20) DEFAULT NULL,
