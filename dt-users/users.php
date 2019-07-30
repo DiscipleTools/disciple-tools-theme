@@ -444,6 +444,17 @@ class Disciple_Tools_Users
      */
     public static function profile_update_hook( $user_id ) {
         self::create_contact_for_user( $user_id );
+
+        if ( !empty( $_POST["allowed_sources"] ) ) {
+            if ( isset( $_REQUEST['action'] ) && 'update' == $_REQUEST['action'] ) {
+                check_admin_referer( 'update-user_' . $user_id );
+            }
+            $allowed_sources = [];
+            foreach ( $_POST["allowed_sources"] as $s ) {  // @codingStandardsIgnoreLine
+                $allowed_sources[] = sanitize_key( wp_unslash( $s ) );
+            }
+            update_user_option( $user_id, "allowed_sources", $allowed_sources );
+        }
     }
 
     public static function create_contacts_for_existing_users(){
@@ -586,7 +597,31 @@ class Disciple_Tools_Users
                 </td>
             </tr>
         </table>
-        <?php
+        <?php if ( user_can( $user->ID, 'access_specific_sources' ) ) :
+            $selected_sources = get_user_option( 'allowed_sources', $user->ID );
+            $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+            $sources = $site_custom_lists['sources'] ?? [];
+            ?>
+            <h3>Digital Responder Access</h3>
+            <table class="form-table">
+                <tr>
+                    <th><?php esc_html_e( "Sources", 'disciple_tools' ) ?></th>
+                    <td>
+                        <ul>
+                        <?php foreach ( $sources as $source ) :
+                            $checked = in_array( $source["key"], $selected_sources === false ? [] : $selected_sources ) ? "checked" : '';
+                            ?>
+                            <li>
+                                <input type="checkbox" name="allowed_sources[]" value="<?php echo esc_html( $source["key"] ) ?>" <?php echo esc_html( $checked ) ?>/>
+                                <?php echo esc_html( $source["label"] ) ?>
+                            </li>
+                        <?php endforeach; ?>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+
+        <?php endif;
     }
 
 
