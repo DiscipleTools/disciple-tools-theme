@@ -21,7 +21,10 @@ class DT_Mapping_Module_Migration_0007 extends DT_Mapping_Module_Migration {
         $count = $wpdb->get_var( "
             SELECT COUNT(DISTINCT meta_value) FROM $wpdb->postmeta WHERE meta_key = 'geonames';
         " );
-        if ( $count > 0 ) {
+        $count_activity = $wpdb->get_var( "
+            SELECT COUNT(DISTINCT meta_value) FROM $wpdb->dt_activity_log WHERE meta_key = 'geonames';
+        " );
+        if ( $count > 0 || $count_activity > 0 ) {
 
             /** End Test */
             dt_write_log( 'geonames exist' );
@@ -107,6 +110,32 @@ class DT_Mapping_Module_Migration_0007 extends DT_Mapping_Module_Migration {
                 ];
             }
 
+
+
+            $used_geonames = $wpdb->get_results( "SELECT DISTINCT meta_value FROM $wpdb->postmeta where meta_key = 'geonames'", ARRAY_A );
+            foreach ( $used_geonames as $ug ){
+                if ( isset( $geonames_ref[$ug["meta_value"]] ) ) {
+                    $wpdb->query( $wpdb->prepare( "
+                        UPDATE $wpdb->postmeta
+                        SET meta_key = 'location_grid',
+                            meta_value = %s 
+                        WHERE meta_key = 'geonames' and meta_value = %s
+                        ", $geonames_ref[$ug["meta_value"]]['grid_id'], $ug["meta_value"]
+                    ) );
+                }
+            }
+            $used_activity_geonames = $wpdb->get_results( "SELECT DISTINCT meta_value FROM $wpdb->dt_activity_log where meta_key = 'geonames'", ARRAY_A );
+            foreach ( $used_activity_geonames as $ug ){
+                if ( isset( $geonames_ref[$ug["meta_value"]] ) ) {
+                    $wpdb->query( $wpdb->prepare( "
+                        UPDATE $wpdb->dt_activity_log
+                        SET meta_key = 'location_grid',
+                            meta_value = %s 
+                        WHERE meta_key = 'geonames' and meta_value = %s
+                        ", $geonames_ref[$ug["meta_value"]]['grid_id'], $ug["meta_value"]
+                    ) );
+                }
+            }
 
 
             // get list of geonames in system; count unique geonameids
