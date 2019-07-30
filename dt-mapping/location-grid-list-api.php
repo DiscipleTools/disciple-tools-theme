@@ -17,11 +17,11 @@ define( 'DOING_AJAX', true );
 define( 'SHORTINIT', 1 );
 
 //get path of wp-load.php and load it
-if ( ! isset( $_SERVER['DOCUMENT_ROOT'] ) ) {
+if ( ! isset( $_SERVER['CONTEXT_DOCUMENT_ROOT'] ) ) {
     exit();
 }
 
-require_once filter_var( $_SERVER['DOCUMENT_ROOT'], FILTER_SANITIZE_URL ) . '/wp-load.php'; //@phpcs:ignore
+require_once filter_var( $_SERVER['CONTEXT_DOCUMENT_ROOT'], FILTER_SANITIZE_URL ) . '/wp-load.php'; //@phpcs:ignore
 
 if ( ! defined( 'WP_CONTENT_URL' ) ) {
     define( 'WP_CONTENT_URL', get_option( 'siteurl' ) . '/wp-content' );
