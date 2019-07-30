@@ -152,8 +152,44 @@ class Disciple_Tools_Posts
      * @return bool
      */
     public static function can_update( string $post_type, int $post_id ) {
-        //same as can_view();
-        return self::can_view( $post_type, $post_id );
+        if ( $post_type !== get_post_type( $post_id ) ){
+            return false;
+        }
+        global $wpdb;
+        if ( current_user_can( 'update_any_' . $post_type ) ) {
+            return true;
+        }
+        if ( current_user_can( 'access_specific_sources' ) ){
+            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+            $post_sources = get_post_meta( $post_id, 'sources' );
+            foreach ( $post_sources as $s ){
+                if ( in_array( $s, $sources ) ){
+                    return true;
+                }
+            }
+        }
+        $user = wp_get_current_user();
+        $assigned_to = get_post_meta( $post_id, "assigned_to", true );
+        if ( isset( $assigned_to ) && $assigned_to === "user-" . $user->ID ) {
+            return true;
+        } else {
+            $shares = $wpdb->get_results( $wpdb->prepare(
+                "SELECT
+                    *
+                FROM
+                    `$wpdb->dt_share`
+                WHERE
+                    post_id = %s",
+                $post_id
+            ), ARRAY_A );
+            foreach ( $shares as $share ) {
+                if ( (int) $share['user_id'] === $user->ID ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public static function get_label_for_post_type( $post_type, $singular = false ){
