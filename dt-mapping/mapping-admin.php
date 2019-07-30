@@ -720,16 +720,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 </tr>
                 <tr>
                     <td>
-                        Geocoding Source
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                        <a href="admin.php?page=dt_mapping_module&tab=geocoding">Edit</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
                         Population
                     </td>
                     <td>
