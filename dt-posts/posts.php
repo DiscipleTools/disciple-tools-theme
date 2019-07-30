@@ -103,31 +103,42 @@ class Disciple_Tools_Posts
         if ( $post_type !== get_post_type( $post_id ) ){
             return false;
         }
+        //check if the user has access to all posts
         if ( current_user_can( 'view_any_' . $post_type ) ) {
             return true;
-        } else {
-            $user = wp_get_current_user();
-            $assigned_to = get_post_meta( $post_id, "assigned_to", true );
-            if ( $assigned_to && $assigned_to === "user-" . $user->ID ) {
-                return true;
-            } else {
-                $shares = $wpdb->get_results( $wpdb->prepare(
-                    "SELECT
-                        *
-                    FROM
-                        `$wpdb->dt_share`
-                    WHERE
-                        post_id = %s",
-                    $post_id
-                ), ARRAY_A );
-                foreach ( $shares as $share ) {
-                    if ( (int) $share['user_id'] === $user->ID ) {
-                        return true;
-                    }
+        }
+        //check if the user has access to all posts of a specific source
+        if ( current_user_can( 'access_specific_sources' ) ){
+            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+            $post_sources = get_post_meta( $post_id, 'sources' );
+            foreach ( $post_sources as $s ){
+                if ( in_array( $s, $sources ) ){
+                    return true;
                 }
             }
         }
-
+        //check if a user is assigned to the post or if the post is shared with the user
+        $user = wp_get_current_user();
+        $assigned_to = get_post_meta( $post_id, "assigned_to", true );
+        if ( $assigned_to && $assigned_to === "user-" . $user->ID ) {
+            return true;
+        } else {
+            $shares = $wpdb->get_results( $wpdb->prepare(
+                "SELECT
+                    *
+                FROM
+                    `$wpdb->dt_share`
+                WHERE
+                    post_id = %s",
+                $post_id
+            ), ARRAY_A );
+            foreach ( $shares as $share ) {
+                if ( (int) $share['user_id'] === $user->ID ) {
+                    return true;
+                }
+            }
+        }
+        //return false if the user does not have access to the post
         return false;
     }
 
@@ -141,36 +152,8 @@ class Disciple_Tools_Posts
      * @return bool
      */
     public static function can_update( string $post_type, int $post_id ) {
-        if ( $post_type !== get_post_type( $post_id ) ){
-            return false;
-        }
-        global $wpdb;
-        if ( current_user_can( 'update_any_' . $post_type ) ) {
-            return true;
-        } else {
-            $user = wp_get_current_user();
-            $assigned_to = get_post_meta( $post_id, "assigned_to", true );
-            if ( isset( $assigned_to ) && $assigned_to === "user-" . $user->ID ) {
-                return true;
-            } else {
-                $shares = $wpdb->get_results( $wpdb->prepare(
-                    "SELECT
-                        *
-                    FROM
-                        `$wpdb->dt_share`
-                    WHERE
-                        post_id = %s",
-                    $post_id
-                ), ARRAY_A );
-                foreach ( $shares as $share ) {
-                    if ( (int) $share['user_id'] === $user->ID ) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
+        //same as can_view();
+        return self::can_view( $post_type, $post_id );
     }
 
     public static function get_label_for_post_type( $post_type, $singular = false ){
@@ -629,6 +612,9 @@ class Disciple_Tools_Posts
                 if ( !in_array( "shared", $include )){
                     $include[] = "shared";
                 }
+                if ( current_user_can( 'access_specific_sources' ) ){
+                    $include[] = "allowed_sources";
+                }
             };
         }
         foreach ( $include as $i ){
@@ -636,12 +622,21 @@ class Disciple_Tools_Posts
                 $share_joins = "LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
                 $access_query = "shares.user_id = $current_user->ID ";
             }
+            if ( $i === "allowed_sources" ){
+                $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+                if ( !empty( $allowed_sources ) ){
+                    $sources_sql = dt_array_to_sql( $allowed_sources );
+                    $access_joins .= "LEFT JOIN $wpdb->postmeta AS source_access ON ( $wpdb->posts.ID = source_access.post_id AND source_access.meta_key = 'sources' ) ";
+                    $access_query .= ( !empty( $access_query ) ? "OR" : "" ) ." ( source_access.meta_key = 'sources' AND source_access.meta_value IN ( $sources_sql ) )";
+
+                }
+            }
         }
         if ( in_array( "shared", $query["assigned_to"] ) ){
             $share_joins = "LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
             $access_query = ( !empty( $access_query ) ? "OR" : "" ) ." shares.user_id = $current_user->ID ";
             if ( !in_array( "me", $query["assigned_to"] ) && !in_array( "all", $query["assigned_to"] ) ){
-                $access_joins = "INNER JOIN $wpdb->postmeta AS assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id ) ";
+                $access_joins .= "INNER JOIN $wpdb->postmeta AS assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id ) ";
                 $access_query .= ( !empty( $access_query ) ? "AND" : "" ) ." ( assigned_to.meta_key = 'assigned_to' AND assigned_to.meta_value != 'user-$current_user->ID' )";
             }
         }
@@ -684,7 +679,9 @@ class Disciple_Tools_Posts
                         } else {
                             break;
                         }
-                        $access_joins = "INNER JOIN $wpdb->postmeta AS assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id ) ";
+                        if ( strpos( $access_joins, "assigned_to" ) === false ){
+                            $access_joins .= "INNER JOIN $wpdb->postmeta AS assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id ) ";
+                        }
                         $access_query .= ( !empty( $access_query ) ? $connector : "" ) . ( $connector == "AND" ? " ( " : "" ) . " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value = '" . esc_sql( $assigned_to ) . "' ) " . ( $connector == "AND" ? " ) " : "" );
 
                     }

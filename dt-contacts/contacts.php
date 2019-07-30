@@ -1358,7 +1358,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         $numbers = [];
-
+        $query_sql = "";
         $user_id = get_current_user_id();
         $access_sql = "";
         $user_post = Disciple_Tools_Users::get_contact_for_user( $user_id ) ?? 0;
@@ -1398,6 +1398,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $all_access = "INNER JOIN $wpdb->dt_share AS shares 
             ON ( shares.post_id = a.ID
                  AND shares.user_id = " . $user_id . " ) ";
+            if ( current_user_can( "access_specific_sources" ) && $tab === "all" ){
+                $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() );
+                $sources_sql = dt_array_to_sql( $allowed_sources );
+                $all_access = "Left JOIN $wpdb->postmeta AS source_access ON ( a.ID = source_access.post_id AND source_access.meta_key = 'sources' )";
+                $query_sql .= "  AND source_access.meta_value IN ( $sources_sql ) ";
+                $all_access .= " LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = a.ID AND shares.user_id = " . $user_id . " ) ";
+                $query_sql .= " OR shares.user_id = " . $user_id . " ";
+            }
         }
         if ( $tab === "my" ){
             $access_sql = $my_access;
@@ -1413,13 +1421,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepare
         $personal_counts = $wpdb->get_results("
-            SELECT (SELECT count(a.ID)
+            SELECT (SELECT count( DISTINCT( a.ID ))
             FROM $wpdb->posts as a
               " . $access_sql . $closed . "
               INNER JOIN $wpdb->postmeta as type
                 ON a.ID=type.post_id AND type.meta_key = 'type'
             WHERE a.post_status = 'publish'
             AND post_type = 'contacts'
+            " . $query_sql . "
             AND (( type.meta_value = 'media' OR type.meta_value = 'next_gen' )
                 OR ( type.meta_key IS NULL ))
             )
@@ -1481,6 +1490,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish'
+              " . $query_sql . "
               AND post_type = 'contacts')
             as update_needed,
             (SELECT count(a.ID)
@@ -1496,6 +1506,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish'
+              " . $query_sql . "
               AND post_type = 'contacts')
             as active,
             (SELECT count(a.ID)
@@ -1511,6 +1522,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish'
+              " . $query_sql . "
               AND post_type = 'contacts')
             as needs_accepted,
             (SELECT count(a.ID)
@@ -1530,6 +1542,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish'
+              " . $query_sql . "
               AND post_type = 'contacts')
             as contact_unattempted,
             (SELECT count(a.ID)
@@ -1549,6 +1562,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish'
+              " . $query_sql . "
               AND post_type = 'contacts' )
             as meeting_scheduled
             ", ARRAY_A );

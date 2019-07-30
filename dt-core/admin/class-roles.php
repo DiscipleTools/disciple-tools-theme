@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 14;
+    private static $target_roles_version_number = 15;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -189,10 +189,7 @@ class Disciple_Tools_Roles
                 'access_contacts'           => true,
                 'create_contacts'           => true,  //create a new contact
                 'update_shared_contacts'    => true,
-                'view_any_contacts'         => true,    //view any contacts
-                'assign_any_contacts'       => true,  //assign contacts to others
-                'update_any_contacts'       => true,  //update any contacts
-                'delete_any_contacts'       => true,  //delete any contacts
+                'access_specific_sources'   => true
             ]
         );
 
