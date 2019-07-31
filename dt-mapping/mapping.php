@@ -1801,7 +1801,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             return $result['name'] ?? '';
         }
 
-
         public function get_population_division() {
             $data = [];
 

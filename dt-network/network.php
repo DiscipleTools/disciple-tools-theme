@@ -514,7 +514,7 @@ class Disciple_Tools_Snapshot_Report {
         ];
 
         if ( $report_data ) {
-            set_transient( 'dt_snapshot_report', $report_data, strtotime( 'tomorrow' ) );
+            set_transient( 'dt_snapshot_report', $report_data, 60 * 60 * 24 );
 
             return $report_data;
         } else {
