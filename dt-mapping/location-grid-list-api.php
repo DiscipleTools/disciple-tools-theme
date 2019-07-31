@@ -58,6 +58,30 @@ if ( isset( $_GET['type'] ) && isset( $_GET['longitude'] ) && isset( $_GET['lati
         echo json_encode( $response );
     }
 
+    // possible list
+    if ( $_GET['type'] === 'possible_matches' ) {
+
+        $level = null;
+        if ( isset( $_GET['level'] ) ) {
+            $level = sanitize_text_field( wp_unslash( $_GET['level'] ) );
+        }
+        $country_code = null;
+        if ( isset( $_GET['country_code'] ) ) {
+            $country_code = sanitize_text_field( wp_unslash( $_GET['country_code'] ) );
+        }
+        $longitude = sanitize_text_field( wp_unslash( $_GET['longitude'] ) );
+        $latitude  = sanitize_text_field( wp_unslash( $_GET['latitude'] ) );
+
+        require_once( '../dt-core/global-functions.php' );
+        require_once( 'location-grid-geocoder.php' ); // Location grid geocoder
+        $geocoder = new Location_Grid_Geocoder();
+
+        $response = $geocoder->get_possible_matches_by_lnglat( $longitude, $latitude, $country_code );
+
+        header( 'Content-type: application/json' );
+        echo json_encode( $response );
+    }
+
 endif; // html
 
 exit();

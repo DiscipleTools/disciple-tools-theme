@@ -78,6 +78,17 @@ class Location_Grid_Geocoder {
         return [];
     }
 
+    public function get_possible_matches_by_lnglat( $longitude, $latitude, $country_code = null, $level = null ) {
+
+        $longitude = (float) $longitude;
+        $latitude = (float) $latitude;
+
+        $results = $this->query_possible_matches_by_lnglat( $longitude, $latitude );
+
+        dt_write_log( $results );
+        return $results;
+    }
+
     /**
      * Test 1: Test for exact match and return results.
      *
@@ -561,6 +572,57 @@ class Location_Grid_Geocoder {
 
             return $query;
         }
+
+    }
+
+    public function query_possible_matches_by_lnglat( float $longitude, float $latitude ): array {
+        global $wpdb;
+
+        $raw_query = $wpdb->get_results( $wpdb->prepare( "
+                SELECT g.*, a0.name as admin0_name, a1.name as admin1_name, a2.name as admin2_name, a3.name as admin3_name, a4.name as admin4_name, a5.name as admin5_name
+                FROM $wpdb->dt_location_grid as g
+                LEFT JOIN $wpdb->dt_location_grid as a0 ON g.admin0_grid_id=a0.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a1 ON g.admin1_grid_id=a1.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a2 ON g.admin2_grid_id=a2.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a3 ON g.admin3_grid_id=a3.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a4 ON g.admin4_grid_id=a4.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a5 ON g.admin5_grid_id=a5.grid_id
+                WHERE
+                g.north_latitude >= %f AND
+                g.south_latitude <= %f AND
+                g.west_longitude >= %f AND
+                g.east_longitude <= %f
+                ORDER BY g.level DESC
+                LIMIT 15;
+            ", $latitude, $latitude, $longitude, $longitude ), ARRAY_A );
+
+        if ( empty( $raw_query ) ) {
+            return [];
+        }
+        foreach ( $raw_query as $row ) {
+            $query[$row['grid_id']] = $row;
+        }
+
+        // get highest level found
+        $highest = 0;
+        foreach ( $query as $row ) {
+            if ( $row['level'] > $highest ) {
+                $highest = $row['level'];
+            }
+        }
+
+
+        $results = [];
+
+        foreach( $query as $result ) {
+            if ( $result['level'] === $highest ) {
+                $results['grid_id'] = $result;
+
+                $results['admin0_grid_id'] = $query[$result['grid_id']]; // @todo unfinished
+            }
+        }
+
+        return $query;
 
     }
 
