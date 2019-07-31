@@ -1766,7 +1766,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $list = json_decode( $list, true );
 
             // cache new response
-            set_transient( 'dt_mapping_module_available_geojson', $list, strtotime( 'today midnight' ) );
+            set_transient( 'dt_mapping_module_available_geojson', $list, 60 * 60 * 24 );
 
             return $list;
         }

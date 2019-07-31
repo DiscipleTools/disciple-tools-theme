@@ -77,17 +77,21 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function refresh_pace( WP_REST_Request $request ) {
+        $query_params = $request->get_query_params();
+        $force = isset( $query_params["force"] ) && $query_params["force"] === "1";
         if ( !$this->has_permission() ){
             return new WP_Error( "refresh_pace", "Missing Permissions", [ 'status' => 400 ] );
         }
-        return $this->get_workers_data( true );
+        return $this->get_workers_data( $force );
     }
 
-    public function workers_pace() {
+    public function workers_pace( WP_REST_Request $request ) {
+        $query_params = $request->get_query_params();
+        $force = isset( $query_params["force"] ) && $query_params["force"] === "1";
         if ( ! $this->has_permission() ){
             return new WP_Error( "workers_pace", "Missing Permissions", [ 'status' => 400 ] );
         }
-        return $this->get_workers_data();
+        return $this->get_workers_data( $force );
     }
 
     public function contact_progress_per_worker() {
@@ -296,7 +300,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             ];
         }
 
-        set_transient( 'chart_contact_progress_per_worker', maybe_serialize( $chart ), strtotime( 'tomorrow' ) );
+        set_transient( 'chart_contact_progress_per_worker', maybe_serialize( $chart ), 60 * 60 * 24 );
 
         return $chart;
     }
@@ -400,7 +404,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
           'timestamp' => current_time( 'timestamp' ),
         ];
 
-        set_transient( 'chart_user_pace', $response, strtotime( 'tomorrow' ) );
+        set_transient( 'chart_user_pace', $response, 60 * 60 * 24 );
 
         return $response;
     }
@@ -508,7 +512,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             "timestamp" => current_time( "mysql" ),
         ];
 
-        set_transient( 'get_workers_data', maybe_serialize( $return ), strtotime( 'tomorrow' ) );
+        set_transient( 'get_workers_data', maybe_serialize( $return ), 60 * 60 * 24 );
 
         return $return;
     }

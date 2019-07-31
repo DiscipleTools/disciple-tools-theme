@@ -531,7 +531,7 @@ class Disciple_Tools_Mapping_Queries {
 
         wp_cache_set( 'counter', $results );
 
-        set_transient( 'counter', $results, strtotime( 'Tomorrow 3am' ) );
+        set_transient( 'counter', $results, 60 * 60 * 24 );
 
         return $results;
     }
@@ -634,7 +634,7 @@ class Disciple_Tools_Mapping_Queries {
             GROUP BY t4.admin3_geonameid, t4.type;
         ", ARRAY_A );
 
-        set_transient( 'get_geoname_totals', $results, strtotime( 'Tomorrow 1am' ) );
+        set_transient( 'get_geoname_totals', $results, 60 * 60 * 24 );
 
         if ( empty( $results ) ) {
             $results = [];
