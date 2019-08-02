@@ -73,7 +73,7 @@ jQuery(document).ready(function($) {
     assignedToInput.trigger('input.typeahead')
   })
 
-  
+
 
 
   /**
@@ -458,7 +458,7 @@ jQuery(document).ready(function($) {
         $("#new-group-link").html(`<a href="${_.escape( newGroup.permalink )}">${_.escape( title )}</a>`)
         $(".hide-after-group-create").hide()
         $('#go-to-group').attr('href', newGroup.permalink);
-        Typeahead['.js-typeahead-child_groups'].addMultiselectItemLayout({ID:newGroup.post_id.toString(), name:title})
+        Typeahead['.js-typeahead-child_groups'].addMultiselectItemLayout({ID:newGroup.ID.toString(), name:title})
       })
       .catch(function(error) {
         $(".js-create-group-button").removeClass("loading").addClass("alert");
@@ -885,7 +885,7 @@ jQuery(document).ready(function($) {
         $("#new-contact-link").html(`<a href="${_.escape( newContact.permalink )}">${_.escape( title )}</a>`)
         $(".hide-after-contact-create").hide()
         $('#go-to-contact').attr('href', _.escape( newContact.permalink ));
-        group.members.push({post_title:title, ID:newContact.post_id})
+        group.members.push({post_title:title, ID:newContact.ID})
         if ( group.members.length > group.member_count ){
           group.member_count = group.members.length
         }
