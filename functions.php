@@ -142,7 +142,7 @@ else {
              */
             $this->token = 'disciple_tools';
             $this->version = '0.22.0';
-            $this->migration_number = 25;
+            $this->migration_number = 26;
 
 
             $this->theme_url = get_template_directory_uri() . '/';
