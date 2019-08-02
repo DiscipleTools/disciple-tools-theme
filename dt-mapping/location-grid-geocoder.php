@@ -11,7 +11,7 @@ class Location_Grid_Geocoder {
 
     public function __construct() {
         $this->geojson         = [];
-        $this->geometry_folder = $this->geometry_folder();
+        $this->geometry_folder = $this->_geometry_folder();
         if ( function_exists( 'dt_get_location_grid_mirror' ) ) {
             $this->mirror_source = dt_get_location_grid_mirror();
         } else {
@@ -78,15 +78,102 @@ class Location_Grid_Geocoder {
         return [];
     }
 
-    public function get_possible_matches_by_lnglat( $longitude, $latitude, $country_code = null, $level = null ) {
+    public function get_possible_matches_by_lnglat( $longitude, $latitude, $country_code = NULL ) {
 
         $longitude = (float) $longitude;
         $latitude = (float) $latitude;
 
-        $results = $this->query_possible_matches_by_lnglat( $longitude, $latitude );
+        if ( ! $country_code ) {
+            $country_code = $this->mapbox_get_country_by_coordinates( $longitude, $latitude );
+        }
 
-        dt_write_log( $results );
-        return $results;
+        $query = $this->query_possible_matches_by_lnglat( $longitude, $latitude, $country_code );
+        if ( empty( $query ) ) {
+            return [];
+        }
+
+        $lowest = 0;
+        $multiple_admin0 = [];
+        foreach ( $query as $row ) {
+            // lowest level
+            if ( $row['level'] > $lowest ) {
+                $lowest = $row['level'];
+            }
+
+            // remove non-viable country results
+            $multiple_admin0[$row['admin0_grid_id']] = true;
+
+        }
+
+        $compiled = [];
+        foreach( $query as $result ) {
+            if ( $result['level'] === $lowest ) {
+                $compiled[$result['grid_id']] = $result;
+
+                // level 0
+                if ( isset( $query[$result['admin0_grid_id']] ) ) {
+                    $compiled[$result['admin0_grid_id']] = $query[$result['admin0_grid_id']];
+                } else {
+                    $compiled[$result['admin0_grid_id']] = $this->query_by_grid_id( $result['admin0_grid_id'] );
+                    if ( empty( $compiled[$result['admin0_grid_id']] ) ) {
+                        unset( $compiled[$result['admin0_grid_id']] );
+                    }
+                }
+
+                // level 1
+                if ( isset( $query[$result['admin1_grid_id']] ) ) {
+                    $compiled[$result['admin1_grid_id']] = $query[$result['admin1_grid_id']];
+                } else {
+                    $compiled[$result['admin1_grid_id']] = $this->query_by_grid_id( $result['admin1_grid_id'] );
+                    if ( empty( $compiled[$result['admin1_grid_id']] ) ) {
+                        unset( $compiled[$result['admin1_grid_id']] );
+                    }
+                }
+
+                // level 2
+                if ( isset( $query[$result['admin2_grid_id']] ) ) {
+                    $compiled[$result['admin2_grid_id']] = $query[$result['admin2_grid_id']];
+                } else {
+                    $compiled[$result['admin2_grid_id']] = $this->query_by_grid_id( $result['admin2_grid_id'] );
+                    if ( empty( $compiled[$result['admin2_grid_id']] ) ) {
+                        unset( $compiled[$result['admin2_grid_id']] );
+                    }
+                }
+
+                // level 3
+                if ( isset( $query[$result['admin3_grid_id']] ) ) {
+                    $compiled[$result['admin3_grid_id']] = $query[$result['admin3_grid_id']];
+                } else {
+
+                    $compiled[$result['admin3_grid_id']] = $this->query_by_grid_id( $result['admin3_grid_id'] );
+                    if ( empty( $compiled[$result['admin3_grid_id']] ) ) {
+                        unset( $compiled[$result['admin3_grid_id']] );
+                    }
+                }
+
+                // level 4
+                if ( isset( $query[$result['admin4_grid_id']] ) ) {
+                    $compiled[$result['admin4_grid_id']] = $query[$result['admin4_grid_id']];
+                } else {
+                    $compiled[$result['admin4_grid_id']] = $this->query_by_grid_id( $result['admin4_grid_id'] );
+                    if ( empty( $compiled[$result['admin4_grid_id']] ) ) {
+                        unset( $compiled[$result['admin4_grid_id']] );
+                    }
+                }
+
+                // level 5
+                if ( isset( $query[$result['admin5_grid_id']] ) ) {
+                    $compiled[$result['admin5_grid_id']] = $query[$result['admin5_grid_id']];
+                } else {
+                    $compiled[$result['admin5_grid_id']] = $this->query_by_grid_id( $result['admin5_grid_id'] );
+                    if ( empty( $compiled[$result['admin5_grid_id']] ) ) {
+                        unset( $compiled[$result['admin5_grid_id']] );
+                    }
+                }
+            }
+        }
+
+        return $compiled;
     }
 
     /**
@@ -155,7 +242,7 @@ class Location_Grid_Geocoder {
         if ( ! empty( $this->geojson ) && ! empty( $results ) ) {
             error_log( '3' );
 
-            $grid_id = $this->grid_id_from_nearest_polygon_line( $results, $longitude, $latitude );
+            $grid_id = $this->_grid_id_from_nearest_polygon_line( $results, $longitude, $latitude );
 
             // return test 3 results
             foreach ( $results as $result ) {
@@ -193,7 +280,7 @@ class Location_Grid_Geocoder {
          * These are often islands, etc.
          * Therefore find the nearest center point of admin1 and admin2 to this point.
          */
-        $grid_id = $this->grid_id_by_nearest_centerpoint( $longitude, $latitude );
+        $grid_id = $this->_grid_id_by_nearest_centerpoint( $longitude, $latitude );
         if ( $grid_id === false ) {
             return false;
         }
@@ -229,7 +316,7 @@ class Location_Grid_Geocoder {
      *
      * @return bool|string
      */
-    public function grid_id_from_nearest_polygon_line( $results, $longitude, $latitude ) {
+    public function _grid_id_from_nearest_polygon_line( $results, $longitude, $latitude ) {
 
         // get location_grid geojson from test 2
         $geojson         = $this->geojson;
@@ -282,7 +369,7 @@ class Location_Grid_Geocoder {
      *
      * @return bool
      */
-    public function grid_id_by_nearest_centerpoint( $longitude, $latitude ) {
+    public function _grid_id_by_nearest_centerpoint( $longitude, $latitude ) {
         global $wpdb;
 
         // create bounding box from longitude/latitude
@@ -470,6 +557,47 @@ class Location_Grid_Geocoder {
         return $miles;
     }
 
+    public function _get_country_levels( $reset = false ) : array {
+        if ( $reset ) {
+            delete_option( 'dt_location_grid_country_levels' );
+        }
+
+        $country_levels = get_option( 'dt_location_grid_country_levels' );
+
+        if ( empty( $country_levels ) ) {
+            global $wpdb;
+            $query = $wpdb->get_results( "
+                SELECT g.country_code, g.admin0_code, MAX(g.level) as level
+                FROM $wpdb->dt_location_grid as g
+                WHERE g.level < 10 
+                GROUP BY g.admin0_code, g.country_code;
+            ", ARRAY_A );
+            if ( empty( $query ) ) {
+                error_log( 'No location records found. You must install location_grid database.' );
+                return [];
+            }
+            $country_levels = [];
+            foreach ( $query as $country ) {
+                if ( ! empty( $country['country_code'] ) ) {
+                    $country_levels[$country['country_code']] = $country;
+                }
+            }
+            update_option( 'dt_location_grid_country_levels', $country_levels, false );
+        }
+
+        return $country_levels;
+    }
+
+    public function _geometry_folder() {
+        $dir         = wp_upload_dir();
+        $uploads_dir = trailingslashit( $dir['basedir'] );
+        if ( ! file_exists( $uploads_dir . 'location_grid' ) ) {
+            mkdir( $uploads_dir . 'location_grid' );
+        }
+
+        return $uploads_dir . 'location_grid/';
+    }
+
     public function query_level_by_lnglat( float $longitude, float $latitude, int $level ): array {
         global $wpdb;
 
@@ -543,7 +671,7 @@ class Location_Grid_Geocoder {
         } else { // using country_code is twice as fast.
 
             // get level
-            $country_levels = $this->get_country_levels();
+            $country_levels = $this->_get_country_levels();
             $country_code = strtoupper( $country_code );
             $level = $country_levels[$country_code]['level'] ?? 0;
 
@@ -575,10 +703,30 @@ class Location_Grid_Geocoder {
 
     }
 
-    public function query_possible_matches_by_lnglat( float $longitude, float $latitude ): array {
+    public function query_possible_matches_by_lnglat( float $longitude, float $latitude, $country_code = NULL ): array {
         global $wpdb;
 
-        $raw_query = $wpdb->get_results( $wpdb->prepare( "
+        if ( $country_code ) {
+            $raw_query = $wpdb->get_results( $wpdb->prepare( "
+                SELECT g.*, a0.name as admin0_name, a1.name as admin1_name, a2.name as admin2_name, a3.name as admin3_name, a4.name as admin4_name, a5.name as admin5_name
+                FROM $wpdb->dt_location_grid as g
+                LEFT JOIN $wpdb->dt_location_grid as a0 ON g.admin0_grid_id=a0.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a1 ON g.admin1_grid_id=a1.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a2 ON g.admin2_grid_id=a2.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a3 ON g.admin3_grid_id=a3.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a4 ON g.admin4_grid_id=a4.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a5 ON g.admin5_grid_id=a5.grid_id
+                WHERE
+                g.north_latitude >= %f AND
+                g.south_latitude <= %f AND
+                g.west_longitude >= %f AND
+                g.east_longitude <= %f AND 
+                g.country_code = %s
+                ORDER BY g.level DESC
+                LIMIT 15;
+            ", $latitude, $latitude, $longitude, $longitude, $country_code ), ARRAY_A );
+        } else {
+            $raw_query = $wpdb->get_results( $wpdb->prepare( "
                 SELECT g.*, a0.name as admin0_name, a1.name as admin1_name, a2.name as admin2_name, a3.name as admin3_name, a4.name as admin4_name, a5.name as admin5_name
                 FROM $wpdb->dt_location_grid as g
                 LEFT JOIN $wpdb->dt_location_grid as a0 ON g.admin0_grid_id=a0.grid_id
@@ -595,76 +743,142 @@ class Location_Grid_Geocoder {
                 ORDER BY g.level DESC
                 LIMIT 15;
             ", $latitude, $latitude, $longitude, $longitude ), ARRAY_A );
+        }
+
 
         if ( empty( $raw_query ) ) {
             return [];
         }
-        foreach ( $raw_query as $row ) {
-            $query[$row['grid_id']] = $row;
-        }
 
-        // get highest level found
-        $highest = 0;
-        foreach ( $query as $row ) {
-            if ( $row['level'] > $highest ) {
-                $highest = $row['level'];
-            }
-        }
-
-
-        $results = [];
-
-        foreach( $query as $result ) {
-            if ( $result['level'] === $highest ) {
-                $results['grid_id'] = $result;
-
-                $results['admin0_grid_id'] = $query[$result['grid_id']]; // @todo unfinished
-            }
-        }
-
-        return $query;
+        return $this->_format_location_grid_results( $raw_query );
 
     }
 
-    public function get_country_levels( $reset = false ) : array {
-        if ( $reset ) {
-            delete_option( 'dt_location_grid_country_levels' );
+    public function query_by_grid_id( $grid_id ) {
+        global $wpdb;
+        return $this->_format_location_grid_results(
+            $wpdb->get_row( $wpdb->prepare( "
+                        SELECT g.*, a0.name as admin0_name, a1.name as admin1_name, a2.name as admin2_name, a3.name as admin3_name, a4.name as admin4_name, a5.name as admin5_name
+                        FROM $wpdb->dt_location_grid as g
+                        LEFT JOIN $wpdb->dt_location_grid as a0 ON g.admin0_grid_id=a0.grid_id
+                        LEFT JOIN $wpdb->dt_location_grid as a1 ON g.admin1_grid_id=a1.grid_id
+                        LEFT JOIN $wpdb->dt_location_grid as a2 ON g.admin2_grid_id=a2.grid_id
+                        LEFT JOIN $wpdb->dt_location_grid as a3 ON g.admin3_grid_id=a3.grid_id
+                        LEFT JOIN $wpdb->dt_location_grid as a4 ON g.admin4_grid_id=a4.grid_id
+                        LEFT JOIN $wpdb->dt_location_grid as a5 ON g.admin5_grid_id=a5.grid_id
+                        WHERE g.grid_id = %d
+                    ", $grid_id ), ARRAY_A )
+        );
+    }
+
+    /**
+     * Returns country_code from longitude and latitude
+     * @param $longitude
+     * @param $latitude
+     *
+     * @return string|bool
+     */
+    public function mapbox_get_country_by_coordinates( $longitude, $latitude ) {
+        $country_code = false;
+        if ( get_option( 'dt_mapbox_api_key' ) ) {
+            $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'. $longitude .','. $latitude . '.json?types=country&access_token=' . get_option( 'dt_mapbox_api_key' );
+            $data_result = @file_get_contents( $url );
+            if ( ! $data_result ) {
+                return false;
+            }
+            $data = json_decode( $data_result, true );
+
+            if ( isset( $data['features'][0]['properties']['short_code'] ) ) {
+                $country_code = strtoupper( $data['features'][0]['properties']['short_code'] );
+            }
+        }
+        return $country_code;
+    }
+
+    public function mapbox_forward_lookup( $address, $country_code = NULL ) {
+        $address = str_replace(';', ' ', $address );
+        $address = utf8_uri_encode( $address );
+
+        if ( $country_code ) {
+            $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'. $address . '.json?types=address&access_token=' . get_option( 'dt_mapbox_api_key' );
+        } else {
+            $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'. $address . '.json?country='.$country_code.'&types=address&access_token=' . get_option( 'dt_mapbox_api_key' );
         }
 
-        $country_levels = get_option( 'dt_location_grid_country_levels' );
+        $data_result = @file_get_contents( $url );
+        if ( ! $data_result ) {
+            return false;
+        }
+        $data = json_decode( $data_result, true );
 
-        if ( empty( $country_levels ) ) {
-            global $wpdb;
-            $query = $wpdb->get_results( "
-                SELECT g.country_code, g.admin0_code, MAX(g.level) as level
-                FROM $wpdb->dt_location_grid as g
-                WHERE g.level < 10 
-                GROUP BY g.admin0_code, g.country_code;
-            ", ARRAY_A );
-            if ( empty( $query ) ) {
-                error_log( 'No location records found. You must install location_grid database.' );
-                return [];
-            }
-            $country_levels = [];
-            foreach ( $query as $country ) {
-                if ( ! empty( $country['country_code'] ) ) {
-                    $country_levels[$country['country_code']] = $country;
+        return $data;
+    }
+
+    public function mapbox_reverse_lookup( $longitude, $latitude ) {
+        $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'. $longitude .','. $latitude . '.json?access_token=' . get_option( 'dt_mapbox_api_key' );
+        $data_result = @file_get_contents( $url );
+        if ( ! $data_result ) {
+            return false;
+        }
+        $data = json_decode( $data_result, true );
+        return $data;
+    }
+
+    public function _format_location_grid_results( $query ) {
+        if ( empty( $query ) ) {
+            $keyed_query = [];
+            foreach( $keyed_query as $index => $row ) {
+                $keyed_query[$index] = [];
+
+                if ( isset( $row['grid_id'] ) ) {
+                    $keyed_query[$index] = (int) $row['grid_id'];
+                }
+                if ( isset( $row['level'] ) ) {
+                    $keyed_query[$index] = (int) $row['level'];
+                }
+                if ( isset( $row['parent_id'] ) ) {
+                    $keyed_query[$index] = (int) $row['parent_id'];
+                }
+                if ( isset( $row['admin0_grid_id'] ) ) {
+                    $keyed_query[$index] = (int) $row['admin0_grid_id'];
+                }
+                if ( isset( $row['admin1_grid_id'] ) ) {
+                    $keyed_query[$index] = (int) $row['admin1_grid_id'];
+                }
+                if ( isset( $row['admin2_grid_id'] ) ) {
+                    $keyed_query[$index] = (int) $row['admin2_grid_id'];
+                }
+                if ( isset( $row['admin3_grid_id'] ) ) {
+                    $keyed_query[$index] = (int) $row['admin3_grid_id'];
+                }
+                if ( isset( $row['admin4_grid_id'] ) ) {
+                    $keyed_query[$index] = (int) $row['admin4_grid_id'];
+                }
+                if ( isset( $row['admin5_grid_id'] ) ) {
+                    $keyed_query[$index] = (int) $row['admin5_grid_id'];
+                }
+                if ( isset( $row['longitude'] ) ) {
+                    $keyed_query[$index] = (float) $row['longitude'];
+                }
+                if ( isset( $row['latitude'] ) ) {
+                    $keyed_query[$index] = (float) $row['latitude'];
+                }
+                if ( isset( $row['north_latitude'] ) ) {
+                    $keyed_query[$index] = (float) $row['north_latitude'];
+                }
+                if ( isset( $row['south_latitude'] ) ) {
+                    $keyed_query[$index] = (float) $row['south_latitude'];
+                }
+                if ( isset( $row['west_longitude'] ) ) {
+                    $keyed_query[$index] = (float) $row['west_longitude'];
+                }
+                if ( isset( $row['east_longitude'] ) ) {
+                    $keyed_query[$index] = (float) $row['east_longitude'];
                 }
             }
-            update_option( 'dt_location_grid_country_levels', $country_levels, false );
+            $query = $keyed_query;
         }
-
-        return $country_levels;
-    }
-
-    public function geometry_folder() {
-        $dir         = wp_upload_dir();
-        $uploads_dir = trailingslashit( $dir['basedir'] );
-        if ( ! file_exists( $uploads_dir . 'location_grid' ) ) {
-            mkdir( $uploads_dir . 'location_grid' );
-        }
-
-        return $uploads_dir . 'location_grid/';
+        return $query;
     }
 
 }
