@@ -51,8 +51,13 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
     <div class="top-bar" id="top-bar-menu"
          data-sticky style="width:100%;margin-top:0">
         <div>
-            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/disciple-tools-logo-beta.png" ?>"
-                 style="margin:0 17px; height: 20px">
+            <img src="<?php
+            /**
+             * Filter for replacing the logo
+             */
+            $url = apply_filters( 'dt_default_logo', get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-beta.png" );
+            echo esc_url( $url );
+            ?>" style="margin:0 17px; height: 20px">
         </div>
         <div class="top-bar-left">
             <ul class="menu">
