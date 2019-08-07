@@ -586,11 +586,13 @@ function refresh_data( key ) {
     },
   })
     .done( function( response ) {
-        if ( DRILLDOWNDATA.settings.current_map !== undefined ) {
-          DRILLDOWN.get_drill_down('map_chart_drilldown', DRILLDOWNDATA.settings.current_map )
-        } else {
-          DRILLDOWN.get_drill_down('map_chart_drilldown')
-        }
+        //reload because drilldown does not contain new data.
+        location.reload();
+        // if ( DRILLDOWNDATA.settings.current_map !== undefined ) {
+        //   DRILLDOWN.get_drill_down('map_chart_drilldown', DRILLDOWNDATA.settings.current_map )
+        // } else {
+        //   DRILLDOWN.get_drill_down('map_chart_drilldown')
+        // }
     })
     .fail(function (err) {
       console.log("error")
