@@ -30,6 +30,9 @@ if ( ! defined( 'WP_CONTENT_URL' ) ) {
 // register global database
 global $wpdb;
 $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
+require_once( '../dt-core/global-functions.php' );
+require_once( 'location-grid-geocoder.php' ); // Location grid geocoder
+$geocoder = new Location_Grid_Geocoder();
 
 // geocodes longitude and latitude and returns json array of location_grid record
 if ( isset( $_GET['type'] ) && isset( $_GET['longitude'] ) && isset( $_GET['latitude'] ) && isset( $_GET['nonce'] ) ) :
@@ -47,10 +50,6 @@ if ( isset( $_GET['type'] ) && isset( $_GET['longitude'] ) && isset( $_GET['lati
         }
         $longitude = sanitize_text_field( wp_unslash( $_GET['longitude'] ) );
         $latitude  = sanitize_text_field( wp_unslash( $_GET['latitude'] ) );
-
-        require_once( '../dt-core/global-functions.php' );
-        require_once( 'location-grid-geocoder.php' ); // Location grid geocoder
-        $geocoder = new Location_Grid_Geocoder();
 
         $response = $geocoder->get_grid_id_by_lnglat( $longitude, $latitude, $country_code );
 
@@ -72,10 +71,6 @@ if ( isset( $_GET['type'] ) && isset( $_GET['longitude'] ) && isset( $_GET['lati
         $longitude = sanitize_text_field( wp_unslash( $_GET['longitude'] ) );
         $latitude  = sanitize_text_field( wp_unslash( $_GET['latitude'] ) );
 
-        require_once( '../dt-core/global-functions.php' );
-        require_once( 'location-grid-geocoder.php' ); // Location grid geocoder
-        $geocoder = new Location_Grid_Geocoder();
-
         $response = $geocoder->get_possible_matches_by_lnglat( $longitude, $latitude, $country_code );
 
         header( 'Content-type: application/json' );
@@ -83,5 +78,29 @@ if ( isset( $_GET['type'] ) && isset( $_GET['longitude'] ) && isset( $_GET['lati
     }
 
 endif; // html
+
+// geocodes bounding box
+if ( isset( $_GET['type'] ) && isset( $_GET['north_latitude'] ) && isset( $_GET['south_latitude'] ) && isset( $_GET['west_longitude'] ) && isset( $_GET['east_longitude'] ) && isset( $_GET['nonce'] ) ) :
+
+    // ids within bounding box
+    if ( $_GET['type'] === 'match_within_bbox' ) {
+
+        $level = null;
+        if ( isset( $_GET['level'] ) ) {
+            $level = sanitize_text_field( wp_unslash( $_GET['level'] ) );
+        }
+
+        $north_latitude  = sanitize_text_field( wp_unslash( $_GET['north_latitude'] ) );
+        $south_latitude  = sanitize_text_field( wp_unslash( $_GET['south_latitude'] ) );
+        $west_longitude  = sanitize_text_field( wp_unslash( $_GET['west_longitude'] ) );
+        $east_longitude  = sanitize_text_field( wp_unslash( $_GET['east_longitude'] ) );
+
+        $response = $geocoder->get_matches_within_bbox( $north_latitude, $south_latitude, $west_longitude, $east_longitude, $level );
+
+        header( 'Content-type: application/json' );
+        echo json_encode( $response );
+    }
+
+endif;
 
 exit();

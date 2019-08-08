@@ -1890,8 +1890,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             return $list;
         }
     } DT_Mapping_Module::instance(); // end DT_Mapping_Module class
+} // end if class check
 
-
+if ( ! function_exists( 'dt_get_location_grid_mirror' ) ) {
     /**
      * Best way to call for the mapping polygon
      * @return array|string
@@ -1914,4 +1915,18 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
         return $mirror;
     }
-} // end if class check
+}
+
+if ( ! function_exists( 'dt_get_mapbox_endpoint' ) ) {
+    function dt_get_mapbox_endpoint( $type = 'places' ) : string {
+        switch( $type ) {
+            case 'permanent':
+                return 'https://api.mapbox.com/geocoding/v5/mapbox.places-permanent/';
+                break;
+            case 'places':
+            default:
+                return 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
+                break;
+        }
+    }
+}

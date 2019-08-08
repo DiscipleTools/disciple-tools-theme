@@ -176,6 +176,11 @@ class Location_Grid_Geocoder {
         return $compiled;
     }
 
+    public function get_matches_within_bbox( $north_latitude, $south_latitude, $west_longitude, $east_longitude, $level = null ) {
+        $data = $this->query_centerpoints_within_bbox( $north_latitude, $south_latitude, $west_longitude, $east_longitude, $level );
+        return $data;
+
+    }
     /**
      * Test 1: Test for exact match and return results.
      *
@@ -701,6 +706,42 @@ class Location_Grid_Geocoder {
             return $query;
         }
 
+    }
+
+    public function query_centerpoints_within_bbox( $north_latitude, $south_latitude, $west_longitude, $east_longitude, $level  ) {
+        global $wpdb;
+        if ( $level ) {
+            $query = $wpdb->get_col( $wpdb->prepare( "
+                SELECT grid_id
+                FROM $wpdb->dt_location_grid as g
+                WHERE 
+                g.latitude <= %f AND
+                g.latitude >= %f AND
+                g.longitude >= %f AND
+                g.longitude <= %f AND 
+                g.level = %d
+        ", $north_latitude, $south_latitude, $west_longitude, $east_longitude, $level ) );
+        } else {
+            $query = $wpdb->get_col( $wpdb->prepare( "
+                SELECT grid_id
+                FROM $wpdb->dt_location_grid as g
+                WHERE 
+                g.latitude <= %f AND
+                g.latitude >= %f AND
+                g.longitude >= %f AND
+                g.longitude <= %f 
+        ", $north_latitude, $south_latitude, $west_longitude, $east_longitude ) );
+        }
+
+        if ( empty( $query ) ) {
+            return [];
+        }
+
+        foreach( $query as $index => $item ) {
+            $query[$index] = (int) $item;
+        }
+
+        return $query;
     }
 
     public function query_possible_matches_by_lnglat( float $longitude, float $latitude, $country_code = NULL ): array {

@@ -875,9 +875,6 @@ jQuery(document).ready(function($) {
   $("#merge-dupe-modal").on("click", function() {
 
     editFieldsUpdate = {
-      // locations: {
-      //   values: []
-      // },
       people_groups: {
         values: []
       },
