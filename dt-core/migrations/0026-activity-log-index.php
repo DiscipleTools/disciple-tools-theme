@@ -3,13 +3,11 @@
 class Disciple_Tools_Migration_0026 extends Disciple_Tools_Migration {
     public function up() {
         global $wpdb;
-        $wpdb->query( "ALTER TABLE `{$wpdb->prefix}dt_activity_log` ADD INDEX object_id_index (object_id)" );
         $wpdb->query( "ALTER TABLE `{$wpdb->prefix}dt_activity_log` ADD INDEX meta_key_index (meta_key)" );
     }
 
     public function down() {
         global $wpdb;
-        $wpdb->query( "ALTER TABLE `{$wpdb->prefix}dt_activity_log` DROP INDEX object_id_index (object_id)" );
         $wpdb->query( "ALTER TABLE `{$wpdb->prefix}dt_activity_log` DROP INDEX meta_key_index (meta_key)" );
     }
 
