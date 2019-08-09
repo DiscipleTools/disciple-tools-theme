@@ -234,193 +234,203 @@ class DT_Mapping_Module_Migration_0007 extends DT_Mapping_Module_Migration {
                 $default_map_settings["children"] = $new_children;
                 update_option( 'dt_mapping_module_starting_map_level', $default_map_settings, false );
             }
-        }
 
 
-        // migrate custom locations
-        $custom_locations = $wpdb->get_results( "
-            SELECT * FROM $wpdb->dt_geonames WHERE is_custom_location = 1 OR geonameid >= 1000000000;
-        ", ARRAY_A );
-        if ( ! empty( $custom_locations ) && ! is_wp_error( $custom_locations ) ) {
-            // loop
 
-            // match the parent_id geonameid and convert it.
+            // migrate custom locations
+            $custom_locations = $wpdb->get_results( "
+                SELECT * FROM $wpdb->dt_geonames WHERE is_custom_location = 1 OR geonameid >= 1000000000;
+            ", ARRAY_A );
+            if ( ! empty( $custom_locations ) && ! is_wp_error( $custom_locations ) ) {
+                // loop
 
-            // save new custom location to location_grid
-            foreach ( $custom_locations as $value ) {
-                if ( isset( $geonames_ref[$value['geonameid']] ) ) {
-                    $level = 10;
-                    $level_name = 'place';
+                // match the parent_id geonameid and convert it.
 
-                    if ( $value['parent_id'] < 1000000000 ) {
-                        // not custom
-                        $parent_record = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_location_grid WHERE grid_id = ( SELECT parent_id FROM $wpdb->dt_location_grid WHERE grid_id =  %s LIMIT 1 )", $geonames_ref[$value['geonameid']]['grid_id'] ), ARRAY_A );
+                // save new custom location to location_grid
+                foreach ( $custom_locations as $value ) {
+                    if ( isset( $geonames_ref[ $value['parent_id'] ] ) ) {
+                        $parent_location_grid_id = $geonames_ref[ $value['parent_id'] ]["grid_id"];
+                        $level                   = 10;
+                        $level_name              = 'place';
+
+                        if ( $value['parent_id'] < 1000000000 ) {
+                            // not custom
+                            $parent_record = $wpdb->get_row( $wpdb->prepare( "
+                            SELECT * FROM $wpdb->dt_location_grid 
+                            WHERE grid_id = %s",
+                                $parent_location_grid_id
+                            ), ARRAY_A );
+                        } else {
+                            // custom
+                            continue; // abandon sub, sub nested custom locations
+                        }
+
+                        $max_id         = (int) $wpdb->get_var( "SELECT MAX(grid_id) FROM $wpdb->dt_location_grid" );
+                        $max_id         = max( $max_id, 1000000000 );
+                        $custom_grid_id = $max_id + 1;
+
+                        $wpdb->insert(
+                            $wpdb->dt_location_grid,
+                            [
+                                'grid_id'            => $custom_grid_id,
+                                'name'               => $value['name'],
+                                'level'              => $level,
+                                'level_name'         => $level_name,
+                                'country_code'       => $parent_record['country_code'],
+                                'admin0_code'        => $parent_record['admin0_code'],
+                                'parent_id'          => $parent_location_grid_id,
+                                'admin0_grid_id'     => $parent_record['admin0_grid_id'],
+                                'admin1_grid_id'     => $parent_record['admin1_grid_id'],
+                                'admin2_grid_id'     => $parent_record['admin2_grid_id'],
+                                'admin3_grid_id'     => $parent_record['admin3_grid_id'],
+                                'admin4_grid_id'     => $parent_record['admin4_grid_id'],
+                                'admin5_grid_id'     => $parent_record['admin5_grid_id'],
+                                'longitude'          => $parent_record['longitude'],
+                                'latitude'           => $parent_record['latitude'],
+                                'north_latitude'     => '',
+                                'south_latitude'     => '',
+                                'west_longitude'     => '',
+                                'east_longitude'     => '',
+                                'population'         => $value['population'],
+                                'modification_date'  => current_time( 'mysql' ),
+                                'alt_name'           => $value['name'],
+                                'alt_population'     => empty( $value['alt_population'] ) ? $value['population'] : $value['alt_population'],
+                                'is_custom_location' => 1,
+                                'alt_name_changed'   => $value['alt_name_changed'],
+                            ],
+                            [
+                                '%d',
+                                '%s', // name
+                                '%d', // level
+                                '%s', // level_name
+                                '%s',
+                                '%s',
+                                '%d', // parent_id
+                                '%d',
+                                '%d',
+                                '%d',
+                                '%d',
+                                '%d',
+                                '%d', // admin5
+                                '%s', // longitude
+                                '%s',
+                                '%s',
+                                '%s',
+                                '%s',
+                                '%s', // east_longitude
+                                '%d', // population
+                                '%s', // modification_date
+                                '%s',
+                                '%s', // alt_name
+                                '%d',
+                                '%d',
+                            ]
+                        );
+
+                        dt_write_log( 'match custom location: ' . $custom_grid_id );
                     } else {
-                        // custom
-                        continue; // abandon sub, sub nested custom locations
+                        if ( !isset( $unmatched[ $value['geonameid'] ] ) ) {
+                            $unmatched[ $value['geonameid'] ] = [];
+                        }
+                        $unmatched[ $value['geonameid'] ][] = [
+                            'type'        => 'custom_location',
+                            'id'          => $value['geonameid'],
+                            'geonameid'   => $value['geonameid'],
+                            'geoname_row' => $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_geonames WHERE geonameid = %s", $value['geonameid'] ), ARRAY_A ),
+                        ];
+
+                        dt_write_log( 'unmatch custom location: ' . $value['geonameid'] );
                     }
-
-                    $wpdb->insert(
-                        $wpdb->dt_location_grid,
-                        [
-                            'grid_id' => $geonames_ref[$value['geonameid']]['grid_id'],
-                            'name' => $value['name'],
-                            'level' => $level,
-                            'level_name' => $level_name,
-                            'country_code' => $value['country_code'],
-                            'admin0_code' => $parent_record['admin0_code'],
-                            'parent_id' => $geonames_ref[$value['geonameid']]['grid_id'],
-                            'admin0_grid_id' => $parent_record['admin0_grid_id'],
-                            'admin1_grid_id' => $parent_record['admin1_grid_id'],
-                            'admin2_grid_id' => $parent_record['admin2_grid_id'],
-                            'admin3_grid_id' => $parent_record['admin3_grid_id'],
-                            'admin4_grid_id' => $parent_record['admin4_grid_id'],
-                            'admin5_grid_id' => $parent_record['admin5_grid_id'],
-                            'longitude' => $parent_record['longitude'],
-                            'latitude' => $parent_record['latitude'],
-                            'north_latitude' => '',
-                            'south_latitude' => '',
-                            'west_longitude' => '',
-                            'east_longitude' => '',
-                            'population' => $value['population'],
-                            'modification_date' => current_time( 'mysql' ),
-                            'alt_name' => $value['name'],
-                            'alt_population' => empty( $value['alt_population'] ) ? $value['population'] : $value['alt_population'],
-                            'is_custom_location' => 1,
-                            'alt_name_changed' => $value['alt_name_changed'],
-                        ],
-                        [
-                            '%d',
-                            '%s', // name
-                            '%d', // level
-                            '%s', // level_name
-                            '%s',
-                            '%s',
-                            '%d', // parent_id
-                            '%d',
-                            '%d',
-                            '%d',
-                            '%d',
-                            '%d',
-                            '%d', // admin5
-                            '%s', // longitude
-                            '%s',
-                            '%s',
-                            '%s',
-                            '%s',
-                            '%s', // east_longitude
-                            '%d', // population
-                            '%s', // modification_date
-                            '%s',
-                            '%s', // alt_name
-                            '%d',
-                            '%d',
-                        ]
-                    );
-
-                    dt_write_log( 'match custom location: ' . $geonames_ref[$value['geonameid']]['grid_id'] );
-                } else {
-                    if ( ! isset( $unmatched[$value['geonameid']] ) ) {
-                        $unmatched[$value['geonameid']] = [];
-                    }
-                    $unmatched[$value['geonameid']][] = [
-                        'type' => 'custom_location',
-                        'id' => $value['geonameid'],
-                        'geonameid' => $value['geonameid'],
-                        'geoname_row' => $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_geonames WHERE geonameid = %s", $value['geonameid'] ), ARRAY_A ),
-                    ];
-
-                    dt_write_log( 'unmatch custom location: ' . $value['geonameid'] );
                 }
             }
-        }
 
-        // migrate custom populations
-        $custom_populations = $wpdb->get_results( "
-            SELECT * FROM $wpdb->dt_geonames WHERE alt_population = 1;
-        ", ARRAY_A );
-        if ( ! empty( $custom_populations ) && ! is_wp_error( $custom_populations ) ) {
+            // migrate custom populations
+            $custom_populations = $wpdb->get_results( "
+                SELECT * FROM $wpdb->dt_geonames WHERE alt_population = 1;
+            ", ARRAY_A );
+            if ( !empty( $custom_populations ) && !is_wp_error( $custom_populations ) ) {
 
-            foreach ( $custom_populations as $value ) {
-                if ( isset( $geonames_ref[$value['geonameid']] ) ) {
-                    $wpdb->update(
-                        $wpdb->dt_location_grid,
-                        [
-                            'alt_population' => $value['alt_population'],
-                        ],
-                        [
-                            'grid_id' => $geonames_ref[$value['geonameid']]['grid_id']
-                        ],
-                        [
-                            '%d'
-                        ],
-                        [
-                            '%d'
-                        ]
-                    );
+                foreach ( $custom_populations as $value ) {
+                    if ( isset( $geonames_ref[ $value['geonameid'] ] ) ) {
+                        $wpdb->update(
+                            $wpdb->dt_location_grid,
+                            [
+                                'alt_population' => $value['alt_population'],
+                            ],
+                            [
+                                'grid_id' => $geonames_ref[ $value['geonameid'] ]['grid_id']
+                            ],
+                            [
+                                '%d'
+                            ],
+                            [
+                                '%d'
+                            ]
+                        );
 
-                    dt_write_log( 'match custom population: ' . $geonames_ref[$value['geonameid']]['grid_id'] );
-                } else {
-                    if ( ! isset( $unmatched[$value['geonameid']] ) ) {
-                        $unmatched[$value['geonameid']] = [];
+                        dt_write_log( 'match custom population: ' . $geonames_ref[ $value['geonameid'] ]['grid_id'] );
+                    } else {
+                        if ( !isset( $unmatched[ $value['geonameid'] ] ) ) {
+                            $unmatched[ $value['geonameid'] ] = [];
+                        }
+                        $unmatched[ $value['geonameid'] ][] = [
+                            'type'        => 'population',
+                            'id'          => $value['geonameid'],
+                            'geonameid'   => $value['geonameid'],
+                            'geoname_row' => $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_geonames WHERE geonameid = %s", $value['geonameid'] ), ARRAY_A ),
+                        ];
+
+                        dt_write_log( 'unmatch custom population: ' . $value['geonameid'] );
                     }
-                    $unmatched[$value['geonameid']][] = [
-                        'type' => 'population',
-                        'id' => $value['geonameid'],
-                        'geonameid' => $value['geonameid'],
-                        'geoname_row' => $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_geonames WHERE geonameid = %s", $value['geonameid'] ), ARRAY_A ),
-                    ];
-
-                    dt_write_log( 'unmatch custom population: ' . $value['geonameid'] );
                 }
             }
-        }
 
 
-        // migrate custom names
-        $custom_names = $wpdb->get_results( "
-            SELECT * FROM $wpdb->dt_geonames WHERE alt_name_changed = 1;
-        ", ARRAY_A );
-        if ( ! empty( $custom_names ) && ! is_wp_error( $custom_names ) ) {
+            // migrate custom names
+            $custom_names = $wpdb->get_results( "
+                SELECT * FROM $wpdb->dt_geonames WHERE alt_name_changed = 1;
+            ", ARRAY_A );
+            if ( !empty( $custom_names ) && !is_wp_error( $custom_names ) ) {
 
-            foreach ( $custom_populations as $value ) {
-                if ( isset( $geonames_ref[$value['geonameid']] ) ) {
-                    $wpdb->update(
-                        $wpdb->dt_location_grid,
-                        [
-                            'alt_name' => $value['alt_name'],
-                        ],
-                        [
-                            'grid_id' => $geonames_ref[$value['geonameid']]['grid_id']
-                        ],
-                        [
-                            '%d'
-                        ],
-                        [
-                            '%d'
-                        ]
-                    );
+                foreach ( $custom_populations as $value ) {
+                    if ( isset( $geonames_ref[ $value['geonameid'] ] ) ) {
+                        $wpdb->update(
+                            $wpdb->dt_location_grid,
+                            [
+                                'alt_name' => $value['alt_name'],
+                            ],
+                            [
+                                'grid_id' => $geonames_ref[ $value['geonameid'] ]['grid_id']
+                            ],
+                            [
+                                '%d'
+                            ],
+                            [
+                                '%d'
+                            ]
+                        );
 
-                    dt_write_log( 'match custom names: ' . $geonames_ref[$value['geonameid']]['grid_id'] );
-                } else {
-                    if ( ! isset( $unmatched[$value['geonameid']] ) ) {
-                        $unmatched[$value['geonameid']] = [];
+                        dt_write_log( 'match custom names: ' . $geonames_ref[ $value['geonameid'] ]['grid_id'] );
+                    } else {
+                        if ( !isset( $unmatched[ $value['geonameid'] ] ) ) {
+                            $unmatched[ $value['geonameid'] ] = [];
+                        }
+                        $unmatched[ $value['geonameid'] ][] = [
+                            'type'        => 'names',
+                            'id'          => $value['geonameid'],
+                            'geonameid'   => $value['geonameid'],
+                            'geoname_row' => $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_geonames WHERE geonameid = %s", $value['geonameid'] ), ARRAY_A ),
+                        ];
+
+                        dt_write_log( 'unmatch custom names: ' . $value['geonameid'] );
                     }
-                    $unmatched[$value['geonameid']][] = [
-                        'type' => 'names',
-                        'id' => $value['geonameid'],
-                        'geonameid' => $value['geonameid'],
-                        'geoname_row' => $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_geonames WHERE geonameid = %s", $value['geonameid'] ), ARRAY_A ),
-                    ];
-
-                    dt_write_log( 'unmatch custom names: ' . $value['geonameid'] );
                 }
             }
+
+
+            // check if any remaining unmatched geonames
+            update_option( 'dt_unmatched_geonames', $unmatched, false );
         }
-
-
-        // check if any remaining unmatched geonames
-        update_option( 'dt_unmatched_geonames', $unmatched, false );
 
         dt_write_log( get_option( 'dt_unmatched_geonames' ) );
 
