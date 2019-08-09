@@ -221,6 +221,19 @@ class DT_Mapping_Module_Migration_0007 extends DT_Mapping_Module_Migration {
                     dt_write_log( 'unmatch activity log: ' . $value['histid'] );
                 }
             }
+
+            // migrate focus
+            $default_map_settings = get_option( 'dt_mapping_module_starting_map_level' );
+            if ( !empty( $default_map_settings["children"] ) ){
+                $new_children = [];
+                foreach ( $default_map_settings["children"] as $c ){
+                    if ( isset( $geonames_ref[$c] ) ) {
+                        $new_children[] = $geonames_ref[$c]["grid_id"];
+                    }
+                }
+                $default_map_settings["children"] = $new_children;
+                update_option( 'dt_mapping_module_starting_map_level', $default_map_settings, false );
+            }
         }
 
 
