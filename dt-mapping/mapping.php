@@ -568,7 +568,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $default_select_first_level = true;
             }
 
-            if ( empty( $grid_id ) || $grid_id === 'top_map_level' ) {
+            if ( empty( $grid_id ) || $grid_id === 'top_map_level' || $grid_id === 'world' ) {
 
                 if ( wp_cache_get( 'drill_down_array_default' ) ) {
                     return wp_cache_get( 'drill_down_array_default' );
