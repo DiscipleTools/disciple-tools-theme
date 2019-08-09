@@ -404,7 +404,7 @@ class Disciple_Tools_Posts
                     }
                 }
                 if ( $fields[$activity->meta_key]["type"] === "key_select" ){
-                    if ( isset( $fields[$activity->meta_key]["default"][$activity->meta_value] ) ){
+                    if ( isset( $fields[$activity->meta_key]["default"][$activity->meta_value]["label"] ) ){
                         $message = $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$activity->meta_value]["label"] ?? $activity->meta_value;
                     } else {
                         $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
@@ -778,7 +778,9 @@ class Disciple_Tools_Posts
         if ( !empty( $search )){
             $inner_joins .= "INNER JOIN $wpdb->postmeta AS search ON ( $wpdb->posts.ID = search.post_id ) ";
             $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
-            $meta_query .= "AND ( ( $wpdb->posts.post_title LIKE '%%" . esc_sql( $search ) . "%%' ) OR ( search.meta_key LIKE 'contact_%' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0 )  ";
+            $meta_query .= "AND ( ( $wpdb->posts.post_title LIKE '%%" . esc_sql( $search ) . "%%' ) 
+                OR ( search.meta_key LIKE 'contact_%' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0 ) 
+                OR ( search.meta_key LIKE 'contact_phone_%' AND REPLACE( " . esc_sql( $search ) . ", ' ', '') = REPLACE( search.meta_value, ' ', '') )";
             foreach ( $other_search_fields as $field ){
                 $meta_query .= " OR ( search.meta_key LIKE '" . esc_sql( $field ) . "' AND search.meta_value LIKE '%%" . esc_sql( $search ) . "%%'   ) ";
             }
