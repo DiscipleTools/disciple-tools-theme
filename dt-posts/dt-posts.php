@@ -626,7 +626,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 "gravatar" => preg_replace( "/^http:/i", "https:", $url ),
                 "comment_content" => wp_kses_post( $comment->comment_content ),
                 "user_id" => $comment->user_id,
-                "comment_type" => $comment->comment_type
+                "comment_type" => $comment->comment_type,
+                "comment_post_ID" => $comment->comment_post_ID
             ];
             $response_body[] =$c;
         }

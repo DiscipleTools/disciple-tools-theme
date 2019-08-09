@@ -427,6 +427,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 count(new_assigned.post_id) as number_new_assigned,
                 count(update_needed.post_id) as number_update
             from $wpdb->users as users
+            INNER JOIN $wpdb->usermeta as um on ( um.user_id = users.ID AND um.meta_key = 'wp_capabilities' AND um.meta_value LIKE '%multiplier%' )
             INNER JOIN $wpdb->postmeta as pm on (pm.meta_key = 'assigned_to' and pm.meta_value = CONCAT( 'user-', users.ID ) )
             INNER JOIN $wpdb->postmeta as type on (type.post_id = pm.post_id and type.meta_key = 'type' and ( type.meta_value = 'media' OR type.meta_value = 'next_gen' ) )
             LEFT JOIN $wpdb->postmeta as met on (met.post_id = type.post_id and met.meta_key = 'seeker_path' and ( met.meta_value = 'met' OR met.meta_value = 'ongoing' OR met.meta_value = 'coaching' ) )
@@ -440,9 +441,9 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             SELECT users.ID,
                 MAX(date_assigned.hist_time) as last_date_assigned
             from $wpdb->users as users
+            INNER JOIN $wpdb->usermeta as um on ( um.user_id = users.ID AND um.meta_key = 'wp_capabilities' AND um.meta_value LIKE '%multiplier%' )
             INNER JOIN $wpdb->postmeta as pm on (pm.meta_key = 'assigned_to' and pm.meta_value = CONCAT( 'user-', users.ID ) )
-            INNER JOIN $wpdb->postmeta as type on (type.post_id = pm.post_id and type.meta_key = 'type' and ( type.meta_value = 'media' OR type.meta_value = 'next_gen' ) )
-            INNER JOIN $wpdb->dt_activity_log as date_assigned on ( date_assigned.meta_key = 'overall_status' and date_assigned.object_type = 'contacts' AND date_assigned.object_id = type.post_id AND date_assigned.meta_value = 'assigned' )
+            INNER JOIN $wpdb->dt_activity_log as date_assigned on ( date_assigned.meta_key = 'overall_status' and date_assigned.object_type = 'contacts' AND date_assigned.object_id = pm.post_id AND date_assigned.meta_value = 'assigned' )
             GROUP by users.ID",
         ARRAY_A);
 

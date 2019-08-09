@@ -27,7 +27,7 @@ function dt_get_comments_with_redacted_user_data( $post_id ) {
     $users = get_users();
 
     foreach ( $comments as $index => $comment ) {
-        $comment_content = $comment->comment_content;
+        $comment_content = $comment["comment_content"];
 
         // replace @mentions with user number
         preg_match_all( '/\@\[(.*?)\]\((.+?)\)/', $comment_content, $matches );

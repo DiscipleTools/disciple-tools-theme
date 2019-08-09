@@ -520,11 +520,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
         $comments = self::get_comments( $non_master_id );
         foreach ( $comments as $comment ){
-            $comment->comment_post_ID = $master_id;
-            if ( $comment->comment_type === "comment" ){
-                $comment->comment_content = sprintf( esc_html_x( '(From Duplicate): %s', 'duplicate comment', 'disciple_tools' ), $comment->comment_content );
+            $comment["comment_post_ID"] = $master_id;
+            if ( $comment["comment_type"] === "comment" ){
+                $comment["comment_content"] = sprintf( esc_html_x( '(From Duplicate): %s', 'duplicate comment', 'disciple_tools' ), $comment["comment_content"] );
             }
-            if ( $comment->comment_type !== "duplicate" ){
+            if ( $comment["comment_type"] !== "duplicate" ){
                 wp_insert_comment( (array) $comment );
             }
         }
