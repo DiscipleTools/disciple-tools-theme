@@ -1920,7 +1920,7 @@ if ( ! function_exists( 'dt_get_location_grid_mirror' ) ) {
 
 if ( ! function_exists( 'dt_get_mapbox_endpoint' ) ) {
     function dt_get_mapbox_endpoint( $type = 'places' ) : string {
-        switch( $type ) {
+        switch ( $type ) {
             case 'permanent':
                 return 'https://api.mapbox.com/geocoding/v5/mapbox.places-permanent/';
                 break;

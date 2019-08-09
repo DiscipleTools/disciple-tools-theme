@@ -78,7 +78,7 @@ class Location_Grid_Geocoder {
         return [];
     }
 
-    public function get_possible_matches_by_lnglat( $longitude, $latitude, $country_code = NULL ) {
+    public function get_possible_matches_by_lnglat( $longitude, $latitude, $country_code = null ) {
 
         $longitude = (float) $longitude;
         $latitude = (float) $latitude;
@@ -106,7 +106,7 @@ class Location_Grid_Geocoder {
         }
 
         $compiled = [];
-        foreach( $query as $result ) {
+        foreach ( $query as $result ) {
             if ( $result['level'] === $lowest ) {
                 $compiled[$result['grid_id']] = $result;
 
@@ -708,7 +708,7 @@ class Location_Grid_Geocoder {
 
     }
 
-    public function query_centerpoints_within_bbox( $north_latitude, $south_latitude, $west_longitude, $east_longitude, $level  ) {
+    public function query_centerpoints_within_bbox( $north_latitude, $south_latitude, $west_longitude, $east_longitude, $level ) {
         global $wpdb;
         if ( $level ) {
             $query = $wpdb->get_col( $wpdb->prepare( "
@@ -737,14 +737,14 @@ class Location_Grid_Geocoder {
             return [];
         }
 
-        foreach( $query as $index => $item ) {
+        foreach ( $query as $index => $item ) {
             $query[$index] = (int) $item;
         }
 
         return $query;
     }
 
-    public function query_possible_matches_by_lnglat( float $longitude, float $latitude, $country_code = NULL ): array {
+    public function query_possible_matches_by_lnglat( float $longitude, float $latitude, $country_code = null ): array {
         global $wpdb;
 
         if ( $country_code ) {
@@ -836,8 +836,8 @@ class Location_Grid_Geocoder {
         return $country_code;
     }
 
-    public function mapbox_forward_lookup( $address, $country_code = NULL ) {
-        $address = str_replace(';', ' ', $address );
+    public function mapbox_forward_lookup( $address, $country_code = null ) {
+        $address = str_replace( ';', ' ', $address );
         $address = utf8_uri_encode( $address );
 
         if ( $country_code ) {
@@ -868,7 +868,7 @@ class Location_Grid_Geocoder {
     public function _format_location_grid_results( $query ) {
         if ( empty( $query ) ) {
             $keyed_query = [];
-            foreach( $keyed_query as $index => $row ) {
+            foreach ( $keyed_query as $index => $row ) {
                 $keyed_query[$index] = [];
 
                 if ( isset( $row['grid_id'] ) ) {

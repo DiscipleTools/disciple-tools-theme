@@ -9,7 +9,7 @@
 class DT_Mapping_Module_Migration_0008 extends DT_Mapping_Module_Migration {
     public function up() {
         global $wpdb;
-        $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}dt_geonames");
+        $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}dt_geonames" );
     }
 
     public function down() {
