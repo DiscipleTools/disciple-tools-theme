@@ -740,7 +740,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                 $reference = Disciple_Tools_Mapping_Queries::get_drilldown_by_grid_id( $grid_id );
                 if ( empty( $reference ) ) {
-                    return new WP_Error( 'no_location_grid', 'Geoname not found.' );
+                    dt_write_log( __METHOD__ . ": Error with grid_id (" . $grid_id . " Disciple_Tools_Mapping_Queries::get_drilldown_by_grid_id Failure" );
+                    return new WP_Error( 'no_location_grid', 'Location Grid not found.' );
                 }
 
                 switch ( $default_level['type'] ) {

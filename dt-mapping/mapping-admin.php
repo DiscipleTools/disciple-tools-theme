@@ -2156,7 +2156,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                     <td id="<?php echo esc_html( $location["ID"] ) ?>_sublocation" class="to-location">
                                         <input name="selected_location_grid[<?php echo esc_html( $location["ID"] ) ?>][geoid]" class="convert-input" type="hidden">
                                         <div class="drilldown">
-                                            <?php DT_Mapping_Module::instance()->drill_down_widget( esc_html( $location["ID"] ) . "_sublocation .drilldown" ) ?>
+                                            <?php DT_Mapping_Module::instance()->drill_down_widget( esc_html( $location["ID"] ) . "_sublocation" ) ?>
                                         </div>
                                     </td>
                                     <td id="<?php echo esc_html( $location["ID"] ) ?>_buttons">
