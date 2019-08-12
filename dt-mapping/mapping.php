@@ -660,9 +660,19 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                 $grid_id = null;
 
-                $test = $list[ array_keys( $list )[0] ];
-                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id_list( array_keys( $list ) ) );
+                $id_list = array_keys( $list );
+                if ( empty( $id_list ) || array_search( 'World', $list ) ) {
+                    $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( 1 ) );
+                }
+                else if ( count( $id_list ) === 1 ) {
+                    $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $id_list[0] ) );
+                }
+                else {
+                    $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id_list( $id_list ) );
+                }
+
                 $deeper_levels = $this->get_deeper_levels( $child_list );
+
                 $selected_name = __( 'World', 'disciple_tools' );
                 if ( $default_level['type'] === 'country' && $default_select_first_level ){
                     $selected_name = $list[ array_keys( $list )[0] ];
