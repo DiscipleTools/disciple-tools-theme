@@ -1850,7 +1850,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                                 var geocoder = new MapboxGeocoder({
                                     accessToken: mapboxgl.accessToken,
-                                    types: 'country', //'country region district postcode locality neighborhood address place',
+                                    types: 'country region district postcode locality neighborhood address place', //'country region district postcode locality neighborhood address place',
                                     marker: {color: 'orange'},
                                     mapboxgl: mapboxgl
                                 });
