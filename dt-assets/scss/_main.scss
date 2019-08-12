@@ -838,8 +838,3 @@ label.dt-switch:active:after {
 .geocode-link {
     margin-top:.7rem;
 }
-
-//make sure datepicker stays above other ui elements
-.ui-datepicker {
-    z-index: 10 !important;
-}

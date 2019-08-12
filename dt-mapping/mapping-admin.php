@@ -366,7 +366,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <!-- Names Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'names' ?>" class="nav-tab
                         <?php echo esc_attr( ( $tab == 'names' ) ? 'nav-tab-active' : '' ); ?>">
-                        <?php esc_attr_e( 'Names', 'disciple_tools' ) ?>
+                        <?php esc_attr_e( 'Names and IDs', 'disciple_tools' ) ?>
                     </a>
                     <!-- Population Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'population' ?>" class="nav-tab
@@ -778,7 +778,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 else if ( $option['type'] === 'country' && empty( $_POST['children'] ) ) {
                     $option['children'] = Disciple_Tools_Mapping_Queries::get_countries( true );
                 }
-                else if ( $option['type'] === 'state' && empty( $_POST['children'] && ! empty( $_POST['parent'] ) ) ) {
+                else if ( $option['type'] === 'state' && ( !isset( $_POST['children'] ) || empty( $_POST['children'] ) && !empty( $_POST['parent'] ) ) ) {
                     $list = Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $option['parent'] );
                     foreach ( $list as $item ) {
                         $option['children'][] = $item['grid_id'];
@@ -2665,7 +2665,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $custom_grid_id = $max_id + 1;
 
             // get level
-            $level = 10;
+            $parent_level = isset( $parent_grid_id["level"] ) ? (int) $parent_grid_id["level"] : 9;
+            $level = $parent_level + 1;
             $level_name = 'place';
 
             // save new record
