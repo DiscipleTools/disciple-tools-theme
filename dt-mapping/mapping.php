@@ -550,6 +550,90 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             ?></ul><?php
         }
 
+
+
+
+        private function drill_down_add_custom_locations( $know_parent, $reference, $list = [] ){
+            if ( (int) $reference["parent_id"] === (int) $know_parent ){
+                return array_reverse( $list );
+            }
+            $next = Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference["parent_id"] );
+            $list[] = $next;
+            return $this->drill_down_add_custom_locations( $know_parent, $next, $list );
+        }
+
+        private function drill_down_for_location( $reference, $default_select_first_level ){
+            $default_level = $this->default_map_settings();
+            $highest_admin_level = 0;
+            foreach ( $reference as $r_key => $r_value ){
+                if ( strpos( $r_key, "_grid_id" ) !== false && !empty( $r_value )){
+                    $key = str_replace( "admin", "", $r_key );
+                    $highest_admin_level = (int) str_replace( "_grid_id", "", $key );
+                }
+            }
+
+            $preset_array = [];
+            if ( !$default_select_first_level ){
+                $preset_array[] = [
+                    'parent' => 'top_map_level',
+                    'selected' => 'top_map_level',
+                    'selected_name' => __( 'World', 'disciple_tools' ),
+                    'link' => true,
+                    'active' => false,
+                ];
+            }
+            if ( $default_level["type"] !== 'state' ){
+                $preset_array[] = [
+                    'parent' => 'top_map_level',
+                    'selected' => (int) $reference['admin0_grid_id'],
+                    'selected_name' => $reference['admin0_name'],
+                    'link' => true,
+                    'active' => false,
+                ];
+            }
+            foreach ( $reference as $r_key => $r_value ){
+                if ( strpos( $r_key, "_grid_id" ) !== false && $r_key !== "admin0_grid_id" ) {
+                    $admin_level    = str_replace( "_grid_id", "", str_replace( "admin", "", $r_key ) );
+                    if ( !empty( $r_value ) ) {
+                        $preset_array[] = [
+                            'parent'        => (int) $reference[ "admin" . ( (int) $admin_level - 1 ) . "_grid_id" ] ?? 0,
+                            'selected'      => (int) $reference[ $r_key ] ?? 0,
+                            'selected_name' => $reference[ 'admin' . $admin_level . '_name' ],
+                            'link'          => true,
+                            'active'        => false,
+                        ];
+                    }
+                }
+            }
+
+            if ( (int) $reference["level"] > 5 ){
+                $other_levels = $this->drill_down_add_custom_locations( $preset_array[ sizeof( $preset_array ) - 1 ]['selected'], $reference, [ $reference ] );
+                foreach ( $other_levels as $level ) {
+                    $preset_array[] = [
+                        'parent'        => (int) $level["parent_id"] ?? 0,
+                        'selected'      => (int) $level["grid_id"] ?? 0,
+                        'selected_name' => $level["name"],
+                        'link'          => true,
+                        'active'        => false
+                    ];
+                }
+            }
+            $preset_array[ sizeof( $preset_array ) - 1 ]['active'] = true;
+            $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference["grid_id"] ) );
+            $deeper_levels = $this->get_deeper_levels( $child_list );
+            $preset_array[] = [
+                'parent' => $preset_array[ sizeof( $preset_array ) - 1 ]["selected"],
+                'selected'      => 0,
+                'selected_name' => null,
+                'link'          => false,
+                'active'        => false,
+                'deeper_levels' => $deeper_levels,
+                'list' => $child_list
+
+            ];
+            return $preset_array;
+        }
+
         /**
          * Drill Down Array
          * This is the core logic and array builder for the drilldown
@@ -564,7 +648,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $list = $this->default_map_short_list();
 
             $default_select_first_level = false;
-            if ( count( $list ) < 2 ) {
+            if ( $default_level['type'] !== 'world' && count( $list ) < 2 ) {
                 $default_select_first_level = true;
             }
 
@@ -576,161 +660,40 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                 $grid_id = null;
 
-                switch ( $default_level['type'] ) {
-
-                    case 'country':
-
-                        if ( $default_select_first_level ) {
-                            // if there is only one top level selected
-
-                            foreach ( $list as $index => $item ) {
-                                $selected = $index;
-                                $selected_name = $item;
-                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $index ) );
-                            }
-
-                            $deeper_levels = $this->get_deeper_levels( $child_list );
-                            $preset_array = [
-                                0 => [
-                                    'parent' => 'top_map_level',
-                                    'selected' => $selected,
-                                    'selected_name' => $selected_name,
-                                    'link' => true,
-                                    'active' => true,
-                                ],
-                                1 => [
-                                    'parent' => $selected,
-                                    'selected' => 0,
-                                    'list' => $child_list,
-                                    'link' => false,
-                                    'active' => false,
-                                    'deeper_levels' => $deeper_levels,
-                                ],
-                            ];
-
-                        } else {
-                            // if there are multiple top levels selected
-                            $items = [];
-                            foreach ( $list as $index => $item ) {
-                                $items[] = $index;
-                            }
-
-                            $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id_list( $items ) );
-                            $deeper_levels = $this->get_deeper_levels( $child_list );
-
-                            $preset_array = [
-                                0 => [
-                                    'parent' => 'top_map_level',
-                                    'selected' => 'top_map_level',
-                                    'selected_name' => __( 'World', 'disciple_tools' ),
-                                    'link' => true,
-                                    'active' => false,
-                                ],
-                                1 => [
-                                    'parent' => 'top_map_level',
-                                    'selected' => 0,
-                                    'selected_name' => '',
-                                    'list' => $child_list,
-                                    'link' => false,
-                                    'active' => true,
-                                    'deeper_levels' => $deeper_levels,
-                                ],
-                            ];
-
-                        }
-
-
-                        break;
-
-                    case 'state':
-                        if ( $default_select_first_level ) {
-                            // if there is only one top level selected
-
-                            foreach ( $list as $index => $item ) {
-                                $selected = $index;
-                                $selected_name = $item;
-                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $index ) );
-                            }
-
-                            $deeper_levels = $this->get_deeper_levels( $child_list );
-                            $preset_array = [
-                                0 => [
-                                    'parent' => 'top_map_level',
-                                    'selected' => $selected,
-                                    'selected_name' => $selected_name,
-                                    'link' => true,
-                                    'active' => true,
-                                ],
-                                1 => [
-                                    'parent' => $selected,
-                                    'selected' => 0,
-                                    'list' => $child_list,
-                                    'link' => false,
-                                    'active' => false,
-                                    'deeper_levels' => $deeper_levels,
-                                ],
-                            ];
-
-                        } else {
-                            // if there are multiple top levels selected
-                            $items = [];
-                            foreach ( $list as $index => $item ) {
-                                $items[] = $index;
-                            }
-
-                            $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id_list( $items ) );
-                            $parent = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $child_list[0]['admin0_grid_id'] ) );
-                            $deeper_levels = $this->get_deeper_levels( $child_list );
-
-                            $preset_array = [
-                                0 => [
-                                    'parent' => 'top_map_level',
-                                    'selected' => 'top_map_level',
-                                    'selected_name' => $parent['name'],
-                                    'link' => true,
-                                    'active' => true,
-                                ],
-                                1 => [
-                                    'parent' => 'top_map_level',
-                                    'selected' => 0,
-                                    'selected_name' => '',
-                                    'list' => $child_list,
-                                    'link' => false,
-                                    'active' => true,
-                                    'deeper_levels' => $deeper_levels,
-                                ],
-                            ];
-
-                        }
-
-
-                        break;
-
-                    case 'world':
-                    default:
-                        $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_countries() );
-                        $deeper_levels = $this->get_deeper_levels( $child_list );
-                        $preset_array = [
-                            0 => [
-                                'parent' => 'top_map_level',
-                                'selected' => 'top_map_level',
-                                'selected_name' => __( 'World', 'disciple_tools' ),
-                                'link' => true,
-                                'active' => true,
-                            ],
-                            1 => [
-                                'parent' => 'top_map_level',
-                                'selected' => 0,
-                                'list' => $child_list,
-                                'link' => false,
-                                'active' => false,
-                                'deeper_levels' => $deeper_levels,
-                            ],
-                        ];
-
-
-                        break;
+                $test = $list[ array_keys( $list )[0] ];
+                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id_list( array_keys( $list ) ) );
+                $deeper_levels = $this->get_deeper_levels( $child_list );
+                $selected_name = __( 'World', 'disciple_tools' );
+                if ( $default_level['type'] === 'country' && $default_select_first_level ){
+                    $selected_name = $list[ array_keys( $list )[0] ];
                 }
+                if ( $default_level['type'] === 'state' ){
+                    if ( $default_select_first_level ){
+                        $selected_name = $list[ array_keys( $list )[0] ];
+                    } else {
+                        $parent = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $child_list[0]["parent_id"] ) );
+                        $selected_name = $parent["name"] ?? $selected_name;
+                    }
+                }
+
+                $preset_array = [
+                    [
+                        'parent' => 'top_map_level',
+                        'selected' => 'top_map_level',
+                        'selected_name' => $selected_name,
+                        'link' => true,
+                        'active' => false,
+                    ],
+                    [
+                        'parent' => 'top_map_level',
+                        'selected' => 0,
+                        'selected_name' => '',
+                        'list' => $child_list,
+                        'link' => false,
+                        'active' => true,
+                        'deeper_levels' => $deeper_levels,
+                    ]
+                ];
 
                 wp_cache_set( 'drill_down_array_default', $preset_array );
                 return $preset_array;
@@ -743,739 +706,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     dt_write_log( __METHOD__ . ": Error with grid_id (" . $grid_id . " Disciple_Tools_Mapping_Queries::get_drilldown_by_grid_id Failure" );
                     return new WP_Error( 'no_location_grid', 'Location Grid not found.' );
                 }
+                return $this->drill_down_for_location( $reference, $default_select_first_level );
 
-                switch ( $default_level['type'] ) {
-
-                    case 'country':
-
-                        // build array according to level
-                        switch ( $reference['level'] ) {
-
-                            case '3': // custom
-                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin3_grid_id'] ) );
-                                $deeper_levels = $this->get_deeper_levels( $child_list );
-
-                                if ( $default_select_first_level ) {
-                                    $preset_array = [
-                                    0 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => (int) $reference['admin0_grid_id'],
-                                        'selected_name' => $reference['admin0_name'],
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    1 => [
-                                        'parent' => (int) $reference['admin0_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin1_grid_id'],
-                                        'selected_name' => $reference['admin1_name'],
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    2 => [
-                                        'parent' => (int) $reference['admin1_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin2_grid_id'],
-                                        'selected_name' => $reference['admin2_name'],
-                                        'link' => true,
-                                        'active' => true,
-                                    ],
-                                    3 => [
-                                        'parent' => (int) $reference['admin2_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin3_grid_id'] ?? 0,
-                                        'selected_name' => $reference['admin3_name'],
-                                        'list' => $child_list,
-                                        'link' => false,
-                                        'active' => false,
-                                        'deeper_levels' => $deeper_levels,
-                                    ],
-
-                                    ];
-                                } else {
-                                    $preset_array = [
-                                    0 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => 'top_map_level',
-                                        'selected_name' => __( 'World', 'disciple_tools' ),
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    1 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => (int) $reference['admin0_grid_id'],
-                                        'selected_name' => $reference['admin0_name'],
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    2 => [
-                                        'parent' => (int) $reference['admin0_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin1_grid_id'],
-                                        'selected_name' => $reference['admin1_name'],
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    3 => [
-                                        'parent' => (int) $reference['admin1_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin2_grid_id'],
-                                        'selected_name' => $reference['admin2_name'],
-                                        'link' => true,
-                                        'active' => true,
-                                    ],
-                                    4 => [
-                                        'parent' => (int) $reference['admin2_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin3_grid_id'] ?? 0,
-                                        'selected_name' => $reference['admin3_name'],
-                                        'list' => $child_list,
-                                        'link' => false,
-                                        'active' => false,
-                                        'deeper_levels' => $deeper_levels,
-                                    ],
-
-                                    ];
-                                }
-                            break;
-
-                            case '2': // custom
-                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin2_grid_id'] ) );
-                                $deeper_levels = $this->get_deeper_levels( $child_list );
-
-                                if ( $default_select_first_level ) {
-                                    $preset_array = [
-                                        0 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['admin0_grid_id'],
-                                            'selected_name' => $reference['admin0_name'],
-                                            'link' => true,
-                                            'active' => false,
-                                        ],
-                                        1 => [
-                                            'parent' => (int) $reference['admin0_grid_id'] ?? 0,
-                                            'selected' => (int) $reference['admin1_grid_id'],
-                                            'selected_name' => $reference['admin1_name'],
-                                            'link' => true,
-                                            'active' => false,
-                                        ],
-                                        2 => [
-                                            'parent' => (int) $reference['admin1_grid_id'] ?? 0,
-                                            'selected' => (int) $reference['admin2_grid_id'],
-                                            'selected_name' => $reference['admin2_name'],
-                                            'link' => true,
-                                            'active' => true,
-                                        ],
-                                        3 => [
-                                            'parent' => (int) $reference['admin2_grid_id'] ?? 0,
-                                            'selected' => (int) $reference['admin3_grid_id'] ?? 0,
-                                            'selected_name' => $reference['admin3_name'],
-                                            'list' => $child_list,
-                                            'link' => false,
-                                            'active' => false,
-                                            'deeper_levels' => $deeper_levels,
-                                        ],
-
-                                    ];
-                                } else {
-                                    $preset_array = [
-                                        0 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => 'top_map_level',
-                                            'selected_name' => __( 'World', 'disciple_tools' ),
-                                            'link' => true,
-                                            'active' => false,
-                                        ],
-                                        1 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['admin0_grid_id'],
-                                            'selected_name' => $reference['admin0_name'],
-                                            'link' => true,
-                                            'active' => false,
-                                        ],
-                                        2 => [
-                                            'parent' => (int) $reference['admin0_grid_id'] ?? 0,
-                                            'selected' => (int) $reference['admin1_grid_id'],
-                                            'selected_name' => $reference['admin1_name'],
-                                            'link' => true,
-                                            'active' => false,
-                                        ],
-                                        3 => [
-                                            'parent' => (int) $reference['admin1_grid_id'] ?? 0,
-                                            'selected' => (int) $reference['admin2_grid_id'],
-                                            'selected_name' => $reference['admin2_name'],
-                                            'link' => true,
-                                            'active' => true,
-                                        ],
-                                        4 => [
-                                            'parent' => (int) $reference['admin2_grid_id'] ?? 0,
-                                            'selected' => (int) $reference['admin3_grid_id'] ?? 0,
-                                            'selected_name' => $reference['admin3_name'],
-                                            'list' => $child_list,
-                                            'link' => false,
-                                            'active' => false,
-                                            'deeper_levels' => $deeper_levels,
-                                        ],
-
-                                    ];
-                                }
-                                break;
-
-                            case '1':
-                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin1_grid_id'] ) );
-                                $deeper_levels = $this->get_deeper_levels( $child_list );
-
-                                if ( $default_select_first_level ) {
-                                    $preset_array = [
-                                        0 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['admin0_grid_id'],
-                                            'selected_name' => $reference['admin0_name'],
-                                            'link' => true,
-                                            'active' => false,
-                                        ],
-                                        1 => [
-                                            'parent' => (int) $reference['admin0_grid_id'] ?? 0,
-                                            'selected' => (int) $reference['admin1_grid_id'],
-                                            'selected_name' => $reference['admin1_name'],
-                                            'link' => true,
-                                            'active' => true,
-                                        ],
-                                        2 => [
-                                            'parent' => (int) $reference['admin1_grid_id'] ?? 0,
-                                            'selected' => (int) $reference['admin2_grid_id'] ?? 0,
-                                            'selected_name' => $reference['admin2_name'],
-                                            'list' => $child_list,
-                                            'link' => false,
-                                            'active' => false,
-                                            'deeper_levels' => $deeper_levels,
-                                        ],
-
-                                    ];
-                                } else {
-                                    $preset_array = [
-                                        0 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => 'top_map_level',
-                                            'selected_name' => __( 'World', 'disciple_tools' ),
-                                            'link' => true,
-                                            'active' => false,
-                                        ],
-                                        1 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['admin0_grid_id'],
-                                            'selected_name' => $reference['admin0_name'],
-                                            'link' => true,
-                                            'active' => false,
-                                        ],
-                                        2 => [
-                                            'parent' => (int) $reference['admin0_grid_id'] ?? 0,
-                                            'selected' => (int) $reference['admin1_grid_id'],
-                                            'selected_name' => $reference['admin1_name'],
-                                            'link' => true,
-                                            'active' => true,
-                                        ],
-                                        3 => [
-                                            'parent' => (int) $reference['admin1_grid_id'] ?? 0,
-                                            'selected' => (int) $reference['admin2_grid_id'] ?? 0,
-                                            'selected_name' => $reference['admin2_name'],
-                                            'list' => $child_list,
-                                            'link' => false,
-                                            'active' => false,
-                                            'deeper_levels' => $deeper_levels,
-                                        ],
-
-                                    ];
-                                }
-                                break;
-
-                            case '0':
-                            default:
-                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin0_grid_id'] ) );
-                                $deeper_levels = $this->get_deeper_levels( $child_list );
-
-                                if ( $default_select_first_level ) {
-                                    $preset_array = [
-                                        0 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['admin0_grid_id'],
-                                            'selected_name' => $reference['admin0_name'],
-                                            'link' => true,
-                                            'active' => true,
-                                        ],
-                                        1 => [
-                                            'parent' => (int) $reference['admin0_grid_id'] ?? 0,
-                                            'selected' => (int) $reference['admin1_grid_id'] ?? 0,
-                                            'selected_name' => $reference['admin1_name'],
-                                            'list' => $child_list,
-                                            'link' => false,
-                                            'active' => false,
-                                            'deeper_levels' => $deeper_levels,
-                                        ],
-                                    ];
-                                } else {
-                                    $preset_array = [
-                                        0 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => 'top_map_level',
-                                            'selected_name' => __( 'World', 'disciple_tools' ),
-                                            'link' => true,
-                                            'active' => false,
-                                        ],
-                                        1 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['admin0_grid_id'],
-                                            'selected_name' => $reference['admin0_name'],
-                                            'link' => true,
-                                            'active' => true,
-                                        ],
-                                        2 => [
-                                            'parent' => (int) $reference['admin0_grid_id'] ?? 0,
-                                            'selected' => (int) $reference['admin1_grid_id'] ?? 0,
-                                            'selected_name' => $reference['admin1_name'],
-                                            'list' => $child_list,
-                                            'link' => false,
-                                            'active' => false,
-                                            'deeper_levels' => $deeper_levels,
-                                        ],
-                                    ];
-                                }
-
-                                break;
-                        }
-
-
-                        return $preset_array;
-                        break;
-
-                    case 'state':
-
-                        // build array according to level
-                        switch ( $reference['level'] ) {
-
-                            case '3':
-                            case '2':
-                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['grid_id'] ) );
-                                $deeper_levels = $this->get_deeper_levels( $child_list );
-
-                                $country = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin0_grid_id'] ) );
-                                $state = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin1_grid_id'] ) );
-                                $county = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin2_grid_id'] ) );
-
-                                if ( $default_select_first_level ) {
-
-                                    $preset_array = [
-                                        0 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => 'top_map_level',
-                                            'selected_name' => $reference['admin1_name'],
-                                            'link' => true,
-                                            'active' => false,
-                                        ],
-                                        1 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['admin2_grid_id'],
-                                            'selected_name' => $reference['admin2_name'],
-                                            'link' => true,
-                                            'active' => true,
-                                        ],
-                                        2 => [
-                                            'parent' => $reference['admin2_grid_id'],
-                                            'selected' => 0,
-                                            'selected_name' => '',
-                                            'list' => $child_list,
-                                            'link' => false,
-                                            'active' => true,
-                                            'deeper_levels' => $deeper_levels,
-                                        ],
-                                    ];
-
-                                } else {
-
-                                    $preset_array = [
-                                        0 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => 'top_map_level',
-                                            'selected_name' => $country['name'],
-                                            'link' => true,
-                                            'active' => false,
-                                        ],
-                                        1 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => $state['grid_id'],
-                                            'selected_name' => $state['name'],
-                                            'link' => true,
-                                            'active' => false,
-                                        ],
-                                        3 => [
-                                            'parent' => $state['grid_id'],
-                                            'selected' => $county['grid_id'],
-                                            'selected_name' => $county['name'],
-                                            'link' => true,
-                                            'active' => true,
-                                        ],
-                                        4 => [
-                                            'parent' => $county['grid_id'],
-                                            'selected' => 0,
-                                            'selected_name' => '',
-                                            'list' => $child_list,
-                                            'link' => false,
-                                            'active' => true,
-                                            'deeper_levels' => $deeper_levels,
-                                        ],
-                                    ];
-                                }
-
-                                break;
-
-                            case '1':
-                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['grid_id'] ) );
-                                $deeper_levels = $this->get_deeper_levels( $child_list );
-
-                                $country = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin0_grid_id'] ) );
-                                $state = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin1_grid_id'] ) );
-
-                                if ( $default_select_first_level ) {
-
-                                    $preset_array = [
-                                        0 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['admin1_grid_id'],
-                                            'selected_name' => $reference['admin1_name'],
-                                            'link' => true,
-                                            'active' => true,
-                                        ],
-                                        1 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => $list['parent'],
-                                            'selected_name' => '',
-                                            'list' => $child_list,
-                                            'link' => false,
-                                            'active' => true,
-                                            'deeper_levels' => $deeper_levels,
-                                        ],
-                                        2 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => $list['parent'],
-                                            'selected_name' => '',
-                                            'list' => $child_list,
-                                            'link' => false,
-                                            'active' => true,
-                                            'deeper_levels' => $deeper_levels,
-                                        ],
-                                    ];
-
-                                } else {
-
-                                    $preset_array = [
-                                        0 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => 'top_map_level',
-                                            'selected_name' => $country['name'],
-                                            'link' => true,
-                                            'active' => false,
-                                        ],
-                                        1 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => $state['grid_id'],
-                                            'selected_name' => $state['name'],
-                                            'link' => true,
-                                            'active' => true,
-                                        ],
-                                        3 => [
-                                            'parent' => $state['grid_id'],
-                                            'selected' => 0,
-                                            'selected_name' => '',
-                                            'list' => $child_list,
-                                            'link' => false,
-                                            'active' => false,
-                                            'deeper_levels' => $deeper_levels,
-                                        ],
-                                    ];
-                                }
-                                break;
-
-                            case 'country':
-                            default:
-                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['grid_id'] ) );
-                                $deeper_levels = $this->get_deeper_levels( $child_list );
-
-                                if ( $default_select_first_level ) {
-
-                                    $preset_array = [
-                                        0 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['admin1_grid_id'],
-                                            'selected_name' => $reference['admin1_name'],
-                                            'link' => true,
-                                            'active' => true,
-                                        ],
-                                        1 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => $list['parent'],
-                                            'selected_name' => '',
-                                            'list' => $child_list,
-                                            'link' => false,
-                                            'active' => true,
-                                            'deeper_levels' => $deeper_levels,
-                                        ],
-                                    ];
-
-                                } else {
-                                    $parent = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin0_grid_id'] ) );
-                                    $preset_array = [
-                                        0 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => 'top_map_level',
-                                            'selected_name' => $parent['name'],
-                                            'link' => true,
-                                            'active' => true,
-                                        ],
-                                        1 => [
-                                            'parent' => 'top_map_level',
-                                            'selected' => 0,
-                                            'selected_name' => '',
-                                            'list' => $child_list,
-                                            'link' => false,
-                                            'active' => true,
-                                            'deeper_levels' => $deeper_levels,
-                                        ],
-                                    ];
-                                }
-
-                                break;
-
-                        }
-
-
-                        return $preset_array;
-
-                        break;
-
-                    case 'world':
-                    default:
-                        // build array according to level
-                        switch ( $reference['level'] ) {
-
-                            case '10': // place
-                                // @todo find out the parent level
-                                // @todo finish
-
-                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin3_grid_id'] ) );
-                                $deeper_levels = $this->get_deeper_levels( $child_list );
-                                $preset_array = [
-                                    0 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => 'top_map_level',
-                                        'selected_name' => __( 'World', 'disciple_tools' ),
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    1 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => (int) $reference['admin0_grid_id'],
-                                        'selected_name' => $reference['admin0_name'],
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    2 => [
-                                        'parent' => (int) $reference['admin0_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin1_grid_id'],
-                                        'selected_name' => $reference['admin1_name'],
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    3 => [
-                                        'parent' => (int) $reference['admin1_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin2_grid_id'],
-                                        'selected_name' => $reference['admin2_name'],
-                                        'link' => true,
-                                        'active' => true,
-                                    ],
-                                    4 => [
-                                        'parent' => (int) $reference['admin2_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin3_grid_id'],
-                                        'selected_name' => $reference['admin3_name'],
-                                        'link' => true,
-                                        'active' => true,
-                                    ],
-                                    5 => [
-                                        'parent' => (int) $reference['admin2_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin3_grid_id'] ?? 0,
-                                        'selected_name' => $reference['admin3_name'],
-                                        'list' => $child_list,
-                                        'link' => false,
-                                        'active' => false,
-                                        'deeper_levels' => $deeper_levels,
-                                    ],
-
-                                ];
-                                break;
-
-                            case '3':
-                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin3_grid_id'] ) );
-                                $deeper_levels = $this->get_deeper_levels( $child_list );
-                                $preset_array = [
-                                    0 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => 'top_map_level',
-                                        'selected_name' => __( 'World', 'disciple_tools' ),
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    1 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => (int) $reference['admin0_grid_id'],
-                                        'selected_name' => $reference['admin0_name'],
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    2 => [
-                                        'parent' => (int) $reference['admin0_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin1_grid_id'],
-                                        'selected_name' => $reference['admin1_name'],
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    3 => [
-                                        'parent' => (int) $reference['admin1_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin2_grid_id'],
-                                        'selected_name' => $reference['admin2_name'],
-                                        'link' => true,
-                                        'active' => true,
-                                    ],
-                                    4 => [
-                                        'parent' => (int) $reference['admin2_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin3_grid_id'],
-                                        'selected_name' => $reference['admin3_name'],
-                                        'link' => true,
-                                        'active' => true,
-                                    ],
-                                    5 => [
-                                        'parent' => (int) $reference['admin2_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin3_grid_id'] ?? 0,
-                                        'selected_name' => $reference['admin3_name'],
-                                        'list' => $child_list,
-                                        'link' => false,
-                                        'active' => false,
-                                        'deeper_levels' => $deeper_levels,
-                                    ],
-
-                                ];
-                                break;
-
-                            case '2':
-                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin2_grid_id'] ) );
-                                $deeper_levels = $this->get_deeper_levels( $child_list );
-                                $preset_array = [
-                                    0 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => 'top_map_level',
-                                        'selected_name' => __( 'World', 'disciple_tools' ),
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    1 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => (int) $reference['admin0_grid_id'],
-                                        'selected_name' => $reference['admin0_name'],
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    2 => [
-                                        'parent' => (int) $reference['admin0_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin1_grid_id'],
-                                        'selected_name' => $reference['admin1_name'],
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    3 => [
-                                        'parent' => (int) $reference['admin1_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin2_grid_id'],
-                                        'selected_name' => $reference['admin2_name'],
-                                        'link' => true,
-                                        'active' => true,
-                                    ],
-                                    4 => [
-                                        'parent' => (int) $reference['admin2_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin3_grid_id'] ?? 0,
-                                        'selected_name' => $reference['admin3_name'],
-                                        'list' => $child_list,
-                                        'link' => false,
-                                        'active' => false,
-                                        'deeper_levels' => $deeper_levels,
-                                    ],
-
-                                ];
-                                break;
-
-                            case '1':
-                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin1_grid_id'] ) );
-                                $deeper_levels = $this->get_deeper_levels( $child_list );
-                                $preset_array = [
-                                    0 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => 'top_map_level',
-                                        'selected_name' => __( 'World', 'disciple_tools' ),
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    1 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => (int) $reference['admin0_grid_id'],
-                                        'selected_name' => $reference['admin0_name'],
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    2 => [
-                                        'parent' => (int) $reference['admin0_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin1_grid_id'],
-                                        'selected_name' => $reference['admin1_name'],
-                                        'link' => true,
-                                        'active' => true,
-                                    ],
-                                    3 => [
-                                        'parent' => (int) $reference['admin1_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin2_grid_id'] ?? 0,
-                                        'selected_name' => $reference['admin2_name'],
-                                        'list' => $child_list,
-                                        'link' => false,
-                                        'active' => false,
-                                        'deeper_levels' => $deeper_levels,
-                                    ],
-
-                                ];
-                                break;
-
-                            case '0':
-                            default:
-                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin0_grid_id'] ) );
-                                $deeper_levels = $this->get_deeper_levels( $child_list );
-                                $preset_array = [
-                                    0 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => 'top_map_level',
-                                        'selected_name' => __( 'World', 'disciple_tools' ),
-                                        'link' => true,
-                                        'active' => false,
-                                    ],
-                                    1 => [
-                                        'parent' => 'top_map_level',
-                                        'selected' => (int) $reference['admin0_grid_id'],
-                                        'selected_name' => $reference['admin0_name'],
-                                        'link' => true,
-                                        'active' => true,
-                                    ],
-                                    2 => [
-                                        'parent' => (int) $reference['admin0_grid_id'] ?? 0,
-                                        'selected' => (int) $reference['admin1_grid_id'] ?? 0,
-                                        'selected_name' => $reference['admin1_name'],
-                                        'list' => $child_list,
-                                        'link' => false,
-                                        'active' => false,
-                                        'deeper_levels' => $deeper_levels,
-                                    ],
-                                ];
-                                break;
-                        }
-
-                        return $preset_array;
-                        break;
-                }
             }
         } // END drill_down_array()
 
