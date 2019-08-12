@@ -8,7 +8,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
      * Set Global Database Variables
      */
     global $wpdb;
-    $wpdb->dt_geonames = $wpdb->prefix .'dt_geonames';
+    $wpdb->dt_location_grid = $wpdb->prefix .'dt_location_grid';
+    $wpdb->dt_location_grid = $wpdb->prefix .'dt_location_grid';
 
     /*******************************************************************************************************************
      * MIGRATION ENGINE
@@ -281,11 +282,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             if ( isset( $data['top_map_list']['world'] ) ) {
                 $data['world'] = $this->get_world_map_data();
             } else {
-                foreach ( $data['top_map_list'] as $geonameid => $name ) {
-                    $data[$geonameid] = $this->map_level_by_geoname( $geonameid );
+                foreach ( $data['top_map_list'] as $grid_id => $name ) {
+                    $data[$grid_id] = $this->map_level_by_grid_id( $grid_id );
                 }
                 $default_map_settings = $this->default_map_settings();
-                $data[$default_map_settings['parent']] = $this->map_level_by_geoname( $default_map_settings['parent'] );
+                $data[$default_map_settings['parent']] = $this->map_level_by_grid_id( $default_map_settings['parent'] );
             }
 
             // set custom columns
@@ -303,7 +304,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             $settings['root'] = esc_url_raw( rest_url() );
             $settings['endpoints'] = $this->endpoints;
-            $settings['mapping_source_url'] = dt_get_saturation_mapping_mirror( true );
+            $settings['mapping_source_url'] = dt_get_location_grid_mirror( true );
             $settings['population_division'] = $this->get_population_division();
             $settings['default_map_settings'] = $this->default_map_settings();
             $settings['spinner'] = ' <img src="'. spinner() . '" width="12px" />';
@@ -349,9 +350,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'method' => 'POST',
             ];
-            $endpoints['get_map_by_geonameid_endpoint'] = [
+            $endpoints['get_map_by_grid_id_endpoint'] = [
                 'namespace' => $this->namespace,
-                'route' => '/mapping_module/get_map_by_geonameid',
+                'route' => '/mapping_module/get_map_by_grid_id',
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'method' => 'POST',
             ];
@@ -361,9 +362,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                    'nonce' => wp_create_nonce( 'wp_rest' ),
                    'method' => 'POST',
             ];
-            $endpoints['search_geonames_by_name'] = [
+            $endpoints['search_location_grid_by_name'] = [
                'namespace' => $this->namespace,
-               'route' => '/mapping_module/search_geonames_by_name',
+               'route' => '/mapping_module/search_location_grid_by_name',
                'nonce' => wp_create_nonce( 'wp_rest' ),
                'method' => 'GET',
             ];
@@ -391,14 +392,14 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             return $this->localize_script();
         }
 
-        public function get_map_by_geonameid_endpoint( WP_REST_Request $request ) {
+        public function get_map_by_grid_id_endpoint( WP_REST_Request $request ) {
             if ( ! $this->permissions ) {
                 return new WP_Error( __METHOD__, 'No permission', [ 'status' => 101 ] );
             }
 
             $params = $request->get_params();
-            if ( isset( $params['geonameid'] ) ) {
-                return $this->map_level_by_geoname( $params['geonameid'] );
+            if ( isset( $params['grid_id'] ) ) {
+                return $this->map_level_by_grid_id( $params['grid_id'] );
             } else {
                 return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
             }
@@ -414,7 +415,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             return DT_Mapping_Module_Admin::instance()->process_rest_edits( $params );
         }
 
-        public function search_geonames_by_name( WP_REST_Request $request ){
+        public function search_location_grid_by_name( WP_REST_Request $request ){
             if ( !current_user_can( 'read_location' )){
                 return new WP_Error( __FUNCTION__, "No permissions to read locations", [ 'status' => 403 ] );
             }
@@ -429,26 +430,26 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
             //search for only the locations that are currently in use
             if ( $filter === "used" ){
-                $locations = Disciple_Tools_Mapping_Queries::search_used_geonames_by_name( [
+                $locations = Disciple_Tools_Mapping_Queries::search_used_location_grid_by_name( [
                     "search_query" => $search,
                 ] );
             } else {
-                $locations = Disciple_Tools_Mapping_Queries::search_geonames_by_name( [
+                $locations = Disciple_Tools_Mapping_Queries::search_location_grid_by_name( [
                     "search_query" => $search,
                     "filter" => $filter
                 ] );
             }
 
             $prepared = [];
-            foreach ( $locations["geonames"] as $location ){
+            foreach ( $locations["location_grid"] as $location ){
                 $prepared[] = [
                     "name" => $location["label"],
-                    "ID" => $location["geonameid"]
+                    "ID" => $location["grid_id"]
                 ];
             }
 
             return [
-                'geonames' => $prepared,
+                'location_grid' => $prepared,
                 'total' => $locations["total"]
             ];
         }
@@ -459,10 +460,10 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
             $params = $request->get_params();
 
-            if ( isset( $params['geonameid'] ) ) {
-                $geonameid = sanitize_key( wp_unslash( $params['geonameid'] ) );
+            if ( isset( $params['grid_id'] ) ) {
+                $grid_id = sanitize_key( wp_unslash( $params['grid_id'] ) );
 
-                return $this->drill_down_array( $geonameid );
+                return $this->drill_down_array( $grid_id );
             } else {
                 return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
             }
@@ -478,9 +479,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 Disciple_Tools_Mapping_Queries::counter();
                 return true;
             }
-            if ( isset( $params['key'] ) && $params['key'] === 'get_geoname_totals' ) {
-                delete_transient( 'get_geoname_totals' );
-                Disciple_Tools_Mapping_Queries::get_geoname_totals();
+            if ( isset( $params['key'] ) && $params['key'] === 'get_location_grid_totals' ) {
+                delete_transient( 'get_location_grid_totals' );
+                Disciple_Tools_Mapping_Queries::get_location_grid_totals();
                 return true;
             }
 
@@ -497,10 +498,10 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
          * This can be used for initial load of the drill down for performance. It is a replica of the javascript found in drill_down.js
          *
          * @param      $bind_function
-         * @param null $geonameid
+         * @param null $grid_id
          */
-        public function drill_down_widget( $bind_function, $geonameid = null) {
-            $dd_array = $this->drill_down_array( $geonameid );
+        public function drill_down_widget( $bind_function, $grid_id = null) {
+            $dd_array = $this->drill_down_array( $grid_id );
 
             if ( empty( $dd_array[0]['list'] ) ) {
                 dt_write_log( new WP_Error( 'dd_list_error', 'Did not find basic list established for drill down.' ) );
@@ -533,8 +534,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 <option value="<?php echo esc_html( $section['parent'] ) ?>"></option>
                                 <?php
                                 foreach ( $section['list'] as $item ) {
-                                    echo '<option value="' . esc_html( $item['geonameid'] ) . '" ';
-                                    if ( $item['geonameid'] == $section['selected'] ) {
+                                    echo '<option value="' . esc_html( $item['grid_id'] ) . '" ';
+                                    if ( $item['grid_id'] == $section['selected'] ) {
                                         echo 'selected';
                                     }
                                     echo '>' . esc_html( $item['name'] ) . '</option>';
@@ -553,11 +554,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
          * Drill Down Array
          * This is the core logic and array builder for the drilldown
          *
-         * @param null $geonameid
+         * @param null $grid_id
          *
          * @return array|bool|mixed
          */
-        public function drill_down_array( $geonameid = null ) {
+        public function drill_down_array( $grid_id = null ) {
 
             $default_level = $this->default_map_settings();
             $list = $this->default_map_short_list();
@@ -567,13 +568,13 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $default_select_first_level = true;
             }
 
-            if ( empty( $geonameid ) || $geonameid === 'top_map_level' ) {
+            if ( empty( $grid_id ) || $grid_id === 'top_map_level' || $grid_id === 'world' ) {
 
                 if ( wp_cache_get( 'drill_down_array_default' ) ) {
                     return wp_cache_get( 'drill_down_array_default' );
                 }
 
-                $geonameid = null;
+                $grid_id = null;
 
                 switch ( $default_level['type'] ) {
 
@@ -585,7 +586,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             foreach ( $list as $index => $item ) {
                                 $selected = $index;
                                 $selected_name = $item;
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $index ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $index ) );
                             }
 
                             $deeper_levels = $this->get_deeper_levels( $child_list );
@@ -614,7 +615,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 $items[] = $index;
                             }
 
-                            $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid_list( $items ) );
+                            $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id_list( $items ) );
                             $deeper_levels = $this->get_deeper_levels( $child_list );
 
                             $preset_array = [
@@ -648,7 +649,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             foreach ( $list as $index => $item ) {
                                 $selected = $index;
                                 $selected_name = $item;
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $index ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $index ) );
                             }
 
                             $deeper_levels = $this->get_deeper_levels( $child_list );
@@ -677,8 +678,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 $items[] = $index;
                             }
 
-                            $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid_list( $items ) );
-                            $parent = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $child_list[0]['country_geonameid'] ) );
+                            $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id_list( $items ) );
+                            $parent = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $child_list[0]['admin0_grid_id'] ) );
                             $deeper_levels = $this->get_deeper_levels( $child_list );
 
                             $preset_array = [
@@ -707,7 +708,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                     case 'world':
                     default:
-                        $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_countries() );
+                        $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_countries() );
                         $deeper_levels = $this->get_deeper_levels( $child_list );
                         $preset_array = [
                             0 => [
@@ -735,11 +736,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 return $preset_array;
 
             } else {
-                // build from geonameid
+                // build from grid_id
 
-                $reference = Disciple_Tools_Mapping_Queries::get_drilldown_by_geonameid( $geonameid );
+                $reference = Disciple_Tools_Mapping_Queries::get_drilldown_by_grid_id( $grid_id );
                 if ( empty( $reference ) ) {
-                    return new WP_Error( 'no_geoname', 'Geoname not found.' );
+                    dt_write_log( __METHOD__ . ": Error with grid_id (" . $grid_id . " Disciple_Tools_Mapping_Queries::get_drilldown_by_grid_id Failure" );
+                    return new WP_Error( 'no_location_grid', 'Location Grid not found.' );
                 }
 
                 switch ( $default_level['type'] ) {
@@ -749,37 +751,36 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         // build array according to level
                         switch ( $reference['level'] ) {
 
-                            case 'admin3':
-                            case 'admin3c': // custom
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin3_geonameid'] ) );
+                            case '3': // custom
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin3_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
                                     $preset_array = [
                                     0 => [
                                         'parent' => 'top_map_level',
-                                        'selected' => (int) $reference['country_geonameid'],
-                                        'selected_name' => $reference['country_name'],
+                                        'selected' => (int) $reference['admin0_grid_id'],
+                                        'selected_name' => $reference['admin0_name'],
                                         'link' => true,
                                         'active' => false,
                                     ],
                                     1 => [
-                                        'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin1_geonameid'],
+                                        'parent' => (int) $reference['admin0_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin1_grid_id'],
                                         'selected_name' => $reference['admin1_name'],
                                         'link' => true,
                                         'active' => false,
                                     ],
                                     2 => [
-                                        'parent' => (int) $reference['admin1_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin2_geonameid'],
+                                        'parent' => (int) $reference['admin1_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin2_grid_id'],
                                         'selected_name' => $reference['admin2_name'],
                                         'link' => true,
                                         'active' => true,
                                     ],
                                     3 => [
-                                        'parent' => (int) $reference['admin2_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin3_geonameid'] ?? 0,
+                                        'parent' => (int) $reference['admin2_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin3_grid_id'] ?? 0,
                                         'selected_name' => $reference['admin3_name'],
                                         'list' => $child_list,
                                         'link' => false,
@@ -799,28 +800,28 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                     ],
                                     1 => [
                                         'parent' => 'top_map_level',
-                                        'selected' => (int) $reference['country_geonameid'],
-                                        'selected_name' => $reference['country_name'],
+                                        'selected' => (int) $reference['admin0_grid_id'],
+                                        'selected_name' => $reference['admin0_name'],
                                         'link' => true,
                                         'active' => false,
                                     ],
                                     2 => [
-                                        'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin1_geonameid'],
+                                        'parent' => (int) $reference['admin0_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin1_grid_id'],
                                         'selected_name' => $reference['admin1_name'],
                                         'link' => true,
                                         'active' => false,
                                     ],
                                     3 => [
-                                        'parent' => (int) $reference['admin1_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin2_geonameid'],
+                                        'parent' => (int) $reference['admin1_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin2_grid_id'],
                                         'selected_name' => $reference['admin2_name'],
                                         'link' => true,
                                         'active' => true,
                                     ],
                                     4 => [
-                                        'parent' => (int) $reference['admin2_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin3_geonameid'] ?? 0,
+                                        'parent' => (int) $reference['admin2_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin3_grid_id'] ?? 0,
                                         'selected_name' => $reference['admin3_name'],
                                         'list' => $child_list,
                                         'link' => false,
@@ -832,37 +833,36 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 }
                             break;
 
-                            case 'admin2':
-                            case 'admin2c': // custom
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin2_geonameid'] ) );
+                            case '2': // custom
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin2_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
                                     $preset_array = [
                                         0 => [
                                             'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['country_geonameid'],
-                                            'selected_name' => $reference['country_name'],
+                                            'selected' => (int) $reference['admin0_grid_id'],
+                                            'selected_name' => $reference['admin0_name'],
                                             'link' => true,
                                             'active' => false,
                                         ],
                                         1 => [
-                                            'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin1_geonameid'],
+                                            'parent' => (int) $reference['admin0_grid_id'] ?? 0,
+                                            'selected' => (int) $reference['admin1_grid_id'],
                                             'selected_name' => $reference['admin1_name'],
                                             'link' => true,
                                             'active' => false,
                                         ],
                                         2 => [
-                                            'parent' => (int) $reference['admin1_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin2_geonameid'],
+                                            'parent' => (int) $reference['admin1_grid_id'] ?? 0,
+                                            'selected' => (int) $reference['admin2_grid_id'],
                                             'selected_name' => $reference['admin2_name'],
                                             'link' => true,
                                             'active' => true,
                                         ],
                                         3 => [
-                                            'parent' => (int) $reference['admin2_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin3_geonameid'] ?? 0,
+                                            'parent' => (int) $reference['admin2_grid_id'] ?? 0,
+                                            'selected' => (int) $reference['admin3_grid_id'] ?? 0,
                                             'selected_name' => $reference['admin3_name'],
                                             'list' => $child_list,
                                             'link' => false,
@@ -882,28 +882,28 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         ],
                                         1 => [
                                             'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['country_geonameid'],
-                                            'selected_name' => $reference['country_name'],
+                                            'selected' => (int) $reference['admin0_grid_id'],
+                                            'selected_name' => $reference['admin0_name'],
                                             'link' => true,
                                             'active' => false,
                                         ],
                                         2 => [
-                                            'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin1_geonameid'],
+                                            'parent' => (int) $reference['admin0_grid_id'] ?? 0,
+                                            'selected' => (int) $reference['admin1_grid_id'],
                                             'selected_name' => $reference['admin1_name'],
                                             'link' => true,
                                             'active' => false,
                                         ],
                                         3 => [
-                                            'parent' => (int) $reference['admin1_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin2_geonameid'],
+                                            'parent' => (int) $reference['admin1_grid_id'] ?? 0,
+                                            'selected' => (int) $reference['admin2_grid_id'],
                                             'selected_name' => $reference['admin2_name'],
                                             'link' => true,
                                             'active' => true,
                                         ],
                                         4 => [
-                                            'parent' => (int) $reference['admin2_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin3_geonameid'] ?? 0,
+                                            'parent' => (int) $reference['admin2_grid_id'] ?? 0,
+                                            'selected' => (int) $reference['admin3_grid_id'] ?? 0,
                                             'selected_name' => $reference['admin3_name'],
                                             'list' => $child_list,
                                             'link' => false,
@@ -915,30 +915,29 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 }
                                 break;
 
-                            case 'admin1':
-                            case 'admin1c':
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin1_geonameid'] ) );
+                            case '1':
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin1_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
                                     $preset_array = [
                                         0 => [
                                             'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['country_geonameid'],
-                                            'selected_name' => $reference['country_name'],
+                                            'selected' => (int) $reference['admin0_grid_id'],
+                                            'selected_name' => $reference['admin0_name'],
                                             'link' => true,
                                             'active' => false,
                                         ],
                                         1 => [
-                                            'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin1_geonameid'],
+                                            'parent' => (int) $reference['admin0_grid_id'] ?? 0,
+                                            'selected' => (int) $reference['admin1_grid_id'],
                                             'selected_name' => $reference['admin1_name'],
                                             'link' => true,
                                             'active' => true,
                                         ],
                                         2 => [
-                                            'parent' => (int) $reference['admin1_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin2_geonameid'] ?? 0,
+                                            'parent' => (int) $reference['admin1_grid_id'] ?? 0,
+                                            'selected' => (int) $reference['admin2_grid_id'] ?? 0,
                                             'selected_name' => $reference['admin2_name'],
                                             'list' => $child_list,
                                             'link' => false,
@@ -958,21 +957,21 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         ],
                                         1 => [
                                             'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['country_geonameid'],
-                                            'selected_name' => $reference['country_name'],
+                                            'selected' => (int) $reference['admin0_grid_id'],
+                                            'selected_name' => $reference['admin0_name'],
                                             'link' => true,
                                             'active' => false,
                                         ],
                                         2 => [
-                                            'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin1_geonameid'],
+                                            'parent' => (int) $reference['admin0_grid_id'] ?? 0,
+                                            'selected' => (int) $reference['admin1_grid_id'],
                                             'selected_name' => $reference['admin1_name'],
                                             'link' => true,
                                             'active' => true,
                                         ],
                                         3 => [
-                                            'parent' => (int) $reference['admin1_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin2_geonameid'] ?? 0,
+                                            'parent' => (int) $reference['admin1_grid_id'] ?? 0,
+                                            'selected' => (int) $reference['admin2_grid_id'] ?? 0,
                                             'selected_name' => $reference['admin2_name'],
                                             'list' => $child_list,
                                             'link' => false,
@@ -984,23 +983,23 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 }
                                 break;
 
-                            case 'country':
+                            case '0':
                             default:
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['country_geonameid'] ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin0_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
                                     $preset_array = [
                                         0 => [
                                             'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['country_geonameid'],
-                                            'selected_name' => $reference['country_name'],
+                                            'selected' => (int) $reference['admin0_grid_id'],
+                                            'selected_name' => $reference['admin0_name'],
                                             'link' => true,
                                             'active' => true,
                                         ],
                                         1 => [
-                                            'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin1_geonameid'] ?? 0,
+                                            'parent' => (int) $reference['admin0_grid_id'] ?? 0,
+                                            'selected' => (int) $reference['admin1_grid_id'] ?? 0,
                                             'selected_name' => $reference['admin1_name'],
                                             'list' => $child_list,
                                             'link' => false,
@@ -1019,14 +1018,14 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         ],
                                         1 => [
                                             'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['country_geonameid'],
-                                            'selected_name' => $reference['country_name'],
+                                            'selected' => (int) $reference['admin0_grid_id'],
+                                            'selected_name' => $reference['admin0_name'],
                                             'link' => true,
                                             'active' => true,
                                         ],
                                         2 => [
-                                            'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                            'selected' => (int) $reference['admin1_geonameid'] ?? 0,
+                                            'parent' => (int) $reference['admin0_grid_id'] ?? 0,
+                                            'selected' => (int) $reference['admin1_grid_id'] ?? 0,
                                             'selected_name' => $reference['admin1_name'],
                                             'list' => $child_list,
                                             'link' => false,
@@ -1048,16 +1047,14 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         // build array according to level
                         switch ( $reference['level'] ) {
 
-                            case 'admin3':
-                            case 'admin3c':
-                            case 'admin2':
-                            case 'admin2c':
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['geonameid'] ) );
+                            case '3':
+                            case '2':
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
-                                $country = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['country_geonameid'] ) );
-                                $state = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['admin1_geonameid'] ) );
-                                $county = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['admin2_geonameid'] ) );
+                                $country = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin0_grid_id'] ) );
+                                $state = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin1_grid_id'] ) );
+                                $county = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin2_grid_id'] ) );
 
                                 if ( $default_select_first_level ) {
 
@@ -1071,13 +1068,13 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         ],
                                         1 => [
                                             'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['admin2_geonameid'],
+                                            'selected' => (int) $reference['admin2_grid_id'],
                                             'selected_name' => $reference['admin2_name'],
                                             'link' => true,
                                             'active' => true,
                                         ],
                                         2 => [
-                                            'parent' => $reference['admin2_geonameid'],
+                                            'parent' => $reference['admin2_grid_id'],
                                             'selected' => 0,
                                             'selected_name' => '',
                                             'list' => $child_list,
@@ -1099,20 +1096,20 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         ],
                                         1 => [
                                             'parent' => 'top_map_level',
-                                            'selected' => $state['geonameid'],
+                                            'selected' => $state['grid_id'],
                                             'selected_name' => $state['name'],
                                             'link' => true,
                                             'active' => false,
                                         ],
                                         3 => [
-                                            'parent' => $state['geonameid'],
-                                            'selected' => $county['geonameid'],
+                                            'parent' => $state['grid_id'],
+                                            'selected' => $county['grid_id'],
                                             'selected_name' => $county['name'],
                                             'link' => true,
                                             'active' => true,
                                         ],
                                         4 => [
-                                            'parent' => $county['geonameid'],
+                                            'parent' => $county['grid_id'],
                                             'selected' => 0,
                                             'selected_name' => '',
                                             'list' => $child_list,
@@ -1125,20 +1122,19 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                                 break;
 
-                            case 'admin1':
-                            case 'admin1c':
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['geonameid'] ) );
+                            case '1':
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
-                                $country = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['country_geonameid'] ) );
-                                $state = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['admin1_geonameid'] ) );
+                                $country = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin0_grid_id'] ) );
+                                $state = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin1_grid_id'] ) );
 
                                 if ( $default_select_first_level ) {
 
                                     $preset_array = [
                                         0 => [
                                             'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['admin1_geonameid'],
+                                            'selected' => (int) $reference['admin1_grid_id'],
                                             'selected_name' => $reference['admin1_name'],
                                             'link' => true,
                                             'active' => true,
@@ -1175,13 +1171,13 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         ],
                                         1 => [
                                             'parent' => 'top_map_level',
-                                            'selected' => $state['geonameid'],
+                                            'selected' => $state['grid_id'],
                                             'selected_name' => $state['name'],
                                             'link' => true,
                                             'active' => true,
                                         ],
                                         3 => [
-                                            'parent' => $state['geonameid'],
+                                            'parent' => $state['grid_id'],
                                             'selected' => 0,
                                             'selected_name' => '',
                                             'list' => $child_list,
@@ -1195,7 +1191,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                             case 'country':
                             default:
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['geonameid'] ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                                 if ( $default_select_first_level ) {
@@ -1203,7 +1199,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                     $preset_array = [
                                         0 => [
                                             'parent' => 'top_map_level',
-                                            'selected' => (int) $reference['admin1_geonameid'],
+                                            'selected' => (int) $reference['admin1_grid_id'],
                                             'selected_name' => $reference['admin1_name'],
                                             'link' => true,
                                             'active' => true,
@@ -1220,7 +1216,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                     ];
 
                                 } else {
-                                    $parent = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_by_geonameid( $reference['country_geonameid'] ) );
+                                    $parent = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $reference['admin0_grid_id'] ) );
                                     $preset_array = [
                                         0 => [
                                             'parent' => 'top_map_level',
@@ -1255,9 +1251,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         // build array according to level
                         switch ( $reference['level'] ) {
 
-                            case 'admin3':
-                            case 'admin3c':
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin3_geonameid'] ) );
+                            case '10': // place
+                                // @todo find out the parent level
+                                // @todo finish
+
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin3_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1269,35 +1267,35 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                     ],
                                     1 => [
                                         'parent' => 'top_map_level',
-                                        'selected' => (int) $reference['country_geonameid'],
-                                        'selected_name' => $reference['country_name'],
+                                        'selected' => (int) $reference['admin0_grid_id'],
+                                        'selected_name' => $reference['admin0_name'],
                                         'link' => true,
                                         'active' => false,
                                     ],
                                     2 => [
-                                        'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin1_geonameid'],
+                                        'parent' => (int) $reference['admin0_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin1_grid_id'],
                                         'selected_name' => $reference['admin1_name'],
                                         'link' => true,
                                         'active' => false,
                                     ],
                                     3 => [
-                                        'parent' => (int) $reference['admin1_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin2_geonameid'],
+                                        'parent' => (int) $reference['admin1_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin2_grid_id'],
                                         'selected_name' => $reference['admin2_name'],
                                         'link' => true,
                                         'active' => true,
                                     ],
                                     4 => [
-                                        'parent' => (int) $reference['admin2_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin3_geonameid'],
+                                        'parent' => (int) $reference['admin2_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin3_grid_id'],
                                         'selected_name' => $reference['admin3_name'],
                                         'link' => true,
                                         'active' => true,
                                     ],
                                     5 => [
-                                        'parent' => (int) $reference['admin2_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin3_geonameid'] ?? 0,
+                                        'parent' => (int) $reference['admin2_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin3_grid_id'] ?? 0,
                                         'selected_name' => $reference['admin3_name'],
                                         'list' => $child_list,
                                         'link' => false,
@@ -1308,9 +1306,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 ];
                                 break;
 
-                            case 'admin2':
-                            case 'admin2c':
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin2_geonameid'] ) );
+                            case '3':
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin3_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1322,28 +1319,35 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                     ],
                                     1 => [
                                         'parent' => 'top_map_level',
-                                        'selected' => (int) $reference['country_geonameid'],
-                                        'selected_name' => $reference['country_name'],
+                                        'selected' => (int) $reference['admin0_grid_id'],
+                                        'selected_name' => $reference['admin0_name'],
                                         'link' => true,
                                         'active' => false,
                                     ],
                                     2 => [
-                                        'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin1_geonameid'],
+                                        'parent' => (int) $reference['admin0_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin1_grid_id'],
                                         'selected_name' => $reference['admin1_name'],
                                         'link' => true,
                                         'active' => false,
                                     ],
                                     3 => [
-                                        'parent' => (int) $reference['admin1_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin2_geonameid'],
+                                        'parent' => (int) $reference['admin1_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin2_grid_id'],
                                         'selected_name' => $reference['admin2_name'],
                                         'link' => true,
                                         'active' => true,
                                     ],
                                     4 => [
-                                        'parent' => (int) $reference['admin2_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin3_geonameid'] ?? 0,
+                                        'parent' => (int) $reference['admin2_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin3_grid_id'],
+                                        'selected_name' => $reference['admin3_name'],
+                                        'link' => true,
+                                        'active' => true,
+                                    ],
+                                    5 => [
+                                        'parent' => (int) $reference['admin2_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin3_grid_id'] ?? 0,
                                         'selected_name' => $reference['admin3_name'],
                                         'list' => $child_list,
                                         'link' => false,
@@ -1354,9 +1358,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 ];
                                 break;
 
-                            case 'admin1':
-                            case 'admin1c':
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['admin1_geonameid'] ) );
+                            case '2':
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin2_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1368,21 +1371,66 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                     ],
                                     1 => [
                                         'parent' => 'top_map_level',
-                                        'selected' => (int) $reference['country_geonameid'],
-                                        'selected_name' => $reference['country_name'],
+                                        'selected' => (int) $reference['admin0_grid_id'],
+                                        'selected_name' => $reference['admin0_name'],
                                         'link' => true,
                                         'active' => false,
                                     ],
                                     2 => [
-                                        'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin1_geonameid'],
+                                        'parent' => (int) $reference['admin0_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin1_grid_id'],
+                                        'selected_name' => $reference['admin1_name'],
+                                        'link' => true,
+                                        'active' => false,
+                                    ],
+                                    3 => [
+                                        'parent' => (int) $reference['admin1_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin2_grid_id'],
+                                        'selected_name' => $reference['admin2_name'],
+                                        'link' => true,
+                                        'active' => true,
+                                    ],
+                                    4 => [
+                                        'parent' => (int) $reference['admin2_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin3_grid_id'] ?? 0,
+                                        'selected_name' => $reference['admin3_name'],
+                                        'list' => $child_list,
+                                        'link' => false,
+                                        'active' => false,
+                                        'deeper_levels' => $deeper_levels,
+                                    ],
+
+                                ];
+                                break;
+
+                            case '1':
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin1_grid_id'] ) );
+                                $deeper_levels = $this->get_deeper_levels( $child_list );
+                                $preset_array = [
+                                    0 => [
+                                        'parent' => 'top_map_level',
+                                        'selected' => 'top_map_level',
+                                        'selected_name' => __( 'World', 'disciple_tools' ),
+                                        'link' => true,
+                                        'active' => false,
+                                    ],
+                                    1 => [
+                                        'parent' => 'top_map_level',
+                                        'selected' => (int) $reference['admin0_grid_id'],
+                                        'selected_name' => $reference['admin0_name'],
+                                        'link' => true,
+                                        'active' => false,
+                                    ],
+                                    2 => [
+                                        'parent' => (int) $reference['admin0_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin1_grid_id'],
                                         'selected_name' => $reference['admin1_name'],
                                         'link' => true,
                                         'active' => true,
                                     ],
                                     3 => [
-                                        'parent' => (int) $reference['admin1_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin2_geonameid'] ?? 0,
+                                        'parent' => (int) $reference['admin1_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin2_grid_id'] ?? 0,
                                         'selected_name' => $reference['admin2_name'],
                                         'list' => $child_list,
                                         'link' => false,
@@ -1393,9 +1441,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 ];
                                 break;
 
-                            case 'country':
+                            case '0':
                             default:
-                                $child_list = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $reference['country_geonameid'] ) );
+                                $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference['admin0_grid_id'] ) );
                                 $deeper_levels = $this->get_deeper_levels( $child_list );
                                 $preset_array = [
                                     0 => [
@@ -1407,14 +1455,14 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                     ],
                                     1 => [
                                         'parent' => 'top_map_level',
-                                        'selected' => (int) $reference['country_geonameid'],
-                                        'selected_name' => $reference['country_name'],
+                                        'selected' => (int) $reference['admin0_grid_id'],
+                                        'selected_name' => $reference['admin0_name'],
                                         'link' => true,
                                         'active' => true,
                                     ],
                                     2 => [
-                                        'parent' => (int) $reference['country_geonameid'] ?? 0,
-                                        'selected' => (int) $reference['admin1_geonameid'] ?? 0,
+                                        'parent' => (int) $reference['admin0_grid_id'] ?? 0,
+                                        'selected' => (int) $reference['admin1_grid_id'] ?? 0,
                                         'selected_name' => $reference['admin1_name'],
                                         'list' => $child_list,
                                         'link' => false,
@@ -1429,7 +1477,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         break;
                 }
             }
-        }
+        } // END drill_down_array()
+
 
         public function get_default_map_data() {
 
@@ -1455,17 +1504,17 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     }
 
                     if ( count( $starting_map_level['children'] ) < 2 ) {
-                        $geonameid = $starting_map_level['children'][0];
+                        $grid_id = $starting_map_level['children'][0];
 
                         // self
-                        $self = Disciple_Tools_Mapping_Queries::get_by_geonameid( $geonameid );
+                        $self = Disciple_Tools_Mapping_Queries::get_by_grid_id( $grid_id );
                         if ( ! $self ) {
                             return $this->get_world_map_data();
                         }
                         $results['self'] = [
                             'name' => $self['name'],
-                            'id' => (int) $self['geonameid'],
-                            'geonameid' => (int) $self['geonameid'],
+                            'id' => (int) $self['grid_id'],
+                            'grid_id' => (int) $self['grid_id'],
                             'population' => (int) $self['population'],
                             'population_formatted' => number_format( (int) $self['population'] ),
                             'latitude' => (float) $self['latitude'],
@@ -1473,17 +1522,17 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         ];
 
                         // children
-                        $children = Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $geonameid );
+                        $children = Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $grid_id );
 
                         if ( ! empty( $children ) ) {
                             // loop and modify types and population
                             foreach ( $children as $child ) {
-                                $index = $child['geonameid'];
+                                $index = $child['grid_id'];
                                 $results['children'][$index] = $child;
 
                                 // set types
                                 $results['children'][$index]['id'] = (int) $child['id'];
-                                $results['children'][$index]['geonameid'] = (int) $child['geonameid'];
+                                $results['children'][$index]['grid_id'] = (int) $child['grid_id'];
                                 $results['children'][$index]['population'] = (int) $child['population'];
                                 $results['children'][$index]['population_formatted'] = number_format( $child['population'] );
                                 $results['children'][$index]['latitude'] = (float) $child['latitude'];
@@ -1496,23 +1545,23 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     }
                     else {
 
-                        $self = Disciple_Tools_Mapping_Queries::get_by_geonameid_list( array_keys( $starting_map_level['children'] ) );
+                        $self = Disciple_Tools_Mapping_Queries::get_by_grid_id_list( array_keys( $starting_map_level['children'] ) );
                         if ( empty( $self ) ) {
                             return $this->get_world_map_data();
                         }
 
                         foreach ( $starting_map_level['children'] as $k => $v ) {
-                            $geonameid = $k;
+                            $grid_id = $k;
 
                             // self
-                            $self = Disciple_Tools_Mapping_Queries::get_by_geonameid( $geonameid );
+                            $self = Disciple_Tools_Mapping_Queries::get_by_grid_id( $grid_id );
                             if ( ! $self ) {
                                 return $this->get_world_map_data();
                             }
                             $results['self'] = [
                                 'name' => $self['name'],
-                                'id' => (int) $self['geonameid'],
-                                'geonameid' => (int) $self['geonameid'],
+                                'id' => (int) $self['grid_id'],
+                                'grid_id' => (int) $self['grid_id'],
                                 'population' => (int) $self['population'],
                                 'population_formatted' => number_format( (int) $self['population'] ),
                                 'latitude' => (float) $self['latitude'],
@@ -1520,17 +1569,17 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             ];
 
                             // children
-                            $children = Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $geonameid );
+                            $children = Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $grid_id );
 
                             if ( ! empty( $children ) ) {
                                 // loop and modify types and population
                                 foreach ( $children as $child ) {
-                                    $index = $child['geonameid'];
+                                    $index = $child['grid_id'];
                                     $results['children'][$index] = $child;
 
                                     // set types
                                     $results['children'][$index]['id'] = (int) $child['id'];
-                                    $results['children'][$index]['geonameid'] = (int) $child['geonameid'];
+                                    $results['children'][$index]['grid_id'] = (int) $child['grid_id'];
                                     $results['children'][$index]['population'] = (int) $child['population'];
                                     $results['children'][$index]['population_formatted'] = number_format( $child['population'] );
                                     $results['children'][$index]['latitude'] = (float) $child['latitude'];
@@ -1591,17 +1640,17 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $list = [ 'world' => 'World' ];
             }
             else {
-                $children = Disciple_Tools_Mapping_Queries::get_by_geonameid_list( $default_map_settings['children'] );
+                $children = Disciple_Tools_Mapping_Queries::get_by_grid_id_list( $default_map_settings['children'] );
                 if ( ! empty( $children ) ) {
                     foreach ( $children as $child ) {
-                        $list[$child['geonameid']] = $child['name'];
+                        $list[$child['grid_id']] = $child['name'];
                     }
                 }
             }
             return $list;
         }
 
-        public function map_level_by_geoname( $geonameid ) {
+        public function map_level_by_grid_id( $grid_id ) {
             $results = [
                 'parent' => [],
                 'self' => [],
@@ -1609,76 +1658,80 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 'deeper_levels' => [],
             ];
 
-            // else if not world, build data from geonameid
-            $parent = Disciple_Tools_Mapping_Queries::get_parent_by_geonameid( $geonameid );
+            // else if not world, build data from grid_id
+            $parent = Disciple_Tools_Mapping_Queries::get_parent_by_grid_id( $grid_id );
             if ( ! empty( $parent ) ) {
                 $results['parent'] = $parent;
 
                 // set types
-                $results['parent']['id'] = (int) $parent['geonameid'];
-                $results['parent']['geonameid'] = (int) $parent['geonameid'];
+                $results['parent']['id'] = (int) $parent['grid_id'];
+                $results['parent']['grid_id'] = (int) $parent['grid_id'];
                 $results['parent']['population'] = (int) $parent['population'];
                 $results['parent']['population_formatted'] = number_format( $parent['population'] );
                 $results['parent']['latitude'] = (float) $parent['latitude'];
                 $results['parent']['longitude'] = (float) $parent['longitude'];
-                $results['parent']['parent_id'] = (int) $parent['parent_id'];
-                $results['parent']['country_geonameid'] = (int) $parent['country_geonameid'];
-                $results['parent']['admin1_geonameid'] = (int) $parent['admin1_geonameid'];
-                $results['parent']['admin2_geonameid'] = (int) $parent['admin2_geonameid'];
-                $results['parent']['admin3_geonameid'] = (int) $parent['admin3_geonameid'];
+                $results['parent']['parent_id'] = empty( $parent['parent_id'] ) ? null : (int) $parent['parent_id'];
+                $results['parent']['admin0_grid_id'] = empty( $parent['admin0_grid_id'] ) ? null : (int) $parent['admin0_grid_id'];
+                $results['parent']['admin1_grid_id'] = empty( $parent['admin1_grid_id'] ) ? null : (int) $parent['admin1_grid_id'];
+                $results['parent']['admin2_grid_id'] = empty( $parent['admin2_grid_id'] ) ? null : (int) $parent['admin2_grid_id'];
+                $results['parent']['admin3_grid_id'] = empty( $parent['admin3_grid_id'] ) ? null : (int) $parent['admin3_grid_id'];
+                $results['parent']['admin4_grid_id'] = empty( $parent['admin4_grid_id'] ) ? null : (int) $parent['admin4_grid_id'];
+                $results['parent']['admin5_grid_id'] = empty( $parent['admin5_grid_id'] ) ? null : (int) $parent['admin5_grid_id'];
             }
 
-            $self = Disciple_Tools_Mapping_Queries::get_by_geonameid( $geonameid );
+            $self = Disciple_Tools_Mapping_Queries::get_by_grid_id( $grid_id );
             if ( ! empty( $self ) ) {
                 $results['self'] = $self;
 
                 // set types
                 $results['self']['id'] = (int) $self['id'];
-                $results['self']['geonameid'] = (int) $self['geonameid'];
+                $results['self']['grid_id'] = (int) $self['grid_id'];
                 $results['self']['population'] = (int) $self['population'];
                 $results['self']['population_formatted'] = number_format( $self['population'] );
                 $results['self']['latitude'] = (float) $self['latitude'];
                 $results['self']['longitude'] = (float) $self['longitude'];
-                $results['self']['parent_id'] = (int) $self['parent_id'];
-                $results['self']['country_geonameid'] = (int) $self['country_geonameid'];
-                $results['self']['admin1_geonameid'] = (int) $self['admin1_geonameid'];
-                $results['self']['admin2_geonameid'] = (int) $self['admin2_geonameid'];
-                $results['self']['admin3_geonameid'] = (int) $self['admin3_geonameid'];
+                $results['self']['parent_id'] = empty( $self['parent_id'] ) ? null : (int) $self['parent_id'];
+                $results['self']['admin0_grid_id'] = empty( $self['admin0_grid_id'] ) ? null : (int) $self['admin0_grid_id'];
+                $results['self']['admin1_grid_id'] = empty( $self['admin1_grid_id'] ) ? null : (int) $self['admin1_grid_id'];
+                $results['self']['admin2_grid_id'] = empty( $self['admin2_grid_id'] ) ? null : (int) $self['admin2_grid_id'];
+                $results['self']['admin3_grid_id'] = empty( $self['admin3_grid_id'] ) ? null : (int) $self['admin3_grid_id'];
+                $results['self']['admin4_grid_id'] = empty( $self['admin4_grid_id'] ) ? null : (int) $self['admin4_grid_id'];
+                $results['self']['admin5_grid_id'] = empty( $self['admin5_grid_id'] ) ? null : (int) $self['admin5_grid_id'];
             }
 
             // get children
-            $children = Disciple_Tools_Mapping_Queries::get_children_by_geonameid( $geonameid );
+            $children = Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $grid_id );
             if ( ! empty( $children ) ) {
                 // loop and modify types and population
                 foreach ( $children as $child ) {
-                    $index = $child['geonameid'];
+                    $index = $child['grid_id'];
                     $results['children'][$index] = $child;
 
                     // set types
                     $results['children'][$index]['id'] = (int) $child['id'];
-                    $results['children'][$index]['geonameid'] = (int) $child['geonameid'];
+                    $results['children'][$index]['grid_id'] = (int) $child['grid_id'];
                     $results['children'][$index]['population'] = (int) $child['population'];
                     $results['children'][$index]['population_formatted'] = number_format( $child['population'] );
                     $results['children'][$index]['latitude'] = (float) $child['latitude'];
                     $results['children'][$index]['longitude'] = (float) $child['longitude'];
-                    $results['children'][$index]['parent_id'] = (int) $child['parent_id'];
-                    $results['children'][$index]['country_geonameid'] = (int) $child['country_geonameid'];
-                    $results['children'][$index]['admin1_geonameid'] = (int) $child['admin1_geonameid'];
-                    $results['children'][$index]['admin2_geonameid'] = (int) $child['admin2_geonameid'];
-                    $results['children'][$index]['admin3_geonameid'] = (int) $child['admin3_geonameid'];
+                    $results['children'][$index]['parent_id'] = empty( $child['parent_id'] ) ? null : (int) $child['parent_id'];
+                    $results['children'][$index]['admin0_grid_id'] = empty( $child['admin0_grid_id'] ) ? null : (int) $child['admin0_grid_id'];
+                    $results['children'][$index]['admin1_grid_id'] = empty( $child['admin1_grid_id'] ) ? null : (int) $child['admin1_grid_id'];
+                    $results['children'][$index]['admin2_grid_id'] = empty( $child['admin2_grid_id'] ) ? null : (int) $child['admin2_grid_id'];
+                    $results['children'][$index]['admin3_grid_id'] = empty( $child['admin3_grid_id'] ) ? null : (int) $child['admin3_grid_id'];
+                    $results['children'][$index]['admin4_grid_id'] = empty( $child['admin4_grid_id'] ) ? null : (int) $child['admin4_grid_id'];
+                    $results['children'][$index]['admin5_grid_id'] = empty( $child['admin5_grid_id'] ) ? null : (int) $child['admin5_grid_id'];
                 }
             }
 
-            $available_geojson = $this->get_available_geojson();
-            if ( ! empty( $results['children'] ) || ! empty( $available_geojson ) ) {
+//            $available_geojson = $this->get_available_geojson();
+            if ( ! empty( $results['children'] ) ) {
                 foreach ( $results['children'] as $index => $child ) {
-                    if ( isset( $available_geojson[$index] ) ) {
-                        $results['deeper_levels'][$index] = true;
-                    }
+                    $results['deeper_levels'][$index] = true;
                 }
             }
 
-            return apply_filters( 'dt_mapping_module_map_level_by_geoname', $results );
+            return apply_filters( 'dt_mapping_module_map_level_by_grid_id', $results );
         }
 
 
@@ -1694,7 +1747,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                  'deeper_levels' => [],
             ];
 
-            $results['self'] = $this->format_geoname_types( Disciple_Tools_Mapping_Queries::get_earth() );
+            $results['self'] = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_earth() );
             $results['self']['population_formatted'] = number_format( $results['self']['population'] ?? 0 );
 
             $results['children'] = $this->get_countries_map_data();
@@ -1711,21 +1764,23 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             if ( ! empty( $children ) ) {
                 // loop and modify types and population
                 foreach ( $children as $child ) {
-                    $index = $child['country_code'];
+                    $index = $child['grid_id'];
                     $results[$index] = $child;
 
                     // set types
-                    $results[$index]['id'] = (int) $child['geonameid'];
-                    $results[$index]['geonameid'] = (int) $child['geonameid'];
+                    $results[$index]['id'] = (int) $child['grid_id'];
+                    $results[$index]['grid_id'] = (int) $child['grid_id'];
                     $results[$index]['population'] = (int) $child['population'];
                     $results[$index]['population_formatted'] = number_format( $child['population'] );
                     $results[$index]['latitude'] = (float) $child['latitude'];
                     $results[$index]['longitude'] = (float) $child['longitude'];
-                    $results[$index]['parent_id'] = (int) $child['parent_id'];
-                    $results[$index]['country_geonameid'] = (int) $child['country_geonameid'];
-                    $results[$index]['admin1_geonameid'] = (int) $child['admin1_geonameid'];
-                    $results[$index]['admin2_geonameid'] = (int) $child['admin2_geonameid'];
-                    $results[$index]['admin3_geonameid'] = (int) $child['admin3_geonameid'];
+                    $results[$index]['parent_id'] = empty( $child['parent_id'] ) ? null : (int) $child['parent_id'];
+                    $results[$index]['admin0_grid_id'] = empty( $child['admin0_grid_id'] ) ? null : (int) $child['admin0_grid_id'];
+                    $results[$index]['admin1_grid_id'] = empty( $child['admin1_grid_id'] ) ? null : (int) $child['admin1_grid_id'];
+                    $results[$index]['admin2_grid_id'] = empty( $child['admin2_grid_id'] ) ? null : (int) $child['admin2_grid_id'];
+                    $results[$index]['admin3_grid_id'] = empty( $child['admin3_grid_id'] ) ? null : (int) $child['admin3_grid_id'];
+                    $results[$index]['admin4_grid_id'] = empty( $child['admin4_grid_id'] ) ? null : (int) $child['admin4_grid_id'];
+                    $results[$index]['admin5_grid_id'] = empty( $child['admin5_grid_id'] ) ? null : (int) $child['admin5_grid_id'];
                 }
             }
             return $results;
@@ -1736,43 +1791,15 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $results = [];
             if ( ! empty( $children ) ) {
                 foreach ( $children as $index => $child ) {
-                    $results[$child['geonameid']] = true;
+                    $results[$child['grid_id']] = true;
                 }
             }
             return $results;
         }
 
-        public function get_geonameid_title( int $geonameid ) : string {
-            $result = Disciple_Tools_Mapping_Queries::get_by_geonameid( $geonameid );
+        public function get_grid_id_title( int $grid_id ) : string {
+            $result = Disciple_Tools_Mapping_Queries::get_by_grid_id( $grid_id );
             return $result['name'] ?? '';
-        }
-
-        public function get_available_geojson() { // @todo needs upgrade. Now polygon, polygon_collection are both folders to check
-
-            if ( get_transient( 'dt_mapping_module_available_geojson' ) ) {
-                return get_transient( 'dt_mapping_module_available_geojson' );
-            }
-
-            // get mirror source
-            $mirror_source = dt_get_saturation_mapping_mirror( true );
-            // get new array
-            $list = file_get_contents( $mirror_source . 'polygon/available_polygons.json' );
-            if ( ! $list ) {
-                dt_write_log( 'Failed to retrieve available locations list. Check Mapping admin configuration.' );
-                dt_write_log( $list );
-
-                return [];
-            }
-            $list = json_decode( $list, true );
-
-            // cache new response
-            set_transient( 'dt_mapping_module_available_geojson', $list, 60 * 60 * 24 );
-
-            return $list;
-        }
-
-        public static function reset_available_geojson() {
-            return delete_option( 'dt_mapping_module_available_geojson' );
         }
 
         public function get_population_division() {
@@ -1793,11 +1820,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             return $data;
         }
-        public function format_geoname_types( $query ) {
+        public function format_location_grid_types( $query ) {
             if ( ! empty( $query ) || ! is_array( $query ) ) {
                 foreach ( $query as $index => $value ) {
-                    if ( isset( $value['geonameid'] ) ) {
-                        $query[$index]['geonameid'] = (int) $value['geonameid'];
+                    if ( isset( $value['grid_id'] ) ) {
+                        $query[$index]['grid_id'] = (int) $value['grid_id'];
                     }
                     if ( isset( $value['population'] ) ) {
                         $query[$index]['population'] = (int) $value['population'];
@@ -1810,19 +1837,25 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         $query[$index]['longitude'] = (float) $value['longitude'];
                     }
                     if ( isset( $value['parent_id'] ) ) {
-                        $query[$index]['parent_id'] = (float) $value['parent_id'];
+                        $query[$index]['parent_id'] = (int) $value['parent_id'];
                     }
-                    if ( isset( $value['country_geonameid'] ) ) {
-                        $query[$index]['country_geonameid'] = (float) $value['country_geonameid'];
+                    if ( isset( $value['admin0_grid_id'] ) ) {
+                        $query[$index]['admin0_grid_id'] = empty( $value['admin0_grid_id'] ) ? null : (int) $value['admin0_grid_id'];
                     }
-                    if ( isset( $value['admin1_geonameid'] ) ) {
-                        $query[$index]['admin1_geonameid'] = (float) $value['admin1_geonameid'];
+                    if ( isset( $value['admin1_grid_id'] ) ) {
+                        $query[$index]['admin1_grid_id'] = empty( $value['admin1_grid_id'] ) ? null : (int) $value['admin1_grid_id'];
                     }
-                    if ( isset( $value['admin2_geonameid'] ) ) {
-                        $query[$index]['admin2_geonameid'] = (float) $value['admin2_geonameid'];
+                    if ( isset( $value['admin2_grid_id'] ) ) {
+                        $query[$index]['admin2_grid_id'] = empty( $value['admin2_grid_id'] ) ? null : (int) $value['admin2_grid_id'];
                     }
-                    if ( isset( $value['admin3_geonameid'] ) ) {
-                        $query[$index]['admin3_geonameid'] = (float) $value['admin3_geonameid'];
+                    if ( isset( $value['admin3_grid_id'] ) ) {
+                        $query[$index]['admin3_grid_id'] = empty( $value['admin3_grid_id'] ) ? null : (int) $value['admin3_grid_id'];
+                    }
+                    if ( isset( $value['admin4_grid_id'] ) ) {
+                        $query[$index]['admin4_grid_id'] = empty( $value['admin4_grid_id'] ) ? null : (int) $value['admin4_grid_id'];
+                    }
+                    if ( isset( $value['admin5_grid_id'] ) ) {
+                        $query[$index]['admin5_grid_id'] = empty( $value['admin5_grid_id'] ) ? null : (int) $value['admin5_grid_id'];
                     }
                 }
             }
@@ -1830,9 +1863,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
         public function get_post_locations( $post_id ) {
             $list = [];
-            $geoname_list = get_post_meta( $post_id, 'geonames' );
-            if ( !empty( $geoname_list ) ) {
-                $list = Disciple_Tools_Mapping_Queries::get_by_geonameid_list( $geoname_list );
+            $location_grid_list = get_post_meta( $post_id, 'location_grid' );
+            if ( !empty( $location_grid_list ) ) {
+                $list = Disciple_Tools_Mapping_Queries::get_by_grid_id_list( $location_grid_list );
             }
             return $list;
         }
@@ -1845,12 +1878,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             foreach ( $regions as $item ) {
                 $cc2 = explode( ',', $item['cc2'] );
 
-                $list[$item['geonameid']]['name'] = $item['name'];
-                $list[$item['geonameid']]['country_codes'] = $cc2;
+                $list[$item['grid_id']]['name'] = $item['name'];
+                $list[$item['grid_id']]['country_codes'] = $cc2;
 
                 foreach ( $countries as $country ) {
                     if ( array_search( $country['country_code'], $cc2 ) !== false ) {
-                        $list[$item['geonameid']]['countries'][] = $country;
+                        $list[$item['grid_id']]['countries'][] = $country;
                     }
                 }
             }
@@ -1858,21 +1891,22 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             return $list;
         }
     } DT_Mapping_Module::instance(); // end DT_Mapping_Module class
+} // end if class check
 
-
+if ( ! function_exists( 'dt_get_location_grid_mirror' ) ) {
     /**
      * Best way to call for the mapping polygon
      * @return array|string
      */
-    function dt_get_saturation_mapping_mirror( $url_only = false ) {
-        $mirror = get_option( 'dt_saturation_mapping_mirror' );
+    function dt_get_location_grid_mirror( $url_only = false ) {
+        $mirror = get_option( 'dt_location_grid_mirror' );
         if ( empty( $mirror ) ) {
             $array = [
-                'key' => 'github',
-                'label' => 'GitHub',
-                'url' => 'https://raw.githubusercontent.com/DiscipleTools/saturation-grid-project/master/'
+                'key'   => 'google',
+                'label' => 'Google',
+                'url'   => 'https://storage.googleapis.com/location-grid-mirror/',
             ];
-            update_option( 'dt_saturation_mapping_mirror', $array, true );
+            update_option( 'dt_location_grid_mirror', $array, true );
             $mirror = $array;
         }
 
@@ -1882,4 +1916,18 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
         return $mirror;
     }
-} // end if class check
+}
+
+if ( ! function_exists( 'dt_get_mapbox_endpoint' ) ) {
+    function dt_get_mapbox_endpoint( $type = 'places' ) : string {
+        switch ( $type ) {
+            case 'permanent':
+                return 'https://api.mapbox.com/geocoding/v5/mapbox.places-permanent/';
+                break;
+            case 'places':
+            default:
+                return 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
+                break;
+        }
+    }
+}

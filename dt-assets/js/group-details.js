@@ -100,12 +100,12 @@ jQuery(document).ready(function($) {
     $('#update-needed').prop("checked", updateNeeded)
   }
   /**
-   * Geonames
+   * Location Grid
    */
   // let loadGeonameTypeahead = ()=>{
-  //   if (!window.Typeahead['.js-typeahead-geonames']){
+  //   if (!window.Typeahead['.js-typeahead-location_grid']){
       $.typeahead({
-        input: '.js-typeahead-geonames',
+        input: '.js-typeahead-location_grid',
         minLength: 0,
         accent: true,
         searchOnFocus: true,
@@ -123,11 +123,11 @@ jQuery(document).ready(function($) {
           focus: {
             display: "name",
             ajax: {
-              url: wpApiShare.root + 'dt/v1/mapping_module/search_geonames_by_name',
+              url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
               data: {
                 s: "{{query}}",
                 filter: function () {
-                  return _.get(window.Typeahead['.js-typeahead-geonames'].filters.dropdown, 'value', 'all')
+                  return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
                 }
               },
               beforeSend: function (xhr) {
@@ -138,7 +138,7 @@ jQuery(document).ready(function($) {
                   if (typeof typeaheadTotals !== "undefined") {
                     typeaheadTotals.field = data.total
                   }
-                  return data.geonames
+                  return data.location_grid
                 }
               }
             }
@@ -150,24 +150,24 @@ jQuery(document).ready(function($) {
         multiselect: {
           matchOn: ["ID"],
           data: function () {
-            return (group.geonames || []).map(g=>{
+            return (group.location_grid || []).map(g=>{
               return {ID:g.id, name:g.label}
             })
 
           }, callback: {
             onCancel: function (node, item) {
-              _.pullAllBy(editFieldsUpdate.geonames.values, [{value:item.ID}], "value")
-              editFieldsUpdate.geonames.values.push({value:item.ID, delete:true})
+              _.pullAllBy(editFieldsUpdate.location_grid.values, [{value:item.ID}], "value")
+              editFieldsUpdate.location_grid.values.push({value:item.ID, delete:true})
             }
           }
         },
         callback: {
           onClick: function(node, a, item, event){
-            if (!editFieldsUpdate.geonames){
-              editFieldsUpdate.geonames = { "values": [] }
+            if (!editFieldsUpdate.location_grid){
+              editFieldsUpdate.location_grid = { "values": [] }
             }
-            _.pullAllBy(editFieldsUpdate.geonames.values, [{value:item.ID}], "value")
-            editFieldsUpdate.geonames.values.push({value:item.ID})
+            _.pullAllBy(editFieldsUpdate.location_grid.values, [{value:item.ID}], "value")
+            editFieldsUpdate.location_grid.values.push({value:item.ID})
             this.addMultiselectItemLayout(item)
             event.preventDefault()
             this.hideLayout();
@@ -181,12 +181,12 @@ jQuery(document).ready(function($) {
               .html("Regions of Focus");
           },
           onResult: function (node, query, result, resultCount) {
-            resultCount = typeaheadTotals.geonames
+            resultCount = typeaheadTotals.location_grid
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#geonames-result-container').html(text);
+            $('#location_grid-result-container').html(text);
           },
           onHideLayout: function () {
-            $('#geonames-result-container').html("");
+            $('#location_grid-result-container').html("");
           }
         }
       });
@@ -582,7 +582,7 @@ jQuery(document).ready(function($) {
   $("#open-edit").on("click", function () {
     editFieldsUpdate = {
       people_groups : { values: [] },
-      geonames : { values: [] }
+      location_grid : { values: [] }
     }
     $('#group-details-edit #title').html( _.escape(group.name) );
     let addressHTML = "";
@@ -598,7 +598,7 @@ jQuery(document).ready(function($) {
 
 
     $('#group-details-edit').foundation('open');
-    ["geonames", "people_groups"].forEach(t=>{
+    ["location_grid", "people_groups"].forEach(t=>{
       Typeahead[`.js-typeahead-${t}`].adjustInputSize()
     })
   })
@@ -684,7 +684,7 @@ jQuery(document).ready(function($) {
       }
     })
 
-    let connections = [ "geonames", "people_groups", "leaders" ]
+    let connections = [ "location_grid", "people_groups", "leaders" ]
     connections.forEach(connection=>{
       let htmlField = $(`.${connection}-list`).empty()
       if ( !group[connection] || group[connection].length === 0 ){
@@ -750,33 +750,33 @@ jQuery(document).ready(function($) {
       statusSelect.css("background-color", "#4CAF50")
     }
   }
-  /**
-   * Church fields
-   */
+
+  /* Church Metrics */
   let health_keys = Object.keys(wpApiGroupsSettings.groups_custom_fields_settings.health_metrics.default)
-
   function fillOutChurchHealthMetrics() {
-    let svgItem = document.getElementById("church-svg-wrapper").contentDocument
+    if ( $("#health-metrics").length ) {
+      let svgItem = document.getElementById("church-svg-wrapper").contentDocument
 
-    let churchWheel = $(svgItem).find('svg')
-    health_keys.forEach(m=>{
-      if (group[`health_metrics`] && group.health_metrics.includes(m) ){
-        churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", "1")
-        $(`#${m}`).css("opacity", "1")
+      let churchWheel = $(svgItem).find('svg')
+      health_keys.forEach(m=>{
+        if (group[`health_metrics`] && group.health_metrics.includes(m) ){
+          churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", "1")
+          $(`#${m}`).css("opacity", "1")
+        } else {
+          churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", ".1")
+          $(`#${m}`).css("opacity", ".4")
+        }
+      })
+      if ( !(group.health_metrics ||[]).includes("church_commitment") ){
+        churchWheel.find('#group').css("opacity", "1")
+        $(`#church_commitment`).css("opacity", ".4")
       } else {
-        churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", ".1")
-        $(`#${m}`).css("opacity", ".4")
+        churchWheel.find('#group').css("opacity", ".1")
+        $(`#church_commitment`).css("opacity", "1")
       }
-    })
-    if ( !(group.health_metrics ||[]).includes("church_commitment") ){
-      churchWheel.find('#group').css("opacity", "1")
-      $(`#church_commitment`).css("opacity", ".4")
-    } else {
-      churchWheel.find('#group').css("opacity", ".1")
-      $(`#church_commitment`).css("opacity", "1")
-    }
 
-    $(".js-progress-bordered-box").removeClass("half-opacity")
+      $(".js-progress-bordered-box").removeClass("half-opacity")
+    }
   }
 
   $('#church-svg-wrapper').on('load', function() {
@@ -800,8 +800,9 @@ jQuery(document).ready(function($) {
         console.log(err)
     })
   })
+  /* end Church fields*/
 
-
+  /* Member List*/
   let memberList = $('.member-list')
   let memberCountInput = $('#member_count')
   let populateMembersList = ()=>{
@@ -836,6 +837,33 @@ jQuery(document).ready(function($) {
     memberCountInput.val( group.member_count )
   }
   populateMembersList()
+  /* end Member List */
+
+  /* Four Fields */
+  let loadFourFields = ()=>{
+    $(document).ready(function(){
+      if ( jQuery('#four-fields').length ) {
+        jQuery('#four_fields_unbelievers').val( group.four_fields_unbelievers )
+        jQuery('#four_fields_believers').val( group.four_fields_believers )
+        jQuery('#four_fields_accountable').val( group.four_fields_accountable )
+        jQuery('#four_fields_church_commitment').val( group.four_fields_church_commitment )
+        jQuery('#four_fields_multiplying').val( group.four_fields_multiplying )
+      }
+     })
+  }
+
+  $(document).ready( function() {
+    let ffInputs = `
+    <input type="text" name="four_fields_unbelievers" id="four_fields_unbelievers" class="four_fields" style="width:60px; position:absolute; top:120px; left:75px;" />
+    <input type="text" name="four_fields_believers" id="four_fields_believers" class="four_fields" style="width:60px; position:absolute; top:120px; right:75px;" />
+    <input type="text" name="four_fields_accountable" id="four_fields_accountable" class="four_fields" style="width:60px; position:absolute; bottom:80px; right:75px;" />
+    <input type="text" name="four_fields_church_commitment" id="four_fields_church_commitment" class="four_fields" style="width:60px; position:absolute; bottom:80px; left:75px;" />
+    <input type="text" name="four_fields_multiplying" id="four_fields_multiplying" class="four_fields" style="width:60px; position:absolute; top:220px; left:170px;" />
+    `
+    $('#four-fields-inputs').append(ffInputs)
+    loadFourFields()
+  })
+  /* End Four Fields */
 
   $(document).on("click", ".delete-member", function () {
     let id = $(this).data('id')

@@ -107,7 +107,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             return 'NULL';
         }
         foreach ( $values as &$val ) {
-            $val = "'" . esc_sql( trim( $val ) ) . "'";
+            if ( '\N' === $val ) {
+                $val = 'NULL';
+            } else {
+                $val = "'" . esc_sql( trim( $val ) ) . "'";
+            }
         }
         return implode( ',', $values );
     }
@@ -156,7 +160,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     /**
-     * This is the modifiable url for downloading the geonames and people groups source files for the DT system.
+     * This is the modifiable url for downloading the location_grid and people groups source files for the DT system.
      * The filter can be used to override the default GitHub location and move this to a custom mirror or fork.
      * @return string
      */

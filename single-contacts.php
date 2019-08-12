@@ -209,7 +209,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         $dispatcher_actions
     ); ?>
 
-    <div id="errors"></div>
+<!--    <div id="errors"></div>-->
 
     <div id="content">
         <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
@@ -726,7 +726,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         <div class="confirm-merge-with-user" style="display: none">
             <p><?php esc_html_e( "To finish the linking, merge this contact with the existing user details.", 'disciple_tools' ) ?></p>
         </div>
-        
+
         <?php endif; ?>
 
         <div class="grid-x">

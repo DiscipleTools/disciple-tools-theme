@@ -13,7 +13,7 @@ class SiteLinkTest extends WP_UnitTestCase {
         'overall_status' => 'active',
         'milestones' => [ "values" => [ [ "value" => 'milestone_has_bible' ], [ "value" => "milestone_baptizing" ] ] ],
         'baptism_date' => "2018-12-31",
-        "geonames" => [ "values" => [ [ "value" => '3017382' ] ] ]
+        "location_grid" => [ "values" => [ [ "value" => '3017382' ] ] ]
     ];
 
 

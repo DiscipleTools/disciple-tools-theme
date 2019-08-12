@@ -1,11 +1,11 @@
 window.DRILLDOWNDATA = mappingModule.mapping_module
 window.DRILLDOWN = {
 
-    get_drill_down( bindFunction, geonameid ) {
+    get_drill_down( bindFunction, grid_id ) {
         DRILLDOWN.show_spinner()
 
-        if ( ! geonameid ) {
-            geonameid = 'top_map_level'
+        if ( ! grid_id ) {
+            grid_id = 'top_map_level'
         }
 
         let drill_down = jQuery('#'+bindFunction)
@@ -14,7 +14,7 @@ window.DRILLDOWN = {
         jQuery.ajax({
             type: rest.method,
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify( {  "bind_function": bindFunction, "geonameid": geonameid } ),
+            data: JSON.stringify( {  "bind_function": bindFunction, "grid_id": grid_id } ),
             dataType: "json",
             url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
             beforeSend: function(xhr) {
@@ -36,7 +36,7 @@ window.DRILLDOWN = {
                     let hollowClass = 'hollow'
                     if ( section.active ) {
                         hollowClass = ''
-                        geonameid = section.selected
+                        grid_id = section.selected
                         selectedGeonameLabel = section.selected_name
                     }
                     let disabled = !response[i+2]
@@ -64,8 +64,8 @@ window.DRILLDOWN = {
 
                             // make option list
                             jQuery.each(section.list, function (ii, item) {
-                                html += `<option value="${_.escape( item.geonameid )}" `
-                                if (item.geonameid === section.selected) {
+                                html += `<option value="${_.escape( item.grid_id )}" `
+                                if (item.grid_id === section.selected) {
                                     html += ` selected`
                                 }
                                 html += `>${_.escape( item.name )}</option>`
@@ -86,7 +86,7 @@ window.DRILLDOWN = {
 
             // trigger supplied bind event
             if ( typeof DRILLDOWN[bindFunction] !== "undefined" ) {
-                DRILLDOWN[bindFunction]( geonameid, selectedGeonameLabel )
+                DRILLDOWN[bindFunction]( grid_id, selectedGeonameLabel )
             }
 
         }) // end success statement

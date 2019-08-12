@@ -73,31 +73,31 @@ function dt_mm_add_churches_column( $data ) {
          * Step 5
          * Add new label and data column
          * This is the section you can loop through any content type
-         * and add a new column of data for it. You want to only add geonameids
+         * and add a new column of data for it. You want to only add grid_ids
          * that have a positive count value.
          *
          * @note    Modify this section!
          * @note    Don't add 0 values, or you might create unnecessary array and
          *          transfer weight to the mapping javascript file.
          */
-        $results = Disciple_Tools_Mapping_Queries::get_geoname_totals();
+        $results = Disciple_Tools_Mapping_Queries::get_location_grid_totals();
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
                 if ( $result['type'] === 'churches' && $result['count'] > 0 ) { // filter for only contact and positive counts
-                    $geonameid = $result['geonameid'];
+                    $grid_id = $result['grid_id'];
 
-                    // test if geonameid exists, else prepare it with 0 values
-                    if ( ! isset( $column_data[ $geonameid ] ) ) {
-                        $column_data[$geonameid] = [];
+                    // test if grid_id exists, else prepare it with 0 values
+                    if ( ! isset( $column_data[ $grid_id ] ) ) {
+                        $column_data[$grid_id] = [];
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
-                            $column_data[$geonameid][$i] = 0;
+                            $column_data[$grid_id][$i] = 0;
                             $i ++;
                         }
                     }
 
                     // add new record to column
-                    $column_data[$geonameid][$next_column_number] = (int) $result['count'] ?? 0; // must be string
+                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
                 }
             }
         }

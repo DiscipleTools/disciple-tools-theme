@@ -790,28 +790,28 @@ Please click the following link to confirm the invite:
         return $custom_data;
     }
 
-    public static function add_user_location( $geonameid, $user_id = null ) {
+    public static function add_user_location( $grid_id, $user_id = null ) {
         if ( empty( $user_id ) ) {
             $user_id = get_current_user_id();
         }
         $corresponds_to_contact = self::get_contact_for_user( $user_id );
         if ( $corresponds_to_contact ){
-            $other_values = get_post_meta( $corresponds_to_contact, 'geonames' );
-            if ( array_search( $geonameid, $other_values ) === false ) {
-                add_post_meta( $corresponds_to_contact, 'geonames', $geonameid, false );
+            $other_values = get_post_meta( $corresponds_to_contact, 'location_grid' );
+            if ( array_search( $grid_id, $other_values ) === false ) {
+                add_post_meta( $corresponds_to_contact, 'location_grid', $grid_id, false );
                 return true;
             }
         }
         return false;
     }
 
-    public static function delete_user_location( $geonameid, $user_id = null ) {
+    public static function delete_user_location( $grid_id, $user_id = null ) {
         if ( empty( $user_id ) ) {
             $user_id = get_current_user_id();
         }
         $corresponds_to_contact = self::get_contact_for_user( $user_id );
         if ( $corresponds_to_contact ){
-            delete_post_meta( $corresponds_to_contact, 'geonames', $geonameid );
+            delete_post_meta( $corresponds_to_contact, 'location_grid', $grid_id );
             return true;
         }
         return false;

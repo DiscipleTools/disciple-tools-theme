@@ -49,11 +49,12 @@ function my_stats() {
                 </div>
             </div>
             
-            <div class="cell">
+            <div class="cell"  id="my_groups_health_container">
                 <div id="my_groups_health" style="height: 500px;"></div>
+                <hr>
             </div>
             <div class="cell">
-            <hr>
+            
                 <div class="grid-x">
                     <div class="cell medium-6 center">
                         <div id="group_types" style="height: 400px;"></div>
@@ -82,7 +83,11 @@ function my_stats() {
     // build charts
 
     drawMyContactsProgress()
-    drawMyGroupHealth();
+    if ( sourceData.preferences.groups.church_metrics ) {
+      drawMyGroupHealth();
+    } else {
+      jQuery('#my_groups_health_container').remove()
+    }
     drawGroupTypes();
     drawGroupGenerations();
 
@@ -152,7 +157,7 @@ function my_stats() {
       series1.dataItems.template.locations.categoryX = 0.5;
       series1.stacked = true;
       series1.tooltip.pointerOrientation = "vertical";
-      
+
       let series2 = chart.series.push(new am4charts.ColumnSeries());
       series2.stroke = am4core.color("#da7070"); // red
       series2.fill = am4core.color("#da7070"); // red

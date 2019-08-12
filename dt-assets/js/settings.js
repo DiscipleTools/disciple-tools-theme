@@ -36,8 +36,8 @@ function change_password() {
 /**
  * Locations
  */
-window.DRILLDOWN.add_user_location = function( geonameid ) {
-    jQuery('#add_location_geoname_value').val(geonameid)
+window.DRILLDOWN.add_user_location = function( grid_id ) {
+    jQuery('#add_location_location_grid_value').val(grid_id)
 }
 
 function load_settings_locations( reload = false ) {
@@ -56,7 +56,7 @@ function load_settings_locations( reload = false ) {
     if ( wpApiSettingsPage.custom_data.current_locations !== undefined && ! reload ) {
         cl.append(`<strong>Current Locations:</strong><br>`)
         jQuery.each( wpApiSettingsPage.custom_data.current_locations, function(i,v) {
-            cl.append(`${v.name}, ${v.country_code} <a style="padding:0 10px;" onclick="delete_location(${v.geonameid})"><img src="${wpApiSettingsPage.template_dir}/dt-assets/images/invalid.svg"></a><br>`)
+            cl.append(`${v.name}, ${v.country_code} <a style="padding:0 10px;" onclick="delete_location(${v.grid_id})"><img src="${wpApiSettingsPage.template_dir}/dt-assets/images/invalid.svg"></a><br>`)
         })
         cl.append(`<br>`)
     } else {
@@ -66,7 +66,7 @@ function load_settings_locations( reload = false ) {
             if (data ) {
                 cl.append(`<strong>Current Locations:</strong><br>`)
                 jQuery.each( data, function(i,v) {
-                    cl.append(`${v.name}, ${v.country_code} <a style="padding:0 10px;" onclick="delete_location(${v.geonameid})"><img src="${wpApiSettingsPage.template_dir}/dt-assets/images/invalid.svg"></a><br>`)
+                    cl.append(`${v.name}, ${v.country_code} <a style="padding:0 10px;" onclick="delete_location(${v.grid_id})"><img src="${wpApiSettingsPage.template_dir}/dt-assets/images/invalid.svg"></a><br>`)
                 })
                 cl.append(`<br>`)
             }
@@ -79,7 +79,7 @@ function load_settings_locations( reload = false ) {
 function add_drill_down_selector() {
     jQuery('#new_locations').empty().append(
             `<div id="add_user_location"><ul class="drill_down"></ul></div>
-            <input type="hidden" id="add_location_geoname_value" />
+            <input type="hidden" id="add_location_location_grid_value" />
             <button type="button" class="button" onclick="save_new_location()">Save</button>`
     )
     window.DRILLDOWN.get_drill_down( 'add_user_location' )
@@ -87,17 +87,17 @@ function add_drill_down_selector() {
 }
 
 function save_new_location() {
-    let geonameid = jQuery('#add_location_geoname_value').val()
+    let grid_id = jQuery('#add_location_location_grid_value').val()
 
-    makeRequest('post', 'users/user_location', { geonameid: geonameid } ).done(data => {
+    makeRequest('post', 'users/user_location', { grid_id: grid_id } ).done(data => {
         console.log( data )
         load_settings_locations( true )
     }).fail(handleAjaxError)
 
 }
 
-function delete_location( geonameid ) {
-    makeRequest('delete', 'users/user_location', { geonameid: geonameid } ).done(data => {
+function delete_location( grid_id ) {
+    makeRequest('delete', 'users/user_location', { grid_id: grid_id } ).done(data => {
         console.log( data )
         load_settings_locations( true )
     }).fail(handleAjaxError)

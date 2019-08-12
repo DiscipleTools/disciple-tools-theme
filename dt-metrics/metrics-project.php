@@ -113,6 +113,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'label_group' => __( 'Group', 'disciple_tools' ),
                 'label_church' => __( 'Church', 'disciple_tools' ),
             ],
+            'preferences' => $this->preferences(),
             'hero_stats' => self::chart_project_hero_stats(),
             'contacts_progress' => self::chart_contacts_progress( 'project' ),
             'group_types' => self::chart_group_types( 'project' ),
@@ -123,6 +124,21 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             'coaching_generation_tree' => $this->get_coaching_generations_tree(),
 
         ];
+    }
+
+    public function preferences() {
+        $data = [];
+
+        /* Add group preferences*/
+        $group_preferences = dt_get_option( 'group_preferences' );
+        $data['groups'] = [
+            'church_metrics' => $group_preferences['church_metrics'] ?? false,
+            'four_fields' => $group_preferences['four_fields'] ?? false,
+        ];
+
+        /* Add other preferences. Please, categorize by section, i.e. contacts, groups, etc */
+
+        return $data;
     }
 
     /**

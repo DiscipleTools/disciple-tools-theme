@@ -68,11 +68,12 @@ function project_overview() {
                    </div> 
                 </div>
             </div>
-            <div class="cell">
+            <div class="cell" id="my_groups_health_container">
                 <div id="my_groups_health" style="height: 500px;"></div>
+                <hr>
             </div>
             <div class="cell">
-                <hr>
+                
                 <div class="grid-x">
                     <div class="cell medium-6 center">
                         <div id="group_types" style="height: 400px;"></div>
@@ -98,12 +99,15 @@ function project_overview() {
 
     // build charts
     drawMyContactsProgress();
-    drawMyGroupHealth();
+    if ( sourceData.preferences.groups.church_metrics ) {
+      drawMyGroupHealth();
+    } else {
+      jQuery('#my_groups_health_container').remove()
+    }
     drawGroupTypes();
     drawGroupGenerations();
 
     function drawMyContactsProgress() {
-      console.log(sourceData.contacts_progress);
       let chart = am4core.create("my_contacts_progress", am4charts.XYChart)
       let title = chart.titles.create()
       title.text = `[bold]${ window.dtMetricsProject.data.translations.label_follow_up_progress }[/]`

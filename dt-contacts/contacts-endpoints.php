@@ -344,7 +344,7 @@ class Disciple_Tools_Contacts_Endpoints
             function( $c ){ return $c->ID; },
             $contacts
         );
-        $geonames = Disciple_Tools_Mapping_Queries::get_geoname_ids_and_names_for_post_ids( $contact_ids );
+        $location_grid = Disciple_Tools_Mapping_Queries::get_location_grid_ids_and_names_for_post_ids( $contact_ids );
         p2p_type( 'contacts_to_groups' )->each_connected( $contacts, [], 'groups' );
         $rv = [];
         foreach ( $contacts as $contact ) {
@@ -355,9 +355,9 @@ class Disciple_Tools_Contacts_Endpoints
             $contact_array["is_team_contact"] = $contact->is_team_contact ?? false;
             $contact_array['permalink'] = get_post_permalink( $contact->ID );
             $contact_array['overall_status'] = get_post_meta( $contact->ID, 'overall_status', true );
-            $contact_array['locations'] = []; // @todo remove or rewrite? Because of geonames upgrade.
-            foreach ( $geonames[$contact->ID] as $location ) {
-                $contact_array['locations'][] = $location["name"]; // @todo remove or rewrite? Because of geonames upgrade.
+            $contact_array['locations'] = []; // @todo remove or rewrite? Because of location_grid upgrade.
+            foreach ( $location_grid[$contact->ID] as $location ) {
+                $contact_array['locations'][] = $location["name"]; // @todo remove or rewrite? Because of location_grid upgrade.
             }
             $contact_array['groups'] = [];
             foreach ( $contact->groups as $group ) {

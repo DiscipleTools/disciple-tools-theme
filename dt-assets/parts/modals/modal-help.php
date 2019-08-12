@@ -76,20 +76,17 @@
         <p>If this group has multiplied into another group, you can add that here (Child Groups).</p>
     </div>
 
-    <!--    -->
-    <div class="help-section" id="-help-text" style="display: none">
-        <h3 class="lead"></h3>
-        <p></p>
+    <!--  Four Fields  -->
+    <div class="help-section" id="four-fields-help-text" style="display: none">
+        <h3 class="lead"><?php esc_html_e( "Four Fields", 'disciple_tools' ) ?></h3>
+        <ul>
+            <li>Unbeliever field: Unbelievers in this group.</li>
+            <li>Believer field: Believers in this group.</li>
+            <li>Accountable field.</li>
+            <li>Church field: Is this a church?</li>
+            <li>Multiply field: How many members of multiplying?</li>
+        </ul>
     </div>
-
-    <!--    -->
-    <div class="help-section" id="-help-text" style="display: none">
-        <h3 class="lead"></h3>
-        <p></p>
-    </div>
-
-
-
 
     <div class="grid-x">
         <button class="button" data-close aria-label="Close reveal" type="button">

@@ -196,13 +196,13 @@
                 <ul class="address"></ul>
             </div>
 
-            <!-- Geonames -->
+            <!-- Location Grid -->
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
                     <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
                 </div>
-                <ul class="geonames-list"></ul>
+                <ul class="location_grid-list"></ul>
             </div>
 
             <!-- People Groups -->
@@ -331,14 +331,14 @@
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
                     <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
                 </div>
-                <div class="geonames">
-                    <var id="geonames-result-container" class="result-container"></var>
-                    <div id="geonames_t" name="form-geonames" class="scrollable-typeahead typeahead-margin-when-active">
+                <div class="location_grid">
+                    <var id="location_grid-result-container" class="result-container"></var>
+                    <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
                         <div class="typeahead__container">
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
-                                    <input class="js-typeahead-geonames"
-                                           name="geonames[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                    <input class="js-typeahead-location_grid"
+                                           name="location_grid[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
                                            autocomplete="off">
                                 </span>
                             </div>
@@ -504,7 +504,7 @@
         </div>
 
         <!-- drill down -->
-        <div id="geoname-encode-contact">
+        <div id="location_grid-encode-contact">
 
         </div>
 

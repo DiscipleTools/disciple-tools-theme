@@ -163,7 +163,7 @@ class Disciple_Tools_Contacts_Transfer
                     'post' => $post_data,
                     'postmeta' => $postmeta_data,
                     'comments' => dt_get_comments_with_redacted_user_data( $contact_id ),
-                    'locations' => $contact['locations'], // @todo remove or rewrite? Because of geonames upgrade.
+                    'locations' => $contact['locations'], // @todo remove or rewrite? Because of location_grid upgrade.
                     'people_groups' => $contact['people_groups'],
                     'transfer_foreign_key' => $contact['transfer_foreign_key'] ?? 0,
                 ],

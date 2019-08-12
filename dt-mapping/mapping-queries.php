@@ -3,120 +3,134 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Mapping_Queries {
 
-    public static function get_by_geonameid( $geonameid ) {
+    public static function get_by_grid_id( $grid_id ) {
 
-        if ( wp_cache_get( 'get_by_geonameid', $geonameid ) ) {
-            return wp_cache_get( 'get_by_geonameid', $geonameid );
+        if ( wp_cache_get( 'get_by_grid_id', $grid_id ) ) {
+            return wp_cache_get( 'get_by_grid_id', $grid_id );
         }
 
         global $wpdb;
 
         $results = $wpdb->get_row( $wpdb->prepare( "
             SELECT
-              g.geonameid as id, 
-              g.geonameid, 
+              g.grid_id as id, 
+              g.grid_id, 
               g.alt_name as name, 
-              IF(g.alt_population > 0, g.alt_population, g.population) as population, 
+              g.alt_population as population, 
               g.latitude, 
               g.longitude,
               g.country_code,
+              g.admin0_code,
               g.parent_id,
-              g.country_geonameid,
-              g.admin1_geonameid,
-              g.admin2_geonameid,
-              g.admin3_geonameid,
+              g.admin0_grid_id,
+              g.admin1_grid_id,
+              g.admin2_grid_id,
+              g.admin3_grid_id,
+              g.admin4_grid_id,
+              g.admin5_grid_id,
               g.level,
+              g.level_name,
               g.is_custom_location
-            FROM $wpdb->dt_geonames as g
-            WHERE g.geonameid = %s
-        ", $geonameid ), ARRAY_A );
+            FROM $wpdb->dt_location_grid as g
+            WHERE g.grid_id = %s
+        ", $grid_id ), ARRAY_A );
 
         if ( empty( $results ) ) {
             $results = [];
         }
 
-        wp_cache_set( 'get_by_geonameid', $results, $geonameid );
+        wp_cache_set( 'get_by_grid_id', $results, $grid_id );
 
         return $results;
     }
 
-    public static function get_parent_by_geonameid( $geonameid ) {
+    public static function get_parent_by_grid_id( $grid_id ) {
 
-        if ( wp_cache_get( 'get_parent_by_geonameid', $geonameid ) ) {
-            return wp_cache_get( 'get_parent_by_geonameid', $geonameid );
+        if ( wp_cache_get( 'get_parent_by_grid_id', $grid_id ) ) {
+            return wp_cache_get( 'get_parent_by_grid_id', $grid_id );
         }
 
         global $wpdb;
 
         $results = $wpdb->get_row( $wpdb->prepare( "
             SELECT 
-              p.geonameid as id, 
-              p.geonameid, 
+              p.grid_id as id, 
+              p.grid_id, 
               p.alt_name as name, 
-              IF(g.alt_population > 0, g.alt_population, g.population) as population, 
+              p.alt_population as population,
               p.latitude, 
               p.longitude,
               p.country_code,
+              p.admin0_code,
               p.parent_id,
-              p.country_geonameid,
-              p.admin1_geonameid,
-              p.admin2_geonameid,
-              p.admin3_geonameid,
-              p.level
-            FROM $wpdb->dt_geonames as g
-            JOIN $wpdb->dt_geonames as p ON g.parent_id=p.geonameid
-            WHERE g.geonameid = %s
-        ", $geonameid ), ARRAY_A );
+              p.admin0_grid_id,
+              p.admin1_grid_id,
+              p.admin2_grid_id,
+              p.admin3_grid_id,
+              p.admin4_grid_id,
+              p.admin5_grid_id,
+              p.level,
+              p.level_name
+            FROM $wpdb->dt_location_grid as g
+            JOIN $wpdb->dt_location_grid as p ON g.parent_id=p.grid_id
+            WHERE g.grid_id = %s
+        ", $grid_id ), ARRAY_A );
 
         if ( empty( $results ) ) {
             $results = [];
         }
 
-        wp_cache_set( 'get_parent_by_geonameid', $results, $geonameid );
+        wp_cache_set( 'get_parent_by_grid_id', $results, $grid_id );
 
         return $results;
     }
 
-    public static function get_children_by_geonameid( $geonameid ) {
+    public static function get_children_by_grid_id( $grid_id ) {
 
-        if ( wp_cache_get( 'get_children_by_geonameid', $geonameid ) ) {
-            return wp_cache_get( 'get_children_by_geonameid', $geonameid );
+        if ( wp_cache_get( 'get_children_by_grid_id', $grid_id ) ) {
+            return wp_cache_get( 'get_children_by_grid_id', $grid_id );
         }
 
         global $wpdb;
 
         $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT
-              g.geonameid as id, 
-              g.geonameid, 
+              g.grid_id as id, 
+              g.grid_id, 
               g.alt_name as name, 
-              IF(g.alt_population > 0, g.alt_population, g.population) as population, 
+              g.alt_population as population, 
               g.latitude, 
               g.longitude,
               g.country_code,
               g.parent_id,
-              g.country_geonameid,
-              g.admin1_geonameid,
-              g.admin2_geonameid,
-              g.admin3_geonameid,
+              g.admin0_grid_id,
+              g.admin1_grid_id,
+              g.admin2_grid_id,
+              g.admin3_grid_id,
+              g.admin4_grid_id,
+              g.admin5_grid_id,
               g.level,
               g.is_custom_location
-            FROM $wpdb->dt_geonames as g
+            FROM $wpdb->dt_location_grid as g
             WHERE g.parent_id = %d
             ORDER BY g.alt_name ASC
-        ", $geonameid ), ARRAY_A );
+        ", $grid_id ), ARRAY_A );
 
         if ( empty( $results ) ) {
             $results = [];
         }
 
-        wp_cache_set( 'get_children_by_geonameid', $results, $geonameid );
+        wp_cache_set( 'get_children_by_grid_id', $results, $grid_id );
 
         return $results;
     }
 
-    public static function get_by_geonameid_list( $list, $short = false ) {
+    public static function get_by_grid_id_list( $list, $short = false ) {
         global $wpdb;
+
+        if ( empty( $list ) ) {
+            return [];
+        }
 
         $prepared_list = '';
         $i = 0;
@@ -135,36 +149,37 @@ class Disciple_Tools_Mapping_Queries {
         if ( $short ) {
             $results = $wpdb->get_results("
                 SELECT
-                  g.geonameid, 
+                  g.grid_id, 
                   g.alt_name as name, 
-                  IF(g.alt_population > 0, g.alt_population, g.population) as population,
+                  g.alt_population as population,
                   g.latitude, 
                   g.longitude,
                   g.country_code,
                   g.level
-                FROM $wpdb->dt_geonames as g
-                WHERE g.geonameid IN ($prepared_list)
+                FROM $wpdb->dt_location_grid as g
+                WHERE g.grid_id IN ($prepared_list)
                 ORDER BY g.alt_name ASC
             ", ARRAY_A );
         } else {
             $results = $wpdb->get_results("
                 SELECT
-                  g.geonameid as id, 
-                  g.geonameid, 
+                  g.grid_id as id, 
+                  g.grid_id, 
                   g.alt_name as name, 
-                  IF(g.alt_population > 0, g.alt_population, g.population) as population,
+                  g.alt_population as population,
                   g.latitude, 
                   g.longitude,
                   g.country_code,
-                  g.feature_code,
                   g.parent_id,
-                  g.country_geonameid,
-                  g.admin1_geonameid,
-                  g.admin2_geonameid,
-                  g.admin3_geonameid,
+                  g.admin0_grid_id,
+                  g.admin1_grid_id,
+                  g.admin2_grid_id,
+                  g.admin3_grid_id,
+                  g.admin4_grid_id,
+                  g.admin5_grid_id,
                   g.level
-                FROM $wpdb->dt_geonames as g
-                WHERE g.geonameid IN ($prepared_list)
+                FROM $wpdb->dt_location_grid as g
+                WHERE g.grid_id IN ($prepared_list)
                 ORDER BY g.alt_name ASC
             ", ARRAY_A );
         }
@@ -198,10 +213,10 @@ class Disciple_Tools_Mapping_Queries {
             }
 
             $results = $wpdb->get_col( "
-                 SELECT g.geonameid
-                 FROM $wpdb->dt_geonames as g
-                 WHERE g.level = 'country'
-                 ORDER BY name ASC
+                 SELECT g.grid_id
+                 FROM $wpdb->dt_location_grid as g
+                 WHERE g.level = 0
+                 ORDER BY alt_name ASC
         " );
 
             wp_cache_set( 'get_countries', $results, 'ids' );
@@ -214,29 +229,24 @@ class Disciple_Tools_Mapping_Queries {
 
             $results = $wpdb->get_results( "
                  SELECT
-                        g.geonameid,
+                        g.grid_id,
                         g.alt_name as name,
+                        g.alt_population as population,
                         g.latitude,
                         g.longitude,
-                        g.feature_class,
-                        g.feature_code,
                         g.country_code,
-                        g.cc2,
-                        g.admin1_code,
-                        g.admin2_code,
-                        g.admin3_code,
-                        g.admin4_code,
-                        IF(g.alt_population > 0, g.alt_population, g.population) as population,
-                        g.timezone,
+                        g.admin0_code,
                         g.modification_date,
                         g.parent_id,
-                        g.country_geonameid,
-                        g.admin1_geonameid,
-                        g.admin2_geonameid,
-                        g.admin3_geonameid,
+                        g.admin0_grid_id,
+                        g.admin1_grid_id,
+                        g.admin2_grid_id,
+                        g.admin3_grid_id,
+                        g.admin4_grid_id,
+                        g.admin5_grid_id,
                         g.level
-                 FROM $wpdb->dt_geonames as g
-                 WHERE g.level = 'country'
+                 FROM $wpdb->dt_location_grid as g
+                 WHERE g.level = 0
                  ORDER BY name ASC
             ", ARRAY_A );
 
@@ -250,113 +260,147 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
-    public static function get_country_code_by_id( $geonameid ) {
+    public static function get_country_code_by_id( $grid_id ) {
 
-        if ( wp_cache_get( 'get_country_code_by_id', $geonameid ) ) {
-            return wp_cache_get( 'get_country_code_by_id', $geonameid );
+        if ( wp_cache_get( 'get_country_code_by_id', $grid_id ) ) {
+            return wp_cache_get( 'get_country_code_by_id', $grid_id );
         }
 
         global $wpdb;
 
         $results = $wpdb->get_var( $wpdb->prepare( "
             SELECT country_code 
-            FROM $wpdb->dt_geonames 
-            WHERE geonameid = %s;
-        ", $geonameid ) );
+            FROM $wpdb->dt_location_grid 
+            WHERE grid_id = %s;
+        ", $grid_id ) );
 
         if ( empty( $results ) ) {
             $results = 0;
         }
 
-        wp_cache_set( 'get_country_code_by_id', $results, $geonameid );
+        wp_cache_set( 'get_country_code_by_id', $results, $grid_id );
 
         return $results;
     }
 
-    public static function get_hierarchy( $geonameid = null ) {
+    public static function get_admin0_code_by_id( $grid_id ) {
 
-        if ( wp_cache_get( 'get_hierarchy', $geonameid ) ) {
-            return wp_cache_get( 'get_hierarchy', $geonameid );
+        if ( wp_cache_get( 'get_admin0_code_by_id', $grid_id ) ) {
+            return wp_cache_get( 'get_admin0_code_by_id', $grid_id );
         }
 
         global $wpdb;
 
-        if ( $geonameid ) {
+        $results = $wpdb->get_var( $wpdb->prepare( "
+            SELECT admin0_code 
+            FROM $wpdb->dt_location_grid 
+            WHERE grid_id = %s;
+        ", $grid_id ) );
+
+        if ( empty( $results ) ) {
+            $results = 0;
+        }
+
+        wp_cache_set( 'get_admin0_code_by_id', $results, $grid_id );
+
+        return $results;
+    }
+
+    public static function get_hierarchy( $grid_id = null ) {
+
+        if ( wp_cache_get( 'get_hierarchy', $grid_id ) ) {
+            return wp_cache_get( 'get_hierarchy', $grid_id );
+        }
+
+        global $wpdb;
+
+        if ( $grid_id ) {
             $results = $wpdb->get_row( $wpdb->prepare( "
                 SELECT
                 g.parent_id,
-                g.geonameid,
-                g.country_geonameid,
-                g.admin1_geonameid,
-                g.admin2_geonameid,
-                g.admin3_geonameid,
+                g.grid_id,
+                g.admin0_grid_id,
+                g.admin1_grid_id,
+                g.admin2_grid_id,
+                g.admin3_grid_id,
+                g.admin4_grid_id,
+                g.admin5_grid_id,
                 g.level
-                FROM $wpdb->dt_geonames as g
-                WHERE g.geonameid = %d;
-            ", $geonameid ), ARRAY_A );
+                FROM $wpdb->dt_location_grid as g
+                WHERE g.grid_id = %d;
+            ", $grid_id ), ARRAY_A );
         } else {
             $results = $wpdb->get_results("
                 SELECT 
                 g.parent_id,
-                g.geonameid,
-                g.country_geonameid,
-                g.admin1_geonameid,
-                g.admin2_geonameid,
-                g.admin3_geonameid,
+                g.grid_id,
+                g.admin0_grid_id,
+                g.admin1_grid_id,
+                g.admin2_grid_id,
+                g.admin3_grid_id,
+                g.admin4_grid_id,
+                g.admin5_grid_id,
                 g.level
-                FROM $wpdb->dt_geonames as g", ARRAY_A );
+                FROM $wpdb->dt_location_grid as g", ARRAY_A );
         }
 
         if ( empty( $results ) ) {
             $results = [];
         }
 
-        wp_cache_set( 'get_hierarchy', $results, $geonameid );
+        wp_cache_set( 'get_hierarchy', $results, $grid_id );
 
         return $results;
     }
 
-    public static function get_drilldown_by_geonameid( $geonameid ) {
+    public static function get_drilldown_by_grid_id( $grid_id ) {
 
-        if ( wp_cache_get( 'get_drilldown_by_geonameid', $geonameid ) ) {
-            return wp_cache_get( 'get_drilldown_by_geonameid', $geonameid );
+        if ( wp_cache_get( 'get_drilldown_by_grid_id', $grid_id ) ) {
+            return wp_cache_get( 'get_drilldown_by_grid_id', $grid_id );
         }
 
         global $wpdb;
 
         $results = $wpdb->get_row( $wpdb->prepare( "
             SELECT
-              g.geonameid as id, 
-              g.geonameid, 
+              g.grid_id as id, 
+              g.grid_id, 
               g.alt_name as name, 
-              IF(g.alt_population > 0, g.alt_population, g.population) as population, 
+              g.alt_population as population, 
               g.latitude, 
               g.longitude,
               g.country_code,
+              g.admin0_code,
               g.parent_id,
-              g.country_geonameid,
-              gc.alt_name as country_name,
-              g.admin1_geonameid,
+              g.admin0_grid_id,
+              gc.alt_name as admin0_name,
+              g.admin1_grid_id,
               ga1.alt_name as admin1_name,
-              g.admin2_geonameid,
+              g.admin2_grid_id,
               ga2.alt_name as admin2_name,
-              g.admin3_geonameid,
+              g.admin3_grid_id,
               ga3.alt_name as admin3_name,
+              g.admin4_grid_id,
+              ga4.alt_name as admin4_name,
+              g.admin5_grid_id,
+              ga5.alt_name as admin5_name,
               g.level,
               g.is_custom_location
-            FROM $wpdb->dt_geonames as g
-            LEFT JOIN $wpdb->dt_geonames as gc ON g.country_geonameid=gc.geonameid
-            LEFT JOIN $wpdb->dt_geonames as ga1 ON g.admin1_geonameid=ga1.geonameid
-            LEFT JOIN $wpdb->dt_geonames as ga2 ON g.admin2_geonameid=ga2.geonameid
-            LEFT JOIN $wpdb->dt_geonames as ga3 ON g.admin3_geonameid=ga3.geonameid
-            WHERE g.geonameid = %s
-        ", $geonameid ), ARRAY_A );
+            FROM $wpdb->dt_location_grid as g
+            LEFT JOIN $wpdb->dt_location_grid as gc ON g.admin0_grid_id=gc.grid_id
+            LEFT JOIN $wpdb->dt_location_grid as ga1 ON g.admin1_grid_id=ga1.grid_id
+            LEFT JOIN $wpdb->dt_location_grid as ga2 ON g.admin2_grid_id=ga2.grid_id
+            LEFT JOIN $wpdb->dt_location_grid as ga3 ON g.admin3_grid_id=ga3.grid_id
+            LEFT JOIN $wpdb->dt_location_grid as ga4 ON g.admin4_grid_id=ga4.grid_id
+            LEFT JOIN $wpdb->dt_location_grid as ga5 ON g.admin5_grid_id=ga5.grid_id
+            WHERE g.grid_id = %s
+        ", $grid_id ), ARRAY_A );
 
         if ( empty( $results ) ) {
             $results = [];
         }
 
-        wp_cache_set( 'get_drilldown_by_geonameid', $results, $geonameid );
+        wp_cache_set( 'get_drilldown_by_grid_id', $results, $grid_id );
 
         return $results;
     }
@@ -373,33 +417,28 @@ class Disciple_Tools_Mapping_Queries {
          * Lists all countries with their region_name and region_id
          * @note There are often two regions that claim the same country.
          */
-        $results = $wpdb->get_results("
-            SELECT
-                g.geonameid,
-                g.alt_name as name,
-                g.latitude,
-                g.longitude,
-                g.feature_class,
-                g.feature_code,
-                g.country_code,
-                g.cc2,
-                g.admin1_code,
-                g.admin2_code,
-                g.admin3_code,
-                g.admin4_code,
-                IF(g.alt_population > 0, g.alt_population, g.population) as population,
-                g.timezone,
-                g.modification_date,
-                g.parent_id,
-                g.country_geonameid,
-                g.admin1_geonameid,
-                g.admin2_geonameid,
-                g.admin3_geonameid,
-                g.level
-            FROM $wpdb->dt_geonames as g
-            WHERE feature_code = 'RGN' 
-            AND country_code = '';
-        ", ARRAY_A );
+        // @todo rebuild this regions strategy for query
+//        $results = $wpdb->get_results("
+//            SELECT
+//                g.grid_id,
+//                g.alt_name as name,
+//                g.alt_population as population,
+//                g.latitude,
+//                g.longitude,
+//                g.country_code,
+//                g.admin0_code,
+//                g.parent_id,
+//                g.admin0_grid_id,
+//                g.admin1_grid_id,
+//                g.admin2_grid_id,
+//                g.admin3_grid_id,
+//                g.admin4_grid_id,
+//                g.admin5_grid_id,
+//                g.level
+//            FROM $wpdb->dt_location_grid as g
+//            WHERE feature_code = 'RGN'
+//            AND country_code = '';
+//        ", ARRAY_A );
 
         if ( empty( $results ) ) {
             $results = [];
@@ -413,33 +452,28 @@ class Disciple_Tools_Mapping_Queries {
     public static function get_continents() {
         global $wpdb;
 
-        $results = $wpdb->get_results("
-            SELECT
-                g.geonameid,
-                g.alt_name as name,
-                g.latitude,
-                g.longitude,
-                g.feature_class,
-                g.feature_code,
-                g.country_code,
-                g.cc2,
-                g.admin1_code,
-                g.admin2_code,
-                g.admin3_code,
-                g.admin4_code,
-                IF(g.alt_population > 0, g.alt_population, g.population) as population,
-                g.timezone,
-                g.modification_date,
-                g.parent_id,
-                g.country_geonameid,
-                g.admin1_geonameid,
-                g.admin2_geonameid,
-                g.admin3_geonameid,
-                g.level
-            FROM $wpdb->dt_geonames as g
-            WHERE g.geonameid IN (6255146,6255147,6255148,6255149,6255151,6255150,6255152)
-            ORDER BY name ASC;
-        ", ARRAY_A );
+        // @todo rebuild continent strategy
+//        $results = $wpdb->get_results("
+//            SELECT
+//                g.grid_id,
+//                g.alt_name as name,
+//                g.alt_population as population,
+//                g.latitude,
+//                g.longitude,
+//                g.country_code,
+//                g.admin0_code,
+//                g.parent_id,
+//                g.admin0_grid_id,
+//                g.admin1_grid_id,
+//                g.admin2_grid_id,
+//                g.admin3_grid_id,
+//                g.admin4_grid_id,
+//                g.admin5_grid_id,
+//                g.level
+//            FROM $wpdb->dt_location_grid as g
+//            WHERE g.grid_id IN (6255146,6255147,6255148,6255149,6255151,6255150,6255152)
+//            ORDER BY name ASC;
+//        ", ARRAY_A );
 
         if ( empty( $results ) ) {
             $results = [];
@@ -453,27 +487,23 @@ class Disciple_Tools_Mapping_Queries {
 
         $results = $wpdb->get_row("
             SELECT
-                g.geonameid,
+                g.grid_id,
                 ('world') as id,
                 g.alt_name as name,
+                g.alt_population as population,
                 g.latitude,
                 g.longitude,
-                g.feature_class,
-                g.feature_code,
-                g.country_code,
-                g.admin1_code,
-                g.admin2_code,
-                g.admin3_code,
-                g.admin4_code,
-                IF(g.alt_population > 0, g.alt_population, g.population) as population,
+                g.admin0_code,
                 g.parent_id,
-                g.country_geonameid,
-                g.admin1_geonameid,
-                g.admin2_geonameid,
-                g.admin3_geonameid,
-                ('world') as level
-            FROM $wpdb->dt_geonames as g
-            WHERE g.geonameid = 6295630
+                g.admin0_grid_id,
+                g.admin1_grid_id,
+                g.admin2_grid_id,
+                g.admin3_grid_id,
+                g.admin4_grid_id,
+                g.admin5_grid_id,
+                (-3) as level
+            FROM $wpdb->dt_location_grid as g
+            WHERE g.grid_id = 1
         ", ARRAY_A );
 
         if ( empty( $results ) ) {
@@ -497,11 +527,13 @@ class Disciple_Tools_Mapping_Queries {
 
         $results = $wpdb->get_results( "
             SELECT
-                g.country_geonameid,
-                g.admin1_geonameid,
-                g.admin2_geonameid,
-                g.admin3_geonameid,
-                g.geonameid,
+                g.admin0_grid_id,
+                g.admin1_grid_id,
+                g.admin2_grid_id,
+                g.admin3_grid_id,
+                g.admin4_grid_id,
+                g.admin5_grid_id,
+                g.grid_id,
    				g.level,
                 p.post_id,
                 CASE
@@ -514,7 +546,7 @@ class Disciple_Tools_Mapping_Queries {
                 IF (pp.post_type = 'contacts', ce.meta_value, ge.meta_value) as end_date
             FROM $wpdb->postmeta as p
                 JOIN $wpdb->posts as pp ON p.post_id=pp.ID
-                LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+                LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value             
                 LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
                 LEFT JOIN $wpdb->postmeta as cs ON cs.post_id=p.post_id AND cs.meta_key = 'overall_status'
                 LEFT JOIN $wpdb->postmeta as gs ON gs.post_id=p.post_id AND gs.meta_key = 'group_status'
@@ -522,7 +554,7 @@ class Disciple_Tools_Mapping_Queries {
                 LEFT JOIN $wpdb->postmeta as gd ON gd.post_id=p.post_id AND gd.meta_key = 'start_date'
                 LEFT JOIN $wpdb->postmeta as ge ON ge.post_id=p.post_id AND ge.meta_key = 'end_date'
                 LEFT JOIN $wpdb->postmeta as ce ON ce.post_id=p.post_id AND ce.meta_key = 'last_modified' AND cs.meta_value = 'closed'
-            WHERE p.meta_key = 'geonames'
+            WHERE p.meta_key = 'location_grid'
         ");
 
         if ( empty( $results ) ) {
@@ -536,22 +568,22 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
-    public static function get_geoname_totals() : array {
+    public static function get_location_grid_totals() : array {
 
         global $wpdb;
 
-        if ( get_transient( 'get_geoname_totals' ) ) {
-            return get_transient( 'get_geoname_totals' );
+        if ( get_transient( 'get_location_grid_totals' ) ) {
+            return get_transient( 'get_location_grid_totals' );
         }
 
         $results = $wpdb->get_results("
             SELECT
-              t1.country_geonameid as geonameid,
+              t1.admin0_grid_id as grid_id,
               t1.type,
-              count(t1.country_geonameid) as count
+              count(t1.admin0_grid_id) as count
             FROM (
                 SELECT
-                    g.country_geonameid,
+                    g.admin0_grid_id,
                     CASE
                     	WHEN gt.meta_value = 'church' THEN 'churches'
                     	WHEN cu.meta_value IS NOT NULL THEN 'users'
@@ -559,21 +591,21 @@ class Disciple_Tools_Mapping_Queries {
                     END as type
                 FROM $wpdb->postmeta as p
                     JOIN $wpdb->posts as pp ON p.post_id=pp.ID
-                    LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+                    LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value             
                     LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
                     LEFT JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'group_type'
-                WHERE p.meta_key = 'geonames'
+                WHERE p.meta_key = 'location_grid'
             ) as t1
-            WHERE t1.country_geonameid != ''
-            GROUP BY t1.country_geonameid, t1.type
+            WHERE t1.admin0_grid_id != ''
+            GROUP BY t1.admin0_grid_id, t1.type
             UNION
             SELECT
-              t2.admin1_geonameid as geonameid,
+              t2.admin1_grid_id as grid_id,
               t2.type,
-              count(t2.admin1_geonameid) as count
+              count(t2.admin1_grid_id) as count
             FROM (
                     SELECT
-                    g.admin1_geonameid,
+                    g.admin1_grid_id,
                     CASE
                     	WHEN gt.meta_value = 'church' THEN 'churches'
                     	WHEN cu.meta_value IS NOT NULL THEN 'users'
@@ -581,21 +613,21 @@ class Disciple_Tools_Mapping_Queries {
                     END as type
                 FROM $wpdb->postmeta as p
                     JOIN $wpdb->posts as pp ON p.post_id=pp.ID
-                    LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+                    LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value             
                     LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
                     LEFT JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'group_type'
-                WHERE p.meta_key = 'geonames'
+                WHERE p.meta_key = 'location_grid'
             ) as t2
-            WHERE t2.admin1_geonameid != ''
-            GROUP BY t2.admin1_geonameid, t2.type
+            WHERE t2.admin1_grid_id != ''
+            GROUP BY t2.admin1_grid_id, t2.type
             UNION
             SELECT
-              t3.admin2_geonameid as geonameid,
+              t3.admin2_grid_id as grid_id,
               t3.type,
-              count(t3.admin2_geonameid) as count
+              count(t3.admin2_grid_id) as count
             FROM (
                     SELECT
-                    g.admin2_geonameid,
+                    g.admin2_grid_id,
                     CASE
                     	WHEN gt.meta_value = 'church' THEN 'churches'
                     	WHEN cu.meta_value IS NOT NULL THEN 'users'
@@ -603,21 +635,21 @@ class Disciple_Tools_Mapping_Queries {
                     END as type
                 FROM $wpdb->postmeta as p
                     JOIN $wpdb->posts as pp ON p.post_id=pp.ID
-                    LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+                    LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value             
                     LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
                     LEFT JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'group_type'
-                WHERE p.meta_key = 'geonames'
+                WHERE p.meta_key = 'location_grid'
             ) as t3
-            WHERE t3.admin2_geonameid != ''
-            GROUP BY t3.admin2_geonameid, t3.type
+            WHERE t3.admin2_grid_id != ''
+            GROUP BY t3.admin2_grid_id, t3.type
             UNION
             SELECT
-              t4.admin3_geonameid as geonameid,
+              t4.admin3_grid_id as grid_id,
               t4.type,
-              count(t4.admin3_geonameid) as count
+              count(t4.admin3_grid_id) as count
             FROM (
                     SELECT
-                    g.admin3_geonameid,
+                    g.admin3_grid_id,
                     CASE
                     	WHEN gt.meta_value = 'church' THEN 'churches'
                     	WHEN cu.meta_value IS NOT NULL THEN 'users'
@@ -625,16 +657,18 @@ class Disciple_Tools_Mapping_Queries {
                     END as type
                 FROM $wpdb->postmeta as p
                     JOIN $wpdb->posts as pp ON p.post_id=pp.ID
-                    LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+                    LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value             
                     LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
                     LEFT JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'group_type'
-                WHERE p.meta_key = 'geonames'
+                WHERE p.meta_key = 'location_grid'
             ) as t4
-            WHERE t4.admin3_geonameid != ''
-            GROUP BY t4.admin3_geonameid, t4.type;
+            WHERE t4.admin3_grid_id != ''
+            GROUP BY t4.admin3_grid_id, t4.type;
         ", ARRAY_A );
 
+
         set_transient( 'get_geoname_totals', $results, 60 * 60 * 24 );
+
 
         if ( empty( $results ) ) {
             $results = [];
@@ -643,21 +677,21 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
-    public static function get_geoname_totals_for_countries() {
+    public static function get_location_grid_totals_for_countries() {
         global $wpdb;
 
-        if ( wp_cache_get( 'get_geoname_totals_for_countries' ) ) {
-            return wp_cache_get( 'get_geoname_totals_for_countries' );
+        if ( wp_cache_get( 'get_location_grid_totals_for_countries' ) ) {
+            return wp_cache_get( 'get_location_grid_totals_for_countries' );
         }
 
         $results = $wpdb->get_results("
                 SELECT
-                  country_geonameid as geonameid,
+                  admin0_grid_id as grid_id,
                   type,
-                  count(country_geonameid) as count
+                  count(admin0_grid_id) as count
                 FROM (
                         SELECT
-                        g.country_geonameid,
+                        g.admin0_grid_id,
                         CASE
                             WHEN gt.meta_value = 'church' THEN 'churches'
                             WHEN cu.meta_value IS NOT NULL THEN 'users'
@@ -665,12 +699,12 @@ class Disciple_Tools_Mapping_Queries {
                         END as type
                     FROM $wpdb->postmeta as p
                         JOIN $wpdb->posts as pp ON p.post_id=pp.ID
-                        LEFT JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
+                        LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value             
                         LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
                         LEFT JOIN wp_postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'group_type'
-                    WHERE p.meta_key = 'geonames' AND g.country_geonameid != ''
+                    WHERE p.meta_key = 'location_grid' AND g.admin0_grid_id != ''
                 ) as t1
-                GROUP BY country_geonameid, type
+                GROUP BY admin0_grid_id, type
             ", ARRAY_A );
 
 
@@ -678,109 +712,109 @@ class Disciple_Tools_Mapping_Queries {
             $results = [];
         }
 
-        wp_cache_set( 'get_geoname_totals_for_countries', $results );
+        wp_cache_set( 'get_location_grid_totals_for_countries', $results );
 
         return $results;
     }
 
-    public static function active_countries_geonames() : array {
+    public static function active_admin0_grid_ids() : array {
 
-        if ( wp_cache_get( 'active_countries_geonames' ) ) {
-            return wp_cache_get( 'active_countries_geonames' );
+        if ( wp_cache_get( 'active_admin0_grid_ids' ) ) {
+            return wp_cache_get( 'active_admin0_grid_ids' );
         }
 
         global $wpdb;
 
         $results = $wpdb->get_col( "
             SELECT DISTINCT
-                g.country_geonameid as geonameid
+                g.admin0_grid_id as grid_id
             FROM $wpdb->postmeta as p
-            JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
-            WHERE p.meta_key = 'geonames' AND g.country_geonameid != 0
+            JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value             
+            WHERE p.meta_key = 'location_grid' AND g.admin0_grid_id != 0
         ");
 
         if ( empty( $results ) ) {
             $results = [];
         }
 
-        wp_cache_set( 'active_countries_geonames', $results );
+        wp_cache_set( 'active_admin0_grid_ids', $results );
 
         return $results;
     }
 
-    public static function active_admin1_geonames() : array {
+    public static function active_admin1_grid_ids() : array {
 
-        if ( wp_cache_get( 'active_admin1_geonames' ) ) {
-            return wp_cache_get( 'active_admin1_geonames' );
+        if ( wp_cache_get( 'active_admin1_grid_ids' ) ) {
+            return wp_cache_get( 'active_admin1_grid_ids' );
         }
 
         global $wpdb;
 
         $results = $wpdb->get_col( "
             SELECT DISTINCT
-                g.admin1_geonameid as geonameid
+                g.admin1_grid_id as grid_id
             FROM $wpdb->postmeta as p
-            JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
-            WHERE p.meta_key = 'geonames' AND g.admin1_geonameid != 0
+            JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value             
+            WHERE p.meta_key = 'location_grid' AND g.admin1_grid_id != 0
         ");
 
         if ( empty( $results ) ) {
             $results = [];
         }
 
-        wp_cache_set( 'active_admin1_geonames', $results );
+        wp_cache_set( 'active_admin1_grid_ids', $results );
 
         return $results;
     }
 
-    public static function active_admin2_geonames() : array {
+    public static function active_admin2_grid_ids() : array {
 
-        if ( wp_cache_get( 'active_admin2_geonames' ) ) {
-            return wp_cache_get( 'active_admin2_geonames' );
+        if ( wp_cache_get( 'active_admin2_grid_ids' ) ) {
+            return wp_cache_get( 'active_admin2_grid_ids' );
         }
 
         global $wpdb;
 
         $results = $wpdb->get_col( "
             SELECT DISTINCT
-                g.admin2_geonameid as geonameid
+                g.admin2_grid_id as grid_id
             FROM $wpdb->postmeta as p
-            JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
-            WHERE p.meta_key = 'geonames' AND g.admin2_geonameid != 0
+            JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value             
+            WHERE p.meta_key = 'location_grid' AND g.admin2_grid_id != 0
         ");
 
         if ( empty( $results ) ) {
             $results = [];
         }
 
-        wp_cache_set( 'active_admin2_geonames', $results );
+        wp_cache_set( 'active_admin2_grid_ids', $results );
 
         return $results;
     }
 
-    public static function get_total_record_count_in_geonames_database() {
+    public static function get_total_record_count_in_location_grid_database() {
 
-        if ( wp_cache_get( 'total_records_in_geonames_database' ) ) {
-            return wp_cache_get( 'total_records_in_geonames_database' );
+        if ( wp_cache_get( 'total_records_in_location_grid_database' ) ) {
+            return wp_cache_get( 'total_records_in_location_grid_database' );
         }
 
         global $wpdb;
 
         $results = $wpdb->get_var("
             SELECT count(*)
-            FROM $wpdb->dt_geonames 
+            FROM $wpdb->dt_location_grid 
         ");
 
         if ( empty( $results ) ) {
             $results = 0;
         }
 
-        wp_cache_set( 'total_records_in_geonames_database', $results );
+        wp_cache_set( 'total_records_in_location_grid_database', $results );
 
         return $results;
     }
 
-    public static function search_geonames_by_name( $args ) {
+    public static function search_location_grid_by_name( $args ) {
         global $wpdb;
 
         $search_query = $wpdb->esc_like( $args['search_query'] ?? "" );
@@ -788,28 +822,28 @@ class Disciple_Tools_Mapping_Queries {
         if ( isset( $args['filter'] ) && $args["filter"] == "focus" ){
             $default_map_settings = DT_Mapping_Module::instance()->default_map_settings();
             if ( $default_map_settings["type"] === "country" && sizeof( $default_map_settings["children"] ) > 0 ){
-                $joined_geoname_ids = dt_array_to_sql( $default_map_settings["children"] );
-                $focus_search_sql = "AND g.country_geonameid IN ( $joined_geoname_ids ) ";
+                $joined_location_grid_ids = dt_array_to_sql( $default_map_settings["children"] );
+                $focus_search_sql = "AND g.admin0_grid_id IN ( $joined_location_grid_ids ) ";
             }
         }
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
-        $geonames = $wpdb->get_results( $wpdb->prepare( "
+        $location_grid = $wpdb->get_results( $wpdb->prepare( "
             SELECT SQL_CALC_FOUND_ROWS
-            DISTINCT( g.geonameid ),
+            DISTINCT( g.grid_id ),
             CASE 
-                WHEN g.level = 'country' 
+                WHEN g.level = 0 
                   THEN g.alt_name
-                WHEN g.level = 'admin1' 
-                  THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
+                WHEN g.level = 1 
+                  THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_location_grid as country WHERE country.grid_id = g.admin0_grid_id LIMIT 1), ' > ', 
                 g.alt_name ) 
-                WHEN g.level = 'admin2' OR g.level = 'admin3'
-                  THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
-                (SELECT a1.alt_name FROM $wpdb->dt_geonames AS a1 WHERE a1.geonameid = g.admin1_geonameid LIMIT 1), ' > ', 
+                WHEN g.level >= 2
+                  THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_location_grid as country WHERE country.grid_id = g.admin0_grid_id LIMIT 1), ' > ', 
+                (SELECT a1.alt_name FROM $wpdb->dt_location_grid AS a1 WHERE a1.grid_id = g.admin1_grid_id LIMIT 1), ' > ', 
                 g.alt_name )
                 ELSE g.alt_name
             END as label
-            FROM $wpdb->dt_geonames as g
+            FROM $wpdb->dt_location_grid as g
             WHERE g.alt_name LIKE %s
             $focus_search_sql
             ORDER BY CASE
@@ -824,39 +858,39 @@ class Disciple_Tools_Mapping_Queries {
 
         $total_rows = $wpdb->get_var( "SELECT found_rows();" );
         return [
-            'geonames' => $geonames,
+            'location_grid' => $location_grid,
             'total' => $total_rows
         ];
     }
 
-    public static function search_used_geonames_by_name( $args ) {
+    public static function search_used_location_grid_by_name( $args ) {
         global $wpdb;
 
         $search_query = $wpdb->esc_like( $args['search_query'] ?? "" );
 
-        $geonames = $wpdb->get_results( $wpdb->prepare( "
+        $location_grid = $wpdb->get_results( $wpdb->prepare( "
             SELECT SQL_CALC_FOUND_ROWS
-            DISTINCT( g.geonameid ),
+            DISTINCT( g.grid_id ),
             CASE 
-                WHEN g.level = 'country' 
+                WHEN g.level = 0 
                   THEN g.alt_name
-                WHEN g.level = 'admin1' 
-                  THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
+                WHEN g.level = 1
+                  THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_location_grid as country WHERE country.grid_id = g.admin0_grid_id LIMIT 1), ' > ', 
                 g.alt_name ) 
-                WHEN g.level = 'admin2' OR g.level = 'admin3'
-                  THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
-                (SELECT a1.alt_name FROM $wpdb->dt_geonames AS a1 WHERE a1.geonameid = g.admin1_geonameid LIMIT 1), ' > ', 
+                WHEN g.level >= 2
+                  THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_location_grid as country WHERE country.grid_id = g.admin0_grid_id LIMIT 1), ' > ', 
+                (SELECT a1.alt_name FROM $wpdb->dt_location_grid AS a1 WHERE a1.grid_id = g.admin1_grid_id LIMIT 1), ' > ', 
                 g.alt_name )
                 ELSE g.alt_name
             END as label
-            FROM $wpdb->dt_geonames as g
+            FROM $wpdb->dt_location_grid as g
             INNER JOIN (
                 SELECT
-                    g.geonameid
+                    g.grid_id
                 FROM $wpdb->postmeta as p
-                JOIN $wpdb->dt_geonames as g ON g.geonameid=p.meta_value             
-                WHERE p.meta_key = 'geonames' AND p.meta_value != ''
-            ) as counter ON (g.geonameid = counter.geonameid)
+                JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value             
+                WHERE p.meta_key = 'location_grid' AND p.meta_value != ''
+            ) as counter ON (g.grid_id = counter.grid_id)
             WHERE g.alt_name LIKE %s
             
             ORDER BY g.country_code, CHAR_LENGTH(label)
@@ -866,31 +900,31 @@ class Disciple_Tools_Mapping_Queries {
         );
         $total_rows = $wpdb->get_var( "SELECT found_rows();" );
         return [
-            'geonames' => $geonames,
+            'location_grid' => $location_grid,
             'total' => $total_rows
         ];
     }
 
-    public static function get_names_from_ids( $geoname_ids ) {
+    public static function get_names_from_ids( $location_grid_ids ) {
         global $wpdb;
 
-        $ids = dt_array_to_sql( $geoname_ids );
+        $ids = dt_array_to_sql( $location_grid_ids );
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
         $results = $wpdb->get_results("
-                            SELECT geonameid, alt_name
-                            FROM $wpdb->dt_geonames
-                            WHERE geonameid IN ( $ids ) 
+                            SELECT grid_id, alt_name
+                            FROM $wpdb->dt_location_grid
+                            WHERE grid_id IN ( $ids ) 
                         ", ARRAY_A );
         // phpcs:enable
         $prepared = [];
         foreach ( $results as $row ){
-            $prepared[$row["geonameid"]] = $row["alt_name"];
+            $prepared[$row["grid_id"]] = $row["alt_name"];
         }
         return $prepared;
     }
 
-    public static function get_geoname_ids_and_names_for_post_ids( $post_ids ) {
+    public static function get_location_grid_ids_and_names_for_post_ids( $post_ids ) {
         global $wpdb;
 
         $prepared = [];
@@ -904,37 +938,35 @@ class Disciple_Tools_Mapping_Queries {
         $joined_post_ids = dt_array_to_sql( $post_ids );
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
-        $geonames = $wpdb->get_results("
+        $location_grids = $wpdb->get_results("
                             SELECT post_id, meta_value
                             FROM $wpdb->postmeta pm
-                            WHERE meta_key = 'geonames'
+                            WHERE meta_key = 'location_grid'
                             AND post_id IN ( $joined_post_ids )
                         ", ARRAY_A );
-        if ( empty( $geonames ) ){
+        if ( empty( $location_grids ) ){
             return $prepared;
         }
-        $geoname_ids = array_map( function( $g ){ return $g["meta_value"]; }, $geonames );
-        $joined_geoname_ids = dt_array_to_sql( $geoname_ids );
-        $geoname_id_names = $wpdb->get_results("
-                            SELECT geonameid, alt_name 
-                            FROM $wpdb->dt_geonames
-                            WHERE geonameid IN ( $joined_geoname_ids ) 
+        $location_grid_ids = array_map( function( $g ){ return $g["meta_value"]; }, $location_grids );
+        $joined_location_grid_ids = dt_array_to_sql( $location_grid_ids );
+        $location_grid_id_names = $wpdb->get_results("
+                            SELECT grid_id, alt_name 
+                            FROM $wpdb->dt_location_grid
+                            WHERE grid_id IN ( $joined_location_grid_ids ) 
                         ", ARRAY_A );
         // phpcs:enable
-        $mapped_geoname_id_to_name = [];
-        foreach ( $geoname_id_names as $geoname ){
-            $mapped_geoname_id_to_name[$geoname["geonameid"]] = $geoname["alt_name"];
+        $mapped_location_grid_id_to_name = [];
+        foreach ( $location_grid_id_names as $location_grid ){
+            $mapped_location_grid_id_to_name[$location_grid["grid_id"]] = $location_grid["alt_name"];
         }
-        foreach ( $geonames as $geoname ){
-            if ( isset( $mapped_geoname_id_to_name[$geoname["meta_value"]] ) ){
-                $prepared[$geoname["post_id"]][] = [
-                    "geoname_id" => $geoname["meta_value"],
-                    "name" => $mapped_geoname_id_to_name[$geoname["meta_value"]]
+        foreach ( $location_grids as $location_grid ){
+            if ( isset( $mapped_location_grid_id_to_name[$location_grid["meta_value"]] ) ){
+                $prepared[$location_grid["post_id"]][] = [
+                    "location_grid_id" => $location_grid["meta_value"],
+                    "name" => $mapped_location_grid_id_to_name[$location_grid["meta_value"]]
                 ];
             }
         }
         return $prepared;
     }
-
-
 }
