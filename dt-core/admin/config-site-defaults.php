@@ -404,7 +404,7 @@ function dt_get_site_options_defaults() {
     ];
     $fields["group_preferences"] = [
         "church_metrics" => true,
-        "four_fields" => true,
+        "four_fields" => false,
     ];
 
     return $fields;
@@ -566,13 +566,13 @@ function dt_get_site_custom_lists( string $list_title = null ) {
     ];
     $fields["group_preferences"] = [
         "church_metrics" => true,
-        "four_fields" => true,
+        "four_fields" => false,
     ];
 
 
     // $fields = apply_filters( 'dt_site_custom_lists', $fields );
 
-        return $fields[ $list_title ] ?? $fields;
+    return $fields[ $list_title ] ?? $fields;
 }
 
 function dt_get_location_levels() {
