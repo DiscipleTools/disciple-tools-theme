@@ -284,7 +284,7 @@ jQuery(document).ready(function($) {
 
 
   /**
-   * Geonames
+   * Locations
    */
   let loadGeonameTypeahead = ()=>{
     if (!window.Typeahead['.js-typeahead-location_grid']){

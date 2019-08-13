@@ -100,7 +100,7 @@
     <hr />
 
     <div class="display-fields grid-x grid-margin-x">
-        <!-- Geonames -->
+        <!-- Locations -->
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
             <div class="section-subheader">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
