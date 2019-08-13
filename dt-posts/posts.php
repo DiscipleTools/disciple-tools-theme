@@ -780,7 +780,7 @@ class Disciple_Tools_Posts
             $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
             $meta_query .= "AND ( ( $wpdb->posts.post_title LIKE '%%" . esc_sql( $search ) . "%%' ) 
                 OR ( search.meta_key LIKE 'contact_%' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0 ) 
-                OR ( search.meta_key LIKE 'contact_phone_%' AND REPLACE( " . esc_sql( $search ) . ", ' ', '') = REPLACE( search.meta_value, ' ', '') )";
+                OR ( search.meta_key LIKE 'contact_phone_%' AND REPLACE( '" . esc_sql( $search ) . "', ' ', '') = REPLACE( search.meta_value, ' ', '') )";
             foreach ( $other_search_fields as $field ){
                 $meta_query .= " OR ( search.meta_key LIKE '" . esc_sql( $field ) . "' AND search.meta_value LIKE '%%" . esc_sql( $search ) . "%%'   ) ";
             }
