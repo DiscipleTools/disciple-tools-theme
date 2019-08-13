@@ -2820,12 +2820,24 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <p>We tried upgrading the locations system to the new version, but something went wrong. Please contact your system administrator</p>
                 </div>
             <?php }
-            if ( ! get_option( 'dt_locations_migrated_to_location_grid', false ) ) { ?>
-                <div class="notice notice-error notice-dt-locations-migration is-dismissible" data-notice="dt-locations-migration">
-                    <p>We have updated Disciple.Tools locations system. Please use the migration tool to make sure all you locations are carried over:
-                        <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=migration' ) ) ?>">Migration Tool</a></p>
-                </div>
-            <?php }
+            if ( !get_option( 'dt_locations_migrated_to_location_grid', false ) ) {
+                global $wpdb;
+                $locations_with_records = $wpdb->get_results( "
+                    SELECT DISTINCT( posts.ID ), post_title, post_parent, COUNT( p2p.p2p_from ) as count
+                    FROM $wpdb->posts as posts
+                    JOIN $wpdb->p2p as p2p on (p2p.p2p_to = posts.ID)
+                    WHERE posts.post_type = 'locations'
+                    GROUP BY posts.ID
+                ", ARRAY_A );
+                if ( sizeof( $locations_with_records ) === 0 ) {
+                    update_option( "dt_locations_migrated_to_location_grid", true );
+                } else { ?>
+                    <div class="notice notice-error notice-dt-locations-migration is-dismissible" data-notice="dt-locations-migration">
+                        <p>We have updated Disciple.Tools locations system. Please use the migration tool to make sure all you locations are carried over:
+                            <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=migration' ) ) ?>">Migration Tool</a></p>
+                    </div>
+                <?php }
+            }
         }
     }
 
