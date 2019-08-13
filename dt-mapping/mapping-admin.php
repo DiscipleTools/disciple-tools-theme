@@ -302,26 +302,35 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     $this->migrations_reset_and_rerun();
                 }
             }
-            if ( (int) get_option( 'dt_mapping_module_migration_lock', 0 ) ) {
-                ?>
-                <h3>Something went wrong with the mapping system.</h3>
+            if ( (int) get_option( 'dt_mapping_module_migration_lock', 0 ) ) :
+                $last_migration_error = get_option( 'dt_mapping_module_migrate_last_error', false ); ?>
                 <form method="post">
+                <?php if ( empty( $last_migration_error ) ) :?>
+                    <h3>Could not open the mapping system</h3>
+
+                    <p>The migration might still be in progress. Please wait a couple minutes and try <strong>refreshing</strong> this page.
+                        If this problem persists click the retry button below.</p>
+                    Click here to refresh <button type="submit" name="refresh" value="1">Refresh</button>
+                <?php else : ?>
+                    <h3>Something went wrong with the mapping system.</h3>
+                <?php endif; ?>
+                    <h4></h4>
                     <?php wp_nonce_field( 'reset_mapping', 'reset_mapping_nonce' ) ?>
                     Retry setting up the mapping system:
                     <button type="submit" name="reset" value="1">Retry</button>
                 </form>
                 <br>
-                <strong>Error message:</strong>
 
                 <?php if ( !empty( $last_migration_error ) ) {
                     if ( isset( $last_migration_error["message"] ) ) : ?>
+                        <strong>Error message:</strong>
                         <p>Cannot migrate, as migration lock is held. This is the last error: <strong><?php echo esc_html( $last_migration_error["message"] ); ?></strong></p>
                     <?php else :
                         var_dump( "Cannot migrate, as migration lock is held. This is the previous stored migration error: " . var_export( $last_migration_error, true ) );
                     endif;
                 }
                 die();
-            }
+            endif;
 
             if ( isset( $_GET['tab'] ) ) {
                 $tab = sanitize_key( wp_unslash( $_GET['tab'] ) );
