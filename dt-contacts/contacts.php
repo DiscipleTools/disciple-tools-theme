@@ -281,9 +281,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     }
                 }
             }
-            if ( isset( $fields["reason_unassignable"] ) ){
-                $fields["overall_status"] = 'unassignable';
-            }
             if ( isset( $fields["seeker_path"] ) ){
                 self::update_quick_action_buttons( $post_id, $fields["seeker_path"] );
             }
