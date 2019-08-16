@@ -9,6 +9,8 @@
 /**
  * @link https://stackoverflow.com/questions/45421976/wordpress-rest-api-slow-response-time
  *       https://deliciousbrains.com/wordpress-rest-api-vs-custom-request-handlers/
+ *
+ * @version 1.0 Initialization
  */
 
 define( 'DOING_AJAX', true );
