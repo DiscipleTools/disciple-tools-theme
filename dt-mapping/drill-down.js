@@ -11,7 +11,10 @@ window.DRILLDOWN = {
         let drill_down = jQuery('#'+bindFunction)
         let rest = DRILLDOWNDATA.settings.endpoints.get_drilldown_endpoint
 
-        jQuery.ajax({
+        let final_list = [];
+        let current_selection = {};
+
+        return jQuery.ajax({
             type: rest.method,
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify( {  "bind_function": bindFunction, "grid_id": grid_id } ),
@@ -21,7 +24,7 @@ window.DRILLDOWN = {
                 xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
             },
         })
-        .done( function( response ) {
+        .then( function( response ) {
 
             let html = ``
 
@@ -46,6 +49,8 @@ window.DRILLDOWN = {
                         onclick="DRILLDOWN.get_drill_down( '${_.escape( bindFunction )}', '${_.escape( section.selected )}' )"
                         class="button ${hollowClass} geocode-link">${_.escape( section.selected_name )}</button></li>`
 
+                    current_selection = section
+
                 } else { // it is a list
                     // check if list is not empty
                     if (!DRILLDOWN.isEmpty(section.list)) {
@@ -55,7 +60,7 @@ window.DRILLDOWN = {
                             console.log('no additional dropdown triggered')
                         } else {
                             // make select
-                            html += `<li><select id="${_.escape( section.parent )}"
+                            html += `<li><select id="${_.escape( section.parent )}" style="vertical-align: top"
                             onchange="DRILLDOWN.get_drill_down( '${_.escape( bindFunction )}', this.value )"
                             class="geocode-select">`
 
@@ -72,11 +77,15 @@ window.DRILLDOWN = {
                             })
 
                             html += `</select></li>`
+
+                            final_list = section.list;
                         }
                     }
                 }
 
             })
+
+            html += `<li><span id="spinner" style="display:none;" class="float-right">${DRILLDOWNDATA.settings.spinner_large}</span></li>`
 
             // close unordered list
             html += `</ul>`
@@ -86,16 +95,20 @@ window.DRILLDOWN = {
 
             // trigger supplied bind event
             if ( typeof DRILLDOWN[bindFunction] !== "undefined" ) {
-                DRILLDOWN[bindFunction]( grid_id, selectedGeonameLabel )
+              current_selection.list = final_list
+                DRILLDOWN[bindFunction]( grid_id, selectedGeonameLabel, current_selection )
             }
+
+            DRILLDOWN.hide_spinner()
+            return final_list;
 
         }) // end success statement
         .fail(function (err) {
             console.log("error")
             console.log(err)
+            DRILLDOWN.hide_spinner()
         })
 
-        DRILLDOWN.hide_spinner()
     },
 
     isEmpty(obj) {

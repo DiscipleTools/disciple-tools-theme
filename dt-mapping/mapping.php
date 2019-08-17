@@ -619,6 +619,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 }
             }
             $preset_array[ sizeof( $preset_array ) - 1 ]['active'] = true;
+            $preset_array[ sizeof( $preset_array ) - 1 ]["self"] = $reference;
             $child_list = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $reference["grid_id"] ) );
             $deeper_levels = $this->get_deeper_levels( $child_list );
             $preset_array[] = [
@@ -629,7 +630,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 'active'        => false,
                 'deeper_levels' => $deeper_levels,
                 'list' => $child_list
-
             ];
             return $preset_array;
         }
@@ -652,7 +652,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $default_select_first_level = true;
             }
 
-            if ( empty( $grid_id ) || $grid_id === 'top_map_level' || $grid_id === 'world' ) {
+            if ( empty( $grid_id ) || $grid_id === 'top_map_level' || $grid_id === 'world' || $grid_id === '1' || $grid_id === 1 ) {
 
                 if ( wp_cache_get( 'drill_down_array_default' ) ) {
                     return wp_cache_get( 'drill_down_array_default' );
@@ -674,14 +674,18 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $deeper_levels = $this->get_deeper_levels( $child_list );
 
                 $selected_name = __( 'World', 'disciple_tools' );
+                $selected_grid_id = 1;
                 if ( $default_level['type'] === 'country' && $default_select_first_level ){
                     $selected_name = $list[ array_keys( $list )[0] ];
+                    $selected_grid_id = array_keys( $list )[0];
                 }
                 if ( $default_level['type'] === 'state' ){
                     if ( $default_select_first_level ){
                         $selected_name = $list[ array_keys( $list )[0] ];
+                        $selected_grid_id = array_keys( $list )[0];
                     } else {
                         $parent = $this->format_location_grid_types( Disciple_Tools_Mapping_Queries::get_by_grid_id( $child_list[0]["parent_id"] ) );
+                        $selected_grid_id = $child_list[0]["parent_id"];
                         $selected_name = $parent["name"] ?? $selected_name;
                     }
                 }
@@ -689,7 +693,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $preset_array = [
                     [
                         'parent' => 'top_map_level',
-                        'selected' => 'top_map_level',
+                        'selected' => $selected_grid_id,
                         'selected_name' => $selected_name,
                         'link' => true,
                         'active' => false,
