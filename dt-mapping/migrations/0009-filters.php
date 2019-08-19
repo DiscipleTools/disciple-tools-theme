@@ -19,7 +19,7 @@ class DT_Mapping_Module_Migration_0009 extends DT_Mapping_Module_Migration {
             if ( file_exists( $uploads_dir . "location_grid_download/geonames_ref_table.tsv.zip" ) ) {
                 unlink( $uploads_dir . "location_grid_download/geonames_ref_table.tsv.zip" );
             }
-            
+
             // get mirror source file url
             require_once( get_template_directory() . '/dt-core/global-functions.php' );
             $mirror_source = dt_get_theme_data_url();
