@@ -22,8 +22,8 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 }
                 $data = json_decode( $data_result, true );
 
-                if ( isset( $data[ 'features' ][ 0 ][ 'properties' ][ 'short_code' ] ) ) {
-                    $country_code = strtoupper( $data[ 'features' ][ 0 ][ 'properties' ][ 'short_code' ] );
+                if ( isset( $data['features'][0]['properties']['short_code'] ) ) {
+                    $country_code = strtoupper( $data['features'][0]['properties']['short_code'] );
                 }
             }
 

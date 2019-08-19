@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  *
  *
  */
-if ( ! class_exists( 'Location_Grid_Geocoder') ) {
+if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
 
     class Location_Grid_Geocoder {
 
@@ -103,77 +103,77 @@ if ( ! class_exists( 'Location_Grid_Geocoder') ) {
             $multiple_admin0 = [];
             foreach ( $query as $row ) {
                 // lowest level
-                if ( $row[ 'level' ] > $lowest ) {
-                    $lowest = $row[ 'level' ];
+                if ( $row['level'] > $lowest ) {
+                    $lowest = $row['level'];
                 }
 
                 // remove non-viable country results
-                $multiple_admin0[ $row[ 'admin0_grid_id' ] ] = true;
+                $multiple_admin0[ $row['admin0_grid_id'] ] = true;
             }
 
             $compiled = [];
             foreach ( $query as $result ) {
-                if ( $result[ 'level' ] === $lowest ) {
-                    $compiled[ $result[ 'grid_id' ] ] = $result;
+                if ( $result['level'] === $lowest ) {
+                    $compiled[ $result['grid_id'] ] = $result;
 
                     // level 0
-                    if ( isset( $query[ $result[ 'admin0_grid_id' ] ] ) ) {
-                        $compiled[ $result[ 'admin0_grid_id' ] ] = $query[ $result[ 'admin0_grid_id' ] ];
+                    if ( isset( $query[ $result['admin0_grid_id'] ] ) ) {
+                        $compiled[ $result['admin0_grid_id'] ] = $query[ $result['admin0_grid_id'] ];
                     } else {
-                        $compiled[ $result[ 'admin0_grid_id' ] ] = $this->query_by_grid_id( $result[ 'admin0_grid_id' ] );
-                        if ( empty( $compiled[ $result[ 'admin0_grid_id' ] ] ) ) {
-                            unset( $compiled[ $result[ 'admin0_grid_id' ] ] );
+                        $compiled[ $result['admin0_grid_id'] ] = $this->query_by_grid_id( $result['admin0_grid_id'] );
+                        if ( empty( $compiled[ $result['admin0_grid_id'] ] ) ) {
+                            unset( $compiled[ $result['admin0_grid_id'] ] );
                         }
                     }
 
                     // level 1
-                    if ( isset( $query[ $result[ 'admin1_grid_id' ] ] ) ) {
-                        $compiled[ $result[ 'admin1_grid_id' ] ] = $query[ $result[ 'admin1_grid_id' ] ];
+                    if ( isset( $query[ $result['admin1_grid_id'] ] ) ) {
+                        $compiled[ $result['admin1_grid_id'] ] = $query[ $result['admin1_grid_id'] ];
                     } else {
-                        $compiled[ $result[ 'admin1_grid_id' ] ] = $this->query_by_grid_id( $result[ 'admin1_grid_id' ] );
-                        if ( empty( $compiled[ $result[ 'admin1_grid_id' ] ] ) ) {
-                            unset( $compiled[ $result[ 'admin1_grid_id' ] ] );
+                        $compiled[ $result['admin1_grid_id'] ] = $this->query_by_grid_id( $result['admin1_grid_id'] );
+                        if ( empty( $compiled[ $result['admin1_grid_id'] ] ) ) {
+                            unset( $compiled[ $result['admin1_grid_id'] ] );
                         }
                     }
 
                     // level 2
-                    if ( isset( $query[ $result[ 'admin2_grid_id' ] ] ) ) {
-                        $compiled[ $result[ 'admin2_grid_id' ] ] = $query[ $result[ 'admin2_grid_id' ] ];
+                    if ( isset( $query[ $result['admin2_grid_id'] ] ) ) {
+                        $compiled[ $result['admin2_grid_id'] ] = $query[ $result['admin2_grid_id'] ];
                     } else {
-                        $compiled[ $result[ 'admin2_grid_id' ] ] = $this->query_by_grid_id( $result[ 'admin2_grid_id' ] );
-                        if ( empty( $compiled[ $result[ 'admin2_grid_id' ] ] ) ) {
-                            unset( $compiled[ $result[ 'admin2_grid_id' ] ] );
+                        $compiled[ $result['admin2_grid_id'] ] = $this->query_by_grid_id( $result['admin2_grid_id'] );
+                        if ( empty( $compiled[ $result['admin2_grid_id'] ] ) ) {
+                            unset( $compiled[ $result['admin2_grid_id'] ] );
                         }
                     }
 
                     // level 3
-                    if ( isset( $query[ $result[ 'admin3_grid_id' ] ] ) ) {
-                        $compiled[ $result[ 'admin3_grid_id' ] ] = $query[ $result[ 'admin3_grid_id' ] ];
+                    if ( isset( $query[ $result['admin3_grid_id'] ] ) ) {
+                        $compiled[ $result['admin3_grid_id'] ] = $query[ $result['admin3_grid_id'] ];
                     } else {
 
-                        $compiled[ $result[ 'admin3_grid_id' ] ] = $this->query_by_grid_id( $result[ 'admin3_grid_id' ] );
-                        if ( empty( $compiled[ $result[ 'admin3_grid_id' ] ] ) ) {
-                            unset( $compiled[ $result[ 'admin3_grid_id' ] ] );
+                        $compiled[ $result['admin3_grid_id'] ] = $this->query_by_grid_id( $result['admin3_grid_id'] );
+                        if ( empty( $compiled[ $result['admin3_grid_id'] ] ) ) {
+                            unset( $compiled[ $result['admin3_grid_id'] ] );
                         }
                     }
 
                     // level 4
-                    if ( isset( $query[ $result[ 'admin4_grid_id' ] ] ) ) {
-                        $compiled[ $result[ 'admin4_grid_id' ] ] = $query[ $result[ 'admin4_grid_id' ] ];
+                    if ( isset( $query[ $result['admin4_grid_id'] ] ) ) {
+                        $compiled[ $result['admin4_grid_id'] ] = $query[ $result['admin4_grid_id'] ];
                     } else {
-                        $compiled[ $result[ 'admin4_grid_id' ] ] = $this->query_by_grid_id( $result[ 'admin4_grid_id' ] );
-                        if ( empty( $compiled[ $result[ 'admin4_grid_id' ] ] ) ) {
-                            unset( $compiled[ $result[ 'admin4_grid_id' ] ] );
+                        $compiled[ $result['admin4_grid_id'] ] = $this->query_by_grid_id( $result['admin4_grid_id'] );
+                        if ( empty( $compiled[ $result['admin4_grid_id'] ] ) ) {
+                            unset( $compiled[ $result['admin4_grid_id'] ] );
                         }
                     }
 
                     // level 5
-                    if ( isset( $query[ $result[ 'admin5_grid_id' ] ] ) ) {
-                        $compiled[ $result[ 'admin5_grid_id' ] ] = $query[ $result[ 'admin5_grid_id' ] ];
+                    if ( isset( $query[ $result['admin5_grid_id'] ] ) ) {
+                        $compiled[ $result['admin5_grid_id'] ] = $query[ $result['admin5_grid_id'] ];
                     } else {
-                        $compiled[ $result[ 'admin5_grid_id' ] ] = $this->query_by_grid_id( $result[ 'admin5_grid_id' ] );
-                        if ( empty( $compiled[ $result[ 'admin5_grid_id' ] ] ) ) {
-                            unset( $compiled[ $result[ 'admin5_grid_id' ] ] );
+                        $compiled[ $result['admin5_grid_id'] ] = $this->query_by_grid_id( $result['admin5_grid_id'] );
+                        if ( empty( $compiled[ $result['admin5_grid_id'] ] ) ) {
+                            unset( $compiled[ $result['admin5_grid_id'] ] );
                         }
                     }
                 }
@@ -200,8 +200,8 @@ if ( ! class_exists( 'Location_Grid_Geocoder') ) {
                 error_log( '1' );
                 // return test 1 results
                 foreach ( $results as $result ) {
-                    if ( ! isset( $result[ 'grid_id' ] ) ) {
-                        $result = $result[ 0 ];
+                    if ( ! isset( $result['grid_id'] ) ) {
+                        $result = $result[0];
                     }
 
                     return $result;
@@ -225,10 +225,10 @@ if ( ! class_exists( 'Location_Grid_Geocoder') ) {
                 error_log( '2' );
 
                 foreach ( $results as $result ) {
-                    if ( $this->_this_grid_id( (int) $result[ 'grid_id' ], $longitude, $latitude ) ) {
+                    if ( $this->_this_grid_id( (int) $result['grid_id'], $longitude, $latitude ) ) {
                         // return test 2 results
-                        if ( ! isset( $result[ 'grid_id' ] ) ) {
-                            $result = $result[ 0 ];
+                        if ( ! isset( $result['grid_id'] ) ) {
+                            $result = $result[0];
                         }
 
                         return $result;
@@ -258,10 +258,10 @@ if ( ! class_exists( 'Location_Grid_Geocoder') ) {
 
                 // return test 3 results
                 foreach ( $results as $result ) {
-                    if ( (int) $result[ 'grid_id' ] === (int) $grid_id ) {
+                    if ( (int) $result['grid_id'] === (int) $grid_id ) {
                         // return test 3 results
-                        if ( ! isset( $result[ 'grid_id' ] ) ) {
-                            $result = $result[ 0 ];
+                        if ( ! isset( $result['grid_id'] ) ) {
+                            $result = $result[0];
                         }
 
                         return $result;
@@ -313,8 +313,8 @@ if ( ! class_exists( 'Location_Grid_Geocoder') ) {
             if ( empty( $result ) ) {
                 return false;
             }
-            if ( ! isset( $result[ 'grid_id' ] ) ) {
-                $result = $result[ 0 ];
+            if ( ! isset( $result['grid_id'] ) ) {
+                $result = $result[0];
             }
 
             return $result;
@@ -335,20 +335,20 @@ if ( ! class_exists( 'Location_Grid_Geocoder') ) {
 
             // build flat associative array of all coordinates
             foreach ( $results as $result ) {
-                $grid_id  = $result[ 'grid_id' ];
-                $features = $geojson[ $grid_id ][ 'features' ];
+                $grid_id  = $result['grid_id'];
+                $features = $geojson[ $grid_id ]['features'];
 
                 // handle Polygon and MultiPolygon geometries
                 foreach ( $features as $feature ) {
-                    if ( $feature[ 'geometry' ][ 'type' ] === 'Polygon' ) {
-                        foreach ( $feature[ 'geometry' ][ 'coordinates' ] as $coordinates ) { // select out the coordinate list
+                    if ( $feature['geometry']['type'] === 'Polygon' ) {
+                        foreach ( $feature['geometry']['coordinates'] as $coordinates ) { // select out the coordinate list
 
                             foreach ( $coordinates as $coordinate ) { // build flat associate array of $coordinates
                                 $coordinate_list[ $grid_id ] = $coordinate;
                             }
                         }
-                    } else if ( $feature[ 'geometry' ][ 'type' ] === 'MultiPolygon' ) {
-                        foreach ( $feature[ 'geometry' ][ 'coordinates' ] as $top_coordinates ) { // select out the multi polygons
+                    } else if ( $feature['geometry']['type'] === 'MultiPolygon' ) {
+                        foreach ( $feature['geometry']['coordinates'] as $top_coordinates ) { // select out the multi polygons
                             foreach ( $top_coordinates as $coordinates ) { // select out the coordinate list
 
                                 foreach ( $coordinates as $coordinate ) { // build flat associate array of $coordinates
@@ -363,13 +363,13 @@ if ( ! class_exists( 'Location_Grid_Geocoder') ) {
             // get distance between reference and all points
             $distance = [];
             foreach ( $coordinate_list as $key => $pair ) {
-                $distance[ $key ] = $this->_distance( $pair[ 0 ], $pair[ 1 ], $longitude, $latitude );
+                $distance[ $key ] = $this->_distance( $pair[0], $pair[1], $longitude, $latitude );
             }
 
             asort( $distance ); // sort distances so smallest is on top
             $keys = array_keys( $distance ); // pull keys
 
-            return $keys[ 0 ]; // return top key
+            return $keys[0]; // return top key
         }
 
         /**
@@ -404,12 +404,12 @@ if ( ! class_exists( 'Location_Grid_Geocoder') ) {
 
                 $distance = [];
                 foreach ( $results as $result ) {
-                    $distance[ $result[ 'grid_id' ] ] = $this->_distance( $result[ 'longitude' ], $result[ 'latitude' ], $longitude, $latitude );
+                    $distance[ $result['grid_id'] ] = $this->_distance( $result['longitude'], $result['latitude'], $longitude, $latitude );
                 }
                 asort( $distance ); // sort distances so smallest is on top
                 $keys = array_keys( $distance ); // pull keys
 
-                return $keys[ 0 ]; // return top key
+                return $keys[0]; // return top key
             }
 
             return false;
@@ -436,31 +436,31 @@ if ( ! class_exists( 'Location_Grid_Geocoder') ) {
             }
             $geojson                   = json_decode( $raw_geojson, true );
             $this->geojson[ $grid_id ] = $geojson; // save for 3 test if necessary
-            $features                  = $geojson[ 'features' ];
+            $features                  = $geojson['features'];
 
             // handle Polygon and MultiPolygon geometries
             foreach ( $features as $feature ) {
-                if ( $feature[ 'geometry' ][ 'type' ] === 'Polygon' ) {
-                    foreach ( $feature[ 'geometry' ][ 'coordinates' ] as $coordinates ) {
+                if ( $feature['geometry']['type'] === 'Polygon' ) {
+                    foreach ( $feature['geometry']['coordinates'] as $coordinates ) {
 
                         $data = $this->_split_polygon( $coordinates );
 
-                        $vertices_x     = $data[ 'longitude' ];
-                        $vertices_y     = $data[ 'latitude' ];
+                        $vertices_x     = $data['longitude'];
+                        $vertices_y     = $data['latitude'];
                         $points_polygon = count( $vertices_x );  // number vertices - zero-based array
 
                         if ( $this->_is_in_polygon( $points_polygon, $vertices_x, $vertices_y, $longitude_x, $latitude_y ) ) {
                             return $grid_id;
                         }
                     }
-                } else if ( $feature[ 'geometry' ][ 'type' ] === 'MultiPolygon' ) {
-                    foreach ( $feature[ 'geometry' ][ 'coordinates' ] as $top_coordinates ) {
+                } else if ( $feature['geometry']['type'] === 'MultiPolygon' ) {
+                    foreach ( $feature['geometry']['coordinates'] as $top_coordinates ) {
                         foreach ( $top_coordinates as $coordinates ) {
 
                             $data = $this->_split_polygon( $coordinates );
 
-                            $vertices_x     = $data[ 'longitude' ];
-                            $vertices_y     = $data[ 'latitude' ];
+                            $vertices_x     = $data['longitude'];
+                            $vertices_y     = $data['latitude'];
                             $points_polygon = count( $vertices_x );  // number vertices - zero-based array
 
                             if ( $this->_is_in_polygon( $points_polygon, $vertices_x, $vertices_y, $longitude_x, $latitude_y ) ) {
@@ -539,8 +539,8 @@ if ( ! class_exists( 'Location_Grid_Geocoder') ) {
         public function _split_polygon( array $polygon_geometry ) {
             $longitude = $latitude = $data = [];
             foreach ( $polygon_geometry as $vertices ) {
-                $longitude[] = $vertices[ 0 ];
-                $latitude[]  = $vertices[ 1 ];
+                $longitude[] = $vertices[0];
+                $latitude[]  = $vertices[1];
             }
             $data = [
                 'longitude' => $longitude,
@@ -590,8 +590,8 @@ if ( ! class_exists( 'Location_Grid_Geocoder') ) {
                 }
                 $country_levels = [];
                 foreach ( $query as $country ) {
-                    if ( ! empty( $country[ 'country_code' ] ) ) {
-                        $country_levels[ $country[ 'country_code' ] ] = $country;
+                    if ( ! empty( $country['country_code'] ) ) {
+                        $country_levels[ $country['country_code'] ] = $country;
                     }
                 }
                 update_option( 'dt_location_grid_country_levels', $country_levels, false );
@@ -602,7 +602,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder') ) {
 
         public function _geometry_folder() {
             $dir         = wp_upload_dir();
-            $uploads_dir = trailingslashit( $dir[ 'basedir' ] );
+            $uploads_dir = trailingslashit( $dir['basedir'] );
             if ( ! file_exists( $uploads_dir . 'location_grid' ) ) {
                 mkdir( $uploads_dir . 'location_grid' );
             }
@@ -668,12 +668,12 @@ if ( ! class_exists( 'Location_Grid_Geocoder') ) {
                 // get highest level found
                 $highest = 0;
                 foreach ( $query as $row ) {
-                    if ( $row[ 'level' ] > $highest ) {
-                        $highest = $row[ 'level' ];
+                    if ( $row['level'] > $highest ) {
+                        $highest = $row['level'];
                     }
                 }
                 foreach ( $query as $index => $value ) {
-                    if ( $value[ 'level' ] < $highest ) {
+                    if ( $value['level'] < $highest ) {
                         unset( $query[ $index ] );
                     }
                 }
@@ -684,7 +684,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder') ) {
                 // get level
                 $country_levels = $this->_get_country_levels();
                 $country_code   = strtoupper( $country_code );
-                $level          = $country_levels[ $country_code ][ 'level' ] ?? 0;
+                $level          = $country_levels[ $country_code ]['level'] ?? 0;
 
                 $query = $wpdb->get_results( $wpdb->prepare( "
                 SELECT g.*, a0.name as admin0_name, a1.name as admin1_name, a2.name as admin2_name, a3.name as admin3_name, a4.name as admin4_name, a5.name as admin5_name
@@ -832,8 +832,8 @@ if ( ! class_exists( 'Location_Grid_Geocoder') ) {
                 }
                 $data = json_decode( $data_result, true );
 
-                if ( isset( $data[ 'features' ][ 0 ][ 'properties' ][ 'short_code' ] ) ) {
-                    $country_code = strtoupper( $data[ 'features' ][ 0 ][ 'properties' ][ 'short_code' ] );
+                if ( isset( $data['features'][0]['properties']['short_code'] ) ) {
+                    $country_code = strtoupper( $data['features'][0]['properties']['short_code'] );
                 }
             }
 
@@ -876,50 +876,50 @@ if ( ! class_exists( 'Location_Grid_Geocoder') ) {
                 foreach ( $keyed_query as $index => $row ) {
                     $keyed_query[ $index ] = [];
 
-                    if ( isset( $row[ 'grid_id' ] ) ) {
-                        $keyed_query[ $index ] = (int) $row[ 'grid_id' ];
+                    if ( isset( $row['grid_id'] ) ) {
+                        $keyed_query[ $index ] = (int) $row['grid_id'];
                     }
-                    if ( isset( $row[ 'level' ] ) ) {
-                        $keyed_query[ $index ] = (int) $row[ 'level' ];
+                    if ( isset( $row['level'] ) ) {
+                        $keyed_query[ $index ] = (int) $row['level'];
                     }
-                    if ( isset( $row[ 'parent_id' ] ) ) {
-                        $keyed_query[ $index ] = (int) $row[ 'parent_id' ];
+                    if ( isset( $row['parent_id'] ) ) {
+                        $keyed_query[ $index ] = (int) $row['parent_id'];
                     }
-                    if ( isset( $row[ 'admin0_grid_id' ] ) ) {
-                        $keyed_query[ $index ] = (int) $row[ 'admin0_grid_id' ];
+                    if ( isset( $row['admin0_grid_id'] ) ) {
+                        $keyed_query[ $index ] = (int) $row['admin0_grid_id'];
                     }
-                    if ( isset( $row[ 'admin1_grid_id' ] ) ) {
-                        $keyed_query[ $index ] = (int) $row[ 'admin1_grid_id' ];
+                    if ( isset( $row['admin1_grid_id'] ) ) {
+                        $keyed_query[ $index ] = (int) $row['admin1_grid_id'];
                     }
-                    if ( isset( $row[ 'admin2_grid_id' ] ) ) {
-                        $keyed_query[ $index ] = (int) $row[ 'admin2_grid_id' ];
+                    if ( isset( $row['admin2_grid_id'] ) ) {
+                        $keyed_query[ $index ] = (int) $row['admin2_grid_id'];
                     }
-                    if ( isset( $row[ 'admin3_grid_id' ] ) ) {
-                        $keyed_query[ $index ] = (int) $row[ 'admin3_grid_id' ];
+                    if ( isset( $row['admin3_grid_id'] ) ) {
+                        $keyed_query[ $index ] = (int) $row['admin3_grid_id'];
                     }
-                    if ( isset( $row[ 'admin4_grid_id' ] ) ) {
-                        $keyed_query[ $index ] = (int) $row[ 'admin4_grid_id' ];
+                    if ( isset( $row['admin4_grid_id'] ) ) {
+                        $keyed_query[ $index ] = (int) $row['admin4_grid_id'];
                     }
-                    if ( isset( $row[ 'admin5_grid_id' ] ) ) {
-                        $keyed_query[ $index ] = (int) $row[ 'admin5_grid_id' ];
+                    if ( isset( $row['admin5_grid_id'] ) ) {
+                        $keyed_query[ $index ] = (int) $row['admin5_grid_id'];
                     }
-                    if ( isset( $row[ 'longitude' ] ) ) {
-                        $keyed_query[ $index ] = (float) $row[ 'longitude' ];
+                    if ( isset( $row['longitude'] ) ) {
+                        $keyed_query[ $index ] = (float) $row['longitude'];
                     }
-                    if ( isset( $row[ 'latitude' ] ) ) {
-                        $keyed_query[ $index ] = (float) $row[ 'latitude' ];
+                    if ( isset( $row['latitude'] ) ) {
+                        $keyed_query[ $index ] = (float) $row['latitude'];
                     }
-                    if ( isset( $row[ 'north_latitude' ] ) ) {
-                        $keyed_query[ $index ] = (float) $row[ 'north_latitude' ];
+                    if ( isset( $row['north_latitude'] ) ) {
+                        $keyed_query[ $index ] = (float) $row['north_latitude'];
                     }
-                    if ( isset( $row[ 'south_latitude' ] ) ) {
-                        $keyed_query[ $index ] = (float) $row[ 'south_latitude' ];
+                    if ( isset( $row['south_latitude'] ) ) {
+                        $keyed_query[ $index ] = (float) $row['south_latitude'];
                     }
-                    if ( isset( $row[ 'west_longitude' ] ) ) {
-                        $keyed_query[ $index ] = (float) $row[ 'west_longitude' ];
+                    if ( isset( $row['west_longitude'] ) ) {
+                        $keyed_query[ $index ] = (float) $row['west_longitude'];
                     }
-                    if ( isset( $row[ 'east_longitude' ] ) ) {
-                        $keyed_query[ $index ] = (float) $row[ 'east_longitude' ];
+                    if ( isset( $row['east_longitude'] ) ) {
+                        $keyed_query[ $index ] = (float) $row['east_longitude'];
                     }
                 }
                 $query = $keyed_query;
