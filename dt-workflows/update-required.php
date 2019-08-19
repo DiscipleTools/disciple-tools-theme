@@ -39,8 +39,9 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
         if ( $update_needed_settings["enabled"] === true ) {
             wp_set_current_user( 0 ); // to keep the update needed notifications from coming from a specific user.
             $current_user = wp_get_current_user();
-            $current_user->add_cap( "view_any_groups" );
-            $current_user->add_cap( "update_any_groups" );
+            $current_user->add_cap( "access_contacts" );
+            $current_user->add_cap( "view_any_contacts" );
+            $current_user->add_cap( "update_any_contacts" );
             foreach ( $update_needed_settings["options"] as $setting ) {
                 $date                 = time() - $setting["days"] * 24 * 60 * 60; // X days in seconds
                 $contacts_need_update = $wpdb->get_results( $wpdb->prepare( "
@@ -81,6 +82,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
         if ( $group_update_needed_settings["enabled"] === true ) {
             wp_set_current_user( 0 ); // to keep the update needed notifications from coming from a specific user.
             $current_user = wp_get_current_user();
+            $current_user->add_cap( "access_groups" );
             $current_user->add_cap( "view_any_groups" );
             $current_user->add_cap( "update_any_groups" );
 
