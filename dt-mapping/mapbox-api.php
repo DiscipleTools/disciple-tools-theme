@@ -3,6 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 if ( ! class_exists( 'DT_Mapbox_API' ) ) {
     class DT_Mapbox_API {
+
         /**
          * Returns country_code from longitude and latitude
          *
@@ -59,7 +60,21 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             return $data;
         }
 
-        public static function box_geocoding_source() {
+        public static function load_mapbox_header_scripts() {
+            // Mabox Mapping API
+            wp_enqueue_script( 'mapbox-gl', 'https://api.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.js', [ 'jquery' ], '1.1.0', false );
+            wp_enqueue_style( 'mapbox-gl-css', 'https://api.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.css', [], '1.1.0' );
+        }
+
+        public static function load_header() {
+            add_action( "enqueue_scripts", [ 'DT_Mapbox_API', 'load_mapbox_header_scripts' ] );
+        }
+
+        public static function load_admin_header() {
+            add_action( "admin_enqueue_scripts", [ 'DT_Mapbox_API', 'load_mapbox_header_scripts' ] );
+        }
+
+        public static function metabox_for_admin() {
 
             if ( isset( $_POST['mapbox_key'] )
                  && ( isset( $_POST['geocoding_key_nonce'] )
@@ -384,7 +399,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             <?php
         }
 
-        public function warning_handler( $errno, $errstr ) {
+        public static function warning_handler( $errno, $errstr ) {
             ?>
             <div class="notice notice-error notice-dt-mapping-source" data-notice="dt-demo">
                 <p><?php echo "MIRROR SOURCE NOT AVAILABLE" ?></p>

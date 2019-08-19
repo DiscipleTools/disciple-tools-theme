@@ -62,6 +62,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                 add_action( 'admin_head', [ $this, 'scripts' ] );
                 add_action( "admin_enqueue_scripts", [ $this, 'enqueue_drilldown_script' ] );
+
+                // load mapbox resources
+                if ( ! class_exists( 'DT_Mapbox_API' ) ) {
+                    require_once ( 'mapbox-api.php' );
+                }
+                DT_Mapbox_API::load_admin_header();
+                // end mapbox
+
             }
         }
 
@@ -169,9 +177,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             if ( 'admin.php' === $hook ) {
                 return;
             }
-            // Mabox Mapping API
-            wp_enqueue_script( 'mapbox-gl', 'https://api.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.js', [ 'jquery','lodash' ], '1.1.0', false );
-            wp_enqueue_style( 'mapbox-gl-css', 'https://api.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.css', [], '1.1.0' );
 
             // Drill Down Tool
             wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery','lodash' ], '1.1' );
@@ -1709,7 +1714,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function box_geocoding_source() {
-            DT_Mapbox_API::box_geocoding_source();
+            if ( ! class_exists( 'DT_Mapbox_API' ) ) {
+                require_once ( 'mapbox-api.php' );
+            }
+            DT_Mapbox_API::metabox_for_admin();
         }
 
         public function box_migration_from_locations( $return = false ){
@@ -2500,7 +2508,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <p>We tried upgrading the locations system to the new version, but something went wrong. Please contact your system administrator</p>
                 </div>
             <?php }
-            if ( !get_option( 'dt_locations_migrated_to_location_grid', false ) ) {
+            if ( ! get_option( 'dt_locations_migrated_to_location_grid', false ) ) {
                 global $wpdb;
                 $locations_with_records = $wpdb->get_results( "
                     SELECT DISTINCT( posts.ID ), post_title, post_parent, COUNT( p2p.p2p_from ) as count
