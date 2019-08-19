@@ -1926,26 +1926,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 }
             } else {
                 ?>
-                <!-- Conversion Report -->
-                <table class="widefat striped" name="locations-completed">
-                    <thead>
-                    <tr>
-                        <th>Migrated Locations ( <?php echo esc_html( sizeof( $saved_for_migration ) ) ?>)</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <ul style="list-style: disc">
-                                <?php foreach ( $saved_for_migration as $location_id => $migration_values ) : ?>
-                                    <li style="margin-inline-start: 40px"><?php echo esc_html( $migration_values["message"] ) ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </td>
-                    </tr>
-                    </tbody>
-                    <tr></tr>
-                </table>
 
                 <!-- Migration Utility -->
                 <span id="locations-remaining" name="locations-remaining"></span>
@@ -2035,7 +2015,30 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         jQuery(`#${location_id}_actions .${val}`).show()
                     })
                 </script>
-            <?php } ?>
+            <?php }
+            $saved_for_migration = get_option( "dt_mapping_migration_list", [] );
+            ?>
+
+            <!-- Conversion Report -->
+            <table class="widefat striped" name="locations-completed">
+                <thead>
+                <tr>
+                    <th>Migrated Locations ( <?php echo esc_html( sizeof( $saved_for_migration ) ) ?>)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <ul style="list-style: disc">
+                            <?php foreach ( $saved_for_migration as $location_id => $migration_values ) : ?>
+                                <li style="margin-inline-start: 40px"><?php echo esc_html( $migration_values["message"] ) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+                <tr></tr>
+            </table>
 
 
             <?php
@@ -2614,6 +2617,23 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 //            try converting to location_grid
             global $wpdb;
 
+            $dir = wp_upload_dir();
+            $uploads_dir = trailingslashit( $dir['basedir'] );
+            // load list to array, make geonameid key
+            $geonames_ref = [];
+            $geonmes_ref_raw = array_map( function( $v){return str_getcsv( $v, "\t" );
+            }, file( $uploads_dir . "location_grid_download/geonames_ref_table.tsv" ) );
+            if ( empty( $geonmes_ref_raw ) ) {
+                throw new Exception( 'Failed to build array from remote file.' );
+            }
+            foreach ( $geonmes_ref_raw as $value ) {
+                $geonames_ref[$value[1]] = [
+                    'grid_id' => $value[0],
+                    'geonameid' => $value[1],
+                ];
+            }
+
+
             $users = get_users( [ "meta_key" => $wpdb->get_blog_prefix() . "saved_filters" ] );
             foreach ( $users as $user ){
                 $save_filters = get_user_option( "saved_filters", $user->ID );
@@ -2633,6 +2653,25 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                     if ( isset( $migrated[$label["id"]]["selected_location_grid"] )){
                                         $label["field"] = "location_grid";
                                         $label["id"] = $migrated[$label["id"]]["selected_location_grid"];
+                                    }
+                                }
+                            }
+                        }
+                        if ( !empty( $filter["query"]["geonames"] ) ){
+                            $location_grid_ids = [];
+                            foreach ( $filter["query"]["geonames"] as $geoname ){
+                                if ( isset( $geonames_ref[ $geoname ] ) ) {
+                                    $location_grid_ids[] = $geonames_ref[$geoname ]["grid_id"];
+                                }
+                            }
+                            $filter['query']['location_grid'] = $location_grid_ids;
+                            unset( $filter["query"]["locations"] );
+                            unset( $filter["query"]["geonames"] );
+                            foreach ( $filter["labels"] as &$label ){
+                                if ( $label["field"] === "geonames") {
+                                    if ( isset( $geonames_ref[ $label["id"]] )){
+                                        $label["field"] = "location_grid";
+                                        $label["id"] = $geonames_ref[ $label["id"]]["grid_id"];
                                     }
                                 }
                             }
