@@ -263,10 +263,39 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             }
                         }
                         break;
-
+                    case 'longitude':
+                        if ( $value ) {
+                            $update_id = $wpdb->update(
+                                $wpdb->dt_location_grid,
+                                [ 'longitude' => $value ],
+                                [ 'grid_id' => $grid_id ],
+                                [ '%f' ],
+                                [ '%s' ]
+                            );
+                            if ( $update_id ) {
+                                return true;
+                            } else {
+                                return new WP_Error( 'update_fail', 'Failed to update longitude' );
+                            }
+                        }
+                        break;
+                    case 'latitude':
+                        if ( $value ) {
+                            $update_id = $wpdb->update(
+                                $wpdb->dt_location_grid,
+                                [ 'latitude' => $value ],
+                                [ 'grid_id' => $grid_id ],
+                                [ '%s' ],
+                                [ '%s' ]
+                            );
+                            if ( $update_id ) {
+                                return true;
+                            } else {
+                                return new WP_Error( 'update_fail', 'Failed to update latitude' );
+                            }
+                        }
+                        break;
                     case 'sub_location':
-
-                        dt_write_log( $params );
 
                         if ( isset( $params['value']['name'] ) && ! empty( $params['value']['name'] ) ) {
                             $name = sanitize_text_field( wp_unslash( $params['value']['name'] ) );
@@ -274,13 +303,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             return new WP_Error( 'missing_param', 'Missing name parameter' );
                         }
 
-                        if ( ! empty( $params['value']['population'] ) ) {
-                            $population = sanitize_text_field( wp_unslash( $params['value']['population'] ) );
-                        } else {
-                            $population = 0;
-                        }
+                        $population = !empty( $params['value']['population'] ) ? sanitize_text_field( wp_unslash( $params['value']['population'] ) ) : 0;
+                        $longitude = !empty( $params["value"]["longitude"] ) ? sanitize_text_field( wp_unslash( $params["value"]["longitude"] ) ) : null;
+                        $latitude = !empty( $params["value"]["latitude"] ) ? sanitize_text_field( wp_unslash( $params["value"]["latitude"] ) ) : null;
 
-                        $custom_grid_id = $this->add_sublocation_under_location_grid( $grid_id, $name, $population );
+                        $custom_grid_id = $this->add_sublocation_under_location_grid( $grid_id, $name, $population, $longitude, $latitude );
 
                         return [
                                 'name' => $name,
@@ -380,17 +407,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <!-- Names Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'names' ?>" class="nav-tab
                         <?php echo esc_attr( ( $tab == 'names' ) ? 'nav-tab-active' : '' ); ?>">
-                        <?php esc_attr_e( 'Names and IDs', 'disciple_tools' ) ?>
-                    </a>
-                    <!-- Population Tab -->
-                    <a href="<?php echo esc_attr( $link ) . 'population' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab == 'population' ) ? 'nav-tab-active' : '' ); ?>">
-                        <?php esc_attr_e( 'Population', 'disciple_tools' ) ?>
-                    </a>
-                    <!-- Add Sub-Locations -->
-                    <a href="<?php echo esc_attr( $link ) . 'sub_locations' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab == 'sub_locations' ) ? 'nav-tab-active' : '' ); ?>">
-                        <?php esc_attr_e( 'Sub-Locations', 'disciple_tools' ) ?>
+                        <?php esc_attr_e( 'Locations List', 'disciple_tools' ) ?>
                     </a>
                     <!-- Add Migration -->
                     <a href="<?php echo esc_attr( $link ) . 'migration' ?>" class="nav-tab
@@ -425,12 +442,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         break;
                     case "names":
                         $this->tab_names();
-                        break;
-                    case "population":
-                        $this->tab_population();
-                        break;
-                    case "sub_locations":
-                        $this->tab_sub_locations();
                         break;
                     case "migration":
                         $this->tab_migration();
@@ -584,59 +595,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <div id="post-body-content">
                             <!-- Main Column -->
 
-                            <?php $this->box_names_editor() ?>
-
-                            <!-- End Main Column -->
-                        </div><!-- end post-body-content -->
-                        <div id="postbox-container-1" class="postbox-container">
-                            <!-- Right Column -->
-
-                            <!-- End Right Column -->
-                        </div><!-- postbox-container 1 -->
-                        <div id="postbox-container-2" class="postbox-container">
-                        </div><!-- postbox-container 2 -->
-                    </div><!-- post-body meta box container -->
-                </div><!--poststuff end -->
-            </div><!-- wrap end -->
-            <?php
-        }
-
-        public function tab_population() {
-            ?>
-            <div class="wrap">
-                <div id="poststuff">
-                    <div id="post-body" class="metabox-holder columns-1">
-                        <div id="post-body-content">
-                            <!-- Main Column -->
-
-                            <?php $this->box_population_division(); ?>
-
-                            <?php $this->box_population_edit(); ?>
-
-                            <!-- End Main Column -->
-                        </div><!-- end post-body-content -->
-                        <div id="postbox-container-1" class="postbox-container">
-                            <!-- Right Column -->
-
-                            <!-- End Right Column -->
-                        </div><!-- postbox-container 1 -->
-                        <div id="postbox-container-2" class="postbox-container">
-                        </div><!-- postbox-container 2 -->
-                    </div><!-- post-body meta box container -->
-                </div><!--poststuff end -->
-            </div><!-- wrap end -->
-            <?php
-        }
-
-        public function tab_sub_locations() {
-            ?>
-            <div class="wrap">
-                <div id="poststuff">
-                    <div id="post-body" class="metabox-holder columns-1">
-                        <div id="post-body-content">
-                            <!-- Main Column -->
-
-                            <?php $this->box_sub_locations_editor() ?>
+                            <?php $this->box_location_grids() ?>
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
@@ -743,12 +702,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         ?>
                     </td>
                     <td>
-                        <a href="admin.php?page=dt_mapping_module&tab=population">Edit</a>
+
                     </td>
                 </tr>
                 </tbody>
             </table>
+            <br>
+            <br>
             <?php
+            $this->box_population_division();
         }
 
         public function box_mapping_focus_start_level() {
@@ -1385,333 +1347,199 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-        public function box_population_edit() {
+        public function box_location_grids() {
             ?>
             <table class="widefat striped">
                 <thead>
-                    <tr><th>Select Population List to Edit</th></tr>
+                    <tr><th>Select a location to Edit</th></tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td id="population_edit"></td>
+                    <td id="location_grids"><img id="spinner" src="<?php echo esc_html( spinner() ) ?>" width="30px" /></td>
                 </tr>
                 </tbody>
             </table>
 
+            <div style="display: none" id="location-data">
+                <h4>Update <span class="location-name-title"></span>
+                    <img id="update-location-spinner" src="<?php echo esc_html( spinner() ) ?>" width="20px" style="display: none" />
+                </h4>
+                <table  class="widefat striped" style="width: min-content">
+                    <tr>
+                        <td>Name</td>
+                        <td><input type="text" id="location-name" value=""></td>
+                        <td><a class="button update-button" data-field="name">Update</a></td>
+                        <td><a class="button reset-button" data-field="name">Reset</a></td>
+                    </tr>
+                    <tr>
+                        <td>Population</td>
+                        <td><input type="text" id="location-population" value=""></td>
+                        <td><a class="button update-button" data-field="population">Update</a></td>
+                        <td><a class="button reset-button" data-field="population">Reset</a></td>
+                    </tr>
+                    <tr>
+                        <td>Longitude</td>
+                        <td><input type="text" id="location-longitude" value=""></td>
+                        <td><a class="button update-button" data-field="longitude">Update</a></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Latitude</td>
+                        <td><input type="text" id="location-latitude" value=""></td>
+                        <td><a class="button update-button" data-field="latitude">Update</a></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <br>
+            <h4>Locations Under <span class="location-name-title"></h4>
+            <p>Only showing locations selected in your Mapping Focus</p>
             <table class="widefat striped">
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Population</th>
-                        <th>New Population (no commas)</th>
-                        <th></th>
-                        <th></th>
+                        <th>ID</th>
                     </tr>
                 </thead>
                 <tbody id="list_results">
                 </tbody>
             </table>
-
-            <script>
-                window.DRILLDOWNDATA.settings.hide_final_drill_down = false
-                window.DRILLDOWN.get_drill_down('population_edit')
-                window.DRILLDOWN.population_edit = function (grid_id) {
-                    let list_results = jQuery('#list_results')
-                    let div = 'list_results'
-
-                    // Find data source before build
-                    if ( grid_id === 'top_map_level' ) {
-                        let default_map_settings = DRILLDOWNDATA.settings.default_map_settings
-
-                        // Initialize Location Data
-                        let map_data = DRILLDOWNDATA.data[default_map_settings.parent]
-                        if ( map_data === undefined ) {
-                            console.log('error getting map_data')
-                            return;
-                        }
-
-                        build_list( div, map_data )
-                    }
-                    else if ( DRILLDOWNDATA.data[grid_id] === undefined ) {
-                        let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_grid_id_endpoint
-
-                        jQuery.ajax({
-                            type: rest.method,
-                            contentType: "application/json; charset=utf-8",
-                            data: JSON.stringify( { 'grid_id': grid_id } ),
-                            dataType: "json",
-                            url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
-                            beforeSend: function(xhr) {
-                                xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
-                            },
-                        })
-                            .done( function( response ) {
-                                DRILLDOWNDATA.data[grid_id] = response
-                                build_list( div, DRILLDOWNDATA.data[grid_id] )
-                            })
-                            .fail(function (err) {
-                                console.log("error")
-                                console.log(err)
-                                DRILLDOWN.hide_spinner()
-                            })
-
-                    } else {
-                        build_list( div, DRILLDOWNDATA.data[grid_id] )
-                    }
-
-                    function build_list( div, map_data ) {
-                        list_results.empty()
-                        jQuery.each( map_data.children, function (i, v) {
-                            list_results.append(`<tr>
-                                <td>${_.escape( v.name )}</td>
-                                <td id="label-${_.escape( v.grid_id )}">${_.escape( v.population_formatted )}</td>
-                                <td><input type="number" id="input-${_.escape( v.grid_id )}" value=""></td>
-                                <td id="button-${_.escape( v.grid_id )}"><a class="button" onclick="update( ${_.escape( v.grid_id )}, jQuery('#input-'+${_.escape( v.grid_id )}).val(), 'population' )">Update</a></td>
-                                <td id="reset-${_.escape( v.grid_id )}"><a class="button" onclick="reset( ${_.escape( v.grid_id )}, 'population' )">Reset</a></td>
-                            </tr>`)
-                        })
-                    }
-                }
-
-            </script>
-
-            <?php
-        }
-
-        public function box_names_editor() {
-            ?>
-            <table class="widefat striped">
-                <thead>
-                    <tr><th>Edit Default Location Names</th></tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td id="name_select"></td>
-                </tr>
-                </tbody>
-            </table>
-
-            <table class="widefat striped">
-                <thead>
+            <div id="add-new-location-section">
+                <h4>Add New Location Under <span class="location-name-title"></span>
+                    <img id="new-location-spinner" src="<?php echo esc_html( spinner() ) ?>" width="20px" style="display: none" />
+                </h4>
+                <table class="widefat striped new_location_table">
                     <tr>
-                        <th>Name</th>
-                        <th>New Name</th>
-                        <th></th>
-                        <th></th>
-                        <th>ID</th>
+                        <td style="width:150px;">Name</td>
+                        <td><input id="new_name" value="" /></td>
                     </tr>
-                </thead>
-                <tbody id="list_results"></tbody>
-            </table>
+                    <tr>
+                        <td>Population (optional)</td>
+                        <td><input id="new_population" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>Longitude (optional)</td>
+                        <td><input id="new_longitude" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>Latitude (optional)</td>
+                        <td><input id="new_latitude" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="button" id="save-sub-location-button" class="button" >Save</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
 
             <script>
                 window.DRILLDOWNDATA.settings.hide_final_drill_down = false
-                window.DRILLDOWN.get_drill_down('name_select')
-                window.DRILLDOWN.name_select = function (grid_id) {
+                window.DRILLDOWN.get_drill_down('location_grids')
+                let current = {}
+                window.DRILLDOWN.location_grids = function (grid_id, a, selection) {
+                    current = selection
                     let list_results = jQuery('#list_results')
                     let div = 'list_results'
-
-                    // Find data source before build
-                    if (grid_id === 'top_map_level') {
-                        let default_map_settings = DRILLDOWNDATA.settings.default_map_settings
-
-                        // Initialize Location Data
-                        let map_data = DRILLDOWNDATA.data[default_map_settings.parent]
-                        if (map_data === undefined) {
-                            console.log('error getting map_data')
-                            return;
-                        }
-
-                        build_list(div, map_data)
-                    }
-                    else if (DRILLDOWNDATA.data[grid_id] === undefined) {
-                        let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_grid_id_endpoint
-
-                        jQuery.ajax({
-                            type: rest.method,
-                            contentType: "application/json; charset=utf-8",
-                            data: JSON.stringify({'grid_id': grid_id}),
-                            dataType: "json",
-                            url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
-                            beforeSend: function (xhr) {
-                                xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
-                            },
-                        })
-                            .done(function (response) {
-                                DRILLDOWNDATA.data[grid_id] = response
-                                build_list(div, DRILLDOWNDATA.data[grid_id])
-                            })
-                            .fail(function (err) {
-                                console.log("error")
-                                console.log(err)
-                                DRILLDOWN.hide_spinner()
-                            })
-
-                    } else {
-                        build_list(div, DRILLDOWNDATA.data[grid_id])
-                    }
-
-                    function build_list(div, map_data) {
-                        list_results.empty()
-                        jQuery.each(map_data.children, function (i, v) {
-                            list_results.append(`<tr>
-                                <td id="label-${_.escape( v.grid_id )}">${_.escape( v.name )}</td>
-                                <td><input type="text" id="input-${_.escape( v.grid_id )}" value=""></td>
-                                <td id="button-${_.escape( v.grid_id )}"><a class="button" onclick="update( ${_.escape( v.grid_id )}, jQuery('#input-'+${_.escape( v.grid_id )}).val(), 'name' )">Update</a></td>
-                                <td id="reset-${_.escape( v.grid_id )}"><a class="button" onclick="reset( ${_.escape( v.grid_id )}, 'name' )">Reset</a></td>
-                                <td>${_.escape( v.grid_id )}</td>
-                            </tr>`)
-                        })
-                    }
-                }
-            </script>
-
-            <?php
-
-        }
-
-        public function box_sub_locations_editor() {
-            ?>
-            <table class="widefat striped">
-                <thead>
-                <tr><th>Select the Location</th></tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td id="sublocation"></td>
-                </tr>
-                </tbody>
-            </table>
-            <table class="widefat striped" style="display:none;" id="current_subs">
-                <thead>
-                <tr>
-                <th>Current Sub-Locations (use these if possible):</th>
-                <th style="width:20px;"></th>
-                </tr>
-                </thead>
-                <tbody id="other_list">
-                </tbody>
-            </table>
-            <br>
-            <table class="widefat striped">
-                <tbody id="list_results"></tbody>
-            </table>
-
-            <script>
-                jQuery(document).on('click', '.open_next_drilldown', function(){
-                    let gnid = jQuery(this).data('grid_id')
-                    console.log(gnid)
-                    DRILLDOWN.get_drill_down( 'sublocation', gnid  );
-                })
-
-                window.DRILLDOWNDATA.settings.hide_final_drill_down = false
-                window.DRILLDOWN.get_drill_down('sublocation')
-                window.DRILLDOWN.sublocation = function (grid_id) {
-
-                    let list_results = jQuery('#list_results')
-                    let div = 'list_results'
-                    let current_subs = jQuery('#current_subs')
-                    let other_list = jQuery('#other_list')
 
                     list_results.empty()
-                    other_list.empty()
-                    current_subs.hide()
 
-                    // Find data source before build
-                    if (grid_id === 'top_map_level') {
-                        let default_map_settings = DRILLDOWNDATA.settings.default_map_settings
 
-                        // Initialize Location Data
-                        let map_data = DRILLDOWNDATA.data[default_map_settings.parent]
-                        if (map_data === undefined) {
-                            console.log('error getting map_data')
-                            return;
-                        }
+                    jQuery.each( selection.list, function (i, v) {
+                        list_results.append(`<tr>
+                            <td>
+                                <a class="open_next_drilldown"
+                                    data-parent="${_.escape( v.parent_id )}"
+                                    data-grid_id="${_.escape( v.grid_id )}"
+                                    style="cursor: pointer;">${_.escape( v.name )}
+                                </a>
+                            </td>
+                            <td>${_.escape( v.population_formatted )}</td>
+                            <td>${_.escape( v.grid_id )}</td>
+                        </tr>`)
+                    })
 
-                        build_list(div, map_data)
-                    }
-                    else if ( DRILLDOWNDATA.data[grid_id] === undefined) {
-                        let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_grid_id_endpoint
-
-                        jQuery.ajax({
-                            type: rest.method,
-                            contentType: "application/json; charset=utf-8",
-                            data: JSON.stringify({'grid_id': grid_id}),
-                            dataType: "json",
-                            url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
-                            beforeSend: function (xhr) {
-                                xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
-                            },
-                        })
-                            .done(function (response) {
-                                DRILLDOWNDATA.data[grid_id] = response
-                                build_list(div, DRILLDOWNDATA.data[grid_id])
-                            })
-                            .fail(function (err) {
-                                console.log("error")
-                                console.log(err)
-                                DRILLDOWN.hide_spinner()
-                            })
-
+                    jQuery('.location-name-title').html(selection.selected_name)
+                    if ( selection.self ){
+                        jQuery('#location-data').show()
+                        jQuery('#location-name').val(selection.self.name)
+                        jQuery('#location-population').val(selection.self.population)
+                        jQuery('#location-longitude').val(selection.self.longitude)
+                        jQuery('#location-latitude').val(selection.self.latitude)
                     } else {
-                        build_list(div, DRILLDOWNDATA.data[grid_id])
+                        jQuery('#location-data').hide()
+                    }
+                    if (selection.selected !== 1 || selection.selected !== "1") {
+                      jQuery('#add-new-location-section').show()
+                    } else  {
+                      jQuery('#add-new-location-section').hide()
                     }
 
-                    function build_list(div, map_data) {
-
-                        if (!window.DRILLDOWN.isEmpty(map_data.children)) { // empty children for grid_id
-                            jQuery.each(map_data.children, function (gnid, data) {
-                                other_list.append(`
-                                    <tr><td>
-                                        <a class="open_next_drilldown" data-parent="${_.escape( data.parent_id )}" data-grid_id="${_.escape( data.grid_id )}" style="cursor: pointer;">${_.escape( data.name )}</a>
-                                    </td><td></td></tr>`)
-                            })
-                            current_subs.show()
-                        }
-
-                        list_results.empty().append(`
-                                <tr><td colspan="2">Add New Location under ${_.escape( map_data.self.name )}</td></tr>
-                                <tr><td style="width:150px;">Name</td><td><input id="new_name" value="" /></td></tr>
-                                <tr><td>Longitude</td><td><input id="new_longitude" value="" /></td></tr>
-                                <tr><td>Latitude</td><td><input id="new_latitude" value="" /></td></tr>
-                                <tr><td>Population</td><td><input id="new_population" value="" /></td></tr>
-                                <tr><td colspan="2"><button type="button" id="save-button" class="button" onclick="update_location( ${_.escape( map_data.self.grid_id )} )" >Save</a></td></tr>`)
-                    }
                 }
+                jQuery(".update-button").on("click", function () {
+                  jQuery('#update-location-spinner').show()
+                  let field = jQuery(this).data('field')
+                  let value = jQuery(`#location-${field}`).val()
+                  //udate location
+                  let grid_id = current.selected
+                  let update = send_update({key: field, value: value, grid_id: grid_id})
 
-                function update_location(grid_id) {
-                    jQuery('#save-button').prop('disabled', true)
+                  update.done(function (data) {
+                    jQuery('#update-location-spinner').hide()
+                  }).fail(()=>{
+                    jQuery('#update-location-spinner').hide()
+                  })
+                })
+                jQuery(".reset-button").on("click", function () {
+                  jQuery('#update-location-spinner').show()
+                  let field = jQuery(this).data('field')
+                  let grid_id = current.selected
+                  //reset location
+                  let update = send_update({key: field, reset: true, grid_id: grid_id})
 
+                  update.done(function (data) {
+                    jQuery('#update-location-spinner').hide()
+                    if (data) {
+                      jQuery(`#location-${field}`).val(data.value)
+                    }
+                  }).fail(()=>{
+                    jQuery('#update-location-spinner').hide()
+                  })
+                })
+                jQuery(document).on('click', '.open_next_drilldown', function(){
+                  let gnid = jQuery(this).data('grid_id')
+                  DRILLDOWN.get_drill_down( 'location_grids', gnid  );
+                })
+                jQuery('#save-sub-location-button').on('click', function () {
+                    jQuery('#new-location-spinner').show()
                     let data = {}
                     data.key = 'sub_location'
-                    data.grid_id = grid_id
+                    data.grid_id = current.selected
                     data.value = {}
                     data.value.name = jQuery('#new_name').val()
                     data.value.population = jQuery('#new_population').val()
-
-                    console.log(data)
+                    data.value.longitude = jQuery('#new_longitude').val()
+                    data.value.latitude = jQuery('#new_latitude').val()
 
                     let update = send_update(data)
-
                     update.done(function (data) {
-                        console.log(data)
-                        if (data) {
-                            jQuery('#other_list').append(`
-                                <tr><td><a class="open_next_drilldown" data-parent="${_.escape( grid_id )}" data-grid_id="${_.escape( data.grid_id )}" style="cursor: pointer;">${_.escape(data.name)}</a></td></tr>`)
-                            jQuery('#new_name').val('')
-                            jQuery('#new_population').val('')
-                            jQuery('#current_subs').show()
-                        }
-                        jQuery('#save-button').removeProp('disabled')
+                      jQuery('#new-location-spinner').hide()
+                      DRILLDOWN.get_drill_down( 'location_grids', current.selected );
+                      jQuery('.new_location_table input').val('')
+                    }).fail(()=>{
+                      jQuery('#new-location-spinner').hide()
                     })
+                })
 
-                    console.log(grid_id)
-                }
             </script>
 
             <?php
-
         }
+
 
         public function box_geocoding_source() {
             if ( ! class_exists( 'DT_Mapbox_API' ) ) {
@@ -2345,10 +2173,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
          * @param $parent_location_grid_id
          * @param $name
          * @param $population
+         * @param null $longitude
+         * @param null $latitude
          *
          * @return int|WP_Error, the id of the new sublocation
          */
-        public function add_sublocation_under_location_grid( $parent_location_grid_id, $name, $population ){
+        public function add_sublocation_under_location_grid( $parent_location_grid_id, $name, $population, $longitude = null, $latitude = null ){
             global $wpdb;
             $parent_grid_id = $wpdb->get_row( $wpdb->prepare( "
                 SELECT * FROM $wpdb->dt_location_grid WHERE grid_id = %d
@@ -2383,8 +2213,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     'admin3_grid_id' => $parent_grid_id['admin3_grid_id'],
                     'admin4_grid_id' => $parent_grid_id['admin4_grid_id'],
                     'admin5_grid_id' => $parent_grid_id['admin5_grid_id'],
-                    'longitude' => $parent_grid_id['longitude'],
-                    'latitude' => $parent_grid_id['latitude'],
+                    'longitude' => $longitude ?? $parent_grid_id['longitude'],
+                    'latitude' => $latitude ?? $parent_grid_id['latitude'],
                     'population' => $population,
                     'modification_date' => current_time( 'mysql' ),
                     'alt_name' => $name,
