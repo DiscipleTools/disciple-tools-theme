@@ -251,7 +251,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         } elseif ( $value ) {
                             $update_id = $wpdb->update(
                                 $wpdb->dt_location_grid,
-                                [ 'alt_population' => $value ],
+                                [ 'alt_population' => preg_replace( "/[^0-9.]/", "", $value ) ],
                                 [ 'grid_id' => $grid_id ],
                                 [ '%d' ],
                                 [ '%d' ]

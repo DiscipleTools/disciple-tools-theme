@@ -606,7 +606,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 }
             }
 
-            if ( (int) $reference["level"] > 5 ){
+            if ( (int) $reference["grid_id"] != (int) $preset_array[ sizeof( $preset_array ) - 1 ]['selected'] ){
                 $other_levels = $this->drill_down_add_custom_locations( $preset_array[ sizeof( $preset_array ) - 1 ]['selected'], $reference, [ $reference ] );
                 foreach ( $other_levels as $level ) {
                     $preset_array[] = [
