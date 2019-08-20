@@ -610,6 +610,11 @@ class Disciple_Tools_Posts
             $offset = esc_sql( sanitize_text_field( $query["offset"] ) );
             unset( $query["offset"] );
         }
+        $limit = 100;
+        if ( isset( $query["limit"] )){
+            $limit = esc_sql( sanitize_text_field( $query["limit"] ) );
+            unset( $query["limit"] );
+        }
         $combine = [];
         if ( isset( $query["combine"] )){
             $combine = $query["combine"];
@@ -923,7 +928,7 @@ class Disciple_Tools_Posts
             AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
             GROUP BY $wpdb->posts.ID
             ORDER BY " . $sort_sql . "
-            LIMIT %d, 100
+            LIMIT %d, " . $limit . "
             ",
             esc_sql( $post_type ),
             $offset
