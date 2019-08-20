@@ -457,7 +457,7 @@ select.color-select {
 
 }
 
-//make sure datepicker stays above other ui elements
-.single .ui-datepicker {
-    z-index: 10 !important;
+//don't have typeaheads cover other elements
+.typeahead__query {
+    z-index: 1 !important;
 }
