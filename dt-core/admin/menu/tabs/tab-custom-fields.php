@@ -301,7 +301,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         if ( !( isset( $option["deleted"] ) && $option["deleted"] == true ) ):
                             $label = $option["label"] ?? "";
                             $in_defaults = isset( $defaults[$field_key]["default"][$key] );
-                        ?>
+                            ?>
                             <tr>
                                 <td>
                                     <?php echo esc_html( $key ) ?>
