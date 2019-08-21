@@ -1378,16 +1378,16 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <td><a class="button reset-button" data-field="population">Reset</a></td>
                     </tr>
                     <tr>
-                        <td>Longitude</td>
-                        <td><input type="text" id="location-longitude" value=""></td>
-                        <td><a class="button update-button" data-field="longitude">Update</a></td>
+                        <td>Latitude</td>
+                        <td><input type="text" id="location-latitude" value=""></td>
+                        <td><a class="button update-button" data-field="latitude">Update</a></td>
                         <td></td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td>Latitude</td>
-                        <td><input type="text" id="location-latitude" value=""></td>
-                        <td><a class="button update-button" data-field="latitude">Update</a></td>
+                        <td>Longitude</td>
+                        <td><input type="text" id="location-longitude" value=""></td>
+                        <td><a class="button update-button" data-field="longitude">Update</a></td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -1421,12 +1421,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <td><input id="new_population" value="" /></td>
                     </tr>
                     <tr>
-                        <td>Longitude (optional)</td>
-                        <td><input id="new_longitude" value="" /></td>
-                    </tr>
-                    <tr>
                         <td>Latitude (optional)</td>
                         <td><input id="new_latitude" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>Longitude (optional)</td>
+                        <td><input id="new_longitude" value="" /></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -2289,7 +2289,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             // get level
             $parent_level = isset( $parent_grid_id["level"] ) ? (int) $parent_grid_id["level"] : 9;
-            $level = $parent_level + 1;
+            $level = max( $parent_level + 1, 10 );
             $level_name = 'place';
 
             // save new record
