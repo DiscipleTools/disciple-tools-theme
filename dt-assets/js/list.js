@@ -345,7 +345,7 @@
     }).join(", ");
     const gcfs = wpApiListSettings.custom_fields_settings;
     const status = _.get( gcfs, `group_status.default[${group.group_status || "active"}]["label"]`, group.group_status )
-    const type = _.get( gcfs, `gcfs.group_type.default[${group.group_type || "group"}]["label"]`, group.group_type )
+    const type = _.get( gcfs, `group_type.default[${group.group_type || "group"}]["label"]`, group.group_type )
     const context = _.assign({}, group, wpApiListSettings, {
       leader_links,
       status,
