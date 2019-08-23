@@ -85,7 +85,7 @@ window.DRILLDOWN = {
 
             })
 
-            html += `<li><span id="spinner" style="display:none;" class="float-right">${DRILLDOWNDATA.settings.spinner_large}</span></li>`
+            html += `<li><span id="spinner" style="display:none;">${DRILLDOWNDATA.settings.spinner_large}</span></li>`
 
             // close unordered list
             html += `</ul>`

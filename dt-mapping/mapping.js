@@ -615,9 +615,6 @@ function page_mapping_list() {
     chartDiv.empty().html(`
         <div class="grid-x grid-margin-x">
             <div class="cell auto" id="location_list_drilldown"></div>
-            <div class="cell small-1">
-                <span id="spinner" style="display:none;" class="float-right">${DRILLDOWNDATA.settings.spinner_large}</span>
-            </div>
         </div>
         
         <hr style="max-width:100%;">
