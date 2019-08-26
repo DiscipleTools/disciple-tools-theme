@@ -33,7 +33,7 @@ if ( ! defined( 'WP_CONTENT_URL' ) ) {
 global $wpdb;
 $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
 require_once( '../dt-core/global-functions.php' );
-require_once( 'location-grid-geocoder.php' ); // Location grid geocoder
+require_once('geocode-api/location-grid-geocoder.php'); // Location grid geocoder
 $geocoder = new Location_Grid_Geocoder();
 
 // geocodes longitude and latitude and returns json array of location_grid record

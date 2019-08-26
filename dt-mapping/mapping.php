@@ -9,7 +9,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
      */
     global $wpdb;
     $wpdb->dt_location_grid = $wpdb->prefix .'dt_location_grid';
-    $wpdb->dt_location_grid = $wpdb->prefix .'dt_location_grid';
 
     /*******************************************************************************************************************
      * MIGRATION ENGINE
