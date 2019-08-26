@@ -1378,16 +1378,16 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <td><a class="button reset-button" data-field="population">Reset</a></td>
                     </tr>
                     <tr>
-                        <td>Longitude</td>
-                        <td><input type="text" id="location-longitude" value=""></td>
-                        <td><a class="button update-button" data-field="longitude">Update</a></td>
+                        <td>Latitude</td>
+                        <td><input type="text" id="location-latitude" value=""></td>
+                        <td><a class="button update-button" data-field="latitude">Update</a></td>
                         <td></td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td>Latitude</td>
-                        <td><input type="text" id="location-latitude" value=""></td>
-                        <td><a class="button update-button" data-field="latitude">Update</a></td>
+                        <td>Longitude</td>
+                        <td><input type="text" id="location-longitude" value=""></td>
+                        <td><a class="button update-button" data-field="longitude">Update</a></td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -1421,12 +1421,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <td><input id="new_population" value="" /></td>
                     </tr>
                     <tr>
-                        <td>Longitude (optional)</td>
-                        <td><input id="new_longitude" value="" /></td>
-                    </tr>
-                    <tr>
                         <td>Latitude (optional)</td>
                         <td><input id="new_latitude" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>Longitude (optional)</td>
+                        <td><input id="new_longitude" value="" /></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -1549,6 +1549,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function box_migration_from_locations( $return = false ){
+            global $wpdb;
             if ( isset( $_POST["location_migrate_nonce"] ) && wp_verify_nonce( sanitize_key( $_POST['location_migrate_nonce'] ), 'save' ) ) {
                 if ( isset( $_POST["run-migration"], $_POST["selected_location_grid"] ) ){
                     $select_location_grid = dt_sanitize_array_html( $_POST["selected_location_grid"] ); //phpcs:ignore
@@ -1586,9 +1587,30 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     }
                     update_option( "dt_mapping_migration_list", $saved_for_migration, false );
                 }
+                if ( isset( $_POST["convert_geoname"], $_POST["selected_location_grid"] ) ) {
+                    $selected_geoname = sanitize_text_field( wp_unslash( $_POST["convert_geoname"] ) );
+                    if ( isset( $_POST["selected_location_grid"][ $selected_geoname ] ) && !empty( $_POST["selected_location_grid"][ $selected_geoname ] ) ) {
+                        $location_grid_id = sanitize_text_field( wp_unslash( $_POST["selected_location_grid"][ $selected_geoname ] ) );
+
+                        $wpdb->query( $wpdb->prepare( "
+                            UPDATE $wpdb->postmeta
+                            SET meta_key = 'location_grid',
+                                meta_value = %s 
+                            WHERE meta_key = 'geonames' and meta_value = %s
+                            ", $location_grid_id, $selected_geoname
+                        ) );
+                        $wpdb->query( $wpdb->prepare( "
+                            UPDATE $wpdb->dt_activity_log
+                            SET meta_key = 'location_grid',
+                                meta_value = %s 
+                            WHERE meta_key = 'geonames' and meta_value = %s
+                            ", $location_grid_id, $selected_geoname
+                        ) );
+                    }
+                }
             }
 
-            global $wpdb;
+
             $locations_with_records = $wpdb->get_results( "
                 SELECT DISTINCT( posts.ID ), post_title, post_parent, COUNT( p2p.p2p_from ) as count
                 FROM $wpdb->posts as posts
@@ -1692,7 +1714,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         let id = jQuery(b).attr('id')
                         window.DRILLDOWN[`${ id } .drilldown`] = function (grid_id, label) {
                             jQuery(`#${id} .convert-input`).val(grid_id)
-                            console.log(id);
                             jQuery(`#${id.replace("sublocation", "actions")} .selected-location_grid-label`).text(label)
                         }
                     })
@@ -1707,6 +1728,78 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $saved_for_migration = get_option( "dt_mapping_migration_list", [] );
             ?>
 
+
+            <?php
+            $remaining_geonames = $wpdb->get_results( "
+                SELECT DISTINCT( pm.meta_value ), COUNT( pm.meta_value ) as count
+                FROM $wpdb->postmeta as pm
+                WHERE pm.meta_key = 'geonames' 
+                GROUP BY pm.meta_value
+            ", ARRAY_A );
+            $test = "";
+            if ( sizeof( $remaining_geonames ) > 0 ) { ?>
+
+            <br>
+            <br>
+            <h3>Migrate geonames</h3>
+            <p>These are the geonames that were not automatically migrated.</p>
+            <form method="post" action="">
+                <?php wp_nonce_field( 'save', 'location_migrate_nonce', true, true ) ?>
+                <table class="widefat striped">
+                    <thead>
+                    <tr>
+                        <th>Occurrences</th>
+                        <th>ID</th>
+                        <th>Geoname</th>
+                        <th>Convert To</th>
+                        <th>Update</th>
+                    </tr>
+                    </thead>
+                    <?php foreach ( $remaining_geonames as $geo ): ?>
+                    <tr>
+                        <td><?php echo esc_html( $geo["count"] ) ?></td>
+                        <td><?php echo esc_html( $geo["meta_value"] ) ?></td>
+                        <td>Name not available.
+                            <?php if ( $geo["meta_value"] < 1000000000 ) : ?>
+                            <a target="_blank" href="https://www.geonames.org/<?php echo esc_html( $geo["meta_value"] ) ?>">Lookup
+                                geoname</a>
+                            <?php endif; ?>
+                        </td>
+                        <td id="<?php echo esc_html( $geo["meta_value"] ) ?>_sublocation" class="to-location_grid">
+                            <input name="selected_location_grid[<?php echo esc_html( $geo["meta_value"] ) ?>]" class="convert-input" type="hidden">
+                            <div class="drilldown">
+                                <?php DT_Mapping_Module::instance()->drill_down_widget( esc_html( $geo["meta_value"] ) . "_sublocation .drilldown" ) ?>
+                            </div>
+                        </td>
+                        <td colspan="">
+                            <button class="button" type="submit" name="convert_geoname" value="<?php echo esc_html( $geo["meta_value"] ) ?>">Save</button>
+                        </td>
+
+                    </tr>
+
+
+                    <?php endforeach; ?>
+                </table>
+            </form>
+            <script>
+              jQuery(".to-location_grid").each((a, b)=>{
+                let id = jQuery(b).attr('id')
+                window.DRILLDOWN[`${ id } .drilldown`] = function (grid_id, label, c) {
+                  jQuery(`#${id} .convert-input`).val(grid_id)
+                  jQuery(`#${id.replace("sublocation", "actions")} .selected-location_grid-label`).text(label)
+                }
+              })
+            </script>
+
+
+
+            <?php } ?>
+
+
+
+
+            <br>
+            <br>
             <!-- Conversion Report -->
             <table class="widefat striped" name="locations-completed">
                 <thead>
@@ -2196,7 +2289,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             // get level
             $parent_level = isset( $parent_grid_id["level"] ) ? (int) $parent_grid_id["level"] : 9;
-            $level = $parent_level + 1;
+            $level = max( $parent_level + 1, 10 );
             $level_name = 'place';
 
             // save new record

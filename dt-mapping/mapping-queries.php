@@ -824,6 +824,9 @@ class Disciple_Tools_Mapping_Queries {
             if ( $default_map_settings["type"] === "country" && sizeof( $default_map_settings["children"] ) > 0 ){
                 $joined_location_grid_ids = dt_array_to_sql( $default_map_settings["children"] );
                 $focus_search_sql = "AND g.admin0_grid_id IN ( $joined_location_grid_ids ) ";
+            } elseif ( $default_map_settings["type"] === "state" && sizeof( $default_map_settings["children"] ) > 0 ){
+                $joined_location_grid_ids = dt_array_to_sql( $default_map_settings["children"] );
+                $focus_search_sql = "AND g.admin1_grid_id IN ( $joined_location_grid_ids ) ";
             }
         }
         // phpcs:disable

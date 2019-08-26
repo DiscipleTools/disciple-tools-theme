@@ -13,12 +13,21 @@ jQuery(document).ready(function($) {
     $(`div.top-bar-left ul.menu [href*=${ref.replace(wpApiShare.site_url, '').split('/')[0]}]`).parent().addClass('active');
 })
 
-function makeRequest (type, url, data) {
+
+/**
+ *
+ * @param type
+ * @param url
+ * @param data
+ * @param base, when using a custom D.T endpoint that does not start with dt/v1
+ * @returns {jQuery}
+ */
+function makeRequest (type, url, data, base = 'dt/v1/') {
     const options = {
         type: type,
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
-        url: url.startsWith('http') ? url : `${wpApiShare.root}dt/v1/${url}`,
+        url: url.startsWith('http') ? url : `${wpApiShare.root}${base}${url}`,
         beforeSend: xhr => {
             xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
         }
