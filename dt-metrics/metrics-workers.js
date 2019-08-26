@@ -1,12 +1,15 @@
 jQuery(document).ready(function() {
 
     if( ! window.location.hash || '#workers_activity' === window.location.hash  ) {
+      jQuery('#metrics-sidemenu').foundation('down', jQuery('#workers-menu'));
         workers_activity()
     }
     if( '#follow_up_pace' === window.location.hash) {
+      jQuery('#metrics-sidemenu').foundation('down', jQuery('#workers-menu'));
         window.show_follow_up_pace()
     }
     if( '#contact_follow_up_pace' === window.location.hash) {
+      jQuery('#metrics-sidemenu').foundation('down', jQuery('#workers-menu'));
         contact_follow_up_pace()
     }
 
@@ -15,7 +18,6 @@ jQuery(document).ready(function() {
 function workers_activity() {
     "use strict";
     let chartDiv = jQuery('#chart')
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#workers-menu'));
     let sourceData = dtMetricsUsers.data
     chartDiv.empty().html(`
         <span style="float:right;"><i class="fi-info primary-color"></i> </span>
@@ -144,7 +146,6 @@ function workers_activity() {
 
 function contact_follow_up_pace(){
     "use strict";
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#workers-menu'));
     let localizedObject = window.dtMetricsUsers
     let chartDiv = jQuery('#chart') // retrieves the chart div in the metrics page
 
@@ -254,7 +255,6 @@ function drawContactsProgressPerUser( data ) {
 
 window.show_follow_up_pace = function show_follow_up_pace(){
     "use strict";
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#workers-menu'));
     let localizedObject = window.dtMetricsUsers
     let chartDiv = jQuery('#chart') // retrieves the chart div in the metrics page
 

@@ -1,17 +1,20 @@
 jQuery(document).ready(function() {
-  if( ! window.location.hash || '#project_overview' === window.location.hash  ) {
-        project_overview()
+    if( ! window.location.hash || '#project_overview' === window.location.hash  ) {
+      jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+      project_overview()
     }
     if( '#group_tree' === window.location.hash  ) {
-        project_group_tree()
+      jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+      project_group_tree()
     }
     if( '#baptism_tree' === window.location.hash  ) {
-        project_baptism_tree()
+      jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+      project_baptism_tree()
     }
     if( '#coaching_tree' === window.location.hash  ) {
-        project_coaching_tree()
+      jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+      project_coaching_tree()
     }
-
 })
 
 function project_overview() {
