@@ -6,7 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  * @version 1.0 Initialize
  */
 
-
 if ( ! class_exists( 'DT_Mapbox_API' ) ) {
     class DT_Mapbox_API {
 

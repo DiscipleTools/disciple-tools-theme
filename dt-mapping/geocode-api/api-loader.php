@@ -12,12 +12,10 @@ class DT_Geocode_API_Loader {
 
     public function __construct() {
         // load through sym
-        $dir = scandir( getcwd() );
-        foreach ( $dir as $file ) {
-            if ( 'php' === substr( $file, -3, 3 ) ) {
-                require_once( $file );
-            }
-        }
+        require_once( 'google-api.php' );
+        require_once( 'ipstack-api.php' );
+        require_once( 'location-grid-geocoder.php' );
+        require_once( 'mapbox-api.php' );
     }
 }
 DT_Geocode_API_Loader::instance();
