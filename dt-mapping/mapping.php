@@ -62,6 +62,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             require_once( 'mapping-queries.php' );
             require_once( 'mapping-admin.php' ); // can't filter for is_admin because of REST dependencies
+            require_once( 'geocode-api/api-loader.php' ); // loads geocoding apis
 
 
             /**
