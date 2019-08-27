@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  * @version 1.0 Initialize
  */
 
-if ( ! function_exists( 'dt_mapbox_api') ) {
+if ( ! function_exists( 'dt_mapbox_api' ) ) {
     function dt_mapbox_api() {
         return new DT_Mapbox_API();
     }
@@ -40,7 +40,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
         public static function get_key() {
             return get_option( 'dt_mapbox_api_key' );
         }
-        public static function delete_key( ) {
+        public static function delete_key() {
             return delete_option( 'dt_mapbox_api_key' );
         }
         public static function update_key( $key ) {
@@ -51,10 +51,13 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
          * Geocoder Scripts for Echo
          */
         public static function geocoder_scripts() {
+            // Mapbox requires the goecoder placed in the body at the top of the map.
+            // @codingStandardsIgnoreStart
             ?>
             <script src="<?php echo esc_url_raw( self::$mb_geocoder_js ) ?>"></script>
             <link rel='stylesheet' href="<?php echo esc_url_raw( self::$mb_geocoder_css ) ?>" type='text/css' />
             <?php
+            // @codingStandardsIgnoreEnd
         }
 
         /**
@@ -75,7 +78,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
 
             /** @link https://codex.wordpress.org/Function_Reference/wp_remote_get */
             $response = wp_remote_get( esc_url_raw( $url ) );
-            $data_result = wp_remote_retrieve_body($response);
+            $data_result = wp_remote_retrieve_body( $response );
 
             if ( ! $data_result ) {
                 return false;
@@ -86,7 +89,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
         public static function reverse_lookup( $longitude, $latitude ) {
             $url         = self::$mapbox_endpoint  . $longitude . ',' . $latitude . '.json?access_token=' . self::get_key();
             $response = wp_remote_get( esc_url_raw( $url ) );
-            $data_result = wp_remote_retrieve_body($response);
+            $data_result = wp_remote_retrieve_body( $response );
 
             if ( ! $data_result ) {
                 return false;
@@ -130,7 +133,6 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             return '';
         }
 
-
         public static function load_mapbox_header_scripts() {
             // Mabox Mapping API
             wp_enqueue_script( 'mapbox-gl', self::$mapbox_gl_js, [ 'jquery' ], self::$mapbox_gl_version, false );
@@ -149,7 +151,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             $key = self::get_key();
             $url = self::$mapbox_endpoint . 'Denver.json?access_token=' . $key;
             $response = wp_remote_get( esc_url_raw( $url ) );
-            $data_result = wp_remote_retrieve_body($response);
+            $data_result = wp_remote_retrieve_body( $response );
 
             return ! empty( $data_result );
         }
@@ -403,7 +405,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                         let table_body = ''
                                         jQuery.each( data, function(i,v) {
                                             let string = '<tr><td class="add-column">'
-                                            string += '<button onclick="add_selection(' + v.grid_id +')">Add</button></td> '
+                                            string += '<button type="button" onclick="add_selection(' + v.grid_id +')">Add</button></td> '
                                             string += '<td><strong style="font-size:1.2em;">'+v.name+'</strong> <br>'
                                             if ( v.admin0_name !== v.name ) {
                                                 string += v.admin0_name

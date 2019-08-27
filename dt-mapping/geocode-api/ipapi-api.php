@@ -45,9 +45,9 @@ if ( ! class_exists( 'DT_Ipapi_API' ) ) {
 
             switch ( $type ) {
                 case 'lnglat':
-                    $data['latitude'] = self::parse_raw_result( $response, 'latitude');
-                    $data['longitude'] = self::parse_raw_result( $response, 'longitude');
-                    $data['lnglat'] = self::parse_raw_result( $response, 'lnglat');
+                    $data['latitude'] = self::parse_raw_result( $response, 'latitude' );
+                    $data['longitude'] = self::parse_raw_result( $response, 'longitude' );
+                    $data['lnglat'] = self::parse_raw_result( $response, 'lnglat' );
                     return $data;
                     break;
 
@@ -162,18 +162,18 @@ if ( ! class_exists( 'DT_Ipapi_API' ) ) {
             switch ( $item ) {
 
                 case 'city':
-                    return $raw_response['city'] ?? false ;
+                    return $raw_response['city'] ?? false;
                     break;
 
-                 case 'region':
+                case 'region':
                     return $raw_response['region'] ?? false;
                     break;
 
-                 case 'region_code':
+                case 'region_code':
                     return $raw_response['region_code'] ?? false;
                     break;
 
-                 case 'country':
+                case 'country':
                     return $raw_response['country'] ?? false;
                     break;
 
@@ -246,7 +246,7 @@ if ( ! class_exists( 'DT_Ipapi_API' ) ) {
                     if ( ! $longitude || ! $latitude ) {
                         return false;
                     }
-                    return  $latitude . ',' . $longitude;
+                    return $latitude . ',' . $longitude;
                     break;
 
                 case 'full': // useful for running a raw result though the array check at the beginning of the function
