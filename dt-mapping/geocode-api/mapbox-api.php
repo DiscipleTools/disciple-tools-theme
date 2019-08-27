@@ -4,6 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  * DT_Mapbox_API
  *
  * @version 1.0 Initialize
+ *          1.1 Major revisions and function additions
  */
 
 if ( ! function_exists( 'dt_mapbox_api' ) ) {
@@ -13,6 +14,9 @@ if ( ! function_exists( 'dt_mapbox_api' ) ) {
 }
 
 if ( ! class_exists( 'DT_Mapbox_API' ) ) {
+    /**
+     * Class DT_Mapbox_API
+     */
     class DT_Mapbox_API {
 
         /**
@@ -475,6 +479,235 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             <?php endif;
         }
 
+        public static function parse_raw_result( array $raw_response, $item, $first_result_only = false ) {
+
+            if ( ! isset( $raw_response['features'] ) || empty( $raw_response['features'] ) ) {
+                return false;
+            }
+
+            $data = [];
+
+            switch ( $item ) {
+                case 'features':
+                    return $raw_response['features'] ?? false;
+                    break;
+
+                /**
+                 * Standard elements
+                 */
+                case 'id':
+                    if ( $first_result_only ) {
+                        return $raw_response['features'][0]['id'] ?? false;
+                    }
+                    else {
+                        foreach( $raw_response['features'] as $feature ) {
+                            $data[] = $feature['id'];
+                        }
+                        return $data;
+                    }
+                    break;
+                case 'type':
+                    if ( $first_result_only ) {
+                        return $raw_response['features'][0]['type'] ?? false;
+                    }
+                    else {
+                        foreach( $raw_response['features'] as $feature ) {
+                            $data[] = $feature['type'];
+                        }
+                        return $data;
+                    }
+                    break;
+                case 'place_type':
+                    if ( $first_result_only ) {
+                        return $raw_response['features'][0]['place_type'] ?? false;
+                    }
+                    else {
+                        foreach( $raw_response['features'] as $feature ) {
+                            $data[] = $feature['place_type'];
+                        }
+                        return $data;
+                    }
+                    break;
+                case 'relevance':
+                    if ( $first_result_only ) {
+                        return $raw_response['features'][0]['relevance'] ?? false;
+                    }
+                    else {
+                        foreach( $raw_response['features'] as $feature ) {
+                            $data[] = $feature['relevance'];
+                        }
+                        return $data;
+                    }
+                    break;
+                case 'properties':
+                    if ( $first_result_only ) {
+                        return $raw_response['features'][0]['properties'] ?? false;
+                    }
+                    else {
+                        foreach( $raw_response['features'] as $feature ) {
+                            $data[] = $feature['properties'];
+                        }
+                        return $data;
+                    }
+                    break;
+                case 'text':
+                    if ( $first_result_only ) {
+                        return $raw_response['features'][0]['text'] ?? false;
+                    }
+                    else {
+                        foreach( $raw_response['features'] as $feature ) {
+                            $data[] = $feature['text'];
+                        }
+                        return $data;
+                    }
+                    break;
+                case 'place_name':
+                    if ( $first_result_only ) {
+                        return $raw_response['features'][0]['place_name'] ?? false;
+                    }
+                    else {
+                        foreach( $raw_response['features'] as $feature ) {
+                            $data[] = $feature['place_name'];
+                        }
+                        return $data;
+                    }
+                    break;
+                case 'center':
+                    if ( $first_result_only ) {
+                        return $raw_response['features'][0]['center'] ?? false;
+                    }
+                    else {
+                        foreach( $raw_response['features'] as $feature ) {
+                            $data[] = $feature['center'];
+                        }
+                        return $data;
+                    }
+                    break;
+                case 'geometry':
+                    if ( $first_result_only ) {
+                        return $raw_response['features'][0]['geometry'] ?? false;
+                    }
+                    else {
+                        foreach( $raw_response['features'] as $feature ) {
+                            $data[] = $feature['geometry'];
+                        }
+                        return $data;
+                    }
+                    break;
+                case 'context':
+                    if ( $first_result_only ) {
+                        return $raw_response['features'][0]['context'] ?? false;
+                    }
+                    else {
+                        foreach( $raw_response['features'] as $feature ) {
+                            $data[] = $feature['context'];
+                        }
+                        return $data;
+                    }
+                    break;
+                case 'attribution':
+                    return $raw_response['attribution'] ?? false;
+                    break;
+
+                /**
+                 * Parsed Elements
+                 */
+                case 'neighborhood':
+                    if ( $first_result_only ) {
+                        return $data[] = [ self::context_filter( $raw_response['features'][0]['context'], 'neighborhood' ) ] ;
+                    }
+                    else {
+                        foreach( $raw_response['features'] as $feature ) {
+                            $location = self::context_filter( $feature['context'], 'neighborhood' );
+                            if ( ! empty( $location ) ) {
+                                $data[$location['id']] = $location;
+                            }
+                        }
+                        sort($data);
+                        return $data;
+                    }
+                    break;
+                case 'postcode':
+                    if ( $first_result_only ) {
+                        return $data[] = [ self::context_filter( $raw_response['features'][0]['context'], 'postcode' ) ] ;
+                    }
+                    else {
+                        foreach( $raw_response['features'] as $feature ) {
+                            $location = self::context_filter( $feature['context'], 'postcode' );
+                            if ( ! empty( $location ) ) {
+                                $data[$location['id']] = $location;
+                            }
+                        }
+                        sort($data);
+                        return $data;
+                    }
+                    break;
+                case 'place':
+                    if ( $first_result_only ) {
+                        return $data[] = [ self::context_filter( $raw_response['features'][0]['context'], 'place' ) ];
+                    }
+                    else {
+                        foreach( $raw_response['features'] as $feature ) {
+                            $location = self::context_filter( $feature['context'], 'place' );
+                            if ( ! empty( $location ) ) {
+                                $data[$location['id']] = $location;
+                            }
+                        }
+                        sort($data);
+                        return $data;
+                    }
+                    break;
+                case 'region':
+                    if ( $first_result_only ) {
+                        return $data[] = [ self::context_filter( $raw_response['features'][0]['context'], 'region' ) ];
+                    }
+                    else {
+                        foreach( $raw_response['features'] as $feature ) {
+                            $location = self::context_filter( $feature['context'], 'region' );
+                            if ( ! empty( $location ) ) {
+                                $data[$location['id']] = $location;
+                            }
+                        }
+                        sort($data);
+                        return $data;
+                    }
+                    break;
+                case 'country':
+                    if ( $first_result_only ) {
+                        return $data[] = [ self::context_filter( $raw_response['features'][0]['context'], 'country' ) ];
+                    }
+                    else {
+                        foreach( $raw_response['features'] as $feature ) {
+                            $location = self::context_filter( $feature['context'], 'country' );
+                            if ( ! empty( $location ) ) {
+                                $data[$location['id']] = $location;
+                            }
+                        }
+                        sort($data);
+                        return $data;
+                    }
+                    break;
+
+                case 'full': // useful for running a raw result though the array check at the beginning of the function
+                    return $raw_response;
+                    break;
+
+                default:
+                    return false;
+                    break;
+            }
+
+        }
+
+        private static function context_filter( $context, $feature ) {
+            $data = [];
+            foreach ( $context as $item ) {
+                $split = explode( '.', $item['id'] );
+                $data[$split[0]] = $item;
+            }
+            return $data[$feature] ?? false;
+        }
+
         /**
          * @return string
          */
@@ -492,6 +725,402 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
 
             return $ip;
         }
+
     }
 }
 
+
+
+/**
+EXAMPLE RESPONSE
+
+(
+    [type] => FeatureCollection
+    [query] => Array
+        (
+            [0] => highlands
+            [1] => ranch
+            [2] => co
+        )
+
+    [features] => Array
+        (
+            [0] => Array
+                (
+                    [id] => address.1434026830431070
+                    [type] => Feature
+                    [place_type] => Array
+                        (
+                            [0] => address
+                        )
+
+                    [relevance] => 0.99
+                    [properties] => Array
+                        (
+                            [accuracy] => street
+                        )
+
+                    [text] => County Line Road
+                    [place_name] => County Line Road, Highlands Ranch, Colorado 80124, United States
+                    [center] => Array
+                        (
+                            [0] => -104.8745144
+                            [1] => 39.5659061
+                        )
+
+                    [geometry] => Array
+                        (
+                            [type] => Point
+                            [coordinates] => Array
+                                (
+                                    [0] => -104.8745144
+                                    [1] => 39.5659061
+                                )
+
+                        )
+
+                    [context] => Array
+                        (
+                            [0] => Array
+                                (
+                                    [id] => neighborhood.280159
+                                    [text] => Castlewood
+                                )
+
+                            [1] => Array
+                                (
+                                    [id] => postcode.9509949786967160
+                                    [text] => 80124
+                                )
+
+                            [2] => Array
+                                (
+                                    [id] => place.8851940959283391
+                                    [wikidata] =>
+                                    [text] => Highlands Ranch
+                                )
+
+                            [3] => Array
+                                (
+                                    [id] => region.10094095868017490
+                                    [short_code] => US-CO
+                                    [wikidata] => Q1261
+                                    [text] => Colorado
+                                )
+
+                            [4] => Array
+                                (
+                                    [id] => country.9053006287256050
+                                    [short_code] => us
+                                    [wikidata] => Q30
+                                    [text] => United States
+                                )
+
+                        )
+
+                )
+
+            [1] => Array
+                (
+                    [id] => address.2460830930065704
+                    [type] => Feature
+                    [place_type] => Array
+                        (
+                            [0] => address
+                        )
+
+                    [relevance] => 0.99
+                    [properties] => Array
+                        (
+                            [accuracy] => street
+                        )
+
+                    [text] => Cottoncreek Dr
+                    [place_name] => Cottoncreek Dr, Highlands Ranch, Colorado 80130, United States
+                    [center] => Array
+                        (
+                            [0] => -104.9070019
+                            [1] => 39.5334287
+                        )
+
+                    [geometry] => Array
+                        (
+                            [type] => Point
+                            [coordinates] => Array
+                                (
+                                    [0] => -104.9070019
+                                    [1] => 39.5334287
+                                )
+
+                        )
+
+                    [context] => Array
+                        (
+                            [0] => Array
+                                (
+                                    [id] => neighborhood.32817
+                                    [text] => Carriage Club
+                                )
+
+                            [1] => Array
+                                (
+                                    [id] => postcode.16510139692750790
+                                    [text] => 80130
+                                )
+
+                            [2] => Array
+                                (
+                                    [id] => place.8851940959283391
+                                    [wikidata] =>
+                                    [text] => Highlands Ranch
+                                )
+
+                            [3] => Array
+                                (
+                                    [id] => region.10094095868017490
+                                    [short_code] => US-CO
+                                    [wikidata] => Q1261
+                                    [text] => Colorado
+                                )
+
+                            [4] => Array
+                                (
+                                    [id] => country.9053006287256050
+                                    [short_code] => us
+                                    [wikidata] => Q30
+                                    [text] => United States
+                                )
+
+                        )
+
+                )
+
+            [2] => Array
+                (
+                    [id] => address.942586569251724
+                    [type] => Feature
+                    [place_type] => Array
+                        (
+                            [0] => address
+                        )
+
+                    [relevance] => 0.99
+                    [properties] => Array
+                        (
+                            [accuracy] => street
+                        )
+
+                    [text] => Colorado Highway 470
+                    [place_name] => Colorado Highway 470, Highlands Ranch, Colorado 80129, United States
+                    [center] => Array
+                        (
+                            [0] => -105.0263374
+                            [1] => 39.5640733
+                        )
+
+                    [geometry] => Array
+                        (
+                            [type] => Point
+                            [coordinates] => Array
+                                (
+                                    [0] => -105.0263374
+                                    [1] => 39.5640733
+                                )
+
+                        )
+
+                    [context] => Array
+                        (
+                            [0] => Array
+                                (
+                                    [id] => neighborhood.279927
+                                    [text] => Wolhurst
+                                )
+
+                            [1] => Array
+                                (
+                                    [id] => postcode.18484341735575200
+                                    [text] => 80129
+                                )
+
+                            [2] => Array
+                                (
+                                    [id] => place.8851940959283391
+                                    [wikidata] =>
+                                    [text] => Highlands Ranch
+                                )
+
+                            [3] => Array
+                                (
+                                    [id] => region.10094095868017490
+                                    [short_code] => US-CO
+                                    [wikidata] => Q1261
+                                    [text] => Colorado
+                                )
+
+                            [4] => Array
+                                (
+                                    [id] => country.9053006287256050
+                                    [short_code] => us
+                                    [wikidata] => Q30
+                                    [text] => United States
+                                )
+
+                        )
+
+                )
+
+            [3] => Array
+                (
+                    [id] => address.93500362632578
+                    [type] => Feature
+                    [place_type] => Array
+                        (
+                            [0] => address
+                        )
+
+                    [relevance] => 0.5
+                    [properties] => Array
+                        (
+                            [accuracy] => street
+                        )
+
+                    [text] => South University Boulevard
+                    [place_name] => South University Boulevard, Littleton, Colorado 80210, United States
+                    [matching_text] => Colorado Highway 177
+                    [matching_place_name] => Colorado Highway 177, Littleton, Colorado 80210, United States
+                    [center] => Array
+                        (
+                            [0] => -104.9553051
+                            [1] => 39.6217977
+                        )
+
+                    [geometry] => Array
+                        (
+                            [type] => Point
+                            [coordinates] => Array
+                                (
+                                    [0] => -104.9553051
+                                    [1] => 39.6217977
+                                )
+
+                        )
+
+                    [context] => Array
+                        (
+                            [0] => Array
+                                (
+                                    [id] => postcode.93500362632578
+                                    [text] => 80210
+                                )
+
+                            [1] => Array
+                                (
+                                    [id] => place.18080090047604780
+                                    [wikidata] => Q953583
+                                    [text] => Littleton
+                                )
+
+                            [2] => Array
+                                (
+                                    [id] => region.10094095868017490
+                                    [short_code] => US-CO
+                                    [wikidata] => Q1261
+                                    [text] => Colorado
+                                )
+
+                            [3] => Array
+                                (
+                                    [id] => country.9053006287256050
+                                    [short_code] => us
+                                    [wikidata] => Q30
+                                    [text] => United States
+                                )
+
+                        )
+
+                )
+
+            [4] => Array
+                (
+                    [id] => address.5465220035127262
+                    [type] => Feature
+                    [place_type] => Array
+                        (
+                            [0] => address
+                        )
+
+                    [relevance] => 0.5
+                    [properties] => Array
+                        (
+                            [accuracy] => street
+                        )
+
+                    [text] => C-470
+                    [place_name] => C-470, Littleton, Colorado 80128, United States
+                    [matching_text] => Colorado Highway 470
+                    [matching_place_name] => Colorado Highway 470, Littleton, Colorado 80128, United States
+                    [center] => Array
+                        (
+                            [0] => -105.0412336
+                            [1] => 39.5664011
+                        )
+
+                    [geometry] => Array
+                        (
+                            [type] => Point
+                            [coordinates] => Array
+                                (
+                                    [0] => -105.0412336
+                                    [1] => 39.5664011
+                                )
+
+                        )
+
+                    [context] => Array
+                        (
+                            [0] => Array
+                                (
+                                    [id] => neighborhood.279927
+                                    [text] => Wolhurst
+                                )
+
+                            [1] => Array
+                                (
+                                    [id] => postcode.5460871545452160
+                                    [text] => 80128
+                                )
+
+                            [2] => Array
+                                (
+                                    [id] => place.18080090047604780
+                                    [wikidata] => Q953583
+                                    [text] => Littleton
+                                )
+
+                            [3] => Array
+                                (
+                                    [id] => region.10094095868017490
+                                    [short_code] => US-CO
+                                    [wikidata] => Q1261
+                                    [text] => Colorado
+                                )
+
+                            [4] => Array
+                                (
+                                    [id] => country.9053006287256050
+                                    [short_code] => us
+                                    [wikidata] => Q30
+                                    [text] => United States
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [attribution] => NOTICE: © 2019 Mapbox and its suppliers. All rights reserved. Use of this data is subject to the Mapbox Terms of Service (https://www.mapbox.com/about/maps/). This response and the information it contains may not be retained. POI(s) provided by Foursquare.
+)
+
+*/
