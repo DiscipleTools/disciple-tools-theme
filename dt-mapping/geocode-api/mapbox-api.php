@@ -15,38 +15,83 @@ if ( ! function_exists( 'dt_mapbox_api') ) {
 if ( ! class_exists( 'DT_Mapbox_API' ) ) {
     class DT_Mapbox_API {
 
+        /**
+         * Mapbox Endpoint
+         */
+        public static $mapbox_endpoint = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
+
+        /**
+         * Mapbox GL for loading in the header
+         */
+        public static $mapbox_gl_js = 'https://api.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.js';
+        public static $mapbox_gl_css = 'https://api.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.css';
+        public static $mapbox_gl_version = '1.1.0';
+
+        /**
+         * Mapbox Geocoder loaded in the body
+         */
+        public static $mb_geocoder_js = 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.0/mapbox-gl-geocoder.min.js';
+        public static $mb_geocoder_css = 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.0/mapbox-gl-geocoder.css';
+        public static $mb_geocoder_version = '4.4.0';
+
+        /**
+         * Mapbox Key options storage
+         */
         public static function get_key() {
             return get_option( 'dt_mapbox_api_key' );
         }
+        public static function delete_key( ) {
+            return delete_option( 'dt_mapbox_api_key' );
+        }
+        public static function update_key( $key ) {
+            return update_option( 'dt_mapbox_api_key', $key, true );
+        }
 
+        /**
+         * Geocoder Scripts for Echo
+         */
+        public static function geocoder_scripts() {
+            ?>
+            <script src="<?php echo esc_url_raw( self::$mb_geocoder_js ) ?>"></script>
+            <link rel='stylesheet' href="<?php echo esc_url_raw( self::$mb_geocoder_css ) ?>" type='text/css' />
+            <?php
+        }
+
+        /**
+         * Forward Address Lookup
+         * @param $address
+         * @param null $country_code
+         * @return array|bool|mixed|object
+         */
         public static function forward_lookup( $address, $country_code = null ) {
             $address = str_replace( ';', ' ', $address );
             $address = utf8_uri_encode( $address );
 
             if ( $country_code ) {
-                $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . $address . '.json?types=address&access_token=' . get_option( 'dt_mapbox_api_key' );
+                $url = self::$mapbox_endpoint . $address . '.json?types=address&access_token=' . self::get_key();
             } else {
-                $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . $address . '.json?country=' . $country_code . '&types=address&access_token=' . get_option( 'dt_mapbox_api_key' );
+                $url = self::$mapbox_endpoint  . $address . '.json?country=' . $country_code . '&types=address&access_token=' . self::get_key();
             }
 
-            $data_result = @file_get_contents( $url );
+            /** @link https://codex.wordpress.org/Function_Reference/wp_remote_get */
+            $response = wp_remote_get( esc_url_raw( $url ) );
+            $data_result = wp_remote_retrieve_body($response);
+
             if ( ! $data_result ) {
                 return false;
             }
-            $data = json_decode( $data_result, true );
-
-            return $data;
+            return json_decode( $data_result, true );
         }
 
         public static function reverse_lookup( $longitude, $latitude ) {
-            $url         = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . $longitude . ',' . $latitude . '.json?access_token=' . get_option( 'dt_mapbox_api_key' );
-            $data_result = @file_get_contents( $url );
+            $url         = self::$mapbox_endpoint  . $longitude . ',' . $latitude . '.json?access_token=' . self::get_key();
+            $response = wp_remote_get( esc_url_raw( $url ) );
+            $data_result = wp_remote_retrieve_body($response);
+
             if ( ! $data_result ) {
                 return false;
             }
-            $data = json_decode( $data_result, true );
-
-            return $data;
+            return json_decode( $data_result, true );
         }
 
         /**
@@ -59,8 +104,8 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
          */
         public static function get_country_by_coordinates( $longitude, $latitude ) {
             $country_code = false;
-            if ( get_option( 'dt_mapbox_api_key' ) ) {
-                $url         = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . $longitude . ',' . $latitude . '.json?types=country&access_token=' . get_option( 'dt_mapbox_api_key' );
+            if ( self::get_key() ) {
+                $url         = self::$mapbox_endpoint  . $longitude . ',' . $latitude . '.json?types=country&access_token=' . self::get_key();
                 $data_result = @file_get_contents( $url );
                 if ( ! $data_result ) {
                     return false;
@@ -75,15 +120,21 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             return $country_code;
         }
 
-        public static function root_url() {
-            $url = esc_url( trailingslashit( get_template_directory_uri() ) ) . 'dt-mapping/';
-            return apply_filters( 'dt_mapbox_api_root_url', $url );
+        /**
+         * Build Components
+         */
+        public static function location_list_url() {
+            if ( file_exists( get_template_directory() . '/dt-mapping/location-grid-list-api.php' ) ) {
+                return get_template_directory_uri() . '/dt-mapping/location-grid-list-api.php';
+            }
+            return '';
         }
+
 
         public static function load_mapbox_header_scripts() {
             // Mabox Mapping API
-            wp_enqueue_script( 'mapbox-gl', 'https://api.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.js', [ 'jquery' ], '1.1.0', false );
-            wp_enqueue_style( 'mapbox-gl-css', 'https://api.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.css', [], '1.1.0' );
+            wp_enqueue_script( 'mapbox-gl', self::$mapbox_gl_js, [ 'jquery' ], self::$mapbox_gl_version, false );
+            wp_enqueue_style( 'mapbox-gl-css', self::$mapbox_gl_css, [], self::$mapbox_gl_version );
         }
 
         public static function load_header() {
@@ -94,6 +145,18 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             add_action( "admin_enqueue_scripts", [ 'DT_Mapbox_API', 'load_mapbox_header_scripts' ] );
         }
 
+        public static function is_active_mapbox_key() : bool {
+            $key = self::get_key();
+            $url = self::$mapbox_endpoint . 'Denver.json?access_token=' . $key;
+            $response = wp_remote_get( esc_url_raw( $url ) );
+            $data_result = wp_remote_retrieve_body($response);
+
+            return ! empty( $data_result );
+        }
+
+        /**
+         * Administrative Page Metabox
+         */
         public static function metabox_for_admin() {
 
             if ( isset( $_POST['mapbox_key'] )
@@ -102,19 +165,15 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
 
                 $key = sanitize_text_field( wp_unslash( $_POST['mapbox_key'] ) );
                 if ( empty( $key ) ) {
-                    delete_option( 'dt_mapbox_api_key' );
+                    self::delete_key();
                 } else {
-                    update_option( 'dt_mapbox_api_key', $key, true );
+                    self::update_key( $key );
                 }
             }
-            $key = get_option( 'dt_mapbox_api_key' );
+            $key = self::get_key();
             $hidden_key = '**************' . substr( $key, -5, 5 );
 
-            set_error_handler( [ "DT_Mapbox_API", "warning_handler" ], E_WARNING );
-            $list = file_get_contents( 'https://api.mapbox.com/geocoding/v5/mapbox.places/Denver.json?access_token=' . $key );
-            restore_error_handler();
-
-            if ( $list ) {
+            if ( self::is_active_mapbox_key() ) {
                 $status_class = 'connected';
                 $message = 'Successfully connected to selected source.';
             } else {
@@ -146,7 +205,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             </form>
             <br>
 
-            <?php if ( empty( get_option( 'dt_mapbox_api_key' ) ) ) : ?>
+            <?php if ( empty( self::get_key() ) ) : ?>
                 <table class="widefat striped">
                     <thead>
                     <tr><th>MapBox.com Instructions</th></tr>
@@ -179,7 +238,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 <br>
             <?php endif; ?>
 
-            <?php if ( ! empty( get_option( 'dt_mapbox_api_key' ) ) ) : ?>
+            <?php if ( ! empty( self::get_key() ) ) : ?>
                 <table class="widefat striped">
                     <thead>
                     <tr><th>Geocoding Test</th></tr>
@@ -189,10 +248,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     <tr>
                         <td>
                             <!-- Geocoder Input Section -->
-                            <?php // @codingStandardsIgnoreStart ?>
-                            <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.0/mapbox-gl-geocoder.min.js'></script>
-                            <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.0/mapbox-gl-geocoder.css' type='text/css' />
-                            <?php // @codingStandardsIgnoreEnd ?>
+                            <?php self::geocoder_scripts() ?>
                             <style>
                                 .mapboxgl-ctrl-geocoder {
                                     min-width:100%;
@@ -234,7 +290,8 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
 
                             <!-- Mapbox script -->
                             <script>
-                                mapboxgl.accessToken = '<?php echo esc_html( get_option( 'dt_mapbox_api_key' ) ) ?>';
+                                window.spinner = '<img class="load-spinner" src="<?php echo esc_url( get_template_directory_uri() ) . '/spinner.svg' ?>" width="20px" />'
+                                mapboxgl.accessToken = '<?php echo esc_html( self::get_key() ) ?>';
                                 var map = new mapboxgl.Map({
                                     container: 'map',
                                     style: 'mapbox://styles/mapbox/streets-v11',
@@ -262,6 +319,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
 
                                 map.on('click', function (e) {
                                     console.log(e)
+                                    jQuery('#list').empty().append(window.spinner);
 
                                     let lng = e.lngLat.lng
                                     let lat = e.lngLat.lat
@@ -277,7 +335,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                     console.log(active_marker)
 
                                     // add polygon
-                                    jQuery.get('<?php echo esc_url( self::root_url() ) ?>location-grid-list-api.php',
+                                    jQuery.get('<?php echo esc_url( self::location_list_url() ) ?>',
                                         {
                                             type: 'possible_matches',
                                             longitude: lng,
@@ -307,12 +365,13 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                 map.addControl(userGeocode);
                                 userGeocode.on('geolocate', function(e) { // respond to search
                                     console.log(e)
+                                    jQuery('#list').empty().append(window.spinner);
                                     let lat = e.coords.latitude
                                     let lng = e.coords.longitude
                                     window.active_lnglat = [lng,lat]
 
                                     // add polygon
-                                    jQuery.get('<?php echo esc_url( self::root_url() ) ?>location-grid-list-api.php',
+                                    jQuery.get('<?php echo esc_url( self::location_list_url() ) ?>',
                                         {
                                             type: 'possible_matches',
                                             longitude: lng,
@@ -322,7 +381,6 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                         console.log(data)
 
                                         if ( data !== undefined ) {
-
                                             print_click_results(data)
                                         }
                                     })
@@ -368,7 +426,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                             string += '</td></tr>'
                                             table_body += string
                                         })
-                                        print.append('<table>' + table_body + '</table>')
+                                        print.append('<table>' + table_body + '</table><div><h2>Success!</h2></div>')
                                     }
                                 }
 
@@ -407,20 +465,12 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                     window.selected_locations[grid_id].remove()
                                     jQuery('#' + grid_id ).remove()
                                 }
-
-
                             </script>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-            <?php endif; ?>
-
-            <?php
-        }
-
-        public static function warning_handler( $errno, $errstr ) {
-            dt_write_log( __METHOD__ . ": ". $errstr);
+            <?php endif;
         }
 
         /**
