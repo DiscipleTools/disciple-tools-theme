@@ -65,7 +65,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                 // load mapbox resources
                 if ( ! class_exists( 'DT_Mapbox_API' ) ) {
-                    require_once( 'mapbox-api.php' );
+                    require_once( 'geocode-api/mapbox-api.php' );
                 }
                 DT_Mapbox_API::load_admin_header();
                 // end mapbox
@@ -1543,7 +1543,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
         public function box_geocoding_source() {
             if ( ! class_exists( 'DT_Mapbox_API' ) ) {
-                require_once( 'mapbox-api.php' );
+                require_once( 'geocode-api/mapbox-api.php' );
             }
             DT_Mapbox_API::metabox_for_admin();
         }

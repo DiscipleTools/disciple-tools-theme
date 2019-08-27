@@ -6,12 +6,47 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  * @version 1.0 Initialize
  */
 
+if ( ! function_exists( 'dt_mapbox_api') ) {
+    function dt_mapbox_api() {
+        return new DT_Mapbox_API();
+    }
+}
+
 if ( ! class_exists( 'DT_Mapbox_API' ) ) {
     class DT_Mapbox_API {
 
-        public static function root_url() {
-            $url = esc_url( trailingslashit( get_template_directory_uri() ) ) . 'dt-mapping/';
-            return apply_filters( 'dt_mapbox_api_root_url', $url );
+        public static function get_key() {
+            return get_option( 'dt_mapbox_api_key' );
+        }
+
+        public static function forward_lookup( $address, $country_code = null ) {
+            $address = str_replace( ';', ' ', $address );
+            $address = utf8_uri_encode( $address );
+
+            if ( $country_code ) {
+                $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . $address . '.json?types=address&access_token=' . get_option( 'dt_mapbox_api_key' );
+            } else {
+                $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . $address . '.json?country=' . $country_code . '&types=address&access_token=' . get_option( 'dt_mapbox_api_key' );
+            }
+
+            $data_result = @file_get_contents( $url );
+            if ( ! $data_result ) {
+                return false;
+            }
+            $data = json_decode( $data_result, true );
+
+            return $data;
+        }
+
+        public static function reverse_lookup( $longitude, $latitude ) {
+            $url         = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . $longitude . ',' . $latitude . '.json?access_token=' . get_option( 'dt_mapbox_api_key' );
+            $data_result = @file_get_contents( $url );
+            if ( ! $data_result ) {
+                return false;
+            }
+            $data = json_decode( $data_result, true );
+
+            return $data;
         }
 
         /**
@@ -22,10 +57,10 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
          *
          * @return string|bool
          */
-        public static function mapbox_get_country_by_coordinates( $longitude, $latitude ) {
+        public static function get_country_by_coordinates( $longitude, $latitude ) {
             $country_code = false;
             if ( get_option( 'dt_mapbox_api_key' ) ) {
-                $url         = 'https://api.mapbox.com/geocode-api/v5/mapbox.places/' . $longitude . ',' . $latitude . '.json?types=country&access_token=' . get_option( 'dt_mapbox_api_key' );
+                $url         = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . $longitude . ',' . $latitude . '.json?types=country&access_token=' . get_option( 'dt_mapbox_api_key' );
                 $data_result = @file_get_contents( $url );
                 if ( ! $data_result ) {
                     return false;
@@ -40,34 +75,9 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             return $country_code;
         }
 
-        public static function mapbox_forward_lookup( $address, $country_code = null ) {
-            $address = str_replace( ';', ' ', $address );
-            $address = utf8_uri_encode( $address );
-
-            if ( $country_code ) {
-                $url = 'https://api.mapbox.com/geocode-api/v5/mapbox.places/' . $address . '.json?types=address&access_token=' . get_option( 'dt_mapbox_api_key' );
-            } else {
-                $url = 'https://api.mapbox.com/geocode-api/v5/mapbox.places/' . $address . '.json?country=' . $country_code . '&types=address&access_token=' . get_option( 'dt_mapbox_api_key' );
-            }
-
-            $data_result = @file_get_contents( $url );
-            if ( ! $data_result ) {
-                return false;
-            }
-            $data = json_decode( $data_result, true );
-
-            return $data;
-        }
-
-        public static function mapbox_reverse_lookup( $longitude, $latitude ) {
-            $url         = 'https://api.mapbox.com/geocode-api/v5/mapbox.places/' . $longitude . ',' . $latitude . '.json?access_token=' . get_option( 'dt_mapbox_api_key' );
-            $data_result = @file_get_contents( $url );
-            if ( ! $data_result ) {
-                return false;
-            }
-            $data = json_decode( $data_result, true );
-
-            return $data;
+        public static function root_url() {
+            $url = esc_url( trailingslashit( get_template_directory_uri() ) ) . 'dt-mapping/';
+            return apply_filters( 'dt_mapbox_api_root_url', $url );
         }
 
         public static function load_mapbox_header_scripts() {
@@ -101,7 +111,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             $hidden_key = '**************' . substr( $key, -5, 5 );
 
             set_error_handler( [ "DT_Mapbox_API", "warning_handler" ], E_WARNING );
-            $list = file_get_contents( 'https://api.mapbox.com/geocode-api/v5/mapbox.places/Denver.json?access_token=' . $key );
+            $list = file_get_contents( 'https://api.mapbox.com/geocoding/v5/mapbox.places/Denver.json?access_token=' . $key );
             restore_error_handler();
 
             if ( $list ) {
@@ -410,12 +420,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
         }
 
         public static function warning_handler( $errno, $errstr ) {
-            ?>
-            <div class="notice notice-error notice-dt-mapping-source" data-notice="dt-demo">
-                <p><?php echo "MIRROR SOURCE NOT AVAILABLE" ?></p>
-                <p><?php echo "Error Message: " . esc_attr( $errstr ) ?></p>
-            </div>
-            <?php
+            dt_write_log( __METHOD__ . ": ". $errstr);
         }
 
         /**
