@@ -1,9 +1,10 @@
 let translations = window.mappingModule.mapping_module.translations
 
 jQuery(document).ready(function() {
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#mapping-menu'));
+
     let mapUrl = ''
     if('#mapping_view' === window.location.hash) {
+        jQuery('#metrics-sidemenu').foundation('down', jQuery('#mapping-menu'));
         if ( window.am4geodata_worldLow === undefined ) {
           mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'collection/world.geojson'
           jQuery.getJSON( mapUrl, function( data ) {
@@ -18,6 +19,7 @@ jQuery(document).ready(function() {
         }
     }
     if('#mapping_list' === window.location.hash) {
+        jQuery('#metrics-sidemenu').foundation('down', jQuery('#mapping-menu'));
         if ( window.am4geodata_worldLow === undefined ) {
           mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'collection/world.geojson'
           jQuery.getJSON( mapUrl, function( data ) {

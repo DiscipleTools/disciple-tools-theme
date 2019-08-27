@@ -6,9 +6,6 @@ jQuery(document).ready(function() {
   if( '#project_critical_path' === window.location.hash  ) {
     project_critical_path()
   }
-
-  jQuery('#metrics-sidemenu').foundation('down', jQuery('#path-menu'));
-
 })
 
 

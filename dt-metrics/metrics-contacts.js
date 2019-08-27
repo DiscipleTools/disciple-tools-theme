@@ -1,18 +1,17 @@
 jQuery(document).ready(function() {
   if( '#project_seeker_path' === window.location.hash  ) {
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#contacts-menu'));
     project_seeker_path()
   }
   if( '#project_milestones' === window.location.hash  ) {
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#contacts-menu'));
     project_milestones()
   }
   if( '#contact_sources' === window.location.hash  ) {
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#contacts-menu'));
     show_sources_overview()
   }
-  jQuery('#metrics-sidemenu').foundation('down', jQuery('#contacts-menu'));
-
-
 })
-
 
 
 function numberWithCommas(x) {
