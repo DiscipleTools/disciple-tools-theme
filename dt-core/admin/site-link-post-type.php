@@ -23,6 +23,7 @@ if ( !defined( 'ABSPATH' ) ) {
  *          0.1.16 Added https filter, capability filter for token verification
  *          0.1.17 Added type column to admin list
  *          0.1.18 Added listing function by site type
+ *          0.1.19 Added unique identifiers to the metaboxes to remove conflicts.
  */
 if ( ! class_exists( 'Site_Link_System' ) ) {
 
@@ -513,8 +514,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         }
 
         public function meta_box_setup() {
-            add_meta_box( $this->post_type . '_details', __( 'Manage Site Link' ), [ $this, 'meta_box_load_management_box' ], $this->post_type, 'normal', 'high' );
-            add_meta_box( $this->post_type . '_instructions', __( 'Configuration' ), [ $this, 'meta_box_configuration_box' ], $this->post_type, 'normal', 'high' );
+            add_meta_box( $this->post_type . '_details' . hash( 'sha256' , self::get_current_site_base_url() ), __( 'Manage Site Link' ), [ $this, 'meta_box_load_management_box' ], $this->post_type, 'normal', 'high' );
+            add_meta_box( $this->post_type . '_instructions'  . hash( 'sha256' , self::get_current_site_base_url() ), __( 'Configuration' ), [ $this, 'meta_box_configuration_box' ], $this->post_type, 'normal', 'high' );
         }
 
         public function meta_box_content( $section = 'info' ) {
