@@ -7,12 +7,6 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  *          1.1 Major revisions and function additions
  */
 
-if ( ! function_exists( 'dt_mapbox_api' ) ) {
-    function dt_mapbox_api() {
-        return new DT_Mapbox_API();
-    }
-}
-
 if ( ! class_exists( 'DT_Mapbox_API' ) ) {
     /**
      * Class DT_Mapbox_API
@@ -79,6 +73,69 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             } else {
                 $url = self::$mapbox_endpoint  . $address . '.json?country=' . $country_code . '&types=address&access_token=' . self::get_key();
             }
+
+            /** @link https://codex.wordpress.org/Function_Reference/wp_remote_get */
+            $response = wp_remote_get( esc_url_raw( $url ) );
+            $data_result = wp_remote_retrieve_body( $response );
+
+            if ( ! $data_result ) {
+                return false;
+            }
+            return json_decode( $data_result, true );
+        }
+
+
+        public static function lookup(  $search_string, $type = null, $country_code = null  ) {
+            $search_string = str_replace( ';', ' ', $search_string );
+            $search_string = utf8_uri_encode( $search_string );
+
+            // country, region, place, district, postcode, locality, neighborhood, address, poi, poi.landmark
+            switch ( $type ) {
+                case 'country':
+                    if ( $country_code ) {
+                        $url = self::$mapbox_endpoint  . $search_string . '.json?country=' . $country_code . '&types=country&access_token=' . self::get_key();
+                    } else {
+                        $url = self::$mapbox_endpoint . $search_string . '.json?types=country&access_token=' . self::get_key();
+                    }
+                    break;
+                case 'region':
+                    if ( $country_code ) {
+                        $url = self::$mapbox_endpoint  . $search_string . '.json?country=' . $country_code . '&types=country,region&access_token=' . self::get_key();
+                    } else {
+                        $url = self::$mapbox_endpoint . $search_string . '.json?types=country,region&access_token=' . self::get_key();
+                    }
+                    break;
+                case 'address':
+                    if ( $country_code ) {
+                        $url = self::$mapbox_endpoint  . $search_string . '.json?country=' . $country_code . '&types=address&access_token=' . self::get_key();
+                    } else {
+                        $url = self::$mapbox_endpoint . $search_string . '.json?types=address&access_token=' . self::get_key();
+                    }
+                    break;
+                case 'poi':
+                    if ( $country_code ) {
+                        $url = self::$mapbox_endpoint  . $search_string . '.json?country=' . $country_code . '&types=poi&access_token=' . self::get_key();
+                    } else {
+                        $url = self::$mapbox_endpoint . $search_string . '.json?types=poi&access_token=' . self::get_key();
+                    }
+                    break;
+
+                case 'place':
+                    if ( $country_code ) {
+                        $url = self::$mapbox_endpoint  . $search_string . '.json?country=' . $country_code . '&types=place&access_token=' . self::get_key();
+                    } else {
+                        $url = self::$mapbox_endpoint . $search_string . '.json?types=poi&access_token=' . self::get_key();
+                    }
+                    break;
+                default:
+                    if ( $country_code ) {
+                        $url = self::$mapbox_endpoint  . $search_string . '.json?country=' . $country_code . '&access_token=' . self::get_key();
+                    } else {
+                        $url = self::$mapbox_endpoint . $search_string . '.json?access_token=' . self::get_key();
+                    }
+                    break;
+            }
+
 
             /** @link https://codex.wordpress.org/Function_Reference/wp_remote_get */
             $response = wp_remote_get( esc_url_raw( $url ) );

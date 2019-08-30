@@ -23,13 +23,13 @@ if ( ! class_exists( 'DT_Ipapi_API' ) ) {
          * @param $ip_address
          * @param $type
          *
-         * @return bool|array False on fail, or result array on success
+         * @return array False on fail, or result array on success
          */
         public static function geocode_ip_address( $ip_address, $type = null ) {
             $data = [];
 
             if ( ! self::check_valid_ip_address( $ip_address ) ) {
-                return false;
+                return ['error' => 'Invalid IP Address'];
             }
 
             if ( is_null( $ip_address ) || empty( $ip_address ) ) {
@@ -40,7 +40,7 @@ if ( ! class_exists( 'DT_Ipapi_API' ) ) {
 
             $response = json_decode( self::url_get_contents( self::$base_url . $ip_address . '/json' ), true );
             if ( $response['error'] ?? false ) {
-                return false;
+                return $response;
             }
 
             switch ( $type ) {
