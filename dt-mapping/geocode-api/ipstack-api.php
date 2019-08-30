@@ -208,7 +208,7 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
 
         public static function parse_raw_result( array $raw_response, $item ) {
 
-            if ( empty( $raw_response ) || $raw_response['error'] ?? false ) {
+            if ( empty( $raw_response ) || isset( $raw_response['error'] ) ) {
                 return false;
             }
 

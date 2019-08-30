@@ -184,6 +184,10 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             return $country_code;
         }
 
+        public static function static_map( $longitude, $latitude, $zoom = 5, $width = 600, $height = 250, $type = 'streets-v11' ) {
+            return 'https://api.mapbox.com/styles/v1/mapbox/'.$type.'/static/'. $longitude.',' . $latitude .','. $zoom .',0,0/'.$width.'x'.$height.'?access_token=' . self::get_key();
+        }
+        
         /**
          * Build Components
          */
@@ -743,6 +747,28 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         sort($data);
                         return $data;
                     }
+                    break;
+
+                case 'lng':
+                case 'longitude': // returns single value
+                    return (float) $raw_response['features'][0]['center'][0] ?? false;
+                    break;
+
+                case 'lat';
+                case 'latitude': // returns single value
+                    return (float) $raw_response['features'][0]['center'][1] ?? false;
+                    break;
+
+                case 'coordinates':
+                case 'lnglat':
+                    foreach( $raw_response['features'] as $feature ) {
+                        $location = $feature['center'][1] ?? false;
+                        if ( ! empty( $location ) ) {
+                            $data[$location['id']] = $location;
+                        }
+                    }
+                    sort($data);
+                    return $data;
                     break;
 
                 case 'full': // useful for running a raw result though the array check at the beginning of the function
