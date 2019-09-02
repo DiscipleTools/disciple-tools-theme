@@ -106,7 +106,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 if ( isset( $nest[1]) ) {
                     $this->module_url  = get_theme_file_uri() . $nest[1];
                 } else {
-                    $this->module_url  = get_theme_file_uri();
+                    $this->module_url  = trailingslashit( get_theme_file_uri() ) . 'dt-mapping/';
                 }
             } else if ( strpos( $dir, 'wp-content/plugins' ) ) {
                 $this->module_path = plugin_dir_path( __FILE__ );
