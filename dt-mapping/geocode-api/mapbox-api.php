@@ -184,10 +184,10 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             return $country_code;
         }
 
-        public static function static_map( $longitude, $latitude, $zoom = 5, $width = 600, $height = 250, $type = 'streets-v11' ) {
+        public static function static_map( $longitude, $latitude, $zoom = 7, $width = 600, $height = 250, $type = 'streets-v11' ) {
             return 'https://api.mapbox.com/styles/v1/mapbox/'.$type.'/static/'. $longitude.',' . $latitude .','. $zoom .',0,0/'.$width.'x'.$height.'?access_token=' . self::get_key();
         }
-        
+
         /**
          * Build Components
          */
@@ -225,6 +225,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
          * Administrative Page Metabox
          */
         public static function metabox_for_admin() {
+
 
             if ( isset( $_POST['mapbox_key'] )
                  && ( isset( $_POST['geocoding_key_nonce'] )

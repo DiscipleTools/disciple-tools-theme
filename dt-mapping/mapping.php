@@ -27,11 +27,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $dir = __DIR__;
             if ( strpos( $dir, 'wp-content/themes' ) ) {
                 $nest = explode( get_stylesheet(), plugin_dir_path( __FILE__ ) );
-                return get_theme_file_uri() . $nest[1] . 'spinner.svg';
+                return get_theme_file_uri() .  '/spinner.svg';
             } else if ( strpos( $dir, 'wp-content/plugins' ) ) {
-                return plugin_dir_url( __FILE__ ) . 'spinner.svg';
+                return plugin_dir_url( __FILE__ ) . '/spinner.svg';
             } else {
-                return plugin_dir_url( __FILE__ ) . 'spinner.svg';
+                return plugin_dir_url( __FILE__ ) . '/spinner.svg';
             }
         }
     }
@@ -103,7 +103,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             if ( strpos( $dir, 'wp-content/themes' ) ) {
                 $this->module_path = plugin_dir_path( __FILE__ );
                 $nest              = explode( get_stylesheet(), plugin_dir_path( __FILE__ ) );
-                $this->module_url  = get_theme_file_uri() . $nest[1];
+                if ( isset( $nest[1]) ) {
+                    $this->module_url  = get_theme_file_uri() . $nest[1];
+                } else {
+                    $this->module_url  = get_theme_file_uri();
+                }
             } else if ( strpos( $dir, 'wp-content/plugins' ) ) {
                 $this->module_path = plugin_dir_path( __FILE__ );
                 $this->module_url  = plugin_dir_url( __FILE__ );
@@ -153,15 +157,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 add_filter( 'dt_metrics_menu', [ $this, 'menu' ], 99 );
 
                 if ( 'metrics/mapping' === $url_path ){
-                    add_action( 'wp_enqueue_scripts', [ $this, 'drilldown_script' ], 89 );
-                    add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
-                }
-            }
-            if ( 'mapping' === $url_base ) {
-                if ( 'mapping' === substr( $url_path, '0', $url_base_length ) ) {
-
-                    add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
-                    add_filter( 'dt_metrics_menu', [ $this, 'menu' ], 99 );
                     add_action( 'wp_enqueue_scripts', [ $this, 'drilldown_script' ], 89 );
                     add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
                 }
@@ -292,10 +287,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             // set custom columns
             $data['custom_column_labels'] = [];
             $data['custom_column_data'] = [];
-
-            // initialize drill down configuration
-//            $data['default_drill_down'] = $this->drill_down_array();
-
 
             return $data;
         }

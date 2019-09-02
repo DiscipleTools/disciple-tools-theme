@@ -667,7 +667,7 @@ class Disciple_Tools_Mapping_Queries {
         ", ARRAY_A );
 
 
-        set_transient( 'get_geoname_totals', $results, 60 * 60 * 24 );
+        set_transient( 'get_location_grid_totals', $results, 60 * 60 * 24 );
 
 
         if ( empty( $results ) ) {
