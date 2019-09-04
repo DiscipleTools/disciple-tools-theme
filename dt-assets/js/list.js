@@ -243,7 +243,13 @@
             <%= group_links %>
           </span>
       </td>
-      <td class="hide-for-small-only"><span class="status status--<%- overall_status %>"><%- status %></span></td>
+      <td class="hide-for-small-only">
+        <span class="status status--<%- overall_status %>"><%- status %>
+        <% if (update_needed){ %>
+            <img style="" src="${_.escape( wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+        <% } %>  
+        </span>
+      </td>
       <td class="hide-for-small-only"><span class="status status--<%- seeker_path %>"><%- seeker_path %></span></td>
       <td class="hide-for-small-only">
         <span class="milestone milestone--<%- access_milestone_key %>"><%- access_milestone %></span>
@@ -334,6 +340,7 @@
       belief_milestone: _.get(ccfs, `milestones.default["milestone_${belief_milestone_key}"].label`, ""),
       sharing_milestone: _.get(ccfs, `milestones.default["milestone_${sharing_milestone_key}"].label`, ""),
       group_links,
+      update_needed : contact.requires_update
     });
     return $.parseHTML(template(context));
   }
