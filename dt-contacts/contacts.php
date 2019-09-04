@@ -289,6 +289,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     self::handle_quick_action_button_event( $post_id, [ $field_key => $value ] );
                 }
             }
+            if ( isset( $fields["overall_status"], $fields["reason_paused"] ) && $fields["overall_status"] === "paused"){
+                $fields["requires_update"] = false;
+            }
+            if ( isset( $fields["overall_status"], $fields["reason_closed"] ) && $fields["overall_status"] === "closed"){
+                $fields["requires_update"] = false;
+            }
         }
         return $fields;
     }
