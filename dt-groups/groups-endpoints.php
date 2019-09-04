@@ -215,9 +215,9 @@ class Disciple_Tools_Groups_Endpoints
             $group_array["ID"] = $group->ID;
             $group_array["post_title"] = $group->post_title;
             $group_array['permalink'] = get_post_permalink( $group->ID );
-            $group_array['locations'] = []; // @todo remove or rewrite? Because of location_grid upgrade.
+            $group_array['locations'] = [];
             foreach ( $location_grid[$group->ID] as $location ) {
-                $group_array['locations'][] = $location["name"]; // @todo remove or rewrite? Because of location_grid upgrade.
+                $group_array['locations'][] = $location["name"];
             }
             $group_array['leaders'] = [];
             $group_array['member_count'] = $meta_fields["member_count"] ?? 0;
@@ -228,6 +228,7 @@ class Disciple_Tools_Groups_Endpoints
                 ];
             }
             $group_array['group_status'] = "";
+            $group_array["requires_update"] = false;
             foreach ( $meta_fields as $meta_key => $meta_value ) {
                 if ( $meta_key == 'group_status' ) {
                     $group_array[ $meta_key ] = $meta_value[0];
@@ -235,6 +236,8 @@ class Disciple_Tools_Groups_Endpoints
                     $group_array[ $meta_key ] = $meta_value[0];
                 } elseif ( $meta_key == 'last_modified' ) {
                     $group_array[ $meta_key ] = (int) $meta_value[0];
+                } elseif ( $meta_key == "requires_update" ) {
+                    $group_array[ $meta_key ] = $meta_value[0];
                 }
             }
             if ( !isset( $group_array["last_modified"] ) ){

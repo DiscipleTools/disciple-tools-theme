@@ -278,7 +278,13 @@
         <%= leader_links %>
       </td>
       <td class="hide-for-small-only"><a href="<%- permalink %>"><%- post_title %></a></td>
-      <td class="hide-for-small-only"><span class="group-status group-status--<%- group_status %>"><%- status %></span></td>
+      <td class="hide-for-small-only">
+        <span class="group-status group-status--<%- group_status %>"><%- status %>
+        <% if (update_needed){ %>
+            <img style="" src="${_.escape( wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+        <% } %> 
+        </span>
+      </td>
       <td class="hide-for-small-only"><span class="group-type group-type--<%- group_type %>"><%- type %></span></td>
       <td class="hide-for-small-only" style="text-align: center"><%- member_count %></td>
       <td class="hide-for-small-only"><%= leader_links %></td>
@@ -356,7 +362,8 @@
     const context = _.assign({}, group, wpApiListSettings, {
       leader_links,
       status,
-      type
+      type,
+      update_needed : group.requires_update
     });
     return $.parseHTML(template(context));
   }
