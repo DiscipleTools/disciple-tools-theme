@@ -61,17 +61,22 @@ if ( ! isset( $dt_mapping['is_disciple_tools'] )  ) {
 if ( ! isset( $dt_mapping['path'] ) ) {
     if ( $dt_mapping['is_disciple_tools'] ) {
         $dt_mapping['path'] = trailingslashit( get_template_directory() ) . 'dt-mapping/';
+
     } else {
         $dt_mapping['path'] = trailingslashit( plugin_dir_path( __DIR__ ) );
+
     }
 }
 
 /** Add url */
 if ( ! isset( $dt_mapping['url'] ) ) {
     if ( $dt_mapping['is_disciple_tools'] ) {
-        $dt_mapping['url'] = trailingslashit(get_stylesheet_directory_uri() ) . 'dt-mapping/' ;
-    } else {
+        $dt_mapping['url'] = trailingslashit( get_stylesheet_directory_uri()) . 'dt-mapping/';
+        dt_write_log('theme');
+    }
+    else {
         $dt_mapping['url'] = trailingslashit( plugin_dir_url(__FILE__) );
+        dt_write_log('plugin');
     }
 }
 
@@ -138,3 +143,4 @@ if ( ! isset( $dt_mapping['theme'] ) ) {
 }
 
 $GLOBALS['dt_mapping'] = $dt_mapping;
+

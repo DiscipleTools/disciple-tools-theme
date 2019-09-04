@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Disciple Tools - Mapping Extension
+ * Plugin Name: Disciple Tools - Mapping Module
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
@@ -80,7 +80,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function __construct( $dt_mapping ) {
-            dt_write_log($dt_mapping);
 
             require_once( 'mapping-queries.php' );
             require_once( 'mapping-admin.php' ); // can't filter for is_admin because of REST dependencies

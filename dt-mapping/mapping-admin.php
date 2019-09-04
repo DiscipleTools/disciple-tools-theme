@@ -2203,7 +2203,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function rebuild_location_grid( $reset = false ) {
-            global $wpdb;
+            global $wpdb, $dt_mapping;
 
             // clear previous installation
             $dir = wp_upload_dir();
@@ -2213,7 +2213,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             // TEST for presence of source files
             if ( ! file_exists( $uploads_dir . "location_grid/" . $file ) ) {
-                require_once( get_template_directory() . '/dt-mapping/migrations/0001-prepare-location_grid-data.php' );
+                require_once( $dt_mapping['path'] . 'migrations/0001-prepare-location_grid-data.php' );
                 $download = new DT_Mapping_Module_Migration_0001();
                 $download->up();
 
@@ -2227,7 +2227,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             // TEST for expected tables and clear it
             $wpdb->query( "SHOW TABLES LIKE '$wpdb->dt_location_grid'" );
             if ( $wpdb->num_rows < 1 ) {
-                require_once( get_template_directory() . '/dt-mapping/migrations/0000-initial.php' );
+                require_once( $dt_mapping['path'] . 'migrations/0000-initial.php' );
                 $download = new DT_Mapping_Module_Migration_0000();
                 $download->up();
 

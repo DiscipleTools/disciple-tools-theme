@@ -193,8 +193,8 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
          */
         public static function location_list_url() {
             global $dt_mapping;
-            if ( file_exists( get_template_directory() . 'location-grid-list-api.php' ) ) {
-                return get_template_directory_uri() . '/dt-mapping/location-grid-list-api.php';
+            if ( file_exists( $dt_mapping['path'] . 'location-grid-list-api.php' ) ) {
+                return $dt_mapping['path'] . 'location-grid-list-api.php';
             }
             return '';
         }

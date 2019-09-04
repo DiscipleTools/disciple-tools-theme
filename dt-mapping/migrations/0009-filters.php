@@ -90,7 +90,7 @@ class DT_Mapping_Module_Migration_0009 extends DT_Mapping_Module_Migration {
 
         update_option( "dt_mapping_migration_list", $migrated );
         //update filters
-        require_once( get_template_directory() . '/dt-mapping/mapping-admin.php' );
+        require_once( $dt_mapping['path'] . 'mapping-admin.php' );
         DT_Mapping_Module_Admin::instance()->migrate_user_filters_to_location_grid();
 
     }
