@@ -82,7 +82,7 @@ function page_mapping_view() {
             <div class="cell medium-2 left-border-grey">
                 <div class="grid-y">
                     <div class="cell" style="overflow-y: scroll; height:700px; padding:0 .4em;" id="child-list-container">
-                        <div id="minimap"></div><br><br>
+                        <div id="minimap" style="height: 250px;"></div><br><br>
                         <div class="button-group expanded stacked" id="data-type-list">
                          </div>
                     </div>
