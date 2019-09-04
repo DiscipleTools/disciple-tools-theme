@@ -445,10 +445,17 @@ jQuery(document).ready(function($) {
     source: TYPEAHEADS.typeaheadUserSource(),
     templateValue: "{{name}}",
     template: function (query, item) {
-      return `<span class="row" dir="auto">
-        <span class="avatar"><img src="{{avatar}}"/> </span>
-        <span>${_.escape( item.name )}</span>
-      </span>`
+      return `<div class="assigned-to-row" dir="auto">
+        <span>
+            <img style="vertical-align: text-bottom" src="{{avatar}}"/>
+            ${_.escape( item.name )}
+        </span>
+        ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
+        ${ item.update_needed ? `<span>
+          <img style="height: 12px;" src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/broken.svg"/>
+          <span style="font-size: 14px">${_.escape(item.update_needed)}</span>
+        </span>` : '' }
+      </div>`
     },
     dynamic: true,
     hint: true,
