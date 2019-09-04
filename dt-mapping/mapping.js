@@ -72,7 +72,6 @@ function page_mapping_view() {
                 <span id="current_level"></span>
             </div>
         </div>
-        <span style="font-size:.8em; margin-left:20px"><a onclick="refresh_data('get_location_grid_totals')">${_.escape( translations.refresh_data )}</a></span>
         <hr style="max-width:100%;">
         
        <!-- Map -->
@@ -92,6 +91,8 @@ function page_mapping_view() {
         </div>
         
         <hr style="max-width:100%;">
+        
+        <span style="font-size:.8em; margin-left:20px"><a onclick="refresh_data('get_location_grid_totals')">${_.escape( translations.refresh_data )}</a></span>
         
         <br>
         `);

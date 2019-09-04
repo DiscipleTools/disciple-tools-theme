@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-//if ( ! class_exists( 'DT_Mapping_Module_Config' ) ) {
+if ( ! class_exists( 'DT_Mapping_Module_Config' ) ) {
     class DT_Mapping_Module_Config
     {
         private static $_instance = null;
@@ -20,10 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
              * Load custom columns or remove these and replace with your own.
              * Use these as examples and make your own columns.
              */
-            require_once( 'add-churches-column.php' );
-            require_once( 'add-groups-column.php' );
-            require_once( 'add-contacts-column.php' );
-            require_once( 'add-users-column.php' );
 
             /**
              * dt_mapping_module_has_permissions
@@ -163,5 +159,5 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
     }
     DT_Mapping_Module_Config::instance();
-//}
+}
 

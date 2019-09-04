@@ -293,6 +293,10 @@ else {
              * dt-mapping
              */
             require_once( get_template_directory() . '/dt-mapping/mapping-module-config.php' );
+            require_once( get_template_directory() . '/dt-mapping/add-churches-column.php' );
+            require_once( get_template_directory() . '/dt-mapping/add-groups-column.php' );
+            require_once( get_template_directory() . '/dt-mapping/add-contacts-column.php' );
+            require_once( get_template_directory() . '/dt-mapping/add-users-column.php' );
             require_once( get_template_directory() . '/dt-mapping/mapping.php' ); // load for mapping module
 
 
