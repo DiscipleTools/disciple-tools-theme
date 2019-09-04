@@ -192,7 +192,8 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
          * Build Components
          */
         public static function location_list_url() {
-            if ( file_exists( get_template_directory() . '/dt-mapping/location-grid-list-api.php' ) ) {
+            global $dt_mapping;
+            if ( file_exists( get_template_directory() . 'location-grid-list-api.php' ) ) {
                 return get_template_directory_uri() . '/dt-mapping/location-grid-list-api.php';
             }
             return '';
@@ -225,7 +226,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
          * Administrative Page Metabox
          */
         public static function metabox_for_admin() {
-
+            global $dt_mapping;
 
             if ( isset( $_POST['mapbox_key'] )
                  && ( isset( $_POST['geocoding_key_nonce'] )
@@ -358,7 +359,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
 
                             <!-- Mapbox script -->
                             <script>
-                                window.spinner = '<img class="load-spinner" src="<?php echo esc_url( get_template_directory_uri() ) . '/spinner.svg' ?>" width="20px" />'
+                                window.spinner = '<img class="load-spinner" src="<?php echo esc_url( $dt_mapping['spinner'] ) ?>" width="20px" />'
                                 mapboxgl.accessToken = '<?php echo esc_html( self::get_key() ) ?>';
                                 var map = new mapboxgl.Map({
                                     container: 'map',
@@ -403,7 +404,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                     console.log(active_marker)
 
                                     // add polygon
-                                    jQuery.get('<?php echo esc_url( self::location_list_url() ) ?>',
+                                    jQuery.get('<?php echo esc_url( $dt_mapping['location_api_url'] ) ?>',
                                         {
                                             type: 'possible_matches',
                                             longitude: lng,
@@ -439,7 +440,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                     window.active_lnglat = [lng,lat]
 
                                     // add polygon
-                                    jQuery.get('<?php echo esc_url( self::location_list_url() ) ?>',
+                                    jQuery.get('<?php echo esc_url( $dt_mapping['location_api_url'] ) ?>',
                                         {
                                             type: 'possible_matches',
                                             longitude: lng,

@@ -91,29 +91,34 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * The the base site url with, including the subfolder if wp is installed in a subfolder.
      * @return string
      */
-    function dt_get_url_path() {
-        if ( isset( $_SERVER["HTTP_HOST"] ) ) {
-            $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
-            if ( isset( $_SERVER["REQUEST_URI"] ) ) {
-                $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
+    if ( ! function_exists( 'dt_get_url_path' ) ) {
+        function dt_get_url_path() {
+            if ( isset( $_SERVER["HTTP_HOST"] ) ) {
+                $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
+                if ( isset( $_SERVER["REQUEST_URI"] ) ) {
+                    $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
+                }
+                return trim( str_replace( get_site_url(), "", $url ), '/' );
             }
-            return trim( str_replace( get_site_url(), "", $url ), '/' );
+            return '';
         }
-        return '';
     }
 
-    function dt_array_to_sql( $values ) {
-        if ( empty( $values ) ){
-            return 'NULL';
-        }
-        foreach ( $values as &$val ) {
-            if ( '\N' === $val ) {
-                $val = 'NULL';
-            } else {
-                $val = "'" . esc_sql( trim( $val ) ) . "'";
+    if ( ! function_exists( 'dt_array_to_sql' ) ) {
+        function dt_array_to_sql($values)
+        {
+            if (empty($values)) {
+                return 'NULL';
             }
+            foreach ($values as &$val) {
+                if ('\N' === $val) {
+                    $val = 'NULL';
+                } else {
+                    $val = "'" . esc_sql(trim($val)) . "'";
+                }
+            }
+            return implode(',', $values);
         }
-        return implode( ',', $values );
     }
 
 
@@ -123,50 +128,57 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      *
      * @return bool|int|string
      */
-    function dt_format_date( $date, $format = 'short' ){
-        $date_format = get_option( 'date_format' );
-        $time_format = get_option( 'time_format' );
-        if ( $format === 'short' ){
-            $format = $date_format;
-        } else if ( $format === 'long') {
-            $format = $date_format . ' ' . $time_format;
+    if ( ! function_exists( 'dt_format_date' ) ) {
+        function dt_format_date($date, $format = 'short')
+        {
+            $date_format = get_option('date_format');
+            $time_format = get_option('time_format');
+            if ($format === 'short') {
+                $format = $date_format;
+            } else if ($format === 'long') {
+                $format = $date_format . ' ' . $time_format;
+            }
+            if (is_numeric($date)) {
+                $formatted = date_i18n($format, $date);
+            } else {
+                $formatted = mysql2date($format, $date);
+            }
+            return $formatted;
         }
-        if ( is_numeric( $date ) ){
-            $formatted = date_i18n( $format, $date );
-        } else {
-            $formatted = mysql2date( $format, $date );
+    }
+
+    if ( ! function_exists( 'dt_date_start_of_year' ) ) {
+        function dt_date_start_of_year()
+        {
+            $this_year = date('Y');
+            $timestamp = strtotime($this_year . '-01-01');
+            return $timestamp;
         }
-        return $formatted;
+    }
+    if ( ! function_exists( 'dt_date_end_of_year' ) ) {
+        function dt_date_end_of_year()
+        {
+            $this_year = (int)date('Y');
+            return strtotime(($this_year + 1) . '-01-01');
+        }
+    }
+    if ( ! function_exists( 'dt_date_end_of_year' ) ) {
+        function dt_get_year_from_timestamp(int $time)
+        {
+            return date("Y", $time);
+        }
     }
 
-    function dt_date_start_of_year(){
-        $this_year = date( 'Y' );
-        $timestamp = strtotime( $this_year . '-01-01' );
-        return $timestamp;
-    }
-    function dt_date_end_of_year(){
-        $this_year = (int) date( 'Y' );
-        return strtotime( ( $this_year + 1 ) . '-01-01' );
-    }
-
-    function dt_get_year_from_timestamp( int $time ){
-        return date( "Y", $time );
-    }
-    function dt_sanitize_array_html( $array ) {
-        array_walk_recursive( $array, function ( &$v ) {
-            $v = filter_var( trim( $v ), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES );
-        } );
-        return $array;
+    if ( ! function_exists( 'dt_date_end_of_year' ) ) {
+        function dt_sanitize_array_html($array)
+        {
+            array_walk_recursive($array, function (&$v) {
+                $v = filter_var(trim($v), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+            });
+            return $array;
+        }
     }
 
-    /**
-     * This is the modifiable url for downloading the location_grid and people groups source files for the DT system.
-     * The filter can be used to override the default GitHub location and move this to a custom mirror or fork.
-     * @return string
-     */
-    function dt_get_theme_data_url() {
-        return apply_filters( 'disciple_tools_theme_data_url', 'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-theme-data/master/' );
-    }
     /**
      * All code above here.
      */

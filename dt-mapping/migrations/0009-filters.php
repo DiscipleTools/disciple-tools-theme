@@ -8,7 +8,7 @@
 
 class DT_Mapping_Module_Migration_0009 extends DT_Mapping_Module_Migration {
     public function up() {
-
+        global $dt_mapping;
 
         $dir = wp_upload_dir();
         $uploads_dir = trailingslashit( $dir['basedir'] );
@@ -21,7 +21,6 @@ class DT_Mapping_Module_Migration_0009 extends DT_Mapping_Module_Migration {
             }
 
             // get mirror source file url
-            require_once( get_template_directory() . '/dt-core/global-functions.php' );
             $mirror_source = dt_get_theme_data_url();
 
             $gn_source_url = $mirror_source . 'location_grid/geonames_ref_table.tsv.zip';
