@@ -1,61 +1,10 @@
 <?php
-/**
- * Plugin Name: Disciple Tools - Mapping Module
- */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-/**
- * $dt_mapping global
- *
- * The $dt_mapping is a global that contains the various urls, endpoints, and settings for the mapping system. Please,
- * use this global in all references to these items.
- */
-if ( ! isset( $dt_mapping ) ) {
-    require_once ('setup-global.php');
-}
-
-if ( $dt['is_disciple_tools'] ?? false && ! function_exists( 'dt_mapping_module' ) ) {
-    // Only load this action if module is not in Disciple Tools
-    function dt_mapping_module() {
-        global $dt_mapping;
-
-        if ( $dt_mapping['is_disciple_tools'] && version_compare( $dt_mapping['theme']['current_theme_version'],  $dt_mapping['required_dt_theme_version'], "<" ) ) {
-            add_action( 'admin_notices', function() {
-                global $dt_mapping;
-                ?><div class="notice notice-error notice-public_map is-dismissible" data-notice="public_map">Disciple Tools Theme is not
-                latest version for this plugin plugin. Please upgrade to <?php echo esc_attr( $dt_mapping['required_dt_theme_version'] ) ?></div><?php
-            } );
-            return new WP_Error( 'current_theme_not_dt', 'Disciple Tools Theme not active or not latest version.' );
-        }
-        require_once( $dt_mapping['module_config_path'] );
-        add_filter( 'dt_mapping_module_has_permissions', true );
-        return DT_Mapping_Module::instance();
-    }
-    add_action( 'init', 'dt_mapping_module' );
-}
-/** End Test */
-
 if ( ! class_exists( 'DT_Mapping_Module' ) ) {
-
-    global $wpdb;
-    $wpdb->dt_location_grid = $wpdb->prefix .'dt_location_grid';
-
-    /*******************************************************************************************************************
-     * MIGRATION ENGINE
-     ******************************************************************************************************************/
-    require_once( 'class-migration-engine.php' );
-    try {
-        DT_Mapping_Module_Migration_Engine::migrate( DT_Mapping_Module_Migration_Engine::$migration_number );
-    } catch ( Throwable $e ) {
-        $migration_error = new WP_Error( 'migration_error', 'Migration engine for mapping module failed to migrate.', [ 'error' => $e ] );
-        dt_write_log( $migration_error );
-    }
-    /*******************************************************************************************************************/
-
     if ( ! function_exists( 'wp_create_nonce' ) ) {
         require_once( ABSPATH . '/wp-includes/pluggable.php' );
     }
-
 
     /**
      * Class DT_Mapping_Module
@@ -80,10 +29,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function __construct( $dt_mapping ) {
-
-            require_once( 'mapping-queries.php' );
-            require_once( 'mapping-admin.php' ); // can't filter for is_admin because of REST dependencies
-            require_once( 'geocode-api/api-loader.php' ); // loads geocoding apis
 
             /**
              * LOAD REST ENDPOINTS

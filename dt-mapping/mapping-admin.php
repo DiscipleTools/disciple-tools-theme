@@ -8,11 +8,6 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-if ( ! isset( $dt_mapping ) ) {
-    require_once ('setup-global.php');
-}
-
-
 if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
     /**
@@ -193,7 +188,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     'mapping_module' => DT_Mapping_Module::instance()->localize_script(),
                 )
             );
-
         }
 
         public function process_rest_edits( $params ) {
@@ -579,7 +573,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <div id="post-body-content">
                             <!-- Main Column -->
 
-                            <?php $this->box_geocoding_source(); ?>
+                            <?php $this->box_mapbox(); ?>
+                            <br>
+                            <?php $this->box_ipstack(); ?>
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
@@ -1552,13 +1548,20 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
+        public function box_ipstack() {
+            if ( ! class_exists( 'DT_Ipstack_API' ) ) {
+                require_once( 'geocode-api/ipstack-api.php' );
+            }
+            DT_Ipstack_API::metabox_for_admin();
+        }
 
-        public function box_geocoding_source() {
+        public function box_mapbox() {
             if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 require_once( 'geocode-api/mapbox-api.php' );
             }
             DT_Mapbox_API::metabox_for_admin();
         }
+
 
         public function dt_sanitize_array_html($array)
         {
@@ -1951,6 +1954,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function box_credits() {
+            global $dt_mapping;
             ?>
             <div class="wrap">
                 <div id="poststuff">

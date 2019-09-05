@@ -19,64 +19,48 @@ if ( ! function_exists( 'dt_write_log' ) ) {
         }
     }
 }
-
-/** Setup location grid database in $wpdb */
-
-
-/** Create global */
-if ( ! isset( $dt_mapping ) ) {
-    /**
-     * This global must be used through the mapping system so that he dt-mapping module continues to be an independent
-     * module, able to be included in non-disciple tools themes.
-     *
-     * it can be included in functions like other globals:
-     *      global $dt_mapping;
-     */
-    $dt_mapping = [];
+if ( ! function_exists( 'dt_get_theme_data_url' ) ) {
+    function dt_get_theme_data_url() {
+        /**
+         * This is the modifiable url for downloading the location_grid and people groups source files for the DT system.
+         * The filter can be used to override the default GitHub location and move this to a custom mirror or fork.
+         * @return string
+         */
+        return apply_filters( 'disciple_tools_theme_data_url', 'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-theme-data/master/' );
+    }
 }
 
-/** Add versions */
-if ( ! isset( $dt_mapping['version'] ) ) {
-    /**
-     * @version     1.0 First generation
-     *              1.1 Converted to transportable module. Established global $dt_mapping;
-     */
-    $dt_mapping['version'] = 1.1;
-}
+/** Add required DT Level */
 if ( ! isset( $dt_mapping['required_dt_theme_version'] ) ) {
     $dt_mapping['required_dt_theme_version'] = '0.22.0';
 }
 
-/** Add disciple tools check */
-if ( ! isset( $dt_mapping['is_disciple_tools'] )  ) {
-    $wp_theme = wp_get_theme();
-    if ( strpos( $wp_theme->get_template(), "disciple-tools-theme" ) !== false || $wp_theme->name === "Disciple Tools" ) {
-        $dt_mapping['is_disciple_tools'] = 1;
-    } else {
-        $dt_mapping['is_disciple_tools'] = 0;
-    }
-}
-
 /** Add path */
 if ( ! isset( $dt_mapping['path'] ) ) {
-    if ( $dt_mapping['is_disciple_tools'] ) {
-        $dt_mapping['path'] = trailingslashit( get_template_directory() ) . 'dt-mapping/';
-
-    } else {
-        $dt_mapping['path'] = trailingslashit( plugin_dir_path( __DIR__ ) );
-
+    switch ( $dt_mapping['environment'] ) {
+        case 'plugin':
+            $dt_mapping['path'] = trailingslashit( plugin_dir_path( __FILE__ ) );
+            break;
+        case 'theme':
+        case 'disciple_tools':
+        default:
+            $dt_mapping['path'] = trailingslashit( get_template_directory() ) . 'dt-mapping/';
+            break;
     }
 }
+
 
 /** Add url */
 if ( ! isset( $dt_mapping['url'] ) ) {
-    if ( $dt_mapping['is_disciple_tools'] ) {
-        $dt_mapping['url'] = trailingslashit( get_stylesheet_directory_uri()) . 'dt-mapping/';
-        dt_write_log('theme');
-    }
-    else {
-        $dt_mapping['url'] = trailingslashit( plugin_dir_url(__FILE__) );
-        dt_write_log('plugin');
+    switch ( $dt_mapping['environment'] ) {
+        case 'plugin':
+            $dt_mapping['url'] = trailingslashit( plugin_dir_url(__FILE__) );
+            break;
+        case 'theme':
+        case 'disciple_tools':
+        default:
+            $dt_mapping['url'] = trailingslashit( get_stylesheet_directory_uri()) . 'dt-mapping/';
+            break;
     }
 }
 
@@ -106,7 +90,6 @@ if ( ! isset( $dt_mapping['module_config_path'] ) ) {
     $dt_mapping['module_config_path'] = apply_filters( 'mapping_module_config_path', 'mapping-module-config.php' );
 }
 
-
 /** Add dt options */
 if ( ! isset( $dt_mapping['options'] ) ) {
     $all_options = wp_load_alloptions();
@@ -118,22 +101,17 @@ if ( ! isset( $dt_mapping['options'] ) ) {
     }
 }
 
-/**
- * This is the modifiable url for downloading the location_grid and people groups source files for the DT system.
- * The filter can be used to override the default GitHub location and move this to a custom mirror or fork.
- * @return string
- */
-function dt_get_theme_data_url() {
-    return apply_filters( 'disciple_tools_theme_data_url', 'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-theme-data/master/' );
-}
+/** Add github theme data url */
 if ( ! isset( $dt_mapping['disciple_tools_theme_data_url'] ) ) {
     $dt_mapping['disciple_tools_theme_data_url'] = dt_get_theme_data_url();
 }
 
+/** Add spinner */
 if ( ! isset( $dt_mapping['spinner'] ) ) {
     $dt_mapping['spinner'] = $dt_mapping['url'] . 'spinner.svg';
 }
 
+/** Add theme info */
 if ( ! isset( $dt_mapping['theme'] ) ) {
     $wp_theme = wp_get_theme();
     $dt_mapping['theme'] = [
@@ -142,5 +120,31 @@ if ( ! isset( $dt_mapping['theme'] ) ) {
     ];
 }
 
+/** Add globals to global object */
 $GLOBALS['dt_mapping'] = $dt_mapping;
 
+/** Add location grid database name */
+global $wpdb;
+$wpdb->dt_location_grid = $wpdb->prefix .'dt_location_grid';
+
+/*******************************************************************************************************************
+ * MIGRATION ENGINE
+ ******************************************************************************************************************/
+require_once( 'class-migration-engine.php' );
+try {
+    DT_Mapping_Module_Migration_Engine::migrate( DT_Mapping_Module_Migration_Engine::$migration_number );
+} catch ( Throwable $e ) {
+    $migration_error = new WP_Error( 'migration_error', 'Migration engine for mapping module failed to migrate.', [ 'error' => $e ] );
+    dt_write_log( $migration_error );
+}
+/*******************************************************************************************************************/
+
+if ( ! function_exists( 'dt_mapping_path' ) ) {
+    function dt_mapping_path( $echo = false ) {
+        global $dt_mapping;
+        if ( $echo ) {
+            echo $dt_mapping['path'];
+        }
+        return $dt_mapping['path'];
+    }
+}
