@@ -179,6 +179,23 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    if ( ! function_exists( 'dt_array_to_sql' ) ) {
+        function dt_array_to_sql($values)
+        {
+            if (empty($values)) {
+                return 'NULL';
+            }
+            foreach ($values as &$val) {
+                if ('\N' === $val) {
+                    $val = 'NULL';
+                } else {
+                    $val = "'" . esc_sql(trim($val)) . "'";
+                }
+            }
+            return implode(',', $values);
+        }
+    }
+
     /**
      * All code above here.
      */
