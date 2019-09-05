@@ -242,8 +242,9 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 
                         <?php if ( current_user_can( "view_any_contacts" ) ): ?>
                         <p>
-                            <strong><?php esc_html_e( 'Follow all contacts', 'disciple_tools' )?>:</strong>
+                            <strong><?php esc_html_e( 'Follow all contacts', 'disciple_tools' )?></strong>
                         </p>
+                        <p><?php esc_html_e( "You will receive an notification for any update that happens in the system.", 'disciple_tools' ) ?></p>
                         <div class="switch large">
                             <input class="switch-input" id="follow_all" type="checkbox" name="follow_all"
                                    onclick="switch_preference('dt_follow_all');" <?php ( isset( $dt_user_meta['dt_follow_all'] ) && $dt_user_meta['dt_follow_all'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
@@ -260,6 +261,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 
                 </div>
 
+                <!-- Begin Availability-->
                 <div class="small-12 cell">
 
                     <div class="bordered-box cell" id="availability" data-magellan-target="availability">
@@ -268,264 +270,191 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                         <span class="section-header"><?php esc_html_e( 'Availability', 'disciple_tools' )?></span>
                         <hr size="1" style="max-width:100%"/>
 
+                        <p><?php esc_html_e( "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts", 'disciple_tools' ) ?></p>
 
-                        <!-- Turn on Vacation Reminders -->
                         <p>
-                            <strong><?php esc_html_e( 'Set Away', 'disciple_tools' )?>:</strong>
+                            <strong>
+                                <?php esc_html_e( "Schedule Travel or Dates Unavailable", 'disciple_tools' ) ?>
+                            </strong>
                         </p>
-                        <div class="switch large">
-                            <input class="switch-input" id="switch0vac" type="checkbox" name="switch0vac"
-                                   onclick="switch_preference('dt_availability');" <?php ( isset( $dt_user_meta['dt_availability'] ) && $dt_user_meta['dt_availability'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> />
-                            <label class="switch-paddle" for="switch0vac">
-                                <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
-                                <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'On', 'disciple_tools' )?></span>
-                                <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'Off', 'disciple_tools' )?></span>
-                            </label>
+                        <div style="display: flex; justify-content: flex-start; align-items: flex-end">
+                            <div style="flex-shrink: 1">
+                                <div class="section-subheader cell">
+                                    <?php esc_html_e( 'Start Date', 'disciple_tools' )?>
+                                </div>
+                                <div class="start_date"><input type="text" class="date-picker" id="start_date"></div>
+                            </div>
+                            <div style="margin: 0 20px">
+                                <div class="section-subheader cell">
+                                    <?php esc_html_e( 'End Date', 'disciple_tools' )?>
+                                </div>
+                                <div class="end_date"><input type="text" class="date-picker" id="end_date"></div>
+                            </div>
+                            <div>
+                                <button id="add_unavailable_dates" class="button" disabled><?php esc_html_e( "Add Unavailable dates", 'disciple_tools' ) ?></button>
+                                <div id="add_unavailable_dates_spinner" style="display: inline-block" class="loading-spinner"></div>
+                            </div>
                         </div>
+                        <div >
+                            <table class="hover stack-for-small striped">
+                                <thead>
+                                <tr>
+                                    <th><?php esc_html_e( "Start Date", 'disciple_tools' ) ?></th>
+                                    <th><?php esc_html_e( "End Date", 'disciple_tools' ) ?></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody id="unavailable-list">
+                                    <tr><td><?php esc_html_e( "No Travel Scheduled", 'disciple_tools' ) ?></td></tr>
+                                </tbody>
 
-
-                        <?php /**
-
-                        <!-- List of past, present, and future vacations scheduled -->
-                        <p>
-                            <strong>Schedule Away: </strong>
-                        </p>
-                        <p>
-                            <button class="button" onclick="" data-open="add-away"><i class="fi-pencil"></i>
-                                Add
-                            </button>
-                        </p>
-                        <table class="hover stack-for-small striped">
-                            <thead>
-                            <tr>
-                                <td>Begin Date</td>
-                                <td>End Date</td>
-                                <td>Status</td>
-                                <td></td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>2017-02-24</td>
-                                <td>2017-03-04</td>
-                                <td>Scheduled</td>
-                                <td>
-                                    <button class="hollow button tiny alert"><i class="fi-x"></i> Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2017-02-24</td>
-                                <td>2017-03-04</td>
-                                <td>Active</td>
-                                <td>
-                                    <button class="hollow button tiny alert"><i class="fi-x"></i> Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2017-02-24</td>
-                                <td>2017-03-04</td>
-                                <td>Completed</td>
-                                <td>
-                                    <button class="hollow button tiny alert"><i class="fi-x"></i> Delete</button>
-                                </td>
-                            </tr>
-                            </tbody>
-
-                        </table>
-
+                            </table>
+                        </div>
                     </div> <!-- End Availability -->
+                </div>
 
 
-                    </div>
-
-                    <!-- Future development of availability -->
-                <div class="reveal" id="add-away" data-reveal>
+                <div class="reveal" id="edit-profile" data-reveal>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h2>Add</h2>
+                    <h2><?php esc_html_e( 'Edit', 'disciple_tools' )?></h2>
 
                     <div class="row column medium-12">
 
+                        <form method="post">
 
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Start date&nbsp;
-                                    <a href="#" class="button tiny" id="dp4" data-date-format="yyyy-mm-dd"
-                                       data-date="2012-02-20">Change</a>
-                                </th>
-                                <th>End date&nbsp;
-                                    <a href="#" class="button tiny" id="dp5" data-date-format="yyyy-mm-dd"
-                                       data-date="2012-02-25">Change</a>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td id="startDate">2012-02-20</td>
-                                <td id="endDate">2012-02-25</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <div class="alert alert-box" style="display:none;" id="alert"><strong>Oh snap!</strong>
-                        </div>
-                        <button class="button">Add New Vacation</button>
+                            <?php wp_nonce_field( "user_" . $dt_user->ID . "_update", "user_update_nonce", false, true ); ?>
+
+                            <table class="table">
+
+                                <tr>
+                                    <td><?php echo get_avatar( $dt_user->ID, '32' ); ?></td>
+                                    <td>
+                                        <span data-tooltip data-click-open="true" class="top" tabindex="1"
+                                              title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.' ) ?>">
+                                            <a href="http://gravatar.com" class="small"><?php esc_html_e( 'edit image on gravatar.com', 'zume' ) ?> <i class="fi-link"></i></a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><?php esc_html_e( 'User Name', 'disciple_tools' )?> </td>
+                                    <td><span data-tooltip data-click-open="true" class="top" tabindex="2" title="<?php esc_html_e( 'Username cannot be changed' ) ?>"><?php echo esc_html( $dt_user->user_login ); ?> <i class="fi-info primary-color" onclick="jQuery('#username-message').toggle()"></i></span>
+                                        <span id="username-message" style="display: none; font-size: .7em;"><br><?php esc_html_e( 'Username cannot be changed' ) ?></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><?php esc_html_e( 'System Email', 'disciple_tools' )?></td>
+                                    <td><span data-tooltip data-click-open="true" class="top" tabindex="3" title="<?php esc_html_e( 'User email can be changed by site administrator.' ) ?>">
+                                        <input type="text" class="profile-input" id="user_email"
+                                            name="user_email"
+                                            value="<?php echo esc_html( $dt_user->user_email ); ?>"/></td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><?php esc_html_e( 'Password', 'disciple_tools' )?></td>
+                                    <td><span data-tooltip data-click-open="true" class="top" tabindex="1" title="<?php esc_html_e( 'Use this email reset form to create a new password.' ) ?>">
+                                            <a href="/wp-login.php?action=lostpassword" target="_blank" rel="nofollow noopener">
+                                                <?php esc_html_e( 'go to password change form' ) ?> <i class="fi-link"></i>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td><label for="first_name"><?php esc_html_e( 'First Name', 'disciple_tools' )?></label></td>
+                                    <td><input type="text" class="profile-input" id="first_name"
+                                               name="first_name"
+                                               value="<?php echo esc_html( $dt_user->first_name ); ?>"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="last_name"><?php esc_html_e( 'Last Name', 'disciple_tools' )?></label></td>
+                                    <td><input type="text" class="profile-input" id="last_name" name="last_name"
+                                               value="<?php echo esc_html( $dt_user->last_name ); ?>"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="nickname"><span dir="auto"><?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' )?></span></label></td>
+                                    <td><input type="text" class="profile-input" id="nickname" name="nickname" dir="auto"
+                                               value=" <?php echo esc_html( $dt_user->nickname ); ?>"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="nickname"><?php esc_html_e( 'Locations', 'disciple_tools' )?></label></td>
+                                    <td><?php esc_html_e( '(Edit on contact record)', 'disciple_tools' )?>
+                                        <a href="/contacts/<?php //@todo  ?>"><i class="fi-link"></i></a>
+                                    </td>
+                                </tr>
+
+                                <?php // site defined fields
+                                foreach ( $dt_user_fields as $dt_field ) {
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <label for="<?php echo esc_attr( $dt_field['key'] ) ?>"><?php echo esc_html( $dt_field['label'] ) ?></label>
+                                        </td>
+                                        <td><input type="text"
+                                                   class="profile-input"
+                                                   id="<?php echo esc_attr( $dt_field['key'], 'disciple_tools' ) ?>"
+                                                   name="<?php echo esc_attr( $dt_field['key'], 'disciple_tools' ) ?>"
+                                                   value="<?php echo esc_html( $dt_field['value'] ) ?>"/>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                } // end foreach
+                                ?>
+
+                                <tr>
+                                    <td><label for="description"><?php esc_html_e( 'Description', 'disciple_tools' )?></label></td>
+                                    <td><textarea type="text" class="profile-input" id="description"
+                                                  name="description"
+                                                  rows="5"><?php echo esc_html( $dt_user->description ); ?></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="description"><?php esc_html_e( 'Language', 'disciple_tools' )?></label></td>
+                                    <td dir="auto">
+                                        <?php
+                                        require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
+                                        $translations = wp_get_available_translations();
+                                        $translations["ar_MA"] = [
+                                            "language" => "ar_MA",
+                                            "native_name" => "العربية (المغرب)",
+                                            "english_name" => "Arabic (Morocco)",
+                                            "iso" => [ "ar" ]
+                                        ];
+                                        $translations["sw"] = [
+                                            "language" => "sw",
+                                            "native_name" => "Kiswahili",
+                                            "english_name" => "Swahili",
+                                            "iso" => [ "sw" ]
+                                        ];
+                                        wp_dropdown_languages( array(
+                                            'name'                        => 'locale',
+                                            'id'                          => 'locale',
+                                            'selected'                    => esc_html( $dt_user->locale ),
+                                            'languages'                   => $dt_available_languages,
+                                            'show_available_translations' => false,
+                                            'show_option_site_default'    => false,
+                                            'translations'                => $translations
+                                        ) );
+                                        ?>
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                            <div class="alert alert-box" style="display:none;" id="alert">
+                                <strong><?php echo esc_html( 'Oh snap!' ) ?></strong>
+                            </div>
+
+                            <button class="button" type="submit"><?php esc_html_e( 'Save', 'disciple_tools' )?></button>
+
+                        </form>
                     </div>
 
                 </div>
-                 <!--   End future development of availability -->
-
-                */ ?>
-
-
-                        <div class="reveal" id="edit-profile" data-reveal>
-                            <button class="close-button" data-close aria-label="Close modal" type="button">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h2><?php esc_html_e( 'Edit', 'disciple_tools' )?></h2>
-
-                            <div class="row column medium-12">
-
-                                <form method="post">
-
-                                    <?php wp_nonce_field( "user_" . $dt_user->ID . "_update", "user_update_nonce", false, true ); ?>
-
-                                    <table class="table">
-
-                                        <tr>
-                                            <td><?php echo get_avatar( $dt_user->ID, '32' ); ?></td>
-                                            <td>
-                                                <span data-tooltip data-click-open="true" class="top" tabindex="1"
-                                                      title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.' ) ?>">
-                                                    <a href="http://gravatar.com" class="small"><?php esc_html_e( 'edit image on gravatar.com', 'zume' ) ?> <i class="fi-link"></i></a>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><?php esc_html_e( 'User Name', 'disciple_tools' )?> </td>
-                                            <td><span data-tooltip data-click-open="true" class="top" tabindex="2" title="<?php esc_html_e( 'Username cannot be changed' ) ?>"><?php echo esc_html( $dt_user->user_login ); ?> <i class="fi-info primary-color" onclick="jQuery('#username-message').toggle()"></i></span>
-                                                <span id="username-message" style="display: none; font-size: .7em;"><br><?php esc_html_e( 'Username cannot be changed' ) ?></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><?php esc_html_e( 'System Email', 'disciple_tools' )?></td>
-                                            <td><span data-tooltip data-click-open="true" class="top" tabindex="3" title="<?php esc_html_e( 'User email can be changed by site administrator.' ) ?>">
-                                                <input type="text" class="profile-input" id="user_email"
-                                                    name="user_email"
-                                                    value="<?php echo esc_html( $dt_user->user_email ); ?>"/></td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><?php esc_html_e( 'Password', 'disciple_tools' )?></td>
-                                            <td><span data-tooltip data-click-open="true" class="top" tabindex="1" title="<?php esc_html_e( 'Use this email reset form to create a new password.' ) ?>">
-                                                    <a href="/wp-login.php?action=lostpassword" target="_blank" rel="nofollow noopener">
-                                                        <?php esc_html_e( 'go to password change form' ) ?> <i class="fi-link"></i>
-                                                    </a>
-                                                </span>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td><label for="first_name"><?php esc_html_e( 'First Name', 'disciple_tools' )?></label></td>
-                                            <td><input type="text" class="profile-input" id="first_name"
-                                                       name="first_name"
-                                                       value="<?php echo esc_html( $dt_user->first_name ); ?>"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td><label for="last_name"><?php esc_html_e( 'Last Name', 'disciple_tools' )?></label></td>
-                                            <td><input type="text" class="profile-input" id="last_name" name="last_name"
-                                                       value="<?php echo esc_html( $dt_user->last_name ); ?>"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td><label for="nickname"><span dir="auto"><?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' )?></span></label></td>
-                                            <td><input type="text" class="profile-input" id="nickname" name="nickname" dir="auto"
-                                                       value=" <?php echo esc_html( $dt_user->nickname ); ?>"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td><label for="nickname"><?php esc_html_e( 'Locations', 'disciple_tools' )?></label></td>
-                                            <td><?php esc_html_e( '(Edit on contact record)', 'disciple_tools' )?>
-                                                <a href="/contacts/<?php //@todo  ?>"><i class="fi-link"></i></a>
-                                            </td>
-                                        </tr>
-
-                                        <?php // site defined fields
-                                        foreach ( $dt_user_fields as $dt_field ) {
-                                            ?>
-                                            <tr>
-                                                <td>
-                                                    <label for="<?php echo esc_attr( $dt_field['key'] ) ?>"><?php echo esc_html( $dt_field['label'] ) ?></label>
-                                                </td>
-                                                <td><input type="text"
-                                                           class="profile-input"
-                                                           id="<?php echo esc_attr( $dt_field['key'], 'disciple_tools' ) ?>"
-                                                           name="<?php echo esc_attr( $dt_field['key'], 'disciple_tools' ) ?>"
-                                                           value="<?php echo esc_html( $dt_field['value'] ) ?>"/>
-                                                </td>
-                                            </tr>
-                                            <?php
-                                        } // end foreach
-                                        ?>
-
-                                        <tr>
-                                            <td><label for="description"><?php esc_html_e( 'Description', 'disciple_tools' )?></label></td>
-                                            <td><textarea type="text" class="profile-input" id="description"
-                                                          name="description"
-                                                          rows="5"><?php echo esc_html( $dt_user->description ); ?></textarea>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><label for="description"><?php esc_html_e( 'Language', 'disciple_tools' )?></label></td>
-                                            <td dir="auto">
-                                                <?php
-                                                require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
-                                                $translations = wp_get_available_translations();
-                                                $translations["ar_MA"] = [
-                                                    "language" => "ar_MA",
-                                                    "native_name" => "العربية (المغرب)",
-                                                    "english_name" => "Arabic (Morocco)",
-                                                    "iso" => [ "ar" ]
-                                                ];
-                                                $translations["sw"] = [
-                                                    "language" => "sw",
-                                                    "native_name" => "Kiswahili",
-                                                    "english_name" => "Swahili",
-                                                    "iso" => [ "sw" ]
-                                                ];
-                                                wp_dropdown_languages( array(
-                                                    'name'                        => 'locale',
-                                                    'id'                          => 'locale',
-                                                    'selected'                    => esc_html( $dt_user->locale ),
-                                                    'languages'                   => $dt_available_languages,
-                                                    'show_available_translations' => false,
-                                                    'show_option_site_default'    => false,
-                                                    'translations'                => $translations
-                                                ) );
-                                                ?>
-                                            </td>
-                                        </tr>
-
-                                    </table>
-
-                                    <div class="alert alert-box" style="display:none;" id="alert">
-                                        <strong><?php echo esc_html( 'Oh snap!' ) ?></strong>
-                                    </div>
-
-                                    <button class="button" type="submit"><?php esc_html_e( 'Save', 'disciple_tools' )?></button>
-
-                                </form>
-                            </div>
-
-                        </div>
-
-                    </div> <!-- end #inner-content -->
-
-                </div>
-
             </div>
-
         </div>
+    </div> <!-- end #inner-content -->
+</div> <!-- end #content -->
 
-    </div> <!-- end #content -->
-
-    <?php get_footer(); ?>
+<?php get_footer(); ?>

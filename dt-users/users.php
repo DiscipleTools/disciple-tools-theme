@@ -45,6 +45,7 @@ class Disciple_Tools_Users
         add_filter( 'manage_users_custom_column', [ $this, 'new_modify_user_table_row' ], 10, 3 );
 
         add_filter( 'dt_settings_js_data', [ $this, 'add_current_locations_list' ], 10, 1 );
+        add_filter( 'dt_settings_js_data', [ $this, 'add_date_availability' ], 10, 1 );
 
     }
 
@@ -826,6 +827,10 @@ Please click the following link to confirm the invite:
 
     public function add_current_locations_list( $custom_data ) {
         $custom_data['current_locations'] = DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( get_current_user_id() ) );
+        return $custom_data;
+    }
+    public function add_date_availability( $custom_data ) {
+        $custom_data['availability'] = get_user_option( "user_dates_unavailable", get_current_user_id() );
         return $custom_data;
     }
 
