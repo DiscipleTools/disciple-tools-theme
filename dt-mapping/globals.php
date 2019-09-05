@@ -1,4 +1,5 @@
 <?php
+/** Utility functions */
 if ( ! function_exists( 'dt_write_log' ) ) {
     // @note Included here because the module can be used independently
     function dt_write_log( $log ) {
@@ -27,6 +28,59 @@ if ( ! function_exists( 'dt_get_theme_data_url' ) ) {
          * @return string
          */
         return apply_filters( 'disciple_tools_theme_data_url', 'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-theme-data/master/' );
+    }
+}
+if ( ! function_exists( 'dt_get_location_grid_mirror' ) ) {
+    /**
+     * Best way to call for the mapping polygon
+     * @return array|string
+     */
+    function dt_get_location_grid_mirror( $url_only = false ) {
+        $mirror = get_option( 'dt_location_grid_mirror' );
+        if ( empty( $mirror ) ) {
+            $array = [
+                'key'   => 'google',
+                'label' => 'Google',
+                'url'   => 'https://storage.googleapis.com/location-grid-mirror/',
+            ];
+            update_option( 'dt_location_grid_mirror', $array, true );
+            $mirror = $array;
+        }
+
+        if ( $url_only ) {
+            return $mirror['url'];
+        }
+
+        return $mirror;
+    }
+}
+if ( ! function_exists( 'dt_get_mapbox_endpoint' ) ) {
+    function dt_get_mapbox_endpoint( $type = 'places' ) : string {
+        switch ( $type ) {
+            case 'permanent':
+                return 'https://api.mapbox.com/geocoding/v5/mapbox.places-permanent/';
+                break;
+            case 'places':
+            default:
+                return 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
+                break;
+        }
+    }
+}
+if ( ! function_exists( 'dt_array_to_sql' ) ) {
+    function dt_array_to_sql($values)
+    {
+        if (empty($values)) {
+            return 'NULL';
+        }
+        foreach ($values as &$val) {
+            if ('\N' === $val) {
+                $val = 'NULL';
+            } else {
+                $val = "'" . esc_sql(trim($val)) . "'";
+            }
+        }
+        return implode(',', $values);
     }
 }
 
@@ -139,6 +193,7 @@ try {
 }
 /*******************************************************************************************************************/
 
+/** Global variable dependent functions */
 if ( ! function_exists( 'dt_mapping_path' ) ) {
     function dt_mapping_path( $echo = false ) {
         global $dt_mapping;
