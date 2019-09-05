@@ -1,11 +1,15 @@
 window.DRILLDOWNDATA = mappingModule.mapping_module
 window.DRILLDOWN = {
 
-    get_drill_down( bindFunction, grid_id ) {
+    get_drill_down( bindFunction, grid_id, cached ) {
         DRILLDOWN.show_spinner()
 
         if ( ! grid_id ) {
             grid_id = 'top_map_level'
+        }
+
+        if ( ! cached ) {
+          cached = false
         }
 
         let drill_down = jQuery('#'+bindFunction)
@@ -17,7 +21,7 @@ window.DRILLDOWN = {
         return jQuery.ajax({
             type: rest.method,
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify( {  "bind_function": bindFunction, "grid_id": grid_id } ),
+            data: JSON.stringify( {  "bind_function": bindFunction, "grid_id": grid_id, "cached": cached } ),
             dataType: "json",
             url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
             beforeSend: function(xhr) {

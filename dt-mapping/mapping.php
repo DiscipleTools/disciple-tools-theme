@@ -17,6 +17,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         public $module_path;
         public $module_url;
         public $endpoints;
+        public $cache_length;
 
         // Singleton
         private static $_instance = null;
@@ -67,6 +68,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 return;
             }
             /** END PERMISSION CHECK */
+
+
 
             /**
              * SET FILE LOCATIONS
@@ -273,6 +276,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $settings['spinner_large'] = ' <img src="'. $dt_mapping['spinner'] . '" width="24px" />';
             $settings['heatmap_focus'] = 0;
             $settings['current_map'] = 'top_map_list';
+            $settings['cached'] = 0; // this controls the endpoint transient caching
 
             return $settings;
         }
@@ -309,6 +313,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
          * ENDPOINTS
          ************************************************************************************************************/
         public function default_endpoints( $endpoints = [] ) {
+            /** Defines a default length of cache. @var cache_length */
+            $this->cache_length = apply_filters( 'dt_mapping_cache_length', 60*60 );
+
             $endpoints['get_default_map_data_endpoint'] = [
                 'namespace' => $this->namespace,
                 'route' => '/mapping_module/get_default_map_data',
@@ -354,7 +361,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 return new WP_Error( __METHOD__, 'No permission', [ 'status' => 101 ] );
             }
 
-            if ( isset( $params['cache'] ) && ! empty( $params['cache'] )  ) {
+            if ( isset( $params['cached'] ) && ! empty( $params['cached'] )  ) {
                 $trans_key = 'dt_default_map_';
                 if ( ! empty( get_transient( $trans_key ) ) ) {
                     return get_transient( $trans_key );
@@ -363,9 +370,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             $response = $this->localize_script();
 
-            // set transient for cache
-            if ( isset( $params['cache'] ) && ! empty( $params['cache'] )  ) {
-                set_transient( $trans_key, $response, 60 * 60 );
+            // set transient for cached
+            if ( isset( $params['cached'] ) && ! empty( $params['cached'] )  ) {
+                set_transient( $trans_key, $response, $this->cache_length );
             }
 
             return $response;
@@ -378,8 +385,10 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $params = $request->get_params();
 
             if ( isset( $params['grid_id'] ) ) {
-                // check for cache
-                if ( isset( $params['cache'] ) && ! empty( $params['cache'] )  ) {
+                // check for cached
+                if ( isset( $params['cached'] ) && ! empty( $params['cached'] )  ) {
+                    dt_write_log('cache triggered');
+                    dt_write_log($this->cache_length);
                     $trans_key = 'dt_map_' . hash('sha256', $params['grid_id'] );
                     if ( ! empty( get_transient( $trans_key ) ) ) {
                         return get_transient( $trans_key );
@@ -391,8 +400,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $response = $this->map_level_by_grid_id( $grid_id );
 
                 // set transient for cache
-                if ( isset( $params['cache'] ) && ! empty( $params['cache'] )  ) {
-                    set_transient( $trans_key, $response, 60 * 60 );
+                if ( isset( $params['cached'] ) && ! empty( $params['cached'] )  ) {
+                    set_transient( $trans_key, $response, $this->cache_length );
                 }
 
                 return $response;
@@ -454,8 +463,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $params = $request->get_params();
 
             if ( isset( $params['grid_id'] ) ) {
-                // check for cache
-                if ( isset( $params['cache'] ) && ! empty( $params['cache'] )  ) {
+                // check for cached
+                if ( isset( $params['cached'] ) && ! empty( $params['cached'] )  ) {
                     $trans_key = 'dt_map_' . hash('sha256', $params['grid_id'] );
                     if ( ! empty( get_transient( $trans_key ) ) ) {
                         return get_transient( $trans_key );
@@ -466,9 +475,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                 $response = $this->drill_down_array( $grid_id );
 
-                // set transient for cache
-                if ( isset( $params['cache'] ) && ! empty( $params['cache'] )  ) {
-                    set_transient( $trans_key, $response, 60 * 60 );
+                // set transient for cached
+                if ( isset( $params['cached'] ) && ! empty( $params['cached'] )  ) {
+                    set_transient( $trans_key, $response, $this->cache_length );
                 }
 
                 return $response;
