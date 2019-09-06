@@ -193,22 +193,13 @@ jQuery(document).ready(function($) {
   $('.accept-decline').on('click', function () {
     let action = $(this).data("action")
     let data = {accept:action === "accept"}
-    jQuery.ajax({
-      type: "POST",
-      data: JSON.stringify(data),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: contactsDetailsWpApiSettings.root + 'dt-posts/v2/contacts/' + contactId + "/accept",
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', contactsDetailsWpApiSettings.nonce);
-      }
-    }).then(function (resp) {
+    makeRequestOnPosts( "POST", `contacts/${contactId}/accept`, data)
+    .then(function (resp) {
       setStatus(resp)
       jQuery('#accept-contact').hide()
     }).catch(err=>{
       console.log('error')
       console.log(err.responseText)
-      // jQuery("#errors").append(err.responseText)
     })
   })
 
