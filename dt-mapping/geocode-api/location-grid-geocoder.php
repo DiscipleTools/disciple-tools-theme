@@ -840,36 +840,6 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             return $country_code;
         }
 
-        public function mapbox_forward_lookup( $address, $country_code = null ) {
-            $address = str_replace( ';', ' ', $address );
-            $address = utf8_uri_encode( $address );
-
-            if ( $country_code ) {
-                $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . $address . '.json?types=address&access_token=' . get_option( 'dt_mapbox_api_key' );
-            } else {
-                $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . $address . '.json?country=' . $country_code . '&types=address&access_token=' . get_option( 'dt_mapbox_api_key' );
-            }
-
-            $data_result = @file_get_contents( $url );
-            if ( ! $data_result ) {
-                return false;
-            }
-            $data = json_decode( $data_result, true );
-
-            return $data;
-        }
-
-        public function mapbox_reverse_lookup( $longitude, $latitude ) {
-            $url         = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . $longitude . ',' . $latitude . '.json?access_token=' . get_option( 'dt_mapbox_api_key' );
-            $data_result = @file_get_contents( $url );
-            if ( ! $data_result ) {
-                return false;
-            }
-            $data = json_decode( $data_result, true );
-
-            return $data;
-        }
-
         public function _format_location_grid_results( $query ) {
             if ( empty( $query ) ) {
                 $keyed_query = [];

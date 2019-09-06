@@ -72,7 +72,6 @@ function page_mapping_view() {
                 <span id="current_level"></span>
             </div>
         </div>
-        <span style="font-size:.8em; margin-left:20px"><a onclick="refresh_data('get_location_grid_totals')">${_.escape( translations.refresh_data )}</a></span>
         <hr style="max-width:100%;">
         
        <!-- Map -->
@@ -83,7 +82,7 @@ function page_mapping_view() {
             <div class="cell medium-2 left-border-grey">
                 <div class="grid-y">
                     <div class="cell" style="overflow-y: scroll; height:700px; padding:0 .4em;" id="child-list-container">
-                        <div id="minimap"></div><br><br>
+                        <div id="minimap" style="height: 250px;"></div><br><br>
                         <div class="button-group expanded stacked" id="data-type-list">
                          </div>
                     </div>
@@ -92,6 +91,8 @@ function page_mapping_view() {
         </div>
         
         <hr style="max-width:100%;">
+        
+        <span style="font-size:.8em; margin-left:20px"><a onclick="refresh_data('get_location_grid_totals')">${_.escape( translations.refresh_data )}</a></span>
         
         <br>
         `);
@@ -394,7 +395,7 @@ function location_grid_map( div, grid_id ) {
       jQuery.ajax({
         type: rest.method,
         contentType: "application/json; charset=utf-8",
-        data: JSON.stringify( { 'grid_id': grid_id } ),
+        data: JSON.stringify( { 'grid_id': grid_id, 'cached': DRILLDOWNDATA.settings.cached, 'cached_length': DRILLDOWNDATA.settings.cached_length } ),
         dataType: "json",
         url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
         beforeSend: function(xhr) {
@@ -479,7 +480,7 @@ function location_grid_map( div, grid_id ) {
             // Click navigation
             circle.events.on("hit", function (ev) {
 
-              return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.grid_id )
+              return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.grid_id, DRILLDOWNDATA.settings.cached )
 
             }, this);
 
@@ -526,10 +527,10 @@ function heatmap_focus_change( focus_id, current_map ) {
     DRILLDOWNDATA.settings.heatmap_focus = focus_id
 
     if ( current_map !== 'top_map_level' ) { // make sure this is not a top level continent or world request
-        DRILLDOWN.get_drill_down( 'map_chart_drilldown', current_map )
+        DRILLDOWN.get_drill_down( 'map_chart_drilldown', current_map, DRILLDOWNDATA.settings.cached )
     }
     else { // top_level maps
-        DRILLDOWN.get_drill_down('map_chart_drilldown')
+        DRILLDOWN.get_drill_down('map_chart_drilldown', null, DRILLDOWNDATA.settings.cached)
     }
 }
 
@@ -649,7 +650,7 @@ function page_mapping_list() {
     // set the depth of the drill down
     DRILLDOWNDATA.settings.hide_final_drill_down = false
     // load drill down
-    window.DRILLDOWN.get_drill_down('location_list_drilldown')
+    window.DRILLDOWN.get_drill_down('location_list_drilldown', null, DRILLDOWNDATA.settings.cached)
 }
 
 window.DRILLDOWN.location_list_drilldown = function( grid_id ) {
@@ -696,7 +697,7 @@ function location_grid_list( div, grid_id ) {
         jQuery.ajax({
             type: rest.method,
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify( { 'grid_id': grid_id } ),
+            data: JSON.stringify( { 'grid_id': grid_id, 'cached': DRILLDOWNDATA.settings.cached, 'cached_length': DRILLDOWNDATA.settings.cached_length } ),
             dataType: "json",
             url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
             beforeSend: function(xhr) {
