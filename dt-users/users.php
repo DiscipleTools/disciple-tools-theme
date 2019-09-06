@@ -637,7 +637,7 @@ class Disciple_Tools_Users
                 </td>
             </tr>
         </table>
-        <?php if ( user_can( $user->ID, 'access_specific_sources' ) ) :
+        <?php if ( isset( $user->ID ) && user_can( $user->ID, 'access_specific_sources' ) ) :
             $selected_sources = get_user_option( 'allowed_sources', $user->ID );
             $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
             $sources = $site_custom_lists['sources'] ?? [];
