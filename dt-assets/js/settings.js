@@ -102,3 +102,68 @@ function delete_location( grid_id ) {
         load_settings_locations( true )
     }).fail(handleAjaxError)
 }
+
+let update_user = ( key, value )=>{
+    let data =  {
+      [key]: value
+    }
+    return makeRequest( "POST", `user/update`, data , 'dt/v1/' )
+  }
+/**
+ * Set availability dates
+ */
+let dateFields = [ "start_date", "end_date" ]
+  dateFields.forEach(key=>{
+    let datePicker = $(`#${key}.date-picker`)
+    datePicker.datepicker({
+      onSelect: function (date) {
+        let start_date = $('#start_date').val()
+        let end_date = $('#end_date').val()
+        if ( start_date && end_date && ( moment(start_date) < moment(end_date) )){
+          $('#add_unavailable_dates').removeAttr("disabled");
+        } else {
+          $('#add_unavailable_dates').attr("disabled", true);
+        }
+      },
+      dateFormat: 'yy-mm-dd',
+      changeMonth: true,
+      changeYear: true
+    })
+  })
+
+$('#add_unavailable_dates').on('click', function () {
+  let start_date = $('#start_date').val()
+  let end_date = $('#end_date').val()
+  $('#add_unavailable_dates_spinner').addClass('active')
+  update_user( 'add_unavailability', {start_date, end_date}).then((resp)=>{
+    $('#add_unavailable_dates_spinner').removeClass('active')
+    $('#start_date').val('')
+    $('#end_date').val('')
+    display_dates_unavailable(resp)
+  })
+})
+let display_dates_unavailable = (list = [], first_run )=>{
+  let date_unavailable_table = $('#unavailable-list')
+  let rows = ``
+  list = _.orderBy( list, [ "start_date" ], "desc")
+  list.forEach(range=>{
+    rows += `<tr>
+        <td>${_.escape(range.start_date)}</td>
+        <td>${_.escape(range.end_date)}</td>
+        <td>
+            <button class="button hollow tiny alert remove_dates_unavailable" data-id="${_.escape(range.id)}">
+            <i class="fi-x"></i> ${_.escape( wpApiSettingsPage.translations.delete )}</button>
+        </td>
+      </tr>`
+  })
+  if ( rows || ( !rows && !first_run ) ){
+    date_unavailable_table.html(rows)
+  }
+}
+display_dates_unavailable( wpApiSettingsPage.custom_data.availability, true )
+$( document).on( 'click', '.remove_dates_unavailable', function () {
+  let id = $(this).data('id');
+  update_user( 'remove_unavailability', id).then((resp)=>{
+    display_dates_unavailable(resp)
+  })
+})

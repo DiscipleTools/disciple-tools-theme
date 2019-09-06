@@ -569,6 +569,21 @@ function dt_get_site_custom_lists( string $list_title = null ) {
         "four_fields" => false,
     ];
 
+    $fields["user_workload_status"] = [
+        "active" => [
+            "label" => __( "Accepting new contacts", 'disciple_tools' ),
+            "color" => "#4caf50"
+        ],
+        "existing" => [
+            "label" => __( "I'm only investing in existing contacts", 'disciple_tools' ),
+            "color" => "#ff9800"
+        ],
+        "too_many" => [
+            "label" => __( "I have too many contacts", 'disciple_tools' ),
+            "color" => "#F43636"
+        ]
+    ];
+
 
     // $fields = apply_filters( 'dt_site_custom_lists', $fields );
 

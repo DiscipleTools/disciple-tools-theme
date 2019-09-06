@@ -837,3 +837,9 @@ input.dt-switch:checked + label:after {
 label.dt-switch:active:after {
     width: 20px;
 }
+
+
+.ul-no-bullets {
+    list-style-type: none;
+    margin: 0;
+}

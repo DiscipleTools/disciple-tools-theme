@@ -93,6 +93,12 @@ class Disciple_Tools_Users_Endpoints
                 'callback' => [ $this, 'delete_user_location' ]
             ]
         );
+        register_rest_route(
+            $this->namespace, '/user/update', [
+                'methods' => "POST",
+                'callback' => [ $this, 'update_user' ]
+            ]
+        );
     }
 
     /**
@@ -206,6 +212,46 @@ class Disciple_Tools_Users_Endpoints
         } else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status', 400 ] );
         }
+    }
+
+    public function update_user( WP_REST_Request $request ){
+        $get_params = $request->get_params();
+        $body = $request->get_json_params();
+        $user = wp_get_current_user();
+        if ( $user ){
+            if ( !empty( $body["add_unavailability"] ) ){
+                if ( !empty( $body["add_unavailability"]["start_date"] ) && !empty( $body["add_unavailability"]["end_date"] ) ) {
+                    $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
+                    if ( !$dates_unavailable ){
+                        $dates_unavailable = [];
+                    }
+                    $max_id = 0;
+                    foreach ( $dates_unavailable as $range ){
+                        $max_id = max( $max_id, $range["id"] ?? 0 );
+                    }
+
+                    $dates_unavailable[] = [
+                        "id" => $max_id + 1,
+                        "start_date" => $body["add_unavailability"]["start_date"],
+                        "end_date" => $body["add_unavailability"]["end_date"],
+                    ];
+                    update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
+                    return $dates_unavailable;
+                }
+            }
+            if ( !empty( $body["remove_unavailability"] ) ) {
+                $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
+                foreach ( $dates_unavailable as $index => $range ) {
+                    if ( $body["remove_unavailability"] === $range["id"] ){
+                        unset( $dates_unavailable[$index] );
+                    }
+                }
+                $dates_unavailable = array_values( $dates_unavailable );
+                update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
+                return $dates_unavailable;
+            }
+        }
+        return true;
     }
 
 }

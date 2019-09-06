@@ -180,15 +180,15 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['assigned_to'] = [
             'name'        => __( 'Assigned To', 'disciple_tools' ),
-            'description' => '',
+            'description' => __( 'Select the main person who is responsible for reporting on this contact', 'disciple_tools' ),
             'type'        => 'user_select',
             'default'     => '',
             'section'     => 'status',
         ];
         // Status Section
         $fields['overall_status'] = [
-            'name'        => __( 'Overall Status', 'disciple_tools' ),
-            'description' => '',
+            'name'        => __( 'Contact Status', 'disciple_tools' ),
+            'description' => __( 'This is where you set the current status of the contact.', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'new'   => [

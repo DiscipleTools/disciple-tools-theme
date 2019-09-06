@@ -461,3 +461,17 @@ select.color-select {
 .typeahead__query {
     z-index: 1 !important;
 }
+
+.assigned-to-row {
+    display: flex;
+    align-items: center;
+    .status-square {
+        height: 13px;
+        width: 13px;
+        display: inline-block;
+        border-radius: 2px;
+    }
+    > span {
+        margin-right: 10px;
+    }
+}
