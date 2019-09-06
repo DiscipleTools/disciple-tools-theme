@@ -158,13 +158,13 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             return strtotime( ( $this_year + 1 ) . '-01-01' );
         }
     }
-    if ( ! function_exists( 'dt_date_end_of_year' ) ) {
+    if ( ! function_exists( 'dt_get_year_from_timestamp' ) ) {
         function dt_get_year_from_timestamp( int $time) {
             return date( "Y", $time );
         }
     }
 
-    if ( ! function_exists( 'dt_date_end_of_year' ) ) {
+    if ( ! function_exists( 'dt_sanitize_array_html' ) ) {
         function dt_sanitize_array_html( $array) {
             array_walk_recursive($array, function ( &$v) {
                 $v = filter_var( trim( $v ), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES );
