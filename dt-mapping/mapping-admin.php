@@ -1185,13 +1185,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function box_levels() {
-            dt_write_log($_POST);
             if ( isset( $_POST['install_level_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['install_level_nonce'] ) ), 'install_level' . get_current_user_id() ) ) {
 
                 if ( isset( $_POST['country_select'] ) && ! empty( $_POST['country_select'] ) ) {
                     $admin0_code = sanitize_text_field( wp_unslash( $_POST['country_select'] ) );
                     $this->install_additional_levels( $admin0_code );
-                    dt_write_log('test');
+                    dt_write_log( 'test' );
                 }
 
                 if ( isset( $_POST['remove'] ) && ! empty( $_POST['remove'] ) ) {
@@ -1563,11 +1562,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
 
-        public function dt_sanitize_array_html($array)
-        {
-            array_walk_recursive($array, function (&$v) {
-            $v = filter_var(trim($v), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-        });
+        public function dt_sanitize_array_html( $array) {
+            array_walk_recursive($array, function ( &$v) {
+                $v = filter_var( trim( $v ), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES );
+            });
             return $array;
         }
 

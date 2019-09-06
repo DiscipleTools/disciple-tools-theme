@@ -21,7 +21,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Loader' ) ) {
                  */
                 $dt_mapping = [];
             }
-            if ( ! isset( $dt_mapping['environment'] )  ) {
+            if ( ! isset( $dt_mapping['environment'] ) ) {
                 /**
                  * Three supported environments: disciple_tools, theme, plugin
                  */
@@ -41,7 +41,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Loader' ) ) {
             if ( ! isset( $dt_mapping['version'] ) ) {
                 $dt_mapping['version'] = '3.0';
             }
-            require_once ('globals.php');
+            require_once( 'globals.php' );
             /** end create globals */
 
             /** Configurations */
@@ -49,10 +49,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Loader' ) ) {
 
             /** Additional columns */
             if ( ! $custom_columns ) {
-                require_once('columns/add-contacts-column.php');
-                require_once('columns/add-groups-column.php');
-                require_once('columns/add-churches-column.php');
-                require_once('columns/add-users-column.php');
+                require_once( 'columns/add-contacts-column.php' );
+                require_once( 'columns/add-groups-column.php' );
+                require_once( 'columns/add-churches-column.php' );
+                require_once( 'columns/add-users-column.php' );
             }
 
             /** Queries */

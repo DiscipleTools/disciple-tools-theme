@@ -23,23 +23,22 @@ define( 'SHORTINIT', 1 );
 if ( ! isset( $_SERVER['DOCUMENT_ROOT'] ) ) {
     exit( 'missing server info' );
 }
-//require_once filter_var( $_SERVER['DOCUMENT_ROOT'], FILTER_SANITIZE_URL ) . '/wp-load.php'; //@phpcs:ignore
-require_once $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php'; //@phpcs:ignore
 
 if ( ! defined( 'WP_CONTENT_URL' ) ) {
     define( 'WP_CONTENT_URL', get_option( 'siteurl' ) . '/wp-content' );
 }
 $dir = __DIR__;
 if ( strpos( $dir, 'wp-content/themes' ) ) {
-    $mapping_url = ABSPATH . 'wp-content/themes/' . get_option('template') . '/dt-mapping/';
+    $mapping_url = ABSPATH . 'wp-content/themes/' . get_option( 'template' ) . '/dt-mapping/';
 }  else {
-    $mapping_url = basename( plugin_dir_path(  dirname( __FILE__ , 2 ) ) ) ; // @todo
+    $mapping_url = basename( plugin_dir_path( dirname( __FILE__, 2 ) ) ); // @todo
 }
 
 if ( file_exists( $mapping_url . 'geocode-api/location-grid-geocoder.php' ) ) {
     require_once( 'geocode-api/location-grid-geocoder.php' ); // Location grid geocoder
 } else {
-    echo json_encode( ['error' => 'did not find geocoder file' ] );
+    echo json_encode( [ 'error' => 'did not find geocoder file' ] );
     return;
 }
 

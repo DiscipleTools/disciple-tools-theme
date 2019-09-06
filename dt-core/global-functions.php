@@ -105,19 +105,18 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     if ( ! function_exists( 'dt_array_to_sql' ) ) {
-        function dt_array_to_sql($values)
-        {
-            if (empty($values)) {
+        function dt_array_to_sql( $values) {
+            if (empty( $values )) {
                 return 'NULL';
             }
             foreach ($values as &$val) {
                 if ('\N' === $val) {
                     $val = 'NULL';
                 } else {
-                    $val = "'" . esc_sql(trim($val)) . "'";
+                    $val = "'" . esc_sql( trim( $val ) ) . "'";
                 }
             }
-            return implode(',', $values);
+            return implode( ',', $values );
         }
     }
 
@@ -129,70 +128,64 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * @return bool|int|string
      */
     if ( ! function_exists( 'dt_format_date' ) ) {
-        function dt_format_date($date, $format = 'short')
-        {
-            $date_format = get_option('date_format');
-            $time_format = get_option('time_format');
+        function dt_format_date( $date, $format = 'short') {
+            $date_format = get_option( 'date_format' );
+            $time_format = get_option( 'time_format' );
             if ($format === 'short') {
                 $format = $date_format;
             } else if ($format === 'long') {
                 $format = $date_format . ' ' . $time_format;
             }
-            if (is_numeric($date)) {
-                $formatted = date_i18n($format, $date);
+            if (is_numeric( $date )) {
+                $formatted = date_i18n( $format, $date );
             } else {
-                $formatted = mysql2date($format, $date);
+                $formatted = mysql2date( $format, $date );
             }
             return $formatted;
         }
     }
 
     if ( ! function_exists( 'dt_date_start_of_year' ) ) {
-        function dt_date_start_of_year()
-        {
-            $this_year = date('Y');
-            $timestamp = strtotime($this_year . '-01-01');
+        function dt_date_start_of_year() {
+            $this_year = date( 'Y' );
+            $timestamp = strtotime( $this_year . '-01-01' );
             return $timestamp;
         }
     }
     if ( ! function_exists( 'dt_date_end_of_year' ) ) {
-        function dt_date_end_of_year()
-        {
-            $this_year = (int)date('Y');
-            return strtotime(($this_year + 1) . '-01-01');
+        function dt_date_end_of_year() {
+            $this_year = (int) date( 'Y' );
+            return strtotime( ( $this_year + 1 ) . '-01-01' );
         }
     }
     if ( ! function_exists( 'dt_date_end_of_year' ) ) {
-        function dt_get_year_from_timestamp(int $time)
-        {
-            return date("Y", $time);
+        function dt_get_year_from_timestamp( int $time) {
+            return date( "Y", $time );
         }
     }
 
     if ( ! function_exists( 'dt_date_end_of_year' ) ) {
-        function dt_sanitize_array_html($array)
-        {
-            array_walk_recursive($array, function (&$v) {
-                $v = filter_var(trim($v), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+        function dt_sanitize_array_html( $array) {
+            array_walk_recursive($array, function ( &$v) {
+                $v = filter_var( trim( $v ), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES );
             });
             return $array;
         }
     }
 
     if ( ! function_exists( 'dt_array_to_sql' ) ) {
-        function dt_array_to_sql($values)
-        {
-            if (empty($values)) {
+        function dt_array_to_sql( $values) {
+            if (empty( $values )) {
                 return 'NULL';
             }
             foreach ($values as &$val) {
                 if ('\N' === $val) {
                     $val = 'NULL';
                 } else {
-                    $val = "'" . esc_sql(trim($val)) . "'";
+                    $val = "'" . esc_sql( trim( $val ) ) . "'";
                 }
             }
-            return implode(',', $values);
+            return implode( ',', $values );
         }
     }
 

@@ -39,7 +39,7 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
             $data = [];
 
             if ( ! self::check_valid_ip_address( $ip_address ) ) {
-                return ['error' => 'Invalid IP Address'];
+                return [ 'error' => 'Invalid IP Address' ];
             }
 
             if ( is_null( $ip_address ) || empty( $ip_address ) ) {
@@ -49,7 +49,7 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
             }
 
             $response = json_decode( self::url_get_contents( self::make_url( $ip_address ) ), true );
-            if ( isset( $response['success'] ) &&  ! $response['success'] ) {
+            if ( isset( $response['success'] ) && ! $response['success'] ) {
                 return $response;
             }
 
@@ -69,7 +69,7 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
 
         public static function geocode_current_visitor() : array {
             $response = json_decode( self::url_get_contents( self::make_url( 'check' ) ), true );
-            if ( isset( $response['success'] ) &&  ! $response['success'] ) {
+            if ( isset( $response['success'] ) && ! $response['success'] ) {
                 return [];
             }
             return $response;
@@ -147,7 +147,9 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
                             <?php if ( ! empty( self::get_key() ) ) : ?>
                                 <a onclick="jQuery('#ip-geocode-report').toggle();" class="button">Show Report</a>
                                 <div id="ip-geocode-report" style="display:none;">
-                                    <?php print '<br>Your IP Response<br><pre>'; print_r( self::geocode_current_visitor() ); print '</pre>'; ?>
+                                    <?php print '<br>Your IP Response<br><pre>';
+                                    print_r( self::geocode_current_visitor() );
+                                    print '</pre>'; ?>
                                 </div>
 
                             <?php endif; ?>
@@ -196,7 +198,7 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
             return $output;
         }
 
-        public static function  make_url( $ip_address ) {
+        public static function make_url( $ip_address ) {
             $key = self::get_key();
             return self::$ipstack_endpoint . $ip_address . '?access_key=' . $key;
         }
@@ -328,7 +330,6 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
 
 /***************************************************************************************************************
  * Expected Full Response
- *
 
 Array
 (

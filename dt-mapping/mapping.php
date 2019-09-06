@@ -24,7 +24,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         public static function instance() {
             global $dt_mapping;
             if ( is_null( self::$_instance ) ) {
-                self::$_instance = new self($dt_mapping);
+                self::$_instance = new self( $dt_mapping );
             }
             return self::$_instance;
         }
@@ -314,7 +314,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
          ************************************************************************************************************/
         public function default_endpoints( $endpoints = [] ) {
             /** Defines a default length of cache. @var cache_length */
-            $this->cache_length = apply_filters( 'dt_mapping_cache_length', 60*60 );
+            $this->cache_length = apply_filters( 'dt_mapping_cache_length', 60 *60 );
 
             $endpoints['get_default_map_data_endpoint'] = [
                 'namespace' => $this->namespace,
@@ -361,7 +361,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 return new WP_Error( __METHOD__, 'No permission', [ 'status' => 101 ] );
             }
 
-            if ( isset( $params['cached'] ) && ! empty( $params['cached'] )  ) {
+            if ( isset( $params['cached'] ) && ! empty( $params['cached'] ) ) {
                 $trans_key = 'dt_default_map_';
                 if ( ! empty( get_transient( $trans_key ) ) ) {
                     return get_transient( $trans_key );
@@ -371,7 +371,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $response = $this->localize_script();
 
             // set transient for cached
-            if ( isset( $params['cached'] ) && ! empty( $params['cached'] )  ) {
+            if ( isset( $params['cached'] ) && ! empty( $params['cached'] ) ) {
                 set_transient( $trans_key, $response, $this->cache_length );
             }
 
@@ -386,10 +386,10 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             if ( isset( $params['grid_id'] ) ) {
                 // check for cached
-                if ( isset( $params['cached'] ) && ! empty( $params['cached'] )  ) {
-                    dt_write_log('cache triggered');
-                    dt_write_log($this->cache_length);
-                    $trans_key = 'dt_map_' . hash('sha256', $params['grid_id'] );
+                if ( isset( $params['cached'] ) && ! empty( $params['cached'] ) ) {
+                    dt_write_log( 'cache triggered' );
+                    dt_write_log( $this->cache_length );
+                    $trans_key = 'dt_map_' . hash( 'sha256', $params['grid_id'] );
                     if ( ! empty( get_transient( $trans_key ) ) ) {
                         return get_transient( $trans_key );
                     }
@@ -400,7 +400,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $response = $this->map_level_by_grid_id( $grid_id );
 
                 // set transient for cache
-                if ( isset( $params['cached'] ) && ! empty( $params['cached'] )  ) {
+                if ( isset( $params['cached'] ) && ! empty( $params['cached'] ) ) {
                     set_transient( $trans_key, $response, $this->cache_length );
                 }
 
@@ -464,8 +464,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             if ( isset( $params['grid_id'] ) ) {
                 // check for cached
-                if ( isset( $params['cached'] ) && ! empty( $params['cached'] )  ) {
-                    $trans_key = 'dt_map_' . hash('sha256', $params['grid_id'] );
+                if ( isset( $params['cached'] ) && ! empty( $params['cached'] ) ) {
+                    $trans_key = 'dt_map_' . hash( 'sha256', $params['grid_id'] );
                     if ( ! empty( get_transient( $trans_key ) ) ) {
                         return get_transient( $trans_key );
                     }
@@ -476,7 +476,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 $response = $this->drill_down_array( $grid_id );
 
                 // set transient for cached
-                if ( isset( $params['cached'] ) && ! empty( $params['cached'] )  ) {
+                if ( isset( $params['cached'] ) && ! empty( $params['cached'] ) ) {
                     set_transient( $trans_key, $response, $this->cache_length );
                 }
 

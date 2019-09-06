@@ -85,7 +85,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
         }
 
 
-        public static function lookup(  $search_string, $type = null, $country_code = null  ) {
+        public static function lookup( $search_string, $type = null, $country_code = null ) {
             $search_string = str_replace( ';', ' ', $search_string );
             $search_string = utf8_uri_encode( $search_string );
 
@@ -546,7 +546,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         return $raw_response['features'][0]['id'] ?? false;
                     }
                     else {
-                        foreach( $raw_response['features'] as $feature ) {
+                        foreach ( $raw_response['features'] as $feature ) {
                             $data[] = $feature['id'];
                         }
                         return $data;
@@ -557,7 +557,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         return $raw_response['features'][0]['type'] ?? false;
                     }
                     else {
-                        foreach( $raw_response['features'] as $feature ) {
+                        foreach ( $raw_response['features'] as $feature ) {
                             $data[] = $feature['type'];
                         }
                         return $data;
@@ -568,7 +568,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         return $raw_response['features'][0]['place_type'] ?? false;
                     }
                     else {
-                        foreach( $raw_response['features'] as $feature ) {
+                        foreach ( $raw_response['features'] as $feature ) {
                             $data[] = $feature['place_type'];
                         }
                         return $data;
@@ -579,7 +579,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         return $raw_response['features'][0]['relevance'] ?? false;
                     }
                     else {
-                        foreach( $raw_response['features'] as $feature ) {
+                        foreach ( $raw_response['features'] as $feature ) {
                             $data[] = $feature['relevance'];
                         }
                         return $data;
@@ -590,7 +590,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         return $raw_response['features'][0]['properties'] ?? false;
                     }
                     else {
-                        foreach( $raw_response['features'] as $feature ) {
+                        foreach ( $raw_response['features'] as $feature ) {
                             $data[] = $feature['properties'];
                         }
                         return $data;
@@ -601,7 +601,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         return $raw_response['features'][0]['text'] ?? false;
                     }
                     else {
-                        foreach( $raw_response['features'] as $feature ) {
+                        foreach ( $raw_response['features'] as $feature ) {
                             $data[] = $feature['text'];
                         }
                         return $data;
@@ -612,7 +612,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         return $raw_response['features'][0]['place_name'] ?? false;
                     }
                     else {
-                        foreach( $raw_response['features'] as $feature ) {
+                        foreach ( $raw_response['features'] as $feature ) {
                             $data[] = $feature['place_name'];
                         }
                         return $data;
@@ -623,7 +623,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         return $raw_response['features'][0]['center'] ?? false;
                     }
                     else {
-                        foreach( $raw_response['features'] as $feature ) {
+                        foreach ( $raw_response['features'] as $feature ) {
                             $data[] = $feature['center'];
                         }
                         return $data;
@@ -634,7 +634,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         return $raw_response['features'][0]['geometry'] ?? false;
                     }
                     else {
-                        foreach( $raw_response['features'] as $feature ) {
+                        foreach ( $raw_response['features'] as $feature ) {
                             $data[] = $feature['geometry'];
                         }
                         return $data;
@@ -645,7 +645,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         return $raw_response['features'][0]['context'] ?? false;
                     }
                     else {
-                        foreach( $raw_response['features'] as $feature ) {
+                        foreach ( $raw_response['features'] as $feature ) {
                             $data[] = $feature['context'];
                         }
                         return $data;
@@ -660,31 +660,31 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                  */
                 case 'neighborhood':
                     if ( $first_result_only ) {
-                        return $data[] = [ self::context_filter( $raw_response['features'][0]['context'], 'neighborhood' ) ] ;
+                        return $data[] = [ self::context_filter( $raw_response['features'][0]['context'], 'neighborhood' ) ];
                     }
                     else {
-                        foreach( $raw_response['features'] as $feature ) {
+                        foreach ( $raw_response['features'] as $feature ) {
                             $location = self::context_filter( $feature['context'], 'neighborhood' );
                             if ( ! empty( $location ) ) {
                                 $data[$location['id']] = $location;
                             }
                         }
-                        sort($data);
+                        sort( $data );
                         return $data;
                     }
                     break;
                 case 'postcode':
                     if ( $first_result_only ) {
-                        return $data[] = [ self::context_filter( $raw_response['features'][0]['context'], 'postcode' ) ] ;
+                        return $data[] = [ self::context_filter( $raw_response['features'][0]['context'], 'postcode' ) ];
                     }
                     else {
-                        foreach( $raw_response['features'] as $feature ) {
+                        foreach ( $raw_response['features'] as $feature ) {
                             $location = self::context_filter( $feature['context'], 'postcode' );
                             if ( ! empty( $location ) ) {
                                 $data[$location['id']] = $location;
                             }
                         }
-                        sort($data);
+                        sort( $data );
                         return $data;
                     }
                     break;
@@ -693,13 +693,13 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         return $data[] = [ self::context_filter( $raw_response['features'][0]['context'], 'place' ) ];
                     }
                     else {
-                        foreach( $raw_response['features'] as $feature ) {
+                        foreach ( $raw_response['features'] as $feature ) {
                             $location = self::context_filter( $feature['context'], 'place' );
                             if ( ! empty( $location ) ) {
                                 $data[$location['id']] = $location;
                             }
                         }
-                        sort($data);
+                        sort( $data );
                         return $data;
                     }
                     break;
@@ -708,13 +708,13 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         return $data[] = [ self::context_filter( $raw_response['features'][0]['context'], 'region' ) ];
                     }
                     else {
-                        foreach( $raw_response['features'] as $feature ) {
+                        foreach ( $raw_response['features'] as $feature ) {
                             $location = self::context_filter( $feature['context'], 'region' );
                             if ( ! empty( $location ) ) {
                                 $data[$location['id']] = $location;
                             }
                         }
-                        sort($data);
+                        sort( $data );
                         return $data;
                     }
                     break;
@@ -723,13 +723,13 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         return $data[] = [ self::context_filter( $raw_response['features'][0]['context'], 'country' ) ];
                     }
                     else {
-                        foreach( $raw_response['features'] as $feature ) {
+                        foreach ( $raw_response['features'] as $feature ) {
                             $location = self::context_filter( $feature['context'], 'country' );
                             if ( ! empty( $location ) ) {
                                 $data[$location['id']] = $location;
                             }
                         }
-                        sort($data);
+                        sort( $data );
                         return $data;
                     }
                     break;
@@ -739,20 +739,20 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     return (float) $raw_response['features'][0]['center'][0] ?? false;
                     break;
 
-                case 'lat';
+                case 'lat':
                 case 'latitude': // returns single value
                     return (float) $raw_response['features'][0]['center'][1] ?? false;
                     break;
 
                 case 'coordinates':
                 case 'lnglat':
-                    foreach( $raw_response['features'] as $feature ) {
+                    foreach ( $raw_response['features'] as $feature ) {
                         $location = $feature['center'][1] ?? false;
                         if ( ! empty( $location ) ) {
                             $data[$location['id']] = $location;
                         }
                     }
-                    sort($data);
+                    sort( $data );
                     return $data;
                     break;
 

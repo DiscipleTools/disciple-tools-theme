@@ -68,19 +68,18 @@ if ( ! function_exists( 'dt_get_mapbox_endpoint' ) ) {
     }
 }
 if ( ! function_exists( 'dt_array_to_sql' ) ) {
-    function dt_array_to_sql($values)
-    {
-        if (empty($values)) {
+    function dt_array_to_sql( $values) {
+        if (empty( $values )) {
             return 'NULL';
         }
         foreach ($values as &$val) {
             if ('\N' === $val) {
                 $val = 'NULL';
             } else {
-                $val = "'" . esc_sql(trim($val)) . "'";
+                $val = "'" . esc_sql( trim( $val ) ) . "'";
             }
         }
-        return implode(',', $values);
+        return implode( ',', $values );
     }
 }
 
@@ -108,12 +107,12 @@ if ( ! isset( $dt_mapping['path'] ) ) {
 if ( ! isset( $dt_mapping['url'] ) ) {
     switch ( $dt_mapping['environment'] ) {
         case 'plugin':
-            $dt_mapping['url'] = trailingslashit( plugin_dir_url(__FILE__) );
+            $dt_mapping['url'] = trailingslashit( plugin_dir_url( __FILE__ ) );
             break;
         case 'theme':
         case 'disciple_tools':
         default:
-            $dt_mapping['url'] = trailingslashit( get_stylesheet_directory_uri()) . 'dt-mapping/';
+            $dt_mapping['url'] = trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/';
             break;
     }
 }
@@ -148,7 +147,7 @@ if ( ! isset( $dt_mapping['module_config_path'] ) ) {
 if ( ! isset( $dt_mapping['options'] ) ) {
     $all_options = wp_load_alloptions();
     $dt_mapping['options'] = [];
-    foreach( $all_options as $key => $value ) {
+    foreach ( $all_options as $key => $value ) {
         if ( substr( $key, 0, 3 ) === 'dt_' ) {
             $dt_mapping['options'][$key] = $value;
         }
@@ -198,7 +197,7 @@ if ( ! function_exists( 'dt_mapping_path' ) ) {
     function dt_mapping_path( $echo = false ) {
         global $dt_mapping;
         if ( $echo ) {
-            echo $dt_mapping['path'];
+            echo esc_url_raw( $dt_mapping['path'] );
         }
         return $dt_mapping['path'];
     }
