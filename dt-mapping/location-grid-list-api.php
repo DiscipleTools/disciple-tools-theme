@@ -6,6 +6,7 @@
  * loading the most minimal of WP services.
  */
 
+if ( defined( 'ABSPATH' ) ) { exit; }
 /**
  * @link https://stackoverflow.com/questions/45421976/wordpress-rest-api-slow-response-time
  *       https://deliciousbrains.com/wordpress-rest-api-vs-custom-request-handlers/
@@ -18,22 +19,34 @@ define( 'DOING_AJAX', true );
 //Tell WordPress to only load the basics
 define( 'SHORTINIT', 1 );
 
-//get path of wp-load.php and load it
+// Setup
 if ( ! isset( $_SERVER['DOCUMENT_ROOT'] ) ) {
-    exit();
+    exit( 'missing server info' );
 }
-
-require_once filter_var( $_SERVER['DOCUMENT_ROOT'], FILTER_SANITIZE_URL ) . '/wp-load.php'; //@phpcs:ignore
+require_once $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php'; //@phpcs:ignore
 
 if ( ! defined( 'WP_CONTENT_URL' ) ) {
     define( 'WP_CONTENT_URL', get_option( 'siteurl' ) . '/wp-content' );
+}
+$dir = __DIR__;
+if ( strpos( $dir, 'wp-content/themes' ) ) {
+    $mapping_url = ABSPATH . 'wp-content/themes/' . get_option( 'template' ) . '/dt-mapping/';
+}  else {
+    $mapping_url = basename( plugin_dir_path( dirname( __FILE__, 2 ) ) ); // @todo
+}
+
+if ( file_exists( $mapping_url . 'geocode-api/location-grid-geocoder.php' ) ) {
+    require_once( 'geocode-api/location-grid-geocoder.php' ); // Location grid geocoder
+} else {
+    echo json_encode( [ 'error' => 'did not find geocoder file' ] );
+    return;
 }
 
 // register global database
 global $wpdb;
 $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
-require_once( '../dt-core/global-functions.php' );
-require_once( 'location-grid-geocoder.php' ); // Location grid geocoder
+
+
 $geocoder = new Location_Grid_Geocoder();
 
 // geocodes longitude and latitude and returns json array of location_grid record

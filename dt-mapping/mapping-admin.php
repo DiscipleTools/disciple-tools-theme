@@ -33,6 +33,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         public $current_user_id;
 
         public function __construct() {
+            global $dt_mapping;
             /**
              * If allowed, this class will load into every admin the header scripts and rest endpoints. It is best
              * practice to add a filter to a config file in the plugin or theme using this module that filters for the
@@ -54,9 +55,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             add_action( "admin_menu", [ $this, 'register_menu' ] );
             add_action( 'admin_notices', [ $this, 'dt_locations_migration_admin_notice' ] );
             if ( is_admin() && isset( $_GET['page'] ) && 'dt_mapping_module' === $_GET['page'] ) {
-                if ( function_exists( "spinner" ) ){
-                    $this->spinner = spinner();
-                }
+                $this->spinner = $dt_mapping['spinner'];
                 $this->nonce = wp_create_nonce( 'wp_rest' );
                 $this->current_user_id = get_current_user_id();
 
@@ -65,7 +64,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                 // load mapbox resources
                 if ( ! class_exists( 'DT_Mapbox_API' ) ) {
-                    require_once( 'mapbox-api.php' );
+                    require_once( 'geocode-api/mapbox-api.php' );
                 }
                 DT_Mapbox_API::load_admin_header();
                 // end mapbox
@@ -77,6 +76,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
          * Admin Page Elements
          */
         public function scripts() {
+            global $dt_mapping;
             ?>
             <script>
                 let _ = window.lodash
@@ -100,7 +100,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                 function update(grid_id, value, key) {
                     if (value) {
-                        jQuery('#button-' + grid_id).append(`<span><img src="<?php echo esc_url_raw( spinner() ) ?>" width="20px" /></span>`)
+                        jQuery('#button-' + grid_id).append(`<span><img src="<?php echo esc_url_raw( $dt_mapping['spinner'] ) ?>" width="20px" /></span>`)
 
                         let update = send_update({key: key, value: value, grid_id: grid_id})
 
@@ -115,7 +115,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 }
 
                 function reset(grid_id, key) {
-                    jQuery('#reset-' + grid_id).append(`<span><img src="<?php echo esc_url_raw( spinner() ) ?>" width="20px" /></span>`)
+                    jQuery('#reset-' + grid_id).append(`<span><img src="<?php echo esc_url_raw( $dt_mapping['spinner'] ) ?>" width="20px" /></span>`)
 
                     let update = send_update({key: key, reset: true, grid_id: grid_id})
 
@@ -174,12 +174,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function enqueue_drilldown_script( $hook ) {
+
             if ( 'admin.php' === $hook ) {
                 return;
             }
+            global $dt_mapping;
+
 
             // Drill Down Tool
-            wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery','lodash' ], '1.1' );
+            wp_enqueue_script( 'mapping-drill-down', $dt_mapping['drill_down_js_url'], [ 'jquery','lodash' ], 1 );
             wp_localize_script(
                 'mapping-drill-down', 'mappingModule', array(
                     'mapping_module' => DT_Mapping_Module::instance()->localize_script(),
@@ -570,7 +573,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <div id="post-body-content">
                             <!-- Main Column -->
 
-                            <?php $this->box_geocoding_source(); ?>
+                            <?php $this->box_mapbox(); ?>
+                            <br>
+                            <?php $this->box_ipstack(); ?>
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
@@ -1185,6 +1190,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 if ( isset( $_POST['country_select'] ) && ! empty( $_POST['country_select'] ) ) {
                     $admin0_code = sanitize_text_field( wp_unslash( $_POST['country_select'] ) );
                     $this->install_additional_levels( $admin0_code );
+                    dt_write_log( 'test' );
                 }
 
                 if ( isset( $_POST['remove'] ) && ! empty( $_POST['remove'] ) ) {
@@ -1348,6 +1354,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function box_location_grids() {
+            global $dt_mapping;
             ?>
             <table class="widefat striped">
                 <thead>
@@ -1355,14 +1362,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 </thead>
                 <tbody>
                 <tr>
-                    <td id="location_grids"><img id="spinner" src="<?php echo esc_html( spinner() ) ?>" width="30px" /></td>
+                    <td id="location_grids"><img id="spinner" src="<?php echo esc_html( $dt_mapping['spinner'] ) ?>" width="30px" /></td>
                 </tr>
                 </tbody>
             </table>
 
             <div style="display: none" id="location-data">
                 <h4>Update <span class="location-name-title"></span>
-                    <img id="update-location-spinner" src="<?php echo esc_html( spinner() ) ?>" width="20px" style="display: none" />
+                    <img id="update-location-spinner" src="<?php echo esc_html( $dt_mapping['spinner'] ) ?>" width="20px" style="display: none" />
                 </h4>
                 <table  class="widefat striped" style="width: min-content">
                     <tr>
@@ -1409,7 +1416,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             </table>
             <div id="add-new-location-section">
                 <h4>Add New Location Under <span class="location-name-title"></span>
-                    <img id="new-location-spinner" src="<?php echo esc_html( spinner() ) ?>" width="20px" style="display: none" />
+                    <img id="new-location-spinner" src="<?php echo esc_html( $dt_mapping['spinner'] ) ?>" width="20px" style="display: none" />
                 </h4>
                 <table class="widefat striped new_location_table">
                     <tr>
@@ -1540,19 +1547,33 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
+        public function box_ipstack() {
+            if ( ! class_exists( 'DT_Ipstack_API' ) ) {
+                require_once( 'geocode-api/ipstack-api.php' );
+            }
+            DT_Ipstack_API::metabox_for_admin();
+        }
 
-        public function box_geocoding_source() {
+        public function box_mapbox() {
             if ( ! class_exists( 'DT_Mapbox_API' ) ) {
-                require_once( 'mapbox-api.php' );
+                require_once( 'geocode-api/mapbox-api.php' );
             }
             DT_Mapbox_API::metabox_for_admin();
+        }
+
+
+        public function dt_sanitize_array_html( $array) {
+            array_walk_recursive($array, function ( &$v) {
+                $v = filter_var( trim( $v ), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES );
+            });
+            return $array;
         }
 
         public function box_migration_from_locations( $return = false ){
             global $wpdb;
             if ( isset( $_POST["location_migrate_nonce"] ) && wp_verify_nonce( sanitize_key( $_POST['location_migrate_nonce'] ), 'save' ) ) {
                 if ( isset( $_POST["run-migration"], $_POST["selected_location_grid"] ) ){
-                    $select_location_grid = dt_sanitize_array_html( $_POST["selected_location_grid"] ); //phpcs:ignore
+                    $select_location_grid = $this->dt_sanitize_array_html( $_POST["selected_location_grid"] ); //phpcs:ignore
                     $saved_for_migration = get_option( "dt_mapping_migration_list", [] );
                     foreach ( $select_location_grid as $location_id => $migration_values ){
                         if ( !empty( $location_id ) && !empty( $migration_values["migration_type"] ) ) {
@@ -1931,6 +1952,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function box_credits() {
+            global $dt_mapping;
             ?>
             <div class="wrap">
                 <div id="poststuff">
@@ -1968,7 +1990,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 <!--                                        </p>-->
 
                                         <div id="hierarchy_list" style="display:none; padding: 15px; border: solid 2px #ccc;">
-                                            <img src="<?php echo esc_html( spinner() ) ?>" width="30px" />
+                                            <img src="<?php echo esc_html( $dt_mapping['spinner'] ) ?>" width="30px" />
                                         </div>
                                     </td>
                                 </tr>
@@ -1977,7 +1999,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <!-- End Main Column -->
 
                             <div id="hierarchy_list" style="display:none; padding: 15px; border: solid 2px #ccc;">
-                                <img src="<?php echo esc_html( spinner() ) ?>" width="30px" />
+                                <img src="<?php echo esc_html( $dt_mapping['spinner'] ) ?>" width="30px" />
                             </div>
 
                         </div><!-- end post-body-content -->
@@ -1988,7 +2010,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <script>
                 function show_license() {
                     let hl = jQuery("#hierarchy_list")
-                    hl.show().empty().html('<img src="<?php echo esc_html( spinner() ) ?>" width="30px" />')
+                    hl.show().empty().html('<img src="<?php echo esc_html( $dt_mapping['spinner'] ) ?>" width="30px" />')
                     jQuery.ajax({
                         url: "https://raw.githubusercontent.com/DiscipleTools/location-grid-project/master/LICENSE",
                         dataType: "text",
@@ -1999,7 +2021,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 }
                 function show_list() {
                     let hl = jQuery("#hierarchy_list")
-                    hl.show().empty().html('<img src="<?php echo esc_html( spinner() ) ?>" width="30px" />')
+                    hl.show().empty().html('<img src="<?php echo esc_html( $dt_mapping['spinner'] ) ?>" width="30px" />')
                     jQuery.ajax({
                         url: "https://raw.githubusercontent.com/DiscipleTools/location-grid-project/master/hierarchy.txt",
                         dataType: "text",
@@ -2010,7 +2032,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 }
                 function show_totals() {
                     let hl = jQuery("#hierarchy_list")
-                    hl.show().empty().html('<img src="<?php echo esc_html( spinner() ) ?>" width="30px" />')
+                    hl.show().empty().html('<img src="<?php echo esc_html( $dt_mapping['spinner'] ) ?>" width="30px" />')
                     jQuery.ajax({
                         url: "https://raw.githubusercontent.com/DiscipleTools/location-grid-project/master/totals.txt",
                         dataType: "text",
@@ -2052,7 +2074,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             }
 
             // get mirror source file url
-            require_once( get_template_directory() . '/dt-core/global-functions.php' );
+//            require_once( get_template_directory() . '/dt-core/global-functions.php' );
             $mirror_source = dt_get_theme_data_url();
 
             $gn_source_url = $mirror_source . 'location_grid/'.$admin0_code.'.tsv.zip';
@@ -2183,7 +2205,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function rebuild_location_grid( $reset = false ) {
-            global $wpdb;
+            global $wpdb, $dt_mapping;
 
             // clear previous installation
             $dir = wp_upload_dir();
@@ -2193,7 +2215,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             // TEST for presence of source files
             if ( ! file_exists( $uploads_dir . "location_grid/" . $file ) ) {
-                require_once( get_template_directory() . '/dt-mapping/migrations/0001-prepare-location_grid-data.php' );
+                require_once( $dt_mapping['path'] . 'migrations/0001-prepare-location_grid-data.php' );
                 $download = new DT_Mapping_Module_Migration_0001();
                 $download->up();
 
@@ -2207,7 +2229,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             // TEST for expected tables and clear it
             $wpdb->query( "SHOW TABLES LIKE '$wpdb->dt_location_grid'" );
             if ( $wpdb->num_rows < 1 ) {
-                require_once( get_template_directory() . '/dt-mapping/migrations/0000-initial.php' );
+                require_once( $dt_mapping['path'] . 'migrations/0000-initial.php' );
                 $download = new DT_Mapping_Module_Migration_0000();
                 $download->up();
 

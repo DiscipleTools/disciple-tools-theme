@@ -292,12 +292,8 @@ else {
             /**
              * dt-mapping
              */
-            require_once( get_template_directory() . '/dt-mapping/mapbox-api.php' ); // Mapbox API
-            require_once( get_template_directory() . '/dt-mapping/location-grid-geocoder.php' ); // Location grid geocoder
-            require_once( get_template_directory() . '/dt-mapping/mapping-module-config.php' ); // configuration file for mapping module
-            DT_Mapping_Module_Config::instance();
-            require_once( get_template_directory() . '/dt-mapping/mapping.php' ); // load for mapping module
-
+            require_once( get_template_directory() . '/dt-mapping/loader.php' );
+            new DT_Mapping_Module_Loader();
 
 
             /**
