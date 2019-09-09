@@ -40,21 +40,27 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
      */
     public function hooks_new_post( $post_ID, $post, $update ) {
         if ( ! $update ) {
-            dt_activity_insert(
-                [
-                    'action' => 'created',
-                    'object_type' => $post->post_type,
-                    'object_subtype' => '',
-                    'object_id' => $post->ID,
-                    'object_name' => $this->_draft_or_post_title( $post->ID ),
-                    'meta_id'           => '',
-                    'meta_key'          => '',
-                    'meta_value'        => '',
-                    'meta_parent'        => '',
-                    'object_note'       => '',
-                    'hist_time'         => time() - 1,
-                ]
-            );
+            $activity = [
+                'action'         => 'created',
+                'object_type'    => $post->post_type,
+                'object_subtype' => '',
+                'object_id'      => $post->ID,
+                'object_name'    => $this->_draft_or_post_title( $post->ID ),
+                'meta_id'        => '',
+                'meta_key'       => '',
+                'meta_value'     => '',
+                'meta_parent'    => '',
+                'object_note'    => '',
+                'hist_time'      => time() - 1,
+            ];
+            if ( !get_current_user_id()){
+                $user = wp_get_current_user();
+                if ( $user->display_name ){
+                    $activity['object_note'] = "Created with site link: " . $user->display_name;
+                }
+            }
+
+            dt_activity_insert( $activity );
         }
     }
 
