@@ -389,7 +389,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 if ( isset( $params['cached'] ) && ! empty( $params['cached'] ) ) {
                     dt_write_log( 'cache triggered' );
                     dt_write_log( $this->cache_length );
-                    $trans_key = 'dt_map_' . hash( 'sha256', $params['grid_id'] );
+                    $trans_key = 'dt_grid_' . hash( 'sha256', $params['grid_id'] );
                     if ( ! empty( get_transient( $trans_key ) ) ) {
                         return get_transient( $trans_key );
                     }
@@ -465,7 +465,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             if ( isset( $params['grid_id'] ) ) {
                 // check for cached
                 if ( isset( $params['cached'] ) && ! empty( $params['cached'] ) ) {
-                    $trans_key = 'dt_map_' . hash( 'sha256', $params['grid_id'] );
+                    $trans_key = 'dt_drill_' . hash( 'sha256', $params['grid_id'] );
                     if ( ! empty( get_transient( $trans_key ) ) ) {
                         return get_transient( $trans_key );
                     }
