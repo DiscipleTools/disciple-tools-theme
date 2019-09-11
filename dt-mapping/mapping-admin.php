@@ -1208,7 +1208,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             if ( empty( $json ) ) {
                 ?>
                 <div class="notice notice-error notice-dt-locations-migration is-dismissible" data-notice="dt-locations-migration">
-                    <p>Source of extended levels not found. Check https://github.com/DiscipleTools/location-grid-theme-data</p>
+                    <p>Source of extended levels not found. Check <?php echo esc_html( $theme_data ) ?></p>
                 </div>
                 <?php
                 return;
