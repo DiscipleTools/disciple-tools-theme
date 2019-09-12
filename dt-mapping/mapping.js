@@ -113,6 +113,10 @@ function page_mapping_view() {
                   height: 100vh;
                   vertical-align: text-top;
               }
+              .child_list_container {
+                max-height: 300px;
+                  height: 100vh;
+              }
             }
         </style>
         
