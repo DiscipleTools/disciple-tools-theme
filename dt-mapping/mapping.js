@@ -43,12 +43,12 @@ window.DRILLDOWN.map_chart_drilldown = function( grid_id ) {
     if ( grid_id !== 'top_map_level' ) { // make sure this is not a top level continent or world request
         DRILLDOWNDATA.settings.current_map = parseInt(grid_id)
         location_grid_map( 'map_chart', parseInt(grid_id) )
-        data_type_list( 'data-type-list' )
+        data_type_list( 'data_type_list' )
     }
     else { // top_level maps
         DRILLDOWNDATA.settings.current_map = 'top_map_level'
         top_level_map( 'map_chart' )
-        data_type_list( 'data-type-list' )
+        data_type_list( 'data_type_list' )
     }
 }
 
@@ -64,37 +64,84 @@ function page_mapping_view() {
     "use strict";
     let chartDiv = jQuery('#chart')
     chartDiv.empty().html(`
+        <style>
+            .map_wrapper {}
+            .map_header_wrapper {}
+            .section_title {
+                font-size:2em;
+            }
+            .current_level {}
+            .map_chart {
+                width: 100%;
+                max-height: 500px;
+                height: 100vh;
+                vertical-align: text-top;
+            }
+            .map_hr {
+                max-width:100%;
+                margin: 10px 0;
+            }
+            .map_title_wrapper {
+                text-align:right;
+            }
+            .child_list_container {
+                overflow-y: scroll; 
+                height:500px; 
+                padding:0 .4em;
+            }
+            .minimap {
+                height: 250px;
+                margin-bottom: 20px;
+            }
+            .refresh_data {
+                font-size:.8em; 
+                margin-left:20px;
+            }
+             @media screen and (max-width : 640px){
+               .map_title_wrapper {
+                    text-align:center;
+                }
+                .minimap {
+                    display:none;
+                }
+                .map_chart_wrapper {
+                    margin-bottom: 20px;
+                }
+                .map_chart {
+                  width: 100%;
+                  max-height: 300px;
+                  height: 100vh;
+                  vertical-align: text-top;
+              }
+            }
+        </style>
         
-        <div class="grid-x grid-margin-y">
-            <div class="cell medium-6" id="map_chart_drilldown"></div>
-            <div class="cell medium-6" style="text-align:right;">
-               <strong id="section-title" style="font-size:2em;"></strong><br>
-                <span id="current_level"></span>
+         <!-- Map Widget -->
+        <div id="map_wrapper" class="map_wrapper">
+           <div  id="map_header_wrapper" class="grid-x map_header_wrapper">
+              <div id="map_chart_drilldown" class="cell medium-6 map_chart_drilldown"></div>
+              <div id="map_title_wrapper" class="cell medium-6 map_title_wrapper">
+                    <strong id="section_title" class="section_title"></strong><br>
+                  <span id="current_level" class="current_level"></span>
+              </div>
+           </div>
+           <hr id="map_hr_1" class="map_hr" style="">
+          
+           <div id="map_body_wrapper" class="grid-x grid-margin-x map_body_wrapper">
+              <div id="map_chart_wrapper" class="cell medium-10 map_chart_wrapper">
+                  <div id="map_chart" class="map_chart"></div>
+              </div>
+              <div id="child_list_container" class="cell medium-2 left-border-grey child_list_container">
+                  <div id="minimap" class="minimap"></div>
+                  <div id="data_type_list" class="button-group expanded stacked data_type_list">
+                   </div>
+              </div>
+                    
             </div>
-        </div>
-        <hr style="max-width:100%;">
+            <hr id="map_hr_2" class="map_hr">
+        </div> <!-- end widget -->
         
-       <!-- Map -->
-       <div class="grid-x grid-margin-x">
-            <div class="cell medium-10">
-                <div id="map_chart" style="width: 100%;max-height: 700px;height: 100vh;vertical-align: text-top;"></div>
-            </div>
-            <div class="cell medium-2 left-border-grey">
-                <div class="grid-y">
-                    <div class="cell" style="overflow-y: scroll; height:700px; padding:0 .4em;" id="child-list-container">
-                        <div id="minimap" style="height: 250px;"></div><br><br>
-                        <div class="button-group expanded stacked" id="data-type-list">
-                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <hr style="max-width:100%;">
-        
-        <span style="font-size:.8em; margin-left:20px"><a onclick="refresh_data('get_location_grid_totals')">${_.escape( translations.refresh_data )}</a></span>
-        
-        <br>
+        <span id="refresh_data" class="refresh_data"><a onclick="refresh_data('get_location_grid_totals')">${_.escape( translations.refresh_data )}</a></span>
         `);
 
     // set the depth of the drill down
@@ -214,7 +261,7 @@ function top_level_map( div ) {
     let default_map_settings = DRILLDOWNDATA.settings.default_map_settings
     let mapUrl = ''
     let top_map_list = DRILLDOWNDATA.data.top_map_list
-    let title = jQuery('#section-title')
+    let title = jQuery('#section_title')
 
     switch ( default_map_settings.type ) {
 
@@ -382,7 +429,7 @@ function location_grid_map( div, grid_id ) {
     am4core.useTheme(am4themes_animated);
 
     let chart = am4core.create( div, am4maps.MapChart);
-    let title = jQuery('#section-title')
+    let title = jQuery('#section_title')
     let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_grid_id_endpoint
 
     chart.projection = new am4maps.projections.Miller(); // Set projection
@@ -616,35 +663,49 @@ function page_mapping_list() {
     "use strict";
     let chartDiv = jQuery('#chart')
     chartDiv.empty().html(`
-        <div class="grid-x grid-margin-x">
-            <div class="cell auto" id="location_list_drilldown"></div>
-        </div>
-        
-        <hr style="max-width:100%;">
-        
-        <div id="page-header" style="float:left;">
-            <strong id="section-title" style="font-size:1.5em;"></strong><br>
-            <span id="current_level"></span>
-        </div>
-        
-        <div id="location_list"></div>
-        
-        <hr style="max-width:100%;">
-        
-        <br>
-        <style> /* @todo move these definitions to site style sheet. */
-            #page-header {
+          <style>
+            .map_wrapper {}
+            .map_header_wrapper {
+                float:left;
                 position:absolute;
             }
+            .section_title {
+                font-size:1.5em;
+            }
+            .current_level {}
+            .location_list {
+            }
+            .map_hr {
+                max-width:100%;
+                margin: 10px 0;
+            }
             @media screen and (max-width : 640px){
-                #page-header {
+                #country-list-table {
+                    margin-left: 5px !important;
+                }
+                .map_header_wrapper {
                     position:relative;
                     text-align: center;
                     width: 100%;
                 }
             }
-           
         </style>
+        
+        <!-- List Widget -->
+        <div id="map_wrapper" class="map_wrapper">
+          <div id="map_drill_wrapper" class="grid-x grid-margin-x map_drill_wrapper">
+              <div id="location_list_drilldown" class="cell auto location_list_drilldown"></div>
+          </div>
+          <hr id="map_hr_1" class="map_hr">
+          
+          <div id="map_header_wrapper" class="map_header_wrapper">
+              <strong id="section_title" class="section_title" ></strong><br>
+              <span id="current_level" class="current_level"></span>
+          </div>
+          
+          <div id="location_list" class="location_list"></div>
+          <hr id="map_hr_2" class="map_hr">
+        </div> <!-- end widget -->
         `);
 
     // set the depth of the drill down
@@ -675,7 +736,7 @@ function location_grid_list( div, grid_id ) {
                 map_data = DRILLDOWNDATA.data[default_map_settings.children[0]]
             } else {
                 // multiple child
-                jQuery('#section-title').empty()
+                jQuery('#section_title').empty()
                 jQuery('#current_level').empty()
                 jQuery('#location_list').empty().append('Select Location')
                 DRILLDOWN.hide_spinner()
@@ -722,7 +783,7 @@ function location_grid_list( div, grid_id ) {
     function build_location_grid_list( div, map_data ) {
 
         // Place Title
-        let title = jQuery('#section-title')
+        let title = jQuery('#section_title')
         title.empty().html(map_data.self.name)
 
         // Population Division and Check for Custom Division
@@ -793,9 +854,20 @@ function location_grid_list( div, grid_id ) {
         html += `</table>`
         locations.append(html)
 
-        jQuery('#country-list-table').DataTable({
+        let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
+
+        if (isMobile) {
+          jQuery('#country-list-table').DataTable({
+            "paging":   false,
+            "scrollX": true
+          });
+        } else {
+          jQuery('#country-list-table').DataTable({
             "paging":   false
-        });
+          });
+        }
+
+
 
         DRILLDOWN.hide_spinner()
     }
