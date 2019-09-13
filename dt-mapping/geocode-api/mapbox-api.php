@@ -85,7 +85,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
         }
 
 
-        public static function lookup( $search_string, $type = null, $country_code = null ) {
+        public static function lookup( $search_string, $type = 'full', $country_code = null ) {
             $search_string = str_replace( ';', ' ', $search_string );
             $search_string = utf8_uri_encode( $search_string );
 
@@ -127,6 +127,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         $url = self::$mapbox_endpoint . $search_string . '.json?types=poi&access_token=' . self::get_key();
                     }
                     break;
+                case 'full':
                 default:
                     if ( $country_code ) {
                         $url = self::$mapbox_endpoint  . $search_string . '.json?country=' . $country_code . '&access_token=' . self::get_key();
