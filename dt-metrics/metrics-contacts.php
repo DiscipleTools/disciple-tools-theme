@@ -53,7 +53,7 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
     }
 
     public function scripts() {
-        wp_enqueue_script( 'dt_metrics_project_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-contacts.js', [
+        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . '/dt-metrics/metrics-contacts.js', [
             'moment',
             'jquery',
             'jquery-ui-core',

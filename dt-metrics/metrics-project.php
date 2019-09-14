@@ -53,7 +53,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
     public function scripts() {
         wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
-        wp_enqueue_script( 'dt_metrics_project_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-project.js', [
+        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . '/dt-metrics/metrics-project.js', [
             'jquery',
             'jquery-ui-core',
             'amcharts-core',
