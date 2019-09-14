@@ -128,7 +128,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function scripts() {
-        wp_enqueue_script( 'dt_metrics_workers_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-workers.js', [
+        wp_enqueue_script( 'dt_metrics_workers_script', get_template_directory_uri() . '/dt-metrics/metrics-workers.js', [
             'jquery',
             'jquery-ui-core',
             'amcharts-core',
