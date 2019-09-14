@@ -44,7 +44,7 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function scripts() {
-        wp_enqueue_script( 'dt_metrics_prayer_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-prayer.js', [
+        wp_enqueue_script( 'dt_metrics_prayer_script', get_template_directory_uri() . '/dt-metrics/metrics-prayer.js', [
             'jquery',
             'jquery-ui-core',
         ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-prayer.js' ), true );
