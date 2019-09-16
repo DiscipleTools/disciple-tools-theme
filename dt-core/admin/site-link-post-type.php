@@ -148,7 +148,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                           JOIN $wpdb->postmeta
                           ON $wpdb->posts.ID=$wpdb->postmeta.post_id
                             AND meta_key = 'type'
-                        WHERE meta_value IN ($type_string)", ARRAY_A ); //@phpcs:ignore
+                        WHERE $wpdb->posts.post_type = 'site_link_system' 
+                        AND $wpdb->posts.post_status = 'publish'
+                        AND meta_value IN ($type_string)", ARRAY_A ); //@phpcs:ignore
 
                     return $results;
                     break;
@@ -160,7 +162,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                           JOIN $wpdb->postmeta
                           ON $wpdb->posts.ID=$wpdb->postmeta.post_id
                             AND meta_key = 'type'
-                        WHERE meta_value IN ($type_string)" ); //@phpcs:ignore
+                        WHERE $wpdb->posts.post_type = 'site_link_system' 
+                        AND $wpdb->posts.post_status = 'publish'
+                        AND meta_value IN ($type_string)" ); //@phpcs:ignore
 
                     return $results;
                     break;
@@ -963,6 +967,18 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         </style>";
 
             }
+            $uri = dt_get_url_path();
+
+            if ( $uri && ( strpos( $uri, 'edit.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) || ( strpos( $uri, 'post-new.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) ) : ?>
+                <script>
+                  jQuery(function($) {
+                    $(`<div><a href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/admin.html?highlight=transfer#site-links" style="margin-bottom:15px;" target="_blank">
+                        <img style="height:15px" class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                        Site link documentation</a></div>`).insertAfter(
+                        '#wpbody-content .wrap .wp-header-end:eq(0)')
+                  });
+                </script>
+            <?php endif;
         }
 
         public function enter_title_here( $title ) {
