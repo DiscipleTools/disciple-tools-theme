@@ -112,7 +112,7 @@ if ( ! isset( $dt_mapping['url'] ) ) {
         case 'theme':
         case 'disciple_tools':
         default:
-            $dt_mapping['url'] = trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/';
+            $dt_mapping['url'] = trailingslashit( get_template_directory_uri() ) . 'dt-mapping/';
             break;
     }
 }
