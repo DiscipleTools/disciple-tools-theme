@@ -44,7 +44,7 @@ function dt_people_groups_post_type_scripts() {
     if ( ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow || 'edit.php' === $pagenow )
         && 'peoplegroups' === get_post_type( $post ) ) || ( isset( $_GET['tab'] ) && $_GET['tab'] === 'people-groups' ) ) {
 
-        wp_enqueue_script( 'dt_peoplegroups_scripts', get_stylesheet_directory_uri() . '/dt-people-groups/people-groups.js', [
+        wp_enqueue_script( 'dt_peoplegroups_scripts', get_template_directory_uri() . '/dt-people-groups/people-groups.js', [
             'jquery',
             'jquery-ui-core',
         ], filemtime( get_template_directory() . '/dt-people-groups/people-groups.js' ), true );
@@ -54,7 +54,7 @@ function dt_people_groups_post_type_scripts() {
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
-                'theme_uri' => get_stylesheet_directory_uri(),
+                'theme_uri' => get_template_directory_uri(),
                 'images_uri' => disciple_tools()->admin_img_url,
             )
         );
@@ -72,7 +72,7 @@ function dt_options_scripts() {
             'jquery-ui-core',
         ], filemtime( disciple_tools()->admin_js_path . 'dt-options.js' ), true );
         if ( isset( $_GET["tab"] ) && $_GET["tab"] === 'people-groups' ) {
-            wp_enqueue_script( 'dt_peoplegroups_scripts', get_stylesheet_directory_uri() . '/dt-people-groups/people-groups.js', [
+            wp_enqueue_script( 'dt_peoplegroups_scripts', get_template_directory_uri() . '/dt-people-groups/people-groups.js', [
                 'jquery',
                 'jquery-ui-core',
             ], filemtime( get_template_directory() . '/dt-people-groups/people-groups.js' ), true );
@@ -84,7 +84,7 @@ function dt_options_scripts() {
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
-                'theme_uri' => get_stylesheet_directory_uri(),
+                'theme_uri' => get_template_directory_uri(),
                 'images_uri' => disciple_tools()->admin_img_url,
             )
         );

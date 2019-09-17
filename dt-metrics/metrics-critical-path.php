@@ -65,7 +65,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
                 'root'               => esc_url_raw( rest_url() ),
-                'theme_uri'          => get_stylesheet_directory_uri(),
+                'theme_uri'          => get_template_directory_uri(),
                 'nonce'              => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id'    => get_current_user_id(),
