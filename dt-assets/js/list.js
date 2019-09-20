@@ -919,31 +919,16 @@
 
       let sourceData =  { data: [] }
       let fieldOptions = _.get(wpApiListSettings, `custom_fields_settings.${field}.default`, {})
-      if (field === 'sources') {
-        /* Similar code is in contact-details.js, copy-pasted for now. */
-        sourcesTypeahead.attr("disabled", true) // disable while loading AJAX
-        const response = await fetch(wpApiListSettings.root + 'dt/v1/contact/list-sources', {
-          credentials: 'same-origin', // needed for Safari
-          headers: {
-            'X-WP-Nonce': wpApiShare.nonce,
-          },
-        });
-        _.forOwn(await response.json(), (sourceValue, sourceKey) => {
-          sourceData.data.push({
-            key: sourceKey,
-            value: sourceValue || "",
-            name: sourceKey, // name is used for building URL params later
-          })
-        })
-        sourcesTypeahead.attr("disabled", false)
-      } else if ( Object.keys(fieldOptions).length > 0 ){
+      if ( Object.keys(fieldOptions).length > 0 ){
         _.forOwn(fieldOptions, (val, key)=>{
+          if ( !val.deleted ){
             sourceData.data.push({
               key: key,
               name:key,
               value: val.label || key
             })
-          })
+          }
+        })
       } else {
         sourceData = {
           [field]: {

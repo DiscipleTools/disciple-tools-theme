@@ -63,7 +63,7 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
             'wp-i18n'
         ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-contacts.js' ) );
 
-        $contacts_custom_field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false );
+        $contacts_custom_field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false, null, true );
         $overall_status_settings = $contacts_custom_field_settings['overall_status'];
         $overall_status_settings['order'] = array_keys( $overall_status_settings['default'] );
         $seeker_path_settings = $contacts_custom_field_settings['seeker_path'];
@@ -71,6 +71,10 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
         $milestone_settings = [];
         foreach ( $contacts_custom_field_settings["milestones"]["default"] as $key => $option ){
             $milestone_settings[$key] = $option["label"];
+        }
+        $sources = [];
+        foreach ( $contacts_custom_field_settings["sources"]["default"] as $key => $values ){
+            $sources[ $key ] = $values["label"];
         }
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
@@ -81,7 +85,7 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
                 'current_user_id'    => get_current_user_id(),
                 'data'               => $this->data(),
                 'spinner' => '<img src="' .trailingslashit( plugin_dir_url( __DIR__ ) ) . 'ajax-loader.gif" style="height:1em;" />',
-                'sources' => Disciple_Tools_Contacts::list_sources(),
+                'sources' => $sources,
                 'source_names' => $contacts_custom_field_settings['sources']['default'],
                 'overall_status_settings' => $overall_status_settings,
                 'seeker_path_settings' => $seeker_path_settings,

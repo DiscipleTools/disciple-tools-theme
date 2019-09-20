@@ -30,18 +30,21 @@ get_header();
                     <input name="email" type="text"  placeholder="<?php esc_html_e( "Email", "disciple_tools" ); ?>">
                 </label>
 
-                <?php if ( current_user_can( 'view_any_contacts' )) :?>
-                    <label>
-                        <?php esc_html_e( "Source", "disciple_tools" ); ?>
-                        <select name="sources" aria-describedby="source-help-text">
-                            <?php foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $source_key => $source ): ?>
-                                <option value="<?php echo esc_attr( $source_key, 'disciple_tools' ); ?>">
-                                    <?php echo esc_html( $source['label'] )?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </label>
-                <?php endif; ?>
+                <label>
+                    <?php esc_html_e( "Source", "disciple_tools" ); ?>
+                    <select name="sources" aria-describedby="source-help-text">
+                        <?php
+                        $contacts_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
+                        $sources = $contacts_settings["fields"]["sources"]["default"];
+                        foreach ( $sources as $source_key => $source ): ?>
+                            <?php if ( !isset( $source["deleted"] ) || $source["delete"] !== true ) : ?>
+                            <option value="<?php echo esc_attr( $source_key, 'disciple_tools' ); ?>">
+                                <?php echo esc_html( $source['label'] )?>
+                            </option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
 
                 <?php esc_html_e( "Location", "disciple_tools" ); ?>
                 <div class="location_grid">
