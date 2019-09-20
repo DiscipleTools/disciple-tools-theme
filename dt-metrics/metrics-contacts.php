@@ -53,7 +53,7 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
     }
 
     public function scripts() {
-        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . '/dt-metrics/metrics-contacts.js', [
+        wp_enqueue_script( 'dt_metrics_contacts_script', get_template_directory_uri() . '/dt-metrics/metrics-contacts.js', [
             'moment',
             'jquery',
             'jquery-ui-core',
@@ -63,7 +63,7 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
             'wp-i18n'
         ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-contacts.js' ) );
 
-        $contacts_custom_field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false, null, true );
+        $contacts_custom_field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false );
         $overall_status_settings = $contacts_custom_field_settings['overall_status'];
         $overall_status_settings['order'] = array_keys( $overall_status_settings['default'] );
         $seeker_path_settings = $contacts_custom_field_settings['seeker_path'];
@@ -77,14 +77,13 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
             $sources[ $key ] = $values["label"];
         }
         wp_localize_script(
-            'dt_metrics_project_script', 'dtMetricsProject', [
+            'dt_metrics_contacts_script', 'dtMetricsContacts', [
                 'root'               => esc_url_raw( rest_url() ),
-                'theme_uri'          => get_stylesheet_directory_uri(),
+                'theme_uri'          => get_template_directory_uri(),
                 'nonce'              => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id'    => get_current_user_id(),
                 'data'               => $this->data(),
-                'spinner' => '<img src="' .trailingslashit( plugin_dir_url( __DIR__ ) ) . 'ajax-loader.gif" style="height:1em;" />',
                 'sources' => $sources,
                 'source_names' => $contacts_custom_field_settings['sources']['default'],
                 'overall_status_settings' => $overall_status_settings,
