@@ -110,9 +110,6 @@ jQuery(document).ready(function($) {
         accent: true,
         searchOnFocus: true,
         maxItem: 20,
-        template: function (query, item) {
-          return `<span>${_.escape(item.name)}</span>`
-        },
         dropdownFilter: [{
           key: 'group',
           value: 'focus',
@@ -206,9 +203,6 @@ jQuery(document).ready(function($) {
     accent: true,
     searchOnFocus: true,
     maxItem: 20,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
     source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
     display: "name",
     templateValue: "{{name}}",
