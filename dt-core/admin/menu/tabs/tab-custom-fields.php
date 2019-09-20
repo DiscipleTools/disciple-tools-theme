@@ -354,6 +354,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
     }
 
+    private static function moveElement( &$array, $a, $b ) {
+        $out = array_splice( $array, $a, 1 );
+        array_splice( $array, $b, 0, $out );
+    }
+
 
     private function process_edit_field( $post_submission ){
         //save values
@@ -381,10 +386,12 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 foreach ( $post_submission as $key => $val ){
                     if ( strpos( $key, "field_option_" ) === 0 ){
                         $option_key = substr( $key, 13 );
-                        if ( $field_options[$option_key]["label"] != $val ){
-                            $custom_field["default"][$option_key]["label"] = $val;
+                        if ( isset( $field_options[$option_key]["label"] ) ){
+                            if ( $field_options[$option_key]["label"] != $val ){
+                                $custom_field["default"][$option_key]["label"] = $val;
+                            }
+                            $field_options[$option_key]["label"] = $val;
                         }
-                        $field_options[$option_key]["label"] = $val;
                     }
                 }
                 //delete option
@@ -404,19 +411,13 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     $active_field_options = [];
                     foreach ( $field_options as $field_option_key => $field_option_val ){
                         if ( !( isset( $field_option_val["deleted"] ) && $field_option_val["deleted"] == true ) ){
-                            $active_field_options[$field_option_key] = $field_option_val;
+                            $active_field_options[strval( $field_option_key )] = $field_option_val;
                         }
                     }
-                    $pos = (int) array_search( $option_key, array_keys( $active_field_options ) ) + $direction;
-                    $val = $active_field_options[ $option_key ];
-                    unset( $active_field_options[ $option_key ] );
-                    $active_field_options = array_merge(
-                        array_slice( $active_field_options, 0, $pos ),
-                        [ $option_key => $val ],
-                        array_slice( $active_field_options, $pos )
-                    );
-                    $order = array_keys( $active_field_options );
-                    $custom_field["order"] = $order;
+                    $pos = (int) array_search( $option_key, array_keys( $active_field_options ) );
+                    $option_keys = array_keys( $active_field_options );
+                    self::moveElement( $option_keys, $pos, $pos + $direction );
+                    $custom_field["order"] = $option_keys;
                 }
                 /*
                  * add option
