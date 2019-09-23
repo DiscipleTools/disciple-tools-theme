@@ -244,7 +244,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                         <p>
                             <strong><?php esc_html_e( 'Follow all contacts', 'disciple_tools' )?></strong>
                         </p>
-                        <p><?php esc_html_e( "You will receive an notification for any update that happens in the system.", 'disciple_tools' ) ?></p>
+                        <p><?php esc_html_e( "You will receive a notification for any update that happens in the system.", 'disciple_tools' ) ?></p>
                         <div class="switch large">
                             <input class="switch-input" id="follow_all" type="checkbox" name="follow_all"
                                    onclick="switch_preference('dt_follow_all');" <?php ( isset( $dt_user_meta['dt_follow_all'] ) && $dt_user_meta['dt_follow_all'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
