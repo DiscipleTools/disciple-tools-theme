@@ -49,7 +49,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
              * Themes or plugins implementing the module need to add a simple filter to check
              * permissions and control access to the mapping module resource. By default the module is disabled.
              *
-             * For targeted use. Give only the 'read_location' permission
+             * For targeted use. Give only the 'view_mapping' permission
              *
              * Governing filter living inside
              * @link mapping-module-config.php
@@ -65,6 +65,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
              */
             $this->permissions = apply_filters( 'dt_mapping_module_has_permissions', false );
             if ( ! $this->permissions ) {
+                if ( current_user_can( 'view_any_contacts' )
+                    || current_user_can( 'view_project_metrics' )
+                    || current_user_can( 'view_mapping' ) ) {
+                    $this->permissions = true;
+                }
                 return;
             }
             /** END PERMISSION CHECK */
@@ -379,7 +384,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function get_map_by_grid_id_endpoint( WP_REST_Request $request ) {
-            if ( ! current_user_can( 'read_location' ) ) {
+            if ( ! current_user_can( 'view_mapping' ) && ! $this->permissions ) {
                 return new WP_Error( __METHOD__, 'No permission', [ 'status' => 101 ] );
             }
             $params = $request->get_params();
@@ -421,7 +426,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function search_location_grid_by_name( WP_REST_Request $request ){
-            if ( ! current_user_can( 'read_location' ) ) {
+            if ( ! current_user_can( 'view_mapping' ) || ! $this->permissions ) {
                 return new WP_Error( __FUNCTION__, "No permissions to read locations", [ 'status' => 403 ] );
             }
             $params = $request->get_params();
