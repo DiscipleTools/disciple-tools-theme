@@ -368,34 +368,18 @@
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
                     <?php esc_html_e( 'Source', "disciple_tools" ); ?>
                 </div>
-                <?php if ( user_can( get_current_user_id(), 'view_any_contacts' ) ) : ?>
-                    <span id="sources-result-container" class="result-container"></span>
-                    <div id="sources_t" name="form-sources" class="scrollable-typeahead">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-sources"
-                                           name="sources[query]" placeholder="<?php esc_html_e( "Search sources", 'disciple_tools' ) ?>"
-                                           autocomplete="off">
-                                </span>
-                            </div>
+                <span id="sources-result-container" class="result-container"></span>
+                <div id="sources_t" name="form-sources" class="scrollable-typeahead">
+                    <div class="typeahead__container">
+                        <div class="typeahead__field">
+                            <span class="typeahead__query">
+                                <input class="js-typeahead-sources"
+                                       name="sources[query]" placeholder="<?php esc_html_e( "Search sources", 'disciple_tools' ) ?>"
+                                       autocomplete="off">
+                            </span>
                         </div>
                     </div>
-                <?php else : ?>
-                    <ul class="sources-list <?php echo esc_html( user_can( get_current_user_id(), 'view_any_contacts' ) ? 'details-list' : '' ) ?>">
-                        <?php
-                        foreach ($contact['sources'] ?? [] as $value){
-                            ?>
-                            <li class="<?php echo esc_html( $value )?>">
-                                <?php echo esc_html( $contact_fields['sources']['default'][$value] ?? $value ) ?>
-                            </li>
-                        <?php }
-                        if ( !isset( $contact['sources'] ) || sizeof( $contact['sources'] ) === 0){
-                            ?> <li id="no-source"><?php esc_html_e( "No source set", 'disciple_tools' ) ?></li><?php
-                        }
-                        ?>
-                    </ul>
-                <?php endif; ?>
+                </div>
             </div>
 
             <!-- Gender -->
