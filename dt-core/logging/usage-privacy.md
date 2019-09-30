@@ -1,9 +1,9 @@
-# What does D.T usage track?
+# What does Disciple.Tools usage track?
 
 ## Disciple.Tools Instance Versions.
 - **Site url**: example labs.disciple.tools
-- **PHP version**: To better serve our users and make D.T runs smoothly on the most popular versions
-- **WordPress version**: To better serve our users and make D.T runs smoothly on the most popular versions
+- **PHP version**: To better serve our users and make Disciple.Tools runs smoothly on the most popular versions
+- **WordPress version**: To better serve our users and make Disciple.Tools runs smoothly on the most popular versions
 - **Disciple.Tools Database version**: To track if a database migration is failing even if the theme is being upgraded.
 - **Theme version**: To track how quickly new features are arriving to end user and if a certain upgrade is failing.
 
