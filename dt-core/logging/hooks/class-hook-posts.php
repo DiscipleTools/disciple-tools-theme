@@ -57,6 +57,9 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 $user = wp_get_current_user();
                 if ( $user->display_name ){
                     $activity['object_note'] = "Created with site link: " . $user->display_name;
+                    if ( isset( $user->site_key ) ){
+                        $activity["user_caps"] = $user->site_key;
+                    }
                 }
             }
 

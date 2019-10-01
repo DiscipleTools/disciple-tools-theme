@@ -48,7 +48,7 @@ class Disciple_Tools_Activity_Log_API {
                 'field_type'     => ''
             ]
         );
-        $user = get_user_by( 'id', get_current_user_id() );
+        $user = wp_get_current_user();
         if ( $user ) {
             $args['user_caps'] = strtolower( key( $user->caps ) );
             if ( empty( $args['user_id'] ) ) {
@@ -59,6 +59,9 @@ class Disciple_Tools_Activity_Log_API {
             if ( empty( $args['user_id'] ) ) {
                 $args['user_id'] = 0;
             }
+        }
+        if ( isset( $user->site_key ) ){
+            $args["user_caps"] = $user->site_key;
         }
 
         $wpdb->insert(

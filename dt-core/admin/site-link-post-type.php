@@ -242,7 +242,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             $connection_type = get_post_meta( self::get_post_id_by_site_key( $decrypted_key ), 'type', true );
             $site_link_label = isset( $keys[$decrypted_key]["label"] ) ? $keys[$decrypted_key]["label"] : __( "Site Link", 'disciple_tools' );
             if ( ! empty( $connection_type ) ) {
-                self::add_capabilities_required_by_type( $connection_type, $site_link_label );
+                self::add_capabilities_required_by_type( $connection_type, $site_link_label, $decrypted_key );
             }
 
             return true;
@@ -259,8 +259,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          *
          * @param $connection_type
          * @param string $site_link_label
+         * @param string $site_key
          */
-        public static function add_capabilities_required_by_type( $connection_type, $site_link_label = "Site Link" ) {
+        public static function add_capabilities_required_by_type( $connection_type, $site_link_label = "Site Link", $site_key = '' ) {
             /**
              * Use the $connection_type to filter for the correct type
              * Update and return the $capabilities array
@@ -280,6 +281,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     $current_user->add_cap( $capability );
                 }
                 $current_user->display_name = $site_link_label;
+                if ( $site_key ){
+                    $current_user->site_key = $site_key;
+                }
             }
         }
 
