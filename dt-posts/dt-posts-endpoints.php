@@ -69,6 +69,12 @@ class Disciple_Tools_Posts_Endpoints {
                 'type' => 'string',
                 'required' => false,
                 "validate_callback" => [ $this, "prefix_validate_args" ]
+            ],
+            "comment_type" => [
+                "description" => "The type of the comment",
+                'type' => 'string',
+                'required' => false,
+                "validate_callback" => [ $this, "prefix_validate_args" ]
             ]
         ];
 
@@ -170,7 +176,8 @@ class Disciple_Tools_Posts_Endpoints {
                         ],
                         "post_type" => $arg_schemas["post_type"],
                         "id" => $arg_schemas["id"],
-                        "date" => $arg_schemas
+                        "date" => $arg_schemas["date"],
+                        'comment_type' => $arg_schemas["comment_type"]
                     ]
                 ]
             ]
@@ -458,7 +465,15 @@ class Disciple_Tools_Posts_Endpoints {
         $get_params = $request->get_query_params();
         $body = $request->get_json_params();
         $silent = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
-        $result = DT_Posts::add_post_comment( $url_params["post_type"], $url_params["id"], $body["comment"], 'comment', [ "comment_date" => $body["date"] ?? null ], true, $silent );
+        $args = [];
+        if ( isset( $body["date"] ) ){
+            $args["comment_date"] = $body["date"];
+        }
+        $type = 'comment';
+        if ( isset( $body["comment_type"] ) ){
+            $type = $body["comment_type"];
+        }
+        $result = DT_Posts::add_post_comment( $url_params["post_type"], $url_params["id"], $body["comment"], $type, $args, true, $silent );
         if ( is_wp_error( $result ) ) {
             return $result;
         } else {
