@@ -366,15 +366,15 @@ class Disciple_Tools_Posts_Endpoints {
             $argument = $attributes['args'][ $param ];
             // Check to make sure our argument is a string.
             if ( 'string' === $argument['type'] && ! is_string( $value ) ) {
-                return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not of type %2$s', 'Disciple_tools' ), $param, 'string' ), array( 'status' => 400 ) );
+                return new WP_Error( 'rest_invalid_param', sprintf( '%1$s is not of type %2$s', $param, 'string' ), array( 'status' => 400 ) );
             }
             if ( 'integer' === $argument['type'] && ! is_numeric( $value ) ) {
-                return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not of type %2$s', 'Disciple_tools' ), $param, 'integer' ), array( 'status' => 400 ) );
+                return new WP_Error( 'rest_invalid_param', sprintf( '%1$s is not of type %2$s', $param, 'integer' ), array( 'status' => 400 ) );
             }
             if ( 'post_type' === $argument['type'] ){
                 $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
                 if ( !in_array( $value, $post_types ) ){
-                    return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not a valid post type', 'Disciple_tools' ), $value ), array( 'status' => 400 ) );
+                    return new WP_Error( 'rest_invalid_param', sprintf( '%1$s is not a valid post type', $value ), array( 'status' => 400 ) );
                 }
             }
         } else {
