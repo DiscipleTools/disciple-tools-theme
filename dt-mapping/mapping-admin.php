@@ -1245,9 +1245,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                     <option></option>
                                     <?php
                                     foreach ( $json as $index => $name ) {
-                                        if ( array_search( $index, $list ) !== false ) {
-                                            continue; // skip already installed countries
-                                        }
                                         echo '<option value="'.esc_attr( $index ).'">';
                                         echo esc_html( $name );
                                         echo '</option>';
