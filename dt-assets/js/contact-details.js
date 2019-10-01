@@ -431,7 +431,7 @@ jQuery(document).ready(function($) {
     template: function (query, item) {
       return `<div class="assigned-to-row" dir="auto">
         <span>
-            <img style="vertical-align: text-bottom" src="{{avatar}}"/>
+            <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
             ${_.escape( item.name )}
         </span>
         ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
