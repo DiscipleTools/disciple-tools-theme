@@ -217,7 +217,7 @@ function dt_site_scripts() {
                         'root'                            => esc_url_raw( rest_url() ),
                         'nonce'                           => wp_create_nonce( 'wp_rest' ),
                         'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
-                        'sources'                         => Disciple_Tools_Contacts::list_sources(),
+                        'sources'                         => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false, null, true )['sources']["default"],
                         'channels'                        => Disciple_Tools_Contacts::get_channel_list(),
                         'template_dir'                    => get_template_directory_uri(),
                         'can_view_all'                    => user_can( get_current_user_id(), 'view_any_contacts' ),

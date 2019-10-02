@@ -200,13 +200,6 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'get_contact_counts' ]
             ]
         );
-
-        register_rest_route(
-            $namespace, '/contact/list-sources', [
-                "methods" => "GET",
-                "callback" => [ $this, 'list_sources' ],
-            ]
-        );
         register_rest_route(
             $namespace, '/contacts/(?P<id>\d+)/duplicates', [
                 "methods"  => "GET",
@@ -740,10 +733,6 @@ class Disciple_Tools_Contacts_Endpoints
         $tab = $params["tab"] ?? null;
         $show_closed = isset( $params["closed"] ) && $params["closed"] == "true";
         return Disciple_Tools_Contacts::get_count_of_contacts( $tab, $show_closed );
-    }
-
-    public function list_sources() {
-        return Disciple_Tools_Contacts::list_sources();
     }
 
     public function get_duplicates_on_contact( WP_REST_Request $request ){

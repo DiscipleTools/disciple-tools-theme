@@ -2,7 +2,7 @@
 
 Disciple_Tools_Metrics_Critical_Path::instance();
 class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_Base {
-    public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
+    public $permissions = [ 'access_contacts' ];
     private static $_instance = null;
 
     public static function instance() {

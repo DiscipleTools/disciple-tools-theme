@@ -63,6 +63,18 @@ class Disciple_Tools_Posts_Endpoints {
                 "type" => 'integer',
                 "required" => true,
                 "validate_callback" => [ $this, "prefix_validate_args" ]
+            ],
+            "date" => [
+                "description" => "The date the comment was made",
+                'type' => 'string',
+                'required' => false,
+                "validate_callback" => [ $this, "prefix_validate_args" ]
+            ],
+            "comment_type" => [
+                "description" => "The type of the comment",
+                'type' => 'string',
+                'required' => false,
+                "validate_callback" => [ $this, "prefix_validate_args" ]
             ]
         ];
 
@@ -164,6 +176,8 @@ class Disciple_Tools_Posts_Endpoints {
                         ],
                         "post_type" => $arg_schemas["post_type"],
                         "id" => $arg_schemas["id"],
+                        "date" => $arg_schemas["date"],
+                        'comment_type' => $arg_schemas["comment_type"]
                     ]
                 ]
             ]
@@ -352,15 +366,15 @@ class Disciple_Tools_Posts_Endpoints {
             $argument = $attributes['args'][ $param ];
             // Check to make sure our argument is a string.
             if ( 'string' === $argument['type'] && ! is_string( $value ) ) {
-                return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not of type %2$s', 'Disciple_tools' ), $param, 'string' ), array( 'status' => 400 ) );
+                return new WP_Error( 'rest_invalid_param', sprintf( '%1$s is not of type %2$s', $param, 'string' ), array( 'status' => 400 ) );
             }
             if ( 'integer' === $argument['type'] && ! is_numeric( $value ) ) {
-                return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not of type %2$s', 'Disciple_tools' ), $param, 'integer' ), array( 'status' => 400 ) );
+                return new WP_Error( 'rest_invalid_param', sprintf( '%1$s is not of type %2$s', $param, 'integer' ), array( 'status' => 400 ) );
             }
             if ( 'post_type' === $argument['type'] ){
                 $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
                 if ( !in_array( $value, $post_types ) ){
-                    return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not a valid post type', 'Disciple_tools' ), $value ), array( 'status' => 400 ) );
+                    return new WP_Error( 'rest_invalid_param', sprintf( '%1$s is not a valid post type', $value ), array( 'status' => 400 ) );
                 }
             }
         } else {
@@ -451,7 +465,15 @@ class Disciple_Tools_Posts_Endpoints {
         $get_params = $request->get_query_params();
         $body = $request->get_json_params();
         $silent = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
-        $result = DT_Posts::add_post_comment( $url_params["post_type"], $url_params["id"], $body["comment"], 'comment', [], true, $silent );
+        $args = [];
+        if ( isset( $body["date"] ) ){
+            $args["comment_date"] = $body["date"];
+        }
+        $type = 'comment';
+        if ( isset( $body["comment_type"] ) ){
+            $type = $body["comment_type"];
+        }
+        $result = DT_Posts::add_post_comment( $url_params["post_type"], $url_params["id"], $body["comment"], $type, $args, true, $silent );
         if ( is_wp_error( $result ) ) {
             return $result;
         } else {

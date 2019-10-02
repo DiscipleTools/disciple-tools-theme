@@ -72,6 +72,10 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
         foreach ( $contacts_custom_field_settings["milestones"]["default"] as $key => $option ){
             $milestone_settings[$key] = $option["label"];
         }
+        $sources = [];
+        foreach ( $contacts_custom_field_settings["sources"]["default"] as $key => $values ){
+            $sources[ $key ] = $values["label"];
+        }
         wp_localize_script(
             'dt_metrics_contacts_script', 'dtMetricsContacts', [
                 'root'               => esc_url_raw( rest_url() ),
@@ -80,7 +84,7 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id'    => get_current_user_id(),
                 'data'               => $this->data(),
-                'sources' => Disciple_Tools_Contacts::list_sources(),
+                'sources' => $sources,
                 'source_names' => $contacts_custom_field_settings['sources']['default'],
                 'overall_status_settings' => $overall_status_settings,
                 'seeker_path_settings' => $seeker_path_settings,

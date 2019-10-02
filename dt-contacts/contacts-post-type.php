@@ -404,6 +404,9 @@ class Disciple_Tools_Contact_Post_Type
 
         $sources_default = [];
         foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $key => $value ) {
+            if ( isset( $value['enabled'] ) && $value["enabled"] === false ) {
+                $value["deleted"] = true;
+            }
             $sources_default[ $key ] = $value;
         }
 
@@ -411,8 +414,9 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Sources', 'disciple_tools' ),
             'description' => '',
             'type'        => 'multi_select',
-            'default'     => [],
+            'default'     => $sources_default,
             'section'     => 'misc',
+            'customizable' => 'all'
         ];
 
         $fields["source_details"] = [
@@ -611,7 +615,8 @@ class Disciple_Tools_Contact_Post_Type
      */
     public function get_custom_fields_settings( $include_current_post = true, int $post_id = null, $with_deleted_options = false, $load_from_cache = true ) {
 
-        $cached = wp_cache_get( "contact_field_settings" );
+        $cache_with_deleted = $with_deleted_options ? "_with_deleted" : "";
+        $cached = wp_cache_get( "contact_field_settings" . $cache_with_deleted );
         if ( $load_from_cache && $cached ){
             return $cached;
         }
@@ -673,7 +678,9 @@ class Disciple_Tools_Contact_Post_Type
             }
         }
 
-        wp_cache_set( "contact_field_settings", $fields );
+        $fields = apply_filters( 'dt_custom_fields_settings_after_combine', $fields, "contacts" );
+
+        wp_cache_set( "contact_field_settings" . $cache_with_deleted, $fields );
         return $fields;
     } // End get_custom_fields_settings()
 
@@ -681,7 +688,7 @@ class Disciple_Tools_Contact_Post_Type
         if ( $post_type === "contacts" ){
             $fields = $this->get_custom_fields_settings();
             $settings = [
-                'sources' => dt_get_option( 'dt_site_custom_lists' )['sources'],
+                'sources' => $this->get_custom_fields_settings( false, null, true )["sources"]["default"],
                 'fields' => $fields,
                 'address_types' => dt_get_option( "dt_site_custom_lists" )["contact_address_types"],
                 'channels' => $this->get_channels_list(),

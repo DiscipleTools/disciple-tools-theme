@@ -207,21 +207,20 @@ jQuery(document).ready(function($) {
    * Sources
    */
   let leadSourcesTypeahead = async function leadSourcesTypeahead() {
+    let sources = _.get(contactsDetailsWpApiSettings,  'contacts_custom_fields_settings.sources.default' )
     let sourceTypeahead =  $(".js-typeahead-sources");
     if (!window.Typeahead['.js-typeahead-sources']){
-      /* Similar code is in list.js, copy-pasted for now. */
-      sourceTypeahead.attr("disabled", true) // disable while loading AJAX
-      const response = await fetch(contactsDetailsWpApiSettings.root + 'dt/v1/contact/list-sources', {
-        credentials: 'same-origin', // needed for Safari
-        headers: {
-          'X-WP-Nonce': wpApiShare.nonce,
-        },
-      });
       let sourcesData = []
-      _.forOwn(await response.json(), (sourceValue, sourceKey) => {
-        sourcesData.push({key:sourceKey, value:sourceValue || ""})
+      _.forOwn(sources, (val, key)=>{
+        if ( !val.deleted ){
+          sourcesData.push({
+            key: key,
+            name:key,
+            value: val.label || key
+          })
+        }
       })
-      sourceTypeahead.attr("disabled", false)
+
       $.typeahead({
         input: '.js-typeahead-sources',
         minLength: 0,
@@ -240,7 +239,7 @@ jQuery(document).ready(function($) {
             return (contact.sources || []).map(sourceKey=>{
               return {
                 key:sourceKey,
-                value: _.get(contactsDetailsWpApiSettings.sources, sourceKey) || sourceKey,
+                value: _.get(sources, `${sourceKey}.label`) || sourceKey,
               }
             })
           }, callback: {
@@ -285,9 +284,6 @@ jQuery(document).ready(function($) {
         accent: true,
         searchOnFocus: true,
         maxItem: 20,
-        template: function (query, item) {
-          return `<span>${_.escape(item.name)}</span>`
-        },
         dropdownFilter: [{
           key: 'group',
           value: 'focus',
@@ -382,9 +378,6 @@ jQuery(document).ready(function($) {
         accent: true,
         searchOnFocus: true,
         maxItem: 20,
-        template: function (query, item) {
-          return `<span>${_.escape(item.name)}</span>`
-        },
         source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
         display: "name",
         templateValue: "{{name}}",
@@ -438,7 +431,7 @@ jQuery(document).ready(function($) {
     template: function (query, item) {
       return `<div class="assigned-to-row" dir="auto">
         <span>
-            <img style="vertical-align: text-bottom" src="{{avatar}}"/>
+            <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
             ${_.escape( item.name )}
         </span>
         ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
@@ -564,9 +557,6 @@ jQuery(document).ready(function($) {
     minLength: 0,
     maxItem: 20,
     searchOnFocus: true,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
     source: {
       tags: {
         display: ["name"],
@@ -1125,11 +1115,8 @@ jQuery(document).ready(function($) {
     let sourceHTML = $('.sources-list').empty()
     if ( contact.sources && contact.sources.length > 0 ){
       contact.sources.forEach(source=>{
-        let translatedSourceHTML = _.escape(_.get(contactsDetailsWpApiSettings, `sources.${source}`))
-        if (! translatedSourceHTML) {
-          translatedSourceHTML = `<code>Unknown source: ${_.escape(source)}</code>`
-        }
-        sourceHTML.append(`<li>${translatedSourceHTML}</li>`)
+        let translatedSourceHTML = _.escape(_.get(contactsDetailsWpApiSettings, `sources.${source}.label`))
+        sourceHTML.append(`<li>${translatedSourceHTML || _.escape(source)}</li>`)
       })
     } else {
       sourceHTML.append(`<li id="no-source">${_.escape( contactsDetailsWpApiSettings.translations["not-set"]["source"] )}</li>`)
