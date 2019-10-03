@@ -312,7 +312,7 @@ msgstr "Aucun dirigeant définie"
 #: dt-assets/functions/enqueue-scripts.php:190
 #: dt-assets/parts/group-details.php:125
 msgid "No people group set"
-msgstr "Aucun groupe ethinique défini"
+msgstr "Aucun groupe ethnique défini"
 
 #: dt-assets/functions/enqueue-scripts.php:191
 msgid "No email set"
@@ -566,7 +566,7 @@ msgstr "Source"
 
 #: dt-assets/parts/contact-details.php:279
 msgid "Edit Contact"
-msgstr "Modifier le Contact"
+msgstr "Modifier le contact"
 
 #: dt-assets/parts/contact-details.php:283
 #: dt-assets/parts/content-contacts.php:40
@@ -886,7 +886,7 @@ msgstr "Contact créé"
 #: dt-assets/parts/modals/modal-new-contact.php:29
 #: dt-assets/parts/modals/modal-new-group.php:27
 msgid "Return to Contact"
-msgstr "Retourner au Contact"
+msgstr "Retourner au contact"
 
 #: dt-assets/parts/modals/modal-new-contact.php:31
 #: dt-assets/parts/modals/modal-new-group.php:31
@@ -2210,7 +2210,7 @@ msgstr "Tout temps"
 
 #: dt-metrics/metrics-critical-path.php:206
 msgid "Assigned Contacts"
-msgstr "Contacts Assignés"
+msgstr "Contacts assignés"
 
 #: dt-metrics/metrics-critical-path.php:214 dt-metrics/metrics-personal.php:74
 #: dt-metrics/metrics-project.php:83
@@ -2667,7 +2667,7 @@ msgstr "Rechercher des étiquettes"
 
 #: single-contacts.php:508
 msgid "Close Contact"
-msgstr "Fermer le Contact"
+msgstr "Fermer le contact"
 
 #: single-contacts.php:509
 msgid "Why do you want to close this contact?"
@@ -3309,82 +3309,82 @@ msgstr "Baptisé par"
 
 #: dt-assets/parts/modals/modal-help.php:81 single-groups.php:204
 msgid "Four Fields"
-msgstr ""
+msgstr "Quatre Champs"
 
 #: dt-contacts/contacts-post-type.php:359
 msgid "Contact on vacation"
-msgstr ""
+msgstr "Contact en vacances"
 
 #: dt-contacts/contacts-post-type.php:360
 msgid "Contact not responding"
-msgstr ""
+msgstr "Contact ne répond pas"
 
 #: dt-contacts/contacts-post-type.php:361
 msgid "Contact not available"
-msgstr ""
+msgstr "Contact indisponible"
 
 #: dt-contacts/contacts-post-type.php:362
 msgid "Contact has little interest/hunger"
-msgstr ""
+msgstr "Contact n'a pas l'intérêt"
 
 #: dt-contacts/contacts-post-type.php:363
 msgid "Contact shows no initiative"
-msgstr ""
+msgstr "Contact ne prend aucune initiative"
 
 #: dt-contacts/contacts-post-type.php:364
 msgid "Contact has questionable motives"
-msgstr ""
+msgstr "Contact a des motifs discutables"
 
 #: dt-contacts/contacts-post-type.php:365
 msgid "Ball is in the contact's court"
-msgstr ""
+msgstr "La balle est dans le camp de contact"
 
 #: dt-contacts/contacts-post-type.php:366
 msgid "We want to see if/how the contact responds to automated text messages"
-msgstr ""
+msgstr "Nous attendons de voir s'il répond à des messages automatisés"
 
 #: dt-contacts/contacts-post-type.php:543
 msgid "Coached by"
-msgstr ""
+msgstr "Entraîné par"
 
 #: dt-contacts/contacts-post-type.php:590
 msgid "Coordinates"
-msgstr ""
+msgstr "Les coordonnées"
 
 #: dt-contacts/contacts-post-type.php:595
 msgid "Reminders"
-msgstr ""
+msgstr "Des rappels"
 
 #: dt-core/admin/config-site-defaults.php:775
 msgid "Weekly"
-msgstr ""
+msgstr "Hebdomadaire"
 
 #: dt-groups/groups-post-type.php:329
 msgid "Unbelievers"
-msgstr ""
+msgstr "Incroyants"
 
 #: dt-groups/groups-post-type.php:334
 msgid "Believers"
-msgstr ""
+msgstr "Croyants"
 
 #: dt-groups/groups-post-type.php:339
 msgid "Accountable"
-msgstr ""
+msgstr "Tenu responsable"
 
 #: dt-groups/groups-post-type.php:349
 msgid "Multiplying"
-msgstr ""
+msgstr "Se multiplie"
 
 #: dt-mapping/mapping.php:322
 msgid "Refresh Cached Data"
-msgstr ""
+msgstr "Actualisez le cache"
 
 #: dt-metrics/metrics-project.php:99
 msgid "Follow-up of all active contacts"
-msgstr ""
+msgstr "Suivi de tous les contacts actifs"
 
 #: dt-notifications/notifications.php:823
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr ""
+msgstr "@%1$s, une mise à jour est nécessaire sur %2$s."
 
