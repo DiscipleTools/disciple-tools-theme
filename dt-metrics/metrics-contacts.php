@@ -63,7 +63,7 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
             'wp-i18n'
         ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-contacts.js' ) );
 
-        $contacts_custom_field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false, null, true );
+        $contacts_custom_field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false );
         $overall_status_settings = $contacts_custom_field_settings['overall_status'];
         $overall_status_settings['order'] = array_keys( $overall_status_settings['default'] );
         $seeker_path_settings = $contacts_custom_field_settings['seeker_path'];
