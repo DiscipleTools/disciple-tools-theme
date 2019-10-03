@@ -54,6 +54,7 @@ function dt_remove_action_feed() {
 /**
  * Removes pingback and a couple common DOS attacks strategies from header
  */
+$xmlrpc_enabled = getenv( 'XMLRPC_ENABLED' );
 function dt_remove_x_pingback_header( $headers ) {
     unset( $headers['X-Pingback'] );
     return $headers;
@@ -65,7 +66,11 @@ function dt_block_xmlrpc_attacks( $methods ) {
     return $methods;
 }
 add_filter( 'xmlrpc_methods', 'dt_block_xmlrpc_attacks' );
-add_filter( 'xmlrpc_enabled', '__return_false' );
+if ( $xmlrpc_enabled === true || strtolower($xmlrpc_enabled) == 'true' ) {
+    add_filter( 'xmlrpc_enabled', '__return_true' );
+} else {
+    add_filter( 'xmlrpc_enabled', '__return_false' );
+}
 
 /**
  * Removes header clutter
