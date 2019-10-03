@@ -66,7 +66,7 @@ function dt_block_xmlrpc_attacks( $methods ) {
     return $methods;
 }
 add_filter( 'xmlrpc_methods', 'dt_block_xmlrpc_attacks' );
-if ( $xmlrpc_enabled === true || strtolower($xmlrpc_enabled) == 'true' ) {
+if ( $xmlrpc_enabled === true || strtolower( $xmlrpc_enabled ) == 'true' ) {
     add_filter( 'xmlrpc_enabled', '__return_true' );
 } else {
     add_filter( 'xmlrpc_enabled', '__return_false' );
