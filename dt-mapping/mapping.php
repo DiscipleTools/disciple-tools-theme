@@ -881,7 +881,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function default_map_settings() : array {
-            $level = get_option( 'dt_mapping_module_starting_map_level' );
+            $level = apply_filters( 'dt_starting_map_level', get_option( 'dt_mapping_module_starting_map_level' ) );
 
             if ( ! $level || ! is_array( $level ) ) {
                 $level = [
@@ -893,6 +893,73 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
 
             return $level;
+        }
+
+
+        /**
+         * Builds default settings for specific grid_id.
+         * Note: Useful for functions supplying a different starting point to the display map.
+         *
+         * @param $grid_id
+         * @return array
+         */
+        public function get_map_level_settings_by_grid_id( $grid_id ) {
+            $default_array = [];
+
+            $row = Disciple_Tools_Mapping_Queries::get_by_grid_id( $grid_id );
+            //            (
+//                [id] => 100364199
+//                [grid_id] => 100364199
+//                [name] => United States
+//                [population] => 310232863
+//                [latitude] => 45.7987
+//                [longitude] => 0.311424
+//                [country_code] => US
+//                [admin0_code] => USA
+//                [parent_id] => 1
+//                [admin0_grid_id] => 100364199
+//                [admin1_grid_id] =>
+//                [admin2_grid_id] =>
+//                [admin3_grid_id] =>
+//                [admin4_grid_id] =>
+//                [admin5_grid_id] =>
+//                [level] => 0
+//                [level_name] => admin0
+//                [is_custom_location] => 0
+//            )
+
+            if ( ! empty( $row ) ) {
+                if ( $row['level_name'] === 'world' ) {
+                    $default_array = [
+                        'type' => 'world',
+                        'parent' => 'world',
+                        'children' => []
+                    ];
+                }
+                else if ( $row['level_name'] === 'admin0' ) {
+                    $default_array = [
+                        'type' => 'country',
+                        'parent' => 'world',
+                        'children' => [ $grid_id ]
+                    ];
+                }
+                else if ( $row['level_name'] === 'admin1' ) {
+                    $default_array = [
+                        'type' => 'state',
+                        'parent' => $row['parent_id'],
+                        'children' => [ $grid_id ]
+                    ];
+                }
+                else {
+                    $default_array = [
+                        'type' => $row['level_name'],
+                        'parent' => $row['parent_id'],
+                        'children' => [ $grid_id ]
+                    ];
+                }
+            }
+
+            return $default_array;
         }
 
         /**
