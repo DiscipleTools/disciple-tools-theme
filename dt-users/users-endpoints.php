@@ -222,7 +222,7 @@ class Disciple_Tools_Users_Endpoints
 
     public function update_user( WP_REST_Request $request ){
         $get_params = $request->get_params();
-        $body = $request->get_json_params();
+        $body = $request->get_json_params() ?? $request->get_params();
         $user = wp_get_current_user();
         if ( $user ){
             if ( !empty( $body["add_unavailability"] ) ){
@@ -273,16 +273,6 @@ class Disciple_Tools_Users_Endpoints
     public function get_my_info( WP_REST_Request $request ){
         $user = wp_get_current_user();
         if ( $user ){
-//            //todo move to core endpoints
-//            $translations = dt_get_translations();
-//            $available_language_codes = get_available_languages( get_template_directory() .'/dt-assets/translation' );
-//            $available_languages = [];
-//            foreach ( $available_language_codes as $code ){
-//                if ( isset( $translations[$code] )){
-//                    $available_languages[] = $translations[$code];
-//                }
-//            }
-
             return [
                 "ID" => $user->ID,
                 "user_email" => $user->user_email,

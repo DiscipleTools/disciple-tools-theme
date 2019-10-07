@@ -375,6 +375,12 @@ else {
             require_once( get_template_directory() . '/dt-core/multisite.php' );
 
             /**
+             * core
+             */
+            require_once( get_template_directory() . '/dt-core/core-endpoints.php' );
+            new Disciple_Tools_Core_Endpoints();
+
+            /**
              * Admin panel
              * Contains all those features that only run if in the Admin panel
              * or those things directly supporting Admin panel features.
