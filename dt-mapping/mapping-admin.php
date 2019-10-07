@@ -1037,8 +1037,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <td>
                         <p>You can select World, Country, or State level focus for the mapping. By selecting the most
                             specific region of focus, you optimize the performance of the site load and various drop
-                            down
-                            lists throughout the site.
+                            down lists throughout the site.
                         </p>
                     </td>
                 </tr>
