@@ -99,6 +99,12 @@ class Disciple_Tools_Users_Endpoints
                 'callback' => [ $this, 'update_user' ]
             ]
         );
+        register_rest_route(
+            $this->namespace, '/user/my', [
+                'methods' => "GET",
+                'callback' => [ $this, 'get_my_info' ]
+            ]
+        );
     }
 
     /**
@@ -250,8 +256,41 @@ class Disciple_Tools_Users_Endpoints
                 update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
                 return $dates_unavailable;
             }
+            if ( !empty( $body["locale"] ) ){
+                $e = wp_update_user( [
+                    'ID' => $user->ID,
+                    'locale' => $body["locale"]
+                ] );
+                return is_wp_error( $e ) ? $e : true;
+            }
+            return new WP_Error( "update_user", "No valid field found to update", [ 'status', 400 ] );
+        }  else {
+            return new WP_Error( "update_user", "Something went wrong. Are you a user?", [ 'status', 400 ] );
         }
-        return true;
     }
 
+
+    public function get_my_info( WP_REST_Request $request ){
+        $user = wp_get_current_user();
+        if ( $user ){
+//            //todo move to core endpoints
+//            $translations = dt_get_translations();
+//            $available_language_codes = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+//            $available_languages = [];
+//            foreach ( $available_language_codes as $code ){
+//                if ( isset( $translations[$code] )){
+//                    $available_languages[] = $translations[$code];
+//                }
+//            }
+
+            return [
+                "ID" => $user->ID,
+                "user_email" => $user->user_email,
+                "display_name" => $user->display_name,
+                "locale" => get_locale()
+            ];
+        } else {
+            return new WP_Error( "get_my_info", "Something went wrong. Are you a user?", [ 'status', 400 ] );
+        }
+    }
 }

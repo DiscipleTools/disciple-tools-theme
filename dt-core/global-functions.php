@@ -173,19 +173,23 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
-    if ( ! function_exists( 'dt_array_to_sql' ) ) {
-        function dt_array_to_sql( $values) {
-            if (empty( $values )) {
-                return 'NULL';
-            }
-            foreach ($values as &$val) {
-                if ('\N' === $val) {
-                    $val = 'NULL';
-                } else {
-                    $val = "'" . esc_sql( trim( $val ) ) . "'";
-                }
-            }
-            return implode( ',', $values );
+    if ( ! function_exists( 'dt_get_translations' ) ) {
+        function dt_get_translations() {
+            require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
+            $translations = wp_get_available_translations();
+            $translations["ar_MA"] = [
+                "language" => "ar_MA",
+                "native_name" => "العربية (المغرب)",
+                "english_name" => "Arabic (Morocco)",
+                "iso" => [ "ar" ]
+            ];
+            $translations["sw"] = [
+                "language" => "sw",
+                "native_name" => "Kiswahili",
+                "english_name" => "Swahili",
+                "iso" => [ "sw" ]
+            ];
+            return $translations;
         }
     }
 
