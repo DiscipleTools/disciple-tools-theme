@@ -971,7 +971,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         </style>";
 
             }
-            $uri = dt_get_url_path();
+            $uri = $this->get_url_path();
 
             if ( $uri && ( strpos( $uri, 'edit.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) || ( strpos( $uri, 'post-new.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) ) : ?>
                 <script>
@@ -983,6 +983,17 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                   });
                 </script>
             <?php endif;
+        }
+
+        public function get_url_path() {
+            if ( isset( $_SERVER["HTTP_HOST"] ) ) {
+                $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
+                if ( isset( $_SERVER["REQUEST_URI"] ) ) {
+                    $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
+                }
+                return trim( str_replace( get_site_url(), "", $url ), '/' );
+            }
+            return '';
         }
 
         public function enter_title_here( $title ) {
