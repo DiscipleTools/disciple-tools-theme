@@ -292,7 +292,15 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                     log.hist_time = b.hist_time
                     AND log.object_id = b.object_id
                 )
+                LEFT JOIN wp_dt_activity_log as sl ON ( sl.object_id = log.object_id AND sl.meta_key = 'overall_status' AND sl.meta_value = 'active' )
                 WHERE log.meta_key = 'seeker_path'
+                AND sl.hist_time = (
+                    SELECT MAX( hist_time ) as hist_time
+                    FROM  wp_dt_activity_log
+                    WHERE meta_key = 'overall_status'
+                    AND hist_time < %d
+                    AND object_id = log.object_id
+                )
                 AND log.object_id NOT IN (
                     SELECT post_id
                     FROM $wpdb->postmeta
@@ -301,7 +309,7 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                     GROUP BY post_id
                 )
                 GROUP BY log.meta_value
-            ", $end
+            ", $end, $end
             ), ARRAY_A
         );
         $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
