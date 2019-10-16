@@ -19,7 +19,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
                     <div class="bordered-box">
 
-                        <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu data-multi-expand="true" >
+                        <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu>
 
                             <?php
 
