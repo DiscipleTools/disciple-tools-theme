@@ -147,7 +147,6 @@ class Disciple_Tools_Metric_Reports_Tab extends Disciple_Tools_Abstract_Menu_Bas
             WHERE report.report_source = 'monthly_report'
             GROUP BY report.id, rm.meta_key
             ORDER BY report.report_date DESC
-           
         ", ARRAY_A );
         $reports = [];
         foreach ( $results as $result ){

@@ -180,13 +180,13 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
      */
     public static function critical_path_activity( $start = 0, $end = 0 ){
         $data = [];
-        $manual_additions = Disciple_Tools_Counter_Outreach::get_outreach_count( 'manual_additions', $start, $end );
-        foreach ( $manual_additions as $addition ){
-            if ( $addition["section"] == "before") {
+        $manual_additions = Disciple_Tools_Counter_Outreach::get_monthly_reports_count( $start, $end );
+        foreach ( $manual_additions as $addition_key => $addition ) {
+            if ( $addition["section"] == "outreach") {
                 $data[] = [
-                    "key" => $addition["source"],
+                    "key" => $addition_key,
                     "label" => $addition["label"],
-                    "outreach" => $addition["total"]
+                    "outreach" => $addition["sum"]
                 ];
             }
         }
@@ -304,12 +304,12 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
             "total" => (int) $total_church_planters,
             "type" => "ongoing"
         ];
-        foreach ( $manual_additions as $addition ){
-            if ( $addition["section"] == "after") {
+        foreach ( $manual_additions as $addition_key => $addition ) {
+            if ( $addition["section"] == "movement") {
                 $data[] = [
-                    "key" => $addition["source"],
+                    "key" => $addition_key,
                     "label" => $addition["label"],
-                    "total" => $addition["total"],
+                    "total" => $addition["latest"],
                     "type" => "ongoing"
                 ];
             }
