@@ -184,6 +184,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         foreach ( $manual_additions as $addition_key => $addition ) {
             if ( $addition["section"] == "outreach") {
                 $data[] = [
+                    "description" => $addition["description"],
                     "key" => $addition_key,
                     "label" => $addition["label"],
                     "outreach" => $addition["sum"]
@@ -195,6 +196,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         $data[] = [
             "key" => "new_contacts",
             "label" => __( "New Contacts", "disciple_tools" ),
+            "description" => __( "Any new created contact", "disciple_tools" ),
             "value" => (int) $new_contacts,
             "total" => (int) $current_contacts,
             "type" => "activity"
@@ -204,6 +206,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         $data[] = [
             "key" => "assigned_contacts",
             "label" => __( "Assigned Contacts", "disciple_tools" ),
+            "description" => __( "Number of contacts where the status was change to assigned", "disciple_tools" ),
             "value" => (int) $assigned_contacts,
             "total" => (int) $status_at_date["assigned"]["value"],
             "type" => "activity"
@@ -212,6 +215,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         $data[] = [
             "key" => "active_contacts",
             "label" => __( "Active Contacts", "disciple_tools" ),
+            "description" => __( "Number of contacts that had the active status", "disciple_tools" ),
             "value" => (int) $active_contacts,
             "total" => (int) $status_at_date["active"]["value"],
             "type" => "activity"
@@ -220,9 +224,15 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         $seeker_path_activity = Disciple_Tools_Counter_Contacts::seeker_path_activity( $start, $end );
         foreach ( $seeker_path_counts as $key => $val ){
             if ( $key !== "none" ){
+                if ( $key == "ongoing" || $key == "coaching" ){
+                    $description = sprintf( __( "Number of contacts on %s at the end of the time range", "disciple_tools" ), $val["label"] );
+                } else {
+                    $description = sprintf( __( "Number of contacts where %s was set on the seeker path", "disciple_tools" ), $val["label"] );
+                }
                 $data[] = [
                     "key" => $key,
                     "label" => $val["label"],
+                    "description" => $description,
                     "value" => (int) $seeker_path_activity[$key]["value"],
                     "total" => (int) $val["value"],
                     "type" => ( $key == "ongoing" || $key == "coaching" ) ? "ongoing" : "activity"
@@ -230,10 +240,11 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
             }
         }
         $baptisms = Disciple_Tools_Counter_Baptism::get_number_of_baptisms( $start, $end );
-        $baptisms_total = Disciple_Tools_Counter_Baptism::get_number_of_baptisms( $start, $end );
+        $baptisms_total = Disciple_Tools_Counter_Baptism::get_number_of_baptisms( 0, $end );
         $data[] = [
             "key" => "baptisms",
             "label" => __( "Baptisms", "disciple_tools" ),
+            "description" => __( "Number of baptized contact with a baptism date in date range and baptized by connection", "disciple_tools" ),
             "value" => (int) $baptisms,
             "total" => (int) $baptisms_total,
             "type" => "activity"
@@ -247,9 +258,11 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
                     $value = $c;
                 }
             }
+
             $data[] = [
                 "key" => "baptism_generation_$gen",
                 "label" => sprintf( __( "Baptism Generation %s", "disciple_tools" ), $gen ),
+                "description" => sprintf( __( "Number of %s generation baptisms", "disciple_tools" ), $gen ),
                 "value" => (int) $value,
                 "total" => (int) $count,
                 "type" => "activity"
@@ -260,6 +273,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         $data[] = [
             "key" => "baptizers",
             "label" => __( "Baptizers", "disciple_tools" ),
+            "description" => __( "Number of contacts or users who have baptized a contact", "disciple_tools" ),
             "value" => (int) $baptizers,
             "total" => (int) $total_baptizers,
             "type" => "activity"
@@ -269,6 +283,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         $data[] = [
             "key" => "active_groups",
             "label" => __( "Active Groups", "disciple_tools" ),
+            "description" => __( "Groups active and the end of the time range", "disciple_tools" ),
             "value" => (int) $active_groups,
             "total" => (int) $current_groups,
             "type" => "ongoing"
@@ -278,6 +293,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         $data[] = [
             "key" => "active_churches",
             "label" => __( "Active Churches", "disciple_tools" ),
+            "description" => __( "Churches active and the end of the time range", "disciple_tools" ),
             "value" => (int) $active_churches,
             "total" => (int) $current_churches,
             "type" => "ongoing"
@@ -290,6 +306,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
             $data[] = [
                 "key" => "church_generation_$i",
                 "label" => sprintf( __( "Church Generation %s", "disciple_tools" ), $i ),
+                "description" => sprintf( __( "Number of generation %s churches at the end of the time range", "disciple_tools" ), $i ),
                 "value" => (int) isset( $church_generations[$i] ) ? $church_generations[$i] : 0,
                 "total" => (int) isset( $current_church_generations[$i] ) ? $current_church_generations[$i] : 0,
                 "type" => "ongoing"
@@ -300,6 +317,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         $data[] = [
             "key" => "church_planters",
             "label" => __( "Church Planters", "disciple_tools" ),
+            "description" => __( "Number of contacts or users who have started a church and are marked as the church coach", "disciple_tools" ),
             "value" => (int) $church_planters,
             "total" => (int) $total_church_planters,
             "type" => "ongoing"
@@ -307,6 +325,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         foreach ( $manual_additions as $addition_key => $addition ) {
             if ( $addition["section"] == "movement") {
                 $data[] = [
+                    "description" => $addition["description"],
                     "key" => $addition_key,
                     "label" => $addition["label"],
                     "total" => $addition["latest"],
