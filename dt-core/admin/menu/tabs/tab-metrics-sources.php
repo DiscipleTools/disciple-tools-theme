@@ -75,13 +75,13 @@ class Disciple_Tools_Metric_Sources_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <th>Key</th>
                     <th>Label</th>
                     <th>Description</th>
-                    <th>Section</th>
-<!--                    <th>Order</th>-->
+                    <th>Critical Path Section</th>
+                    <th>Order</th>
                     <th></th>
                     <th></th>
                 </tr>
                 </thead>
-                <?php foreach ( $sources as $source ): ?>
+                <?php foreach ( $sources as $index => $source ): ?>
                 <tr>
                     <td><?php echo esc_html( $source["key"] ) ?></td>
                     <td>
@@ -96,10 +96,14 @@ class Disciple_Tools_Metric_Sources_Tab extends Disciple_Tools_Abstract_Menu_Bas
                             <option value="movement" <?php echo esc_html( ( $source["section"] ?? '' ) === 'movement' ? 'selected' : '' ) ?>>Movement Section</option>
                         </select>
                     </td>
-<!--                    <td>-->
-<!--                        <button>Up</button>-->
-<!--                        <button>Down</button>-->
-<!--                    </td>-->
+                    <td>
+                        <?php if ( $index ) :?>
+                        <button type="submit" class="button" name="order_up" value="<?php echo esc_html( $source["key"] ) ?>">Up</button>
+                        <?php endif;
+                        if ( $index != sizeof( $sources ) -1 ) : ?>
+                        <button type="submit" class="button" name="order_down" value="<?php echo esc_html( $source["key"] ) ?>">Down</button>
+                        <?php endif; ?>
+                    </td>
                     <td>
                         <button type="submit" class="button button-primary" name="save_changes" value="<?php echo esc_html( $source["key"] ) ?>">Save Changes</button>
                     </td>
@@ -185,6 +189,16 @@ class Disciple_Tools_Metric_Sources_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     $key = sanitize_key( wp_unslash( $_POST["delete_source"] ) );
                     $index = array_search( $key, array_column( $sources, 'key' ) );
                     array_splice( $sources, $index, 1 );
+                    update_option( 'dt_critical_path_sources', $sources );
+                } elseif ( isset( $_POST["order_up"] ) || isset( $_POST["order_down"] ) ){
+                    //move option  up or down
+                    $up = isset( $_POST["order_up"] );
+                    $option_key = $up ? sanitize_text_field( wp_unslash( $_POST["order_up"] ) ) : sanitize_text_field( wp_unslash( $_POST["order_down"] ) );
+                    $direction = $up ? -1 : 1;
+                    $sources = get_option( 'dt_critical_path_sources', [] );
+                    $index = array_search( $option_key, array_column( $sources, 'key' ) );
+                    $out = array_splice( $sources, $index, 1 );
+                    array_splice( $sources, $index + $direction, 0, $out );
                     update_option( 'dt_critical_path_sources', $sources );
                 }
             }
