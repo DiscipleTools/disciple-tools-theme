@@ -15,23 +15,23 @@ class Disciple_Tools_Migration_0023 extends Disciple_Tools_Migration
             WHERE post.post_type = 'locations'
         ", ARRAY_A );
         $map = [
-            "barcelona" => 3336901,
-            "madrid" => 3117732,
-            "castilla-y-leon" => 3336900,
-            "aragon" => 3336899,
-            "castilla-la-mancha" => 2593111,
-            "andalusia" => 2593109,
-            "extremadura" => 2593112,
-            "gibraltar" => 6255148,
-            "portugal" => 6255148,
-            "morocco" => 2542007,
-            "new-york-new-york" => 5128638,
-            "united-states" => 6252001
+            "barcelona" => 100074621,
+            "madrid" => 100074627,
+            "castilla-y-leon" => 100074581,
+            "aragon" => 100074578,
+            "castilla-la-mancha" => 100074580,
+            "andalusia" => 100074577,
+            "extremadura" => 100074587,
+            "gibraltar" => 100131318,
+            "portugal" => 100131318,
+            "morocco" => 100241761,
+            "new-york-new-york" => 100364232,
+            "united-states" => 100130478
         ];
 
         foreach ( $sample_locations as $location ){
             if ( isset( $map[$location["post_name"] ] ) ){
-                DT_Mapping_Module_Admin::instance()->convert_location_to_geoname( $location["ID"], $map[ $location["post_name"] ] );
+                DT_Mapping_Module_Admin::instance()->convert_location_to_location_grid( $location["ID"], $map[ $location["post_name"] ] );
             }
         }
     }

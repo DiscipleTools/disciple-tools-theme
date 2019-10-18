@@ -3,15 +3,33 @@
 
     <!--    Contact Status-->
     <div class="help-section" id="overall-status-help-text" style="display: none">
-        <h3><?php esc_html_e( "Contact Status", 'disciple_tools' ) ?></h3>
-        <p><?php esc_html_e( "This is where you set the current status of the contact.", 'disciple_tools' ) ?></p>
+        <?php
+        $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["overall_status"]; ?>
+        <h3><?php echo esc_html( $field["name"] ) ?></h3>
+        <p><?php echo esc_html( $field["description"] ) ?></p>
         <ul>
-            <?php
-            $status_options = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["overall_status"]["default"];
-            foreach ( $status_options as $option ): ?>
+            <?php foreach ( $field["default"] as $option ): ?>
                 <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ?? "" ) ?></li>
             <?php endforeach; ?>
         </ul>
+    </div>
+
+
+    <div class="help-section" id="assigned-to-help-text" style="display: none">
+        <?php
+        $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["assigned_to"]; ?>
+        <h3><?php echo esc_html( $field["name"] )?></h3>
+        <p><?php echo esc_html( $field["description"] ) ?></p>
+        <?php if ( current_user_can( "view_any_contacts" ) ) : ?>
+            <p><strong><?php esc_html_e( "Icons legend", 'disciple_tools' ) ?></strong></p>
+            <ul style="list-style-type:none">
+            <?php $workload_status_options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
+            foreach ( $workload_status_options as $option_key =>$option_val ): ?>
+                <li><span style="background-color: <?php echo esc_html( $option_val["color"] ) ?>; height:10px; padding: 0 5px; border-radius: 2px">&nbsp;</span> <?php echo esc_html( $option_val["label"] ) ?></li>
+            <?php endforeach ?>
+                <li><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" /> 2: <?php esc_html_e( "2 contacts need an update", 'disciple_tools' ) ?> </li>
+            </ul>
+        <?php endif; ?>
     </div>
 
 
@@ -76,20 +94,17 @@
         <p>If this group has multiplied into another group, you can add that here (Child Groups).</p>
     </div>
 
-    <!--    -->
-    <div class="help-section" id="-help-text" style="display: none">
-        <h3 class="lead"></h3>
-        <p></p>
+    <!--  Four Fields  -->
+    <div class="help-section" id="four-fields-help-text" style="display: none">
+        <h3 class="lead"><?php esc_html_e( "Four Fields", 'disciple_tools' ) ?></h3>
+        <ul>
+            <li>Unbeliever field: Unbelievers in this group.</li>
+            <li>Believer field: Believers in this group.</li>
+            <li>Accountable field.</li>
+            <li>Church field: Is this a church?</li>
+            <li>Multiply field: How many members of multiplying?</li>
+        </ul>
     </div>
-
-    <!--    -->
-    <div class="help-section" id="-help-text" style="display: none">
-        <h3 class="lead"></h3>
-        <p></p>
-    </div>
-
-
-
 
     <div class="grid-x">
         <button class="button" data-close aria-label="Close reveal" type="button">

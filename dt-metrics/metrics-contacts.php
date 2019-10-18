@@ -53,7 +53,7 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
     }
 
     public function scripts() {
-        wp_enqueue_script( 'dt_metrics_project_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-contacts.js', [
+        wp_enqueue_script( 'dt_metrics_contacts_script', get_template_directory_uri() . '/dt-metrics/metrics-contacts.js', [
             'moment',
             'jquery',
             'jquery-ui-core',
@@ -72,16 +72,19 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
         foreach ( $contacts_custom_field_settings["milestones"]["default"] as $key => $option ){
             $milestone_settings[$key] = $option["label"];
         }
+        $sources = [];
+        foreach ( $contacts_custom_field_settings["sources"]["default"] as $key => $values ){
+            $sources[ $key ] = $values["label"];
+        }
         wp_localize_script(
-            'dt_metrics_project_script', 'dtMetricsProject', [
+            'dt_metrics_contacts_script', 'dtMetricsContacts', [
                 'root'               => esc_url_raw( rest_url() ),
-                'theme_uri'          => get_stylesheet_directory_uri(),
+                'theme_uri'          => get_template_directory_uri(),
                 'nonce'              => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id'    => get_current_user_id(),
                 'data'               => $this->data(),
-                'spinner' => '<img src="' .trailingslashit( plugin_dir_url( __DIR__ ) ) . 'ajax-loader.gif" style="height:1em;" />',
-                'sources' => Disciple_Tools_Contacts::list_sources(),
+                'sources' => $sources,
                 'source_names' => $contacts_custom_field_settings['sources']['default'],
                 'overall_status_settings' => $overall_status_settings,
                 'seeker_path_settings' => $seeker_path_settings,
@@ -236,6 +239,7 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
         $res = $wpdb->get_results( $wpdb->prepare( "
             SELECT COUNT( DISTINCT(log.object_id) ) as `value`, log.meta_value as milestones
             FROM $wpdb->dt_activity_log log
+            INNER JOIN $wpdb->postmeta as type ON ( log.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
             INNER JOIN $wpdb->posts post 
             ON (
                 post.ID = log.object_id
@@ -313,6 +317,7 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
                 a.meta_value sources, b.meta_value overall_status, c.meta_value seeker_path, COUNT(p.ID) count
             FROM
                 $wpdb->posts p
+            INNER JOIN $wpdb->postmeta as type ON ( p.ID = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
             LEFT JOIN
                 $wpdb->postmeta a ON p.ID = a.post_id AND a.meta_key = 'sources'
             LEFT JOIN
@@ -385,6 +390,7 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
                 a.meta_value sources, b.meta_value milestone, COUNT(p.ID) count
             FROM
                 $wpdb->posts p
+            INNER JOIN $wpdb->postmeta as type ON ( p.ID = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
             LEFT JOIN
                 $wpdb->postmeta a ON p.ID = a.post_id AND a.meta_key = 'sources'
             JOIN

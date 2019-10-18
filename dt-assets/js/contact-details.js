@@ -1,4 +1,4 @@
-/* global jQuery:false, contactsDetailsWpApiSettings:false, moment:false, _:false */
+/*global contactsDetailsWpApiSettings:false, moment:false, _:false */
 
 
 
@@ -29,7 +29,7 @@ function save_quick_action(contactId, fieldKey){
   }).catch(err=>{
       console.log("error")
       console.log(err)
-      jQuery("#errors").append(err.responseText)
+      // jQuery("#errors").append(err.responseText)
   })
 
   if (fieldKey.indexOf("quick_button")>-1){
@@ -60,7 +60,7 @@ window.contactDetailsEvents = (function() {
   let topics = {}
   return {
     subscribe(topic, listener) {
-      if (! topics.hasOwnProperty(topic)) {
+      if (! Object.prototype.hasOwnProperty.call( topics, topic ) ) {
         topics[topic] = []
       }
       let index = topics[topic].push(listener) - 1;
@@ -71,7 +71,7 @@ window.contactDetailsEvents = (function() {
       }
     },
     publish(topic, info) {
-      if (! topics.hasOwnProperty(topic)) {
+      if (! Object.prototype.hasOwnProperty.call( topics, topic )) {
         return
       }
       topics[topic].forEach(listener => listener(info))
@@ -176,7 +176,7 @@ jQuery(document).ready(function($) {
         $("#new-group-link").html(`<a href="${_.escape( newGroup.permalink )}">${_.escape(title)}</a>`)
         $(".hide-after-group-create").hide()
         $('#go-to-group').attr('href', newGroup.permalink);
-        Typeahead['.js-typeahead-groups'].addMultiselectItemLayout({ID:newGroup.post_id.toString(), name:title})
+        Typeahead['.js-typeahead-groups'].addMultiselectItemLayout({ID:newGroup.ID.toString(), name:title})
       })
       .catch(function(error) {
         $(".js-create-group-button").removeClass("loading").addClass("alert");
@@ -193,20 +193,13 @@ jQuery(document).ready(function($) {
   $('.accept-decline').on('click', function () {
     let action = $(this).data("action")
     let data = {accept:action === "accept"}
-    jQuery.ajax({
-      type: "POST",
-      data: JSON.stringify(data),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: contactsDetailsWpApiSettings.root + 'dt-posts/v2/contacts/' + contactId + "/accept",
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', contactsDetailsWpApiSettings.nonce);
-      }
-    }).then(function (resp) {
+    makeRequestOnPosts( "POST", `contacts/${contactId}/accept`, data)
+    .then(function (resp) {
       setStatus(resp)
       jQuery('#accept-contact').hide()
     }).catch(err=>{
-      jQuery("#errors").append(err.responseText)
+      console.log('error')
+      console.log(err.responseText)
     })
   })
 
@@ -214,21 +207,20 @@ jQuery(document).ready(function($) {
    * Sources
    */
   let leadSourcesTypeahead = async function leadSourcesTypeahead() {
+    let sources = _.get(contactsDetailsWpApiSettings,  'contacts_custom_fields_settings.sources.default' )
     let sourceTypeahead =  $(".js-typeahead-sources");
     if (!window.Typeahead['.js-typeahead-sources']){
-      /* Similar code is in list.js, copy-pasted for now. */
-      sourceTypeahead.attr("disabled", true) // disable while loading AJAX
-      const response = await fetch(contactsDetailsWpApiSettings.root + 'dt/v1/contact/list-sources', {
-        credentials: 'same-origin', // needed for Safari
-        headers: {
-          'X-WP-Nonce': wpApiShare.nonce,
-        },
-      });
       let sourcesData = []
-      _.forOwn(await response.json(), (sourceValue, sourceKey) => {
-        sourcesData.push({key:sourceKey, value:sourceValue || ""})
+      _.forOwn(sources, (val, key)=>{
+        if ( !val.deleted ){
+          sourcesData.push({
+            key: key,
+            name:key,
+            value: val.label || key
+          })
+        }
       })
-      sourceTypeahead.attr("disabled", false)
+
       $.typeahead({
         input: '.js-typeahead-sources',
         minLength: 0,
@@ -247,7 +239,7 @@ jQuery(document).ready(function($) {
             return (contact.sources || []).map(sourceKey=>{
               return {
                 key:sourceKey,
-                value: _.get(contactsDetailsWpApiSettings.sources, sourceKey) || sourceKey,
+                value: _.get(sources, `${sourceKey}.label`) || sourceKey,
               }
             })
           }, callback: {
@@ -282,19 +274,16 @@ jQuery(document).ready(function($) {
 
 
   /**
-   * Geonames
+   * Locations
    */
   let loadGeonameTypeahead = ()=>{
-    if (!window.Typeahead['.js-typeahead-geonames']){
+    if (!window.Typeahead['.js-typeahead-location_grid']){
       $.typeahead({
-        input: '.js-typeahead-geonames',
+        input: '.js-typeahead-location_grid',
         minLength: 0,
         accent: true,
         searchOnFocus: true,
         maxItem: 20,
-        template: function (query, item) {
-          return `<span>${_.escape(item.name)}</span>`
-        },
         dropdownFilter: [{
           key: 'group',
           value: 'focus',
@@ -305,11 +294,11 @@ jQuery(document).ready(function($) {
           focus: {
             display: "name",
             ajax: {
-              url: wpApiShare.root + 'dt/v1/mapping_module/search_geonames_by_name',
+              url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
               data: {
                 s: "{{query}}",
                 filter: function () {
-                  return _.get(window.Typeahead['.js-typeahead-geonames'].filters.dropdown, 'value', 'all')
+                  return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
                 }
               },
               beforeSend: function (xhr) {
@@ -320,7 +309,7 @@ jQuery(document).ready(function($) {
                   if (typeof typeaheadTotals !== "undefined") {
                     typeaheadTotals.field = data.total
                   }
-                  return data.geonames
+                  return data.location_grid
                 }
               }
             }
@@ -332,24 +321,24 @@ jQuery(document).ready(function($) {
         multiselect: {
           matchOn: ["ID"],
           data: function () {
-            return (contact.geonames || []).map(g=>{
+            return (contact.location_grid || []).map(g=>{
               return {ID:g.id, name:g.label}
             })
 
           }, callback: {
             onCancel: function (node, item) {
-              _.pullAllBy(editFieldsUpdate.geonames.values, [{value:item.ID}], "value")
-              editFieldsUpdate.geonames.values.push({value:item.ID, delete:true})
+              _.pullAllBy(editFieldsUpdate.location_grid.values, [{value:item.ID}], "value")
+              editFieldsUpdate.location_grid.values.push({value:item.ID, delete:true})
             }
           }
         },
         callback: {
           onClick: function(node, a, item, event){
-            if (!editFieldsUpdate.geonames){
-              editFieldsUpdate.geonames = { "values": [] }
+            if (!editFieldsUpdate.location_grid){
+              editFieldsUpdate.location_grid = { "values": [] }
             }
-            _.pullAllBy(editFieldsUpdate.geonames.values, [{value:item.ID}], "value")
-            editFieldsUpdate.geonames.values.push({value:item.ID})
+            _.pullAllBy(editFieldsUpdate.location_grid.values, [{value:item.ID}], "value")
+            editFieldsUpdate.location_grid.values.push({value:item.ID})
             this.addMultiselectItemLayout(item)
             event.preventDefault()
             this.hideLayout();
@@ -363,12 +352,12 @@ jQuery(document).ready(function($) {
               .html("Regions of Focus");
           },
           onResult: function (node, query, result, resultCount) {
-            resultCount = typeaheadTotals.geonames
+            resultCount = typeaheadTotals.location_grid
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#geonames-result-container').html(text);
+            $('#location_grid-result-container').html(text);
           },
           onHideLayout: function () {
-            $('#geonames-result-container').html("");
+            $('#location_grid-result-container').html("");
           }
         }
       });
@@ -389,9 +378,6 @@ jQuery(document).ready(function($) {
         accent: true,
         searchOnFocus: true,
         maxItem: 20,
-        template: function (query, item) {
-          return `<span>${_.escape(item.name)}</span>`
-        },
         source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
         display: "name",
         templateValue: "{{name}}",
@@ -443,10 +429,17 @@ jQuery(document).ready(function($) {
     source: TYPEAHEADS.typeaheadUserSource(),
     templateValue: "{{name}}",
     template: function (query, item) {
-      return `<span class="row" dir="auto">
-        <span class="avatar"><img src="{{avatar}}"/> </span>
-        <span>${_.escape( item.name )}</span>
-      </span>`
+      return `<div class="assigned-to-row" dir="auto">
+        <span>
+            <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
+            ${_.escape( item.name )}
+        </span>
+        ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
+        ${ item.update_needed ? `<span>
+          <img style="height: 12px;" src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/broken.svg"/>
+          <span style="font-size: 14px">${_.escape(item.update_needed)}</span>
+        </span>` : '' }
+      </div>`
     },
     dynamic: true,
     hint: true,
@@ -564,9 +557,6 @@ jQuery(document).ready(function($) {
     minLength: 0,
     maxItem: 20,
     searchOnFocus: true,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
     source: {
       tags: {
         display: ["name"],
@@ -807,7 +797,7 @@ jQuery(document).ready(function($) {
     editFieldsUpdate = {
       people_groups : { values: [] },
       sources : { values: [] },
-      geonames : { values: [] }
+      location_grid : { values: [] }
     }
     let phoneHTML = "";
     (contact.contact_phone|| []).forEach(field=>{
@@ -873,16 +863,13 @@ jQuery(document).ready(function($) {
   $("#merge-dupe-modal").on("click", function() {
 
     editFieldsUpdate = {
-      // locations: {
-      //   values: []
-      // },
       people_groups: {
         values: []
       },
       sources: {
         values: []
       },
-      geonames: { values: [] }
+      location_grid: { values: [] }
     }
     let phoneHTML = "";
     (contact.contact_phone || []).forEach(field => {
@@ -1100,7 +1087,7 @@ jQuery(document).ready(function($) {
     if ( socialIsEmpty ){
       socialHTMLField.append(`<li id="no-social">${_.escape( contactsDetailsWpApiSettings.translations["not-set"]["social"] )}</li>`)
     }
-    let connections = [ "people_groups", "geonames" ]
+    let connections = [ "people_groups", "location_grid" ]
     connections.forEach(connection=>{
       let htmlField = $(`.${connection}-list`).empty()
       if ( !contact[connection] || contact[connection].length === 0 ){
@@ -1128,11 +1115,8 @@ jQuery(document).ready(function($) {
     let sourceHTML = $('.sources-list').empty()
     if ( contact.sources && contact.sources.length > 0 ){
       contact.sources.forEach(source=>{
-        let translatedSourceHTML = _.escape(_.get(contactsDetailsWpApiSettings, `sources.${source}`))
-        if (! translatedSourceHTML) {
-          translatedSourceHTML = `<code>Unknown source: ${_.escape(source)}</code>`
-        }
-        sourceHTML.append(`<li>${translatedSourceHTML}</li>`)
+        let translatedSourceHTML = _.escape(_.get(contactsDetailsWpApiSettings, `sources.${source}.label`))
+        sourceHTML.append(`<li>${translatedSourceHTML || _.escape(source)}</li>`)
       })
     } else {
       sourceHTML.append(`<li id="no-source">${_.escape( contactsDetailsWpApiSettings.translations["not-set"]["source"] )}</li>`)
@@ -1165,7 +1149,7 @@ jQuery(document).ready(function($) {
       }).catch(err=>{
       console.log("error")
       console.log(err)
-      jQuery("#errors").append(err.responseText)
+      // jQuery("#errors").append(err.responseText)
     })
 
     if (fieldKey.indexOf("quick_button")>-1){
@@ -1299,7 +1283,7 @@ jQuery(document).ready(function($) {
         }
       }).catch(err=>{
         jQuery('#transfer_spinner').empty().append(err.responseJSON.message).append('&nbsp;' + contactsDetailsWpApiSettings.translations.transfer_error )
-        jQuery("#errors").empty()
+        // jQuery("#errors").empty()
         console.log("error")
         console.log(err)
       })

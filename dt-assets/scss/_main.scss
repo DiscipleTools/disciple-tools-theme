@@ -209,6 +209,9 @@ nav.second-bar {
         font-weight: 800;
         font-size:1.3rem;
     }
+    ul.is-at-top {
+        padding-top: 10px;
+    }
 }
 
 
@@ -484,6 +487,7 @@ button.loader{
     border: .25rem solid #919191;
     border-top-color: black;
     animation: spin 1s infinite linear;
+    display: inline-block;
 }
 
 
@@ -542,6 +546,10 @@ button.loader{
             padding: 1px;
         }
     }
+}
+
+.avatar img {
+    height: 16px;
 }
 
 .clearfix {
@@ -835,6 +843,8 @@ label.dt-switch:active:after {
     width: 20px;
 }
 
-.geocode-link {
-    margin-top:.7rem;
+
+.ul-no-bullets {
+    list-style-type: none;
+    margin: 0;
 }

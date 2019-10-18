@@ -627,7 +627,7 @@ class Disciple_Tools_Notifications
 
                         if ( in_array( "assigned_to", $notification_on_fields ) ) {
                             if ( $assigned_to ) {
-                                if ( $follower === $assigned_to ) {
+                                if ( (int) $follower === (int) $assigned_to ) {
                                     $notification["notification_name"] = "assigned_to";
                                     $notification_type                 = 'new_assigned';
                                     if ( dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $follower ) ) {
@@ -651,7 +651,7 @@ class Disciple_Tools_Notifications
                             }
                         }
                         if ( in_array( "requires_update", $notification_on_fields ) ) {
-                            if ( $follower === $assigned_to || in_array( $follower, $subassigned ) ) {
+                            if ( (int) $follower === (int) $assigned_to || in_array( $follower, $subassigned ) ) {
                                 $notification["notification_name"] = "requires_update";
                                 $notification_type                 = 'updates';
                                 if ( dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $follower ) ) {
@@ -819,7 +819,8 @@ class Disciple_Tools_Notifications
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
             $notification_note = sprintf( esc_html_x( '%1$s added milestone %2$s on %3$s.', 'User1 added milestone Baptizing on contact1.', 'disciple_tools' ), $display_name, $label, $link );
         } elseif ( $notification["notification_name"] ==="requires_update" ) {
-            $notification_note = $notification_note = sprintf( esc_html_x( 'An update is requested on %1$s.', 'An update is requested on contact1.', 'disciple_tools' ), $link );
+            $assigned_to = dt_get_assigned_name( $notification["post_id"], true );
+            $notification_note = $notification_note = sprintf( esc_html_x( '@%1$s, an update is requested on %2$s.', '@Multiplier1, an update is requested on contact1.', 'disciple_tools' ), $assigned_to, $link );
         } elseif ( $notification["notification_name"] ==="contact_info_update" ){
             $source_user = get_userdata( $notification["source_user_id"] );
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );

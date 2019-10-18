@@ -18,7 +18,7 @@
              style="display: <?php echo esc_html( ( isset( $contact['requires_update'] ) && $contact['requires_update'] === true ) ? "block" : "none" ) ?> ">
         <div class="bordered-box detail-notification-box" style="background-color:#F43636">
             <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This contact needs an update', 'disciple_tools' ) ?>.</h4>
-            <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?>.</p>
+            <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?></p>
         </div>
     </section>
 
@@ -113,6 +113,9 @@
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
                     <?php esc_html_e( 'Assigned to', 'disciple_tools' )?>
+                    <button class="help-button" data-section="assigned-to-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
                 </div>
 
                 <div class="assigned_to details">
@@ -196,13 +199,13 @@
                 <ul class="address"></ul>
             </div>
 
-            <!-- Geonames -->
+            <!-- Location Grid -->
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
                     <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
                 </div>
-                <ul class="geonames-list"></ul>
+                <ul class="location_grid-list"></ul>
             </div>
 
             <!-- People Groups -->
@@ -318,7 +321,7 @@
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
                     <?php esc_html_e( 'Address', 'disciple_tools' )?>
-                    <button id="add-new-address" data-open="geocode-address" >
+                    <button id="add-new-address">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 </div>
@@ -331,14 +334,14 @@
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
                     <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
                 </div>
-                <div class="geonames">
-                    <var id="geonames-result-container" class="result-container"></var>
-                    <div id="geonames_t" name="form-geonames" class="scrollable-typeahead typeahead-margin-when-active">
+                <div class="location_grid">
+                    <var id="location_grid-result-container" class="result-container"></var>
+                    <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
                         <div class="typeahead__container">
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
-                                    <input class="js-typeahead-geonames"
-                                           name="geonames[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                    <input class="js-typeahead-location_grid"
+                                           name="location_grid[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
                                            autocomplete="off">
                                 </span>
                             </div>
@@ -365,34 +368,18 @@
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
                     <?php esc_html_e( 'Source', "disciple_tools" ); ?>
                 </div>
-                <?php if ( user_can( get_current_user_id(), 'view_any_contacts' ) ) : ?>
-                    <span id="sources-result-container" class="result-container"></span>
-                    <div id="sources_t" name="form-sources" class="scrollable-typeahead">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-sources"
-                                           name="sources[query]" placeholder="<?php esc_html_e( "Search sources", 'disciple_tools' ) ?>"
-                                           autocomplete="off">
-                                </span>
-                            </div>
+                <span id="sources-result-container" class="result-container"></span>
+                <div id="sources_t" name="form-sources" class="scrollable-typeahead">
+                    <div class="typeahead__container">
+                        <div class="typeahead__field">
+                            <span class="typeahead__query">
+                                <input class="js-typeahead-sources"
+                                       name="sources[query]" placeholder="<?php esc_html_e( "Search sources", 'disciple_tools' ) ?>"
+                                       autocomplete="off">
+                            </span>
                         </div>
                     </div>
-                <?php else : ?>
-                    <ul class="sources-list <?php echo esc_html( user_can( get_current_user_id(), 'view_any_contacts' ) ? 'details-list' : '' ) ?>">
-                        <?php
-                        foreach ($contact['sources'] ?? [] as $value){
-                            ?>
-                            <li class="<?php echo esc_html( $value )?>">
-                                <?php echo esc_html( $contact_fields['sources']['default'][$value] ?? $value ) ?>
-                            </li>
-                        <?php }
-                        if ( !isset( $contact['sources'] ) || sizeof( $contact['sources'] ) === 0){
-                            ?> <li id="no-source"><?php esc_html_e( "No source set", 'disciple_tools' ) ?></li><?php
-                        }
-                        ?>
-                    </ul>
-                <?php endif; ?>
+                </div>
             </div>
 
             <!-- Gender -->
@@ -504,7 +491,7 @@
         </div>
 
         <!-- drill down -->
-        <div id="geoname-encode-contact">
+        <div id="location_grid-encode-contact">
 
         </div>
 

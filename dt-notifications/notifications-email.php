@@ -40,7 +40,13 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
 
     $subject = dt_get_option( "dt_email_base_subject" ) . ": " . $subject;
 
-    $continue = apply_filters( "dt_sent_email_check", true, $email, $subject, $message_plain_text );
+    $user = get_user_by( "email", $email );
+    $continue = true;
+    // don't send notifications if the user only has "registered" role.
+    if ( $user && in_array( "registered", $user->roles ) && sizeof( $user->roles ) === 1 ){
+        $continue = false;
+    }
+    $continue = apply_filters( "dt_sent_email_check", $continue, $email, $subject, $message_plain_text );
     if ( !$continue ){
         return false;
     }

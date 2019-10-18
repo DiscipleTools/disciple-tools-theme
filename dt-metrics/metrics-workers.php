@@ -77,17 +77,21 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function refresh_pace( WP_REST_Request $request ) {
+        $query_params = $request->get_query_params();
+        $force = isset( $query_params["force"] ) && $query_params["force"] === "1";
         if ( !$this->has_permission() ){
             return new WP_Error( "refresh_pace", "Missing Permissions", [ 'status' => 400 ] );
         }
-        return $this->get_workers_data( true );
+        return $this->get_workers_data( $force );
     }
 
-    public function workers_pace() {
+    public function workers_pace( WP_REST_Request $request ) {
+        $query_params = $request->get_query_params();
+        $force = isset( $query_params["force"] ) && $query_params["force"] === "1";
         if ( ! $this->has_permission() ){
             return new WP_Error( "workers_pace", "Missing Permissions", [ 'status' => 400 ] );
         }
-        return $this->get_workers_data();
+        return $this->get_workers_data( $force );
     }
 
     public function contact_progress_per_worker() {
@@ -124,7 +128,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function scripts() {
-        wp_enqueue_script( 'dt_metrics_workers_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-workers.js', [
+        wp_enqueue_script( 'dt_metrics_workers_script', get_template_directory_uri() . '/dt-metrics/metrics-workers.js', [
             'jquery',
             'jquery-ui-core',
             'amcharts-core',
@@ -134,7 +138,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         wp_localize_script(
             'dt_metrics_workers_script', 'dtMetricsUsers', [
                 'root' => esc_url_raw( rest_url() ),
-                'theme_uri' => get_stylesheet_directory_uri(),
+                'theme_uri' => get_template_directory_uri(),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
@@ -296,7 +300,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             ];
         }
 
-        set_transient( 'chart_contact_progress_per_worker', maybe_serialize( $chart ), strtotime( 'tomorrow' ) );
+        set_transient( 'chart_contact_progress_per_worker', maybe_serialize( $chart ), 60 * 60 * 24 );
 
         return $chart;
     }
@@ -400,7 +404,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
           'timestamp' => current_time( 'timestamp' ),
         ];
 
-        set_transient( 'chart_user_pace', $response, strtotime( 'tomorrow' ) );
+        set_transient( 'chart_user_pace', $response, 60 * 60 * 24 );
 
         return $response;
     }
@@ -423,6 +427,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 count(new_assigned.post_id) as number_new_assigned,
                 count(update_needed.post_id) as number_update
             from $wpdb->users as users
+            INNER JOIN $wpdb->usermeta as um on ( um.user_id = users.ID AND um.meta_key = 'wp_capabilities' AND um.meta_value LIKE '%multiplier%' )
             INNER JOIN $wpdb->postmeta as pm on (pm.meta_key = 'assigned_to' and pm.meta_value = CONCAT( 'user-', users.ID ) )
             INNER JOIN $wpdb->postmeta as type on (type.post_id = pm.post_id and type.meta_key = 'type' and ( type.meta_value = 'media' OR type.meta_value = 'next_gen' ) )
             LEFT JOIN $wpdb->postmeta as met on (met.post_id = type.post_id and met.meta_key = 'seeker_path' and ( met.meta_value = 'met' OR met.meta_value = 'ongoing' OR met.meta_value = 'coaching' ) )
@@ -436,9 +441,9 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             SELECT users.ID,
                 MAX(date_assigned.hist_time) as last_date_assigned
             from $wpdb->users as users
+            INNER JOIN $wpdb->usermeta as um on ( um.user_id = users.ID AND um.meta_key = 'wp_capabilities' AND um.meta_value LIKE '%multiplier%' )
             INNER JOIN $wpdb->postmeta as pm on (pm.meta_key = 'assigned_to' and pm.meta_value = CONCAT( 'user-', users.ID ) )
-            INNER JOIN $wpdb->postmeta as type on (type.post_id = pm.post_id and type.meta_key = 'type' and ( type.meta_value = 'media' OR type.meta_value = 'next_gen' ) )
-            INNER JOIN $wpdb->dt_activity_log as date_assigned on ( date_assigned.meta_key = 'overall_status' and date_assigned.object_type = 'contacts' AND date_assigned.object_id = type.post_id AND date_assigned.meta_value = 'assigned' )
+            INNER JOIN $wpdb->dt_activity_log as date_assigned on ( date_assigned.meta_key = 'overall_status' and date_assigned.object_type = 'contacts' AND date_assigned.object_id = pm.post_id AND date_assigned.meta_value = 'assigned' )
             GROUP by users.ID",
         ARRAY_A);
 
@@ -508,7 +513,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             "timestamp" => current_time( "mysql" ),
         ];
 
-        set_transient( 'get_workers_data', maybe_serialize( $return ), strtotime( 'tomorrow' ) );
+        set_transient( 'get_workers_data', maybe_serialize( $return ), 60 * 60 * 24 );
 
         return $return;
     }

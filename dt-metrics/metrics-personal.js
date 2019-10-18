@@ -1,6 +1,4 @@
 jQuery(document).ready(function() {
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
-
     if( ! window.location.hash || '#my_stats' === window.location.hash  ) {
         my_stats()
     }
@@ -49,11 +47,12 @@ function my_stats() {
                 </div>
             </div>
             
-            <div class="cell">
+            <div class="cell"  id="my_groups_health_container">
                 <div id="my_groups_health" style="height: 500px;"></div>
+                <hr>
             </div>
             <div class="cell">
-            <hr>
+            
                 <div class="grid-x">
                     <div class="cell medium-6 center">
                         <div id="group_types" style="height: 400px;"></div>
@@ -82,7 +81,11 @@ function my_stats() {
     // build charts
 
     drawMyContactsProgress()
-    drawMyGroupHealth();
+    if ( sourceData.preferences.groups.church_metrics ) {
+      drawMyGroupHealth();
+    } else {
+      jQuery('#my_groups_health_container').remove()
+    }
     drawGroupTypes();
     drawGroupGenerations();
 
@@ -123,6 +126,14 @@ function my_stats() {
       let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
       categoryAxis.dataFields.category = "label";
       categoryAxis.renderer.grid.template.location = 0;
+      categoryAxis.renderer.minGridDistance = 20;
+      categoryAxis.renderer.labels.template.wrap = true
+      categoryAxis.events.on("sizechanged", function(ev) {
+        var axis = ev.target;
+        var cellWidth = axis.pixelWidth / (axis.endIndex - axis.startIndex);
+        axis.renderer.labels.template.maxWidth = cellWidth > 70 ? cellWidth : 70;
+        axis.renderer.labels.template.disabled = cellWidth < 70;
+      });
 
       let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
       valueAxis.min = 0;
@@ -144,7 +155,7 @@ function my_stats() {
       series1.dataItems.template.locations.categoryX = 0.5;
       series1.stacked = true;
       series1.tooltip.pointerOrientation = "vertical";
-      
+
       let series2 = chart.series.push(new am4charts.ColumnSeries());
       series2.stroke = am4core.color("#da7070"); // red
       series2.fill = am4core.color("#da7070"); // red
@@ -170,8 +181,9 @@ function my_stats() {
       let pieSeries = chart.series.push(new am4charts.PieSeries());
       pieSeries.dataFields.value = "count";
       pieSeries.dataFields.category = "label";
-
+      pieSeries.labels.template.disabled = true;
       chart.innerRadius = am4core.percent(30);
+      chart.legend = new am4charts.Legend();
     }
 
     function drawGroupGenerations() {
@@ -180,12 +192,11 @@ function my_stats() {
       title.text = `[bold]${ translations.title_generations }[/]`
 
       chart.data = sourceData.group_generations.reverse()
-
       let categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
       categoryAxis.dataFields.category = "generation";
       categoryAxis.renderer.grid.template.location = 0;
       categoryAxis.renderer.labels.template.adapter.add("text", function(text) {
-        return translations.generation + ' ' + text;
+        return translations.label_generation + ' ' + text;
       });
 
       let valueAxis = chart.xAxes.push(new am4charts.ValueAxis());

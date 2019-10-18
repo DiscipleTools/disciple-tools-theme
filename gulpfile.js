@@ -8,7 +8,10 @@ var gulp  = require('gulp'),
   plugin = require('gulp-load-plugins')(),
   touch = require('gulp-touch-cmd'),
   rename = require('gulp-rename'),
-  merge = require('merge-stream');
+  merge = require('merge-stream'),
+  postcss = require('gulp-postcss'),
+  cssnano = require('cssnano');
+
 
 
 // GULP VARIABLES
@@ -111,7 +114,7 @@ gulp.task('styles', function() {
       cascade: false
     }))
     .pipe(rename({suffix: '.min'}))
-    .pipe(plugin.cssnano())
+    .pipe(postcss([cssnano()]))
     .pipe(plugin.sourcemaps.write('.'))
     .pipe(gulp.dest(BUILD_DIRS.styles))
     .pipe(touch())

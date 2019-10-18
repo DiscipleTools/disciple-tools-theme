@@ -180,15 +180,15 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['assigned_to'] = [
             'name'        => __( 'Assigned To', 'disciple_tools' ),
-            'description' => '',
+            'description' => __( 'Select the main person who is responsible for reporting on this contact', 'disciple_tools' ),
             'type'        => 'user_select',
             'default'     => '',
             'section'     => 'status',
         ];
         // Status Section
         $fields['overall_status'] = [
-            'name'        => __( 'Overall Status', 'disciple_tools' ),
-            'description' => '',
+            'name'        => __( 'Contact Status', 'disciple_tools' ),
+            'description' => __( 'This is where you set the current status of the contact.', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'new'   => [
@@ -356,14 +356,14 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'key_select',
             'default' => [
                 'none'                 => [ "label" => '' ],
-                'vacation'             => [ "label" => __( 'On Vacation', 'disciple_tools' ) ],
-                'not_responding'       => [ "label" => __( 'Not Responding', 'disciple_tools' ) ],
-                'not_available'        => [ "label" => __( 'Not available', 'disciple_tools' ) ],
-                'little_interest'      => [ "label" => __( 'Little interest/hunger', 'disciple_tools' ) ],
-                'no_initiative'        => [ "label" => __( 'No initiative', 'disciple_tools' ) ],
-                'questionable_motives' => [ "label" => __( 'Questionable motives', 'disciple_tools' ) ],
-                'ball_in_their_court'  => [ "label" => __( 'Ball is in his/her court', 'disciple_tools' ) ],
-                'wait_and_see'         => [ "label" => __( 'Want to see if/how they respond to automated text messages', 'disciple_tools' ) ],
+                'vacation'             => [ "label" => __( 'Contact on vacation', 'disciple_tools' ) ],
+                'not_responding'       => [ "label" => __( 'Contact not responding', 'disciple_tools' ) ],
+                'not_available'        => [ "label" => __( 'Contact not available', 'disciple_tools' ) ],
+                'little_interest'      => [ "label" => __( 'Contact has little interest/hunger', 'disciple_tools' ) ],
+                'no_initiative'        => [ "label" => __( 'Contact shows no initiative', 'disciple_tools' ) ],
+                'questionable_motives' => [ "label" => __( 'Contact has questionable motives', 'disciple_tools' ) ],
+                'ball_in_their_court'  => [ "label" => __( 'Ball is in the contact\'s court', 'disciple_tools' ) ],
+                'wait_and_see'         => [ "label" => __( 'We want to see if/how the contact responds to automated text messages', 'disciple_tools' ) ],
             ],
             'section'     => 'misc',
             'customizable' => 'all'
@@ -404,6 +404,9 @@ class Disciple_Tools_Contact_Post_Type
 
         $sources_default = [];
         foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $key => $value ) {
+            if ( isset( $value['enabled'] ) && $value["enabled"] === false ) {
+                $value["deleted"] = true;
+            }
             $sources_default[ $key ] = $value;
         }
 
@@ -411,8 +414,9 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Sources', 'disciple_tools' ),
             'description' => '',
             'type'        => 'multi_select',
-            'default'     => [],
+            'default'     => $sources_default,
             'section'     => 'misc',
+            'customizable' => 'all'
         ];
 
         $fields["source_details"] = [
@@ -533,14 +537,6 @@ class Disciple_Tools_Contact_Post_Type
             "default" => '',
             "hidden" => true
         ];
-        $fields["locations"] = [
-            "name" => __( "Locations", "disciple_tools" ),
-            "type" => "connection",
-            "p2p_direction" => "from",
-            "p2p_key" => "contacts_to_locations",
-            'icon' => get_template_directory_uri() .'/dt-assets/images/location.svg',
-            'section' => 'details'
-        ];
         $fields["relation"] = [
             "name" => __( "Relation", "disciple_tools" ),
             "type" => "connection",
@@ -548,7 +544,7 @@ class Disciple_Tools_Contact_Post_Type
             "p2p_key" => "contacts_to_relation"
         ];
         $fields["coached_by"] = [
-            "name" => __( "Coached_by", "disciple_tools" ),
+            "name" => __( "Coached by", "disciple_tools" ),
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "contacts_to_contacts"
@@ -566,7 +562,7 @@ class Disciple_Tools_Contact_Post_Type
             "p2p_key" => "baptizer_to_baptized"
         ];
         $fields["baptized_by"] = [
-            "name" => __( "Baptized_by", "disciple_tools" ),
+            "name" => __( "Baptized by", "disciple_tools" ),
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "baptizer_to_baptized"
@@ -589,10 +585,19 @@ class Disciple_Tools_Contact_Post_Type
             "p2p_direction" => "to",
             "p2p_key" => "contacts_to_subassigned"
         ];
-        $fields['geonames'] = [
+        $fields['location_grid'] = [
             'name'        => __( 'Locations', 'disciple_tools' ),
             'type'        => 'location',
             'default'     => [],
+        ];
+        $fields['location_lnglat'] = [
+            'name'        => __( 'Coordinates', 'disciple_tools' ),
+            'type'        => 'location',
+            'default'     => [],
+        ];
+        $fields['reminders'] = [
+            'name' => __( 'Reminders', 'disciple_tools' ),
+            'type' => 'post_user_meta',
         ];
 
         return $fields;
@@ -610,7 +615,8 @@ class Disciple_Tools_Contact_Post_Type
      */
     public function get_custom_fields_settings( $include_current_post = true, int $post_id = null, $with_deleted_options = false, $load_from_cache = true ) {
 
-        $cached = wp_cache_get( "contact_field_settings" );
+        $cache_with_deleted = $with_deleted_options ? "_with_deleted" : "";
+        $cached = wp_cache_get( "contact_field_settings" . $cache_with_deleted );
         if ( $load_from_cache && $cached ){
             return $cached;
         }
@@ -672,7 +678,9 @@ class Disciple_Tools_Contact_Post_Type
             }
         }
 
-        wp_cache_set( "contact_field_settings", $fields );
+        $fields = apply_filters( 'dt_custom_fields_settings_after_combine', $fields, "contacts" );
+
+        wp_cache_set( "contact_field_settings" . $cache_with_deleted, $fields );
         return $fields;
     } // End get_custom_fields_settings()
 
@@ -680,7 +688,7 @@ class Disciple_Tools_Contact_Post_Type
         if ( $post_type === "contacts" ){
             $fields = $this->get_custom_fields_settings();
             $settings = [
-                'sources' => dt_get_option( 'dt_site_custom_lists' )['sources'],
+                'sources' => $this->get_custom_fields_settings( false, null, true )["sources"]["default"],
                 'fields' => $fields,
                 'address_types' => dt_get_option( "dt_site_custom_lists" )["contact_address_types"],
                 'channels' => $this->get_channels_list(),

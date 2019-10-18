@@ -141,8 +141,8 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '0.21.0';
-            $this->migration_number = 24;
+            $this->version = '0.24.0';
+            $this->migration_number = 26;
 
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -161,6 +161,7 @@ else {
             $wpdb->dt_reportmeta = $wpdb->prefix . 'dt_reportmeta';
             $wpdb->dt_share = $wpdb->prefix . 'dt_share';
             $wpdb->dt_notifications = $wpdb->prefix . 'dt_notifications';
+            $wpdb->dt_post_user_meta = $wpdb->prefix . 'dt_post_user_meta';
 
             /**
              * Load first files
@@ -291,10 +292,8 @@ else {
             /**
              * dt-mapping
              */
-            require_once( get_template_directory() . '/dt-mapping/mapping-module-config.php' ); // configuration file for mapping module
-            DT_Mapping_Module_Config::instance();
-            require_once( get_template_directory() . '/dt-mapping/mapping.php' ); // load for mapping module
-
+            require_once( get_template_directory() . '/dt-mapping/loader.php' );
+            new DT_Mapping_Module_Loader();
 
 
             /**
@@ -376,6 +375,12 @@ else {
             require_once( get_template_directory() . '/dt-core/multisite.php' );
 
             /**
+             * core
+             */
+            require_once( get_template_directory() . '/dt-core/core-endpoints.php' );
+            new Disciple_Tools_Core_Endpoints();
+
+            /**
              * Admin panel
              * Contains all those features that only run if in the Admin panel
              * or those things directly supporting Admin panel features.
@@ -455,7 +460,7 @@ else {
      */
     function dt_route_front_page() {
         if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-            wp_safe_redirect( home_url( '/contacts' ) );
+            wp_safe_redirect( apply_filters( 'dt_front_page', home_url( '/contacts' ) ) );
         }
         else if ( ! is_user_logged_in() ) {
             dt_please_log_in();

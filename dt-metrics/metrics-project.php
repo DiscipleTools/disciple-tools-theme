@@ -53,7 +53,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
     public function scripts() {
         wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
-        wp_enqueue_script( 'dt_metrics_project_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-project.js', [
+        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . '/dt-metrics/metrics-project.js', [
             'jquery',
             'jquery-ui-core',
             'amcharts-core',
@@ -63,7 +63,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
                 'root' => esc_url_raw( rest_url() ),
-                'theme_uri' => get_stylesheet_directory_uri(),
+                'theme_uri' => get_template_directory_uri(),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
@@ -96,11 +96,11 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'title_locations_tree' => __( 'Location Tree', 'disciple_tools' ),
                 'title_teams' => __( 'Teams', 'disciple_tools' ),
                 'label_number_of_contacts' => strtolower( __( 'number of contacts', 'disciple_tools' ) ),
-                'label_follow_up_progress' => __( 'Follow-up of my active contacts', 'disciple_tools' ),
+                'label_follow_up_progress' => __( 'Follow-up of all active contacts', 'disciple_tools' ),
                 'label_group_needs_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
                 'label_groups' => strtolower( __( 'groups', 'disciple_tools' ) ),
                 'label_generations' => strtolower( __( 'generations', 'disciple_tools' ) ),
-                'label_generation' => strtolower( __( 'Generation', 'disciple_tools' ) ),
+                'label_generation' => __( 'Generation', 'disciple_tools' ),
                 'label_groups_by_type' => strtolower( __( 'groups by type', 'disciple_tools' ) ),
                 'label_group_types' => __( 'Group Types', 'disciple_tools' ),
                 'label_total_locations' => __( 'Total Locations', 'disciple_tools' ),
@@ -113,6 +113,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'label_group' => __( 'Group', 'disciple_tools' ),
                 'label_church' => __( 'Church', 'disciple_tools' ),
             ],
+            'preferences' => $this->preferences(),
             'hero_stats' => self::chart_project_hero_stats(),
             'contacts_progress' => self::chart_contacts_progress( 'project' ),
             'group_types' => self::chart_group_types( 'project' ),
@@ -123,6 +124,21 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             'coaching_generation_tree' => $this->get_coaching_generations_tree(),
 
         ];
+    }
+
+    public function preferences() {
+        $data = [];
+
+        /* Add group preferences*/
+        $group_preferences = dt_get_option( 'group_preferences' );
+        $data['groups'] = [
+            'church_metrics' => $group_preferences['church_metrics'] ?? false,
+            'four_fields' => $group_preferences['four_fields'] ?? false,
+        ];
+
+        /* Add other preferences. Please, categorize by section, i.e. contacts, groups, etc */
+
+        return $data;
     }
 
     /**

@@ -39,6 +39,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         add_filter( "dt_post_updated", [ $this, "post_updated_hook" ], 10, 4 );
         add_filter( "dt_get_post_fields_filter", [ $this, "dt_get_post_fields_filter" ], 10, 2 );
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
+        add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
+        add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
 
         parent::__construct();
     }
@@ -190,15 +192,28 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     }
                     $fields["assigned_to"] = sprintf( "user-%d", $base_id );
                 }
+            } else {
+                if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
+                    $user = get_user_by( "email", $fields["assigned_to"] );
+                    if ( $user ) {
+                        $fields["assigned_to"] = $user->ID;
+                    } else {
+                        return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
+                    }
+                }
+                if ( is_numeric( $fields["assigned_to"] ) ||
+                     strpos( $fields["assigned_to"], "user" ) === false ){
+                    $fields["assigned_to"] = "user-" . $fields["assigned_to"];
+                }
             }
             if ( !isset( $fields["overall_status"] ) ){
                 $current_roles = wp_get_current_user()->roles;
                 if (in_array( "dispatcher", $current_roles, true ) || in_array( "marketer", $current_roles, true )) {
-                    $fields["overall_status"] = "unassigned";
+                    $fields["overall_status"] = "new";
                 } else if (in_array( "multiplier", $current_roles, true ) ) {
                     $fields["overall_status"] = "active";
                 } else {
-                    $fields["overall_status"] = "unassigned";
+                    $fields["overall_status"] = "new";
                 }
             }
         }
@@ -234,7 +249,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     //add the required fields to the DT_Post::create_contact() function
-    public function update_post_field_hook( $post_type, $post_id, $fields ){
+    public function update_post_field_hook( $fields, $post_type, $post_id ){
         if ( $post_type === "contacts" ){
             if ( isset( $fields["assigned_to"] ) ) {
                 if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
@@ -252,18 +267,19 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 }
                 $existing_contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
                 if ( !isset( $existing_contact["assigned_to"] ) || $fields["assigned_to"] !== $existing_contact["assigned_to"]["assigned-to"] ){
-                    if ( current_user_can( "assign_any_contacts" ) ) {
-                        $fields["overall_status"] = 'assigned';
-                    }
                     $user_id = explode( '-', $fields["assigned_to"] )[1];
-                    if ( $user_id ){
-                        DT_Posts::add_shared( "contacts", $post_id, $user_id, null, false, false, false );
+                    if ( $user_id != get_current_user_id() ){
+                        if ( current_user_can( "assign_any_contacts" ) ) {
+                            $fields["overall_status"] = 'assigned';
+                        }
+                        $fields['accepted'] = false;
+                    } elseif ( isset( $existing_contact["overall_status"]["key"] ) && $existing_contact["overall_status"]["key"] === "assigned" ) {
+                        $fields["overall_status"] = 'active';
                     }
-                    $fields['accepted'] = false;
+                    if ( $user_id ){
+                        DT_Posts::add_shared( "contacts", $post_id, $user_id, null, false, true, false );
+                    }
                 }
-            }
-            if ( isset( $fields["reason_unassignable"] ) ){
-                $fields["overall_status"] = 'unassignable';
             }
             if ( isset( $fields["seeker_path"] ) ){
                 self::update_quick_action_buttons( $post_id, $fields["seeker_path"] );
@@ -273,17 +289,75 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     self::handle_quick_action_button_event( $post_id, [ $field_key => $value ] );
                 }
             }
+            if ( isset( $fields["overall_status"], $fields["reason_paused"] ) && $fields["overall_status"] === "paused"){
+                $fields["requires_update"] = false;
+            }
+            if ( isset( $fields["overall_status"], $fields["reason_closed"] ) && $fields["overall_status"] === "closed"){
+                $fields["requires_update"] = false;
+            }
         }
         return $fields;
     }
 
-    public function post_updated_hook( $post_type, $post_id, $initial_fields, $previous_values ){
+    public function post_updated_hook( $post_type, $post_id, $updated_fields, $previous_values ){
         if ( $post_type === 'contacts' ){
             $contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
-            do_action( "dt_contact_updated", $post_id, $initial_fields, $contact, $previous_values );
+            do_action( "dt_contact_updated", $post_id, $updated_fields, $contact, $previous_values );
         }
     }
 
+
+    public function post_connection_added( $post_type, $post_id, $post_key, $value ){
+        if ( $post_type === "contacts" ){
+            if ( $post_key === "subassigned" ){
+                $user_id = get_post_meta( $value, "corresponds_to_user", true );
+                if ( $user_id ){
+                    self::add_shared_on_contact( $post_id, $user_id, null, false, false, false );
+                    Disciple_Tools_Notifications::insert_notification_for_subassigned( $user_id, $post_id );
+                }
+            }
+            if ( $post_key === 'baptized' ){
+                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $value );
+                $milestones = get_post_meta( $post_id, 'milestones' );
+                if ( empty( $milestones ) || !in_array( "milestone_baptizing", $milestones ) ){
+                    add_post_meta( $post_id, "milestones", "milestone_baptizing" );
+                }
+                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $post_id );
+            }
+            if ( $post_key === 'baptized_by' ){
+                $milestones = get_post_meta( $post_id, 'milestones' );
+                if ( empty( $milestones ) || !in_array( "milestone_baptized", $milestones ) ){
+                    add_post_meta( $post_id, "milestones", "milestone_baptized" );
+                }
+                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $post_id );
+            }
+            if ( $post_key === "groups" ){
+                // share the group with the owner of the contact.
+                $assigned_to = get_post_meta( $post_id, "assigned_to", true );
+                if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){
+                    $user_id = explode( "-", $assigned_to )[1];
+                    if ( $user_id ){
+                        DT_Posts::add_shared( "groups", $value, $user_id, null, false, false );
+                    }
+                }
+                do_action( 'group_member_count', $value, "added" );
+            }
+        }
+    }
+
+    public function post_connection_removed( $post_type, $post_id, $post_key, $value ){
+        if ( $post_type === "contacts" ){
+            if ( $post_key === "groups" ){
+                do_action( 'group_member_count', $value, "removed" );
+            }
+            if ( $post_key === "baptized_by" ){
+                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $post_id );
+            }
+            if ( $post_key === "baptized" ){
+                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $value );
+            }
+        }
+    }
 
 
     //check to see if the contact is marked as needing an update
@@ -412,8 +486,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( !$master_id || !$non_master_id) { return; }
         $master = self::get_contact( $master_id );
         $non_master = self::get_contact( $non_master_id );
-        $keys = self::$contact_connection_types;
 
+        $post_settings = DT_Posts::get_post_settings( 'contacts' );
+        $keys = $post_settings["connection_types"];
         $update = [];
         $to_remove = [];
 
@@ -428,23 +503,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     $to_remove[$key] = array();
                     $to_remove[$key]['values'] = array();
                 }
-                if ( in_array( $key, [ "baptized", "coaching", "subassigned" ] ) ){
-                    array_push($update[$key]['values'], array(
-                        'value' => $result->p2p_from
-                    ));
-                    array_push($to_remove[$key]['values'], array(
-                        'value' => $result->p2p_from,
-                        'delete' => true
-                    ));
-                } else {
-                    array_push($update[$key]['values'], array(
-                        'value' => $result->p2p_to
-                    ));
-                    array_push($to_remove[$key]['values'], array(
-                        'value' => $result->p2p_to,
-                        'delete' => true
-                    ));
-                }
+                array_push($update[$key]['values'], array(
+                    'value' => $result["ID"]
+                ));
+                array_push($to_remove[$key]['values'], array(
+                    'value' => $result["ID"],
+                    'delete' => true
+                ));
             }
         }
 
@@ -458,11 +523,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
         $comments = self::get_comments( $non_master_id );
         foreach ( $comments as $comment ){
-            $comment->comment_post_ID = $master_id;
-            if ( $comment->comment_type === "comment" ){
-                $comment->comment_content = sprintf( esc_html_x( '(From Duplicate): %s', 'duplicate comment', 'disciple_tools' ), $comment->comment_content );
+            $comment["comment_post_ID"] = $master_id;
+            if ( $comment["comment_type"] === "comment" ){
+                $comment["comment_content"] = sprintf( esc_html_x( '(From Duplicate): %s', 'duplicate comment', 'disciple_tools' ), $comment["comment_content"] );
             }
-            if ( $comment->comment_type !== "duplicate" ){
+            if ( $comment["comment_type"] !== "duplicate" ){
                 wp_insert_comment( (array) $comment );
             }
         }
@@ -474,7 +539,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return array|null|object
      */
     public static function get_activity( $contact_id ) {
-        return DT_Posts::get_post_activity( "contacts", $contact_id );
+        $resp = DT_Posts::get_post_activity( "contacts", $contact_id );
+        return is_wp_error( $resp ) ? $resp : $resp["activity"];
     }
 
     /**
@@ -785,7 +851,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return array|int|WP_Error
      */
     public static function get_comments( int $contact_id, bool $check_permissions = true, $type = "all" ) {
-        return DT_Posts::get_post_comments( 'contacts', $contact_id, $check_permissions, $type );
+        $resp = DT_Posts::get_post_comments( 'contacts', $contact_id, $check_permissions, $type );
+        return is_wp_error( $resp ) ? $resp : $resp["comments"];
     }
 
 
@@ -1255,6 +1322,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $comment = sprintf( esc_html_x( '%1$s is a duplicate and was merged into %2$s', 'Contact1 is a duplicated and was merged into Contact2', 'disciple_tools' ), $duplicate['title'], $link );
 
         self::add_comment( $duplicate_id, $comment, "duplicate", [], true, true );
+        self::dismiss_all( $duplicate_id );
 
         //comment on master
         $link = "<a href='" . get_permalink( $duplicate_id ) . "'>{$duplicate['title']}</a>";
@@ -1293,7 +1361,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         $numbers = [];
-
+        $query_sql = "";
         $user_id = get_current_user_id();
         $access_sql = "";
         $user_post = Disciple_Tools_Users::get_contact_for_user( $user_id ) ?? 0;
@@ -1333,6 +1401,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $all_access = "INNER JOIN $wpdb->dt_share AS shares 
             ON ( shares.post_id = a.ID
                  AND shares.user_id = " . $user_id . " ) ";
+            if ( current_user_can( "access_specific_sources" ) && $tab === "all" ){
+                $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() );
+                $sources_sql = dt_array_to_sql( $allowed_sources );
+                $all_access = "Left JOIN $wpdb->postmeta AS source_access ON ( a.ID = source_access.post_id AND source_access.meta_key = 'sources' )";
+                $query_sql .= "  AND source_access.meta_value IN ( $sources_sql ) ";
+                $all_access .= " LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = a.ID AND shares.user_id = " . $user_id . " ) ";
+                $query_sql .= " OR shares.user_id = " . $user_id . " ";
+            }
         }
         if ( $tab === "my" ){
             $access_sql = $my_access;
@@ -1348,13 +1424,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepare
         $personal_counts = $wpdb->get_results("
-            SELECT (SELECT count(a.ID)
+            SELECT (SELECT count( DISTINCT( a.ID ))
             FROM $wpdb->posts as a
               " . $access_sql . $closed . "
               INNER JOIN $wpdb->postmeta as type
                 ON a.ID=type.post_id AND type.meta_key = 'type'
             WHERE a.post_status = 'publish'
             AND post_type = 'contacts'
+            " . $query_sql . "
             AND (( type.meta_value = 'media' OR type.meta_value = 'next_gen' )
                 OR ( type.meta_key IS NULL ))
             )
@@ -1416,6 +1493,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish'
+              " . $query_sql . "
               AND post_type = 'contacts')
             as update_needed,
             (SELECT count(a.ID)
@@ -1431,15 +1509,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish'
+              " . $query_sql . "
               AND post_type = 'contacts')
             as active,
             (SELECT count(a.ID)
               FROM $wpdb->posts as a
-                INNER JOIN $wpdb->postmeta as b
-                  ON a.ID=b.post_id
-                    AND b.meta_key = 'accepted'
-                    AND b.meta_value = ''
-                " . $access_sql . $closed . "
+                " . $access_sql . "
                 INNER JOIN $wpdb->postmeta as d
                   ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
@@ -1450,6 +1525,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish'
+              " . $query_sql . "
               AND post_type = 'contacts')
             as needs_accepted,
             (SELECT count(a.ID)
@@ -1469,6 +1545,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish'
+              " . $query_sql . "
               AND post_type = 'contacts')
             as contact_unattempted,
             (SELECT count(a.ID)
@@ -1488,6 +1565,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish'
+              " . $query_sql . "
               AND post_type = 'contacts' )
             as meeting_scheduled
             ", ARRAY_A );
@@ -1555,78 +1633,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
 
     /**
-     * Return an associative array of sources for contacts that the current
-     * user can see, (or all sources if the user has permission). The return
-     * value looks like this:
-     *
-     *  $rv = [
-     *      // $source_key => $source_label,
-     *      "facebook" => null, // when a label could not be found for a source
-     *      "phone" => "The phone",
-     *      "partner" => "Our partners",
-     *      "web" => "Website",
-     *  ];
-     *
-     *  @access public
-     *  @return array | WP_Error
-     */
-    public static function list_sources() {
-        if ( !self::can_access( "contacts" ) ) {
-            return new WP_Error( __FUNCTION__, "Permission denied.", [ 'status' => 403 ] );
-        }
-        global $wpdb;
-        $source_labels = dt_get_option( 'dt_site_custom_lists' )['sources'];
-        $rv = [];
-
-        if ( current_user_can( 'view_any_contacts' ) ) {
-            foreach ( $source_labels as $source_key => $source ) {
-                if ( !isset( $source["enabled"] ) || $source["enabled"] != false ){
-                    $rv[$source_key] = $source['label'];
-                }
-            }
-            //check for sources not in the defined list
-            $results = $wpdb->get_results(
-                "SELECT DISTINCT meta_value FROM $wpdb->postmeta WHERE meta_key = 'sources'",
-                ARRAY_N
-            );
-            foreach ( $results as $result ) {
-                if ( ! array_key_exists( $result[0], $rv ) ) {
-                    $rv[ $result[0] ] = null;
-                }
-            }
-        } else {
-            $user_id = get_current_user_id();
-            // get the sources for the contacts shared with the user
-            $results = $wpdb->get_results( $wpdb->prepare(
-                "SELECT DISTINCT meta_value 
-                FROM $wpdb->postmeta 
-                JOIN $wpdb->dt_share as shares ON ( 
-                    shares.post_id = $wpdb->postmeta.post_id
-                    AND shares.user_id = %s
-                )  
-                WHERE meta_key = 'sources'",
-                $user_id
-            ), ARRAY_N );
-            foreach ( $results as $result ) {
-                $post_source_key = $result[0];
-                if ( ! array_key_exists( $post_source_key, $rv ) ) {
-                    if ( array_key_exists( $post_source_key, $source_labels ) ) {
-                        if ( !isset( $source_labels[$post_source_key]["enabled"] ) || $source_labels[$post_source_key]["enabled"] != false ) {
-                            $rv[ $post_source_key ] = $source_labels[ $post_source_key ]['label'];
-                        }
-                    } else {
-                        $rv[ $post_source_key ] = null;
-                    }
-                }
-            }
-        }
-
-        asort( $rv );
-        return $rv;
-    }
-
-
-    /**
      * Make sure activity is created for all the steps before the current seeker path
      *
      * @param $contact_id
@@ -1690,9 +1696,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, "Permission denied.", [ 'status' => 403 ] );
         }
 
+        $fields = self::get_contact_fields();
         return [
-            'sources' => self::list_sources(),
-            'fields' => self::get_contact_fields(),
+            'sources' => $fields["sources"]["default"],
+            'fields' => $fields,
             'address_types' => self::$address_types,
             'channels' => self::$channel_list,
             'connection_types' => self::$contact_connection_types

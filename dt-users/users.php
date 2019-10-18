@@ -45,6 +45,7 @@ class Disciple_Tools_Users
         add_filter( 'manage_users_custom_column', [ $this, 'new_modify_user_table_row' ], 10, 3 );
 
         add_filter( 'dt_settings_js_data', [ $this, 'add_current_locations_list' ], 10, 1 );
+        add_filter( 'dt_settings_js_data', [ $this, 'add_date_availability' ], 10, 1 );
 
     }
 
@@ -63,6 +64,7 @@ class Disciple_Tools_Users
         global $wpdb;
         $user_id = get_current_user_id();
         $users = [];
+        $update_needed = [];
         if ( !user_can( get_current_user_id(), 'view_any_contacts' ) ){
             // users that are shared posts that are shared with me
             $users_ids = $wpdb->get_results( $wpdb->prepare("
@@ -112,17 +114,55 @@ class Disciple_Tools_Users
             ] );
 
             $users = $user_query->get_results();
+
+            //used cached updated needed data if available
+            //@todo refresh the cache if not available
+            $dispatcher_user_data = get_transient( 'dispatcher_user_data' );
+            if ( $dispatcher_user_data ){
+                foreach ( maybe_unserialize( $dispatcher_user_data ) as $uid => $val ){
+                    $update_needed['user-' . $uid] = $val["number_update"];
+                }
+            } else {
+                $ids = [];
+                foreach ( $users as $a ){
+                    $ids[] = 'user-' . $a->ID;
+                }
+                $user_ids = dt_array_to_sql( $ids );
+                //phpcs:disable
+                $update_needed_result = $wpdb->get_results("
+                    SELECT pm.meta_value, COUNT(update_needed.post_id) as count
+                    FROM $wpdb->postmeta pm
+                    INNER JOIN $wpdb->postmeta as update_needed on (update_needed.post_id = pm.post_id and update_needed.meta_key = 'requires_update' and update_needed.meta_value = '1' )
+                    WHERE pm.meta_key = 'assigned_to' and pm.meta_value IN ( $user_ids )
+                    GROUP BY pm.meta_value
+                ", ARRAY_A );
+                //phpcs:enable
+                foreach ( $update_needed_result as $up ){
+                    $update_needed[$up["meta_value"]] = $up["count"];
+                }
+            }
         }
         $list = [];
 
+        $workload_status_options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
+
         foreach ( $users as $user ) {
             if ( user_can( $user, "access_contacts" ) ) {
-                $list[] = [
+                $u = [
                     "name" => $user->display_name,
                     "ID"   => $user->ID,
                     "user" => $user->user_login,
                     "avatar" => get_avatar_url( $user->ID, [ 'size' => '16' ] )
                 ];
+                //extra information for the dispatcher
+                if ( current_user_can( 'view_any_contacts' ) ){
+                    $workload_status = get_user_option( 'workload_status', $user->ID );
+                    if ( $workload_status && isset( $workload_status_options[ $workload_status ]["color"] ) ) {
+                        $u['status_color'] = $workload_status_options[$workload_status]["color"];
+                    }
+                    $u["update_needed"] = $update_needed['user-' . $user->ID] ?? 0;
+                }
+                $list[] = $u;
             }
         }
 
@@ -444,6 +484,17 @@ class Disciple_Tools_Users
      */
     public static function profile_update_hook( $user_id ) {
         self::create_contact_for_user( $user_id );
+
+        if ( !empty( $_POST["allowed_sources"] ) ) {
+            if ( isset( $_REQUEST['action'] ) && 'update' == $_REQUEST['action'] ) {
+                check_admin_referer( 'update-user_' . $user_id );
+            }
+            $allowed_sources = [];
+            foreach ( $_POST["allowed_sources"] as $s ) {  // @codingStandardsIgnoreLine
+                $allowed_sources[] = sanitize_key( wp_unslash( $s ) );
+            }
+            update_user_option( $user_id, "allowed_sources", $allowed_sources );
+        }
     }
 
     public static function create_contacts_for_existing_users(){
@@ -586,7 +637,31 @@ class Disciple_Tools_Users
                 </td>
             </tr>
         </table>
-        <?php
+        <?php if ( isset( $user->ID ) && user_can( $user->ID, 'access_specific_sources' ) ) :
+            $selected_sources = get_user_option( 'allowed_sources', $user->ID );
+            $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+            $sources = $site_custom_lists['sources'] ?? [];
+            ?>
+            <h3>Digital Responder Access</h3>
+            <table class="form-table">
+                <tr>
+                    <th><?php esc_html_e( "Sources", 'disciple_tools' ) ?></th>
+                    <td>
+                        <ul>
+                        <?php foreach ( $sources as $source ) :
+                            $checked = in_array( $source["key"], $selected_sources === false ? [] : $selected_sources ) ? "checked" : '';
+                            ?>
+                            <li>
+                                <input type="checkbox" name="allowed_sources[]" value="<?php echo esc_html( $source["key"] ) ?>" <?php echo esc_html( $checked ) ?>/>
+                                <?php echo esc_html( $source["label"] ) ?>
+                            </li>
+                        <?php endforeach; ?>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+
+        <?php endif;
     }
 
 
@@ -754,29 +829,33 @@ Please click the following link to confirm the invite:
         $custom_data['current_locations'] = DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( get_current_user_id() ) );
         return $custom_data;
     }
+    public function add_date_availability( $custom_data ) {
+        $custom_data['availability'] = get_user_option( "user_dates_unavailable", get_current_user_id() );
+        return $custom_data;
+    }
 
-    public static function add_user_location( $geonameid, $user_id = null ) {
+    public static function add_user_location( $grid_id, $user_id = null ) {
         if ( empty( $user_id ) ) {
             $user_id = get_current_user_id();
         }
         $corresponds_to_contact = self::get_contact_for_user( $user_id );
         if ( $corresponds_to_contact ){
-            $other_values = get_post_meta( $corresponds_to_contact, 'geonames' );
-            if ( array_search( $geonameid, $other_values ) === false ) {
-                add_post_meta( $corresponds_to_contact, 'geonames', $geonameid, false );
+            $other_values = get_post_meta( $corresponds_to_contact, 'location_grid' );
+            if ( array_search( $grid_id, $other_values ) === false ) {
+                add_post_meta( $corresponds_to_contact, 'location_grid', $grid_id, false );
                 return true;
             }
         }
         return false;
     }
 
-    public static function delete_user_location( $geonameid, $user_id = null ) {
+    public static function delete_user_location( $grid_id, $user_id = null ) {
         if ( empty( $user_id ) ) {
             $user_id = get_current_user_id();
         }
         $corresponds_to_contact = self::get_contact_for_user( $user_id );
         if ( $corresponds_to_contact ){
-            delete_post_meta( $corresponds_to_contact, 'geonames', $geonameid );
+            delete_post_meta( $corresponds_to_contact, 'location_grid', $grid_id );
             return true;
         }
         return false;

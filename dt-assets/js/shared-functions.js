@@ -1,4 +1,4 @@
-/* global jQuery:false, wpApiShare:false */
+/* global wpApiShare:false */
 _ = _ || window.lodash // make sure lodash is defined so plugins like gutenberg don't break it.
 const { __, _x, _n, _nx } = wp.i18n;
 
@@ -10,15 +10,24 @@ jQuery(document).ready(function($) {
     } else {
         ref = window.location.pathname
     }
-    $(`div.top-bar-left ul.menu [href*=${ref.replace(wpApiShare.site_url, '').split('/')[0]}]`).parent().addClass('active');
+    $(`div.top-bar-left ul.menu [href$=${ref.replace(wpApiShare.site_url, '').split('/')[0]+'\\/'}]`).parent().addClass('active');
 })
 
-function makeRequest (type, url, data) {
+
+/**
+ *
+ * @param type
+ * @param url
+ * @param data
+ * @param base, when using a custom D.T endpoint that does not start with dt/v1
+ * @returns {jQuery}
+ */
+function makeRequest (type, url, data, base = 'dt/v1/') {
     const options = {
         type: type,
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
-        url: url.startsWith('http') ? url : `${wpApiShare.root}dt/v1/${url}`,
+        url: url.startsWith('http') ? url : `${wpApiShare.root}${base}${url}`,
         beforeSend: xhr => {
             xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
         }
@@ -97,7 +106,7 @@ function handleAjaxError (err) {
     if (_.get(err, "statusText") !== "abortPromise" && err.responseText){
         console.trace("error")
         console.log(err)
-        jQuery("#errors").append(err.responseText)
+        // jQuery("#errors").append(err.responseText)
     }
 }
 
@@ -120,7 +129,7 @@ window.TYPEAHEADS = {
     typeaheadSource : function (field, url) {
         return {
             contacts: {
-                display: "name",
+                display: [ "name", "ID" ],
                 ajax: {
                     url: wpApiShare.root + url,
                     data: {
@@ -339,7 +348,7 @@ window.METRICS = {
                 .fail(function (err) {
                     console.log("error")
                     console.log(err)
-                    jQuery("#errors").append(err.responseText)
+                    // jQuery("#errors").append(err.responseText)
                 })
             // console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
         });
@@ -354,6 +363,6 @@ setInterval(function() {
     //check if timed out
     get_new_notification_count()
         .fail(function(x) {
-            window.location.href = wpApiShare.site_url;
+            window.location.reload()
         });
 }, 300000); //300000 = five minutes

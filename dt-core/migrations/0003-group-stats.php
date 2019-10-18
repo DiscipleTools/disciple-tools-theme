@@ -3,8 +3,7 @@
 class Disciple_Tools_Migration_0003 extends Disciple_Tools_Migration {
     public function up() {
 
-        $groups_instance = new Disciple_Tools_Groups();
-        $groups = $groups_instance::get_viewable_groups();
+        $groups = Disciple_Tools_Groups::get_viewable_groups();
         if ( !is_wp_error( $groups ) && count( $groups["groups"] ) > 0 ) {
             foreach ( $groups["groups"] as $group ){
                 $meta_fields = get_post_custom( $group->ID );

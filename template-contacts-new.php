@@ -30,28 +30,31 @@ get_header();
                     <input name="email" type="text"  placeholder="<?php esc_html_e( "Email", "disciple_tools" ); ?>">
                 </label>
 
-                <?php if ( current_user_can( 'view_any_contacts' )) :?>
-                    <label>
-                        <?php esc_html_e( "Source", "disciple_tools" ); ?>
-                        <select name="sources" aria-describedby="source-help-text">
-                            <?php foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $source_key => $source ): ?>
-                                <option value="<?php echo esc_attr( $source_key, 'disciple_tools' ); ?>">
-                                    <?php echo esc_html( $source['label'] )?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </label>
-                <?php endif; ?>
+                <label>
+                    <?php esc_html_e( "Source", "disciple_tools" ); ?>
+                    <select name="sources" aria-describedby="source-help-text">
+                        <?php
+                        $contacts_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
+                        $sources = $contacts_settings["fields"]["sources"]["default"];
+                        foreach ( $sources as $source_key => $source ): ?>
+                            <?php if ( !isset( $source["deleted"] ) || $source["delete"] !== true ) : ?>
+                            <option value="<?php echo esc_attr( $source_key, 'disciple_tools' ); ?>">
+                                <?php echo esc_html( $source['label'] )?>
+                            </option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
 
                 <?php esc_html_e( "Location", "disciple_tools" ); ?>
-                <div class="geonames">
-                    <var id="geonames-result-container" class="result-container"></var>
-                    <div id="geonames_t" name="form-geonames" class="scrollable-typeahead typeahead-margin-when-active">
+                <div class="location_grid">
+                    <var id="location_grid-result-container" class="result-container"></var>
+                    <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
                         <div class="typeahead__container">
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
-                                    <input class="js-typeahead-geonames"
-                                           name="geonames[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                    <input class="js-typeahead-location_grid"
+                                           name="location_grid[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
                                            autocomplete="off">
                                 </span>
                             </div>
@@ -83,18 +86,12 @@ get_header();
             .attr("disabled", true)
             .addClass("loading");
         let source = $(".js-create-contact select[name=sources]").val()
-        let status = 'new'
-        if ( source === "personal" ){
-            status = "active"
-        }
-
         API.create_post( 'contacts', {
-            overall_status: status,
             title: $(".js-create-contact input[name=title]").val(),
             contact_phone: [{value:$(".js-create-contact input[name=phone]").val()}],
             contact_email: [{value:$(".js-create-contact input[name=email]").val()}],
             sources: {values:[{value:source || "personal"}]},
-            geonames: {values:selectedLocations.map(i=>{return {value:i}})},
+            location_grid: {values:selectedLocations.map(i=>{return {value:i}})},
             initial_comment: $(".js-create-contact textarea[name=initial_comment]").val(),
         }).then(function(data) {
             window.location = data.permalink;
@@ -113,14 +110,11 @@ get_header();
      */
     typeaheadTotals = {}
     $.typeahead({
-        input: '.js-typeahead-geonames',
+        input: '.js-typeahead-location_grid',
         minLength: 0,
         accent: true,
         searchOnFocus: true,
         maxItem: 20,
-        template: function (query, item) {
-            return `<span>${_.escape(item.name)}</span>`
-        },
         dropdownFilter: [{
             key: 'group',
             value: 'focus',
@@ -131,11 +125,11 @@ get_header();
             focus: {
                 display: "name",
                 ajax: {
-                    url: wpApiShare.root + 'dt/v1/mapping_module/search_geonames_by_name',
+                    url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
                     data: {
                         s: "{{query}}",
                         filter: function () {
-                            return _.get(window.Typeahead['.js-typeahead-geonames'].filters.dropdown, 'value', 'all')
+                            return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
                         }
                     },
                     beforeSend: function (xhr) {
@@ -146,7 +140,7 @@ get_header();
                             if (typeof typeaheadTotals !== "undefined") {
                                 typeaheadTotals.field = data.total
                             }
-                            return data.geonames
+                            return data.location_grid
                         }
                     }
                 }
@@ -180,12 +174,12 @@ get_header();
                     .html("Regions of Focus");
             },
             onResult: function (node, query, result, resultCount) {
-                resultCount = typeaheadTotals.geonames
+                resultCount = typeaheadTotals.location_grid
                 let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-                $('#geonames-result-container').html(text);
+                $('#location_grid-result-container').html(text);
             },
             onHideLayout: function () {
-                $('#geonames-result-container').html("");
+                $('#location_grid-result-container').html("");
             }
         }
     });

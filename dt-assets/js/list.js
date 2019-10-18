@@ -23,6 +23,15 @@
   } catch (e) {
     cachedFilter = {}
   }
+  $.urlParam = function (name) {
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+      .exec(window.location.search);
+
+    return (results !== null) ? results[1] || 0 : false;
+  }
+
+  let tabQueryParam = $.urlParam( 'list-tab' )
+
   let showClosedCookie = getCookie("show_closed")
   let showClosedCheckbox = $('#show_closed')
   let currentFilter = {}
@@ -154,6 +163,13 @@
   }
   setupFilters(savedFilters[wpApiListSettings.current_post_type])
   //look at the cookie to see what was the last selected view
+  if ( tabQueryParam ){
+    cachedFilter = {
+      type: "default",
+      tab: "my",
+      ID: tabQueryParam
+    }
+  }
   let selectedFilter = ""
   if ( cachedFilter && !_.isEmpty(cachedFilter)){
     if (cachedFilter.type==="saved-filters"){
@@ -227,7 +243,13 @@
             <%= group_links %>
           </span>
       </td>
-      <td class="hide-for-small-only"><span class="status status--<%- overall_status %>"><%- status %></span></td>
+      <td class="hide-for-small-only">
+        <span class="status status--<%- overall_status %>"><%- status %>
+        <% if (update_needed){ %>
+            <img style="" src="${_.escape( wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+        <% } %>  
+        </span>
+      </td>
       <td class="hide-for-small-only"><span class="status status--<%- seeker_path %>"><%- seeker_path %></span></td>
       <td class="hide-for-small-only">
         <span class="milestone milestone--<%- access_milestone_key %>"><%- access_milestone %></span>
@@ -256,7 +278,13 @@
         <%= leader_links %>
       </td>
       <td class="hide-for-small-only"><a href="<%- permalink %>"><%- post_title %></a></td>
-      <td class="hide-for-small-only"><span class="group-status group-status--<%- group_status %>"><%- status %></span></td>
+      <td class="hide-for-small-only">
+        <span class="group-status group-status--<%- group_status %>"><%- status %>
+        <% if (update_needed){ %>
+            <img style="" src="${_.escape( wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+        <% } %> 
+        </span>
+      </td>
       <td class="hide-for-small-only"><span class="group-type group-type--<%- group_type %>"><%- type %></span></td>
       <td class="hide-for-small-only" style="text-align: center"><%- member_count %></td>
       <td class="hide-for-small-only"><%= leader_links %></td>
@@ -318,6 +346,7 @@
       belief_milestone: _.get(ccfs, `milestones.default["milestone_${belief_milestone_key}"].label`, ""),
       sharing_milestone: _.get(ccfs, `milestones.default["milestone_${sharing_milestone_key}"].label`, ""),
       group_links,
+      update_needed : contact.requires_update
     });
     return $.parseHTML(template(context));
   }
@@ -329,11 +358,12 @@
     }).join(", ");
     const gcfs = wpApiListSettings.custom_fields_settings;
     const status = _.get( gcfs, `group_status.default[${group.group_status || "active"}]["label"]`, group.group_status )
-    const type = _.get( gcfs, `gcfs.group_type.default[${group.group_type || "group"}]["label"]`, group.group_type )
+    const type = _.get( gcfs, `group_type.default[${group.group_type || "group"}]["label"]`, group.group_type )
     const context = _.assign({}, group, wpApiListSettings, {
       leader_links,
       status,
-      type
+      type,
+      update_needed : group.requires_update
     });
     return $.parseHTML(template(context));
   }
@@ -648,19 +678,16 @@
    */
 
   /**
-   * geonames
+   * location_grid
    */
   let loadLocationTypeahead = ()=> {
-    if (!window.Typeahead['.js-typeahead-geonames']) {
+    if (!window.Typeahead['.js-typeahead-location_grid']) {
       $.typeahead({
-        input: '.js-typeahead-geonames',
+        input: '.js-typeahead-location_grid',
         minLength: 0,
         accent: true,
         searchOnFocus: true,
         maxItem: 20,
-        template: function (query, item) {
-          return `<span>${_.escape(item.name)}</span>`
-        },
         dropdownFilter: [{
           key: 'group',
           value: 'used',
@@ -671,11 +698,11 @@
           used: {
             display: "name",
             ajax: {
-              url: wpApiShare.root + 'dt/v1/mapping_module/search_geonames_by_name',
+              url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
               data: {
                 s: "{{query}}",
                 filter: function () {
-                  return _.get(window.Typeahead['.js-typeahead-geonames'].filters.dropdown, 'value', 'all')
+                  return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
                 }
               },
               beforeSend: function (xhr) {
@@ -686,7 +713,7 @@
                   if (typeof typeaheadTotals !== "undefined") {
                     typeaheadTotals.field = data.total
                   }
-                  return data.geonames
+                  return data.location_grid
                 }
               }
             }
@@ -700,7 +727,7 @@
           data: [],
           callback: {
             onCancel: function (node, item) {
-              $(`.current-filter[data-id="${item.ID}"].geonames`).remove()
+              $(`.current-filter[data-id="${item.ID}"].location_grid`).remove()
               _.pullAllBy(newFilterLabels, [{id: item.ID}], "id")
             }
           }
@@ -708,7 +735,7 @@
         callback: {
           onResult: function (node, query, result, resultCount) {
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#geonames-result-container').html(text);
+            $('#location_grid-result-container').html(text);
           },
           onReady(){
             this.filters.dropdown = {key: "group", value: "used", template: "Used Locations"}
@@ -718,12 +745,12 @@
               .html("Used Locations");
           },
           onHideLayout: function () {
-            $('#geonames-result-container').html("");
+            $('#location_grid-result-container').html("");
           },
           onClick: function (node, a, item) {
-            let name = _.get(wpApiListSettings, `custom_fields_settings.geonames.name`, 'geonames')
-            newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "geonames"})
-            selectedFilters.append(`<span class="current-filter geonames" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
+            let name = _.get(wpApiListSettings, `custom_fields_settings.location_grid.name`, 'location_grid')
+            newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "location_grid"})
+            selectedFilters.append(`<span class="current-filter location_grid" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
           }
         }
       });
@@ -889,31 +916,16 @@
 
       let sourceData =  { data: [] }
       let fieldOptions = _.get(wpApiListSettings, `custom_fields_settings.${field}.default`, {})
-      if (field === 'sources') {
-        /* Similar code is in contact-details.js, copy-pasted for now. */
-        sourcesTypeahead.attr("disabled", true) // disable while loading AJAX
-        const response = await fetch(wpApiListSettings.root + 'dt/v1/contact/list-sources', {
-          credentials: 'same-origin', // needed for Safari
-          headers: {
-            'X-WP-Nonce': wpApiShare.nonce,
-          },
-        });
-        _.forOwn(await response.json(), (sourceValue, sourceKey) => {
-          sourceData.data.push({
-            key: sourceKey,
-            value: sourceValue || "",
-            name: sourceKey, // name is used for building URL params later
-          })
-        })
-        sourcesTypeahead.attr("disabled", false)
-      } else if ( Object.keys(fieldOptions).length > 0 ){
+      if ( Object.keys(fieldOptions).length > 0 ){
         _.forOwn(fieldOptions, (val, key)=>{
+          if ( !val.deleted ){
             sourceData.data.push({
               key: key,
               name:key,
               value: val.label || key
             })
-          })
+          }
+        })
       } else {
         sourceData = {
           [field]: {
@@ -1023,7 +1035,7 @@
       newFilterLabels = filter.labels
       let connectionTypeKeys = Object.keys(wpApiListSettings.connection_types)
       connectionTypeKeys.push("assigned_to")
-      connectionTypeKeys.push("geonames")
+      connectionTypeKeys.push("location_grid")
       newFilterLabels.forEach(label=>{
         selectedFilters.append(`<span class="current-filter ${_.escape( label.field )}" data-id="${_.escape( label.id )}">${_.escape( label.name )}</span>`)
         let type = _.get(wpApiListSettings, `custom_fields_settings.${label.field}.type`)

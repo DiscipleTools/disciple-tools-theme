@@ -1,17 +1,20 @@
 jQuery(document).ready(function() {
-  if( ! window.location.hash || '#project_overview' === window.location.hash  ) {
-        project_overview()
+    if( ! window.location.hash || '#project_overview' === window.location.hash  ) {
+      jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+      project_overview()
     }
     if( '#group_tree' === window.location.hash  ) {
-        project_group_tree()
+      jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+      project_group_tree()
     }
     if( '#baptism_tree' === window.location.hash  ) {
-        project_baptism_tree()
+      jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+      project_baptism_tree()
     }
     if( '#coaching_tree' === window.location.hash  ) {
-        project_coaching_tree()
+      jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+      project_coaching_tree()
     }
-
 })
 
 function project_overview() {
@@ -68,11 +71,12 @@ function project_overview() {
                    </div> 
                 </div>
             </div>
-            <div class="cell">
+            <div class="cell" id="my_groups_health_container">
                 <div id="my_groups_health" style="height: 500px;"></div>
+                <hr>
             </div>
             <div class="cell">
-                <hr>
+                
                 <div class="grid-x">
                     <div class="cell medium-6 center">
                         <div id="group_types" style="height: 400px;"></div>
@@ -98,17 +102,19 @@ function project_overview() {
 
     // build charts
     drawMyContactsProgress();
-    drawMyGroupHealth();
+    if ( sourceData.preferences.groups.church_metrics ) {
+      drawMyGroupHealth();
+    } else {
+      jQuery('#my_groups_health_container').remove()
+    }
     drawGroupTypes();
     drawGroupGenerations();
 
     function drawMyContactsProgress() {
-      console.log(sourceData.contacts_progress);
       let chart = am4core.create("my_contacts_progress", am4charts.XYChart)
       let title = chart.titles.create()
       title.text = `[bold]${ window.dtMetricsProject.data.translations.label_follow_up_progress }[/]`
       chart.data = sourceData.contacts_progress.reverse()
-
       let categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
       categoryAxis.dataFields.category = "label";
       categoryAxis.renderer.grid.template.location = 0;
@@ -140,6 +146,14 @@ function project_overview() {
       let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
       categoryAxis.dataFields.category = "label";
       categoryAxis.renderer.grid.template.location = 0;
+      categoryAxis.renderer.minGridDistance = 20;
+      categoryAxis.renderer.labels.template.wrap = true
+      categoryAxis.events.on("sizechanged", function(ev) {
+        var axis = ev.target;
+        var cellWidth = axis.pixelWidth / (axis.endIndex - axis.startIndex);
+        axis.renderer.labels.template.maxWidth = cellWidth > 70 ? cellWidth : 70;
+        axis.renderer.labels.template.disabled = cellWidth < 70;
+      });
 
       let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
       valueAxis.min = 0;
@@ -186,8 +200,9 @@ function project_overview() {
       let pieSeries = chart.series.push(new am4charts.PieSeries());
       pieSeries.dataFields.value = "count";
       pieSeries.dataFields.category = "label";
-
+      pieSeries.labels.template.disabled = true;
       chart.innerRadius = am4core.percent(30);
+      chart.legend = new am4charts.Legend();
     }
 
     function drawGroupGenerations() {
@@ -253,7 +268,7 @@ function project_group_tree() {
     let chartHeight = height - ( height * .15 )
 
     chartDiv.empty().html(`
-        <span class="section-header">${ translations.title_group_tree }</span><hr>
+        <span class="section-header">${ _.escape( translations.title_group_tree ) }</span><hr>
         
         <br clear="all">
         <div class="grid-x grid-padding-x">
@@ -311,21 +326,21 @@ function open_modal_details( id ) {
     })
         .done(function (data) {
             if( data ) {
-                let list = '<dt>Members</dt><ul>'
-                jQuery.each(data.members, function(i, v)  { list += '<li><a href="/contacts/'+data.members[i].ID+'">' + data.members[i].post_title + '</a></li>' } )
+              let list = '<dt>Members</dt><ul>'
+                jQuery.each(data.members, function(i, v)  { list += `<li><a href="/contacts/${_.escape( data.members[i].ID )}">${_.escape( data.members[i].post_title )}</a></li>` } )
                 list += '</ul>'
                 let content = `
                 <div class="grid-x">
-                    <div class="cell"><span class="section-header">${data.name}</span><hr style="max-width:100%;"></div>
+                    <div class="cell"><span class="section-header">${_.escape( data.title )}</span><hr style="max-width:100%;"></div>
                     <div class="cell">
                         <dl>
-                            <dd><strong>Status: </strong>${data.group_status.label}</dd>
-                            <dd><strong>Assigned to: </strong>${data.assigned_to['display']}</dd>
-                            <dd><strong>Total Members: </strong>${data.member_count}</dd>
+                            <dd><strong>Status: </strong>${_.escape( data.group_status.label )}</dd>
+                            <dd><strong>Assigned to: </strong>${_.escape( data.assigned_to['display'] )}</dd>
+                            <dd><strong>Total Members: </strong>${_.escape( data.member_count )}</dd>
                             ${list}
                         </dl>
                     </div>
-                    <div class="cell center"><hr><a href="/groups/${id}">View Group</a></div>
+                    <div class="cell center"><hr><a href="/groups/${_.escape( id )}">View Group</a></div>
                 </div>
                 <button class="close-button" data-close aria-label="Close modal" type="button">
                     <span aria-hidden="true">&times;</span>

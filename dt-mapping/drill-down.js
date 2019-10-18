@@ -1,29 +1,34 @@
 window.DRILLDOWNDATA = mappingModule.mapping_module
 window.DRILLDOWN = {
 
-    get_drill_down( bindFunction, geonameid ) {
+    get_drill_down( bindFunction, grid_id, cached ) {
         DRILLDOWN.show_spinner()
 
-        if ( ! geonameid ) {
-            geonameid = 'top_map_level'
+        if ( ! grid_id ) {
+            grid_id = 'top_map_level'
         }
-        console.log(geonameid)
+
+        if ( ! cached ) {
+          cached = false
+        }
 
         let drill_down = jQuery('#'+bindFunction)
         let rest = DRILLDOWNDATA.settings.endpoints.get_drilldown_endpoint
 
-        jQuery.ajax({
+        let final_list = [];
+        let current_selection = {};
+
+        return jQuery.ajax({
             type: rest.method,
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify( {  "bind_function": bindFunction, "geonameid": geonameid } ),
+            data: JSON.stringify( {  "bind_function": bindFunction, "grid_id": grid_id, "cached": cached } ),
             dataType: "json",
             url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
             },
         })
-        .done( function( response ) {
-            console.log(response)
+        .then( function( response ) {
 
             let html = ``
 
@@ -38,15 +43,17 @@ window.DRILLDOWN = {
                     let hollowClass = 'hollow'
                     if ( section.active ) {
                         hollowClass = ''
-                        geonameid = section.selected
+                        grid_id = section.selected
                         selectedGeonameLabel = section.selected_name
                     }
                     let disabled = !response[i+2]
 
                     // create button
-                    html += `<li><button id="${section.parent}" type="button" ${disabled ? "disabled" : ""}
-                        onclick="DRILLDOWN.get_drill_down( '${bindFunction}', '${section.selected}' )"
-                        class="button ${hollowClass} geocode-link">${section.selected_name}</button></li>`
+                    html += `<li><button id="${_.escape( section.parent )}" type="button" ${disabled ? "disabled" : ""}
+                        onclick="DRILLDOWN.get_drill_down( '${_.escape( bindFunction )}', '${_.escape( section.selected )}' )"
+                        class="button ${hollowClass} geocode-link">${_.escape( section.selected_name )}</button></li>`
+
+                    current_selection = section
 
                 } else { // it is a list
                     // check if list is not empty
@@ -57,28 +64,32 @@ window.DRILLDOWN = {
                             console.log('no additional dropdown triggered')
                         } else {
                             // make select
-                            html += `<li><select id="${section.parent}"
-                            onchange="DRILLDOWN.get_drill_down( '${bindFunction}', this.value )"
+                            html += `<li><select id="${_.escape( section.parent )}" style="vertical-align: top"
+                            onchange="DRILLDOWN.get_drill_down( '${_.escape( bindFunction )}', this.value )"
                             class="geocode-select">`
 
                             // make initial option
-                            html += `<option value="${section.parent}"></option>`
+                            html += `<option value="${_.escape( section.parent )}"></option>`
 
                             // make option list
                             jQuery.each(section.list, function (ii, item) {
-                                html += `<option value="${item.geonameid}" `
-                                if (item.geonameid === section.selected) {
+                                html += `<option value="${_.escape( item.grid_id )}" `
+                                if (item.grid_id === section.selected) {
                                     html += ` selected`
                                 }
-                                html += `>${item.name}</option>`
+                                html += `>${_.escape( item.name )}</option>`
                             })
 
                             html += `</select></li>`
+
+                            final_list = section.list;
                         }
                     }
                 }
 
             })
+
+            html += `<li><span id="spinner" style="display:none;">${DRILLDOWNDATA.settings.spinner_large}</span></li>`
 
             // close unordered list
             html += `</ul>`
@@ -88,21 +99,25 @@ window.DRILLDOWN = {
 
             // trigger supplied bind event
             if ( typeof DRILLDOWN[bindFunction] !== "undefined" ) {
-                DRILLDOWN[bindFunction]( geonameid, selectedGeonameLabel )
+              current_selection.list = final_list
+                DRILLDOWN[bindFunction]( grid_id, selectedGeonameLabel, current_selection )
             }
+
+            DRILLDOWN.hide_spinner()
+            return final_list;
 
         }) // end success statement
         .fail(function (err) {
             console.log("error")
             console.log(err)
+            DRILLDOWN.hide_spinner()
         })
 
-        DRILLDOWN.hide_spinner()
     },
 
     isEmpty(obj) {
         for(let key in obj) {
-            if(obj.hasOwnProperty(key))
+            if( Object.prototype.hasOwnProperty.call(obj, key) )
                 return false;
         }
         return true;

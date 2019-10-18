@@ -205,7 +205,7 @@ class Disciple_Tools_Groups_Endpoints
             function( $g ){ return $g->ID; },
             $groups
         );
-        $geonames = Disciple_Tools_Mapping_Queries::get_geoname_ids_and_names_for_post_ids( $group_ids );
+        $location_grid = Disciple_Tools_Mapping_Queries::get_location_grid_ids_and_names_for_post_ids( $group_ids );
         p2p_type( 'contacts_to_groups' )->each_connected( $groups, [], 'members' );
         p2p_type( 'groups_to_leaders' )->each_connected( $groups, [], 'leaders' );
         $rv = [];
@@ -215,9 +215,9 @@ class Disciple_Tools_Groups_Endpoints
             $group_array["ID"] = $group->ID;
             $group_array["post_title"] = $group->post_title;
             $group_array['permalink'] = get_post_permalink( $group->ID );
-            $group_array['locations'] = []; // @todo remove or rewrite? Because of geonames upgrade.
-            foreach ( $geonames[$group->ID] as $location ) {
-                $group_array['locations'][] = $location["name"]; // @todo remove or rewrite? Because of geonames upgrade.
+            $group_array['locations'] = [];
+            foreach ( $location_grid[$group->ID] as $location ) {
+                $group_array['locations'][] = $location["name"];
             }
             $group_array['leaders'] = [];
             $group_array['member_count'] = $meta_fields["member_count"] ?? 0;
@@ -228,6 +228,7 @@ class Disciple_Tools_Groups_Endpoints
                 ];
             }
             $group_array['group_status'] = "";
+            $group_array["requires_update"] = false;
             foreach ( $meta_fields as $meta_key => $meta_value ) {
                 if ( $meta_key == 'group_status' ) {
                     $group_array[ $meta_key ] = $meta_value[0];
@@ -235,6 +236,8 @@ class Disciple_Tools_Groups_Endpoints
                     $group_array[ $meta_key ] = $meta_value[0];
                 } elseif ( $meta_key == 'last_modified' ) {
                     $group_array[ $meta_key ] = (int) $meta_value[0];
+                } elseif ( $meta_key == "requires_update" ) {
+                    $group_array[ $meta_key ] = $meta_value[0];
                 }
             }
             if ( !isset( $group_array["last_modified"] ) ){
@@ -364,7 +367,8 @@ class Disciple_Tools_Groups_Endpoints
     public function get_comments( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['id'] ) ) {
-            return DT_Posts::get_post_comments( 'groups', $params['id'] );
+            $resp = DT_Posts::get_post_comments( 'groups', $params['id'] );
+            return is_wp_error( $resp ) ? $resp : $resp["comments"];
         } else {
             return new WP_Error( "get_comments", "Missing a valid group id", [ 'status' => 400 ] );
         }
@@ -378,7 +382,8 @@ class Disciple_Tools_Groups_Endpoints
     public function get_activity( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['id'] ) ) {
-            return DT_Posts::get_post_activity( 'groups', $params['id'] );
+            $resp = DT_Posts::get_post_activity( 'groups', $params['id'] );
+            return is_wp_error( $resp ) ? $resp : $resp["activity"];
         } else {
             return new WP_Error( "get_activity", "Missing a valid group id", [ 'status' => 400 ] );
         }
@@ -451,7 +456,7 @@ class Disciple_Tools_Groups_Endpoints
      */
     public function create_group( WP_REST_Request $request ) {
         $fields = $request->get_json_params();
-        $result = DT_Posts::create_post( 'groups', $fields );
+        $result = Disciple_Tools_Groups::create_group( $fields );
         if ( is_wp_error( $result ) ) {
             return $result;
         }

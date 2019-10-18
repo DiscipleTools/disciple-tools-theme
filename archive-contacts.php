@@ -207,7 +207,7 @@ declare(strict_types=1);
 
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
-                    <?php $fields = [ "assigned_to", "subassigned",  "created_on", "geonames", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
+                    <?php $fields = [ "assigned_to", "subassigned",  "created_on", "location_grid", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
                     $allowed_types = [ "multi_select", "key_select", "boolean", "date", "location" ];
                     foreach ( $dt_contact_field_options as $field_key => $field){
                         if ( in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
@@ -217,7 +217,7 @@ declare(strict_types=1);
                     $fields = apply_filters( 'dt_filters_additional_fields', $fields, "contacts" ) ?? [];
                     $connections = Disciple_Tools_Posts::$connection_types;
                     $connections["assigned_to"] = [ "name" => __( "Assigned To", 'disciple_tools' ) ];
-                    $connections["geonames"] = [ "name" => __( "Locations", 'disciple_tools' ) ];
+                    $connections["location_grid"] = [ "name" => __( "Locations", 'disciple_tools' ) ];
                     ?>
                     <ul class="vertical tabs" data-tabs id="filter-tabs">
                         <?php foreach ( $fields as $index => $field ) :

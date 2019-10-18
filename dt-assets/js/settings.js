@@ -36,8 +36,8 @@ function change_password() {
 /**
  * Locations
  */
-window.DRILLDOWN.add_user_location = function( geonameid ) {
-    jQuery('#add_location_geoname_value').val(geonameid)
+window.DRILLDOWN.add_user_location = function( grid_id ) {
+    jQuery('#add_location_location_grid_value').val(grid_id)
 }
 
 function load_settings_locations( reload = false ) {
@@ -56,7 +56,7 @@ function load_settings_locations( reload = false ) {
     if ( wpApiSettingsPage.custom_data.current_locations !== undefined && ! reload ) {
         cl.append(`<strong>Current Locations:</strong><br>`)
         jQuery.each( wpApiSettingsPage.custom_data.current_locations, function(i,v) {
-            cl.append(`${v.name}, ${v.country_code} <a style="padding:0 10px;" onclick="delete_location(${v.geonameid})"><img src="${wpApiSettingsPage.template_dir}/dt-assets/images/invalid.svg"></a><br>`)
+            cl.append(`${v.name}, ${v.country_code} <a style="padding:0 10px;" onclick="delete_location(${v.grid_id})"><img src="${wpApiSettingsPage.template_dir}/dt-assets/images/invalid.svg"></a><br>`)
         })
         cl.append(`<br>`)
     } else {
@@ -66,7 +66,7 @@ function load_settings_locations( reload = false ) {
             if (data ) {
                 cl.append(`<strong>Current Locations:</strong><br>`)
                 jQuery.each( data, function(i,v) {
-                    cl.append(`${v.name}, ${v.country_code} <a style="padding:0 10px;" onclick="delete_location(${v.geonameid})"><img src="${wpApiSettingsPage.template_dir}/dt-assets/images/invalid.svg"></a><br>`)
+                    cl.append(`${v.name}, ${v.country_code} <a style="padding:0 10px;" onclick="delete_location(${v.grid_id})"><img src="${wpApiSettingsPage.template_dir}/dt-assets/images/invalid.svg"></a><br>`)
                 })
                 cl.append(`<br>`)
             }
@@ -79,7 +79,7 @@ function load_settings_locations( reload = false ) {
 function add_drill_down_selector() {
     jQuery('#new_locations').empty().append(
             `<div id="add_user_location"><ul class="drill_down"></ul></div>
-            <input type="hidden" id="add_location_geoname_value" />
+            <input type="hidden" id="add_location_location_grid_value" />
             <button type="button" class="button" onclick="save_new_location()">Save</button>`
     )
     window.DRILLDOWN.get_drill_down( 'add_user_location' )
@@ -87,18 +87,83 @@ function add_drill_down_selector() {
 }
 
 function save_new_location() {
-    let geonameid = jQuery('#add_location_geoname_value').val()
+    let grid_id = jQuery('#add_location_location_grid_value').val()
 
-    makeRequest('post', 'users/user_location', { geonameid: geonameid } ).done(data => {
+    makeRequest('post', 'users/user_location', { grid_id: grid_id } ).done(data => {
         console.log( data )
         load_settings_locations( true )
     }).fail(handleAjaxError)
 
 }
 
-function delete_location( geonameid ) {
-    makeRequest('delete', 'users/user_location', { geonameid: geonameid } ).done(data => {
+function delete_location( grid_id ) {
+    makeRequest('delete', 'users/user_location', { grid_id: grid_id } ).done(data => {
         console.log( data )
         load_settings_locations( true )
     }).fail(handleAjaxError)
 }
+
+let update_user = ( key, value )=>{
+    let data =  {
+      [key]: value
+    }
+    return makeRequest( "POST", `user/update`, data , 'dt/v1/' )
+  }
+/**
+ * Set availability dates
+ */
+let dateFields = [ "start_date", "end_date" ]
+  dateFields.forEach(key=>{
+    let datePicker = $(`#${key}.date-picker`)
+    datePicker.datepicker({
+      onSelect: function (date) {
+        let start_date = $('#start_date').val()
+        let end_date = $('#end_date').val()
+        if ( start_date && end_date && ( moment(start_date) < moment(end_date) )){
+          $('#add_unavailable_dates').removeAttr("disabled");
+        } else {
+          $('#add_unavailable_dates').attr("disabled", true);
+        }
+      },
+      dateFormat: 'yy-mm-dd',
+      changeMonth: true,
+      changeYear: true
+    })
+  })
+
+$('#add_unavailable_dates').on('click', function () {
+  let start_date = $('#start_date').val()
+  let end_date = $('#end_date').val()
+  $('#add_unavailable_dates_spinner').addClass('active')
+  update_user( 'add_unavailability', {start_date, end_date}).then((resp)=>{
+    $('#add_unavailable_dates_spinner').removeClass('active')
+    $('#start_date').val('')
+    $('#end_date').val('')
+    display_dates_unavailable(resp)
+  })
+})
+let display_dates_unavailable = (list = [], first_run )=>{
+  let date_unavailable_table = $('#unavailable-list')
+  let rows = ``
+  list = _.orderBy( list, [ "start_date" ], "desc")
+  list.forEach(range=>{
+    rows += `<tr>
+        <td>${_.escape(range.start_date)}</td>
+        <td>${_.escape(range.end_date)}</td>
+        <td>
+            <button class="button hollow tiny alert remove_dates_unavailable" data-id="${_.escape(range.id)}">
+            <i class="fi-x"></i> ${_.escape( wpApiSettingsPage.translations.delete )}</button>
+        </td>
+      </tr>`
+  })
+  if ( rows || ( !rows && !first_run ) ){
+    date_unavailable_table.html(rows)
+  }
+}
+display_dates_unavailable( wpApiSettingsPage.custom_data.availability, true )
+$( document).on( 'click', '.remove_dates_unavailable', function () {
+  let id = $(this).data('id');
+  update_user( 'remove_unavailability', id).then((resp)=>{
+    display_dates_unavailable(resp)
+  })
+})

@@ -2,7 +2,7 @@
 
 Disciple_Tools_Metrics_Critical_Path::instance();
 class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_Base {
-    public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
+    public $permissions = [ 'access_contacts' ];
     private static $_instance = null;
 
     public static function instance() {
@@ -52,7 +52,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
     }
 
     public function scripts() {
-        wp_enqueue_script( 'dt_metrics_project_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-critical-path.js', [
+        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . '/dt-metrics/metrics-critical-path.js', [
             'moment',
             'jquery',
             'jquery-ui-core',
@@ -65,7 +65,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
                 'root'               => esc_url_raw( rest_url() ),
-                'theme_uri'          => get_stylesheet_directory_uri(),
+                'theme_uri'          => get_template_directory_uri(),
                 'nonce'              => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id'    => get_current_user_id(),

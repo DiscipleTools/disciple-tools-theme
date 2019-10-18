@@ -324,6 +324,33 @@ class Disciple_Tools_Groups_Post_Type
             "customizable" => "add_only"
         ];
 
+        /* 4 fields */
+        $fields["four_fields_unbelievers"] = [
+            'name' => __( 'Unbelievers', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => ''
+        ];
+        $fields["four_fields_believers"] = [
+            'name' => __( 'Believers', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => ''
+        ];
+        $fields["four_fields_accountable"] = [
+            'name' => __( 'Accountable', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => ''
+        ];
+        $fields["four_fields_church_commitment"] = [
+            'name' => __( 'Church Commitment', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => ''
+        ];
+        $fields["four_fields_multiplying"] = [
+            'name' => __( 'Multiplying', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => ''
+        ];
+
         $fields['start_date'] = [
             'name'        => __( 'Start Date', 'disciple_tools' ),
             'description' => '',
@@ -371,13 +398,6 @@ class Disciple_Tools_Groups_Post_Type
             'type' => 'text',
             'default' => ''
         ];
-        $fields["locations"] = [
-            "name" => __( "Locations", "disciple_tools" ),
-            "type" => "connection",
-            "p2p_direction" => "from",
-            "p2p_key" => "contacts_to_locations",
-            'icon' => get_template_directory_uri() .'/dt-assets/images/location.svg',
-        ];
         $fields["parent_groups"] = [
             "name" => __( "Parents", "disciple_tools" ),
             "type" => "connection",
@@ -414,12 +434,18 @@ class Disciple_Tools_Groups_Post_Type
             "p2p_direction" => "from",
             "p2p_key" => "groups_to_leaders"
         ];
+        $fields["coaches"] = [
+            "name" => __( "Group Coach / Church Planter", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "groups_to_coaches"
+        ];
         $fields["requires_update"] = [
             'name'        => __( 'Requires Update', 'disciple_tools' ),
             'type'        => 'boolean',
             'default'     => false,
         ];
-        $fields['geonames'] = [
+        $fields['location_grid'] = [
             'name'        => __( 'Locations', 'disciple_tools' ),
             'type'        => 'location',
             'default'     => [],
@@ -580,14 +606,21 @@ class Disciple_Tools_Groups_Post_Type
         add_rewrite_rule( 'groups/([0-9]+)?$', 'index.php?post_type=groups&p=$matches[1]', 'top' );
     }
 
+    public function get_channels_list(){
+        return [
+            "address" => [
+                "label" => __( "Address", 'disciple_tools' ),
+            ]
+        ];
+    }
+
     public function get_post_type_settings_hook( $settings, $post_type ){
         if ( $post_type === "groups" ){
             $fields = $this->get_custom_fields_settings();
-//            @todo connections types
             $settings = [
                 'fields' => $fields,
                 'address_types' => dt_address_metabox()->get_address_type_list( "groups" ),
-                'channels' => [],
+                'channels' => $this->get_channels_list(),
                 'connection_types' => array_keys( array_filter( $fields, function ( $a ) {
                     return $a["type"] === "connection";
                 } ) ),

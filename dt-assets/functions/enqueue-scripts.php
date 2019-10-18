@@ -185,7 +185,7 @@ function dt_site_scripts() {
             $translations = [
                 "not-set"     => [
                     "source"     => __( 'No source set', 'disciple_tools' ),
-                    "geonames"     => __( 'No location set', 'disciple_tools' ),
+                    "location_grid"     => __( 'No location set', 'disciple_tools' ),
                     "leaders"     => __( 'No leaders set', 'disciple_tools' ),
                     "people_groups" => __( 'No people group set', 'disciple_tools' ),
                     "email"        => __( 'No email set', 'disciple_tools' ),
@@ -217,7 +217,7 @@ function dt_site_scripts() {
                         'root'                            => esc_url_raw( rest_url() ),
                         'nonce'                           => wp_create_nonce( 'wp_rest' ),
                         'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
-                        'sources'                         => Disciple_Tools_Contacts::list_sources(),
+                        'sources'                         => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false, null, true )['sources']["default"],
                         'channels'                        => Disciple_Tools_Contacts::get_channel_list(),
                         'template_dir'                    => get_template_directory_uri(),
                         'can_view_all'                    => user_can( get_current_user_id(), 'view_any_contacts' ),
@@ -253,7 +253,7 @@ function dt_site_scripts() {
 
     $url_path = dt_get_url_path();
     if ( 'settings' === $url_path ) {
-        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash', 'mapping-drill-down' ), true );
+        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash', 'mapping-drill-down', 'moment' ), true );
         wp_localize_script(
             'dt-settings', 'wpApiSettingsPage', array(
                 'root'                  => esc_url_raw( rest_url() ),
@@ -262,7 +262,9 @@ function dt_site_scripts() {
                 'current_user_id'       => get_current_user_id(),
                 'template_dir'          => get_template_directory_uri(),
                 'associated_contact_id' => dt_get_associated_user_id( get_current_user_id(), 'user' ),
-                'translations'          => apply_filters( 'dt_settings_js_translations', [] ),
+                'translations'          => apply_filters( 'dt_settings_js_translations', [
+                    'delete' => __( 'delete', 'disciple_tools' )
+                ] ),
                 'custom_data'           => apply_filters( 'dt_settings_js_data', [] ), // nest associated array
             )
         );

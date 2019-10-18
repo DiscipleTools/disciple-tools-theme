@@ -23,13 +23,11 @@ if ( !defined( 'ABSPATH' ) ) {
  *          0.1.16 Added https filter, capability filter for token verification
  *          0.1.17 Added type column to admin list
  *          0.1.18 Added listing function by site type
+ *          0.1.19 Added unique identifiers to the metaboxes to remove conflicts.
  */
 if ( ! class_exists( 'Site_Link_System' ) ) {
 
-    // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-    // @codingStandardsIgnoreLine
-    class Site_Link_System
-    {
+    class Site_Link_System {
 
         /*****************************************************************************************************************
          * PRIMARY INTEGRATION SECTION
@@ -150,7 +148,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                           JOIN $wpdb->postmeta
                           ON $wpdb->posts.ID=$wpdb->postmeta.post_id
                             AND meta_key = 'type'
-                        WHERE meta_value IN ($type_string)", ARRAY_A ); //@phpcs:ignore
+                        WHERE $wpdb->posts.post_type = 'site_link_system' 
+                        AND $wpdb->posts.post_status = 'publish'
+                        AND meta_value IN ($type_string)", ARRAY_A ); //@phpcs:ignore
 
                     return $results;
                     break;
@@ -162,7 +162,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                           JOIN $wpdb->postmeta
                           ON $wpdb->posts.ID=$wpdb->postmeta.post_id
                             AND meta_key = 'type'
-                        WHERE meta_value IN ($type_string)" ); //@phpcs:ignore
+                        WHERE $wpdb->posts.post_type = 'site_link_system' 
+                        AND $wpdb->posts.post_status = 'publish'
+                        AND meta_value IN ($type_string)" ); //@phpcs:ignore
 
                     return $results;
                     break;
@@ -190,7 +192,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         }
 
         /**
-         * VERIFY A TRANSFER TOKEN FROM A CONNECTED SITE REST REQUEST
+         * VERIFY A TRANSFER TOKEN FROM A CONNECTED SITE REST REQUEST AND ADD CAPABILITIES
          *
          * @since 1.0
          *
@@ -200,14 +202,22 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          */
         public static function verify_transfer_token( $transfer_token ): bool
         {
+            /**
+             * If you are debugging authentication, note that this method
+             * doesn't just return true or false, it also adds capabilities to
+             * the current request, based on the authentication token.
+             */
             // challenge https connection
-            if ( ! isset( $_SERVER['HTTPS'] ) ) {
-                dt_write_log( __METHOD__ . ': Server does not have the HTTPS parameter set.' );
-                return false;
-            }
-            elseif ( ! ( 'on' === $_SERVER['HTTPS'] ) ) {
-                dt_write_log( __METHOD__ . ': Failed https challenge' );
-                return false;
+            if ( WP_DEBUG !== true ) {
+                if ( !isset( $_SERVER['HTTPS'] ) ) {
+                    dt_write_log( __METHOD__ . ': Server does not have the HTTPS parameter set.' );
+
+                    return false;
+                } elseif ( !( 'on' === $_SERVER['HTTPS'] ) ) {
+                    dt_write_log( __METHOD__ . ': Failed https challenge' );
+
+                    return false;
+                }
             }
 
             // challenge empty token
@@ -235,8 +245,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             // add prepared permissions to the current_user object
             $connection_type = get_post_meta( self::get_post_id_by_site_key( $decrypted_key ), 'type', true );
+            $site_link_label = isset( $keys[$decrypted_key]["label"] ) ? $keys[$decrypted_key]["label"] : __( "Site Link", 'disciple_tools' );
             if ( ! empty( $connection_type ) ) {
-                self::add_capabilities_required_by_type( $connection_type );
+                self::add_capabilities_required_by_type( $connection_type, $site_link_label, $decrypted_key );
             }
 
             return true;
@@ -252,8 +263,10 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          *      and giving the current_user the specific permissions needed for the tasks done during the site to site link.
          *
          * @param $connection_type
+         * @param string $site_link_label
+         * @param string $site_key
          */
-        public static function add_capabilities_required_by_type( $connection_type ) {
+        public static function add_capabilities_required_by_type( $connection_type, $site_link_label = "Site Link", $site_key = '' ) {
             /**
              * Use the $connection_type to filter for the correct type
              * Update and return the $capabilities array
@@ -271,6 +284,10 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                 foreach ( $capabilities as $capability ) {
                     $current_user->add_cap( $capability );
+                }
+                $current_user->display_name = $site_link_label;
+                if ( $site_key ){
+                    $current_user->site_key = $site_key;
                 }
             }
         }
@@ -513,8 +530,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         }
 
         public function meta_box_setup() {
-            add_meta_box( $this->post_type . '_details', __( 'Manage Site Link' ), [ $this, 'meta_box_load_management_box' ], $this->post_type, 'normal', 'high' );
-            add_meta_box( $this->post_type . '_instructions', __( 'Configuration' ), [ $this, 'meta_box_configuration_box' ], $this->post_type, 'normal', 'high' );
+            add_meta_box( $this->post_type . '_details' . hash( 'sha256', self::get_current_site_base_url() ), __( 'Manage Site Link' ), [ $this, 'meta_box_load_management_box' ], $this->post_type, 'normal', 'high' );
+            add_meta_box( $this->post_type . '_instructions'  . hash( 'sha256', self::get_current_site_base_url() ), __( 'Configuration' ), [ $this, 'meta_box_configuration_box' ], $this->post_type, 'normal', 'high' );
         }
 
         public function meta_box_content( $section = 'info' ) {
@@ -702,7 +719,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                 // Escape and confirm format of the URL fields.
                 if ( 'url' == $field_data[ $f ]['type'] ) {
-                    if ( strpos( ${$f}, 'http' ) !== false || strpos( ${$f}, '//' ) !== false || strpos( ${$f}, '/' ) !== false ) {
+                    if ( strpos( ${$f}, 'http' ) !== false || strpos( ${$f}, '//' ) !== false ) {
                         ${$f} = parse_url( ${$f}, PHP_URL_HOST );
                     }
                 }
@@ -956,11 +973,32 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         /*border is optional*/
                         cursor: pointer;
                         }
-                        #postbox-container-3 {display:none;}
-                        #postbox-container-4 {display:none;}
                         </style>";
 
             }
+            $uri = $this->get_url_path();
+
+            if ( $uri && ( strpos( $uri, 'edit.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) || ( strpos( $uri, 'post-new.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) ) : ?>
+                <script>
+                  jQuery(function($) {
+                    $(`<div><a href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/admin.html?highlight=transfer#site-links" style="margin-bottom:15px;" target="_blank">
+                        <img style="height:15px" class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                        Site link documentation</a></div>`).insertAfter(
+                        '#wpbody-content .wrap .wp-header-end:eq(0)')
+                  });
+                </script>
+            <?php endif;
+        }
+
+        public function get_url_path() {
+            if ( isset( $_SERVER["HTTP_HOST"] ) ) {
+                $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
+                if ( isset( $_SERVER["REQUEST_URI"] ) ) {
+                    $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
+                }
+                return trim( str_replace( get_site_url(), "", $url ), '/' );
+            }
+            return '';
         }
 
         public function enter_title_here( $title ) {
@@ -1022,7 +1060,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             return true;
         }
 
-        public function build_cached_option() {
+        public static function build_cached_option() {
             global $wpdb;
 
             $results = $wpdb->get_results(  "

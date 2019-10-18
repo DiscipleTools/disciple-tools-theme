@@ -54,6 +54,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         add_filter( "dt_post_updated", [ $this, "post_updated_hook" ], 10, 3 );
         add_filter( "dt_get_post_fields_filter", [ $this, "dt_get_post_fields_filter" ], 10, 2 );
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
+        add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
+        add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
 
         parent::__construct();
     }
@@ -114,7 +116,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     //add the required fields to the DT_Post::create_group() function
-    public function update_post_field_hook( $post_type, $post_id, $fields ){
+    public function update_post_field_hook( $fields, $post_type, $post_id ){
         if ( $post_type === "groups" ){
             if ( isset( $fields["assigned_to"] ) ) {
                 if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
@@ -132,7 +134,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 }
                 $user_id = explode( '-', $fields["assigned_to"] )[1];
                 if ( $user_id ){
-                    DT_Posts::add_shared( "groups", $post_id, $user_id, null, false, false, false );
+                    DT_Posts::add_shared( "groups", $post_id, $user_id, null, false, true, false );
                 }
             }
             $existing_group = DT_Posts::get_post( 'groups', $post_id, true, false );
@@ -153,6 +155,49 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         }
     }
 
+
+    public function post_connection_added( $post_type, $post_id, $field_key, $value ){
+        if ( $post_type === "groups" ){
+            if ( $field_key === "members" ){
+                // share the group with the owner of the contact.
+                $assigned_to = get_post_meta( $value, "assigned_to", true );
+                if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){
+                    $user_id = explode( "-", $assigned_to )[1];
+                    if ( $user_id ){
+                        self::add_shared_on_group( $post_id, $user_id, null, false, false );
+                    }
+                }
+                do_action( 'group_member_count', $post_id, "added" );
+            }
+        }
+    }
+
+    public function post_connection_removed( $post_type, $post_id, $field_key, $value ){
+        if ( $post_type === "groups" ){
+            if ( $field_key === "members" ){
+                do_action( 'group_member_count', $post_id, "removed" );
+            }
+        }
+    }
+
+
+    public function update_group_member_count( $group_id, $action = "added" ){
+        $group = get_post( $group_id );
+        $args = [
+            'connected_type'   => "contacts_to_groups",
+            'connected_direction' => 'to',
+            'connected_items'  => $group,
+            'nopaging'         => true,
+            'suppress_filters' => false,
+        ];
+        $members = get_posts( $args );
+        $member_count = get_post_meta( $group_id, 'member_count', true );
+        if ( sizeof( $members ) > intval( $member_count ) ){
+            update_post_meta( $group_id, 'member_count', sizeof( $members ) );
+        } elseif ( $action === "removed" ){
+            update_post_meta( $group_id, 'member_count', intval( $member_count ) - 1 );
+        }
+    }
 
 
     //check to see if the group is marked as needing an update
@@ -201,7 +246,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @return array|int|WP_Error
      */
     public static function get_comments( int $group_id ) {
-        return DT_Posts::get_post_comments( 'groups', $group_id );
+        $resp = DT_Posts::get_post_comments( 'groups', $group_id );
+        return is_wp_error( $resp ) ? $resp : $resp["comments"];
     }
 
 
@@ -219,7 +265,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @return array|null|object|WP_Error
      */
     public static function get_activity( int $group_id ) {
-        return DT_Posts::get_post_activity( 'groups', $group_id );
+        $resp = DT_Posts::get_post_activity( 'groups', $group_id );
+        return is_wp_error( $resp ) ? $resp : $resp["activity"];
     }
 
     /**
@@ -269,7 +316,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @return int | WP_Error
      */
     public static function create_group( array $fields = [], $check_permissions = true ) {
-        return DT_Posts::create_post( 'groups', $fields, false, $check_permissions );
+        $group = DT_Posts::create_post( 'groups', $fields, false, $check_permissions );
+        return is_wp_error( $group ) ? $group : $group["ID"];
     }
 
     //add the required fields to the DT_Post::create_contact() function

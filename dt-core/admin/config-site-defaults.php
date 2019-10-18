@@ -35,7 +35,7 @@ add_action( 'admin_init', 'dt_security_headers_insert' );
 // wp-login.php doesn't have a send_headers action so we abuse init
 add_action( 'login_init', 'dt_security_headers_insert' );
 //add_filter( 'wp_handle_upload_prefilter', 'dt_disable_file_upload' ); //this breaks uploading plugins and themes
-
+add_filter( 'cron_schedules', 'dt_cron_schedules' );
 /*********************************************************************************************
  * Functions
  */
@@ -217,6 +217,10 @@ function dt_get_option( string $name ) {
         case 'group_type':
             $site_options = dt_get_option( "dt_site_custom_lists" );
             return $site_options["group_type"];
+
+        case 'group_preferences':
+            $site_options = dt_get_option( "dt_site_options" );
+            return $site_options["group_preferences"];
         default:
             return false;
             break;
@@ -271,7 +275,7 @@ function dt_update_option( $name, $value, $autoload = false ) {
 function dt_get_site_options_defaults() {
     $fields = [];
 
-    $fields['version'] = '7';
+    $fields['version'] = '8';
 
     $fields['user_notifications'] = [
         'new_web'          => true,
@@ -398,6 +402,10 @@ function dt_get_site_options_defaults() {
             ]
         ]
     ];
+    $fields["group_preferences"] = [
+        "church_metrics" => true,
+        "four_fields" => false,
+    ];
 
     return $fields;
 }
@@ -416,7 +424,7 @@ function dt_get_site_options_defaults() {
 function dt_get_site_custom_lists( string $list_title = null ) {
     $fields = [];
 
-    $fields['version'] = 9;
+    $fields['version'] = 10;
 
     // the prefix dt_user_ assists db meta queries on the user
     $fields['user_fields'] = [
@@ -556,11 +564,30 @@ function dt_get_site_custom_lists( string $list_title = null ) {
         "work"  => [ "label" => __( 'Work', 'disciple_tools' ) ],
         "other" => [ "label" => __( 'Other', 'disciple_tools' ) ],
     ];
+    $fields["group_preferences"] = [
+        "church_metrics" => true,
+        "four_fields" => false,
+    ];
+
+    $fields["user_workload_status"] = [
+        "active" => [
+            "label" => __( "Accepting new contacts", 'disciple_tools' ),
+            "color" => "#4caf50"
+        ],
+        "existing" => [
+            "label" => __( "I'm only investing in existing contacts", 'disciple_tools' ),
+            "color" => "#ff9800"
+        ],
+        "too_many" => [
+            "label" => __( "I have too many contacts", 'disciple_tools' ),
+            "color" => "#F43636"
+        ]
+    ];
 
 
     // $fields = apply_filters( 'dt_site_custom_lists', $fields );
 
-        return $fields[ $list_title ] ?? $fields;
+    return $fields[ $list_title ] ?? $fields;
 }
 
 function dt_get_location_levels() {
@@ -755,7 +782,12 @@ function dt_security_headers_insert() {
 //    header( "Content-Security-Policy: default-src 'self' https:; img-src 'self' https: data:; script-src https: 'self' 'unsafe-inline' 'unsafe-eval'; style-src  https: 'self' 'unsafe-inline'" );
 }
 
-//function dt_disable_file_upload( $file ) {
-//    $file['error'] = 'Uploading has been disabled';
-//    return $file;
-//}
+
+
+function dt_cron_schedules( $schedules ) {
+    $schedules['weekly'] = array(
+        'interval' => 60 * 60 * 24 * 7, # 604,800, seconds in a week
+        'display'  => __( 'Weekly' )
+    );
+    return $schedules;
+}

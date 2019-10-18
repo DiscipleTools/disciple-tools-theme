@@ -77,11 +77,12 @@ final class Disciple_Tools_Admin_User_Edit {
 
         $editable_roles = dt_multi_role_get_editable_role_names();
 
-        asort( $editable_roles );
+//        asort( $editable_roles );
 
         wp_nonce_field( 'new_user_roles', 'dt_multi_role_new_user_roles_nonce' ); ?>
 
         <h3><?php esc_html_e( 'Roles', 'members' ); ?></h3>
+        <p>For a description of each of the roles, please see the <a href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/roles.html" target="_blank">Roles Documentation</a>  </p>
 
         <table class="form-table">
 

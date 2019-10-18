@@ -1,12 +1,15 @@
 jQuery(document).ready(function() {
 
     if( ! window.location.hash || '#workers_activity' === window.location.hash  ) {
+      jQuery('#metrics-sidemenu').foundation('down', jQuery('#workers-menu'));
         workers_activity()
     }
     if( '#follow_up_pace' === window.location.hash) {
+      jQuery('#metrics-sidemenu').foundation('down', jQuery('#workers-menu'));
         window.show_follow_up_pace()
     }
     if( '#contact_follow_up_pace' === window.location.hash) {
+      jQuery('#metrics-sidemenu').foundation('down', jQuery('#workers-menu'));
         contact_follow_up_pace()
     }
 
@@ -15,7 +18,6 @@ jQuery(document).ready(function() {
 function workers_activity() {
     "use strict";
     let chartDiv = jQuery('#chart')
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#workers-menu'));
     let sourceData = dtMetricsUsers.data
     chartDiv.empty().html(`
         <span style="float:right;"><i class="fi-info primary-color"></i> </span>
@@ -144,7 +146,6 @@ function workers_activity() {
 
 function contact_follow_up_pace(){
     "use strict";
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#workers-menu'));
     let localizedObject = window.dtMetricsUsers
     let chartDiv = jQuery('#chart') // retrieves the chart div in the metrics page
 
@@ -254,13 +255,11 @@ function drawContactsProgressPerUser( data ) {
 
 window.show_follow_up_pace = function show_follow_up_pace(){
     "use strict";
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#workers-menu'));
     let localizedObject = window.dtMetricsUsers
     let chartDiv = jQuery('#chart') // retrieves the chart div in the metrics page
 
-    // TODO: escape this properly
     chartDiv.empty().html(`
-      <span class="text-small" style="float:right; font-size:.6em; color: gray;">data as of <span id="pace-timestamp"></span> - <a onclick="refresh_worker_pace_data()">refresh</a></span>
+      <span class="text-small" style="float:right; font-size:.6em; color: gray;">data as of <span id="pace-timestamp"></span> - <a onclick="refresh_worker_pace_data(true)">refresh</a></span>
       <span class="section-header">${ localizedObject.data.translations.title_response }</span>
       
       <hr style="max-width:100%;">
@@ -299,26 +298,25 @@ window.show_follow_up_pace = function show_follow_up_pace(){
 
 function add_worker_pace_table( data) {
     let tableHTML = ``;
-    // TODO: escape this properly
     data.forEach(worker=>{
         tableHTML +=`
       <tr>
-        <td>${worker.display_name}</td>
-        <td>${worker.avg_hours_to_contact_attempt || ""}</td>
-        <td>${worker.number_new_assigned}</td>
-        <td>${worker.number_active}</td>
-        <td>${worker.number_update}</td>
-        <td>${worker.number_assigned_to}</td>
-        <td>${worker.number_met}</td>
-        <td>${worker.number_baptized}</td>
-        <td>${worker.last_date_assigned || ""}</td>
+        <td>${_.escape( worker.display_name )}</td>
+        <td>${_.escape( worker.avg_hours_to_contact_attempt ) || ""}</td>
+        <td>${_.escape( worker.number_new_assigned )}</td>
+        <td>${_.escape( worker.number_active )}</td>
+        <td>${_.escape( worker.number_update )}</td>
+        <td>${_.escape( worker.number_assigned_to )}</td>
+        <td>${_.escape( worker.number_met )}</td>
+        <td>${_.escape( worker.number_baptized )}</td>
+        <td>${_.escape( worker.last_date_assigned  || "" ) }</td> )
       </tr>
       `
     })
     jQuery("#workers_table_body").empty().html(tableHTML)
 }
 
-function refresh_worker_pace_data() {
+function refresh_worker_pace_data(force=false) {
     let table = jQuery('#workers_table_body')
     table.empty().html(`
             <tr><td colspan="8">
@@ -329,7 +327,7 @@ function refresh_worker_pace_data() {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: dtMetricsUsers.root + 'dt/v1/metrics/workers/workers_pace',
+        url: dtMetricsUsers.root + 'dt/v1/metrics/workers/workers_pace?force=' + (force ? "1" : "0"),
         beforeSend: function(xhr) {
             xhr.setRequestHeader('X-WP-Nonce', dtMetricsUsers.nonce);
         },

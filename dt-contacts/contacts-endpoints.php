@@ -200,13 +200,6 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'get_contact_counts' ]
             ]
         );
-
-        register_rest_route(
-            $namespace, '/contact/list-sources', [
-                "methods" => "GET",
-                "callback" => [ $this, 'list_sources' ],
-            ]
-        );
         register_rest_route(
             $namespace, '/contacts/(?P<id>\d+)/duplicates', [
                 "methods"  => "GET",
@@ -344,7 +337,7 @@ class Disciple_Tools_Contacts_Endpoints
             function( $c ){ return $c->ID; },
             $contacts
         );
-        $geonames = Disciple_Tools_Mapping_Queries::get_geoname_ids_and_names_for_post_ids( $contact_ids );
+        $location_grid = Disciple_Tools_Mapping_Queries::get_location_grid_ids_and_names_for_post_ids( $contact_ids );
         p2p_type( 'contacts_to_groups' )->each_connected( $contacts, [], 'groups' );
         $rv = [];
         foreach ( $contacts as $contact ) {
@@ -355,9 +348,9 @@ class Disciple_Tools_Contacts_Endpoints
             $contact_array["is_team_contact"] = $contact->is_team_contact ?? false;
             $contact_array['permalink'] = get_post_permalink( $contact->ID );
             $contact_array['overall_status'] = get_post_meta( $contact->ID, 'overall_status', true );
-            $contact_array['locations'] = []; // @todo remove or rewrite? Because of geonames upgrade.
-            foreach ( $geonames[$contact->ID] as $location ) {
-                $contact_array['locations'][] = $location["name"]; // @todo remove or rewrite? Because of geonames upgrade.
+            $contact_array['locations'] = []; // @todo remove or rewrite? Because of location_grid upgrade.
+            foreach ( $location_grid[$contact->ID] as $location ) {
+                $contact_array['locations'][] = $location["name"]; // @todo remove or rewrite? Because of location_grid upgrade.
             }
             $contact_array['groups'] = [];
             foreach ( $contact->groups as $group ) {
@@ -563,7 +556,7 @@ class Disciple_Tools_Contacts_Endpoints
             if ( is_wp_error( $result ) ) {
                 return $result;
             } else {
-                return new WP_REST_Response( $result );
+                return new WP_REST_Response( $result["comments"] );
             }
         } else {
             return new WP_Error( "get_comments", "Missing a valid contact id", [ 'status' => 400 ] );
@@ -582,7 +575,7 @@ class Disciple_Tools_Contacts_Endpoints
             if ( is_wp_error( $result ) ) {
                 return $result;
             } else {
-                return new WP_REST_Response( $result );
+                return new WP_REST_Response( $result["activity"] );
             }
         } else {
             return new WP_Error( "get_activity", "Missing a valid contact id", [ 'status' => 400 ] );
@@ -740,10 +733,6 @@ class Disciple_Tools_Contacts_Endpoints
         $tab = $params["tab"] ?? null;
         $show_closed = isset( $params["closed"] ) && $params["closed"] == "true";
         return Disciple_Tools_Contacts::get_count_of_contacts( $tab, $show_closed );
-    }
-
-    public function list_sources() {
-        return Disciple_Tools_Contacts::list_sources();
     }
 
     public function get_duplicates_on_contact( WP_REST_Request $request ){
