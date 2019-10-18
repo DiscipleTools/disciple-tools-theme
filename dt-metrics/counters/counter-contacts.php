@@ -283,15 +283,20 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                     log.hist_time = b.hist_time
                     AND log.object_id = b.object_id
                 )
-                JOIN wp_dt_activity_log as sl ON ( sl.object_id = log.object_id AND sl.meta_key = 'overall_status' AND sl.meta_value = 'active' )
-                WHERE log.object_type = 'contacts' AND log.meta_key = 'seeker_path'
-                AND sl.hist_time = (
-                    SELECT MAX( hist_time ) as hist_time
-                    FROM  wp_dt_activity_log
-                    WHERE meta_key = 'overall_status'
-                    AND hist_time < %d
-                    AND object_id = log.object_id
+                JOIN wp_dt_activity_log as sl ON (
+                    sl.object_type = 'contacts' 
+                    AND sl.object_id = log.object_id
+                    AND sl.meta_key = 'overall_status'
+                    AND sl.meta_value = 'active'
+                    AND sl.hist_time = (
+                        SELECT MAX( hist_time ) as hist_time
+                        FROM  wp_dt_activity_log
+                        WHERE meta_key = 'overall_status'
+                        AND hist_time < %d
+                        AND object_id = log.object_id
+                    )
                 )
+                WHERE log.meta_key = 'seeker_path'
                 AND log.object_id NOT IN (
                     SELECT post_id
                     FROM $wpdb->postmeta
