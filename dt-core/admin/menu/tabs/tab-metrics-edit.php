@@ -196,7 +196,7 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
                                value="<?php echo esc_html( isset( $report[$source["key"] ] ) ? $report[$source["key"] ] : '' ) ?>">
                     </td>
                     <td>
-                        <?php echo esc_html( $source["description"] ) ?>
+                        <?php echo esc_html( $source["description"] ?? '' ) ?>
                     </td>
                 </tr>
                 <?php endforeach;?>

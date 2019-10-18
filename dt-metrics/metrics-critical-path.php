@@ -206,7 +206,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         $data[] = [
             "key" => "assigned_contacts",
             "label" => __( "Assigned Contacts", "disciple_tools" ),
-            "description" => __( "Number of contacts where the status was change to assigned", "disciple_tools" ),
+            "description" => __( "Number of contacts assigned for a face-to-face visit", "disciple_tools" ),
             "value" => (int) $assigned_contacts,
             "total" => (int) $status_at_date["assigned"]["value"],
             "type" => "activity"
@@ -261,8 +261,8 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
 
             $data[] = [
                 "key" => "baptism_generation_$gen",
-                "label" => sprintf( __( "Baptism Generation %s", "disciple_tools" ), $gen ),
-                "description" => sprintf( __( "Number of %s generation baptisms", "disciple_tools" ), $gen ),
+                "label" => sprintf( __( "Generation %s Baptisms", "disciple_tools" ), $gen ),
+                "description" => sprintf( __( "Number of generation %s baptisms", "disciple_tools" ), $gen ),
                 "value" => (int) $value,
                 "total" => (int) $count,
                 "type" => "activity"
@@ -305,7 +305,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         for ( $i = 1;  $i <= $max_gen; $i++ ){
             $data[] = [
                 "key" => "church_generation_$i",
-                "label" => sprintf( __( "Church Generation %s", "disciple_tools" ), $i ),
+                "label" => sprintf( __( "Generation %s Churches", "disciple_tools" ), $i ),
                 "description" => sprintf( __( "Number of generation %s churches at the end of the time range", "disciple_tools" ), $i ),
                 "value" => (int) isset( $church_generations[$i] ) ? $church_generations[$i] : 0,
                 "total" => (int) isset( $current_church_generations[$i] ) ? $current_church_generations[$i] : 0,
