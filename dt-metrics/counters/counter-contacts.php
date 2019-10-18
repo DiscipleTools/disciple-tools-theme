@@ -273,15 +273,6 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
             $wpdb->prepare( "
                 SELECT count( DISTINCT( log.object_id ) ) as value, log.meta_value as seeker_path
                 FROM $wpdb->dt_activity_log log
-                INNER JOIN $wpdb->posts post
-                ON ( 
-                    post.ID = log.object_id
-                    AND post.post_type = 'contacts' 
-                )
-                INNER JOIN $wpdb->postmeta pm ON (
-                    post.ID = pm.post_id
-                    AND pm.meta_key = 'seeker_path'
-                )
                 JOIN (
                     SELECT MAX( hist_time ) as hist_time, object_id
                     FROM  $wpdb->dt_activity_log
@@ -292,15 +283,20 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                     log.hist_time = b.hist_time
                     AND log.object_id = b.object_id
                 )
-                LEFT JOIN wp_dt_activity_log as sl ON ( sl.object_id = log.object_id AND sl.meta_key = 'overall_status' AND sl.meta_value = 'active' )
-                WHERE log.meta_key = 'seeker_path'
-                AND sl.hist_time = (
-                    SELECT MAX( hist_time ) as hist_time
-                    FROM  wp_dt_activity_log
-                    WHERE meta_key = 'overall_status'
-                    AND hist_time < %d
-                    AND object_id = log.object_id
+                JOIN wp_dt_activity_log as sl ON (
+                    sl.object_type = 'contacts' 
+                    AND sl.object_id = log.object_id
+                    AND sl.meta_key = 'overall_status'
+                    AND sl.meta_value = 'active'
+                    AND sl.hist_time = (
+                        SELECT MAX( hist_time ) as hist_time
+                        FROM  wp_dt_activity_log
+                        WHERE meta_key = 'overall_status'
+                        AND hist_time < %d
+                        AND object_id = log.object_id
+                    )
                 )
+                WHERE log.meta_key = 'seeker_path'
                 AND log.object_id NOT IN (
                     SELECT post_id
                     FROM $wpdb->postmeta

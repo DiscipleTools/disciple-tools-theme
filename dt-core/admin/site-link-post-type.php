@@ -192,7 +192,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         }
 
         /**
-         * VERIFY A TRANSFER TOKEN FROM A CONNECTED SITE REST REQUEST
+         * VERIFY A TRANSFER TOKEN FROM A CONNECTED SITE REST REQUEST AND ADD CAPABILITIES
          *
          * @since 1.0
          *
@@ -202,6 +202,11 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          */
         public static function verify_transfer_token( $transfer_token ): bool
         {
+            /**
+             * If you are debugging authentication, note that this method
+             * doesn't just return true or false, it also adds capabilities to
+             * the current request, based on the authentication token.
+             */
             // challenge https connection
             if ( WP_DEBUG !== true ) {
                 if ( !isset( $_SERVER['HTTPS'] ) ) {
