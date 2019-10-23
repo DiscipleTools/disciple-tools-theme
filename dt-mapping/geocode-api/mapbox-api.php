@@ -119,20 +119,19 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         $url = self::$mapbox_endpoint . $search_string . '.json?types=poi&access_token=' . self::get_key();
                     }
                     break;
-
                 case 'place':
                     if ( $country_code ) {
                         $url = self::$mapbox_endpoint  . $search_string . '.json?country=' . $country_code . '&types=place&access_token=' . self::get_key();
                     } else {
-                        $url = self::$mapbox_endpoint . $search_string . '.json?types=poi&access_token=' . self::get_key();
+                        $url = self::$mapbox_endpoint . $search_string . '.json?types=place&access_token=' . self::get_key();
                     }
                     break;
                 case 'full':
                 default:
                     if ( $country_code ) {
-                        $url = self::$mapbox_endpoint  . $search_string . '.json?country=' . $country_code . '&access_token=' . self::get_key();
+                        $url = self::$mapbox_endpoint  . $search_string . '.json?country=' . $country_code . 'types=country,region,place,address&&access_token=' . self::get_key();
                     } else {
-                        $url = self::$mapbox_endpoint . $search_string . '.json?access_token=' . self::get_key();
+                        $url = self::$mapbox_endpoint . $search_string . '.json?types=country,region,place,address&access_token=' . self::get_key();
                     }
                     break;
             }
