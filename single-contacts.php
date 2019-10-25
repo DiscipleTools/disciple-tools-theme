@@ -264,8 +264,16 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                         <div class="grid-x grid-margin-x grid-margin-y grid">
                             <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item">
             <!--                    <div class="bordered-box last-typeahead-in-section">-->
-                                <div class="bordered-box"><h3 class="section-header"><?php esc_html_e( "Connections", 'disciple_tools' ) ?></h3>
-                                    <div class="section-subheader"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></div>
+                                <div class="bordered-box"><h3 class="section-header"><?php esc_html_e( "Connections", 'disciple_tools' ) ?>
+                                        <button class="help-button float-right" data-section="connections-help-text">
+                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                        </button>
+                                    </h3>
+                                    <div class="section-subheader"><?php esc_html_e( "Groups", 'disciple_tools' ) ?>
+                                        <button class="help-button" data-section="groups-help-text">
+                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                        </button>
+                                    </div>
                                     <var id="groups-result-container" class="result-container"></var>
                                     <div id="groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
                                         <div class="typeahead__container">
@@ -295,7 +303,13 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                     foreach ( $connections as $connection => $connection_label ) {
                                         ?>
                                         <div id="<?php echo esc_attr( $connection . '_connection' ) ?>">
-                                            <div class="section-subheader"><?php echo esc_html( $connection_label ) ?></div>
+                                            <div class="section-subheader"><?php echo esc_html( $connection_label ) ?>
+                                            <!-- this needs to be automated
+                                                <button class="help-button" data-section="group-type-help-text">
+                                                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                                </button>
+                                            -->
+                                            </div>
                                             <var id="<?php echo esc_html( $connection ) ?>-result-container" class="result-container"></var>
                                             <div id="<?php echo esc_html( $connection ) ?>_t" name="form-<?php echo esc_html( $connection ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
                                                 <div class="typeahead__container">
@@ -323,9 +337,9 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             <section id="faith" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box">
                                     <label class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?>
-            <!--                            <button class="help-button float-right" data-section="contact-progress-help-text">-->
-            <!--                                <img class="help-icon" src="--><?php //echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?><!--"/>-->
-            <!--                            </button>-->
+                                        <button class="help-button float-right" data-section="contact-progress-help-text">
+                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                        </button>
                                     </label>
                                     <div class="section-subheader">
                                         <?php echo esc_html( $contact_fields["seeker_path"]["name"] )?>
@@ -374,7 +388,11 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                     </div>
 
                                     <div class="baptism_date">
-                                        <div class="section-subheader"><?php esc_html_e( 'Baptism Date', 'disciple_tools' )?></div>
+                                        <div class="section-subheader"><?php esc_html_e( 'Baptism Date', 'disciple_tools' )?>
+                                            <button class="help-button" data-section="baptism-date-help-text">
+                                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                            </button>
+                                        </div>
                                         <div class="baptism_date">
                                             <input type="text" class="dt_date_picker"
                                                    value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>"

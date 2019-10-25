@@ -72,6 +72,12 @@
         <p><?php esc_html_e( "This is where you set which milestones the contact has reached in their faith journey.", 'disciple_tools' ) ?></p>
     </div>
 
+    <!-- Baptism Date -->
+    <div class="help-section" id="baptism-date-help-text" style="display: none">
+        <h3 class="lead"><?php esc_html_e( "Baptism Date", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "This is where you set the date of when this contact was baptised.", 'disciple_tools' ) ?></p>
+    </div>
+
     <!--  Health Metrics  -->
     <div class="help-section" id="health-metrics-help-text" style="display: none">
         <h3 class="lead"><?php esc_html_e( "Health Metrics", 'disciple_tools' ) ?></h3>
@@ -83,7 +89,7 @@
     <!--  Group type  -->
     <div class="help-section" id="group-type-help-text" style="display: none">
         <h3 class="lead"><?php esc_html_e( "Group type", 'disciple_tools' ) ?></h3>
-        <p><?php esc_html_e( "Here you can select whether the group is a pre-group, group or church.", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "Here you can select whether the group is a pre-group, group, church or team.", 'disciple_tools' ) ?></p>
         <p><?php esc_html_e( "We define a pre-group as having x people. We define a group as having x people.", 'disciple_tools' ) ?></p>
         <p><?php esc_html_e( "We define a church as having 3 or more believers.", 'disciple_tools' ) ?></p>
     </div>
@@ -120,6 +126,19 @@
             <li><?php esc_html_e( "Child Groups: A group that has been birthed out of this group.", 'disciple_tools' ) ?></li>
         </ul>
     </div>
+
+    <!--  Groups  -->
+    <div class="help-section" id="groups-help-text" style="display: none">
+        <h3 class="lead"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "Here you can connect this contact with a group by either searching for a group or creating a new group that they will then be added to.", 'disciple_tools' ) ?></p>
+    </div>
+
+    <!--  Connections  -->
+    <div class="help-section" id="connections-help-text" style="display: none">
+        <h3 class="lead"><?php esc_html_e( "Connections", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "Here you can make connections with this contact with group/s  or other people in this system.", 'disciple_tools' ) ?></p>
+    </div>
+
 
     <!--  Four Fields  -->
     <div class="help-section" id="four-fields-help-text" style="display: none">
