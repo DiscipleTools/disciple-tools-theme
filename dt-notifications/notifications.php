@@ -779,7 +779,7 @@ class Disciple_Tools_Notifications
         if ( $notification["notification_name"] === "created" ) {
             $notification_note = sprintf( esc_html_x( '%s was created and assigned to you.', '%s was created and assigned to you.', 'disciple_tools' ), $link );
         } elseif ( $notification["notification_name"] === "assigned_to" ) {
-            $notification_note = sprintf( esc_html_x( 'You have be assigned: %1$s.', 'You have been assigned: contact1.', 'disciple_tools' ), $link );
+            $notification_note = sprintf( esc_html_x( 'You have been assigned: %1$s.', 'You have been assigned: contact1.', 'disciple_tools' ), $link );
         } elseif ( $notification["notification_name"] === "assigned_to_other" ) {
             $source_user = get_userdata( $notification["source_user_id"] );
             $source_user_name = $source_user ? "@" . $source_user->display_name : '';
