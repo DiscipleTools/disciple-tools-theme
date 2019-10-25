@@ -193,7 +193,7 @@ class Disciple_Tools_Contact_Post_Type
             'default'     => [
                 'new'   => [
                     "label" => _x( 'New Contact', 'Contact Status', 'disciple_tools' ),
-                    "description" => _x( "The contact is new in the system", "Contact Status", 'disciple_tools' )
+                    "description" => _x( "The contact is new in the system", "Contact Status", 'disciple_tools' ),
                     "color" => "#F43636",
                 ],
                 'unassignable' => [
