@@ -34,7 +34,7 @@
 
 
     <div class="help-section" id="quick-action-help-text" style="display: none">
-        <h3 class="lead">Quick action buttons</h3>
+        <h3 class="lead"><?php esc_html_e( "Quick action buttons", 'disciple_tools' ) ?></h3>
         <p>These quick action buttons are here to aid you in updating the contact record.
         They track how many times each one has been used.</p>
         <p>They also update the "Seeker Path" below. For example,

@@ -186,7 +186,9 @@
 
             <!-- Social Media -->
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                <div class="section-subheader"><?php esc_html_e( 'Social Media', 'disciple_tools' ) ?></div>
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/socialmedia.svg' ?>">
+                    <?php esc_html_e( 'Social Media', 'disciple_tools' ) ?></div>
                 <ul class="social"></ul>
             </div>
 
