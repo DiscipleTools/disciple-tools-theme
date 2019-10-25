@@ -146,7 +146,6 @@
                     <button class="help-button" data-section="subassigned-to-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
-
                 </div>
                 <div class="subassigned details">
                     <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
