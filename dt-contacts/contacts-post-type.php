@@ -166,7 +166,7 @@ class Disciple_Tools_Contact_Post_Type
             'show_in_nav_menus'     => true,
             'can_export'            => true,
             'exclude_from_search'   => true,
-            'show_in_rest'          => false
+            'show_in_rest'          => false,
         ];
 
         $args = wp_parse_args( $this->args, $defaults );
