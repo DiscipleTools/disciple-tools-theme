@@ -273,7 +273,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     //checks for a partial string in an array
     public function partial_array_search( $array, $find ) {
         //check for null value
-        if ( $find == null || count( $array ) == 0 ) {
+        if ( $find == null || !$array || sizeof( $array ) == 0 ) {
             return -1;
         }
         //with array keys
