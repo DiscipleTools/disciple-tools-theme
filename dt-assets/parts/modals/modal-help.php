@@ -1,7 +1,7 @@
 <div class="reveal" id="help-modal" data-reveal>
 
 
-    <!--    Contact Status-->
+    <!--    Contact Status  -->
     <div class="help-section" id="overall-status-help-text" style="display: none">
         <?php
         $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["overall_status"]; ?>
@@ -14,7 +14,7 @@
         </ul>
     </div>
 
-
+    <!--    Assigned to -->
     <div class="help-section" id="assigned-to-help-text" style="display: none">
         <?php
         $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["assigned_to"]; ?>
@@ -32,7 +32,13 @@
         <?php endif; ?>
     </div>
 
+    <!--    Subassigned to  -->
+    <div class="help-section" id="subassigned-to-help-text" style="display: none">
+        <h3 class="lead"><?php esc_html_e( "Sub-assigned to", 'disciple_tools' ) ?></h3>
+        <p>This is someone working alongside of the main person assigned to the contact. You may find that you are partnering with others in your discipleship relationships. Only one person can be assigned while multiple people can be sub-assigned.</p>
+    </div>
 
+    <!--    Quick Actions   -->
     <div class="help-section" id="quick-action-help-text" style="display: none">
         <h3 class="lead"><?php esc_html_e( "Quick action buttons", 'disciple_tools' ) ?></h3>
         <p>These quick action buttons are here to aid you in updating the contact record.

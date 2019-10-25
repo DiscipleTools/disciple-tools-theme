@@ -143,6 +143,10 @@
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/subassigned.svg' ?>">
                     <?php esc_html_e( 'Sub-assigned to', 'disciple_tools' )?>
+                    <button class="help-button" data-section="subassigned-to-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
+
                 </div>
                 <div class="subassigned details">
                     <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
