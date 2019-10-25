@@ -473,10 +473,17 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
                             <section id="other" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box">
-                                    <label class="section-header"><?php esc_html_e( 'Other', 'disciple_tools' )?></label>
+                                    <label class="section-header"><?php esc_html_e( 'Other', 'disciple_tools' )?>
+                                        <button class="help-button" data-section="other-tile-help-text">
+                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                        </button>
+                                    </label>
 
                                     <div class="section-subheader">
                                         <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
+                                        <button class="help-button" data-section="tags-help-text">
+                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                        </button>
                                     </div>
                                     <div class="tags">
                                         <var id="tags-result-container" class="result-container"></var>

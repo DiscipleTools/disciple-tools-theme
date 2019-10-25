@@ -139,6 +139,17 @@
         <p><?php esc_html_e( "Here you can make connections with this contact with group/s  or other people in this system.", 'disciple_tools' ) ?></p>
     </div>
 
+    <!--  Other tile  -->
+    <div class="help-section" id="other-tile-help-text" style="display: none">
+        <h3 class="lead"><?php esc_html_e( "Other", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "In this tile, you can assign tags to help connect this contact with other contacts.", 'disciple_tools' ) ?></p>
+    </div>
+
+    <!--  Tags  -->
+    <div class="help-section" id="tags-help-text" style="display: none">
+        <h3 class="lead"><?php esc_html_e( "Tags", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "Here you can assign tags to help connect this contact with other contacts.", 'disciple_tools' ) ?></p>
+    </div>
 
     <!--  Four Fields  -->
     <div class="help-section" id="four-fields-help-text" style="display: none">
