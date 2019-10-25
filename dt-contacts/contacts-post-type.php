@@ -193,38 +193,38 @@ class Disciple_Tools_Contact_Post_Type
             'default'     => [
                 'new'   => [
                     "label" => _x( 'New Contact', 'Contact Status', 'disciple_tools' ),
-                    "color" => "#F43636",
                     "description" => _x( "The contact is new in the system", "Contact Status", 'disciple_tools' )
+                    "color" => "#F43636",
                 ],
                 'unassignable' => [
-                    "color" => "#FF9800",
                     "label" => _x( 'Not Ready', 'Contact Status', 'disciple_tools' ),
                     "description" => _x( "There is not enough information to move forward with the contact at this time.", "Contact Status", 'disciple_tools' )
+                    "color" => "#FF9800",
                 ],
                 'unassigned'   => [
                     "label" => _x( 'Dispatch Needed', 'Contact Status', 'disciple_tools' ),
-                    "color" => "#F43636",
                     "description" => _x( "This contact needs to be assigned to a multiplier.", "Contact Status", 'disciple_tools' )
+                    "color" => "#F43636",
                 ],
                 'assigned'     => [
-                    "color" => "#FF9800",
                     "label" => _x( "Waiting to be accepted", 'Contact Status', 'disciple_tools' ),
                     "description" => _x( "The contact has been assigned to someone, but has not yet been accepted by that person.", "Contact Status", 'disciple_tools' )
+                    "color" => "#FF9800",
                 ],
                 'active'       => [
-                    "color" => "#4CAF50",
                     "label" => _x( 'Active', 'Contact Status', 'disciple_tools' ),
                     "description" => _x( "The contact is progressing and/or continually being updated.", "Contact Status", 'disciple_tools' )
+                    "color" => "#4CAF50",
                 ],
                 'paused'       => [
-                    "color" => "#FF9800",
                     "label" => _x( 'Paused', 'Contact Status', 'disciple_tools' ),
                     "description" => _x( "This contact is currently on hold (i.e. on vacation or not responding).", "Contact Status", 'disciple_tools' )
+                    "color" => "#FF9800",
                 ],
                 'closed'       => [
-                    "color" => "#F43636",
                     "label" => _x( 'Closed', 'Contact Status', 'disciple_tools' ),
                     "description" => _x( "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.", "Contact Status", 'disciple_tools' )
+                    "color" => "#F43636",
                 ],
             ],
             'section'     => 'status',
@@ -292,7 +292,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['baptism_date'] = [
             'name'        => __( 'Baptism Date', 'disciple_tools' ),
-            'description' => '',
+            'description' => 'The date the contact was baptised',
             'type'        => 'date',
             'default'     => '',
             'section'     => 'misc',
@@ -300,7 +300,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['baptism_generation'] = [
             'name'        => __( 'Baptism Generation', 'disciple_tools' ),
-            'description' => '',
+            'description' => 'The generation of baptism',
             'type'        => 'text',
             'default'     => '',
             'section'     => 'misc',
@@ -310,7 +310,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['gender'] = [
             'name'        => __( 'Gender', 'disciple_tools' ),
-            'description' => '',
+            'description' => 'Male or Female',
             'type'        => 'key_select',
             'default'     => [
                 'not-set' => [ "label" => '' ],
@@ -321,7 +321,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['age'] = [
             'name'        => __( 'Age', 'disciple_tools' ),
-            'description' => '',
+            'description' => 'Age of contact',
             'type'        => 'key_select',
             'default'     => [
                 'not-set' => [ "label" => '' ],
@@ -335,7 +335,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields["reason_unassignable"] = [
             'name'        => __( 'Reason Not Ready', "disciple_tools" ),
-            'description' => '',
+            'description' => 'The main reason the contact is not ready to be assigned to a user.',
             'type'        => 'key_select',
             'default'     => [
                 'none'         => [ "label" => '', ],
@@ -352,7 +352,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['reason_paused'] = [
             'name'        => __( 'Reason Paused' ),
-            'description' => '',
+            'description' => 'The current main reason the contact is has been paused.',
             'type'        => 'key_select',
             'default' => [
                 'none'                 => [ "label" => '' ],
@@ -371,7 +371,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['reason_closed'] = [
             'name'        => __( 'Reason Closed', 'disciple_tools' ),
-            'description' => '',
+            'description' => 'The reason this contact has been closed',
             'type'        => 'key_select',
             'default'     => [
                 'none'                 => [ "label" => '' ],
@@ -395,7 +395,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['accepted'] = [
             'name'        => __( 'Accepted', 'disciple_tools' ),
-            'description' => '',
+            'description' => 'The assignment has been accepted',
             'type'        => 'boolean',
             'default'     => false,
             'section'     => 'status',
@@ -412,7 +412,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['sources'] = [
             'name'        => __( 'Sources', 'disciple_tools' ),
-            'description' => '',
+            'description' => 'List of possible sources for this contact',
             'type'        => 'multi_select',
             'default'     => $sources_default,
             'section'     => 'misc',
@@ -421,7 +421,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields["source_details"] = [
             "name" => __( "Source Details", 'disciple_tools' ),
-            'description' => '',
+            'description' => 'Type of source of this contact?',
             'type' => 'text',
             'default' => '',
             'section'     => 'misc',
@@ -430,7 +430,7 @@ class Disciple_Tools_Contact_Post_Type
         // contact buttons
         $fields['quick_button_no_answer'] = [
             'name'        => __( 'No Answer', 'disciple_tools' ),
-            'description' => '',
+            'description' => 'Call was attempted by not answered',
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
@@ -438,7 +438,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['quick_button_contact_established'] = [
             'name'        => __( 'Contact Established', 'disciple_tools' ),
-            'description' => '',
+            'description' => 'Contact was successfully established',
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
@@ -446,7 +446,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['quick_button_meeting_scheduled'] = [
             'name'        => __( 'Meeting Scheduled', 'disciple_tools' ),
-            'description' => '',
+            'description' => 'A meeting has been scheduled',
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
@@ -454,7 +454,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['quick_button_meeting_complete'] = [
             'name'        => __( 'Meeting Complete', 'disciple_tools' ),
-            'description' => '',
+            'description' => 'A meeting was completed',
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
@@ -462,7 +462,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['quick_button_no_show'] = [
             'name'        => __( 'Meeting No-show', 'disciple_tools' ),
-            'description' => '',
+            'description' => 'Did not attend a scheduled meeting',
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
@@ -478,7 +478,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["type"] = [
             'name'        => __( 'Contact type', 'disciple_tools' ),
-            'description' => '',
+            'description' => 'Type of contact',
             'type'        => 'key_select',
             'default'     => [
                 'media'    => [ "label" => __( 'Media', 'disciple_tools' ) ],
@@ -505,7 +505,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['tags'] = [
             'name'        => __( 'Tags', 'disciple_tools' ),
-            'description' => '',
+            'description' => 'A useful way to group related items',
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
@@ -831,11 +831,15 @@ class Disciple_Tools_Contact_Post_Type
                 "types" => [
                     "instagram" => [ "label" => __( 'Instagram', 'disciple_tools' ) ],
                 ],
+                "icon" => get_template_directory_uri() . "/dt-assets/images/instagram.svg",
+                "hide_domain" => true
             ],
             "skype"     => [
                 "label" => __( 'Skype', 'disciple_tools' ),
                 "types" => [
                     "skype" => [ "label" => __( 'Skype', 'disciple_tools' ) ],
+                "icon" => get_template_directory_uri() . "/dt-assets/images/skype.svg",
+                "hide_domain" => true
                 ],
             ],
             "other"     => [
