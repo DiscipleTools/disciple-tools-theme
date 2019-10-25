@@ -16,6 +16,14 @@
                     $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true, true );
                     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                     ?>
+
+                    <!-- work out how to display/align this better  -->
+
+                    <button class="help-button" data-section="quick-action-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
+
+
                 <ul class="dropdown menu" data-dropdown-menu $dropdownmenu-arrow-color="white">
                     <li style="border-radius: 5px">
                         <a class="button menu-white-dropdown-arrow"
@@ -44,6 +52,9 @@
                     </li>
                 </ul>
                 <?php endif; ?>
+
+
+
             </div>
             <div class="shrink cell" id="add-comment-button-container">
                 <button id="add-comment-button" class="button loader">

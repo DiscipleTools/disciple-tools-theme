@@ -45,8 +45,8 @@
     <!--    Quick Actions   -->
     <div class="help-section" id="quick-action-help-text" style="display: none">
         <h3 class="lead"><?php esc_html_e( "Quick action buttons", 'disciple_tools' ) ?></h3>
-        <?php esc_html_e( '<p>These quick action buttons are here to aid you in updating the contact record.
-        They track how many times each one has been used.</p>', 'disciple_tools' ) ?>
+        <p><?php esc_html_e( 'These quick action buttons are here to aid you in updating the contact record.
+        They track how many times each one has been used.', 'disciple_tools' ) ?></p>
         <p><?php esc_html_e( 'They also update the "Seeker Path" below. For example,
             If you click the "No Answer" button 4 times, a number will be added to "No Answer" meaning that you have
             attempted to call the contact 4 times, but they did not answer.
