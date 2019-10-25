@@ -838,8 +838,6 @@ class Disciple_Tools_Contact_Post_Type
                 "label" => __( 'Skype', 'disciple_tools' ),
                 "types" => [
                     "skype" => [ "label" => __( 'Skype', 'disciple_tools' ) ],
-                "icon" => get_template_directory_uri() . "/dt-assets/images/skype.svg",
-                "hide_domain" => true
                 ],
                 "icon" => get_template_directory_uri() . "/dt-assets/images/skype.svg",
             ],
