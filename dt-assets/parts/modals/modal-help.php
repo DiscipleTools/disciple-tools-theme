@@ -51,7 +51,7 @@
 
     <!--  Group type  -->
     <div class="help-section" id="group-type-help-text" style="display: none">
-        <h3 class="lead"><?php esc_html_e( "Group type", 'disciple_tools' ) ?></h3>
+        <h3 class="lead">Group type</h3>
         <p>Here you can select whether the group is a pre-group, group or church.</p>
         <p>We define a pre-group as having x people. We define a group as having x people.</p>
         <p>We define a church as having 3 or more believers.</p>
@@ -71,25 +71,11 @@
         </ul>
     </div>
 
-    <!--  Group Parents, Peers and Children  -->
+    <!--  Group Parents and Children  -->
     <div class="help-section" id="group-connections-help-text" style="display: none">
-        <h3 class="lead">Group Connections. Parent, Peer and Child Groups</h3>
-        <p>Here you can select whether the group is a pre-group, group, church or team.</p>
-        <h4>Group Type:</h4>
-         <ul>
-            <li>Pre-group - a predominantly a non-believers group </li>
-            <li>Group - having 3 or more believers but not identifying as church</li>
-             <li>Church - having 3 or more believers and identifying as church  </li>
-             <li>Team - a special group that is not meeting for or trying to become church).</li>
-        </ul>
-
-<h4>Group Connections. Parent, Peer and Child Groups</h4>
-
-        <ul>
-            <li>Parent Group: The group that founded this group.</li>
-        <li>Peer Group: Related groups that aren’t parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc.</li>
-        <li>Child Groups: A group that has been birthed out of this group.</li>
-        </ul>
+        <h3 class="lead">Group Connections. Parent and Child Groups</h3>
+        <p>If this group has multiplied from another group, you can add that group here (Parent Group).</p>
+        <p>If this group has multiplied into another group, you can add that here (Child Groups).</p>
     </div>
 
     <!--    -->
