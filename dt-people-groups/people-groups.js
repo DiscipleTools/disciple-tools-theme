@@ -71,14 +71,11 @@ function add_single_people_group( rop3, country ) {
                 button.text('duplicate')
             }
 
-
-            message.html(data.message)
             console.log(data)
         })
         .fail(function (err) {
             console.log("error");
             console.log(err);
-            message.html(data.message)
         })
 }
 
@@ -181,13 +178,11 @@ function link_or_update( rop3, country, post_id ) {
                 button.text('installed')
             }
 
-            message.html(data.message)
             console.log(data)
         })
         .fail(function (err) {
             console.log("error");
             console.log(err);
-            message.html(data.message)
         })
 }
 
@@ -215,12 +210,10 @@ function link_or_update_by_rop3( rop3, country, post_id ) {
                 button.text('installed')
             }
 
-            message.html(data.message)
             console.log(data)
         })
         .fail(function (err) {
             console.log("error");
             console.log(err);
-            message.html(data.message)
         })
 }

@@ -107,12 +107,10 @@ class Disciple_Tools_Contact_Post_Type
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'contacts_rewrites_init' ] );
         add_filter( 'post_type_link', [ $this, 'contacts_permalink' ], 1, 3 );
+        add_filter( 'dt_get_post_type_settings', [ $this, 'get_post_type_settings_hook' ], 10, 2 );
 
         if ( is_admin() ) {
-            add_action( 'admin_menu', [ $this, 'disable_new_contacts_in_admin_area' ] );
-            add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
-            add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
         }
     } // End __construct()
 
@@ -126,28 +124,8 @@ class Disciple_Tools_Contact_Post_Type
         $labels = [
             'name'                  => $this->plural,
             'singular_name'         => $this->singular,
-            'add_new'               => _x( 'Add New', 'Contacts', 'disciple_tools' ),
-            'add_new_item'          => sprintf( __( 'Add New %s', 'disciple_tools' ), $this->singular ),
-            'edit_item'             => sprintf( __( 'Edit %s', 'disciple_tools' ), $this->singular ),
-            'update_item'           => sprintf( __( 'Update %s', 'disciple_tools' ), $this->singular ),
-            'new_item'              => sprintf( __( 'New %s', 'disciple_tools' ), $this->singular ),
-            'all_items'             => sprintf( __( 'All %s', 'disciple_tools' ), $this->plural ),
-            'view_item'             => sprintf( __( 'View %s', 'disciple_tools' ), $this->singular ),
-            'view_items'            => sprintf( __( 'View %s', 'disciple_tools' ), $this->plural ),
-            'search_items'          => sprintf( __( 'Search %a', 'disciple_tools' ), $this->plural ),
-            'not_found'             => sprintf( __( 'No %s Found', 'disciple_tools' ), $this->plural ),
-            'not_found_in_trash'    => sprintf( __( 'No %s Found In Trash', 'disciple_tools' ), $this->plural ),
-            'parent_item_colon'     => '',
             'menu_name'             => $this->plural,
-            'featured_image'        => sprintf( __( 'Featured Image', 'disciple_tools' ), $this->plural ),
-            'set_featured_image'    => sprintf( __( 'Set featured image', 'disciple_tools' ), $this->plural ),
-            'remove_featured_image' => sprintf( __( 'Remove featured image', 'disciple_tools' ), $this->plural ),
-            'use_featured_image'    => sprintf( __( 'Use as featured image', 'disciple_tools' ), $this->plural ),
-            'insert_into_item'      => sprintf( __( 'Placed into %s', 'disciple_tools' ), $this->plural ),
-            'uploaded_to_this_item' => sprintf( __( 'Uploaded to this %s', 'disciple_tools' ), $this->plural ),
-            'items_list'            => sprintf( __( '%s list', 'disciple_tools' ), $this->plural ),
-            'items_list_navigation' => sprintf( __( '%s list navigation', 'disciple_tools' ), $this->plural ),
-            'filter_items_list'     => sprintf( __( 'Filter %s list', 'disciple_tools' ), $this->plural ),
+            'search_items'          => sprintf( __( 'Search %s', 'disciple_tools' ), $this->plural ),
         ];
         $rewrite = [
             'slug'       => 'contacts',
@@ -156,6 +134,7 @@ class Disciple_Tools_Contact_Post_Type
             'feeds'      => false,
         ];
         $capabilities = [
+            'create_posts'        => 'do_not_allow',
             'edit_post'           => 'access_contacts',
             'read_post'           => 'access_contacts',
             'delete_post'         => 'delete_any_contacts',
@@ -186,11 +165,8 @@ class Disciple_Tools_Contact_Post_Type
             'show_in_admin_bar'     => true,
             'show_in_nav_menus'     => true,
             'can_export'            => true,
-            'exclude_from_search'   => false,
-            'show_in_rest'          => true,
-//            'register_meta_box_cb'  => [ $this, 'meta_box_setup' ],
-            'rest_base'             => 'contacts',
-            'rest_controller_class' => 'WP_REST_Posts_Controller',
+            'exclude_from_search'   => true,
+            'show_in_rest'          => false
         ];
 
         $args = wp_parse_args( $this->args, $defaults );
@@ -198,399 +174,57 @@ class Disciple_Tools_Contact_Post_Type
         register_post_type( $this->post_type, $args );
     } // End register_post_type()
 
-    /**
-     * Update messages for the post type admin.
-     *
-     * @since  0.1.0
-     *
-     * @param  array $messages Array of messages for all post types.
-     *
-     * @return array           Modified array.
-     */
-    public function updated_messages( $messages ) {
-        global $post;
-
-        $link = '<a target="_blank" href="' . esc_url( get_permalink( $post->ID ) ) .'">' .  __( 'View', 'disciple_tools' ) . '</a>';
-
-        $messages[ $this->post_type ] = [
-            0  => '', // Unused. Messages start at index 1.
-            1  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ) . ' ' . $link,
-            2  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
-            3  => sprintf( __( '%s deleted.', 'disciple_tools' ), $this->singular ),
-            4  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
-            /* translators: %s: date and time of the revision */
-            5  => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-            6  => sprintf( __( '%s published.', 'disciple_tools' ), $this->singular ) . ' ' . $link,
-            7  => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
-            8  => sprintf( __( '%s submitted.', 'disciple_tools' ), $this->singular ) . ' ' . $link,
-            9  => sprintf(
-                __( '%1$s scheduled for: %2$s.', 'disciple_tools' ),
-                $this->singular,
-                '<strong>' . date_i18n( _x( 'M j, Y @ G:i', 'Publish box date format, see http://php.net/date', 'disciple_tools' ), strtotime( $post->post_date ) ) . '</strong>'
-            ) . ' ' . $link,
-            10  => sprintf( __( '%s draft updated.', 'disciple_tools' ), $this->singular ) . ' ' . $link,
-        ];
-
-        return $messages;
-    } // End updated_messages()
-
-    /**
-     * Setup the meta box.
-     *
-     * @access public
-     * @since  0.1.0
-     * @return void
-     */
-    public function meta_box_setup() {
-        add_meta_box( $this->post_type . '_status', __( 'Status', 'disciple_tools' ), [ $this, 'load_status_info_meta_box' ], $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_path', __( 'Milestones', 'disciple_tools' ), [ $this, 'load_milestone_meta_box' ], $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_misc', __( 'Misc', 'disciple_tools' ), [ $this, 'load_misc_meta_box' ], $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_sharing', __( 'Sharing', 'disciple_tools' ), [ $this, 'load_shared_meta_box' ], $this->post_type, 'side', 'low' );
-        add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'side', 'low' );
-        do_action( "dt_contact_meta_boxes_setup", $this->post_type );
-    } // End meta_box_setup()
-
-    /**
-     * The contents of meta box.
-     *
-     * @param string $section
-     */
-    public function meta_box_content( $section = 'info' ) {
-        global $post_id;
-        $fields = get_post_custom( $post_id );
-        $field_data = $this->get_custom_fields_settings();
-
-        echo '<input type="hidden" name="dt_' . esc_attr( $this->post_type ) . '_noonce" id="dt_' . esc_attr( $this->post_type ) . '_noonce" value="' . esc_attr( wp_create_nonce( 'update_dt_contacts' ) ) . '" />';
-
-        if ( 0 < count( $field_data ) ) {
-            echo '<table class="form-table">' . "\n";
-            echo '<tbody>' . "\n";
-
-            foreach ( $field_data as $k => $v ) {
-
-                if ( ( isset( $v['section'] ) && $v['section'] == $section ) || $section == 'all' ) {
-
-                    $data = $v['default'];
-
-                    if ( isset( $fields[ $k ] ) && isset( $fields[ $k ][0] ) ) {
-                        $data = $fields[ $k ][0];
-                    }
-
-                    $type = $v['type'];
-
-                    switch ( $type ) {
-
-                        case 'text':
-                            echo '<tr valign="top" id="' . esc_attr( $k ) . '"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label></th>
-                                <td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-                            echo '<p class="description">' . esc_attr( $v['description'] ) . '</p>' . "\n";
-                            echo '</td><tr/>' . "\n";
-                            break;
-                        case 'textarea':
-                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label></th>
-                                <td><textarea name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text"  >' . esc_attr( $data ) . '</textarea>' . "\n";
-                            echo '<p class="description">' . esc_attr( $v['description'] ) . '</p>' . "\n";
-                            echo '</td><tr/>' . "\n";
-                            break;
-                        case 'date':
-                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label></th><td><input name="' . esc_attr( $k ) . '" class="datepicker regular-text" type="text" id="' . esc_attr( $k ) . '"  value="' . esc_attr( $data ) . '" />' . "\n";
-                            echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
-                            echo '</td><tr/>' . "\n";
-
-                            break;
-                        case 'select':
-                            echo '<tr valign="top"><th scope="row">
-                                <label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label></th>
-                                <td>
-                                <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
-                            // Iterate the options
-                            foreach ( $v['default'] as $vv ) {
-                                echo '<option value="' . esc_attr( $vv ) . '" ';
-                                if ( $vv == $data ) {
-                                    echo 'selected';
-                                }
-                                echo '>' . esc_attr( $vv ) . '</option>';
-                            }
-                            echo '</select>' . "\n";
-                            echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
-                            echo '</td><tr/>' . "\n";
-                            break;
-                        case 'key_select':
-                            echo '<tr valign="top"><th scope="row">
-                                <label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label></th>
-                                <td>
-                                <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
-                            // Iterate the options
-                            foreach ( $v['default'] as $kk => $vv ) {
-                                echo '<option value="' . esc_attr( $kk ) . '" ';
-                                if ( $kk == $data ) {
-                                    echo 'selected';
-                                }
-                                echo '>' . esc_attr( $vv ) . '</option>';
-                            }
-                            echo '</select>' . "\n";
-                            echo '<p class="description">' . esc_attr( $v['description'] ) . '</p>' . "\n";
-                            echo '</td><tr/>' . "\n";
-                            break;
-                        case 'radio':
-                            echo '<tr valign="top"><th scope="row">' . esc_attr( $v['name'] ) . '</th>
-                                <td><fieldset>';
-                            // Iterate the buttons
-                            $increment_the_radio_button = 1;
-                            foreach ( $v['default'] as $vv ) {
-                                echo '<label for="' . esc_attr( "$k-$increment_the_radio_button" ) . '">' . esc_attr( $vv ) . '</label>
-                                    <input class="dt-radio" type="radio" name="' . esc_attr( $k ) . '" id="' . esc_attr( $k . '-' . $increment_the_radio_button ) . '" value="' . esc_attr( $vv ) . '" ';
-                                if ( $vv == $data ) {
-                                    echo 'checked';
-                                }
-                                echo '>';
-                                $increment_the_radio_button++;
-                            }
-                            echo '</fieldset>' . "\n";
-                            echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
-                            echo '</td><tr/>' . "\n";
-                            break;
-                        case 'checkbox':
-                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . esc_attr( $v['name'] ) . '</label></th><td>
-
-                                <input name="' . esc_attr( $k ) . '" type="checkbox" id="' . esc_attr( $k ) . '" value="';
-
-                            if ( $data ) {
-                                echo esc_attr( $data ) . '" checked="checked"/>';
-                            } else {
-                                echo '"/>';
-                            }
-
-                            echo '<p class="description">' . esc_html( $v['description'] ) . '(' . esc_html( $v ) . ')</p>' . "\n";
-                            echo '</td><tr/>' . "\n";
-                            break;
-                        case 'user_select':
-                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . esc_attr( $v['name'] ) . '</label></th><td>';
-                            echo wp_kses(
-                                $k === "assigned_to" ? $this->assigned_to_field() : $v['default'],
-                                [
-                                    'a'      => [
-                                        'id'    => [],
-                                        'name'  => [],
-                                        'href'  => [],
-                                        'class' => [],
-                                    ],
-                                    'select' => [
-                                        'id'    => [],
-                                        'name'  => [],
-                                        'class' => [],
-                                    ],
-                                    'option' => [
-                                        'id'    => [],
-                                        'name'  => [],
-                                        'class' => [],
-                                        'value' => [],
-                                    ],
-                                    'input'  => [
-                                        'id'    => [],
-                                        'name'  => [],
-                                        'class' => [],
-                                        'value' => [],
-                                    ],
-                                    'br'     => [],
-                                    'strong' => [],
-                                    'em'     => [],
-                                ]
-                            );
-                            echo '</td><tr/>' . "\n";
-                            break;
-                        case 'number':
-                            echo '<input name="' . esc_attr( $k ) . '" type="hidden" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />';
-                            break;
-
-                        default:
-                            error_log( "Unrecognised meta box type $type" );
-                            break;
-                    }
-                }
-            }
-
-            echo '</tbody>' . "\n";
-            echo '</table>' . "\n";
-        }
-    } // End meta_box_content()
-
-    /**
-     * Save meta box fields.
-     *
-     * @access public
-     * @since  0.1.0
-     *
-     * @param  int $post_id
-     *
-     * @return int $post_id
-     */
-    public function meta_box_save( $post_id ) {
-        // global $post, $messages;
-
-        // Verify
-        if ( get_post_type() != $this->post_type ) {
-            return $post_id;
-        }
-        $nonce_key = "dt_" . $this->post_type . "_nonce";
-        if ( isset( $_POST[ $nonce_key ] ) && !wp_verify_nonce( sanitize_key( $_POST[ $nonce_key ] ), 'update_dt_contacts' ) ) {
-            return $post_id;
-        }
-
-        if ( isset( $_POST['post_type'] ) && 'page' == esc_attr( sanitize_text_field( wp_unslash( $_POST['post_type'] ) ) ) ) {
-            if ( !current_user_can( 'edit_page', $post_id ) ) {
-                return $post_id;
-            }
-        } else {
-            if ( !current_user_can( 'edit_post', $post_id ) ) {
-                return $post_id;
-            }
-        }
-
-        if ( isset( $_GET['action'] ) ) {
-            if ( $_GET['action'] == 'trash' || $_GET['action'] == 'untrash' || $_GET['action'] == 'delete' ) {
-                return $post_id;
-            }
-        }
-
-        $field_data = $this->get_custom_fields_settings();
-        $fields = array_keys( $field_data );
-
-        if ( ( isset( $_POST['new-key-address'] ) && !empty( $_POST['new-key-address'] ) ) && ( isset( $_POST['new-value-address'] ) && !empty( $_POST['new-value-address'] ) ) ) { // catch and prepare new contact fields
-            $k = explode( "_", sanitize_text_field( wp_unslash( $_POST['new-key-address'] ) ) );
-            $type = $k[1];
-            $number_key = dt_address_metabox()->create_channel_metakey( "address" );
-            $details_key = $number_key . "_details";
-            $details = [
-            'type' => $type,
-            'verified' => false
-            ];
-            //save the field and the field details
-            add_post_meta( $post_id, strtolower( $number_key ), sanitize_text_field( wp_unslash( $_POST['new-value-address'] ) ), true );
-            add_post_meta( $post_id, strtolower( $details_key ), $details, true );
-        }
-
-        if ( ( isset( $_POST['new-key-contact'] ) && !empty( $_POST['new-key-contact'] ) ) && ( isset( $_POST['new-value-contact'] ) && !empty( $_POST['new-value-contact'] ) ) ) { // catch and prepare new contact fields
-            $k = explode( "_", sanitize_text_field( wp_unslash( $_POST['new-key-contact'] ) ) );
-            $channel = $k[0];
-            $type = $k[1];
-            $number_key = $this->create_channel_metakey( $channel, "contact" );
-            $details_key = $number_key . "_details";
-            $details = [
-            'type' => $type,
-            'verified' => false
-            ];
-            //save the field and the field details
-            add_post_meta( $post_id, strtolower( $number_key ), sanitize_text_field( wp_unslash( $_POST['new-value-contact'] ) ), true );
-            add_post_meta( $post_id, strtolower( $details_key ), $details, true );
-        }
-
-        foreach ( $fields as $f ) {
-
-            if ( isset( $_POST[ $f ] ) ) {
-                ${$f} = strip_tags( trim( sanitize_text_field( wp_unslash( $_POST[ $f ] ) ) ) );
-
-                if ( get_post_meta( $post_id, $f ) == '' ) {
-                    add_post_meta( $post_id, $f, ${$f}, true );
-                } elseif ( ${$f} == '' ) {
-                    delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
-                } elseif ( ${$f} != get_post_meta( $post_id, $f, true ) ) {
-                    update_post_meta( $post_id, $f, ${$f} );
-                }
-            }
-        }
-
-        return $post_id;
-    } // End meta_box_save()
-
-    /**
-     * Load activity metabox
-     */
-    public function load_activity_meta_box() {
-        dt_activity_metabox()->activity_meta_box( get_the_ID() );
-    }
-
-    /**
-     * Load activity metabox
-     */
-    public function load_shared_meta_box() {
-        dt_share_contact_metabox()->content_display( get_the_ID() );
-    }
-
-    /**
-     * Meta box for Status Information
-     *
-     * @access public
-     * @since  0.1.0
-     */
-    public function load_milestone_meta_box() {
-        $this->meta_box_content( 'milestone' ); // prints
-    }
-
-    /**
-     * Meta box for Status Information
-     *
-     * @access public
-     * @since  0.1.0
-     */
-    public function load_status_info_meta_box() {
-        $this->meta_box_content( 'status' ); // prints
-    }
-
-    /**
-     * Meta box for Status Information
-     *
-     * @access public
-     * @since  0.1.0
-     */
-    public function load_misc_meta_box() {
-        $this->meta_box_content( 'misc' ); // prints
-    }
-
 
     public function get_contact_field_defaults( $post_id = null, $include_current_post = null ){
         $fields = [];
 
         $fields['assigned_to'] = [
             'name'        => __( 'Assigned To', 'disciple_tools' ),
-            'description' => '',
+            'description' => __( 'Select the main person who is responsible for reporting on this contact', 'disciple_tools' ),
             'type'        => 'user_select',
             'default'     => '',
             'section'     => 'status',
         ];
         // Status Section
         $fields['overall_status'] = [
-            'name'        => __( 'Overall Status', 'disciple_tools' ),
-            'description' => '',
+            'name'        => __( 'Contact Status', 'disciple_tools' ),
+            'description' => __( 'This is where you set the current status of the contact.', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'new'   => [
                     "label" => _x( 'New Contact', 'Contact Status', 'disciple_tools' ),
-                    "color" => "#F43636"
+                    "color" => "#F43636",
+                    "description" => _x( "The contact is new in the system", "Contact Status", 'disciple_tools' )
                 ],
                 'unassignable' => [
                     "color" => "#FF9800",
-                    "label" => _x( 'Not Ready', 'Contact Status', 'disciple_tools' )
+                    "label" => _x( 'Not Ready', 'Contact Status', 'disciple_tools' ),
+                    "description" => _x( "There is not enough information to move forward with the contact at this time.", "Contact Status", 'disciple_tools' )
                 ],
                 'unassigned'   => [
                     "label" => _x( 'Dispatch Needed', 'Contact Status', 'disciple_tools' ),
-                    "color" => "#F43636"
+                    "color" => "#F43636",
+                    "description" => _x( "This contact needs to be assigned to a multiplier.", "Contact Status", 'disciple_tools' )
                 ],
                 'assigned'     => [
                     "color" => "#FF9800",
-                    "label" => _X( "Waiting to be accepted", 'Contact Status', 'disciple_tools' )
+                    "label" => _x( "Waiting to be accepted", 'Contact Status', 'disciple_tools' ),
+                    "description" => _x( "The contact has been assigned to someone, but has not yet been accepted by that person.", "Contact Status", 'disciple_tools' )
                 ],
                 'active'       => [
                     "color" => "#4CAF50",
-                    "label" => _X( 'Active', 'Contact Status', 'disciple_tools' )
+                    "label" => _x( 'Active', 'Contact Status', 'disciple_tools' ),
+                    "description" => _x( "The contact is progressing and/or continually being updated.", "Contact Status", 'disciple_tools' )
                 ],
                 'paused'       => [
                     "color" => "#FF9800",
-                    "label" => _x( 'Paused', 'Contact Status', 'disciple_tools' )
+                    "label" => _x( 'Paused', 'Contact Status', 'disciple_tools' ),
+                    "description" => _x( "This contact is currently on hold (i.e. on vacation or not responding).", "Contact Status", 'disciple_tools' )
                 ],
                 'closed'       => [
                     "color" => "#F43636",
-                    "label" => _x( 'Closed', 'Contact Status', 'disciple_tools' )
+                    "label" => _x( 'Closed', 'Contact Status', 'disciple_tools' ),
+                    "description" => _x( "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.", "Contact Status", 'disciple_tools' )
                 ],
             ],
             'section'     => 'status',
@@ -700,7 +334,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
 
         $fields["reason_unassignable"] = [
-            'name'        => __( 'Reason Not Ready' ),
+            'name'        => __( 'Reason Not Ready', "disciple_tools" ),
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
@@ -722,14 +356,14 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'key_select',
             'default' => [
                 'none'                 => [ "label" => '' ],
-                'vacation'             => [ "label" => __( 'On Vacation', 'disciple_tools' ) ],
-                'not_responding'       => [ "label" => __( 'Not Responding', 'disciple_tools' ) ],
-                'not_available'        => [ "label" => __( 'Not available', 'disciple_tools' ) ],
-                'little_interest'      => [ "label" => __( 'Little interest/hunger', 'disciple_tools' ) ],
-                'no_initiative'        => [ "label" => __( 'No initiative', 'disciple_tools' ) ],
-                'questionable_motives' => [ "label" => __( 'Questionable motives', 'disciple_tools' ) ],
-                'ball_in_their_court'  => [ "label" => __( 'Ball is in his/her court', 'disciple_tools' ) ],
-                'wait_and_see'         => [ "label" => __( 'Want to see if/how they respond to automated text messages', 'disciple_tools' ) ],
+                'vacation'             => [ "label" => __( 'Contact on vacation', 'disciple_tools' ) ],
+                'not_responding'       => [ "label" => __( 'Contact not responding', 'disciple_tools' ) ],
+                'not_available'        => [ "label" => __( 'Contact not available', 'disciple_tools' ) ],
+                'little_interest'      => [ "label" => __( 'Contact has little interest/hunger', 'disciple_tools' ) ],
+                'no_initiative'        => [ "label" => __( 'Contact shows no initiative', 'disciple_tools' ) ],
+                'questionable_motives' => [ "label" => __( 'Contact has questionable motives', 'disciple_tools' ) ],
+                'ball_in_their_court'  => [ "label" => __( 'Ball is in the contact\'s court', 'disciple_tools' ) ],
+                'wait_and_see'         => [ "label" => __( 'We want to see if/how the contact responds to automated text messages', 'disciple_tools' ) ],
             ],
             'section'     => 'misc',
             'customizable' => 'all'
@@ -742,16 +376,18 @@ class Disciple_Tools_Contact_Post_Type
             'default'     => [
                 'none'                 => [ "label" => '' ],
                 'duplicate'            => [ "label" => __( 'Duplicate', 'disciple_tools' ) ],
+                'insufficient'         => [ "label" => __( 'Insufficient contact info', 'disciple_tools' ) ],
+                'denies_submission'    => [ "label" => __( 'Denies submitting contact request', 'disciple_tools' ) ],
                 'hostile_self_gain'    => [ "label" => __( 'Hostile, playing game or self gain', 'disciple_tools' ) ],
                 'games'                => [ "label" => __( 'Playing games', 'disciple_tools' ) ],
                 'apologetics'          => [ "label" => __( 'Only wants to argue or debate', 'disciple_tools' ) ],
-                'insufficient'         => [ "label" => __( 'Insufficient contact info', 'disciple_tools' ) ],
-                'already_connected'    => [ "label" => __( 'Already in church or connected with others', 'disciple_tools' ) ],
+                'media_only'           => [ "label" => __( 'Just wanted media or book', 'disciple_tools' ) ],
                 'no_longer_interested' => [ "label" => __( 'No longer interested', 'disciple_tools' ) ],
                 'no_longer_responding' => [ "label" => __( 'No longer responding', 'disciple_tools' ) ],
-                'media_only'           => [ "label" => __( 'Just wanted media or book', 'disciple_tools' ) ],
-                'denies_submission'    => [ "label" => __( 'Denies submitting contact request', 'disciple_tools' ) ],
+                'already_connected'    => [ "label" => __( 'Already in church or connected with others', 'disciple_tools' ) ],
                 'transfer'             => [ "label" => __( 'Transferred contact to partner', 'disciple_tools' ) ],
+                'martyred'             => [ "label" => __( 'Martyred', 'disciple_tools' ) ],
+                'moved'                => [ "label" => __( 'Moved or relocated', 'disciple_tools' ) ],
                 'unknown'              => [ "label" => __( 'Unknown', 'disciple_tools' ) ]
             ],
             'section'     => 'misc',
@@ -763,10 +399,14 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'boolean',
             'default'     => false,
             'section'     => 'status',
+            'hidden'      => true
         ];
 
         $sources_default = [];
         foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $key => $value ) {
+            if ( isset( $value['enabled'] ) && $value["enabled"] === false ) {
+                $value["deleted"] = true;
+            }
             $sources_default[ $key ] = $value;
         }
 
@@ -776,6 +416,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'multi_select',
             'default'     => $sources_default,
             'section'     => 'misc',
+            'customizable' => 'all'
         ];
 
         $fields["source_details"] = [
@@ -845,7 +486,8 @@ class Disciple_Tools_Contact_Post_Type
                 'user'     => [ "label" => __( 'User', 'disciple_tools' ) ],
                 'partner'  => [ "label" => __( 'Partner', 'disciple_tools' ) ],
             ],
-            'section'     => 'misc'
+            'section'     => 'misc',
+            'hidden'      => true
         ];
         $fields["last_modified"] =[
             'name' => __( 'Last modified', 'disciple_tools' ),
@@ -874,6 +516,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
+            'hidden'      => true
         ];
         $fields["unfollow"] = [
             'name'        => __( 'Un-Follow', 'disciple_tools' ),
@@ -881,6 +524,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
+            'hidden'      => true
         ];
         $fields["tags"] = [
             "name" => __( "Tags", "disciple_tools" ),
@@ -893,6 +537,68 @@ class Disciple_Tools_Contact_Post_Type
             "default" => '',
             "hidden" => true
         ];
+        $fields["relation"] = [
+            "name" => __( "Relation", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "any",
+            "p2p_key" => "contacts_to_relation"
+        ];
+        $fields["coached_by"] = [
+            "name" => __( "Coached by", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "contacts_to_contacts"
+        ];
+        $fields["coaching"] = [
+            "name" => __( "Coached", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "to",
+            "p2p_key" => "contacts_to_contacts"
+        ];
+        $fields["baptized"] = [
+            "name" => __( "Baptized", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "to",
+            "p2p_key" => "baptizer_to_baptized"
+        ];
+        $fields["baptized_by"] = [
+            "name" => __( "Baptized by", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "baptizer_to_baptized"
+        ];
+        $fields["people_groups"] = [
+            "name" => __( "People Groups", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "contacts_to_peoplegroups"
+        ];
+        $fields["groups"] = [
+            "name" => __( "Groups", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "contacts_to_groups"
+        ];
+        $fields["subassigned"] = [
+            "name" => __( "Sub-assigned to", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "to",
+            "p2p_key" => "contacts_to_subassigned"
+        ];
+        $fields['location_grid'] = [
+            'name'        => __( 'Locations', 'disciple_tools' ),
+            'type'        => 'location',
+            'default'     => [],
+        ];
+        $fields['location_lnglat'] = [
+            'name'        => __( 'Coordinates', 'disciple_tools' ),
+            'type'        => 'location',
+            'default'     => [],
+        ];
+        $fields['reminders'] = [
+            'name' => __( 'Reminders', 'disciple_tools' ),
+            'type' => 'post_user_meta',
+        ];
 
         return $fields;
     }
@@ -903,11 +609,17 @@ class Disciple_Tools_Contact_Post_Type
      * @param bool $include_current_post
      * @param int|null $post_id
      * @param bool $with_deleted_options
+     * @param bool $load_from_cache
      *
      * @return mixed
      */
-    public function get_custom_fields_settings( $include_current_post = true, int $post_id = null, $with_deleted_options = false ) {
+    public function get_custom_fields_settings( $include_current_post = true, int $post_id = null, $with_deleted_options = false, $load_from_cache = true ) {
 
+        $cache_with_deleted = $with_deleted_options ? "_with_deleted" : "";
+        $cached = wp_cache_get( "contact_field_settings" . $cache_with_deleted );
+        if ( $load_from_cache && $cached ){
+            return $cached;
+        }
         $fields = $this->get_contact_field_defaults( $post_id, $include_current_post );
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
         foreach ( $fields as $field_key => $field ){
@@ -935,7 +647,7 @@ class Disciple_Tools_Contact_Post_Type
                         }
                         if ( $field_type === "key_select" || $field_type === "multi_select" ) {
                             if ( isset( $field["default"] ) ) {
-                                $fields[ $key ]["default"] = array_merge( $fields[ $key ]["default"], $field["default"] );
+                                $fields[ $key ]["default"] = array_replace_recursive( $fields[ $key ]["default"], $field["default"] );
                             }
                         }
                     }
@@ -958,7 +670,7 @@ class Disciple_Tools_Contact_Post_Type
             foreach ( $fields as $field_key => $field ){
                 if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
                     foreach ( $field["default"] as $option_key => $option_value ){
-                        if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ){
+                        if ( isset( $option_value["deleted"] ) && $option_value["deleted"] == true ){
                             unset( $fields[$field_key]["default"][$option_key] );
                         }
                     }
@@ -966,8 +678,30 @@ class Disciple_Tools_Contact_Post_Type
             }
         }
 
+        $fields = apply_filters( 'dt_custom_fields_settings_after_combine', $fields, "contacts" );
+
+        wp_cache_set( "contact_field_settings" . $cache_with_deleted, $fields );
         return $fields;
     } // End get_custom_fields_settings()
+
+    public function get_post_type_settings_hook( $settings, $post_type ){
+        if ( $post_type === "contacts" ){
+            $fields = $this->get_custom_fields_settings();
+            $settings = [
+                'sources' => $this->get_custom_fields_settings( false, null, true )["sources"]["default"],
+                'fields' => $fields,
+                'address_types' => dt_get_option( "dt_site_custom_lists" )["contact_address_types"],
+                'channels' => $this->get_channels_list(),
+                'connection_types' => array_keys( array_filter( $fields, function ( $a ) {
+                    return $a["type"] === "connection";
+                } ) ),
+                'label_singular' => $this->singular,
+                'label_plural' => $this->plural,
+                'post_type' => 'contacts'
+            ];
+        }
+        return $settings;
+    }
 
     /**
      * Field: Contact Fields
@@ -1021,43 +755,6 @@ class Disciple_Tools_Contact_Post_Type
         return $fields;
     }
 
-    /**
-     * Add Contact fields html for adding a new contact channel
-     *
-     * @usage Added to the bottom of the Contact Details Metabox.
-     */
-    public function add_new_contact_field() {
-
-        echo '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-fields\').toggle();"><strong>+ Contact Detail</strong></a></p>';
-        echo '<table class="form-table" id="new-fields" style="display: none;"><tbody>' . "\n";
-
-        $channels = $this->get_channels_list();
-
-        echo '<tr><th>
-            <select name="new-key-contact" class="edit-input"><option value=""></option> ';
-        foreach ( $channels as $channel_key => $channel ) {
-            foreach ( $channels[ $channel_key ]["types"] as $type_key => $type ) {
-                $key = $channel_key . '_' . $type_key;
-
-                echo '<option value="' . esc_attr( $key ) . '">' . esc_html( $channel["label"] );
-                if ( $channel["label"] != $type["label"] ) {
-                    echo '  (' . esc_html( $type["label"] ) . ')';
-                }
-                echo '</option>';
-            }
-        }
-        echo '</select></th>';
-
-        echo '<td>
-                <input type="text" name="new-value-contact" id="new-value" class="edit-input" />
-            </td>
-            <td>
-                <button type="submit" class="button">Save</button>
-            </td>
-            </tr>';
-
-        echo '</tbody></table>';
-    }
 
     /**
      * Helper function to create the unique metakey for contacts channels.
@@ -1156,66 +853,6 @@ class Disciple_Tools_Contact_Post_Type
         return apply_filters( 'dt_custom_channels', $channel_list );
     }
 
-    /**
-     * Field: The 'Assigned To' dropdown controller
-     */
-    public function assigned_to_field() {
-        global $post;
-
-        //        $exclude_group = '';
-        $exclude_user = '';
-
-        ob_start();
-        // Start drop down
-        echo '<select name="assigned_to" id="assigned_to" class="edit-input">';
-
-        // Set selected state
-        if ( isset( $post->ID ) ) {
-            $assigned_to = get_post_meta( $post->ID, 'assigned_to', true );
-        }
-
-        if ( empty( $assigned_to ) || $assigned_to == 'dispatch' ) {
-            // set default to dispatch
-            //            @todo $assigned_to the dispatcher user
-            echo '<option value="" selected></option>';
-        } elseif ( !empty( $assigned_to ) ) { // If there is already a record
-            $metadata = get_post_meta( $post->ID, 'assigned_to', true );
-            $meta_array = explode( '-', $metadata ); // Separate the type and id
-            $type = $meta_array[0]; // Build variables
-
-            // Build option for current value
-            if ( $type == 'user' && isset( $metadata[1] ) ) {
-                $id = $meta_array[1];
-                $value = get_user_by( 'id', $id );
-                if ( isset( $value->display_name ) ) {
-                    echo '<option value="user-' . esc_attr( $id ) . '" selected>' . esc_html( $value->display_name ) . '</option>';
-                    echo '<option>---</option>';
-                }
-
-                // exclude the current id from the $results list
-                $exclude_user = "'exclude' => $id";
-            }
-        }
-
-        // Collect user list
-        $args = [
-        'role__not_in' => [ 'registered', 'prayer_supporter', 'project_supporter' ],
-        'fields' => [ 'ID', 'display_name' ],
-        'exclude' => $exclude_user,
-        'order' => 'ASC'
-        ];
-        $results = get_users( $args );
-
-        // Loop user list
-        foreach ( $results as $value ) {
-            echo '<option value="user-' . esc_attr( $value->ID ) . '">' . esc_html( $value->display_name ) . '</option>';
-        }
-
-        // End drop down
-        echo '</select>  ';
-
-        return ob_get_clean();
-    }
 
     /**
      * Customise the "Enter title here" text.
@@ -1274,16 +911,5 @@ class Disciple_Tools_Contact_Post_Type
         add_rewrite_rule( 'contacts/([0-9]+)?$', 'index.php?post_type=contacts&p=$matches[1]', 'top' );
     }
 
-    public function disable_new_contacts_in_admin_area() {
-        echo "<style type='text/css' >
-            #menu-posts-contacts ul { display:none; }
-        </style>";
-        // Hide link on listing page
-        if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'contacts') {
-            echo '<style type="text/css">
-            .page-title-action { display:none; }
-        </style>';
-        }
-    }
 
 } // End Class

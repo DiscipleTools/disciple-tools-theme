@@ -3,11 +3,15 @@ require('dotenv').config();
 // GULP PACKAGES
 // Most packages are lazy loaded
 var gulp  = require('gulp'),
-  gutil = require('gulp-util'),
+  log = require('fancy-log');
   browserSync = require('browser-sync').create(),
   plugin = require('gulp-load-plugins')(),
+  touch = require('gulp-touch-cmd'),
   rename = require('gulp-rename'),
-  merge = require('merge-stream');
+  merge = require('merge-stream'),
+  postcss = require('gulp-postcss'),
+  cssnano = require('cssnano');
+
 
 
 // GULP VARIABLES
@@ -80,7 +84,7 @@ gulp.task('scripts', function() {
 
   return gulp.src(SOURCE.scripts)
     .pipe(plugin.plumber(function(error) {
-      gutil.log(gutil.colors.red(error.message));
+      log.error(error.message);
       this.emit('end');
     }))
     .pipe(plugin.sourcemaps.init())
@@ -100,7 +104,7 @@ gulp.task('scripts', function() {
 gulp.task('styles', function() {
   return gulp.src(SOURCE.styles)
     .pipe(plugin.plumber(function(error) {
-      gutil.log(gutil.colors.red(error.message));
+      log.error(error.message);
       this.emit('end');
     }))
     .pipe(plugin.sourcemaps.init())
@@ -110,9 +114,10 @@ gulp.task('styles', function() {
       cascade: false
     }))
     .pipe(rename({suffix: '.min'}))
-    .pipe(plugin.cssnano())
+    .pipe(postcss([cssnano()]))
     .pipe(plugin.sourcemaps.write('.'))
     .pipe(gulp.dest(BUILD_DIRS.styles))
+    .pipe(touch())
     .pipe(browserSync.reload({
       stream: true
     }));

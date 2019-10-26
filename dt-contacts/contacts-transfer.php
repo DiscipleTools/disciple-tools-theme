@@ -92,14 +92,15 @@ class Disciple_Tools_Contacts_Transfer
 
                 <?php if ( $foreign_key_exists ) : ?>
                 <div class="cell" id="transfer-warning">
-                    <h6><?php esc_html_e( 'Already transfered to' ) ?> <?php echo esc_html( $site_title ) ?></h6>
+
+                    <h6><?php echo sprintf( esc_html__( 'Already transfered to %s' ), esc_html( $site_title ) ) ?></h6>
                     <p><?php esc_html_e( 'NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?', 'disciple_tools' ) ?></p>
                     <p><button type="button" onclick="jQuery('#transfer-form').show();jQuery('#transfer-warning').hide();" class="button"><?php esc_html_e( 'Override and Continue', "disciple_tools" ) ?></button></p>
                 </div>
                 <?php endif; ?>
 
                 <div class="cell" id="transfer-form" <?php if ( $foreign_key_exists ) { echo 'style="display:none;"'; }?>>
-                    <h6><?php esc_html_e( 'Transfer this contact to:', "disciple_tools" ) ?></h6>
+                    <h6><a href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/admin.html?highlight=transfer#site-links" target="_blank"> <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/></a> <?php esc_html_e( 'Transfer this contact to:', "disciple_tools" ) ?></h6>
                     <select name="transfer_contact" id="transfer_contact" onchange="jQuery('#transfer_button_div').show();">
                         <option value=""></option>
                         <?php
@@ -162,7 +163,7 @@ class Disciple_Tools_Contacts_Transfer
                     'post' => $post_data,
                     'postmeta' => $postmeta_data,
                     'comments' => dt_get_comments_with_redacted_user_data( $contact_id ),
-                    'locations' => $contact['locations'],
+                    'locations' => $contact['locations'], // @todo remove or rewrite? Because of location_grid upgrade.
                     'people_groups' => $contact['people_groups'],
                     'transfer_foreign_key' => $contact['transfer_foreign_key'] ?? 0,
                 ],
@@ -170,34 +171,51 @@ class Disciple_Tools_Contacts_Transfer
         ];
 
         $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/contact/transfer', $args );
+        if ( is_wp_error( $result ) ){
+            return $result;
+        }
+        $result_body = json_decode( $result['body'] );
 
-        if ( is_wp_error( $result ) || empty( $result['body'] ) ) {
-            $errors->add( 'failed_remote_post', $result->get_error_message() );
+        if ( ! ( isset( $result_body->status ) && 'OK' === $result_body->status ) ) {
+            $errors->add( 'transfer', $result_body->error ?? __( 'Unknown error.' ) );
             return $errors;
+        }
+
+        if ( ! empty( $result_body->error ) ) {
+            foreach ( $result_body->error->errors as $key => $value ) {
+                $time_in_mysql_format = current_time( 'mysql' );
+                wp_insert_comment([
+                    'comment_post_ID' => $contact_id,
+                    'comment_content' => __( 'Minor transfer error.', 'disciple_tools' ) . ' ' . $key,
+                    'comment_type' => '',
+                    'comment_parent' => 0,
+                    'user_id' => get_current_user_id(),
+                    'comment_date' => $time_in_mysql_format,
+                    'comment_approved' => 1,
+                ]);
+            }
         }
 
         /**************************************************************************************************************
          * Close current contact
          **************************************************************************************************************/
-        $result_body = json_decode( $result['body'] );
-
         // log foreign key
         if ( isset( $result_body->transfer_foreign_key ) ) {
             $key_result = update_post_meta( $contact_id, 'transfer_foreign_key', $result_body->transfer_foreign_key );
             if ( is_wp_error( $key_result ) ) {
-                $errors->add( __METHOD__, $result->get_error_message() );
+                $errors->add( 'error_transfer_foreign_key', $result->get_error_message() );
             }
         }
 
         // add note that the record was transferred
-        $time = current_time( 'mysql' );
+        $time_in_mysql_format = current_time( 'mysql' );
         $comment_result = wp_insert_comment([
             'comment_post_ID' => $contact_id,
             'comment_content' => sprintf( 'This contact was transferred to %s for further follow-up.', esc_attr( get_the_title( $site_post_id ) ) ),
             'comment_type' => '',
             'comment_parent' => 0,
             'user_id' => get_current_user_id(),
-            'comment_date' => $time,
+            'comment_date' => $time_in_mysql_format,
             'comment_approved' => 1,
         ]);
         if ( is_wp_error( $comment_result ) ) {
@@ -232,7 +250,7 @@ class Disciple_Tools_Contacts_Transfer
      *
      * @param $params
      *
-     * @return array
+     * @return array|WP_Error
      */
     public static function receive_transferred_contact( $params ) {
         dt_write_log( __METHOD__ );
@@ -240,7 +258,7 @@ class Disciple_Tools_Contacts_Transfer
         // set variables
         $contact_data = $params['contact_data'];
         $post_args = $contact_data['post'];
-        $comment_data = $contact_data['comments'];
+        $comment_data = $contact_data['comments'] ?? [];
         $meta_input = [];
         $lagging_meta_input = [];
         $errors = new WP_Error();
@@ -287,11 +305,7 @@ class Disciple_Tools_Contacts_Transfer
         $post_id = wp_insert_post( $post_args );
         if ( is_wp_error( $post_id ) ) {
             $errors->add( 'transfer_insert_fail', 'Failed to create transfer contact for '. $post_args['ID'] );
-            return [
-                'status' => 'FAIL',
-                'transfer_foreign_key' => '',
-                'errors' => $errors,
-            ];
+            return $errors;
         }
 
         // insert lagging post meta
@@ -318,6 +332,7 @@ class Disciple_Tools_Contacts_Transfer
                 $comment_id = wp_insert_comment( $comment );
                 if ( is_wp_error( $comment_id ) ) {
                     $errors->add( 'comment_insert_fail', 'Comment insert fail for '. $comment['comment_ID'] );
+                    return $errors;
                 }
             }
         }
@@ -351,7 +366,6 @@ class Disciple_Tools_Contacts_Transfer
                 $errors->add( 'comment_insert_fail', 'Comment insert fail for transfer notation.' );
             }
         }
-
 
         return [
             'status' => 'OK',

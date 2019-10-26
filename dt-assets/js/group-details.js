@@ -1,4 +1,4 @@
-/* global jQuery:false, wpApiGroupsSettings:false, _:false */
+/* global wpApiGroupsSettings:false, _:false */
 
 let typeaheadTotals = {}
 jQuery(document).ready(function($) {
@@ -28,7 +28,6 @@ jQuery(document).ready(function($) {
    * Assigned_to
    */
   let assignedToInput = $('.js-typeahead-assigned_to');
-  typeaheadTotals.assigned_to = 0;
   $.typeahead({
     input: '.js-typeahead-assigned_to',
     minLength: 0,
@@ -40,7 +39,7 @@ jQuery(document).ready(function($) {
     template: function (query, item) {
       return `<span class="row">
         <span class="avatar"><img src="{{avatar}}"/> </span>
-        <span>${item.name}</span>
+        <span>${_.escape( item.name )}</span>
       </span>`
     },
     dynamic: true,
@@ -48,10 +47,13 @@ jQuery(document).ready(function($) {
     emptyTemplate: 'No users found "{{query}}"',
     callback: {
       onClick: function(node, a, item){
-        editFieldsUpdate.assigned_to = item.ID
+        API.update_post( 'groups', groupId, {assigned_to: 'user-' + item.ID}).then(function (response) {
+          group = response
+          assigned_to_input.val(contact.assigned_to.display)
+          assigned_to_input.blur()
+        }).catch(err => { console.error(err) })
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.assigned_to
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#assigned_to-result-container').html(text);
       },
@@ -62,8 +64,6 @@ jQuery(document).ready(function($) {
         if (_.get(group,  "assigned_to.display")){
           assignedToInput.val(group.assigned_to.display)
         }
-        assignedToInput.focus()
-        $('.assigned_to-result-container').html("");
       }
     },
     debug:true
@@ -73,93 +73,136 @@ jQuery(document).ready(function($) {
     assignedToInput.trigger('input.typeahead')
   })
 
-  /**
-   * Share
-   */
-  let shareTypeahead = null
-  $('.open-share').on("click", function(){
-    $('#share-contact-modal').foundation('open');
-    if  (!shareTypeahead) {
-      shareTypeahead = TYPEAHEADS.share("group", groupId)
-    }
-  })
+
+
 
   /**
-   * Follow
+   * Update Needed
    */
-  $('.follow.switch-input').change(function () {
-    let follow = $(this).is(':checked')
-    let update = {
-      follow: {values:[{value:wpApiGroupsSettings.current_user_id, delete:!follow}]},
-      unfollow: {values:[{value:wpApiGroupsSettings.current_user_id, delete:follow}]}
-    }
-    API.save_field_api( "group", groupId, update)
+  $('#update-needed.dt-switch').change(function () {
+    let updateNeeded = $(this).is(':checked')
+    $('.update-needed-notification').toggle(updateNeeded)
+    API.update_post( 'groups', groupId, {"requires_update":updateNeeded}).then(resp=>{
+      group = resp
+    })
   })
+  $('#content')[0].addEventListener('comment_posted', function (e) {
+    if ( _.get(group, "requires_update") === true ){
+      API.get_post("groups", groupId ).then(resp=>{
+        group = resp
+        groupUpdated(_.get(group, "requires_update") === true )
+      }).catch(err => { console.error(err) })
+    }
+  }, false);
 
+  function groupUpdated(updateNeeded) {
+    $('.update-needed-notification').toggle(updateNeeded)
+    $('#update-needed').prop("checked", updateNeeded)
+  }
   /**
-   * Locations
+   * Location Grid
    */
-  typeaheadTotals.locations = 0;
-  $.typeahead({
-    input: '.js-typeahead-locations',
-    minLength: 0,
-    accent: true,
-    searchOnFocus: true,
-    maxItem: 20,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
-    source: TYPEAHEADS.typeaheadSource('locations', 'dt/v1/locations/compact/'),
-    display: "name",
-    templateValue: "{{name}}",
-    dynamic: true,
-    multiselect: {
-      matchOn: ["ID"],
-      data: function () {
-        return group.locations.map(g=>{
-          return {ID:g.ID, name:g.post_title}
-        })
-      }, callback: {
-        onCancel: function (node, item) {
-          _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
-          editFieldsUpdate.locations.values.push({value:item.ID, delete:true})
+  // let loadGeonameTypeahead = ()=>{
+  //   if (!window.Typeahead['.js-typeahead-location_grid']){
+      $.typeahead({
+        input: '.js-typeahead-location_grid',
+        minLength: 0,
+        accent: true,
+        searchOnFocus: true,
+        maxItem: 20,
+        dropdownFilter: [{
+          key: 'group',
+          value: 'focus',
+          template: 'Regions of Focus',
+          all: 'All Locations'
+        }],
+        source: {
+          focus: {
+            display: "name",
+            ajax: {
+              url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+              data: {
+                s: "{{query}}",
+                filter: function () {
+                  return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                }
+              },
+              beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+              },
+              callback: {
+                done: function (data) {
+                  if (typeof typeaheadTotals !== "undefined") {
+                    typeaheadTotals.field = data.total
+                  }
+                  return data.location_grid
+                }
+              }
+            }
+          }
+        },
+        display: "name",
+        templateValue: "{{name}}",
+        dynamic: true,
+        multiselect: {
+          matchOn: ["ID"],
+          data: function () {
+            return (group.location_grid || []).map(g=>{
+              return {ID:g.id, name:g.label}
+            })
+
+          }, callback: {
+            onCancel: function (node, item) {
+              _.pullAllBy(editFieldsUpdate.location_grid.values, [{value:item.ID}], "value")
+              editFieldsUpdate.location_grid.values.push({value:item.ID, delete:true})
+            }
+          }
+        },
+        callback: {
+          onClick: function(node, a, item, event){
+            if (!editFieldsUpdate.location_grid){
+              editFieldsUpdate.location_grid = { "values": [] }
+            }
+            _.pullAllBy(editFieldsUpdate.location_grid.values, [{value:item.ID}], "value")
+            editFieldsUpdate.location_grid.values.push({value:item.ID})
+            this.addMultiselectItemLayout(item)
+            event.preventDefault()
+            this.hideLayout();
+            this.resetInput();
+          },
+          onReady(){
+            this.filters.dropdown = {key: "group", value: "focus", template: "Regions of Focus"}
+            this.container
+              .removeClass("filter")
+              .find("." + this.options.selector.filterButton)
+              .html("Regions of Focus");
+          },
+          onResult: function (node, query, result, resultCount) {
+            resultCount = typeaheadTotals.location_grid
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $('#location_grid-result-container').html(text);
+          },
+          onHideLayout: function () {
+            $('#location_grid-result-container').html("");
+          }
         }
-      }
-    },
-    callback: {
-      onClick: function(node, a, item, event){
-        _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
-        editFieldsUpdate.locations.values.push({value:item.ID})
-        this.addMultiselectItemLayout(item)
-        event.preventDefault()
-        this.hideLayout();
-        this.resetInput();
-      },
-      onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.locations
-        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-        $('#locations-result-container').html(text);
-      },
-      onHideLayout: function () {
-        $('#locations-result-container').html("");
-      }
-    }
-  });
+      });
+  //   }
+  // }
+
+
+
 
   let peopleGroupList = $('.people_groups-list')
   /**
-   * People_groups
+   * People groups
    */
-  typeaheadTotals.people_groups = 0;
   $.typeahead({
     input: '.js-typeahead-people_groups',
     minLength: 0,
     accent: true,
     searchOnFocus: true,
     maxItem: 20,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
     source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
     display: "name",
     templateValue: "{{name}}",
@@ -188,7 +231,6 @@ jQuery(document).ready(function($) {
         this.resetInput();
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.people_groups
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#people_groups-result-container').html(text);
       },
@@ -201,7 +243,6 @@ jQuery(document).ready(function($) {
   /**
    * parent Groups
    */
-  typeaheadTotals.groups = 0;
   $.typeahead({
     input: '.js-typeahead-parent_groups',
     minLength: 0,
@@ -209,12 +250,12 @@ jQuery(document).ready(function($) {
     searchOnFocus: true,
     maxItem: 20,
     template: function (query, item) {
-      if (item.ID == "new-item"){
+      if (item.ID === "new-item"){
         return "Create new Group"
       }
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: TYPEAHEADS.typeaheadSource('groups', 'dt/v1/groups/compact/'),
+    source: TYPEAHEADS.typeaheadSource('groups', 'dt-posts/v2/groups/compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -226,12 +267,12 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.save_field_api('group', groupId, {'parent_groups': {values:[{value:item.ID, delete:true}]}})
+          API.update_post( 'groups', groupId, {'parent_groups': {values:[{value:item.ID, delete:true}]}})
         }
       },
       href: function(item){
         if (item){
-          return `${window.wpApiShare.site_url}/groups/${item.ID}`
+          return `${_.escape(window.wpApiShare.site_url)}/groups/${_.escape( item.ID )}`
         }
       }
     },
@@ -241,7 +282,7 @@ jQuery(document).ready(function($) {
           event.preventDefault();
           $('#create-group-modal').foundation('open');
         } else {
-          API.save_field_api('group', groupId, {'parent_groups': {values:[{value:item.ID}]}})
+          API.update_post( 'groups', groupId, {'parent_groups': {values:[{value:item.ID}]}})
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();
@@ -250,7 +291,70 @@ jQuery(document).ready(function($) {
         }
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.groups
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+        result.push({
+          ID: "new-item",
+          group:"contacts"
+        })
+        $('#groups-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('#groups-result-container').html("");
+      }
+    }
+  });
+
+  /**
+   * peer Groups
+   */
+  $.typeahead({
+    input: '.js-typeahead-peer_groups',
+    minLength: 0,
+    accent: true,
+    searchOnFocus: true,
+    maxItem: 20,
+    template: function (query, item) {
+      if (item.ID === "new-item"){
+        return "Create new Group"
+      }
+      return `<span>${_.escape(item.name)}</span>`
+    },
+    source: TYPEAHEADS.typeaheadSource('groups', 'dt-posts/v2/groups/compact/'),
+    display: "name",
+    templateValue: "{{name}}",
+    dynamic: true,
+    multiselect: {
+      matchOn: ["ID"],
+      data: function () {
+        return (group.peer_groups||[]).map(g=>{
+          return {ID:g.ID, name:g.post_title}
+        })
+      }, callback: {
+        onCancel: function (node, item) {
+          API.update_post( 'groups', groupId, {'peer_groups': {values:[{value:item.ID, delete:true}]}})
+        }
+      },
+      href: function(item){
+        if (item){
+          return `${_.escape(window.wpApiShare.site_url)}/groups/${_.escape( item.ID )}`
+        }
+      }
+    },
+    callback: {
+      onClick: function(node, a, item, event){
+        if(item.ID === "new-item"){
+          event.preventDefault();
+          $('#create-group-modal').foundation('open');
+        } else {
+          API.update_post( 'groups', groupId, {'peer_groups': {values:[{value:item.ID}]}})
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
+          masonGrid.masonry('layout')
+        }
+      },
+      onResult: function (node, query, result, resultCount) {
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         result.push({
           ID: "new-item",
@@ -266,7 +370,6 @@ jQuery(document).ready(function($) {
   /**
    * Child Groups
    */
-  typeaheadTotals.groups = 0;
   $.typeahead({
     input: '.js-typeahead-child_groups',
     minLength: 0,
@@ -274,12 +377,12 @@ jQuery(document).ready(function($) {
     searchOnFocus: true,
     maxItem: 20,
     template: function (query, item) {
-      if (item.ID == "new-item"){
+      if (item.ID === "new-item"){
         return "Create new Group"
       }
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: TYPEAHEADS.typeaheadSource('groups', 'dt/v1/groups/compact/'),
+    source: TYPEAHEADS.typeaheadSource('groups', 'dt-posts/v2/groups/compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -291,12 +394,12 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-            API.save_field_api('group', groupId, {'child_groups': {values:[{value:item.ID, delete:true}]}})
+            API.update_post( 'groups', groupId, {'child_groups': {values:[{value:item.ID, delete:true}]}})
           }
       },
       href: function(item){
         if (item){
-          return `${window.wpApiShare.site_url}/groups/${item.ID}`
+          return `${_.escape(window.wpApiShare.site_url)}/groups/${item.ID}`
         }
       }
     },
@@ -306,7 +409,7 @@ jQuery(document).ready(function($) {
           event.preventDefault();
           $('#create-group-modal').foundation('open');
         } else {
-          API.save_field_api('group', groupId, {'child_groups': {values:[{value:item.ID}]}})
+          API.update_post( 'groups', groupId, {'child_groups': {values:[{value:item.ID}]}})
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();
@@ -314,7 +417,6 @@ jQuery(document).ready(function($) {
         }
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.groups
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         result.push({
           ID: "new-item",
@@ -333,18 +435,24 @@ jQuery(document).ready(function($) {
     $(".reveal-after-group-create").hide()
     $(".hide-after-group-create").show()
   })
+  //reset new group modal on close.
+  $('#create-contact-modal').on("closed.zf.reveal", function () {
+    $(".reveal-after-contact-create").hide()
+    $("#create-contact-modal input[name='title']").val('')
+    $(".hide-after-contact-create").show()
+  })
 
   //create new group
   $(".js-create-group").on("submit", function(e) {
     e.preventDefault();
     let title = $(".js-create-group input[name=title]").val()
-    API.create_group({title, parent_group_id: groupId, group_type:"group"})
+    API.create_post('groups', {title, parent_groups: {values:[{ value:groupId }]}, group_type:"group"})
       .then((newGroup)=>{
         $(".reveal-after-group-create").show()
-        $("#new-group-link").html(`<a href="${newGroup.permalink}">${title}</a>`)
+        $("#new-group-link").html(`<a href="${_.escape( newGroup.permalink )}">${_.escape( title )}</a>`)
         $(".hide-after-group-create").hide()
         $('#go-to-group').attr('href', newGroup.permalink);
-        Typeahead['.js-typeahead-child_groups'].addMultiselectItemLayout({ID:newGroup.post_id.toString(), name:title})
+        Typeahead['.js-typeahead-child_groups'].addMultiselectItemLayout({ID:newGroup.ID.toString(), name:title})
       })
       .catch(function(error) {
         $(".js-create-group-button").removeClass("loading").addClass("alert");
@@ -355,12 +463,12 @@ jQuery(document).ready(function($) {
       });
   })
 
-  $("#add-new-address").click(function () {
+  $("#add-new-address").on("click", function () {
     $('#edit-contact_address').append(`
       <li style="display: flex">
-        <textarea rows="3" class="contact-input" data-type="contact_address"></textarea>
+        <textarea rows="3" class="contact-input" data-type="contact_address" dir="auto"></textarea>
         <button class="button clear delete-button" data-id="new">
-          <img src="${wpApiGroupsSettings.template_dir}/dt-assets/images/invalid.svg">
+          <img src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/invalid.svg">
         </button>
     </li>`)
   })
@@ -368,17 +476,14 @@ jQuery(document).ready(function($) {
   /**
    * members
    */
-  typeaheadTotals.members = 0;
   $.typeahead({
     input: '.js-typeahead-members',
     minLength: 0,
     accent: true,
     searchOnFocus: true,
     maxItem: 20,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
-    source: TYPEAHEADS.typeaheadSource('members', 'dt/v1/contacts/compact/'),
+    template: window.TYPEAHEADS.contactListRowTemplate,
+    source: TYPEAHEADS.typeaheadContactsSource(),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -390,8 +495,10 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.save_field_api('group', groupId, {'members': {values:[{value:item.ID, delete:true}]}}).then(()=>{
-
+          API.update_post( 'groups', groupId, {'members': {values:[{value:item.ID, delete:true}]}}).then((g)=>{
+            group = g
+            populateMembersList()
+            masonGrid.masonry('layout')
           }).catch(err => { console.error(err) })
         }
       },
@@ -399,12 +506,14 @@ jQuery(document).ready(function($) {
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.save_field_api('group', groupId, {'members': {values:[{value:item.ID}]}}).then((addedItem)=>{
+        API.update_post( 'groups', groupId, {'members': {values:[{value:item.ID}]}}).then((addedItem)=>{
+          group = addedItem
+          populateMembersList()
+          masonGrid.masonry('layout')
         }).catch(err => { console.error(err) })
         masonGrid.masonry('layout')
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.members
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#members-result-container').html(text);
       },
@@ -413,21 +522,18 @@ jQuery(document).ready(function($) {
       }
     }
   });
-  
+
   /**
    * coaches
    */
-  typeaheadTotals.coaches = 0;
   $.typeahead({
     input: '.js-typeahead-coaches',
     minLength: 0,
     accent: true,
     searchOnFocus: true,
     maxItem: 20,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
-    source: TYPEAHEADS.typeaheadSource('coaches', 'dt/v1/contacts/compact/'),
+    template: window.TYPEAHEADS.contactListRowTemplate,
+    source: TYPEAHEADS.typeaheadContactsSource(),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -439,7 +545,7 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.save_field_api('group', groupId, {'coaches': {values:[{value:item.ID, delete:true}]}}).then(()=>{
+          API.update_post( 'groups', groupId, {'coaches': {values:[{value:item.ID, delete:true}]}}).then(()=>{
           }).catch(err => { console.error(err) })
         }
       },
@@ -447,12 +553,11 @@ jQuery(document).ready(function($) {
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.save_field_api('group', groupId, {'coaches': {values:[{value:item.ID}]}}).then((addedItem)=>{
+        API.update_post( 'groups', groupId, {'coaches': {values:[{value:item.ID}]}}).then((addedItem)=>{
         }).catch(err => { console.error(err) })
         masonGrid.masonry('layout')
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.coaches
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#coaches-result-container').html(text);
       },
@@ -462,80 +567,24 @@ jQuery(document).ready(function($) {
     }
   });
 
-  /**
-   * leaders
-   */
-  typeaheadTotals.leaders = 0;
-  $.typeahead({
-    input: '.js-typeahead-leaders',
-    minLength: 0,
-    accent: true,
-    searchOnFocus: true,
-    maxItem: 20,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
-    source: TYPEAHEADS.typeaheadSource('leaders', 'dt/v1/contacts/compact/'),
-    display: "name",
-    templateValue: "{{name}}",
-    dynamic: true,
-    multiselect: {
-      matchOn: ["ID"],
-      data: function () {
-        return group.leaders.map(g=>{
-          return {ID:g.ID, name:g.post_title}
-        })
-      }, callback: {
-        onCancel: function (node, item) {
-          _.pullAllBy(editFieldsUpdate.leaders.values, [{value:item.ID}], "value")
-          editFieldsUpdate.leaders.values.push({value:item.ID, delete:true})
-        }
-      },
-      href: window.wpApiShare.site_url + "/contacts/{{ID}}"
-    },
-    callback: {
-      onClick: function(node, a, item, e){
-        _.pullAllBy(editFieldsUpdate.leaders.values, [{value:item.ID}], "value")
-        editFieldsUpdate.leaders.values.push({value:item.ID})
-        this.addMultiselectItemLayout(item)
-        event.preventDefault()
-        this.hideLayout();
-        this.resetInput();
-      },
-      onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.leaders
-        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-        $('#leaders-result-container').html(text);
-      },
-      onHideLayout: function () {
-        $('#leaders-result-container').html("");
-      }
-    }
-  });
 
 
   /**
    * Setup group fields
    */
 
-  if (group.assigned_to){
-    $('.current-assigned').text(_.get(group, "assigned_to.display"))
-  }
-
-
   $("#open-edit").on("click", function () {
     editFieldsUpdate = {
-      locations : { values: [] },
       people_groups : { values: [] },
-      leaders : { values: [] },
+      location_grid : { values: [] }
     }
-    $('#group-details-edit #title').val( group.name );
+    $('#group-details-edit #title').html( _.escape(group.name) );
     let addressHTML = "";
     (group.contact_address|| []).forEach(field=>{
       addressHTML += `<li style="display: flex">
-        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address">${field.value}</textarea>
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${_.escape(field.value)}</textarea>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
-            <img src="${wpApiGroupsSettings.template_dir}/dt-assets/images/invalid.svg">
+            <img src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/invalid.svg">
         </button>
       </li>`
     })
@@ -543,7 +592,7 @@ jQuery(document).ready(function($) {
 
 
     $('#group-details-edit').foundation('open');
-    ["locations", "people_groups", "leaders"].forEach(t=>{
+    ["location_grid", "people_groups"].forEach(t=>{
       Typeahead[`.js-typeahead-${t}`].adjustInputSize()
     })
   })
@@ -553,27 +602,40 @@ jQuery(document).ready(function($) {
    * Save group details updates
    */
   $('#save-edit-details').on('click', function () {
+    let contactInput = $(".contact-input")
+    contactInput.each((index, entry)=>{
+      if ( !$(entry).attr("id") ){
+        let val = $(entry).val()
+        let channelType = $(entry).data("type")
+        if ( !editFieldsUpdate[channelType]){
+          editFieldsUpdate[channelType] = {values:[]}
+        }
+        editFieldsUpdate[channelType].values.push({value:val})
+      }
+    })
     $(this).toggleClass("loading")
-      API.save_field_api( "group", groupId, editFieldsUpdate).then((updatedGroup)=>{
+      API.update_post( 'groups', groupId, editFieldsUpdate).then((updatedGroup)=>{
       group = updatedGroup
       $(this).toggleClass("loading")
       resetDetailsFields(group)
       $(`#group-details-edit`).foundation('close')
-    }).catch(handelAjaxError)
+    }).catch(handleAjaxError)
   })
 
   $("#group-details-edit").on('change', '.contact-input', function() {
     let value = $(this).val()
     let field = $(this).data("type")
     let key = $(this).attr('id')
-    if (!editFieldsUpdate[field]){
-      editFieldsUpdate[field] = { values: [] }
-    }
-    let existing = _.find(editFieldsUpdate[field].values, {key})
-    if (existing){
-      existing.value = value
-    } else {
-      editFieldsUpdate[field].values.push({ key, value })
+    if ( key ){
+      if (!editFieldsUpdate[field]){
+        editFieldsUpdate[field] = { values: [] }
+      }
+      let existing = _.find(editFieldsUpdate[field].values, {key})
+      if (existing){
+        existing.value = value
+      } else {
+        editFieldsUpdate[field].values.push({ key, value })
+      }
     }
   }).on('click', '.delete-button', function () {
     let field = $(this).data('type')
@@ -606,43 +668,36 @@ jQuery(document).ready(function($) {
         }
         htmlField.append(`<li class="details-list ${_.escape(field.key)}">
             ${_.escape(field.value)}
-              <img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${wpApiGroupsSettings.template_dir}/dt-assets/images/verified.svg"/>
-              <img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${wpApiGroupsSettings.template_dir}/dt-assets/images/broken.svg"/>
+              <img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/verified.svg"/>
+              <img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/broken.svg"/>
             </li>
           `)
       })
       if (!fields || fields.length === 0 || allEmptyValues){
-        htmlField.append(`<li id="no-${fieldDesignator}">${wpApiGroupsSettings.translations["not-set"][fieldDesignator]}</li>`)
+        htmlField.append(`<li id="no-${_.escape( fieldDesignator )}">${_.escape( wpApiGroupsSettings.translations["not-set"][fieldDesignator] )}</li>`)
       }
     })
 
-    let connections = [ "locations", "people_groups", "leaders" ]
+    let connections = [ "location_grid", "people_groups", "leaders" ]
     connections.forEach(connection=>{
       let htmlField = $(`.${connection}-list`).empty()
       if ( !group[connection] || group[connection].length === 0 ){
-        htmlField.append(`<li id="no-${connection}">${wpApiGroupsSettings.translations["not-set"][connection]}</li>`)
+        htmlField.append(`<li id="no-${_.escape( connection )}">${_.escape( wpApiGroupsSettings.translations["not-set"][connection] )}</li>`)
       } else {
         group[connection].forEach(field=>{
-          let title = `${_.escape(field.post_title)}`
+          let title = `${_.escape(field.post_title||field.label)}`
           if ( connection === "leaders" ){
-            title = `<a href="${_.escape(field.permalink)}">${title}</a>`
+            title = `<a href="${_.escape(field.permalink)}">${_.escape( title )}</a>`
           }
-          htmlField.append(`<li class="details-list ${_.escape(field.key)}">
+          htmlField.append(`<li class="details-list ${_.escape(field.key || field.id)}">
             ${title}
-              <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${wpApiGroupsSettings.template_dir}/dt-assets/images/verified.svg"/>
-              <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${wpApiGroupsSettings.template_dir}/dt-assets/images/broken.svg"/>
+              <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/verified.svg"/>
+              <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/broken.svg"/>
             </li>
           `)
         })
       }
     })
-    let assignedHtml = $(`.assigned_to.details-list`).empty()
-    if ( group.assigned_to ){
-      assignedHtml.html(group.assigned_to.display)
-    } else {
-      assignedHtml.html(wpApiGroupsSettings.translations["not-set"]["assigned_to"])
-    }
-
 
     dateFields.forEach(dateField=>{
       if ( group[dateField] ){
@@ -661,61 +716,67 @@ jQuery(document).ready(function($) {
    * Group Status
    */
 
-  let selectFiled = $('select.select-field')
-  selectFiled.on('change', function () {
-    let id = $(this).attr('id')
-    let val = $(this).val()
-    API.save_field_api(
-      'group',
-      groupId,
-      {[id]:val}
-    ).then(resp=>{
-      group = resp
-      resetDetailsFields(group);
-    }).catch(err=>{
-      console.log(err)
-    })
-  })
-  $('input.text-input').change(function(){
-    const id = $(this).attr('id')
-    const val = $(this).val()
-
-    API.save_field_api('group', groupId, { [id]: val })
-      .catch(handelAjaxError)
-  })
-
-  /**
-   * Church fields
-   */
-  let health_keys = Object.keys(wpApiGroupsSettings.groups_custom_fields_settings.health_metrics.default)
-
-  function fillOutChurchHealthMetrics() {
-    let svgItem = document.getElementById("church-svg-wrapper").contentDocument
-
-    let churchWheel = $(svgItem).find('svg')
-    health_keys.forEach(m=>{
-      if (group[`health_metrics`] && group.health_metrics.includes(m) ){
-        churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", "1")
-        $(`#${m}`).css("opacity", "1")
-      } else {
-        churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", ".1")
-        $(`#${m}`).css("opacity", ".4")
-      }
-    })
-    if ( !(group.health_metrics ||[]).includes("church_commitment") ){
-      churchWheel.find('#group').css("opacity", "1")
-      $(`#church_commitment`).css("opacity", ".4")
-    } else {
-      churchWheel.find('#group').css("opacity", ".1")
-      $(`#church_commitment`).css("opacity", "1")
+  $( document ).on( 'select-field-updated', function (e, newGroup, id, val) {
+    group = newGroup
+    resetDetailsFields(group);
+    if ( id === 'group_status' ){
+      statusChanged()
     }
+  })
 
-    $(".js-progress-bordered-box").removeClass("half-opacity")
+  $( document ).on( 'text-input-updated', function (e, newGroup, id, val){})
+
+  $( document ).on( 'number-input-updated', function (e, newGroup, id, val ){})
+
+  $( document ).on( 'dt_date_picker-updated', function (e, newGroup, id, date){})
+
+  $( document ).on( 'dt_multi_select-updated', function (e, newGroup, fieldKey, optionKey, action){})
+
+  let statusChanged = ()=>{
+    let statusSelect = $('#group_status')
+    let status = _.get(group, "group_status.key")
+    let statusColor = _.get(wpApiGroupsSettings,
+      `groups_custom_fields_settings.group_status.default.${status}.color`
+    )
+    if (statusColor){
+      statusSelect.css("background-color", _.escape( statusColor ))
+    } else {
+      statusSelect.css("background-color", "#4CAF50")
+    }
+  }
+
+  /* Church Metrics */
+  let health_keys = Object.keys(wpApiGroupsSettings.groups_custom_fields_settings.health_metrics.default)
+  function fillOutChurchHealthMetrics() {
+    if ( $("#health-metrics").length ) {
+      let svgItem = document.getElementById("church-svg-wrapper").contentDocument
+
+      let churchWheel = $(svgItem).find('svg')
+      health_keys.forEach(m=>{
+        if (group[`health_metrics`] && group.health_metrics.includes(m) ){
+          churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", "1")
+          $(`#${m}`).css("opacity", "1")
+        } else {
+          churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", ".1")
+          $(`#${m}`).css("opacity", ".4")
+        }
+      })
+      if ( !(group.health_metrics ||[]).includes("church_commitment") ){
+        churchWheel.find('#group').css("opacity", "1")
+        $(`#church_commitment`).css("opacity", ".4")
+      } else {
+        churchWheel.find('#group').css("opacity", ".1")
+        $(`#church_commitment`).css("opacity", "1")
+      }
+
+      $(".js-progress-bordered-box").removeClass("half-opacity")
+    }
   }
 
   $('#church-svg-wrapper').on('load', function() {
     fillOutChurchHealthMetrics()
   })
+  fillOutChurchHealthMetrics()
 
   $('.group-progress-button').on('click', function () {
     let fieldId = $(this).attr('id')
@@ -725,7 +786,7 @@ jQuery(document).ready(function($) {
     if ( already_set ){
       update.values[0].delete = true;
     }
-    API.save_field_api('group', groupId, {"health_metrics": update })
+    API.update_post( 'groups', groupId, {"health_metrics": update })
       .then(groupData=>{
         group = groupData
         fillOutChurchHealthMetrics()
@@ -733,44 +794,133 @@ jQuery(document).ready(function($) {
         console.log(err)
     })
   })
+  /* end Church fields*/
 
-  $('button.dt_multi_select').on('click',function () {
-    let fieldKey = $(this).data("field-key")
-    let optionKey = $(this).attr('id')
-    let fieldValue = {}
-    let data = {}
-    let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`)
-    field.addClass("submitting-select-button")
-    let action = "add"
-    if (field.hasClass("selected-select-button")){
-      fieldValue = {values:[{value:optionKey,delete:true}]}
-      action = "delete"
-    } else {
-      field.removeClass("empty-select-button")
-      field.addClass("selected-select-button")
-      fieldValue = {values:[{value:optionKey}]}
+  /* Member List*/
+  let memberList = $('.member-list')
+  let memberCountInput = $('#member_count')
+  let populateMembersList = ()=>{
+    memberList.empty()
+
+    group.members.forEach(m=>{
+      if ( _.find( group.leaders || [], {ID: m.ID} ) ){
+        m.leader = true
+      }
+    })
+    group.members = _.sortBy( group.members, ["leader"])
+    group.members.forEach(member=>{
+      let leaderHTML = '';
+      if( member.leader ){
+        leaderHTML = `<i class="fi-foot small leader"></i>`
+      }
+      let memberHTML = `<div class="member-row" style="" data-id="${_.escape( member.ID )}">
+          <div style="flex-grow: 1" class="member-status">
+              <i class="fi-torso small"></i>
+              <a href="${_.escape(window.wpApiShare.site_url)}/contacts/${_.escape( member.ID )}">${_.escape(member.post_title)}</a>
+              ${leaderHTML}
+          </div>
+          <button class="button clear make-leader member-row-actions" data-id="${_.escape( member.ID )}">
+            <i class="fi-foot small"></i>
+          </button>
+          <button class="button clear delete-member member-row-actions" data-id="${_.escape( member.ID )}">
+            <i class="fi-x small"></i>
+          </button>
+        </div>`
+      memberList.append(memberHTML)
+    })
+    memberCountInput.val( group.member_count )
+  }
+  populateMembersList()
+  /* end Member List */
+
+  /* Four Fields */
+  let loadFourFields = ()=>{
+    $(document).ready(function(){
+      if ( jQuery('#four-fields').length ) {
+        jQuery('#four_fields_unbelievers').val( group.four_fields_unbelievers )
+        jQuery('#four_fields_believers').val( group.four_fields_believers )
+        jQuery('#four_fields_accountable').val( group.four_fields_accountable )
+        jQuery('#four_fields_church_commitment').val( group.four_fields_church_commitment )
+        jQuery('#four_fields_multiplying').val( group.four_fields_multiplying )
+      }
+     })
+  }
+
+  $(document).ready( function() {
+    let ffInputs = `
+    <input type="text" name="four_fields_unbelievers" id="four_fields_unbelievers" class="four_fields" style="width:60px; position:absolute; top:120px; left:75px;" />
+    <input type="text" name="four_fields_believers" id="four_fields_believers" class="four_fields" style="width:60px; position:absolute; top:120px; right:75px;" />
+    <input type="text" name="four_fields_accountable" id="four_fields_accountable" class="four_fields" style="width:60px; position:absolute; bottom:80px; right:75px;" />
+    <input type="text" name="four_fields_church_commitment" id="four_fields_church_commitment" class="four_fields" style="width:60px; position:absolute; bottom:80px; left:75px;" />
+    <input type="text" name="four_fields_multiplying" id="four_fields_multiplying" class="four_fields" style="width:60px; position:absolute; top:220px; left:170px;" />
+    `
+    $('#four-fields-inputs').append(ffInputs)
+    loadFourFields()
+  })
+  /* End Four Fields */
+
+  $(document).on("click", ".delete-member", function () {
+    let id = $(this).data('id')
+    $(`.member-row[data-id="${id}"]`).remove()
+    API.update_post( 'groups', groupId, {'members': {values:[{value:id, delete:true}]}}).then(groupRes=>{
+      group=groupRes
+      populateMembersList()
+      masonGrid.masonry('layout')
+    })
+    if( _.find( group.leaders || [], {ID: id}) ) {
+      API.update_post( 'groups', groupId, {'leaders': {values: [{value: id, delete: true}]}})
     }
-    data[optionKey] = fieldValue
-    API.save_field_api('group', groupId, {[fieldKey]: fieldValue}).then((resp)=>{
-      field.removeClass("submitting-select-button selected-select-button")
-      field.blur();
-      field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
-    }).catch(err=>{
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").text(err.responseText)
-      field.removeClass("submitting-select-button selected-select-button")
-      field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
+  })
+  $(document).on("click", ".make-leader", function () {
+    let id = $(this).data('id')
+    let remove = false
+    let existingLeaderIcon = $(`.member-row[data-id="${id}"] .leader`)
+    if( _.find( group.leaders || [], {ID: id}) || existingLeaderIcon.length !== 0){
+      remove = true
+      existingLeaderIcon.remove()
+    } else {
+      $(`.member-row[data-id="${id}"] .member-status`).append(`<i class="fi-foot small leader"></i>`)
+    }
+    API.update_post( 'groups', groupId, {'leaders': {values:[{value:id, delete:remove}]}}).then(groupRes=>{
+      group=groupRes
+      populateMembersList()
+      masonGrid.masonry('layout')
     })
   })
-  $('.dt_date_picker').datepicker({
-    dateFormat: 'yy-mm-dd',
-    onSelect: function (date) {
-      let id = $(this).attr('id')
-      API.save_field_api('group', groupId, { [id]: date }).catch(handelAjaxError)
-    },
-    changeMonth: true,
-    changeYear: true
+  $('.add-new-member').on("click", function () {
+    $('#add-new-group-member').foundation('open');
+    ["members"].forEach(t=>{
+      Typeahead[`.js-typeahead-${t}`].adjustInputSize()
+    })
+  })
+  //create new group
+  $(".js-create-contact").on("submit", function(e) {
+    e.preventDefault();
+    let title = $(".js-create-contact input[name=title]").val()
+    API.create_post( 'contacts', {
+      title,
+      groups:{values:[{value:groupId}]},
+      requires_update: true,
+      overall_status: "active"
+    }).then((newContact)=>{
+        $(".reveal-after-contact-create").show()
+        $("#new-contact-link").html(`<a href="${_.escape( newContact.permalink )}">${_.escape( title )}</a>`)
+        $(".hide-after-contact-create").hide()
+        $('#go-to-contact').attr('href', _.escape( newContact.permalink ));
+        group.members.push({post_title:title, ID:newContact.ID})
+        if ( group.members.length > group.member_count ){
+          group.member_count = group.members.length
+        }
+        populateMembersList()
+        masonGrid.masonry('layout')
+      })
+      .catch(function(error) {
+        $(".js-create-contact-button").removeClass("loading").addClass("alert");
+        $(".js-create-contact").append(
+          $("<div>").html(error.responseText)
+        );
+        console.error(error);
+      });
   })
 
 

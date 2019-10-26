@@ -75,6 +75,36 @@ class Disciple_Tools_Users_Endpoints
                 'callback' => [ $this, 'get_user_contact_id' ]
             ]
         );
+        register_rest_route(
+            $this->namespace, '/users/current_locations', [
+                'methods' => "GET",
+                'callback' => [ $this, 'get_current_locations' ]
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/users/user_location', [
+                'methods' => "POST",
+                'callback' => [ $this, 'add_user_location' ]
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/users/user_location', [
+                'methods' => "DELETE",
+                'callback' => [ $this, 'delete_user_location' ]
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/user/update', [
+                'methods' => "POST",
+                'callback' => [ $this, 'update_user' ]
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/user/my', [
+                'methods' => "GET",
+                'callback' => [ $this, 'get_my_info' ]
+            ]
+        );
     }
 
     /**
@@ -168,4 +198,89 @@ class Disciple_Tools_Users_Endpoints
         }
     }
 
+    public function get_current_locations(){
+        return DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( get_current_user_id(), 'user' ) );
+    }
+
+    public function add_user_location( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params["grid_id"] ) ){
+            return Disciple_Tools_Users::add_user_location( $params["grid_id"] );
+        } else {
+            return new WP_Error( "missing_error", "Missing fields", [ 'status', 400 ] );
+        }
+    }
+
+    public function delete_user_location( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params["grid_id"] ) ){
+            return Disciple_Tools_Users::delete_user_location( $params["grid_id"] );
+        } else {
+            return new WP_Error( "missing_error", "Missing fields", [ 'status', 400 ] );
+        }
+    }
+
+    public function update_user( WP_REST_Request $request ){
+        $get_params = $request->get_params();
+        $body = $request->get_json_params() ?? $request->get_params();
+        $user = wp_get_current_user();
+        if ( $user ){
+            if ( !empty( $body["add_unavailability"] ) ){
+                if ( !empty( $body["add_unavailability"]["start_date"] ) && !empty( $body["add_unavailability"]["end_date"] ) ) {
+                    $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
+                    if ( !$dates_unavailable ){
+                        $dates_unavailable = [];
+                    }
+                    $max_id = 0;
+                    foreach ( $dates_unavailable as $range ){
+                        $max_id = max( $max_id, $range["id"] ?? 0 );
+                    }
+
+                    $dates_unavailable[] = [
+                        "id" => $max_id + 1,
+                        "start_date" => $body["add_unavailability"]["start_date"],
+                        "end_date" => $body["add_unavailability"]["end_date"],
+                    ];
+                    update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
+                    return $dates_unavailable;
+                }
+            }
+            if ( !empty( $body["remove_unavailability"] ) ) {
+                $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
+                foreach ( $dates_unavailable as $index => $range ) {
+                    if ( $body["remove_unavailability"] === $range["id"] ){
+                        unset( $dates_unavailable[$index] );
+                    }
+                }
+                $dates_unavailable = array_values( $dates_unavailable );
+                update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
+                return $dates_unavailable;
+            }
+            if ( !empty( $body["locale"] ) ){
+                $e = wp_update_user( [
+                    'ID' => $user->ID,
+                    'locale' => $body["locale"]
+                ] );
+                return is_wp_error( $e ) ? $e : true;
+            }
+            return new WP_Error( "update_user", "No valid field found to update", [ 'status', 400 ] );
+        }  else {
+            return new WP_Error( "update_user", "Something went wrong. Are you a user?", [ 'status', 400 ] );
+        }
+    }
+
+
+    public function get_my_info( WP_REST_Request $request ){
+        $user = wp_get_current_user();
+        if ( $user ){
+            return [
+                "ID" => $user->ID,
+                "user_email" => $user->user_email,
+                "display_name" => $user->display_name,
+                "locale" => get_locale()
+            ];
+        } else {
+            return new WP_Error( "get_my_info", "Something went wrong. Are you a user?", [ 'status', 400 ] );
+        }
+    }
 }

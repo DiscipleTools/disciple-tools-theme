@@ -27,6 +27,13 @@ declare(strict_types=1);
             </li>
         </ul>
     </div>
+    <div class="show-closed-switch">
+        <?php esc_html_e( "Inactive Groups", 'disciple_tools' ) ?>
+        <div class="switch tiny">
+            <input class="switch-input" id="show_closed" type="checkbox" name="testGroup">
+            <label class="switch-paddle" for="show_closed"></label>
+        </div>
+    </div>
     <table class="table-remove-top-border js-list stack striped">
         <thead>
             <tr class="sortable">
@@ -35,7 +42,7 @@ declare(strict_types=1);
                 <th data-id="group_type"><?php esc_html_e( "Type", "disciple_tools" ); ?></th>
                 <th data-id="members"><?php esc_html_e( "Members", "disciple_tools" ); ?></th>
                 <th data-id="leaders"><?php esc_html_e( "Leader", "disciple_tools" ); ?></th>
-                <th data-id="locations"><?php esc_html_e( "Location", "disciple_tools" ); ?></th>
+                <th data-id="location_grid"><?php esc_html_e( "Location", "disciple_tools" ); ?></th>
             </tr>
         </thead>
         <tbody>

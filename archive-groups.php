@@ -2,12 +2,26 @@
 declare(strict_types=1);
 
 ( function () {
+    if ( ! current_user_can( 'access_groups' ) ) {
+        wp_safe_redirect( '/settings' );
+    }
+
     $dt_group_field_options = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( false );
-    get_header(); ?>
+    get_header();
+
+    function print_filters(){ ?>
+        <div class="list-views">
+            <label class="list-view">
+                <input type="radio" name="view" value="no_filter" class="js-list-view" autocomplete="off">
+                <span id="total_filter_label"><?php esc_html_e( "All", "disciple_tools" ); ?></span>
+                <span class="list-view__count js-list-view-count" data-value="total_count">.</span>
+            </label>
+        </div>
+    <?php } ?>
 
     <div id="errors"> </div>
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
-        <nav aria-label="<?php esc_attr_e( "You are here:" ); ?>" role="navigation"
+        <nav role="navigation"
              data-sticky data-options="marginTop:3;" style="width:100%" data-top-anchor="1"
              class="second-bar">
             <div class="container-width center">
@@ -20,10 +34,10 @@ declare(strict_types=1);
                     <span class="hide-for-small-only"><?php esc_html_e( "Filter groups", 'disciple_tools' ) ?></span>
                 </a>
                 <input class="search-input" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="search groups">
-                <button class="button" style="margin-bottom:0" id="search">
+                <a class="button" style="margin-bottom:0" id="search">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
-                    <?php esc_html_e( "Search", 'disciple_tools' ) ?>
-                </button>
+                    <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
+                </a>
             </div>
         </nav>
     </div>
@@ -38,7 +52,7 @@ declare(strict_types=1);
             <span class="hide-for-small-only"><?php esc_html_e( "Filter groups", 'disciple_tools' ) ?></span>
         </a>
         <a class="button" style="margin-bottom:0" id="open-search">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
+            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
             <span class="hide-for-small-only"><?php esc_html_e( "Search groups", 'disciple_tools' ) ?></span>
         </a>
         <div class="hideable-search" style="display: none; margin-top:5px">
@@ -71,24 +85,55 @@ declare(strict_types=1);
 
             <div class="reveal js-filters-modal" id="filters-modal">
                 <div class="js-filters-modal-content">
-                    <h5 class="hide-for-small-only"><?php esc_html_e( "Filters", "disciple_tools" ); ?></h5>
-                    <div class="list-views">
-                        <label class="list-view">
+                    <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( "Group Filters", "disciple_tools" ); ?></h5>
+                    <!-- @todo re-enable when we have more group filters-->
+<!--                    <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion">-->
+<!--                        <li class="accordion-item" data-accordion-item data-id="my">-->
+<!--                            <a href="#" class="accordion-title">-->
+<!--                                --><?php //esc_html_e( "Groups Assigned to me", 'disciple_tools' ) ?>
+<!--                                <span class="tab-count-span" data-tab="total_my"></span>-->
+<!--                            </a>-->
+<!--                            <div class="accordion-content" data-tab-content>-->
+<!--                                --><?php //print_filters() ?>
+<!--                            </div>-->
+<!--                        </li>-->
+<!--                        <li class="accordion-item" data-accordion-item data-id="shared">-->
+<!--                            <a href="#" class="accordion-title">-->
+<!--                                --><?php //esc_html_e( "Groups Shared with me", 'disciple_tools' ) ?>
+<!--                                <span class="tab-count-span" data-tab="total_shared"></span>-->
+<!--                            </a>-->
+<!--                            <div class="accordion-content" data-tab-content>-->
+<!--                                --><?php //print_filters() ?>
+<!--                            </div>-->
+<!--                        </li>-->
+<!--                        <li class="accordion-item" data-accordion-item data-id="all">-->
+<!--                            <a href="#" class="accordion-title">-->
+<!--                                --><?php //esc_html_e( "All my groups", 'disciple_tools' ) ?>
+<!--                                <span class="tab-count-span" data-tab="total_all"></span>-->
+<!--                            </a>-->
+<!--                            <div class="accordion-content" data-tab-content>-->
+<!--                                --><?php //print_filters() ?>
+<!--                            </div>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+                    <div class="list-views is-active">
+                        <label class="list-view ">
                             <input type="radio" name="view" value="all" class="js-list-view" autocomplete="off">
                             <?php esc_html_e( "All groups", "disciple_tools" ); ?>
-                            <span class="list-view__count js-list-view-count" data-value="all_groups">.</span>
+                            <span class="list-view__count js-list-view-count tab-count-span" data-value="all_groups" data-tab="total_all">.</span>
                         </label>
                         <label class="list-view">
                             <input type="radio" name="view" value="my" class="js-list-view" checked autocomplete="off">
                             <?php esc_html_e( "My groups", "disciple_tools" ); ?>
-                            <span class="list-view__count js-list-view-count" data-value="my_groups">.</span>
+                            <span class="list-view__count js-list-view-count tab-count-span" data-value="my_groups" data-tab="total_my">.</span>
                         </label>
                         <label class="list-view">
-                            <input type="radio" name="view" value="shared_with_me" class="js-list-view" autocomplete="off">
+                            <input type="radio" name="view" value="shared" class="js-list-view" autocomplete="off">
                             <?php esc_html_e( "Groups shared with me", "disciple_tools" ); ?>
-                            <span class="list-view__count js-list-view-count" data-value="groups_shared_with_me">.</span>
+                            <span class="list-view__count js-list-view-count tab-count-span" data-value="shared" data-tab="total_shared">.</span>
                         </label>
                     </div>
+
                     <h5><?php esc_html_e( 'Custom Filters', "disciple_tools" ); ?></h5>
                     <div style="margin-bottom: 5px">
                         <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
@@ -113,8 +158,10 @@ declare(strict_types=1);
     <div class="reveal" id="filter-modal" data-reveal>
         <div class="grid-container" >
             <div class="grid-x">
-                <div class="cell small-4">
-                    <h3><?php esc_html_e( 'New Filter', 'disciple_tools' )?></h3>
+                <div class="cell small-4" style="padding: 0 5px 5px 5px">
+                    <input type="text" id="new-filter-name"
+                           placeholder="<?php esc_html_e( 'Filter Name', 'disciple_tools' )?>"
+                           style="margin-bottom: 0"/>
                 </div>
                 <div class="cell small-8">
                     <div id="selected-filters"></div>
@@ -122,19 +169,21 @@ declare(strict_types=1);
             </div>
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
-                    <?php $fields = [ "assigned_to", "group_status", "group_type", "locations" ];
+                    <?php $fields = [ "assigned_to", "created_on", "group_status", "group_type", "location_grid" ];
                     $fields = apply_filters( 'dt_filters_additional_fields', $fields, "groups" );
+                    $allowed_types = [ "multi_select", "key_select", "boolean", "date", "location" ];
+                    foreach ( $dt_group_field_options as $field_key => $field){
+                        if ( in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
+                            $fields[] = $field_key;
+                        }
+                    }
                     $connections = Disciple_Tools_Posts::$connection_types;
                     $connections["assigned_to"] = [ "name" => __( "Assigned To", 'disciple_tools' ) ];
+                    $connections["location_grid"] = [ "name" => __( "Locations", 'disciple_tools' ) ];
                     ?>
-                    <ul class="vertical tabs" data-tabs id="example-tabs">
+                    <ul class="vertical tabs" data-tabs id="filter-tabs">
                         <?php foreach ( $fields as $index => $field ) :
-                            if ( $field === "health_metrics" ) : ?>
-                                <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
-                                    <a href="#<?php echo esc_html( $field )?>">
-                                        <?php echo esc_html( "Health Metrics" ) ?></a>
-                                </li>
-                            <?php elseif ( isset( $dt_group_field_options[$field]["name"] ) ) : ?>
+                            if ( isset( $dt_group_field_options[$field]["name"] ) ) : ?>
                                 <li class="tabs-title <?php if ( $index === 0 ){ echo "is-active"; } ?>" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>" <?php if ( $index === 0 ){ echo 'aria-selected="true"'; } ?>>
                                         <?php echo esc_html( $dt_group_field_options[$field]["name"] ) ?></a>
@@ -144,12 +193,17 @@ declare(strict_types=1);
                                     <a href="#<?php echo esc_html( $field )?>">
                                         <?php echo esc_html( $connections[$field]["name"] ) ?></a>
                                 </li>
+                            <?php elseif ( $field === "created_on" ) : ?>
+                                <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
+                                    <a href="#<?php echo esc_html( $field )?>">
+                                        <?php esc_html_e( "Creation Date", 'disciple_tools' ) ?></a>
+                                </li>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </ul>
                 </div>
 
-                <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="example-tabs">
+                <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="filter-tabs">
                     <?php foreach ( $fields as $index => $field ) :
                         $is_multi_select = isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "multi_select";
                         if ( in_array( $field, array_keys( $connections ) ) || $is_multi_select ) : ?>
@@ -170,21 +224,6 @@ declare(strict_types=1);
                                 </div>
                             </div>
 
-                        <?php elseif ( $field == "health_metrics" ) : ?>
-                            <div class="tabs-panel" id="health_metrics">
-                                <div id="health_metrics-options">
-                                    <?php foreach ( $dt_group_field_options as $dt_field_key => $dt_field_value ) :
-                                        if ( strpos( $dt_field_key, "church_" ) === 0 ) : ?>
-                                            <div>
-                                                <label style="cursor: pointer;">
-                                                    <input type="checkbox" value="<?php echo esc_html( $dt_field_key ) ?>" class="milestone-filter" autocomplete="off">
-                                                    <?php echo esc_html( $dt_field_value["name"] ) ?>
-                                                </label>
-                                            </div>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
-                                </div>
-                            </div>
                         <?php else : ?>
                             <div class="tabs-panel" id="<?php echo esc_html( $field ) ?>">
                                 <div id="<?php echo esc_html( $field ) ?>-options">
@@ -198,7 +237,40 @@ declare(strict_types=1);
                                                 </label>
                                             </div>
                                         <?php endforeach; ?>
-                                    <?php elseif ( isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "key_select" ) : ?>
+                                    <?php elseif ( isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "boolean" ) : ?>
+                                        <div class="boolean_options">
+                                            <label style="cursor: pointer">
+                                                <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>" data-label="<?php esc_html_e( "No", 'disciple_tools' ) ?>"
+                                                       value="0"> <?php esc_html_e( "No", 'disciple_tools' ) ?>
+                                            </label>
+                                        </div>
+                                        <div class="boolean_options">
+                                            <label style="cursor: pointer">
+                                                <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>" data-label="<?php esc_html_e( "Yes", 'disciple_tools' ) ?>"
+                                                       value="1"> <?php esc_html_e( "Yes", 'disciple_tools' ) ?>
+                                            </label>
+                                        </div>
+                                    <?php elseif ( $field === "created_on" || isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "date" ) : ?>
+                                        <strong><?php esc_html_e( "Range Start", 'disciple_tools' ) ?></strong>
+                                        <button class="clear-date-picker" style="color:firebrick"
+                                                data-for="<?php echo esc_html( $field ) ?>_start">
+                                            <?php echo esc_html_x( "Clear", 'Clear/empty input', 'disciple_tools' ) ?></button>
+                                        <input id="<?php echo esc_html( $field ) ?>_start"
+                                               autocomplete="off"
+                                               type="text" data-date-format='yy-mm-dd'
+                                               class="dt_date_picker" data-delimit="start"
+                                               data-field="<?php echo esc_html( $field ) ?>">
+                                        <br>
+                                        <strong><?php esc_html_e( "Range end", 'disciple_tools' ) ?></strong>
+                                        <button class="clear-date-picker"
+                                                style="color:firebrick"
+                                                data-for="<?php echo esc_html( $field ) ?>_end">
+                                            <?php echo esc_html_x( "Clear", 'Clear/empty input', 'disciple_tools' ) ?></button>
+                                        <input id="<?php echo esc_html( $field ) ?>_end"
+                                               autocomplete="off" type="text"
+                                               data-date-format='yy-mm-dd'
+                                               class="dt_date_picker" data-delimit="end"
+                                               data-field="<?php echo esc_html( $field ) ?>">
 
                                     <?php endif; ?>
                                 </div>
@@ -217,10 +289,12 @@ declare(strict_types=1);
                 </button>
             </div>
             <div class="cell small-8 filter-modal-right confirm-buttons">
-                <button class="button loader confirm-filter-contacts" type="button" id="confirm-filter-contacts" data-close >
+                <button style="display: inline-block" class="button loader confirm-filter-contacts"
+                        type="button" id="confirm-filter-contacts" data-close >
                     <?php esc_html_e( 'Filter Groups', 'disciple_tools' )?>
                 </button>
-                <button class="button loader confirm-filter-contacts" type="button" id="save-filter-edits" data-close style="display: none">
+                <button class="button loader confirm-filter-contacts"
+                        type="button" id="save-filter-edits" data-close style="display: none">
                     <?php esc_html_e( 'Save', 'disciple_tools' )?>
                 </button>
             </div>

@@ -37,68 +37,18 @@ function dt_register_required_plugins() {
      * If the source is NOT from the .org repo, then source is also required.
      */
     $plugins = array(
-
-
         array(
             'name'                  => 'iThemes Security',
             'slug'                  => 'better-wp-security',
             'required'              => false,
-            'version'               => '6.8.0',
+            'version'               => '7.2.0',
         ),
-//        array(
-//            'name'                  => 'Updraft Plus',
-//            'slug'                  => 'updraftplus',
-//            'required'              => false,
-//            'version'               => '1.14.2',
-//        ),
-//        array(
-//            'name'                  => 'WP Easy SMTP',
-//            'slug'                  => 'wp-easy-smtp',
-//            'required'              => false,
-//            'version'               => '1.1.1',
-//        ),
         array(
-            'name' => 'Host Header Injection Fix',
-            'slug' => 'host-header-injection-fix',
-            'version' => '1.1',
-            'required' => true,
+            'name'                  => 'Easy WP SMTP',
+            'slug'                  => 'easy-wp-smtp',
+            'required'              => false,
+            'version'               => '1.3.7',
         ),
-//        array(
-//            'name' => 'Disciple Tools - Zume',
-//            'slug' => 'disciple-tools-zume',
-//            'source' => 'https://github.com/DiscipleTools/disciple-tools-zume/archive/master.zip',
-//            'version' => '0.1.0',
-//            'is_callable' => 'dt_zume',
-//        ),
-//        array(
-//            'name' => 'Disciple Tools - Facebook',
-//            'slug' => 'disciple-tools-facebook',
-//            'source' => 'https://github.com/DiscipleTools/disciple-tools-facebook/archive/master.zip',
-//            'version' => '0.1.0',
-//            'is_callable' => 'dt_facebook',
-//        ),
-//        array(
-//            'name' => 'Disciple Tools - Demo Content',
-//            'slug' => 'disciple-tools-demo-content',
-//            'source' => 'https://github.com/DiscipleTools/disciple-tools-demo-content/archive/master.zip',
-//            'version' => '0.1.0',
-//            'is_callable' => 'dt_demo',
-//        ),
-//        array(
-//            'name' => 'Disciple Tools - Mailchimp',
-//            'slug' => 'disciple-tools-mailchimp',
-//            'source' => 'https://github.com/DiscipleTools/disciple-tools-mailchimp/archive/master.zip',
-//            'version' => '0.1.0',
-//            'is_callable' => 'dt_mailchimp',
-//        ),
-//        array(
-//            'name' => 'Disciple Tools - Webform',
-//            'slug' => 'disciple-tools-webform',
-//            'source' => 'https://github.com/DiscipleTools/disciple-tools-webform/archive/master.zip',
-//            'version' => '0.1.3',
-//            'is_callable' => 'dt_webform',
-//        ),
-
     );
 
     /*
@@ -114,7 +64,7 @@ function dt_register_required_plugins() {
         'capability'   => 'manage_options',    // Capability needed to view plugin install page, should be a capability associated with the parent menu used.
         'has_notices'  => true,                    // Show admin notices or not.
         'dismissable'  => true,                    // If false, a user cannot dismiss the nag message.
-        'dismiss_msg'  => 'These are recommended plugins for to complement your disciple tools system.',                      // If 'dismissable' is false, this message will be output at top of nag.
+        'dismiss_msg'  => 'These are recommended plugins to complement your disciple tools system.',                      // If 'dismissable' is false, this message will be output at top of nag.
         'is_automatic' => true,                   // Automatically activate plugins after installation or not.
         'message'      => '',                      // Message to output right before the plugins table.
 

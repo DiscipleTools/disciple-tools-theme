@@ -16,7 +16,6 @@ class Disciple_Tools_Migration_0007 extends Disciple_Tools_Migration {
         dt_get_option( 'dt_site_options' );
         dt_get_option( 'dt_site_custom_lists' );
         dt_get_option( 'base_user' );
-        dt_get_option( 'map_key' );
         dt_get_option( 'location_levels' );
 
     }

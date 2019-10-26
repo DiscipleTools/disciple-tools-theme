@@ -1,0 +1,3 @@
+[submodule "dt-core/libraries/plugin-update-checker"]
+	path = dt-core/libraries/plugin-update-checker
+	url = https://github.com/YahnisElsts/plugin-update-checker

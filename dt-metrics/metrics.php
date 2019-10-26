@@ -32,20 +32,29 @@ class Disciple_Tools_Metrics
         $url_path = dt_get_url_path();
         if ( strpos( $url_path, "metrics" ) !== false ) {
 
-            add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_google' ], 10 );
+            add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 10 );
 
+            //load base chart setup
+            require_once( get_template_directory() . '/dt-metrics/charts-base.php' );
             // load basic charts
             require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
+            require_once( get_template_directory() . '/dt-metrics/metrics-critical-path.php' );
             require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
+            require_once( get_template_directory() . '/dt-metrics/metrics-workers.php' );
+//            require_once( get_template_directory() . '/dt-metrics/metrics-prayer.php' );
+            require_once( get_template_directory() . '/dt-metrics/contacts/sources.php' );
+            require_once( get_template_directory() . '/dt-metrics/contacts/milestones.php' );
+//            require_once( get_template_directory() . '/dt-metrics/contacts/seeker-path.php' );
         }
     }
 
     // Enqueue maps and charts for standard metrics
-    public function enqueue_google() {
-        /* phpcs:ignore WordPress.WP.EnqueuedResourceParameters */
-        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', [], false );
-        /* phpcs:ignore WordPress.WP.EnqueuedResourceParameters */
-        wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . dt_get_option( 'map_key' ), array(), null, true );
+    public function enqueue_scripts() {
+        wp_register_script( 'datepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', false );
+        wp_enqueue_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css', array() );
+
+        wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, false, true );
+        wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, false, true );
     }
 
     /**
@@ -69,7 +78,15 @@ class Disciple_Tools_Metrics
         return $current;
     }
 
-
+    public static function convert_seconds( $seconds, $include_seconds = false ) {
+        $dt1 = new DateTime( "@0" );
+        $dt2 = new DateTime( "@$seconds" );
+        if ( $include_seconds ) {
+            return $dt1->diff( $dt2 )->format( '%a days, %h hours, %i minutes and %s seconds' );
+        } else {
+            return $dt1->diff( $dt2 )->format( '%a days, %h hours, %i minutes' );
+        }
+    }
 
     /**
      * Check permissions for if the user can view a certain report
@@ -99,14 +116,17 @@ class Disciple_Tools_Metrics
                 break;
         }
     }
-
-
 }
+Disciple_Tools_Metrics::instance();
 
 
 function dt_get_time_until_midnight() {
+
+    /**
+     * If looking for the timestamp for tomorrow midnight, use strtotime('tomorrow')
+     */
     $midnight = mktime( 0, 0, 0, date( 'n' ), date( 'j' ) +1, date( 'Y' ) );
-    return $midnight - current_time( 'timestamp' );
+    return intval( $midnight - current_time( 'timestamp' ) );
 }
 
 abstract class Disciple_Tools_Metrics_Hooks_Base
@@ -152,6 +172,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             'groups' => $results['groups'],
             'needs_training' => $needs_training,
             'fully_practicing' => (int) $results['groups'] - (int) $needs_training,
+            'teams' => (int) $results['teams'],
         ];
 
         return $chart;
@@ -163,28 +184,24 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         switch ( $type ) {
             case 'personal':
                 $results = self::query_my_contacts_progress( get_current_user_id() );
-
-                $chart[] = [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ];
-
                 foreach ( $results as $value ) {
-                    $chart[] = [ $value['label'], $value['count'], $value['count'] ];
+                    $chart[] = [
+                        'label' => $value['label'],
+                        'value' => $value['count']
+                    ];
                 }
                 break;
             case 'project':
-                $chart = self::query_project_contacts_progress();
-
+                $results = self::query_project_contacts_progress();
+                foreach ( $results as $value ) {
+                    $chart[] = [
+                        'label' => $value['label'],
+                        'value' => $value['value']
+                    ];
+                }
                 break;
             default:
-                $chart = [
-                    [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
-                    [ 'Contact Attempt Needed', 0, 0 ],
-                    [ 'Contact Attempted', 0, 0 ],
-                    [ 'Contact Established', 0, 0 ],
-                    [ 'First Meeting Scheduled', 0, 0 ],
-                    [ 'First Meeting Complete', 0, 0 ],
-                    [ 'Ongoing Meetings', 0, 0 ],
-                    [ 'Being Coached', 0, 0 ],
-                ];
+                $chart = [];
                 break;
         }
 
@@ -201,27 +218,20 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         switch ( $type ) {
             case 'personal':
                 $results = self::query_my_group_types();
-                $chart[] = [ 'Group Type', 'Number' ];
                 foreach ( $results as $result ) {
-                    $label = $types[$result['type']]["label"] ?? $result['type'];
-                    $chart[] = [ $label, intval( $result['count'] ) ];
+                    $result["label"] = $types[$result['type']]["label"] ?? $result['type'];
+                    $chart[] = $result;
                 }
                 break;
             case 'project':
                 $results = self::query_project_group_types();
-                $chart[] = [ 'Group Type', 'Number' ];
                 foreach ( $results as $result ) {
-                    $label = $types[$result['type']]["label"] ?? $result['type'];
-                    $chart[] = [ $label, intval( $result['count'] ) ];
+                    $result["label"] = $types[$result['type']]["label"] ?? $result['type'];
+                    $chart[] = $result;
                 }
                 break;
             default:
-                $chart = [
-                    [ 'Group Type', 'Number' ],
-                    [ 'Pre-Group', 0 ],
-                    [ 'Group', 0 ],
-                    [ 'Church', 0 ],
-                ];
+                $chart = [];
                 break;
         }
 
@@ -253,34 +263,25 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         }
 
         if ( $results ) {
-
+            $out_of = 0;
             if ( isset( $results[0]['out_of'] ) ) {
                 $out_of = $results[0]['out_of'];
             }
-
-            // Create rows from results
-            foreach ( $results as $result ) {
-                foreach ( $labels as $k_label => $v_label ) {
-                    if ( $k_label === $result['health_key'] ) {
-                        $value = intval( $result['out_of'] ) - intval( $result['count'] );
-                        $chart[] = [ $v_label, intval( $result['count'] ), intval( $value ), '' ];
-                        unset( $labels[ $k_label ] ); // remove established value from list
-                        break;
+            foreach ( $labels as $label_key => $label_value ) {
+                $row = [
+                    "label"      => $label_value,
+                    "practicing" => 0,
+                    "remaining"  => (int) $out_of
+                ];
+                foreach ( $results as $result ) {
+                    if ( $result['health_key'] === $label_key ) {
+                        $row["practicing"] = (int) $result["count"];
+                        $row["remaining"]  = intval( $result['out_of'] ) - intval( $result['count'] );
                     }
-                    $out_of = $result['out_of'];
                 }
+                $chart[] = $row;
             }
-        } else {
-            $out_of = 0;
         }
-
-        // Create remaining rows at full value
-        foreach ( $labels as $k_label => $v_label ) {
-            $chart[] = [ $v_label, 0, (int) $out_of, '' ];
-        }
-
-        array_unshift( $chart, [ 'Step', __( 'Practicing', 'disciple_tools' ), __( 'Not Practicing', 'disciple_tools' ), [ 'role' => 'annotation' ] ] ); // add top row
-
         return $chart;
     }
 
@@ -300,25 +301,24 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 $generation_tree = [ "Generations", "Pre-Group", "Group", "Church", [ "role" => "Annotation" ] ];
                 break;
         }
-        $first_row = [ "Generations" ];
-        foreach ( $generation_tree[0] as $key => $label ){
-            if ( $key != "generation" && $key != "total" ){
-                if ( isset( $groups_fields["group_type"]["default"][$key]["label"] ) ){
-                    $first_row[] = $groups_fields["group_type"]["default"][$key]["label"];
-                } else {
-                    $first_row[] = $key;
-                }
-            }
-        }
-        $first_row[] = [ "role" => "Annotation" ];
-        return array_merge( [ $first_row ], $generation_tree );
+//        $first_row = [ "Generations" ];
+//        foreach ( $generation_tree[0] as $key => $label ){
+//            if ( $key != "generation" && $key != "total" ){
+//                if ( isset( $groups_fields["group_type"]["default"][$key]["label"] ) ){
+//                    $first_row[] = $groups_fields["group_type"]["default"][$key]["label"];
+//                } else {
+//                    $first_row[] = $key;
+//                }
+//            }
+//        }
+        return $generation_tree;
     }
 
     public static function chart_project_hero_stats() {
-        $stats = self::query_project_hero_stats();
 
+        $stats = self::query_project_hero_stats();
         $group_health = self::query_project_group_health();
-        $needs_training = 0;
+        $needs_training = 0; // @todo
 
         if ( ! empty( $group_health ) ) {
             foreach ( $group_health as $value ) {
@@ -337,7 +337,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             'updates_needed' => $stats['needs_update'],
             'total_groups' => $stats['groups'],
             'needs_training' => $needs_training,
-            'fully_practicing' => (int) $stats['groups'] - (int) $needs_training,
+            'fully_practicing' => (int) $stats['groups'] - (int) $needs_training, // @todo
+            'teams' => $stats['teams'],
             'generations' => 0,
         ];
 
@@ -429,6 +430,11 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return wp_parse_args( $query_results, $defaults );
     }
 
+    /**
+     * @note active use
+     *
+     * @return array
+     */
     public static function query_project_contacts_progress() {
         global $wpdb;
 
@@ -510,14 +516,15 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             SELECT c.meta_value as type, count( a.ID ) as count
                 FROM $wpdb->posts as a
                 JOIN $wpdb->postmeta as b
-                ON a.ID=b.post_id
-                AND b.meta_key = 'group_status'
-                   AND b.meta_value = 'active'
+                    ON a.ID=b.post_id
+                    AND b.meta_key = 'group_status'
+                    AND b.meta_value = 'active'
                 JOIN $wpdb->postmeta as c
-                ON a.ID=c.post_id
-                AND c.meta_key = 'group_type'
+                    ON a.ID=c.post_id
+                    AND c.meta_key = 'group_type'
+                    AND c.meta_value != 'team'
                 WHERE a.post_status = 'publish'
-                  AND a.post_type = 'groups'
+                    AND a.post_type = 'groups'
                 GROUP BY type
                 ORDER BY type DESC
         ", ARRAY_A );
@@ -534,22 +541,23 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT c.meta_value as type, count( a.ID ) as count
-                FROM $wpdb->posts as a
-                JOIN $wpdb->postmeta as b
+            FROM $wpdb->posts as a
+            JOIN $wpdb->postmeta as b
                 ON a.ID=b.post_id
                 AND b.meta_key = 'group_status'
-                   AND b.meta_value = 'active'
-                JOIN $wpdb->postmeta as c
+               AND b.meta_value = 'active'
+            JOIN $wpdb->postmeta as c
                 ON a.ID=c.post_id
                 AND c.meta_key = 'group_type'
-                JOIN $wpdb->postmeta as d
+                AND c.meta_value != 'team'
+            JOIN $wpdb->postmeta as d
                  ON a.ID=d.post_id
                     AND d.meta_key = 'assigned_to'
                     AND d.meta_value = %s
-                WHERE a.post_status = 'publish'
+            WHERE a.post_status = 'publish'
                   AND a.post_type = 'groups'
-                GROUP BY type
-                ORDER BY type DESC
+            GROUP BY type
+            ORDER BY type DESC
         ",
         'user-' . $user_id ), ARRAY_A );
 
@@ -585,6 +593,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     GROUP BY post_id
                 ))
               as contacts,
+              
               (SELECT count(a.ID)
                 FROM $wpdb->posts as a
                   JOIN $wpdb->postmeta as b
@@ -609,6 +618,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     GROUP BY post_id
                   )
               ) as needs_accept,
+              
               (SELECT count(a.ID)
                 FROM $wpdb->posts as a
                   JOIN $wpdb->postmeta as b
@@ -633,6 +643,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     GROUP BY post_id
                 )
               ) as needs_update,
+              
               (SELECT count(a.ID)
                 FROM $wpdb->posts as a
                   JOIN $wpdb->postmeta as c
@@ -645,8 +656,27 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                       AND d.meta_value = 'active'
                 WHERE a.post_status = 'publish'
                   AND a.post_type = 'groups')
-                as `groups`
+                as `groups`,
+                
+                (SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                  JOIN $wpdb->postmeta as c
+                    ON a.ID=c.post_id
+                      AND c.meta_key = 'assigned_to'
+                      AND c.meta_value = CONCAT( 'user-', %s )
+                  JOIN $wpdb->postmeta as d
+                    ON a.ID=d.post_id
+                      AND d.meta_key = 'group_status'
+                      AND d.meta_value = 'active'
+                  JOIN $wpdb->postmeta as e
+                    ON a.ID=e.post_id
+                      AND e.meta_key = 'group_type'
+                      AND e.meta_value = 'team'
+                WHERE a.post_status = 'publish'
+                  AND a.post_type = 'groups')
+                as `teams`
             ",
+            $user_id,
             $user_id,
             $user_id,
             $user_id,
@@ -684,6 +714,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                   ON a.ID=c.post_id
                      AND c.meta_key = 'group_status'
                      AND c.meta_value = 'active'
+                JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                     AND e.meta_key = 'group_type'
+                     AND ( e.meta_value = 'group' OR e.meta_value = 'church' )
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
               ) as out_of
@@ -696,12 +730,16 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                   ON a.ID=c.post_id
                      AND c.meta_key = 'group_status'
                      AND c.meta_value = 'active'
+                JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                     AND e.meta_key = 'group_type'
+                     AND ( e.meta_value = 'group' OR e.meta_value = 'church' )
                 LEFT JOIN $wpdb->postmeta as d
                   ON ( a.ID=d.post_id
                   AND d.meta_key = 'health_metrics' )
               WHERE a.post_status = 'publish'
                   AND a.post_type = 'groups'
-              GROUP BY d.meta_key
+              GROUP BY d.meta_value
         ",
             'user-' . $user_id,
             'user-' . $user_id
@@ -713,7 +751,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     public static function query_project_group_health() {
         global $wpdb;
 
-        $results = $wpdb->get_results($wpdb->prepare( "
+        $results = $wpdb->get_results( "
             SELECT d.meta_value as health_key,
               count(distinct(a.ID)) as count,
               ( SELECT count(*)
@@ -722,6 +760,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                   ON a.ID=c.post_id
                      AND c.meta_key = 'group_status'
                      AND c.meta_value = 'active'
+                JOIN $wpdb->postmeta as d
+                  ON a.ID=d.post_id
+                     AND d.meta_key = 'group_type'
+                     AND ( d.meta_value = 'group' OR d.meta_value = 'church' )
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
               ) as out_of
@@ -732,11 +774,15 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                      AND c.meta_value = 'active'
                 JOIN $wpdb->postmeta as d
                   ON ( a.ID=d.post_id
-                    AND d.meta_key = %s )
+                    AND d.meta_key = 'health_metrics' )
+                JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                     AND e.meta_key = 'group_type'
+                     AND ( e.meta_value = 'group' OR e.meta_value = 'church' )
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
               GROUP BY d.meta_value
-        ", 'health_metrics' ), ARRAY_A );
+        ", ARRAY_A );
 
         return $results;
     }
@@ -762,24 +808,26 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
               JOIN $wpdb->postmeta as c
                 ON a.ID = c.post_id
                    AND c.meta_key = 'group_status'
-              LEFT JOIN $wpdb->postmeta as d
+              JOIN $wpdb->postmeta as d
                 ON a.ID = d.post_id
                    AND d.meta_key = 'group_type'
+                   AND d.meta_value != 'team'
             WHERE a.post_status = 'publish'
                   AND a.post_type = 'groups'
                   AND a.ID NOT IN (
-              SELECT DISTINCT (p2p_from)
-              FROM $wpdb->p2p
-              WHERE p2p_type = 'groups_to_groups'
-              GROUP BY p2p_from)
+                      SELECT DISTINCT (p2p_from)
+                      FROM $wpdb->p2p
+                      WHERE p2p_type = 'groups_to_groups'
+                      GROUP BY p2p_from)
             UNION
             SELECT
-              p.p2p_from                          as id,
-              p.p2p_to                            as parent_id,
+              p.p2p_from  as id,
+              p.p2p_to    as parent_id,
               (SELECT meta_value
                FROM $wpdb->postmeta
                WHERE post_id = p.p2p_from
-                     AND meta_key = 'group_type') as group_type,
+                     AND meta_key = 'group_type')
+                     as group_type,
                (SELECT meta_value
                FROM $wpdb->postmeta
                WHERE post_id = p.p2p_from
@@ -838,10 +886,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             as needs_accept,
             (SELECT count(a.ID)
                 FROM $wpdb->posts as a
-                            JOIN $wpdb->postmeta as b
-                            ON a.ID=b.post_id
-                               AND b.meta_key = 'requires_update'
-                               AND b.meta_value = '1'
+                    JOIN $wpdb->postmeta as b
+                    ON a.ID=b.post_id
+                       AND b.meta_key = 'requires_update'
+                       AND b.meta_value = '1'
                JOIN $wpdb->postmeta as d
                ON a.ID=d.post_id
                       AND d.meta_key = 'overall_status'
@@ -862,9 +910,26 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 ON a.ID=d.post_id
                     AND d.meta_key = 'group_status'
                 AND d.meta_value = 'active'
+                JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                     AND e.meta_key = 'group_type'
+                     AND e.meta_value != 'team'
                 WHERE a.post_status = 'publish'
                 AND a.post_type = 'groups')
-            as `groups`
+            as `groups`,
+            (SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as d
+                ON a.ID=d.post_id
+                    AND d.meta_key = 'group_status'
+                AND d.meta_value = 'active'
+                JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                     AND e.meta_key = 'group_type'
+                     AND e.meta_value = 'team'
+                WHERE a.post_status = 'publish'
+                AND a.post_type = 'groups')
+            as `teams`
         ",
         ARRAY_A );
 
@@ -877,6 +942,17 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         }
 
         return $numbers;
+    }
+
+
+}
+
+// Tests if timestamp is valid.
+if ( ! function_exists( 'is_valid_timestamp' ) ) {
+    function is_valid_timestamp( $timestamp ) {
+        return ( (string) (int) $timestamp === $timestamp )
+            && ( $timestamp <= PHP_INT_MAX )
+            && ( $timestamp >= ~PHP_INT_MAX );
     }
 }
 

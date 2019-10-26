@@ -32,11 +32,6 @@ if ( !defined( 'ABSPATH' ) ) {
  * @return bool|\WP_Error
  */
 function dt_send_email( $email, $subject, $message_plain_text ) {
-    //@todo, remove this. Even System needs to be able to send emails.
-    // Check permission to send email
-//    if ( ! Disciple_Tools_Posts::can_access( 'contacts' ) ) {
-//        return new WP_Error( 'send_email_permission_error', 'You do not have the minimum permissions to send an email' );
-//    }
 
     // Sanitize
     $email = sanitize_email( $email );
@@ -45,23 +40,31 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
 
     $subject = dt_get_option( "dt_email_base_subject" ) . ": " . $subject;
 
-    $continue = apply_filters( "dt_sent_email_check", true, $email, $subject, $message_plain_text );
+    $user = get_user_by( "email", $email );
+    $continue = true;
+    // don't send notifications if the user only has "registered" role.
+    if ( $user && in_array( "registered", $user->roles ) && sizeof( $user->roles ) === 1 ){
+        $continue = false;
+    }
+    $continue = apply_filters( "dt_sent_email_check", $continue, $email, $subject, $message_plain_text );
     if ( !$continue ){
         return false;
     }
+    wp_mail( $email, $subject, $message_plain_text );
+//    @todo figure why this async method is slower.
     // Send email
-    try {
-        $send_email = new Disciple_Tools_Notifications_Email();
-        $send_email->launch(
-            [
-                'email'              => $email,
-                'subject'            => $subject,
-                'message_plain_text' => $message_plain_text,
-            ]
-        );
-    } catch ( Exception $e ) {
-        return false;
-    }
+//    try {
+//        $send_email = new Disciple_Tools_Notifications_Email();
+//        $send_email->launch(
+//            [
+//                'email'              => $email,
+//                'subject'            => $subject,
+//                'message_plain_text' => $message_plain_text,
+//            ]
+//        );
+//    } catch ( Exception $e ) {
+//        return false;
+//    }
 
     return true;
 }
@@ -94,6 +97,7 @@ function dt_send_email_about_post( string $email, int $post_id, string $message_
     $post_type = get_post_type( $post_id );
     $contact_url = home_url( '/' ) . $post_type . '/' . $post_id;
     $full_message = $message_plain_text . "\r\n\r\n--\r\n" . __( 'Click here to view or reply', 'disciple_tools' ) . ": $contact_url";
+    $full_message .= "\r\n" . __( 'Do not reply directly to this email.', 'disciple_tools' );
     $post_label = Disciple_Tools_Posts::get_label_for_post_type( $post_type, true );
 
     return dt_send_email(
@@ -152,9 +156,16 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
      * Not used when launching via the dt_send_email() function.
      */
     protected function run_action() {
-        $email = sanitize_email( $_POST[0]['email'] );
-        $subject = sanitize_text_field( $_POST[0]['subject'] );
-        $message_plain_text = sanitize_textarea_field( $_POST[0]['message_plain_text'] );
+        /**
+         * Nonce validation is done through a custom nonce process inside Disciple_Tools_Async_Task
+         * to allow for asynchronous processing. This is a valid nonce but is not recognized by the WP standards checker.
+         */
+        // WordPress.CSRF.NonceVerification.NoNonceVerification
+        // @phpcs:disable
+        $email = isset( $_POST[0]['email'] ) ? sanitize_email( wp_unslash( $_POST[0]['email'] ) ) : '';
+        $subject = isset( $_POST[0]['subject'] ) ? sanitize_text_field( wp_unslash( $_POST[0]['subject'] ) ) : '';
+        $message_plain_text = isset( $_POST[0]['message_plain_text'] ) ? sanitize_textarea_field( $_POST[0]['message_plain_text'] ) : '';
+        // phpcs:enable
 
         do_action( "dt_async_$this->action", $email, $subject, $message_plain_text );
 

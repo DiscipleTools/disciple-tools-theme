@@ -1,7 +1,5 @@
 <?php
 ( function() {
-    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
-    $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
     ?>
 
     <div class="grid-y">
@@ -14,13 +12,16 @@
         </div>
         <div class="cell grid-x" style="margin-bottom: 20px">
             <div class="cell auto">
-                <?php if ( is_singular( "contacts" ) ) : ?>
+                <?php if ( is_singular( "contacts" ) ) :
+                    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true, true );
+                    $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
+                    ?>
                 <ul class="dropdown menu" data-dropdown-menu $dropdownmenu-arrow-color="white">
                     <li style="border-radius: 5px">
                         <a class="button menu-white-dropdown-arrow"
                            style="background-color: #00897B; color: white;">
                             <?php esc_html_e( "Quick actions", 'disciple_tools' ) ?></a>
-                        <ul class="menu">
+                        <ul class="menu" style="width: max-content">
                             <?php
                             foreach ( $contact_fields as $field => $val ) {
                                 if ( strpos( $field, "quick_button" ) === 0 ) {
@@ -51,7 +52,8 @@
             </div>
         </div>
         <div class="cell">
-            <h3 class="section-header"><?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?></h3>
+            <h3 class="section-header" style="display: inline-block"><?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?></h3>
+            <div id="comments-activity-spinner" style="display: inline-block" class="loading-spinner"></div>
             <div>
             <span style="display: inline-block; margin-right:5px; vertical-align:top; font-weight: bold"><?php esc_html_e( "Showing:", 'disciple_tools' ) ?></span>
             <ul id="comment-activity-tabs" style="display: inline-block; margin: 0">
@@ -130,7 +132,7 @@
 
     <div class="reveal" id="edit-comment-modal" data-reveal>
         <p class="lead"><?php esc_html_e( 'Edit Comment:', 'disciple_tools' )?></p>
-        <textarea id="comment-to-edit" rows="10"></textarea>
+        <textarea id="comment-to-edit" rows="10" dir="auto"></textarea>
         <div class="grid-x">
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
                 <?php esc_html_e( 'Close', 'disciple_tools' )?>

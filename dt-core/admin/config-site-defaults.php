@@ -25,8 +25,17 @@ add_filter( 'comment_notification_recipients', 'dt_override_comment_notice_recip
 add_filter( 'language_attributes', 'dt_custom_dir_attr' );
 add_filter( 'retrieve_password_message', 'dt_custom_password_reset', 99, 4 );
 add_filter( 'wpmu_signup_blog_notification_email', 'dt_wpmu_signup_blog_notification_email', 10, 8 );
-
-
+add_filter( 'login_errors', 'login_error_messages' );
+remove_action( 'plugins_loaded', 'wp_maybe_load_widgets', 0 );  //don't load widgets as we don't use them
+remove_action( "init", "wp_widgets_init", 1 );
+//set security headers
+add_action( 'send_headers', 'dt_security_headers_insert' );
+// admin section doesn't have a send_headers action so we abuse init
+add_action( 'admin_init', 'dt_security_headers_insert' );
+// wp-login.php doesn't have a send_headers action so we abuse init
+add_action( 'login_init', 'dt_security_headers_insert' );
+//add_filter( 'wp_handle_upload_prefilter', 'dt_disable_file_upload' ); //this breaks uploading plugins and themes
+add_filter( 'cron_schedules', 'dt_cron_schedules' );
 /*********************************************************************************************
  * Functions
  */
@@ -165,9 +174,6 @@ function dt_get_option( string $name ) {
             }
             break;
 
-        case 'map_key':
-            return Disciple_Tools_Google_Geocode_API::get_map_key();
-            break;
 
         case 'location_levels':
             $default_levels = dt_get_location_levels();
@@ -211,6 +217,10 @@ function dt_get_option( string $name ) {
         case 'group_type':
             $site_options = dt_get_option( "dt_site_custom_lists" );
             return $site_options["group_type"];
+
+        case 'group_preferences':
+            $site_options = dt_get_option( "dt_site_options" );
+            return $site_options["group_preferences"];
         default:
             return false;
             break;
@@ -265,7 +275,7 @@ function dt_update_option( $name, $value, $autoload = false ) {
 function dt_get_site_options_defaults() {
     $fields = [];
 
-    $fields['version'] = '6';
+    $fields['version'] = '8';
 
     $fields['user_notifications'] = [
         'new_web'          => true,
@@ -336,7 +346,7 @@ function dt_get_site_options_defaults() {
     ];
 
     $fields['update_required'] = [
-        "enabled" => false,
+        "enabled" => true,
         "options" => [
             [
                 "status"      => "active",
@@ -382,6 +392,20 @@ function dt_get_site_options_defaults() {
             ]
         ]
     ];
+    $fields["group_update_required"] = [
+        "enabled" => true,
+        "options" => [
+            [
+                "status"      => "active",
+                "days"        => 30,
+                "comment"     => __( "We haven't heard about this group in a while. Do you have an update?", 'disciple_tools' )
+            ]
+        ]
+    ];
+    $fields["group_preferences"] = [
+        "church_metrics" => true,
+        "four_fields" => false,
+    ];
 
     return $fields;
 }
@@ -400,7 +424,7 @@ function dt_get_site_options_defaults() {
 function dt_get_site_custom_lists( string $list_title = null ) {
     $fields = [];
 
-    $fields['version'] = 9;
+    $fields['version'] = 10;
 
     // the prefix dt_user_ assists db meta queries on the user
     $fields['user_fields'] = [
@@ -530,7 +554,7 @@ function dt_get_site_custom_lists( string $list_title = null ) {
         'transfer' => [
             'label'       => 'Transfer',
             'key'         => 'transfer',
-            'description' => 'Contacts coming an contact transfer partnership with another DT site.',
+            'description' => 'Contacts coming an contact transfer partnership with another Disciple.Tools site.',
             'enabled'     => true,
         ],
 
@@ -540,11 +564,30 @@ function dt_get_site_custom_lists( string $list_title = null ) {
         "work"  => [ "label" => __( 'Work', 'disciple_tools' ) ],
         "other" => [ "label" => __( 'Other', 'disciple_tools' ) ],
     ];
+    $fields["group_preferences"] = [
+        "church_metrics" => true,
+        "four_fields" => false,
+    ];
+
+    $fields["user_workload_status"] = [
+        "active" => [
+            "label" => __( "Accepting new contacts", 'disciple_tools' ),
+            "color" => "#4caf50"
+        ],
+        "existing" => [
+            "label" => __( "I'm only investing in existing contacts", 'disciple_tools' ),
+            "color" => "#ff9800"
+        ],
+        "too_many" => [
+            "label" => __( "I have too many contacts", 'disciple_tools' ),
+            "color" => "#F43636"
+        ]
+    ];
 
 
     // $fields = apply_filters( 'dt_site_custom_lists', $fields );
 
-        return $fields[ $list_title ] ?? $fields;
+    return $fields[ $list_title ] ?? $fields;
 }
 
 function dt_get_location_levels() {
@@ -651,9 +694,11 @@ function dt_custom_dir_attr( $lang ){
 
     $current_user = wp_get_current_user();
     $user_language = $current_user->locale;
-    $dir = _x( 'text direction', 'either rtl or ltr', 'disciple_tools' );
-    if ( $dir === 'text direction' || !$dir || empty( $dir ) ){
+    $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
+    if ( $dir === 'ltr' || $dir === 'text direction' || !$dir || empty( $dir ) ){
         $dir = "ltr";
+    } else {
+        $dir = "rtl";
     }
     $dir_attr = 'dir="' . $dir . '"';
     return 'lang="' . $user_language .'" ' .$dir_attr;
@@ -689,74 +734,60 @@ function dt_custom_password_reset( $message, $key, $user_login, $user_data ){
 
 }
 
-
-/**
- * The the base site url with, including the subfolder if wp is installed in a subfolder.
- * @return string
- */
-function dt_get_url_path() {
-    if ( isset( $_SERVER["HTTP_HOST"] ) ) {
-        $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
-        if ( isset( $_SERVER["REQUEST_URI"] ) ) {
-            $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
-        }
-    }
-    return trim( str_replace( get_site_url(), "", $url ), '/' );
-}
-
-/**
- * check is the current url is a rest api request
- * @return bool
- */
-function dt_is_rest_url() {
-    $is_rest = false;
-    if ( function_exists( 'rest_url' ) && !empty( $_SERVER['REQUEST_URI'] ) ) {
-        $rest_url_base = get_rest_url( get_current_blog_id(), '/' );
-        $rest_path = trim( parse_url( $rest_url_base, PHP_URL_PATH ), '/' );
-        $request_path = trim( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/' );
-        $is_rest = ( strpos( $request_path, $rest_path ) === 0 );
-    }
-    return $is_rest;
-}
-
-/**
- * @param $date
- * @param string $format  options are short, long, or [custom]
- *
- * @return bool|int|string
- */
-
-function dt_format_date( $date, $format = 'short' ){
-    $date_format = get_option( 'date_format' );
-    $time_format = get_option( 'time_format' );
-    if ( $format === 'short' ){
-        $format = $date_format;
-    } else if ( $format === 'long') {
-        $format = $date_format . ' ' . $time_format;
-    }
-    if ( is_numeric( $date ) ){
-        $formatted = date_i18n( $format, $date );
-    } else {
-        $formatted = mysql2date( $format, $date );
-    }
-    return $formatted;
-}
-
-function dt_date_start_of_year(){
-    $this_year = date( 'Y' );
-    $timestamp = strtotime( $this_year . '-01-01' );
-    return $timestamp;
-}
-function dt_date_end_of_year(){
-    $this_year = (int) date( 'Y' );
-    return strtotime( ( $this_year + 1 ) . '-01-01' );
-}
-
-function dt_get_year_from_timestamp( int $time ){
-    return date( "Y", $time );
-}
-
-
 function dt_wpmu_signup_blog_notification_email( $message, $domain, $path, $title, $user, $user_email, $key, $meta ){
     return str_replace( "blog", "site", $message );
+}
+
+/**
+ * change the error message if it is invalid_username or incorrect password
+ *
+ * @param $message string Error string provided by WordPress
+ * @return $message string Modified error string
+*/
+function login_error_messages( $message ){
+    global $errors;
+    if ( isset( $errors->errors['invalid_username'] ) || isset( $errors->errors['incorrect_password'] ) ) {
+        $message = __( '<strong>ERROR</strong>: Invalid username/password combination.', 'disciple_tools' ) . ' ' .
+        sprintf(
+            ( '<a href="%1$s" title="%2$s">%3$s</a>?' ),
+            site_url( 'wp-login.php?action=lostpassword', 'login' ),
+            __( 'Reset password', 'disciple_tools' ),
+            __( 'Lost your password', 'disciple_tools' )
+        );
+    }
+    return $message;
+}
+
+
+/*
+ * Add security headers
+ */
+function dt_security_headers_insert() {
+    $xss_disabled = get_option( "dt_disable_header_xss" );
+    $referer_disabled = get_option( "dt_disable_header_referer" );
+    $content_type_disabled = get_option( "dt_disable_header_content_type" );
+    $strict_transport_disabled = get_option( "dt_disable_header_strict_transport" );
+    if ( !$xss_disabled ){
+        header( "X-XSS-Protection: 1; mode=block" );
+    }
+    if ( !$referer_disabled ){
+        header( "Referrer-Policy: same-origin" );
+    }
+    if ( !$content_type_disabled ){
+        header( "X-Content-Type-Options: nosniff" );
+    }
+    if ( !$strict_transport_disabled && is_ssl() ){
+        header( "Strict-Transport-Security: max-age=2592000" );
+    }
+//    header( "Content-Security-Policy: default-src 'self' https:; img-src 'self' https: data:; script-src https: 'self' 'unsafe-inline' 'unsafe-eval'; style-src  https: 'self' 'unsafe-inline'" );
+}
+
+
+
+function dt_cron_schedules( $schedules ) {
+    $schedules['weekly'] = array(
+        'interval' => 60 * 60 * 24 * 7, # 604,800, seconds in a week
+        'display'  => __( 'Weekly' )
+    );
+    return $schedules;
 }

@@ -7,7 +7,9 @@ node_modules/
 dt-people-groups/json/*
 composer.phar
 .vscode/*
-composer.lock
 CodeSniffer.conf
 phpcbf.phar
 phpcs.phar
+
+*/development-only/*
+

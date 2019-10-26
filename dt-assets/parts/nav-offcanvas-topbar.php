@@ -3,6 +3,15 @@
  * By default, Foundation will use .title-bar for small, and .top-bar for
  * medium up
  */
+global $pagenow;
+if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
+    /**
+     * Removes blog header if user is activating.
+     * @see wp-activate.php
+     */
+    return;
+}
+
 ?>
 
 <div class="title-bar show-for-small-only" data-responsive-toggle="top-bar-menu">
@@ -10,25 +19,45 @@
         <button class="" type="button" data-open="off-canvas">
             <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/hamburger.svg" ?>">
         </button>
-        <div class="title-bar-title"><?php esc_html_e( "Disciple Tools" ); ?></div>
+        <div class="title-bar-title" style="margin-left: 5px"><?php esc_html_e( "Disciple Tools" ); ?></div>
     </div>
     <div class="title-bar-right">
-        <a href="<?php echo esc_url( site_url( '/notifications' ) ); ?>">
+        <ul class="dropdown menu" data-dropdown-menu style="display:inline-block; margin-left: 10px">
+            <li class="has-submenu center-items" style="width:21px;">
+                <button>
+                    <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add.svg" ?>" style="width:21px;">
+                </button>
+                <ul class="submenu menu vertical">
+                    <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'contacts/new'; ?>"><?php esc_html_e( 'New Contact', 'disciple_tools' )?></a></li>
+                    <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'groups/new'; ?>"><?php esc_html_e( 'New Group', 'disciple_tools' )?></a></li>
+                    <?php do_action( 'dt_nav_add_post_menu' ) ?>
+                </ul>
+            </li>
+        </ul>
+
+        <a href="<?php echo esc_url( site_url( '/notifications' ) ); ?>" style="margin-left: 10px">
             <img title="<?php esc_html_e( "Notifications", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
             <span class="badge alert notification-count" style="display:none"></span>
         </a>
-        <a href="<?php echo esc_url( site_url( '/' ) ) . 'settings/'; ?>">
+
+        <a href="<?php echo esc_url( site_url( '/' ) ) . 'settings/'; ?>" style="margin-left: 10px">
             <img title="<?php esc_html_e( "Settings", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/gear.svg" ?>">
         </a>
+
     </div>
 </div>
 
 <div data-sticky-container class="hide-for-small-only">
     <div class="top-bar" id="top-bar-menu"
          data-sticky style="width:100%;margin-top:0">
-        <div style="margin-bottom:6px;padding-top:6px">
-            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/disciple-tools-logo-beta.png" ?>"
-                 style="margin:0 17px; height: 20px">
+        <div>
+            <img src="<?php
+            /**
+             * Filter for replacing the logo
+             */
+            $url = apply_filters( 'dt_default_logo', get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-beta.png" );
+            echo esc_url( $url );
+            ?>" style="margin:0 17px; height: 20px">
         </div>
         <div class="top-bar-left">
             <ul class="menu">
@@ -40,8 +69,18 @@
                 <li class="image-menu-nav">
                     <a href="<?php echo esc_url( site_url( '/' ) ) . 'settings/'; ?>">
                         <img title="<?php esc_html_e( "Profile", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/profile.svg" ?>">
-                        <?php echo esc_html( wp_get_current_user()->display_name ); ?>
+                        <span dir="auto"><?php echo esc_html( wp_get_current_user()->display_name ); ?></span>
                     </a>
+                </li>
+                <li class="has-submenu center-items">
+                    <button>
+                        <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add.svg" ?>" style="width:21px;">
+                    </button>
+                    <ul class="submenu menu vertical">
+                        <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'contacts/new'; ?>"><?php esc_html_e( 'New Contact', 'disciple_tools' )?></a></li>
+                        <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'groups/new'; ?>"><?php esc_html_e( 'New Group', 'disciple_tools' )?></a></li>
+                        <?php do_action( 'dt_nav_add_post_menu' ) ?>
+                    </ul>
                 </li>
                 <li class="image-menu-nav">
                     <a href="<?php echo esc_url( site_url( '/notifications' ) ); ?>">
@@ -73,4 +112,3 @@
         </div>
     </div>
 </div>
-

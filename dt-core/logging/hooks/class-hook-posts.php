@@ -7,11 +7,13 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
     public function __construct() {
-        add_action( 'transition_post_status', [ &$this, 'hooks_transition_post_status' ], 10, 3 );
+        add_action( 'wp_insert_post', [ &$this, 'hooks_new_post' ], 10, 3 );
         add_action( 'delete_post', [ &$this, 'hooks_delete_post' ] );
+
         add_action( "added_post_meta", [ &$this, 'hooks_added_post_meta' ], 10, 4 );
         add_action( "updated_post_meta", [ &$this, 'hooks_updated_post_meta' ], 10, 4 );
         add_action( "delete_post_meta", [ &$this, 'post_meta_deleted' ], 10, 4 );
+
         add_action( 'p2p_created_connection', [ &$this, 'hooks_p2p_created' ], 10, 1 );
         add_action( 'p2p_delete_connections', [ &$this, 'hooks_p2p_deleted' ], 10, 1 );
 
@@ -29,53 +31,42 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         return $title;
     }
 
-    public function hooks_transition_post_status( $new_status, $old_status, $post ) {
-        if ( 'auto-draft' === $old_status && ( 'auto-draft' !== $new_status && 'inherit' !== $new_status ) ) {
-            // page created
-            $action = 'created';
-        }
-        elseif ( 'auto-draft' === $new_status || ( 'new' === $old_status && 'inherit' === $new_status ) ) {
-            // nvm.. ignore it.
-            return;
-        }
-        elseif ( 'trash' === $new_status ) {
-            // page was deleted.
-            $action = 'trashed';
-        }
-        elseif ( 'trash' === $old_status ) {
-            $action = 'restored';
-        }
-        elseif ( 'draft' === $old_status && 'published' == $new_status ) {
-            $action = 'published';
-        }
-        else {
-            return;
-        }
+    /**
+     * @see /wp-includes/post.php:3684
+     *
+     * @param $post_ID
+     * @param $post
+     * @param $update
+     */
+    public function hooks_new_post( $post_ID, $post, $update ) {
+        if ( ! $update ) {
+            $activity = [
+                'action'         => 'created',
+                'object_type'    => $post->post_type,
+                'object_subtype' => '',
+                'object_id'      => $post->ID,
+                'object_name'    => $this->_draft_or_post_title( $post->ID ),
+                'meta_id'        => '',
+                'meta_key'       => '',
+                'meta_value'     => '',
+                'meta_parent'    => '',
+                'object_note'    => '',
+                'hist_time'      => time() - 1,
+            ];
+            if ( !get_current_user_id()){
+                $user = wp_get_current_user();
+                if ( $user->display_name ){
+                    $activity['object_note'] = "Created with site link: " . $user->display_name;
+                    if ( isset( $user->site_key ) ){
+                        $activity["user_caps"] = $user->site_key;
+                    }
+                }
+            }
 
-        if ( wp_is_post_revision( $post->ID ) ) { // Skip for revision.
-            return;
+            dt_activity_insert( $activity );
         }
-
-
-        if ( 'nav_menu_item' === get_post_type( $post->ID ) ) { // Skip for menu items.
-            return;
-        }
-
-        dt_activity_insert(
-            [
-                'action' => $action,
-                'object_type' => 'Post',
-                'object_subtype' => $post->post_type,
-                'object_id' => $post->ID,
-                'object_name' => $this->_draft_or_post_title( $post->ID ),
-                'meta_id'           => ' ',
-                'meta_key'          => ' ',
-                'meta_value'        => ' ',
-                'meta_parent'        => ' ',
-                'object_note'       => ' ',
-            ]
-        );
     }
+
 
     public function hooks_delete_post( $post_id ) {
         if ( wp_is_post_revision( $post_id ) ) {
@@ -96,8 +87,8 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         dt_activity_insert(
             [
                 'action' => 'deleted',
-                'object_type' => 'Post',
-                'object_subtype' => $post->post_type,
+                'object_type' => $post->post_type,
+                'object_subtype' => '',
                 'object_id' => $post->ID,
                 'object_name' => $this->_draft_or_post_title( $post->ID ),
                 'meta_id'           => ' ',
@@ -137,7 +128,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         // get the previous value
         $prev = '';
         $prev_value = '';
-        if ( !$new){
+        if ( !$new ){
             $prev = $wpdb->get_results( $wpdb->prepare(
                 "SELECT
                     *
@@ -175,9 +166,6 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 break;
             case 'groups':
                 $fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
-                break;
-            case 'locations':
-                $fields = Disciple_Tools_Location_Post_Type::instance()->get_custom_fields_settings();
                 break;
             default:
                 $fields = '';

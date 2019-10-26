@@ -48,14 +48,7 @@
         ?>
         </title>
 
-<!--        <link rel="pingback" href="--><?php //bloginfo('pingback_url'); ?><!--">-->
-
-        <!-- Start wp_head -->
         <?php wp_head(); ?>
-        <!-- End wp_head -->
-
-        <!-- Drop Google Analytics here -->
-        <!-- end analytics -->
 
     </head>
 

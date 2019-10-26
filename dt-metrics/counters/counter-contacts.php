@@ -141,4 +141,247 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
         }
     }
 
+
+    public static function new_contact_count( int $start, int $end ){
+        global $wpdb;
+        $res = $wpdb->get_var(
+            $wpdb->prepare( "
+                SELECT count(ID) as count
+                FROM $wpdb->posts
+                WHERE post_type = 'contacts'
+                  AND post_status = 'publish'
+                  AND post_date >= %s
+                  AND post_date < %s
+                  AND ID NOT IN (
+                    SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND  meta_value = 'user'
+                    GROUP BY post_id
+                )",
+                dt_format_date( $start, 'Y-m-d' ),
+                dt_format_date( $end, 'Y-m-d' )
+            )
+        );
+        return $res;
+    }
+
+    public static function assigned_contacts_count( int $start, int $end ){
+        global $wpdb;
+        $res = $wpdb->get_var(
+            $wpdb->prepare( "
+                SELECT COUNT( DISTINCT(log.object_id) ) as `value`
+                FROM $wpdb->dt_activity_log log
+                INNER JOIN $wpdb->postmeta as type ON ( log.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
+                INNER JOIN $wpdb->posts post
+                ON ( 
+                    post.ID = log.object_id
+                    AND post.post_type = 'contacts'
+                    AND post.post_status = 'publish'
+                )
+                WHERE log.meta_key = 'overall_status'
+                AND log.meta_value = 'assigned'
+                AND log.object_type = 'contacts' 
+                AND log.hist_time > %s
+                AND log.hist_time < %s
+            ", $start, $end
+            )
+        );
+        return $res;
+    }
+
+    public static function active_contacts_count( int $start, int $end ){
+        global $wpdb;
+        $res = $wpdb->get_var(
+            $wpdb->prepare( "
+                SELECT COUNT( DISTINCT(log.object_id) ) as `value`
+                FROM $wpdb->dt_activity_log log
+                INNER JOIN $wpdb->postmeta as type ON ( log.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
+                INNER JOIN $wpdb->posts post
+                ON ( 
+                    post.ID = log.object_id
+                    AND post.post_type = 'contacts'
+                    AND post.post_status = 'publish'
+                )
+                WHERE log.meta_key = 'overall_status'
+                AND log.meta_value = 'active'
+                AND log.object_type = 'contacts' 
+                AND log.hist_time > %s
+                AND log.hist_time < %s
+            ", $start, $end
+            )
+        );
+        return $res;
+    }
+
+    /**
+     * @param int $start timestamp
+     * @param int $end timestamp
+     * @return array
+     */
+    public static function seeker_path_activity( int $start = 0, int $end = 0 ){
+        global $wpdb;
+        $res = $wpdb->get_results( $wpdb->prepare( "
+            SELECT COUNT( DISTINCT(log.object_id) ) as `value`, log.meta_value as seeker_path
+            FROM $wpdb->dt_activity_log log
+            INNER JOIN $wpdb->postmeta as type ON ( log.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
+            INNER JOIN $wpdb->posts post
+            ON ( 
+                post.ID = log.object_id
+                AND log.meta_key = 'seeker_path'
+                AND log.object_type = 'contacts' 
+            )
+            INNER JOIN $wpdb->postmeta pm
+            ON (
+                pm.post_id = post.ID
+                AND pm.meta_key = 'seeker_path'
+            )
+            WHERE post.post_type = 'contacts'
+            AND log.hist_time > %s
+            AND log.hist_time < %s
+            AND post.post_status = 'publish'
+            GROUP BY log.meta_value
+        ", $start, $end ), ARRAY_A );
+
+        $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $seeker_path_options = $field_settings["seeker_path"]["default"];
+        $seeker_path_data = [];
+        foreach ( $seeker_path_options as $option_key => $option_value ){
+            $value = 0;
+            foreach ( $res as $r ){
+                if ( $r["seeker_path"] === $option_key ){
+                    $value = $r["value"];
+                }
+            }
+            $seeker_path_data[$option_key] = [
+                "label" => $option_value["label"],
+                "value" => $value
+            ];
+        }
+
+        return $seeker_path_data;
+    }
+
+    /**
+     * Get the snapshot for each seeker path at a certain date.
+     * @param int $end
+     *
+     * @return array
+     */
+    public static function seeker_path_at_date( int $end ){
+        global $wpdb;
+        $res = $wpdb->get_results(
+            $wpdb->prepare( "
+                SELECT count( DISTINCT( log.object_id ) ) as value, log.meta_value as seeker_path
+                FROM $wpdb->dt_activity_log log
+                JOIN (
+                    SELECT MAX( hist_time ) as hist_time, object_id
+                    FROM  $wpdb->dt_activity_log
+                    WHERE meta_key = 'seeker_path'
+                    AND hist_time < %d
+                    GROUP BY object_id
+                ) as b ON (
+                    log.hist_time = b.hist_time
+                    AND log.object_id = b.object_id
+                )
+                JOIN wp_dt_activity_log as sl ON (
+                    sl.object_type = 'contacts' 
+                    AND sl.object_id = log.object_id
+                    AND sl.meta_key = 'overall_status'
+                    AND sl.meta_value = 'active'
+                    AND sl.hist_time = (
+                        SELECT MAX( hist_time ) as hist_time
+                        FROM  wp_dt_activity_log
+                        WHERE meta_key = 'overall_status'
+                        AND hist_time < %d
+                        AND object_id = log.object_id
+                    )
+                )
+                WHERE log.meta_key = 'seeker_path'
+                AND log.object_id NOT IN (
+                    SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_key = 'corresponds_to_user'
+                      AND meta_value != 0
+                    GROUP BY post_id
+                )
+                GROUP BY log.meta_value
+            ", $end, $end
+            ), ARRAY_A
+        );
+        $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $seeker_path_options = $field_settings["seeker_path"]["default"];
+        $seeker_path_data = [];
+        foreach ( $seeker_path_options as $option_key => $option_value ){
+            $value = 0;
+            foreach ( $res as $r ){
+                if ( $r["seeker_path"] === $option_key ){
+                    $value = $r["value"];
+                }
+            }
+            $seeker_path_data[$option_key] = [
+                "label" => $option_value["label"],
+                "value" => $value
+            ];
+        }
+
+        return $seeker_path_data;
+    }
+
+    /**
+     * Get a snapshot of each status at a certain date
+     *
+     * @param int $end
+     *
+     * @return array
+     */
+    public static function overall_status_at_date( int $end ){
+        global $wpdb;
+        $res = $wpdb->get_results(
+            $wpdb->prepare( "
+                SELECT count( DISTINCT( log.object_id ) ) as value, log.meta_value as overall_status
+                FROM $wpdb->dt_activity_log log
+                INNER JOIN $wpdb->posts post ON ( 
+                    post.ID = log.object_id
+                    AND post.post_type = 'contacts' 
+                )
+                JOIN (
+                    SELECT MAX( hist_time ) as hist_time, object_id
+                    FROM  $wpdb->dt_activity_log
+                    WHERE meta_key = 'overall_status'
+                    AND hist_time < %d
+                    GROUP BY object_id
+                ) as b ON (
+                    log.hist_time = b.hist_time
+                    AND log.object_id = b.object_id
+                )
+                WHERE log.meta_key = 'overall_status'
+                AND log.object_id NOT IN (
+                    SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_key = 'corresponds_to_user'
+                      AND meta_value != 0
+                    GROUP BY post_id
+                )
+                GROUP BY log.meta_value
+            ", $end
+            ), ARRAY_A
+        );
+        $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $overall_status_options = $field_settings["overall_status"]["default"];
+        $overall_status_data = [];
+        foreach ( $overall_status_options as $option_key => $option_value ){
+            $value = 0;
+            foreach ( $res as $r ){
+                if ( $r["overall_status"] === $option_key ){
+                    $value = $r["value"];
+                }
+            }
+            $overall_status_data[$option_key] = [
+                "label" => $option_value["label"],
+                "value" => $value
+            ];
+        }
+
+        return $overall_status_data;
+    }
 }

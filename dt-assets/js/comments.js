@@ -1,8 +1,12 @@
-/* global jQuery:false, moment:false, _:false, commentsSettings:false */
-
+/* global moment:false, _:false, commentsSettings:false */
 jQuery(document).ready(function($) {
-  let postId = $("#post-id").text()
-  let postType = $("#post-type").text()
+
+  let commentPostedEvent = document.createEvent('Event');
+  commentPostedEvent.initEvent('comment_posted', true, true);
+
+  let postId = window.detailsSettings.post_id
+  let postType = window.detailsSettings.post_type
+  let rest_api = window.API
 
   let comments = []
   let activity = [] // not guaranteed to be in any particular order
@@ -14,15 +18,15 @@ jQuery(document).ready(function($) {
         commentButton.toggleClass('loading')
         commentInput.attr("disabled", true)
         commentButton.attr("disabled", true)
-        API.post_comment(postType, postId, _.escape(comment_plain_text)).then(data => {
+        rest_api.post_comment(postType, postId, _.escape(comment_plain_text)).then(data => {
+          let updated_comment = data.comment || data
           commentInput.val("").trigger( "change" )
           commentButton.toggleClass('loading')
-          data.comment.date = moment(data.comment.comment_date_gmt + "Z")
-          comments.push(data.comment)
+          updated_comment.date = moment(updated_comment.comment_date_gmt + "Z")
+          comments.push(updated_comment)
           display_activity_comment()
-          if ( typeof commentPosted === "function"){
-            commentPosted()
-          }
+          // fire comment posted event
+          $('#content')[0].dispatchEvent(commentPostedEvent);
           commentInput.attr("disabled", false)
           commentButton.attr("disabled", false)
           $('textarea.mention').mentionsInput('reset')
@@ -68,9 +72,9 @@ jQuery(document).ready(function($) {
         if (contactsDetailsWpApiSettings){
           field = _.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings[${item.meta_key}].name`)
         }
-        item.action = `<a class="revert-activity dt_tooltip" data-id="${item.histid}">
+        item.action = `<a class="revert-activity dt_tooltip" data-id="${_.escape( item.histid )}">
           <img class="revert-arrow-img" src="${commentsSettings.template_dir}/dt-assets/images/undo.svg">
-          <span class="tooltiptext">${field || item.meta_key} </span>
+          <span class="tooltiptext">${_.escape( field || item.meta_key )} </span>
         </a>`
       } else {
         item.action = ''
@@ -85,10 +89,14 @@ jQuery(document).ready(function($) {
   }
   $(".show-tabs").on("click", function () {
     let id = $(this).attr("id")
-    $('.tabs-section').prop('checked', id === 'show-all-tabs')
-    display_activity_comment()
+    $('input.tabs-section').prop('checked', id === 'show-all-tabs')
+    saveTabs()
   })
 
+  /* We use the CSS 'white-space:pre-wrap' and '<div dir=auto>' HTML elements
+   * to match the behaviour that the user sees when editing the comment in an
+   * input with dir=auto set, especially when using a right-to-left language
+   * with multiple paragraphs. */
   let commentTemplate = _.template(`
   <div class="activity-block">
     <div>
@@ -99,7 +107,7 @@ jQuery(document).ready(function($) {
     <div class="activity-text">
     <% _.forEach(activity, function(a){
         if (a.comment){ %>
-            <div dir="auto" class="comment-bubble <%- a.comment_ID %>" style="white-space: pre-line"> <%= a.text /* not escaped on purpose */ %> </div>
+            <div dir="auto" class="comment-bubble <%- a.comment_ID %>" style="white-space: pre-wrap"><div dir=auto><%= a.text.replace(/\\n/g, '</div><div dir=auto>') /* not escaped on purpose */ %></div></div>
             <p class="comment-controls">
                <% if ( a.comment_ID ) { %>
                   <a class="open-edit-comment" data-id="<%- a.comment_ID %>" style="margin-right:5px">
@@ -130,7 +138,7 @@ jQuery(document).ready(function($) {
   $('#confirm-comment-delete').on("click", function () {
     let id = $(this).data("id")
     $(this).toggleClass('loading')
-    API.delete_comment( postType, postId, id ).then(response=>{
+    rest_api.delete_comment( postType, postId, id ).then(response=>{
       $(this).toggleClass('loading')
       if (response){
         $('#delete-comment-modal').foundation('close')
@@ -165,9 +173,9 @@ jQuery(document).ready(function($) {
     $(this).toggleClass('loading')
     let id = $(this).data("id")
     let updated_comment = $('#comment-to-edit').val()
-    API.update_comment( postType, postId, id, updated_comment).then((response)=>{
+    rest_api.update_comment( postType, postId, id, updated_comment).then((response)=>{
       $(this).toggleClass('loading')
-      if (response === 1 || response === 0){
+      if (response === 1 || response === 0 || response.comment_ID){
         $('#edit-comment-modal').foundation('close')
       } else {
         $('.edit-comment.callout').show()
@@ -196,13 +204,10 @@ jQuery(document).ready(function($) {
       activeTabs.each((i, e)=>{
         activeTabIds.push($(e).data("id"))
       })
-    } else {
-      activeTabIds.forEach(tab=>{
-      })
     }
     let possibleTabs = _.union( [ 'activity', 'comment' ], commentsSettings.additional_sections.map((l)=>{return l['key']}))
     possibleTabs.forEach(tab=>{
-        $(`#tab-button-${tab}`).prop('checked', activeTabIds.includes(tab))
+      $(`#tab-button-${tab}`).prop('checked', activeTabIds.includes(tab))
     })
 
     let commentsWrapper = $("#comments-wrapper")
@@ -270,6 +275,13 @@ jQuery(document).ready(function($) {
       }
     }
   });
+  $( document ).ajaxSend(function(event, xhr, settings) {
+    if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
+      if (!settings.url.includes("notifications")){
+        $("#comments-activity-spinner.loading-spinner").addClass("active")
+      }
+    }
+  });
 
   let refreshActivity = ()=>{
     get_all();
@@ -279,24 +291,28 @@ jQuery(document).ready(function($) {
     if(comment){
       let mentionRegex = /\@\[(.*?)\]\((.+?)\)/g
       comment = comment.replace(mentionRegex, (match, text, id)=>{
-        return `<a>@${text}</a>`
+        /* dir=auto means that @ will be put to the left of the name if the
+          * mentioned name is LTR, and to the right if the mentioned name is
+          * RTL, instead of letting the surrounding dir determine the placement
+          * of @ */
+        return `<a dir="auto">@${text}</a>`
       })
       let urlRegex = /((href=('|"))|(\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g
       comment = comment.replace(urlRegex, (match)=>{
         let url = match
         if(match.indexOf("@") === -1 && match.indexOf("[") === -1 && match.indexOf("(") === -1 && match.indexOf("href") === -1) {
-              if (match.indexOf("http") === 0 && match.indexOf("www.") === -1) {
-                  url = match
-              }
-              else if (match.indexOf("http") === -1 && match.indexOf("www.") === 0) {
-                  url = "http://" + match
-              }
-              else if (match.indexOf("www.") === -1) {
-                  url = "http://www." + match
-              }
-              return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`
+          if (match.indexOf("http") === 0 && match.indexOf("www.") === -1) {
+            url = match
           }
-          return match
+          else if (match.indexOf("http") === -1 && match.indexOf("www.") === 0) {
+            url = "http://" + match
+          }
+          else if (match.indexOf("www.") === -1) {
+            url = "http://www." + match
+          }
+          return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`
+        }
+        return match
       })
       let linkRegex = /\[(.*?)\]\((.+?)\)/g
       comment = comment.replace(linkRegex, (match, text, url)=>{
@@ -310,17 +326,31 @@ jQuery(document).ready(function($) {
     return comment
   })
 
+  let getAllPromise = null
+  let getCommentsPromise = null
+  let getActivityPromise = null
   function get_all() {
-    $.when(
-      API.get_comments(postType, postId),
-      API.get_activity(postType, postId)
-    ).then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
-      const commentData = commentDataStatusJQXHR[0];
-      const activityData = activityDataStatusJQXHR[0];
+    //abort previous promise if it is not finished.
+    if (getAllPromise && _.get(getAllPromise, "readyState") !== 4){
+      getActivityPromise.abort()
+      getCommentsPromise.abort()
+    }
+    getCommentsPromise =  rest_api.get_comments(postType, postId)
+    getActivityPromise = rest_api.get_activity(postType, postId)
+    getAllPromise = $.when(
+      getCommentsPromise,
+      getActivityPromise
+    )
+    getAllPromise.then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
+      $("#comments-activity-spinner.loading-spinner").removeClass("active")
+      const commentData = commentDataStatusJQXHR[0].comments;
+      const activityData = activityDataStatusJQXHR[0].activity;
       prepareData(commentData, activityData)
     }).catch(err => {
-      console.error(err);
-      jQuery("#errors").append(err.responseText)
+      if ( !_.get( err, "statusText" ) === "abort" ) {
+        console.error(err);
+        jQuery("#errors").append(err.responseText)
+      }
     })
   }
 
@@ -357,7 +387,7 @@ jQuery(document).ready(function($) {
     prepareActivityData(activity)
     display_activity_comment("all")
   }
-  prepareData( commentsSettings.comments, commentsSettings.activity )
+  prepareData( commentsSettings.comments.comments, commentsSettings.activity.activity )
 
 
   jQuery('#add-comment-button').on('click', function () {
@@ -365,6 +395,9 @@ jQuery(document).ready(function($) {
   })
 
   $('#comment-activity-tabs .tabs-section').on("change", function () {
+    saveTabs()
+  })
+  let saveTabs = ()=>{
     let activeTabs = $('#comment-activity-tabs .tabs-section:checked')
     let activeTabIds = [];
     activeTabs.each((i, e)=>{
@@ -372,7 +405,8 @@ jQuery(document).ready(function($) {
     })
     document.cookie = `contact_details_tabs=${JSON.stringify(activeTabIds)};path=/;expires=Fri, 31 Dec 9999 23:59:59 GMT"`
     display_activity_comment()
-  })
+  }
+
 
   let searchUsersPromise = null
 
@@ -441,5 +475,11 @@ jQuery(document).ready(function($) {
       }
     }).catch(err => { console.error(err) })
   })
+
+  window.onbeforeunload = function() {
+    if ( $('textarea.mention').val() ){
+      return true;
+    }
+  };
 
 });

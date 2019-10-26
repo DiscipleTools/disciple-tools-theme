@@ -80,13 +80,12 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* Site Notifications */
 
-        /* Metrics
-            if ( dt_metrics_visibility( 'tab' ) ) : // @todo remove after development
-                $this->box( 'top', 'Metrics' );
-                $this->metrics(); // prints content for the notifications box
-                $this->box( 'bottom' );
-            endif;
-         /* End Metrics */
+            /* Update Required */
+            $this->box( 'top', 'Group Tile Preferences' );
+            $this->process_group_preferences();
+            $this->update_group_preferences();
+            $this->box( 'bottom' );
+            /* Site Notifications */
 
             $this->template( 'right_column' );
 
@@ -231,7 +230,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         );
 
         echo '<form method="post" name="extension_modules_form">';
-        echo '<p>Base User is the catch-all account for orphaned contacts and other records to be assigned to. To be a base user, the user must be an administrator, dispatcher, multiplier, marketer, or strategist.</p>';
+        echo '<p>Base User is the catch-all account for orphaned contacts and other records to be assigned to. To be a Base User, the user must be an Administrator, Dispatcher, Multiplier, Digital Responder, or Strategist.</p>';
         echo '<hr>';
         echo '<input type="hidden" name="base_user_nonce" id="base_user_nonce" value="' . esc_attr( wp_create_nonce( 'base_user' ) ) . '" />';
 
@@ -268,7 +267,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         ?>
         <form method="POST">
             <input type="hidden" name="email_base_subject_nonce" id="email_base_subject_nonce" value="<?php echo esc_attr( wp_create_nonce( 'email_subject' ) )?>" />
-            <label for="email_subject"><?php esc_html_e( "Configure the first part of the subject line in email sent by DT", 'disciple_tools' ) ?></label>
+            <label for="email_subject"><?php esc_html_e( "Configure the first part of the subject line in email sent by Disciple.Tools", 'disciple_tools' ) ?></label>
             <input name="email_subject" id="email_subject" value="<?php echo esc_html( dt_get_option( "dt_email_base_subject" ) ) ?>" />
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Update", 'disciple_tools' ) ?></button></span>
         </form>
@@ -310,6 +309,26 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             update_option( 'dt_site_options', $site_options, true );
         }
 
+        if ( isset( $_POST['group_update_required_nonce'] ) &&
+             wp_verify_nonce( sanitize_key( wp_unslash( $_POST['group_update_required_nonce'] ) ), 'group_update_required' ) ) {
+            $site_options = dt_get_option( "dt_site_options" );
+
+            if ( isset( $_POST["run_update_required"] ) ){
+                do_action( "dt_find_contacts_that_need_an_update" );
+            }
+            $site_options["group_update_required"]["enabled"] = isset( $_POST["triggers_enabled"] );
+
+            foreach ( $site_options["group_update_required"]["options"] as $option_index => $option ){
+                if ( isset( $_POST[$option_index . "_days"] ) ){
+                    $site_options["group_update_required"]["options"][$option_index]["days"] = sanitize_text_field( wp_unslash( $_POST[$option_index . "_days"] ) );
+                }
+                if ( isset( $_POST[$option_index . "_comment"] ) ){
+                    $site_options["group_update_required"]["options"][$option_index]["comment"] = wp_unslash( sanitize_text_field( wp_unslash( $_POST[$option_index . "_comment"] ) ) );
+                }
+            }
+            update_option( 'dt_site_options', $site_options, true );
+        }
+
     }
 
     public function update_required_options(){
@@ -317,6 +336,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         $update_required_options = $site_options['update_required']["options"];
         $field_options = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false )
         ?>
+        <h3><?php esc_html_e( "Contacts", 'disciple_tools' ) ?></h3>
         <form method="post" name="update_required-form">
             <button type="submit" class="button-like-link" name="run_update_required" value="1"><?php esc_html_e( "Run checker now", 'disciple_tools' ) ?></button>
             <p><?php esc_html_e( "Change how long to wait before a contact needs an update", 'disciple_tools' ) ?></p>
@@ -345,7 +365,49 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                                 value="<?php echo esc_html( $option["days"] ) ?>"  />
                         </td>
                         <td>
-                            <input name="<?php echo esc_html( $option_key ) ?>_comment" type="text" value="<?php echo esc_html( $option["comment"] ) ?>">
+                            <textarea name="<?php echo esc_html( $option_key ) ?>_comment"
+                                      style="width:100%"><?php echo esc_html( $option["comment"] ) ?></textarea>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+
+            </table>
+            <br>
+            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
+        </form>
+
+        <?php
+        $update_required_options = $site_options['group_update_required']["options"];
+        $field_options = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( false )
+        ?>
+        <h3><?php esc_html_e( "Groups", 'disciple_tools' ) ?></h3>
+        <form method="post" name="group_update_required-form" style="margin-top: 50px">
+            <p><?php esc_html_e( "Change how long to wait before a group needs an update", 'disciple_tools' ) ?></p>
+            <p>
+                <?php esc_html_e( "Update needed triggers enabled", 'disciple_tools' ) ?>
+                <input type="checkbox" name="triggers_enabled" <?php echo esc_html( $site_options['group_update_required']["enabled"] ) ? 'checked' : '' ?> />
+            </p>
+
+            <input type="hidden" name="group_update_required_nonce" id="group_update_required_nonce" value="' <?php echo esc_attr( wp_create_nonce( 'group_update_required' ) ) ?>'" />
+
+            <table class="widefat">
+                <thead>
+                    <tr>
+                        <th><?php esc_html_e( "Group Status", 'disciple_tools' ) ?></th>
+                        <th><?php esc_html_e( "Days to wait", 'disciple_tools' ) ?></th>
+                        <th><?php esc_html_e( "Comment", 'disciple_tools' ) ?></th>
+                    </tr>
+                </thead>
+                <?php foreach ( $update_required_options as $option_key => $option ) : ?>
+                    <tr>
+                        <td><?php echo esc_html( $field_options["group_status"]['default'][$option['status']]["label"] ) ?></td>
+                        <td>
+                            <input name="<?php echo esc_html( $option_key ) ?>_days" type="number"
+                                value="<?php echo esc_html( $option["days"] ) ?>"  />
+                        </td>
+                        <td>
+                            <textarea name="<?php echo esc_html( $option_key ) ?>_comment"
+                                      style="width:100%"><?php echo esc_html( $option["comment"] ) ?></textarea>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -357,109 +419,52 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         <?php
     }
 
+    /** Group Preferences */
+    public function process_group_preferences(){
 
+        if ( isset( $_POST['group_preferences_nonce'] ) &&
+             wp_verify_nonce( sanitize_key( wp_unslash( $_POST['group_preferences_nonce'] ) ), 'group_preferences' . get_current_user_id() ) ) {
 
-
-
-
-
-
-    // @todo evaluate below and possibly remove
-
-    /**
-     * Print extension module box for options page
-     */
-    public function extension_modules() {
-
-        $site_options = dt_get_option( 'dt_site_options' );
-        $extension_modules = $site_options['extension_modules'];
-
-        echo '<form method="post" name="extension_modules_form">';
-        echo '<button type="submit" class="button-like-link" name="reset_extension_modules" value="1">reset</button>';
-        echo '<p>These are optional modules available in the system.</p>';
-        echo '<input type="hidden" name="extension_modules_nonce" id="extension_modules_nonce" value="' . esc_attr( wp_create_nonce( 'extension_modules' ) ) . '" />';
-
-        echo '<table class="widefat">';
-
-        echo '<tr><td>Add People Groups Module <span style="color:darkred;float:right;">(planned for future)</span></td><td><input name="add_people_groups" type="checkbox" ' . ( $extension_modules['add_people_groups'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Add Asset Mapping <span style="color:darkred;float:right;">(planned for future)</span></td><td><input name="add_assetmapping" type="checkbox" ' . ( $extension_modules['add_assetmapping'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Add Prayer <span style="color:darkred;float:right;">(planned for future)</span></td><td><input name="add_prayer" type="checkbox" ' . ( $extension_modules['add_prayer'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Add Workers Section <span style="color:darkred;float:right;">(planned for future)</span> </td><td><input name="add_worker" type="checkbox" ' . ( $extension_modules['add_worker'] ? "checked" : "" ) . ' /></td></tr>';
-
-        echo '</table><br><span style="float:right;"><button type="submit" class="button float-right">Save</button> </span></form>';
-    }
-
-    /**
-     * Print reports selection box @todo remove?
-     */
-    public function reports() {
-
-        $site_options = dt_get_option( 'dt_site_options' );
-        $daily_reports = $site_options['daily_reports'];
-
-        echo '<form method="post" name="daily_reports_form">';
-        echo '<button type="submit" class="button-like-link" name="reset_reports" value="1">reset</button>';
-        echo '<p>These are regular services that run to check and build reports on integrations and system status.</p>';
-        echo '<input type="hidden" name="daily_reports_nonce" id="daily_reports_nonce" value="' . esc_attr( wp_create_nonce( 'daily_reports' ) ) . '" />';
-
-        echo '<table class="widefat">';
-
-        echo '<tr><td>Build Report for Contacts</td><td><input name="build_report_for_contacts" type="checkbox" ' . ( $daily_reports['build_report_for_contacts'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Groups</td><td><input name="build_report_for_groups" type="checkbox" ' . ( $daily_reports['build_report_for_groups'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Facebook</td><td><input name="build_report_for_facebook" type="checkbox" ' . ( $daily_reports['build_report_for_facebook'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Twitter</td><td><input name="build_report_for_twitter" type="checkbox" ' . ( $daily_reports['build_report_for_twitter'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Analytics</td><td><input name="build_report_for_analytics" type="checkbox" ' . ( $daily_reports['build_report_for_analytics'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Adwords</td><td><input name="build_report_for_adwords" type="checkbox" ' . ( $daily_reports['build_report_for_adwords'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Mailchimp</td><td><input name="build_report_for_mailchimp" type="checkbox" ' . ( $daily_reports['build_report_for_mailchimp'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Youtube</td><td><input name="build_report_for_youtube" type="checkbox" ' . ( $daily_reports['build_report_for_youtube'] ? "checked" : "" ) . ' /></td></tr>';
-
-        echo '</table><br><span style="float:right;"><button type="submit" class="button float-right">Save</button></span>  </form>';
-    }
-
-    /**
-     * Process reports selections from reports box @todo remove?
-     */
-    public function process_reports() {
-
-        if ( isset( $_POST['daily_reports_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['daily_reports_nonce'] ) ), 'daily_reports' ) ) {
-
-            $site_options = dt_get_option( 'dt_site_options' );
-
-            if ( isset( $_POST['reset_reports'] ) ) {
-                unset( $site_options['daily_reports'] );
-                $site_option_defaults = dt_get_site_options_defaults();
-                $site_options['daily_reports'] = $site_option_defaults['daily_reports'];
+            $site_options = dt_get_option( "dt_site_options" );
+            if ( isset( $_POST['church_metrics'] ) && ! empty( $_POST['church_metrics'] ) ) {
+                $site_options["group_preferences"]["church_metrics"] = true;
+            } else {
+                $site_options["group_preferences"]["church_metrics"] = false;
             }
-
-            foreach ( $site_options['daily_reports'] as $key => $value ) {
-                $site_options['daily_reports'][ $key ] = isset( $_POST[ $key ] );
+            if ( isset( $_POST['four_fields'] ) && ! empty( $_POST['four_fields'] ) ) {
+                $site_options["group_preferences"]["four_fields"] = true;
+            } else {
+                $site_options["group_preferences"]["four_fields"] = false;
             }
 
             update_option( 'dt_site_options', $site_options, true );
         }
+
     }
 
-    /**
-     * Process extension module
-     */
-    public function process_extension_modules() {
-        if ( isset( $_POST['extension_modules_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['extension_modules_nonce'] ) ), 'extension_modules' ) ) {
-
-            $site_options = dt_get_option( 'dt_site_options' );
-
-            if ( isset( $_POST['reset_extension_modules'] ) ) {
-                unset( $site_options['extension_modules'] );
-                $site_option_defaults = dt_get_site_options_defaults();
-                $site_options['extension_modules'] = $site_option_defaults['extension_modules'];
-            }
-
-            foreach ( $site_options['extension_modules'] as $key => $value ) {
-                $site_options['extension_modules'][ $key ] = isset( $_POST[ $key ] );
-            }
-
-            update_option( 'dt_site_options', $site_options, true );
-        }
+    public function update_group_preferences(){
+        $group_preferences = dt_get_option( 'group_preferences' );
+        ?>
+        <form method="post" >
+            <table class="widefat">
+                <tr>
+                    <td>
+                        <input type="checkbox" name="church_metrics" <?php echo empty( $group_preferences['church_metrics'] ) ? '' : 'checked' ?> /> Church Metrics
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="four_fields" <?php echo empty( $group_preferences['four_fields'] ) ? '' : 'checked' ?> /> Four Fields
+                    </td>
+                </tr>
+                <?php wp_nonce_field( 'group_preferences' . get_current_user_id(), 'group_preferences_nonce' )?>
+            </table>
+            <br>
+            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
+        </form>
+        <?php
     }
+
 }
 
 

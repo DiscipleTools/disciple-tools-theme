@@ -37,20 +37,22 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function scripts() {
-        wp_enqueue_script( 'dt_metrics_personal_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-personal.js', [
+        wp_enqueue_script( 'dt_metrics_personal_script', get_template_directory_uri() . '/dt-metrics/metrics-personal.js', [
             'jquery',
             'jquery-ui-core',
+            'amcharts-core',
+            'amcharts-charts'
         ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-personal.js' ), true );
 
         wp_localize_script(
             'dt_metrics_personal_script', 'dtMetricsPersonal', [
                 'root' => esc_url_raw( rest_url() ),
-                'theme_uri' => get_stylesheet_directory_uri(),
+                'theme_uri' => get_template_directory_uri(),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
-                'map_key' => dt_get_option( 'map_key' ),
                 'data' => $this->overview(),
+
             ]
         );
     }
@@ -68,6 +70,7 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
                 'title_fully_practicing' => __( 'Fully Practicing', 'disciple_tools' ),
                 'title_group_types' => __( 'Group Types', 'disciple_tools' ),
                 'title_generations' => __( 'Group and Church Generations', 'disciple_tools' ),
+                'title_teams' => __( 'Lead Teams', 'disciple_tools' ),
                 'label_active_contacts'  => __( 'Active Contacts', 'disciple_tools' ),
                 'total_groups'    => __( 'Total Groups', 'disciple_tools' ),
                 'updates_needed'  => __( 'Updates Needed', 'disciple_tools' ),
@@ -77,7 +80,12 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
                 'label_my_follow_up_progress' => __( 'Follow-up of my active contacts', 'disciple_tools' ),
                 'label_group_needing_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
                 'label_stats_as_of' => strtolower( __( 'stats as of', 'disciple_tools' ) ),
+                'label_pre_group' => __( 'Pre-Group', 'disciple_tools' ),
+                'label_group' => __( 'Group', 'disciple_tools' ),
+                'label_church' => __( 'Church', 'disciple_tools' ),
+                'label_generation' => __( 'Generation', 'disciple_tools' ),
             ],
+            'preferences'       => $this->preferences(),
             'hero_stats'        => self::chart_my_hero_stats(),
             'contacts_progress' => self::chart_contacts_progress(),
             'group_types'       => self::chart_group_types(),
@@ -86,5 +94,20 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
         ];
 
         return apply_filters( 'dt_my_metrics', $data );
+    }
+
+    public function preferences() {
+        $data = [];
+
+        /* Add group preferences*/
+        $group_preferences = dt_get_option( 'group_preferences' );
+        $data['groups'] = [
+            'church_metrics' => $group_preferences['church_metrics'] ?? false,
+            'four_fields' => $group_preferences['four_fields'] ?? false,
+        ];
+
+        /* Add other preferences. Please, categorize by section, i.e. contacts, groups, etc */
+
+        return $data;
     }
 }

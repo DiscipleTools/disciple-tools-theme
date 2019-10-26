@@ -28,6 +28,7 @@
   <exclude-pattern>dt-update/class-tgm-plugin-activation.php</exclude-pattern>
   <exclude-pattern>dt-update/plugin-update-checker/*</exclude-pattern>
   <exclude-pattern>dt-core/libraries/*</exclude-pattern>
+  <exclude-pattern>*.js</exclude-pattern>
 
   <arg name="extensions" value="php,inc,lib"/>
   <arg value="n"/>
@@ -164,6 +165,7 @@
     <!-- <exclude name="WordPress.WhiteSpace.OperatorSpacing.SpacingAfter" /> -->
     <!-- <exclude name="WordPress.WhiteSpace.OperatorSpacing.SpacingBefore" /> -->
     <exclude name="WordPress.WP.EnqueuedResourceParameters.MissingVersion" />
+    <exclude name="WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion" />
 
   </rule>
 

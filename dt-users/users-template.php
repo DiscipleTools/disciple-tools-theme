@@ -162,6 +162,13 @@ function dt_get_team_contacts( $user_id ) {
  */
 function dt_get_site_notification_defaults() {
     $site_options = dt_get_option( 'dt_site_options' );
+    $default_notifications = dt_get_site_options_defaults()["notifications"];
+    //get translated value
+    foreach ( $site_options['notifications'] as $notification_key => $value ){
+        if ( isset( $default_notifications[$notification_key]["label"] ) ){
+            $site_options["notifications"][$notification_key]["label"] = $default_notifications[$notification_key]["label"];
+        }
+    }
 
     return $site_options['notifications'];
 }
@@ -179,6 +186,24 @@ function dt_get_site_default_user_fields(): array
     }
 
     return $site_custom_lists['user_fields'];
+}
+
+/**
+ * Returns the corresponding id for either user or contact.
+ *
+ * @param        $id
+ * @param string $id_type
+ *
+ * @return bool|mixed
+ */
+function dt_get_associated_user_id( $id, $id_type = 'user' ) {
+    if ( $id_type === 'user' ) {
+        return get_user_option( "corresponds_to_contact", $id );
+    } else if ( $id_type === 'contact' ) {
+        return get_post_meta( $id, 'corresponds_to_user', true );
+    } else {
+        return false;
+    }
 }
 
 /**
@@ -290,94 +315,46 @@ function dt_build_user_fields_display( array $usermeta ): array
 }
 
 /**
- * @param int $user_id
+ * Expects the contact id, but can be given the user id and look up the contact id.
  *
- * @return array|bool
+ * @param int  $id
+ * @param bool $is_user_id
+ *
+ * @return array|bool|null|object
  */
-function dt_get_user_locations_list( int $user_id ) {
+function dt_get_user_locations_list( int $id, $is_user_id = false ) {
     global $wpdb;
 
-    // get connected location ids to user
-    $location_ids = $wpdb->get_col(
+    if ( $is_user_id ) {
+        $id = $wpdb->get_var( $wpdb->prepare( "
+          SELECT post_id 
+          FROM $wpdb->postmeta 
+          WHERE meta_key = 'corresponds_to_user' 
+          AND meta_value = %d",
+        $id ) );
+    }
+    if ( empty( $id ) ) {
+        return false;
+    }
+
+    $locations = $wpdb->get_results(
         $wpdb->prepare(
-            "SELECT p2p_from as location_id 
-                FROM  $wpdb->p2p 
-                WHERE p2p_to = %d 
-                  AND p2p_type = 'team_member_locations';",
-        $user_id )
+            "SELECT
+                      a.p2p_to as location_id,
+                      b.post_title
+                    FROM  $wpdb->p2p as a
+                      JOIN $wpdb->posts as b
+                      ON a.p2p_to=b.ID
+                    WHERE a.p2p_from = %d
+                    AND a.p2p_type = 'contacts_to_locations'",
+        $id ), ARRAY_A
     );
-
     // check if null return
-    if ( empty( $location_ids ) ) {
+    if ( empty( $locations ) ) {
         return false;
+    } else {
+        return $locations;
     }
-
-    // get location posts from connected array
-    $location_posts = new WP_Query( [
-        'post__in' => $location_ids,
-        'post_type' => 'locations'
-    ] );
-
-    return $location_posts->posts;
-}
-
-/**
- * Gets an array of teams populated with an array of members for each team
- * array(
- *      team_id
- *      team_name
- *      team_members array(
- *              ID
- *              display_name
- *              user_email
- *              user_url
- *
- * @param int $user_id
- *
- * @return array|bool
- */
-function dt_get_user_team_members_list( int $user_id ) {
-
-    $team_members_list = [];
-
-    $teams = wp_get_object_terms( $user_id, 'user-group' );
-    if ( empty( $teams ) || is_wp_error( $teams ) ) {
-        return false;
-    }
-
-    foreach ( $teams as $team ) {
-
-        $team_id = $team->term_id;
-        $team_name = $team->name;
-
-        $members_list = [];
-        $args = [
-            'taxonomy' => 'user-group',
-            'term'     => $team_id,
-            'term_by'  => 'id',
-        ];
-        $results = disciple_tools_get_users_of_group( $args );
-        if ( !empty( $results ) ) {
-            foreach ( $results as $result ) {
-                if ( !( $user_id == $result->data->ID ) ) {
-                    $members_list[] = [
-                        'ID'           => $result->data->ID,
-                        'display_name' => $result->data->display_name,
-                        'user_email'   => $result->data->user_email,
-                        'user_url'     => $result->data->user_url,
-                    ];
-                }
-            }
-        }
-
-        $team_members_list[] = [
-            'team_id'      => $team_id,
-            'team_name'    => $team_name,
-            'team_members' => $members_list,
-        ];
-    }
-
-    return $team_members_list;
 }
 
 /**

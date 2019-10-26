@@ -98,7 +98,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         //get plugin data
         $plugins = $this->get_plugins();
         ?>
-        <h3><?php esc_html_e( "Official DT Plugins", 'disciple_tools' ) ?></h3>
+        <h3><?php esc_html_e( "Official Disciple.Tools Plugins", 'disciple_tools' ) ?></h3>
         <table class="widefat striped">
             <thead>
             <tr>
@@ -174,7 +174,8 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     <?php echo esc_html__( "UpdraftPlus - Backup/Restore", 'disciple_tools' ); ?>
                 </td>
                 <td>
-                    <?php echo esc_html__( "Backup and restore: take backups locally, or backup to Amazon S3, Dropbox, Google Drive, Rackspace, (S)FTP, WebDAV & email, on automatic schedules.", 'disciple_tools' ); ?>
+                    <?php echo esc_html__( "Setup backups to a remote location. Note: Only the Premium version works with Disciple.Tools. See our help page:", 'disciple_tools' ); ?>
+                    <a target="_blank" href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/development/self_hosting.html#backups">Backups</a>
                 </td>
                 <td>
                     <?php
@@ -272,7 +273,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     //checks for a partial string in an array
     public function partial_array_search( $array, $find ) {
         //check for null value
-        if ( $find == null || count( $array ) == 0 ) {
+        if ( $find == null || !$array || sizeof( $array ) == 0 ) {
             return -1;
         }
         //with array keys

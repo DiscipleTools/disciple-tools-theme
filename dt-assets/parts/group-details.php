@@ -2,7 +2,7 @@
 ( function() {
     ?>
     <?php
-    $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
+    $group = Disciple_Tools_Groups::get_group( get_the_ID(), true, true );
 
     $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
 
@@ -16,164 +16,48 @@
     ?>
 
 <section class="bordered-box">
-
-    <div class="item-details-header-row">
-        <i class="fi-torsos-all large"></i>
-        <span class="item-details-header details-list title" ><?php the_title_attribute(); ?></span>
-        <select id="group_status" class="status select-field" style="width:fit-content;">
-            <?php foreach ( $group_fields["group_status"]["default"] as $status_key => $option ) { ?>
-                <option value="<?php echo esc_attr( $status_key, 'disciple_tools' ); ?>"
-                <?php echo esc_attr( $status_key === $group['group_status']['key'] ? 'selected' : '', 'disciple_tools' ); ?>>
-                    <?php echo esc_html( $option["label"] ?? "" ) ?>
-                </option>
-            <?php } ?>
-        </select>
-        <button class="help-button" data-section="group-status-help-text">
-            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-        </button>
-
-        <button class="float-right" id="open-edit">
-            <i class="fi-pencil"></i>
-            <span><?php esc_html_e( 'Edit', 'disciple_tools' )?></span>
-        </button>
+    <div style="display: flex;">
+        <div class="item-details-header" style="flex-grow:1">
+            <i class="fi-torsos-all large" style="padding-bottom: 1.2rem"></i>
+            <span class="title"><?php the_title_attribute(); ?></span>
+        </div>
+        <div>
+            <button class="" id="open-edit">
+                <i class="fi-pencil"></i>
+                <span><?php esc_html_e( 'Edit', 'disciple_tools' )?></span>
+            </button>
+        </div>
     </div>
-
-    <div class="display-fields grid-x grid-margin-x">
-        <div class="medium-4 cell">
-
-            <div class="section-subheader"><?php esc_html_e( 'Locations', 'disciple_tools' )?></div>
-            <ul class="locations-list details-list">
-                <?php
-                foreach ($group["locations"] ?? [] as $value){
-                    ?>
-                    <li class="<?php echo intval( $value->ID ); ?>">
-                        <?php echo esc_html( $value->post_title ); ?>
-                    </li>
-                    <?php
-                }
-                if (sizeof( $group["locations"] ) === 0){
-                    ?> <li id="no-locations"><?php esc_html_e( "No location set", 'disciple_tools' ) ?></li><?php
-                }
-                ?>
-            </ul>
-
-            <div class="section-subheader"><?php esc_html_e( 'People Groups', 'disciple_tools' )?></div>
-            <ul class="people_groups-list details-list">
-                <?php
-                foreach ($group["people_groups"] ?? [] as $value){
-                    ?>
-                    <li class="<?php echo esc_html( $value->ID )?>">
-                        <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
-                    </li>
-                <?php }
-                if (sizeof( $group["people_groups"] ) === 0){
-                    ?> <li id="no-people_groups"><?php esc_html_e( "No people group set", 'disciple_tools' ) ?></li><?php
-                }
-                ?>
-            </ul>
-
+    <div class="grid-x grid-margin-x" style="margin-top: 20px">
+        <div class="cell small-12 medium-4">
             <div class="section-subheader">
-                <?php esc_html_e( 'Leaders', 'disciple_tools' )?>
+                <?php esc_html_e( "Status", 'disciple_tools' ) ?>
+                <button class="help-button" data-section="group-status-help-text">
+                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                </button>
             </div>
-            <ul class="details-list leaders-list">
-                <?php
-                foreach ($group["leaders"] ?? [] as $value){
-                    ?>
-                    <li class="<?php echo esc_html( $value->ID )?>">
-                        <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
-                    </li>
-                <?php }
-                if (sizeof( $group["leaders"] ) === 0){
-                    ?> <li id="no-leaders"><?php esc_html_e( "No leaders set", 'disciple_tools' ) ?></li>
-                    <?php
-                }
-                ?>
-            </ul>
-        </div>
-
-
-        <div class="medium-4 cell">
-            <div class="section-subheader"><?php esc_html_e( 'Assigned to', 'disciple_tools' )?></div>
-            <ul class="details-list assigned_to">
-                <li class="current-assigned">
-                    <?php
-                    if ( isset( $groups["assigned_to"] ) ){
-                        echo esc_html( $group["assigned_to"]["display"] );
-                    } else {
-                        esc_html_e( 'None Assigned', 'disciple_tools' );
-                    }
-                    ?>
-                </li>
-            </ul>
-
-
-            <div class="section-subheader"><?php esc_html_e( 'Address', 'disciple_tools' )?>
-            </div>
-            <ul class="address details-list">
-                <?php
-                if (sizeof( $group["contact_address"] ?? [] ) === 0 ){
-                    ?> <li id="no-address"><?php esc_html_e( 'No address set', 'disciple_tools' )?></li> <?php
-                }
-                foreach ($group["contact_address"] ?? [] as $value){
-                    $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
-                    $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
-                    ?>
-                    <li class="<?php echo esc_html( $value["key"] ) ?> address-row">
-                        <div class="address-text"><?php echo esc_html( $value["value"] );?></div>
-                        <?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
-                    </li>
+            <?php
+            $active_color = "#4CAF50";
+            $current_key = $group["group_status"]["key"] ?? "";
+            if ( isset( $group_fields["group_status"]["default"][ $current_key ]["color"] )){
+                $active_color = $group_fields["group_status"]["default"][ $current_key ]["color"];
+            }
+            ?>
+            <select id="group_status" class="status select-field color-select" style="background-color: <?php echo esc_html( $active_color ) ?>">
+                <?php foreach ( $group_fields["group_status"]["default"] as $status_key => $option ) { ?>
+                    <option value="<?php echo esc_attr( $status_key, 'disciple_tools' ); ?>"
+                        <?php echo esc_attr( $status_key === $group['group_status']['key'] ? 'selected' : '', 'disciple_tools' ); ?>>
+                        <?php echo esc_html( $option["label"] ?? "" ) ?>
+                    </option>
                 <?php } ?>
-            </ul>
+            </select>
         </div>
-
-        <div class="medium-4 cell">
-            <div class="section-subheader"><?php esc_html_e( 'Start Date', 'disciple_tools' )?></div>
-            <ul class="date-list start_date details-list"><?php
-            if ( isset( $group["start_date"] ) ) {
-                echo esc_html( $group["start_date"]["formatted"] );
-            } else {
-                esc_html_e( "No start date", 'disciple_tools' );
-            } ?>
-            </ul>
-            <div class="section-subheader"><?php esc_html_e( 'Church Start Date', 'disciple_tools' )?></div>
-            <ul class="date-list church_start_date details-list"><?php
-            if ( isset( $group["church_start_date"] ) ) {
-                echo esc_html( $group["church_start_date"]["formatted"] );
-            } else {
-                esc_html_e( "No church start date", 'disciple_tools' );
-            } ?>
-            </ul>
-            <div class="section-subheader"><?php esc_html_e( 'End Date', 'disciple_tools' )?></div>
-            <ul class="date-list end_date details-list"><?php
-            if ( isset( $group["end_date"] ) ) {
-                echo esc_html( $group["end_date"]["formatted"] );
-            } else {
-                esc_html_e( "No end date", 'disciple_tools' );
-            } ?>
-            </ul>
-        </div>
-
-
-    </div>
-
-
-</section> <!-- end article -->
-
-<div class="reveal" id="group-details-edit" data-reveal>
-    <h1><?php esc_html_e( "Edit Group", 'disciple_tools' ) ?></h1>
-    <div class="display-fields">
-        <div class="grid-x">
-            <div class="cell section-subheader">
-                <?php esc_html_e( 'Name', 'disciple_tools' ) ?>
+        <div class="cell small-12 medium-4">
+            <div class="section-subheader">
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
+                <?php esc_html_e( 'Assigned to', 'disciple_tools' )?>
             </div>
-            <input type="text" id="title" class="edit-text-input" value="<?php the_title_attribute(); ?>">
-        </div>
 
-
-        <div class="grid-x">
-            <div class="section-subheader cell">
-                <?php esc_html_e( 'Assigned To', 'disciple_tools' )?>
-            </div>
             <div class="assigned_to details">
                 <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
                 <div id="assigned_to_t" name="form-assigned_to">
@@ -193,30 +77,128 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
-        <div class="grid-x">
-            <div class="section-subheader cell">
-                <?php esc_html_e( 'Leaders', 'disciple_tools' )?>
-            </div>
-            <div class="leaders">
-                <var id="leaders-result-container" class="result-container leaders-result-container"></var>
-                <div id="leaders_t" name="form-leaders">
+        <div class="cell small-12 medium-4">
+            <div class="section-subheader"><?php esc_html_e( "Group Coach / Church Planter", 'disciple_tools' ) ?></div>
+            <div class="coaches">
+                <var id="coaches-result-container" class="result-container"></var>
+                <div id="coaches_t" name="form-coaches" class="scrollable-typeahead">
                     <div class="typeahead__container">
                         <div class="typeahead__field">
-                            <span class="typeahead__query">
-                                <input class="js-typeahead-leaders input-height"
-                                       name="leaders[query]" placeholder="<?php esc_html_e( "Search Leaders", 'disciple_tools' ) ?>"
-                                       autocomplete="off">
-                            </span>
+                                            <span class="typeahead__query">
+                                                <input class="js-typeahead-coaches"
+                                                       name="coaches[query]" placeholder="<?php esc_html_e( "Search Users and Contacts", 'disciple_tools' ) ?>"
+                                                       autocomplete="off">
+                                            </span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <hr />
+
+    <div class="display-fields grid-x grid-margin-x">
+        <!-- Locations -->
+        <div class="xlarge-4 large-6 medium-6 small-12 cell">
+            <div class="section-subheader">
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
+                <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
+            </div>
+            <ul class="location_grid-list"></ul>
+        </div>
+        <div class="xlarge-4 large-6 medium-6 small-12 cell">
+            <div class="section-subheader">
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
+                <?php esc_html_e( 'People Groups', 'disciple_tools' )?>
+            </div>
+            <ul class="people_groups-list details-list">
+                <?php
+                foreach ($group["people_groups"] ?? [] as $value){
+                    ?>
+                    <li class="<?php echo esc_html( $value["ID"] )?>">
+                        <a href="<?php echo esc_url( $value["permalink"] ) ?>"><?php echo esc_html( $value["post_title"] ) ?></a>
+                    </li>
+                <?php }
+                if (sizeof( $group["people_groups"] ) === 0){
+                    ?> <li id="no-people_groups"><?php esc_html_e( "No people group set", 'disciple_tools' ) ?></li><?php
+                }
+                ?>
+            </ul>
+        </div>
 
 
+        <div class="xlarge-4 large-6 medium-6 small-12 cell">
+
+            <div class="section-subheader">
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
+                <?php esc_html_e( 'Address', 'disciple_tools' )?>
+            </div>
+            <ul class="address details-list">
+                <?php
+                if (sizeof( $group["contact_address"] ?? [] ) === 0 ){
+                    ?> <li id="no-address"><?php esc_html_e( 'No address set', 'disciple_tools' )?></li> <?php
+                }
+                foreach ($group["contact_address"] ?? [] as $value){
+                    $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
+                    $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
+                    ?>
+                    <li class="<?php echo esc_html( $value["key"] ) ?> address-row">
+                        <div class="address-text" dir="auto"><?php echo esc_html( $value["value"] );?></div>
+                        <?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
+                    </li>
+                <?php } ?>
+            </ul>
+        </div>
+
+        <div class="xlarge-4 large-6 medium-6 small-12 cell">
+            <div class="section-subheader"><?php esc_html_e( 'Start Date', 'disciple_tools' )?></div>
+            <ul class="date-list start_date details-list"><?php
+            if ( isset( $group["start_date"] ) ) {
+                echo esc_html( $group["start_date"]["formatted"] );
+            } else {
+                esc_html_e( "No start date", 'disciple_tools' );
+            } ?>
+            </ul>
+        </div>
+        <div class="xlarge-4 large-6 medium-6 small-12 cell">
+            <div class="section-subheader"><?php esc_html_e( 'Church Start Date', 'disciple_tools' )?></div>
+            <ul class="date-list church_start_date details-list"><?php
+            if ( isset( $group["church_start_date"] ) ) {
+                echo esc_html( $group["church_start_date"]["formatted"] );
+            } else {
+                esc_html_e( "No church start date", 'disciple_tools' );
+            } ?>
+            </ul>
+        </div>
+        <div class="xlarge-4 large-6 medium-6 small-12 cell">
+            <div class="section-subheader"><?php esc_html_e( 'End Date', 'disciple_tools' )?></div>
+            <ul class="date-list end_date details-list"><?php
+            if ( isset( $group["end_date"] ) ) {
+                echo esc_html( $group["end_date"]["formatted"] );
+            } else {
+                esc_html_e( "No end date", 'disciple_tools' );
+            } ?>
+            </ul>
+        </div>
+
+    </div>
+
+
+</section> <!-- end article -->
+
+<div class="reveal" id="group-details-edit" data-reveal data-close-on-click="false">
+    <h1><?php esc_html_e( "Edit Group", 'disciple_tools' ) ?></h1>
+    <div class="display-fields">
+        <div class="grid-x">
+            <div class="cell section-subheader">
+                <?php esc_html_e( 'Name', 'disciple_tools' ) ?>
+            </div>
+            <input type="text" id="title" class="edit-text-input" value="<?php the_title_attribute(); ?>">
+        </div>
+
+        <!-- Address -->
         <div class="grix-x">
             <div class="section-subheader cell">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
@@ -229,6 +211,28 @@
             </ul>
         </div>
 
+        <div class="grix-x">
+            <div class="section-subheader cell">
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
+                <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
+            </div>
+            <div class="location_grid">
+                <var id="location_grid-result-container" class="result-container"></var>
+                <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
+                    <div class="typeahead__container">
+                        <div class="typeahead__field">
+                            <span class="typeahead__query">
+                                <input class="js-typeahead-location_grid"
+                                       name="location_grid[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                       autocomplete="off">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dates -->
         <div class="grix-x">
             <div class="section-subheader cell">
                 <?php esc_html_e( 'Start Date', 'disciple_tools' )?>
@@ -250,7 +254,7 @@
             <div class="end_date"><input type="text" class="date-picker" id="end_date"></div>
         </div>
 
-
+        <!-- People Groups -->
         <div class="grix-x">
             <div class="section-subheader cell">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
@@ -263,7 +267,7 @@
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-people_groups"
-                                       name="people_groups[query]" placeholder="<?php esc_html_e( "Search People_groups", 'disciple_tools' ) ?>"
+                                       name="people_groups[query]" placeholder="<?php esc_html_e( "Search People Groups", 'disciple_tools' ) ?>"
                                        autocomplete="off">
                             </span>
                         </div>
@@ -272,29 +276,6 @@
             </div>
         </div>
 
-
-
-
-        <div class="grix-x">
-            <div class="section-subheader cell">
-                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
-            </div>
-            <div class="locations">
-                <var id="locations-result-container" class="result-container"></var>
-                <div id="locations_t" name="form-locations" class="scrollable-typeahead typeahead-margin-when-active">
-                    <div class="typeahead__container">
-                        <div class="typeahead__field">
-                            <span class="typeahead__query">
-                                <input class="js-typeahead-locations"
-                                       name="locations[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
-                                       autocomplete="off">
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <div>
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">

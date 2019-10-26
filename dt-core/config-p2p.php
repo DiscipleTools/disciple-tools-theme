@@ -13,6 +13,9 @@ function dt_my_connection_types() {
             'name'        => 'contacts_to_contacts',
             'from'        => 'contacts',
             'to'          => 'contacts',
+            'admin_box' => [
+                'show' => false,
+            ],
             'title'       => [
                 'from' => __( 'Coached by', 'disciple_tools' ),
                 'to'   => __( 'Coaching', 'disciple_tools' ),
@@ -37,7 +40,10 @@ function dt_my_connection_types() {
         [
             'name'        => 'contacts_to_relation',
             'from'        => 'contacts',
-            'to'          => 'contacts'
+            'to'          => 'contacts',
+            'admin_box' => [
+                'show' => false,
+            ],
         ]
     );
 
@@ -46,6 +52,9 @@ function dt_my_connection_types() {
             'name'        => 'contacts_to_subassigned',
             'from'        => 'contacts',
             'to'          => 'contacts',
+            'admin_box' => [
+                'show' => false,
+            ],
             'title'       => [
                 'from' => __( 'Sub-assigned by', 'disciple_tools' ),
                 'to'   => __( 'Sub-assigned', 'disciple_tools' ),
@@ -71,6 +80,9 @@ function dt_my_connection_types() {
             'name'        => 'baptizer_to_baptized',
             'from'        => 'contacts',
             'to'          => 'contacts',
+            'admin_box' => [
+                'show' => false,
+            ],
             'title'       => [
                 'from' => __( 'Baptized by', 'disciple_tools' ),
                 'to'   => __( 'Baptized', 'disciple_tools' ),
@@ -115,8 +127,9 @@ function dt_my_connection_types() {
             'name'           => 'contacts_to_groups',
             'from'           => 'contacts',
             'to'             => 'groups',
-            'admin_column'   => 'any',
-            'admin_dropdown' => 'from',
+            'admin_box' => [
+                'show' => false,
+            ],
             'title'          => [
                 'from' => __( 'Contacts', 'disciple_tools' ),
                 'to'   => __( 'Members', 'disciple_tools' ),
@@ -149,8 +162,9 @@ function dt_my_connection_types() {
             'name'           => 'groups_to_leaders',
             'from'           => 'groups',
             'to'             => 'contacts',
-            'admin_column'   => 'any',
-            'admin_dropdown' => 'from',
+            'admin_box' => [
+                'show' => false,
+            ],
             'title'          => [
                 'from' => __( 'Groups', 'disciple_tools' ),
                 'to'   => __( 'Leaders', 'disciple_tools' ),
@@ -183,8 +197,9 @@ function dt_my_connection_types() {
             'name'           => 'groups_to_coaches',
             'from'           => 'groups',
             'to'             => 'contacts',
-            'admin_column'   => 'any',
-            'admin_dropdown' => 'from',
+            'admin_box' => [
+                'show' => false,
+            ],
             'title'          => [
                 'from' => __( 'Groups', 'disciple_tools' ),
                 'to'   => __( 'Coaches', 'disciple_tools' ),
@@ -212,62 +227,6 @@ function dt_my_connection_types() {
         ]
     );
 
-    p2p_register_connection_type(
-        [
-            'name'        => 'contacts_to_locations',
-            'from'        => 'contacts',
-            'to'          => 'locations',
-            //            'cardinality' => 'many-to-one',
-            'title'       => [
-                'from' => __( 'Location', 'disciple_tools' ),
-                'to'   => __( 'Contacts', 'disciple_tools' ),
-            ],
-            'to_labels'   => [
-                'singular_name' => __( 'Locations', 'disciple_tools' ),
-                'search_items'  => __( 'Search locations', 'disciple_tools' ),
-                'not_found'     => __( 'No locations found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Location', 'disciple_tools' ),
-            ],
-            'from_labels' => [
-                'singular_name' => __( 'Contacts', 'disciple_tools' ),
-                'search_items'  => __( 'Search contacts', 'disciple_tools' ),
-                'not_found'     => __( 'No contacts found.', 'disciple_tools' ),
-                'create'        => __( 'Create Contact', 'disciple_tools' ),
-            ],
-            'fields'      => [
-                'primary' => [
-                    'title' => __( 'Primary', 'disciple_tools' ),
-                    'type'  => 'checkbox',
-                ],
-            ],
-        ]
-    );
-
-    p2p_register_connection_type(
-        [
-            'name'        => 'groups_to_locations',
-            'from'        => 'groups',
-            'to'          => 'locations',
-            'title'       => [
-                'from' => __( 'Location', 'disciple_tools' ),
-                'to'   => __( 'Groups', 'disciple_tools' ),
-            ],
-            'to_labels'   => [
-                'singular_name' => __( 'Location', 'disciple_tools' ),
-                'plural_name' => __( 'Locations', 'disciple_tools' ),
-                'search_items'  => __( 'Search locations', 'disciple_tools' ),
-                'not_found'     => __( 'No locations found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Location', 'disciple_tools' ),
-            ],
-            'from_labels' => [
-                'singular_name' => __( 'Group', 'disciple_tools' ),
-                'plural_name' => __( 'Groups', 'disciple_tools' ),
-                'search_items'  => __( 'Search groups', 'disciple_tools' ),
-                'not_found'     => __( 'No groups found.', 'disciple_tools' ),
-                'create'        => __( 'Create Group', 'disciple_tools' ),
-            ],
-        ]
-    );
 
     p2p_register_connection_type(
         [
@@ -296,36 +255,18 @@ function dt_my_connection_types() {
         ]
     );
 
-
     /**
-     * This creates the link between members and locations for assignment purposes.
+     * Peer groups
      */
-    p2p_register_connection_type(
-        [
-            'name'  => 'team_member_locations',
-            'from'  => 'locations',
-            'to'    => 'user',
-            'title' => [
-                'from' => __( 'Team Members', 'disciple_tools' ),
-                'to'   => __( 'Locations', 'disciple_tools' ),
-            ],
-        ]
-    );
+    p2p_register_connection_type( [
+        'name'         => 'groups_to_peers',
+        'from'         => 'groups',
+        'to'           => 'groups',
+        'admin_column' => 'any'
+    ] );
 
-    /**
-     * People Groups
-     */
-    p2p_register_connection_type(
-        [
-            'name'  => 'team_member_peoplegroups',
-            'from'  => 'peoplegroups',
-            'to'    => 'user',
-            'title' => [
-                'from' => __( 'Team Members', 'disciple_tools' ),
-                'to'   => __( 'People Groups', 'disciple_tools' ),
-            ],
-        ]
-    );
+
+
     p2p_register_connection_type(
         [
             'name'        => 'contacts_to_peoplegroups',
@@ -380,35 +321,6 @@ function dt_my_connection_types() {
             ],
         ]
     );
-    p2p_register_connection_type(
-        [
-            'name'        => 'peoplegroups_to_locations',
-            'from'        => 'peoplegroups',
-            'to'          => 'locations',
-            'title'       => [
-                'from' => __( 'Locations', 'disciple_tools' ),
-                'to'   => __( 'People Groups', 'disciple_tools' ),
-            ],
-            'to_labels'   => [
-                'singular_name' => __( 'Locations', 'disciple_tools' ),
-                'search_items'  => __( 'Search locations', 'disciple_tools' ),
-                'not_found'     => __( 'No locations found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Location', 'disciple_tools' ),
-            ],
-            'from_labels' => [
-                'singular_name' => __( 'People Groups', 'disciple_tools' ),
-                'search_items'  => __( 'Search People Groups', 'disciple_tools' ),
-                'not_found'     => __( 'No people groups found.', 'disciple_tools' ),
-                'create'        => __( 'Create People Groups', 'disciple_tools' ),
-            ],
-            'fields'      => [
-                'primary' => [
-                    'title' => __( 'Primary', 'disciple_tools' ),
-                    'type'  => 'checkbox',
-                ],
-            ],
-        ]
-    );
 
     //    } // end options filter for people groups
 }
@@ -428,154 +340,9 @@ function dt_p2p_published_by_default( $args ) {
 }
 add_filter( 'p2p_new_post_args', 'dt_p2p_published_by_default', 10, 1 );
 
-/**
- * Adding the connection box to the user profile
- *
- * @param $user
- */
-function dt_user_location_connections( $user ) {
-
-    // Find connected posts
-    $args = [
-        'connected_type'   => 'team_member_locations',
-        'connected_items'  => $user,
-        'suppress_filters' => false,
-        'nopaging'         => true,
-        'post_status'      => 'publish',
-    ];
-    $connected = get_posts( $args );
-
-    // Display connected posts
-    if ( count( $connected ) ) {
-        ?>
-        <h3>User Locations</h3>
-        <table class="form-table">
-            <tbody>
-            <tr>
-                <th>
-                    <label for="user-group">Locations</label>
-                </th>
-                <td>
-                    <table class="wp-list-table widefat fixed striped user-groups">
-                        <thead>
-                        <tr>
-                            <th scope="col" class="manage-column column-name column-primary">Name</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                        foreach ( $connected as $next ) { ?>
-                            <tr class="inactive">
-                                <td class="column-primary">
-                                    <strong><?php echo esc_html( $next->post_title ); ?></strong>
-                                    <div class="row-actions">
-                                        <a href="<?php echo esc_url( get_permalink( $next->ID ) ); ?>">View in Portal</a> | <a
-                                            href="<?php echo esc_url( home_url( '/' ) ); ?>wp-admin/post.php?post=<?php echo esc_url( $next->ID ); ?>&action=edit">View
-                                            in Admin</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <?php
-                        } ?>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <th scope="col" class="manage-column column-name column-primary">Name</th>
-                        </tr>
-                        </tfoot>
-                    </table>
-
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <ul>
-
-        </ul>
-
-        <?php
-        // Prevent weirdness
-        wp_reset_postdata();
-    }
-}
-add_action( 'show_user_profile', 'dt_user_location_connections', 999 );
-add_action( 'edit_user_profile', 'dt_user_location_connections', 999 );
-
-/**
- * Adding the connection box to the user profile
- *
- * @param $user
- */
-function dt_user_peoplegroup_connections( $user ) {
-
-    // Find connected posts
-    $args = [
-        'connected_type'   => 'team_member_peoplegroups',
-        'connected_items'  => $user,
-        'suppress_filters' => false,
-        'nopaging'         => true,
-        'post_status'      => 'publish',
-    ];
-    $connected = get_posts( $args );
-
-    // Display connected posts
-    if ( count( $connected ) ) {
-        ?>
-        <h3>User People Groups</h3>
-        <table class="form-table">
-            <tbody>
-            <tr>
-                <th>
-                    <label for="user-group">People Groups</label>
-                </th>
-                <td>
-                    <table class="wp-list-table widefat fixed striped user-groups">
-                        <thead>
-                        <tr>
-                            <th scope="col" class="manage-column column-name column-primary">Name</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                        foreach ( $connected as $next ) { ?>
-                            <tr class="inactive">
-                                <td class="column-primary">
-                                    <strong><?php echo esc_html( $next->post_title ); ?></strong>
-                                    <div class="row-actions">
-                                        <a href="<?php echo esc_url( get_permalink( $next->ID ) ); ?>">View in Portal</a> | <a
-                                            href="<?php echo esc_url( home_url( '/' ) ); ?>wp-admin/post.php?post=<?php echo esc_url( $next->ID ); ?>&action=edit">View
-                                            in Admin</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <?php
-                        } ?>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <th scope="col" class="manage-column column-name column-primary">Name</th>
-                        </tr>
-                        </tfoot>
-                    </table>
-
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <ul>
-
-        </ul>
-
-        <?php
-        // Prevent weirdness
-        wp_reset_postdata();
-    }
-}
-add_action( 'show_user_profile', 'dt_user_peoplegroup_connections', 999 );
-add_action( 'edit_user_profile', 'dt_user_peoplegroup_connections', 999 );
-
 //escape the connection title because p2p doesn't
 function dt_p2p_title_escape( $title, $object = null, $type = null ){
     return esc_html( $title );
 }
 add_filter( "p2p_connected_title", "dt_p2p_title_escape" );
+

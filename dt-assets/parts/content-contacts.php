@@ -27,7 +27,13 @@ declare(strict_types=1);
             </li>
         </ul>
     </div>
-
+    <div class="show-closed-switch">
+        <?php esc_html_e( "Closed Contacts", 'disciple_tools' ) ?>
+        <div class="switch tiny">
+            <input class="switch-input" id="show_closed" type="checkbox" name="testGroup">
+            <label class="switch-paddle" for="show_closed"></label>
+        </div>
+    </div>
     <table class="table-remove-top-border js-list stack striped">
         <thead>
             <tr class="sortable">
@@ -36,7 +42,7 @@ declare(strict_types=1);
                 <th class="not-mobile" data-id="seeker_path"><?php esc_html_e( "Seeker Path", "disciple_tools" ); ?></th>
                 <th class="desktop" data-id="faith_milestones"><?php esc_html_e( "Faith Milestones", "disciple_tools" ); ?></th>
                 <th class="desktop" data-id="assigned_to"><?php esc_html_e( "Assigned to", "disciple_tools" ); ?></th>
-                <th class="not-mobile" data-id="locations"><?php esc_html_e( "Location", "disciple_tools" ); ?></th>
+                <th class="not-mobile" data-id="location_grid"><?php esc_html_e( "Location", "disciple_tools" ); ?></th>
                 <th class="not-mobile" data-id="groups"><?php esc_html_e( "Group", "disciple_tools" ); ?></th>
             </tr>
         </thead>
