@@ -46,6 +46,10 @@
     <?php do_action( 'dt_contact_detail_notification', $contact ); ?>
 
     <section class="cell bordered-box">
+       <div class="section-header">
+            <?php esc_html_e( "Details", 'disciple_tools' ) ?>
+<a class="button small" id="backlink" href="../" style=""><?php esc_html_e( 'Back to Contacts List', 'disciple_tools' )?></a>
+        </div>
         <div style="display: flex;">
             <div class="item-details-header" style="flex-grow:1">
                 <i class="fi-torso large" style="padding-bottom: 1.2rem"></i>
