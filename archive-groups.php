@@ -136,7 +136,7 @@ declare(strict_types=1);
 
                     <h5><?php esc_html_e( 'Custom Filters', "disciple_tools" ); ?></h5>
                     <div style="margin-bottom: 5px">
-                        <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
+                        <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px;width:14px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>" /><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
                     </div>
                     <div class="custom-filters">
                     </div>
