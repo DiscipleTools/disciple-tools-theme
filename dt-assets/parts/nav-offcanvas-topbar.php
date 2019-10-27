@@ -13,23 +13,23 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
 }
 
 ?>
-
+<?php  /* TOP RIGHT SIDE MENU AREA */ ?>
 <div class="title-bar show-for-small-only" data-responsive-toggle="top-bar-menu">
     <div class="title-bar-left">
         <button class="" type="button" data-open="off-canvas">
             <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/hamburger.svg" ?>">
         </button>
-        <div class="title-bar-title" style="margin-left: 5px"><?php esc_html_e( "Disciple Tools" ); ?></div>
+        <div class="title-bar-title" style="margin-left: 5px"><?php esc_html_e( "Disciple Tools" ); ?><?php  /* REPLACE_TEXT */ ?></div>
     </div>
     <div class="title-bar-right">
         <ul class="dropdown menu" data-dropdown-menu style="display:inline-block; margin-left: 10px">
             <li class="has-submenu center-items" style="width:21px;">
                 <button>
-                    <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add.svg" ?>" style="width:21px;">
+                    <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-plus.svg" ?>" style="width:24px;">
                 </button>
                 <ul class="submenu menu vertical">
-                    <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'contacts/new'; ?>"><?php esc_html_e( 'New Contact', 'disciple_tools' )?></a></li>
-                    <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'groups/new'; ?>"><?php esc_html_e( 'New Group', 'disciple_tools' )?></a></li>
+                    <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'contacts/new'; ?>" title="<?php esc_html_e( "Add New Contact", "disciple_tools" ); ?>"><?php esc_html_e( 'New Contact', 'disciple_tools' )?> <img title="<?php esc_html_e( "Add New Contact", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-contact.svg" ?>" style="width:22px;"></a></li>
+                    <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'groups/new'; ?>" title="<?php esc_html_e( "Add New Group", "disciple_tools" ); ?>"><?php esc_html_e( 'New Group', 'disciple_tools' )?> <img title="<?php esc_html_e( "Add New Group", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-group.svg" ?>" style="width:22px;"></a></li>
                     <?php do_action( 'dt_nav_add_post_menu' ) ?>
                 </ul>
             </li>
@@ -47,6 +47,7 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
     </div>
 </div>
 
+<?php  /* LOGO AREA */ ?>
 <div data-sticky-container class="hide-for-small-only">
     <div class="top-bar" id="top-bar-menu"
          data-sticky style="width:100%;margin-top:0">
@@ -72,13 +73,13 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
                         <span dir="auto"><?php echo esc_html( wp_get_current_user()->display_name ); ?></span>
                     </a>
                 </li>
-                <li class="has-submenu center-items">
+                <li class="has-submenu center-items"><?php  /* ADD NEW BUTTON AREA UNDER HEADER */ ?>
                     <button>
-                        <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add.svg" ?>" style="width:21px;">
+                        <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-plus.svg" ?>" style="width:24px;">
                     </button>
-                    <ul class="submenu menu vertical">
-                        <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'contacts/new'; ?>"><?php esc_html_e( 'New Contact', 'disciple_tools' )?></a></li>
-                        <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'groups/new'; ?>"><?php esc_html_e( 'New Group', 'disciple_tools' )?></a></li>
+                    <ul class="submenu menu vertical title-bar-right">
+                        <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'contacts/new'; ?>" title="<?php esc_html_e( "Add New Contact", "disciple_tools" ); ?>" style="vertical-align:middle"><?php esc_html_e( 'New Contact', 'disciple_tools' )?> <img title="<?php esc_html_e( "Add New Contact", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-contact.svg" ?>" style="width:22px;"></a></li>
+                        <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'groups/new'; ?>" title="<?php esc_html_e( "Add New Group", "disciple_tools" ); ?>" style="vertical-align:middle"><?php esc_html_e( 'New Group', 'disciple_tools' )?> <img title="<?php esc_html_e( "Add New Group", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-group.svg" ?>" style="width:22px;"></a></li>
                         <?php do_action( 'dt_nav_add_post_menu' ) ?>
                     </ul>
                 </li>
