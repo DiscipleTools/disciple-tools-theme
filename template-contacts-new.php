@@ -15,6 +15,7 @@ get_header();
 
         <div class="large-8 medium-12 small-12 cell">
             <form class="js-create-contact bordered-box" style="margin-bottom:200px">
+                <h3 class="section-header"><?php esc_html_e( "Create new contact", "disciple_tools" ); ?></h3>
                 <label>
                     <?php esc_html_e( "Name of contact", "disciple_tools" ); ?>
                     <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required dir="auto" aria-describedby="name-help-text">

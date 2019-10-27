@@ -16,6 +16,7 @@ $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_s
 
         <div class="large-8 medium-12 small-12 cell">
             <form class="js-create-group bordered-box">
+                <h3 class="section-header"><?php esc_html_e( "Create new group", "disciple_tools" ); ?></h3>
                 <label for="title">
                     <?php esc_html_e( "Name of group", "disciple_tools" ); ?>
                 </label>
