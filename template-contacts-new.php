@@ -67,7 +67,8 @@ get_header();
                 </label>
 
                 <div style="text-align: center">
-                    <button class="button loader js-create-contact-button" type="submit" disabled><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
+                    <a href="/contacts/" class="button small" title="<?php esc_html_e( 'Cancel and return to the Contacts List page', 'disciple_tools' )?>"><?php esc_html_e( 'Cancel', 'disciple_tools' )?></a>
+                    <button class="button loader js-create-contact-button dt-green" type="submit" disabled title="<?php esc_html_e( 'Save and continue editing the new contact', 'disciple_tools' )?>"><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
                 </div>
             </form>
         </div>
