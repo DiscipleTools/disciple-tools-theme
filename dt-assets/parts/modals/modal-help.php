@@ -162,7 +162,11 @@
             <li><?php esc_html_e( "Multiply field: How many members are multiplying?", 'disciple_tools' ) ?></li>
         </ul>
     </div>
-
+    <!-- documentation link -->
+    <div style="float:right">
+        <h5><?php esc_html_e( "Need more help?", 'disciple_tools' ) ?></h5>
+        <a class="button small" id="docslink" href="https://disciple-tools.readthedocs.io/en/latest/index.html"><?php esc_html_e( 'Read the documentation', 'disciple_tools' )?></a>
+    </div>
     <!-- close -->
     <div class="grid-x">
         <button class="button" data-close aria-label="Close reveal" type="button">
