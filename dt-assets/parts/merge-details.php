@@ -80,6 +80,12 @@
                         case 'contact_twitter':
                             var svg = 'twitter.svg';
                             break;
+                        case 'contact_instagram':
+                            var svg = 'instagram.svg';
+                            break;
+                        case 'contact_skype':
+                            var svg = 'skype.svg';
+                            break;
                         default:
                             return true; //skip
                     }
