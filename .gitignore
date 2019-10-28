@@ -13,3 +13,5 @@ phpcs.phar
 
 */development-only/*
 
+package-lock.json
+package.json
