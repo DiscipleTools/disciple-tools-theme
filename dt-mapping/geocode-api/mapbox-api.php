@@ -193,17 +193,17 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             @link https://docs.mapbox.com/api/search/#data-types
             The data types available in the geocoder, listed from the largest to the most granular, are:
 
-            country	        - Generally recognized countries or, in some cases like Hong Kong, an area of quasi-national administrative status that has been given a designated country code under ISO 3166-1.
-            region	        - Top-level sub-national administrative features, such as states in the United States or provinces in Canada or China.
-            postcode	    - Postal codes used in country-specific national addressing systems.
-            district	    - Features that are smaller than top-level administrative features but typically larger than cities, in countries that use such an additional layer in postal addressing (for example, prefectures in China).
-            place	        - Typically these are cities, villages, municipalities, etc. They’re usually features used in postal addressing, and are suitable for display in ambient end-user applications where current-location context is needed (for example, in weather displays).
-            locality	    - Official sub-city features present in countries where such an additional administrative layer is used in postal addressing, or where such features are commonly referred to in local parlance. Examples include city districts in Brazil and Chile and arrondissements in France.
-            neighborhood	- Colloquial sub-city features often referred to in local parlance. Unlike locality features, these typically lack official status and may lack universally agreed-upon boundaries.
-            address	        - Individual residential or business addresses.
-            poi	            - Points of interest. These include restaurants, stores, concert venues, parks, museums, etc.
+            country         - Generally recognized countries or, in some cases like Hong Kong, an area of quasi-national administrative status that has been given a designated country code under ISO 3166-1.
+            region          - Top-level sub-national administrative features, such as states in the United States or provinces in Canada or China.
+            postcode        - Postal codes used in country-specific national addressing systems.
+            district        - Features that are smaller than top-level administrative features but typically larger than cities, in countries that use such an additional layer in postal addressing (for example, prefectures in China).
+            place           - Typically these are cities, villages, municipalities, etc. They’re usually features used in postal addressing, and are suitable for display in ambient end-user applications where current-location context is needed (for example, in weather displays).
+            locality        - Official sub-city features present in countries where such an additional administrative layer is used in postal addressing, or where such features are commonly referred to in local parlance. Examples include city districts in Brazil and Chile and arrondissements in France.
+            neighborhood    - Colloquial sub-city features often referred to in local parlance. Unlike locality features, these typically lack official status and may lack universally agreed-upon boundaries.
+            address         - Individual residential or business addresses.
+            poi             - Points of interest. These include restaurants, stores, concert venues, parks, museums, etc.
              */
-            switch( $code ) {
+            switch ( $code ) {
                 case 'country':
                     $level = 2;
                     break;
@@ -841,15 +841,15 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
 
 The data types available in the geocoder, listed from the largest to the most granular, are:
 
-country	        - Generally recognized countries or, in some cases like Hong Kong, an area of quasi-national administrative status that has been given a designated country code under ISO 3166-1.
-region	        - Top-level sub-national administrative features, such as states in the United States or provinces in Canada or China.
-postcode	    - Postal codes used in country-specific national addressing systems.
-district	    - Features that are smaller than top-level administrative features but typically larger than cities, in countries that use such an additional layer in postal addressing (for example, prefectures in China).
-place	        - Typically these are cities, villages, municipalities, etc. They’re usually features used in postal addressing, and are suitable for display in ambient end-user applications where current-location context is needed (for example, in weather displays).
-locality	    - Official sub-city features present in countries where such an additional administrative layer is used in postal addressing, or where such features are commonly referred to in local parlance. Examples include city districts in Brazil and Chile and arrondissements in France.
-neighborhood	- Colloquial sub-city features often referred to in local parlance. Unlike locality features, these typically lack official status and may lack universally agreed-upon boundaries.
-address	        - Individual residential or business addresses.
-poi	            - Points of interest. These include restaurants, stores, concert venues, parks, museums, etc.
+country         - Generally recognized countries or, in some cases like Hong Kong, an area of quasi-national administrative status that has been given a designated country code under ISO 3166-1.
+region          - Top-level sub-national administrative features, such as states in the United States or provinces in Canada or China.
+postcode        - Postal codes used in country-specific national addressing systems.
+district        - Features that are smaller than top-level administrative features but typically larger than cities, in countries that use such an additional layer in postal addressing (for example, prefectures in China).
+place           - Typically these are cities, villages, municipalities, etc. They’re usually features used in postal addressing, and are suitable for display in ambient end-user applications where current-location context is needed (for example, in weather displays).
+locality        - Official sub-city features present in countries where such an additional administrative layer is used in postal addressing, or where such features are commonly referred to in local parlance. Examples include city districts in Brazil and Chile and arrondissements in France.
+neighborhood    - Colloquial sub-city features often referred to in local parlance. Unlike locality features, these typically lack official status and may lack universally agreed-upon boundaries.
+address         - Individual residential or business addresses.
+poi             - Points of interest. These include restaurants, stores, concert venues, parks, museums, etc.
 
 
 */
