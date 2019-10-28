@@ -56,7 +56,7 @@ class Disciple_Tools_Users
      *
      * @return array|\WP_Error
      */
-    public static function get_assignable_users_compact( string $search_string = null ) {
+    public static function get_assignable_users_compact( string $search_string = null, $get_all = false ) {
         if ( !current_user_can( "access_contacts" ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to assign" ), [ 'status' => 403 ] );
         }
@@ -80,8 +80,11 @@ class Disciple_Tools_Users
                 $user_id
             ), ARRAY_N );
 
-            $dispatchers = $wpdb->get_results("SELECT user_id FROM $wpdb->usermeta WHERE meta_key =
-            'wp_capabilities' AND meta_value LIKE '%dispatcher%'");
+            $dispatchers = $wpdb->get_results("
+                SELECT user_id FROM $wpdb->usermeta 
+                WHERE meta_key = '{$wpdb->prefix}capabilities' 
+                AND meta_value LIKE '%dispatcher%'
+            ");
 
             $assure_unique = [];
             foreach ( $dispatchers as $index ){
@@ -110,7 +113,7 @@ class Disciple_Tools_Users
                     'user_url',
                     'display_name'
                 ],
-                'number' => 10
+                'number' => $get_all ? 1000 : 10
             ] );
 
             $users = $user_query->get_results();
@@ -155,7 +158,7 @@ class Disciple_Tools_Users
                     "avatar" => get_avatar_url( $user->ID, [ 'size' => '16' ] )
                 ];
                 //extra information for the dispatcher
-                if ( current_user_can( 'view_any_contacts' ) ){
+                if ( current_user_can( 'view_any_contacts' ) && !$get_all ){
                     $workload_status = get_user_option( 'workload_status', $user->ID );
                     if ( $workload_status && isset( $workload_status_options[ $workload_status ]["color"] ) ) {
                         $u['status_color'] = $workload_status_options[$workload_status]["color"];
