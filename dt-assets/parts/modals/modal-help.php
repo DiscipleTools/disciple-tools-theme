@@ -34,11 +34,9 @@
 
     <!--    Subassigned to  -->
     <div class="help-section" id="subassigned-to-help-text" style="display: none">
-        <h3 class="lead"><?php esc_html_e( "Sub-assigned to", 'disciple_tools' ) ?></h3>
-        <p><?php esc_html_e( "This is someone working alongside of the main person assigned to the contact. You may find that you are partnering with others in your discipleship relationships. Only one person can be assigned while multiple people can be sub-assigned.", 'disciple_tools' ) ?></p>
         <?php
-        $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["subassigned_to"]; ?>
-        <h3><?php echo esc_html( $field["name"] ) ?></h3>
+        $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["subassigned"]; ?>
+        <h3 class="lead"><?php echo esc_html( $field["name"] ) ?></h3>
         <p><?php echo esc_html( $field["description"] ) ?></p>
     </div>
 

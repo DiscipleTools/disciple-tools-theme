@@ -581,6 +581,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["subassigned"] = [
             "name" => __( "Sub-assigned to", "disciple_tools" ),
+            "description" => __( "This is someone working alongside of the main person assigned to the contact. You may find that you are partnering with others in your discipleship relationships. Only one person can be assigned while multiple people can be sub-assigned.", "disciple_tools" ),
             "type" => "connection",
             "p2p_direction" => "to",
             "p2p_key" => "contacts_to_subassigned"
