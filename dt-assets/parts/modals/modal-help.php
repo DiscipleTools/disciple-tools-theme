@@ -162,12 +162,12 @@
     </div>
     <!-- documentation link -->
     <div style="float:right">
-        <h5><?php esc_html_e( "Need more help?", 'disciple_tools' ) ?></h5>
+        <div><?php esc_html_e( "Need more help?", 'disciple_tools' ) ?></div>
         <a class="button small" id="docslink" href="https://disciple-tools.readthedocs.io/en/latest/index.html"><?php esc_html_e( 'Read the documentation', 'disciple_tools' )?></a>
     </div>
     <!-- close -->
     <div class="grid-x">
-        <button class="button" data-close aria-label="Close reveal" type="button">
+        <button class="button small" style="position:absolute;bottom:15px" data-close aria-label="Close reveal" type="button">
             <?php esc_html_e( 'Close', 'disciple_tools' )?>
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">
