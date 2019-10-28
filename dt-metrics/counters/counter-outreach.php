@@ -179,7 +179,7 @@ class Disciple_Tools_Counter_Outreach extends Disciple_Tools_Counter_Base
         foreach ( $sources as $source ){
             $reports[ $source["key"] ] = [
                 "label" => $source["label"],
-                "section" => $source["section"] ?? 'outreach',
+                "section" => $source["section"] ?? 'none',
                 "description" => $source["description"] ?? '',
                 "sum" => 0,
                 "latest" => null

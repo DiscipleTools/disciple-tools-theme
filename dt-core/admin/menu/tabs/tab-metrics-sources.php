@@ -92,6 +92,7 @@ class Disciple_Tools_Metric_Sources_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     </td>
                     <td>
                         <select name="section[<?php echo esc_html( $source["key"] ) ?>]">
+                            <option value="none" <?php echo esc_html( ( $source["none"] ?? '' ) === 'none' ? 'selected' : '' ) ?>>None</option>
                             <option value="outreach" <?php echo esc_html( ( $source["section"] ?? '' ) === 'outreach' ? 'selected' : '' ) ?>>Outreach Section</option>
                             <option value="movement" <?php echo esc_html( ( $source["section"] ?? '' ) === 'movement' ? 'selected' : '' ) ?>>Movement Section</option>
                         </select>
