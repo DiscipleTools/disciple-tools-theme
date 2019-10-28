@@ -167,6 +167,31 @@
         </ul>
     </div>
 
+    <!-- Source  -->
+    <div class="help-section" id="source-help-text" style="display: none">
+        <?php
+        $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["sources"]; ?>
+        <h3><?php echo esc_html( $field["name"] ) ?></h3>
+        <p><?php echo esc_html( $field["description"] ) ?></p>
+        <ul>
+            <?php foreach ( $field["default"] as $option ): ?>
+                <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ?? "" ) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
+    <!--  Location  -->
+    <div class="help-section" id="location-help-text" style="display: none">
+        <h3 class="lead"><?php esc_html_e( "Location", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "This is the general location where the contact lives - and not their address. Clicking this will bring up a list of locations that were previously created in the backend by an Admin Role user. You cannot add a new location here. You or an an Admin Role user will first have to add new locations in the backend of your Disciple.Tools instance.", 'disciple_tools' ) ?></p>
+    </div>
+
+    <!--  Initial Comment  -->
+    <div class="help-section" id="initial-comment-help-text" style="display: none">
+        <h3 class="lead"><?php esc_html_e( "Initial Comment", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "This is for any other info you need to put about the contact/group. It will be saved under the Activity and Comments Tile in the Contact's/Group's Record.", 'disciple_tools' ) ?></p>
+    </div>
+
     <!-- documentation link -->
     <div style="float:right">
         <h5><?php esc_html_e( "Need more help?", 'disciple_tools' ) ?></h5>
