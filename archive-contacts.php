@@ -63,7 +63,7 @@ declare(strict_types=1);
         <nav role="navigation"
              data-sticky data-options="marginTop:3;" style="width:100%" data-top-anchor="1"
              class="second-bar">
-            <div class="container-width center"><?php  /* DESKTOP VIEW BUTTON AREA */ ?>
+            <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
                 <a class="button dt-green" style="margin-bottom:0" href="<?php echo esc_url( home_url( '/' ) ) . "contacts/new" ?>">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-contact.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php esc_html_e( "Create new contact", "disciple_tools" ); ?></span>
@@ -85,7 +85,7 @@ declare(strict_types=1);
         </nav>
     </div>
     <nav  role="navigation" style="width:100%;"
-          class="second-bar show-for-small-only center"><?php  /* MOBILE VIEW BUTTON AREA */ ?>
+          class="second-bar show-for-small-only center"><!--  /* MOBILE VIEW BUTTON AREA */ -->
         <a class="button dt-green" style="margin-bottom:0" href="<?php echo esc_url( home_url( '/' ) ) . "contacts/new" ?>">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-contact.svg' ) ?>"/>
             <span class="hide-for-small-only"><?php esc_html_e( "Create new contact", "disciple_tools" ); ?></span>
@@ -170,7 +170,7 @@ declare(strict_types=1);
 
                     <h5><?php esc_html_e( 'Custom Filters', "disciple_tools" ); ?></h5>
                     <div style="margin-bottom: 5px">
-                        <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px;width:14px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?> "/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
+                        <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
                     </div>
                     <div class="custom-filters">
 
