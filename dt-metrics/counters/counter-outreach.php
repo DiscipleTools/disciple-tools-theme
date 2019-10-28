@@ -159,4 +159,41 @@ class Disciple_Tools_Counter_Outreach extends Disciple_Tools_Counter_Base
         }
     }
 
+
+    public static function get_monthly_reports_count( $start, $end ){
+        global $wpdb;
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT report.id, report.report_date, meta_key, meta_value FROM $wpdb->dt_reports report
+            JOIN $wpdb->dt_reportmeta rm ON ( rm.report_id = report.id )
+            WHERE report.report_source = 'monthly_report'
+            AND report_date >= %s
+            AND report_date < %s
+            GROUP BY report.id, rm.meta_key
+            ORDER BY report.report_date DESC
+        ",
+            dt_format_date( $start, 'Y-m-d' ),
+            dt_format_date( $end, 'Y-m-d' )
+        ), ARRAY_A );
+        $sources = get_option( 'dt_critical_path_sources', [] );
+        $reports = [];
+        foreach ( $sources as $source ){
+            $reports[ $source["key"] ] = [
+                "label" => $source["label"],
+                "section" => $source["section"] ?? 'outreach',
+                "description" => $source["description"] ?? '',
+                "sum" => 0,
+                "latest" => null
+            ];
+        }
+        foreach ( $results as $res ){
+            if ( isset( $reports[ $res["meta_key"] ] ) ) {
+                $reports[$res["meta_key"]]["sum"] += (int) $res["meta_value"];
+                if ( $reports[$res["meta_key"]]["latest"] === null ){
+                    $reports[$res["meta_key"]]["latest"] = (int) $res["meta_value"];
+                }
+            }
+        }
+
+        return $reports;
+    }
 }
