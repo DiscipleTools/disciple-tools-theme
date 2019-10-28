@@ -417,6 +417,11 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-contact-import.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr-erase.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr-export.php' );
+
+                require_once( get_template_directory() . '/dt-core/admin/menu/menu-metrics.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-metrics-reports.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-metrics-sources.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-metrics-edit.php' );
                 /* End menu tab section */
 
 
