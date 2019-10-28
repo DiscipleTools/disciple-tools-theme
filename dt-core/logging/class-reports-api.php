@@ -129,6 +129,36 @@ class Disciple_Tools_Reports_API
         );
     }
 
+    public function update_report_meta( $report_id, $field, $value ){
+        global $wpdb;
+        $wpdb->update(
+            $wpdb->dt_reportmeta,
+            [
+                'meta_value' => $value,
+            ],
+            [
+                'report_id'  => $report_id,
+                'meta_key'   => $field,
+            ],
+            [ '%s' ],
+            [ '%d', '%s' ]
+        );
+    }
+
+    public function delete_report( $report_id ){
+        global $wpdb;
+        $wpdb->delete(
+            $wpdb->dt_reports,
+            [ 'id' => $report_id ],
+            [ '%d' ]
+        );
+        $wpdb->delete(
+            $wpdb->dt_reportmeta,
+            [ 'report_id' => $report_id ],
+            [ '%d' ]
+        );
+    }
+
     /**
      * @param $report_source
      *

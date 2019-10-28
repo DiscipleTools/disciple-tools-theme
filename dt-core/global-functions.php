@@ -193,6 +193,18 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    if ( !function_exists( "dt_create_field_key" ) ){
+        function dt_create_field_key( $s, $with_hash = false ){
+            $string = str_replace( ' ', '_', $s ); // Replaces all spaces with hyphens.
+            $ret = preg_replace( '/[^A-Za-z0-9\-_]/', '', $string ); // Removes special chars.
+            $ret = strtolower( $ret );
+            if ( $with_hash === true ){
+                $ret .= '_' . substr( md5( rand( 10000, 100000 ) ), 0, 3 ); // create a unique 3 digit key
+            }
+            return $ret;
+        }
+    }
+
     /**
      * All code above here.
      */
