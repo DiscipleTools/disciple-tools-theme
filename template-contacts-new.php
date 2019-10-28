@@ -17,22 +17,29 @@ get_header();
             <form class="js-create-contact bordered-box" style="margin-bottom:200px">
                 <h3 class="section-header"><?php esc_html_e( "Create new contact", "disciple_tools" ); ?></h3>
                 <label>
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/name.svg' ?>">
                     <?php esc_html_e( "Name of contact", "disciple_tools" ); ?>
                     <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required dir="auto" aria-describedby="name-help-text">
                 </label>
                 <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
 
                 <label>
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/phone.svg' ?>">
                     <?php esc_html_e( "Phone number", "disciple_tools" ); ?>
                     <input name="phone" type="text" type="tel" placeholder="<?php esc_html_e( "Phone number", "disciple_tools" ); ?>">
                 </label>
                 <label>
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/email.svg' ?>">
                     <?php esc_html_e( "Email", "disciple_tools" ); ?>
                     <input name="email" type="text"  placeholder="<?php esc_html_e( "Email", "disciple_tools" ); ?>">
                 </label>
 
                 <label>
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
                     <?php esc_html_e( "Source", "disciple_tools" ); ?>
+                    <button class="help-button" data-section="source-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
                     <select name="sources" aria-describedby="source-help-text">
                         <?php
                         $contacts_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
@@ -47,7 +54,12 @@ get_header();
                     </select>
                 </label>
 
+                <label>
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
                 <?php esc_html_e( "Location", "disciple_tools" ); ?>
+                <button class="help-button" data-section="location-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
                 <div class="location_grid">
                     <var id="location_grid-result-container" class="result-container"></var>
                     <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
@@ -62,8 +74,13 @@ get_header();
                         </div>
                     </div>
                 </div>
+                </label>
                 <label>
                     <?php esc_html_e( "Initial comment", "disciple_tools" ); ?>
+                    <button class="help-button" data-section="initial-comment-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
+
                     <textarea name="initial_comment" dir="auto" placeholder="<?php esc_html_e( "Initial comment", "disciple_tools" ); ?>"></textarea>
                 </label>
 
