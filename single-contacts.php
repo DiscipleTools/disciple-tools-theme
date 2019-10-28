@@ -265,7 +265,9 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item">
             <!--                    <div class="bordered-box last-typeahead-in-section">-->
                                 <div class="bordered-box"><h3 class="section-header"><?php esc_html_e( "Connections", 'disciple_tools' ) ?></h3>
-                                    <div class="section-subheader"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></div>
+                                    <div class="section-subheader">
+                                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/groups.svg' ?>">
+                                    <?php esc_html_e( "Groups", 'disciple_tools' ) ?></div>
                                     <var id="groups-result-container" class="result-container"></var>
                                     <div id="groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
                                         <div class="typeahead__container">
