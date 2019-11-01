@@ -99,7 +99,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                         <!-- GROUPS TILE -->
                         <section id="groups" class="xlarge-6 large-12 medium-6 cell grid-item">
                             <div class="bordered-box">
-                                <label class="section-header"><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/group-types.svg' ) ?>"/> <?php esc_html_e( "Groups", 'disciple_tools' ) ?>
+                                <label class="section-header"><?php esc_html_e( "Groups", 'disciple_tools' ) ?>
                                     <button class="help-button" data-section="group-connections-help-text">
                                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                     </button>
