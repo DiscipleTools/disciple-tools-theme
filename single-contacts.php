@@ -260,6 +260,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                     <div id="contact-details" class="small-12 cell grid-margin-y">
                         <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
                     </div>
+
+                <!-- CONNECTIONS TILE -->
                     <div class="cell small-12">
                         <div class="grid-x grid-margin-x grid-margin-y grid">
                             <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item">
@@ -337,6 +339,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                 </div>
                             </section>
 
+                        <!-- PROGRESS TILE -->
                             <section id="faith" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box">
                                     <label class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?>
@@ -473,7 +476,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                 <?php
                             }
                             ?>
-
+                        <!-- OTHER TILE -->
                             <section id="other" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box">
                                     <label class="section-header"><?php esc_html_e( 'Other', 'disciple_tools' )?>

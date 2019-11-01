@@ -109,8 +109,8 @@
                 </p>
             </div>
 
+        <!-- ASSIGNED TO -->
             <div class="cell small-12 medium-4">
-                <!-- Assigned To -->
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
                     <?php esc_html_e( 'Assigned to', 'disciple_tools' )?>
@@ -140,6 +140,7 @@
                 </div>
             </div>
 
+        <!-- SUBASSIGNED -->
             <div class="cell small-12 medium-4">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/subassigned.svg' ?>">
@@ -223,7 +224,6 @@
                 </div>
                 <ul class="people_groups-list details-list"></ul>
             </div>
-
 
             <!-- Age -->
             <div class="xlarge-4 large-6 medium-6 small-12 cell">

@@ -58,7 +58,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                 <div class="cell small-12">
                     <div class="grid-x grid-margin-x grid-margin-y grid">
 
-                        <!-- Members-->
+                        <!-- MEMBERS TILE -->
                         <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item" >
                             <div class="bordered-box">
                                 <label class="section-header"><?php esc_html_e( 'Members', 'disciple_tools' )?>
@@ -96,17 +96,17 @@ if ( ! current_user_can( 'access_groups' ) ) {
                             </div>
                         </section>
 
-                        <!-- Groups -->
+                        <!-- GROUPS TILE -->
                         <section id="groups" class="xlarge-6 large-12 medium-6 cell grid-item">
                             <div class="bordered-box">
-                                <label class="section-header"><?php esc_html_e( "Groups", 'disciple_tools' ) ?>
+                                <label class="section-header"><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/group-types.svg' ) ?>"/> <?php esc_html_e( "Groups", 'disciple_tools' ) ?>
                                     <button class="help-button" data-section="group-connections-help-text">
                                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                     </button>
                                 </label>
 
                                 <div class="section-subheader">
-                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/groups.svg' ) ?>"/>
+                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/group-type.svg' ) ?>"/>
                                     <?php echo esc_html( $group_fields["group_type"]["name"] )?>
                                 </div>
                                 <select class="select-field" id="group_type">
@@ -123,7 +123,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                     ?>
                                 </select>
                                 <div class="section-subheader">
-                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/parent.svg' ) ?>"/>
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/group-parent.svg' ) ?>"/>
                                 <?php esc_html_e( "Parent Group", 'disciple_tools' ) ?></div>
                                 <var id="parent_groups-result-container" class="result-container"></var>
                                 <div id="parent_groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
@@ -138,7 +138,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                     </div>
                                 </div>
                                 <div class="section-subheader">
-                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/peer.svg' ) ?>"/>
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/group-peer.svg' ) ?>"/>
                                 <?php esc_html_e( "Peer Group", 'disciple_tools' ) ?></div>
                                 <var id="peer_groups-result-container" class="result-container"></var>
                                 <div id="peer_groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
@@ -153,8 +153,8 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                     </div>
                                 </div>
                                 <div class="section-subheader">
-                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/child.svg' ) ?>"/>
-                                <?php esc_html_e( "Child Groups", 'disciple_tools' ) ?></div>
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/group-child.svg' ) ?>"/>
+                                <?php esc_html_e( "Child Group", 'disciple_tools' ) ?></div>
                                 <var id="child_groups-result-container" class="result-container"></var>
                                 <div id="child_groups_t" name="form-child_groups" class="scrollable-typeahead typeahead-margin-when-active">
                                     <div class="typeahead__container">

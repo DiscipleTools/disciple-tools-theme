@@ -156,7 +156,7 @@
         </div>
 
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
-            <div class="section-subheader"><img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-start.svg' ?>"><?php esc_html_e( 'Start Date', 'disciple_tools' )?></div>
+            <div class="section-subheader"><img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-start.svg' ?>"> <?php esc_html_e( 'Start Date', 'disciple_tools' )?></div>
             <ul class="date-list start_date details-list"><?php
             if ( isset( $group["start_date"] ) ) {
                 echo esc_html( $group["start_date"]["formatted"] );
@@ -167,7 +167,7 @@
         </div>
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
             <div class="section-subheader">
-            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-success.svg' ?>"><?php esc_html_e( 'Church Start Date', 'disciple_tools' ) ?>
+            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-success.svg' ?>"> <?php esc_html_e( 'Church Start Date', 'disciple_tools' ) ?>
             </div>
             <ul class="date-list church_start_date details-list"><?php
             if ( isset( $group["church_start_date"] ) ) {
@@ -179,7 +179,7 @@
         </div>
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
             <div class="section-subheader">
-            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-end.svg' ?>"><?php esc_html_e( 'End Date', 'disciple_tools' ) ?>
+            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-end.svg' ?>"> <?php esc_html_e( 'End Date', 'disciple_tools' ) ?>
             </div>
             <ul class="date-list end_date details-list"><?php
             if ( isset( $group["end_date"] ) ) {
