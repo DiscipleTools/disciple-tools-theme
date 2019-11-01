@@ -61,6 +61,7 @@
         <div class="grid-x grid-margin-x" style="margin-top: 20px">
             <div class="cell small-12 medium-4">
                 <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
                     <?php esc_html_e( "Status", 'disciple_tools' ) ?>
                     <button class="help-button" data-section="overall-status-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
@@ -108,8 +109,8 @@
                 </p>
             </div>
 
+        <!-- ASSIGNED TO -->
             <div class="cell small-12 medium-4">
-                <!-- Assigned To -->
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
                     <?php esc_html_e( 'Assigned to', 'disciple_tools' )?>
@@ -139,6 +140,7 @@
                 </div>
             </div>
 
+        <!-- SUBASSIGNED -->
             <div class="cell small-12 medium-4">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/subassigned.svg' ?>">
@@ -192,13 +194,14 @@
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/socialmedia.svg' ?>">
                     <?php esc_html_e( 'Social Media', 'disciple_tools' ) ?></div>
+                    <!-- Social Media List -->
                 <ul class="social"></ul>
             </div>
 
             <!-- Address -->
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
                 <div class="section-subheader">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
                     <?php esc_html_e( 'Address', 'disciple_tools' )?>
                 </div>
                 <ul class="address"></ul>
@@ -221,7 +224,6 @@
                 </div>
                 <ul class="people_groups-list details-list"></ul>
             </div>
-
 
             <!-- Age -->
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
@@ -288,6 +290,7 @@
         <div class="display-fields details-edit-fields">
             <div class="grid-x">
                 <div class="cell section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/name.svg' ?>">
                     <?php esc_html_e( 'Name', 'disciple_tools' ) ?>
                 </div>
                 <input type="text" id="title" class="edit-text-input" dir="auto" value="<?php the_title_attribute(); ?>">
@@ -324,7 +327,7 @@
             <!-- Address -->
             <div class="grix-x">
                 <div class="section-subheader cell">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
                     <?php esc_html_e( 'Address', 'disciple_tools' )?>
                     <button id="add-new-address">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
@@ -358,12 +361,13 @@
             <!-- Social Media -->
             <div class="grix-x">
                 <div class="section-subheader cell">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/socialmedia.svg' ?>">
                     <?php esc_html_e( 'Social Media', 'disciple_tools' ) ?>
                     <button id="add-new-social-media">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 </div>
+                <!-- list of Social Media -->
                 <ul id="edit-social" class="cell"></ul>
             </div>
 

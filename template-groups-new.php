@@ -16,7 +16,9 @@ $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_s
 
         <div class="large-8 medium-12 small-12 cell">
             <form class="js-create-group bordered-box">
+                <h3 class="section-header"><?php esc_html_e( "Create new group", "disciple_tools" ); ?></h3>
                 <label for="title">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/name.svg' ?>">
                     <?php esc_html_e( "Name of group", "disciple_tools" ); ?>
                 </label>
                 <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
@@ -24,6 +26,9 @@ $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_s
 
                 <div class="section-subheader">
                     <?php esc_html_e( 'Group Type', 'disciple_tools' )?>
+                    <button class="help-button" data-section="group-type-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
                 </div>
                 <select class="select-field" id="group_type" name="group_name">
                     <?php
@@ -32,8 +37,32 @@ $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_s
                     <?php } ?>
                 </select>
 
+<!--
+                <div class="section-subheader">
+                    <?php esc_html_e( 'Group Status', 'disciple_tools' )?>
+                    <button class="help-button" data-section="group-status-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
+                </div>
+
+                <select class="select-field" id="group_status" name="group_name">
+                    <?php
+                    foreach ($group_fields["group_status"]["default"] as $key => $option){ ?>
+                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $option["label"] ?? "" ); ?></option>
+                    <?php } ?>
+                </select>
+                <label>
+                    <?php esc_html_e( "Initial comment", "disciple_tools" ); ?>
+                    <button class="help-button" data-section="initial-comment-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
+
+                    <textarea name="initial_comment" dir="auto" placeholder="<?php esc_html_e( "Initial comment", "disciple_tools" ); ?>"></textarea>
+                </label>
+-->
                 <div style="text-align: center">
-                    <button class="button loader js-create-group-button" type="submit" disabled><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
+                    <a href="/groups/" class="button small" title="<?php esc_html_e( 'Cancel and return to the Groups List page', 'disciple_tools' )?>"><?php esc_html_e( 'Cancel', 'disciple_tools' )?></a>
+                    <button class="button loader js-create-group-button dt-green" type="submit" disabled title="<?php esc_html_e( 'Save and continue editing the new group', 'disciple_tools' )?>"><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
                 </div>
             </form>
 
