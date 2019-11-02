@@ -31,6 +31,7 @@
     <div class="grid-x grid-margin-x" style="margin-top: 20px">
         <div class="cell small-12 medium-4">
             <div class="section-subheader">
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
                 <?php esc_html_e( "Status", 'disciple_tools' ) ?>
                 <button class="help-button" data-section="group-status-help-text">
                     <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
@@ -79,7 +80,9 @@
             </div>
         </div>
         <div class="cell small-12 medium-4">
-            <div class="section-subheader"><?php esc_html_e( "Group Coach / Church Planter", 'disciple_tools' ) ?></div>
+            <div class="section-subheader">
+            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/coach.svg' ?>">
+            <?php esc_html_e( "Group Coach / Church Planter", 'disciple_tools' ) ?></div>
             <div class="coaches">
                 <var id="coaches-result-container" class="result-container"></var>
                 <div id="coaches_t" name="form-coaches" class="scrollable-typeahead">
@@ -132,7 +135,7 @@
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
 
             <div class="section-subheader">
-                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
                 <?php esc_html_e( 'Address', 'disciple_tools' )?>
             </div>
             <ul class="address details-list">
@@ -153,7 +156,7 @@
         </div>
 
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
-            <div class="section-subheader"><?php esc_html_e( 'Start Date', 'disciple_tools' )?></div>
+            <div class="section-subheader"><img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-start.svg' ?>"> <?php esc_html_e( 'Start Date', 'disciple_tools' )?></div>
             <ul class="date-list start_date details-list"><?php
             if ( isset( $group["start_date"] ) ) {
                 echo esc_html( $group["start_date"]["formatted"] );
@@ -163,7 +166,9 @@
             </ul>
         </div>
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
-            <div class="section-subheader"><?php esc_html_e( 'Church Start Date', 'disciple_tools' )?></div>
+            <div class="section-subheader">
+            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-success.svg' ?>"> <?php esc_html_e( 'Church Start Date', 'disciple_tools' ) ?>
+            </div>
             <ul class="date-list church_start_date details-list"><?php
             if ( isset( $group["church_start_date"] ) ) {
                 echo esc_html( $group["church_start_date"]["formatted"] );
@@ -173,7 +178,9 @@
             </ul>
         </div>
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
-            <div class="section-subheader"><?php esc_html_e( 'End Date', 'disciple_tools' )?></div>
+            <div class="section-subheader">
+            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-end.svg' ?>"> <?php esc_html_e( 'End Date', 'disciple_tools' ) ?>
+            </div>
             <ul class="date-list end_date details-list"><?php
             if ( isset( $group["end_date"] ) ) {
                 echo esc_html( $group["end_date"]["formatted"] );
@@ -201,7 +208,7 @@
         <!-- Address -->
         <div class="grix-x">
             <div class="section-subheader cell">
-                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
                 <?php esc_html_e( 'Address', 'disciple_tools' )?>
                 <button id="add-new-address">
                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
