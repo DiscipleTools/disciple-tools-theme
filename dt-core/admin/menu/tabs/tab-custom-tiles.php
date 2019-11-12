@@ -371,11 +371,6 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         update_option( "dt_custom_tiles", $tile_options );
     }
 
-    public function create_field_key( $s ){
-        $string = str_replace( ' ', '_', $s ); // Replaces all spaces with hyphens.
-        $ret = preg_replace( '/[^A-Za-z0-9\-_]/', '', $string ); // Removes special chars.
-        return strtolower( $ret );
-    }
 
 
     private function add_tile(){
@@ -423,7 +418,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             $post_type = $post_submission["post_type"];
             $tile_options = dt_get_option( "dt_custom_tiles" );
             $sections = apply_filters( 'dt_details_additional_section_ids', [], "contacts" );
-            $tile_key = $this->create_field_key( $post_submission["new_tile_name"] );
+            $tile_key = dt_create_field_key( $post_submission["new_tile_name"] );
             if ( in_array( $tile_key, array_keys( $tile_options[$post_type] ) ) || in_array( $tile_key, $sections ) ){
                 self::admin_notice( __( "tile already exists", 'disciple_tools' ), "error" );
                 return false;

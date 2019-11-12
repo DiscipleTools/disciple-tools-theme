@@ -319,7 +319,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
             if ( !empty( $_POST["add_channel"] ) ){
                 $label = sanitize_text_field( wp_unslash( $_POST["add_channel"] ) );
-                $key = $this->create_field_key( $label );
+                $key = dt_create_field_key( $label );
                 if ( !empty( $key ) ){
                     if ( isset( $channels[$key] ) ){
                         self::admin_notice( __( "This channel already exists", 'disciple_tools' ), "error" );
@@ -337,12 +337,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
-
-    public function create_field_key( $s ){
-        $string = str_replace( ' ', '_', $s ); // Replaces all spaces with hyphens.
-        $ret = preg_replace( '/[^A-Za-z0-9\-_]/', '', $string ); // Removes special chars.
-        return strtolower( $ret );
-    }
 
      /**
      * Display admin notice

@@ -210,7 +210,7 @@ declare(strict_types=1);
                     <?php $fields = [ "assigned_to", "subassigned",  "created_on", "location_grid", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
                     $allowed_types = [ "multi_select", "key_select", "boolean", "date", "location" ];
                     foreach ( $dt_contact_field_options as $field_key => $field){
-                        if ( in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
+                        if ( $field_key && in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
                             $fields[] = $field_key;
                         }
                     }
