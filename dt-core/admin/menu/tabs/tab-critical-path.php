@@ -236,34 +236,34 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
               g.meta_value as section,
               h.meta_value as total
             FROM $wpdb->dt_reports as a
-            LEFT JOIN wp_dt_reportmeta as b
+            LEFT JOIN $wpdb->dt_reportmeta as b
               ON b.report_id=a.id
               AND b.meta_key = 'submit_date'
-            LEFT JOIN wp_dt_reportmeta as c
+            LEFT JOIN $wpdb->dt_reportmeta as c
               ON a.id=c.report_id
                  AND c.meta_key = 'author'
-            LEFT JOIN wp_dt_reportmeta as d
+            LEFT JOIN $wpdb->dt_reportmeta as d
               ON a.id=d.report_id
                  AND d.meta_key = 'source'
-            LEFT JOIN wp_dt_reportmeta as e
+            LEFT JOIN $wpdb->dt_reportmeta as e
               ON a.id=e.report_id
                  AND e.meta_key = 'year'
-            LEFT JOIN wp_dt_reportmeta as f
+            LEFT JOIN $wpdb->dt_reportmeta as f
               ON a.id=f.report_id
                  AND f.meta_key = 'type'
-            LEFT JOIN wp_dt_reportmeta as g
+            LEFT JOIN $wpdb->dt_reportmeta as g
               ON a.id=g.report_id
                  AND g.meta_key = 'section'
-            LEFT JOIN wp_dt_reportmeta as h
+            LEFT JOIN $wpdb->dt_reportmeta as h
               ON a.id=h.report_id
                  AND h.meta_key = 'total'
             WHERE a.category = 'manual'
             AND a.id IN ( SELECT MAX( bb.report_id )
-                FROM wp_dt_reportmeta as bb
-                  LEFT JOIN wp_dt_reportmeta as d
+                FROM $wpdb->dt_reportmeta as bb
+                  LEFT JOIN $wpdb->dt_reportmeta as d
                     ON bb.report_id=d.report_id
                        AND d.meta_key = 'source'
-                  LEFT JOIN wp_dt_reportmeta as e
+                  LEFT JOIN $wpdb->dt_reportmeta as e
                     ON bb.report_id=e.report_id
                        AND e.meta_key = 'year'
                 WHERE bb.meta_key = 'submit_date'
