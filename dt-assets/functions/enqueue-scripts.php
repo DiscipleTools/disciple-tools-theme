@@ -253,6 +253,7 @@ function dt_site_scripts() {
 
     $url_path = dt_get_url_path();
     if ( 'settings' === $url_path ) {
+        DT_Mapping_Module::instance()->drilldown_script();
         dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash', 'mapping-drill-down', 'moment' ), true );
         wp_localize_script(
             'dt-settings', 'wpApiSettingsPage', array(
@@ -269,16 +270,7 @@ function dt_site_scripts() {
             )
         );
     }
-    if ( 'settings' === $url_path ) {
-        wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery', 'lodash' ], '1' );
-        wp_localize_script(
-            'mapping-drill-down', 'mappingModule', array(
-                'mapping_module' => DT_Mapping_Module::instance()->localize_script(),
-                'custom_data' => apply_filters( 'dt_drill_down_js_data', [] ),
-                'translations' => apply_filters( 'dt_drill_down_js_translations', [] ),
-            )
-        );
-    }
+
     if ( is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" ) ) {
         $post_type = null;
         $custom_field_settings = [];
