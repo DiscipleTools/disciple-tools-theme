@@ -244,7 +244,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                         <p>
                             <strong><?php esc_html_e( 'Follow all contacts', 'disciple_tools' )?></strong>
                         </p>
-                        <p><?php esc_html_e( "You will receive an notification for any update that happens in the system.", 'disciple_tools' ) ?></p>
+                        <p><?php esc_html_e( "You will receive a notification for any update that happens in the system.", 'disciple_tools' ) ?></p>
                         <div class="switch large">
                             <input class="switch-input" id="follow_all" type="checkbox" name="follow_all"
                                    onclick="switch_preference('dt_follow_all');" <?php ( isset( $dt_user_meta['dt_follow_all'] ) && $dt_user_meta['dt_follow_all'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
@@ -413,20 +413,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                     <td><label for="description"><?php esc_html_e( 'Language', 'disciple_tools' )?></label></td>
                                     <td dir="auto">
                                         <?php
-                                        require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
-                                        $translations = wp_get_available_translations();
-                                        $translations["ar_MA"] = [
-                                            "language" => "ar_MA",
-                                            "native_name" => "العربية (المغرب)",
-                                            "english_name" => "Arabic (Morocco)",
-                                            "iso" => [ "ar" ]
-                                        ];
-                                        $translations["sw"] = [
-                                            "language" => "sw",
-                                            "native_name" => "Kiswahili",
-                                            "english_name" => "Swahili",
-                                            "iso" => [ "sw" ]
-                                        ];
+                                        $translations = dt_get_translations();
                                         wp_dropdown_languages( array(
                                             'name'                        => 'locale',
                                             'id'                          => 'locale',

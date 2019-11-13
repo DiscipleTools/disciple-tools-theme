@@ -160,7 +160,7 @@ let setupChart = function ( chart, valueX, titleText){
   label.truncate = true
   label.maxWidth = chart_label_width;
   label.minWidth = chart_label_width;
-  label.tooltipText = "{category}";
+  label.tooltipText = "{description}";
   label.textAlign = "end"
   label.dx = -5
 

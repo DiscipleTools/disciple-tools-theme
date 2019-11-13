@@ -34,13 +34,18 @@ class Disciple_Tools_Metrics
 
             add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 10 );
 
+            //load base chart setup
+            require_once( get_template_directory() . '/dt-metrics/charts-base.php' );
             // load basic charts
             require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
             require_once( get_template_directory() . '/dt-metrics/metrics-critical-path.php' );
             require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
-            require_once( get_template_directory() . '/dt-metrics/metrics-contacts.php' );
             require_once( get_template_directory() . '/dt-metrics/metrics-workers.php' );
 //            require_once( get_template_directory() . '/dt-metrics/metrics-prayer.php' );
+            require_once( get_template_directory() . '/dt-metrics/contacts/sources.php' );
+            require_once( get_template_directory() . '/dt-metrics/contacts/milestones.php' );
+            require_once( get_template_directory() . '/dt-metrics/contacts/milestones-map.php' );
+//            require_once( get_template_directory() . '/dt-metrics/contacts/seeker-path.php' );
         }
     }
 

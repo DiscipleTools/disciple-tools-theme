@@ -380,7 +380,7 @@ jQuery(document).ready(function($) {
         maxItem: 20,
         source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
         display: "name",
-        templateValue: "{{name}}",
+        template: "{{name}}",
         dynamic: true,
         multiselect: {
           matchOn: ["ID"],
@@ -431,7 +431,7 @@ jQuery(document).ready(function($) {
     template: function (query, item) {
       return `<div class="assigned-to-row" dir="auto">
         <span>
-            <img style="vertical-align: text-bottom" src="{{avatar}}"/>
+            <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
             ${_.escape( item.name )}
         </span>
         ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
@@ -1073,6 +1073,9 @@ jQuery(document).ready(function($) {
             channel.icon = upgradeUrl( channel.icon )
             label = `<object data="${_.escape( channel.icon )}" height="10px" width="10px"
               type="image/jpg">${_.escape( label )}</object>`
+          }
+          if ( fieldDesignator === 'whatsapp' ) {
+            value = `<a href="https://wa.me/${value.replace('-','').replace('+','').replace('(','').replace(')','')}">${value}</a>`
           }
           socialHTMLField.append(`<li class="details-list ${_.escape(field.key)}">
             ${label}

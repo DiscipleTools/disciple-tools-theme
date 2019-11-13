@@ -141,7 +141,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '0.23.0';
+            $this->version = '0.25.0';
             $this->migration_number = 26;
 
 
@@ -375,6 +375,12 @@ else {
             require_once( get_template_directory() . '/dt-core/multisite.php' );
 
             /**
+             * core
+             */
+            require_once( get_template_directory() . '/dt-core/core-endpoints.php' );
+            new Disciple_Tools_Core_Endpoints();
+
+            /**
              * Admin panel
              * Contains all those features that only run if in the Admin panel
              * or those things directly supporting Admin panel features.
@@ -411,6 +417,11 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-contact-import.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr-erase.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr-export.php' );
+
+                require_once( get_template_directory() . '/dt-core/admin/menu/menu-metrics.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-metrics-reports.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-metrics-sources.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-metrics-edit.php' );
                 /* End menu tab section */
 
 

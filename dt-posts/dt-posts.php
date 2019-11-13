@@ -695,6 +695,12 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $a->name =$user->display_name;
                     $a->gravatar = get_avatar_url( $user->ID, [ 'size' => '16' ] );
                 }
+            } else if ( isset( $a->user_caps ) && strlen( $a->user_caps ) === 32 ){
+                //get site-link name
+                $site_link = Site_Link_System::get_post_id_by_site_key( $a->user_caps );
+                if ( $site_link ){
+                    $a->name = get_the_title( $site_link );
+                }
             }
             if ( !empty( $a->object_note ) ){
                 $activity_simple[] = [

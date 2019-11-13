@@ -181,13 +181,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             global $dt_mapping;
 
 
-            // Drill Down Tool
-            wp_enqueue_script( 'mapping-drill-down', $dt_mapping['drill_down_js_url'], [ 'jquery','lodash' ], 1 );
-            wp_localize_script(
-                'mapping-drill-down', 'mappingModule', array(
-                    'mapping_module' => DT_Mapping_Module::instance()->localize_script(),
-                )
-            );
+            DT_Mapping_Module::instance()->drilldown_script();
         }
 
         public function process_rest_edits( $params ) {
@@ -1037,8 +1031,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <td>
                         <p>You can select World, Country, or State level focus for the mapping. By selecting the most
                             specific region of focus, you optimize the performance of the site load and various drop
-                            down
-                            lists throughout the site.
+                            down lists throughout the site.
                         </p>
                     </td>
                 </tr>
@@ -1245,9 +1238,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                     <option></option>
                                     <?php
                                     foreach ( $json as $index => $name ) {
-                                        if ( array_search( $index, $list ) !== false ) {
-                                            continue; // skip already installed countries
-                                        }
                                         echo '<option value="'.esc_attr( $index ).'">';
                                         echo esc_html( $name );
                                         echo '</option>';
@@ -1445,7 +1435,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
 
             <script>
-                window.DRILLDOWNDATA.settings.hide_final_drill_down = false
                 window.DRILLDOWN.get_drill_down('location_grids')
                 let current = {}
                 window.DRILLDOWN.location_grids = function (grid_id, a, selection) {

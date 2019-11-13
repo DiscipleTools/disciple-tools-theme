@@ -173,19 +173,38 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
-    if ( ! function_exists( 'dt_array_to_sql' ) ) {
-        function dt_array_to_sql( $values) {
-            if (empty( $values )) {
-                return 'NULL';
+    if ( ! function_exists( 'dt_get_translations' ) ) {
+        function dt_get_translations() {
+            require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
+            $translations = wp_get_available_translations();
+            $translations["ar_MA"] = [
+                "language" => "ar_MA",
+                "native_name" => "العربية (المغرب)",
+                "english_name" => "Arabic (Morocco)",
+                "iso" => [ "ar" ]
+            ];
+            $translations["sw"] = [
+                "language" => "sw",
+                "native_name" => "Kiswahili",
+                "english_name" => "Swahili",
+                "iso" => [ "sw" ]
+            ];
+            return $translations;
+        }
+    }
+
+    if ( !function_exists( "dt_create_field_key" ) ){
+        function dt_create_field_key( $s, $with_hash = false ){
+            //note we don't limit to alhpa_numeric because it would strip out all non latin based languages
+            $s = str_replace( ' ', '_', $s ); // Replaces all spaces with hyphens.
+            $s = sanitize_key( $s );
+            if ( $with_hash === true ){
+                $s .= '_' . substr( md5( rand( 10000, 100000 ) ), 0, 3 ); // create a unique 3 digit key
             }
-            foreach ($values as &$val) {
-                if ('\N' === $val) {
-                    $val = 'NULL';
-                } else {
-                    $val = "'" . esc_sql( trim( $val ) ) . "'";
-                }
+            if ( empty( $s ) ){
+                $s .= 'key_' . substr( md5( rand( 10000, 100000 ) ), 0, 3 );
             }
-            return implode( ',', $values );
+            return $s;
         }
     }
 

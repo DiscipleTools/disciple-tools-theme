@@ -61,6 +61,7 @@
         <div class="grid-x grid-margin-x" style="margin-top: 20px">
             <div class="cell small-12 medium-4">
                 <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
                     <?php esc_html_e( "Status", 'disciple_tools' ) ?>
                     <button class="help-button" data-section="overall-status-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
@@ -108,8 +109,8 @@
                 </p>
             </div>
 
+        <!-- ASSIGNED TO -->
             <div class="cell small-12 medium-4">
-                <!-- Assigned To -->
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
                     <?php esc_html_e( 'Assigned to', 'disciple_tools' )?>
@@ -139,10 +140,14 @@
                 </div>
             </div>
 
+        <!-- SUBASSIGNED -->
             <div class="cell small-12 medium-4">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/subassigned.svg' ?>">
                     <?php esc_html_e( 'Sub-assigned to', 'disciple_tools' )?>
+                    <button class="help-button" data-section="subassigned-to-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
                 </div>
                 <div class="subassigned details">
                     <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
@@ -186,14 +191,17 @@
 
             <!-- Social Media -->
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                <div class="section-subheader"><?php esc_html_e( 'Social Media', 'disciple_tools' ) ?></div>
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/socialmedia.svg' ?>">
+                    <?php esc_html_e( 'Social Media', 'disciple_tools' ) ?></div>
+                    <!-- Social Media List -->
                 <ul class="social"></ul>
             </div>
 
             <!-- Address -->
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
                 <div class="section-subheader">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
                     <?php esc_html_e( 'Address', 'disciple_tools' )?>
                 </div>
                 <ul class="address"></ul>
@@ -216,7 +224,6 @@
                 </div>
                 <ul class="people_groups-list details-list"></ul>
             </div>
-
 
             <!-- Age -->
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
@@ -283,6 +290,7 @@
         <div class="display-fields details-edit-fields">
             <div class="grid-x">
                 <div class="cell section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/name.svg' ?>">
                     <?php esc_html_e( 'Name', 'disciple_tools' ) ?>
                 </div>
                 <input type="text" id="title" class="edit-text-input" dir="auto" value="<?php the_title_attribute(); ?>">
@@ -319,7 +327,7 @@
             <!-- Address -->
             <div class="grix-x">
                 <div class="section-subheader cell">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
                     <?php esc_html_e( 'Address', 'disciple_tools' )?>
                     <button id="add-new-address">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
@@ -353,12 +361,13 @@
             <!-- Social Media -->
             <div class="grix-x">
                 <div class="section-subheader cell">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/socialmedia.svg' ?>">
                     <?php esc_html_e( 'Social Media', 'disciple_tools' ) ?>
                     <button id="add-new-social-media">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 </div>
+                <!-- list of Social Media -->
                 <ul id="edit-social" class="cell"></ul>
             </div>
 
@@ -368,34 +377,18 @@
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
                     <?php esc_html_e( 'Source', "disciple_tools" ); ?>
                 </div>
-                <?php if ( user_can( get_current_user_id(), 'view_any_contacts' ) ) : ?>
-                    <span id="sources-result-container" class="result-container"></span>
-                    <div id="sources_t" name="form-sources" class="scrollable-typeahead">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-sources"
-                                           name="sources[query]" placeholder="<?php esc_html_e( "Search sources", 'disciple_tools' ) ?>"
-                                           autocomplete="off">
-                                </span>
-                            </div>
+                <span id="sources-result-container" class="result-container"></span>
+                <div id="sources_t" name="form-sources" class="scrollable-typeahead">
+                    <div class="typeahead__container">
+                        <div class="typeahead__field">
+                            <span class="typeahead__query">
+                                <input class="js-typeahead-sources"
+                                       name="sources[query]" placeholder="<?php esc_html_e( "Search sources", 'disciple_tools' ) ?>"
+                                       autocomplete="off">
+                            </span>
                         </div>
                     </div>
-                <?php else : ?>
-                    <ul class="sources-list <?php echo esc_html( user_can( get_current_user_id(), 'view_any_contacts' ) ? 'details-list' : '' ) ?>">
-                        <?php
-                        foreach ($contact['sources'] ?? [] as $value){
-                            ?>
-                            <li class="<?php echo esc_html( $value )?>">
-                                <?php echo esc_html( $contact_fields['sources']['default'][$value] ?? $value ) ?>
-                            </li>
-                        <?php }
-                        if ( !isset( $contact['sources'] ) || sizeof( $contact['sources'] ) === 0){
-                            ?> <li id="no-source"><?php esc_html_e( "No source set", 'disciple_tools' ) ?></li><?php
-                        }
-                        ?>
-                    </ul>
-                <?php endif; ?>
+                </div>
             </div>
 
             <!-- Gender -->

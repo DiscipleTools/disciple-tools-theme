@@ -99,6 +99,12 @@ class Disciple_Tools_Users_Endpoints
                 'callback' => [ $this, 'update_user' ]
             ]
         );
+        register_rest_route(
+            $this->namespace, '/user/my', [
+                'methods' => "GET",
+                'callback' => [ $this, 'get_my_info' ]
+            ]
+        );
     }
 
     /**
@@ -112,7 +118,11 @@ class Disciple_Tools_Users_Endpoints
         if ( isset( $params['s'] ) ) {
             $search = $params['s'];
         }
-        $users = Disciple_Tools_Users::get_assignable_users_compact( $search );
+        $get_all = 0;
+        if ( isset( $params["get_all"] )){
+            $get_all = $params["get_all"] === "1";
+        }
+        $users = Disciple_Tools_Users::get_assignable_users_compact( $search, $get_all );
 
         return $users;
     }
@@ -216,7 +226,7 @@ class Disciple_Tools_Users_Endpoints
 
     public function update_user( WP_REST_Request $request ){
         $get_params = $request->get_params();
-        $body = $request->get_json_params();
+        $body = $request->get_json_params() ?? $request->get_params();
         $user = wp_get_current_user();
         if ( $user ){
             if ( !empty( $body["add_unavailability"] ) ){
@@ -250,8 +260,31 @@ class Disciple_Tools_Users_Endpoints
                 update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
                 return $dates_unavailable;
             }
+            if ( !empty( $body["locale"] ) ){
+                $e = wp_update_user( [
+                    'ID' => $user->ID,
+                    'locale' => $body["locale"]
+                ] );
+                return is_wp_error( $e ) ? $e : true;
+            }
+            return new WP_Error( "update_user", "No valid field found to update", [ 'status', 400 ] );
+        }  else {
+            return new WP_Error( "update_user", "Something went wrong. Are you a user?", [ 'status', 400 ] );
         }
-        return true;
     }
 
+
+    public function get_my_info( WP_REST_Request $request ){
+        $user = wp_get_current_user();
+        if ( $user ){
+            return [
+                "ID" => $user->ID,
+                "user_email" => $user->user_email,
+                "display_name" => $user->display_name,
+                "locale" => get_locale()
+            ];
+        } else {
+            return new WP_Error( "get_my_info", "Something went wrong. Are you a user?", [ 'status', 400 ] );
+        }
+    }
 }

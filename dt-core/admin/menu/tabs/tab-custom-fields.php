@@ -133,7 +133,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $this->add_field();
                 $this->box( 'bottom' );
             }
-            if ( $field_key && $post_type ){
+            if ( $this->get_post_fields( $post_type )[$field_key] && $post_type ){
                 $this->box( 'top', $this->get_post_fields( $post_type )[$field_key]["name"] );
                 $this->edit_field( $field_key, $post_type );
                 $this->box( 'bottom' );
@@ -240,6 +240,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Tile", 'disciple_tools' ) ?></td>
+                <td></td>
+                <td></td>
             </tr>
             </thead>
             <tbody>
@@ -264,12 +266,21 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             </select>
                         <?php endif; ?>
                     </td>
+                    <td>
+                        <button type="submit" name="save" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
+                    </td>
+                    <td>
+                    <?php
+                    $custom_field = dt_get_option( "dt_field_customizations" )[$post_type][$field_key];
+                    if ( isset( $custom_field["customizable"] ) && $custom_field["customizable"] == "all" ) : ?>
+                        <button type="submit" name="delete"  class="button"><?php esc_html_e( "Delete", 'disciple_tools' ) ?></button>
+                    <?php endif ?>
+                    </td>
                 </tr>
             </tbody>
         </table>
 
         <br>
-        <button type="submit" style="float:right;" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
 
             <?php if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
                 ?>
@@ -364,9 +375,20 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         //save values
         $post_type = $post_submission["post_type"];
         $post_fields = $this->get_post_fields( $post_type );
+
+        $field_customizations = dt_get_option( "dt_field_customizations" );
+        $field_key = $post_submission["field_key"];
+        if ( isset( $post_submission["delete"] ) ){
+            if ( isset( $field_customizations[$post_type][$field_key] ) ){
+                unset( $field_customizations[$post_type][$field_key] );
+            }
+            update_option( "dt_field_customizations", $field_customizations );
+            wp_cache_delete( $post_type . "_field_settings" );
+            return;
+        }
+
+
         if ( isset( $post_fields[$post_submission["field_key"]]["default"] )){
-            $field_customizations = dt_get_option( "dt_field_customizations" );
-            $field_key = $post_submission["field_key"];
             if ( !isset( $field_customizations[$post_type][$field_key] ) ){
                 $field_customizations[$post_type][$field_key] = [];
             }
@@ -423,7 +445,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                  * add option
                  */
                 if ( !empty( $post_submission["add_option"] ) ){
-                    $option_key = $this->create_field_key( $post_submission["add_option"] );
+                    $option_key = dt_create_field_key( $post_submission["add_option"] );
                     if ( !isset( $field_options[$option_key] )){
                         if ( !empty( $option_key ) && !empty( $post_submission["add_option"] )){
                             $field_options[ $option_key ] = [ "label" => $post_submission["add_option"] ];
@@ -440,11 +462,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             update_option( "dt_field_customizations", $field_customizations );
             wp_cache_delete( $post_type . "_field_settings" );
         }
-    }
-    public function create_field_key( $s ){
-        $string = str_replace( ' ', '_', $s ); // Replaces all spaces with hyphens.
-        $ret = preg_replace( '/[^A-Za-z0-9\-_]/', '', $string ); // Removes special chars.
-        return strtolower( $ret );
     }
 
 
@@ -542,7 +559,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $post_type = $post_submission["post_type"];
             $field_type = $post_submission["new_field_type"];
             $field_tile = $post_submission["new_field_tile"] ?? '';
-            $field_key = $this->create_field_key( $post_submission["new_field_name"] );
+            $field_key = dt_create_field_key( $post_submission["new_field_name"] );
+            if ( !$field_key ){
+                return false;
+            }
             $post_fields = $this->get_post_fields( $post_type );
             if ( isset( $post_fields[ $field_key ] )){
                 self::admin_notice( __( "Field already exists", 'disciple_tools' ), "error" );

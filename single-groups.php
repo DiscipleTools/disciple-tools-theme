@@ -58,10 +58,14 @@ if ( ! current_user_can( 'access_groups' ) ) {
                 <div class="cell small-12">
                     <div class="grid-x grid-margin-x grid-margin-y grid">
 
-                        <!-- Members-->
+                        <!-- MEMBERS TILE -->
                         <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item" >
                             <div class="bordered-box">
-                                <span class="section-header"><?php esc_html_e( 'Members', 'disciple_tools' )?></span>
+                                <label class="section-header"><?php esc_html_e( 'Members', 'disciple_tools' )?>
+                                <button class="help-button" data-section="members-help-text">
+                                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                    </button>
+                                </label>
                                 <div class="section-subheader"><?php esc_html_e( "Member Count", 'disciple_tools' ) ?></div>
                                 <input id="member_count"
                                        class="number-input" type="number" min="0"
@@ -84,6 +88,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                     </button>
                                 </div>
                                 <div class="members-section">
+                                &nbsp;<!--<p class="small"><?php esc_html_e( "No group members yet. Create or Select new members to add them to this group.", 'disciple_tools' ) ?></p>-->
                                     <div class="member-list">
 
                                     </div>
@@ -91,7 +96,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                             </div>
                         </section>
 
-                        <!-- Groups -->
+                        <!-- GROUPS TILE -->
                         <section id="groups" class="xlarge-6 large-12 medium-6 cell grid-item">
                             <div class="bordered-box">
                                 <label class="section-header"><?php esc_html_e( "Groups", 'disciple_tools' ) ?>
@@ -101,6 +106,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                 </label>
 
                                 <div class="section-subheader">
+                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/group-type.svg' ) ?>"/>
                                     <?php echo esc_html( $group_fields["group_type"]["name"] )?>
                                 </div>
                                 <select class="select-field" id="group_type">
@@ -116,7 +122,9 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                     }
                                     ?>
                                 </select>
-                                <div class="section-subheader"><?php esc_html_e( "Parent Group", 'disciple_tools' ) ?></div>
+                                <div class="section-subheader">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/group-parent.svg' ) ?>"/>
+                                <?php esc_html_e( "Parent Group", 'disciple_tools' ) ?></div>
                                 <var id="parent_groups-result-container" class="result-container"></var>
                                 <div id="parent_groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
                                     <div class="typeahead__container">
@@ -129,7 +137,9 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="section-subheader"><?php esc_html_e( "Peer Group", 'disciple_tools' ) ?></div>
+                                <div class="section-subheader">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/group-peer.svg' ) ?>"/>
+                                <?php esc_html_e( "Peer Group", 'disciple_tools' ) ?></div>
                                 <var id="peer_groups-result-container" class="result-container"></var>
                                 <div id="peer_groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
                                     <div class="typeahead__container">
@@ -142,7 +152,9 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="section-subheader"><?php esc_html_e( "Child Groups", 'disciple_tools' ) ?></div>
+                                <div class="section-subheader">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/group-child.svg' ) ?>"/>
+                                <?php esc_html_e( "Child Group", 'disciple_tools' ) ?></div>
                                 <var id="child_groups-result-container" class="result-container"></var>
                                 <div id="child_groups_t" name="form-child_groups" class="scrollable-typeahead typeahead-margin-when-active">
                                     <div class="typeahead__container">

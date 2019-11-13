@@ -24,6 +24,7 @@ if ( !defined( 'ABSPATH' ) ) {
  *          0.1.17 Added type column to admin list
  *          0.1.18 Added listing function by site type
  *          0.1.19 Added unique identifiers to the metaboxes to remove conflicts.
+ *          0.1.20 Added x-wp-nonce header acceptance to the CORS policy
  */
 if ( ! class_exists( 'Site_Link_System' ) ) {
 
@@ -192,7 +193,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         }
 
         /**
-         * VERIFY A TRANSFER TOKEN FROM A CONNECTED SITE REST REQUEST
+         * VERIFY A TRANSFER TOKEN FROM A CONNECTED SITE REST REQUEST AND ADD CAPABILITIES
          *
          * @since 1.0
          *
@@ -202,6 +203,11 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          */
         public static function verify_transfer_token( $transfer_token ): bool
         {
+            /**
+             * If you are debugging authentication, note that this method
+             * doesn't just return true or false, it also adds capabilities to
+             * the current request, based on the authentication token.
+             */
             // challenge https connection
             if ( WP_DEBUG !== true ) {
                 if ( !isset( $_SERVER['HTTPS'] ) ) {
@@ -242,7 +248,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             $connection_type = get_post_meta( self::get_post_id_by_site_key( $decrypted_key ), 'type', true );
             $site_link_label = isset( $keys[$decrypted_key]["label"] ) ? $keys[$decrypted_key]["label"] : __( "Site Link", 'disciple_tools' );
             if ( ! empty( $connection_type ) ) {
-                self::add_capabilities_required_by_type( $connection_type, $site_link_label );
+                self::add_capabilities_required_by_type( $connection_type, $site_link_label, $decrypted_key );
             }
 
             return true;
@@ -259,8 +265,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          *
          * @param $connection_type
          * @param string $site_link_label
+         * @param string $site_key
          */
-        public static function add_capabilities_required_by_type( $connection_type, $site_link_label = "Site Link" ) {
+        public static function add_capabilities_required_by_type( $connection_type, $site_link_label = "Site Link", $site_key = '' ) {
             /**
              * Use the $connection_type to filter for the correct type
              * Update and return the $capabilities array
@@ -280,6 +287,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     $current_user->add_cap( $capability );
                 }
                 $current_user->display_name = $site_link_label;
+                if ( $site_key ){
+                    $current_user->site_key = $site_key;
+                }
             }
         }
 
@@ -353,6 +363,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         header( 'Access-Control-Allow-Methods: GET, POST, HEAD, OPTIONS' );
                         header( 'Access-Control-Allow-Credentials: true' );
                         header( 'Access-Control-Expose-Headers: Link', false );
+                        header( 'Access-Control-Allow-Headers: X-WP-Nonce', false );
 
                         return $value;
                     } );
@@ -710,7 +721,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                 // Escape and confirm format of the URL fields.
                 if ( 'url' == $field_data[ $f ]['type'] ) {
-                    if ( strpos( ${$f}, 'http' ) !== false || strpos( ${$f}, '//' ) !== false || strpos( ${$f}, '/' ) !== false ) {
+                    if ( strpos( ${$f}, 'http' ) !== false || strpos( ${$f}, '//' ) !== false ) {
                         ${$f} = parse_url( ${$f}, PHP_URL_HOST );
                     }
                 }
@@ -967,7 +978,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         </style>";
 
             }
-            $uri = dt_get_url_path();
+            $uri = $this->get_url_path();
 
             if ( $uri && ( strpos( $uri, 'edit.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) || ( strpos( $uri, 'post-new.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) ) : ?>
                 <script>
@@ -979,6 +990,17 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                   });
                 </script>
             <?php endif;
+        }
+
+        public function get_url_path() {
+            if ( isset( $_SERVER["HTTP_HOST"] ) ) {
+                $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
+                if ( isset( $_SERVER["REQUEST_URI"] ) ) {
+                    $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
+                }
+                return trim( str_replace( get_site_url(), "", $url ), '/' );
+            }
+            return '';
         }
 
         public function enter_title_here( $title ) {
