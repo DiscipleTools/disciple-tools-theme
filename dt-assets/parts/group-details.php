@@ -1,5 +1,5 @@
 <?php
-( function () {
+( function() {
     ?>
     <?php
     $group = Disciple_Tools_Groups::get_group( get_the_ID(), true, true );
@@ -7,12 +7,13 @@
     $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
 
 
-    function dt_contact_details_status( $id, $verified, $invalid) {
+    function dt_contact_details_status( $id, $verified, $invalid ){
         ?>
     <img id="<?php echo esc_attr( $id . '-verified', 'disciple_tools' ); ?>" class="details-status" style="display: <?php echo esc_attr( $verified, 'disciple_tools' ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/verified.svg'; ?>"/>
     <img id="<?php echo esc_attr( $id . '-invalid', 'disciple_tools' ); ?>"  class="details-status" style="display: <?php echo esc_attr( $invalid, 'disciple_tools' ); ?>"  src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/broken.svg'; ?>" />
         <?php
-    } ?>
+    }
+    ?>
 
 <section class="bordered-box">
        <div class="section-header">
@@ -42,11 +43,12 @@
             <?php
             $active_color = "#4CAF50";
             $current_key = $group["group_status"]["key"] ?? "";
-            if (isset( $group_fields["group_status"]["default"][ $current_key ]["color"] )) {
+            if ( isset( $group_fields["group_status"]["default"][ $current_key ]["color"] )){
                 $active_color = $group_fields["group_status"]["default"][ $current_key ]["color"];
-            } ?>
+            }
+            ?>
             <select id="group_status" class="status select-field color-select" style="background-color: <?php echo esc_html( $active_color ) ?>">
-                <?php foreach ($group_fields["group_status"]["default"] as $status_key => $option) { ?>
+                <?php foreach ( $group_fields["group_status"]["default"] as $status_key => $option ) { ?>
                     <option value="<?php echo esc_attr( $status_key, 'disciple_tools' ); ?>"
                         <?php echo esc_attr( $status_key === $group['group_status']['key'] ? 'selected' : '', 'disciple_tools' ); ?>>
                         <?php echo esc_html( $option["label"] ?? "" ) ?>
@@ -81,7 +83,9 @@
             </div>
         </div>
         <div class="cell small-12 medium-4">
-            <div class="section-subheader"><?php esc_html_e( "Group Coach / Church Planter", 'disciple_tools' ) ?></div>
+            <div class="section-subheader">
+            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/coach.svg' ?>">
+            <?php esc_html_e( "Group Coach / Church Planter", 'disciple_tools' ) ?></div>
             <div class="coaches">
                 <var id="coaches-result-container" class="result-container"></var>
                 <div id="coaches_t" name="form-coaches" class="scrollable-typeahead">
@@ -117,16 +121,16 @@
             </div>
             <ul class="people_groups-list details-list">
                 <?php
-                foreach ($group["people_groups"] ?? [] as $value) {
+                foreach ($group["people_groups"] ?? [] as $value){
                     ?>
                     <li class="<?php echo esc_html( $value["ID"] )?>">
                         <a href="<?php echo esc_url( $value["permalink"] ) ?>"><?php echo esc_html( $value["post_title"] ) ?></a>
                     </li>
-                    <?php
-                }
-                if (sizeof( $group["people_groups"] ) === 0) {
+                <?php }
+                if (sizeof( $group["people_groups"] ) === 0){
                     ?> <li id="no-people_groups"><?php esc_html_e( "No people group set", 'disciple_tools' ) ?></li><?php
-                } ?>
+                }
+                ?>
             </ul>
         </div>
 
@@ -134,30 +138,30 @@
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
 
             <div class="section-subheader">
-                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
                 <?php esc_html_e( 'Address', 'disciple_tools' )?>
             </div>
             <ul class="address details-list">
                 <?php
-                if (sizeof( $group["contact_address"] ?? [] ) === 0) {
+                if (sizeof( $group["contact_address"] ?? [] ) === 0 ){
                     ?> <li id="no-address"><?php esc_html_e( 'No address set', 'disciple_tools' )?></li> <?php
                 }
-                foreach ($group["contact_address"] ?? [] as $value) {
+                foreach ($group["contact_address"] ?? [] as $value){
                     $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
-                    $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none"; ?>
+                    $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
+                    ?>
                     <li class="<?php echo esc_html( $value["key"] ) ?> address-row">
-                        <div class="address-text" dir="auto"><?php echo esc_html( $value["value"] ); ?></div>
-                                    <?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
+                        <div class="address-text" dir="auto"><?php echo esc_html( $value["value"] );?></div>
+                        <?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
                     </li>
-                            <?php
-                } ?>
+                <?php } ?>
             </ul>
         </div>
 
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
-            <div class="section-subheader"><?php esc_html_e( 'Start Date', 'disciple_tools' )?></div>
+            <div class="section-subheader"><img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-start.svg' ?>"> <?php esc_html_e( 'Start Date', 'disciple_tools' )?></div>
             <ul class="date-list start_date details-list"><?php
-            if (isset( $group["start_date"] )) {
+            if ( isset( $group["start_date"] ) ) {
                 echo esc_html( $group["start_date"]["formatted"] );
             } else {
                 esc_html_e( "No start date", 'disciple_tools' );
@@ -165,9 +169,11 @@
             </ul>
         </div>
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
-            <div class="section-subheader"><?php esc_html_e( 'Church Start Date', 'disciple_tools' )?></div>
+            <div class="section-subheader">
+            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-success.svg' ?>"> <?php esc_html_e( 'Church Start Date', 'disciple_tools' ) ?>
+            </div>
             <ul class="date-list church_start_date details-list"><?php
-            if (isset( $group["church_start_date"] )) {
+            if ( isset( $group["church_start_date"] ) ) {
                 echo esc_html( $group["church_start_date"]["formatted"] );
             } else {
                 esc_html_e( "No church start date", 'disciple_tools' );
@@ -175,9 +181,11 @@
             </ul>
         </div>
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
-            <div class="section-subheader"><?php esc_html_e( 'End Date', 'disciple_tools' )?></div>
+            <div class="section-subheader">
+            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-end.svg' ?>"> <?php esc_html_e( 'End Date', 'disciple_tools' ) ?>
+            </div>
             <ul class="date-list end_date details-list"><?php
-            if (isset( $group["end_date"] )) {
+            if ( isset( $group["end_date"] ) ) {
                 echo esc_html( $group["end_date"]["formatted"] );
             } else {
                 esc_html_e( "No end date", 'disciple_tools' );
@@ -203,7 +211,7 @@
         <!-- Address -->
         <div class="grix-x">
             <div class="section-subheader cell">
-                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
                 <?php esc_html_e( 'Address', 'disciple_tools' )?>
                 <button id="add-new-address">
                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
