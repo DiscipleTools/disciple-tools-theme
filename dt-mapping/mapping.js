@@ -23,7 +23,7 @@ window.DRILLDOWN.map_chart_drilldown = function( grid_id ) {
  * This displays a vision map and allows for drill down through clicking on map sections.
  *
  **********************************************************************************************************************/
-function page_mapping_view( rest_endpoints_base ) {
+function page_mapping_view( rest_endpoints_base = null ) {
   MAPPINGDATA.rest_endpoints_base = rest_endpoints_base
   let chartDiv = jQuery('#mapping_chart')
   chartDiv.empty().html(`
@@ -57,20 +57,22 @@ function page_mapping_view( rest_endpoints_base ) {
     <span id="refresh_data" class="refresh_data"><a onclick="get_data(true)">${_.escape( translations.refresh_data )}</a></span>
   `);
 
-  
-  get_data(false).then(response=>{
-    MAPPINGDATA.data = response
-    // set the depth of the drill down
-    MAPPINGDATA.settings.hide_final_drill_down = false
-    // load drill down
+  if ( MAPPINGDATA.data ){
     DRILLDOWN.get_drill_down('map_chart_drilldown', MAPPINGDATA.settings.current_map)
-  }).fail(err=>{
-    console.log(err)
-  })
-
-
+  } else {
+    get_data(false).then(response=>{
+      MAPPINGDATA.data = response
+      // set the depth of the drill down
+      MAPPINGDATA.settings.hide_final_drill_down = false
+      // load drill down
+      DRILLDOWN.get_drill_down('map_chart_drilldown', MAPPINGDATA.settings.current_map)
+    }).fail(err=>{
+      console.log(err)
+    })
+  }
 
 }
+
 
 function setCommonMapSettings( chart ) {
   let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
