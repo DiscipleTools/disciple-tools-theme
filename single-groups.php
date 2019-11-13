@@ -31,7 +31,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
     ); ?>
 
 <!--<div id="errors"> </div>-->
-
+<!-- <div><a class="button small" id="backlink" href="../" style="margin:.9rem 0 0 1.3em"><?php esc_html_e('Back to Groups List', 'disciple_tools')?></a></div> -->
 <div id="content">
     <span id="group-id" style="display: none"><?php echo get_the_ID()?></span>
     <span id="post-id" style="display: none"><?php echo get_the_ID()?></span>
