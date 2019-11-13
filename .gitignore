@@ -10,8 +10,4 @@ composer.phar
 CodeSniffer.conf
 phpcbf.phar
 phpcs.phar
-
-package-lock.json
-package.json
-dt-assets/build/
 */development-only/*
