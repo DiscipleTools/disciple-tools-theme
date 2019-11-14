@@ -181,13 +181,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             global $dt_mapping;
 
 
-            // Drill Down Tool
-            wp_enqueue_script( 'mapping-drill-down', $dt_mapping['drill_down_js_url'], [ 'jquery','lodash' ], 1 );
-            wp_localize_script(
-                'mapping-drill-down', 'mappingModule', array(
-                    'mapping_module' => DT_Mapping_Module::instance()->localize_script(),
-                )
-            );
+            DT_Mapping_Module::instance()->drilldown_script();
         }
 
         public function process_rest_edits( $params ) {
@@ -1441,7 +1435,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
 
             <script>
-                window.DRILLDOWNDATA.settings.hide_final_drill_down = false
                 window.DRILLDOWN.get_drill_down('location_grids')
                 let current = {}
                 window.DRILLDOWN.location_grids = function (grid_id, a, selection) {

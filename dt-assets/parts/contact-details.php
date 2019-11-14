@@ -6,7 +6,7 @@
     $current_user = wp_get_current_user();
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 
-    function dt_contact_details_status( $id, $verified, $invalid ) { ?>
+    function dt_contact_details_status( $id, $verified, $invalid) { ?>
         <img id="<?php echo esc_html( $id )?>-verified" class="details-status" style="display:<?php echo esc_html( $verified )?>" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/verified.svg' )?>" />
         <img id="<?php echo esc_html( $id ) ?>-invalid" class="details-status" style="display:<?php echo esc_html( $invalid )?>" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" />
         <?php
@@ -24,8 +24,8 @@
 
     <!-- Assigned to block -->
     <?php
-    if ( isset( $contact['overall_status'] ) && $contact['overall_status']['key'] == 'assigned' &&
-        isset( $contact['assigned_to'] ) && $contact['assigned_to']['id'] == $current_user->ID ) { ?>
+    if (isset( $contact['overall_status'] ) && $contact['overall_status']['key'] == 'assigned' &&
+        isset( $contact['assigned_to'] ) && $contact['assigned_to']['id'] == $current_user->ID) { ?>
     <section class="cell accept-contact" id="accept-contact">
         <div class="bordered-box detail-notification-box">
             <h4><?php esc_html_e( 'This contact has been assigned to you.', 'disciple_tools' )?></h4>
@@ -35,7 +35,7 @@
     </section>
     <?php } ?>
 
-    <?php if ( isset( $contact['corresponds_to_user'] ) ) { ?>
+    <?php if (isset( $contact['corresponds_to_user'] )) { ?>
     <section class="cell" id="contact-is-user">
         <div class="bordered-box detail-notification-box" style="background-color:#3F729B">
             <h4><?php esc_html_e( 'This contact represents a user.', 'disciple_tools' )?></h4>
@@ -46,6 +46,10 @@
     <?php do_action( 'dt_contact_detail_notification', $contact ); ?>
 
     <section class="cell bordered-box">
+       <div class="section-header">
+            <?php esc_html_e( "Contact Details", 'disciple_tools' ) ?>
+            <!-- <a class="button small" id="backlink" href="../" style=""><?php esc_html_e( 'Back to Contacts List', 'disciple_tools' )?></a> -->
+        </div>
         <div style="display: flex;">
             <div class="item-details-header" style="flex-grow:1">
                 <i class="fi-torso large" style="padding-bottom: 1.2rem"></i>
@@ -70,42 +74,42 @@
                 <?php
                 $active_color = "#366184";
                 $current_key = $contact["overall_status"]["key"] ?? "";
-                if ( isset( $contact_fields["overall_status"]["default"][ $current_key ]["color"] )){
+                if (isset( $contact_fields["overall_status"]["default"][ $current_key ]["color"] )) {
                     $active_color = $contact_fields["overall_status"]["default"][ $current_key ]["color"];
-                }
-                ?>
+                } ?>
                 <select id="overall_status" class="select-field color-select" style="margin-bottom:0px; background-color: <?php echo esc_html( $active_color ) ?>">
-                    <?php foreach ($contact_fields["overall_status"]["default"] as $key => $option){
+                    <?php foreach ($contact_fields["overall_status"]["default"] as $key => $option) {
                         $value = $option["label"] ?? "";
-                        if ( $contact["overall_status"]["key"] === $key ) {
+                        if ($contact["overall_status"]["key"] === $key) {
                             ?>
                             <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
-                        <?php } else { ?>
+                            <?php
+                        } else { ?>
                             <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
                         <?php } ?>
-                    <?php } ?>
+                        <?php
+                    } ?>
                 </select>
                 <p>
                     <span id="reason">
                         <?php
                         $hide_edit_button = false;
-                        if ( $contact["overall_status"]["key"] === "paused" &&
-                             isset( $contact["reason_paused"]["label"] )){
+                        if ($contact["overall_status"]["key"] === "paused" &&
+                             isset( $contact["reason_paused"]["label"] )) {
                             echo '(' . esc_html( $contact["reason_paused"]["label"] ) . ')';
-                        } else if ( $contact["overall_status"]["key"] === "closed" &&
-                                    isset( $contact["reason_closed"]["label"] )){
+                        } elseif ($contact["overall_status"]["key"] === "closed" &&
+                                    isset( $contact["reason_closed"]["label"] )) {
                             echo '(' . esc_html( $contact["reason_closed"]["label"] ) . ')';
-                        } else if ( $contact["overall_status"]["key"] === "unassignable" &&
-                                    isset( $contact["reason_unassignable"]["label"] )){
+                        } elseif ($contact["overall_status"]["key"] === "unassignable" &&
+                                    isset( $contact["reason_unassignable"]["label"] )) {
                             echo '(' . esc_html( $contact["reason_unassignable"]["label"] ) . ')';
                         } else {
-                            if ( !in_array( $contact["overall_status"]["key"], [ "paused", "closed", "unassignable" ] ) ){
+                            if ( !in_array( $contact["overall_status"]["key"], [ "paused", "closed", "unassignable" ] )) {
                                 $hide_edit_button = true;
                             }
-                        }
-                        ?>
+                        } ?>
                     </span>
-                    <button id="edit-reason" <?php if ( $hide_edit_button ) : ?> style="display: none"<?php endif; ?> ><i class="fi-pencil"></i></button>
+                    <button id="edit-reason" <?php if ($hide_edit_button) : ?> style="display: none"<?php endif; ?> ><i class="fi-pencil"></i></button>
                 </p>
             </div>
 
@@ -234,12 +238,11 @@
                 <ul class="details-list">
                     <li class="age">
                         <?php
-                        if ( !empty( $contact['age']['label'] ) ){
+                        if ( !empty( $contact['age']['label'] )) {
                             echo esc_html( $contact['age']['label'] );
                         } else {
                             esc_html_e( 'No age set', 'disciple_tools' );
-                        }
-                        ?>
+                        } ?>
                     </li>
                 </ul>
             </div>
@@ -253,12 +256,11 @@
                 <ul class="details-list">
                     <li class="gender">
                         <?php
-                        if ( !empty( $contact['gender']['label'] ) ){
+                        if ( !empty( $contact['gender']['label'] )) {
                             echo esc_html( $contact['gender']['label'] );
                         } else {
                             esc_html_e( 'No gender set', 'disciple_tools' );
-                        }
-                        ?>
+                        } ?>
                 </ul>
             </div>
 
@@ -270,16 +272,16 @@
                 </div>
                 <ul class="sources-list <?php echo esc_html( user_can( get_current_user_id(), 'view_any_contacts' ) ? 'details-list' : '' ) ?>">
                     <?php
-                    foreach ($contact['sources'] ?? [] as $value){
+                    foreach ($contact['sources'] ?? [] as $value) {
                         ?>
                         <li class="<?php echo esc_html( $value )?>">
                             <?php echo esc_html( $contact_fields['sources']['default'][$value]["label"] ?? $value ) ?>
                         </li>
-                    <?php }
-                    if ( !isset( $contact['sources'] ) || sizeof( $contact['sources'] ) === 0){
-                        ?> <li id="no-source"><?php esc_html_e( "No source set", 'disciple_tools' ) ?></li><?php
+                        <?php
                     }
-                    ?>
+                    if ( !isset( $contact['sources'] ) || sizeof( $contact['sources'] ) === 0) {
+                        ?> <li id="no-source"><?php esc_html_e( "No source set", 'disciple_tools' ) ?></li><?php
+                    } ?>
                 </ul>
             </div>
         </div>
@@ -400,16 +402,15 @@
                     </div>
                     <select id="gender" class="select-input">
                         <?php
-                        foreach ( $contact_fields['gender']['default'] as $gender_key => $option ) {
+                        foreach ($contact_fields['gender']['default'] as $gender_key => $option) {
                             $gender_value = $option["label"] ?? "";
-                            if ( isset( $contact['gender']['key'] ) &&
-                                 $contact['gender']['key'] === $gender_key){
+                            if (isset( $contact['gender']['key'] ) &&
+                                 $contact['gender']['key'] === $gender_key) {
                                 echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
                             } else {
                                 echo '<option value="'. esc_html( $gender_key ) . '">' . esc_html( $gender_value ). '</option>';
                             }
-                        }
-                        ?>
+                        } ?>
                     </select>
                 </div>
 
@@ -421,16 +422,15 @@
                     </div>
                     <select id="age" class="select-input">
                         <?php
-                        foreach ( $contact_fields["age"]["default"] as $age_key => $option ) {
+                        foreach ($contact_fields["age"]["default"] as $age_key => $option) {
                             $age_value = $option["label"] ?? "";
-                            if ( isset( $contact["age"] ) && isset( $contact["age"]["key"] ) &&
-                                 $contact["age"]["key"] === $age_key){
+                            if (isset( $contact["age"] ) && isset( $contact["age"]["key"] ) &&
+                                 $contact["age"]["key"] === $age_key) {
                                 echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
                             } else {
                                 echo '<option value="'. esc_html( $age_key ) . '">' . esc_html( $age_value ). '</option>';
                             }
-                        }
-                        ?>
+                        } ?>
                     </select>
                 </div>
             </div>
@@ -514,4 +514,5 @@
 
 
 
-<?php } )(); ?>
+    <?php
+} )(); ?>

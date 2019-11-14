@@ -63,9 +63,9 @@ declare(strict_types=1);
         <nav role="navigation"
              data-sticky data-options="marginTop:3;" style="width:100%" data-top-anchor="1"
              class="second-bar">
-            <div class="container-width center">
+            <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
                 <a class="button dt-green" style="margin-bottom:0" href="<?php echo esc_url( home_url( '/' ) ) . "contacts/new" ?>">
-                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
+                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-contact.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php esc_html_e( "Create new contact", "disciple_tools" ); ?></span>
                 </a>
                 <a class="button" style="margin-bottom:0" data-open="filter-modal">
@@ -85,9 +85,9 @@ declare(strict_types=1);
         </nav>
     </div>
     <nav  role="navigation" style="width:100%;"
-          class="second-bar show-for-small-only center">
+          class="second-bar show-for-small-only center"><!--  /* MOBILE VIEW BUTTON AREA */ -->
         <a class="button dt-green" style="margin-bottom:0" href="<?php echo esc_url( home_url( '/' ) ) . "contacts/new" ?>">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
+            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-contact.svg' ) ?>"/>
             <span class="hide-for-small-only"><?php esc_html_e( "Create new contact", "disciple_tools" ); ?></span>
         </a>
         <a class="button" style="margin-bottom:0" data-open="filter-modal">
@@ -210,7 +210,7 @@ declare(strict_types=1);
                     <?php $fields = [ "assigned_to", "subassigned",  "created_on", "location_grid", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
                     $allowed_types = [ "multi_select", "key_select", "boolean", "date", "location" ];
                     foreach ( $dt_contact_field_options as $field_key => $field){
-                        if ( in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
+                        if ( $field_key && in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
                             $fields[] = $field_key;
                         }
                     }

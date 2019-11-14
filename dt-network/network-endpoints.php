@@ -8,10 +8,7 @@
  * @package    Disciple_Tools
  */
 
-if ( !defined( 'ABSPATH' ) ) {
-    exit;
-} // Exit if accessed directly.
-
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 /**
  * Class Disciple_Tools_Network_Endpoints
@@ -62,12 +59,6 @@ class Disciple_Tools_Network_Endpoints
 
     public function add_api_routes() {
         register_rest_route(
-            $this->public_namespace, '/network/trigger_transfer', [
-                'methods'  => 'POST',
-                'callback' => [ $this, 'trigger_transfer' ],
-            ]
-        );
-        register_rest_route(
             $this->public_namespace, '/network/live_stats', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'live_stats' ],
@@ -85,67 +76,6 @@ class Disciple_Tools_Network_Endpoints
         }
 
         return Disciple_Tools_Snapshot_Report::snapshot_report();
-    }
-
-    /**
-     * @param \WP_REST_Request $request
-     *
-     * @return array|WP_Error
-     */
-    public function trigger_transfer( WP_REST_Request $request ) {
-
-        $params = $this->process_token( $request );
-        if ( is_wp_error( $params ) ) {
-            return $params;
-        }
-
-        if ( ! isset( $params['type'] ) || ! isset( $params['site_post_id'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing parameter: type or matching site_post_id.' );
-        }
-
-        switch ( $params['type'] ) {
-
-            case 'project_totals':
-                return Disciple_Tools_Network::send_project_totals( $params['site_post_id'] );
-                break;
-
-            case 'site_profile':
-                return Disciple_Tools_Network::send_site_profile( $params['site_post_id'] );
-                break;
-
-            case 'site_locations':
-                return Disciple_Tools_Network::send_site_locations( $params['site_post_id'] );
-                break;
-
-            default:
-                return new WP_Error( __METHOD__, 'No trigger type recognized.' );
-                break;
-        }
-    }
-
-
-    /**
-     * @param \WP_REST_Request $request
-     *
-     * @return array|WP_Error
-     */
-    public function set_location_attributes( WP_REST_Request $request ) {
-
-        $params = $this->process_token( $request );
-        if ( is_wp_error( $params ) ) {
-            return $params;
-        }
-
-        if ( ! isset( $params['collection'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing parameters.' );
-        }
-
-        $result = Disciple_Tools_Network::api_set_location_attributes( $params['collection'] );
-        if ( is_wp_error( $result ) ) {
-            return new WP_Error( __METHOD__, $result->get_error_message() );
-        }
-
-        return $result;
     }
 
     /**

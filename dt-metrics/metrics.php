@@ -44,6 +44,7 @@ class Disciple_Tools_Metrics
 //            require_once( get_template_directory() . '/dt-metrics/metrics-prayer.php' );
             require_once( get_template_directory() . '/dt-metrics/contacts/sources.php' );
             require_once( get_template_directory() . '/dt-metrics/contacts/milestones.php' );
+            require_once( get_template_directory() . '/dt-metrics/contacts/milestones-map.php' );
 //            require_once( get_template_directory() . '/dt-metrics/contacts/seeker-path.php' );
         }
     }

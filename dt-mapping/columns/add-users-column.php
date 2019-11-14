@@ -12,7 +12,7 @@ function dt_mm_add_workers_column( $data ) {
         }
     }
     $url_path = trim( str_replace( get_site_url(), "", $url ), '/' );
-    if ( 'mapping' === substr( $url_path, '0', 7 ) || strpos( $url_path, "metrics/mapping" ) === 0 ) {
+    if ( strpos( $url_path, 'metrics/mapping' ) !== false ) {
 
         /**
          * Step 1

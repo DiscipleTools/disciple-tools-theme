@@ -195,13 +195,16 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
     if ( !function_exists( "dt_create_field_key" ) ){
         function dt_create_field_key( $s, $with_hash = false ){
-            $string = str_replace( ' ', '_', $s ); // Replaces all spaces with hyphens.
-            $ret = preg_replace( '/[^A-Za-z0-9\-_]/', '', $string ); // Removes special chars.
-            $ret = strtolower( $ret );
+            //note we don't limit to alhpa_numeric because it would strip out all non latin based languages
+            $s = str_replace( ' ', '_', $s ); // Replaces all spaces with hyphens.
+            $s = sanitize_key( $s );
             if ( $with_hash === true ){
-                $ret .= '_' . substr( md5( rand( 10000, 100000 ) ), 0, 3 ); // create a unique 3 digit key
+                $s .= '_' . substr( md5( rand( 10000, 100000 ) ), 0, 3 ); // create a unique 3 digit key
             }
-            return $ret;
+            if ( empty( $s ) ){
+                $s .= 'key_' . substr( md5( rand( 10000, 100000 ) ), 0, 3 );
+            }
+            return $s;
         }
     }
 

@@ -1074,6 +1074,9 @@ jQuery(document).ready(function($) {
             label = `<object data="${_.escape( channel.icon )}" height="10px" width="10px"
               type="image/jpg">${_.escape( label )}</object>`
           }
+          if ( fieldDesignator === 'whatsapp' ) {
+            value = `<a href="https://wa.me/${value.replace('-','').replace('+','').replace('(','').replace(')','')}">${value}</a>`
+          }
           socialHTMLField.append(`<li class="details-list ${_.escape(field.key)}">
             ${label}
               ${ value }

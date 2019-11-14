@@ -127,7 +127,7 @@ if ( ! isset( $dt_mapping['drill_down_js_url'] ) ) {
     $dt_mapping['drill_down_js_url'] = $dt_mapping['url'] . 'drill-down.js';
 }
 if ( ! isset( $dt_mapping['drill_down_js_version'] ) ) {
-    $dt_mapping['drill_down_js_version'] = 1.2;
+    $dt_mapping['drill_down_js_version'] = 1.3;
 }
 
 /** Add mapping.js url */
@@ -135,7 +135,14 @@ if ( ! isset( $dt_mapping['mapping_js_url'] ) ) {
     $dt_mapping['mapping_js_url'] = $dt_mapping['url'] . 'mapping.js';
 }
 if ( ! isset( $dt_mapping['mapping_js_version'] ) ) {
-    $dt_mapping['mapping_js_version'] = 0.1;
+    $dt_mapping['mapping_js_version'] = 0.2;
+}
+/** Add mapping.css url */
+if ( ! isset( $dt_mapping['mapping_css_url'] ) ) {
+    $dt_mapping['mapping_css_url'] = $dt_mapping['url'] . 'mapping.css';
+}
+if ( ! isset( $dt_mapping['mapping_css_version'] ) ) {
+    $dt_mapping['mapping_css_version'] = 0.2;
 }
 
 /** Add configuration module */

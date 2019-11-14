@@ -24,6 +24,7 @@ if ( !defined( 'ABSPATH' ) ) {
  *          0.1.17 Added type column to admin list
  *          0.1.18 Added listing function by site type
  *          0.1.19 Added unique identifiers to the metaboxes to remove conflicts.
+ *          0.1.20 Added x-wp-nonce header acceptance to the CORS policy
  */
 if ( ! class_exists( 'Site_Link_System' ) ) {
 
@@ -362,6 +363,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         header( 'Access-Control-Allow-Methods: GET, POST, HEAD, OPTIONS' );
                         header( 'Access-Control-Allow-Credentials: true' );
                         header( 'Access-Control-Expose-Headers: Link', false );
+                        header( 'Access-Control-Allow-Headers: X-WP-Nonce', false );
 
                         return $value;
                     } );

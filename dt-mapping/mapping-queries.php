@@ -568,6 +568,106 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
+    /**
+     * Count post types, churchs and groups in each used location and accross admin levels
+     */
+    public static function get_location_grid_totals_on_field( $post_type, $field, $force_refresh = false ) : array {
+
+        global $wpdb;
+
+        if ( !$force_refresh && get_transient( "get_location_grid_totals_{$post_type}_{$field}" ) ) {
+            return get_transient( "get_location_grid_totals_{$post_type}_{$field}" );
+        }
+
+        $results = $wpdb->get_results("
+            SELECT
+              t1.admin0_grid_id as grid_id,
+              t1.type,
+              count(t1.admin0_grid_id) as count
+            FROM (
+                SELECT
+                    g.admin0_grid_id,
+                    gt.meta_value as type
+                FROM $wpdb->postmeta as p
+                    JOIN $wpdb->posts as pp ON p.post_id=pp.ID
+                    LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value             
+                    LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
+                    LEFT JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'milestones'
+                WHERE p.meta_key = 'location_grid'
+            ) as t1
+            WHERE t1.admin0_grid_id != ''
+            GROUP BY t1.admin0_grid_id, t1.type
+            UNION
+            SELECT
+              t2.admin1_grid_id as grid_id,
+              t2.type,
+              count(t2.admin1_grid_id) as count
+            FROM (
+                    SELECT
+                    g.admin1_grid_id,
+                    gt.meta_value as type
+                FROM $wpdb->postmeta as p
+                    JOIN $wpdb->posts as pp ON p.post_id=pp.ID
+                    LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value             
+                    LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
+                    LEFT JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'milestones'
+                WHERE p.meta_key = 'location_grid'
+            ) as t2
+            WHERE t2.admin1_grid_id != ''
+            GROUP BY t2.admin1_grid_id, t2.type
+            UNION
+            SELECT
+              t3.admin2_grid_id as grid_id,
+              t3.type,
+              count(t3.admin2_grid_id) as count
+            FROM (
+                    SELECT
+                    g.admin2_grid_id,
+                    gt.meta_value as type
+                FROM $wpdb->postmeta as p
+                    JOIN $wpdb->posts as pp ON p.post_id=pp.ID
+                    LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value             
+                    LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
+                    LEFT JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'milestones'
+                WHERE p.meta_key = 'location_grid'
+            ) as t3
+            WHERE t3.admin2_grid_id != ''
+            GROUP BY t3.admin2_grid_id, t3.type
+            UNION
+            SELECT
+              t4.admin3_grid_id as grid_id,
+              t4.type,
+              count(t4.admin3_grid_id) as count
+            FROM (
+                    SELECT
+                    g.admin3_grid_id,
+                    gt.meta_value as type
+                FROM $wpdb->postmeta as p
+                    JOIN $wpdb->posts as pp ON p.post_id=pp.ID
+                    LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value             
+                    LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
+                    LEFT JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'milestones'
+                WHERE p.meta_key = 'location_grid'
+            ) as t4
+            WHERE t4.admin3_grid_id != ''
+            GROUP BY t4.admin3_grid_id, t4.type;
+        ", ARRAY_A );
+
+
+        set_transient( "get_location_grid_totals_{$post_type}_{$field}", $results, 60 * 60 * 24 );
+
+
+        if ( empty( $results ) ) {
+            $results = [];
+        }
+
+        return $results;
+    }
+
+
+    /**
+     * Count post types, churchs and groups in each used location and accross admin levels
+     */
     public static function get_location_grid_totals() : array {
 
         global $wpdb;

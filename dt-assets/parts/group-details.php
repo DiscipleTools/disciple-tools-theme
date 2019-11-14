@@ -16,6 +16,10 @@
     ?>
 
 <section class="bordered-box">
+       <div class="section-header">
+            <?php esc_html_e( "Group Details", 'disciple_tools' ) ?>
+            <!-- <a class="button small" id="backlink" href="../" style=""><?php esc_html_e( 'Back to Groups List', 'disciple_tools' )?></a> -->
+        </div>
     <div style="display: flex;">
         <div class="item-details-header" style="flex-grow:1">
             <i class="fi-torsos-all large" style="padding-bottom: 1.2rem"></i>
