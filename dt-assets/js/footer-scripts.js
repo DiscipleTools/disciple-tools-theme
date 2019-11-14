@@ -1,5 +1,3 @@
-console.log('connect to footer-scripts.js');
-
 /*
 These functions make sure WordPress
 and Foundation play nice together.
@@ -29,10 +27,10 @@ function contactFilterAccordion() {
   jQuery('#list-filter-tabs').find('.accordion-item.is-active').removeClass('is-active').find('.accordion-content').css({ 'display': "" });
 
   // (optional) set a callback when a panel open
-  $('#list-filter-tabs').on('down.zf.accordion menu', function () { });
+  $('#list-filter-tabs').on('down.zf.accordion menu', function () {});
 
   // (optional) set a callback when a panel is down
-  $('#list-filter-tabs').on('up.zf.accordion menu', function () { });
+  $('#list-filter-tabs').on('up.zf.accordion menu', function () {});
 
 }
 
