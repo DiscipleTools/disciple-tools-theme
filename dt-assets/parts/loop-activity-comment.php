@@ -17,13 +17,6 @@
                     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                     ?>
 
-                    <!-- work out how to display/align this better  -->
-
-                    <button class="help-button" data-section="quick-action-help-text">
-                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                    </button>
-
-
                 <ul class="dropdown menu" data-dropdown-menu $dropdownmenu-arrow-color="white">
                     <li style="border-radius: 5px">
                         <a class="button menu-white-dropdown-arrow"
@@ -44,12 +37,16 @@
                                             (<span class="<?php echo esc_attr( $field ) ?>"><?php echo esc_html( $current_value ); ?></span>)
                                         </a>
                                     </li>
+
                                     <?php
                                 }
                             }
                             ?>
                         </ul>
                     </li>
+                    <button class="help-button" data-section="quick-action-help-text">
+                        <img class="help-icon" src="<?php echo esc_html(get_template_directory_uri() . '/dt-assets/images/help.svg') ?>"/>
+                    </button>
                 </ul>
                 <?php endif; ?>
 
