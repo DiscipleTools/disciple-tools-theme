@@ -60,7 +60,7 @@ function page_mapping_view( rest_endpoints_base = null ) {
   if ( MAPPINGDATA.data ){
     DRILLDOWN.get_drill_down('map_chart_drilldown', MAPPINGDATA.settings.current_map)
   } else {
-    get_data(false).then(response=>{
+    return get_data(false).then(response=>{
       MAPPINGDATA.data = response
       // set the depth of the drill down
       MAPPINGDATA.settings.hide_final_drill_down = false
@@ -135,27 +135,27 @@ function setCommonMapSettings( chart ) {
   let default_map_settings = MAPPINGDATA.settings.default_map_settings
   if ( default_map_settings.children.length > 1 && default_map_settings.type !== "world" && MAPPINGDATA.settings.current_map == default_map_settings.parent ){
     // Pre-zoom to a list of countries
-    var zoomTo = MAPPINGDATA.settings.default_map_settings.children;
+    let zoomTo = MAPPINGDATA.settings.default_map_settings.children;
     chart.events.on("appeared", function(ev) {
       // Init extrems
-      var north, south, west, east;
-      
+      let north, south, west, east;
+
       // Find extreme coordinates for all pre-zoom countries
-      for(var i = 0; i < zoomTo.length; i++) {
-        var country = polygonSeries.getPolygonById(zoomTo[i]);
-        if (north == undefined || (country.north > north)) {
+      for(let i = 0; i < zoomTo.length; i++) {
+        let country = polygonSeries.getPolygonById(zoomTo[i]);
+        if (north === undefined || (country.north > north)) {
           north = country.north;
         }
-        if (south == undefined || (country.south < south)) {
+        if (south === undefined || (country.south < south)) {
           south = country.south;
         }
-        if (west == undefined || (country.west < west)) {
+        if (west === undefined || (country.west < west)) {
           west = country.west;
         }
-        if (east == undefined || (country.east > east)) {
+        if (east === undefined || (country.east > east)) {
           east = country.east;
         }
-        
+
         country.isActive = true;
       }
       chart.zoomToRectangle(north, east, south, west, 1, true);
@@ -213,7 +213,7 @@ function location_grid_map( div, grid_id = 'world' ) {
     let chart = null
     if ( openChart ){
       openChart.dispose()
-    } 
+    }
     chart = am4core.create( div, am4maps.MapChart);
     setCommonMapSettings( chart );
     chart.projection = new am4maps.projections.Miller(); // Set projection
@@ -286,7 +286,7 @@ function location_grid_map( div, grid_id = 'world' ) {
         jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, label) {
           let value = totals[labelIndex] || 0
           self_html += `<li><strong>${label.label}</strong>: ${value}</li>`
-          
+
         })
         self_info.html(self_html + `</ul`)
 
@@ -296,12 +296,9 @@ function location_grid_map( div, grid_id = 'world' ) {
         .fail(function() {
           // if failed to get multi polygon map, then get boundary map and fill with placemarks
 
-          jQuery.getJSON( MAPPINGDATA.settings.mapping_source_url + 'low/' + grid_id+'.geojson', function( data ) {
+          jQuery.getJSON( MAPPINGDATA.settings.mapping_source_url + 'low/' + grid_id+'.geojson' ).then(function( data ) {
             // Create map polygon series
-
-            let polygon = data
-
-            chart.geodata = polygon;
+            chart.geodata = data
 
             chart.projection = new am4maps.projections.Miller();
             let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
@@ -384,14 +381,14 @@ function data_type_list( div ) {
 }
 
 function heatmap_focus_change( focus_id, current_map ) {
-  
+
   MAPPINGDATA.settings.heatmap_focus = focus_id
   let geodata = openChart.geodata
   geodata.features = setUpData( geodata.features, MAPPINGDATA.data[MAPPINGDATA.settings.current_map])
 
   openChart.geodata = []
   openChart.geodata = geodata
- 
+
   data_type_list( 'data_type_list' )
 }
 
@@ -415,32 +412,32 @@ function mini_map( div, marker_data ) {
     }
 
     am4core.useTheme(am4themes_animated);
-  
+
     minimapChart = am4core.create( div, am4maps.MapChart);
     let chart = minimapChart
-  
+
     chart.projection = new am4maps.projections.Orthographic(); // Set projection
-  
+
     chart.seriesContainer.draggable = false;
     chart.seriesContainer.resizable = false;
-  
+
     if ( parseInt(marker_data[0].longitude) < 0 ) {
       chart.deltaLongitude = parseInt(Math.abs(marker_data[0].longitude));
     } else {
       chart.deltaLongitude = parseInt(-Math.abs(marker_data[0].longitude));
     }
-  
+
     chart.geodata = window.am4geodata_worldLow;
-    var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
-  
+    let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+
     polygonSeries.useGeodata = true;
-  
-    var imageSeries = chart.series.push(new am4maps.MapImageSeries());
-  
+
+    let imageSeries = chart.series.push(new am4maps.MapImageSeries());
+
     imageSeries.data = marker_data;
-  
-    var imageSeriesTemplate = imageSeries.mapImages.template;
-    var circle = imageSeriesTemplate.createChild(am4core.Circle);
+
+    let imageSeriesTemplate = imageSeries.mapImages.template;
+    let circle = imageSeriesTemplate.createChild(am4core.Circle);
     circle.radius = 4;
     circle.fill = am4core.color("#B27799");
     circle.stroke = am4core.color("#FFFFFF");
