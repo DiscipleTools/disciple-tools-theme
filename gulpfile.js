@@ -192,14 +192,12 @@ gulp.task('browsersync', gulp.series(gulp.parallel('styles', 'scripts'), serve, 
  * https://www.browsersync.io/docs/gulp
  * https://stackoverflow.com/a/38241262/957186
  * for usage set your proxy value from your command line, like so:
- * gulp browsersync-p --option http://http://local.discipletools03/
+ * gulp browsersync-p --option http://local.discipletools/
  *
  */
 
 gulp.task('browsersync-p', function (done) {
-  //list all arguments
-  console.log(process.argv);
-
+ 
   //get the --option argument value
   var option,
     i = process.argv.indexOf("--option");
@@ -207,12 +205,10 @@ gulp.task('browsersync-p', function (done) {
     option = process.argv[i + 1];
   }
 
-  console.log('my option is: ' + option);
-
-  // Initialize BrowserSync
+  // Initializing Browser-sync
   var serverp = browserSync.create();
 
-  //initialize browser-sync
+  // Initialize proxy for Browser-sync
    serverp.init({
     proxy: process.env.BROWSERSYNC_PROXIED_SITE || option,
     notify: false,
@@ -222,6 +218,7 @@ gulp.task('browsersync-p', function (done) {
     //reloadOnRestart: false,
   });
 
+  // Helper function for Browser-sync
   function reload(done) {
     serverp.reload();
     done();
@@ -231,9 +228,9 @@ gulp.task('browsersync-p', function (done) {
    gulp.watch(SOURCE.styles, gulp.series('styles', reload));
    // Watch scripts files
    gulp.watch(SOURCE.scripts, gulp.series('scripts', reload));
-   //Watch php files
+   // Watch php files
    gulp.watch(SOURCE.php, gulp.series(reload));
-   //Watch other JavaScript files
+   // Watch other JavaScript files
    gulp.watch(SOURCE.otherjs, gulp.series(reload));
    
   done();
