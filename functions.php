@@ -156,12 +156,7 @@ else {
 
             $this->user_local = get_user_locale();
 
-            $wpdb->dt_activity_log = $wpdb->prefix . 'dt_activity_log'; // Prepare database table names
-            $wpdb->dt_reports = $wpdb->prefix . 'dt_reports';
-            $wpdb->dt_reportmeta = $wpdb->prefix . 'dt_reportmeta';
-            $wpdb->dt_share = $wpdb->prefix . 'dt_share';
-            $wpdb->dt_notifications = $wpdb->prefix . 'dt_notifications';
-            $wpdb->dt_post_user_meta = $wpdb->prefix . 'dt_post_user_meta';
+            set_up_wpdb_tables();
 
             /**
              * Load first files
@@ -434,6 +429,7 @@ else {
             }
             /* End Admin configuration section */
 
+            add_action( 'switch_blog', 'set_up_wpdb_tables', 99, 2 );
 
         } // End __construct()
 
@@ -474,6 +470,20 @@ else {
             wp_safe_redirect( home_url( '/settings' ) );
         }
     }
+    function set_up_wpdb_tables(){
+        global $wpdb;
+        $wpdb->dt_activity_log = $wpdb->prefix . 'dt_activity_log'; // Prepare database table names
+        $wpdb->dt_reports = $wpdb->prefix . 'dt_reports';
+        $wpdb->dt_reportmeta = $wpdb->prefix . 'dt_reportmeta';
+        $wpdb->dt_share = $wpdb->prefix . 'dt_share';
+        $wpdb->dt_notifications = $wpdb->prefix . 'dt_notifications';
+        $wpdb->dt_post_user_meta = $wpdb->prefix . 'dt_post_user_meta';
+
+        $more_tables = apply_filters( 'dt_custom_tables', [] );
+        foreach ( $more_tables as $table ){
+            $wpdb->$table = $wpdb->prefix . $table;
+        }
+    }
 }
 
 /**
@@ -488,5 +498,4 @@ function dt_theme_admin_notice_required_php_version() {
     </div>
     <?php
 }
-
 
