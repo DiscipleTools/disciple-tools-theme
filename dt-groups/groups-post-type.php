@@ -484,19 +484,19 @@ class Disciple_Tools_Groups_Post_Type
         ];
         $fields["member_count"] = [
             'name' => __( 'Member Count', 'disciple_tools' ),
-            'description' => 'The number of members in this group.',
+            'description' => 'The number of members in this group. The member count will be automatically adjust when new member names are added or removed in the member list. The number can be adjusted manually to included people who may not be in the system but are members of the group.',
             'type' => 'text',
             'default' => ''
         ];
         $fields["member_list"] = [
             'name' => __( 'Member List', 'disciple_tools' ),
-            'description' => 'The list of members in this group. The number can be adjusted to included people who may not be in the system.',
+            'description' => 'The list of members in this group. Clicking the X will remove that member from the list. While clicking the footprint icon next to the members name, will assign that person as a leader of that group. (Multiple leaders can be assigned to a group.)',
             'type' => 'text',
             'default' => ''
         ];
         $fields["leaders"] = [
             "name" => __( "Leaders", "disciple_tools" ),
-            'description' => 'A list of the leaders of the group (contacts).',
+            'description' => 'A list of the leaders of the group (contacts). Multiple leaders can be assigned to a group.',
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "groups_to_leaders"
