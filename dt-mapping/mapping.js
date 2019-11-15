@@ -1,3 +1,4 @@
+/*global amcharts:false, am4maps:false */
 "use strict";
 let translations = window.mappingModule.mapping_module.translations
 
@@ -124,10 +125,10 @@ function setCommonMapSettings( chart ) {
   homeButton.insertBefore(chart.zoomControl.plusButton);
 
 
- /* Click navigation */
+  /* Click navigation */
   template.events.on("hit", function(ev) {
     // if (MAPPINGDATA.data[ev.target.dataItem.dataContext.grid_id]) {
-      return DRILLDOWN.get_drill_down('map_chart_drilldown', ev.target.dataItem.dataContext.grid_id)
+    return DRILLDOWN.get_drill_down('map_chart_drilldown', ev.target.dataItem.dataContext.grid_id)
     // }
   }, this);
 
@@ -208,156 +209,156 @@ function setUpData( features, map_data ){
 
 
 function location_grid_map( div, grid_id = 'world' ) {
-    am4core.useTheme(am4themes_animated);
+  am4core.useTheme(am4themes_animated);
 
-    let chart = null
-    if ( openChart ){
-      openChart.dispose()
-    }
-    chart = am4core.create( div, am4maps.MapChart);
-    setCommonMapSettings( chart );
-    chart.projection = new am4maps.projections.Miller(); // Set projection
-    openChart = chart
-    let title = jQuery('#section_title')
-    let rest = MAPPINGDATA.settings.endpoints.get_map_by_grid_id_endpoint
-
-
-    title.empty()
+  let chart = null
+  if ( openChart ){
+    openChart.dispose()
+  }
+  chart = am4core.create( div, am4maps.MapChart);
+  setCommonMapSettings( chart );
+  chart.projection = new am4maps.projections.Miller(); // Set projection
+  openChart = chart
+  let title = jQuery('#section_title')
+  let rest = MAPPINGDATA.settings.endpoints.get_map_by_grid_id_endpoint
 
 
-    if ( MAPPINGDATA.data[grid_id] ) {
-        build_map( MAPPINGDATA.data[grid_id] )
-    } else {
-      jQuery.ajax({
-        type: rest.method,
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify( { 'grid_id': grid_id, 'cached': MAPPINGDATA.settings.cached, 'cached_length': MAPPINGDATA.settings.cached_length } ),
-        dataType: "json",
-        url: MAPPINGDATA.settings.root + rest.namespace + rest.route,
-        beforeSend: function(xhr) {
-          xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
-        },
+  title.empty()
+
+
+  if ( MAPPINGDATA.data[grid_id] ) {
+    build_map( MAPPINGDATA.data[grid_id] )
+  } else {
+    jQuery.ajax({
+      type: rest.method,
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify( { 'grid_id': grid_id, 'cached': MAPPINGDATA.settings.cached, 'cached_length': MAPPINGDATA.settings.cached_length } ),
+      dataType: "json",
+      url: MAPPINGDATA.settings.root + rest.namespace + rest.route,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
+      },
+    })
+    .done( function( response ) {
+      MAPPINGDATA.data[grid_id] = response
+      build_map(response)
+
+    }) // end success statement
+    .fail(function (err) {
+      console.log("error")
+      console.log(err)
+    })
+  }
+
+  function build_map( response ) {
+    title.html(response.self.name)
+
+    jQuery.getJSON( MAPPINGDATA.settings.mapping_source_url + 'collection/' + grid_id+'.geojson', function( data ) { // get geojson data
+
+      // load geojson with additional parameters
+      let mapData = data
+      mapData.features = setUpData( mapData.features, response )
+      chart.geodata = mapData
+
+      //minimap
+      let coordinates = []
+      coordinates.push({
+        "latitude": response.self.latitude || 0,
+        "longitude": response.self.longitude || 0,
+        "title": response.self.name || 'World'
       })
-        .done( function( response ) {
-          MAPPINGDATA.data[grid_id] = response
-          build_map(response)
+      mini_map( 'minimap', coordinates )
 
-        }) // end success statement
-        .fail(function (err) {
-          console.log("error")
-          console.log(err)
+      //add totals section under the minimap
+      let totals = MAPPINGDATA.data.custom_column_data[grid_id] || []
+      if ( grid_id === "world" ){
+        totals = new Array(MAPPINGDATA.data.custom_column_labels.length).fill(0)
+        Object.keys(MAPPINGDATA.data.world.children).forEach(id=>{
+          if ( MAPPINGDATA.data.custom_column_data[id] ){
+            totals = totals.map((num, idx)=>{
+              return num + MAPPINGDATA.data.custom_column_data[id][idx]
+            })
+          }
         })
-    }
+      }
+      let self_info = jQuery('#self_info')
+      self_info.empty()
+      let self_html = `<ul class="ul-no-bullets">`
+      jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, label) {
+        let value = totals[labelIndex] || 0
+        self_html += `<li><strong>${label.label}</strong>: ${value}</li>`
 
-    function build_map( response ) {
-      title.html(response.self.name)
+      })
+      self_info.html(self_html + `</ul`)
 
-      jQuery.getJSON( MAPPINGDATA.settings.mapping_source_url + 'collection/' + grid_id+'.geojson', function( data ) { // get geojson data
+    }) // end get geojson
 
-        // load geojson with additional parameters
-        let mapData = data
-        mapData.features = setUpData( mapData.features, response )
-        chart.geodata = mapData
 
-        //minimap
-        let coordinates = []
-        coordinates.push({
-          "latitude": response.self.latitude || 0,
-          "longitude": response.self.longitude || 0,
-          "title": response.self.name || 'World'
-        })
-        mini_map( 'minimap', coordinates )
+    .fail(function() {
+      // if failed to get multi polygon map, then get boundary map and fill with placemarks
 
-        //add totals section under the minimap
-        let totals = MAPPINGDATA.data.custom_column_data[grid_id] || []
-        if ( grid_id === "world" ){
-          totals = new Array(MAPPINGDATA.data.custom_column_labels.length).fill(0)
-          Object.keys(MAPPINGDATA.data.world.children).forEach(id=>{
-            if ( MAPPINGDATA.data.custom_column_data[id] ){
-              totals = totals.map((num, idx)=>{
-                return num + MAPPINGDATA.data.custom_column_data[id][idx]
-              })
-            }
+      jQuery.getJSON( MAPPINGDATA.settings.mapping_source_url + 'low/' + grid_id+'.geojson' ).then(function( data ) {
+        // Create map polygon series
+        chart.geodata = data
+
+        chart.projection = new am4maps.projections.Miller();
+        let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+        polygonSeries.useGeodata = true;
+
+
+        let imageSeries = chart.series.push(new am4maps.MapImageSeries());
+
+        let locations = []
+        jQuery.each( MAPPINGDATA.data[grid_id].children, function(i, v) {
+          /* custom columns */
+          let focus = MAPPINGDATA.settings.heatmap_focus
+          jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, label) {
+            v[label.key] = _.get( MAPPINGDATA.data.custom_column_data, `[${v.grid_id}][${labelIndex}]`, 0 )
           })
-        }
-        let self_info = jQuery('#self_info')
-        self_info.empty()
-        let self_html = `<ul class="ul-no-bullets">`
-        jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, label) {
-          let value = totals[labelIndex] || 0
-          self_html += `<li><strong>${label.label}</strong>: ${value}</li>`
 
-        })
-        self_info.html(self_html + `</ul`)
-
-      }) // end get geojson
+          locations.push( v )
+        } )
+        imageSeries.data = locations;
 
 
-        .fail(function() {
-          // if failed to get multi polygon map, then get boundary map and fill with placemarks
+        let imageSeriesTemplate = imageSeries.mapImages.template;
+        let circle = imageSeriesTemplate.createChild(am4core.Circle);
+        circle.radius = 6;
+        circle.fill = am4core.color("#3c5bdc");
+        circle.stroke = am4core.color("#3c5bdc");
+        circle.strokeWidth = 2;
+        circle.nonScaling = true;
 
-          jQuery.getJSON( MAPPINGDATA.settings.mapping_source_url + 'low/' + grid_id+'.geojson' ).then(function( data ) {
-            // Create map polygon series
-            chart.geodata = data
+        // Click navigation
+        circle.events.on("hit", function (ev) {
 
-            chart.projection = new am4maps.projections.Miller();
-            let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
-            polygonSeries.useGeodata = true;
+          return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.grid_id, MAPPINGDATA.settings.cached )
 
+        }, this);
 
-            let imageSeries = chart.series.push(new am4maps.MapImageSeries());
-
-            let locations = []
-            jQuery.each( MAPPINGDATA.data[grid_id].children, function(i, v) {
-              /* custom columns */
-              let focus = MAPPINGDATA.settings.heatmap_focus
-              jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, label) {
-                v[label.key] = _.get( MAPPINGDATA.data.custom_column_data, `[${v.grid_id}][${labelIndex}]`, 0 )
-              })
-
-              locations.push( v )
-            } )
-            imageSeries.data = locations;
-
-
-            let imageSeriesTemplate = imageSeries.mapImages.template;
-            let circle = imageSeriesTemplate.createChild(am4core.Circle);
-            circle.radius = 6;
-            circle.fill = am4core.color("#3c5bdc");
-            circle.stroke = am4core.color("#3c5bdc");
-            circle.strokeWidth = 2;
-            circle.nonScaling = true;
-
-            // Click navigation
-            circle.events.on("hit", function (ev) {
-
-              return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.grid_id, MAPPINGDATA.settings.cached )
-
-            }, this);
-
-            let circleTipContent = `<strong>{name}</strong><br>
+        let circleTipContent = `<strong>{name}</strong><br>
                             ---------<br>
                             ${_.escape(translations.population)}: {population}<br>
                             `;
-            jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, vc) {
-              circleTipContent += `${_.escape(vc.label)}: {${_.escape( vc.key )}}<br>`
-            })
-            circle.tooltipHTML = circleTipContent
+        jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, vc) {
+          circleTipContent += `${_.escape(vc.label)}: {${_.escape( vc.key )}}<br>`
+        })
+        circle.tooltipHTML = circleTipContent
 
-            imageSeries.heatRules.push({
-              property: "fill",
-              target: circle,
-              min: chart.colors.getIndex(1).brighten(1.5),
-              max: chart.colors.getIndex(1).brighten(-0.3)
-            });
+        imageSeries.heatRules.push({
+          property: "fill",
+          target: circle,
+          min: chart.colors.getIndex(1).brighten(1.5),
+          max: chart.colors.getIndex(1).brighten(-0.3)
+        });
 
-            imageSeriesTemplate.propertyFields.latitude = "latitude";
-            imageSeriesTemplate.propertyFields.longitude = "longitude";
-            imageSeriesTemplate.nonScaling = true;
+        imageSeriesTemplate.propertyFields.latitude = "latitude";
+        imageSeriesTemplate.propertyFields.longitude = "longitude";
+        imageSeriesTemplate.nonScaling = true;
 
-          })
       })
-    }
+    })
+  }
 }
 
 function data_type_list( div ) {
@@ -368,7 +369,7 @@ function data_type_list( div ) {
   jQuery.each( MAPPINGDATA.data.custom_column_labels, function(i,v) {
     let hollow = 'hollow'
     if ( i === focus ) {
-        hollow = ''
+      hollow = ''
     }
     list.append(`
       <a onclick="heatmap_focus_change( ${_.escape( i )}, '${MAPPINGDATA.settings.current_map}' )" 
@@ -395,6 +396,10 @@ function heatmap_focus_change( focus_id, current_map ) {
 
 let minimapChart = null
 function mini_map( div, marker_data ) {
+  //if the minimap is not set
+  if ( !jQuery('#' + div ).length ){
+    return
+  }
 
   if ( window.am4geodata_worldLow === undefined ) {
     let mapUrl = MAPPINGDATA.settings.mapping_source_url + 'collection/world.geojson'
@@ -461,15 +466,15 @@ function get_data( force_refresh = false ) {
       xhr.setRequestHeader('X-WP-Nonce', window.mappingModule.nonce );
     },
   })
-    .then( function( response ) {
-      spinner.removeClass('active')
-      return response
-    })
-    .fail(function (err) {
-      spinner.removeClass('active')
-      console.log("error")
-      console.log(err)
-    })
+  .then( function( response ) {
+    spinner.removeClass('active')
+    return response
+  })
+  .fail(function (err) {
+    spinner.removeClass('active')
+    console.log("error")
+    console.log(err)
+  })
 }
 
 
