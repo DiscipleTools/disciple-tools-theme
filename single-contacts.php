@@ -210,7 +210,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     ); ?>
 
 <!--    <div id="errors"></div>-->
-
+<!-- <div><a class="button small" id="backlink" href="../" style="margin:.9rem 0 0 1.3em"><?php esc_html_e( 'Back to Contacts List', 'disciple_tools' )?></a></div> -->
     <div id="content">
         <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
         <span id="post-id" style="display: none"><?php echo get_the_ID()?></span>

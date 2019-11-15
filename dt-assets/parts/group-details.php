@@ -16,6 +16,10 @@
     ?>
 
 <section class="bordered-box">
+       <div class="section-header">
+            <?php esc_html_e( "Group Details", 'disciple_tools' ) ?>
+            <!-- <a class="button small" id="backlink" href="../" style=""><?php esc_html_e( 'Back to Groups List', 'disciple_tools' )?></a> -->
+        </div>
     <div style="display: flex;">
         <div class="item-details-header" style="flex-grow:1">
             <i class="fi-torsos-all large" style="padding-bottom: 1.2rem"></i>
@@ -200,7 +204,8 @@
     <div class="display-fields">
         <div class="grid-x">
             <div class="cell section-subheader">
-                <?php esc_html_e( 'Name', 'disciple_tools' ) ?>
+              <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/name.svg' ?>">
+              <?php esc_html_e( 'Name', 'disciple_tools' ) ?>
             </div>
             <input type="text" id="title" class="edit-text-input" value="<?php the_title_attribute(); ?>">
         </div>
@@ -242,21 +247,24 @@
         <!-- Dates -->
         <div class="grix-x">
             <div class="section-subheader cell">
-                <?php esc_html_e( 'Start Date', 'disciple_tools' )?>
+              <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-start.svg' ?>">
+              <?php esc_html_e( 'Start Date', 'disciple_tools' )?>
             </div>
             <div class="start_date"><input type="text" class="date-picker" id="start_date"></div>
         </div>
 
         <div class="grix-x">
             <div class="section-subheader cell">
-                <?php esc_html_e( 'Church Start Date', 'disciple_tools' )?>
+              <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-success.svg' ?>">
+              <?php esc_html_e( 'Church Start Date', 'disciple_tools' )?>
             </div>
             <div class="church_start_date"><input type="text" class="date-picker" id="church_start_date"></div>
         </div>
 
         <div class="grix-x">
             <div class="section-subheader cell">
-                <?php esc_html_e( 'End Date', 'disciple_tools' )?>
+              <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-end.svg' ?>">
+              <?php esc_html_e( 'End Date', 'disciple_tools' )?>
             </div>
             <div class="end_date"><input type="text" class="date-picker" id="end_date"></div>
         </div>
