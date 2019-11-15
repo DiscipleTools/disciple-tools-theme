@@ -5,6 +5,8 @@ node_modules/
 .idea
 .DS_Store
 dt-people-groups/json/*
+dt-assets/build/css/*
+dt-assets/build/js/*
 composer.phar
 .vscode/*
 CodeSniffer.conf
@@ -13,5 +15,3 @@ phpcs.phar
 
 */development-only/*
 
-dt-assets/build/css/*
-dt-assets/build/js/*
