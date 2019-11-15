@@ -7,6 +7,9 @@ node_modules/
 dt-people-groups/json/*
 dt-assets/build/css/*
 dt-assets/build/js/*
+dt-assets/images/
+dt-assets/images/favicon/*
+dt-core/admin/*
 composer.phar
 .vscode/*
 CodeSniffer.conf
