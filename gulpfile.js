@@ -132,10 +132,12 @@ gulp.task('default', gulp.parallel('styles', 'scripts'));
 
 /** 
  * MANAGE WATCH AND RELOADING OPTIONS BELOW
+ * NOTE! - Please set your local URL host here if you plan on using Browser-sync
+ * example: 
+ * const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || 'http://local.discipletools/'; 
  */
 
-// Set your local URL if using Browser-Sync
-const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || 'http://local.discipletools03/';
+ const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || ' ';
 
 // Initialize BrowserSync
 var server = browserSync.create();
