@@ -295,7 +295,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields["milestones"] = [
             "name"    => __( 'Faith Milestones', 'disciple_tools' ),
-            "description" => __('Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order.', 'disciple_tools' ),
+            "description" => __( 'Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order.', 'disciple_tools' ),
             "type"    => "multi_select",
             "default" => [
                 "milestone_has_bible"     => [
@@ -304,7 +304,8 @@ class Disciple_Tools_Contact_Post_Type
                 ],
                 "milestone_reading_bible" => [
                   "label" => __( 'Reading Bible', 'disciple_tools' ),
-                  "description" => _x( "This contact is reading the bible.", "Reading Bible", 'disciple_tools') ],
+                  "description" => _x( "This contact is reading the bible.", "Reading Bible", 'disciple_tools' )
+                ],
                 "milestone_belief"        => [
                   "label" => __( 'States Belief', 'disciple_tools' ),
                   "description" => _x( "This contact states belief. i.e. they have repented and believed.", "States Belief", 'disciple_tools' ),
@@ -426,20 +427,20 @@ class Disciple_Tools_Contact_Post_Type
             'description' => __( 'The main reason the contact is not ready to be assigned to a user.', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
-                'none'         => [ "label" => '',
-              ],
-                'insufficient' => [ "label" => __( 'Insufficient Contact Information', "disciple_tools" )
-              ],
-                'location'     => [ "label" => __( 'Unknown Location', "disciple_tools" )
-              ],
-                'media'        => [ "label" => __( 'Only wants media', "disciple_tools" )
-              ],
-                'outside_area' => [ "label" => __( 'Outside Area', "disciple_tools" )
-              ],
-                'needs_review' => [ "label" => __( 'Needs Review', "disciple_tools" )
-              ],
-                'awaiting_confirmation' => [ "label" => __( 'Waiting for Confirmation', "disciple_tools" )
-              ],
+                      'none'         => [ "label" => '',
+                  ],
+                      'insufficient' => [ "label" => __( 'Insufficient Contact Information', "disciple_tools" )
+                  ],
+                      'location'     => [ "label" => __( 'Unknown Location', "disciple_tools" )
+                  ],
+                      'media'        => [ "label" => __( 'Only wants media', "disciple_tools" )
+                  ],
+                      'outside_area' => [ "label" => __( 'Outside Area', "disciple_tools" )
+                  ],
+                      'needs_review' => [ "label" => __( 'Needs Review', "disciple_tools" )
+                  ],
+                      'awaiting_confirmation' => [ "label" => __( 'Waiting for Confirmation', "disciple_tools" )
+                  ],
             ],
             'section'     => 'misc',
             'customizable' => 'all'
@@ -593,7 +594,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["duplicate_data"] = [
             "name" => __( 'Duplicates', 'disciple_tools' ),
-            'description' => __('Possible contact duplicates', 'disciple_tools' ),
+            'description' => __( 'Possible contact duplicates', 'disciple_tools' ),
             'type' => 'array',
             'default' => [],
             'section' => 'admin'
