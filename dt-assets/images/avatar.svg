@@ -1,0 +1,18 @@
+<svg width="40" height="40" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="Canvas" transform="translate(-653 1317)">
+<g id="Rectangle 4">
+<use xlink:href="#path0_fill" transform="translate(653 -1317)" fill="#BDBDBD"/>
+</g>
+<g id="Vector">
+<use xlink:href="#path1_fill" transform="translate(658.333 -1291.06)" fill="#444444"/>
+</g>
+<g id="Vector">
+<use xlink:href="#path2_fill" transform="translate(664.2 -1308.33)" fill="#444444"/>
+</g>
+</g>
+<defs>
+<path id="path0_fill" d="M 0 0L 40 0L 40 40L 0 40L 0 0Z"/>
+<path id="path1_fill" d="M 21.3019 -5.97636e-07C 19.4715 1.44231 17.1708 2.31083 14.6667 2.31083C 12.1626 2.31083 9.86187 1.44231 8.03147 -5.97636e-07C 3.2736 2.43029 0 7.37508 0 13.0817L 0 14.0608L 29.3333 14.0608L 29.3333 13.0817C 29.3333 7.37508 26.0597 2.43029 21.3019 -5.97636e-07Z"/>
+<path id="path2_fill" d="M 8.8 0C 3.94827 0 0 3.95388 0 8.8125C 0 13.6711 3.94827 17.625 8.8 17.625C 13.6517 17.625 17.6 13.6711 17.6 8.8125C 17.6 3.95388 13.6517 0 8.8 0Z"/>
+</defs>
+</svg>

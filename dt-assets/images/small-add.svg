@@ -1,0 +1,16 @@
+<svg width="14" height="14" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>small-add</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(1120 70)">
+<g id="small-add">
+<g id="Group">
+<g id="Vector">
+<use xlink:href="#path0_fill" transform="translate(-1120 -70)" fill="#4CAF50"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_fill" d="M 12.8333 5.83333L 8.16667 5.83333L 8.16667 1.16667C 8.16667 0.466667 7.7 0 7 0C 6.3 0 5.83333 0.466667 5.83333 1.16667L 5.83333 5.83333L 1.16667 5.83333C 0.466667 5.83333 0 6.3 0 7C 0 7.7 0.466667 8.16667 1.16667 8.16667L 5.83333 8.16667L 5.83333 12.8333C 5.83333 13.5333 6.3 14 7 14C 7.7 14 8.16667 13.5333 8.16667 12.8333L 8.16667 8.16667L 12.8333 8.16667C 13.5333 8.16667 14 7.7 14 7C 14 6.3 13.5333 5.83333 12.8333 5.83333Z"/>
+</defs>
+</svg>

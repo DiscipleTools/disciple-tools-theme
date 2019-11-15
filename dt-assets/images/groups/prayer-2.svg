@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="44" height="44" viewBox="0 0 44 44">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="44" height="44" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="prayer-2" clip-path="url(#clip-path)">
+    <g id="folded-hands" transform="translate(-2 -2)">
+      <path id="Path_810" data-name="Path 810" d="M23.92,3.608a2.624,2.624,0,0,0-4.839,0,.938.938,0,0,0-.067.229l-3.935,23.6L11.4,30.2a1,1,0,0,0-.107,1.507l7,7A1,1,0,0,0,19.6,38.8l4-3A1,1,0,0,0,24,35V4a1,1,0,0,0-.08-.392Z" fill="#ffd764"/>
+      <path id="Path_811" data-name="Path 811" d="M19.707,38.293l-8-8a1,1,0,0,0-1.154-.188l-8,4A1,1,0,0,0,2,35V45a1,1,0,0,0,1,1h9a.994.994,0,0,0,.65-.241l7-6a1,1,0,0,0,.057-1.466Z" fill="#43a6dd"/>
+      <path id="Path_812" data-name="Path 812" d="M36.6,30.2l-3.679-2.76L28.986,3.84a.938.938,0,0,0-.067-.229,2.624,2.624,0,0,0-4.839,0A1,1,0,0,0,24,4V35a1,1,0,0,0,.4.8l4,3a1,1,0,0,0,1.307-.093l7-7A1,1,0,0,0,36.6,30.2Z" fill="#ffd764"/>
+      <path id="Path_813" data-name="Path 813" d="M45.447,34.1l-8-4a1,1,0,0,0-1.154.188l-8,8a1,1,0,0,0,.057,1.466l7,6A.994.994,0,0,0,36,46h9a1,1,0,0,0,1-1V35A1,1,0,0,0,45.447,34.1Z" fill="#43a6dd"/>
+      <path id="Path_814" data-name="Path 814" d="M24,35a1,1,0,0,1-1-1V5a1,1,0,0,1,2,0V34A1,1,0,0,1,24,35Z" fill="#e2ac4b"/>
+    </g>
+  </g>
+</svg>

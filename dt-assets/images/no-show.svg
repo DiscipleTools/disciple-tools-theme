@@ -1,0 +1,20 @@
+<svg width="20" height="20" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>no-show</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(909 164)">
+<g id="no-show">
+<g id="Group">
+<g id="Subtract">
+<use xlink:href="#path0_fill" transform="translate(-909 -157.333)" fill="#3F729B"/>
+</g>
+<g id="Vector">
+<use xlink:href="#path1_fill" transform="translate(-909 -164)" fill="#3F729B"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_fill" fill-rule="evenodd" d="M 0 12.5L 0 0L 20 0L 20 12.5C 20 12.9608 19.6274 13.3333 19.1667 13.3333L 0.833252 13.3333C 0.372559 13.3333 0 12.9608 0 12.5ZM 8 3.33334L 7 4.33334L 9.08325 6.83334L 7 9.33334L 8 10.3333L 10 7.93335L 12 10.3333L 13 9.33334L 10.9167 6.83334L 13 4.33334L 12 3.33334L 10 5.73334L 8 3.33334Z"/>
+<path id="path1_fill" d="M 19.1667 1.66667L 15.8333 1.66667L 15.8333 0L 14.175 0L 14.175 1.66667L 10.8333 1.66667L 10.8333 0L 9.175 0L 9.175 1.66667L 5.83333 1.66667L 5.83333 0L 4.175 0L 4.175 1.66667L 0.833333 1.66667C 0.3725 1.66667 0 2.03917 0 2.5L 0 5L 20 5L 20 2.5C 20 2.03917 19.6275 1.66667 19.1667 1.66667Z"/>
+</defs>
+</svg>

@@ -1,0 +1,24 @@
+<svg width="14" height="14" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>a-time</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(-1546 -1363)">
+<g id="a-time">
+<g id="Group">
+<g id="Vector">
+<use xlink:href="#path0_fill" transform="translate(1548.33 1363)" fill="#333333"/>
+</g>
+<g id="Vector">
+<use xlink:href="#path1_fill" transform="translate(1553 1370)" fill="#333333"/>
+</g>
+<g id="Vector">
+<use xlink:href="#path2_fill" transform="translate(1546 1371.17)" fill="#333333"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_fill" d="M 2.91667 7C 1.30608 7 0 5.11058 0 3.5L 0 2.91667C 0 1.30608 1.30608 0 2.91667 0C 4.52725 0 5.83333 1.30608 5.83333 2.91667L 5.83333 3.5C 5.83333 5.11058 4.52725 7 2.91667 7Z"/>
+<path id="path1_fill" d="M 3.5 7C 5.43317 7 7 5.43317 7 3.5C 7 1.56683 5.43317 0 3.5 0C 1.56683 0 0 1.56683 0 3.5C 0 5.43317 1.56683 7 3.5 7ZM 2.91667 1.16667L 4.08333 1.16667L 4.08333 2.91667L 5.83333 2.91667L 5.83333 4.08333L 2.91667 4.08333L 2.91667 1.16667Z"/>
+<path id="path2_fill" d="M 5.83333 2.33333C 5.83333 1.50792 6.04975 0.734417 6.42542 0.0618333C 6.048 0.02275 5.65483 0 5.25 0C 3.60267 0 2.14142 0.372167 1.18183 0.695917C 0.4725 0.935667 0 1.60358 0 2.352L 0 4.66667L 6.46275 4.66667C 6.06492 3.9795 5.83333 3.18442 5.83333 2.33333Z"/>
+</defs>
+</svg>

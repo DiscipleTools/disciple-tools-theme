@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="46" height="42" viewBox="0 0 46 42">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="46" height="42" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="word-2" clip-path="url(#clip-path)">
+    <path id="Path_720" data-name="Path 720" d="M45,45H3a2,2,0,0,1-2-2V11A2,2,0,0,1,3,9H45a2,2,0,0,1,2,2V43A2,2,0,0,1,45,45Z" transform="translate(-1 -3)" fill="#444"/>
+    <path id="Path_721" data-name="Path 721" d="M40,40H8a1,1,0,0,1-1-1V15a1,1,0,0,1,1-1H40a1,1,0,0,1,1,1V39A1,1,0,0,1,40,40Z" transform="translate(-1 -3)" fill="#848484"/>
+    <path id="Path_722" data-name="Path 722" d="M42.585,3.189a1,1,0,0,0-.9-.138L24,8.946V39a1.01,1.01,0,0,0,.316-.051l18-6A1,1,0,0,0,43,32V4A1,1,0,0,0,42.585,3.189Z" transform="translate(-1 -3)" fill="#c6c6c6"/>
+    <path id="Path_723" data-name="Path 723" d="M24,8.946,6.316,3.051A1,1,0,0,0,5,4V32a1,1,0,0,0,.684.949l18,6A1.01,1.01,0,0,0,24,39Z" transform="translate(-1 -3)" fill="#e6e6e6"/>
+  </g>
+</svg>
