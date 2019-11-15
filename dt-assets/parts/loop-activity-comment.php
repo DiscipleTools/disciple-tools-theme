@@ -3,6 +3,9 @@
     ?>
 
     <div class="grid-y">
+      <h3 class="section-header"><?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?><button class="help-button" data-section="comments-activity-help-text">
+          <img class="help-icon" src="<?php echo esc_html(get_template_directory_uri() . '/dt-assets/images/help.svg') ?>"/>
+      </button></h3>
         <div class="cell grid-x grid-margin-x" id="add-comment-section">
             <div class="auto cell">
             <textarea class="mention" dir="auto"  id="comment-input"
@@ -60,7 +63,6 @@
             </div>
         </div>
         <div class="cell">
-            <h3 class="section-header" style="display: inline-block"><?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?></h3>
             <div id="comments-activity-spinner" style="display: inline-block" class="loading-spinner"></div>
             <div>
             <span style="display: inline-block; margin-right:5px; vertical-align:top; font-weight: bold"><?php esc_html_e( "Showing:", 'disciple_tools' ) ?></span>

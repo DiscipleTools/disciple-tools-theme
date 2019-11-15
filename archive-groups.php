@@ -85,6 +85,10 @@ declare(strict_types=1);
 
             <div class="reveal js-filters-modal" id="filters-modal">
                 <div class="js-filters-modal-content">
+                  <label class="section-header"><?php esc_html_e( 'Filters', 'disciple_tools' )?>
+                  <button class="help-button float-right" data-section="filters-help-text">
+                      <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                  </button></label>
                     <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( "Group Filters", "disciple_tools" ); ?></h5>
                     <!-- @todo re-enable when we have more group filters-->
 <!--                    <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion">-->

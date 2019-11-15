@@ -2,6 +2,10 @@
 declare(strict_types=1);
 ?>
 <div class="bordered-box list-box">
+    <label class="section-header"><?php esc_html_e( 'Groups List', 'disciple_tools' )?>
+    <button class="help-button float-right" data-section="groups-list-help-text">
+        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+    </button></label>
     <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( "Groups", "disciple_tools" ); ?></h5>
     <div style="display: inline-block" class="loading-spinner active"></div>
     <span style="display: inline-block" class="filter-result-text"></span>
@@ -33,6 +37,9 @@ declare(strict_types=1);
             <input class="switch-input" id="show_closed" type="checkbox" name="testGroup">
             <label class="switch-paddle" for="show_closed"></label>
         </div>
+        <button class="help-button float-right" data-section="groups-switch-help-text">
+            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+        </button>
     </div>
     <table class="table-remove-top-border js-list stack striped">
         <thead>
@@ -53,4 +60,3 @@ declare(strict_types=1);
         <button id="load-more" class="button"><?php esc_html_e( "Load more groups", 'disciple_tools' ) ?></button>
     </div>
 </div>
-

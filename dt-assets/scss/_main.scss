@@ -671,6 +671,10 @@ html[dir='rtl'] {
     margin-right: 3px;
     margin-left: 3px;
 }
+.help-section h3 { font-size: 1.6rem;}
+.help-section h4 { font-size: 1.2rem;}
+div.help-more {float: right;}
+div.help-more h5 {font-size: 1rem;}
 
 .dropdown.menu>li.is-dropdown-submenu-parent>a.menu-white-dropdown-arrow:after {
     border-color: #FFF transparent transparent
