@@ -427,20 +427,27 @@ class Disciple_Tools_Contact_Post_Type
             'description' => __( 'The main reason the contact is not ready to be assigned to a user.', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
-                      'none'         => [ "label" => '',
-                  ],
-                      'insufficient' => [ "label" => __( 'Insufficient Contact Information', "disciple_tools" )
-                  ],
-                      'location'     => [ "label" => __( 'Unknown Location', "disciple_tools" )
-                  ],
-                      'media'        => [ "label" => __( 'Only wants media', "disciple_tools" )
-                  ],
-                      'outside_area' => [ "label" => __( 'Outside Area', "disciple_tools" )
-                  ],
-                      'needs_review' => [ "label" => __( 'Needs Review', "disciple_tools" )
-                  ],
-                      'awaiting_confirmation' => [ "label" => __( 'Waiting for Confirmation', "disciple_tools" )
-                  ],
+                'none'         => [
+                    "label" => '',
+                ],
+                'insufficient' => [
+                    "label" => __( 'Insufficient Contact Information', "disciple_tools" )
+                ],
+                'location'     => [
+                    "label" => __( 'Unknown Location', "disciple_tools" )
+                ],
+                'media'        => [
+                    "label" => __( 'Only wants media', "disciple_tools" )
+                ],
+                'outside_area' => [
+                    "label" => __( 'Outside Area', "disciple_tools" )
+                ],
+                'needs_review' => [
+                    "label" => __( 'Needs Review', "disciple_tools" )
+                ],
+                'awaiting_confirmation' => [
+                    "label" => __( 'Waiting for Confirmation', "disciple_tools" )
+                ],
             ],
             'section'     => 'misc',
             'customizable' => 'all'
