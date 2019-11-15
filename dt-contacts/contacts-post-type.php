@@ -239,25 +239,32 @@ class Disciple_Tools_Contact_Post_Type
             'default'     => [
                 'none'        => [
                   "label" => __( 'Contact Attempt Needed', 'disciple_tools' ),
-                  "description" => _x("Contact with this contact needs to be attempted.", "Contact Attempt Needed", 'disciple_tools'), ],
+                  "description" => _x( "Contact with this contact needs to be attempted.", "Contact Attempt Needed", 'disciple_tools' ),
+                ],
                 'attempted'   => [
                   "label" => __( 'Contact Attempted', 'disciple_tools' ),
-                  "description" => _x("Contact with this contact was attempted.", "Contact Attempted", 'disciple_tools'), ],
+                  "description" => _x( "Contact with this contact was attempted.", "Contact Attempted", 'disciple_tools' ),
+                ],
                 'established' => [
                   "label" => __( 'Contact Established', 'disciple_tools' ),
-                  "description" => _x("Contact with this contact was established.", "Contact Established", 'disciple_tools'), ],
+                  "description" => _x( "Contact with this contact was established.", "Contact Established", 'disciple_tools' ),
+                ],
                 'scheduled'   => [
                   "label" => __( 'First Meeting Scheduled', 'disciple_tools' ),
-                  "description" => _x("The first meeting with this contact has been scheduled.", "First Meeting Scheduled", 'disciple_tools'), ],
+                  "description" => _x( "The first meeting with this contact has been scheduled.", "First Meeting Scheduled", 'disciple_tools' ),
+                ],
                 'met'         => [
                   "label" => __( 'First Meeting Complete', 'disciple_tools' ),
-                  "description" => _x("The first meeting with this contact has been completed.", "First Meeting Complete", 'disciple_tools'), ],
+                  "description" => _x( "The first meeting with this contact has been completed.", "First Meeting Complete", 'disciple_tools' ),
+                ],
                 'ongoing'     => [
                   "label" => __( 'Ongoing Meetings', 'disciple_tools' ),
-                  "description" => _x("This contact is continuing in meetings.", "Ongoing Meetings", 'disciple_tools'), ],
+                  "description" => _x( "This contact is continuing in meetings.", "Ongoing Meetings", 'disciple_tools' ),
+                ],
                 'coaching'    => [
                   "label" => __( 'Being Coached', 'disciple_tools' ),
-                  "description" => _x("This contact is being coached.", "Being Coached", 'disciple_tools'), ],
+                  "description" => _x( "This contact is being coached.", "Being Coached", 'disciple_tools' ),
+                ],
             ],
             'section'     => 'status',
             'customizable' => 'add_only'
@@ -288,36 +295,44 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields["milestones"] = [
             "name"    => __( 'Faith Milestones', 'disciple_tools' ),
-            "description" => __('Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order.', 'disciple_tools'),
+            "description" => __('Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order.', 'disciple_tools' ),
             "type"    => "multi_select",
             "default" => [
                 "milestone_has_bible"     => [
                   "label" => __( 'Has Bible', 'disciple_tools' ),
-                  "description" => _x("This contact has a bible.", "Has Bible", 'disciple_tools'), ],
+                  "description" => _x( "This contact has a bible.", "Has Bible", 'disciple_tools' ),
+                ],
                 "milestone_reading_bible" => [
                   "label" => __( 'Reading Bible', 'disciple_tools' ),
-                  "description" => _x("This contact is reading the bible.", "Reading Bible", 'disciple_tools') ],
+                  "description" => _x( "This contact is reading the bible.", "Reading Bible", 'disciple_tools') ],
                 "milestone_belief"        => [
                   "label" => __( 'States Belief', 'disciple_tools' ),
-                  "description" => _x("This contact states belief. i.e. they have repented and believed.", "States Belief", 'disciple_tools'), ],
+                  "description" => _x( "This contact states belief. i.e. they have repented and believed.", "States Belief", 'disciple_tools' ),
+                ],
                 "milestone_can_share"     => [
                   "label" => __( 'Can Share Gospel/Testimony', 'disciple_tools' ),
-                  "description" => _x("This contact has been trained to share the Gospel and their testimony.", "Can Share Gospel/Testimony", 'disciple_tools'), ],
+                  "description" => _x( "This contact has been trained to share the Gospel and their testimony.", "Can Share Gospel/Testimony", 'disciple_tools' ),
+                ],
                 "milestone_sharing"       => [
                   "label" => __( 'Sharing Gospel/Testimony', 'disciple_tools' ),
-                  "description" => _x("This contact is sharing the Gospel and their testimony.", "Sharing Gospel/Testimony", 'disciple_tools'), ],
+                  "description" => _x( "This contact is sharing the Gospel and their testimony.", "Sharing Gospel/Testimony", 'disciple_tools' ),
+                ],
                 "milestone_baptized"      => [
                   "label" => __( 'Baptized', 'disciple_tools' ),
-                  "description" => _x("This contact has been baptized.", "Baptized", 'disciple_tools'), ],
+                  "description" => _x( "This contact has been baptized.", "Baptized", 'disciple_tools' ),
+                ],
                 "milestone_baptizing"     => [
                   "label" => __( 'Baptizing', 'disciple_tools' ),
-                  "description" => _x("This contact is baptizing others.", "Baptizing", 'disciple_tools'), ],
+                  "description" => _x( "This contact is baptizing others.", "Baptizing", 'disciple_tools' ),
+                ],
                 "milestone_in_group"      => [
                   "label" => __( 'In Church/Group', 'disciple_tools' ),
-                  "description" => _x("This contact is in a church or group.", "In Church/Group", 'disciple_tools'), ],
+                  "description" => _x( "This contact is in a church or group.", "In Church/Group", 'disciple_tools' ),
+                ],
                 "milestone_planting"      => [
                   "label" => __( 'Starting Churches', 'disciple_tools' ),
-                  "description" => _x("This contact is planting Churches.", "Starting Churches", 'disciple_tools'), ],
+                  "description" => _x( "This contact is planting Churches.", "Starting Churches", 'disciple_tools' ),
+                ],
             ],
             "customizable" => "add_only"
         ];
@@ -411,13 +426,20 @@ class Disciple_Tools_Contact_Post_Type
             'description' => __( 'The main reason the contact is not ready to be assigned to a user.', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
-                'none'         => [ "label" => '', ],
-                'insufficient' => [ "label" => __( 'Insufficient Contact Information', "disciple_tools" ) ],
-                'location'     => [ "label" => __( 'Unknown Location', "disciple_tools" ) ],
-                'media'        => [ "label" => __( 'Only wants media', "disciple_tools" ) ],
-                'outside_area' => [ "label" => __( 'Outside Area', "disciple_tools" ) ],
-                'needs_review' => [ "label" => __( 'Needs Review', "disciple_tools" ) ],
-                'awaiting_confirmation' => [ "label" => __( 'Waiting for Confirmation', "disciple_tools" ) ],
+                'none'         => [ "label" => '',
+              ],
+                'insufficient' => [ "label" => __( 'Insufficient Contact Information', "disciple_tools" )
+              ],
+                'location'     => [ "label" => __( 'Unknown Location', "disciple_tools" )
+              ],
+                'media'        => [ "label" => __( 'Only wants media', "disciple_tools" )
+              ],
+                'outside_area' => [ "label" => __( 'Outside Area', "disciple_tools" )
+              ],
+                'needs_review' => [ "label" => __( 'Needs Review', "disciple_tools" )
+              ],
+                'awaiting_confirmation' => [ "label" => __( 'Waiting for Confirmation', "disciple_tools" )
+              ],
             ],
             'section'     => 'misc',
             'customizable' => 'all'

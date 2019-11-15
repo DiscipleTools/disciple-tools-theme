@@ -4,7 +4,7 @@
 
     <div class="grid-y">
       <h3 class="section-header"><?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?><button class="help-button" data-section="comments-activity-help-text">
-          <img class="help-icon" src="<?php echo esc_html(get_template_directory_uri() . '/dt-assets/images/help.svg') ?>"/>
+          <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
       </button></h3>
         <div class="cell grid-x grid-margin-x" id="add-comment-section">
             <div class="auto cell">
@@ -48,7 +48,7 @@
                         </ul>
                     </li>
                     <button class="help-button" data-section="quick-action-help-text">
-                        <img class="help-icon" src="<?php echo esc_html(get_template_directory_uri() . '/dt-assets/images/help.svg') ?>"/>
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
                 </ul>
                 <?php endif; ?>
