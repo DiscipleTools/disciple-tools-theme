@@ -99,7 +99,7 @@ gulp.task('scripts', function () {
     .pipe(plugin.uglify())
     .pipe(rename({ suffix: '.min' }))
     .pipe(plugin.sourcemaps.write('.')) // Creates sourcemap for minified JS
-    .pipe(gulp.dest(BUILD_DIRS.scripts))
+    .pipe(gulp.dest(BUILD_DIRS.scripts));
 });
 
 // Compile Sass, Autoprefix and minify
@@ -119,10 +119,7 @@ gulp.task('styles', function () {
     .pipe(postcss([cssnano()]))
     .pipe(plugin.sourcemaps.write('.'))
     .pipe(gulp.dest(BUILD_DIRS.styles))
-    .pipe(touch())
-    .pipe(browserSync.reload({
-      stream: true
-    }));
+    .pipe(touch());
 });
 
 // Run styles, scripts and foundation-js
@@ -143,6 +140,11 @@ var server = browserSync.create();
 function serve(done) {
   server.init({
     proxy: LOCAL_URL,
+    notify: false,
+    reloadDebounce: 2000,
+    //reloadDelay: 250,
+    //injectChanges: true,
+    //reloadOnRestart: false,
   });
   done();
 }
@@ -168,9 +170,9 @@ gulp.task('watchWithBrowserSync', function () {
   // Watch scripts files
   gulp.watch(SOURCE.scripts, gulp.series('scripts', reload));
   //Watch php files
-  gulp.watch(SOURCE.php, reload);
+  gulp.watch(SOURCE.php);
   //Watch other JavaScript files
-  gulp.watch(SOURCE.otherjs, reload);
+  gulp.watch(SOURCE.otherjs);
 });
 
 // Launch the development environemnt with Browser-Sync
