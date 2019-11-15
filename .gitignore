@@ -12,3 +12,6 @@ phpcbf.phar
 phpcs.phar
 
 */development-only/*
+
+dt-assets/build/css/*
+dt-assets/build/js/*
