@@ -170,9 +170,9 @@ gulp.task('watchWithBrowserSync', function () {
   // Watch scripts files
   gulp.watch(SOURCE.scripts, gulp.series('scripts', reload));
   //Watch php files
-  gulp.watch(SOURCE.php);
+  gulp.watch(SOURCE.php, gulp.series(reload));
   //Watch other JavaScript files
-  gulp.watch(SOURCE.otherjs);
+  gulp.watch(SOURCE.otherjs, gulp.series(reload));
 });
 
 // Launch the development environemnt with Browser-Sync
