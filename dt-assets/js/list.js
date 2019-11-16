@@ -114,6 +114,7 @@
     })
   }
 
+
   let savedFiltersList = $("#saved-filters")
   function setupFilters(filters){
     savedFiltersList.empty()
@@ -191,6 +192,7 @@
     $(`.is-active input[name=view][value="${_.escape( selectedFilter )}"].js-list-view`).prop('checked', true);
   }
 
+
   $(function() {
     $(window).resize(function() {
       if (Foundation.MediaQuery.is('small only') || Foundation.MediaQuery.is('medium only')) {
@@ -204,6 +206,8 @@
       }
     }).trigger("resize");
   });
+
+
 
   $("#list-filter-tabs .accordion-item").on("click", function (a, b) {
 
@@ -496,6 +500,8 @@
     getContactForCurrentView()
   }
 
+
+
   $('#filter-modal .tabs-title a').on("click", function () {
     let id = $(this).attr('href').replace('#', '')
     $(`.js-typeahead-${id}`).trigger('input')
@@ -544,6 +550,7 @@
     })
     return searchQuery
   }
+
 
   //add the new filter in the filters list
   function addCustomFilter(name, type, query, labels) {
@@ -595,26 +602,24 @@
     }).catch(err => { console.error(err) })
   })
 
+
   $("#search").on("click", function () {
     let searchText = _.escape( $("#search-query").val() )
     let query = {text:searchText, assigned_to:["all"]}
     let labels = [{ id:"search", name:searchText, field: "search"}]
     addCustomFilter(searchText, "search", query, labels)
   })
-
   $("#search-mobile").on("click", function () {
     let searchText = _.escape( $("#search-query-mobile").val() )
     let query = {text:searchText, assigned_to:["all"]}
     let labels = [{ id:"search", name:searchText, field: "search"}]
     addCustomFilter(searchText, "search", query, labels)
   })
-
   $('.search-input').on('keyup', function (e) {
     if ( e.keyCode === 13 ){
       $("#search").trigger("click")
     }
   })
-
   $('.search-input-mobile').on('keyup', function (e) {
     if ( e.keyCode === 13 ){
       $("#search-mobile").trigger("click")
@@ -635,7 +640,6 @@
   $("#open-search").on("click", function () {
     $(".hideable-search").toggle()
   })
-
   $("#load-more").on('click', function () {
     get_contacts( items.length )
   })
@@ -667,6 +671,7 @@
     let field = $(this).data('field')
     get_contacts(0, (dir === "asc" ? "" : '-') + field)
   })
+
 
   /**
    * Modal options
@@ -899,7 +904,6 @@
       });
     }
   }
-
   let sourcesTypeahead = $(".js-typeahead-sources")
   let loadMultiSelectTypeaheads = async function loadMultiSelectTypeaheads() {
     for (let input of $(".multi_select .typeahead__query input")) {
@@ -1053,7 +1057,6 @@
       $('#save-filter-edits').data("filter-id", filter.ID).show()
     })
   }
-
   $('#save-filter-edits').on('click', function () {
     let searchQuery = getSearchQuery()
     let filterId = $('#save-filter-edits').data("filter-id")
@@ -1104,7 +1107,6 @@
       _.pullAllBy(newFilterLabels, [{id:optionId}], "id")
     }
   })
-
   $('#filter-modal .dt_date_picker').datepicker({
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
@@ -1130,7 +1132,6 @@
     changeMonth: true,
     changeYear: true
   })
-
   $('#filter-modal .clear-date-picker').on('click', function () {
       let id = $(this).data('for')
       $(`#filter-modal #${id}`).datepicker('setDate', null)
@@ -1187,46 +1188,4 @@
     getContactForCurrentView()
   })
 
-
-$(document).ready(function () {
-
-  /**
-   * Managing the "Contact Filters" Accordion optons
-   * Helpful Resource Guides to look over
-   * https://foundation.zurb.com/sites/docs/javascript.html
-   * https://foundation.zurb.com/sites/docs/javascript.html#programmatic-use
-   * https://foundation.zurb.com/sites/docs/accordion-menu.html
-   * https://foundation.zurb.com/sites/docs/v/5.5.3/javascript.html
-   * https://www.sitepoint.com/foundation-6-menu-component/
-   */
-
-  function contactFilterAccordion() {
-
-    //Set speed and expansion options for the Contact Filter accordion
-    var $accordion = new Foundation.Accordion($('#list-filter-tabs'), {
-      slideSpeed: 100,
-      multiExpand: false,
-      allowAllClosed: true
-    });
-  
-    //(optional) set Contact Filter accordion panels to all be closed by default
-    $('#list-filter-tabs').find('.accordion-item.is-active .accordion-content').css({ 'display': "" }).closest('.is-active').removeClass("is-active");
-
-    //(optional) set a callback when a panel opens
-    $('#list-filter-tabs').on('down.zf.accordion menu', function () {});
-  
-    //(optional) set a callback when a panel closes
-    $('#list-filter-tabs').on('up.zf.accordion menu', function () {});
-  
-  }
-
-  //initialize Contact Filters accordion function
-  contactFilterAccordion();
-})
-
-
 })(window.jQuery, window.wpApiListSettings, window.Foundation);
-
-
-
-
