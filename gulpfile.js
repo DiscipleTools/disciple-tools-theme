@@ -139,10 +139,10 @@ gulp.task('default', gulp.parallel('styles', 'scripts'));
 
  const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || ' ';
 
-// Initialize BrowserSync
+// Initialize Browser-sync
 var server = browserSync.create();
 
-// Initializing proxy for BrowserSync
+// Initializing proxy for Browser-sync
 function serve(done) {
   server.init({
     proxy: LOCAL_URL,
@@ -155,7 +155,7 @@ function serve(done) {
   done();
 }
 
-// A helpder function to reload with BrowserSync
+// A helpder function to reload with Browser-sync
 function reload(done) {
   server.reload();
   done();
@@ -186,12 +186,12 @@ gulp.task('browsersync', gulp.series(gulp.parallel('styles', 'scripts'), serve, 
 
 /**
  * OPTIONAL - USE THE FOLLOWING TASK TO RUN BROWSER-SYNC WITH A PROXY ARGUMENT FROM THE COMMAND LINE. 
- * Take advantage of node's [process.argv] to reference arguments from the command line.  
- * The beautiy of this approach is that we don't have in to include any extra dependencies.
+ * We're taking advantage of node's [process.argv] to reference arguments from the command line.  
+ * The beauty of this approach is that we don't have in to include any extra dependencies.
  * https://stackoverflow.com/a/32937333/957186
  * https://www.browsersync.io/docs/gulp
  * https://stackoverflow.com/a/38241262/957186
- * for usage set your proxy value from your command line, like so:
+ * example:
  * gulp browsersync-p --option http://local.discipletools/
  *
  */
