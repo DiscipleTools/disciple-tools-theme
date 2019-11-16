@@ -1205,7 +1205,7 @@ $(document).ready(function () {
     //Set speed and expansion options for the Contact Filter accordion
     var $accordion = new Foundation.Accordion($('#list-filter-tabs'), {
       slideSpeed: 100,
-      multiExpand: true,
+      multiExpand: false,
       allowAllClosed: true
     });
   
