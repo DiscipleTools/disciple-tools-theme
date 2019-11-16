@@ -60,7 +60,8 @@ const SOURCE = {
     FOUNDATION + '/dist/js/plugins/foundation.toggler.js',
     // FOUNDATION + '/dist/js/plugins/foundation.tooltip.js',
 
-    // Place custom JS here, files will be concantonated, minified if ran with --production
+    // Please place all custom JS scripts within 'dt-assets/js/footer-scrips.js
+    
     'dt-assets/js/footer-scripts.js',
 
     'node_modules/masonry-layout/dist/masonry.pkgd.js'
@@ -69,7 +70,10 @@ const SOURCE = {
   // Scss files will be concantonated, minified if ran with --production
   styles: 'dt-assets/scss/**/*.scss',
 
-  otherjs: 'dt-assets/**/*.js',
+  otherjs: [
+    'dt-assets/**/*.js',
+    '!dt-assets/js/footer-scripts.js',
+  ],
 
   php: '**/*.php'
 };
@@ -128,10 +132,12 @@ gulp.task('default', gulp.parallel('styles', 'scripts'));
 
 /** 
  * MANAGE WATCH AND RELOADING OPTIONS BELOW
+ * NOTE! - Please set your local URL host here if you plan on using Browser-sync
+ * example: 
+ * const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || 'http://local.discipletools/'; 
  */
 
- // Set your local URL if using Browser-Sync
-const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || 'http://local.discipletools03/';
+ const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || ' ';
 
 // Initialize BrowserSync
 var server = browserSync.create();
@@ -178,8 +184,54 @@ gulp.task('watchWithBrowserSync', function () {
 // Launch the development environemnt with Browser-Sync
 gulp.task('browsersync', gulp.series(gulp.parallel('styles', 'scripts'), serve, 'watchWithBrowserSync'));
 
+/**
+ * OPTIONAL - USE THE FOLLOWING TASK TO RUN BROWSER-SYNC WITH A PROXY ARGUMENT FROM THE COMMAND LINE. 
+ * Take advantage of node's [process.argv] to reference arguments from the command line.  
+ * The beautiy of this approach is that we don't have in to include any extra dependencies.
+ * https://stackoverflow.com/a/32937333/957186
+ * https://www.browsersync.io/docs/gulp
+ * https://stackoverflow.com/a/38241262/957186
+ * for usage set your proxy value from your command line, like so:
+ * gulp browsersync-p --option http://local.discipletools/
+ *
+ */
 
+gulp.task('browsersync-p', function (done) {
+ 
+  //get the --option argument value
+  var option,
+    i = process.argv.indexOf("--option");
+  if (i > -1) {
+    option = process.argv[i + 1];
+  }
 
+  // Initializing Browser-sync
+  var serverp = browserSync.create();
 
+  // Initialize proxy for Browser-sync
+   serverp.init({
+    proxy: process.env.BROWSERSYNC_PROXIED_SITE || option,
+    notify: false,
+    reloadDebounce: 2000,
+    //reloadDelay: 250,
+    //injectChanges: true,
+    //reloadOnRestart: false,
+  });
 
+  // Helper function for Browser-sync
+  function reload(done) {
+    serverp.reload();
+    done();
+  }
 
+   // Watch .scss files
+   gulp.watch(SOURCE.styles, gulp.series('styles', reload));
+   // Watch scripts files
+   gulp.watch(SOURCE.scripts, gulp.series('scripts', reload));
+   // Watch php files
+   gulp.watch(SOURCE.php, gulp.series(reload));
+   // Watch other JavaScript files
+   gulp.watch(SOURCE.otherjs, gulp.series(reload));
+   
+  done();
+});
