@@ -12,9 +12,5 @@ CodeSniffer.conf
 phpcbf.phar
 phpcs.phar
 
-bh-guides/
-dt-assets/build/
-
-
 */development-only/*
 
