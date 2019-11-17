@@ -1220,7 +1220,7 @@ $(document).ready(function () {
   
   }
 
-  //initialize Contact Filters accordion function
+  //run Contact Filters accordion options
   contactFilterAccordion();
 })
 
