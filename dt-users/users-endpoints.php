@@ -140,10 +140,10 @@ class Disciple_Tools_Users_Endpoints
             if ( $result["status"] ) {
                 return $result["response"];
             } else {
-                return new WP_Error( "changed_notification_error", $result["message"], [ 'status', 400 ] );
+                return new WP_Error( "changed_notification_error", $result["message"], [ 'status' => 400 ] );
             }
         } else {
-            return new WP_Error( "preference_error", "Please provide a valid preference to change for user", [ 'status', 400 ] );
+            return new WP_Error( "preference_error", "Please provide a valid preference to change for user", [ 'status' => 400 ] );
         }
     }
 
@@ -157,7 +157,7 @@ class Disciple_Tools_Users_Endpoints
         if ( isset( $params["filters"] )){
             return Disciple_Tools_Users::save_user_filters( $params["filters"] );
         } else {
-            return new WP_Error( "missing_error", "Missing filters", [ 'status', 400 ] );
+            return new WP_Error( "missing_error", "Missing filters", [ 'status' => 400 ] );
         }
     }
 
@@ -173,7 +173,7 @@ class Disciple_Tools_Users_Endpoints
             wp_redirect( '/' );
             return true;
         } else {
-            return new WP_Error( "missing_error", "Missing filters", [ 'status', 400 ] );
+            return new WP_Error( "missing_error", "Missing filters", [ 'status' => 400 ] );
         }
     }
 
@@ -189,7 +189,7 @@ class Disciple_Tools_Users_Endpoints
         if ( isset( $params["user-email"], $params["user-display"], $params["corresponds_to_contact"] ) ){
             return Disciple_Tools_Users::create_user( $params["user-email"], $params["user-email"], $params["user-display"], $params["corresponds_to_contact"] );
         } else {
-            return new WP_Error( "missing_error", "Missing fields", [ 'status', 400 ] );
+            return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
         }
     }
 
@@ -198,7 +198,7 @@ class Disciple_Tools_Users_Endpoints
         if ( isset( $params["user_id"] ) ){
             return Disciple_Tools_Users::get_contact_for_user( $params["user_id"] );
         } else {
-            return new WP_Error( "missing_error", "Missing fields", [ 'status', 400 ] );
+            return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
         }
     }
 
@@ -211,7 +211,7 @@ class Disciple_Tools_Users_Endpoints
         if ( isset( $params["grid_id"] ) ){
             return Disciple_Tools_Users::add_user_location( $params["grid_id"] );
         } else {
-            return new WP_Error( "missing_error", "Missing fields", [ 'status', 400 ] );
+            return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
         }
     }
 
@@ -220,7 +220,7 @@ class Disciple_Tools_Users_Endpoints
         if ( isset( $params["grid_id"] ) ){
             return Disciple_Tools_Users::delete_user_location( $params["grid_id"] );
         } else {
-            return new WP_Error( "missing_error", "Missing fields", [ 'status', 400 ] );
+            return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
         }
     }
 
@@ -288,7 +288,7 @@ class Disciple_Tools_Users_Endpoints
                 "locale" => get_locale()
             ];
         } else {
-            return new WP_Error( "get_my_info", "Something went wrong. Are you a user?", [ 'status', 400 ] );
+            return new WP_Error( "get_my_info", "Something went wrong. Are you a user?", [ 'status' => 400 ] );
         }
     }
 }
