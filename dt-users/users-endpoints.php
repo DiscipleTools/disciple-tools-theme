@@ -228,49 +228,53 @@ class Disciple_Tools_Users_Endpoints
         $get_params = $request->get_params();
         $body = $request->get_json_params() ?? $request->get_params();
         $user = wp_get_current_user();
-        if ( $user ){
-            if ( !empty( $body["add_unavailability"] ) ){
-                if ( !empty( $body["add_unavailability"]["start_date"] ) && !empty( $body["add_unavailability"]["end_date"] ) ) {
-                    $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
-                    if ( !$dates_unavailable ){
-                        $dates_unavailable = [];
-                    }
-                    $max_id = 0;
-                    foreach ( $dates_unavailable as $range ){
-                        $max_id = max( $max_id, $range["id"] ?? 0 );
-                    }
-
-                    $dates_unavailable[] = [
-                        "id" => $max_id + 1,
-                        "start_date" => $body["add_unavailability"]["start_date"],
-                        "end_date" => $body["add_unavailability"]["end_date"],
-                    ];
-                    update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
-                    return $dates_unavailable;
-                }
-            }
-            if ( !empty( $body["remove_unavailability"] ) ) {
+        if ( !$user ) {
+            return new WP_Error( "update_user", "Something went wrong. Are you a user?", [ 'status' => 400 ] );
+        }
+        if ( !empty( $body["add_unavailability"] ) ){
+            if ( !empty( $body["add_unavailability"]["start_date"] ) && !empty( $body["add_unavailability"]["end_date"] ) ) {
                 $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
-                foreach ( $dates_unavailable as $index => $range ) {
-                    if ( $body["remove_unavailability"] === $range["id"] ){
-                        unset( $dates_unavailable[$index] );
-                    }
+                if ( !$dates_unavailable ){
+                    $dates_unavailable = [];
                 }
-                $dates_unavailable = array_values( $dates_unavailable );
+                $max_id = 0;
+                foreach ( $dates_unavailable as $range ){
+                    $max_id = max( $max_id, $range["id"] ?? 0 );
+                }
+
+                $dates_unavailable[] = [
+                    "id" => $max_id + 1,
+                    "start_date" => $body["add_unavailability"]["start_date"],
+                    "end_date" => $body["add_unavailability"]["end_date"],
+                ];
                 update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
                 return $dates_unavailable;
             }
-            if ( !empty( $body["locale"] ) ){
-                $e = wp_update_user( [
-                    'ID' => $user->ID,
-                    'locale' => $body["locale"]
-                ] );
-                return is_wp_error( $e ) ? $e : true;
-            }
-            return new WP_Error( "update_user", "No valid field found to update", [ 'status', 400 ] );
-        }  else {
-            return new WP_Error( "update_user", "Something went wrong. Are you a user?", [ 'status', 400 ] );
         }
+        if ( !empty( $body["remove_unavailability"] ) ) {
+            $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
+            foreach ( $dates_unavailable as $index => $range ) {
+                if ( $body["remove_unavailability"] === $range["id"] ){
+                    unset( $dates_unavailable[$index] );
+                }
+            }
+            $dates_unavailable = array_values( $dates_unavailable );
+            update_user_option( $user->ID, "user_dates_unavailable", $dates_unavailable );
+            return $dates_unavailable;
+        }
+        if ( !empty( $body["locale"] ) ){
+            $e = wp_update_user( [
+                'ID' => $user->ID,
+                'locale' => $body["locale"]
+            ] );
+            return is_wp_error( $e ) ? $e : true;
+        }
+        try {
+            do_action( 'dt_update_user', $user, $body );
+        } catch (Exception $e) {
+            return new WP_Error( __FUNCTION__, $e->getMessage(), [ 'status' => $e->getCode() ] );
+        }
+        return new WP_REST_Response( true );
     }
 
 
