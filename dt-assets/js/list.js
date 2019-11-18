@@ -1206,7 +1206,7 @@ $(document).ready(function () {
     var $accordion = new Foundation.Accordion($('#list-filter-tabs'), {
       slideSpeed: 100,
       //multiExpand: false,
-      allowAllClosed: true
+      //allowAllClosed: true
     });
   
     //(optional) set Contact Filter accordion panels to all be closed by default
