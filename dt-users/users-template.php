@@ -163,14 +163,15 @@ function dt_get_team_contacts( $user_id ) {
 function dt_get_site_notification_defaults() {
     $site_options = dt_get_option( 'dt_site_options' );
     $default_notifications = dt_get_site_options_defaults()["notifications"];
+    $notifications = apply_filters( "dt_get_site_notification_options", $site_options["notifications"] );
     //get translated value
-    foreach ( $site_options['notifications'] as $notification_key => $value ){
-        if ( isset( $default_notifications[$notification_key]["label"] ) ){
-            $site_options["notifications"][$notification_key]["label"] = $default_notifications[$notification_key]["label"];
+    foreach ($notifications['types'] as $notification_key => $value ){
+        if ( isset( $default_notifications['types'][$notification_key]["label"] ) ){
+            $notifications['types'][$notification_key]["label"] = $default_notifications["types"][$notification_key]["label"];
         }
     }
 
-    return $site_options['notifications'];
+    return $notifications;
 }
 
 /**
@@ -375,8 +376,9 @@ function dt_user_notification_is_enabled( string $notification_name, string $cha
     }
 
     // Check status of site defined defaults
-    $site_defaults = dt_get_site_notification_defaults();
-    if ( isset( $site_defaults[ $notification_name ][ $channel ] ) && $site_defaults[ $notification_name ][ $channel ] ) { // This checks to see if the site has required this notification to be true. If true, then personal preference is not checked.
+    $notification_settings = dt_get_site_notification_defaults();
+    // This checks to see if the site has required this notification to be true. If true, then personal preference is not checked.
+    if ( isset( $notification_settings["types"][ $notification_name ][ $channel ] ) && $notification_settings["type"][ $notification_name ][ $channel ] ) {
         return true;
     }
 
