@@ -378,7 +378,7 @@ function dt_user_notification_is_enabled( string $notification_name, string $cha
     // Check status of site defined defaults
     $notification_settings = dt_get_site_notification_defaults();
     // This checks to see if the site has required this notification to be true. If true, then personal preference is not checked.
-    if ( isset( $notification_settings["types"][ $notification_name ][ $channel ] ) && $notification_settings["type"][ $notification_name ][ $channel ] ) {
+    if ( isset( $notification_settings["types"][ $notification_name ][ $channel ] ) && $notification_settings["types"][ $notification_name ][ $channel ] ) {
         return true;
     }
 
