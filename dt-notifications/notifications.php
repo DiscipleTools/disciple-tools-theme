@@ -810,7 +810,7 @@ class Disciple_Tools_Notifications
             $notification_note = sprintf( esc_html_x( '%1$s subassigned %2$s to you.', 'User1 subassigned contact1 to you.', 'disciple_tools' ), $display_name, $link );
         } elseif ( $notification["notification_name"] ==="milestone" ){
             $meta_value = $notification["field_value"] ?? '';
-            $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+            $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( true, null, false, false ); //no cache to get the labels in the correct language
             $label = $meta_value;
             if ( isset( $contact_fields["milestones"]["default"][$meta_value]["label"] ) ){
                 $label = $contact_fields["milestones"]["default"][$meta_value]["label"];
