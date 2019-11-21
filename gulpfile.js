@@ -1,10 +1,13 @@
 require('dotenv').config();
 
-// GULP PACKAGES
+/** 
+ * GULP PACKAGES
+ */
+
 // Most packages are lazy loaded
-var gulp  = require('gulp'),
+var gulp = require('gulp'),
   log = require('fancy-log');
-  browserSync = require('browser-sync').create(),
+browserSync = require('browser-sync'),
   plugin = require('gulp-load-plugins')(),
   touch = require('gulp-touch-cmd'),
   rename = require('gulp-rename'),
@@ -12,15 +15,11 @@ var gulp  = require('gulp'),
   postcss = require('gulp-postcss'),
   cssnano = require('cssnano');
 
+/** 
+ * DEFINE GULP VARIABLE VALUES TO MATCH YOUR PROJECT NEEDS
+ */
 
-
-// GULP VARIABLES
-// Modify these variables to match your project needs
-
-// Set local URL if using Browser-Sync
-const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || 'http://jointswp-github.dev/';
-
-// Set path to Foundation files
+//Run "npm  install" to get the node_modules directory, and Set path below to Foundation files
 const FOUNDATION = 'node_modules/foundation-sites';
 
 // Select Foundation components, remove components project will not use
@@ -61,7 +60,8 @@ const SOURCE = {
     FOUNDATION + '/dist/js/plugins/foundation.toggler.js',
     // FOUNDATION + '/dist/js/plugins/foundation.tooltip.js',
 
-    // Place custom JS here, files will be concantonated, minified if ran with --production
+    // Please place all custom JS scripts within 'dt-assets/js/footer-scrips.js
+    
     'dt-assets/js/footer-scripts.js',
 
     'node_modules/masonry-layout/dist/masonry.pkgd.js'
@@ -70,9 +70,15 @@ const SOURCE = {
   // Scss files will be concantonated, minified if ran with --production
   styles: 'dt-assets/scss/**/*.scss',
 
+  otherjs: [
+    'dt-assets/**/*.js',
+    '!dt-assets/js/footer-scripts.js',
+  ],
+
   php: '**/*.php'
 };
 
+// Build output locations
 const BUILD_DIRS = {
   styles: 'dt-assets/build/css/',
   scripts: 'dt-assets/build/js/',
@@ -80,10 +86,10 @@ const BUILD_DIRS = {
 
 // GULP FUNCTIONS
 // concat, and minify JavaScript
-gulp.task('scripts', function() {
+gulp.task('scripts', function () {
 
   return gulp.src(SOURCE.scripts)
-    .pipe(plugin.plumber(function(error) {
+    .pipe(plugin.plumber(function (error) {
       log.error(error.message);
       this.emit('end');
     }))
@@ -95,15 +101,15 @@ gulp.task('scripts', function() {
     }))
     .pipe(plugin.concat('scripts.js'))
     .pipe(plugin.uglify())
-    .pipe(rename({suffix: '.min'}))
+    .pipe(rename({ suffix: '.min' }))
     .pipe(plugin.sourcemaps.write('.')) // Creates sourcemap for minified JS
-    .pipe(gulp.dest(BUILD_DIRS.scripts))
+    .pipe(gulp.dest(BUILD_DIRS.scripts));
 });
 
 // Compile Sass, Autoprefix and minify
-gulp.task('styles', function() {
+gulp.task('styles', function () {
   return gulp.src(SOURCE.styles)
-    .pipe(plugin.plumber(function(error) {
+    .pipe(plugin.plumber(function (error) {
       log.error(error.message);
       this.emit('end');
     }))
@@ -113,48 +119,119 @@ gulp.task('styles', function() {
       browsers: ['last 2 versions'],
       cascade: false
     }))
-    .pipe(rename({suffix: '.min'}))
+    .pipe(rename({ suffix: '.min' }))
     .pipe(postcss([cssnano()]))
     .pipe(plugin.sourcemaps.write('.'))
     .pipe(gulp.dest(BUILD_DIRS.styles))
-    .pipe(touch())
-    .pipe(browserSync.reload({
-      stream: true
-    }));
-});
-
-
-
-// Watch files for changes (without Browser-Sync)
-gulp.task('watch', function() {
-
-  // Watch .scss files
-  gulp.watch(SOURCE.styles, ['styles']);
-
-  // Watch scripts files
-  gulp.watch(SOURCE.scripts, ['scripts']);
-
+    .pipe(touch());
 });
 
 // Run styles, scripts and foundation-js
 gulp.task('default', gulp.parallel('styles', 'scripts'));
 
-// Browser-Sync watch files and inject changes
-gulp.task('browsersync', gulp.series('default', function() {
 
-  // Watch these files
-  var files = [
-    SOURCE.styles,
-    SOURCE.scripts,
-    SOURCE.php,
-    'dt-assets/**/*.js', // Some .js aren't in SOURCE.scripts
-  ];
+/** 
+ * MANAGE WATCH AND RELOADING OPTIONS BELOW
+ * NOTE! - Please set your local URL host here if you plan on using Browser-sync
+ * example: 
+ * const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || 'http://local.discipletools/'; 
+ */
 
-  browserSync.init(files, {
+ const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || ' ';
+
+// Initialize Browser-sync
+var server = browserSync.create();
+
+// Initializing proxy for Browser-sync
+function serve(done) {
+  server.init({
     proxy: LOCAL_URL,
+    notify: false,
+    reloadDebounce: 2000,
+    //reloadDelay: 250,
+    //injectChanges: true,
+    //reloadOnRestart: false,
+  });
+  done();
+}
+
+// A helpder function to reload with Browser-sync
+function reload(done) {
+  server.reload();
+  done();
+}
+
+// Watch for file changes without Browser-Sync | run "gulp watch" or "npm run watch"
+gulp.task('watch', function () {
+  // Watch .scss files
+  gulp.watch(SOURCE.styles, gulp.series('styles'));
+  // Watch scripts files
+  gulp.watch(SOURCE.scripts, gulp.series('scripts'));
+});
+
+// Watch for file changes with Browser-Sync | run "gulp browsersync" or "npm run browsersync"
+gulp.task('watchWithBrowserSync', function () {
+  // Watch .scss files
+  gulp.watch(SOURCE.styles, gulp.series('styles', reload));
+  // Watch scripts files
+  gulp.watch(SOURCE.scripts, gulp.series('scripts', reload));
+  //Watch php files
+  gulp.watch(SOURCE.php, gulp.series(reload));
+  //Watch other JavaScript files
+  gulp.watch(SOURCE.otherjs, gulp.series(reload));
+});
+
+// Launch the development environemnt with Browser-Sync
+gulp.task('browsersync', gulp.series(gulp.parallel('styles', 'scripts'), serve, 'watchWithBrowserSync'));
+
+/**
+ * OPTIONAL - USE THE FOLLOWING TASK TO RUN BROWSER-SYNC WITH A PROXY ARGUMENT FROM THE COMMAND LINE. 
+ * We're taking advantage of node's [process.argv] to reference arguments from the command line.  
+ * The beauty of this approach is that we don't have in to include any extra dependencies.
+ * https://stackoverflow.com/a/32937333/957186
+ * https://www.browsersync.io/docs/gulp
+ * https://stackoverflow.com/a/38241262/957186
+ * example:
+ * gulp browsersync-p --option http://local.discipletools/
+ *
+ */
+
+gulp.task('browsersync-p', function (done) {
+ 
+  //get the --option argument value
+  var option,
+    i = process.argv.indexOf("--option");
+  if (i > -1) {
+    option = process.argv[i + 1];
+  }
+
+  // Initializing Browser-sync
+  var serverp = browserSync.create();
+
+  // Initialize proxy for Browser-sync
+   serverp.init({
+    proxy: process.env.BROWSERSYNC_PROXIED_SITE || option,
+    notify: false,
+    reloadDebounce: 2000,
+    //reloadDelay: 250,
+    //injectChanges: true,
+    //reloadOnRestart: false,
   });
 
-  gulp.watch(SOURCE.styles, ['styles']);
-  gulp.watch(SOURCE.scripts, ['scripts']).on('change', browserSync.reload);
+  // Helper function for Browser-sync
+  function reload(done) {
+    serverp.reload();
+    done();
+  }
 
-}));
+   // Watch .scss files
+   gulp.watch(SOURCE.styles, gulp.series('styles', reload));
+   // Watch scripts files
+   gulp.watch(SOURCE.scripts, gulp.series('scripts', reload));
+   // Watch php files
+   gulp.watch(SOURCE.php, gulp.series(reload));
+   // Watch other JavaScript files
+   gulp.watch(SOURCE.otherjs, gulp.series(reload));
+   
+  done();
+});

@@ -206,46 +206,35 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                             <thead>
                             <tr>
                                 <td><?php esc_html_e( 'Type of Notification', 'disciple_tools' )?></td>
-                                <td><?php esc_html_e( 'Web', 'disciple_tools' )?></td>
-                                <td><?php esc_html_e( 'Email', 'disciple_tools' )?></td>
+                                <?php foreach ( $dt_site_notification_defaults["channels"] as $channel_key => $channel_value ) : ?>
+                                    <td><?php echo esc_html( $channel_value["label"] )?></td>
+                                <?php endforeach; ?>
                             </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ( $dt_site_notification_defaults as $dt_notification_key => $dt_notification_default ) : ?>
+                                <?php foreach ( $dt_site_notification_defaults["types"] as $dt_notification_key => $dt_notification_default ) : ?>
                                 <tr>
                                     <td class="tall-4"><?php echo esc_html( $dt_notification_default["label"] )?></td>
+                                    <?php foreach ( $dt_site_notification_defaults["channels"] as $channel_key => $channel_value ) : ?>
                                     <td>
-                                    <?php if ( $dt_notification_default["web"] ) : ?>
-                                        <div style="height:2em;"><?php esc_html_e( "required", 'disciple_tools' ) ?></div>
-                                    <?php else : ?>
-                                        <div class="switch">
-                                            <input class="switch-input" id="<?php echo esc_html( $dt_notification_key ) ?>_web" type="checkbox"
-                                                   name="<?php echo esc_html( $dt_notification_key ) ?>_web"
-                                                   onclick="switch_preference( '<?php echo esc_html( $dt_notification_key ) ?>_web', 'notifications' );"
-                                                <?php ( isset( $dt_user_meta[$dt_notification_key . '_web'] ) && $dt_user_meta[$dt_notification_key . '_web'][0] == false ) ?
-                                                    print esc_attr( '', 'disciple_tools' ) : print esc_attr( 'checked', 'disciple_tools' ); ?>>
-                                            <label class="switch-paddle inactive" for="<?php echo esc_html( $dt_notification_key ) ?>_web">
-                                                <span class="show-for-sr"><?php echo esc_html( $dt_notification_default['label'] ) ?></span>
-                                            </label>
-                                        </div>
-                                    <?php endif; ?>
+                                        <?php if ( $dt_notification_default[$channel_key] ) : ?>
+                                            <div style="height:2em;"><?php esc_html_e( "required", 'disciple_tools' ) ?></div>
+                                        <?php else :
+                                            $channel_notification_key = $dt_notification_key . '_' . $channel_key;
+                                            ?>
+                                            <div class="switch">
+                                                <input class="switch-input" id="<?php echo esc_html( $channel_notification_key ) ?>" type="checkbox"
+                                                       name="<?php echo esc_html( $channel_notification_key ) ?>"
+                                                       onclick="switch_preference( '<?php echo esc_html( $channel_notification_key ) ?>', 'notifications' );"
+                                                    <?php ( isset( $dt_user_meta[$channel_notification_key ] ) && $dt_user_meta[$channel_notification_key ][0] == false ) ?
+                                                        print esc_attr( '', 'disciple_tools' ) : print esc_attr( 'checked', 'disciple_tools' ); ?>>
+                                                <label class="switch-paddle inactive" for="<?php echo esc_html( $channel_notification_key ) ?>">
+                                                    <span class="show-for-sr"><?php echo esc_html( $dt_notification_default['label'] ) ?></span>
+                                                </label>
+                                            </div>
+                                        <?php endif; ?>
                                     </td>
-                                    <td>
-                                    <?php if ( $dt_notification_default["email"] ) : ?>
-                                        <div style="height:2em;"><?php esc_html_e( "required", 'disciple_tools' ) ?></div>
-                                    <?php else : ?>
-                                        <div class="switch">
-                                            <input class="switch-input" id="<?php echo esc_html( $dt_notification_key ) ?>_email" type="checkbox"
-                                                   name="<?php echo esc_html( $dt_notification_key ) ?>_email"
-                                                   onclick="switch_preference( '<?php echo esc_html( $dt_notification_key ) ?>_email', 'notifications' );"
-                                                <?php ( isset( $dt_user_meta[$dt_notification_key . '_email'] ) && $dt_user_meta[$dt_notification_key . '_email'][0] == false ) ?
-                                                    print esc_attr( '', 'disciple_tools' ) : print esc_attr( 'checked', 'disciple_tools' ); ?>>
-                                            <label class="switch-paddle inactive" for="<?php echo esc_html( $dt_notification_key ) ?>_email">
-                                                <span class="show-for-sr"><?php echo esc_html( $dt_notification_default['label'] ) ?></span>
-                                            </label>
-                                        </div>
-                                    <?php endif; ?>
-                                    </td>
+                                    <?php endforeach; ?>
                                 </tr>
                                 <?php endforeach; ?>
                             </tbody>
