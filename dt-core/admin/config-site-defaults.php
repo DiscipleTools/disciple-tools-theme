@@ -119,7 +119,7 @@ function dt_get_option( string $name ) {
         case 'dt_site_custom_lists':
             $default_custom_lists = dt_get_site_custom_lists();
 
-            if ( !get_option( 'dt_site_custom_lists' ) ) { // options doen't exist, create new.
+            if ( !get_option( 'dt_site_custom_lists' ) ) { // options doesn't exist, create new.
                 add_option( 'dt_site_custom_lists', $default_custom_lists, '', true );
             }
             else {
@@ -275,53 +275,48 @@ function dt_update_option( $name, $value, $autoload = false ) {
 function dt_get_site_options_defaults() {
     $fields = [];
 
-    $fields['version'] = '8';
-
-    $fields['user_notifications'] = [
-        'new_web'          => true,
-        'new_email'        => true,
-        'mentions_web'     => true,
-        'mentions_email'   => true,
-        'comments_web'     => true,
-        'comments_email'   => true,
-        'updates_web'      => true,
-        'updates_email'    => true,
-        'changes_web'      => true,
-        'changes_email'    => true,
-        'milestones_web'   => true,
-        'milestones_email' => true,
-    ];
+    $fields['version'] = '9';
 
     $fields['notifications'] = [
-        'new_assigned' => [
-            'label' => __( 'Newly Assigned Contact', 'disciple_tools' ),
-            'web'   => true,
-            'email' => true
+        'channels' => [
+            'email' => [
+                "label" => __( 'Email', 'disciple_tools' )
+            ],
+            'web' => [
+                "label" => __( 'Web', 'disciple_tools' )
+            ]
         ],
-        'mentions' => [
-            'label' => __( '@Mentions', 'disciple_tools' ),
-            'web'   => true,
-            'email' => true
-        ],
-        'comments' => [
-            'label' => __( 'New comments', 'disciple_tools' ),
-            'web'   => false,
-            'email' => false
-        ],
-        'updates' => [
-            'label' => __( 'Update Needed', 'disciple_tools' ),
-            'web'   => true,
-            'email' => true
-        ],
-        'changes' => [
-            'label' => __( 'Contact Info Changed', 'disciple_tools' ),
-            'web'   => false,
-            'email' => false
-        ],
-        'milestones' => [
-            'label' => __( 'Contact Milestones and Group Health metrics', 'disciple_tools' ),
-            'web'   => false,
-            'email' => false
+        'types' => [
+            'new_assigned' => [
+                'label' => __( 'Newly Assigned Contact', 'disciple_tools' ),
+                'web'   => true,
+                'email' => true
+            ],
+            'mentions' => [
+                'label' => __( '@Mentions', 'disciple_tools' ),
+                'web'   => true,
+                'email' => true
+            ],
+            'comments' => [
+                'label' => __( 'New comments', 'disciple_tools' ),
+                'web'   => false,
+                'email' => false
+            ],
+            'updates' => [
+                'label' => __( 'Update Needed', 'disciple_tools' ),
+                'web'   => true,
+                'email' => true
+            ],
+            'changes' => [
+                'label' => __( 'Contact Info Changed', 'disciple_tools' ),
+                'web'   => false,
+                'email' => false
+            ],
+            'milestones' => [
+                'label' => __( 'Contact Milestones and Group Health metrics', 'disciple_tools' ),
+                'web'   => false,
+                'email' => false
+            ]
         ]
     ];
 

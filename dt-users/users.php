@@ -743,7 +743,7 @@ Please click the following link to confirm the invite:
 
     public static function create_user( $user_name, $user_email, $display_name, $corresponds_to_contact = null ){
         if ( !current_user_can( "create_users" ) ){
-            return new WP_Error( "create_user", "You don't have permissions to create users", [ 'status', 401 ] );
+            return new WP_Error( "create_user", "You don't have permissions to create users", [ 'status' => 401 ] );
         }
 
 
@@ -756,12 +756,12 @@ Please click the following link to confirm the invite:
             if ( !is_user_member_of_blog( $user->ID ) ){
                 $user_id = self::invite_existing_user_to_site( $user->ID, $user_email, 'multiplier' );
             } else {
-                return new WP_Error( "create_user", __( "Email already exists", 'disciple_tools' ), [ 'status', 403 ] );
+                return new WP_Error( "create_user", __( "Email already exists", 'disciple_tools' ), [ 'status' => 403 ] );
             }
         } else {
             $user_id = username_exists( $user_name );
             if ( $user_id ){
-                return new WP_Error( "create_user", __( "Username already exists", 'disciple_tools' ), [ 'status', 403 ] );
+                return new WP_Error( "create_user", __( "Username already exists", 'disciple_tools' ), [ 'status' => 403 ] );
             }
         }
 

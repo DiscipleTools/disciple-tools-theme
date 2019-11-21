@@ -100,7 +100,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function user_notifications() {
 
         $site_options = dt_get_option( 'dt_site_options' );
-        $notifications = $site_options['notifications'];
+        $notifications = $site_options['notifications']["types"];
 
         ?>
         <form method="post" name="notifications-form">
@@ -147,9 +147,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 $site_options['notifications'] = $site_option_defaults['notifications'];
             }
 
-            foreach ( $site_options['notifications'] as $key => $value ) {
-                $site_options['notifications'][ $key ]['web'] = isset( $_POST[ $key.'_web' ] );
-                $site_options['notifications'][ $key ]['email'] = isset( $_POST[ $key.'_email' ] );
+            foreach ( $site_options['notifications']["types"] as $key => $value ) {
+                $site_options['notifications']["types"][ $key ]['web'] = isset( $_POST[ $key.'_web' ] );
+                $site_options['notifications']["types"][ $key ]['email'] = isset( $_POST[ $key.'_email' ] );
             }
 
             update_option( 'dt_site_options', $site_options, true );
