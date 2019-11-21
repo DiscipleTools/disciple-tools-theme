@@ -445,24 +445,18 @@ class Disciple_Tools_Groups_Post_Type
             "p2p_direction" => "to",
             "p2p_key" => "groups_to_groups"
         ];
+        $fields["member_count"] = [
+            'name' => __( 'Member Count', 'disciple_tools' ),
+            'description' => 'The member count is the number of members in this group and it will automatically adjust when new member names are added or removed in the member list. The number can also be adjusted manually to included people who may not be in the system but are also members of the group.',
+            'type' => 'text',
+            'default' => ''
+        ];
         $fields["members"] = [
-            "name" => __( "Members", "disciple_tools" ),
-            'description' => 'Who is a member of this group?',
+            "name" => __( "Member List", "disciple_tools" ),
+            'description' => 'The member list is a list of members in this group. To remove a member, click the X icon to the right side of the member name. Click the footprint icon next to the members name to signify that this person is a leader of this group. (Multiple leaders can be assigned to a group.',
             "type" => "connection",
             "p2p_direction" => "to",
             "p2p_key" => "contacts_to_groups"
-        ];
-        $fields["member_count"] = [
-            'name' => __( 'Member Count', 'disciple_tools' ),
-            'description' => 'The number of members in this group. The member count will be automatically adjust when new member names are added or removed in the member list. The number can be adjusted manually to included people who may not be in the system but are members of the group.',
-            'type' => 'text',
-            'default' => ''
-        ];
-        $fields["member_list"] = [
-            'name' => __( 'Member List', 'disciple_tools' ),
-            'description' => 'The list of members in this group. Clicking the X will remove that member from the list. While clicking the footprint icon next to the members name, will assign that person as a leader of that group. (Multiple leaders can be assigned to a group.)',
-            'type' => 'text',
-            'default' => ''
         ];
         $fields["people_groups"] = [
             "name" => __( "People Groups", "disciple_tools" ),

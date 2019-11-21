@@ -208,16 +208,15 @@
 
     <!-- Members Tile -->
     <div class="help-section" id="members-help-text" style="display: none">
-        <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["members"]; ?>
-        <h3><?php echo esc_html( $field["name"] ) ?></h3>
+        <h3><?php esc_html_e( "Members", 'disciple_tools' ) ?></h3>
         <p><?php esc_html_e( "This is the area where you list the number of contacts that are a part of the group.", 'disciple_tools' ) ?></p>
         <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["member_count"]; ?>
         <h4><?php echo esc_html( $field["name"] ) ?></h4>
         <p><?php echo esc_html( $field["description"] ) ?></p>
-        <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["member_list"]; ?>
+        <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["members"]; ?>
         <h4><?php echo esc_html( $field["name"] ) ?></h4>
         <p><?php echo esc_html( $field["description"] ) ?></p>
-        <p><?php esc_html_e( "To add new members, click on the 'Create' or 'Select' and click on the name or search for them. To delete a contact, click on the X next to their name. You can also quickly navigate between the Group Records and the members’ Contact Records in this area.", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "To add new members, click on the 'Create' or 'Select' and click on the name or search for them. You can also quickly navigate between the Group Records and the members’ Contact Records in this area.", 'disciple_tools' ) ?></p>
     </div>
 
     <!--  Group type  -->
