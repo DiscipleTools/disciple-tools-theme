@@ -174,6 +174,7 @@ class Disciple_Tools_Contact_Post_Type
         register_post_type( $this->post_type, $args );
     } // End register_post_type()
 
+
     public function get_contact_field_defaults( $post_id = null, $include_current_post = null ){
         $fields = [];
 
@@ -223,7 +224,7 @@ class Disciple_Tools_Contact_Post_Type
                 ],
                 'closed'       => [
                     "label" => _x( 'Closed', 'Contact Status', 'disciple_tools' ),
-                    "description" => _x( "This contact has made it known that they no longer want to continue or you have decided not to continue with them.", "Contact Status", 'disciple_tools' ),
+                    "description" => _x( "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.", "Contact Status", 'disciple_tools' ),
                     "color" => "#F43636",
                 ],
             ],
@@ -355,48 +356,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
 
         // Misc Information fields
-        $fields["contact_name"] = [
-            "name" => __( "Contact Name", 'disciple_tools' ),
-            'description' => __( 'The name of the contact is searchable and can be used to help you filter your contacts in the Contacts List page.', 'disciple_tools' ),
-            'type' => 'text',
-            'default' => '',
-            'section'     => 'info',
-        ];
-        $fields["phone"] = [
-            "name" => __( "Contact Phone Number", 'disciple_tools' ),
-            'description' => __( 'A contact phone number for this contact. The system uses this phone number to check for duplicate contacts.', 'disciple_tools' ),
-            'type' => 'text',
-            'default' => '',
-            'section'     => 'info',
-        ];
-        $fields["email"] = [
-            "name" => __( "Contact Email", 'disciple_tools' ),
-            'description' => __( 'A contact email address for this contact.', 'disciple_tools' ),
-            'type' => 'text',
-            'default' => '',
-            'section'     => 'info',
-        ];
-        $fields["socialmedia"] = [
-            "name" => __( "Social Media", 'disciple_tools' ),
-            'description' => __( 'Social media accounts for this contact.', 'disciple_tools' ),
-            'type' => 'text',
-            'default' => '',
-            'section'     => 'info',
-        ];
-        $fields["address"] = [
-            "name" => __( "Contact Address", 'disciple_tools' ),
-            'description' => __( 'A contact address for this contact. (e.g., 124 Market St or “Jon’s Famous Coffee Shop”)', 'disciple_tools' ),
-            'type' => 'text',
-            'default' => '',
-            'section'     => 'info',
-        ];
-        $fields["locations"] = [
-            "name" => __( "Locations", 'disciple_tools' ),
-            'description' => __( 'The general area where this contact is located.', 'disciple_tools' ),
-            'type' => 'text',
-            'default' => '',
-            'section'     => 'info',
-        ];
+
         $fields['gender'] = [
             'name'        => __( 'Gender', 'disciple_tools' ),
             'description' => __( 'Male or Female.', 'disciple_tools' ),
@@ -606,6 +566,13 @@ class Disciple_Tools_Contact_Post_Type
             'default' => [],
             'section' => 'admin'
         ];
+        $fields['tags'] = [
+            'name'        => __( 'Tags', 'disciple_tools' ),
+            'description' => __( 'A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags.', 'disciple_tools' ),
+            'type'        => 'multi_select',
+            'default'     => [],
+            'section'     => 'misc',
+        ];
         $fields["follow"] = [
             'name'        => __( 'Follow', 'disciple_tools' ),
             'description' => __( 'Users following this contact', 'disciple_tools' ),
@@ -622,47 +589,6 @@ class Disciple_Tools_Contact_Post_Type
             'section'     => 'misc',
             'hidden'      => true
         ];
-        $fields['tags'] = [
-            'name'        => __( 'Tags', 'disciple_tools' ),
-            'description' => __( 'A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags.', 'disciple_tools' ),
-            'type'        => 'multi_select',
-            'default'     => [],
-            'section'     => 'misc',
-        ];
-
-        $fields['contact_connections'] = [
-            'name'        => __( 'Contact Connections', 'disciple_tools' ),
-            'description' => 'Connections this contact has with other users (and groups) in this system.',
-            'type'        => 'key_select',
-            'default'     => [
-                'groups' => [
-                    'label' => __( 'Groups', 'disciple_tools' ),
-                    'description' => __( 'The groups that this user is in. Search for a group or create a new group this user will be added to.', 'disciple_tools' ),
-                ],
-                'relationship'   => [
-                    'label' => __( 'Connection or Relation', 'disciple_tools' ),
-                    'description' => __( 'This user is connected or related to these other users.', 'disciple_tools' ),
-                ],
-                'baptized_by'   => [
-                    'label' => __( 'Baptized By', 'disciple_tools' ),
-                    'description' => __( 'Who this user was baptised by.', 'disciple_tools' ),
-                ],
-                'baptized'   => [
-                    'label' => __( 'Baptized', 'disciple_tools' ),
-                    'description' => __( 'People who this user has baptised themseleves.', 'disciple_tools' ),
-                ],
-                'coached_by'   => [
-                    'label' => __( 'Coached', 'disciple_tools' ),
-                    'description' => __( 'The people this user is being coached by.', 'disciple_tools' ),
-                ],
-                'coaching'   => [
-                    'label' => __( 'Coaching', 'disciple_tools' ),
-                    'description' => __( 'Who are the people this user is themseleves coaching.', 'disciple_tools' ),
-                ],
-              ],
-            'section'     => 'info',
-        ];
-
         $fields["duplicate_of"] = [
             "name" => __( "Duplicate of", "disciple_tools" ),
             "description" => __( "Duplicate of another contact.", "disciple_tools" ),

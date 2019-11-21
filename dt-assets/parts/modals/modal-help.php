@@ -5,32 +5,33 @@
       <h3><?php esc_html_e( "Contact Details", 'disciple_tools' ) ?></h3>
       <p><?php esc_html_e( "This is the area where you can view and edit the contact details for this contact.", 'disciple_tools' ) ?></p>
       <ul>
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["contact_name"]; ?>
-        <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["overall_status"]; ?>
-        <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["assigned_to"]; ?>
-        <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["subassigned"]; ?>
-        <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["phone"]; ?>
-        <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["email"]; ?>
-        <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["socialmedia"]; ?>
-        <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["address"]; ?>
-        <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["locations"]; ?>
-        <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["people_groups"]; ?>
-        <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["age"]; ?>
-        <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["gender"]; ?>
-        <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["sources"]; ?>
-        <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
+            <?php php//@// TODO: simplify this list by possibly using foreach statements ?>
+            <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["contact_name"]; ?>
+            <li><strong><?php esc_html_e( "Contact Name", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "The name of the contact is searchable and can be used to help you filter your contacts in the Contacts List page.", 'disciple_tools' ) ?></li>
+            <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["overall_status"]; ?>
+            <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
+            <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["assigned_to"]; ?>
+            <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
+            <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["subassigned"]; ?>
+            <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
+            <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["phone"]; ?>
+            <li><strong><?php esc_html_e( "Contact Phone Number", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "A contact phone number for this contact. The system uses this phone number to check for duplicate contacts.", 'disciple_tools' ) ?></li>
+            <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["email"]; ?>
+            <li><strong><?php esc_html_e( "Contact Email", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "A contact email address for this contact.", 'disciple_tools' ) ?></li>
+            <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["socialmedia"]; ?>
+            <li><strong><?php esc_html_e( "Social Media", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "Social media accounts for this contact.", 'disciple_tools' ) ?></li>
+            <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["address"]; ?>
+            <li><strong><?php esc_html_e( "Contact Address", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "A contact address for this contact. (e.g., 124 Market St or “Jon’s Famous Coffee Shop).", 'disciple_tools' ) ?></li>
+            <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["locations"]; ?>
+            <li><strong><?php esc_html_e( "Locations", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "The general area where this contact is located.", 'disciple_tools' ) ?></li>
+            <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["people_groups"]; ?>
+            <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
+            <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["age"]; ?>
+            <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
+            <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["gender"]; ?>
+            <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
+            <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["sources"]; ?>
+            <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
       </ul>
     <!-- end Contact Details modal -->
     </div>
@@ -40,8 +41,8 @@
       <h3><?php esc_html_e( "Group Details", 'disciple_tools' ) ?></h3>
       <p><?php esc_html_e( "This is the area where you can view and edit the contact details for this group.", 'disciple_tools' ) ?></p>
       <ul>
-        <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_name"]; ?>
-        <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
+        <?php //$field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_name"]; ?>
+        <li><strong><?php esc_html_e( "Group Name", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "The name of the group is searchable and can be used to help you filter your contacts in the Groups List page.", 'disciple_tools' ) ?></li>
         <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_status"]; ?>
         <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?>
           <ul>
@@ -65,12 +66,12 @@
         </li>
         <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["coaches"]; ?>
         <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
-        <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["locations"]; ?>
-        <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
+        <?php //$field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["locations"]; ?>
+        <li><strong><?php esc_html_e( "Locations", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "A general idea where this group is located.", 'disciple_tools' ) ?></li>
         <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["people_groups"]; ?>
         <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
-        <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["address"]; ?>
-        <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
+        <?php //$field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["address"]; ?>
+        <li><strong><?php esc_html_e( "Address", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "The address where this group meets. (e.g., 124 Market St or “Jon’s Famous Coffee Shop).", 'disciple_tools' ) ?></li>
         <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["start_date"]; ?>
         <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
         <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["church_start_date"]; ?>
@@ -192,22 +193,17 @@
 
     <!--  Group Health Metrics Tile  -->
     <div class="help-section" id="health-metrics-help-text" style="display: none">
-
-        <?php
-        $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["health_metrics"]; ?>
-    <h3><?php echo esc_html( $field["name"] ) ?></h3>
-    <p><?php echo esc_html( $field["description"] ) ?></p>
-      <!-- <?php echo esc_html( $field["name"] ) ?> list -->
-      <ul>
-            <?php foreach ( $field["default"] as $option ): ?>
-              <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ) ?? "" ?></li>
-            <?php endforeach; ?>
-      </ul>
-
-      <p><?php esc_html_e( "If the group/church regularly practices any of the elements listed, then click each element to add them inside the circle.", 'disciple_tools' ) ?></p>
-      <p><?php esc_html_e( "If the group has committed to be a church, indicate this by clicking the \"Church Commitment\" button to make the dotted line circle solid.", 'disciple_tools' ) ?></p>
-
-
+            <?php
+            $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["health_metrics"]; ?>
+            <h3><?php echo esc_html( $field["name"] ) ?></h3>
+            <p><?php echo esc_html( $field["description"] ) ?></p>
+            <ul>
+                <?php foreach ( $field["default"] as $option ): ?>
+                  <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ) ?? "" ?></li>
+                <?php endforeach; ?>
+            </ul>
+            <p><?php esc_html_e( "If the group/church regularly practices any of the elements listed, then click each element to add them inside the circle.", 'disciple_tools' ) ?></p>
+            <p><?php esc_html_e( "If the group has committed to be a church, indicate this by clicking the \"Church Commitment\" button to make the dotted line circle solid.", 'disciple_tools' ) ?></p>
     </div>
 
     <!-- Members Tile -->
@@ -232,7 +228,7 @@
         <!-- <?php echo esc_html( $field["name"] ) ?> list -->
         <ul>
                 <?php foreach ( $field["default"] as $option ): ?>
-                <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ) ?? "" ?></li>
+                    <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ) ?? "" ?></li>
                 <?php endforeach; ?>
         </ul>
     </div>
@@ -267,14 +263,17 @@
                 <?php endforeach; ?>
         </ul>
 
-        <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_connections"]; ?>
-        <h4><?php echo esc_html( $field["name"] ) ?></h4>
-        <p><?php echo esc_html( $field["description"] ) ?></p>
-        <!-- <?php echo esc_html( $field["name"] ) ?> list -->
+        <?php //@// TODO:  ?>
+        <h4><?php esc_html_e( "Group Connections", 'disciple_tools' ) ?></h4>
+        <p><?php esc_html_e( "Connections this group has with other groups in this system.", 'disciple_tools' ) ?></p>
+        <!-- <?php //echo esc_html( $field["name"] ) ?> list -->
         <ul>
-                <?php foreach ( $field["default"] as $option ): ?>
-                <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ) ?? "" ?></li>
-                <?php endforeach; ?>
+                <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["parent_groups"]; ?>
+                <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ?? "" ) ?></li>
+                <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["peer_groups"]; ?>
+                <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ?? "" ) ?></li>
+                <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["child_groups"]; ?>
+                <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ?? "" ) ?></li>
         </ul>
     </div>
 
@@ -283,14 +282,21 @@
         <h3><?php esc_html_e( "Connections", 'disciple_tools' ) ?></h3>
         <p><?php esc_html_e( "Here you can make connections between this contact and other people in this system.", 'disciple_tools' ) ?></p>
 
-
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["contact_connections"]; ?>
-        <h4><?php echo esc_html( $field["name"] ) ?></h4>
-        <p><?php echo esc_html( $field["description"] ) ?></p>
+        <?php //@// TODO: simplify the list to use foreach statements ?>
+        <h4><?php esc_html_e( "Contact Connections", 'disciple_tools' ) ?></h4>
+        <p><?php esc_html_e( "Connections this contact has with other users (and groups) in this system.", 'disciple_tools' ) ?></p>
         <ul>
-                <?php foreach ( $field["default"] as $option ): ?>
-                <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ) ?? "" ?></li>
-                <?php endforeach; ?>
+                <li><strong><?php esc_html_e( "Groups", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "The groups that this user is in. Search for a group or create a new group this user will be added to.", 'disciple_tools' ) ?></li>
+                <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["relation"]; ?>
+                <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ?? "" ) ?></li>
+                <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["baptized_by"]; ?>
+                <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ?? "" ) ?></li>
+                <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["baptized"]; ?>
+                <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ?? "" ) ?></li>
+                <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["coached_by"]; ?>
+                <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ?? "" ) ?></li>
+                <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["coaching"]; ?>
+                <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ?? "" ) ?></li>
         </ul>
     </div>
 
@@ -350,7 +356,6 @@
         <h3><?php esc_html_e( "Location", 'disciple_tools' ) ?></h3>
         <p><?php esc_html_e( "This is the general location where the contact lives - and not their address. Clicking this will bring up a list of locations to choose from.", 'disciple_tools' ) ?></p>
         <p><?php esc_html_e( "This locations list was previously created in the backend by an Admin Role user. You cannot add a new location here. If the location you are looking for is not in the list, then an Admin Role user will first have to add the new location in the backend admin area of this website instance.", 'disciple_tools' ) ?></p>
-
     </div>
 
     <!--  Initial Comment  -->
@@ -392,50 +397,50 @@
 
     <!--  New Contact -->
     <div class="help-section" id="new-contact-help-text" style="display: none">
-          <h3><?php esc_html_e( "Create new contact", 'disciple_tools' ) ?></h3>
-          <p><?php esc_html_e( "After writing the name of the contact, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new contact has just been just created.", 'disciple_tools' ) ?></p>
+        <h3><?php esc_html_e( "Create new contact", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "After writing the name of the contact, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new contact has just been just created.", 'disciple_tools' ) ?></p>
     </div>
 
     <!--  Contact name -->
     <div class="help-section" id="contact-name-help-text" style="display: none">
         <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["contact_name"]; ?>
-      <h3><?php echo esc_html( $field["name"] ) ?></h3>
-      <p><?php echo esc_html( $field["description"] ) ?></p>
+        <h3><?php echo esc_html( $field["name"] ) ?></h3>
+        <p><?php echo esc_html( $field["description"] ) ?></p>
     </div>
 
     <!--  Contact phone -->
     <div class="help-section" id="phone-help-text" style="display: none">
-            <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["phone"]; ?>
-      <h3><?php echo esc_html( $field["name"] ) ?></h3>
-      <p><?php echo esc_html( $field["description"] ) ?></p>
+        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["phone"]; ?>
+        <h3><?php echo esc_html( $field["name"] ) ?></h3>
+        <p><?php echo esc_html( $field["description"] ) ?></p>
     </div>
 
     <!--  Contact email -->
     <div class="help-section" id="email-help-text" style="display: none">
-            <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["email"]; ?>
-      <h3><?php echo esc_html( $field["name"] ) ?></h3>
-      <p><?php echo esc_html( $field["description"] ) ?></p>
+        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["email"]; ?>
+        <h3><?php echo esc_html( $field["name"] ) ?></h3>
+        <p><?php echo esc_html( $field["description"] ) ?></p>
     </div>
 
     <!--  New Group -->
     <div class="help-section" id="new-group-help-text" style="display: none">
-      <h3><?php esc_html_e( "Create new group", 'disciple_tools' ) ?></h3>
-      <p><?php esc_html_e( "After writing the name of the group, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new group has just been created.", 'disciple_tools' ) ?></p>
+        <h3><?php esc_html_e( "Create new group", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "After writing the name of the group, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new group has just been created.", 'disciple_tools' ) ?></p>
     </div>
 
     <!--  Group name -->
     <div class="help-section" id="group-name-help-text" style="display: none">
-            <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_name"]; ?>
-      <h3><?php echo esc_html( $field["name"] ) ?></h3>
-      <p><?php echo esc_html( $field["description"] ) ?></p>
+        <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_name"]; ?>
+        <h3><?php echo esc_html( $field["name"] ) ?></h3>
+        <p><?php echo esc_html( $field["description"] ) ?></p>
     </div>
 
     <!--  Your Profile -->
     <div class="help-section" id="profile-help-text" style="display: none">
-      <h3><?php esc_html_e( "Your Profile", 'disciple_tools' ) ?></h3>
-      <p><?php esc_html_e( "In this area you can see your user profile.", 'disciple_tools' ) ?></p>
-      <p><?php esc_html_e( "You are not required to fill out any of these profile fields. They are optional to meet your team’s needs.", 'disciple_tools' ) ?></p>
-      <p><?php esc_html_e( "By clicking 'Edit', you will be able adjust things like the language that this system operates in.", 'disciple_tools' ) ?></p>
+        <h3><?php esc_html_e( "Your Profile", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "In this area you can see your user profile.", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "You are not required to fill out any of these profile fields. They are optional to meet your team’s needs.", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "By clicking 'Edit', you will be able adjust things like the language that this system operates in.", 'disciple_tools' ) ?></p>
     </div>
 
     <!--  Your Locations  -->
@@ -447,19 +452,19 @@
 
     <!--  Your notifications -->
     <div class="help-section" id="notifications-help-text" style="display: none">
-      <h3><?php esc_html_e( "Your notifications", 'disciple_tools' ) ?></h3>
-      <p><?php esc_html_e( "You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons.", 'disciple_tools' ) ?></p>
-      <ul>
+        <h3><?php esc_html_e( "Your notifications", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons.", 'disciple_tools' ) ?></p>
+        <ul>
         <li><?php esc_html_e( "Notifications Turned On: The toggle will appear blue.", 'disciple_tools' ) ?></li>
         <li><?php esc_html_e( "Notifications Turned Off: The toggle will appear grey.", 'disciple_tools' ) ?></li>
-      </ul>
-      <p><?php esc_html_e( "Some of the types of notifications cannot be adjusted because they are required by the system.", 'disciple_tools' ) ?></p>
+        </ul>
+        <p><?php esc_html_e( "Some of the types of notifications cannot be adjusted because they are required by the system.", 'disciple_tools' ) ?></p>
     </div>
 
     <!--  Your availability -->
     <div class="help-section" id="availability-help-text" style="display: none">
-      <h3><?php esc_html_e( "Your availability", 'disciple_tools' ) ?></h3>
-      <p><?php esc_html_e( "This availability feature allows you the user to set a start date and end date to schedule dates when you will be unavailable e.g. you are traveling or on vacation, so the Dispatcher will know your availability to receive new contacts.", 'disciple_tools' ) ?></p>
+        <h3><?php esc_html_e( "Your availability", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "This availability feature allows you the user to set a start date and end date to schedule dates when you will be unavailable e.g. you are traveling or on vacation, so the Dispatcher will know your availability to receive new contacts.", 'disciple_tools' ) ?></p>
     </div>
 
     <!-- documentation link -->

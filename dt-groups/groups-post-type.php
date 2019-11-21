@@ -238,17 +238,9 @@ class Disciple_Tools_Groups_Post_Type
 
         $fields = [];
 
-        $fields["group_name"] = [
-            "name" => __( "Group Name", 'disciple_tools' ),
-            'description' => __( 'The name of the group is searchable and can be used to help you filter your contacts in the Groups List page.', 'disciple_tools' ),
-            'type' => 'text',
-            'default' => '',
-            'section'     => 'info',
-        ];
-
         $fields['group_status'] = [
-            'name'        => __( 'Status', 'disciple_tools' ),
-            'description' => 'Set the current status of the group.',
+            'name'        => __( 'Group Status', 'disciple_tools' ),
+            'description' => __( 'Set the current status of the group.', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'inactive' => [
@@ -432,28 +424,6 @@ class Disciple_Tools_Groups_Post_Type
             'section'     => 'misc',
             'hidden'      => true
         ];
-        // revision needed for group_connections
-        $fields['group_connections'] = [
-            'name'        => __( 'Group Connections', 'disciple_tools' ),
-            'description' => 'Connections this group has with other groups in this system.',
-            'type'        => 'key_select',
-            'default'     => [
-                'parent' => [
-                    'label' => __( 'Parent', 'disciple_tools' ),
-                    'description' => __( 'A group that founded this group.', 'disciple_tools' ),
-                ],
-                'peer'   => [
-                    'label' => __( 'Peer', 'disciple_tools' ),
-                    'description' => __( "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc.", 'disciple_tools' ),
-                ],
-                'child'   => [
-                    'label' => __( 'Child', 'disciple_tools' ),
-                    'description' => __( 'A group that has been birthed out of this group', 'disciple_tools' ),
-                ],
-            ],
-            'section'     => 'info',
-        ];
-
         $fields["parent_groups"] = [
             "name" => __( "Parent Group", "disciple_tools" ),
             'description' => 'A group that founded this group.',
@@ -494,6 +464,13 @@ class Disciple_Tools_Groups_Post_Type
             'type' => 'text',
             'default' => ''
         ];
+        $fields["people_groups"] = [
+            "name" => __( "People Groups", "disciple_tools" ),
+            'description' => 'The people groups that are a part of this group.',
+            "type" => "connection",
+            "p2p_direction" => "from",
+            "p2p_key" => "groups_to_peoplegroups"
+        ];
         $fields["leaders"] = [
             "name" => __( "Leaders", "disciple_tools" ),
             'description' => 'A list of the leaders of the group (contacts). Multiple leaders can be assigned to a group.',
@@ -520,27 +497,7 @@ class Disciple_Tools_Groups_Post_Type
             'type'        => 'location',
             'default'     => [],
         ];
-        $fields["locations"] = [
-            "name" => __( "Locations", 'disciple_tools' ),
-            'description' => __( 'A general idea where this group is located.', 'disciple_tools' ),
-            'type' => 'text',
-            'default' => '',
-            'section'     => 'info',
-        ];
-        $fields["people_groups"] = [
-            "name" => __( "People Groups", "disciple_tools" ),
-            'description' => 'The people groups that are a part of this group.',
-            "type" => "connection",
-            "p2p_direction" => "from",
-            "p2p_key" => "groups_to_peoplegroups"
-        ];
-        $fields["address"] = [
-            "name" => __( "Address", 'disciple_tools' ),
-            'description' => __( 'The address where this group meets. (e.g., 124 Market St or “Jon’s Famous Coffee Shop”)', 'disciple_tools' ),
-            'type' => 'text',
-            'default' => '',
-            'section'     => 'info',
-        ];
+
 
         $id = isset( $post->ID ) ? $post->ID : $post_id;
         if ( $include_current_post &&
