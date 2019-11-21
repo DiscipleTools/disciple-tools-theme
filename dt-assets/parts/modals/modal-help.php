@@ -5,7 +5,7 @@
       <h3><?php esc_html_e( "Contact Details", 'disciple_tools' ) ?></h3>
       <p><?php esc_html_e( "This is the area where you can view and edit the contact details for this contact.", 'disciple_tools' ) ?></p>
       <ul>
-            <?php php//@// TODO: simplify this list by possibly using foreach statements ?>
+            <?php //@// TODO: simplify this list by possibly using foreach statements ?>
             <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["contact_name"]; ?>
             <li><strong><?php esc_html_e( "Contact Name", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "The name of the contact is searchable and can be used to help you filter your contacts in the Contacts List page.", 'disciple_tools' ) ?></li>
             <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["overall_status"]; ?>
@@ -262,7 +262,7 @@
                 <?php endforeach; ?>
         </ul>
 
-        <?php //@// TODO:  ?>
+        <?php //@// TODO: is there a better way to do this list  ?>
         <h4><?php esc_html_e( "Group Connections", 'disciple_tools' ) ?></h4>
         <p><?php esc_html_e( "Connections this group has with other groups in this system.", 'disciple_tools' ) ?></p>
         <!-- <?php //echo esc_html( $field["name"] ) ?> list -->
