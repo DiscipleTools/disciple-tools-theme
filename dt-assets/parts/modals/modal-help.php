@@ -222,13 +222,13 @@
     <!--  Group type  -->
     <div class="help-section" id="group-type-help-text" style="display: none">
         <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_type"]; ?>
-      <h4><?php echo esc_html( $field["name"] ) ?></h4>
-      <p><?php echo esc_html( $field["description"] ) ?></p>
+        <h4><?php echo esc_html( $field["name"] ) ?></h4>
+        <p><?php echo esc_html( $field["description"] ) ?></p>
         <!-- <?php echo esc_html( $field["name"] ) ?> list -->
         <ul>
-                <?php foreach ( $field["default"] as $option ): ?>
-                    <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ) ?? "" ?></li>
-                <?php endforeach; ?>
+            <?php foreach ( $field["default"] as $option ): ?>
+                <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ?? "" ) ?></li>
+            <?php endforeach; ?>
         </ul>
     </div>
 
@@ -257,9 +257,9 @@
         <p><?php echo esc_html( $field["description"] ) ?></p>
         <!-- <?php echo esc_html( $field["name"] ) ?> list -->
         <ul>
-                <?php foreach ( $field["default"] as $option ): ?>
-                <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ) ?? "" ?></li>
-                <?php endforeach; ?>
+            <?php foreach ( $field["default"] as $option ): ?>
+                <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ?? "" ) ?></li>
+            <?php endforeach; ?>
         </ul>
 
         <?php //@// TODO: is there a better way to do this list  ?>
@@ -402,23 +402,23 @@
 
     <!--  Contact name -->
     <div class="help-section" id="contact-name-help-text" style="display: none">
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["contact_name"]; ?>
-        <h3><?php echo esc_html( $field["name"] ) ?></h3>
-        <p><?php echo esc_html( $field["description"] ) ?></p>
+<!--        --><?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["contact_name"]; ?>
+<!--        <h3>--><?php //echo esc_html( $field["name"] ) ?><!--</h3>-->
+<!--        <p>--><?php //echo esc_html( $field["description"] ) ?><!--</p>-->
     </div>
 
     <!--  Contact phone -->
     <div class="help-section" id="phone-help-text" style="display: none">
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["phone"]; ?>
-        <h3><?php echo esc_html( $field["name"] ) ?></h3>
-        <p><?php echo esc_html( $field["description"] ) ?></p>
+<!--        --><?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["phone"]; ?>
+<!--        <h3>--><?php //echo esc_html( $field["name"] ) ?><!--</h3>-->
+<!--        <p>--><?php //echo esc_html( $field["description"] ) ?><!--</p>-->
     </div>
 
     <!--  Contact email -->
     <div class="help-section" id="email-help-text" style="display: none">
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["email"]; ?>
-        <h3><?php echo esc_html( $field["name"] ) ?></h3>
-        <p><?php echo esc_html( $field["description"] ) ?></p>
+<!--        --><?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["email"]; ?>
+<!--        <h3>--><?php //echo esc_html( $field["name"] ) ?><!--</h3>-->
+<!--        <p>--><?php //echo esc_html( $field["description"] ) ?><!--</p>-->
     </div>
 
     <!--  New Group -->
@@ -429,9 +429,9 @@
 
     <!--  Group name -->
     <div class="help-section" id="group-name-help-text" style="display: none">
-        <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_name"]; ?>
-        <h3><?php echo esc_html( $field["name"] ) ?></h3>
-        <p><?php echo esc_html( $field["description"] ) ?></p>
+<!--        --><?php //$field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_name"]; ?>
+<!--        <h3>--><?php //echo esc_html( $field["name"] ) ?><!--</h3>-->
+<!--        <p>--><?php //echo esc_html( $field["description"] ) ?><!--</p>-->
     </div>
 
     <!--  Your Profile -->
@@ -466,17 +466,22 @@
         <p><?php esc_html_e( "This availability feature allows you the user to set a start date and end date to schedule dates when you will be unavailable e.g. you are traveling or on vacation, so the Dispatcher will know your availability to receive new contacts.", 'disciple_tools' ) ?></p>
     </div>
 
-    <!-- documentation link -->
-    <div class="help-more">
-        <h5><?php esc_html_e( "Need more help?", 'disciple_tools' ) ?></h5>
-        <a class="button small" id="docslink" href="https://disciple-tools.readthedocs.io/en/latest/index.html"><?php esc_html_e( 'Read the documentation', 'disciple_tools' )?></a>
-    </div>
 
     <!-- close -->
-    <div class="grid-x">
-        <button class="button" data-close aria-label="Close reveal" type="button">
-            <?php esc_html_e( 'Close', 'disciple_tools' )?>
-        </button>
+    <div class="grid-x grid-padding-x">
+        <div class="cell small-4">
+            <h5>&nbsp;</h5>
+            <button class="button small" data-close aria-label="Close reveal" type="button">
+                <?php esc_html_e( 'Close', 'disciple_tools' )?>
+            </button>
+        </div>
+        <div class="cell small-8">
+            <!-- documentation link -->
+            <div class="help-more">
+                <h5><?php esc_html_e( "Need more help?", 'disciple_tools' ) ?></h5>
+                <a class="button small" id="docslink" href="https://disciple-tools.readthedocs.io/en/latest/index.html"><?php esc_html_e( 'Read the documentation', 'disciple_tools' )?></a>
+            </div>
+        </div>
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
