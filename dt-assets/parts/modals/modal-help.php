@@ -458,6 +458,7 @@
         <li><?php esc_html_e( "Notifications Turned Off: The toggle will appear grey.", 'disciple_tools' ) ?></li>
         </ul>
         <p><?php esc_html_e( "Some of the types of notifications cannot be adjusted because they are required by the system.", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system.", 'disciple_tools' ) ?></p>
     </div>
 
     <!--  Your availability -->
@@ -466,6 +467,17 @@
         <p><?php esc_html_e( "This availability feature allows you the user to set a start date and end date to schedule dates when you will be unavailable e.g. you are traveling or on vacation, so the Dispatcher will know your availability to receive new contacts.", 'disciple_tools' ) ?></p>
     </div>
 
+    <!--   Notifications page -->
+    <div class="help-section" id="notifications-template-help-text" style="display: none">
+        <h3><?php esc_html_e( "Notifications Page", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records.", 'disciple_tools' ) ?></p>
+        <h4><?php esc_html_e( "All / Unread", 'disciple_tools' ) ?></h4>
+        <p><?php esc_html_e( "Click the All button or the  Unread button to adjust the list of notifcations.", 'disciple_tools' ) ?></p>
+        <h4><?php esc_html_e( "Mark All as Read", 'disciple_tools' ) ?></h4>
+        <p><?php esc_html_e( "Click the Mark All as Read link to quickly adjust all the messages that they have all been read.", 'disciple_tools' ) ?></p>
+        <h4><?php esc_html_e( "Settings", 'disciple_tools' ) ?></h4>
+        <p><?php esc_html_e( "Click the Settings link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system.", 'disciple_tools' ) ?></p>
+    </div>
 
     <!-- close -->
     <div class="grid-x grid-padding-x">
