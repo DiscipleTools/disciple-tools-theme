@@ -46,8 +46,10 @@ function disciple_tools_off_canvas_nav() {
     ?>
     <ul class="vertical menu sticky is-stuck is-at-top" data-accordion-menu>
 
-        <li>
-            <span class="title"><?php esc_html_e( 'Disciple Tools', 'disciple_tools' )  ?></span>
+        <li class="nav-title">
+            <div>
+                <span class="title"><?php esc_html_e( 'Disciple Tools', 'disciple_tools' )  ?></span>
+            </div>
             <hr/>
         </li>
 
@@ -112,4 +114,3 @@ function disciple_tools_footer_links() {
         ]
     );
 } /* End Footer Menu */
-
