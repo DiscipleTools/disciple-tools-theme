@@ -267,17 +267,12 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item">
             <!--                    <div class="bordered-box last-typeahead-in-section">-->
 
-                              
                                 <div class="bordered-box"><h3 class="section-header"><?php esc_html_e( "Connections", 'disciple_tools' ) ?>
                                         <button class="help-button float-right" data-section="connections-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
                                     </h3>
-                                    <div class="section-subheader"><?php esc_html_e( "Groups", 'disciple_tools' ) ?>
-                                        <button class="help-button" data-section="groups-help-text">
-                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                        </button>
-                                    </div>
+                                    <div class="section-subheader"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></div>
 
                                   <var id="groups-result-container" class="result-container"></var>
                                     <div id="groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
@@ -487,9 +482,6 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
                                     <div class="section-subheader">
                                         <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
-                                        <button class="help-button" data-section="tags-help-text">
-                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                        </button>
                                     </div>
                                     <div class="tags">
                                         <var id="tags-result-container" class="result-container"></var>

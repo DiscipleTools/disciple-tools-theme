@@ -56,9 +56,14 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 
                     <div class="bordered-box cell" id="profile" data-magellan-target="profile">
 
-                        <button class="float-right" data-open="edit-profile"><i class="fi-pencil"></i> <?php esc_html_e( 'Edit', 'disciple_tools' )?></button>
+                        <button class="help-button float-right" data-section="profile-help-text">
+                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                        </button>
 
                         <span class="section-header"><?php esc_html_e( 'Your Profile', 'disciple_tools' )?></span>
+
+                        <button class="float-right" data-open="edit-profile"><i class="fi-pencil"></i> <?php esc_html_e( 'Edit', 'disciple_tools' )?></button>
+
                         <hr size="1" style="max-width:100%"/>
 
 
@@ -175,6 +180,9 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 
                 <div class="small-12 cell">
                     <div class="bordered-box cell" id="locations" data-magellan-target="locations">
+                        <button class="help-button float-right" data-section="locations-help-text">
+                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                        </button>
                         <span class="section-header"><?php esc_html_e( 'Locations', 'disciple_tools' )?></span>
                         <hr size="1" style="max-width:100%"/>
                         <!-- Geocoding -->
@@ -188,6 +196,9 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                 <div class="small-12 cell">
 
                     <div class="bordered-box cell" id="notifications" data-magellan-target="notifications">
+                        <button class="help-button float-right" data-section="notifications-help-text">
+                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                        </button>
                         <span class="section-header"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></span>
                         <hr size="1" style="max-width:100%"/>
 
@@ -254,6 +265,9 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                 <div class="small-12 cell">
 
                     <div class="bordered-box cell" id="availability" data-magellan-target="availability">
+                      <button class="help-button float-right" data-section="availability-help-text">
+                          <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                      </button>
 
                         <!-- section header-->
                         <span class="section-header"><?php esc_html_e( 'Availability', 'disciple_tools' )?></span>

@@ -74,8 +74,12 @@ declare(strict_types=1);
 
             <aside class="cell padding-bottom show-for-small-only">
                 <div class="bordered-box" style="padding-top:5px;padding-bottom:5px">
+                    <label class="section-header"><?php esc_html_e( 'Groups Filters', 'disciple_tools' )?>
+                    <button class="help-button float-right" data-section="filters-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button></label>
                     <div class="js-list-filter filter--closed">
-                        <div class="filter__title js-list-filter-title" style="margin-bottom:0"><?php esc_html_e( "Filters", "disciple_tools" ); ?>
+                        <div class="filter__title js-list-filter-title" style="margin-bottom:0"><?php esc_html_e( "Default Filters", "disciple_tools" ); ?>
                             <div style="display: inline-block" class="loading-spinner active"></div>
                         </div>
                         <div class="js-filters-accordion"></div>
@@ -84,8 +88,12 @@ declare(strict_types=1);
             </aside>
 
             <div class="reveal js-filters-modal" id="filters-modal">
-                <div class="js-filters-modal-content">
-                    <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( "Group Filters", "disciple_tools" ); ?></h5>
+                <div class="js-filters-modal-content"><!-- archive-groups -->
+                  <label class="section-header hide-for-small-only"><?php esc_html_e( 'Groups Filters', 'disciple_tools' )?>
+                  <button class="help-button float-right" data-section="filters-help-text">
+                      <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                  </button></label>
+                    <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( "Default Filters", "disciple_tools" ); ?></h5>
                     <!-- @todo re-enable when we have more group filters-->
 <!--                    <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion">-->
 <!--                        <li class="accordion-item" data-accordion-item data-id="my">-->
