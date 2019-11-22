@@ -222,13 +222,13 @@
     <!--  Group type  -->
     <div class="help-section" id="group-type-help-text" style="display: none">
         <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_type"]; ?>
-      <h4><?php echo esc_html( $field["name"] ) ?></h4>
-      <p><?php echo esc_html( $field["description"] ) ?></p>
+        <h4><?php echo esc_html( $field["name"] ) ?></h4>
+        <p><?php echo esc_html( $field["description"] ) ?></p>
         <!-- <?php echo esc_html( $field["name"] ) ?> list -->
         <ul>
-                <?php foreach ( $field["default"] as $option ): ?>
-                    <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ) ?? "" ?></li>
-                <?php endforeach; ?>
+            <?php foreach ( $field["default"] as $option ): ?>
+                <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ?? "" ) ?></li>
+            <?php endforeach; ?>
         </ul>
     </div>
 
@@ -257,9 +257,9 @@
         <p><?php echo esc_html( $field["description"] ) ?></p>
         <!-- <?php echo esc_html( $field["name"] ) ?> list -->
         <ul>
-                <?php foreach ( $field["default"] as $option ): ?>
-                <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ) ?? "" ?></li>
-                <?php endforeach; ?>
+            <?php foreach ( $field["default"] as $option ): ?>
+                <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ?? "" ) ?></li>
+            <?php endforeach; ?>
         </ul>
 
         <?php //@// TODO: is there a better way to do this list  ?>
@@ -402,23 +402,23 @@
 
     <!--  Contact name -->
     <div class="help-section" id="contact-name-help-text" style="display: none">
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["contact_name"]; ?>
-        <h3><?php echo esc_html( $field["name"] ) ?></h3>
-        <p><?php echo esc_html( $field["description"] ) ?></p>
+<!--        --><?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["contact_name"]; ?>
+<!--        <h3>--><?php //echo esc_html( $field["name"] ) ?><!--</h3>-->
+<!--        <p>--><?php //echo esc_html( $field["description"] ) ?><!--</p>-->
     </div>
 
     <!--  Contact phone -->
     <div class="help-section" id="phone-help-text" style="display: none">
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["phone"]; ?>
-        <h3><?php echo esc_html( $field["name"] ) ?></h3>
-        <p><?php echo esc_html( $field["description"] ) ?></p>
+<!--        --><?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["phone"]; ?>
+<!--        <h3>--><?php //echo esc_html( $field["name"] ) ?><!--</h3>-->
+<!--        <p>--><?php //echo esc_html( $field["description"] ) ?><!--</p>-->
     </div>
 
     <!--  Contact email -->
     <div class="help-section" id="email-help-text" style="display: none">
-        <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["email"]; ?>
-        <h3><?php echo esc_html( $field["name"] ) ?></h3>
-        <p><?php echo esc_html( $field["description"] ) ?></p>
+<!--        --><?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["email"]; ?>
+<!--        <h3>--><?php //echo esc_html( $field["name"] ) ?><!--</h3>-->
+<!--        <p>--><?php //echo esc_html( $field["description"] ) ?><!--</p>-->
     </div>
 
     <!--  New Group -->
@@ -429,9 +429,9 @@
 
     <!--  Group name -->
     <div class="help-section" id="group-name-help-text" style="display: none">
-        <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_name"]; ?>
-        <h3><?php echo esc_html( $field["name"] ) ?></h3>
-        <p><?php echo esc_html( $field["description"] ) ?></p>
+<!--        --><?php //$field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_name"]; ?>
+<!--        <h3>--><?php //echo esc_html( $field["name"] ) ?><!--</h3>-->
+<!--        <p>--><?php //echo esc_html( $field["description"] ) ?><!--</p>-->
     </div>
 
     <!--  Your Profile -->
