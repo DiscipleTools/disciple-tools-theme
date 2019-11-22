@@ -209,6 +209,13 @@ nav.second-bar {
     }
 }
 
+#off-canvas ul.is-at-top li.nav-title div {
+    margin-left: 1rem;
+}
+#off-canvas ul.is-at-top li.nav-title span.title {
+    padding-left: 0;
+}
+
 .menu {
     input {
         margin-left: 1rem;
