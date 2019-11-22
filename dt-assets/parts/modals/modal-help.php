@@ -466,17 +466,22 @@
         <p><?php esc_html_e( "This availability feature allows you the user to set a start date and end date to schedule dates when you will be unavailable e.g. you are traveling or on vacation, so the Dispatcher will know your availability to receive new contacts.", 'disciple_tools' ) ?></p>
     </div>
 
-    <!-- documentation link -->
-    <div class="help-more">
-        <h5><?php esc_html_e( "Need more help?", 'disciple_tools' ) ?></h5>
-        <a class="button small" id="docslink" href="https://disciple-tools.readthedocs.io/en/latest/index.html"><?php esc_html_e( 'Read the documentation', 'disciple_tools' )?></a>
-    </div>
 
     <!-- close -->
-    <div class="grid-x">
-        <button class="button" data-close aria-label="Close reveal" type="button">
-            <?php esc_html_e( 'Close', 'disciple_tools' )?>
-        </button>
+    <div class="grid-x grid-padding-x">
+        <div class="cell small-4">
+            <h5>&nbsp;</h5>
+            <button class="button small" data-close aria-label="Close reveal" type="button">
+                <?php esc_html_e( 'Close', 'disciple_tools' )?>
+            </button>
+        </div>
+        <div class="cell small-8">
+            <!-- documentation link -->
+            <div class="help-more">
+                <h5><?php esc_html_e( "Need more help?", 'disciple_tools' ) ?></h5>
+                <a class="button small" id="docslink" href="https://disciple-tools.readthedocs.io/en/latest/index.html"><?php esc_html_e( 'Read the documentation', 'disciple_tools' )?></a>
+            </div>
+        </div>
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
