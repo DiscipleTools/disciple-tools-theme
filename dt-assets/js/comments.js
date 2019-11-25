@@ -160,10 +160,23 @@ jQuery(document).ready(function($) {
 
     let comment_html = comment.comment_content // eg: "Tom &amp; Jerry"
 
+
+/**
+ * .DT - while previewing submitted comments, enhance the presentation of special characters with a helper function below
+ */
+
+function unescapeHtml(safe) {
+  return safe.replace(/&amp;/g, '&')
+      //.replace(/&lt;/g, '<')
+      //.replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#039;/g, "'");
+}
+ 
     // textarea deos not render HTML, so using _.unescape is safe. Note that
     // _.unescape will silently ignore invalid HTML, for instance,
     // _.unescape("Tom & Jerry") will return "Tom & Jerry"
-    $('#comment-to-edit').val(_.unescape(comment_html))
+    $('#comment-to-edit').val(unescapeHtml(comment_html));
 
     $('.edit-comment.callout').hide()
     $('#edit-comment-modal').foundation('open')
