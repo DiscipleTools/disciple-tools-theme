@@ -116,7 +116,6 @@ gulp.task('styles', function () {
     .pipe(plugin.sourcemaps.init())
     .pipe(plugin.sass())
     .pipe(plugin.autoprefixer({
-      browsers: ['last 2 versions'],
       cascade: false
     }))
     .pipe(rename({ suffix: '.min' }))
