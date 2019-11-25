@@ -1,5 +1,5 @@
 <?php
-(function () {
+( function () {
     ?>
 
     <div class="grid-y">
@@ -27,7 +27,7 @@
                     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                     ?>
 
-                    <ul class="dropdown menu" data-dropdown-menu $dropdownmenu-arrow-color="white">
+                    <ul class="dropdown menu" data-dropdown-menu style="display: inline-block">
                         <li style="border-radius: 5px">
                             <a class="button menu-white-dropdown-arrow"
                                style="background-color: #00897B; color: white;">
@@ -54,11 +54,11 @@
                                 ?>
                             </ul>
                         </li>
-                        <button class="help-button" data-section="quick-action-help-text">
-                            <img class="help-icon"
-                                 src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                        </button>
                     </ul>
+                    <button class="help-button" data-section="quick-action-help-text">
+                        <img class="help-icon"
+                             src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
                 <?php endif; ?>
 
 
@@ -91,10 +91,7 @@
                     $post_type = get_post_type();
                     $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );
                     foreach ( $sections as $section ) :
-                        if ( isset( $section["key"] ) && isset( $section["label"] ) ) :
-                            $class = (isset( $section["selected_by_default"] ) && $section["selected_by_default"] === true) ?
-                                "selected-select-button" : "empty-select-button"
-                            ?>
+                        if ( isset( $section["key"] ) && isset( $section["label"] ) ) : ?>
                             <li class="tabs-title">
                                 <label for="tab-button-<?php echo esc_html( $section["key"] ) ?>">
                                     <input type="checkbox"
@@ -102,7 +99,7 @@
                                            id="tab-button-<?php echo esc_html( $section["key"] ) ?>"
                                            data-id="<?php echo esc_html( $section["key"] ) ?>"
                                            class="tabs-section"
-                                        <?php echo esc_html( (isset( $section["selected_by_default"] ) && $section["selected_by_default"] === true) ? 'checked' : '' ) ?>
+                                        <?php echo esc_html( ( isset( $section["selected_by_default"] ) && $section["selected_by_default"] === true ) ? 'checked' : '' ) ?>
                                     >
                                     <span class="tab-button-label"
                                           data-id="<?php echo esc_html( $section["key"] ) ?>"> <?php echo esc_html( $section["label"] ) ?></span>
@@ -171,4 +168,4 @@
 
 
     <?php
-})();
+} )();
