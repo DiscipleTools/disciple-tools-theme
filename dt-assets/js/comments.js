@@ -369,12 +369,11 @@ jQuery(document).ready(function($) {
        * that. This is not sufficient for malicious input, but hopefully we
        * can trust the contents of the database to have been sanitized
        * thanks to wp_new_comment . */
-      
-      // .DT lets strip out the tags provided from the submited comment and treat it as pure text.  We should use text() when dealing with untrusted input, wherever possible.
+    
+        // .DT lets strip out the tags provided from the submited comment and treat it as pure text.  We should use text() when dealing with untrusted input, wherever possible.
        //comment.comment_content = $("<div>").html(comment.comment_content).html()
        comment.comment_content = $("<div>").html(comment.comment_content).text()
-      
-    _.forOwn(typesCount, (val, key)=>{  
+
       if (!typesCount[comment.comment_type]){
         typesCount[comment.comment_type] = 0;
       }
