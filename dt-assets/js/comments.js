@@ -170,6 +170,7 @@ function unescapeHtml(safe) {
       //.replace(/&lt;/g, '<')
       //.replace(/&gt;/g, '>')
       .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
       .replace(/&#039;/g, "'");
 }
  
@@ -372,6 +373,10 @@ function unescapeHtml(safe) {
     let typesCount = {};
     commentData.forEach(comment => {
       comment.date = moment(comment.comment_date_gmt + "Z")
+
+      //.DT - lets make an initial attempt to trip out specific tags in comment string.
+     comment.comment_content = comment.comment_content.replace(/&lt;/g,'').replace(/&gt;/g,'').replace('console.log','');
+
       if(comment.comment_content.match(/function|script/)) {
         comment.comment_content = _.escape(comment.comment_content)
       }
