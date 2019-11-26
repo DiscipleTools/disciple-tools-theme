@@ -9,7 +9,6 @@ if ( ! wp_next_scheduled( 'reminder_notifications' ) ) {
     wp_schedule_event( time(), 'hourly', 'reminder_notifications' );
 }
 add_action( 'reminder_notifications', 'set_reminder_notifications' );
-add_action( 'init', 'set_reminder_notifications' );
 add_filter( 'dt_custom_notification_note', 'dt_custom_notification_note', 10, 2 );
 
 function set_reminder_notifications(){
