@@ -491,6 +491,11 @@ class Disciple_Tools_Groups_Post_Type
             'type'        => 'location',
             'default'     => [],
         ];
+        $fields['reminders'] = [
+            'name' => __( 'Reminders', 'disciple_tools' ),
+            'description' => __( 'Reminders related to this group.', 'disciple_tools' ),
+            'type' => 'post_user_meta',
+        ];
 
 
         $id = isset( $post->ID ) ? $post->ID : $post_id;

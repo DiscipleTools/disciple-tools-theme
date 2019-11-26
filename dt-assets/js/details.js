@@ -218,6 +218,61 @@ jQuery(document).ready(function($) {
   // details_section_dom.html(details_fields_html)
 
 
+  //open the create reminder modal
+  $('#open-set-reminder').on( "click", function () {
+    $('.js-add-reminder-form .error-text').empty();
+    let reminders = _.sortBy(post.reminders || [], ['date']).reverse()
+    let html = ``
+    reminders.forEach(reminder=>{
+      html += `<li style="${reminder.value.status === 'reminder_sent' ? 'text-decoration:line-through' : ''}">
+        <strong>${_.escape( moment(reminder.date).format("MMM D YYYY") )}</strong>: ${_.escape( reminder.value.note )}
+      </li>`
+    })
+    $('.js-add-reminder-form .existing-reminders').html(html)
+    $('#reminders-modal').foundation('open');
+  })
+  //init the datepicker
+  $('#create-reminder-date').datepicker({
+    dateFormat: 'yy-mm-dd',
+    changeMonth: true,
+    changeYear: true,
+    yearRange: "1900:2050",
+  })
+  let reminder_note = $('#reminders-modal #create-reminder-note')
+  let reminder_date = $('#reminders-modal #create-reminder-date')
+  //submit the create reminder form
+  $(".js-add-reminder-form").on("submit", function(e) {
+    e.preventDefault();
+    $("#create-reminder")
+      .attr("disabled", true)
+      .addClass("loading");
+    let date = reminder_date.datepicker('getDate');
+    let note = reminder_note.val()
+    API.update_post(post_type, post_id, {
+      "reminders":{
+        values: [
+          {
+            date: date,
+            value: {note: note}
+          }
+        ]
+      }
+    }).then( resp => {
+      post = resp
+      $("#create-reminder")
+      .attr("disabled", false)
+      .removeClass("loading");
+      reminder_note.val('')
+      reminder_date.datepicker('setDate', null);
+      $('#reminders-modal').foundation('close');
+    }).catch(err => {
+      $("#create-reminder")
+      .attr("disabled", false)
+      .removeClass("loading");
+      $('.js-add-reminder-form .error-text').html(_.escape(_.get(err, "responseJSON.message")));
+      console.error(err)
+    })
+  })
 
   //leave at the end of this file
   masonGrid.masonry({

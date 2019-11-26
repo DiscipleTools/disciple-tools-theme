@@ -206,7 +206,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         isset( $contact["requires_update"] ) && $contact["requires_update"] === true,
         in_array( $current_user_id, $following ),
         isset( $contact["assigned_to"]["id"] ) ? $contact["assigned_to"]["id"] == $current_user_id : false,
-        $dispatcher_actions
+        $dispatcher_actions,
+        true
     ); ?>
 
 <!--    <div id="errors"></div>-->
@@ -525,6 +526,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'share' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-group' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'revert' ); ?>
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'reminders' ); ?>
 
 
     <div class="reveal" id="closed-contact-modal" data-reveal>

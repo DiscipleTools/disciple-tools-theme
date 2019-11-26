@@ -10,6 +10,7 @@ declare(strict_types=1);
  * @param bool $following
  * @param bool $disable_following_toggle_function
  * @param array $dispatcher_actions
+ * @param bool $reminder
  */
 function dt_print_details_bar(
     bool $share_button = false,
@@ -18,7 +19,8 @@ function dt_print_details_bar(
     bool $update_needed = false,
     bool $following = false,
     bool $disable_following_toggle_function = false,
-    array $dispatcher_actions = []
+    array $dispatcher_actions = [],
+    bool $reminder = false
 ) {
     ?>
 
@@ -64,7 +66,15 @@ function dt_print_details_bar(
                         <strong><?php the_title_attribute(); ?></strong>
                     </div>
                     <div class="cell small-4 align-right grid-x grid-margin-x">
-                        <div class="cell shrink center-items ">
+                        <?php if ( $reminder ) : ?>
+                        <div class="cell shrink center-items">
+                            <button id="open-set-reminder" class="button">
+                                <?php esc_html_e( 'Reminders', 'disciple_tools' ); ?>
+                                <i class="fi-clock"></i>
+                            </button>
+                        </div>
+                        <?php endif; ?>
+                        <div class="cell shrink center-items">
                         <?php if ( $disable_following_toggle_function ) : ?>
                             <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
                         <?php else :
