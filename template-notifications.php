@@ -19,7 +19,7 @@ get_header(); ?>
 
 </script>
 
-<div id="content">
+<div id="content" class="notifications-page">
 
     <div id="inner-content" class="grid-x grid-margin-x">
 
@@ -38,7 +38,7 @@ get_header(); ?>
                                                                      style="display:none;">&nbsp;</span>
                                 <strong><?php esc_html_e( 'New', 'disciple_tools' )?></strong></div>
                             <div class="small-4 medium-2 cell">
-                                <div class="expanded small button-group" style="text-align:center;">
+                                <div class="expanded small button-group">
                                     <button id="all" type="button"
                                             onclick="toggle_buttons('all'); get_notifications( all = true, true, );"
                                             class="button hollow"><?php esc_html_e( 'All', 'disciple_tools' )?>
