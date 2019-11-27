@@ -13,7 +13,7 @@ $dt_contacts = new Disciple_Tools_Contacts();
 $dt_duplicates = wp_unslash( $dt_contacts->get_all_duplicates() );
 ?>
 
-    <div id="content">
+    <div id="content" class="template-view-duplicates">
 
         <div id="inner-content" class="grid-x grid-margin-x">
 

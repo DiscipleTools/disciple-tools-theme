@@ -10,7 +10,7 @@ get_header();
 $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
 ?>
 
-<div id="content">
+<div id="content" class="template-groups-new">
     <div id="inner-content" class="grid-x grid-margin-x">
         <div class="large-2 medium-12 small-12 cell"></div>
 

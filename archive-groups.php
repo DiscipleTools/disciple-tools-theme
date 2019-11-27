@@ -62,7 +62,7 @@ declare(strict_types=1);
     </nav>
 
 
-    <div id="content">
+    <div id="content" class="archive-groups">
 
         <div id="inner-content" class="grid-x grid-margin-x">
 

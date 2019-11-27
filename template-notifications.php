@@ -19,7 +19,7 @@ get_header(); ?>
 
 </script>
 
-<div id="content">
+<div id="content" class="template-notifications">
 
     <div id="inner-content" class="grid-x grid-margin-x">
 
