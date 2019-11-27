@@ -180,11 +180,12 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['assigned_to'] = [
             'name'        => __( 'Assigned To', 'disciple_tools' ),
-            'description' => __( 'Select the main person who is responsible for reporting on this contact', 'disciple_tools' ),
+            'description' => __( 'Select the main person who is responsible for reporting on this contact. (a user not a contact)', 'disciple_tools' ),
             'type'        => 'user_select',
             'default'     => '',
             'section'     => 'status',
         ];
+
         // Status Section
         $fields['overall_status'] = [
             'name'        => __( 'Contact Status', 'disciple_tools' ),
@@ -193,7 +194,7 @@ class Disciple_Tools_Contact_Post_Type
             'default'     => [
                 'new'   => [
                     "label" => _x( 'New Contact', 'Contact Status', 'disciple_tools' ),
-                    "description" => _x( "The contact is new in the system", "Contact Status", 'disciple_tools' ),
+                    "description" => _x( "The contact is new in the system.", "Contact Status", 'disciple_tools' ),
                     "color" => "#F43636",
                 ],
                 'unassignable' => [
@@ -234,23 +235,45 @@ class Disciple_Tools_Contact_Post_Type
         //these fields must stay in order of importance
         $fields['seeker_path'] = [
             'name'        => __( 'Seeker Path', 'disciple_tools' ),
-            'description' => '',
+            'description' => 'Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward.',
             'type'        => 'key_select',
             'default'     => [
-                'none'        => [ "label" => __( 'Contact Attempt Needed', 'disciple_tools' ) ],
-                'attempted'   => [ "label" => __( 'Contact Attempted', 'disciple_tools' ) ],
-                'established' => [ "label" => __( 'Contact Established', 'disciple_tools' ) ],
-                'scheduled'   => [ "label" => __( 'First Meeting Scheduled', 'disciple_tools' ) ],
-                'met'         => [ "label" => __( 'First Meeting Complete', 'disciple_tools' ) ],
-                'ongoing'     => [ "label" => __( 'Ongoing Meetings', 'disciple_tools' ) ],
-                'coaching'    => [ "label" => __( 'Being Coached', 'disciple_tools' ) ],
+                'none'        => [
+                  "label" => __( 'Contact Attempt Needed', 'disciple_tools' ),
+                  "description" => _x( "Contact with this contact needs to be attempted.", "Contact Attempt Needed", 'disciple_tools' ),
+                ],
+                'attempted'   => [
+                  "label" => __( 'Contact Attempted', 'disciple_tools' ),
+                  "description" => _x( "Contact with this contact was attempted.", "Contact Attempted", 'disciple_tools' ),
+                ],
+                'established' => [
+                  "label" => __( 'Contact Established', 'disciple_tools' ),
+                  "description" => _x( "Contact with this contact was established.", "Contact Established", 'disciple_tools' ),
+                ],
+                'scheduled'   => [
+                  "label" => __( 'First Meeting Scheduled', 'disciple_tools' ),
+                  "description" => _x( "The first meeting with this contact has been scheduled.", "First Meeting Scheduled", 'disciple_tools' ),
+                ],
+                'met'         => [
+                  "label" => __( 'First Meeting Complete', 'disciple_tools' ),
+                  "description" => _x( "The first meeting with this contact has been completed.", "First Meeting Complete", 'disciple_tools' ),
+                ],
+                'ongoing'     => [
+                  "label" => __( 'Ongoing Meetings', 'disciple_tools' ),
+                  "description" => _x( "This contact is continuing in meetings.", "Ongoing Meetings", 'disciple_tools' ),
+                ],
+                'coaching'    => [
+                  "label" => __( 'Being Coached', 'disciple_tools' ),
+                  "description" => _x( "This contact is being coached.", "Being Coached", 'disciple_tools' ),
+                ],
             ],
             'section'     => 'status',
             'customizable' => 'add_only'
         ];
+
         $fields['requires_update'] = [
             'name'        => __( 'Requires Update', 'disciple_tools' ),
-            'description' => '',
+            'description' => __( 'The contact requires an update.', 'disciple_tools' ),
             'type'        => 'boolean',
             'default'     => false,
             'section'     => 'status',
@@ -271,28 +294,54 @@ class Disciple_Tools_Contact_Post_Type
             }
         }
 
-
         $fields["milestones"] = [
             "name"    => __( 'Faith Milestones', 'disciple_tools' ),
+            "description" => __( 'Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order.', 'disciple_tools' ),
             "type"    => "multi_select",
             "default" => [
-                "milestone_has_bible"     => [ "label" => __( 'Has Bible', 'disciple_tools' ) ],
-                "milestone_reading_bible" => [ "label" => __( 'Reading Bible', 'disciple_tools' ) ],
-                "milestone_belief"        => [ "label" => __( 'States Belief', 'disciple_tools' ) ],
-                "milestone_can_share"     => [ "label" => __( 'Can Share Gospel/Testimony', 'disciple_tools' ) ],
-                "milestone_sharing"       => [ "label" => __( 'Sharing Gospel/Testimony', 'disciple_tools' ) ],
-                "milestone_baptized"      => [ "label" => __( 'Baptized', 'disciple_tools' ) ],
-                "milestone_baptizing"     => [ "label" => __( 'Baptizing', 'disciple_tools' ) ],
-                "milestone_in_group"      => [ "label" => __( 'In Church/Group', 'disciple_tools' ) ],
-                "milestone_planting"      => [ "label" => __( 'Starting Churches', 'disciple_tools' ) ],
+                "milestone_has_bible"     => [
+                  "label" => __( 'Has Bible', 'disciple_tools' ),
+                  "description" => _x( "This contact has a bible.", "Has Bible", 'disciple_tools' ),
+                ],
+                "milestone_reading_bible" => [
+                  "label" => __( 'Reading Bible', 'disciple_tools' ),
+                  "description" => _x( "This contact is reading the bible.", "Reading Bible", 'disciple_tools' )
+                ],
+                "milestone_belief"        => [
+                  "label" => __( 'States Belief', 'disciple_tools' ),
+                  "description" => _x( "This contact states belief. i.e. they have repented and believed.", "States Belief", 'disciple_tools' ),
+                ],
+                "milestone_can_share"     => [
+                  "label" => __( 'Can Share Gospel/Testimony', 'disciple_tools' ),
+                  "description" => _x( "This contact has been trained to share the Gospel and their testimony.", "Can Share Gospel/Testimony", 'disciple_tools' ),
+                ],
+                "milestone_sharing"       => [
+                  "label" => __( 'Sharing Gospel/Testimony', 'disciple_tools' ),
+                  "description" => _x( "This contact is sharing the Gospel and their testimony.", "Sharing Gospel/Testimony", 'disciple_tools' ),
+                ],
+                "milestone_baptized"      => [
+                  "label" => __( 'Baptized', 'disciple_tools' ),
+                  "description" => _x( "This contact has been baptized.", "Baptized", 'disciple_tools' ),
+                ],
+                "milestone_baptizing"     => [
+                  "label" => __( 'Baptizing', 'disciple_tools' ),
+                  "description" => _x( "This contact is baptizing others.", "Baptizing", 'disciple_tools' ),
+                ],
+                "milestone_in_group"      => [
+                  "label" => __( 'In Church/Group', 'disciple_tools' ),
+                  "description" => _x( "This contact is in a church or group.", "In Church/Group", 'disciple_tools' ),
+                ],
+                "milestone_planting"      => [
+                  "label" => __( 'Starting Churches', 'disciple_tools' ),
+                  "description" => _x( "This contact is planting Churches.", "Starting Churches", 'disciple_tools' ),
+                ],
             ],
             "customizable" => "add_only"
         ];
 
-
         $fields['baptism_date'] = [
             'name'        => __( 'Baptism Date', 'disciple_tools' ),
-            'description' => 'The date the contact was baptised',
+            'description' => __( 'The date the contact was baptised. For metrics reporting, it is important to always note the day a person is baptised.', 'disciple_tools' ),
             'type'        => 'date',
             'default'     => '',
             'section'     => 'misc',
@@ -300,7 +349,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['baptism_generation'] = [
             'name'        => __( 'Baptism Generation', 'disciple_tools' ),
-            'description' => 'The generation of baptism',
+            'description' => __( 'The generation of baptism.', 'disciple_tools' ),
             'type'        => 'text',
             'default'     => '',
             'section'     => 'misc',
@@ -310,7 +359,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['gender'] = [
             'name'        => __( 'Gender', 'disciple_tools' ),
-            'description' => 'Male or Female',
+            'description' => __( 'Male or Female.', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'not-set' => [ "label" => '' ],
@@ -321,7 +370,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['age'] = [
             'name'        => __( 'Age', 'disciple_tools' ),
-            'description' => 'Age of contact',
+            'description' => __( 'Age range of contact.', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'not-set' => [ "label" => '' ],
@@ -335,16 +384,30 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields["reason_unassignable"] = [
             'name'        => __( 'Reason Not Ready', "disciple_tools" ),
-            'description' => 'The main reason the contact is not ready to be assigned to a user.',
+            'description' => __( 'The main reason the contact is not ready to be assigned to a user.', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
-                'none'         => [ "label" => '', ],
-                'insufficient' => [ "label" => __( 'Insufficient Contact Information', "disciple_tools" ) ],
-                'location'     => [ "label" => __( 'Unknown Location', "disciple_tools" ) ],
-                'media'        => [ "label" => __( 'Only wants media', "disciple_tools" ) ],
-                'outside_area' => [ "label" => __( 'Outside Area', "disciple_tools" ) ],
-                'needs_review' => [ "label" => __( 'Needs Review', "disciple_tools" ) ],
-                'awaiting_confirmation' => [ "label" => __( 'Waiting for Confirmation', "disciple_tools" ) ],
+                'none'         => [
+                    "label" => '',
+                ],
+                'insufficient' => [
+                    "label" => __( 'Insufficient Contact Information', "disciple_tools" )
+                ],
+                'location'     => [
+                    "label" => __( 'Unknown Location', "disciple_tools" )
+                ],
+                'media'        => [
+                    "label" => __( 'Only wants media', "disciple_tools" )
+                ],
+                'outside_area' => [
+                    "label" => __( 'Outside Area', "disciple_tools" )
+                ],
+                'needs_review' => [
+                    "label" => __( 'Needs Review', "disciple_tools" )
+                ],
+                'awaiting_confirmation' => [
+                    "label" => __( 'Waiting for Confirmation', "disciple_tools" )
+                ],
             ],
             'section'     => 'misc',
             'customizable' => 'all'
@@ -352,7 +415,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['reason_paused'] = [
             'name'        => __( 'Reason Paused' ),
-            'description' => 'The current main reason the contact is has been paused.',
+            'description' => __( 'The current main reason the contact is has been paused.', 'disciple_tools' ),
             'type'        => 'key_select',
             'default' => [
                 'none'                 => [ "label" => '' ],
@@ -371,7 +434,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['reason_closed'] = [
             'name'        => __( 'Reason Closed', 'disciple_tools' ),
-            'description' => 'The reason this contact has been closed',
+            'description' => __( 'The reason this contact has been closed', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'none'                 => [ "label" => '' ],
@@ -395,7 +458,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['accepted'] = [
             'name'        => __( 'Accepted', 'disciple_tools' ),
-            'description' => 'The assignment has been accepted',
+            'description' => __( 'The assignment has been accepted', 'disciple_tools' ),
             'type'        => 'boolean',
             'default'     => false,
             'section'     => 'status',
@@ -412,7 +475,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['sources'] = [
             'name'        => __( 'Sources', 'disciple_tools' ),
-            'description' => 'List of possible sources for this contact',
+            'description' => __( 'List of possible sources for this contact.', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => $sources_default,
             'section'     => 'misc',
@@ -421,7 +484,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields["source_details"] = [
             "name" => __( "Source Details", 'disciple_tools' ),
-            'description' => 'Type of source of this contact?',
+            'description' => __( 'Type of source of this contact.', 'disciple_tools' ),
             'type' => 'text',
             'default' => '',
             'section'     => 'misc',
@@ -430,7 +493,7 @@ class Disciple_Tools_Contact_Post_Type
         // contact buttons
         $fields['quick_button_no_answer'] = [
             'name'        => __( 'No Answer', 'disciple_tools' ),
-            'description' => 'Call was attempted by not answered',
+            'description' => __( 'Call was attempted by not answered', 'disciple_tools' ),
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
@@ -438,7 +501,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['quick_button_contact_established'] = [
             'name'        => __( 'Contact Established', 'disciple_tools' ),
-            'description' => 'Contact was successfully established',
+            'description' => __( 'Contact was successfully established', 'disciple_tools' ),
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
@@ -446,7 +509,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['quick_button_meeting_scheduled'] = [
             'name'        => __( 'Meeting Scheduled', 'disciple_tools' ),
-            'description' => 'A meeting has been scheduled',
+            'description' => __( 'A meeting has been scheduled', 'disciple_tools' ),
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
@@ -454,7 +517,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['quick_button_meeting_complete'] = [
             'name'        => __( 'Meeting Complete', 'disciple_tools' ),
-            'description' => 'A meeting was completed',
+            'description' => __( 'A meeting was completed', 'disciple_tools' ),
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
@@ -462,7 +525,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['quick_button_no_show'] = [
             'name'        => __( 'Meeting No-show', 'disciple_tools' ),
-            'description' => 'Did not attend a scheduled meeting',
+            'description' => __( 'Did not attend a scheduled meeting', 'disciple_tools' ),
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
@@ -471,14 +534,14 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['corresponds_to_user'] = [
             'name' => __( 'Corresponds to user', 'disciple_tools' ),
-            'description' => 'The id of the user this contact corresponds to',
+            'description' => __( 'The id of the user this contact corresponds to', 'disciple_tools' ),
             'type' => 'number',
             'default' => 0,
             'section' => 'misc'
         ];
         $fields["type"] = [
             'name'        => __( 'Contact type', 'disciple_tools' ),
-            'description' => 'Type of contact',
+            'description' => __( 'Type of contact', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'media'    => [ "label" => __( 'Media', 'disciple_tools' ) ],
@@ -491,28 +554,28 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["last_modified"] =[
             'name' => __( 'Last modified', 'disciple_tools' ),
-            'description' => 'The time of the last modification',
+            'description' => __( 'The time of the last modification', 'disciple_tools' ),
             'type' => 'number',
             'default' => 0,
             'section' => 'admin'
         ];
         $fields["duplicate_data"] = [
             "name" => __( 'Duplicates', 'disciple_tools' ),
-            'description' => 'Possible contact duplicates',
+            'description' => __( 'Possible contact duplicates', 'disciple_tools' ),
             'type' => 'array',
             'default' => [],
             'section' => 'admin'
         ];
         $fields['tags'] = [
             'name'        => __( 'Tags', 'disciple_tools' ),
-            'description' => 'A useful way to group related items',
+            'description' => __( 'A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags.', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
         ];
         $fields["follow"] = [
             'name'        => __( 'Follow', 'disciple_tools' ),
-            'description' => 'Users following this contact',
+            'description' => __( 'Users following this contact', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
@@ -520,61 +583,64 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["unfollow"] = [
             'name'        => __( 'Un-Follow', 'disciple_tools' ),
-            'description' => 'Users not following this contact',
+            'description' => __( 'Users not following this contact', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
             'hidden'      => true
         ];
-        $fields["tags"] = [
-            "name" => __( "Tags", "disciple_tools" ),
-            "type" => "multi_select",
-            "default" => []
-        ];
         $fields["duplicate_of"] = [
             "name" => __( "Duplicate of", "disciple_tools" ),
+            "description" => __( "Duplicate of another contact.", "disciple_tools" ),
             "type" => "text",
             "default" => '',
             "hidden" => true
         ];
         $fields["relation"] = [
             "name" => __( "Relation", "disciple_tools" ),
+            "description" => __( "Relationship this contact has with another contact in the system.", "disciple_tools" ),
             "type" => "connection",
             "p2p_direction" => "any",
             "p2p_key" => "contacts_to_relation"
         ];
         $fields["coached_by"] = [
             "name" => __( "Coached by", "disciple_tools" ),
+            "description" => __( "This contact is being coached by this other contact.", "disciple_tools" ),
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "contacts_to_contacts"
         ];
         $fields["coaching"] = [
             "name" => __( "Coached", "disciple_tools" ),
+            "description" => __( "This contact is coaching this other contact.", "disciple_tools" ),
             "type" => "connection",
             "p2p_direction" => "to",
             "p2p_key" => "contacts_to_contacts"
         ];
-        $fields["baptized"] = [
-            "name" => __( "Baptized", "disciple_tools" ),
-            "type" => "connection",
-            "p2p_direction" => "to",
-            "p2p_key" => "baptizer_to_baptized"
-        ];
         $fields["baptized_by"] = [
             "name" => __( "Baptized by", "disciple_tools" ),
+            "description" => __( "This contact has been baptised by this other contact.", "disciple_tools" ),
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "baptizer_to_baptized"
         ];
+        $fields["baptized"] = [
+            "name" => __( "Baptized", "disciple_tools" ),
+            "description" => __( "This contact has baptised this other contact.", "disciple_tools" ),
+            "type" => "connection",
+            "p2p_direction" => "to",
+            "p2p_key" => "baptizer_to_baptized"
+        ];
         $fields["people_groups"] = [
             "name" => __( "People Groups", "disciple_tools" ),
+            "description" => __( "People Groups this contact is in.", "disciple_tools" ),
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "contacts_to_peoplegroups"
         ];
         $fields["groups"] = [
             "name" => __( "Groups", "disciple_tools" ),
+            "description" => __( "Groups this contact is connected to.", "disciple_tools" ),
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "contacts_to_groups"
@@ -588,16 +654,19 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['location_grid'] = [
             'name'        => __( 'Locations', 'disciple_tools' ),
+            'description' => __( 'The general location where this contact is located.', 'disciple_tools' ),
             'type'        => 'location',
             'default'     => [],
         ];
         $fields['location_lnglat'] = [
             'name'        => __( 'Coordinates', 'disciple_tools' ),
+            'description' => __( 'Longtitude and Latitude coordinates of the location.', 'disciple_tools' ),
             'type'        => 'location',
             'default'     => [],
         ];
         $fields['reminders'] = [
             'name' => __( 'Reminders', 'disciple_tools' ),
+            'description' => __( 'Reminders related to this contact.', 'disciple_tools' ),
             'type' => 'post_user_meta',
         ];
 

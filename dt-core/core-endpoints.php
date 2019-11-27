@@ -51,7 +51,7 @@ class Disciple_Tools_Core_Endpoints {
                 "available_translations" => $available_translations
             ];
         } else {
-            return new WP_Error( "get_settings", "Something went wrong. Are you a user?", [ 'status', 400 ] );
+            return new WP_Error( "get_settings", "Something went wrong. Are you a user?", [ 'status' => 400 ] );
         }
     }
 

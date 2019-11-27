@@ -48,8 +48,9 @@
     <section class="cell bordered-box">
        <div class="section-header">
             <?php esc_html_e( "Contact Details", 'disciple_tools' ) ?>
-            <!-- <a class="button small" id="backlink" href="../" style=""><?php esc_html_e( 'Back to Contacts List', 'disciple_tools' )?></a> -->
-        </div>
+            <button class="help-button" data-section="contact-details-help-text">
+                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+            </button></div>
         <div style="display: flex;">
             <div class="item-details-header" style="flex-grow:1">
                 <i class="fi-torso large" style="padding-bottom: 1.2rem"></i>

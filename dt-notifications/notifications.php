@@ -81,6 +81,7 @@ class Disciple_Tools_Notifications
     public function __construct() {
         include( 'notifications-comments.php' );
         new Disciple_Tools_Notifications_Comments();
+        add_action( 'send_notification_on_channels', [ $this, "send_notification_on_channels" ], 10, 4 );
     } // End __construct()
 
     /**
@@ -94,44 +95,6 @@ class Disciple_Tools_Notifications
      */
     public static function insert_notification( $args ) {
         global $wpdb;
-
-        // Make sure for non duplicate.
-        $check_duplicate = $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT
-                    `id`
-                FROM
-                    `$wpdb->dt_notifications`
-                WHERE
-                    `user_id` = %s
-                    AND `source_user_id` = %s
-                    AND `post_id` = %s
-                    AND `secondary_item_id` = %s
-                    AND `notification_name` = %s
-                    AND `notification_action` = %s
-                    AND `notification_note` = %s
-                    AND `date_notified` = %s
-                    AND `is_new` = %s
-                    AND `field_key` = %s
-                    AND `field_value` = %s
-				;",
-                $args['user_id'],
-                $args['source_user_id'],
-                $args['post_id'],
-                $args['secondary_item_id'],
-                $args['notification_name'],
-                $args['notification_action'],
-                $args['notification_note'],
-                $args['date_notified'],
-                $args['is_new'],
-                $args['field_key'],
-                $args['field_value']
-            )
-        );
-
-        if ( $check_duplicate ) { // don't create a duplicate record
-            return;
-        }
 
         if ( $args['user_id'] == $args['source_user_id'] ) { // check if source of the event and notification target are the same, if so, don't create notification. i.e. I don't want notifications of my own actions.
             return;
@@ -429,15 +392,19 @@ class Disciple_Tools_Notifications
         }
     }
 
-    /**
-     * Get the @mention message content
-     *
-     * @param $comment_id
-     *
-     * @return array|null|WP_Post
-     */
-    public static function get_at_mention_message( $comment_id ) {
-        return get_post( $comment_id );
+
+
+    public static function send_notification_on_channels( $user_id, $notification, $notification_type, $already_sent = [] ){
+        $message = self::get_notification_message_html( $notification );
+        $user_meta = get_user_meta( $user_id );
+        if ( !in_array( 'web', $already_sent ) && dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $user_id ) ) {
+            dt_notification_insert( $notification );
+        }
+        if ( !in_array( 'email', $already_sent ) && dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $user_id ) ) {
+            $user = get_userdata( $user_id );
+            $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
+            dt_send_email_about_post( $user->user_email, $notification["post_id"], $message_plain_text );
+        }
     }
 
     /**
@@ -463,12 +430,8 @@ class Disciple_Tools_Notifications
                 'field_key'           => "comments",
                 'field_value'         => ''
             ];
-            $message = self::get_notification_message_html( $args );
 
-            dt_notification_insert( $args );
-            $user = get_userdata( $user_id );
-            $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
-            dt_send_email_about_post( $user->user_email, $post_id, $message_plain_text );
+            do_action( 'send_notification_on_channels', $user_id, $args, 'share', [] );
         }
     }
 
@@ -495,12 +458,8 @@ class Disciple_Tools_Notifications
                 'field_key'           => "comments",
                 'field_value'         => ''
             ];
-            $message = self::get_notification_message_html( $args );
 
-            dt_notification_insert( $args );
-            $user = get_userdata( $user_id );
-            $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
-            dt_send_email_about_post( $user->user_email, $post_id, $message_plain_text );
+            do_action( 'send_notification_on_channels', $user_id, $args, 'subassigned', [] );
         }
     }
 
@@ -513,11 +472,12 @@ class Disciple_Tools_Notifications
      */
     public static function insert_notification_for_assignment_declined( int $user_who_declined, int $new_assigned_to, int $post_id ) {
 
-        if ( $new_assigned_to != get_current_user_id() ) { // check if assignment_declined is not to self, else don't notify
+        $user_id = get_current_user_id();
+        if ( $new_assigned_to != $user_id ) { // check if assignment_declined is not to self, else don't notify
 
             $args = [
                 'user_id'             => $new_assigned_to,
-                'source_user_id'      => get_current_user_id(),
+                'source_user_id'      => $user_id,
                 'post_id'             => $post_id,
                 'secondary_item_id'   => $user_who_declined,
                 'notification_name'   => 'assignment_declined',
@@ -528,12 +488,8 @@ class Disciple_Tools_Notifications
                 'field_key'           => "",
                 'field_value'         => ''
             ];
-            $message = self::get_notification_message_html( $args );
 
-            dt_notification_insert( $args );
-            $user = get_userdata( $new_assigned_to );
-            $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
-            dt_send_email_about_post( $user->user_email, $post_id, $message_plain_text );
+            do_action( 'send_notification_on_channels', $user_id, $args, 'assignment_declined', [] );
         }
     }
 
@@ -562,17 +518,8 @@ class Disciple_Tools_Notifications
                     'field_key'           => $post_type,
                     'field_value'         => '',
                 ];
-                $message = self::get_notification_message_html( $notification );
 
-                $user_meta = get_user_meta( $user_id );
-                if ( dt_user_notification_is_enabled( 'new_assigned', 'web', $user_meta, $user_id ) ) {
-                    dt_notification_insert( $notification );
-                }
-                if ( dt_user_notification_is_enabled( 'new_assigned', 'email', $user_meta, $user_id ) ) {
-                    $user = get_userdata( $user_id );
-                    $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
-                    dt_send_email_about_post( $user->user_email, $post_id, $message_plain_text );
-                }
+                do_action( 'send_notification_on_channels', $user_id, $notification, 'new_assigned', [] );
             }
         }
     }
@@ -630,23 +577,19 @@ class Disciple_Tools_Notifications
                                 if ( (int) $follower === (int) $assigned_to ) {
                                     $notification["notification_name"] = "assigned_to";
                                     $notification_type                 = 'new_assigned';
-                                    if ( dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $follower ) ) {
-                                        dt_notification_insert( $notification );
-                                    }
                                     if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
                                         $email .= self::get_notification_message_html( $notification ) . "\n";
                                     }
+                                    do_action( 'send_notification_on_channels', $follower, $notification, $notification_type, [ 'email' ] );
                                 } else {
                                     $notification["notification_name"] = "assigned_to_other";
                                     $notification['field_key'] = "assigned_to";
                                     $notification['field_value'] = $fields["assigned_to"]["id"];
                                     $notification_type                 = 'changes';
-                                    if ( dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $follower ) ) {
-                                        dt_notification_insert( $notification );
-                                    }
                                     if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
                                         $email .= self::get_notification_message_html( $notification ) . "\n";
                                     }
+                                    do_action( 'send_notification_on_channels', $follower, $notification, $notification_type, [ 'email' ] );
                                 }
                             }
                         }
@@ -654,12 +597,10 @@ class Disciple_Tools_Notifications
                             if ( (int) $follower === (int) $assigned_to || in_array( $follower, $subassigned ) ) {
                                 $notification["notification_name"] = "requires_update";
                                 $notification_type                 = 'updates';
-                                if ( dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $follower ) ) {
-                                    dt_notification_insert( $notification );
-                                }
                                 if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
                                     $email .= self::get_notification_message_html( $notification ) . "\n";
                                 }
+                                do_action( 'send_notification_on_channels', $follower, $notification, $notification_type, [ 'email' ] );
                             }
                         }
                         if ( in_array( "milestone", $notification_on_fields ) ) {
@@ -670,22 +611,18 @@ class Disciple_Tools_Notifications
                             foreach ( $diff as $k => $v ){
                                 $notification["field_value"] = $v;
                             }
-                            if ( dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $follower ) ) {
-                                dt_notification_insert( $notification );
-                            }
                             if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
                                 $email .= self::get_notification_message_html( $notification ) . "\n";
                             }
+                            do_action( 'send_notification_on_channels', $follower, $notification, $notification_type, [ 'email' ] );
                         }
                         if ( in_array( "contact_info_update", $notification_on_fields ) ) {
                             $notification["notification_name"] = "contact_info_update";
                             $notification_type                 = 'changes';
-                            if ( dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $follower ) ) {
-                                dt_notification_insert( $notification );
-                            }
                             if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
                                 $email .= self::get_notification_message_html( $notification ) . "\n";
                             }
+                            do_action( 'send_notification_on_channels', $follower, $notification, $notification_type, [ 'email' ] );
                         }
                         if ( $email ) {
                             $user = get_userdata( $follower );
@@ -810,7 +747,7 @@ class Disciple_Tools_Notifications
             $notification_note = sprintf( esc_html_x( '%1$s subassigned %2$s to you.', 'User1 subassigned contact1 to you.', 'disciple_tools' ), $display_name, $link );
         } elseif ( $notification["notification_name"] ==="milestone" ){
             $meta_value = $notification["field_value"] ?? '';
-            $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+            $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( true, null, false, false ); //no cache to get the labels in the correct language
             $label = $meta_value;
             if ( isset( $contact_fields["milestones"]["default"][$meta_value]["label"] ) ){
                 $label = $contact_fields["milestones"]["default"][$meta_value]["label"];

@@ -94,7 +94,7 @@ function setCommonMapSettings( chart ) {
 
   // Create hover state and set alternative fill color
   let hs = template.states.create("hover");
-  hs.properties.fill = am4core.color("#3c5bdc");
+  hs.properties.fill = am4core.color("#000");
 
   template.propertyFields.fill = "fill";
   polygonSeries.tooltip.label.interactionsEnabled = true;
