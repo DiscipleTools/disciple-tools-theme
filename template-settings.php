@@ -336,7 +336,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                     <td>
                                         <span data-tooltip data-click-open="true" class="top" tabindex="1"
                                               title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.' ) ?>">
-                                            <a href="http://gravatar.com" class="small"><?php esc_html_e( 'edit image on gravatar.com', 'zume' ) ?> <i class="fi-link"></i></a>
+                                            <a href="http://gravatar.com" class="small"><?php esc_html_e( 'edit image on gravatar.com', 'disciple_tools' ) ?> <i class="fi-link"></i></a>
                                         </span>
                                     </td>
                                 </tr>
