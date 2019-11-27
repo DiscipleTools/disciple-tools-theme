@@ -348,6 +348,7 @@ class Disciple_Tools_Contacts_Endpoints
             $contact_array["is_team_contact"] = $contact->is_team_contact ?? false;
             $contact_array['permalink'] = get_post_permalink( $contact->ID );
             $contact_array['overall_status'] = get_post_meta( $contact->ID, 'overall_status', true );
+            $contact_array['last_modified_date'] = get_the_modified_date( 'F j, Y', $contact->ID);
             $contact_array['locations'] = []; // @todo remove or rewrite? Because of location_grid upgrade.
             foreach ( $location_grid[$contact->ID] as $location ) {
                 $contact_array['locations'][] = $location["name"]; // @todo remove or rewrite? Because of location_grid upgrade.
