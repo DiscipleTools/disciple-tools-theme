@@ -16,10 +16,15 @@ $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_s
 
         <div class="large-8 medium-12 small-12 cell">
             <form class="js-create-group bordered-box">
-                <h3 class="section-header"><?php esc_html_e( "Create new group", "disciple_tools" ); ?></h3>
+                <h3 class="section-header"><?php esc_html_e( "Create new group", "disciple_tools" ); ?><button class="help-button float-right" data-section="new-group-help-text">
+                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                </button></h3>
                 <label for="title">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/name.svg' ?>">
                     <?php esc_html_e( "Name of group", "disciple_tools" ); ?>
+                    <button class="help-button" data-section="group-name-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
                 </label>
                 <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
                 <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>

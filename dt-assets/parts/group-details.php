@@ -18,7 +18,9 @@
 <section class="bordered-box">
        <div class="section-header">
             <?php esc_html_e( "Group Details", 'disciple_tools' ) ?>
-            <!-- <a class="button small" id="backlink" href="../" style=""><?php esc_html_e( 'Back to Groups List', 'disciple_tools' )?></a> -->
+            <button class="help-button" data-section="group-details-help-text">
+                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+            </button>
         </div>
     <div style="display: flex;">
         <div class="item-details-header" style="flex-grow:1">
@@ -61,6 +63,9 @@
             <div class="section-subheader">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
                 <?php esc_html_e( 'Assigned to', 'disciple_tools' )?>
+                <button class="help-button" data-section="assigned-to-help-text">
+                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                </button>
             </div>
 
             <div class="assigned_to details">
@@ -86,7 +91,11 @@
         <div class="cell small-12 medium-4">
             <div class="section-subheader">
             <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/coach.svg' ?>">
-            <?php esc_html_e( "Group Coach / Church Planter", 'disciple_tools' ) ?></div>
+            <?php esc_html_e( "Group Coach / Church Planter", 'disciple_tools' ) ?>
+            <button class="help-button" data-section="coaches-help-text">
+                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+            </button>
+            </div>
             <div class="coaches">
                 <var id="coaches-result-container" class="result-container"></var>
                 <div id="coaches_t" name="form-coaches" class="scrollable-typeahead">

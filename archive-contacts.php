@@ -87,7 +87,7 @@ declare(strict_types=1);
     <nav  role="navigation" style="width:100%;"
           class="second-bar show-for-small-only center"><!--  /* MOBILE VIEW BUTTON AREA */ -->
         <a class="button dt-green" style="margin-bottom:0" href="<?php echo esc_url( home_url( '/' ) ) . "contacts/new" ?>">
-            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-contact.svg' ) ?>"/>
+            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-contact-white.svg' ) ?>"/>
             <span class="hide-for-small-only"><?php esc_html_e( "Create new contact", "disciple_tools" ); ?></span>
         </a>
         <a class="button" style="margin-bottom:0" data-open="filter-modal">
@@ -115,8 +115,13 @@ declare(strict_types=1);
 
             <aside class="cell padding-bottom hide-for-large">
                 <div class="bordered-box" style="padding-top:5px;padding-bottom:5px">
+                    <label class="section-header"><?php esc_html_e( 'Contacts Filters', 'disciple_tools' )?>
+                    <button class="help-button float-right" data-section="filters-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
+                    </label>
                     <div class="js-list-filter filter--closed">
-                        <div class="filter__title js-list-filter-title" style="margin-bottom:0"><?php esc_html_e( "Filters", "disciple_tools" ); ?>
+                        <div class="filter__title js-list-filter-title" style="margin-bottom:0"><?php esc_html_e( "Default Filters", "disciple_tools" ); ?>
                             <div style="display: inline-block" class="loading-spinner active"></div>
                         </div>
                         <div class="js-filters-accordion"></div>
@@ -125,8 +130,13 @@ declare(strict_types=1);
             </aside>
 
             <div class="reveal js-filters-modal" id="filters-modal">
-                <div class="js-filters-modal-content">
-                    <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( 'Contact Filters', "disciple_tools" ); ?></h5>
+                <div class="js-filters-modal-content"><!-- archive-contacts -->
+                    <label class="section-header hide-for-small-only"><?php esc_html_e( 'Contacts Filters', 'disciple_tools' )?>
+                    <button class="help-button float-right" data-section="filters-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
+                    </label>
+                    <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( 'Default Filters', "disciple_tools" ); ?></h5>
 
                     <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion">
                         <li class="accordion-item" data-accordion-item data-id="all">

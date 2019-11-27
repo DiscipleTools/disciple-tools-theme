@@ -34,6 +34,10 @@
     "jshint-stylish": "^2.2.0",
     "motion-ui": "^1.2.2"
   },
+  "browserslist": [
+    "last 2 version",
+    "> 2%"
+  ],
   "scripts": {
     "postinstall": "npm run build",
     "build": "gulp",

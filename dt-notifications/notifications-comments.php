@@ -89,17 +89,10 @@ class Disciple_Tools_Notifications_Comments
 
                         $notification["notification_note"] = Disciple_Tools_Notifications::get_notification_message_html( $notification );
 
-                        // web notification
-                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions', 'web', $user_meta, $user->ID ) :
-                            dt_user_notification_is_enabled( 'comments', 'web', $user_meta, $user->ID ) ) {
-                            dt_notification_insert( $notification );
-                        }
-
-                        // email notification
-                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions', 'email', $user_meta, $user->ID ) :
-                            dt_user_notification_is_enabled( 'comments', 'email', $user_meta, $user->ID )) {
-                            $message_plain_text = wp_specialchars_decode( $notification["notification_note"], ENT_QUOTES );
-                            dt_send_email_about_post( $user->user_email, $post_id, $message_plain_text );
+                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ){
+                            do_action( 'send_notification_on_channels', $user_to_notify, $notification, 'mentions', [] );
+                        } else {
+                            do_action( 'send_notification_on_channels', $user_to_notify, $notification, 'comments', [] );
                         }
                     }
                 }

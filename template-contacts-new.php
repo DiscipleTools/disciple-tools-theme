@@ -15,10 +15,15 @@ get_header();
 
         <div class="large-8 medium-12 small-12 cell">
             <form class="js-create-contact bordered-box" style="margin-bottom:200px">
-                <h3 class="section-header"><?php esc_html_e( "Create new contact", "disciple_tools" ); ?></h3>
+                <h3 class="section-header"><?php esc_html_e( "Create new contact", "disciple_tools" ); ?><button class="help-button float-right" data-section="new-contact-help-text">
+                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                </button></h3>
                 <label>
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/name.svg' ?>">
                     <?php esc_html_e( "Name of contact", "disciple_tools" ); ?>
+                    <button class="help-button" data-section="contact-name-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
                     <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required dir="auto" aria-describedby="name-help-text">
                 </label>
                 <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
@@ -26,11 +31,17 @@ get_header();
                 <label>
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/phone.svg' ?>">
                     <?php esc_html_e( "Phone number", "disciple_tools" ); ?>
+                    <button class="help-button" data-section="phone-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
                     <input name="phone" type="text" type="tel" placeholder="<?php esc_html_e( "Phone number", "disciple_tools" ); ?>">
                 </label>
                 <label>
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/email.svg' ?>">
                     <?php esc_html_e( "Email", "disciple_tools" ); ?>
+                    <button class="help-button" data-section="email-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
                     <input name="email" type="text"  placeholder="<?php esc_html_e( "Email", "disciple_tools" ); ?>">
                 </label>
 
