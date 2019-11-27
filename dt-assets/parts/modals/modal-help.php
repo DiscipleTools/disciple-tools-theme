@@ -475,6 +475,12 @@
         <p><?php esc_html_e( "Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system.", 'disciple_tools' ) ?></p>
     </div>
 
+    <!--   Duplicates view page -->
+    <div class="help-section" id="duplicates-template-help-text" style="display: none">
+        <h3><?php esc_html_e( "Duplicate Contact page", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system as possibly being duplicates of another already existing contact.", 'disciple_tools' ) ?></p>
+    </div>
+
     <!-- close -->
     <div class="grid-x grid-padding-x">
         <div class="cell small-4">
