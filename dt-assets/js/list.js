@@ -261,7 +261,7 @@
       <td class="hide-for-small-only"><%- assigned_to ? assigned_to.name : "" %></td>
       <td class="hide-for-small-only"><%= locations.join(", ") %></td>
       <td class="hide-for-small-only"><%= group_links %></td>
-      <td><%- last_modified_date %></td>
+      <td><%= last_modified %></td>
     </tr>`),
     groups: _.template(`<tr>
       <!--<td><img src="<%- template_directory_uri %>/dt-assets/images/green_flag.svg" width=10 height=12></td>-->
@@ -331,6 +331,9 @@
     const group_links = _.map(contact.groups, function(group) {
       return '<a href="' + _.escape(group.permalink) + '">' + group.post_title + "</a>";
     }).join(", ");
+
+    const last_modified = new Date(contact.last_modified*1000);
+
     const context = _.assign({last_modified: 0}, contact, wpApiListSettings, {
       index,
       status,
@@ -342,6 +345,7 @@
       belief_milestone: _.get(ccfs, `milestones.default["milestone_${belief_milestone_key}"].label`, ""),
       sharing_milestone: _.get(ccfs, `milestones.default["milestone_${sharing_milestone_key}"].label`, ""),
       group_links,
+      last_modified,
       update_needed : contact.requires_update
     });
     return $.parseHTML(template(context));
@@ -355,10 +359,12 @@
     const gcfs = wpApiListSettings.custom_fields_settings;
     const status = _.get( gcfs, `group_status.default[${group.group_status || "active"}]["label"]`, group.group_status )
     const type = _.get( gcfs, `group_type.default[${group.group_type || "group"}]["label"]`, group.group_type )
+   // const lastmodified = _.map(contacts.last_modified);
     const context = _.assign({}, group, wpApiListSettings, {
       leader_links,
       status,
       type,
+     // lastmodified,
       update_needed : group.requires_update
     });
     return $.parseHTML(template(context));
