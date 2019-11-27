@@ -19,7 +19,7 @@ $dt_duplicates = wp_unslash( $dt_contacts->get_all_duplicates() );
 
             <main id="main" class="large-12 medium-12 cell" role="main">
                 <div class="bordered-box">
-                    <h3><?php esc_html_e( 'Duplicate Contacts', 'zume' ) ?></h3>
+                    <h3><?php esc_html_e( 'Duplicate Contacts', 'disciple_tools' ) ?></h3>
 
                     <table id='table-duplicates'>
                         <?php
