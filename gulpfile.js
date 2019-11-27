@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-/** 
+/**
  * GULP PACKAGES
  */
 
@@ -15,7 +15,7 @@ browserSync = require('browser-sync'),
   postcss = require('gulp-postcss'),
   cssnano = require('cssnano');
 
-/** 
+/**
  * DEFINE GULP VARIABLE VALUES TO MATCH YOUR PROJECT NEEDS
  */
 
@@ -61,7 +61,7 @@ const SOURCE = {
     // FOUNDATION + '/dist/js/plugins/foundation.tooltip.js',
 
     // Please place all custom JS scripts within 'dt-assets/js/footer-scrips.js
-    
+
     'dt-assets/js/footer-scripts.js',
 
     'node_modules/masonry-layout/dist/masonry.pkgd.js'
@@ -129,11 +129,11 @@ gulp.task('styles', function () {
 gulp.task('default', gulp.parallel('styles', 'scripts'));
 
 
-/** 
+/**
  * MANAGE WATCH AND RELOADING OPTIONS BELOW
  * NOTE! - Please set your local URL host here if you plan on using Browser-sync
- * example: 
- * const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || 'http://local.discipletools/'; 
+ * example:
+ * const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || 'http://local.discipletools/';
  */
 
  const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || ' ';
@@ -184,8 +184,8 @@ gulp.task('watchWithBrowserSync', function () {
 gulp.task('browsersync', gulp.series(gulp.parallel('styles', 'scripts'), serve, 'watchWithBrowserSync'));
 
 /**
- * OPTIONAL - USE THE FOLLOWING TASK TO RUN BROWSER-SYNC WITH A PROXY ARGUMENT FROM THE COMMAND LINE. 
- * We're taking advantage of node's [process.argv] to reference arguments from the command line.  
+ * OPTIONAL - USE THE FOLLOWING TASK TO RUN BROWSER-SYNC WITH A PROXY ARGUMENT FROM THE COMMAND LINE.
+ * We're taking advantage of node's [process.argv] to reference arguments from the command line.
  * The beauty of this approach is that we don't have in to include any extra dependencies.
  * https://stackoverflow.com/a/32937333/957186
  * https://www.browsersync.io/docs/gulp
@@ -196,7 +196,7 @@ gulp.task('browsersync', gulp.series(gulp.parallel('styles', 'scripts'), serve, 
  */
 
 gulp.task('browsersync-p', function (done) {
- 
+
   //get the --option argument value
   var option,
     i = process.argv.indexOf("--option");
@@ -231,6 +231,105 @@ gulp.task('browsersync-p', function (done) {
    gulp.watch(SOURCE.php, gulp.series(reload));
    // Watch other JavaScript files
    gulp.watch(SOURCE.otherjs, gulp.series(reload));
-   
+
   done();
+});
+
+var realFavicon = require ('gulp-real-favicon');
+var fs = require('fs');
+
+// File where the favicon markups are stored
+var FAVICON_DATA_FILE = 'faviconData.json';
+
+// Generate the icons. This task takes a few seconds to complete.
+// You should run it at least once to create the icons. Then,
+// you should run it whenever RealFaviconGenerator updates its
+// package (see the check-for-favicon-update task below).
+gulp.task('generate-favicon', function(done) {
+	realFavicon.generateFavicon({
+		masterPicture: 'dt-assets/dt-icon.png',
+		dest: 'dt-assets/favicon',
+		iconsPath: '/dt-assets/favicon',
+		design: {
+			ios: {
+				pictureAspect: 'noChange',
+				assets: {
+					ios6AndPriorIcons: true,
+					ios7AndLaterIcons: true,
+					precomposedIcons: true,
+					declareOnlyDefaultIcon: true
+				},
+				appName: 'D.T'
+			},
+			desktopBrowser: {},
+			windows: {
+				pictureAspect: 'noChange',
+				backgroundColor: '#3f729b',
+				onConflict: 'override',
+				assets: {
+					windows80Ie10Tile: true,
+					windows10Ie11EdgeTiles: {
+						small: true,
+						medium: true,
+						big: true,
+						rectangle: true
+					}
+				},
+				appName: 'D.T'
+			},
+			androidChrome: {
+				pictureAspect: 'noChange',
+				themeColor: '#ffffff',
+				manifest: {
+					name: 'D.T',
+					display: 'standalone',
+					orientation: 'notSet',
+					onConflict: 'override',
+					declared: true
+				},
+				assets: {
+					legacyIcon: true,
+					lowResolutionIcons: true
+				}
+			},
+			safariPinnedTab: {
+				pictureAspect: 'blackAndWhite',
+				threshold: 62.96875,
+				themeColor: '#3f729b'
+			}
+		},
+		settings: {
+			compression: 1,
+			scalingAlgorithm: 'Mitchell',
+			errorOnImageTooSmall: false,
+			readmeFile: true,
+			htmlCodeFile: true,
+			usePathAsIs: true
+		},
+		markupFile: FAVICON_DATA_FILE
+	}, function() {
+		done();
+	});
+});
+
+// Inject the favicon markups in your HTML pages. You should run
+// this task whenever you modify a page. You can keep this task
+// as is or refactor your existing HTML pipeline.
+gulp.task('inject-favicon-markups', function() {
+	return gulp.src([ 'meta' ])
+		.pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).favicon.html_code))
+		.pipe(gulp.dest('dest'));
+});
+
+// Check for updates on RealFaviconGenerator (think: Apple has just
+// released a new Touch icon along with the latest version of iOS).
+// Run this task from time to time. Ideally, make it part of your
+// continuous integration system.
+gulp.task('check-for-favicon-update', function(done) {
+	var currentVersion = JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).version;
+	realFavicon.checkForUpdates(currentVersion, function(err) {
+		if (err) {
+			throw err;
+		}
+	});
 });
