@@ -1433,7 +1433,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 " . $query_sql . "
                 AND a.ID NOT IN (
                     SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'corresponds_to_user' AND meta_value != 0
+                    WHERE meta_key = 'type' AND meta_value = 'user'
                     GROUP BY post_id
                 )
             ) as total_count,
@@ -1445,7 +1445,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 AND post_type = 'contacts'
                 AND a.ID NOT IN (
                     SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'corresponds_to_user' AND meta_value != 0
+                    WHERE meta_key = 'type' AND meta_value = 'user'
                     GROUP BY post_id
                 )
             ) as total_my,
@@ -1457,7 +1457,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 AND post_type = 'contacts'
                 AND a.ID NOT IN (
                     SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'corresponds_to_user' AND meta_value != 0
+                    WHERE meta_key = 'type' AND meta_value = 'user'
                     GROUP BY post_id
                 )
             ) as total_subassigned,
@@ -1469,7 +1469,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 AND post_type = 'contacts'
                 AND a.ID NOT IN (
                     SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'corresponds_to_user' AND meta_value != 0
+                    WHERE meta_key = 'type' AND meta_value = 'user'
                     GROUP BY post_id
                 )
             ) as total_shared,
@@ -1481,7 +1481,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 AND post_type = 'contacts'
                 AND a.ID NOT IN (
                     SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'corresponds_to_user' AND meta_value != 0
+                    WHERE meta_key = 'type' AND meta_value = 'user'
                     GROUP BY post_id
                 )
             ) as total_all,
@@ -1498,7 +1498,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 AND post_type = 'contacts'
                 AND a.ID NOT IN (
                     SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'corresponds_to_user' AND meta_value != 0
+                    WHERE meta_key = 'type' AND meta_value = 'user'
                     GROUP BY post_id
                 )
             ) as update_needed,
@@ -1515,7 +1515,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 AND post_type = 'contacts'
                 AND a.ID NOT IN (
                     SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'corresponds_to_user' AND meta_value != 0
+                    WHERE meta_key = 'type' AND meta_value = 'user'
                     GROUP BY post_id
                 )
             ) as active,
@@ -1532,7 +1532,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 AND post_type = 'contacts'
                 AND a.ID NOT IN (
                     SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'corresponds_to_user' AND meta_value != 0
+                    WHERE meta_key = 'type' AND meta_value = 'user'
                     GROUP BY post_id
                 )
             ) as needs_accepted,
@@ -1553,7 +1553,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 AND post_type = 'contacts'
                 AND a.ID NOT IN (
                     SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'corresponds_to_user' AND meta_value != 0
+                    WHERE meta_key = 'type' AND meta_value = 'user'
                     GROUP BY post_id
                 )
             ) as contact_unattempted,
@@ -1574,7 +1574,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 AND post_type = 'contacts'
                 AND a.ID NOT IN (
                     SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'corresponds_to_user' AND meta_value != 0
+                    WHERE meta_key = 'type' AND meta_value = 'user'
                     GROUP BY post_id
                 )
             ) as meeting_scheduled
@@ -1612,7 +1612,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 WHERE a.post_status = 'publish'
                 AND a.ID NOT IN (
                     SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'corresponds_to_user' AND meta_value != 0
+                    WHERE meta_key = 'type' AND meta_value = 'user'
                     GROUP BY post_id
                 )
             ) as new

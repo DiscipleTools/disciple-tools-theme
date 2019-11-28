@@ -851,10 +851,8 @@ class Disciple_Tools_Posts
         $post_type_check = "";
         if ( $post_type == "contacts" ){
             $post_type_check = "AND $wpdb->posts.ID NOT IN (
-                SELECT post_id
-                FROM $wpdb->postmeta
-                WHERE meta_key = 'corresponds_to_user'
-                  AND meta_value != 0
+                SELECT post_id FROM $wpdb->postmeta
+                WHERE meta_key = 'type' AND meta_value = 'user'
                 GROUP BY post_id
             )";
             $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
