@@ -23,7 +23,6 @@ $dt_duplicates = wp_unslash( $dt_contacts->get_all_duplicates() );
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button></h3>
 
-                    <?php //@// TODO: use an if statement to show a message if not duplicates were found. Else show the following table ?>
                     <table id='table-duplicates'>
                         <?php
                         foreach ( $dt_duplicates as $dt_id => $dt_duplicate ) {
