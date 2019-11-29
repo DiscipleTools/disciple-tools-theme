@@ -7,7 +7,7 @@
       <ul>
             <?php //@// TODO: simplify this list by possibly using foreach statements ?>
             <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["contact_name"]; ?>
-            <li><strong><?php esc_html_e( "Contact Name", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "The name of the contact is searchable and can be used to help you filter your contacts in the Contacts List page.", 'disciple_tools' ) ?></li>
+            <li><strong><?php esc_html_e( "Contact Name", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "The name of the contact is searchable and can be used to help you filter your contacts in the Contacts List page. The system uses this name to check for duplicate contacts.", 'disciple_tools' ) ?></li>
             <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["overall_status"]; ?>
             <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
             <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["assigned_to"]; ?>
@@ -15,9 +15,9 @@
             <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["subassigned"]; ?>
             <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
             <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["phone"]; ?>
-            <li><strong><?php esc_html_e( "Contact Phone Number", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "A contact phone number for this contact. The system uses this phone number to check for duplicate contacts.", 'disciple_tools' ) ?></li>
+            <li><strong><?php esc_html_e( "Contact Phone Number", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "A phone number for this contact. The system uses this phone number to check for duplicate contacts.", 'disciple_tools' ) ?></li>
             <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["email"]; ?>
-            <li><strong><?php esc_html_e( "Contact Email", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "A contact email address for this contact.", 'disciple_tools' ) ?></li>
+            <li><strong><?php esc_html_e( "Contact Email", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "An email for this contact. The system uses this email to check for duplicate contacts.", 'disciple_tools' ) ?></li>
             <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["socialmedia"]; ?>
             <li><strong><?php esc_html_e( "Social Media", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "Social media accounts for this contact.", 'disciple_tools' ) ?></li>
             <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["address"]; ?>
@@ -478,7 +478,7 @@
     <!--   Duplicates view page -->
     <div class="help-section" id="duplicates-template-help-text" style="display: none">
         <h3><?php esc_html_e( "Duplicate Contact page", 'disciple_tools' ) ?></h3>
-        <p><?php esc_html_e( "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system as possibly being duplicates of another already existing contact.", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact. ", 'disciple_tools' ) ?></p>
     </div>
 
     <!-- close -->
