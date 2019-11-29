@@ -436,7 +436,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             LEFT JOIN $wpdb->postmeta as update_needed on (update_needed.post_id = p.ID and update_needed.meta_key = 'requires_update' and update_needed.meta_value = '1' )
             WHERE p.ID NOT IN (
                 SELECT post_id FROM $wpdb->postmeta
-                WHERE meta_key = 'corresponds_to_user' AND meta_value != 0
+                WHERE meta_key = 'type' AND meta_value = 'user'
                 GROUP BY post_id )
             GROUP by users.ID",
         ARRAY_A);
