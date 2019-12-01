@@ -7,7 +7,7 @@
       <ul>
             <?php //@// TODO: simplify this list by possibly using foreach statements ?>
             <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["contact_name"]; ?>
-            <li><strong><?php esc_html_e( "Contact Name", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "The name of the contact is searchable and can be used to help you filter your contacts in the Contacts List page.", 'disciple_tools' ) ?></li>
+            <li><strong><?php esc_html_e( "Contact Name", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "The name of the contact is searchable and can be used to help you filter your contacts in the Contacts List page. The system uses this name to check for duplicate contacts.", 'disciple_tools' ) ?></li>
             <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["overall_status"]; ?>
             <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
             <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["assigned_to"]; ?>
@@ -15,9 +15,9 @@
             <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["subassigned"]; ?>
             <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?></li>
             <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["phone"]; ?>
-            <li><strong><?php esc_html_e( "Contact Phone Number", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "A contact phone number for this contact. The system uses this phone number to check for duplicate contacts.", 'disciple_tools' ) ?></li>
+            <li><strong><?php esc_html_e( "Contact Phone Number", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "A phone number for this contact. The system uses this phone number to check for duplicate contacts.", 'disciple_tools' ) ?></li>
             <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["email"]; ?>
-            <li><strong><?php esc_html_e( "Contact Email", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "A contact email address for this contact.", 'disciple_tools' ) ?></li>
+            <li><strong><?php esc_html_e( "Contact Email", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "An email for this contact. The system uses this email to check for duplicate contacts.", 'disciple_tools' ) ?></li>
             <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["socialmedia"]; ?>
             <li><strong><?php esc_html_e( "Social Media", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "Social media accounts for this contact.", 'disciple_tools' ) ?></li>
             <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["address"]; ?>
@@ -353,7 +353,7 @@
     <!--  Location  -->
     <div class="help-section" id="location-help-text" style="display: none">
         <h3><?php esc_html_e( "Location", 'disciple_tools' ) ?></h3>
-        <p><?php esc_html_e( "This is the general location where the contact lives - and not their address. Clicking this will bring up a list of locations to choose from.", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "This is the general location where the contact lives - and not their address. Clicking this will bring up a list of locations to choose from. Select 'Regions of Focus' or 'All Locations' to adjust the list of locations you can choose from.", 'disciple_tools' ) ?></p>
         <p><?php esc_html_e( "This locations list was previously created in the backend by an Admin Role user. You cannot add a new location here. If the location you are looking for is not in the list, then an Admin Role user will first have to add the new location in the backend admin area of this website instance.", 'disciple_tools' ) ?></p>
     </div>
 
@@ -393,7 +393,6 @@
         <p><?php esc_html_e( "Use this toggle switch to either show or not show inactive groups in the list.", 'disciple_tools' ) ?></p>
     </div>
 
-
     <!--  New Contact -->
     <div class="help-section" id="new-contact-help-text" style="display: none">
         <h3><?php esc_html_e( "Create new contact", 'disciple_tools' ) ?></h3>
@@ -402,23 +401,20 @@
 
     <!--  Contact name -->
     <div class="help-section" id="contact-name-help-text" style="display: none">
-<!--        --><?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["contact_name"]; ?>
-<!--        <h3>--><?php //echo esc_html( $field["name"] ) ?><!--</h3>-->
-<!--        <p>--><?php //echo esc_html( $field["description"] ) ?><!--</p>-->
+        <h3><?php esc_html_e( "Name of contact", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "The name of the contact is searchable and can be used to help you filter your contacts in the Contacts List page.", 'disciple_tools' ) ?></p>
     </div>
 
     <!--  Contact phone -->
     <div class="help-section" id="phone-help-text" style="display: none">
-<!--        --><?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["phone"]; ?>
-<!--        <h3>--><?php //echo esc_html( $field["name"] ) ?><!--</h3>-->
-<!--        <p>--><?php //echo esc_html( $field["description"] ) ?><!--</p>-->
+        <h3><?php esc_html_e( "Phone", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "A contact phone number for this contact. The system uses this phone number to check for duplicate contacts.", 'disciple_tools' ) ?></p>
     </div>
 
     <!--  Contact email -->
     <div class="help-section" id="email-help-text" style="display: none">
-<!--        --><?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["email"]; ?>
-<!--        <h3>--><?php //echo esc_html( $field["name"] ) ?><!--</h3>-->
-<!--        <p>--><?php //echo esc_html( $field["description"] ) ?><!--</p>-->
+        <h3><?php esc_html_e( "Email", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "A contact email address for this contact.", 'disciple_tools' ) ?></p>
     </div>
 
     <!--  New Group -->
@@ -429,9 +425,8 @@
 
     <!--  Group name -->
     <div class="help-section" id="group-name-help-text" style="display: none">
-<!--        --><?php //$field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_name"]; ?>
-<!--        <h3>--><?php //echo esc_html( $field["name"] ) ?><!--</h3>-->
-<!--        <p>--><?php //echo esc_html( $field["description"] ) ?><!--</p>-->
+        <h3><?php esc_html_e( "Name of group", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "The name of the group is searchable and can be used to help you filter your contacts in the Groups List page.", 'disciple_tools' ) ?></p>
     </div>
 
     <!--  Your Profile -->
@@ -458,6 +453,7 @@
         <li><?php esc_html_e( "Notifications Turned Off: The toggle will appear grey.", 'disciple_tools' ) ?></li>
         </ul>
         <p><?php esc_html_e( "Some of the types of notifications cannot be adjusted because they are required by the system.", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system.", 'disciple_tools' ) ?></p>
     </div>
 
     <!--  Your availability -->
@@ -466,6 +462,24 @@
         <p><?php esc_html_e( "This availability feature allows you the user to set a start date and end date to schedule dates when you will be unavailable e.g. you are traveling or on vacation, so the Dispatcher will know your availability to receive new contacts.", 'disciple_tools' ) ?></p>
     </div>
 
+    <!--   Notifications page -->
+    <div class="help-section" id="notifications-template-help-text" style="display: none">
+        <h3><?php esc_html_e( "Notifications Page", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records.", 'disciple_tools' ) ?></p>
+        <h4><?php esc_html_e( "All / Unread", 'disciple_tools' ) ?></h4>
+        <p><?php esc_html_e( "Click the 'All' button to show the full list of all of your notifications.", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "Click the 'Unread' button to show the list of all of your unread notifications.", 'disciple_tools' ) ?></p>
+        <h4><?php esc_html_e( "Mark All as Read", 'disciple_tools' ) ?></h4>
+        <p><?php esc_html_e( "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read.", 'disciple_tools' ) ?></p>
+        <h4><?php esc_html_e( "Settings", 'disciple_tools' ) ?></h4>
+        <p><?php esc_html_e( "Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system.", 'disciple_tools' ) ?></p>
+    </div>
+
+    <!--   Duplicates view page -->
+    <div class="help-section" id="duplicates-template-help-text" style="display: none">
+        <h3><?php esc_html_e( "Duplicate Contact page", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact. ", 'disciple_tools' ) ?></p>
+    </div>
 
     <!-- close -->
     <div class="grid-x grid-padding-x">
