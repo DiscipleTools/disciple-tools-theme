@@ -294,6 +294,7 @@ function dt_site_scripts() {
             'filter_all' => sprintf( _x( 'All %s', 'Contacts or Groups', 'disciple_tools' ), Disciple_Tools_Posts::get_label_for_post_type( $post_type ) ),
             'filter_needs_accepted' => __( 'Waiting to be accepted', 'disciple_tools' ),
             'filter_unassigned' => __( 'Dispatch needed', 'disciple_tools' ),
+            'filter_unassignable' => __( 'Not Ready', 'disciple_tools' ),
             'filter_update_needed' => __( 'Update needed', 'disciple_tools' ),
             'filter_meeting_scheduled' => __( 'Meeting scheduled', 'disciple_tools' ),
             'filter_contact_unattempted' => __( 'Contact attempt needed', 'disciple_tools' ),
