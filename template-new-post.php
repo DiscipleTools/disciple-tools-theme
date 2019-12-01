@@ -12,7 +12,7 @@ get_header();
 
 ?>
 
-    <div id="content">
+    <div id="content" class="template-new-post">
         <div id="inner-content" class="grid-x grid-margin-x">
             <div class="large-2 medium-12 small-12 cell"></div>
 

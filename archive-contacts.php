@@ -108,7 +108,7 @@ declare(strict_types=1);
             <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
         </div>
     </nav>
-    <div id="content">
+    <div id="content" class="archive-contacts">
 
         <div id="inner-content" class="grid-x grid-margin-x">
 
