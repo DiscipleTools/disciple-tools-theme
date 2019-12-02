@@ -1424,112 +1424,121 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepare
         $personal_counts = $wpdb->get_results("
-            SELECT (SELECT count( DISTINCT( a.ID ))
-            FROM $wpdb->posts as a
-              " . $access_sql . $closed . "
-              INNER JOIN $wpdb->postmeta as type
-                ON a.ID=type.post_id AND type.meta_key = 'type'
-            WHERE a.post_status = 'publish'
-            AND post_type = 'contacts'
-            " . $query_sql . "
-            AND (( type.meta_value = 'media' OR type.meta_value = 'next_gen' )
-                OR ( type.meta_key IS NULL ))
-            )
-            as total_count,
-            (SELECT count(a.ID)
-            FROM $wpdb->posts as a
-            " . $my_access . $closed . "
-            INNER JOIN $wpdb->postmeta as type
-              ON a.ID=type.post_id AND type.meta_key = 'type'
-            WHERE a.post_status = 'publish'
-            AND post_type = 'contacts'
-            AND (( type.meta_value = 'media' OR type.meta_value = 'next_gen' )
-                OR ( type.meta_key IS NULL ))
-            )
-            as total_my,
-            (SELECT count(a.ID)
-            FROM $wpdb->posts as a
-            " . $subassigned_access . $closed . "
-            INNER JOIN $wpdb->postmeta as type
-              ON a.ID=type.post_id AND type.meta_key = 'type'
-            WHERE a.post_status = 'publish'
-            AND post_type = 'contacts'
-            AND (( type.meta_value = 'media' OR type.meta_value = 'next_gen' )
-                OR ( type.meta_key IS NULL ))
-            )
-            as total_subassigned,
-            (SELECT count(a.ID)
-            FROM $wpdb->posts as a
-            " . $shared_access . $closed . "
-            INNER JOIN $wpdb->postmeta as type
-              ON a.ID=type.post_id AND type.meta_key = 'type'
-            WHERE a.post_status = 'publish'
-            AND post_type = 'contacts'
-            AND (( type.meta_value = 'media' OR type.meta_value = 'next_gen' )
-                OR ( type.meta_key IS NULL ))
-            )
-            as total_shared,
-            (SELECT count(a.ID)
-            FROM $wpdb->posts as a
-            " . $all_access . $closed . "
-            INNER JOIN $wpdb->postmeta as type
-              ON a.ID=type.post_id AND type.meta_key = 'type'
-            WHERE a.post_status = 'publish'
-            AND post_type = 'contacts'
-            AND (( type.meta_value = 'media' OR type.meta_value = 'next_gen' )
-                OR ( type.meta_key IS NULL ))
-            )
-            as total_all,
-            (SELECT count(a.ID)
-              FROM $wpdb->posts as a
+            SELECT (
+                SELECT count( DISTINCT( a.ID ) )
+                FROM $wpdb->posts as a
+                  " . $access_sql . $closed . "
+                WHERE a.post_status = 'publish'
+                AND post_type = 'contacts'
+                " . $query_sql . "
+                AND a.ID NOT IN (
+                    SELECT post_id FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND meta_value = 'user'
+                    GROUP BY post_id
+                )
+            ) as total_count,
+            (
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                " . $my_access . $closed . "
+                WHERE a.post_status = 'publish'
+                AND post_type = 'contacts'
+                AND a.ID NOT IN (
+                    SELECT post_id FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND meta_value = 'user'
+                    GROUP BY post_id
+                )
+            ) as total_my,
+            (
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                " . $subassigned_access . $closed . "
+                WHERE a.post_status = 'publish'
+                AND post_type = 'contacts'
+                AND a.ID NOT IN (
+                    SELECT post_id FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND meta_value = 'user'
+                    GROUP BY post_id
+                )
+            ) as total_subassigned,
+            (
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                " . $shared_access . $closed . "
+                WHERE a.post_status = 'publish'
+                AND post_type = 'contacts'
+                AND a.ID NOT IN (
+                    SELECT post_id FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND meta_value = 'user'
+                    GROUP BY post_id
+                )
+            ) as total_shared,
+            (
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                " . $all_access . $closed . "
+                WHERE a.post_status = 'publish'
+                AND post_type = 'contacts'
+                AND a.ID NOT IN (
+                    SELECT post_id FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND meta_value = 'user'
+                    GROUP BY post_id
+                )
+            ) as total_all,
+            (
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
                 " . $access_sql . $closed . "
                 JOIN $wpdb->postmeta as b
                   ON a.ID=b.post_id
                     AND b.meta_key = 'requires_update'
                     AND b.meta_value = '1'
-                INNER JOIN $wpdb->postmeta as e
-                  ON a.ID=e.post_id
-                  AND (( e.meta_key = 'type'
-                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
-                  OR e.meta_key IS NULL)
-              WHERE a.post_status = 'publish'
-              " . $query_sql . "
-              AND post_type = 'contacts')
-            as update_needed,
-            (SELECT count(a.ID)
-              FROM $wpdb->posts as a
+                WHERE a.post_status = 'publish'
+                " . $query_sql . "
+                AND post_type = 'contacts'
+                AND a.ID NOT IN (
+                    SELECT post_id FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND meta_value = 'user'
+                    GROUP BY post_id
+                )
+            ) as update_needed,
+            (
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
                 " . $access_sql . "
                 JOIN $wpdb->postmeta as b
                   ON a.ID=b.post_id
                     AND b.meta_key = 'overall_status'
                     AND b.meta_value = 'active'
-                INNER JOIN $wpdb->postmeta as e
-                  ON a.ID=e.post_id
-                  AND (( e.meta_key = 'type'
-                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
-                  OR e.meta_key IS NULL)
-              WHERE a.post_status = 'publish'
-              " . $query_sql . "
-              AND post_type = 'contacts')
-            as active,
-            (SELECT count(a.ID)
-              FROM $wpdb->posts as a
+                WHERE a.post_status = 'publish'
+                " . $query_sql . "
+                AND post_type = 'contacts'
+                AND a.ID NOT IN (
+                    SELECT post_id FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND meta_value = 'user'
+                    GROUP BY post_id
+                )
+            ) as active,
+            (
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
                 " . $access_sql . "
                 INNER JOIN $wpdb->postmeta as d
                   ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
                     AND d.meta_value = 'assigned'
-                INNER JOIN $wpdb->postmeta as e
-                  ON a.ID=e.post_id
-                  AND (( e.meta_key = 'type'
-                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
-                  OR e.meta_key IS NULL)
-              WHERE a.post_status = 'publish'
-              " . $query_sql . "
-              AND post_type = 'contacts')
-            as needs_accepted,
-            (SELECT count(a.ID)
-              FROM $wpdb->posts as a
+                WHERE a.post_status = 'publish'
+                " . $query_sql . "
+                AND post_type = 'contacts'
+                AND a.ID NOT IN (
+                    SELECT post_id FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND meta_value = 'user'
+                    GROUP BY post_id
+                )
+            ) as needs_accepted,
+            (
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
                 JOIN $wpdb->postmeta as b
                   ON a.ID=b.post_id
                     AND b.meta_key = 'seeker_path'
@@ -1539,17 +1548,18 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                   ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
                     AND d.meta_value = 'active'
-                INNER JOIN $wpdb->postmeta as e
-                  ON a.ID=e.post_id
-                  AND (( e.meta_key = 'type'
-                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
-                  OR e.meta_key IS NULL)
-              WHERE a.post_status = 'publish'
-              " . $query_sql . "
-              AND post_type = 'contacts')
-            as contact_unattempted,
-            (SELECT count(a.ID)
-              FROM $wpdb->posts as a
+                WHERE a.post_status = 'publish'
+                " . $query_sql . "
+                AND post_type = 'contacts'
+                AND a.ID NOT IN (
+                    SELECT post_id FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND meta_value = 'user'
+                    GROUP BY post_id
+                )
+            ) as contact_unattempted,
+            (
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
                 JOIN $wpdb->postmeta as b
                   ON a.ID=b.post_id
                     AND b.meta_key = 'seeker_path'
@@ -1559,15 +1569,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                   ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
                     AND d.meta_value = 'active'
-                INNER JOIN $wpdb->postmeta as e
-                  ON a.ID=e.post_id
-                  AND (( e.meta_key = 'type'
-                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
-                  OR e.meta_key IS NULL)
-              WHERE a.post_status = 'publish'
-              " . $query_sql . "
-              AND post_type = 'contacts' )
-            as meeting_scheduled
+                WHERE a.post_status = 'publish'
+                " . $query_sql . "
+                AND post_type = 'contacts'
+                AND a.ID NOT IN (
+                    SELECT post_id FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND meta_value = 'user'
+                    GROUP BY post_id
+                )
+            ) as meeting_scheduled
             ", ARRAY_A );
 
         if ( empty( $personal_counts ) ) {
@@ -1580,37 +1590,49 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         if ( user_can( $user_id, 'view_any_contacts' ) ) {
             $dispatcher_counts = $wpdb->get_results( "
-            SELECT (SELECT count(a.ID)
+            SELECT (
+                SELECT count(a.ID)
                 FROM $wpdb->posts as a
                 INNER JOIN $wpdb->postmeta as b
-                  ON a.ID=b.post_id
-                     AND b.meta_key = 'overall_status'
-                     AND b.meta_value = 'unassigned'
+                    ON a.ID=b.post_id
+                    AND b.meta_key = 'overall_status'
+                    AND b.meta_value = 'unassigned'
                 " . $access_sql . "
-                INNER JOIN $wpdb->postmeta as e
-                  ON a.ID=e.post_id
-                  AND (( e.meta_key = 'type'
-                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
-                  OR e.meta_key IS NULL)
-                    WHERE a.post_status = 'publish'
-                  )
-                as needs_assigned,
-            (SELECT count(a.ID)
+                WHERE a.post_status = 'publish'
+            ) as needs_assigned,
+            (
+                SELECT count(a.ID)
                 FROM $wpdb->posts as a
                 INNER JOIN $wpdb->postmeta as b
                   ON a.ID=b.post_id
                      AND b.meta_key = 'overall_status'
                      AND b.meta_value = 'new'
                 " . $access_sql . "
-                INNER JOIN $wpdb->postmeta as e
-                  ON a.ID=e.post_id
-                  AND (( e.meta_key = 'type'
-                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
-                  OR e.meta_key IS NULL)
-                    WHERE a.post_status = 'publish'
-                  )
-                as new
-              ", ARRAY_A );
+                
+                WHERE a.post_status = 'publish'
+                AND a.ID NOT IN (
+                    SELECT post_id FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND meta_value = 'user'
+                    GROUP BY post_id
+                )
+            ) as new,
+            (
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                INNER JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                     AND b.meta_key = 'overall_status'
+                     AND b.meta_value = 'unassignable'
+                " . $access_sql . "
+                
+                WHERE a.post_status = 'publish'
+                AND a.ID NOT IN (
+                    SELECT post_id FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND meta_value = 'user'
+                    GROUP BY post_id
+                )
+            ) as unassignable
+            ", ARRAY_A );
 
             foreach ( $dispatcher_counts[0] as $key => $value ) {
                 $numbers[$key] = $value;

@@ -33,6 +33,11 @@ declare(strict_types=1);
                     <?php esc_html_e( "Dispatch needed", "disciple_tools" ); ?>
                     <span class="list-view__count js-list-view-count" data-value="needs_assigned">.</span>
                 </label>
+                <label class="list-view">
+                    <input type="radio" name="view" value="unassignable" class="js-list-view">
+                    <?php esc_html_e( "Not Ready", "disciple_tools" ); ?>
+                    <span class="list-view__count js-list-view-count" data-value="unassignable">.</span>
+                </label>
             <?php } ?>
             <label class="list-view">
                 <input type="radio" name="view" value="needs_accepted" class="js-list-view" autocomplete="off">
@@ -103,7 +108,7 @@ declare(strict_types=1);
             <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
         </div>
     </nav>
-    <div id="content">
+    <div id="content" class="archive-contacts">
 
         <div id="inner-content" class="grid-x grid-margin-x">
 

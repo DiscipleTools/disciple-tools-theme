@@ -112,7 +112,7 @@ function handleAjaxError (err) {
 
 jQuery(document).ajaxComplete((event, xhr, settings) => {
     if (_.get(xhr, 'responseJSON.data.status') === 401) {
-        window.location.replace('/login');
+        window.location.reload()
     }
 }).ajaxError((event, xhr) => {
     handleAjaxError(xhr)
