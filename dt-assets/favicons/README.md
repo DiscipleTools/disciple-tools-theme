@@ -16,7 +16,10 @@ Insert the following code in the `head` section of your pages:
     <link rel="manifest" href="/wp-content/themes/disciple-tools-theme/dt-assets/favicons/site.webmanifest">
     <link rel="mask-icon" href="/wp-content/themes/disciple-tools-theme/dt-assets/favicons/safari-pinned-tab.svg" color="#3f729b">
     <link rel="shortcut icon" href="/wp-content/themes/disciple-tools-theme/dt-assets/favicons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Disciple.Tools">
+    <meta name="application-name" content="Disciple.Tools">
     <meta name="msapplication-TileColor" content="#3f729b">
+    <meta name="msapplication-TileImage" content="/wp-content/themes/disciple-tools-theme/dt-assets/favicons/mstile-144x144.png">
     <meta name="msapplication-config" content="/wp-content/themes/disciple-tools-theme/dt-assets/favicons/browserconfig.xml">
     <meta name="theme-color" content="#3f729b">
 

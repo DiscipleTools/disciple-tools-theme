@@ -2,7 +2,10 @@
 <browserconfig>
     <msapplication>
         <tile>
+            <square70x70logo src="/wp-content/themes/disciple-tools-theme/dt-assets/favicons/mstile-70x70.png"/>
             <square150x150logo src="/wp-content/themes/disciple-tools-theme/dt-assets/favicons/mstile-150x150.png"/>
+            <square310x310logo src="/wp-content/themes/disciple-tools-theme/dt-assets/favicons/mstile-310x310.png"/>
+            <wide310x150logo src="/wp-content/themes/disciple-tools-theme/dt-assets/favicons/mstile-310x150.png"/>
             <TileColor>#3f729b</TileColor>
         </tile>
     </msapplication>
