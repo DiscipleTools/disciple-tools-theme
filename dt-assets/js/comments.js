@@ -374,9 +374,6 @@ function unescapeHtml(safe) {
     commentData.forEach(comment => {
       comment.date = moment(comment.comment_date_gmt + "Z")
 
-      //.DT - lets make an initial attempt to trip out specific tags in comment string.
-     comment.comment_content = comment.comment_content.replace(/&lt;/g,'').replace(/&gt;/g,'').replace('console.log','');
-
       if(comment.comment_content.match(/function|script/)) {
         comment.comment_content = _.escape(comment.comment_content)
       }
@@ -388,9 +385,9 @@ function unescapeHtml(safe) {
        * can trust the contents of the database to have been sanitized
        * thanks to wp_new_comment . */
     
-        // .DT lets strip out the tags provided from the submited comment and treat it as pure text.  We should use text() when dealing with untrusted input, wherever possible.
+        // .DT lets strip out the tags provided from the submited comment and treat it as pure text.
        //comment.comment_content = $("<div>").html(comment.comment_content).html()
-       comment.comment_content = $("<div>").html(comment.comment_content).text()
+       comment.comment_content = $("<div>").text(comment.comment_content).text()
 
       if (!typesCount[comment.comment_type]){
         typesCount[comment.comment_type] = 0;
