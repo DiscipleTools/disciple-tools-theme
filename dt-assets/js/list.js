@@ -332,7 +332,7 @@
       return '<a href="' + _.escape(group.permalink) + '">' + group.post_title + "</a>";
     }).join(", ");
 
-    const last_modified = new Date(contact.last_modified*1000).toISOString().slice(0, 10);
+    const last_modified = new Date(contact.last_modified*1000).toString().slice(0, 15);
 
     const context = _.assign({last_modified: 0}, contact, wpApiListSettings, {
       index,
