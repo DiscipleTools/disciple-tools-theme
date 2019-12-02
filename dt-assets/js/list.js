@@ -261,7 +261,7 @@
       <td class="hide-for-small-only"><%- assigned_to ? assigned_to.name : "" %></td>
       <td class="hide-for-small-only"><%= locations.join(", ") %></td>
       <td class="hide-for-small-only"><%= group_links %></td>
-      <td><%- last_modified %></td>
+      <td class="hide-for-small-only"><%- last_modified %></td>
     </tr>`),
     groups: _.template(`<tr>
       <!--<td><img src="<%- template_directory_uri %>/dt-assets/images/green_flag.svg" width=10 height=12></td>-->
