@@ -334,73 +334,92 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                 </div>
                             </section>
 
+
+
+
+
+
                         <!-- PROGRESS TILE -->
                             <section id="faith" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box">
-                                    <label class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?>
+                                        
+                                    <h3 class="section-header">
+                                        <?php esc_html_e( 'Progress', 'disciple_tools' )?>
+
+                                        <button class="section-chevron chevron_down">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
+
+                                        <button class="section-chevron chevron_up">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                        </button>
+
                                         <button class="help-button float-right" data-section="contact-progress-help-text">
-                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
-                                    </label>
-                                    <div class="section-subheader">
-                                        <?php echo esc_html( $contact_fields["seeker_path"]["name"] )?>
-                                        <button class="help-button" data-section="seeker-path-help-text">
+                                    </h3>
+        
+                                    <div class="section-body">
+                                        <div class="section-subheader">
+                                            <?php echo esc_html( $contact_fields["seeker_path"]["name"] )?>
+                                            <button class="help-button" data-section="seeker-path-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                        </button>
-                                    </div>
+                                            </button>
+                                        </div>
 
-                                    <select class="select-field" id="seeker_path" style="margin-bottom: 0">
-                                    <?php
-
-                                    foreach ($contact_fields["seeker_path"]["default"] as $key => $option){
-                                        $value = $option["label"] ?? "";
-                                        if ( $contact["seeker_path"]["key"] === $key ) {
-                                            ?>
-                                            <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
-                                        <?php } else { ?>
-                                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
-                                        <?php }
-                                    }
-                                    $keys = array_keys( $contact_fields["seeker_path"]["default"] );
-                                    $path_index = array_search( $contact["seeker_path"]["key"], $keys ) ?? 0;
-                                    $percentage = $path_index / ( sizeof( $keys ) -1 ) *100
-                                    ?>
-                                    </select>
-                                    <div class="progress" role="progressbar" tabindex="0" aria-valuenow="<?php echo 4 ?>" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
-                                        <div id="seeker-progress" class="progress-meter" style="width: <?php echo esc_html( $percentage ) ?>%"></div>
-                                    </div>
-
-                                    <div class="section-subheader">
-                                        <?php echo esc_html( $contact_fields["milestones"]["name"] )?>
-                                        <button class="help-button" data-section="faith-milestones-help-text">
-                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                        </button>
-                                    </div>
-                                    <div class="small button-group" style="display: inline-block">
-                                        <?php foreach ( $contact_fields["milestones"]["default"] as $option_key => $option_value ): ?>
+                                        <select class="select-field" id="seeker_path" style="margin-bottom: 0">
                                             <?php
-                                                $class = ( in_array( $option_key, $contact["milestones"] ?? [] ) ) ?
-                                                    "selected-select-button" : "empty-select-button"; ?>
-                                                <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="milestones"
-                                                        class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
-                                                    <?php echo esc_html( $contact_fields["milestones"]["default"][$option_key]["label"] ) ?>
-                                                </button>
-                                        <?php endforeach; ?>
-                                    </div>
+                                                foreach ($contact_fields["seeker_path"]["default"] as $key => $option){
+                                                    $value = $option["label"] ?? "";
+                                                    if ( $contact["seeker_path"]["key"] === $key ) {
+                                                        ?>
+                                                        <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
+                                                    <?php } else { ?>
+                                                        <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
+                                                    <?php }
+                                                }
+                                                $keys = array_keys( $contact_fields["seeker_path"]["default"] );
+                                                $path_index = array_search( $contact["seeker_path"]["key"], $keys ) ?? 0;
+                                                $percentage = $path_index / ( sizeof( $keys ) -1 ) *100
+                                            ?>
+                                        </select>
+                                        
+                                        <div class="progress" role="progressbar" tabindex="0" aria-valuenow="<?php echo 4 ?>" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
+                                            <div id="seeker-progress" class="progress-meter" style="width: <?php echo esc_html( $percentage ) ?>%"></div>
+                                        </div>
 
-                                    <div class="baptism_date">
-                                        <div class="section-subheader"><?php esc_html_e( 'Baptism Date', 'disciple_tools' )?>
-                                            <button class="help-button" data-section="baptism-date-help-text">
+                                        <div class="section-subheader">
+                                            <?php echo esc_html( $contact_fields["milestones"]["name"] )?>
+                                            <button class="help-button" data-section="faith-milestones-help-text">
                                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                             </button>
                                         </div>
+
+                                        <div class="small button-group" style="display: inline-block">
+                                            <?php foreach ( $contact_fields["milestones"]["default"] as $option_key => $option_value ): ?>
+                                                <?php
+                                                    $class = ( in_array( $option_key, $contact["milestones"] ?? [] ) ) ?
+                                                        "selected-select-button" : "empty-select-button"; ?>
+                                                    <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="milestones"
+                                                            class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
+                                                        <?php echo esc_html( $contact_fields["milestones"]["default"][$option_key]["label"] ) ?>
+                                                    </button>
+                                            <?php endforeach; ?>
+                                        </div>
+
                                         <div class="baptism_date">
-                                            <input type="text" class="dt_date_picker"
-                                                   value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>"
-                                                   id="baptism_date">
+                                            <div class="section-subheader"><?php esc_html_e( 'Baptism Date', 'disciple_tools' )?>
+                                                <button class="help-button" data-section="baptism-date-help-text">
+                                                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                                </button>
+                                            </div>
+                                            <div class="baptism_date">
+                                                <input type="text" class="dt_date_picker"
+                                                    value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>"
+                                                    id="baptism_date">
+                                            </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </section>
 
@@ -474,34 +493,48 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                         <!-- OTHER TILE -->
                             <section id="other" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box">
-                                    <label class="section-header"><?php esc_html_e( 'Other', 'disciple_tools' )?>
-                                        <button class="help-button" data-section="other-tile-help-text">
-                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                        </button>
-                                    </label>
+                                        <h3 class="section-header">
+                                            <?php esc_html_e( 'Other', 'disciple_tools' )?>
+                                            
+                                            <button class="section-chevron chevron_down">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                            </button>
+                                            
+                                            <button class="section-chevron chevron_up">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                            </button>
 
-                                    <div class="section-subheader">
-                                        <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
-                                    </div>
-                                    <div class="tags">
-                                        <var id="tags-result-container" class="result-container"></var>
-                                        <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
-                                            <div class="typeahead__container">
-                                                <div class="typeahead__field">
-                                                    <span class="typeahead__query">
-                                                        <input class="js-typeahead-tags input-height"
-                                                               name="tags[query]" placeholder="<?php esc_html_e( "Search Tags", 'disciple_tools' ) ?>"
-                                                               autocomplete="off">
-                                                    </span>
-                                                    <span class="typeahead__button">
-                                                        <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
-                                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
-                                                        </button>
-                                                    </span>
+                                            <button class="help-button" data-section="other-tile-help-text">
+                                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                            </button>
+                                        </h3>
+                          
+                                        <div class="section-body">
+                                            <div class="section-subheader">
+                                                <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
+                                            </div>
+                                            <div class="tags">
+                                                <var id="tags-result-container" class="result-container"></var>
+                                                <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
+                                                    <div class="typeahead__container">
+                                                        <div class="typeahead__field">
+                                                            <span class="typeahead__query">
+                                                                <input class="js-typeahead-tags input-height"
+                                                                    name="tags[query]" placeholder="<?php esc_html_e( "Search Tags", 'disciple_tools' ) ?>"
+                                                                    autocomplete="off">
+                                                            </span>
+                                                            <span class="typeahead__button">
+                                                                <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
+                                                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
+                                                                </button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+
+
                                 </div>
 
                             </section>
