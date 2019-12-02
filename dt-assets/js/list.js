@@ -452,6 +452,9 @@
     } else if ( currentView === "assignment_needed" ){
       query.overall_status = ["unassigned"]
       filter.labels = [{ id:"unassigned", name:filter_name, field: "assigned"}]
+    } else if ( currentView === "unassignable" ){
+      query.overall_status = ["unassignable"]
+      filter.labels = [{ id:"unassignable", name:filter_name, field: "overall_status"}]
     } else if ( currentView === "update_needed" ){
       filter.labels = [{ id:"update_needed", name:filter_name, field: "requires_update"}]
       query.requires_update = [true]

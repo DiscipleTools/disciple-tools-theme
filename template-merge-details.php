@@ -45,7 +45,7 @@ $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
   $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='Edit' class='fi-pencil'></a><a class='fi-x hide cancel' title='Cancel'></a><a class='fi-check hide save' title='Save'></a></span>";
     ?>
 
-    <div id="content">
+    <div id="content"  class="template-merge-details">
 
         <div id="inner-content" class="grid-x grid-margin-x">
 

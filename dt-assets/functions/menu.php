@@ -84,16 +84,16 @@ function disciple_tools_off_canvas_nav() {
         ?>
         <li>&nbsp;<!-- Spacer--></li>
         <li>
-            <a href="<?php echo esc_url( site_url( '/notifications/' ) ); ?>"><?php esc_html_e( "Notifications" ); ?></a>
+            <a href="<?php echo esc_url( site_url( '/notifications/' ) ); ?>"><?php esc_html_e( "Notifications", 'disciple_tools' ); ?></a>
         </li>
         <li>
-            <a href="<?php echo esc_url( site_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a>
+            <a href="<?php echo esc_url( site_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings", 'disciple_tools' ); ?></a>
         </li>
         <?php if ( user_can( get_current_user_id(), 'manage_dt' ) ) : ?>
-            <li><a href="<?php echo esc_url( get_admin_url() ); ?>"><?php esc_html_e( "Admin" ); ?></a></li>
+            <li><a href="<?php echo esc_url( get_admin_url() ); ?>"><?php esc_html_e( "Admin", 'disciple_tools' ); ?></a></li>
         <?php endif; ?>
         <li>
-            <a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( "Log Off" ); ?></a>
+            <a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( "Log Off", 'disciple_tools' ); ?></a>
         </li>
 
     </ul>
