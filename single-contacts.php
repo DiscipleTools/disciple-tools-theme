@@ -334,18 +334,12 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                 </div>
                             </section>
 
-
-
-
-
-
                         <!-- PROGRESS TILE -->
                             <section id="faith" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box">
-                                        
                                     <h3 class="section-header">
-                                        <?php esc_html_e( 'Progress', 'disciple_tools' )?>
-
+                                    <?php esc_html_e( 'Progress', 'disciple_tools' )?>
+                                        
                                         <button class="section-chevron chevron_down">
                                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                                         </button>
@@ -355,20 +349,21 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         </button>
 
                                         <button class="help-button float-right" data-section="contact-progress-help-text">
-                                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
                                     </h3>
-        
+                                    
                                     <div class="section-body">
                                         <div class="section-subheader">
                                             <?php echo esc_html( $contact_fields["seeker_path"]["name"] )?>
                                             <button class="help-button" data-section="seeker-path-help-text">
-                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                             </button>
                                         </div>
 
                                         <select class="select-field" id="seeker_path" style="margin-bottom: 0">
                                             <?php
+
                                                 foreach ($contact_fields["seeker_path"]["default"] as $key => $option){
                                                     $value = $option["label"] ?? "";
                                                     if ( $contact["seeker_path"]["key"] === $key ) {
@@ -383,7 +378,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                                 $percentage = $path_index / ( sizeof( $keys ) -1 ) *100
                                             ?>
                                         </select>
-                                        
+
                                         <div class="progress" role="progressbar" tabindex="0" aria-valuenow="<?php echo 4 ?>" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
                                             <div id="seeker-progress" class="progress-meter" style="width: <?php echo esc_html( $percentage ) ?>%"></div>
                                         </div>
@@ -394,7 +389,6 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                             </button>
                                         </div>
-
                                         <div class="small button-group" style="display: inline-block">
                                             <?php foreach ( $contact_fields["milestones"]["default"] as $option_key => $option_value ): ?>
                                                 <?php
@@ -420,121 +414,121 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </section>
 
                             <?php
-                            //get sections added by plugins
-                            $sections = apply_filters( 'dt_details_additional_section_ids', [], "contacts" );
-                            //get custom sections
-                            $custom_tiles = dt_get_option( "dt_custom_tiles" );
-                            foreach ( $custom_tiles["contacts"] as $tile_key => $tile_options ){
-                                if ( !in_array( $tile_key, $sections ) ){
-                                    $sections[] = $tile_key;
-                                }
-                                //remove section if hidden
-                                if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
-                                    if ( ( $index = array_search( $tile_key, $sections ) ) !== false) {
-                                        unset( $sections[ $index ] );
+                                //get sections added by plugins
+                                $sections = apply_filters( 'dt_details_additional_section_ids', [], "contacts" );
+                                //get custom sections
+                                $custom_tiles = dt_get_option( "dt_custom_tiles" );
+                                foreach ( $custom_tiles["contacts"] as $tile_key => $tile_options ){
+                                    if ( !in_array( $tile_key, $sections ) ){
+                                        $sections[] = $tile_key;
+                                    }
+                                    //remove section if hidden
+                                    if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
+                                        if ( ( $index = array_search( $tile_key, $sections ) ) !== false) {
+                                            unset( $sections[ $index ] );
+                                        }
                                     }
                                 }
-                            }
 
-                            foreach ( $sections as $section ){
-                                ?>
-                                <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                    <div class="bordered-box">
-                                        <?php
-                                        //setup tile label if see by customizations
-                                        if ( isset( $custom_tiles["contacts"][$section]["label"] ) ){ ?>
-                                            <h3 class="section-header">
-                                                <?php echo esc_html( $custom_tiles["contacts"][$section]["label"] )?>
-                                                <button class="section-chevron chevron_down">
-                                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                                                </button>
-                                                <button class="section-chevron chevron_up">
-                                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
-                                                </button>
-
-                                            </h3>
-                                        <?php }
-                                        // let the plugin add section content
-                                        do_action( "dt_details_additional_section", $section, "contacts" );
-
-                                        ?>
-                                        <div class="section-body">
+                                foreach ( $sections as $section ){
+                                    ?>
+                                    <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
+                                        <div class="bordered-box">
                                             <?php
-                                            //setup the order of the tile fields
-                                            $order = $custom_tiles["contacts"][$section]["order"] ?? [];
-                                            foreach ( $contact_fields as $key => $option ){
-                                                if ( isset( $option["tile"] ) && $option["tile"] === $section ){
-                                                    if ( !in_array( $key, $order )){
-                                                        $order[] = $key;
+                                            //setup tile label if see by customizations
+                                            if ( isset( $custom_tiles["contacts"][$section]["label"] ) ){ ?>
+                                                <h3 class="section-header">
+                                                    <?php echo esc_html( $custom_tiles["contacts"][$section]["label"] )?>
+                                                    <button class="section-chevron chevron_down">
+                                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                                    </button>
+                                                    <button class="section-chevron chevron_up">
+                                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                                    </button>
+
+                                                </h3>
+                                            <?php }
+                                            // let the plugin add section content
+                                            do_action( "dt_details_additional_section", $section, "contacts" );
+
+                                            ?>
+                                            <div class="section-body">
+                                                <?php
+                                                //setup the order of the tile fields
+                                                $order = $custom_tiles["contacts"][$section]["order"] ?? [];
+                                                foreach ( $contact_fields as $key => $option ){
+                                                    if ( isset( $option["tile"] ) && $option["tile"] === $section ){
+                                                        if ( !in_array( $key, $order )){
+                                                            $order[] = $key;
+                                                        }
                                                     }
                                                 }
-                                            }
-                                            foreach ( $order as $field_key ) {
-                                                if ( !isset( $contact_fields[$field_key] ) ){
-                                                    continue;
-                                                }
+                                                foreach ( $order as $field_key ) {
+                                                    if ( !isset( $contact_fields[$field_key] ) ){
+                                                        continue;
+                                                    }
 
-                                                $field = $contact_fields[$field_key];
-                                                if ( isset( $field["tile"] ) && $field["tile"] === $section){
-                                                    render_field_for_display( $field_key, $contact_fields, $contact );
+                                                    $field = $contact_fields[$field_key];
+                                                    if ( isset( $field["tile"] ) && $field["tile"] === $section){
+                                                        render_field_for_display( $field_key, $contact_fields, $contact );
+                                                    }
                                                 }
-                                            }
-                                            ?>
+                                                ?>
+                                            </div>
                                         </div>
-                                    </div>
-                                </section>
-                                <?php
-                            }
+                                    </section>
+                                    <?php
+                                }
                             ?>
                         <!-- OTHER TILE -->
                             <section id="other" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box">
-                                        <h3 class="section-header">
-                                            <?php esc_html_e( 'Other', 'disciple_tools' )?>
-                                            
-                                            <button class="section-chevron chevron_down">
-                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                                            </button>
-                                            
-                                            <button class="section-chevron chevron_up">
-                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
-                                            </button>
+                                    <h3 class="section-header">                                
+                                        <?php esc_html_e( 'Other', 'disciple_tools' )?>
+                                    
+                                        <button class="section-chevron chevron_down">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
 
-                                            <button class="help-button" data-section="other-tile-help-text">
-                                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                            </button>
-                                        </h3>
-                          
-                                        <div class="section-body">
-                                            <div class="section-subheader">
-                                                <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
-                                            </div>
-                                            <div class="tags">
-                                                <var id="tags-result-container" class="result-container"></var>
-                                                <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
-                                                    <div class="typeahead__container">
-                                                        <div class="typeahead__field">
-                                                            <span class="typeahead__query">
-                                                                <input class="js-typeahead-tags input-height"
-                                                                    name="tags[query]" placeholder="<?php esc_html_e( "Search Tags", 'disciple_tools' ) ?>"
-                                                                    autocomplete="off">
-                                                            </span>
-                                                            <span class="typeahead__button">
-                                                                <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
-                                                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
-                                                                </button>
-                                                            </span>
-                                                        </div>
+                                        <button class="section-chevron chevron_up">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                        </button>
+
+                                        <button class="help-button" data-section="other-tile-help-text">
+                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                        </button>
+                                    </h3>
+
+                                    <div class="section-body">
+                                        <div class="section-subheader">
+                                            <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
+                                        </div>
+
+                                        <div class="tags">
+                                            <var id="tags-result-container" class="result-container"></var>
+                                            <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
+                                                <div class="typeahead__container">
+                                                    <div class="typeahead__field">
+                                                        <span class="typeahead__query">
+                                                            <input class="js-typeahead-tags input-height"
+                                                                name="tags[query]" placeholder="<?php esc_html_e( "Search Tags", 'disciple_tools' ) ?>"
+                                                                autocomplete="off">
+                                                        </span>
+                                                        <span class="typeahead__button">
+                                                            <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
+                                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
+                                                            </button>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-
+                                    </div>
                                 </div>
 
                             </section>
