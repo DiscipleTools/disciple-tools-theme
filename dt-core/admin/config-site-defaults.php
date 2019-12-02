@@ -36,6 +36,8 @@ add_action( 'admin_init', 'dt_security_headers_insert' );
 add_action( 'login_init', 'dt_security_headers_insert' );
 //add_filter( 'wp_handle_upload_prefilter', 'dt_disable_file_upload' ); //this breaks uploading plugins and themes
 add_filter( 'cron_schedules', 'dt_cron_schedules' );
+add_action( 'login_init', 'dt_redirect_logged_in' );
+
 /*********************************************************************************************
  * Functions
  */
@@ -785,4 +787,14 @@ function dt_cron_schedules( $schedules ) {
         'display'  => __( 'Weekly' )
     );
     return $schedules;
+}
+
+//redirect already logged in users from the login page.
+function dt_redirect_logged_in() {
+    global $action;
+    if ('logout' === $action || !is_user_logged_in()) {
+        return;
+    }
+    dt_route_front_page();
+    exit;
 }

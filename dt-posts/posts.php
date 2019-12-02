@@ -850,13 +850,11 @@ class Disciple_Tools_Posts
         $sort_join = "";
         $post_type_check = "";
         if ( $post_type == "contacts" ){
-            $inner_joins .= " LEFT JOIN $wpdb->postmeta as contact_type ON ( $wpdb->posts.ID = contact_type.post_id AND contact_type.meta_key = 'type' ) ";
-            $post_type_check = " AND (
-                ( contact_type.meta_key = 'type' AND contact_type.meta_value = 'media' )
-                OR
-                ( contact_type.meta_key = 'type' AND contact_type.meta_value = 'next_gen' )
-                OR ( contact_type.meta_key IS NULL )
-            ) ";
+            $post_type_check = "AND $wpdb->posts.ID NOT IN (
+                SELECT post_id FROM $wpdb->postmeta
+                WHERE meta_key = 'type' AND meta_value = 'user'
+                GROUP BY post_id
+            )";
             $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
             if ( $sort === "overall_status" || $sort === "seeker_path" ) {
                 $keys = array_keys( $contact_fields[$sort]["default"] );
