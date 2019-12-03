@@ -21,7 +21,14 @@
             <button class="help-button" data-section="group-details-help-text">
                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
             </button>
+            <button class="section-chevron chevron_down">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+            </button>
+            <button class="section-chevron chevron_up">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+            </button>
         </div>
+        <div class="section-body"><!-- start collapse -->
     <div style="display: flex;">
         <div class="item-details-header" style="flex-grow:1">
             <i class="fi-torsos-all large" style="padding-bottom: 1.2rem"></i>
@@ -203,7 +210,7 @@
             </ul>
         </div>
 
-    </div>
+    </div><!-- end collapse --></div>
 
 
 </section> <!-- end article -->
