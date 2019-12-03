@@ -271,7 +271,14 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         <button class="help-button float-right" data-section="connections-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
+                                        <button class="section-chevron chevron_down">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
+                                        <button class="section-chevron chevron_up">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                        </button>
                                     </h3>
+                                    <div class="section-body"><!-- start collapse -->
                                     <div class="section-subheader"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></div>
 
                                   <var id="groups-result-container" class="result-container"></var>
@@ -331,17 +338,24 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         <?php
                                     }
                                     ?>
-                                </div>
+                                </div><!-- end collapse --></div>
                             </section>
 
                         <!-- PROGRESS TILE -->
                             <section id="faith" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box">
-                                    <label class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?>
+                                    <h3 class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?>
                                         <button class="help-button float-right" data-section="contact-progress-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
-                                    </label>
+                                        <button class="section-chevron chevron_down">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
+                                        <button class="section-chevron chevron_up">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                        </button>
+                                    </h3>
+                                    <div class="section-body"><!-- start collapse -->
                                     <div class="section-subheader">
                                         <?php echo esc_html( $contact_fields["seeker_path"]["name"] )?>
                                         <button class="help-button" data-section="seeker-path-help-text">
@@ -401,7 +415,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         </div>
                                     </div>
 
-                                </div>
+                                </div><!-- end collapse --></div>
                             </section>
 
                             <?php
@@ -436,7 +450,6 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                                 <button class="section-chevron chevron_up">
                                                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
                                                 </button>
-
                                             </h3>
                                         <?php }
                                         // let the plugin add section content
@@ -474,12 +487,18 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                         <!-- OTHER TILE -->
                             <section id="other" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box">
-                                    <label class="section-header"><?php esc_html_e( 'Other', 'disciple_tools' )?>
+                                    <h3 class="section-header"><?php esc_html_e( 'Other', 'disciple_tools' )?>
                                         <button class="help-button" data-section="other-tile-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
-                                    </label>
-
+                                        <button class="section-chevron chevron_down">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
+                                        <button class="section-chevron chevron_up">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                        </button>
+                                    </h3>
+                                    <div class="section-body"><!-- start collapse -->
                                     <div class="section-subheader">
                                         <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
                                     </div>
@@ -503,7 +522,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         </div>
                                     </div>
                                 </div>
-
+                                <!-- end collapse --></div>
                             </section>
                         </div>
                     </div>

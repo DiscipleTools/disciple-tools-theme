@@ -50,7 +50,15 @@
             <?php esc_html_e( "Contact Details", 'disciple_tools' ) ?>
             <button class="help-button" data-section="contact-details-help-text">
                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-            </button></div>
+            </button>
+            <button class="section-chevron chevron_down">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+            </button>
+            <button class="section-chevron chevron_up">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+            </button>
+        </div>
+        <div class="section-body"><!-- start collapse -->
         <div style="display: flex;">
             <div class="item-details-header" style="flex-grow:1">
                 <i class="fi-torso large" style="padding-bottom: 1.2rem"></i>
@@ -285,7 +293,7 @@
                     } ?>
                 </ul>
             </div>
-        </div>
+        </div><!-- end collapse --></div>
     </section>
 
     <div class="reveal" id="contact-details-edit" data-reveal data-close-on-click="false">
