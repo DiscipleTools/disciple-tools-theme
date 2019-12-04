@@ -19,7 +19,6 @@
                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
             </button>
         </h3>
-        <div class="section-body"><!-- start collapse -->
         <div class="cell grid-x grid-margin-x" id="add-comment-section">
             <div class="auto cell">
                 <textarea class="mention" dir="auto" id="comment-input"
@@ -76,6 +75,7 @@
                 </button>
             </div>
         </div>
+        <div class="section-body"><!-- start collapse -->
         <div class="cell">
 
             <div>

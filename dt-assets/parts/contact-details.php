@@ -58,7 +58,6 @@
                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
             </button>
         </div>
-        <div class="section-body"><!-- start collapse -->
         <div style="display: flex;">
             <div class="item-details-header" style="flex-grow:1">
                 <i class="fi-torso large" style="padding-bottom: 1.2rem"></i>
@@ -71,6 +70,7 @@
                 </button>
             </div>
         </div>
+        <div class="section-body"><!-- start collapse -->
         <div class="grid-x grid-margin-x" style="margin-top: 20px">
             <div class="cell small-12 medium-4">
                 <div class="section-subheader">

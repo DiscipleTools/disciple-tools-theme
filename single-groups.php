@@ -349,7 +349,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
         </main> <!-- end #main -->
 
         <aside class="auto cell grid-x">
-            <section class="bordered-box comment-activity-section cell"
+            <section class="comment-activity-section cell"
                      id="comment-activity-section">
                 <?php get_template_part( 'dt-assets/parts/loop', 'activity-comment' ); ?>
             </section>
