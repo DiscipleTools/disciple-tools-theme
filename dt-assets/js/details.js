@@ -49,12 +49,15 @@ jQuery(document).ready(function($) {
 
   $('.dt_date_picker').datepicker({
     dateFormat: 'yy-mm-dd',
-    onSelect: function (date) {
-      let id = $(this).attr('id')
-      rest_api.update_post( post_type, post_id, { [id]: date }).then((resp)=>{
-        $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
-      }).catch(handleAjaxError)
-    },
+    onClose: function(date) {
+        if (!$(this).val()) {
+          date = null; //.DT - our way of clearing the baptism date | the member intentionally left this input field blank, so return nothing.
+        }
+        let id = $(this).attr('id');
+        rest_api.update_post( post_type, post_id, { [id]: date }).then((resp)=>{
+          $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
+         }).catch(handleAjaxError)
+      },
     changeMonth: true,
     changeYear: true,
     yearRange: "1900:2050",
