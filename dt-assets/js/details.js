@@ -51,7 +51,7 @@ jQuery(document).ready(function($) {
     dateFormat: 'yy-mm-dd',
     onClose: function(date) {
         if (!$(this).val()) {
-          date = null; //.DT - our way of clearing the baptism date | the member intentionally left this input field blank, so return null.
+          date = null; //.DT - our way of clearing the baptism date | the member intentionally left this input field blank, so return null for date.
         }
         let id = $(this).attr('id');
         rest_api.update_post( post_type, post_id, { [id]: date }).then((resp)=>{
