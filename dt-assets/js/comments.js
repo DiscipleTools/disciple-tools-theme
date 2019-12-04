@@ -386,8 +386,7 @@ function unescapeHtml(safe) {
        * thanks to wp_new_comment . */
     
         // .DT lets strip out the tags provided from the submited comment and treat it as pure text.
-       //comment.comment_content = $("<div>").html(comment.comment_content).html()
-       comment.comment_content = $("<div>").text(comment.comment_content).text()
+       comment.comment_content = $("<div>").html(comment.comment_content).html()
 
       if (!typesCount[comment.comment_type]){
         typesCount[comment.comment_type] = 0;
