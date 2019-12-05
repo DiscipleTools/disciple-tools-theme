@@ -717,10 +717,10 @@ class Disciple_Tools_Posts
                         } else {
                             break;
                         }
-                        if ( strpos( $access_joins, "assigned_to" ) === false ){
-                            $access_joins .= "INNER JOIN $wpdb->postmeta AS assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id ) ";
+                        if ( !empty( $access_query ) ){
+                            $access_query .= $connector;
                         }
-                        $access_query .= ( !empty( $access_query ) ? $connector : "" ) . ( $connector == "AND" ? " ( " : "" ) . " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value = '" . esc_sql( $assigned_to ) . "' ) " . ( $connector == "AND" ? " ) " : "" );
+                        $access_query .= ( $connector == "AND" ? " ( " : "" ) . " ( $wpdb->posts.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'assigned_to' AND meta_value = '" . esc_sql( $assigned_to ) . "' ) ) " . ( $connector == "AND" ? " ) " : "" );
 
                     }
                 } else {
