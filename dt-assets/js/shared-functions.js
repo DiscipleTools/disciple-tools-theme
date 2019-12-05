@@ -129,7 +129,8 @@ window.TYPEAHEADS = {
     typeaheadSource : function (field, url) {
         return {
             contacts: {
-                display: [ "name", "ID" ],
+                display: [ "name", "ID"],
+                template: "<span>{{name}}</span>",
                 ajax: {
                     url: wpApiShare.root + url,
                     data: {
