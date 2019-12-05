@@ -1420,6 +1420,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $access_sql = $all_access;
         }
 
+        //filter out the contacts linked to users.
+        $user_posts = $wpdb->get_results( "
+            SELECT post_id FROM $wpdb->postmeta
+            WHERE meta_key = 'type' AND meta_value = 'user'
+            GROUP BY post_id
+        ", ARRAY_A);
+        $user_posts = dt_array_to_sql( array_map( function ( $g ) {
+            return $g["post_id"];
+        }, $user_posts ) );
 
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepare
@@ -1431,11 +1440,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 WHERE a.post_status = 'publish'
                 AND post_type = 'contacts'
                 " . $query_sql . "
-                AND a.ID NOT IN (
-                    SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                )
+                AND a.ID NOT IN ( $user_posts )
             ) as total_count,
             (
                 SELECT count(a.ID)
@@ -1443,11 +1448,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 " . $my_access . $closed . "
                 WHERE a.post_status = 'publish'
                 AND post_type = 'contacts'
-                AND a.ID NOT IN (
-                    SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                )
+               AND a.ID NOT IN ( $user_posts )
             ) as total_my,
             (
                 SELECT count(a.ID)
@@ -1455,11 +1456,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 " . $subassigned_access . $closed . "
                 WHERE a.post_status = 'publish'
                 AND post_type = 'contacts'
-                AND a.ID NOT IN (
-                    SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                )
+                AND a.ID NOT IN ( $user_posts )
             ) as total_subassigned,
             (
                 SELECT count(a.ID)
@@ -1467,11 +1464,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 " . $shared_access . $closed . "
                 WHERE a.post_status = 'publish'
                 AND post_type = 'contacts'
-                AND a.ID NOT IN (
-                    SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                )
+                AND a.ID NOT IN ( $user_posts )
             ) as total_shared,
             (
                 SELECT count(a.ID)
@@ -1479,11 +1472,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 " . $all_access . $closed . "
                 WHERE a.post_status = 'publish'
                 AND post_type = 'contacts'
-                AND a.ID NOT IN (
-                    SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                )
+                AND a.ID NOT IN ( $user_posts )
             ) as total_all,
             (
                 SELECT count(a.ID)
@@ -1496,11 +1485,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 WHERE a.post_status = 'publish'
                 " . $query_sql . "
                 AND post_type = 'contacts'
-                AND a.ID NOT IN (
-                    SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                )
+                AND a.ID NOT IN ( $user_posts )
             ) as update_needed,
             (
                 SELECT count(a.ID)
@@ -1513,11 +1498,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 WHERE a.post_status = 'publish'
                 " . $query_sql . "
                 AND post_type = 'contacts'
-                AND a.ID NOT IN (
-                    SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                )
+                AND a.ID NOT IN ( $user_posts )
             ) as active,
             (
                 SELECT count(a.ID)
@@ -1530,11 +1511,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 WHERE a.post_status = 'publish'
                 " . $query_sql . "
                 AND post_type = 'contacts'
-                AND a.ID NOT IN (
-                    SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                )
+                AND a.ID NOT IN ( $user_posts )
             ) as needs_accepted,
             (
                 SELECT count(a.ID)
@@ -1551,11 +1528,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 WHERE a.post_status = 'publish'
                 " . $query_sql . "
                 AND post_type = 'contacts'
-                AND a.ID NOT IN (
-                    SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                )
+                AND a.ID NOT IN ( $user_posts )
             ) as contact_unattempted,
             (
                 SELECT count(a.ID)
@@ -1572,11 +1545,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 WHERE a.post_status = 'publish'
                 " . $query_sql . "
                 AND post_type = 'contacts'
-                AND a.ID NOT IN (
-                    SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                )
+                AND a.ID NOT IN ( $user_posts )
             ) as meeting_scheduled
             ", ARRAY_A );
 
@@ -1610,11 +1579,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 " . $access_sql . "
                 
                 WHERE a.post_status = 'publish'
-                AND a.ID NOT IN (
-                    SELECT post_id FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                )
+                AND a.ID NOT IN ( $user_posts )
             ) as new
             ", ARRAY_A );
 
