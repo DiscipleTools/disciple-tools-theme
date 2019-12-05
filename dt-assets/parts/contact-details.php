@@ -179,7 +179,7 @@
                 <!--Phone-->
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/phone.svg' ?>">
-                    <?php echo esc_html( $channel_list["phone"]["label"] ) ?>
+                    <?php echo esc_html_e( $channel_list["phone"]["label"] ) ?>
                 </div>
                 <ul class="phone">
                 </ul>
@@ -188,7 +188,7 @@
                 <!--Email-->
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/email.svg' ?>">
-                    <?php echo esc_html( $channel_list['email']['label'] ) ?>
+                    <?php echo esc_html_e( $channel_list['email']['label'] ) ?>
                 </div>
                 <ul class="email">
                 </ul>
