@@ -243,7 +243,7 @@
         <span class="status status--<%- overall_status %>"><%- status %>
         <% if (update_needed){ %>
             <img style="" src="${_.escape( wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-        <% } %>  
+        <% } %>
         </span>
       </td>
       <td class="hide-for-small-only"><span class="status status--<%- seeker_path %>"><%- seeker_path %></span></td>
@@ -278,7 +278,7 @@
         <span class="group-status group-status--<%- group_status %>"><%- status %>
         <% if (update_needed){ %>
             <img style="" src="${_.escape( wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-        <% } %> 
+        <% } %>
         </span>
       </td>
       <td class="hide-for-small-only"><span class="group-type group-type--<%- group_type %>"><%- type %></span></td>
@@ -1128,7 +1128,7 @@
       //add new filters
       newFilterLabels.push({id:`${id}_${delimiter}`, name:`${fieldName} ${delimiterLabel}:${date}`, field:id, date:date})
       selectedFilters.append(`
-        <span class="current-filter ${id}_${delimiter}" 
+        <span class="current-filter ${id}_${delimiter}"
               data-id="${id}_${delimiter}">
                 ${fieldName} ${delimiterLabel}:${date}
         </span>
@@ -1213,18 +1213,18 @@ $(document).ready(function () {
     var $accordion = new Foundation.Accordion($('#list-filter-tabs'), {
       slideSpeed: 100,
       //multiExpand: false,
-      //allowAllClosed: true
+      allowAllClosed: true
     });
-  
+
     //(optional) set Contact Filter accordion panels to all be closed by default
     $('#list-filter-tabs').find('.accordion-item.is-active .accordion-content').css({ 'display': "" });
 
     //(optional) set a callback when a panel opens
     $('#list-filter-tabs').on('down.zf.accordion menu', function () {});
-  
+
     //(optional) set a callback when a panel closes
     $('#list-filter-tabs').on('up.zf.accordion menu', function () {});
-  
+
   }
 
   //run Contact Filters accordion options
@@ -1233,7 +1233,3 @@ $(document).ready(function () {
 
 
 })(window.jQuery, window.wpApiListSettings, window.Foundation);
-
-
-
-
