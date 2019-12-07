@@ -1580,7 +1580,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 
                 WHERE a.post_status = 'publish'
                 AND a.ID NOT IN ( $user_posts )
-            ) as new
+            ) as new,
             (
                 SELECT count(a.ID)
                 FROM $wpdb->posts as a
