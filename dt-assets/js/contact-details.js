@@ -380,7 +380,7 @@ jQuery(document).ready(function($) {
         maxItem: 20,
         source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
         display: "name",
-        template: "{{name}}",
+        templateValue: "{{name}}",
         dynamic: true,
         multiselect: {
           matchOn: ["ID"],
@@ -1437,4 +1437,3 @@ jQuery(document).ready(function($) {
   });
   //leave at the end of this file
 })
-

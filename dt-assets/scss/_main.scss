@@ -198,7 +198,7 @@ nav.second-bar {
 
 #off-canvas {
     span.title {
-        padding: 2rem 1rem 1rem;
+        padding: 2rem 1rem 2rem 0;
         text-align: center;
         font-weight: 800;
         font-size: 1.3rem;
@@ -207,13 +207,9 @@ nav.second-bar {
     ul.is-at-top {
         padding-top: 10px;
     }
-}
-
-#off-canvas ul.is-at-top li.nav-title div {
-    margin-left: 1rem;
-}
-#off-canvas ul.is-at-top li.nav-title span.title {
-    padding-left: 0;
+    ul.is-at-top li.nav-title div {
+        margin-left: 1rem;
+    }
 }
 
 .menu {
@@ -679,6 +675,13 @@ a.dt-green:hover {
     .unread-notification-row {
         background-color: rgba(63, 114, 155, 0.19);
     }
+}
+
+/* keeps buttons from touching each other */
+.notifications-page div.button-group
+{
+    text-align:center;
+    .button {margin-right: .25rem}
 }
 
 .help-icon {

@@ -10,7 +10,7 @@ declare(strict_types=1);
     get_header();
     ?>
 
-    <div id="content">
+    <div id="content" class="archive-template">
         <div id="inner-content" class="grid-x grid-margin-x">
             <aside class="large-3 cell padding-bottom show-for-large">
                 <div class="bordered-box js-pane-filters">

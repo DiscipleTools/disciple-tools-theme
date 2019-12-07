@@ -1581,6 +1581,18 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 WHERE a.post_status = 'publish'
                 AND a.ID NOT IN ( $user_posts )
             ) as new
+            (
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                INNER JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                     AND b.meta_key = 'overall_status'
+                     AND b.meta_value = 'unassignable'
+                " . $access_sql . "
+                
+                WHERE a.post_status = 'publish'
+                AND a.ID NOT IN ( $user_posts )
+            ) as unassignable
             ", ARRAY_A );
 
             foreach ( $dispatcher_counts[0] as $key => $value ) {

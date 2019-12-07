@@ -51,6 +51,7 @@ declare(strict_types=1);
                 <th class="desktop" data-id="assigned_to"><?php esc_html_e( "Assigned to", "disciple_tools" ); ?></th>
                 <th class="not-mobile" data-id="location_grid"><?php esc_html_e( "Location", "disciple_tools" ); ?></th>
                 <th class="not-mobile" data-id="groups"><?php esc_html_e( "Group", "disciple_tools" ); ?></th>
+                <th class="not-mobile" data-id="last_modified"><?php esc_html_e( "Last Modified", "disciple_tools" ); ?></th>
             </tr>
         </thead>
         <tbody>
