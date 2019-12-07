@@ -79,20 +79,20 @@ jQuery(document).ready(function ($) {
     yearRange: "1900:2050",
   })
 
+  function initActions() {
+    $('#baptism_date').val("");
+    let id = $('#baptism_date').attr('id');
+    date = new Date('Jan 1 1900');
+    date = date.toDateString();
+
+    rest_api.update_post(post_type, post_id, { [id]: date }).then((resp) => {
+      $(document).trigger("dt_date_picker-updated", [resp, id, date]);
+    }).catch(handleAjaxError)
+  }
+
   if (document.body.classList.contains('contacts-template-default')) {
     let mcleardate = document.getElementById("clear-date-button");
     mcleardate.onclick = initActions;
-    function initActions() {
-      $('#baptism_date').val("");
-      let id = $('#baptism_date').attr('id');
-      date = new Date('Jan 1 1900');
-      date = date.toDateString();
-
-      rest_api.update_post(post_type, post_id, { [id]: date }).then((resp) => {
-        $(document).trigger("dt_date_picker-updated", [resp, id, date]);
-      }).catch(handleAjaxError)
-
-    }
   }
 
 
