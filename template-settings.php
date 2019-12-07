@@ -23,7 +23,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 
 <?php get_header(); ?>
 
-<div id="content">
+<div id="content" class="template-settings">
 
     <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
@@ -93,7 +93,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                 <?php endif; ?>
 
                                 <p>
-                                    <strong><?php esc_html_e( "Roles" ); ?></strong><br>
+                                    <strong><?php esc_html_e( 'Roles', 'disciple_tools' ); ?></strong><br>
                                     <?php echo esc_html( implode( ", ", wp_get_current_user()->roles ) ); ?>
                                 </p>
 

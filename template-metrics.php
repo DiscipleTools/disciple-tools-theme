@@ -9,7 +9,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
 <?php get_header(); ?>
 
-    <div style="padding:15px">
+    <div style="padding:15px" class="template-metrics">
 
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
@@ -56,4 +56,3 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     </div> <!-- end #content -->
 
 <?php get_footer(); ?>
-

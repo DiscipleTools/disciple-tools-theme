@@ -19,7 +19,8 @@ get_header(); ?>
 
 </script>
 
-<div id="content">
+
+<div id="content" class="template-notifications notifications-page">
 
     <div id="inner-content" class="grid-x grid-margin-x">
 
@@ -27,6 +28,10 @@ get_header(); ?>
 
             <div class="bordered-box">
 
+                <h3 class="section-header"><?php esc_html_e( "Notifications", "disciple_tools" ); ?><button class="help-button float-right" data-section="notifications-template-help-text">
+                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                </button></h3>
+                
                 <div class="grid-x">
                     <div class="cell">
                         <div class="grid-x grid-margin-x " style="border-bottom: 1px solid #ccc;">
@@ -34,7 +39,7 @@ get_header(); ?>
                                                                      style="display:none;">&nbsp;</span>
                                 <strong><?php esc_html_e( 'New', 'disciple_tools' )?></strong></div>
                             <div class="small-4 medium-2 cell">
-                                <div class="expanded small button-group" style="text-align:center;">
+                                <div class="expanded small button-group">
                                     <button id="all" type="button"
                                             onclick="toggle_buttons('all'); get_notifications( all = true, true, );"
                                             class="button hollow"><?php esc_html_e( 'All', 'disciple_tools' )?>

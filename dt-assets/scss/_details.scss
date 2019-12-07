@@ -283,40 +283,6 @@ ul.social li {
 }
 
 
-.single-contacts {
-    &.editing {
-        .details-list {
-            display: none;
-        }
-    }
-
-    &.listing {
-        .details-edit {
-            display: none;
-        }
-    }
-
-    .show-content {
-        display: none;
-
-        ul {
-            margin: 0;
-        }
-    }
-
-    li {
-        list-style-type: none;
-    }
-}
-
-.single-groups {
-    .details-edit {
-        display: none;
-    }
-}
-
-
-
 /**
 Groups
 **/
