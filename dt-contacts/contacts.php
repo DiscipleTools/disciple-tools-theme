@@ -1549,16 +1549,16 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         // phpcs:enable
 
         $numbers = wp_parse_args( $numbers, [
-            'my_contacts' => 0,
-            'update_needed' => 0,
-            'needs_accepted' => 0,
-            'contact_unattempted' => 0,
-            'meeting_scheduled' => 0,
-            'all_contacts' => 0,
-            'needs_assigned' => 0,
-            'new' => 0,
-            'unassignable' => 0,
-            'unassigned' => 0
+            'my_contacts' => '0',
+            'update_needed' => '0',
+            'needs_accepted' => '0',
+            'contact_unattempted' => '0',
+            'meeting_scheduled' => '0',
+            'all_contacts' => '0',
+            'needs_assigned' => '0',
+            'new' => '0',
+            'unassignable' => '0',
+            'unassigned' => '0'
         ] );
 
         return $numbers;
