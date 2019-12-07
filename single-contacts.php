@@ -398,6 +398,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                             <input type="text" class="dt_date_picker"
                                                    value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>"
                                                    id="baptism_date">
+                                                   <button id="clear-date-button" class="button">Clear Date</button>
                                         </div>
                                     </div>
 

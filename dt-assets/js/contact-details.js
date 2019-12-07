@@ -643,7 +643,7 @@ jQuery(document).ready(function($) {
   $( document ).on( 'text-input-updated', function (e, newContact){})
 
   $( document ).on( 'dt_date_picker-updated', function (e, newContact, id, date){
-    if ( id === 'baptism_date' ){
+    if ( id === 'baptism_date' && newContact.baptism_date.timestamp){
       openBaptismModal(newContact)
     }
   })

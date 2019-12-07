@@ -7,9 +7,15 @@ jQuery(document).ready(function ($) {
   let masonGrid = $('.grid')
   let groupId = group.ID
   let editFieldsUpdate = {}
-  //construct our custom string data
+
+
+  /**
+   * date field management
+   */
+
+  //1 - set initial string data and create helpers functions
   let dateFields = ["start_date", "church_start_date", "end_date"]
-  //construct our helper function for formating new date()
+
   function format(date) {
     let d = date.getDate();
     let m = date.getMonth() + 1;
@@ -17,46 +23,55 @@ jQuery(document).ready(function ($) {
     return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
   }
 
-  /**
-   * datepicker management for date fields
-   */
-
-  //click "edit" link to initiate the following actions in edit mode
-  let meditbtn = document.getElementById("open-edit");
-  meditbtn.onclick = initActions;
-  function initActions() {
-
-    //loop through date fields based on custom string data & initliaze datepicker
-    //set the timezone format
-    //capture the date from each date field
-    //extend datepicker options
-    dateFields.forEach(key => {
-      let datePicker = $(`#${key}.date-picker`)
-      datePicker.datepicker({
-        dateFormat: 'yy-mm-dd',
-        onClose: function (date) {
-          editFieldsUpdate[key] = date
-        },
-        changeMonth: true,
-        changeYear: true
-      });
-    });
-
-    //loop through date fields again, to match date field values in ready-only & edit mode
-    //if member leaves the field blank, then keep it clear, else set the date value
+  function getinitialdates(...args) {
+    let initialdates = [];
     for (const [index, dateField] of dateFields.entries()) {
-      let jqselector = $('#' + dateField).datepicker('getDate', '+1d');
-      let mdate = jqselector.setDate(jqselector.getDate() + 1);
-      mdate = new Date(mdate);
-      mdate = format(mdate);
-      if (mdate === "1970-01-01") {
-        $('#' + dateField).val("");
-      } else {
-        //assign mdate to each date field
-        $('#' + dateField).val(mdate);
+      let initdate = $(`.date-list.${dateField}.details-list`).text();
+      let initconvert = new Date(initdate);
+      initconvert = format(initconvert);
+      if (initconvert === "NaN-NaN-NaN") {
+        initconvert = "";
       }
-    }//end for of loop
-  } //end initAction()
+      initialdates.push(initconvert);
+    }
+    return initialdates;
+  }
+
+  //2 - on click "edit" check read-only values, and assign them to our data fields in edit mode
+  let meditbtn = document.getElementById("open-edit");
+  meditbtn.onclick = editActions;
+  function editActions() {
+    let checkdates = getinitialdates(dateFields);
+    for (const [index, dateField] of dateFields.entries()) {
+      $('#' + dateField).val(checkdates[index]);
+    }
+  }
+
+  //3 - while in edit mode, allow the member to modify date values via datepicker
+  dateFields.forEach(key => {
+    let datePicker = $(`#${key}.date-picker`)
+    datePicker.datepicker({
+      dateFormat: 'yy-mm-dd',
+      onClose: function (date) {
+        editFieldsUpdate[key] = date
+      },
+      changeMonth: true,
+      changeYear: true
+    });
+  });
+
+  //4 - on click "save" re-check read-only values again, and assign them to our data fields in edit mode
+  let msavebtn = document.getElementById("save-edit-details");
+  msavebtn.onclick = saveActions;
+  function saveActions() {
+    $(document).ajaxStop(function () {
+      let recheckdates = getinitialdates(dateFields);
+      for (const [index, dateField] of dateFields.entries()) {
+        $('#' + dateField).val(recheckdates[index]);
+      }
+    });
+  }
+
 
   /**
    * Assigned_to
