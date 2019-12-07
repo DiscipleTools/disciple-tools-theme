@@ -46,13 +46,29 @@ jQuery(document).ready(function($) {
       handleAjaxError(err)
     })
   })
+  
+
+/**
+ * .DT - baptism date  management
+ * - check for the right location
+ * - save and/or clear date value, even if member leaves it blank
+ */
+
+   let initialdate = $('#baptism_date').val();
+   console.log(initialdate);
+
+   if (initialdate == "January 1, 1900") {
+    $('#baptism_date').val("");
+   }
 
   $('.dt_date_picker').datepicker({
     dateFormat: 'yy-mm-dd',
     onClose: function(date) {
         if (!$(this).val()) {
-          date = null; //.DT - our way of clearing the baptism date | the member intentionally left this input field blank, so return null for date.
+          date = new Date('Jan 1 1900');
+          date = date.toDateString();
         }
+        //console.log(`${date}`);
         let id = $(this).attr('id');
         rest_api.update_post( post_type, post_id, { [id]: date }).then((resp)=>{
           $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
@@ -62,6 +78,23 @@ jQuery(document).ready(function($) {
     changeYear: true,
     yearRange: "1900:2050",
   })
+
+if (document.body.classList.contains('contacts-template-default')) {
+  let mcleardate = document.getElementById("clear-date-button");
+  mcleardate.onclick = initActions;
+  function initActions() {
+      $('#baptism_date').val("");
+      let id = $('#baptism_date').attr('id');
+      date = new Date('Jan 1 1900');
+      date = date.toDateString();
+
+       rest_api.update_post(post_type, post_id, { [id]: date }).then((resp) => {
+          $(document).trigger("dt_date_picker-updated", [resp, id, date]);
+      }).catch(handleAjaxError)
+
+  }
+}
+
 
   $('select.select-field').change(e => {
     const id = $(e.currentTarget).attr('id')
