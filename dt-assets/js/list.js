@@ -49,7 +49,8 @@
   let filterToEdit = ""
   let currentFilters = $("#current-filters")
   let newFilterLabels = []
-  let loading_spinner = $(".loading-spinner")
+  let loading_spinner = $("#list-loading-spinner")
+  let count_spinner = $("#count-loading-spinner")
   let tableHeaderRow = $('.js-list thead .sortable th')
   let getContactsPromise = null
   let selectedFilterTab = "all"
@@ -1152,6 +1153,7 @@
 
   let getFilterCountsPromise = null
   let get_filter_counts = ()=>{
+    count_spinner.addClass("active")
     let showClosed = showClosedCheckbox.prop("checked")
     if ( getFilterCountsPromise && _.get( getFilterCountsPromise, "readyState") !== 4 ){
       getFilterCountsPromise.abort()
@@ -1163,6 +1165,7 @@
       }
     })
     getFilterCountsPromise.then(counts=>{
+      count_spinner.removeClass("active")
       $(".js-list-view-count").each(function() {
         const $el = $(this);
         let view_id = $el.data("value")
