@@ -336,7 +336,8 @@ class Disciple_Tools_Notifications
      *
      * @return false|string
      */
-    public static function pretty_timestamp( $timestamp ) {
+    public static function pretty_timestamp( $timestamp ) 
+    {
         $current_time = current_time( 'mysql' );
         $one_hour_ago = date( 'Y-m-d H:i:s', strtotime( '-1 hour', strtotime( $current_time ) ) );
         $yesterday = date( 'Y-m-d', strtotime( '-1 day', strtotime( $current_time ) ) );
