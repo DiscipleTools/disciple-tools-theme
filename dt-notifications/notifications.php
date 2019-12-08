@@ -347,7 +347,7 @@ class Disciple_Tools_Notifications
         $six_days_ago = date( 'Y-m-d', strtotime( '-6 day', strtotime( $current_time ) ) );
         $seven_days_ago = date( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
         $one_month_ago = date(
-            'Y-m-d', strtotime( '-30 days', strtotime( $current_time ) ) 
+            'Y-m-d', strtotime( '-30 days', strtotime( $current_time ) )
         );
 
         $seven_days_ago = date( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
