@@ -375,7 +375,7 @@
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
-                    <?php esc_html_e( 'Source', "disciple_tools" ); ?>
+                    <?php esc_html_e( 'Source', 'disciple_tools' ); ?>
                 </div>
                 <span id="sources-result-container" class="result-container"></span>
                 <div id="sources_t" name="form-sources" class="scrollable-typeahead">

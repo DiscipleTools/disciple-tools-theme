@@ -494,8 +494,7 @@ function dt_theme_admin_notice_required_php_version() {
     <div class="notice notice-error">
         <p><?php esc_html_e( 'Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:', 'disciple_tools' );
             echo esc_html( phpversion() );
-            esc_html_e( 'Please upgrade PHP or uninstall this theme', "disciple_tools" ); ?></p>
+            esc_html_e( 'Please upgrade PHP or uninstall this theme', 'disciple_tools' ); ?></p>
     </div>
     <?php
 }
-

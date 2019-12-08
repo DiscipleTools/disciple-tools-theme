@@ -75,7 +75,7 @@ declare(strict_types=1);
                 </a>
                 <a class="button" style="margin-bottom:0" data-open="filter-modal">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
-                    <span class="hide-for-small-only"><?php esc_html_e( "Filter contacts", 'disciple_tools' ) ?></span>
+                    <span class="hide-for-small-only"><?php esc_html_e( "Filter Contacts", 'disciple_tools' ) ?></span>
                 </a>
                 <a class="button" style="margin-bottom:0" href="<?php echo esc_url( site_url( '/view-duplicates' ) ); ?>">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
@@ -97,7 +97,7 @@ declare(strict_types=1);
         </a>
         <a class="button" style="margin-bottom:0" data-open="filter-modal">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
-            <span class="hide-for-small-only"><?php esc_html_e( "Filter contacts", 'disciple_tools' ) ?></span>
+            <span class="hide-for-small-only"><?php esc_html_e( "Filter Contacts", 'disciple_tools' ) ?></span>
         </a>
         <a class="button" style="margin-bottom:0" id="open-search">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
@@ -141,7 +141,7 @@ declare(strict_types=1);
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
                     </label>
-                    <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( 'Default Filters', "disciple_tools" ); ?></h5>
+                    <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( 'Default Filters', 'disciple_tools' ); ?></h5>
 
                     <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion">
                         <li class="accordion-item" data-accordion-item data-id="all">
@@ -183,7 +183,7 @@ declare(strict_types=1);
                     </ul>
 
 
-                    <h5><?php esc_html_e( 'Custom Filters', "disciple_tools" ); ?></h5>
+                    <h5><?php esc_html_e( 'Custom Filters', 'disciple_tools' ); ?></h5>
                     <div style="margin-bottom: 5px">
                         <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
                     </div>
@@ -313,7 +313,7 @@ declare(strict_types=1);
                                             </label>
                                         </div>
                                     <?php elseif ( $field === "created_on" || isset( $dt_contact_field_options[$field] ) && $dt_contact_field_options[$field]["type"] == "date" ) : ?>
-                                        <strong><?php esc_html_e( "Range Start", 'disciple_tools' ) ?></strong>
+                                        <strong><?php echo esc_html_x( "Range Start", 'The start date of a date range', 'disciple_tools' ) ?></strong>
                                         <button class="clear-date-picker" style="color:firebrick"
                                                 data-for="<?php echo esc_html( $field ) ?>_start">
                                             <?php echo esc_html_x( "Clear", 'Clear/empty input', 'disciple_tools' ) ?></button>
@@ -323,7 +323,7 @@ declare(strict_types=1);
                                                class="dt_date_picker" data-delimit="start"
                                                data-field="<?php echo esc_html( $field ) ?>">
                                         <br>
-                                        <strong><?php esc_html_e( "Range end", 'disciple_tools' ) ?></strong>
+                                        <strong><?php echo esc_html_x( "Range End", 'The end date of a date range', 'disciple_tools' ) ?></strong>
                                         <button class="clear-date-picker"
                                                 style="color:firebrick"
                                                 data-for="<?php echo esc_html( $field ) ?>_end">

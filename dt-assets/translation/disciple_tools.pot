@@ -106,7 +106,7 @@ msgid "Create new contact"
 msgstr ""
 
 #: archive-contacts.php:73 archive-contacts.php:95 archive-contacts.php:350
-msgid "Filter contacts"
+msgid "Filter Contacts"
 msgstr ""
 
 #: archive-contacts.php:77
@@ -240,7 +240,7 @@ msgid "Create new group"
 msgstr ""
 
 #: archive-groups.php:34 archive-groups.php:52
-msgid "Filter groups"
+msgid "Filter Groups"
 msgstr ""
 
 #: archive-groups.php:56 single-contacts.php:283 single-groups.php:164
@@ -958,7 +958,7 @@ msgstr ""
 
 #: dt-assets/parts/modals/modal-help.php:57
 #: dt-assets/parts/modals/modal-help.php:103
-msgid "User workload status icons legend"
+msgid "User workload status icons legend:"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-help.php:63
