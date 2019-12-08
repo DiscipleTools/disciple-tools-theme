@@ -336,8 +336,7 @@ class Disciple_Tools_Notifications
      *
      * @return false|string
      */
-    public static function pretty_timestamp( $timestamp ) 
-    {
+    public static function pretty_timestamp( $timestamp ) {
         $current_time = current_time( 'mysql' );
         $one_hour_ago = date( 'Y-m-d H:i:s', strtotime( '-1 hour', strtotime( $current_time ) ) );
         $yesterday = date( 'Y-m-d', strtotime( '-1 day', strtotime( $current_time ) ) );
@@ -347,7 +346,10 @@ class Disciple_Tools_Notifications
         $five_days_ago = date( 'Y-m-d', strtotime( '-5 day', strtotime( $current_time ) ) );
         $six_days_ago = date( 'Y-m-d', strtotime( '-6 day', strtotime( $current_time ) ) );
         $seven_days_ago = date( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
-        $one_month_ago = date('Y-m-d', strtotime( '-30 days', strtotime( $current_time ) ) );
+        $one_month_ago = date(
+            'Y-m-d', strtotime( '-30 days', strtotime( $current_time ) ) 
+        );
+
         $seven_days_ago = date( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
         if ( $timestamp > $one_hour_ago ) {
             $current = new DateTime( $current_time );
