@@ -1169,8 +1169,10 @@
       $(".js-list-view-count").each(function() {
         const $el = $(this);
         let view_id = $el.data("value")
-        if ( counts && counts[view_id] ){
+        if ( counts && counts[view_id] && parseInt( counts[view_id] ) > 0 ){
           $el.text( counts[view_id] );
+        } else {
+          $el.text( '0' );
         }
       });
       $(".tab-count-span").each(function () {

@@ -1501,6 +1501,22 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             (
                 SELECT count(a.ID)
                 FROM $wpdb->posts as a
+                " . $all_access . $closed . "
+                WHERE a.post_status = 'publish'
+                AND post_type = 'contacts'
+                AND a.ID NOT IN ( $user_posts )
+            ) as total_all,
+            (
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                " . $my_access . $closed . "
+                WHERE a.post_status = 'publish'
+                AND post_type = 'contacts'
+                AND a.ID NOT IN ( $user_posts )
+            ) as total_my,
+            (
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
                 " . $subassigned_access . $closed . "
                 WHERE a.post_status = 'publish'
                 AND post_type = 'contacts'
