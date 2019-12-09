@@ -54,12 +54,6 @@ jQuery(document).ready(function ($) {
    * - save and/or clear date value, even if member leaves it blank
    */
 
-  let initialdate = $('#baptism_date').val();
-
-  if (initialdate == "January 1, 1900") {
-    $('#baptism_date').val("");
-  }
-
   $('.dt_date_picker').datepicker({
     dateFormat: 'yy-mm-dd',
     onClose: function (date) {
