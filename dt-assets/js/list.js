@@ -243,7 +243,7 @@
         <span class="status status--<%- overall_status %>"><%- status %>
         <% if (update_needed){ %>
             <img style="" src="${_.escape( wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-        <% } %>  
+        <% } %>
         </span>
       </td>
       <td class="hide-for-small-only"><span class="status status--<%- seeker_path %>"><%- seeker_path %></span></td>
@@ -261,7 +261,7 @@
       <td class="hide-for-small-only"><%- assigned_to ? assigned_to.name : "" %></td>
       <td class="hide-for-small-only"><%= locations.join(", ") %></td>
       <td class="hide-for-small-only"><%= group_links %></td>
-      <!--<td><%- last_modified %></td>-->
+      <td class="hide-for-small-only"><%- last_modified %></td>
     </tr>`),
     groups: _.template(`<tr>
       <!--<td><img src="<%- template_directory_uri %>/dt-assets/images/green_flag.svg" width=10 height=12></td>-->
@@ -278,7 +278,7 @@
         <span class="group-status group-status--<%- group_status %>"><%- status %>
         <% if (update_needed){ %>
             <img style="" src="${_.escape( wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-        <% } %> 
+        <% } %>
         </span>
       </td>
       <td class="hide-for-small-only"><span class="group-type group-type--<%- group_type %>"><%- type %></span></td>
@@ -331,6 +331,9 @@
     const group_links = _.map(contact.groups, function(group) {
       return '<a href="' + _.escape(group.permalink) + '">' + group.post_title + "</a>";
     }).join(", ");
+
+    const last_modified = new Date(contact.last_modified*1000).toString().slice(0, 15);
+
     const context = _.assign({last_modified: 0}, contact, wpApiListSettings, {
       index,
       status,
@@ -342,6 +345,7 @@
       belief_milestone: _.get(ccfs, `milestones.default["milestone_${belief_milestone_key}"].label`, ""),
       sharing_milestone: _.get(ccfs, `milestones.default["milestone_${sharing_milestone_key}"].label`, ""),
       group_links,
+      last_modified,
       update_needed : contact.requires_update
     });
     return $.parseHTML(template(context));
@@ -452,6 +456,9 @@
     } else if ( currentView === "assignment_needed" ){
       query.overall_status = ["unassigned"]
       filter.labels = [{ id:"unassigned", name:filter_name, field: "assigned"}]
+    } else if ( currentView === "unassignable" ){
+      query.overall_status = ["unassignable"]
+      filter.labels = [{ id:"unassignable", name:filter_name, field: "overall_status"}]
     } else if ( currentView === "update_needed" ){
       filter.labels = [{ id:"update_needed", name:filter_name, field: "requires_update"}]
       query.requires_update = [true]
@@ -1121,7 +1128,7 @@
       //add new filters
       newFilterLabels.push({id:`${id}_${delimiter}`, name:`${fieldName} ${delimiterLabel}:${date}`, field:id, date:date})
       selectedFilters.append(`
-        <span class="current-filter ${id}_${delimiter}" 
+        <span class="current-filter ${id}_${delimiter}"
               data-id="${id}_${delimiter}">
                 ${fieldName} ${delimiterLabel}:${date}
         </span>
@@ -1205,19 +1212,8 @@ $(document).ready(function () {
     //Set speed and expansion options for the Contact Filter accordion
     var $accordion = new Foundation.Accordion($('#list-filter-tabs'), {
       slideSpeed: 100,
-      //multiExpand: false,
-      //allowAllClosed: true
+      allowAllClosed: true
     });
-  
-    //(optional) set Contact Filter accordion panels to all be closed by default
-    $('#list-filter-tabs').find('.accordion-item.is-active .accordion-content').css({ 'display': "" });
-
-    //(optional) set a callback when a panel opens
-    $('#list-filter-tabs').on('down.zf.accordion menu', function () {});
-  
-    //(optional) set a callback when a panel closes
-    $('#list-filter-tabs').on('up.zf.accordion menu', function () {});
-  
   }
 
   //run Contact Filters accordion options
@@ -1226,7 +1222,3 @@ $(document).ready(function () {
 
 
 })(window.jQuery, window.wpApiListSettings, window.Foundation);
-
-
-
-

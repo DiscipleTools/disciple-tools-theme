@@ -112,7 +112,7 @@ function handleAjaxError (err) {
 
 jQuery(document).ajaxComplete((event, xhr, settings) => {
     if (_.get(xhr, 'responseJSON.data.status') === 401) {
-        window.location.replace('/login');
+        window.location.reload()
     }
 }).ajaxError((event, xhr) => {
     handleAjaxError(xhr)
@@ -129,7 +129,8 @@ window.TYPEAHEADS = {
     typeaheadSource : function (field, url) {
         return {
             contacts: {
-                display: [ "name", "ID" ],
+                display: [ "name", "ID"],
+                template: "<span>{{name}}</span>",
                 ajax: {
                     url: wpApiShare.root + url,
                     data: {

@@ -59,7 +59,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     AND $wpdb->posts.post_type = 'contacts' AND $wpdb->posts.post_status = 'publish'
                     AND $wpdb->posts.ID NOT IN (
                         SELECT post_id FROM $wpdb->postmeta
-                        WHERE meta_key = 'corresponds_to_user' AND meta_value != 0
+                        WHERE meta_key = 'type' AND meta_value = 'user'
                         GROUP BY post_id
                     )
                     GROUP BY $wpdb->posts.ID ORDER BY $wpdb->posts.post_date DESC LIMIT 0, 50",

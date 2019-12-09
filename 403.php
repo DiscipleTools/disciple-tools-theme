@@ -1,6 +1,6 @@
 <?php get_header(); ?>
 
-    <div id="content">
+    <div id="content" class="template-error">
 
         <div id="inner-content" class="grid-x grid-padding-x">
 
