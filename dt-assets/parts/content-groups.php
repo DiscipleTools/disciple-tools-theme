@@ -3,11 +3,15 @@ declare(strict_types=1);
 ?>
 <div class="bordered-box list-box">
     <!-- content-groups -->
-    <label class="section-header"><?php esc_html_e( 'Groups List', 'disciple_tools' )?>
-    <button class="help-button float-right" data-section="groups-list-help-text">
-        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-    </button></label>
-    <div style="display: inline-block" class="loading-spinner active"></div>
+    <label class="section-header">
+        <span>
+            <?php esc_html_e( 'Groups List', 'disciple_tools' )?>
+            <span id="list-loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
+        </span>
+        <button class="help-button float-right" data-section="groups-list-help-text">
+            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+        </button>
+    </label>
     <span style="display: inline-block" class="filter-result-text"></span>
     <div style="display: inline-block" id="current-filters"></div>
     <div class="js-sort-dropdown" style="display: inline-block">
