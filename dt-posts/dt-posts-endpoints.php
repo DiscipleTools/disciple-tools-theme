@@ -380,7 +380,7 @@ class Disciple_Tools_Posts_Endpoints {
         } else {
             // This code won't execute because we have specified this argument as required.
             // If we reused this validation callback and did not have required args then this would fire.
-            return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%s was not registered as a request argument.', 'my-textdomain' ), $param ), array( 'status' => 400 ) );
+            return new WP_Error( 'rest_invalid_param', sprintf( '%s was not registered as a request argument.', $param ), array( 'status' => 400 ) );
         }
 
         // If we got this far then the data is valid.
