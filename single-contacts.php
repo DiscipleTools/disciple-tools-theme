@@ -471,7 +471,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                 <?php
                             }
                             ?>
-                        <!-- OTHER TILE -->
+                        <!-- OTHER CONTACT TILE -->
                             <section id="other" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box">
                                     <label class="section-header"><?php esc_html_e( 'Other', 'disciple_tools' )?>

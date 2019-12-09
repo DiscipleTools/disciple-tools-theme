@@ -174,6 +174,41 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                 </div>
                             </div>
                         </section>
+                        <!-- OTHER GROUP TILE -->
+                            <section id="other" class="xlarge-6 large-12 medium-6 cell grid-item">
+                                <div class="bordered-box">
+                                    <label class="section-header"><?php esc_html_e( 'Other', 'disciple_tools' )?>
+                                        <button class="help-button" data-section="other-tile-help-text">
+                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                        </button>
+                                    </label>
+
+                                    <div class="section-subheader">
+                                        <?php //echo esc_html( $contact_fields["tags"]["name"] ) ?>
+                                        <?php esc_html_e( "Tags", 'disciple_tools' ) ?>
+                                    </div>
+                                    <div class="tags">
+                                        <var id="tags-result-container" class="result-container"></var>
+                                        <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
+                                            <div class="typeahead__container">
+                                                <div class="typeahead__field">
+                                                    <span class="typeahead__query">
+                                                        <input class="js-typeahead-tags input-height"
+                                                               name="tags[query]" placeholder="<?php esc_html_e( "Search Tags", 'disciple_tools' ) ?>"
+                                                               autocomplete="off">
+                                                    </span>
+                                                    <span class="typeahead__button">
+                                                        <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
+                                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </section>
 
                         <!-- Health Metrics-->
                         <?php if ( ! empty( $group_preferences['church_metrics'] ) ) : ?>
@@ -370,7 +405,30 @@ if ( ! current_user_can( 'access_groups' ) ) {
         </button>
     </div>
 
+    <div class="reveal" id="create-tag-modal" data-reveal data-reset-on-close>
 
+        <p class="lead"><?php esc_html_e( 'Create Tag', 'disciple_tools' )?></p>
+
+        <form class="js-create-tag">
+            <label for="title">
+                <?php esc_html_e( "Tag", "disciple_tools" ); ?>
+            </label>
+            <input name="title" id="new-tag" type="text" placeholder="<?php esc_html_e( "tag", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
+            <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
+        </form>
+
+        <div class="grid-x">
+            <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+            </button>
+            <button class="button" data-close type="button" id="create-tag-return">
+                <?php esc_html_e( 'Create and apply tag', 'disciple_tools' ); ?>
+            </button>
+            <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
 
     <?php
 } )();
