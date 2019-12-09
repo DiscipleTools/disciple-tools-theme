@@ -12,12 +12,12 @@
                 <img class="help-icon"
                      src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
             </button>
-            <button class="section-chevron chevron_down">
+            <!-- <button class="section-chevron chevron_down">
                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
             </button>
             <button class="section-chevron chevron_up">
                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
-            </button>
+            </button> -->
         </h3>
         <div class="cell grid-x grid-margin-x" id="add-comment-section">
             <div class="auto cell">
