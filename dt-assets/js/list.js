@@ -1215,19 +1215,8 @@ $(document).ready(function () {
     //Set speed and expansion options for the Contact Filter accordion
     var $accordion = new Foundation.Accordion($('#list-filter-tabs'), {
       slideSpeed: 100,
-      //multiExpand: false,
       allowAllClosed: true
     });
-
-    //(optional) set Contact Filter accordion panels to all be closed by default
-    $('#list-filter-tabs').find('.accordion-item.is-active .accordion-content').css({ 'display': "" });
-
-    //(optional) set a callback when a panel opens
-    $('#list-filter-tabs').on('down.zf.accordion menu', function () {});
-
-    //(optional) set a callback when a panel closes
-    $('#list-filter-tabs').on('up.zf.accordion menu', function () {});
-
   }
 
   //run Contact Filters accordion options
