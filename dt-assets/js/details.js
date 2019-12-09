@@ -55,7 +55,6 @@ jQuery(document).ready(function ($) {
    */
 
   let initialdate = $('#baptism_date').val();
-  console.log(initialdate);
 
   if (initialdate == "January 1, 1900") {
     $('#baptism_date').val("");
@@ -65,10 +64,8 @@ jQuery(document).ready(function ($) {
     dateFormat: 'yy-mm-dd',
     onClose: function (date) {
       if (!$(this).val()) {
-        date = new Date('Jan 1 1900');
-        date = date.toDateString();
+        date = null;
       }
-      //console.log(`${date}`);
       let id = $(this).attr('id');
       rest_api.update_post(post_type, post_id, { [id]: date }).then((resp) => {
         $(document).trigger("dt_date_picker-updated", [resp, id, date]);
@@ -82,8 +79,7 @@ jQuery(document).ready(function ($) {
   function initActions() {
     $('#baptism_date').val("");
     let id = $('#baptism_date').attr('id');
-    date = new Date('Jan 1 1900');
-    date = date.toDateString();
+    date = null;
 
     rest_api.update_post(post_type, post_id, { [id]: date }).then((resp) => {
       $(document).trigger("dt_date_picker-updated", [resp, id, date]);
