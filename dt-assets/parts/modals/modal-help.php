@@ -140,7 +140,7 @@
       <h3><?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?></h3>
       <p><?php esc_html_e( "This is where you will want to record important notes from meetings and conversations.", 'disciple_tools' ) ?></p>
       <p><?php esc_html_e( "Type @ and the name of a user to mention them in a comment. This user will then receive a notification.", 'disciple_tools' ) ?></p>
-      <p><?php esc_html_e( "This section also includes the history of activity, such as when the contact or group status became active etc. ", 'disciple_tools' ) ?></p>
+      <p><?php esc_html_e( "This section also includes the history of activity, such as when the contact or group status became active etc.", 'disciple_tools' ) ?></p>
       <p><?php esc_html_e( "You can filter this section either by `All`, `Comments`, or `Activity`.", 'disciple_tools' ) ?></p>
     </div>
 
