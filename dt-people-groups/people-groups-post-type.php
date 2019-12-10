@@ -128,7 +128,7 @@ class Disciple_Tools_People_Groups_Post_Type
             'name'                  => $this->plural,
             'singular_name'         => $this->singular,
             'menu_name'             => $this->plural,
-            'search_items'          => sprintf( __( 'Search %s', 'disciple_tools' ), $this->plural ),
+            'search_items'          => sprintf( _x( 'Search %s', 'Search `something`', 'disciple_tools' ), $this->plural ),
         ];
 
         $rewrite = [
@@ -316,9 +316,9 @@ class Disciple_Tools_People_Groups_Post_Type
     public function load_details_meta_box() {
         global $wpdb, $post;
         $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT meta_key, meta_value 
-            FROM $wpdb->postmeta 
-            WHERE post_id = %s 
+            SELECT meta_key, meta_value
+            FROM $wpdb->postmeta
+            WHERE post_id = %s
             AND (
             meta_key LIKE %s
             OR meta_key LIKE %s

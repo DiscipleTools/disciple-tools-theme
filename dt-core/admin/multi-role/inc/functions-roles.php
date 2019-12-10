@@ -276,7 +276,7 @@ function dt_multi_role_translate_role( $role ) {
     global $wp_roles;
 
     $label = before_last_bar( $wp_roles->role_names[ $role ] );
-    $translated_label = translate_with_gettext_context( $label, '', "disciple_tools" ); //@phpcs:ignore
+    $translated_label = translate_with_gettext_context( $label, '', 'disciple_tools' ); //@phpcs:ignore
     return apply_filters( 'dt_multi_role_translate_role', $translated_label, $role );
 }
 

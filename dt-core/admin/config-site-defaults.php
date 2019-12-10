@@ -58,7 +58,7 @@ function dt_set_permalink_structure() {
 function dt_warn_user_about_permalink_settings() {
     ?>
     <div class="error notices">
-        <p><?php esc_html_e( 'You may only set your permalink settings to "Post name"', "disciple_tools" ); ?></p>
+        <p><?php esc_html_e( 'You may only set your permalink settings to "Post name"', 'disciple_tools' ); ?></p>
     </div>
     <?php
 }
