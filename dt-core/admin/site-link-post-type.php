@@ -149,7 +149,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                           JOIN $wpdb->postmeta
                           ON $wpdb->posts.ID=$wpdb->postmeta.post_id
                             AND meta_key = 'type'
-                        WHERE $wpdb->posts.post_type = 'site_link_system' 
+                        WHERE $wpdb->posts.post_type = 'site_link_system'
                         AND $wpdb->posts.post_status = 'publish'
                         AND meta_value IN ($type_string)", ARRAY_A ); //@phpcs:ignore
 
@@ -163,7 +163,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                           JOIN $wpdb->postmeta
                           ON $wpdb->posts.ID=$wpdb->postmeta.post_id
                             AND meta_key = 'type'
-                        WHERE $wpdb->posts.post_type = 'site_link_system' 
+                        WHERE $wpdb->posts.post_type = 'site_link_system'
                         AND $wpdb->posts.post_status = 'publish'
                         AND meta_value IN ($type_string)" ); //@phpcs:ignore
 
@@ -438,10 +438,10 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         ?>
 
                         <span >
-                        <?php esc_html_e( 'Status:', "disciple_tools" ) ?>
+                        <?php esc_html_e( 'Status:', 'disciple_tools' ) ?>
                             <strong>
                                 <span id="<?php echo esc_attr( md5( $post->ID ) ); ?>-status">
-                                    <?php esc_html_e( 'Checking Status', "disciple_tools" ) ?>
+                                    <?php esc_html_e( 'Checking Status', 'disciple_tools' ) ?>
                                 </span>
                             </strong>
                         </span>

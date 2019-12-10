@@ -313,7 +313,7 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function sources_box() {
-        esc_html_e( 'Sources can be edited on the custom lists tab. Disabled list items will show up in source selection as well.', "disciple_tools" );
+        esc_html_e( 'Sources can be edited on the custom lists tab. Disabled list items will show up in source selection as well.', 'disciple_tools' );
     }
 
     /**
