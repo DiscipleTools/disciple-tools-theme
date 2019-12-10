@@ -165,10 +165,10 @@ class Disciple_Tools_Notifications_Endpoints
         $all = isset( $params['all'] ) ? $params['all'] : false;
         if ( isset( $params['page'] ) && isset( $params['limit'] ) ) {
             $result = Disciple_Tools_Notifications::get_notifications( $all, $params['page'], $params['limit'] );
-            if ( $result['status'] ) {
-                return $result['result'];
+            if ( !is_wp_error( $result ) ) {
+                return $result;
             } else {
-                return new WP_Error( "get_user_notification_results", $result["message"], [ 'status' => 204 ] );
+                return new WP_Error( "get_user_notification_results", 'Something went wrong', [ 'status' => 400 ] );
             }
         } else {
             return new WP_Error( "notification_param_error", "Please set the page and limit query parameters", [ 'status' => 400 ] );
