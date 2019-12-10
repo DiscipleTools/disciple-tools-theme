@@ -162,15 +162,16 @@ class Disciple_Tools_Notifications_Endpoints
      */
     public function get_notifications( WP_REST_Request $request ) {
         $params = $request->get_params();
-        if ( isset( $params['all'] ) && isset( $params['page'] ) && isset( $params['limit'] ) ) {
-            $result = Disciple_Tools_Notifications::get_notifications( $params['all'], $params['page'], $params['limit'] );
+        $all = isset( $params['all'] ) ? $params['all'] : false;
+        if ( isset( $params['page'] ) && isset( $params['limit'] ) ) {
+            $result = Disciple_Tools_Notifications::get_notifications( $all, $params['page'], $params['limit'] );
             if ( $result['status'] ) {
                 return $result['result'];
             } else {
                 return new WP_Error( "get_user_notification_results", $result["message"], [ 'status' => 204 ] );
             }
         } else {
-            return new WP_Error( "notification_param_error", "Please provide a valid array", [ 'status' => 400 ] );
+            return new WP_Error( "notification_param_error", "Please set the page and limit query parameters", [ 'status' => 400 ] );
         }
     }
 

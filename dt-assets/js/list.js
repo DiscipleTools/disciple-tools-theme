@@ -49,7 +49,8 @@
   let filterToEdit = ""
   let currentFilters = $("#current-filters")
   let newFilterLabels = []
-  let loading_spinner = $(".loading-spinner")
+  let loading_spinner = $("#list-loading-spinner")
+  let count_spinner = $("#count-loading-spinner")
   let tableHeaderRow = $('.js-list thead .sortable th')
   let getContactsPromise = null
   let selectedFilterTab = "all"
@@ -1152,6 +1153,7 @@
 
   let getFilterCountsPromise = null
   let get_filter_counts = ()=>{
+    count_spinner.addClass("active")
     let showClosed = showClosedCheckbox.prop("checked")
     if ( getFilterCountsPromise && _.get( getFilterCountsPromise, "readyState") !== 4 ){
       getFilterCountsPromise.abort()
@@ -1163,11 +1165,14 @@
       }
     })
     getFilterCountsPromise.then(counts=>{
+      count_spinner.removeClass("active")
       $(".js-list-view-count").each(function() {
         const $el = $(this);
         let view_id = $el.data("value")
-        if ( counts && counts[view_id] ){
+        if ( counts && counts[view_id] && parseInt( counts[view_id] ) > 0 ){
           $el.text( counts[view_id] );
+        } else {
+          $el.text( '0' );
         }
       });
       $(".tab-count-span").each(function () {
@@ -1212,19 +1217,8 @@ $(document).ready(function () {
     //Set speed and expansion options for the Contact Filter accordion
     var $accordion = new Foundation.Accordion($('#list-filter-tabs'), {
       slideSpeed: 100,
-      //multiExpand: false,
       allowAllClosed: true
     });
-
-    //(optional) set Contact Filter accordion panels to all be closed by default
-    $('#list-filter-tabs').find('.accordion-item.is-active .accordion-content').css({ 'display': "" });
-
-    //(optional) set a callback when a panel opens
-    $('#list-filter-tabs').on('down.zf.accordion menu', function () {});
-
-    //(optional) set a callback when a panel closes
-    $('#list-filter-tabs').on('up.zf.accordion menu', function () {});
-
   }
 
   //run Contact Filters accordion options
