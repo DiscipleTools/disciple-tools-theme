@@ -272,6 +272,7 @@ class Disciple_Tools_People_Groups_Post_Type
     public function meta_box_setup() {
           add_meta_box( $this->post_type . '_update', __( 'Add/Update People Group', 'disciple_tools' ), [ $this, 'load_add_update_meta_box' ], $this->post_type, 'normal', 'high' );
           add_meta_box( $this->post_type . '_data', __( 'People Group Details', 'disciple_tools' ), [ $this, 'load_details_meta_box' ], $this->post_type, 'normal', 'high' );
+          add_meta_box( $this->post_type . '_translate', __('Translations', 'disciple_tools' ), [ $this, 'load_translation_meta_box' ], $this->post_type, 'side', 'low' );
     } // End meta_box_setup()
 
     public function load_add_update_meta_box( $post ) {
@@ -361,6 +362,22 @@ class Disciple_Tools_People_Groups_Post_Type
         }
     }
 
+     /**
+     * Load translation metabox
+     */
+    public function load_translation_meta_box() {
+        global $post;
+         $All_available_translations = dt_get_translations();
+         $dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+         error_log(print_r($dt_available_languages, true));
+
+        echo '<input type="hidden" name="dt_' . esc_attr( $this->post_type ) . '_noonce" id="dt_' . esc_attr( $this->post_type ) . '_noonce" value="' . esc_attr( wp_create_nonce( 'update_peoplegroup_info' ) ) . '" />';
+    ?>
+        <?php foreach ($dt_available_languages as $language) {
+            echo '<label for="dt_translation_' . $All_available_translations[$language]["language"] . '">' . $All_available_translations[$language]["native_name"] . '</label><br/>';
+            echo '<input type="text" name="dt_translation_' . $All_available_translations[$language]["language"] . '" id="dt_translation_' . $All_available_translations[$language]["language"] . '" class="text-input" value="' . get_post_meta($post->ID, $All_available_translations[$language]["language"], true) . '" /><br/>';
+        }
+    }
     /**
      * Load activity metabox
      */
@@ -508,7 +525,7 @@ class Disciple_Tools_People_Groups_Post_Type
 
         $field_data = $this->get_custom_fields_settings();
         $fields = array_keys( $field_data );
-
+        error_log( print_r( $$fields, true ) );
         if ( ( isset( $_POST['new-key-address'] ) && !empty( $_POST['new-key-address'] ) ) && ( isset( $_POST['new-value-address'] ) && !empty( $_POST['new-value-address'] ) ) ) { // catch and prepare new contact fields
             $k = explode( "_", sanitize_text_field( wp_unslash( $_POST['new-key-address'] ) ) );
             $type = $k[1];
@@ -522,7 +539,7 @@ class Disciple_Tools_People_Groups_Post_Type
             add_post_meta( $post_id, strtolower( $number_key ), sanitize_text_field( wp_unslash( $_POST['new-value-address'] ) ), true );
             add_post_meta( $post_id, strtolower( $details_key ), $details, true );
         }
-
+        
         foreach ( $fields as $f ) {
             if ( !isset( $_POST[ $f ] ) ) {
                 continue;
@@ -539,8 +556,25 @@ class Disciple_Tools_People_Groups_Post_Type
             }
         }
 
+        $All_available_translations = dt_get_translations();
+        $dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+
+        foreach ($dt_available_languages as $language) {
+            if ( isset ($_POST['dt_translation_' . $All_available_translations[$language]["language"]] ) )
+            {
+                $translated_text_value = $_POST['dt_translation_' . $All_available_translations[$language]["language"]];
+
+                update_post_meta($post_id, $language, $translated_text_value);
+            }
+        }
+
         return $post_id;
     } // End meta_box_save()
+
+    public function translation_save() {
+
+        
+    }
 
     /**
      * Customise the "Enter title here" text.
