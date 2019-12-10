@@ -184,10 +184,10 @@ class Disciple_Tools_Notifications_Endpoints
      */
     public function get_new_notifications_count() {
         $result = Disciple_Tools_Notifications::get_new_notifications_count();
-        if ( $result["status"] ) {
-            return $result['result'];
+        if ( !is_wp_error( $result ) ){
+            return $result;
         } else {
-            return new WP_Error( "get_user_notification_results", $result["message"], [ 'status' => 204 ] );
+            return new WP_Error( "get_user_notification_results", "Something went wrong", [ 'status' => 400 ] );
         }
     }
 

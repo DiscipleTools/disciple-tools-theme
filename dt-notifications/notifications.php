@@ -354,7 +354,7 @@ class Disciple_Tools_Notifications
     /**
      * Get user notifications
      *
-     * @return array
+     * @return int
      */
     public static function get_new_notifications_count() {
         global $wpdb;
@@ -372,17 +372,10 @@ class Disciple_Tools_Notifications
             $user_id
         ) );
 
-        if ( $result ) {
-            return [
-                'status' => true,
-                'result' => (int) $result,
-            ];
-        } else {
-            return [
-                'status'  => false,
-                'message' => 'No notifications',
-            ];
+        if ( !$result ) {
+            $result = 0;
         }
+        return (int) $result;
     }
 
 
