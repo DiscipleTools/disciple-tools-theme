@@ -171,17 +171,17 @@
                                 });
                             });
                             duplicate_contact_html.append(
-                                `<button class='mergelinks' onclick='$("#dismiss-id").val(${id}); $("#form-dismiss input[type=submit]").click();' style='float: right; padding-left: 10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>`);
+                                `<button class='mergelinks' onclick='$("#dismiss-id").val(${id}); $("#form-dismiss input[type=submit]").click();' style='float: right; padding-left: 10%;'><a><?php echo esc_html_x( "Dismiss", 'button', 'disciple_tools' ) ?></a></button>`);
 
                             duplicate_contact_html.append(
-                                `<button class='mergelinks' onclick='$("#unsure-id").val(${id}); $("#form-unsure input[type=submit]").click();' style='float: right; padding-left: 10%;'><a><?php esc_html_e( "Unsure", 'disciple_tools' ) ?></a></button>`);
+                                `<button class='mergelinks' onclick='$("#unsure-id").val(${id}); $("#form-unsure input[type=submit]").click();' style='float: right; padding-left: 10%;'><a><?php echo esc_html_x( "Unsure", 'button', 'disciple_tools' ) ?></a></button>`);
 
                             duplicate_contact_html.append(`<form action='${site_url}/contacts/mergedetails' method='post'>
                                 <input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr( wp_create_nonce() ); ?>'/>
                                 <input type='hidden' name='currentid' value='${contact_id}'/>
                                 <input type='hidden' name='dupeid' value='${id}'/>
                                 <button type='submit' style='float:right; padding-left: 10%;'>
-                                    <a><?php esc_html_e( 'Merge', 'disciple_tools' ) ?></a>
+                                    <a><?php echo esc_html_x( 'Merge', 'button', 'disciple_tools' ) ?></a>
                                 </button>
                                 </form>`
                             );

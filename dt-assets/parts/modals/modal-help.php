@@ -21,7 +21,7 @@
             <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["socialmedia"]; ?>
             <li><strong><?php esc_html_e( "Social Media", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "Social media accounts for this contact.", 'disciple_tools' ) ?></li>
             <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["address"]; ?>
-            <li><strong><?php esc_html_e( "Contact Address", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "A contact address for this contact. (e.g., 124 Market St or “Jon’s Famous Coffee Shop).", 'disciple_tools' ) ?></li>
+            <li><strong><?php esc_html_e( "Contact Address", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "A contact address for this contact. (e.g., 124 Market St or 'Jon’s Famous Coffee Shop').", 'disciple_tools' ) ?></li>
             <?php //$field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["locations"]; ?>
             <li><strong><?php esc_html_e( "Locations", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "The general area where this contact is located.", 'disciple_tools' ) ?></li>
             <?php $field = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["people_groups"]; ?>
@@ -128,10 +128,10 @@
     <!--    Quick Actions   -->
     <div class="help-section" id="quick-action-help-text" style="display: none">
         <h3><?php esc_html_e( "Quick action buttons", 'disciple_tools' ) ?></h3>
-        <p><?php esc_html_e( 'These quick action buttons are here to aid you in updating the contact record faster.', 'disciple_tools' ) ?>
-        <p><?php esc_html_e( 'They also track how many times each action has been used and also update the "Seeker Path". For example,
-        If you click the "No Answer" button 4 times, the number 4 will be added to the "No Answer" action, meaning that you have attempted to call the contact 4 times, but they did not answer.
-        This action will also change the "Seeker Path" to "Contact Attempted".', 'disciple_tools' ) ?>
+        <p><?php esc_html_e( "These quick action buttons are here to aid you in updating the contact record faster.", 'disciple_tools' ) ?>
+        <p><?php esc_html_e( "They also track how many times each action has been used and also update the 'Seeker Path'. For example,
+        If you click the 'No Answer' button 4 times, the number 4 will be added to the 'No Answer' action, meaning that you have attempted to call the contact 4 times, but they did not answer.
+        This action will also change the 'Seeker Path' to 'Contact Attempted'.", 'disciple_tools' ) ?>
         </p>
     </div>
 
@@ -141,7 +141,7 @@
       <p><?php esc_html_e( "This is where you will want to record important notes from meetings and conversations.", 'disciple_tools' ) ?></p>
       <p><?php esc_html_e( "Type @ and the name of a user to mention them in a comment. This user will then receive a notification.", 'disciple_tools' ) ?></p>
       <p><?php esc_html_e( "This section also includes the history of activity, such as when the contact or group status became active etc.", 'disciple_tools' ) ?></p>
-      <p><?php esc_html_e( "You can filter this section either by `All`, `Comments`, or `Activity`.", 'disciple_tools' ) ?></p>
+      <p><?php esc_html_e( "You can filter this section either by 'All', 'Comments', or 'Activity'.", 'disciple_tools' ) ?></p>
     </div>
 
     <!-- Contact Progress Tile -->
@@ -478,7 +478,7 @@
     <!--   Duplicates view page -->
     <div class="help-section" id="duplicates-template-help-text" style="display: none">
         <h3><?php esc_html_e( "Duplicate Contact page", 'disciple_tools' ) ?></h3>
-        <p><?php esc_html_e( "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact. ", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact.", 'disciple_tools' ) ?></p>
     </div>
 
     <!-- close -->

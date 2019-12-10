@@ -458,7 +458,7 @@ msgid "Showing 0 to 0 of 0 entries"
 msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:311
-msgctxt "just copy `_MAX_`"
+msgctxt "just copy '_MAX_'"
 msgid "(filtered from _MAX_ total entries)"
 msgstr ""
 
@@ -1019,7 +1019,7 @@ msgid ""
 msgstr ""
 
 #: dt-assets/parts/modals/modal-help.php:144
-msgid "You can filter this section either by `All`, `Comments`, or `Activity`."
+msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr ""
 
 #: dt-assets/parts/modals/modal-help.php:149 single-contacts.php:340

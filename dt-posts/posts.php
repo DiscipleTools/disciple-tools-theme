@@ -386,7 +386,7 @@ class Disciple_Tools_Posts
                 }
                 if ( $fields[$activity->meta_key]["type"] === "text"){
                     if ( !empty( $activity->meta_value ) && !empty( $activity->old_value ) ){
-                        $message = sprintf( _x( '%1$s changed to %2$s', 'field1 changed to `text`', 'disciple_tools' ), $fields[$activity->meta_key]["name"], $activity->meta_value );
+                        $message = sprintf( _x( '%1$s changed to %2$s', "field1 changed to 'text'", 'disciple_tools' ), $fields[$activity->meta_key]["name"], $activity->meta_value );
                     }
                 }
                 if ( $fields[$activity->meta_key]["type"] === "multi_select" ){
@@ -826,11 +826,11 @@ class Disciple_Tools_Posts
                         }
                     } else {
                         if ( $post_fields[$query_key]["p2p_direction"] === "to" ){
-                            $meta_query .= " AND ( $wpdb->posts.ID IN ( 
+                            $meta_query .= " AND ( $wpdb->posts.ID IN (
                                 SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $post_fields[$query_key]["p2p_key"] ) . "' AND p2p_from IN (" . esc_sql( $connection_ids ) .")
                             ) ) ";
                         } else {
-                            $meta_query .= " AND ( $wpdb->posts.ID IN ( 
+                            $meta_query .= " AND ( $wpdb->posts.ID IN (
                                 SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $post_fields[$query_key]["p2p_key"] ) . "' AND p2p_to IN (" . esc_sql( $connection_ids ) .")
                             ) ) ";
                         }
