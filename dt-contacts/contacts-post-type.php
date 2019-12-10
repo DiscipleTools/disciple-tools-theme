@@ -240,15 +240,15 @@ class Disciple_Tools_Contact_Post_Type
             'default'     => [
                 'none'        => [
                   "label" => _x( 'Contact Attempt Needed', 'Seeker Path label', 'disciple_tools' ),
-                  "description" => _x( "Contact with this contact needs to be attempted.", "Contact Attempt Needed field description", 'disciple_tools' ),
+                  "description" => _x( "Communication with this contact needs to be attempted.", "Contact Attempt Needed field description", 'disciple_tools' ),
                 ],
                 'attempted'   => [
                   "label" => _x( 'Contact Attempted', 'Seeker Path label', 'disciple_tools' ),
-                  "description" => _x( "Contact with this contact was attempted.", "Contact Attempted field description", 'disciple_tools' ),
+                  "description" => _x( "Communication with this contact was attempted.", "Contact Attempted field description", 'disciple_tools' ),
                 ],
                 'established' => [
                   "label" => _x( 'Contact Established', 'Seeker Path label', 'disciple_tools' ),
-                  "description" => _x( "Contact with this contact was established.", "Contact Established field description", 'disciple_tools' ),
+                  "description" => _x( "Communication with this contact was established.", "Contact Established field description", 'disciple_tools' ),
                 ],
                 'scheduled'   => [
                   "label" => _x( 'First Meeting Scheduled', 'Seeker Path label', 'disciple_tools' ),
