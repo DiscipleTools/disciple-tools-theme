@@ -301,32 +301,25 @@ class Disciple_Tools_Notifications
         $user_id = get_current_user_id();
 
         $result = $wpdb->get_results( $wpdb->prepare(
-            // WordPress.WP.PreparedSQL.NotPrepared
-            // phpcs:ignore
-            "SELECT * FROM `$wpdb->dt_notifications` WHERE user_id = %d $all_where ORDER BY date_notified DESC LIMIT %d OFFSET %d",
+            "SELECT * FROM `$wpdb->dt_notifications` WHERE user_id = %d AND is_new LIKE %s ORDER BY date_notified DESC LIMIT %d OFFSET %d",
             $user_id,
+            $all ? '%' : '1',
             $limit,
             $page
         ), ARRAY_A );
 
-        if ( $result ) {
-
-            // user friendly timestamp
-            foreach ( $result as $key => $value ) {
-                $result[ $key ]['pretty_time'] = self::pretty_timestamp( $value['date_notified'] );
-                $result[ $key ]["notification_note"] = self::get_notification_message_html( $value );
-            }
-
-            return [
-                'status' => true,
-                'result' => $result,
-            ];
-        } else {
-            return [
-                'status'  => false,
-                'message' => 'No notifications',
-            ];
+        if ( !$result ){
+            $result = [];
         }
+
+        // user friendly timestamp
+        foreach ( $result as $key => $value ) {
+            $result[ $key ]['pretty_time'] = self::pretty_timestamp( $value['date_notified'] );
+            $result[ $key ]["notification_note"] = self::get_notification_message_html( $value );
+        }
+
+        return $result;
+
     }
 
     /**
@@ -361,7 +354,7 @@ class Disciple_Tools_Notifications
     /**
      * Get user notifications
      *
-     * @return array
+     * @return int
      */
     public static function get_new_notifications_count() {
         global $wpdb;
@@ -379,17 +372,10 @@ class Disciple_Tools_Notifications
             $user_id
         ) );
 
-        if ( $result ) {
-            return [
-                'status' => true,
-                'result' => (int) $result,
-            ];
-        } else {
-            return [
-                'status'  => false,
-                'message' => 'No notifications',
-            ];
+        if ( !$result ) {
+            $result = 0;
         }
+        return (int) $result;
     }
 
 
