@@ -380,7 +380,7 @@ jQuery(document).ready(function($) {
         maxItem: 20,
         source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
         display: "name",
-        template: "{{name}}",
+        templateValue: "{{name}}",
         dynamic: true,
         multiselect: {
           matchOn: ["ID"],
@@ -1373,6 +1373,61 @@ jQuery(document).ready(function($) {
     })
   })
 
+  let connection_type = null
+  $('.create-new-contact').on( "click", function () {
+    connection_type = $(this).data('connection-key');
+    $('#create-contact-modal').foundation('open');
+    $('.js-create-contact .error-text').empty();
+    $(".js-create-contact-button").attr("disabled", false).removeClass("alert")
+  })
+
+  //create new contact
+  $(".js-create-contact").on("submit", function(e) {
+    e.preventDefault();
+    $(".js-create-contact-button").attr("disabled", true).addClass("loading");
+    let title = $(".js-create-contact input[name=title]").val()
+    if ( !connection_type){
+      $(".js-create-contact .error-text").text(
+        "Something went wrong. Please refresh and try again"
+      );
+      return;
+    }
+    let update_field = connection_type;
+    switch (update_field) {
+      case 'baptized': update_field = 'baptized_by'; break;
+      case 'baptized_by' : update_field = 'baptized'; break;
+      case 'coaching' : update_field = 'coached_by'; break;
+      case 'coached_by' : update_field = 'coaching'; break;
+    }
+    API.create_post( 'contacts', {
+      title,
+      [update_field]: {values:[{value:contactId}]},
+      overall_status: "active"
+    }).then((newContact)=>{
+      $(".js-create-contact-button").attr("disabled", false).removeClass("loading");
+      $(".reveal-after-contact-create").show()
+      $("#new-contact-link").html(`<a href="${_.escape( newContact.permalink )}">${_.escape( title )}</a>`)
+      $(".hide-after-contact-create").hide()
+      $('#go-to-contact').attr('href', _.escape( newContact.permalink ));
+      contact[connection_type].push({post_title:title, ID:newContact.ID})
+      Typeahead[`.js-typeahead-${connection_type}`].addMultiselectItemLayout({ID:newContact.ID.toString(), name:title})
+      masonGrid.masonry('layout')
+    })
+    .catch(function(error) {
+      $(".js-create-contact-button").removeClass("loading").addClass("alert");
+      $(".js-create-contact .error-text").text(
+        _.get( error, "responseJSON.message", "Something went wrong. Please refresh and try again" )
+      );
+      console.error(error);
+    });
+  })
+  //reset new contact modal on close.
+  $('#create-contact-modal').on("closed.zf.reveal", function () {
+    $(".reveal-after-contact-create").hide()
+    $(".hide-after-contact-create").show()
+    $(".js-create-contact input[name=title]").val('')
+  })
+
 
 
   //leave at the end of this file
@@ -1382,4 +1437,3 @@ jQuery(document).ready(function($) {
   });
   //leave at the end of this file
 })
-

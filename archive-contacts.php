@@ -33,6 +33,11 @@ declare(strict_types=1);
                     <?php esc_html_e( "Dispatch needed", "disciple_tools" ); ?>
                     <span class="list-view__count js-list-view-count" data-value="needs_assigned">.</span>
                 </label>
+                <label class="list-view">
+                    <input type="radio" name="view" value="unassignable" class="js-list-view">
+                    <?php esc_html_e( "Not Ready", "disciple_tools" ); ?>
+                    <span class="list-view__count js-list-view-count" data-value="unassignable">.</span>
+                </label>
             <?php } ?>
             <label class="list-view">
                 <input type="radio" name="view" value="needs_accepted" class="js-list-view" autocomplete="off">
@@ -103,7 +108,7 @@ declare(strict_types=1);
             <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
         </div>
     </nav>
-    <div id="content">
+    <div id="content" class="archive-contacts">
 
         <div id="inner-content" class="grid-x grid-margin-x">
 
@@ -122,7 +127,7 @@ declare(strict_types=1);
                     </label>
                     <div class="js-list-filter filter--closed">
                         <div class="filter__title js-list-filter-title" style="margin-bottom:0"><?php esc_html_e( "Default Filters", "disciple_tools" ); ?>
-                            <div style="display: inline-block" class="loading-spinner active"></div>
+
                         </div>
                         <div class="js-filters-accordion"></div>
                     </div>
@@ -131,12 +136,16 @@ declare(strict_types=1);
 
             <div class="reveal js-filters-modal" id="filters-modal">
                 <div class="js-filters-modal-content"><!-- archive-contacts -->
-                    <label class="section-header hide-for-small-only"><?php esc_html_e( 'Contacts Filters', 'disciple_tools' )?>
-                    <button class="help-button float-right" data-section="filters-help-text">
-                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                    </button>
+                    <label class="section-header hide-for-small-only hide-for-medium-only">
+                        <span>
+                            <?php esc_html_e( 'Contacts Filters', 'disciple_tools' )?>
+                            <span id="count-loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
+                        </span>
+                        <button class="help-button float-right" data-section="filters-help-text">
+                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                        </button>
                     </label>
-                    <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( 'Default Filters', "disciple_tools" ); ?></h5>
+                    <h5 class="hide-for-small-only hide-for-medium-only" style="display: inline-block"><?php esc_html_e( 'Default Filters', "disciple_tools" ); ?></h5>
 
                     <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion">
                         <li class="accordion-item" data-accordion-item data-id="all">

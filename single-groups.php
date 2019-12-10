@@ -34,7 +34,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
 <!--<div id="errors"> </div>-->
 <!-- <div><a class="button small" id="backlink" href="../" style="margin:.9rem 0 0 1.3em"><?php esc_html_e( 'Back to Groups List', 'disciple_tools' )?></a></div> -->
-<div id="content">
+<div id="content" class="single-groups">
     <span id="group-id" style="display: none"><?php echo get_the_ID()?></span>
     <span id="post-id" style="display: none"><?php echo get_the_ID()?></span>
     <span id="post-type" style="display: none">group</span>
@@ -79,7 +79,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                     <div style="padding-bottom: 5px; margin-right:10px; display: inline-block">
                                         <?php esc_html_e( "Member List", 'disciple_tools' ) ?>
                                     </div>
-                                    <button type="button" data-open="create-contact-modal" style="height: 36px;">
+                                    <button type="button" class="create-new-contact" style="height: 36px;">
                                         <?php esc_html_e( "Create", 'disciple_tools' ) ?>
                                         <img style="height: 14px; width: 14px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                                     </button>

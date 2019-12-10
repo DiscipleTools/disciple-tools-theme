@@ -26,9 +26,6 @@
         <div class="item-details-header" style="flex-grow:1">
             <i class="fi-torsos-all large" style="padding-bottom: 1.2rem"></i>
             <span class="title"><?php the_title_attribute(); ?></span>
-            <button class="help-button" data-section="assigned-to-help-text">
-                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-            </button>
         </div>
         <div>
             <button class="" id="open-edit">

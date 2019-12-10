@@ -96,44 +96,6 @@ class Disciple_Tools_Notifications
     public static function insert_notification( $args ) {
         global $wpdb;
 
-        // Make sure for non duplicate.
-        $check_duplicate = $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT
-                    `id`
-                FROM
-                    `$wpdb->dt_notifications`
-                WHERE
-                    `user_id` = %s
-                    AND `source_user_id` = %s
-                    AND `post_id` = %s
-                    AND `secondary_item_id` = %s
-                    AND `notification_name` = %s
-                    AND `notification_action` = %s
-                    AND `notification_note` = %s
-                    AND `date_notified` = %s
-                    AND `is_new` = %s
-                    AND `field_key` = %s
-                    AND `field_value` = %s
-				;",
-                $args['user_id'],
-                $args['source_user_id'],
-                $args['post_id'],
-                $args['secondary_item_id'],
-                $args['notification_name'],
-                $args['notification_action'],
-                $args['notification_note'],
-                $args['date_notified'],
-                $args['is_new'],
-                $args['field_key'],
-                $args['field_value']
-            )
-        );
-
-        if ( $check_duplicate ) { // don't create a duplicate record
-            return;
-        }
-
         if ( $args['user_id'] == $args['source_user_id'] ) { // check if source of the event and notification target are the same, if so, don't create notification. i.e. I don't want notifications of my own actions.
             return;
         }
@@ -430,16 +392,6 @@ class Disciple_Tools_Notifications
         }
     }
 
-    /**
-     * Get the @mention message content
-     *
-     * @param $comment_id
-     *
-     * @return array|null|WP_Post
-     */
-    public static function get_at_mention_message( $comment_id ) {
-        return get_post( $comment_id );
-    }
 
 
     public static function send_notification_on_channels( $user_id, $notification, $notification_type, $already_sent = [] ){

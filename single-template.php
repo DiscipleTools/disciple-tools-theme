@@ -22,7 +22,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
     $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
     $dt_post = DT_Posts::get_post( $post_type, get_the_ID() );
     ?>
-    <div id="content">
+    <div id="content" class="single-template">
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
             <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell" role="main" style="padding:0">
                 <div class="cell grid-y grid-margin-y" style="display: block">
@@ -159,7 +159,3 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
 
     <?php get_footer();
 } )();
-
-
-
-

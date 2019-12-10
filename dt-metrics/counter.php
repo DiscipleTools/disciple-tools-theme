@@ -719,14 +719,14 @@ class Disciple_Tools_Queries
             case 'baptized_per_worker':
                 $query = $wpdb->get_results("
                     SELECT
-                      p2p_to as contact_id,
-                      (
-                          SELECT meta_value 
-                          FROM $wpdb->postmeta 
-                          WHERE meta_key = 'corresponds_to_user' 
-                            AND post_id = p2p_to
-                      ) as user_id,
-                      count(*) as count
+                    p2p_to as contact_id,
+                    (
+                        SELECT meta_value 
+                        FROM $wpdb->postmeta 
+                        WHERE meta_key = 'corresponds_to_user' 
+                        AND post_id = p2p_to
+                    ) as user_id,
+                    count(*) as count
                     FROM $wpdb->p2p
                     WHERE p2p_type = 'baptizer_to_baptized'
                     GROUP BY p2p_to;", ARRAY_A);

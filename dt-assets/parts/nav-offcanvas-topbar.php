@@ -19,7 +19,7 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
         <button class="" type="button" data-open="off-canvas">
             <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/hamburger.svg" ?>">
         </button>
-        <div class="title-bar-title" style="margin-left: 5px"><?php esc_html_e( "Disciple Tools" ); ?></div>
+        <div class="title-bar-title" style="margin-left: 5px"><?php esc_html_e( "Disciple Tools", "disciple_tools" ); ?></div>
     </div>
     <div class="title-bar-right">
         <ul class="dropdown menu" data-dropdown-menu style="display:inline-block; margin-left: 10px">
@@ -52,11 +52,11 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
     <div class="top-bar" id="top-bar-menu"
          data-sticky style="width:100%;margin-top:0">
         <div>
-            <a href="<?php echo esc_url( site_url() )?>" style="padding-left:0;"><img src="<?php
+            <a href="<?php echo esc_url( site_url() )?>" style="padding-left:0;vertical-align: middle"><img src="<?php
             /**
              * Filter for replacing the logo
              */
-            $url = apply_filters( 'dt_default_logo', get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo.svg" );
+            $url = apply_filters( 'dt_default_logo', get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png" );
             echo esc_url( $url );
             ?>" style="margin:0 17px; height: 20px" alt="logo-image"></a>
         </div>
