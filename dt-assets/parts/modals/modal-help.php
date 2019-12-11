@@ -486,7 +486,7 @@
         <div class="cell small-4">
             <h5>&nbsp;</h5>
             <button class="button small" data-close aria-label="Close reveal" type="button">
-                <?php esc_html_e( 'Close', 'disciple_tools' )?>
+                <?php echo esc_html_x( 'Close', 'button', 'disciple_tools' )?>
             </button>
         </div>
         <div class="cell small-8">

@@ -75,7 +75,7 @@
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-assigned_to input-height"
-                                       name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
+                                       name="assigned_to[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
                                        autocomplete="off">
                             </span>
                             <span class="typeahead__button">
@@ -103,7 +103,7 @@
                         <div class="typeahead__field">
                                             <span class="typeahead__query">
                                                 <input class="js-typeahead-coaches"
-                                                       name="coaches[query]" placeholder="<?php esc_html_e( "Search Users and Contacts", 'disciple_tools' ) ?>"
+                                                       name="coaches[query]" placeholder="<?php echo esc_html_e( "Search Users and Contacts", 'input field placeholder', 'disciple_tools' ) ?>"
                                                        autocomplete="off">
                                             </span>
                         </div>
@@ -244,7 +244,7 @@
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-location_grid"
-                                       name="location_grid[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                       name="location_grid[query]" placeholder="<?php echo esc_html_x( "Search Locations", 'input field placeholder', 'disciple_tools' ) ?>"
                                        autocomplete="off">
                             </span>
                         </div>
@@ -291,7 +291,7 @@
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-people_groups"
-                                       name="people_groups[query]" placeholder="<?php esc_html_e( "Search People Groups", 'disciple_tools' ) ?>"
+                                       name="people_groups[query]" placeholder="<?php echo esc_html_x( "Search People Groups", 'input field placeholder', 'disciple_tools' ) ?>"
                                        autocomplete="off">
                             </span>
                         </div>
@@ -303,7 +303,7 @@
     </div>
     <div>
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-            <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+            <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
         </button>
         <button class="button loader" type="button" id="save-edit-details">
             <?php esc_html_e( 'Save', 'disciple_tools' )?>

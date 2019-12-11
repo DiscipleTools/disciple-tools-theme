@@ -1,17 +1,17 @@
 <div class="reveal" id="create-group-modal" data-reveal data-reset-on-close>
 
-    <p class="lead"><?php esc_html_e( 'Create Group', 'disciple_tools' )?></p>
+    <h1><?php esc_html_e( 'Create Group', 'disciple_tools' )?></h1>
 
     <form class="js-create-group hide-after-group-create">
         <label for="title">
             <?php esc_html_e( "Name of Group", "disciple_tools" ); ?>
         </label>
-        <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
+        <input name="title" type="text" placeholder="<?php echo esc_html_x( "Name", 'input field placeholder', 'disciple_tools' ); ?>" required aria-describedby="name-help-text">
 
         <div>
-            <button class="button loader js-create-group-button" type="submit"><?php esc_html_e( "Create Group", "disciple_tools" ); ?></button>
+            <button class="button loader js-create-group-button" type="submit"><?php echo esc_html_x( "Create Group", 'button', 'disciple_tools' ); ?></button>
             <button class="button button-cancel clear hide-after-group-create" data-close aria-label="Close reveal" type="button">
-                <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+                <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
             </button>
         </div>
     </form>
