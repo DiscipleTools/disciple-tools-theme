@@ -344,15 +344,16 @@ class Disciple_Tools_Notifications
         );
 
         $seven_days_ago = date( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
-        if ( $timestamp > $one_hour_ago ) {
-            $current = new DateTime( $current_time );
-            $stamp = new DateTime( $timestamp );
-            $diff = date_diff( $current, $stamp );
-            $friendly_time = date( "i", mktime( $diff->h, $diff->i, $diff->s ) ) . ' minutes ago';
+        if ($timestamp < $one_hour_ago) {
+            $current = new DateTime($current_time);
+            $stamp = new DateTime($timestamp);
+            $diff = date_diff($current, $stamp);
+            $friendly_time = date('i', mktime($diff->h, $diff->i, $diff->s)).' minutes ago';
+        }
+          elseif ( $timestamp > $one_hour_ago ) {
+            $friendly_time = "Over an hour ago";
         } elseif ( $timestamp > $yesterday ) {
-            $friendly_time = date( "g:i a", strtotime( $timestamp ) );
-        } elseif ( $timestamp > $seven_days_ago ) {
-            $friendly_time = date( "l g:i a", strtotime( $timestamp ) );
+            $friendly_time = "A day ago";
         } elseif ( $timestamp > $two_days_ago) {
             $friendly_time = "Two days ago";
         } elseif ( $timestamp > $three_days_ago ) {
@@ -364,7 +365,7 @@ class Disciple_Tools_Notifications
         } elseif ( $timestamp > $six_days_ago ) {
             $friendly_time = "Six days ago";
         } elseif ( $timestamp > $seven_days_ago ) {
-            $friendly_time = "Over a week ago"; //date( "l g:i a", strtotime( $timestamp ) );
+            $friendly_time = "Over a week ago";
         } elseif ( $timestamp > $one_month_ago ) {
             $friendly_time = "Over a month ago";
         } else {
