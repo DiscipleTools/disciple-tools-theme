@@ -271,7 +271,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                     <?php
-                    $custom_field = dt_get_option( "dt_field_customizations" )[$post_type][$field_key];
+                    $custom_fields = dt_get_option( "dt_field_customizations" );
+                    $custom_field = $custom_fields[$post_type][$field_key] ?? [];
                     if ( isset( $custom_field["customizable"] ) && $custom_field["customizable"] == "all" ) : ?>
                         <button type="submit" name="delete"  class="button"><?php esc_html_e( "Delete", 'disciple_tools' ) ?></button>
                     <?php endif ?>

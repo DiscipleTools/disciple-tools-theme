@@ -54,7 +54,7 @@
             <?php $field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["assigned_to"]; ?>
         <li><strong><?php echo esc_html( $field["name"] ) ?></strong> - <?php echo esc_html( $field["description"] ) ?>
                 <?php if ( current_user_can( "view_any_contacts" ) ) : ?>
-            <p><strong><?php esc_html_e( "User workload status icons legend", 'disciple_tools' ) ?></strong></p>
+            <p><strong><?php esc_html_e( "User workload status icons legend:", 'disciple_tools' ) ?></strong></p>
             <ul style="list-style-type:none">
                     <?php $workload_status_options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
                     foreach ( $workload_status_options as $option_key =>$option_val ): ?>
@@ -100,7 +100,7 @@
         <h3><?php echo esc_html( $field["name"] )?></h3>
         <p><?php echo esc_html( $field["description"] ) ?></p>
         <?php if ( current_user_can( "view_any_contacts" ) ) : ?>
-            <p><strong><?php esc_html_e( "User workload status icons legend", 'disciple_tools' ) ?></strong></p>
+            <p><strong><?php esc_html_e( "User workload status icons legend:", 'disciple_tools' ) ?></strong></p>
             <ul style="list-style-type:none">
             <?php $workload_status_options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
             foreach ( $workload_status_options as $option_key =>$option_val ): ?>
