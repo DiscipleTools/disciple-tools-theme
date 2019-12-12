@@ -339,18 +339,14 @@ class Disciple_Tools_Notifications
         $five_days_ago = date( 'Y-m-d', strtotime( '-5 day', strtotime( $current_time ) ) );
         $six_days_ago = date( 'Y-m-d', strtotime( '-6 day', strtotime( $current_time ) ) );
         $seven_days_ago = date( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
-        $one_month_ago = date(
-            'Y-m-d', strtotime( '-30 days', strtotime( $current_time ) )
-        );
-
+        $one_month_ago = date( 'Y-m-d', strtotime( '-30 days', strtotime( $current_time ) ) );
         $seven_days_ago = date( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
         if ($timestamp < $one_hour_ago) {
-            $current = new DateTime($current_time);
-            $stamp = new DateTime($timestamp);
-            $diff = date_diff($current, $stamp);
-            $friendly_time = date('i', mktime($diff->h, $diff->i, $diff->s)).' minutes ago';
-        }
-          elseif ( $timestamp > $one_hour_ago ) {
+            $current = new DateTime( $current_time );
+            $stamp = new DateTime( $timestamp );
+            $diff = date_diff( $current, $stamp );
+            $friendly_time = date( 'i', mktime( $diff->h, $diff->i, $diff->s ) ) . ' minutes ago';
+        } elseif ( $timestamp > $one_hour_ago ) {
             $friendly_time = "Over an hour ago";
         } elseif ( $timestamp > $yesterday ) {
             $friendly_time = "A day ago";
