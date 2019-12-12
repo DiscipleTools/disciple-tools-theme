@@ -942,31 +942,38 @@ jQuery(document).ready(function ($) {
       Typeahead[`.js-typeahead-${t}`].adjustInputSize()
     })
   })
-  //create new group
-  $(".js-create-contact").on("submit", function (e) {
+  $('.create-new-contact').on( "click", function () {
+    $('#create-contact-modal').foundation('open');
+    $('.js-create-contact .error-text').empty();
+    $(".js-create-contact-button").attr("disabled", false).removeClass("alert")
+  })
+  //create new contact
+  $(".js-create-contact").on("submit", function(e) {
     e.preventDefault();
+    $(".js-create-contact-button").attr("disabled", true).addClass("loading");
     let title = $(".js-create-contact input[name=title]").val()
     API.create_post('contacts', {
       title,
       groups: { values: [{ value: groupId }] },
       requires_update: true,
       overall_status: "active"
-    }).then((newContact) => {
-      $(".reveal-after-contact-create").show()
-      $("#new-contact-link").html(`<a href="${_.escape(newContact.permalink)}">${_.escape(title)}</a>`)
-      $(".hide-after-contact-create").hide()
-      $('#go-to-contact').attr('href', _.escape(newContact.permalink));
-      group.members.push({ post_title: title, ID: newContact.ID })
-      if (group.members.length > group.member_count) {
-        group.member_count = group.members.length
-      }
-      populateMembersList()
-      masonGrid.masonry('layout')
-    })
-      .catch(function (error) {
+    }).then((newContact)=>{
+        $(".js-create-contact-button").attr("disabled", false).removeClass("loading");
+        $(".reveal-after-contact-create").show()
+        $("#new-contact-link").html(`<a href="${_.escape( newContact.permalink )}">${_.escape( title )}</a>`)
+        $(".hide-after-contact-create").hide()
+        $('#go-to-contact').attr('href', _.escape( newContact.permalink ));
+        group.members.push({post_title:title, ID:newContact.ID})
+        if ( group.members.length > group.member_count ){
+          group.member_count = group.members.length
+        }
+        populateMembersList()
+        masonGrid.masonry('layout')
+      })
+      .catch(function(error) {
         $(".js-create-contact-button").removeClass("loading").addClass("alert");
-        $(".js-create-contact").append(
-          $("<div>").html(error.responseText)
+        $(".js-create-contact .error-text").text(
+          _.get( error, "responseJSON.message", "Something went wrong. Please refresh and try again" )
         );
         console.error(error);
       });
