@@ -84,17 +84,17 @@ class Disciple_Tools_GDPR
         $requests_table->prepare_items();
         ?>
         <div class="wrap nosubsub">
-            <h1><?php esc_html_e( 'Export Personal Data', "disciple_tools" ); ?></h1>
+            <h1><?php esc_html_e( 'Export Personal Data', 'disciple_tools' ); ?></h1>
             <hr class="wp-header-end" />
 
             <?php settings_errors(); ?>
 
             <form method="post" class="wp-privacy-request-form">
-                <h2><?php esc_html_e( 'Add Data Export Request', "disciple_tools" ); ?></h2>
-                <p><?php esc_html_e( 'An email will be sent to the user at this email address asking them to verify the request.', "disciple_tools" ); ?></p>
+                <h2><?php esc_html_e( 'Add Data Export Request', 'disciple_tools' ); ?></h2>
+                <p><?php esc_html_e( 'An email will be sent to the user at this email address asking them to verify the request.', 'disciple_tools' ); ?></p>
 
                 <div class="wp-privacy-request-form-field">
-                    <label for="username_or_email_for_privacy_request"><?php esc_html_e( 'Username or email address', "disciple_tools" ); ?></label>
+                    <label for="username_or_email_for_privacy_request"><?php esc_html_e( 'Username or email address', 'disciple_tools' ); ?></label>
                     <input type="text" required class="regular-text" id="username_or_email_for_privacy_request" name="username_or_email_for_privacy_request" />
                     <?php submit_button( __( 'Send Request' ), 'secondary', 'submit', false ); ?>
                 </div>
@@ -151,17 +151,17 @@ class Disciple_Tools_GDPR
 
         ?>
         <div class="wrap nosubsub">
-            <h1><?php esc_html_e( 'Erase Personal Data', "disciple_tools" ); ?></h1>
+            <h1><?php esc_html_e( 'Erase Personal Data', 'disciple_tools' ); ?></h1>
             <hr class="wp-header-end" />
 
             <?php settings_errors(); ?>
 
             <form method="post" class="wp-privacy-request-form">
-                <h2><?php esc_html_e( 'Add Data Erasure Request', "disciple_tools" ); ?></h2>
-                <p><?php esc_html_e( 'An email will be sent to the user at this email address asking them to verify the request.', "disciple_tools" ); ?></p>
+                <h2><?php esc_html_e( 'Add Data Erasure Request', 'disciple_tools' ); ?></h2>
+                <p><?php esc_html_e( 'An email will be sent to the user at this email address asking them to verify the request.', 'disciple_tools' ); ?></p>
 
                 <div class="wp-privacy-request-form-field">
-                    <label for="username_or_email_for_privacy_request"><?php esc_html_e( 'Username or email address', "disciple_tools" ); ?></label>
+                    <label for="username_or_email_for_privacy_request"><?php esc_html_e( 'Username or email address', 'disciple_tools' ); ?></label>
                     <input type="text" required class="regular-text" id="username_or_email_for_privacy_request" name="username_or_email_for_privacy_request" />
                     <?php submit_button( __( 'Send Request' ), 'secondary', 'submit', false ); ?>
                 </div>
@@ -831,7 +831,7 @@ class DT_Privacy_Data_Export_Requests_Table extends DT_Privacy_Requests_Table {
 
         switch ( $status ) {
             case 'request-pending':
-                esc_html_e( 'Waiting for confirmation', "disciple_tools" );
+                esc_html_e( 'Waiting for confirmation', 'disciple_tools' );
                 break;
             case 'request-confirmed':
                 /** This filter is documented in wp-admin/includes/ajax-actions.php */
@@ -945,7 +945,7 @@ class DT_Privacy_Data_Removal_Requests_Table extends DT_Privacy_Requests_Table {
 
         switch ( $status ) {
             case 'request-pending':
-                esc_html_e( 'Waiting for confirmation', "disciple_tools" );
+                esc_html_e( 'Waiting for confirmation', 'disciple_tools' );
                 break;
             case 'request-confirmed':
                 /** This filter is documented in wp-admin/includes/ajax-actions.php */

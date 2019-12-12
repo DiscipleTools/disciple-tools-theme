@@ -299,6 +299,8 @@ function dt_site_scripts() {
             'filter_meeting_scheduled' => __( 'Meeting scheduled', 'disciple_tools' ),
             'filter_contact_unattempted' => __( 'Contact attempt needed', 'disciple_tools' ),
             'filter_assignment_needed' => __( 'Dispatch needed', 'disciple_tools' ),
+            'filter_new' => __( 'New', 'disciple_tools' ),
+            'filter_active' => __( 'Active', 'disciple_tools' ),
             'range_start' => __( 'start', 'disciple_tools' ),
             'range_end' => __( 'end', 'disciple_tools' ),
             'sorting_by' => __( 'Sorting By', 'disciple_tools' ),

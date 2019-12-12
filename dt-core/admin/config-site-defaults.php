@@ -58,7 +58,7 @@ function dt_set_permalink_structure() {
 function dt_warn_user_about_permalink_settings() {
     ?>
     <div class="error notices">
-        <p><?php esc_html_e( 'You may only set your permalink settings to "Post name"', "disciple_tools" ); ?></p>
+        <p><?php esc_html_e( 'You may only set your permalink settings to "Post name"', 'disciple_tools' ); ?></p>
     </div>
     <?php
 }
@@ -426,132 +426,132 @@ function dt_get_site_custom_lists( string $list_title = null ) {
     // the prefix dt_user_ assists db meta queries on the user
     $fields['user_fields'] = [
         'dt_user_personal_phone'   => [
-            'label'       => 'Personal Phone',
+            'label'       => __( 'Personal Phone', 'disciple_tools' ),
             'key'         => 'dt_user_personal_phone',
             'type'        => 'phone',
-            'description' => 'Personal phone is private to the team, not for distribution.',
+            'description' => __( 'Personal phone is private to the team, not for distribution.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'dt_user_personal_email'   => [
-            'label'       => 'Personal Email',
+            'label'       => __( 'Personal Email', 'disciple_tools' ),
             'key'         => 'dt_user_personal_email',
             'type'        => 'email',
-            'description' => 'Personal email is private to the team, not for distribution.',
+            'description' => __( 'Personal email is private to the team, not for distribution.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'dt_user_personal_address' => [
-            'label'       => 'Personal Address',
+            'label'       => __( 'Personal Address', 'disciple_tools' ),
             'key'         => 'dt_user_personal_address',
             'type'        => 'address',
-            'description' => 'Personal address is private to the team, not for distribution.',
+            'description' => __( 'Personal address is private to the team, not for distribution.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'dt_user_work_phone'       => [
-            'label'       => 'Work Phone',
+            'label'       => __( 'Work Phone', 'disciple_tools' ),
             'key'         => 'dt_user_work_phone',
             'type'        => 'phone',
-            'description' => 'Work phone is for distribution to contacts and seekers.',
+            'description' => __( 'Work phone is for distribution to contacts and seekers.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'dt_user_work_email'       => [
-            'label'       => 'Work Email',
+            'label'       => __( 'Work Email', 'disciple_tools' ),
             'key'         => 'dt_user_work_email',
             'type'        => 'email',
-            'description' => 'Work email is for distribution to contacts and seekers.',
+            'description' => __( 'Work email is for distribution to contacts and seekers.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'dt_user_work_facebook'    => [
-            'label'       => 'Work Facebook',
+            'label'       => __( 'Work Facebook', 'disciple_tools' ),
             'key'         => 'dt_user_work_facebook',
             'type'        => 'social',
-            'description' => 'Work Facebook is for distribution to contacts and seekers.',
+            'description' => __( 'Work Facebook is for distribution to contacts and seekers.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'dt_user_work_whatsapp'    => [
-            'label'       => 'Work WhatsApp',
+            'label'       => __( 'Work WhatsApp', 'disciple_tools' ),
             'key'         => 'dt_user_work_whatsapp',
             'type'        => 'other',
-            'description' => 'Work WhatsApp is for distribution to contacts and seekers.',
+            'description' => __( 'Work WhatsApp is for distribution to contacts and seekers.', 'disciple_tools' ),
             'enabled'     => true,
         ],
     ];
 
     $fields['user_fields_types'] = [
         'phone'   => [
-            'label' => 'Phone',
+            'label' => __( 'Phone', 'disciple_tools' ),
             'key'   => 'phone',
         ],
         'email'   => [
-            'label' => 'Email',
+            'label' => __( 'Email', 'disciple_tools' ),
             'key'   => 'email',
         ],
         'social'  => [
-            'label' => 'Social Media',
+            'label' => __( 'Social Media', 'disciple_tools' ),
             'key'   => 'social',
         ],
         'address' => [
-            'label' => 'Address',
+            'label' => __( 'Address', 'disciple_tools' ),
             'key'   => 'address',
         ],
         'other'   => [
-            'label' => 'Other',
+            'label' => __( 'Other', 'disciple_tools' ),
             'key'   => 'other',
         ],
     ];
 
     $fields['sources'] = [
         'personal'           => [
-            'label'       => 'Personal',
+            'label'       => __( 'Personal', 'disciple_tools' ),
             'key'         => 'personal',
-            'description' => 'Personal contacts.',
+            'description' => __( 'Personal contacts.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'web'           => [
-            'label'       => 'Web',
+            'label'       => __( 'Web', 'disciple_tools' ),
             'key'         => 'web',
-            'description' => 'Contacts coming from the website.',
+            'description' => __( 'Contacts coming from the website.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'phone'         => [
-            'label'       => 'Phone',
+            'label'       => __( 'Phone', 'disciple_tools' ),
             'key'         => 'phone',
-            'description' => 'Contacts coming from phone.',
+            'description' => __( 'Contacts coming from phone.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'facebook'      => [
-            'label'       => 'Facebook',
+            'label'       => __( 'Facebook', 'disciple_tools' ),
             'key'         => 'facebook',
-            'description' => 'Contacts coming from Facebook.',
+            'description' => __( 'Contacts coming from Facebook.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'twitter'       => [
-            'label'       => 'Twitter',
+            'label'       => __( 'Twitter', 'disciple_tools' ),
             'key'         => 'twitter',
-            'description' => 'Contacts coming from Twitter.',
+            'description' => __( 'Contacts coming from Twitter.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'linkedin'      => [
-            'label'       => 'LinkedIn',
+            'label'       => __( 'LinkedIn', 'disciple_tools' ),
             'key'         => 'linkedin',
-            'description' => 'Contacts coming from the LinkedIn.',
+            'description' => __( 'Contacts coming from the LinkedIn.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'referral'      => [
-            'label'       => 'Referral',
+            'label'       => __( 'Referral', 'disciple_tools' ),
             'key'         => 'referral',
-            'description' => 'Contacts coming from relational network.',
+            'description' => __( 'Contacts coming from relational network.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'advertisement' => [
-            'label'       => 'Advertisement',
+            'label'       => __( 'Advertisement', 'disciple_tools' ),
             'key'         => 'advertisement',
-            'description' => 'Contacts coming an advertisement campaign.',
+            'description' => __( 'Contacts coming an advertisement campaign.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'transfer' => [
-            'label'       => 'Transfer',
+            'label'       => __( 'Transfer', 'disciple_tools' ),
             'key'         => 'transfer',
-            'description' => 'Contacts coming an contact transfer partnership with another Disciple.Tools site.',
+            'description' => __( 'Contacts coming an contact transfer partnership with another Disciple.Tools site.', 'disciple_tools' ),
             'enabled'     => true,
         ],
 
@@ -792,7 +792,7 @@ function dt_cron_schedules( $schedules ) {
 //redirect already logged in users from the login page.
 function dt_redirect_logged_in() {
     global $action;
-    if ('logout' === $action || !is_user_logged_in()) {
+    if ( 'logout' === $action || !is_user_logged_in()) {
         return;
     }
     dt_route_front_page();

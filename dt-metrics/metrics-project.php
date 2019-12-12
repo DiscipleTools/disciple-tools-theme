@@ -243,10 +243,11 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
      * @param $parent_id
      * @param $menu_data
      * @param $gen
+     * @param $unique_check, avoid infinite recursion by only adding an item once
      *
      * @return string
      */
-    public function build_menu( $parent_id, $menu_data, $gen) {
+    public function build_menu( $parent_id, $menu_data, $gen, $unique_check = []) {
         $html = '';
 
         if (isset( $menu_data['parents'][$parent_id] ))
@@ -265,8 +266,11 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 $html .= '(' . $gen . ') ';
                 $html .= '<strong><a href="' . site_url( "/groups/" ) . esc_html( $item_id ) . '">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></strong><br>';
 
-                // find childitems recursively
-                $html .= $this->build_menu( $item_id, $menu_data, $gen );
+                // find child items recursively
+                if ( !in_array( $item_id, $unique_check ) ){
+                    $unique_check[] = $item_id;
+                    $html .= $this->build_menu( $item_id, $menu_data, $gen, $unique_check );
+                }
 
                 $html .= '</li>';
             }

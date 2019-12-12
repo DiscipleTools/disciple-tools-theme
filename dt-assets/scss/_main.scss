@@ -547,6 +547,15 @@ button.loader {
         }
     }
 }
+.typeahead__label {
+  max-width: -webkit-fill-available;
+  max-width: -moz-available;
+  a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
 
 .avatar img {
     height: 16px;
