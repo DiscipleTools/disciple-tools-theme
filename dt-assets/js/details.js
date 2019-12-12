@@ -160,8 +160,8 @@ jQuery(document).ready(function($) {
   })
 
   // expand and collapse tiles
-  $(".section-header").on("click", function () {
-    $(this).parent().toggleClass("collapsed")
+  $(".section-header .section-chevron").on("click", function () {
+    $(this).closest('.bordered-box').toggleClass("collapsed")
     $('.grid').masonry('layout')
   })
 
