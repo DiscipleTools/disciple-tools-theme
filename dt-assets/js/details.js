@@ -159,9 +159,9 @@ jQuery(document).ready(function($) {
     rest_api.update_post( post_type, post_id, update )
   })
 
-  // expand and collapse tiles
-  $(".section-header").on("click", function () {
-    $(this).parent().toggleClass("collapsed")
+  // expand and collapse tiles, only when a section chevron icon is clicked for that given tile.
+  $(".section-header .section-chevron").on("click", function () {
+    $(this).closest('.bordered-box').toggleClass("collapsed")
     $('.grid').masonry('layout')
   })
 
