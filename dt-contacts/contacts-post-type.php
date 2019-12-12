@@ -252,19 +252,19 @@ class Disciple_Tools_Contact_Post_Type
                 ],
                 'scheduled'   => [
                   "label" => _x( 'First Meeting Scheduled', 'Seeker Path label', 'disciple_tools' ),
-                  "description" => _x( "The first meeting with this contact has been scheduled.", "First Meeting Scheduled field description", 'disciple_tools' ),
+                  "description" => _x( "The first meeting with this contact has been scheduled.", "Seeker Path field description", 'disciple_tools' ),
                 ],
                 'met'         => [
                   "label" => _x( 'First Meeting Complete', 'Seeker Path label', 'disciple_tools' ),
-                  "description" => _x( "The first meeting with this contact has been completed.", "First Meeting Complete field description", 'disciple_tools' ),
+                  "description" => _x( "The first meeting with this contact has been completed.", "Seeker Path field description", 'disciple_tools' ),
                 ],
                 'ongoing'     => [
                   "label" => _x( 'Ongoing Meetings', 'Seeker Path label', 'disciple_tools' ),
-                  "description" => _x( "This contact is continuing in meetings.", "Ongoing Meetings field description", 'disciple_tools' ),
+                  "description" => _x( "This contact is continuing in meetings.", "Seeker Path field description", 'disciple_tools' ),
                 ],
                 'coaching'    => [
                   "label" => _x( 'Being Coached', 'Seeker Path label', 'disciple_tools' ),
-                  "description" => _x( "This contact is being coached.", "Being Coached field description", 'disciple_tools' ),
+                  "description" => _x( "This contact is being coached.", "Seeker Path field description", 'disciple_tools' ),
                 ],
             ],
             'section'     => 'status',
@@ -295,45 +295,45 @@ class Disciple_Tools_Contact_Post_Type
         }
 
         $fields["milestones"] = [
-            "name"    => _x( 'Faith Milestones', 'milestone field name', 'disciple_tools' ),
-            "description" => _x( 'Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order.', 'milestone field description', 'disciple_tools' ),
+            "name"    => _x( 'Faith Milestones', 'Faith Milestone field name', 'disciple_tools' ),
+            "description" => _x( 'Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order.', 'Faith Milestone field description', 'disciple_tools' ),
             "type"    => "multi_select",
             "default" => [
                 "milestone_has_bible"     => [
                   "label" => _x( 'Has Bible', 'milestone field label', 'disciple_tools' ),
-                  "description" => _x( "This contact has a bible.", 'Faith Milestone description', 'disciple_tools' ),
+                  "description" => _x( "This contact has a bible.", 'Faith Milestone field description', 'disciple_tools' ),
                 ],
                 "milestone_reading_bible" => [
                   "label" => _x( 'Reading Bible', 'milestone field label', 'disciple_tools' ),
-                  "description" => _x( "This contact is reading the bible.", 'Faith Milestone description', 'disciple_tools' )
+                  "description" => _x( "This contact is reading the bible.", 'Faith Milestone field description', 'disciple_tools' )
                 ],
                 "milestone_belief"        => [
                   "label" => _x( 'States Belief', 'milestone field label', 'disciple_tools' ),
-                  "description" => _x( "This contact states belief. i.e. they have repented and believed.", 'Faith Milestone description', 'disciple_tools' ),
+                  "description" => _x( "This contact states belief. i.e. they have repented and believed.", 'Faith Milestone field description', 'disciple_tools' ),
                 ],
                 "milestone_can_share"     => [
                   "label" => _x( 'Can Share Gospel/Testimony', 'milestone field label', 'disciple_tools' ),
-                  "description" => _x( "This contact has been trained to share the Gospel and their testimony.", 'Faith Milestone description', 'disciple_tools' ),
+                  "description" => _x( "This contact has been trained to share the Gospel and their testimony.", 'Faith Milestone field description', 'disciple_tools' ),
                 ],
                 "milestone_sharing"       => [
                   "label" => _x( 'Sharing Gospel/Testimony', 'milestone field label', 'disciple_tools' ),
-                  "description" => _x( "This contact is sharing the Gospel and their testimony.", 'Faith Milestone description', 'disciple_tools' ),
+                  "description" => _x( "This contact is sharing the Gospel and their testimony.", 'Faith Milestone field description', 'disciple_tools' ),
                 ],
                 "milestone_baptized"      => [
                   "label" => _x( 'Baptized', 'milestone field label', 'disciple_tools' ),
-                  "description" => _x( "This contact has been baptized.", 'Faith Milestone description', 'disciple_tools' ),
+                  "description" => _x( "This contact has been baptized.", 'Faith Milestone field description', 'disciple_tools' ),
                 ],
                 "milestone_baptizing"     => [
                   "label" => _x( 'Baptizing', 'milestone field label', 'disciple_tools' ),
-                  "description" => _x( "This contact is baptizing others.", 'Faith Milestone description', 'disciple_tools' ),
+                  "description" => _x( "This contact is baptizing others.", 'Faith Milestone field description', 'disciple_tools' ),
                 ],
                 "milestone_in_group"      => [
                   "label" => _x( 'In Church/Group', 'milestone field label', 'disciple_tools' ),
-                  "description" => _x( "This contact is in a church or group.", 'Faith Milestone description', 'disciple_tools' ),
+                  "description" => _x( "This contact is in a church or group.", 'Faith Milestone field description', 'disciple_tools' ),
                 ],
                 "milestone_planting"      => [
                   "label" => _x( 'Starting Churches', 'milestone field label', 'disciple_tools' ),
-                  "description" => _x( "This contact is planting Churches.", 'Faith Milestone description', 'disciple_tools' ),
+                  "description" => _x( "This contact is planting Churches.", 'Faith Milestone field description', 'disciple_tools' ),
                 ],
             ],
             "customizable" => "add_only"
@@ -341,7 +341,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['baptism_date'] = [
             'name'        => _x( 'Baptism Date', 'field name', 'disciple_tools' ),
-            'description' => _x( 'The date the contact was baptised. For metrics reporting, it is important to always note the day a person is baptised.', 'Baptism Date description', 'disciple_tools' ),
+            'description' => _x( 'The date the contact was baptised. For metrics reporting, it is important to always note the day a person is baptised.', 'Baptism Date field description', 'disciple_tools' ),
             'type'        => 'date',
             'default'     => '',
             'section'     => 'misc',
@@ -384,7 +384,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields["reason_unassignable"] = [
             'name'        => _x( 'Reason Not Ready', 'field name', 'disciple_tools' ),
-            'description' => _x( 'The main reason the contact is not ready to be assigned to a user.', 'Reason Not Ready description', 'disciple_tools' ),
+            'description' => _x( 'The main reason the contact is not ready to be assigned to a user.', 'Reason Not Ready field description', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'none'         => [
@@ -484,7 +484,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields["source_details"] = [
             "name" => _x( "Source Details", 'field name', 'disciple_tools' ),
-            'description' => _x( 'Type of source of this contact.', 'field description', 'disciple_tools' ),
+            'description' => _x( 'Type of source of this contact.', 'Source details field description', 'disciple_tools' ),
             'type' => 'text',
             'default' => '',
             'section'     => 'misc',

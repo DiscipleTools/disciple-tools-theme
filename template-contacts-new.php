@@ -42,7 +42,7 @@ get_header();
                     <button class="help-button" data-section="email-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
-                    <input name="email" type="text"  placeholder="<?php echo esc_html_x( "Email",'input field placeholder',  "disciple_tools" ); ?>">
+                    <input name="email" type="text"  placeholder="<?php echo esc_html_x( "Email", 'input field placeholder', "disciple_tools" ); ?>">
                 </label>
 
                 <label>
@@ -92,7 +92,7 @@ get_header();
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
 
-                    <textarea name="initial_comment" dir="auto" placeholder="<?php echo esc_html_x( "Initial comment", 'input field placeholder',  "disciple_tools" ); ?>"></textarea>
+                    <textarea name="initial_comment" dir="auto" placeholder="<?php echo esc_html_x( "Initial comment", 'input field placeholder', "disciple_tools" ); ?>"></textarea>
                 </label>
 
                 <div style="text-align: center">

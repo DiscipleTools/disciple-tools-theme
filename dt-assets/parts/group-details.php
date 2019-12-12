@@ -103,7 +103,7 @@
                         <div class="typeahead__field">
                                             <span class="typeahead__query">
                                                 <input class="js-typeahead-coaches"
-                                                       name="coaches[query]" placeholder="<?php echo esc_html_e( "Search Users and Contacts", 'input field placeholder', 'disciple_tools' ) ?>"
+                                                       name="coaches[query]" placeholder="<?php echo esc_html_x( "Search Users and Contacts", 'input field placeholder', 'disciple_tools' ) ?>"
                                                        autocomplete="off">
                                             </span>
                         </div>
