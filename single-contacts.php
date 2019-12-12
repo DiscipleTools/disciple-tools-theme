@@ -214,7 +214,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     <div id="content" class="single-contacts">
         <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
         <span id="post-id" style="display: none"><?php echo get_the_ID()?></span>
-        <span id="post-type" style="display: none"><?php esc_html_e( 'contact', 'disciple_tools' )?></span>
+        <span id="post-type" style="display: none">contact</span>
 
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
@@ -675,8 +675,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             <p><strong><?php echo esc_html_x( "This contact is already connected to a user.", 'Make user modal', 'disciple_tools' ) ?></strong></p>
         <?php else : ?>
 
-        <p><?php echo esc_html_x( "This will invite this contact to become as a of this system. By default, they will be given the role of a 'multiplier'.", 'Make user modal', 'disciple_tools' ) ?></p>
-        <p><?php echo esc_html_x( "In the fields below, enter their email address and a 'Display Name' (which be changed by them later).", 'Make user modal', 'disciple_tools' ) ?></p>
+        <p><?php echo esc_html_x( "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'.", 'Make user modal', 'disciple_tools' ) ?></p>
+        <p><?php echo esc_html_x( "In the fields below, enter their email address and a 'Display Name' which be changed by them later.", 'Make user modal', 'disciple_tools' ) ?></p>
 
         <form id="create-user-form">
             <label for="user-email">
