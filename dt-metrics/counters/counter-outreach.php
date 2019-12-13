@@ -41,7 +41,7 @@ class Disciple_Tools_Counter_Outreach extends Disciple_Tools_Counter_Base
         $status = strtolower( $status );
 
         if ( empty( $year ) ) {
-            $year = date( 'Y' ); // default to this year
+            $year = gmdate( 'Y' ); // default to this year
         }
 
         switch ( $status ) {

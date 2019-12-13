@@ -90,7 +90,7 @@ class Disciple_Tools_Roles
             remove_role( 'strategist' );
         }
         add_role(
-            'strategist', __( 'Strategist', "disciple_tools" ),
+            'strategist', __( 'Strategist', 'disciple_tools' ),
             [
                 'view_project_metrics' => true
             ]
@@ -100,7 +100,7 @@ class Disciple_Tools_Roles
             remove_role( 'dispatcher' );
         }
         add_role(
-            'dispatcher', __( 'Dispatcher', "disciple_tools" ),
+            'dispatcher', __( 'Dispatcher', 'disciple_tools' ),
             [
                 'read'                      => true, //access to admin
 
@@ -113,7 +113,7 @@ class Disciple_Tools_Roles
                 'access_contacts'           => true,
                 'create_contacts'           => true,  //create a new contact
                 'update_shared_contacts'    => true,
-                'view_any_contacts'         => true,    //view any contacts
+                'view_any_contacts'         => true,  //view any contacts
                 'assign_any_contacts'       => true,  //assign contacts to others
                 'update_any_contacts'       => true,  //update any contacts
                 'delete_any_contacts'       => true,  //delete any contacts
@@ -133,7 +133,7 @@ class Disciple_Tools_Roles
                 /* Add custom caps for groups */
                 'access_groups'             => true,
                 'create_groups'             => true,
-                'view_any_groups'           => true,    //view any groups
+                'view_any_groups'           => true,  //view any groups
                 'assign_any_groups'         => true,  //assign groups to others
                 'update_any_groups'         => true,  //update any groups
                 'delete_any_groups'         => true,  //delete any groups
@@ -178,7 +178,7 @@ class Disciple_Tools_Roles
             remove_role( 'marketer' );
         }
         add_role(
-            'marketer', __( 'Digital Responder', "disciple_tools" ),
+            'marketer', __( 'Digital Responder', 'disciple_tools' ),
             [
                 'access_groups' => true,
                 'create_groups' => true,
@@ -200,7 +200,7 @@ class Disciple_Tools_Roles
             remove_role( 'dt_admin' );
         }
         add_role(
-            'dt_admin', __( 'Disciple.Tools Admin', "disciple_tools" ),
+            'dt_admin', __( 'Disciple.Tools Admin', 'disciple_tools' ),
             [
                 'read'                      => true, //access to admin
                 'edit_posts'                => true, //edit custom post types
@@ -220,7 +220,7 @@ class Disciple_Tools_Roles
                 'access_contacts'           => true,
                 'create_contacts'           => true,  //create a new contact
                 'update_shared_contacts'    => true,
-                'view_any_contacts'         => true,    //view any contacts
+                'view_any_contacts'         => true,  //view any contacts
                 'assign_any_contacts'       => true,  //assign contacts to others
                 'update_any_contacts'       => true,  //update any contacts
                 'delete_any_contacts'       => true,  //delete any contacts
@@ -240,7 +240,7 @@ class Disciple_Tools_Roles
                 /* Add custom caps for groups */
                 'access_groups'             => true,
                 'create_groups'             => true,
-                'view_any_groups'           => true,    //view any groups
+                'view_any_groups'           => true,  //view any groups
                 'assign_any_groups'         => true,  //assign groups to others
                 'update_any_groups'         => true,  //update any groups
                 'delete_any_groups'         => true,  //delete any groups
@@ -291,7 +291,7 @@ class Disciple_Tools_Roles
             remove_role( 'multiplier' );
         }
         add_role(
-            'multiplier', __( 'Multiplier', "disciple_tools" ),
+            'multiplier', __( 'Multiplier', 'disciple_tools' ),
             [
                 'access_contacts'        => true,
                 'create_contacts'        => true,
@@ -308,7 +308,7 @@ class Disciple_Tools_Roles
             remove_role( 'registered' );
         }
         add_role(
-            'registered', __( 'Registered', "disciple_tools" ),
+            'registered', __( 'Registered', 'disciple_tools' ),
             [
                 // No capabilities to this role. Must be moved to another role for permission.
             ]
@@ -428,7 +428,7 @@ class Disciple_Tools_Roles
         remove_role( 'project_supporter' );
 
         add_role(
-            'subscriber', __( 'Subscriber', "disciple_tools" ),
+            'subscriber', __( 'Subscriber', 'disciple_tools' ),
             [
                 'delete_others_posts'    => true,
                 'delete_pages'           => true,

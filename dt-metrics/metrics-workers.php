@@ -198,7 +198,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         $days = 31;
         $last_30_days = [];
         while ( $days > 0 ) {
-            $last_30_days[] = date( 'Y-m-d', strtotime( '- ' . $days . ' days' ) );
+            $last_30_days[] = gmdate( 'Y-m-d', strtotime( '- ' . $days . ' days' ) );
             $days--;
         }
 
@@ -215,7 +215,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             }
 
             $chart[] = [
-                'date' => date( 'M d', strtotime( $day ) ),
+                'date' => gmdate( 'M d', strtotime( $day ) ),
                 'value' => (int) $total
             ];
         }
@@ -505,7 +505,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             foreach ( $last_assigned as $last ){
                 if ( $worker_value["ID"] == $last["ID"] ){
 
-                    $workers[$worker_i]["last_date_assigned"] = date( 'Y-m-d', $last["last_date_assigned"] );
+                    $workers[$worker_i]["last_date_assigned"] = gmdate( 'Y-m-d', $last["last_date_assigned"] );
                 }
             }
         }

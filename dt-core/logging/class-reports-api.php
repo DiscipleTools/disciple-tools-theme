@@ -41,7 +41,7 @@ class Disciple_Tools_Reports_API
         $args = wp_parse_args(
             $args,
             [
-                'report_date'      => date( 'Y-m-d' ),
+                'report_date'      => gmdate( 'Y-m-d' ),
                 'report_source'    => '',
                 'report_subsource' => '',
                 'focus'            => '',
@@ -309,7 +309,7 @@ class Disciple_Tools_Reports_API
     /**
      * Gets report ids by date
      *
-     * @param  $date      string     This is the supplied date for the report date('Y-m-d') format
+     * @param  $date      string     This is the supplied date for the report gmdate('Y-m-d') format
      * @param  $source    string    (optional) This argument limits the results to a certain source
      * @param  $subsource string (optional) This argument further limits the results to a specific subsource of the source. Source is still required, in case of subsource naming conflicts.
      *
@@ -475,7 +475,7 @@ class Disciple_Tools_Reports_API
     public function get_last_value( $source, $meta_key, $subsource = '' ) {
 
         //        global $wpdb;
-        //        $today = date( 'Y-m-d' );
+        //        $today = gmdate( 'Y-m-d' );
 
         if ( empty( $source ) || empty( $meta_key ) ) {
             return false;

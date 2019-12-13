@@ -113,7 +113,7 @@ class Disciple_Tools_Reports_Cron
      */
     public function build_all_disciple_tools_contacts_reports() {
         // Calculate the next date(s) needed reporting
-        $var_date = date( 'Y-m-d', strtotime( '-1 day' ) ); //TODO: should replace this with a foreach loop that queries that last day recorded
+        $var_date = gmdate( 'Y-m-d', strtotime( '-1 day' ) ); //TODO: should replace this with a foreach loop that queries that last day recorded
         $dates = [ $var_date ]; // array of dates
 
         // Request dates needed for reporting (loop)
@@ -135,7 +135,7 @@ class Disciple_Tools_Reports_Cron
      */
     public function build_all_disciple_tools_groups_reports() {
         // Calculate the next date(s) needed reporting
-        $var_date = date( 'Y-m-d', strtotime( '-1 day' ) ); //TODO: should replace this with a foreach loop that queries that last day recorded
+        $var_date = gmdate( 'Y-m-d', strtotime( '-1 day' ) ); //TODO: should replace this with a foreach loop that queries that last day recorded
         $dates = [ $var_date ]; // array of dates
 
         // Request dates needed for reporting (loop)

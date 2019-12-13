@@ -366,7 +366,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     private static function check_requires_update( $contact_id ){
         if ( get_current_user_id() ){
             $requires_update = get_post_meta( $contact_id, "requires_update", true );
-            if ( $requires_update == "yes" || $requires_update == true || $requires_update = "1"){
+            if ( $requires_update == "yes" || $requires_update == true || $requires_update == "1"){
                 //don't remove update needed if the user is a dispatcher (and not assigned to the contacts.)
                 if ( self::can_view_all( 'contacts' ) ){
                     if ( dt_get_user_id_from_assigned_to( get_post_meta( $contact_id, "assigned_to", true ) ) === get_current_user_id() ){
