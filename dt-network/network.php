@@ -531,7 +531,7 @@ class Disciple_Tools_Snapshot_Report {
     public static function get_day_list( $number_of_days = 60 ) {
         $d = [];
         for ( $i = 0; $i < $number_of_days; $i ++ ) {
-            $d[] = date( "Y-m-d", strtotime( '-' . $i . ' days' ) );
+            $d[] = gmdate( "Y-m-d", strtotime( '-' . $i . ' days' ) );
         }
 
         return $d;
@@ -549,7 +549,7 @@ class Disciple_Tools_Snapshot_Report {
     public static function get_month_list( $number_of_months = 25 ) {
         $d = [];
         for ( $i = 0; $i < $number_of_months; $i ++ ) {
-            $d[] = date( "Y-m", strtotime( '-' . $i . ' months' ) );
+            $d[] = gmdate( "Y-m", strtotime( '-' . $i . ' months' ) );
         }
 
         return $d;
