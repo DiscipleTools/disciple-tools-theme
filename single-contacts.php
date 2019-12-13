@@ -237,8 +237,10 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                 if ( current_user_can( "view_any_contacts" ) ){
                     $duplicate_post_meta = get_post_meta( get_the_Id(), 'duplicate_data' );
                     $duplicates = false;
-                    foreach ($duplicate_post_meta[0] ?? [] as $key => $array) {
-                        if ($key === 'override') { continue; }
+                    foreach ( $duplicate_post_meta[0] ?? [] as $key => $array ) {
+                        if ($key === 'override') {
+                            continue;
+                        }
                         if ( !empty( $array )) {
                             $duplicates = true;
                         }
@@ -303,27 +305,21 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                     foreach ( $connections as $connection => $connection_label ) {
                                         ?>
                                         <div id="<?php echo esc_attr( $connection . '_connection' ) ?>">
-                                            <div class="section-subheader"><?php echo esc_html( $connection_label ) ?>
-                                            <!-- this needs to be automated
-                                                <button class="help-button" data-section="group-type-help-text">
-                                                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                                </button>
-                                            -->
-                                            </div>
+                                            <div class="section-subheader"><?php echo esc_html( $connection_label ) ?></div>
                                             <var id="<?php echo esc_html( $connection ) ?>-result-container" class="result-container"></var>
                                             <div id="<?php echo esc_html( $connection ) ?>_t" name="form-<?php echo esc_html( $connection ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
                                                 <div class="typeahead__container">
                                                     <div class="typeahead__field">
                                                         <span class="typeahead__query">
-                                                            <input class="js-typeahead-<?php echo esc_html( $connection ) ?>"
+                                                            <input class="js-typeahead-<?php echo esc_html( $connection ) ?> input-height"
                                                                    name="<?php echo esc_html( $connection ) ?>[query]" placeholder="<?php esc_html_e( "Search multipliers and contacts", 'disciple_tools' ) ?>"
                                                                    autocomplete="off">
                                                         </span>
-                <!--                                        <span class="typeahead__button">-->
-                <!--                                            <button>-->
-                <!--                                                <i class="typeahead__search-icon"></i>-->
-                <!--                                            </button>-->
-                <!--                                        </span>-->
+                                                        <span class="typeahead__button">
+                                                            <button type="button" data-connection-key="<?php echo esc_html( $connection ) ?>" class="create-new-contact typeahead__image_button input-height">
+                                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-contact.svg' ) ?>"/>
+                                                            </button>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -415,7 +411,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                 }
                                 //remove section if hidden
                                 if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
-                                    if ( ( $index = array_search( $tile_key, $sections ) ) !== false) {
+                                    $index = array_search( $tile_key, $sections );
+                                    if ( $index !== false) {
                                         unset( $sections[ $index ] );
                                     }
                                 }
@@ -524,6 +521,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'share' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-group' ); ?>
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-contact' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'revert' ); ?>
 
 

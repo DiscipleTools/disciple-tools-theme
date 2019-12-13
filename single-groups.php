@@ -77,7 +77,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                     <div style="padding-bottom: 5px; margin-right:10px; display: inline-block">
                                         <?php esc_html_e( "Member List", 'disciple_tools' ) ?>
                                     </div>
-                                    <button type="button" data-open="create-contact-modal" style="height: 36px;">
+                                    <button type="button" class="create-new-contact" style="height: 36px;">
                                         <?php esc_html_e( "Create", 'disciple_tools' ) ?>
                                         <img style="height: 14px; width: 14px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                                     </button>
@@ -238,7 +238,8 @@ if ( ! current_user_can( 'access_groups' ) ) {
                             }
                             //remove section if hidden
                             if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
-                                if ( ( $index = array_search( $tile_key, $sections ) ) !== false) {
+                                $index = array_search( $tile_key, $sections );
+                                if ( $index !== false) {
                                     unset( $sections[ $index ] );
                                 }
                             }

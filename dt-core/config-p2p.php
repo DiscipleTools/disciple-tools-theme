@@ -8,6 +8,9 @@
 
 function dt_my_connection_types() {
 
+    /**
+     * Contact Coaching field
+     */
     p2p_register_connection_type(
         [
             'name'        => 'contacts_to_contacts',
@@ -19,34 +22,24 @@ function dt_my_connection_types() {
             'title'       => [
                 'from' => __( 'Coached by', 'disciple_tools' ),
                 'to'   => __( 'Coaching', 'disciple_tools' ),
-            ],
-            'from_labels' => [
-                'singular_name' => __( 'Contact', 'disciple_tools' ),
-                'search_items'  => __( 'Search contacts', 'disciple_tools' ),
-                'not_found'     => __( 'No contacts found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Disciple', 'disciple_tools' ),
-            ],
-            'to_labels'   => [
-                'singular_name' => __( 'Contact', 'disciple_tools' ),
-                'search_items'  => __( 'Search contacts', 'disciple_tools' ),
-                'not_found'     => __( 'No contacts found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Coach', 'disciple_tools' ),
-            ],
-
+            ]
         ]
     );
 
+    /**
+     * Contact Connection or Relation
+     */
     p2p_register_connection_type(
         [
             'name'        => 'contacts_to_relation',
             'from'        => 'contacts',
-            'to'          => 'contacts',
-            'admin_box' => [
-                'show' => false,
-            ],
+            'to'          => 'contacts'
         ]
     );
 
+    /**
+     * Contact Sub-assigned to
+     */
     p2p_register_connection_type(
         [
             'name'        => 'contacts_to_subassigned',
@@ -58,23 +51,13 @@ function dt_my_connection_types() {
             'title'       => [
                 'from' => __( 'Sub-assigned by', 'disciple_tools' ),
                 'to'   => __( 'Sub-assigned', 'disciple_tools' ),
-            ],
-            'from_labels' => [
-                'singular_name' => __( 'Contact', 'disciple_tools' ),
-                'search_items'  => __( 'Search contacts', 'disciple_tools' ),
-                'not_found'     => __( 'No contacts found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Disciple', 'disciple_tools' ),
-            ],
-            'to_labels'   => [
-                'singular_name' => __( 'Contact', 'disciple_tools' ),
-                'search_items'  => __( 'Search contacts', 'disciple_tools' ),
-                'not_found'     => __( 'No contacts found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Sub-assigned', 'disciple_tools' ),
-            ],
-
+            ]
         ]
     );
 
+    /**
+     * Contact Baptism Field
+     */
     p2p_register_connection_type(
         [
             'name'        => 'baptizer_to_baptized',
@@ -86,42 +69,29 @@ function dt_my_connection_types() {
             'title'       => [
                 'from' => __( 'Baptized by', 'disciple_tools' ),
                 'to'   => __( 'Baptized', 'disciple_tools' ),
-            ],
-            'from_labels' => [
-                'singular_name' => __( 'Contact', 'disciple_tools' ),
-                'search_items'  => __( 'Search contacts', 'disciple_tools' ),
-                'not_found'     => __( 'No contacts found.', 'disciple_tools' ),
-                'create'        => __( 'Add Baptism', 'disciple_tools' ),
-            ],
-            'to_labels'   => [
-                'singular_name' => __( 'Contact', 'disciple_tools' ),
-                'search_items'  => __( 'Search contacts', 'disciple_tools' ),
-                'not_found'     => __( 'No contacts found.', 'disciple_tools' ),
-                'create'        => __( 'Add Baptizer', 'disciple_tools' ),
-            ],
-            'fields'      => [
-                'month' => [
-                    'title'   => __( 'Month', 'disciple_tools' ),
-                    'type'    => 'select',
-                    'values'  => [ '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12' ],
-                    'default' => date( 'm' ),
-                ],
-                'day'   => [
-                    'title'   => __( 'Day', 'disciple_tools' ),
-                    'type'    => 'select',
-                    'values'  => [ '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31' ],
-                    'default' => date( 'd' ),
-                ],
-                'year'  => [
-                    'title'   => __( 'Year', 'disciple_tools' ),
-                    'type'    => 'text',
-                    'default' => date( 'Y' ),
-                ],
-            ],
-
+            ]
         ]
     );
 
+    /**
+     * Contact People Groups
+     */
+    p2p_register_connection_type(
+        [
+            'name'        => 'contacts_to_peoplegroups',
+            'from'        => 'contacts',
+            'to'          => 'peoplegroups',
+            'title'       => [
+                'from' => __( 'People Groups', 'disciple_tools' ),
+                'to'   => __( 'Contacts', 'disciple_tools' ),
+            ]
+        ]
+    );
+
+
+    /**
+     * Group members field
+     */
     p2p_register_connection_type(
         [
             'name'           => 'contacts_to_groups',
@@ -133,30 +103,12 @@ function dt_my_connection_types() {
             'title'          => [
                 'from' => __( 'Contacts', 'disciple_tools' ),
                 'to'   => __( 'Members', 'disciple_tools' ),
-            ],
-            'to_labels'      => [
-                'singular_name' => __( 'Group', 'disciple_tools' ),
-                'plural_name' => __( 'Groups', 'disciple_tools' ),
-                'search_items'  => __( 'Search groups', 'disciple_tools' ),
-                'not_found'     => __( 'No groups found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Group', 'disciple_tools' ),
-            ],
-            'from_labels'    => [
-                'singular_name' => __( 'Member', 'disciple_tools' ),
-                'plural_name' => __( 'Members', 'disciple_tools' ),
-                'search_items'  => __( 'Search members', 'disciple_tools' ),
-                'not_found'     => __( 'No members found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Member', 'disciple_tools' ),
-            ],
-            'fields'         => [
-                'leader' => [
-                    'title' => __( 'Leader', 'disciple_tools' ),
-                    'type'  => 'checkbox',
-                ],
-            ],
+            ]
         ]
     );
-
+    /**
+     * Group leaders field
+     */
     p2p_register_connection_type(
         [
             'name'           => 'groups_to_leaders',
@@ -168,30 +120,12 @@ function dt_my_connection_types() {
             'title'          => [
                 'from' => __( 'Groups', 'disciple_tools' ),
                 'to'   => __( 'Leaders', 'disciple_tools' ),
-            ],
-            'from_labels'      => [
-                'singular_name' => __( 'Group', 'disciple_tools' ),
-                'plural_name' => __( 'Groups', 'disciple_tools' ),
-                'search_items'  => __( 'Search groups', 'disciple_tools' ),
-                'not_found'     => __( 'No groups found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Group', 'disciple_tools' ),
-            ],
-            'to_labels'    => [
-                'singular_name' => __( 'Leader', 'disciple_tools' ),
-                'plural_name' => __( 'Leaders', 'disciple_tools' ),
-                'search_items'  => __( 'Search leaders', 'disciple_tools' ),
-                'not_found'     => __( 'No leaders found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Leader', 'disciple_tools' ),
-            ],
-            'fields'         => [
-                'leader' => [
-                    'title' => __( 'Leader', 'disciple_tools' ),
-                    'type'  => 'checkbox',
-                ],
-            ],
+            ]
         ]
     );
-
+    /**
+     * Group coaches field
+     */
     p2p_register_connection_type(
         [
             'name'           => 'groups_to_coaches',
@@ -203,54 +137,22 @@ function dt_my_connection_types() {
             'title'          => [
                 'from' => __( 'Groups', 'disciple_tools' ),
                 'to'   => __( 'Coaches', 'disciple_tools' ),
-            ],
-            'from_labels'      => [
-                'singular_name' => __( 'Group', 'disciple_tools' ),
-                'plural_name' => __( 'Groups', 'disciple_tools' ),
-                'search_items'  => __( 'Search groups', 'disciple_tools' ),
-                'not_found'     => __( 'No groups found.', 'disciple_tools' ),
-                'create'        => __( 'Added coach:', 'disciple_tools' ),
-            ],
-            'to_labels'    => [
-                'singular_name' => __( 'Coach', 'disciple_tools' ),
-                'plural_name' => __( 'Coaches', 'disciple_tools' ),
-                'search_items'  => __( 'Search coaches', 'disciple_tools' ),
-                'not_found'     => __( 'No coaches found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Coach', 'disciple_tools' ),
-            ],
-            'fields'         => [
-                'coach' => [
-                    'title' => __( 'Coach', 'disciple_tools' ),
-                    'type'  => 'checkbox',
-                ],
-            ],
+            ]
         ]
     );
 
 
+    /**
+     * Parent and child groups
+     */
     p2p_register_connection_type(
         [
             'name'         => 'groups_to_groups',
             'from'         => 'groups',
             'to'           => 'groups',
-            'admin_column' => 'any',
             'title'        => [
                 'from' => __( 'Planted by', 'disciple_tools' ),
                 'to'   => __( 'Planting', 'disciple_tools' ),
-            ],
-            'from_labels'  => [
-                'singular_name' => __( 'Parent Group', 'disciple_tools' ),
-                'plural_name' => __( 'Parent Groups', 'disciple_tools' ),
-                'search_items'  => __( 'Search groups', 'disciple_tools' ),
-                'not_found'     => __( 'No groups found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Child Group', 'disciple_tools' ),
-            ],
-            'to_labels'    => [
-                'singular_name' => __( 'Child Group', 'disciple_tools' ),
-                'plural_name' => __( 'Child Groups', 'disciple_tools' ),
-                'search_items'  => __( 'Search groups', 'disciple_tools' ),
-                'not_found'     => __( 'No groups found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Parent Group', 'disciple_tools' ),
             ],
         ]
     );
@@ -262,40 +164,13 @@ function dt_my_connection_types() {
         'name'         => 'groups_to_peers',
         'from'         => 'groups',
         'to'           => 'groups',
-        'admin_column' => 'any'
     ] );
 
 
 
-    p2p_register_connection_type(
-        [
-            'name'        => 'contacts_to_peoplegroups',
-            'from'        => 'contacts',
-            'to'          => 'peoplegroups',
-            'title'       => [
-                'from' => __( 'People Groups', 'disciple_tools' ),
-                'to'   => __( 'Contacts', 'disciple_tools' ),
-            ],
-            'to_labels'   => [
-                'singular_name' => __( 'People Group', 'disciple_tools' ),
-                'search_items'  => __( 'Search People Groups', 'disciple_tools' ),
-                'not_found'     => __( 'No people groups found.', 'disciple_tools' ),
-                'create'        => __( 'Connect People Groups', 'disciple_tools' ),
-            ],
-            'from_labels' => [
-                'singular_name' => __( 'Contacts', 'disciple_tools' ),
-                'search_items'  => __( 'Search contacts', 'disciple_tools' ),
-                'not_found'     => __( 'No contacts found.', 'disciple_tools' ),
-                'create'        => __( 'Create Contact', 'disciple_tools' ),
-            ],
-            'fields'      => [
-                'primary' => [
-                    'title' => __( 'Primary', 'disciple_tools' ),
-                    'type'  => 'checkbox',
-                ],
-            ],
-        ]
-    );
+    /**
+     * Group People Groups field
+     */
     p2p_register_connection_type(
         [
             'name'        => 'groups_to_peoplegroups',
@@ -304,21 +179,7 @@ function dt_my_connection_types() {
             'title'       => [
                 'from' => __( 'People Groups', 'disciple_tools' ),
                 'to'   => __( 'Groups', 'disciple_tools' ),
-            ],
-            'to_labels'   => [
-                'singular_name' => __( 'People Group', 'disciple_tools' ),
-                'plural_name' => __( 'People Groups', 'disciple_tools' ),
-                'search_items'  => __( 'Search people groups', 'disciple_tools' ),
-                'not_found'     => __( 'No people groups found.', 'disciple_tools' ),
-                'create'        => __( 'Connect People Groups', 'disciple_tools' ),
-            ],
-            'from_labels' => [
-                'singular_name' => __( 'Group', 'disciple_tools' ),
-                'plural_name' => __( 'Groups', 'disciple_tools' ),
-                'search_items'  => __( 'Search groups', 'disciple_tools' ),
-                'not_found'     => __( 'No groups found.', 'disciple_tools' ),
-                'create'        => __( 'Create Group', 'disciple_tools' ),
-            ],
+            ]
         ]
     );
 
