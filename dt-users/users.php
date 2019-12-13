@@ -630,6 +630,7 @@ class Disciple_Tools_Users
             }
             if ( $index_to_remove !== null ){
                 unset( $filters[$post_type][$index_to_remove] );
+                $filters[$post_type] = array_values( $filters[$post_type] );
                 update_user_option( $current_user_id, "saved_filters", $filters );
                 return true;
             } else {

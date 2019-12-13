@@ -229,7 +229,7 @@
   }
   setupFilters()
 
-
+  $(`#list-filter-tabs [data-id='${_.escape( selectedFilterTab )}'] a`).click()
   if ( selectedFilter ){
     if ( selectedFilterTab === 'custom' ){
       $(`.is-active input[name=view][data-id="${_.escape( selectedFilter )}"].js-list-view`).prop('checked', true);
