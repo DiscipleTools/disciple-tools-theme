@@ -676,7 +676,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         <?php else : ?>
 
         <p><?php echo esc_html_x( "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'.", 'Make user modal', 'disciple_tools' ) ?></p>
-        <p><?php echo esc_html_x( "In the fields below, enter their email address and a 'Display Name' which be changed by them later.", 'Make user modal', 'disciple_tools' ) ?></p>
+        <p><?php echo esc_html_x( "In the fields below, enter their email address and a 'Display Name' which they can change later.", 'Make user modal', 'disciple_tools' ) ?></p>
 
         <form id="create-user-form">
             <label for="user-email">
