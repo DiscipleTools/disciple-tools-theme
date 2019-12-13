@@ -1870,6 +1870,93 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     }
                 }
             }
+            $filters["filters"] = self::add_default_custom_list_filters( $filters["filters"] );
+        }
+        return $filters;
+    }
+
+    public static function add_default_custom_list_filters( $filters ){
+        if ( empty( $filters )){
+            $filters = [];
+        }
+        $default_filters = [
+            [
+                'ID' => 'my_coached',
+                'visible' => "1",
+                'type' => 'default',
+                'tab' => 'custom',
+                'name' => 'Coached by me',
+                'query' => [
+                    'coached_by' => [ 'me' ],
+                    'sort' => 'seeker_path',
+                ],
+                'labels' => [
+                    [
+                        'id' => 'my_coached',
+                        'name' => 'Coached by be',
+                        'field' => 'coached_by',
+                    ],
+                ],
+            ],
+            [
+                'ID' => 'my_subassigned',
+                'visible' => "1",
+                'type' => 'default',
+                'tab' => 'custom',
+                'name' => 'Subassigned to me',
+                'query' => [
+                    'subassigned' => [ 'me' ],
+                    'sort' => 'overall_status',
+                ],
+                'labels' => [
+                    [
+                        'id' => 'my_subassigned',
+                        'name' => 'Subassigned to me',
+                        'field' => 'subassigned',
+                    ],
+                ],
+            ],
+            [
+                'ID' => 'my_shared',
+                'visible' => "1",
+                'type' => 'default',
+                'tab' => 'custom',
+                'name' => 'Shared with me',
+                'query' => [
+                    'assigned_to' => [ 'shared' ],
+                    'sort' => 'overall_status',
+                ],
+                'labels' => [
+                    [
+                        'id' => 'my_shared',
+                        'name' => 'Shared with me',
+                        'field' => 'subassigned',
+                    ],
+                ],
+            ]
+        ];
+        $contact_filter_ids = array_map( function ( $a ){
+            return $a["ID"];
+        }, $filters );
+        foreach ( $default_filters as $filter ) {
+            if ( !in_array( $filter["ID"], $contact_filter_ids ) ){
+                array_unshift( $filters, $filter );
+            }
+        }
+        //translation for default fields
+        foreach ( $filters as $index => $filter ) {
+            if ( $filter["name"] === 'Subassigned to me' ) {
+                $filters[$index]["name"] = __( 'Subassigned only', 'disciple_tools' );
+                $filters[$index]['labels'][0]['name'] = __( 'Subassigned only', 'disciple_tools' );
+            }
+            if ( $filter["name"] === 'Shared with me' ) {
+                $filters[$index]["name"] = __( 'Shared wth me', 'disciple_tools' );
+                $filters[$index]['labels'][0]['name'] = __( 'Shared with me', 'disciple_tools' );
+            }
+            if ( $filter["name"] === 'Coached by me' ) {
+                $filters[$index]["name"] = __( 'Coached by me', 'disciple_tools' );
+                $filters[$index]['labels'][0]['name'] = __( 'Coached by me', 'disciple_tools' );
+            }
         }
         return $filters;
     }

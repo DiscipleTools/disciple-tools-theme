@@ -158,6 +158,9 @@
       savedFiltersList.html(`<span>${_.escape(wpApiListSettings.translations.empty_custom_filters)}</span>`)
     }
     savedFilters.filters.filter(t=>t.tab==='custom').forEach(filter=>{
+      if ( filter && filter.visible === ''){
+        return
+      }
       let deleteFilter = $(`<span style="float:right" data-filter="${_.escape( filter.ID )}">
         <img style="padding: 0 4px" src="${wpApiShare.template_dir}/dt-assets/images/trash.svg">
       </span>`)
@@ -202,7 +205,6 @@
   if ( showClosedCookie === "true" ){
     showClosedCheckbox.prop('checked', true)
   }
-  setupFilters()
 
   //look at the cookie to see what was the last selected view
   if ( tabQueryParam ){
@@ -225,7 +227,9 @@
   } else {
     selectedFilter = "no_filter"
   }
-  $(`#list-filter-tabs [data-id='${_.escape( selectedFilterTab )}'] a`).click()
+  setupFilters()
+
+
   if ( selectedFilter ){
     if ( selectedFilterTab === 'custom' ){
       $(`.is-active input[name=view][data-id="${_.escape( selectedFilter )}"].js-list-view`).prop('checked', true);
@@ -457,13 +461,12 @@
       closedSwitch.hide()
     }
 
-
     filter.query = query
     let sortField = _.get(currentFilter, "query.sort", "overall_status").replace("-", "");
     filter.query.sort = _.get(currentFilter, "query.sort", "overall_status");
     if ( _.get( cachedFilter, "query.sort") ){
       filter.query.sort = cachedFilter.query.sort;
-      sortField = cachedFilter.query.sort.replace("-", "");
+      sortField = _.get(cachedFilter, "query.sort", "overall_status").replace("-", "");
     }
     //reset sorting in table header
     tableHeaderRow.removeClass("sorting_asc")
@@ -578,10 +581,21 @@
 
   //delete a filter
   $(`#confirm-filter-delete`).on('click', function () {
-    _.pullAllBy(savedFilters.filters, [{ID:filterToDelete}], "ID")
-    API.delete_filter(wpApiListSettings.current_post_type, filterToDelete).then(()=>{
-      setupFilters()
-    }).catch(err => { console.error(err) })
+    let filter = _.find(savedFilters.filters, {ID:filterToDelete})
+    if ( filter && ( filter.visible === true || filter.visible === '1' ) ){
+      filter.visible = false;
+      API.save_filters(wpApiListSettings.current_post_type,filter).then(()=>{
+        _.pullAllBy(savedFilters.filters, [{ID:filterToDelete}], "ID")
+        setupFilters()
+        $(`#list-filter-tabs [data-id='custom'] a`).click()
+      }).catch(err => { console.error(err) })
+    } else {
+      API.delete_filter(wpApiListSettings.current_post_type, filterToDelete).then(()=>{
+        _.pullAllBy(savedFilters.filters, [{ID:filterToDelete}], "ID")
+        setupFilters()
+        $(`#list-filter-tabs [data-id='custom'] a`).click()
+      }).catch(err => { console.error(err) })
+    }
   })
 
   $("#search").on("click", function () {
@@ -775,7 +789,7 @@
   }
 
   /**
-   * Leaders
+   * Subassigned
    */
   let loadSubassignedTypeahead = ()=> {
     if (!window.Typeahead['.js-typeahead-subassigned']) {
@@ -812,6 +826,41 @@
             let name = _.get(wpApiListSettings, `custom_fields_settings.subassigned.name`, 'subassigned')
             newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "subassigned"})
             selectedFilters.append(`<span class="current-filter subassigned" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
+          }
+        }
+      });
+    }
+  }
+    /**
+   * Coached By
+   */
+  let loadCoachedByTypeahead = ()=> {
+    if (!window.Typeahead['.js-typeahead-coached_by']) {
+      $.typeahead({
+        ...TYPEAHEADS.defaultContactTypeahead(),
+        input: '.js-typeahead-coached_by',
+        multiselect: {
+          matchOn: ["ID"],
+          data: [],
+          callback: {
+            onCancel: function (node, item) {
+              $(`.current-filter[data-id="${_.escape( item.ID )}"].coached_by`).remove()
+              _.pullAllBy(newFilterLabels, [{id: item.ID}], "id")
+            }
+          }
+        },
+        callback: {
+          onResult: function (node, query, result, resultCount) {
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $('#coached_by-result-container').html(text);
+          },
+          onHideLayout: function () {
+            $('#coached_by-result-container').html("");
+          },
+          onClick: function (node, a, item, event) {
+            let name = _.get(wpApiListSettings, `custom_fields_settings.coached_by.name`, 'coached_by')
+            newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "coached_by"})
+            selectedFilters.append(`<span class="current-filter coached_by" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
           }
         }
       });
@@ -981,6 +1030,7 @@
       loadLocationTypeahead()
       loadAssignedToTypeahead()
       loadSubassignedTypeahead()
+      loadCoachedByTypeahead()
       typeaheadsLoaded = loadMultiSelectTypeaheads().catch(err => { console.error(err) })
     }
     $('#new-filter-name').val('')

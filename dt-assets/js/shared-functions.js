@@ -202,41 +202,41 @@ window.TYPEAHEADS = {
             }
         }
   },
-  typeaheadPostsSource : function (post_type){
-    return {
-      contacts: {
-        display: [ "name", "ID" ],
-        ajax: {
-          url: wpApiShare.root + `dt-posts/v2/${post_type}/compact`,
-          data: {
-            s: "{{query}}"
-          },
-          beforeSend: function (xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-          },
-          callback: {
-            done: function (data) {
-              return data.posts
+    typeaheadPostsSource : function (post_type){
+      return {
+        contacts: {
+          display: [ "name", "ID" ],
+          ajax: {
+            url: wpApiShare.root + `dt-posts/v2/${post_type}/compact`,
+            data: {
+              s: "{{query}}"
+            },
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+            },
+            callback: {
+              done: function (data) {
+                return data.posts
+              }
             }
           }
         }
       }
-    }
-  },
-  typeaheadHelpText : function (resultCount, query, result){
-    let text = "";
-    if (result.length > 0 && result.length < resultCount) {
-      text = `Showing <strong>${_.escape( result.length )}</strong> of <strong>${_.escape( resultCount )}</strong>(${_.escape( query ? 'elements matching ' + query : '' )})`
-    } else if (result.length > 0 && query) {
-      text = `Showing <strong>${_.escape( result.length )}</strong> items matching ${_.escape( query )}`;
-    } else if (result.length > 0) {
-      text = `Showing <strong>${_.escape( result.length )}</strong> items`;
-    } else {
-      text = `No results matching ${_.escape( query )}`
-    }
-    return text
-  },
-  contactListRowTemplate: function (query, item){
+    },
+    typeaheadHelpText : function (resultCount, query, result){
+      let text = "";
+      if (result.length > 0 && result.length < resultCount) {
+        text = `Showing <strong>${_.escape( result.length )}</strong> of <strong>${_.escape( resultCount )}</strong>(${_.escape( query ? 'elements matching ' + query : '' )})`
+      } else if (result.length > 0 && query) {
+        text = `Showing <strong>${_.escape( result.length )}</strong> items matching ${_.escape( query )}`;
+      } else if (result.length > 0) {
+        text = `Showing <strong>${_.escape( result.length )}</strong> items`;
+      } else {
+        text = `No results matching ${_.escape( query )}`
+      }
+      return text
+    },
+    contactListRowTemplate: function (query, item){
     let img = item.user ? `<img src="${wpApiShare.template_dir}/dt-assets/images/profile.svg">` : ''
     let statusStyle = item.status === "closed" ? 'style="color:gray"' : ''
     return `<span dir="auto" ${statusStyle}>
@@ -245,8 +245,6 @@ window.TYPEAHEADS = {
       <span dir="auto">(#${_.escape( item.ID )})</span>
     </span>`
     },
-
-
     share(post_type, id, v2){
         return $.typeahead({
             input: '.js-typeahead-share',
@@ -294,6 +292,19 @@ window.TYPEAHEADS = {
                 }
             }
         });
+    },
+    defaultContactTypeahead : function () {
+      return {
+        minLength: 0,
+        accent: true,
+        searchOnFocus: true,
+        maxItem: 20,
+        template: this.contactListRowTemplate,
+        source: this.typeaheadContactsSource(),
+        display: "name",
+        templateValue: "{{name}}",
+        dynamic: true,
+      }
     }
 }
 
