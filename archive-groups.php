@@ -31,7 +31,7 @@ declare(strict_types=1);
                 </a>
                 <a class="button" style="margin-bottom:0" data-open="filter-modal">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
-                    <span class="hide-for-small-only"><?php esc_html_e( "Filter groups", 'disciple_tools' ) ?></span>
+                    <span class="hide-for-small-only"><?php esc_html_e( "Filter Groups", 'disciple_tools' ) ?></span>
                 </a>
                 <input class="search-input" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="search groups">
                 <a class="button" style="margin-bottom:0" id="search">
@@ -49,7 +49,7 @@ declare(strict_types=1);
         </a>
         <a class="button" style="margin-bottom:0" data-open="filter-modal">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
-            <span class="hide-for-small-only"><?php esc_html_e( "Filter groups", 'disciple_tools' ) ?></span>
+            <span class="hide-for-small-only"><?php esc_html_e( "Filter Groups", 'disciple_tools' ) ?></span>
         </a>
         <a class="button" style="margin-bottom:0" id="open-search">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
@@ -89,10 +89,15 @@ declare(strict_types=1);
 
             <div class="reveal js-filters-modal" id="filters-modal">
                 <div class="js-filters-modal-content"><!-- archive-groups -->
-                  <label class="section-header hide-for-small-only"><?php esc_html_e( 'Groups Filters', 'disciple_tools' )?>
-                  <button class="help-button float-right" data-section="filters-help-text">
-                      <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                  </button></label>
+                    <label class="section-header hide-for-small-only">
+                        <span>
+                            <?php esc_html_e( 'Groups Filters', 'disciple_tools' )?>
+                            <span id="count-loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
+                        </span>
+                        <button class="help-button float-right" data-section="filters-help-text">
+                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                        </button>
+                    </label>
                     <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( "Default Filters", "disciple_tools" ); ?></h5>
                     <!-- @todo re-enable when we have more group filters-->
 <!--                    <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion">-->
@@ -142,7 +147,7 @@ declare(strict_types=1);
                         </label>
                     </div>
 
-                    <h5><?php esc_html_e( 'Custom Filters', "disciple_tools" ); ?></h5>
+                    <h5><?php esc_html_e( "Custom Filters", "disciple_tools" ); ?></h5>
                     <div style="margin-bottom: 5px">
                         <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
                     </div>

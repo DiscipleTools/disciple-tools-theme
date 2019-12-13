@@ -893,9 +893,15 @@ jQuery(document).ready(function($) {
       Typeahead[`.js-typeahead-${t}`].adjustInputSize()
     })
   })
-  //create new group
+  $('.create-new-contact').on( "click", function () {
+    $('#create-contact-modal').foundation('open');
+    $('.js-create-contact .error-text').empty();
+    $(".js-create-contact-button").attr("disabled", false).removeClass("alert")
+  })
+  //create new contact
   $(".js-create-contact").on("submit", function(e) {
     e.preventDefault();
+    $(".js-create-contact-button").attr("disabled", true).addClass("loading");
     let title = $(".js-create-contact input[name=title]").val()
     API.create_post( 'contacts', {
       title,
@@ -903,6 +909,7 @@ jQuery(document).ready(function($) {
       requires_update: true,
       overall_status: "active"
     }).then((newContact)=>{
+        $(".js-create-contact-button").attr("disabled", false).removeClass("loading");
         $(".reveal-after-contact-create").show()
         $("#new-contact-link").html(`<a href="${_.escape( newContact.permalink )}">${_.escape( title )}</a>`)
         $(".hide-after-contact-create").hide()
@@ -916,8 +923,8 @@ jQuery(document).ready(function($) {
       })
       .catch(function(error) {
         $(".js-create-contact-button").removeClass("loading").addClass("alert");
-        $(".js-create-contact").append(
-          $("<div>").html(error.responseText)
+        $(".js-create-contact .error-text").text(
+          _.get( error, "responseJSON.message", "Something went wrong. Please refresh and try again" )
         );
         console.error(error);
       });
