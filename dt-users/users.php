@@ -547,25 +547,96 @@ class Disciple_Tools_Users
         return $base_user;
     }
 
-    public static function get_user_filters(){
+    public static function get_user_filters( $post_type ){
         $current_user_id = get_current_user_id();
         $filters = [];
         if ( $current_user_id ){
-            $filters = maybe_unserialize( get_user_option( "saved_filters", $current_user_id ) );
-            if ( empty( $filters )){
-                $filters = [];
+            $custom_filters = maybe_unserialize( get_user_option( "saved_filters", $current_user_id ) );
+            $filters = [
+                "tabs" => [
+                    [
+                        "key" => "all",
+                        "label" => _x( "All", 'List Filters', 'disciple_tools' ),
+                        "order" => 10
+                    ],
+                    [
+                        "key" => "custom",
+                        "label" => _x( "Custom Filters", 'List Filters', 'disciple_tools' ),
+                        "order" => 99
+                    ]
+                ],
+                "filters" => [
+                    [
+                        "ID" => 'all',
+                        "tab" => 'all',
+                        "name" => _x( "All", 'List Filters', 'disciple_tools' ),
+                        "query" => [
+                            'sort' => 'name'
+                        ]
+                    ],
+                ]
+            ];
+            foreach ( $custom_filters[$post_type] ?? [] as $filter ){
+                $filter["tab"] = "custom";
+                $filter["ID"] = (string) $filter["ID"];
+                $filters["filters"][] = $filter;
             }
+
+
+            $filters = apply_filters( "dt_user_list_filters", $filters, $post_type );
+            usort( $filters["tabs"], function ( $a, $b ) {
+                return ( $a["order"] ?? 50 ) >= ( $b["order"] ?? 51 );
+            } );
         }
         return $filters;
     }
 
-    public static function save_user_filters( $filters ){
+    public static function save_user_filter( $filter, $post_type ){
+        $current_user_id = get_current_user_id();
+        if ( $current_user_id && isset( $filter["ID"] ) ){
+            $filter = filter_var_array( $filter, FILTER_SANITIZE_STRING );
+            $filters = get_user_option( "saved_filters", $current_user_id );
+            if ( !isset( $filters[$post_type] ) ){
+                $filters[$post_type] = [];
+            }
+
+            $updated = false;
+            foreach ( $filters[$post_type] as $index => $f ){
+                if ( $f["ID"] === $filter["ID"] ){
+                    $filters[$post_type][$index] = $filter;
+                    $updated = true;
+                }
+            }
+            if ( $updated === false ){
+                $filters[$post_type][] = $filter;
+            }
+            update_user_option( $current_user_id, "saved_filters", $filters );
+        }
+        return true;
+    }
+
+    public static function delete_user_filter( $id, $post_type ){
         $current_user_id = get_current_user_id();
         if ( $current_user_id ){
-            $filters = filter_var_array( $filters, FILTER_SANITIZE_STRING );
-            $filters = update_user_option( $current_user_id, "saved_filters", $filters );
+            $filters = get_user_option( "saved_filters", $current_user_id );
+            if ( !isset( $filters[$post_type] ) ){
+                $filters[$post_type] = [];
+            }
+            $index_to_remove = null;
+            foreach ( $filters[$post_type] as $index => $filter ){
+                if ( $filter["ID"] === $id ){
+                    $index_to_remove =$index;
+                }
+            }
+            if ( $index_to_remove !== null ){
+                unset( $filters[$post_type][$index_to_remove] );
+                update_user_option( $current_user_id, "saved_filters", $filters );
+                return true;
+            } else {
+                return false;
+            }
         }
-        return $filters;
+        return false;
     }
 
     /**

@@ -41,6 +41,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
         add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
+        add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
 
         parent::__construct();
     }
@@ -1330,6 +1331,114 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         self::add_comment( $contact_id, $comment, "duplicate", [], true, true );
     }
 
+
+    public static function get_user_posts(){
+        $user_posts = get_transient( "contact_ids_for_useors" );
+        if ( $user_posts ){
+            return dt_array_to_sql( array_map( function ( $g ) {
+                return $g["post_id"];
+            }, $user_posts ) );
+        }
+        //filter out the contacts linked to users.
+        global $wpdb;
+        $user_posts = $wpdb->get_results( "
+            SELECT post_id FROM $wpdb->postmeta
+            WHERE meta_key = 'type' AND meta_value = 'user'
+            GROUP BY post_id
+        ", ARRAY_A);
+
+        set_transient( "contact_ids_for_users", $user_posts, 3600 );
+        return dt_array_to_sql( array_map( function ( $g ) {
+            return (int) $g["post_id"];
+        }, $user_posts ) );
+    }
+
+    public static function get_my_contacts_status_seeker_path(){
+        global $wpdb;
+        $user_posts = self::get_user_posts();
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepare
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT status.meta_value as overall_status, pm.meta_value as seeker_path, count(pm.meta_value) as count, count(un.post_id) as update_needed
+            FROM $wpdb->postmeta pm
+            INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' )
+            INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'contacts' and a.post_status = 'publish' )
+            INNER JOIN $wpdb->postmeta as assigned_to ON a.ID=assigned_to.post_id
+              AND assigned_to.meta_key = 'assigned_to'
+              AND assigned_to.meta_value = CONCAT( 'user-', %s )
+            LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
+            WHERE pm.meta_key = 'seeker_path'
+            AND pm.post_id NOT IN ( $user_posts )
+            GROUP BY status.meta_value, pm.meta_value
+        ", get_current_user_id() ), ARRAY_A);
+        //phpcs:enable
+        $by_status = [
+            "total" => 0,
+            "overall_status" => []
+        ];
+        foreach ( $results as $r ){
+            $by_status["total"] += (int) $r["count"];
+            if ( !isset( $by_status["overall_status"][$r["overall_status"]] ) ) {
+                $by_status["overall_status"][$r["overall_status"]] = [
+                    "seeker_path" => [],
+                    "total" => 0
+                ];
+            }
+            $by_status["overall_status"][$r["overall_status"]]["seeker_path"][$r["seeker_path"]] = $r["count"];
+            $by_status["overall_status"][$r["overall_status"]]["total"] += (int) $r["count"];
+        }
+        return $by_status;
+    }
+
+    public static function get_all_contacts_status_seeker_path(){
+        global $wpdb;
+        $user_posts = self::get_user_posts();
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepare
+        if ( current_user_can( 'view_any_contacts' ) ){
+            $results = $wpdb->get_results("
+                SELECT status.meta_value as overall_status, pm.meta_value as seeker_path, count(pm.meta_value) as count, count(un.post_id) as update_needed
+                FROM $wpdb->postmeta pm
+                INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' )
+                INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'contacts' and a.post_status = 'publish' )
+                LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
+                WHERE pm.meta_key = 'seeker_path'
+                AND pm.post_id NOT IN ( $user_posts )
+                GROUP BY status.meta_value, pm.meta_value
+            ", ARRAY_A);
+        } else {
+            $results = $wpdb->get_results($wpdb->prepare("
+                SELECT status.meta_value as overall_status, pm.meta_value as seeker_path, count(pm.meta_value) as count, count(un.post_id) as update_needed
+                FROM $wpdb->postmeta pm
+                INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' )
+                INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'contacts' and a.post_status = 'publish' )
+                INNER JOIN $wpdb->dt_share AS shares ON ( shares.post_id = a.ID AND shares.user_id = %s )
+                LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
+                WHERE pm.meta_key = 'seeker_path'
+                AND pm.post_id NOT IN ( $user_posts )
+                GROUP BY status.meta_value, pm.meta_value
+            ", get_current_user_id() ), ARRAY_A);
+        }
+        //phpcs:enable
+
+        $by_status = [
+            "total" => 0,
+            "overall_status" => []
+        ];
+        foreach ( $results as $r ){
+            $by_status["total"] += (int) $r["count"];
+            if ( !isset( $by_status["overall_status"][$r["overall_status"]] ) ) {
+                $by_status["overall_status"][$r["overall_status"]] = [
+                    "seeker_path" => [],
+                    "total" => 0
+                ];
+            }
+            $by_status["overall_status"][$r["overall_status"]]["seeker_path"][$r["seeker_path"]] = $r["count"];
+            $by_status["overall_status"][$r["overall_status"]]["total"] += (int) $r["count"];
+        }
+        return $by_status;
+    }
+
     /**
      * Returns numbers for multiplier and dispatcher
      *
@@ -1653,5 +1762,115 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'channels' => self::$channel_list,
             'connection_types' => self::$contact_connection_types
         ];
+    }
+
+
+    public static function dt_user_list_filters( $filters, $post_type ){
+        if ( $post_type === 'contacts' ){
+            $counts = self::get_my_contacts_status_seeker_path();
+            $filters["tabs"][] = [
+                "key" => "assigned_to_me",
+                "label" => _x( "Assigned to me", 'List Filters', 'disciple_tools' ),
+                "count" => $counts["total"],
+            ];
+            // add assigned to me filters
+            $filters["filters"][] = [
+                'ID' => 'my_all',
+                'tab' => 'assigned_to_me',
+                'name' => _x( "All", 'List Filters', 'disciple_tools' ),
+                'query' => [
+                    'assigned_to' => [ 'me' ],
+                    'sort' => 'overall_status'
+                ],
+                "count" => $counts["total"],
+            ];
+            $fields = self::get_contact_fields();
+            foreach ( $fields["overall_status"]["default"] as $status_key => $status_value ) {
+                foreach ( $counts["overall_status"] as $status => $values ) {
+                    if ( $status === $status_key ) {
+                        $filters["filters"][] = [
+                            "ID" => 'my_' . $status,
+                            "tab" => 'assigned_to_me',
+                            "name" => $status_value["label"],
+                            "query" => [
+                                'assigned_to' => [ 'me' ],
+                                'overall_status' => [ $status ],
+                                'sort' => 'seeker_path'
+                            ],
+                            "count" => $values["total"]
+                        ];
+                        if ( $status === 'active' ) {
+                            foreach ( $fields["seeker_path"]["default"] as $seeker_path_key => $seeker_path_value ) {
+                                foreach ( $values["seeker_path"] as $key => $value ) {
+                                    if ( $seeker_path_key === $key ) {
+                                        $filters["filters"][] = [
+                                            "ID" => 'my_' . $key,
+                                            "tab" => 'assigned_to_me',
+                                            "name" => $seeker_path_value["label"],
+                                            "query" => [
+                                                'assigned_to' => [ 'me' ],
+                                                'overall_status' => [ 'active' ],
+                                                'seeker_path' => [ $key ],
+                                                'sort' => 'name'
+                                            ],
+                                            "count" => $value,
+                                            'subfilter' => true
+                                        ];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            $counts = self::get_all_contacts_status_seeker_path();
+            foreach ( $filters["tabs"] as $index => $tab ){
+                if ( $tab["key"] === "all" ){
+                    $filters["tabs"][$index]["count"] = $counts["total"];
+                }
+            }
+            foreach ( $filters["filters"] as $index => $filter ){
+                if ( $filter["ID"] === "all" ){
+                    $filters["filters"][$index]["count"] = $counts["total"];
+                }
+            }
+            foreach ( $fields["overall_status"]["default"] as $status_key => $status_value ) {
+                foreach ( $counts["overall_status"] as $status => $values ) {
+                    if ( $status === $status_key ) {
+                        $filters["filters"][] = [
+                            "ID" => 'all_' . $status,
+                            "tab" => 'all',
+                            "name" => $status_value["label"],
+                            "query" => [
+                                'overall_status' => [ $status ],
+                                'sort' => 'seeker_path'
+                            ],
+                            "count" => $values["total"]
+                        ];
+                        if ( $status === 'active' ) {
+                            foreach ( $fields["seeker_path"]["default"] as $seeker_path_key => $seeker_path_value ) {
+                                foreach ( $values["seeker_path"] as $key => $value ) {
+                                    if ( $seeker_path_key === $key ) {
+                                        $filters["filters"][] = [
+                                            "ID" => 'all_' . $key,
+                                            "tab" => 'all',
+                                            "name" => $seeker_path_value["label"],
+                                            "query" => [
+                                                'overall_status' => [ 'active' ],
+                                                'seeker_path' => [ $key ],
+                                                'sort' => 'name'
+                                            ],
+                                            "count" => $value,
+                                            'subfilter' => true
+                                        ];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $filters;
     }
 }

@@ -56,6 +56,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
         add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
+        add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
 
         parent::__construct();
     }
@@ -478,5 +479,191 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             'channels' => self::$channel_list,
             'connection_types' => self::$group_connection_types
         ];
+    }
+
+
+    public static function get_my_groups_status_type(){
+        global $wpdb;
+
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT status.meta_value as group_status, pm.meta_value as group_type, count(pm.meta_value) as count, count(un.post_id) as update_needed
+            FROM $wpdb->postmeta pm
+            INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'group_status' )
+            INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'groups' and a.post_status = 'publish' )
+            INNER JOIN $wpdb->postmeta as assigned_to ON a.ID=assigned_to.post_id
+              AND assigned_to.meta_key = 'assigned_to'
+              AND assigned_to.meta_value = CONCAT( 'user-', %s )
+            LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
+            WHERE pm.meta_key = 'group_type'
+            GROUP BY status.meta_value, pm.meta_value
+        ", get_current_user_id() ), ARRAY_A);
+
+        $by_status = [
+            "total" => 0,
+            "group_status" => []
+        ];
+        foreach ( $results as $r ){
+            $by_status["total"] += (int) $r["count"];
+            if ( !isset( $by_status["group_status"][$r["group_status"]] ) ) {
+                $by_status["group_status"][$r["group_status"]] = [
+                    "seeker_path" => [],
+                    "total" => 0
+                ];
+            }
+            $by_status["group_status"][$r["group_status"]]["group_type"][$r["group_type"]] = $r["count"];
+            $by_status["group_status"][$r["group_status"]]["total"] += (int) $r["count"];
+        }
+        return $by_status;
+    }
+
+    public static function get_all_groups_status_type(){
+        global $wpdb;
+        if ( current_user_can( 'view_any_groups' ) ){
+            $results = $wpdb->get_results("
+                SELECT status.meta_value as group_status, pm.meta_value as group_type, count(pm.meta_value) as count, count(un.post_id) as update_needed
+                FROM $wpdb->postmeta pm
+                INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'group_status' )
+                INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'groups' and a.post_status = 'publish' )
+                LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
+                WHERE pm.meta_key = 'group_type'
+                GROUP BY status.meta_value, pm.meta_value
+            ", ARRAY_A);
+        } else {
+            $results = $wpdb->get_results($wpdb->prepare("
+                SELECT status.meta_value as group_status, pm.meta_value as group_type, count(pm.meta_value) as count, count(un.post_id) as update_needed
+                FROM $wpdb->postmeta pm
+                INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'group_status' )
+                INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'groups' and a.post_status = 'publish' )
+                INNER JOIN $wpdb->dt_share AS shares ON ( shares.post_id = a.ID AND shares.user_id = %s )
+                LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
+                WHERE pm.meta_key = 'group_type'
+                GROUP BY status.meta_value, pm.meta_value
+            ", get_current_user_id() ), ARRAY_A);
+        }
+
+        $by_status = [
+            "total" => 0,
+            "group_status" => []
+        ];
+        foreach ( $results as $r ){
+            $by_status["total"] += (int) $r["count"];
+            if ( !isset( $by_status["group_status"][$r["group_status"]] ) ) {
+                $by_status["group_status"][$r["group_status"]] = [
+                    "group_type" => [],
+                    "total" => 0
+                ];
+            }
+            $by_status["group_status"][$r["group_status"]]["group_type"][$r["group_type"]] = $r["count"];
+            $by_status["group_status"][$r["group_status"]]["total"] += (int) $r["count"];
+        }
+        return $by_status;
+    }
+
+    public static function dt_user_list_filters( $filters, $post_type ){
+        if ( $post_type === 'groups' ){
+            $counts = self::get_my_groups_status_type();
+            $filters["tabs"][] = [
+                "key" => "assigned_to_me",
+                "label" => _x( "Assigned to me", 'List Filters', 'disciple_tools' ),
+                "count" => $counts["total"],
+            ];
+            // add assigned to me filters
+            $filters["filters"][] = [
+                'ID' => 'my_all',
+                'tab' => 'assigned_to_me',
+                'name' => _x( "All", 'List Filters', 'disciple_tools' ),
+                'query' => [
+                    'assigned_to' => [ 'me' ],
+                    'sort' => 'group_status'
+                ],
+                "count" => $counts["total"],
+            ];
+            foreach ( self::$group_fields["group_status"]["default"] as $status_key => $status_value ) {
+                foreach ( $counts["group_status"] as $status => $values ) {
+                    if ( $status === $status_key ) {
+                        $filters["filters"][] = [
+                            "ID" => 'my_' . $status,
+                            "tab" => 'assigned_to_me',
+                            "name" => $status_value["label"],
+                            "query" => [
+                                'assigned_to' => [ 'me' ],
+                                'group_status' => [ $status ],
+                                'sort' => 'group_type'
+                            ],
+                            "count" => $values["total"]
+                        ];
+                        if ( $status === 'active' ) {
+                            foreach ( self::$group_fields["group_type"]["default"] as $group_type_key => $group_type_value ) {
+                                foreach ( $values["group_type"] as $key => $value ) {
+                                    if ( $group_type_key === $key ) {
+                                        $filters["filters"][] = [
+                                            "ID" => 'my_' . $key,
+                                            "tab" => 'assigned_to_me',
+                                            "name" => $group_type_value["label"],
+                                            "query" => [
+                                                'assigned_to' => [ 'me' ],
+                                                'group_status' => [ 'active' ],
+                                                'group_type' => [ $key ],
+                                                'sort' => 'name'
+                                            ],
+                                            "count" => $value,
+                                            'subfilter' => true
+                                        ];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            $counts = self::get_all_groups_status_type();
+            foreach ( $filters["tabs"] as $index => $tab ){
+                if ( $tab["key"] === "all" ){
+                    $filters["tabs"][$index]["count"] = $counts["total"];
+                }
+            }
+            foreach ( $filters["filters"] as $index => $filter ){
+                if ( $filter["ID"] === "all" ){
+                    $filters["filters"][$index]["count"] = $counts["total"];
+                }
+            }
+            foreach ( self::$group_fields["group_status"]["default"] as $status_key => $status_value ) {
+                foreach ( $counts["group_status"] as $status => $values ) {
+                    if ( $status === $status_key ) {
+                        $filters["filters"][] = [
+                            "ID" => 'all_' . $status,
+                            "tab" => 'all',
+                            "name" => $status_value["label"],
+                            "query" => [
+                                'group_status' => [ $status ],
+                                'sort' => 'group_type'
+                            ],
+                            "count" => $values["total"]
+                        ];
+                        if ( $status === 'active' ) {
+                            foreach ( self::$group_fields["group_type"]["default"] as $group_type_key => $group_type_value ) {
+                                foreach ( $values["group_type"] as $key => $value ) {
+                                    if ( $group_type_key === $key ) {
+                                        $filters["filters"][] = [
+                                            "ID" => 'all_' . $key,
+                                            "tab" => 'all',
+                                            "name" => $group_type_value["label"],
+                                            "query" => [
+                                                'group_status' => [ 'active' ],
+                                                'group_type' => [ $key ],
+                                                'sort' => 'name'
+                                            ],
+                                            "count" => $value,
+                                            'subfilter' => true
+                                        ];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $filters;
     }
 }

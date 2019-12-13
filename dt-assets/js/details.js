@@ -159,12 +159,6 @@ jQuery(document).ready(function($) {
     rest_api.update_post( post_type, post_id, update )
   })
 
-  // expand and collapse tiles
-  $(".section-header").on("click", function () {
-    $(this).parent().toggleClass("collapsed")
-    $('.grid').masonry('layout')
-  })
-
   /**
    * Share
    */

@@ -11,6 +11,13 @@ jQuery(document).ready(function($) {
         ref = window.location.pathname
     }
     $(`div.top-bar-left ul.menu [href$=${ref.replace(wpApiShare.site_url, '').split('/')[0]+'\\/'}]`).parent().addClass('active');
+
+  // expand and collapse tiles
+  $(".section-header").on("click", function () {
+    $(this).parent().toggleClass("collapsed")
+    $('.grid').masonry('layout')
+  })
+
 })
 
 
@@ -93,7 +100,9 @@ window.API = {
 
     get_filters: () => makeRequest('GET', 'users/get_filters'),
 
-    save_filters: filters => makeRequest('POST', 'users/save_filters', { filters }),
+    save_filters: ( post_type, filter ) => makeRequest('POST', 'users/save_filters', { filter, post_type }),
+
+    delete_filter: ( post_type, id ) => makeRequest('DELETE', 'users/save_filters', { id, post_type }),
 
     get_duplicates_on_post: (post_type, postId) => makeRequestOnPosts('GET', `${post_type}/${postId}/duplicates`),
 
