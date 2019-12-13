@@ -338,21 +338,21 @@ class Disciple_Tools_Notifications
      */
     public static function pretty_timestamp( $timestamp ) {
         $current_time = current_time( 'mysql' );
-        $one_hour_ago = date( 'Y-m-d H:i:s', strtotime( '-1 hour', strtotime( $current_time ) ) );
-        $yesterday = date( 'Y-m-d', strtotime( '-1 day', strtotime( $current_time ) ) );
-        $seven_days_ago = date( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
+        $one_hour_ago = gmdate( 'Y-m-d H:i:s', strtotime( '-1 hour', strtotime( $current_time ) ) );
+        $yesterday = gmdate( 'Y-m-d', strtotime( '-1 day', strtotime( $current_time ) ) );
+        $seven_days_ago = gmdate( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
 
         if ( $timestamp > $one_hour_ago ) {
             $current = new DateTime( $current_time );
             $stamp = new DateTime( $timestamp );
             $diff = date_diff( $current, $stamp );
-            $friendly_time = date( "i", mktime( $diff->h, $diff->i, $diff->s ) ) . ' minutes ago';
+            $friendly_time = gmdate( "i", mktime( $diff->h, $diff->i, $diff->s ) ) . ' minutes ago';
         } elseif ( $timestamp > $yesterday ) {
-            $friendly_time = date( "g:i a", strtotime( $timestamp ) );
+            $friendly_time = gmdate( "g:i a", strtotime( $timestamp ) );
         } elseif ( $timestamp > $seven_days_ago ) {
-            $friendly_time = date( "l g:i a", strtotime( $timestamp ) );
+            $friendly_time = gmdate( "l g:i a", strtotime( $timestamp ) );
         } else {
-            $friendly_time = date( 'F j, Y, g:i a', strtotime( $timestamp ) );
+            $friendly_time = gmdate( 'F j, Y, g:i a', strtotime( $timestamp ) );
         }
 
         return $friendly_time;

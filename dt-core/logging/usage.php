@@ -64,7 +64,7 @@ class Disciple_Tools_Usage {
                 'total_users' => (string) $users->get_total() ?: '0',
 
                 'regions' => $regions ?: '0',
-                'timestamp' => date( 'Y-m-d' ),
+                'timestamp' => gmdate( 'Y-m-d' ),
 
             ],
         ];
@@ -146,8 +146,8 @@ class Disciple_Tools_Usage {
 
     public function regions() {
         $data = '';
-
-        if ( $map_level = get_option( 'dt_mapping_module_starting_map_level' ) ) {
+        $map_level = get_option( 'dt_mapping_module_starting_map_level' );
+        if ( $map_level ) {
 
             if ( ! empty( $map_level['children'] ) ) {
                 $data .= implode( ',', $map_level['children'] );
