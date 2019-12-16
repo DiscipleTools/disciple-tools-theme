@@ -547,10 +547,14 @@ class Disciple_Tools_Users
         return $base_user;
     }
 
-    public static function get_user_filters( $post_type ){
+    public static function get_user_filters( $post_type, $force_refresh = false ){
         $current_user_id = get_current_user_id();
         $filters = [];
         if ( $current_user_id ){
+            $filters = get_user_option( "dt_cached_filters_$post_type", $current_user_id );
+            if ( !empty( $filters ) && $force_refresh === false ) {
+                return $filters;
+            }
             $custom_filters = maybe_unserialize( get_user_option( "saved_filters", $current_user_id ) );
             $filters = [
                 "tabs" => [
@@ -587,6 +591,7 @@ class Disciple_Tools_Users
             usort( $filters["tabs"], function ( $a, $b ) {
                 return ( $a["order"] ?? 50 ) >= ( $b["order"] ?? 51 );
             } );
+            update_user_option( $current_user_id, "dt_cached_filters_$post_type", $filters );
         }
         return $filters;
     }

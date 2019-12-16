@@ -1361,7 +1361,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT status.meta_value as overall_status, pm.meta_value as seeker_path, count(pm.meta_value) as count, count(un.post_id) as update_needed
             FROM $wpdb->postmeta pm
-            INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' )
+            INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' AND status.meta_value != 'closed')
             INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'contacts' and a.post_status = 'publish' )
             INNER JOIN $wpdb->postmeta as assigned_to ON a.ID=assigned_to.post_id
               AND assigned_to.meta_key = 'assigned_to'
@@ -1387,6 +1387,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $by_status["overall_status"][$r["overall_status"]]["seeker_path"][$r["seeker_path"]] = $r["count"];
             $by_status["overall_status"][$r["overall_status"]]["total"] += (int) $r["count"];
         }
+        if ( !isset( $by_status["overall_status"]["closed"] ) ) {
+            $by_status["overall_status"]["closed"] = [
+                "seeker_path" => [],
+                "total" => ''
+            ];
+        }
         return $by_status;
     }
 
@@ -1399,7 +1405,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $results = $wpdb->get_results("
                 SELECT status.meta_value as overall_status, pm.meta_value as seeker_path, count(pm.meta_value) as count, count(un.post_id) as update_needed
                 FROM $wpdb->postmeta pm
-                INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' )
+                INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' AND status.meta_value != 'closed' )
                 INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'contacts' and a.post_status = 'publish' )
                 LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
                 WHERE pm.meta_key = 'seeker_path'
@@ -1410,7 +1416,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $results = $wpdb->get_results($wpdb->prepare("
                 SELECT status.meta_value as overall_status, pm.meta_value as seeker_path, count(pm.meta_value) as count, count(un.post_id) as update_needed
                 FROM $wpdb->postmeta pm
-                INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' )
+                INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' AND status.meta_value != 'closed' )
                 INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'contacts' and a.post_status = 'publish' )
                 INNER JOIN $wpdb->dt_share AS shares ON ( shares.post_id = a.ID AND shares.user_id = %s )
                 LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
@@ -1435,6 +1441,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
             $by_status["overall_status"][$r["overall_status"]]["seeker_path"][$r["seeker_path"]] = $r["count"];
             $by_status["overall_status"][$r["overall_status"]]["total"] += (int) $r["count"];
+        }
+        if ( !isset( $by_status["overall_status"]["closed"] ) ) {
+            $by_status["overall_status"]["closed"] = [
+                "seeker_path" => [],
+                "total" => ''
+            ];
         }
         return $by_status;
     }
@@ -1950,7 +1962,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $filters[$index]['labels'][0]['name'] = __( 'Subassigned only', 'disciple_tools' );
             }
             if ( $filter["name"] === 'Shared with me' ) {
-                $filters[$index]["name"] = __( 'Shared wth me', 'disciple_tools' );
+                $filters[$index]["name"] = __( 'Shared with me', 'disciple_tools' );
                 $filters[$index]['labels'][0]['name'] = __( 'Shared with me', 'disciple_tools' );
             }
             if ( $filter["name"] === 'Coached by me' ) {

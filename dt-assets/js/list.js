@@ -1167,57 +1167,36 @@
       $(`.current-filter[data-id="${id}"]`).remove()
   })
 
-  // let type = "contact"
-  // if ( wpApiListSettings.current_post_type === "groups"){
-  //   type = "group"
-  // }
-  // let getFilterCountsPromise = null
-  // let get_filter_counts = ()=>{
-  //   count_spinner.addClass("active")
-  //   let showClosed = showClosedCheckbox.prop("checked")
-  //   if ( getFilterCountsPromise && _.get( getFilterCountsPromise, "readyState") !== 4 ){
-  //     getFilterCountsPromise.abort()
-  //   }
-  //   getFilterCountsPromise = $.ajax({
-  //     url: `${wpApiListSettings.root}dt/v1/${type}/counts?tab=${selectedFilterTab}&closed=${showClosed}`,
-  //     beforeSend: function (xhr) {
-  //       xhr.setRequestHeader('X-WP-Nonce', wpApiListSettings.nonce);
-  //     }
-  //   })
-  //   getFilterCountsPromise.then(counts=>{
-  //     count_spinner.removeClass("active")
-  //     $(".js-list-view-count").each(function() {
-  //       const $el = $(this);
-  //       let view_id = $el.data("value")
-  //       if ( counts && counts[view_id] && parseInt( counts[view_id] ) > 0 ){
-  //         $el.text( counts[view_id] );
-  //       } else {
-  //         $el.text( '0' );
-  //       }
-  //     });
-  //     $(".tab-count-span").each(function () {
-  //       const $el = $(this)
-  //       let tab = $el.data("tab")
-  //       if ( counts && counts[tab] ){
-  //         if ( wpApiListSettings.current_post_type === "groups" ){
-  //           $el.text( ` ${counts[tab]}` )
-  //         } else {
-  //           $el.text( ` (${counts[tab]})` )
-  //         }
-  //       }
-  //     })
-  //   }).catch(err => {
-  //     if ( !_.get( err, "statusText" ) === "abort" ){
-  //       console.error(err)
-  //     }
-  //   })
-  // }
-  // get_filter_counts()
-  // showClosedCheckbox.on("click", function () {
-  //   document.cookie = `show_closed=${$(this).prop('checked')}`
-  //   get_filter_counts()
-  //   getContactForCurrentView()
-  // })
+  let getFilterCountsPromise = null
+  let get_filter_counts = ()=>{
+    if ( getFilterCountsPromise && _.get( getFilterCountsPromise, "readyState") !== 4 ){
+      getFilterCountsPromise.abort()
+    }
+    getFilterCountsPromise = $.ajax({
+      url: `${wpApiListSettings.root}dt/v1/users/get_filters?post_type=${wpApiListSettings.current_post_type}&force_refresh=1`,
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiListSettings.nonce);
+      }
+    })
+    getFilterCountsPromise.then(filters=>{
+      wpApiListSettings.filters = filters
+      filters.tabs.forEach( tab =>{
+        $(`[data-tab="${_.escape(tab.key)}"].tab-count-span`).html(`
+          ${tab.count || tab.count >= 0 ? `(${_.escape(tab.count)})`:``}
+        `)
+      })
+      filters.filters.forEach( filter => {
+        $(`[data-value="${_.escape(filter.ID)}"].js-list-view-count`).html(`
+          ${_.escape(filter.count)}
+        `)
+      })
+    }).catch(err => {
+      if ( !_.get( err, "statusText" ) === "abort" ){
+        console.error(err)
+      }
+    })
+  }
+  get_filter_counts()
 
   //collapse the filters on small view.
   $(function() {

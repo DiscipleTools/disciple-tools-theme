@@ -155,7 +155,14 @@ class Disciple_Tools_Users_Endpoints
 
 
     public function get_user_filters( WP_REST_Request $request ){
-        return Disciple_Tools_Users::get_user_filters();
+        $params = $request->get_params();
+        $force_refresh = false;
+        if ( isset( $params["force_refresh"] ) && !empty( $params["force_refresh"] ) ) {
+            $force_refresh = true;
+        }
+        if ( isset( $params["post_type"] ) ) {
+            return Disciple_Tools_Users::get_user_filters( $params["post_type"], $force_refresh );
+        }
     }
 
     public function save_user_filter( WP_REST_Request $request ){
