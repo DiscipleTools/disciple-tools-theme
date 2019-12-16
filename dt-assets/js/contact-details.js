@@ -381,6 +381,8 @@ jQuery(document).ready(function($) {
         source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
         display: ["name", "translations"],
         templateValue: "{{name}} | {{translations}}",
+        display: ["name", "label"],
+        templateValue: "{{label}}",
         dynamic: true,
         multiselect: {
           matchOn: ["ID"],
@@ -388,6 +390,7 @@ jQuery(document).ready(function($) {
             return contact.people_groups.map(g=>{
               return {ID:g.ID, name:g.post_title}
             })
+              return { ID: g.ID, name: g.post_title, label: g.label };
           },
           callback: {
             onCancel: function (node, item) {
