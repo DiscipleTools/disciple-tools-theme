@@ -1611,7 +1611,7 @@ class Disciple_Tools_Posts
             "post_date" => $post->post_date,
             "post_title" => $post->post_title,
             "permalink" => get_permalink( $post->ID ),
-            "translation" => get_post_meta( $post->ID, $locale, true )
+            "label" => get_post_meta( $post->ID, $locale, true )
         ];
     }
 
