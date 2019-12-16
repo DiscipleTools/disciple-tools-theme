@@ -379,8 +379,8 @@ jQuery(document).ready(function($) {
         searchOnFocus: true,
         maxItem: 20,
         source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
-        display: "name",
-        templateValue: "{{name}}",
+        display: ["name", "translations"],
+        templateValue: "{{name}} | {{translations}}",
         dynamic: true,
         multiselect: {
           matchOn: ["ID"],

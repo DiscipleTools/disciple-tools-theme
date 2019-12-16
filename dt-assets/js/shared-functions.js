@@ -148,6 +148,8 @@ window.TYPEAHEADS = {
                         }
                     }
                 }
+        display: ["name", "ID", "translations"],
+        template: "<span>{{name}} | {{translations}}</span>",
             }
         }
     },
