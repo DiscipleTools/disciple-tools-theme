@@ -47,16 +47,26 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  //3 - while in edit mode, allow the member to modify date values via datepicker
+  //3A - while in edit mode, allow the member to modify date values via datepicker
   dateFields.forEach(key => {
     let datePicker = $(`#${key}.date-picker`)
     datePicker.datepicker({
       dateFormat: 'yy-mm-dd',
       onClose: function (date) {
         editFieldsUpdate[key] = date
+        console.log('the date value stored into editfieldsupdate[key] is now: ' + date);
       },
       changeMonth: true,
       changeYear: true
+    });
+  });
+
+  //3B - if the user wants to clear any of the dates by pressing x, then let them do so...
+  dateFields.forEach(key => {
+    let deleteBtn = $(`#${key}_clear`);
+    deleteBtn.on('click', function(e){
+      $(`#${key}`).val("");
+      editFieldsUpdate[key] = '';
     });
   });
 

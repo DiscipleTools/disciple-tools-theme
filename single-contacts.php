@@ -388,14 +388,15 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                             </button>
                                         </div>
-                                        <div class="baptism_date">
-                                            <input type="text" class="dt_date_picker"
-                                                   value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>"
-                                                   id="baptism_date">
-                                                   <button id="clear-date-button" class="button">Delete Date</button>
-                                        </div>
-                                    </div>
 
+                                        <div class="baptism_date input-group">
+                                            <input id="baptism_date" class="input-group-field dt_date_picker" type="text" value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" >
+                                            <div class="input-group-button">
+                                                <button id="clear-date-button" class="button alert" title="Delete Date">x</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </section>
 
