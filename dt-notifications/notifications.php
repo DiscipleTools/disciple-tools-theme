@@ -364,7 +364,7 @@ class Disciple_Tools_Notifications
 
         return $friendly_time;
     }
-    
+
     /**
      * Get user notifications
      *
