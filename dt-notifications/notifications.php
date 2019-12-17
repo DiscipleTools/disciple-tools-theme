@@ -329,47 +329,82 @@ class Disciple_Tools_Notifications
      *
      * @return false|string
      */
+
+
     public static function pretty_timestamp( $timestamp ) {
         $current_time = current_time( 'mysql' );
-        $one_hour_ago = date( 'Y-m-d H:i:s', strtotime( '-1 hour', strtotime( $current_time ) ) );
-        $yesterday = date( 'Y-m-d', strtotime( '-1 day', strtotime( $current_time ) ) );
-        $two_days_ago = date( 'Y-m-d', strtotime( '-2 day', strtotime( $current_time ) ) );
-        $three_days_ago = date( 'Y-m-d', strtotime( '-3 day', strtotime( $current_time ) ) );
-        $four_days_ago = date( 'Y-m-d', strtotime( '-4 day', strtotime( $current_time ) ) );
-        $five_days_ago = date( 'Y-m-d', strtotime( '-5 day', strtotime( $current_time ) ) );
-        $six_days_ago = date( 'Y-m-d', strtotime( '-6 day', strtotime( $current_time ) ) );
-        $seven_days_ago = date( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
-        $one_month_ago = date( 'Y-m-d', strtotime( '-30 days', strtotime( $current_time ) ) );
-        $seven_days_ago = date( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
-        if ($timestamp < $one_hour_ago) {
+        $one_hour_ago = gmdate( 'Y-m-d H:i:s', strtotime( '-1 hour', strtotime( $current_time ) ) );
+        $hours_ago = gmdate( 'Y-m-d H:i:s', strtotime( '-2 hour', strtotime( $current_time ) ) );
+        $yesterday = gmdate( 'Y-m-d', strtotime( '-1 day', strtotime( $current_time ) ) );
+        $seven_days_ago = gmdate( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
+        $month_ago = gmdate( 'Y-m-d', strtotime( '-30 days', strtotime( $current_time ) ) );
+        $year_ago = gmdate( 'Y-m-d', strtotime( '-365 days', strtotime( $current_time ) ) );
+        $twoyear_ago = gmdate( 'Y-m-d', strtotime( '-730 days', strtotime( $current_time ) ) );
+
+        if ( $timestamp > $one_hour_ago ) {
             $current = new DateTime( $current_time );
             $stamp = new DateTime( $timestamp );
             $diff = date_diff( $current, $stamp );
-            $friendly_time = date( 'i', mktime( $diff->h, $diff->i, $diff->s ) ) . ' minutes ago';
-        } elseif ( $timestamp > $one_hour_ago ) {
-            $friendly_time = "Over an hour ago";
+            $friendly_time = gmdate( "i", mktime( $diff->h, $diff->i, $diff->s ) ) . ' minutes ago';
+        } elseif ( $timestamp > $hours_ago) {
+            $friendly_time = "hours ago";
         } elseif ( $timestamp > $yesterday ) {
-            $friendly_time = "A day ago";
-        } elseif ( $timestamp > $two_days_ago) {
-            $friendly_time = "Two days ago";
-        } elseif ( $timestamp > $three_days_ago ) {
-            $friendly_time = "Three days ago";
-        } elseif ( $timestamp > $four_days_ago ) {
-            $friendly_time = "Four days ago";
-        } elseif ( $timestamp > $five_days_ago ) {
-            $friendly_time = "Five days ago";
-        } elseif ( $timestamp > $six_days_ago ) {
-            $friendly_time = "Six days ago";
+            $friendly_time = "over a day ago";
         } elseif ( $timestamp > $seven_days_ago ) {
-            $friendly_time = "Over a week ago";
-        } elseif ( $timestamp > $one_month_ago ) {
-            $friendly_time = "Over a month ago";
+            $friendly_time = "over a week ago";
+        } elseif ( $timestamp > $month_ago ) {
+            $friendly_time = "over a month ago";
+        } elseif ( $timestamp > $year_ago) {
+            $friendly_time = "over a year ago";
+        } elseif ($timestamp > $twoyear_ago) {
+            $friendly_time = "over two years ago";
         } else {
-            $friendly_time = date( 'F j, Y, g:i a', strtotime( $timestamp ) );
+            $friendly_time = "a long time ago";
         }
 
         return $friendly_time;
     }
+
+
+
+    
+    // public static function pretty_timestamp( $timestamp ) {
+    //     $current_time = current_time( 'mysql' );
+    //     $one_hour_ago = date( 'Y-m-d H:i:s', strtotime( '-1 hour', strtotime( $current_time ) ) );
+    //     $yesterday = date( 'Y-m-d', strtotime( '-1 day', strtotime( $current_time ) ) );
+    //     $two_days_ago = date( 'Y-m-d', strtotime( '-2 day', strtotime( $current_time ) ) );
+    //     $three_days_ago = date( 'Y-m-d', strtotime( '-3 day', strtotime( $current_time ) ) );
+    //     $four_days_ago = date( 'Y-m-d', strtotime( '-4 day', strtotime( $current_time ) ) );
+    //     $five_days_ago = date( 'Y-m-d', strtotime( '-5 day', strtotime( $current_time ) ) );
+    //     $six_days_ago = date( 'Y-m-d', strtotime( '-6 day', strtotime( $current_time ) ) );
+    //     $seven_days_ago = date( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
+    //     $one_month_ago = date( 'Y-m-d', strtotime( '-30 days', strtotime( $current_time ) ) );
+        
+        
+    //     if ( $timestamp > $one_hour_ago) {
+    //         $friendly_time = "over an hour ago";
+    //     } elseif ( $timestamp > $yesterday ) {
+    //         $friendly_time = "A day ago";
+    //     } elseif ( $timestamp > $two_days_ago) {
+    //         $friendly_time = "Two days ago";
+    //     } elseif ( $timestamp > $three_days_ago ) {
+    //         $friendly_time = "Three days ago";
+    //     } elseif ( $timestamp > $four_days_ago ) {
+    //         $friendly_time = "Four days ago";
+    //     } elseif ( $timestamp > $five_days_ago ) {
+    //         $friendly_time = "Five days ago";
+    //     } elseif ( $timestamp > $six_days_ago ) {
+    //         $friendly_time = "Six days ago";
+    //     } elseif ( $timestamp > $seven_days_ago ) {
+    //         $friendly_time = "Over a week ago";
+    //     } elseif ( $timestamp > $one_month_ago ) {
+    //         $friendly_time = "Over a month ago";
+    //     } else {
+    //         $friendly_time = "A long time ago";
+    //     }
+
+    //     return $friendly_time;
+    // }
 
     /**
      * Get user notifications
