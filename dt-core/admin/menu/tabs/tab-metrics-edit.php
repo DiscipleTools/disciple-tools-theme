@@ -155,7 +155,7 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
                         <?php if ( empty( $report["year"] ) ) : ?>
                         <select name="report[year]" id="year">
                             <?php
-                            $current_year = (int) date( 'Y' );
+                            $current_year = (int) gmdate( 'Y' );
                             $number_of_years = 20;
                             for ( $i = 0; $number_of_years >= $i; $i++ ): ?>
                                 <option <?php echo esc_html( (int) $report["year"] == $current_year ? 'selected' : '' ) ?>>

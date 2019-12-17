@@ -23,7 +23,8 @@ class Disciple_Tools_People_Groups
      */
     public static function get_jp_source() {
         $jp_csv = [];
-        if (( $handle = fopen( __DIR__ . "/csv/jp.csv", "r" ) ) !== false) {
+        $handle = fopen( __DIR__ . "/csv/jp.csv", "r" );
+        if ( $handle !== false ) {
             while (( $data = fgetcsv( $handle, 0, "," ) ) !== false) {
                 $jp_csv[] = $data;
             }
@@ -38,7 +39,8 @@ class Disciple_Tools_People_Groups
      */
     public static function get_imb_source() {
         $imb_csv = [];
-        if (( $handle = fopen( __DIR__ . "/csv/imb.csv", "r" ) ) !== false) {
+        $handle = fopen( __DIR__ . "/csv/imb.csv", "r" );
+        if ( $handle !== false ) {
             while (( $data = fgetcsv( $handle, 0, "," ) ) !== false) {
                 $imb_csv[] = $data;
             }
