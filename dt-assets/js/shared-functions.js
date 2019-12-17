@@ -147,8 +147,6 @@ window.TYPEAHEADS = {
                         }
                     }
                 }
-        display: ["name", "ID", "label"],
-        template: "<span>{{label}}</span>",
             }
         }
     },
