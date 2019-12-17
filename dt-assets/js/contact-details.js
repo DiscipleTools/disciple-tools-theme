@@ -379,8 +379,6 @@ jQuery(document).ready(function($) {
         searchOnFocus: true,
         maxItem: 20,
         source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
-        display: ["name", "translations"],
-        templateValue: "{{name}} | {{translations}}",
         display: ["name", "label"],
         templateValue: "{{label}}",
         dynamic: true,
@@ -388,7 +386,6 @@ jQuery(document).ready(function($) {
           matchOn: ["ID"],
           data: function () {
             return contact.people_groups.map(g=>{
-              return {ID:g.ID, name:g.post_title}
             })
               return { ID: g.ID, name: g.post_title, label: g.label };
           },
