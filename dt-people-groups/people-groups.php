@@ -300,7 +300,7 @@ class Disciple_Tools_People_Groups
 
         $list = [];
         foreach ( $query->posts as $post ) {
-            $translation = get_post_meta($post->ID, $locale, true);
+            $translation = get_post_meta( $post->ID, $locale, true );
             if ($translation !== "") {
                 $label = $translation;
             } else {
@@ -329,14 +329,12 @@ class Disciple_Tools_People_Groups
 
         $meta_query = new WP_Query( $meta_query_args );
         foreach ( $meta_query->posts as $post ) {
-            $translation = get_post_meta($post->ID, $locale, true);
+            $translation = get_post_meta( $post->ID, $locale, true );
             if ($translation !== "") {
                 $label = $translation;
             } else {
                 $label = $post->post_title;
             }
-            error_log("339");
-            error_log($label);
             $list[] = [
             "ID" => $post->ID,
             "name" => $post->post_title,
