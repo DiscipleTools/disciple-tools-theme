@@ -126,7 +126,7 @@ function dt_get_time_until_midnight() {
     /**
      * If looking for the timestamp for tomorrow midnight, use strtotime('tomorrow')
      */
-    $midnight = mktime( 0, 0, 0, date( 'n' ), date( 'j' ) +1, date( 'Y' ) );
+    $midnight = mktime( 0, 0, 0, gmdate( 'n' ), gmdate( 'j' ) +1, gmdate( 'Y' ) );
     return intval( $midnight - current_time( 'timestamp' ) );
 }
 
