@@ -386,8 +386,8 @@ jQuery(document).ready(function($) {
           matchOn: ["ID"],
           data: function () {
             return contact.people_groups.map(g=>{
-            })
               return { ID: g.ID, name: g.post_title, label: g.label };
+            })
           },
           callback: {
             onCancel: function (node, item) {
