@@ -301,14 +301,18 @@ class Disciple_Tools_People_Groups
         $list = [];
         foreach ( $query->posts as $post ) {
             $translation = get_post_meta($post->ID, $locale, true);
+            if ($translation !== "") {
+                $label = $translation;
+            } else {
+                $label = $post->post_title;
+            }
+
             $list[] = [
             "ID" => $post->ID,
             "name" => $post->post_title,
-            "translations" => $translation
+            "label" => $label
             ];
         }
-
-
         $meta_query_args = [
             'post_type' => 'peoplegroups',
             'orderby'   => 'title',
@@ -326,18 +330,24 @@ class Disciple_Tools_People_Groups
         $meta_query = new WP_Query( $meta_query_args );
         foreach ( $meta_query->posts as $post ) {
             $translation = get_post_meta($post->ID, $locale, true);
+            if ($translation !== "") {
+                $label = $translation;
+            } else {
+                $label = $post->post_title;
+            }
+            error_log("339");
+            error_log($label);
             $list[] = [
             "ID" => $post->ID,
             "name" => $post->post_title,
-            "translations" => $translation
+            "label" => $label
             ];
         }
 
-        $totalFoundPosts = $query->found_posts + $meta_query->found_posts;
-        
+        $total_found_posts = $query->found_posts + $meta_query->found_posts;
 
         return [
-        "total" => $totalFoundPosts,
+        "total" => $total_found_posts,
         "posts" => $list
         ];
     }
