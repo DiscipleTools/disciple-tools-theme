@@ -969,7 +969,8 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         $users_unfollow = get_post_meta( $post_id, "unfollow", false );
         foreach ( $users_unfollow as $unfollower ){
-            if ( ( $key = array_search( $unfollower, $users ) ) !== false ){
+            $key = array_search( $unfollower, $users );
+            if ( $key !== false ){
                 unset( $users[$key] );
             }
         }

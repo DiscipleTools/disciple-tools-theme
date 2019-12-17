@@ -179,7 +179,7 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
                     <label for="year"><?php esc_attr_e( 'Year' ) ?></label><br>
                     <select name="year" id="year" style="width:100%;">
                         <?php
-                        $current_year = (int) date( 'Y' );
+                        $current_year = (int) gmdate( 'Y' );
                         $number_of_years = 20;
                         for ( $i = 0; $number_of_years >= $i; $i++ ) {
                             echo '<option>'. esc_attr( $current_year ).'</option>';

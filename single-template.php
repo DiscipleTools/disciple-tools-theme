@@ -84,7 +84,8 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                 }
                                 //remove section if hidden
                                 if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
-                                    if ( ( $index = array_search( $tile_key, $sections ) ) !== false) {
+                                    $index = array_search( $tile_key, $sections );
+                                    if ( $index !== false) {
                                         unset( $sections[ $index ] );
                                     }
                                 }
