@@ -1623,13 +1623,17 @@ class Disciple_Tools_Posts
      * @return array
      */
     public static function filter_wp_post_object_fields( $post ){
+        $locale = get_locale();
+        $translation = get_post_meta( $post->ID, $locale, true );
+        $label  = ( $translation ? $translation : $post->post_title );
         return [
             "ID" => $post->ID,
             "post_type" => $post->post_type,
             "post_date_gmt" => $post->post_date_gmt,
             "post_date" => $post->post_date,
             "post_title" => $post->post_title,
-            "permalink" => get_permalink( $post->ID )
+            "permalink" => get_permalink( $post->ID ),
+            "label" => $label
         ];
     }
 
