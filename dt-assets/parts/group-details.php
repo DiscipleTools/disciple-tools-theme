@@ -251,8 +251,8 @@
             </div>
         </div>
 
-         <!-- Dates -->
-         <div class="grix-x">
+        <!-- Dates -->
+        <div class="grix-x">
             <div class="section-subheader cell">
               <img src="<?php echo esc_url(get_template_directory_uri()).'/dt-assets/images/date-start.svg'; ?>">
               <?php esc_html_e('Start Date', 'disciple_tools'); ?>
