@@ -195,8 +195,15 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
     if ( ! function_exists( 'dt_get_available_languages' ) ) {
         function dt_get_available_languages() {
-            $dt_available_languages = ( new Disciple_Tools_Core_Endpoints() )->get_settings();
-            return $dt_available_languages;
+            $translations = dt_get_translations();
+            $available_language_codes = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+            $available_translations = [];
+            foreach ( $available_language_codes as $code ){
+                if ( isset( $translations[$code] )){
+                    $available_translations[] = $translations[$code];
+                }
+            }
+            return $available_translations;
         }
     }
 
