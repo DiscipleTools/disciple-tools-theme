@@ -217,22 +217,32 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         <span id="post-type" style="display: none">contact</span>
 
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
-
-
             <section class="hide-for-large small-12 cell">
                 <div class="bordered-box">
+                    <h3 class="section-header"><?php esc_html_e( 'Quick Actions', 'disciple_tools' ) ?>
+                        <button class="help-button float-right" data-section="quick-action-help-text">
+                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                        </button>
+                        <button class="section-chevron chevron_down">
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                        </button>
+                        <button class="section-chevron chevron_up">
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                        </button>
+                    </h3>
+                    <div class="section-body"><!-- start collapse -->
                     <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
-
                     <div style="text-align: center">
                         <a class="button small" href="#comment-activity-section" style="margin-bottom: 0">
                             <?php esc_html_e( 'View Comments', 'disciple_tools' ) ?>
                         </a>
                     </div>
+                    <!-- end collapse --></div>
                 </div>
             </section>
             <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell" role="main" style="padding:0">
 
-              <div class="cell grid-y grid-margin-y" style="display: block">
+                <div class="cell grid-y grid-margin-y" style="display: block">
                 <?php
                 if ( current_user_can( "view_any_contacts" ) ){
                     $duplicate_post_meta = get_post_meta( get_the_Id(), 'duplicate_data' );
@@ -269,11 +279,19 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item">
             <!--                    <div class="bordered-box last-typeahead-in-section">-->
 
-                                <div class="bordered-box"><h3 class="section-header"><?php esc_html_e( "Connections", 'disciple_tools' ) ?>
+                                <div class="bordered-box" id="connections-tile">
+                                    <h3 class="section-header"><?php esc_html_e( "Connections", 'disciple_tools' ) ?>
                                         <button class="help-button float-right" data-section="connections-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
+                                        <button class="section-chevron chevron_down">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
+                                        <button class="section-chevron chevron_up">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                        </button>
                                     </h3>
+                                    <div class="section-body"><!-- start collapse -->
                                     <div class="section-subheader"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></div>
 
                                   <var id="groups-result-container" class="result-container"></var>
@@ -327,17 +345,24 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         <?php
                                     }
                                     ?>
-                                </div>
+                                </div><!-- end collapse --></div>
                             </section>
 
                         <!-- PROGRESS TILE -->
                             <section id="faith" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                <div class="bordered-box">
-                                    <label class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?>
+                                <div class="bordered-box" id="progress-tile">
+                                    <h3 class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?>
                                         <button class="help-button float-right" data-section="contact-progress-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
-                                    </label>
+                                        <button class="section-chevron chevron_down">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
+                                        <button class="section-chevron chevron_up">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                        </button>
+                                    </h3>
+                                    <div class="section-body"><!-- start collapse -->
                                     <div class="section-subheader">
                                         <?php echo esc_html( $contact_fields["seeker_path"]["name"] )?>
                                         <button class="help-button" data-section="seeker-path-help-text">
@@ -397,7 +422,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         </div>
                                     </div>
 
-                                </div>
+                                </div><!-- end collapse --></div>
                             </section>
 
                             <?php
@@ -421,7 +446,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             foreach ( $sections as $section ){
                                 ?>
                                 <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                    <div class="bordered-box">
+                                    <div class="bordered-box" id="<?php echo esc_html( $section )?>-tile">
                                         <?php
                                         //setup tile label if see by customizations
                                         if ( isset( $custom_tiles["contacts"][$section]["label"] ) ){ ?>
@@ -433,7 +458,6 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                                 <button class="section-chevron chevron_up">
                                                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
                                                 </button>
-
                                             </h3>
                                         <?php }
                                         // let the plugin add section content
@@ -470,13 +494,19 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             ?>
                         <!-- OTHER TILE -->
                             <section id="other" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                <div class="bordered-box">
-                                    <label class="section-header"><?php esc_html_e( 'Other', 'disciple_tools' )?>
+                                <div class="bordered-box" id="other-tile">
+                                    <h3 class="section-header"><?php esc_html_e( 'Other', 'disciple_tools' )?>
                                         <button class="help-button" data-section="other-tile-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
-                                    </label>
-
+                                        <button class="section-chevron chevron_down">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
+                                        <button class="section-chevron chevron_up">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                        </button>
+                                    </h3>
+                                    <div class="section-body"><!-- start collapse -->
                                     <div class="section-subheader">
                                         <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
                                     </div>
@@ -500,7 +530,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         </div>
                                     </div>
                                 </div>
-
+                                <!-- end collapse --></div>
                             </section>
                         </div>
                     </div>
@@ -508,7 +538,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             </main> <!-- end #main -->
 
             <aside class="auto cell grid-x">
-                <section class="bordered-box comment-activity-section cell"
+                <section class="comment-activity-section cell"
                          id="comment-activity-section">
                     <?php get_template_part( 'dt-assets/parts/loop', 'activity-comment' ); ?>
                 </section>

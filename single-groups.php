@@ -60,12 +60,19 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
                         <!-- MEMBERS TILE -->
                         <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item" >
-                            <div class="bordered-box">
-                                <label class="section-header"><?php esc_html_e( 'Members', 'disciple_tools' )?>
-                                <button class="help-button" data-section="members-help-text">
+                            <div class="bordered-box" id="members-tile">
+                                <h3 class="section-header"><?php esc_html_e( 'Members', 'disciple_tools' )?>
+                                    <button class="help-button" data-section="members-help-text">
                                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                     </button>
-                                </label>
+                                    <button class="section-chevron chevron_down">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                    </button>
+                                    <button class="section-chevron chevron_up">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                    </button>
+                                </h3>
+                                <div class="section-body"><!-- start collapse -->
                                 <div class="section-subheader"><?php esc_html_e( "Member Count", 'disciple_tools' ) ?></div>
                                 <input id="member_count"
                                        class="number-input" type="number" min="0"
@@ -93,18 +100,24 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
                                     </div>
                                 </div>
-                            </div>
+                            </div><!-- end collapse --></div>
                         </section>
 
                         <!-- GROUPS TILE -->
                         <section id="groups" class="xlarge-6 large-12 medium-6 cell grid-item">
-                            <div class="bordered-box">
-                                <label class="section-header"><?php esc_html_e( "Groups", 'disciple_tools' ) ?>
+                            <div class="bordered-box" id="groups-tile">
+                                <h3 class="section-header"><?php esc_html_e( "Groups", 'disciple_tools' ) ?>
                                     <button class="help-button" data-section="group-connections-help-text">
                                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                     </button>
-                                </label>
-
+                                    <button class="section-chevron chevron_down">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                    </button>
+                                    <button class="section-chevron chevron_up">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                    </button>
+                                </h3>
+                                <div class="section-body"><!-- start collapse -->
                                 <div class="section-subheader">
                                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/group-type.svg' ) ?>"/>
                                     <?php echo esc_html( $group_fields["group_type"]["name"] )?>
@@ -172,19 +185,26 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div><!-- end collapse --></div>
                         </section>
 
                         <!-- Health Metrics-->
                         <?php if ( ! empty( $group_preferences['church_metrics'] ) ) : ?>
                             <section id="health-metrics" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                <div class="bordered-box js-progress-bordered-box half-opacity">
+                                <div class="bordered-box js-progress-bordered-box half-opacity" id="health-tile">
 
-                                    <label class="section-header"><?php echo esc_html( $group_fields["health_metrics"]["name"] )?>
+                                    <h3 class="section-header"><?php echo esc_html( $group_fields["health_metrics"]["name"] )?>
                                         <button class="help-button" data-section="health-metrics-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
-                                    </label>
+                                        <button class="section-chevron chevron_down">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
+                                        <button class="section-chevron chevron_up">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                        </button>
+                                    </h3>
+                                    <div class="section-body"><!-- start collapse -->
 
                                     <div class="grid-x">
                                         <div style="margin-right:auto; margin-left:auto;min-height:302px">
@@ -203,7 +223,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
                                     </div>
 
-                                </div>
+                                </div><!-- end collapse --></div>
                             </section>
                         <?php endif; ?>
 
@@ -211,18 +231,25 @@ if ( ! current_user_can( 'access_groups' ) ) {
                         <!-- Four Fields -->
                         <?php if ( ! empty( $group_preferences['four_fields'] ) ) : ?>
                             <section id="four-fields" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                <div class="bordered-box js-progress-bordered-box">
+                                <div class="bordered-box js-progress-bordered-box" id="four-fields-tile">
 
-                                    <label class="section-header"><?php esc_html_e( 'Four Fields', 'disciple_tools' ) ?>
+                                    <h3 class="section-header"><?php esc_html_e( 'Four Fields', 'disciple_tools' ) ?>
                                         <button class="help-button" data-section="four-fields-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
-                                    </label>
+                                        <button class="section-chevron chevron_down">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
+                                        <button class="section-chevron chevron_up">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                        </button>
+                                    </h3>
+                                    <div class="section-body"><!-- start collapse -->
 
                                     <div class="grid-x" id="four-fields-inputs">
                                         <div style="width:100%; height:375px;background-image:url('<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/four-fields.svg', 'disciple_tools' ); ?>');background-repeat:no-repeat;"></div>
                                     </div>
-                                </div>
+                                </div><!-- end collapse --></div>
                             </section>
                         <?php endif; ?>
 
@@ -247,7 +274,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                         foreach ( $sections as $section ){
                             ?>
                             <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                <div class="bordered-box">
+                                <div class="bordered-box" id="<?php echo esc_html( $section ); ?>-tile">
                                     <?php
                                     // let the plugin add section content
                                     do_action( "dt_details_additional_section", $section, 'groups' );
@@ -323,7 +350,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
         </main> <!-- end #main -->
 
         <aside class="auto cell grid-x">
-            <section class="bordered-box comment-activity-section cell"
+            <section class="comment-activity-section cell"
                      id="comment-activity-section">
                 <?php get_template_part( 'dt-assets/parts/loop', 'activity-comment' ); ?>
             </section>
