@@ -378,7 +378,7 @@ jQuery(document).ready(function($) {
         accent: true,
         searchOnFocus: true,
         maxItem: 20,
-        source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
+        source: TYPEAHEADS.typeaheadPeopleGroupSource('people_groups', 'dt/v1/people-groups/compact/'),
         display: ["name", "label"],
         templateValue: "{{label}}",
         dynamic: true,
