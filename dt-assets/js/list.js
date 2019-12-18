@@ -1,28 +1,8 @@
 (function($, wpApiListSettings, Foundation) {
   "use strict";
 
-  function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) === ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) === 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
-  let cookie = getCookie("last_view");
-  let cachedFilter = {}
-  try {
-    cachedFilter = JSON.parse(cookie)
-  } catch (e) {
-    cachedFilter = {}
-  }
+  let cachedFilter = window.SHAREDFUNCTIONS.get_json_cookie("last_view")
+
   $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)')
       .exec(window.location.search);
@@ -32,7 +12,7 @@
 
   let tabQueryParam = $.urlParam( 'list-tab' )
 
-  let showClosedCookie = getCookie("show_closed")
+  let showClosedCookie = window.SHAREDFUNCTIONS.getCookie("show_closed")
   let showClosedCheckbox = $('#show_closed')
   let currentFilter = {}
   let items = []

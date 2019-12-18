@@ -60,7 +60,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
                         <!-- MEMBERS TILE -->
                         <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item" >
-                            <div class="bordered-box">
+                            <div class="bordered-box" id="members-tile">
                                 <h3 class="section-header"><?php esc_html_e( 'Members', 'disciple_tools' )?>
                                     <button class="help-button" data-section="members-help-text">
                                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
@@ -105,7 +105,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
                         <!-- GROUPS TILE -->
                         <section id="groups" class="xlarge-6 large-12 medium-6 cell grid-item">
-                            <div class="bordered-box">
+                            <div class="bordered-box" id="groups-tile">
                                 <h3 class="section-header"><?php esc_html_e( "Groups", 'disciple_tools' ) ?>
                                     <button class="help-button" data-section="group-connections-help-text">
                                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
@@ -191,7 +191,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                         <!-- Health Metrics-->
                         <?php if ( ! empty( $group_preferences['church_metrics'] ) ) : ?>
                             <section id="health-metrics" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                <div class="bordered-box js-progress-bordered-box half-opacity">
+                                <div class="bordered-box js-progress-bordered-box half-opacity" id="health-tile">
 
                                     <h3 class="section-header"><?php echo esc_html( $group_fields["health_metrics"]["name"] )?>
                                         <button class="help-button" data-section="health-metrics-help-text">
@@ -231,7 +231,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                         <!-- Four Fields -->
                         <?php if ( ! empty( $group_preferences['four_fields'] ) ) : ?>
                             <section id="four-fields" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                <div class="bordered-box js-progress-bordered-box">
+                                <div class="bordered-box js-progress-bordered-box" id="four-fields-tile">
 
                                     <h3 class="section-header"><?php esc_html_e( 'Four Fields', 'disciple_tools' ) ?>
                                         <button class="help-button" data-section="four-fields-help-text">
@@ -273,7 +273,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                         foreach ( $sections as $section ){
                             ?>
                             <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                <div class="bordered-box">
+                                <div class="bordered-box" id="<?php echo esc_html( $section ); ?>-tile">
                                     <?php
                                     // let the plugin add section content
                                     do_action( "dt_details_additional_section", $section, 'groups' );

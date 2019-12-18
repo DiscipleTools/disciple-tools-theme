@@ -277,7 +277,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item">
             <!--                    <div class="bordered-box last-typeahead-in-section">-->
 
-                                <div class="bordered-box"><h3 class="section-header"><?php esc_html_e( "Connections", 'disciple_tools' ) ?>
+                                <div class="bordered-box" id="connections-tile">
+                                    <h3 class="section-header"><?php esc_html_e( "Connections", 'disciple_tools' ) ?>
                                         <button class="help-button float-right" data-section="connections-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
@@ -353,7 +354,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
                         <!-- PROGRESS TILE -->
                             <section id="faith" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                <div class="bordered-box">
+                                <div class="bordered-box" id="progress-tile">
                                     <h3 class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?>
                                         <button class="help-button float-right" data-section="contact-progress-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
@@ -448,7 +449,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             foreach ( $sections as $section ){
                                 ?>
                                 <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                    <div class="bordered-box">
+                                    <div class="bordered-box" id="<?php echo esc_html( $section )?>-tile">
                                         <?php
                                         //setup tile label if see by customizations
                                         if ( isset( $custom_tiles["contacts"][$section]["label"] ) ){ ?>
@@ -496,7 +497,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             ?>
                         <!-- OTHER TILE -->
                             <section id="other" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                <div class="bordered-box">
+                                <div class="bordered-box" id="other-tile">
                                     <h3 class="section-header"><?php esc_html_e( 'Other', 'disciple_tools' )?>
                                         <button class="help-button" data-section="other-tile-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
