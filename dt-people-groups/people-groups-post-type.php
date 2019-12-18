@@ -367,7 +367,7 @@ class Disciple_Tools_People_Groups_Post_Type
      */
     public function load_translation_meta_box() {
         global $post;
-        $dt_available_languages = Disciple_Tools_Core_Endpoints::get_settings();
+        $dt_available_languages = dt_get_available_languages();
 
         echo '<input type="hidden" name="dt_' . esc_attr( $this->post_type ) . '_noonce" id="dt_' . esc_attr( $this->post_type ) . '_noonce" value="' . esc_attr( wp_create_nonce( 'update_peoplegroup_info' ) ) . '" />';
         ?>
