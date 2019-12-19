@@ -1,6 +1,6 @@
 <div class="reveal" id="create-contact-modal" data-reveal data-reset-on-close>
 
-    <h1><?php esc_html_e( 'Create Contact', 'disciple_tools' )?></h1>
+    <h3><?php esc_html_e( 'Create Contact', 'disciple_tools' )?></h3>
 
     <form class="js-create-contact hide-after-contact-create">
         <label for="title">

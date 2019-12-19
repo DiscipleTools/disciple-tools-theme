@@ -4,7 +4,7 @@ global $post;
 
 <div class="reveal" id="share-contact-modal" data-reveal style="min-height:500px">
 
-    <h1><?php esc_html_e( 'Share settings', 'disciple_tools' )?></h1>
+    <h3><?php esc_html_e( 'Share settings', 'disciple_tools' )?></h3>
     
     <h6>
         <?php

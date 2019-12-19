@@ -1,6 +1,6 @@
 <div class="reveal" id="create-group-modal" data-reveal data-reset-on-close>
 
-    <h1><?php esc_html_e( 'Create Group', 'disciple_tools' )?></h1>
+    <h3><?php esc_html_e( 'Create Group', 'disciple_tools' )?></h3>
 
     <form class="js-create-group hide-after-group-create">
         <label for="title">

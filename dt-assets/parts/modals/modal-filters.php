@@ -1,6 +1,6 @@
 
 <div class="reveal" id="save-filter-modal" data-reveal>
-    <h1><?php esc_html_e( "Save Filter", 'disciple_tools' ) ?></h1>
+    <h3><?php esc_html_e( "Save Filter", 'disciple_tools' ) ?></h3>
     <label><?php esc_html_e( "What do you want to call this filter?", 'disciple_tools' ) ?>
         <input id="filter-name">
     </label>

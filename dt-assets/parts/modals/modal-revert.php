@@ -1,7 +1,7 @@
 
 <div class="reveal" id="revert-modal" data-reveal>
 
-    <h1><?php esc_html_e( 'Revert Activity', 'disciple_tools' )?></h1>
+    <h3><?php esc_html_e( 'Revert Activity', 'disciple_tools' )?></h3>
     <h6><?php esc_html_e( "Field", 'disciple_tools' ) ?>:
         <span class="revert-field"></span>
     </h6>
