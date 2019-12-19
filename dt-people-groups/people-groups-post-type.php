@@ -128,7 +128,7 @@ class Disciple_Tools_People_Groups_Post_Type
             'name'                  => $this->plural,
             'singular_name'         => $this->singular,
             'menu_name'             => $this->plural,
-            'search_items'          => sprintf( _x( 'Search %s', 'Search `something`', 'disciple_tools' ), $this->plural ),
+            'search_items'          => sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural ),
         ];
 
         $rewrite = [
@@ -367,11 +367,11 @@ class Disciple_Tools_People_Groups_Post_Type
      */
     public function load_translation_meta_box() {
         global $post;
-        $dt_available_languages = Disciple_Tools_Core_Endpoints::get_settings();
+        $dt_available_languages = dt_get_available_languages();
 
         echo '<input type="hidden" name="dt_' . esc_attr( $this->post_type ) . '_noonce" id="dt_' . esc_attr( $this->post_type ) . '_noonce" value="' . esc_attr( wp_create_nonce( 'update_peoplegroup_info' ) ) . '" />';
         ?>
-        <?php foreach ($dt_available_languages["available_translations"] as $language) {
+        <?php foreach ($dt_available_languages as $language) {
             echo '<label for="dt_translation_' . esc_attr( $language["language"] ) . '">' . esc_attr( $language["native_name"] ) . '</label><br/>';
             echo '<input type="text" name="dt_translation_' . esc_attr( $language["language"] ) . '" id="dt_translation_' . esc_attr( $language["language"] ) . '" class="text-input" value="' . esc_attr( get_post_meta( $post->ID, $language["language"], true ) ). '" /><br/>';
         }

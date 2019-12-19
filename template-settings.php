@@ -265,9 +265,9 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                 <div class="small-12 cell">
 
                     <div class="bordered-box cell" id="availability" data-magellan-target="availability">
-                      <button class="help-button float-right" data-section="availability-help-text">
-                          <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                      </button>
+<!--                      <button class="help-button float-right" data-section="availability-help-text">-->
+<!--                          <img class="help-icon" src="--><?php //echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?><!--"/>-->
+<!--                      </button>-->
 
                         <!-- section header-->
                         <span class="section-header"><?php esc_html_e( 'Availability', 'disciple_tools' )?></span>

@@ -30,7 +30,7 @@ class Disciple_Tools_Post_Type_Template {
             'name'                  => $this->plural,
             'singular_name'         => $this->singular,
             'menu_name'             => $this->plural,
-            'search_items'          => sprintf( _x( 'Search %s', 'Search `something`', 'disciple_tools' ), $this->plural ),
+            'search_items'          => sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural ),
         ];
         $rewrite = [
             'slug'       => $this->post_type,

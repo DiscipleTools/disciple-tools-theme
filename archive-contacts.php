@@ -81,7 +81,7 @@ declare(strict_types=1);
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php esc_html_e( "View Duplicates", 'disciple_tools' ) ?></span>
                 </a>
-                <input class="search-input" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="search contacts">
+                <input class="search-input" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="<?php echo esc_html_x( "Search Contacts", 'input field placeholder', 'disciple_tools' ) ?>">
                 <a class="button" style="margin-bottom:0" id="search">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
                     <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
@@ -101,10 +101,10 @@ declare(strict_types=1);
         </a>
         <a class="button" style="margin-bottom:0" id="open-search">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
-            <span class="hide-for-small-only"><?php esc_html_e( "Search contacts", 'disciple_tools' ) ?></span>
+            <span class="hide-for-small-only"><?php echo esc_html_x( "Search Contacts", 'input field placeholder', 'disciple_tools' ) ?></span>
         </a>
         <div class="hideable-search" style="display: none; margin-top:5px">
-            <input class="search-input-mobile" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile" placeholder="search contacts">
+            <input class="search-input-mobile" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile" placeholder="<?php echo esc_html_x( "Search Contacts", 'input field placeholder', 'disciple_tools' ) ?>">
             <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
         </div>
     </nav>
@@ -146,7 +146,7 @@ declare(strict_types=1);
                         </button>
                     </label>
 
-                    <h5 class="hide-for-small-only hide-for-medium-only" style="display: inline-block"><?php esc_html_e( 'Default Filters', "disciple_tools" ); ?></h5>
+                    <h5 class="hide-for-small-only hide-for-medium-only" style="display: inline-block"><?php esc_html_e( 'Default Filters', 'disciple_tools' ); ?></h5>
 
                     <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion">
                         <li class="accordion-item" data-accordion-item data-id="all">
@@ -217,7 +217,7 @@ declare(strict_types=1);
             <div class="grid-x">
                 <div class="cell small-4" style="padding: 0 5px 5px 5px">
                     <input type="text" id="new-filter-name"
-                           placeholder="<?php esc_html_e( 'Filter Name', 'disciple_tools' )?>"
+                           placeholder="<?php echo esc_html_x( 'Fliter Name', 'input field placeholder', 'disciple_tools' ) ?>"
                            style="margin-bottom: 0"/>
                 </div>
                 <div class="cell small-8">
@@ -275,7 +275,7 @@ declare(strict_types=1);
                                             <div class="typeahead__field">
                                             <span class="typeahead__query">
                                                 <input class="js-typeahead-<?php echo esc_html( $field ) ?>" data-field="<?php echo esc_html( $field ) ?>"
-                                                       name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php esc_html_e( "Type to Search", 'disciple_tools' ) ?>"
+                                                       name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>"
                                                        autocomplete="off">
                                             </span>
                                             </div>
@@ -352,7 +352,7 @@ declare(strict_types=1);
         <div class="grid-x grid-padding-x">
             <div class="cell small-4 filter-modal-left">
                 <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                    <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+                    <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
                 </button>
             </div>
             <div class="cell small-8 filter-modal-right confirm-buttons">

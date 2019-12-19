@@ -386,7 +386,7 @@ class Disciple_Tools_Posts
                 }
                 if ( $fields[$activity->meta_key]["type"] === "text"){
                     if ( !empty( $activity->meta_value ) && !empty( $activity->old_value ) ){
-                        $message = sprintf( _x( '%1$s changed to %2$s', 'field1 changed to `text`', 'disciple_tools' ), $fields[$activity->meta_key]["name"], $activity->meta_value );
+                        $message = sprintf( _x( '%1$s changed to %2$s', "field1 changed to 'text'", 'disciple_tools' ), $fields[$activity->meta_key]["name"], $activity->meta_value );
                     }
                 }
                 if ( $fields[$activity->meta_key]["type"] === "multi_select" ){
@@ -826,11 +826,11 @@ class Disciple_Tools_Posts
                         }
                     } else {
                         if ( $post_fields[$query_key]["p2p_direction"] === "to" ){
-                            $meta_query .= " AND ( $wpdb->posts.ID IN ( 
+                            $meta_query .= " AND ( $wpdb->posts.ID IN (
                                 SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $post_fields[$query_key]["p2p_key"] ) . "' AND p2p_from IN (" . esc_sql( $connection_ids ) .")
                             ) ) ";
                         } else {
-                            $meta_query .= " AND ( $wpdb->posts.ID IN ( 
+                            $meta_query .= " AND ( $wpdb->posts.ID IN (
                                 SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $post_fields[$query_key]["p2p_key"] ) . "' AND p2p_to IN (" . esc_sql( $connection_ids ) .")
                             ) ) ";
                         }
@@ -1623,18 +1623,22 @@ class Disciple_Tools_Posts
      * @return array
      */
     public static function filter_wp_post_object_fields( $post ){
-        $locale = get_locale();
-        $translation = get_post_meta( $post->ID, $locale, true );
-        $label  = ( $translation ? $translation : $post->post_title );
-        return [
+        $filtered_post = [
             "ID" => $post->ID,
             "post_type" => $post->post_type,
             "post_date_gmt" => $post->post_date_gmt,
             "post_date" => $post->post_date,
             "post_title" => $post->post_title,
-            "permalink" => get_permalink( $post->ID ),
-            "label" => $label
+            "permalink" => get_permalink( $post->ID )
         ];
+        if ( $post->post_type === "peoplegroups" ){
+            $locale = get_locale();
+            $translation = get_post_meta( $post->ID, $locale, true );
+            $label  = ( $translation ? $translation : $post->post_title );
+            $filtered_post["label"] = $label;
+        }
+
+        return $filtered_post;
     }
 
     public static function format_post_contact_details( $post_settings, $meta_fields, $type, $key, $value ) {
