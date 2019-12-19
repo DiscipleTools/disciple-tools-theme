@@ -193,6 +193,20 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    if ( ! function_exists( 'dt_get_available_languages' ) ) {
+        function dt_get_available_languages() {
+            $translations = dt_get_translations();
+            $available_language_codes = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+            $available_translations = [];
+            foreach ( $available_language_codes as $code ){
+                if ( isset( $translations[$code] )){
+                    $available_translations[] = $translations[$code];
+                }
+            }
+            return $available_translations;
+        }
+    }
+
     if ( !function_exists( "dt_create_field_key" ) ){
         function dt_create_field_key( $s, $with_hash = false ){
             //note we don't limit to alhpa_numeric because it would strip out all non latin based languages
