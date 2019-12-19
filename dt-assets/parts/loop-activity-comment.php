@@ -2,7 +2,7 @@
 ( function () {
     ?>
 
-    <div class="grid-y">
+    <div class="grid-y bordered-box">
         <h3 class="section-header">
             <span>
                 <?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?>
@@ -12,6 +12,12 @@
                 <img class="help-icon"
                      src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
             </button>
+            <!-- <button class="section-chevron chevron_down">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+            </button>
+            <button class="section-chevron chevron_up">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+            </button> -->
         </h3>
         <div class="cell grid-x grid-margin-x" id="add-comment-section">
             <div class="auto cell">
@@ -69,6 +75,7 @@
                 </button>
             </div>
         </div>
+        <div class="section-body"><!-- start collapse -->
         <div class="cell">
 
             <div>
@@ -125,7 +132,6 @@
         </div>
     </div>
 
-
     <div class="reveal" id="delete-comment-modal" data-reveal>
         <p class="lead"><?php esc_html_e( 'Delete Comment:', 'disciple_tools' ) ?></p>
         <p id="comment-to-delete"></p>
@@ -166,6 +172,7 @@
         </div>
     </div>
 
+<!-- end collapse --></div>
 
     <?php
 } )();

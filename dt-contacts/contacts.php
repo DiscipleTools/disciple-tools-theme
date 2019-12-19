@@ -365,7 +365,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     private static function check_requires_update( $contact_id ){
         if ( get_current_user_id() ){
             $requires_update = get_post_meta( $contact_id, "requires_update", true );
-            if ( $requires_update == "yes" || $requires_update == true || $requires_update = "1"){
+            if ( $requires_update == "yes" || $requires_update == true || $requires_update == "1"){
                 //don't remove update needed if the user is a dispatcher (and not assigned to the contacts.)
                 if ( self::can_view_all( 'contacts' ) ){
                     if ( dt_get_user_id_from_assigned_to( get_post_meta( $contact_id, "assigned_to", true ) ) === get_current_user_id() ){
@@ -384,7 +384,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $ignore_keys = preg_grep( "/$field/", $ignore );
             $sql = "delete
                 from
-                    wp_postmeta
+                    $wpdb->postmeta
                 where
                     post_id = %d and
                     meta_key like %s";
@@ -1022,7 +1022,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 select
                     *
                 from
-                    wp_posts p join wp_postmeta m on p.ID = m.post_id
+                    $wpdb->posts p join $wpdb->postmeta m on p.ID = m.post_id
                 where
                     p.post_type = %s and
                     m.meta_key = %s
@@ -1177,8 +1177,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 select
                     *
                 from
-                    wp_posts p join
-                    wp_postmeta m on p.ID = m.post_id
+                    $wpdb->posts p join
+                    $wpdb->postmeta m on p.ID = m.post_id
                 where
                     ID != %d and
                     (meta_key regexp %s and meta_key not like %s) and

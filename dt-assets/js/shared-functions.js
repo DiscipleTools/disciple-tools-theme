@@ -303,6 +303,16 @@ window.SHAREDFUNCTIONS = {
             }
         }
         return "";
+    },
+    get_json_cookie(cname, default_val = []){
+      let cookie = this.getCookie(cname)
+      try {
+        default_val = JSON.parse(cookie)
+      } catch (e) {}
+      return default_val
+    },
+    save_json_cookie(cname, json, path = ''){
+      document.cookie = `${cname}=${JSON.stringify(json)};path=/${path}`
     }
 }
 

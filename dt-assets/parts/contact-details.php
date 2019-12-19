@@ -51,6 +51,12 @@
             <button class="help-button" data-section="contact-details-help-text">
                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
             </button>
+            <!-- <button class="section-chevron chevron_down">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+            </button>
+            <button class="section-chevron chevron_up">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+            </button> -->
         </div>
         <div style="display: flex;">
             <div class="item-details-header" style="flex-grow:1">
@@ -64,6 +70,7 @@
                 </button>
             </div>
         </div>
+        <div class="section-body"><!-- start collapse -->
         <div class="grid-x grid-margin-x" style="margin-top: 20px">
             <div class="cell small-12 medium-4">
                 <div class="section-subheader">
@@ -288,7 +295,7 @@
                     ?>
                 </ul>
             </div>
-        </div>
+        </div><!-- end collapse --></div>
     </section>
 
     <div class="reveal" id="contact-details-edit" data-reveal data-close-on-click="false">

@@ -30,7 +30,7 @@ class Disciple_Tools_Hook_User extends Disciple_Tools_Hook_Base {
     public function better_user_login_tracking( $response, $object, $request ){
         if ( get_current_user_id() ){
             $user = wp_get_current_user();
-            $today = date( 'Y-m-d', time() );
+            $today = gmdate( 'Y-m-d', time() );
             $last_call = get_user_option( 'last_rest_call', get_current_user_id() );
             if ( !$last_call || $last_call !== $today ){
                 dt_activity_insert(

@@ -245,12 +245,12 @@ class Disciple_Tools_Groups_Post_Type
             'default'     => [
                 'inactive' => [
                     'label' => _x( 'Inactive', 'field label', 'disciple_tools' ),
-                    'description' => _x( 'The group is no longer meeting at this time.', 'field description', 'disciple_tools' ),
+                    'description' => _x( 'The group is no longer meeting.', 'field description', 'disciple_tools' ),
                     'color' => "#F43636"
                 ],
                 'active'   => [
                     'label' => _x( 'Active', 'field label', 'disciple_tools' ),
-                    'description' => _x( 'The group is actively meeting at this time.', 'field description', 'disciple_tools' ),
+                    'description' => _x( 'The group is actively meeting.', 'field description', 'disciple_tools' ),
                     'color' => "#4CAF50"
                 ],
             ],
@@ -383,7 +383,7 @@ class Disciple_Tools_Groups_Post_Type
 
         $fields['start_date'] = [
             'name'        => __( 'Start Date', 'disciple_tools' ),
-            'description' => _x( 'The start date when this group began meeting.', 'group start_date description', 'disciple_tools' ),
+            'description' => _x( 'The date this group began meeting.', 'group start_date description', 'disciple_tools' ),
             'type'        => 'date',
             'default'     => time(),
             'section'     => 'info',
@@ -396,21 +396,19 @@ class Disciple_Tools_Groups_Post_Type
         ];
         $fields['end_date'] = [
             'name'        => __( 'End Date', 'disciple_tools' ),
-            'description' => _x( 'The date this group stopped meeting. (if applicable)', 'group end_date description', 'disciple_tools' ),
+            'description' => _x( 'The date this group stopped meeting (if applicable).', 'group end_date description', 'disciple_tools' ),
             'type'        => 'date',
             'default'     => '',
             'section'     => 'info',
         ];
         $fields["duplicate_data"] = [
             "name" => __( 'Duplicates', 'disciple_tools' ),
-            'description' => __( 'Possible duplicate data.', 'disciple_tools' ),
             'type' => 'array',
             'default' => [],
             'section' => 'admin'
         ];
         $fields["follow"] = [
             'name'        => __( 'Follow', 'disciple_tools' ),
-            'description' => __( 'Users following this contact.', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
@@ -418,7 +416,6 @@ class Disciple_Tools_Groups_Post_Type
         ];
         $fields["unfollow"] = [
             'name'        => __( 'Un-Follow', 'disciple_tools' ),
-            'description' => __( 'Users not following this contact', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
@@ -433,7 +430,7 @@ class Disciple_Tools_Groups_Post_Type
         ];
         $fields["peer_groups"] = [
             "name" => __( 'Peer Group', 'disciple_tools' ),
-            'description' => _x( 'A related group that isn\'t a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc.', 'peer group description', 'disciple_tools' ),
+            'description' => _x( "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc.", 'peer group description', 'disciple_tools' ),
             "type" => "connection",
             "p2p_direction" => "any",
             "p2p_key" => "groups_to_peers"
@@ -447,20 +444,20 @@ class Disciple_Tools_Groups_Post_Type
         ];
         $fields["member_count"] = [
             'name' => __( 'Member Count', 'disciple_tools' ),
-            'description' => _x( 'The member count is the number of members in this group and it will automatically adjust when new member names are added or removed in the member list. The number can also be adjusted manually to included people who may not be in the system but are also members of the group.', 'member_count description', 'disciple_tools' ),
+            'description' => _x( 'The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the group.', 'member_count description', 'disciple_tools' ),
             'type' => 'text',
             'default' => ''
         ];
         $fields["members"] = [
             "name" => __( 'Member List', 'disciple_tools' ),
-            'description' => _x( 'The member list is a list of members in this group. To remove a member, click the X icon to the right side of the member name. Click the footprint icon next to the members name to signify that this person is a leader of this group. (Multiple leaders can be assigned to a group.', 'members list description', 'disciple_tools' ),
+            'description' => _x( 'The contacts who are members of this group.', 'members list description', 'disciple_tools' ),
             "type" => "connection",
             "p2p_direction" => "to",
             "p2p_key" => "contacts_to_groups"
         ];
         $fields["people_groups"] = [
             "name" => __( 'People Groups', 'disciple_tools' ),
-            'description' => _x( 'The people groups that are a part of this group.', 'people_groups field description', 'disciple_tools' ),
+            'description' => _x( 'The people groups represented by this group.', 'people_groups field description', 'disciple_tools' ),
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "groups_to_peoplegroups"
@@ -487,7 +484,7 @@ class Disciple_Tools_Groups_Post_Type
         ];
         $fields['location_grid'] = [
             'name'        => __( 'Locations', 'disciple_tools' ),
-            'description' => _x( 'The general location where this group is located.', 'location_grid field description', 'disciple_tools' ),
+            'description' => _x( 'The general location where this group meets.', 'location_grid field description', 'disciple_tools' ),
             'type'        => 'location',
             'default'     => [],
         ];
