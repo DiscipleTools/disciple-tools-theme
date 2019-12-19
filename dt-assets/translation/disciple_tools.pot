@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Disciple Tools\n"
-"POT-Creation-Date: 2019-12-19 12:25+0100\n"
+"POT-Creation-Date: 2019-12-19 13:43+0100\n"
 "PO-Revision-Date: 2018-01-09 14:10-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -118,13 +118,15 @@ msgstr ""
 msgid "View Duplicates"
 msgstr ""
 
-#: archive-contacts.php:87 archive-contacts.php:108 archive-groups.php:39
-#: archive-groups.php:60 dt-contacts/contacts-template.php:108
-msgid "Search"
+#: archive-contacts.php:84 archive-contacts.php:104 archive-contacts.php:107
+#: single-groups.php:380
+msgctxt "input field placeholder"
+msgid "Search Contacts"
 msgstr ""
 
-#: archive-contacts.php:104
-msgid "Search contacts"
+#: archive-contacts.php:87 archive-contacts.php:108 archive-groups.php:39
+#: archive-groups.php:60
+msgid "Search"
 msgstr ""
 
 #: archive-contacts.php:123 archive-contacts.php:141
@@ -160,8 +162,9 @@ msgstr ""
 msgid "Add new filter"
 msgstr ""
 
-#: archive-contacts.php:220 archive-groups.php:176
-msgid "Filter Name"
+#: archive-contacts.php:220
+msgctxt "input field placeholder"
+msgid "Fliter Name"
 msgstr ""
 
 #: archive-contacts.php:239 archive-groups.php:194
@@ -183,8 +186,9 @@ msgstr ""
 msgid "Creation Date"
 msgstr ""
 
-#: archive-contacts.php:278 archive-groups.php:231
-msgid "Type to Search"
+#: archive-contacts.php:278 archive-groups.php:59 archive-groups.php:231
+msgctxt "input field placeholder"
+msgid "Type to search"
 msgstr ""
 
 #: archive-contacts.php:287
@@ -225,8 +229,9 @@ msgstr ""
 #: dt-assets/parts/modals/modal-new-contact.php:14
 #: dt-assets/parts/modals/modal-new-group.php:14 single-contacts.php:573
 #: single-contacts.php:600 single-contacts.php:626 single-contacts.php:650
-#: single-contacts.php:731 single-contacts.php:785 single-contacts.php:834
+#: single-contacts.php:732 single-contacts.php:786 single-contacts.php:834
 #: template-contacts-new.php:99 template-groups-new.php:69
+msgctxt "button"
 msgid "Cancel"
 msgstr ""
 
@@ -249,7 +254,13 @@ msgstr ""
 msgid "Filter Groups"
 msgstr ""
 
-#: archive-groups.php:56 single-contacts.php:303 single-groups.php:177
+#: archive-groups.php:36 single-contacts.php:303 single-groups.php:147
+#: single-groups.php:162 single-groups.php:177
+msgctxt "input field placeholder"
+msgid "Search Groups"
+msgstr ""
+
+#: archive-groups.php:56
 msgid "Search groups"
 msgstr ""
 
@@ -267,6 +278,11 @@ msgstr ""
 
 #: archive-groups.php:145
 msgid "Groups shared with me"
+msgstr ""
+
+#: archive-groups.php:176
+msgctxt "input field placeholder"
+msgid "Filter Name"
 msgstr ""
 
 #: archive-groups.php:267
@@ -471,7 +487,7 @@ msgid "Showing 0 to 0 of 0 entries"
 msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:315
-msgctxt "just copy `_MAX_`"
+msgctxt "Just copy '_MAX_'"
 msgid "(filtered from _MAX_ total entries)"
 msgstr ""
 
@@ -561,7 +577,8 @@ msgid "Assigned to"
 msgstr ""
 
 #: dt-assets/parts/contact-details.php:142 dt-assets/parts/group-details.php:85
-#: dt-assets/parts/modals/modal-share.php:25 single-contacts.php:763
+#: dt-assets/parts/modals/modal-share.php:26 single-contacts.php:764
+msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr ""
 
@@ -570,7 +587,8 @@ msgid "Sub-assigned to"
 msgstr ""
 
 #: dt-assets/parts/contact-details.php:172 single-contacts.php:333
-#: single-contacts.php:677 single-contacts.php:813
+#: single-contacts.php:678 single-contacts.php:813
+msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr ""
 
@@ -620,25 +638,25 @@ msgstr ""
 #: dt-assets/parts/contact-details.php:307
 #: dt-assets/parts/content-contacts.php:51
 #: dt-assets/parts/content-groups.php:51 dt-assets/parts/group-details.php:224
-#: dt-assets/parts/modals/modal-new-contact.php:9
-#: dt-assets/parts/modals/modal-new-group.php:9 dt-contacts/contacts.php:118
-#: dt-mapping/mapping-metrics.php:120 dt-mapping/mapping.php:303
-#: template-contacts-new.php:27 template-groups-new.php:29
-#: template-new-post.php:22 template-new-post.php:24 template-settings.php:83
+#: dt-contacts/contacts.php:118 dt-mapping/mapping-metrics.php:120
+#: dt-mapping/mapping.php:303 template-new-post.php:22 template-settings.php:83
 msgid "Name"
 msgstr ""
 
 #: dt-assets/parts/contact-details.php:365
 #: dt-assets/parts/group-details.php:254 template-contacts-new.php:81
+msgctxt "input field placeholder"
 msgid "Search Locations"
 msgstr ""
 
 #: dt-assets/parts/contact-details.php:399
+msgctxt "input field placeholder"
 msgid "Search sources"
 msgstr ""
 
 #: dt-assets/parts/contact-details.php:464
 #: dt-assets/parts/group-details.php:301
+msgctxt "input field placeholder"
 msgid "Search People Groups"
 msgstr ""
 
@@ -742,6 +760,7 @@ msgid "Group Coach / Church Planter"
 msgstr ""
 
 #: dt-assets/parts/group-details.php:113
+msgctxt "input field placeholder"
 msgid "Search Users and Contacts"
 msgstr ""
 
@@ -784,6 +803,7 @@ msgid "Comments and Activity"
 msgstr ""
 
 #: dt-assets/parts/loop-activity-comment.php:25
+msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr ""
 
@@ -818,9 +838,6 @@ msgstr ""
 
 #: dt-assets/parts/loop-activity-comment.php:140
 #: dt-assets/parts/loop-activity-comment.php:160
-#: dt-assets/parts/modals/modal-revert.php:15
-#: dt-assets/parts/modals/modal-share.php:48 single-contacts.php:695
-#: single-groups.php:391
 msgid "Close"
 msgstr ""
 
@@ -865,21 +882,28 @@ msgstr ""
 msgid "Unsure All"
 msgstr ""
 
-#: dt-assets/parts/merge-details.php:174 dt-assets/parts/merge-details.php:245
+#: dt-assets/parts/merge-details.php:174
+msgctxt "button"
 msgid "Dismiss"
 msgstr ""
 
 #: dt-assets/parts/merge-details.php:177
+msgctxt "button"
 msgid "Unsure"
 msgstr ""
 
-#: dt-assets/parts/merge-details.php:184 single-contacts.php:792
+#: dt-assets/parts/merge-details.php:184 single-contacts.php:793
 #: single-contacts.php:841
+msgctxt "button"
 msgid "Merge"
 msgstr ""
 
 #: dt-assets/parts/merge-details.php:198
 msgid "Unsure Duplicates"
+msgstr ""
+
+#: dt-assets/parts/merge-details.php:245
+msgid "Dismiss"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-filters.php:3
@@ -1306,6 +1330,9 @@ msgid ""
 msgstr ""
 
 #: dt-assets/parts/modals/modal-help.php:457
+#: dt-assets/parts/modals/modal-revert.php:15
+#: dt-assets/parts/modals/modal-share.php:49 single-contacts.php:696
+#: single-groups.php:392
 msgctxt "button"
 msgid "Close"
 msgstr ""
@@ -1319,12 +1346,23 @@ msgid "Read the documentation"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-new-contact.php:3
-#: dt-assets/parts/modals/modal-new-contact.php:12
 msgid "Create Contact"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-new-contact.php:7
 msgid "Name of Contact"
+msgstr ""
+
+#: dt-assets/parts/modals/modal-new-contact.php:9
+#: dt-assets/parts/modals/modal-new-group.php:9 template-contacts-new.php:27
+#: template-groups-new.php:29 template-new-post.php:24
+msgctxt "input field placeholder"
+msgid "Name"
+msgstr ""
+
+#: dt-assets/parts/modals/modal-new-contact.php:12
+msgctxt "button"
+msgid "Create Contact"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-new-contact.php:20
@@ -1337,26 +1375,33 @@ msgstr ""
 
 #: dt-assets/parts/modals/modal-new-contact.php:31
 #: dt-assets/parts/modals/modal-new-group.php:30
-msgid "Return to Contact"
+msgctxt "Link button"
+msgid "Back to Contact"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-new-contact.php:33
 #: dt-assets/parts/modals/modal-new-group.php:32
-msgid "Return to Group"
+msgctxt "Link button"
+msgid "Back to Group"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-new-contact.php:35
 #: dt-assets/parts/modals/modal-new-group.php:34
-msgid "Return"
+msgctxt "Link button"
+msgid "Back"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-new-group.php:3
-#: dt-assets/parts/modals/modal-new-group.php:12
 msgid "Create Group"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-new-group.php:7
 msgid "Name of Group"
+msgstr ""
+
+#: dt-assets/parts/modals/modal-new-group.php:12
+msgctxt "button"
+msgid "Create Group"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-new-group.php:19
@@ -1395,11 +1440,11 @@ msgstr ""
 msgid "Share settings"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-share.php:11
+#: dt-assets/parts/modals/modal-share.php:12
 msgid "This group is shared with:"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-share.php:13
+#: dt-assets/parts/modals/modal-share.php:14
 msgid "This contact is shared with:"
 msgstr ""
 
@@ -1458,7 +1503,7 @@ msgstr ""
 #: dt-people-groups/people-groups-post-type.php:131
 #: dt-posts/custom-post-type.php:33
 #, php-format
-msgctxt "Search `something`"
+msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr ""
 
@@ -1589,7 +1634,7 @@ msgstr ""
 
 #: dt-contacts/contacts-post-type.php:243
 msgctxt "Contact Attempt Needed field description"
-msgid "Contact with this contact needs to be attempted."
+msgid "Communication with this contact needs to be attempted."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:246
@@ -1599,7 +1644,7 @@ msgstr ""
 
 #: dt-contacts/contacts-post-type.php:247
 msgctxt "Contact Attempted field description"
-msgid "Contact with this contact was attempted."
+msgid "Communication with this contact was attempted."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:250
@@ -1609,7 +1654,7 @@ msgstr ""
 
 #: dt-contacts/contacts-post-type.php:251
 msgctxt "Contact Established field description"
-msgid "Contact with this contact was established."
+msgid "Communication with this contact was established."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:254
@@ -1618,7 +1663,7 @@ msgid "First Meeting Scheduled"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:255
-msgctxt "First Meeting Scheduled field description"
+msgctxt "Seeker Path field description"
 msgid "The first meeting with this contact has been scheduled."
 msgstr ""
 
@@ -1628,7 +1673,7 @@ msgid "First Meeting Complete"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:259
-msgctxt "First Meeting Complete field description"
+msgctxt "Seeker Path field description"
 msgid "The first meeting with this contact has been completed."
 msgstr ""
 
@@ -1638,7 +1683,7 @@ msgid "Ongoing Meetings"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:263
-msgctxt "Ongoing Meetings field description"
+msgctxt "Seeker Path field description"
 msgid "This contact is continuing in meetings."
 msgstr ""
 
@@ -1648,7 +1693,7 @@ msgid "Being Coached"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:267
-msgctxt "Being Coached field description"
+msgctxt "Seeker Path field description"
 msgid "This contact is being coached."
 msgstr ""
 
@@ -1663,12 +1708,12 @@ msgid "The contact requires an update."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:298
-msgctxt "milestone field name"
+msgctxt "Faith Milestone field name"
 msgid "Faith Milestones"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:299
-msgctxt "milestone field description"
+msgctxt "Faith Milestone field description"
 msgid ""
 "Assign which milestones the contact has reached in their faith journey. "
 "These are points in a contact’s spiritual journey worth celebrating but can "
@@ -1681,7 +1726,7 @@ msgid "Has Bible"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:304
-msgctxt "Faith Milestone description"
+msgctxt "Faith Milestone field description"
 msgid "This contact has a bible."
 msgstr ""
 
@@ -1691,7 +1736,7 @@ msgid "Reading Bible"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:308
-msgctxt "Faith Milestone description"
+msgctxt "Faith Milestone field description"
 msgid "This contact is reading the bible."
 msgstr ""
 
@@ -1701,7 +1746,7 @@ msgid "States Belief"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:312
-msgctxt "Faith Milestone description"
+msgctxt "Faith Milestone field description"
 msgid "This contact states belief. i.e. they have repented and believed."
 msgstr ""
 
@@ -1711,7 +1756,7 @@ msgid "Can Share Gospel/Testimony"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:316
-msgctxt "Faith Milestone description"
+msgctxt "Faith Milestone field description"
 msgid "This contact has been trained to share the Gospel and their testimony."
 msgstr ""
 
@@ -1721,7 +1766,7 @@ msgid "Sharing Gospel/Testimony"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:320
-msgctxt "Faith Milestone description"
+msgctxt "Faith Milestone field description"
 msgid "This contact is sharing the Gospel and their testimony."
 msgstr ""
 
@@ -1731,7 +1776,7 @@ msgid "Baptized"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:324
-msgctxt "Faith Milestone description"
+msgctxt "Faith Milestone field description"
 msgid "This contact has been baptized."
 msgstr ""
 
@@ -1741,7 +1786,7 @@ msgid "Baptizing"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:328
-msgctxt "Faith Milestone description"
+msgctxt "Faith Milestone field description"
 msgid "This contact is baptizing others."
 msgstr ""
 
@@ -1751,7 +1796,7 @@ msgid "In Church/Group"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:332
-msgctxt "Faith Milestone description"
+msgctxt "Faith Milestone field description"
 msgid "This contact is in a church or group."
 msgstr ""
 
@@ -1761,7 +1806,7 @@ msgid "Starting Churches"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:336
-msgctxt "Faith Milestone description"
+msgctxt "Faith Milestone field description"
 msgid "This contact is planting Churches."
 msgstr ""
 
@@ -1771,7 +1816,7 @@ msgid "Baptism Date"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:344
-msgctxt "Baptism Date description"
+msgctxt "Baptism Date field description"
 msgid ""
 "The date the contact was baptised. For metrics reporting, it is important to "
 "always note the day a person is baptised."
@@ -1843,7 +1888,7 @@ msgid "Reason Not Ready"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:387
-msgctxt "Reason Not Ready description"
+msgctxt "Reason Not Ready field description"
 msgid "The main reason the contact is not ready to be assigned to a user."
 msgstr ""
 
@@ -2362,6 +2407,11 @@ msgctxt "post_type title"
 msgid "Enter the contact name here"
 msgstr ""
 
+#: dt-contacts/contacts-template.php:108
+msgctxt "input field placeholder"
+msgid "Search"
+msgstr ""
+
 #: dt-contacts/contacts-transfer.php:29
 msgid "Contact Transfer Both Ways"
 msgstr ""
@@ -2495,9 +2545,8 @@ msgid "You may only set your permalink settings to \"Post name\""
 msgstr ""
 
 #: dt-core/admin/config-site-defaults.php:285
-#: dt-core/admin/config-site-defaults.php:485 single-contacts.php:715
-#: template-contacts-new.php:41 template-contacts-new.php:45
-#: template-settings.php:103
+#: dt-core/admin/config-site-defaults.php:485 single-contacts.php:716
+#: template-contacts-new.php:41 template-settings.php:103
 msgid "Email"
 msgstr ""
 
@@ -3245,8 +3294,7 @@ msgid "Active contacts, by source and faith milestone"
 msgstr ""
 
 #: dt-metrics/contacts/sources.php:90
-msgid ""
-"This is displaying only the contacts with an \"active\" status right now."
+msgid "This is displaying only the contacts with an 'active' status right now."
 msgstr ""
 
 #: dt-metrics/contacts/sources.php:91
@@ -4090,7 +4138,7 @@ msgstr ""
 
 #: dt-posts/posts.php:389
 #, php-format
-msgctxt "field1 changed to `text`"
+msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
 msgstr ""
 
@@ -4335,7 +4383,7 @@ msgstr ""
 msgid "Connection or Relation"
 msgstr ""
 
-#: single-contacts.php:318 single-contacts.php:667
+#: single-contacts.php:318 single-contacts.php:668
 msgid "Baptized By"
 msgstr ""
 
@@ -4351,11 +4399,12 @@ msgstr ""
 msgid "Coaching"
 msgstr ""
 
-#: single-contacts.php:413 single-contacts.php:685
+#: single-contacts.php:413 single-contacts.php:686
 msgid "Baptism Date"
 msgstr ""
 
 #: single-contacts.php:520
+msgctxt "input field placeholder"
 msgid "Search Tags"
 msgstr ""
 
@@ -4368,6 +4417,7 @@ msgid "Why do you want to close this contact?"
 msgstr ""
 
 #: single-contacts.php:576 single-contacts.php:603 single-contacts.php:629
+msgctxt "button"
 msgid "Confirm"
 msgstr ""
 
@@ -4379,8 +4429,20 @@ msgstr ""
 msgid "Why do you want to pause this contact?"
 msgstr ""
 
-#: single-contacts.php:638
+#: single-contacts.php:610
+msgid "Contact Not Ready"
+msgstr ""
+
+#: single-contacts.php:611
+msgid "Why is this contact `not ready` or unassignable to a user?"
+msgstr ""
+
+#: single-contacts.php:637
 msgid "Create Tag"
+msgstr ""
+
+#: single-contacts.php:638
+msgid "Create a tag and apply it to this contact."
 msgstr ""
 
 #: single-contacts.php:642
@@ -4388,10 +4450,11 @@ msgid "Tag"
 msgstr ""
 
 #: single-contacts.php:644
+msgctxt "input field placeholder"
 msgid "tag"
 msgstr ""
 
-#: single-contacts.php:645 single-contacts.php:718 template-contacts-new.php:29
+#: single-contacts.php:645 single-contacts.php:719 template-contacts-new.php:29
 #: template-groups-new.php:30 template-new-post.php:25
 msgid "This is required"
 msgstr ""
@@ -4400,48 +4463,77 @@ msgstr ""
 msgid "Create and apply tag"
 msgstr ""
 
-#: single-contacts.php:705
-msgid "Create User"
+#: single-contacts.php:664
+msgid "Who was this contact baptized by and when?"
 msgstr ""
 
-#: single-contacts.php:708 single-contacts.php:750
-msgid "This contact already represents a user"
+#: single-contacts.php:705
+msgctxt "Make user modal"
+msgid "Make User From Contact"
+msgstr ""
+
+#: single-contacts.php:708
+msgctxt "Make user modal"
+msgid "This contact is already connected to a user."
 msgstr ""
 
 #: single-contacts.php:711
-msgid "This will invite this contact to Disciple.Tools as a multiplier"
+msgctxt "Make user modal"
+msgid ""
+"This will invite this contact to become a user of this system. By default, "
+"they will be given the role of a 'multiplier'."
 msgstr ""
 
-#: single-contacts.php:720
+#: single-contacts.php:712
+msgctxt "Make user modal"
+msgid ""
+"In the fields below, enter their email address and a 'Display Name' which "
+"they can change later."
+msgstr ""
+
+#: single-contacts.php:721
 msgid "Display Name"
 msgstr ""
 
-#: single-contacts.php:723
+#: single-contacts.php:724
+msgctxt "input field placeholder"
 msgid "Display name"
 msgstr ""
 
-#: single-contacts.php:734
+#: single-contacts.php:735
 msgid "Create user"
 msgstr ""
 
-#: single-contacts.php:747
+#: single-contacts.php:748
 msgid "Link this contact to an existing user"
 msgstr ""
 
-#: single-contacts.php:754
-msgid "First, find the user"
+#: single-contacts.php:751
+msgid "This contact already represents a user."
 msgstr ""
 
-#: single-contacts.php:778
+#: single-contacts.php:755
+msgctxt "Step 1 of link user"
+msgid ""
+"To link to an existing user, first, find the user using the field below."
+msgstr ""
+
+#: single-contacts.php:779
+msgctxt "Step 2 of link user"
 msgid ""
 "To finish the linking, merge this contact with the existing user details."
 msgstr ""
 
 #: single-contacts.php:803
-msgid "Merge this contact with another contact"
+msgid "Merge Contact"
+msgstr ""
+
+#: single-contacts.php:804
+msgid "Merge this contact with another contact."
 msgstr ""
 
 #: single-contacts.php:828
+msgctxt "added to the end of a sentence"
 msgid "selected."
 msgstr ""
 
@@ -4458,10 +4550,12 @@ msgid "This group needs an update"
 msgstr ""
 
 #: single-groups.php:88
+msgctxt "button"
 msgid "Create"
 msgstr ""
 
 #: single-groups.php:93
+msgctxt "button"
 msgid "Select"
 msgstr ""
 
@@ -4470,28 +4564,42 @@ msgid ""
 "No group members yet. Create or Select new members to add them to this group."
 msgstr ""
 
-#: single-groups.php:147 single-groups.php:162
-msgid "Search Groups"
-msgstr ""
-
 #: single-groups.php:370
+msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr ""
 
 #: single-groups.php:371
+msgctxt "Add members modal"
+msgid ""
+"In the 'Members List' field, type the name of an existing contact to add "
+"them to this group."
+msgstr ""
+
+#: single-groups.php:372
 msgid "Members List"
 msgstr ""
 
-#: single-groups.php:379
-msgid "Search Contacts"
-msgstr ""
-
-#: template-contacts-new.php:33 template-contacts-new.php:37
+#: template-contacts-new.php:33
 msgid "Phone number"
 msgstr ""
 
-#: template-contacts-new.php:90 template-contacts-new.php:95
-#: template-groups-new.php:60 template-groups-new.php:65
+#: template-contacts-new.php:37
+msgctxt "input field placeholder"
+msgid "Phone number"
+msgstr ""
+
+#: template-contacts-new.php:45
+msgctxt "input field placeholder"
+msgid "Email"
+msgstr ""
+
+#: template-contacts-new.php:90 template-groups-new.php:60
+msgid "Initial comment"
+msgstr ""
+
+#: template-contacts-new.php:95 template-groups-new.php:65
+msgctxt "input field placeholder"
 msgid "Initial comment"
 msgstr ""
 
