@@ -203,15 +203,15 @@ jQuery(document).ready(function($) {
     accent: true,
     searchOnFocus: true,
     maxItem: 20,
-    source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
-    display: "name",
-    templateValue: "{{name}}",
+    source: TYPEAHEADS.typeaheadPeopleGroupSource('people_groups', 'dt/v1/people-groups/compact/'),
+    display: ["name", "label"],
+    templateValue: "{{label}}",
     dynamic: true,
     multiselect: {
       matchOn: ["ID"],
       data: function () {
         return group.people_groups.map(g=>{
-          return {ID:g.ID, name:g.post_title}
+          return {ID:g.ID, name:g.post_title, label: g.label}
         })
       },
       callback: {
@@ -685,14 +685,12 @@ jQuery(document).ready(function($) {
         htmlField.append(`<li id="no-${_.escape( connection )}">${_.escape( wpApiGroupsSettings.translations["not-set"][connection] )}</li>`)
       } else {
         group[connection].forEach(field=>{
-          let title = `${_.escape(field.post_title||field.label)}`
+          let title = `${_.escape(field.label || field.post_title )}`
           if ( connection === "leaders" ){
             title = `<a href="${_.escape(field.permalink)}">${_.escape( title )}</a>`
           }
           htmlField.append(`<li class="details-list ${_.escape(field.key || field.id)}">
-            ${title}
-              <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/verified.svg"/>
-              <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/broken.svg"/>
+              ${title}
             </li>
           `)
         })
