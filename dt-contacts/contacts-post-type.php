@@ -475,7 +475,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['sources'] = [
             'name'        => _x( 'Sources', 'field name', 'disciple_tools' ),
-            'description' => _x( 'List of possible sources for this contact.', 'Sources field description', 'disciple_tools' ),
+            'description' => _x( 'The website, event or location this contact came from.', 'Sources field description', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => $sources_default,
             'section'     => 'misc',
@@ -484,7 +484,6 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields["source_details"] = [
             "name" => _x( "Source Details", 'field name', 'disciple_tools' ),
-            'description' => _x( 'Type of source of this contact.', 'field description', 'disciple_tools' ),
             'type' => 'text',
             'default' => '',
             'section'     => 'misc',
@@ -561,10 +560,10 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["duplicate_data"] = [
             "name" => _x( 'Duplicates', 'duplicate_data field name', 'disciple_tools' ),
-            'description' => _x( 'Possible contact duplicates', 'duplicate_data field description', 'disciple_tools' ),
             'type' => 'array',
             'default' => [],
-            'section' => 'admin'
+            'section' => 'admin',
+            "hidden" => true
         ];
         $fields['tags'] = [
             'name'        => _x( 'Tags', 'field name', 'disciple_tools' ),
@@ -575,7 +574,6 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["follow"] = [
             'name'        => _x( 'Follow', 'field name', 'disciple_tools' ),
-            'description' => _x( 'Users following this contact', 'field description', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
@@ -583,7 +581,6 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["unfollow"] = [
             'name'        => _x( 'Un-Follow', 'field name', 'disciple_tools' ),
-            'description' => _x( 'Users not following this contact', 'field description', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
@@ -591,7 +588,6 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["duplicate_of"] = [
             "name" => _x( "Duplicate of", 'field name', 'disciple_tools' ),
-            "description" => _x( "Duplicate of another contact.", 'field description', 'disciple_tools' ),
             "type" => "text",
             "default" => '',
             "hidden" => true
@@ -605,42 +601,42 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["coached_by"] = [
             "name" => _x( "Coached by", 'field name', 'disciple_tools' ),
-            "description" => _x( "This contact is being coached by this other contact.", 'field description', 'disciple_tools' ),
+            "description" => _x( "Who is coaching this contact", 'field description', 'disciple_tools' ),
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "contacts_to_contacts"
         ];
         $fields["coaching"] = [
             "name" => _x( "Coached", 'field name', 'disciple_tools' ),
-            "description" => _x( "This contact is coaching this other contact.", 'field description', 'disciple_tools' ),
+            "description" => _x( "Who is this contact coaching", 'field description', 'disciple_tools' ),
             "type" => "connection",
             "p2p_direction" => "to",
             "p2p_key" => "contacts_to_contacts"
         ];
         $fields["baptized_by"] = [
             "name" => _x( "Baptized by", 'field name', 'disciple_tools' ),
-            "description" => _x( "This contact has been baptised by this other contact.", 'field description', 'disciple_tools' ),
+            "description" => _x( "Who baptized this contact", 'field description', 'disciple_tools' ),
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "baptizer_to_baptized"
         ];
         $fields["baptized"] = [
             "name" => _x( "Baptized", 'field name', 'disciple_tools' ),
-            "description" => _x( "This contact has baptised this other contact.", 'field description', 'disciple_tools' ),
+            "description" => _x( "Who this contact has baptized", 'field description', 'disciple_tools' ),
             "type" => "connection",
             "p2p_direction" => "to",
             "p2p_key" => "baptizer_to_baptized"
         ];
         $fields["people_groups"] = [
             "name" => _x( "People Groups", 'field name', 'disciple_tools' ),
-            "description" => _x( "People Groups this contact is in.", 'field description', 'disciple_tools' ),
+            "description" => _x( "People Groups this contact belongs to.", 'field description', 'disciple_tools' ),
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "contacts_to_peoplegroups"
         ];
         $fields["groups"] = [
             "name" => _x( "Groups", 'field name', 'disciple_tools' ),
-            "description" => _x( "Groups this contact is connected to.", 'field description', 'disciple_tools' ),
+            "description" => _x( "Groups this contact is a member of.", 'field description', 'disciple_tools' ),
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "contacts_to_groups"
@@ -660,9 +656,9 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['location_lnglat'] = [
             'name'        => _x( 'Coordinates', 'field name', 'disciple_tools' ),
-            'description' => _x( 'Longtitude and Latitude coordinates of the location.', 'field description', 'disciple_tools' ),
             'type'        => 'location',
             'default'     => [],
+            'hidden' => true
         ];
         $fields['reminders'] = [
             'name' => _x( 'Reminders', 'field name', 'disciple_tools' ),
@@ -865,6 +861,7 @@ class Disciple_Tools_Contact_Post_Type
                     "home"    => [ "label" => _x( 'Home', 'field label', 'disciple_tools' ) ],
                     "other"   => [ "label" => _x( 'Other', 'field label', 'disciple_tools' ) ],
                 ],
+                "description" => _x( "A phone number for this contact.", 'contact information description', 'disciple_tools' )
             ],
             "email"     => [
                 "label" => _x( 'Email', 'field label', 'disciple_tools' ),
@@ -874,10 +871,12 @@ class Disciple_Tools_Contact_Post_Type
                     "home"    => [ "label" => _x( 'Home', 'field label', 'disciple_tools' ) ],
                     "other"   => [ "label" => _x( 'Other', 'field label', 'disciple_tools' ) ],
                 ],
+                "description" => _x( "An email address for this contact", 'contact information description', 'disciple_tools' )
             ],
             "address" => [
                 "label" => _x( "Address", 'field label', 'disciple_tools' ),
-                "types" => dt_get_option( "dt_site_custom_lists" )["contact_address_types"]
+                "types" => dt_get_option( "dt_site_custom_lists" )["contact_address_types"],
+                "description" => _x( "A physical address for this contact", 'contact information description', 'disciple_tools' )
             ],
             "facebook"  => [
                 "label" => __( 'Facebook', 'disciple_tools' ),
