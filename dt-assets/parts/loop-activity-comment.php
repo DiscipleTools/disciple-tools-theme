@@ -22,7 +22,7 @@
         <div class="cell grid-x grid-margin-x" id="add-comment-section">
             <div class="auto cell">
                 <textarea class="mention" dir="auto" id="comment-input"
-                          placeholder="<?php esc_html_e( "Write your comment or note here", 'disciple_tools' ) ?>"
+                          placeholder="<?php echo esc_html_x( "Write your comment or note here", 'input field placeholder', 'disciple_tools' ) ?>"
                 ></textarea>
             </div>
         </div>

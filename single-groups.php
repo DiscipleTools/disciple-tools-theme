@@ -85,12 +85,12 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                         <?php esc_html_e( "Member List", 'disciple_tools' ) ?>
                                     </div>
                                     <button type="button" class="create-new-contact" style="height: 36px;">
-                                        <?php esc_html_e( "Create", 'disciple_tools' ) ?>
+                                        <?php echo esc_html_x( 'Create', 'button', 'disciple_tools' )?>
                                         <img style="height: 14px; width: 14px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                                     </button>
                                     <button type="button"
                                             class="add-new-member">
-                                        <?php esc_html_e( "Select", 'disciple_tools' ) ?>
+                                        <?php echo esc_html_x( 'Select', 'button', 'disciple_tools' )?>
                                         <img style="height: 16px; width: 16px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group.svg' ) ?>"/>
                                     </button>
                                 </div>
@@ -144,8 +144,8 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                         <div class="typeahead__field">
                                         <span class="typeahead__query">
                                             <input class="js-typeahead-parent_groups input-height"
-                                                   name="groups[query]" placeholder="<?php esc_html_e( "Search Groups", 'disciple_tools' ) ?>"
-                                                   autocomplete="off">
+                                                    name="groups[query]" placeholder="<?php echo esc_html_x( "Search Groups", 'input field placeholder', 'disciple_tools' ) ?>"
+                                                    autocomplete="off">
                                         </span>
                                         </div>
                                     </div>
@@ -159,7 +159,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                         <div class="typeahead__field">
                                         <span class="typeahead__query">
                                             <input class="js-typeahead-peer_groups input-height"
-                                                   name="groups[query]" placeholder="<?php esc_html_e( "Search Groups", 'disciple_tools' ) ?>"
+                                                   name="groups[query]" placeholder="<?php echo esc_html_x( "Search Groups", 'input field placeholder', 'disciple_tools' ) ?>"
                                                    autocomplete="off">
                                         </span>
                                         </div>
@@ -174,8 +174,8 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                         <div class="typeahead__field">
                                         <span class="typeahead__query">
                                             <input class="js-typeahead-child_groups input-height"
-                                                   name="child_groups[query]" placeholder="<?php esc_html_e( "Search groups", 'disciple_tools' ) ?>"
-                                                   autocomplete="off">
+                                                    name="groups[query]" placeholder="<?php echo esc_html_x( "Search Groups", 'input field placeholder', 'disciple_tools' ) ?>"
+                                                    autocomplete="off">
                                         </span>
                                             <span class="typeahead__button">
                                             <button type="button" data-open="create-group-modal" class="create-new-group typeahead__image_button input-height">
@@ -367,7 +367,8 @@ if ( ! current_user_can( 'access_groups' ) ) {
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-contact' ); ?>
 
     <div class="reveal" id="add-new-group-member" data-reveal style="min-height:500px">
-        <p class="lead"><?php esc_html_e( 'Add members from existing contacts', 'disciple_tools' )?></p>
+        <h3><?php echo esc_html_x( "Add members from existing contacts", 'Add members modal', 'disciple_tools' )?></h3>
+        <p><?php echo esc_html_x( "In the 'Members List' field, type the name of an existing contact to add them to this group.", 'Add members modal', 'disciple_tools' )?></p>
         <div class="section-subheader"><?php esc_html_e( "Members List", 'disciple_tools' ) ?></div>
         <div class="members">
             <var id="members-result-container" class="result-container"></var>
@@ -376,7 +377,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                     <div class="typeahead__field">
                         <span class="typeahead__query">
                             <input class="js-typeahead-members"
-                                   name="members[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
+                                   name="members[query]" placeholder="<?php echo esc_html_x( "Search Contacts", 'input field placeholder', 'disciple_tools' ) ?>"
                                    autocomplete="off">
                         </span>
                     </div>
@@ -388,7 +389,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                 <hr size="1px">
                 <span style="float:right; bottom: 0;">
                     <button class="button" data-close aria-label="Close reveal" type="button">
-                        <?php esc_html_e( 'Close', 'disciple_tools' )?>
+                        <?php echo esc_html_x( 'Close', 'button', 'disciple_tools' )?>
                     </button>
                 </span>
             </div>

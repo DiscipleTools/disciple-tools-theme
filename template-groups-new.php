@@ -26,7 +26,7 @@ $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_s
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
                 </label>
-                <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
+                <input name="title" type="text" placeholder="<?php echo esc_html_x( "Name", 'input field placeholder', 'disciple_tools' ); ?>" required aria-describedby="name-help-text">
                 <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
 
                 <div class="section-subheader">
@@ -62,11 +62,11 @@ $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_s
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
 
-                    <textarea name="initial_comment" dir="auto" placeholder="<?php esc_html_e( "Initial comment", "disciple_tools" ); ?>"></textarea>
+                    <textarea name="initial_comment" dir="auto" placeholder="<?php echo esc_html_x( "Initial comment", 'input field placeholder', 'disciple_tools' ); ?>"></textarea>
                 </label>
 -->
                 <div style="text-align: center">
-                    <a href="/groups/" class="button small" title="<?php esc_html_e( 'Cancel and return to the Groups List page', 'disciple_tools' )?>"><?php esc_html_e( 'Cancel', 'disciple_tools' )?></a>
+                    <a href="/groups/" class="button small" title="<?php esc_html_e( 'Cancel and return to the Groups List page', 'disciple_tools' )?>"><?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?></a>
                     <button class="button loader js-create-group-button dt-green" type="submit" disabled title="<?php esc_html_e( 'Save and continue editing the new group', 'disciple_tools' )?>"><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
                 </div>
             </form>

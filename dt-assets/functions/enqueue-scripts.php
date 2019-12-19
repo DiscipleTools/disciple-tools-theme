@@ -312,7 +312,7 @@ function dt_site_scripts() {
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'txt_infoEmpty' => __( 'Showing 0 to 0 of 0 entries', 'disciple_tools' ),
-            'txt_infoFiltered' => _x( '(filtered from _MAX_ total entries)', 'just copy `_MAX_`', 'disciple_tools' ),
+            'txt_infoFiltered' => _x( "(filtered from _MAX_ total entries)", "Just copy '_MAX_'", 'disciple_tools' ),
             'custom_fields_settings' => $custom_field_settings,
             'template_directory_uri' => get_template_directory_uri(),
             'current_user_login' => wp_get_current_user()->user_login,
