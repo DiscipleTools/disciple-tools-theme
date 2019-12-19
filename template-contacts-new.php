@@ -26,7 +26,7 @@ get_header();
                     </button>
                     <input name="title" type="text" placeholder="<?php echo esc_html_x( "Name", 'input field placeholder', 'disciple_tools' ); ?>" required dir="auto" aria-describedby="name-help-text">
                 </label>
-                <p class="help-text" id="name-help-text"><?php echo esc_html_x( "This is required", "disciple_tools" ); ?></p>
+                <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
 
                 <label>
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/phone.svg' ?>">
