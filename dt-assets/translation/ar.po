@@ -2727,7 +2727,7 @@ msgstr ""
 #: dt-core/admin/config-site-defaults.php:694
 msgctxt "either rtl or ltr"
 msgid "ltr"
-msgstr ""
+msgstr "rtl"
 
 #: dt-core/admin/config-site-defaults.php:721
 msgid "Someone has requested a password reset for the following account:"
