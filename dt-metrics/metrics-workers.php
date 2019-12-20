@@ -198,7 +198,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         $days = 31;
         $last_30_days = [];
         while ( $days > 0 ) {
-            $last_30_days[] = date( 'Y-m-d', strtotime( '- ' . $days . ' days' ) );
+            $last_30_days[] = gmdate( 'Y-m-d', strtotime( '- ' . $days . ' days' ) );
             $days--;
         }
 
@@ -215,7 +215,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             }
 
             $chart[] = [
-                'date' => date( 'M d', strtotime( $day ) ),
+                'date' => gmdate( 'M d', strtotime( $day ) ),
                 'value' => (int) $total
             ];
         }
@@ -429,11 +429,15 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             from $wpdb->users as users
             INNER JOIN $wpdb->usermeta as um on ( um.user_id = users.ID AND um.meta_key = 'wp_capabilities' AND um.meta_value LIKE '%multiplier%' )
             INNER JOIN $wpdb->postmeta as pm on (pm.meta_key = 'assigned_to' and pm.meta_value = CONCAT( 'user-', users.ID ) )
-            INNER JOIN $wpdb->postmeta as type on (type.post_id = pm.post_id and type.meta_key = 'type' and ( type.meta_value = 'media' OR type.meta_value = 'next_gen' ) )
-            LEFT JOIN $wpdb->postmeta as met on (met.post_id = type.post_id and met.meta_key = 'seeker_path' and ( met.meta_value = 'met' OR met.meta_value = 'ongoing' OR met.meta_value = 'coaching' ) )
-            LEFT JOIN $wpdb->postmeta as active on (active.post_id = type.post_id and active.meta_key = 'overall_status' and active.meta_value = 'active' )
-            LEFT JOIN $wpdb->postmeta as new_assigned on (new_assigned.post_id = type.post_id and new_assigned.meta_key = 'overall_status' and new_assigned.meta_value = 'assigned' )
-            LEFT JOIN $wpdb->postmeta as update_needed on (update_needed.post_id = type.post_id and update_needed.meta_key = 'requires_update' and update_needed.meta_value = '1' )
+            INNER JOIN $wpdb->posts as p on ( p.ID = pm.post_id and p.post_type = 'contacts' )
+            LEFT JOIN $wpdb->postmeta as met on (met.post_id = p.ID and met.meta_key = 'seeker_path' and ( met.meta_value = 'met' OR met.meta_value = 'ongoing' OR met.meta_value = 'coaching' ) )
+            LEFT JOIN $wpdb->postmeta as active on (active.post_id = p.ID and active.meta_key = 'overall_status' and active.meta_value = 'active' )
+            LEFT JOIN $wpdb->postmeta as new_assigned on (new_assigned.post_id = p.ID and new_assigned.meta_key = 'overall_status' and new_assigned.meta_value = 'assigned' )
+            LEFT JOIN $wpdb->postmeta as update_needed on (update_needed.post_id = p.ID and update_needed.meta_key = 'requires_update' and update_needed.meta_value = '1' )
+            WHERE p.ID NOT IN (
+                SELECT post_id FROM $wpdb->postmeta
+                WHERE meta_key = 'type' AND meta_value = 'user'
+                GROUP BY post_id )
             GROUP by users.ID",
         ARRAY_A);
 
@@ -501,7 +505,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             foreach ( $last_assigned as $last ){
                 if ( $worker_value["ID"] == $last["ID"] ){
 
-                    $workers[$worker_i]["last_date_assigned"] = date( 'Y-m-d', $last["last_date_assigned"] );
+                    $workers[$worker_i]["last_date_assigned"] = gmdate( 'Y-m-d', $last["last_date_assigned"] );
                 }
             }
         }

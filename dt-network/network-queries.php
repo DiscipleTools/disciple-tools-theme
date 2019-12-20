@@ -9,22 +9,21 @@ class Disciple_Tools_Network_Queries {
          * return array
          */
         $results = $wpdb->get_results("
-                SELECT
-                  b.meta_value as status,
-                  count(a.ID) as count
-                FROM $wpdb->posts as a
-                  JOIN $wpdb->postmeta as b
-                    ON a.ID = b.post_id
-                       AND b.meta_key = 'overall_status'
-                WHERE a.post_status = 'publish'
-                      AND a.post_type = 'contacts'
-                      AND a.ID NOT IN (
-                  SELECT bb.post_id
-                  FROM $wpdb->postmeta as bb
-                  WHERE meta_key = 'corresponds_to_user'
-                        AND meta_value != 0
-                  GROUP BY bb.post_id )
-                GROUP BY b.meta_value
+            SELECT
+                b.meta_value as status,
+                count(a.ID) as count
+            FROM $wpdb->posts as a
+            JOIN $wpdb->postmeta as b
+                ON a.ID = b.post_id
+                AND b.meta_key = 'overall_status'
+            WHERE a.post_status = 'publish'
+            AND a.post_type = 'contacts'
+            AND a.ID NOT IN (
+                SELECT post_id FROM $wpdb->postmeta
+                WHERE meta_key = 'type' AND meta_value = 'user'
+                GROUP BY post_id
+            )
+            GROUP BY b.meta_value
             ", ARRAY_A );
 
         if ( empty( $results ) ) {
@@ -41,18 +40,17 @@ class Disciple_Tools_Network_Queries {
          * return int
          */
         $results = $wpdb->get_var("
-                    SELECT
-                      count(a.ID) as count
-                    FROM $wpdb->posts as a
-                    WHERE a.post_status = 'publish'
-                          AND a.post_type = 'contacts'
-                          AND a.ID NOT IN (
-                      SELECT bb.post_id
-                      FROM $wpdb->postmeta as bb
-                      WHERE meta_key = 'corresponds_to_user'
-                            AND meta_value != 0
-                      GROUP BY bb.post_id )
-                ");
+            SELECT
+                count(a.ID) as count
+            FROM $wpdb->posts as a
+            WHERE a.post_status = 'publish'
+            AND a.post_type = 'contacts'
+            AND a.ID NOT IN (
+                SELECT post_id FROM $wpdb->postmeta
+                WHERE meta_key = 'type' AND meta_value = 'user'
+                GROUP BY post_id
+            )
+        ");
         if ( empty( $results ) ) {
             $results = 0;
         }

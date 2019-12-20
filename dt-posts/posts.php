@@ -25,19 +25,19 @@ class Disciple_Tools_Posts
      */
     public function __construct() {
         self::$connection_types = [
-            "locations" => [ "name" => __( "Locations", "disciple_tools" ) ],
-            "groups" => [ "name" => __( "Groups", "disciple_tools" ) ],
-            "people_groups" => [ "name" => __( "People Groups", "disciple_tools" ) ],
-            "baptized_by" => [ "name" => __( "Baptized By", "disciple_tools" ) ],
-            "baptized" => [ "name" => __( "Baptized", "disciple_tools" ) ],
-            "coached_by" => [ "name" => __( "Coached By", "disciple_tools" ) ],
-            "coaching" => [ "name" => __( "Coaching", "disciple_tools" ) ],
-            "subassigned" => [ "name" => __( "Sub Assigned", "disciple_tools" ) ],
-            "leaders" => [ "name" => __( "Leaders", "disciple_tools" ) ],
-            "coaches" => [ "name" => __( "Coaches/Church planters", "disciple_tools" ) ],
-            "parent_groups" => [ "name" => __( "Parent Groups", "disciple_tools" ) ],
-            "child_groups" => [ "name" => __( "Child Groups", "disciple_tools" ) ],
-            "peer_groups" => [ "name" => __( "Peer Groups", "disciple_tools" ) ],
+            "locations" => [ "name" => _x( "Locations", 'label name', 'disciple_tools' ) ],
+            "groups" => [ "name" => _x( "Groups", 'label name', 'disciple_tools' ) ],
+            "people_groups" => [ "name" => _x( "People Groups", 'label name', 'disciple_tools' ) ],
+            "baptized_by" => [ "name" => _x( "Baptized By", 'label name', 'disciple_tools' ) ],
+            "baptized" => [ "name" => _x( "Baptized", 'label name', 'disciple_tools' ) ],
+            "coached_by" => [ "name" => _x( "Coached By", 'label name', 'disciple_tools' ) ],
+            "coaching" => [ "name" => _x( "Coaching", 'label name', 'disciple_tools' ) ],
+            "subassigned" => [ "name" => _x( "Sub Assigned", 'label name', 'disciple_tools' ) ],
+            "leaders" => [ "name" => _x( "Leaders", 'label name', 'disciple_tools' ) ],
+            "coaches" => [ "name" => _x( "Coaches/Church Planters", 'label name', 'disciple_tools' ) ],
+            "parent_groups" => [ "name" => _x( "Parent Groups", 'label name', 'disciple_tools' ) ],
+            "child_groups" => [ "name" => _x( "Child Groups", 'label name', 'disciple_tools' ) ],
+            "peer_groups" => [ "name" => _x( "Peer Groups", 'label name', 'disciple_tools' ) ],
         ];
         self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
     }
@@ -386,7 +386,7 @@ class Disciple_Tools_Posts
                 }
                 if ( $fields[$activity->meta_key]["type"] === "text"){
                     if ( !empty( $activity->meta_value ) && !empty( $activity->old_value ) ){
-                        $message = sprintf( _x( '%1$s changed to %2$s', 'field1 changed to: text', 'disciple_tools' ), $fields[$activity->meta_key]["name"], $activity->meta_value );
+                        $message = sprintf( _x( '%1$s changed to %2$s', "field1 changed to 'text'", 'disciple_tools' ), $fields[$activity->meta_key]["name"], $activity->meta_value );
                     }
                 }
                 if ( $fields[$activity->meta_key]["type"] === "multi_select" ){
@@ -423,7 +423,7 @@ class Disciple_Tools_Posts
                 if ( $fields[$activity->meta_key]["type"] === "location" ){
                     if ( $activity->meta_value === "value_deleted" ){
                         $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $activity->old_value );
-                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 added to locations', 'disciple_tools' ), $location_grid ? $location_grid["name"] : $activity->old_value );
+                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $location_grid ? $location_grid["name"] : $activity->old_value );
                     } else {
                         $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $activity->meta_value );
                         $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $location_grid ? $location_grid["name"] : $activity->meta_value );
@@ -447,10 +447,10 @@ class Disciple_Tools_Posts
                                     continue;
                                 }
                                 if ($k === "verified") {
-                                    $object_note .= $v ? __( "verified", 'disciple_tools' ) : __( "not verified", 'disciple_tools' );
+                                    $object_note .= $v ? _x( "verified", 'message', 'disciple_tools' ) : _x( "not verified", 'message', 'disciple_tools' );
                                 }
                                 if ($k === "invalid") {
-                                    $object_note .= $v ? __( "invalidated", 'disciple_tools' ) : __( "not invalidated", 'disciple_tools' );
+                                    $object_note .= $v ? _x( "invalidated", 'message', 'disciple_tools' ) : _x( "not invalidated", 'message', 'disciple_tools' );
                                 }
                                 $object_note .= ', ';
                             }
@@ -473,26 +473,26 @@ class Disciple_Tools_Posts
                         }
                     }
                 } else if ( $activity->meta_key == "title" ){
-                    $message = sprintf( __( "Name changed to: %s", 'disciple_tools' ), $activity->meta_value );
+                    $message = sprintf( _x( "Name changed to: %s", 'message', 'disciple_tools' ), $activity->meta_value );
                 } else if ( $activity->meta_key === "_sample"){
-                    $message = __( "Created from Demo Plugin", "disciple_tools" );
+                    $message = _x( "Created from Demo Plugin", 'message', 'disciple_tools' );
                 } else {
                     $message = $activity->meta_key . ": " . $activity->meta_value;
                 }
             }
         } elseif ( $activity->action === "assignment_decline" ){
             $user = get_user_by( "ID", $activity->user_id );
-            $message = sprintf( __( "%s declined assignment", 'disciple_tools' ), $user->display_name ?? __( "A user", "disciple_tools" ) );
+            $message = sprintf( _x( "%s declined assignment", 'message', 'disciple_tools' ), $user->display_name ?? _x( "A user", 'message', 'disciple_tools' ) );
         } elseif ( $activity->action === "assignment_accepted" ){
             $user = get_user_by( "ID", $activity->user_id );
-            $message = sprintf( __( "%s accepted assignment", 'disciple_tools' ), $user->display_name ?? __( "A user", "disciple_tools" ) );
+            $message = sprintf( _x( "%s accepted assignment", 'message', 'disciple_tools' ), $user->display_name ?? _x( "A user", 'message', 'disciple_tools' ) );
         } elseif ( $activity->object_subtype === "p2p" ){
             $message = self::format_connection_message( $activity->meta_id, $activity, $activity->action );
         } elseif ( $activity->object_subtype === "share" ){
             if ($activity->action === "share"){
-                $message = sprintf( __( "Shared with %s", "disciple_tools" ), dt_get_user_display_name( $activity->meta_value ) );
+                $message = sprintf( _x( "Shared with %s", 'message', 'disciple_tools' ), dt_get_user_display_name( $activity->meta_value ) );
             } else if ( $activity->action === "remove" ){
-                $message = sprintf( __( "Unshared with %s", "disciple_tools" ), dt_get_user_display_name( $activity->meta_value ) );
+                $message = sprintf( _x( "Unshared with %s", 'message', 'disciple_tools' ), dt_get_user_display_name( $activity->meta_value ) );
             }
         } else {
             $message = $activity->object_note;
@@ -511,7 +511,7 @@ class Disciple_Tools_Posts
      */
     public static function get_viewable( string $post_type, int $most_recent = 0 ) {
         if ( !self::can_access( $post_type ) ) {
-            return new WP_Error( __FUNCTION__, sprintf( "You do not have access to these %s", $post_type ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, sprintf( _x( "You do not have access to these %s", 'message', 'disciple_tools' ), $post_type ), [ 'status' => 403 ] );
         }
         $current_user = wp_get_current_user();
 
@@ -717,10 +717,10 @@ class Disciple_Tools_Posts
                         } else {
                             break;
                         }
-                        if ( strpos( $access_joins, "assigned_to" ) === false ){
-                            $access_joins .= "INNER JOIN $wpdb->postmeta AS assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id ) ";
+                        if ( !empty( $access_query ) ){
+                            $access_query .= $connector;
                         }
-                        $access_query .= ( !empty( $access_query ) ? $connector : "" ) . ( $connector == "AND" ? " ( " : "" ) . " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value = '" . esc_sql( $assigned_to ) . "' ) " . ( $connector == "AND" ? " ) " : "" );
+                        $access_query .= ( $connector == "AND" ? " ( " : "" ) . " ( $wpdb->posts.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'assigned_to' AND meta_value = '" . esc_sql( $assigned_to ) . "' ) ) " . ( $connector == "AND" ? " ) " : "" );
 
                     }
                 } else {
@@ -780,8 +780,8 @@ class Disciple_Tools_Posts
         if ( !empty( $search )){
             $inner_joins .= "INNER JOIN $wpdb->postmeta AS search ON ( $wpdb->posts.ID = search.post_id ) ";
             $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
-            $meta_query .= "AND ( ( $wpdb->posts.post_title LIKE '%%" . esc_sql( $search ) . "%%' ) 
-                OR ( search.meta_key LIKE 'contact_%' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0 ) 
+            $meta_query .= "AND ( ( $wpdb->posts.post_title LIKE '%%" . esc_sql( $search ) . "%%' )
+                OR ( search.meta_key LIKE 'contact_%' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0 )
                 OR ( search.meta_key LIKE 'contact_phone_%' AND REPLACE( '" . esc_sql( $search ) . "', ' ', '') = REPLACE( search.meta_value, ' ', '') )";
             foreach ( $other_search_fields as $field ){
                 $meta_query .= " OR ( search.meta_key LIKE '" . esc_sql( $field ) . "' AND search.meta_value LIKE '%%" . esc_sql( $search ) . "%%'   ) ";
@@ -795,28 +795,44 @@ class Disciple_Tools_Posts
                 $location_grid_ids = dt_array_to_sql( $query_value );
                 $location_sql .= "
                     AND (
-                        location_grid_counter.admin0_grid_id IN (" . $location_grid_ids .") 
+                        location_grid_counter.admin0_grid_id IN (" . $location_grid_ids .")
                         OR location_grid_counter.admin1_grid_id IN (" . $location_grid_ids .")
                         OR location_grid_counter.admin2_grid_id IN (" . $location_grid_ids .")
                         OR location_grid_counter.admin3_grid_id IN (" . $location_grid_ids .")
                         OR location_grid_counter.grid_id IN (" . $location_grid_ids .")
                     )";
             }
-            if ( in_array( $query_key, array_keys( self::$connection_types ) ) ) {
-                if ( $query_key === "subassigned" ) {
-                    $subassigned_sql = "";
-                    foreach ( $query_value as $subassigned ) {
-                        $l = get_post( $subassigned );
-                        if ( $l && $l->post_type === "contacts" ){
-                            $subassigned_sql .= empty( $subassigned_sql ) ? $l->ID : ( ",".$l->ID );
-                        }
+            if ( isset( $post_fields[$query_key]["type"] ) && $post_fields[$query_key]["type"] === "connection" ) {
+
+                $connection_ids = "";
+                foreach ( $query_value as $connection ) {
+                    if ( $connection === "me" ){
+                        $contact_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
+                        $l = get_post( $contact_id );
+                    } else {
+                        $l = get_post( $connection );
                     }
-                    if ( !empty( $subassigned_sql ) ){
+                    if ( $l ){
+                        $connection_ids .= empty( $connection_ids ) ? $l->ID : ( ",".$l->ID );
+                    }
+                }
+                if ( !empty( $connection_ids ) ){
+                    if ( $query_key === "subassigned" ) {
                         if ( !empty( $access_query ) && in_array( "subassigned", $combine ) ){
-                            $access_query .= "OR ( from_p2p.p2p_type = 'contacts_to_subassigned' AND from_p2p.p2p_from in (" . esc_sql( $subassigned_sql ) .") )";
+                            $access_query .= "OR ( from_p2p.p2p_type = 'contacts_to_subassigned' AND from_p2p.p2p_from in (" . esc_sql( $connection_ids ) .") )";
                             $connections_sql_from .= " ";
                         } else {
-                            $connections_sql_from .= "AND ( from_p2p.p2p_type = 'contacts_to_subassigned' AND from_p2p.p2p_from in (" . esc_sql( $subassigned_sql ) .") )";
+                            $connections_sql_from .= "AND ( from_p2p.p2p_type = 'contacts_to_subassigned' AND from_p2p.p2p_from in (" . esc_sql( $connection_ids ) .") )";
+                        }
+                    } else {
+                        if ( $post_fields[$query_key]["p2p_direction"] === "to" ){
+                            $meta_query .= " AND ( $wpdb->posts.ID IN (
+                                SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $post_fields[$query_key]["p2p_key"] ) . "' AND p2p_from IN (" . esc_sql( $connection_ids ) .")
+                            ) ) ";
+                        } else {
+                            $meta_query .= " AND ( $wpdb->posts.ID IN (
+                                SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $post_fields[$query_key]["p2p_key"] ) . "' AND p2p_to IN (" . esc_sql( $connection_ids ) .")
+                            ) ) ";
                         }
                     }
                 }
@@ -850,13 +866,11 @@ class Disciple_Tools_Posts
         $sort_join = "";
         $post_type_check = "";
         if ( $post_type == "contacts" ){
-            $inner_joins .= " LEFT JOIN $wpdb->postmeta as contact_type ON ( $wpdb->posts.ID = contact_type.post_id AND contact_type.meta_key = 'type' ) ";
-            $post_type_check = " AND (
-                ( contact_type.meta_key = 'type' AND contact_type.meta_value = 'media' )
-                OR
-                ( contact_type.meta_key = 'type' AND contact_type.meta_value = 'next_gen' )
-                OR ( contact_type.meta_key IS NULL )
-            ) ";
+            $post_type_check = "AND $wpdb->posts.ID NOT IN (
+                SELECT post_id FROM $wpdb->postmeta
+                WHERE meta_key = 'type' AND meta_value = 'user'
+                GROUP BY post_id
+            )";
             $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
             if ( $sort === "overall_status" || $sort === "seeker_path" ) {
                 $keys = array_keys( $contact_fields[$sort]["default"] );
@@ -905,7 +919,7 @@ class Disciple_Tools_Posts
         } elseif ( $sort === "locations" || $sort === "groups" || $sort === "leaders" ){
             $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = $wpdb->posts.ID AND sort.p2p_type = '" . $post_type . "_to_$sort' )
             LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_to)";
-            $sort_sql = "ISNULL(p2p_post.post_name), p2p_post.post_name $sort_dir";
+            $sort_sql = "ISNULL(p2p_post.post_title), p2p_post.post_title $sort_dir";
         } elseif ( $sort === "post_date" ){
             $sort_sql = "$wpdb->posts.post_date  " . $sort_dir;
         } elseif ( $sort === "location_grid" ){
@@ -913,17 +927,21 @@ class Disciple_Tools_Posts
             $sort_sql = "sort.meta_value $sort_dir";
         }
 
+        $group_by_sql = "";
+        if ( strpos( $sort_sql, 'sort.meta_value' ) != false ){
+            $group_by_sql = ", sort.meta_value";
+        }
 
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
         $prepared_sql = $wpdb->prepare("
             SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, $wpdb->posts.post_title, $wpdb->posts.post_type FROM $wpdb->posts
-            " . $sort_join . " " . $inner_joins . " " . $share_joins . " " . $access_joins . "
+            " . $inner_joins . " " . $share_joins . " " . $access_joins . " " . $sort_join . "
             WHERE 1=1
             " . $post_type_check . " " . $connections_sql_to . " ". $connections_sql_from . " " . $location_sql . " " . $meta_query . " " . $includes_query . " " . $access_query . "
             AND $wpdb->posts.post_type = %s
             AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
-            GROUP BY $wpdb->posts.ID
+            GROUP BY $wpdb->posts.ID " . $group_by_sql . "
             ORDER BY " . $sort_sql . "
             LIMIT %d, " . $limit . "
             ",
@@ -1218,7 +1236,7 @@ class Disciple_Tools_Posts
                             if ( isset( $value["delete"] ) && $value["delete"] == true ) {
                                 //delete user meta
                                 $delete = $wpdb->query( $wpdb->prepare( "
-                                DELETE FROM $wpdb->dt_post_user_meta 
+                                DELETE FROM $wpdb->dt_post_user_meta
                                 WHERE id = %s
                                     AND user_id = %s
                                     AND post_id = %s
@@ -1607,7 +1625,7 @@ class Disciple_Tools_Posts
      * @return array
      */
     public static function filter_wp_post_object_fields( $post ){
-        return [
+        $filtered_post = [
             "ID" => $post->ID,
             "post_type" => $post->post_type,
             "post_date_gmt" => $post->post_date_gmt,
@@ -1615,6 +1633,14 @@ class Disciple_Tools_Posts
             "post_title" => $post->post_title,
             "permalink" => get_permalink( $post->ID )
         ];
+        if ( $post->post_type === "peoplegroups" ){
+            $locale = get_locale();
+            $translation = get_post_meta( $post->ID, $locale, true );
+            $label  = ( $translation ? $translation : $post->post_title );
+            $filtered_post["label"] = $label;
+        }
+
+        return $filtered_post;
     }
 
     public static function format_post_contact_details( $post_settings, $meta_fields, $type, $key, $value ) {
@@ -1724,24 +1750,24 @@ class Disciple_Tools_Metabox_Address
         switch ( $post_type ) {
             case 'contacts':
                 $addresses = [
-                    "home"  => [ "label" => __( 'Home', 'disciple_tools' ) ],
-                    "work"  => [ "label" => __( 'Work', 'disciple_tools' ) ],
-                    "other" => [ "label" => __( 'Other', 'disciple_tools' ) ],
+                    "home"  => [ "label" => _x( 'Home', 'field label', 'disciple_tools' ) ],
+                    "work"  => [ "label" => _x( 'Work', 'field label', 'disciple_tools' ) ],
+                    "other" => [ "label" => _x( 'Other', 'field label', 'disciple_tools' ) ],
                 ];
 
                 return $addresses;
                 break;
             case 'groups':
                 $addresses = [
-                    "main"      => [ "label" => _x( 'Main', 'Main address', 'disciple_tools' ) ],
-                    "alternate" => [ "label" => _x( 'Alternate', 'Alternate address', 'disciple_tools' ) ],
+                    "main"      => [ "label" => _x( 'Main', 'field label', 'disciple_tools' ) ],
+                    "alternate" => [ "label" => _x( 'Alternate', 'field label', 'disciple_tools' ) ],
                 ];
 
                 return $addresses;
                 break;
             case 'locations':
                 $addresses = [
-                    "main" => [ "label" => __( 'Main', 'disciple_tools' ) ],
+                    "main" => [ "label" => _x( 'Main', 'field label', 'disciple_tools' ) ],
                 ];
 
                 return $addresses;

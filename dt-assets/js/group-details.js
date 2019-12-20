@@ -203,15 +203,15 @@ jQuery(document).ready(function($) {
     accent: true,
     searchOnFocus: true,
     maxItem: 20,
-    source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
-    display: "name",
-    templateValue: "{{name}}",
+    source: TYPEAHEADS.typeaheadPeopleGroupSource('people_groups', 'dt/v1/people-groups/compact/'),
+    display: ["name", "label"],
+    templateValue: "{{label}}",
     dynamic: true,
     multiselect: {
       matchOn: ["ID"],
       data: function () {
         return group.people_groups.map(g=>{
-          return {ID:g.ID, name:g.post_title}
+          return {ID:g.ID, name:g.post_title, label: g.label}
         })
       },
       callback: {
@@ -685,14 +685,12 @@ jQuery(document).ready(function($) {
         htmlField.append(`<li id="no-${_.escape( connection )}">${_.escape( wpApiGroupsSettings.translations["not-set"][connection] )}</li>`)
       } else {
         group[connection].forEach(field=>{
-          let title = `${_.escape(field.post_title||field.label)}`
+          let title = `${_.escape(field.label || field.post_title )}`
           if ( connection === "leaders" ){
             title = `<a href="${_.escape(field.permalink)}">${_.escape( title )}</a>`
           }
           htmlField.append(`<li class="details-list ${_.escape(field.key || field.id)}">
-            ${title}
-              <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/verified.svg"/>
-              <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/broken.svg"/>
+              ${title}
             </li>
           `)
         })
@@ -893,9 +891,15 @@ jQuery(document).ready(function($) {
       Typeahead[`.js-typeahead-${t}`].adjustInputSize()
     })
   })
-  //create new group
+  $('.create-new-contact').on( "click", function () {
+    $('#create-contact-modal').foundation('open');
+    $('.js-create-contact .error-text').empty();
+    $(".js-create-contact-button").attr("disabled", false).removeClass("alert")
+  })
+  //create new contact
   $(".js-create-contact").on("submit", function(e) {
     e.preventDefault();
+    $(".js-create-contact-button").attr("disabled", true).addClass("loading");
     let title = $(".js-create-contact input[name=title]").val()
     API.create_post( 'contacts', {
       title,
@@ -903,6 +907,7 @@ jQuery(document).ready(function($) {
       requires_update: true,
       overall_status: "active"
     }).then((newContact)=>{
+        $(".js-create-contact-button").attr("disabled", false).removeClass("loading");
         $(".reveal-after-contact-create").show()
         $("#new-contact-link").html(`<a href="${_.escape( newContact.permalink )}">${_.escape( title )}</a>`)
         $(".hide-after-contact-create").hide()
@@ -916,8 +921,8 @@ jQuery(document).ready(function($) {
       })
       .catch(function(error) {
         $(".js-create-contact-button").removeClass("loading").addClass("alert");
-        $(".js-create-contact").append(
-          $("<div>").html(error.responseText)
+        $(".js-create-contact .error-text").text(
+          _.get( error, "responseJSON.message", "Something went wrong. Please refresh and try again" )
         );
         console.error(error);
       });

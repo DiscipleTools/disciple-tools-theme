@@ -34,7 +34,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
 <!--<div id="errors"> </div>-->
 <!-- <div><a class="button small" id="backlink" href="../" style="margin:.9rem 0 0 1.3em"><?php esc_html_e( 'Back to Groups List', 'disciple_tools' )?></a></div> -->
-<div id="content">
+<div id="content" class="single-groups">
     <span id="group-id" style="display: none"><?php echo get_the_ID()?></span>
     <span id="post-id" style="display: none"><?php echo get_the_ID()?></span>
     <span id="post-type" style="display: none">group</span>
@@ -62,12 +62,19 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
                         <!-- MEMBERS TILE -->
                         <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item" >
-                            <div class="bordered-box">
-                                <label class="section-header"><?php esc_html_e( 'Members', 'disciple_tools' )?>
-                                <button class="help-button" data-section="members-help-text">
+                            <div class="bordered-box" id="members-tile">
+                                <h3 class="section-header"><?php esc_html_e( 'Members', 'disciple_tools' )?>
+                                    <button class="help-button" data-section="members-help-text">
                                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                     </button>
-                                </label>
+                                    <button class="section-chevron chevron_down">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                    </button>
+                                    <button class="section-chevron chevron_up">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                    </button>
+                                </h3>
+                                <div class="section-body"><!-- start collapse -->
                                 <div class="section-subheader"><?php esc_html_e( "Member Count", 'disciple_tools' ) ?></div>
                                 <input id="member_count"
                                        class="number-input" type="number" min="0"
@@ -79,13 +86,13 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                     <div style="padding-bottom: 5px; margin-right:10px; display: inline-block">
                                         <?php esc_html_e( "Member List", 'disciple_tools' ) ?>
                                     </div>
-                                    <button type="button" data-open="create-contact-modal" style="height: 36px;">
-                                        <?php esc_html_e( "Create", 'disciple_tools' ) ?>
+                                    <button type="button" class="create-new-contact" style="height: 36px;">
+                                        <?php echo esc_html_x( 'Create', 'button', 'disciple_tools' )?>
                                         <img style="height: 14px; width: 14px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                                     </button>
                                     <button type="button"
                                             class="add-new-member">
-                                        <?php esc_html_e( "Select", 'disciple_tools' ) ?>
+                                        <?php echo esc_html_x( 'Select', 'button', 'disciple_tools' )?>
                                         <img style="height: 16px; width: 16px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group.svg' ) ?>"/>
                                     </button>
                                 </div>
@@ -95,18 +102,24 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
                                     </div>
                                 </div>
-                            </div>
+                            </div><!-- end collapse --></div>
                         </section>
 
                         <!-- GROUPS TILE -->
                         <section id="groups" class="xlarge-6 large-12 medium-6 cell grid-item">
-                            <div class="bordered-box">
-                                <label class="section-header"><?php esc_html_e( "Groups", 'disciple_tools' ) ?>
+                            <div class="bordered-box" id="groups-tile">
+                                <h3 class="section-header"><?php esc_html_e( "Groups", 'disciple_tools' ) ?>
                                     <button class="help-button" data-section="group-connections-help-text">
                                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                     </button>
-                                </label>
-
+                                    <button class="section-chevron chevron_down">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                    </button>
+                                    <button class="section-chevron chevron_up">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                    </button>
+                                </h3>
+                                <div class="section-body"><!-- start collapse -->
                                 <div class="section-subheader">
                                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/group-type.svg' ) ?>"/>
                                     <?php echo esc_html( $group_fields["group_type"]["name"] )?>
@@ -133,8 +146,8 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                         <div class="typeahead__field">
                                         <span class="typeahead__query">
                                             <input class="js-typeahead-parent_groups input-height"
-                                                   name="groups[query]" placeholder="<?php esc_html_e( "Search Groups", 'disciple_tools' ) ?>"
-                                                   autocomplete="off">
+                                                    name="groups[query]" placeholder="<?php echo esc_html_x( "Search Groups", 'input field placeholder', 'disciple_tools' ) ?>"
+                                                    autocomplete="off">
                                         </span>
                                         </div>
                                     </div>
@@ -148,7 +161,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                         <div class="typeahead__field">
                                         <span class="typeahead__query">
                                             <input class="js-typeahead-peer_groups input-height"
-                                                   name="groups[query]" placeholder="<?php esc_html_e( "Search Groups", 'disciple_tools' ) ?>"
+                                                   name="groups[query]" placeholder="<?php echo esc_html_x( "Search Groups", 'input field placeholder', 'disciple_tools' ) ?>"
                                                    autocomplete="off">
                                         </span>
                                         </div>
@@ -163,8 +176,8 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                         <div class="typeahead__field">
                                         <span class="typeahead__query">
                                             <input class="js-typeahead-child_groups input-height"
-                                                   name="child_groups[query]" placeholder="<?php esc_html_e( "Search groups", 'disciple_tools' ) ?>"
-                                                   autocomplete="off">
+                                                    name="groups[query]" placeholder="<?php echo esc_html_x( "Search Groups", 'input field placeholder', 'disciple_tools' ) ?>"
+                                                    autocomplete="off">
                                         </span>
                                             <span class="typeahead__button">
                                             <button type="button" data-open="create-group-modal" class="create-new-group typeahead__image_button input-height">
@@ -174,19 +187,26 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div><!-- end collapse --></div>
                         </section>
 
                         <!-- Health Metrics-->
                         <?php if ( ! empty( $group_preferences['church_metrics'] ) ) : ?>
                             <section id="health-metrics" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                <div class="bordered-box js-progress-bordered-box half-opacity">
+                                <div class="bordered-box js-progress-bordered-box half-opacity" id="health-tile">
 
-                                    <label class="section-header"><?php echo esc_html( $group_fields["health_metrics"]["name"] )?>
+                                    <h3 class="section-header"><?php echo esc_html( $group_fields["health_metrics"]["name"] )?>
                                         <button class="help-button" data-section="health-metrics-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
-                                    </label>
+                                        <button class="section-chevron chevron_down">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
+                                        <button class="section-chevron chevron_up">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                        </button>
+                                    </h3>
+                                    <div class="section-body"><!-- start collapse -->
 
                                     <div class="grid-x">
                                         <div style="margin-right:auto; margin-left:auto;min-height:302px">
@@ -205,7 +225,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
                                     </div>
 
-                                </div>
+                                </div><!-- end collapse --></div>
                             </section>
                         <?php endif; ?>
 
@@ -213,18 +233,25 @@ if ( ! current_user_can( 'access_groups' ) ) {
                         <!-- Four Fields -->
                         <?php if ( ! empty( $group_preferences['four_fields'] ) ) : ?>
                             <section id="four-fields" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                <div class="bordered-box js-progress-bordered-box">
+                                <div class="bordered-box js-progress-bordered-box" id="four-fields-tile">
 
-                                    <label class="section-header"><?php esc_html_e( 'Four Fields', 'disciple_tools' ) ?>
+                                    <h3 class="section-header"><?php esc_html_e( 'Four Fields', 'disciple_tools' ) ?>
                                         <button class="help-button" data-section="four-fields-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
-                                    </label>
+                                        <button class="section-chevron chevron_down">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
+                                        <button class="section-chevron chevron_up">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                        </button>
+                                    </h3>
+                                    <div class="section-body"><!-- start collapse -->
 
                                     <div class="grid-x" id="four-fields-inputs">
                                         <div style="width:100%; height:375px;background-image:url('<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/four-fields.svg', 'disciple_tools' ); ?>');background-repeat:no-repeat;"></div>
                                     </div>
-                                </div>
+                                </div><!-- end collapse --></div>
                             </section>
                         <?php endif; ?>
 
@@ -240,7 +267,8 @@ if ( ! current_user_can( 'access_groups' ) ) {
                             }
                             //remove section if hidden
                             if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
-                                if ( ( $index = array_search( $tile_key, $sections ) ) !== false) {
+                                $index = array_search( $tile_key, $sections );
+                                if ( $index !== false) {
                                     unset( $sections[ $index ] );
                                 }
                             }
@@ -248,7 +276,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                         foreach ( $sections as $section ){
                             ?>
                             <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                <div class="bordered-box">
+                                <div class="bordered-box" id="<?php echo esc_html( $section ); ?>-tile">
                                     <?php
                                     // let the plugin add section content
                                     do_action( "dt_details_additional_section", $section, 'groups' );
@@ -324,7 +352,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
         </main> <!-- end #main -->
 
         <aside class="auto cell grid-x">
-            <section class="bordered-box comment-activity-section cell"
+            <section class="comment-activity-section cell"
                      id="comment-activity-section">
                 <?php get_template_part( 'dt-assets/parts/loop', 'activity-comment' ); ?>
             </section>
@@ -342,7 +370,8 @@ if ( ! current_user_can( 'access_groups' ) ) {
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'reminders' ); ?>
 
     <div class="reveal" id="add-new-group-member" data-reveal style="min-height:500px">
-        <p class="lead"><?php esc_html_e( 'Add members from existing contacts', 'disciple_tools' )?></p>
+        <h3><?php echo esc_html_x( "Add members from existing contacts", 'Add members modal', 'disciple_tools' )?></h3>
+        <p><?php echo esc_html_x( "In the 'Members List' field, type the name of an existing contact to add them to this group.", 'Add members modal', 'disciple_tools' )?></p>
         <div class="section-subheader"><?php esc_html_e( "Members List", 'disciple_tools' ) ?></div>
         <div class="members">
             <var id="members-result-container" class="result-container"></var>
@@ -351,7 +380,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                     <div class="typeahead__field">
                         <span class="typeahead__query">
                             <input class="js-typeahead-members"
-                                   name="members[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
+                                   name="members[query]" placeholder="<?php echo esc_html_x( "Search Contacts", 'input field placeholder', 'disciple_tools' ) ?>"
                                    autocomplete="off">
                         </span>
                     </div>
@@ -363,7 +392,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                 <hr size="1px">
                 <span style="float:right; bottom: 0;">
                     <button class="button" data-close aria-label="Close reveal" type="button">
-                        <?php esc_html_e( 'Close', 'disciple_tools' )?>
+                        <?php echo esc_html_x( 'Close', 'button', 'disciple_tools' )?>
                     </button>
                 </span>
             </div>

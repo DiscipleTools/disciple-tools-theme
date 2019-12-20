@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-/** 
+/**
  * GULP PACKAGES
  */
 
@@ -15,7 +15,7 @@ browserSync = require('browser-sync'),
   postcss = require('gulp-postcss'),
   cssnano = require('cssnano');
 
-/** 
+/**
  * DEFINE GULP VARIABLE VALUES TO MATCH YOUR PROJECT NEEDS
  */
 
@@ -61,7 +61,7 @@ const SOURCE = {
     // FOUNDATION + '/dist/js/plugins/foundation.tooltip.js',
 
     // Please place all custom JS scripts within 'dt-assets/js/footer-scrips.js
-    
+
     'dt-assets/js/footer-scripts.js',
 
     'node_modules/masonry-layout/dist/masonry.pkgd.js'
@@ -116,7 +116,6 @@ gulp.task('styles', function () {
     .pipe(plugin.sourcemaps.init())
     .pipe(plugin.sass())
     .pipe(plugin.autoprefixer({
-      browsers: ['last 2 versions'],
       cascade: false
     }))
     .pipe(rename({ suffix: '.min' }))
@@ -130,11 +129,11 @@ gulp.task('styles', function () {
 gulp.task('default', gulp.parallel('styles', 'scripts'));
 
 
-/** 
+/**
  * MANAGE WATCH AND RELOADING OPTIONS BELOW
  * NOTE! - Please set your local URL host here if you plan on using Browser-sync
- * example: 
- * const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || 'http://local.discipletools/'; 
+ * example:
+ * const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || 'http://local.discipletools/';
  */
 
  const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || ' ';
@@ -185,8 +184,8 @@ gulp.task('watchWithBrowserSync', function () {
 gulp.task('browsersync', gulp.series(gulp.parallel('styles', 'scripts'), serve, 'watchWithBrowserSync'));
 
 /**
- * OPTIONAL - USE THE FOLLOWING TASK TO RUN BROWSER-SYNC WITH A PROXY ARGUMENT FROM THE COMMAND LINE. 
- * We're taking advantage of node's [process.argv] to reference arguments from the command line.  
+ * OPTIONAL - USE THE FOLLOWING TASK TO RUN BROWSER-SYNC WITH A PROXY ARGUMENT FROM THE COMMAND LINE.
+ * We're taking advantage of node's [process.argv] to reference arguments from the command line.
  * The beauty of this approach is that we don't have in to include any extra dependencies.
  * https://stackoverflow.com/a/32937333/957186
  * https://www.browsersync.io/docs/gulp
@@ -197,7 +196,7 @@ gulp.task('browsersync', gulp.series(gulp.parallel('styles', 'scripts'), serve, 
  */
 
 gulp.task('browsersync-p', function (done) {
- 
+
   //get the --option argument value
   var option,
     i = process.argv.indexOf("--option");
@@ -232,6 +231,6 @@ gulp.task('browsersync-p', function (done) {
    gulp.watch(SOURCE.php, gulp.series(reload));
    // Watch other JavaScript files
    gulp.watch(SOURCE.otherjs, gulp.series(reload));
-   
+
   done();
 });

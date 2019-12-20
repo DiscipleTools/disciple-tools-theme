@@ -56,8 +56,12 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     AND ( mt2.meta_key = 'overall_status' AND mt2.meta_value = %s )
                     AND ( mt3.meta_key = 'last_modified' AND mt3.meta_value <= %d )
                     AND ( mt4.meta_key = 'seeker_path' AND mt4.meta_value = %s )
-                    AND ( contact_type.meta_value = 'media' OR contact_type.meta_value = 'next_gen' OR contact_type.meta_key IS NULL )
                     AND $wpdb->posts.post_type = 'contacts' AND $wpdb->posts.post_status = 'publish'
+                    AND $wpdb->posts.ID NOT IN (
+                        SELECT post_id FROM $wpdb->postmeta
+                        WHERE meta_key = 'type' AND meta_value = 'user'
+                        GROUP BY post_id
+                    )
                     GROUP BY $wpdb->posts.ID ORDER BY $wpdb->posts.post_date DESC LIMIT 0, 50",
                     esc_sql( $setting["status"] ),
                     $date,

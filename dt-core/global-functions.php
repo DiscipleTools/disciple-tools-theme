@@ -147,20 +147,20 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
     if ( ! function_exists( 'dt_date_start_of_year' ) ) {
         function dt_date_start_of_year() {
-            $this_year = date( 'Y' );
+            $this_year = gmdate( 'Y' );
             $timestamp = strtotime( $this_year . '-01-01' );
             return $timestamp;
         }
     }
     if ( ! function_exists( 'dt_date_end_of_year' ) ) {
         function dt_date_end_of_year() {
-            $this_year = (int) date( 'Y' );
+            $this_year = (int) gmdate( 'Y' );
             return strtotime( ( $this_year + 1 ) . '-01-01' );
         }
     }
     if ( ! function_exists( 'dt_get_year_from_timestamp' ) ) {
         function dt_get_year_from_timestamp( int $time) {
-            return date( "Y", $time );
+            return gmdate( "Y", $time );
         }
     }
 
@@ -190,6 +190,20 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 "iso" => [ "sw" ]
             ];
             return $translations;
+        }
+    }
+
+    if ( ! function_exists( 'dt_get_available_languages' ) ) {
+        function dt_get_available_languages() {
+            $translations = dt_get_translations();
+            $available_language_codes = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+            $available_translations = [];
+            foreach ( $available_language_codes as $code ){
+                if ( isset( $translations[$code] )){
+                    $available_translations[] = $translations[$code];
+                }
+            }
+            return $available_translations;
         }
     }
 
