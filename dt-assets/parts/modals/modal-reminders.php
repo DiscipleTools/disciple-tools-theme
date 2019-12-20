@@ -16,7 +16,7 @@ global $post;
             </label>
 
             <label><?php esc_html_e( "Reminder Date", "disciple_tools" ); ?>
-                <input id="create-reminder-date" name="reminder-date" type="text" class="" required>
+                <input id="create-reminder-date" name="reminder-date" type="text" class="" required autocomplete="off">
             </label>
             <button class="button loader" type="submit" id="create-reminder">
                 <?php esc_html_e( 'Create Reminder', 'disciple_tools' ); ?>
