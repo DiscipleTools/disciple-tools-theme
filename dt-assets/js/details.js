@@ -235,38 +235,38 @@ jQuery(document).ready(function($) {
   // details_section_dom.html(details_fields_html)
 
 
-  //open the create reminder modal
-  $('#open-set-reminder').on( "click", function () {
-    $('.js-add-reminder-form .error-text').empty();
-    let reminders = _.sortBy(post.reminders || [], ['date']).reverse()
+  //open the create task modal
+  $('#open-set-task').on( "click", function () {
+    $('.js-add-task-form .error-text').empty();
+    let tasks = _.sortBy(post.tasks || [], ['date']).reverse()
     let html = ``
-    reminders.forEach(reminder=>{
-      html += `<li style="${reminder.value.status === 'reminder_sent' ? 'text-decoration:line-through' : ''}">
-        <strong>${_.escape( moment(reminder.date).format("MMM D YYYY") )}</strong>: ${_.escape( reminder.value.note )}
+    tasks.forEach(task=>{
+      html += `<li style="${task.value.status === 'reminder_sent' ? 'text-decoration:line-through' : ''}">
+        <strong>${_.escape( moment(task.date).format("MMM D YYYY") )}</strong>: ${_.escape( task.value.note )}
       </li>`
     })
-    $('.js-add-reminder-form .existing-reminders').html(html)
-    $('#reminders-modal').foundation('open');
+    $('.js-add-task-form .existing-tasks').html(html)
+    $('#tasks-modal').foundation('open');
   })
   //init the datepicker
-  $('#create-reminder-date').datepicker({
+  $('#create-task-date').datepicker({
     dateFormat: 'yy-mm-dd',
     changeMonth: true,
     changeYear: true,
     yearRange: "1900:2050",
   })
-  let reminder_note = $('#reminders-modal #create-reminder-note')
-  let reminder_date = $('#reminders-modal #create-reminder-date')
-  //submit the create reminder form
-  $(".js-add-reminder-form").on("submit", function(e) {
+  let task_note = $('#tasks-modal #create-task-note')
+  let task_date = $('#tasks-modal #create-task-date')
+  //submit the create task form
+  $(".js-add-task-form").on("submit", function(e) {
     e.preventDefault();
-    $("#create-reminder")
+    $("#create-task")
       .attr("disabled", true)
       .addClass("loading");
-    let date = reminder_date.datepicker('getDate');
-    let note = reminder_note.val()
+    let date = task_date.datepicker('getDate');
+    let note = task_note.val()
     API.update_post(post_type, post_id, {
-      "reminders":{
+      "tasks":{
         values: [
           {
             date: date,
@@ -276,17 +276,17 @@ jQuery(document).ready(function($) {
       }
     }).then( resp => {
       post = resp
-      $("#create-reminder")
+      $("#create-task")
       .attr("disabled", false)
       .removeClass("loading");
-      reminder_note.val('')
-      reminder_date.datepicker('setDate', null);
-      $('#reminders-modal').foundation('close');
+      task_note.val('')
+      task_date.datepicker('setDate', null);
+      $('#tasks-modal').foundation('close');
     }).catch(err => {
-      $("#create-reminder")
+      $("#create-task")
       .attr("disabled", false)
       .removeClass("loading");
-      $('.js-add-reminder-form .error-text').html(_.escape(_.get(err, "responseJSON.message")));
+      $('.js-add-task-form .error-text').html(_.escape(_.get(err, "responseJSON.message")));
       console.error(err)
     })
   })

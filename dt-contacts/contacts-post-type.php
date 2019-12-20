@@ -660,9 +660,9 @@ class Disciple_Tools_Contact_Post_Type
             'default'     => [],
             'hidden' => true
         ];
-        $fields['reminders'] = [
-            'name' => _x( 'Reminders', 'field name', 'disciple_tools' ),
-            'description' => _x( 'Reminders related to this contact.', 'field description', 'disciple_tools' ),
+        $fields['tasks'] = [
+            'name' => _x( 'Tasks', 'field name', 'disciple_tools' ),
+            'description' => _x( 'Tasks related to this contact.', 'field description', 'disciple_tools' ),
             'type' => 'post_user_meta',
         ];
 

@@ -554,7 +554,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-group' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-contact' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'revert' ); ?>
-    <?php get_template_part( 'dt-assets/parts/modals/modal', 'reminders' ); ?>
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'tasks' ); ?>
 
 
     <div class="reveal" id="closed-contact-modal" data-reveal>

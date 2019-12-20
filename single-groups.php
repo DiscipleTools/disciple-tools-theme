@@ -367,7 +367,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'share' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-group' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-contact' ); ?>
-    <?php get_template_part( 'dt-assets/parts/modals/modal', 'reminders' ); ?>
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'tasks' ); ?>
 
     <div class="reveal" id="add-new-group-member" data-reveal style="min-height:500px">
         <h3><?php echo esc_html_x( "Add members from existing contacts", 'Add members modal', 'disciple_tools' )?></h3>
