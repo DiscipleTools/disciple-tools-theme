@@ -919,7 +919,7 @@ class Disciple_Tools_Posts
         } elseif ( $sort === "locations" || $sort === "groups" || $sort === "leaders" ){
             $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = $wpdb->posts.ID AND sort.p2p_type = '" . $post_type . "_to_$sort' )
             LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_to)";
-            $sort_sql = "ISNULL(p2p_post.post_name), p2p_post.post_name $sort_dir";
+            $sort_sql = "ISNULL(p2p_post.post_title), p2p_post.post_title $sort_dir";
         } elseif ( $sort === "post_date" ){
             $sort_sql = "$wpdb->posts.post_date  " . $sort_dir;
         } elseif ( $sort === "location_grid" ){
