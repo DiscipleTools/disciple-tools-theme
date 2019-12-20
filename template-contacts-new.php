@@ -24,7 +24,7 @@ get_header();
                     <button class="help-button" data-section="contact-name-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
-                    <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required dir="auto" aria-describedby="name-help-text">
+                    <input name="title" type="text" placeholder="<?php echo esc_html_x( "Name", 'input field placeholder', 'disciple_tools' ); ?>" required dir="auto" aria-describedby="name-help-text">
                 </label>
                 <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
 
@@ -34,7 +34,7 @@ get_header();
                     <button class="help-button" data-section="phone-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
-                    <input name="phone" type="text" type="tel" placeholder="<?php esc_html_e( "Phone number", "disciple_tools" ); ?>">
+                    <input name="phone" type="text" type="tel" placeholder="<?php echo esc_html_x( "Phone number", 'input field placeholder', 'disciple_tools' ); ?>">
                 </label>
                 <label>
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/email.svg' ?>">
@@ -42,7 +42,7 @@ get_header();
                     <button class="help-button" data-section="email-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
-                    <input name="email" type="text"  placeholder="<?php esc_html_e( "Email", "disciple_tools" ); ?>">
+                    <input name="email" type="text"  placeholder="<?php echo esc_html_x( "Email", 'input field placeholder', "disciple_tools" ); ?>">
                 </label>
 
                 <label>
@@ -78,7 +78,7 @@ get_header();
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-location_grid"
-                                           name="location_grid[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                           name="location_grid[query]" placeholder="<?php echo esc_html_x( "Search Locations", 'input field placeholder', 'disciple_tools' ) ?>"
                                            autocomplete="off">
                                 </span>
                             </div>
@@ -92,11 +92,11 @@ get_header();
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
 
-                    <textarea name="initial_comment" dir="auto" placeholder="<?php esc_html_e( "Initial comment", "disciple_tools" ); ?>"></textarea>
+                    <textarea name="initial_comment" dir="auto" placeholder="<?php echo esc_html_x( "Initial comment", 'input field placeholder', "disciple_tools" ); ?>"></textarea>
                 </label>
 
                 <div style="text-align: center">
-                    <a href="/contacts/" class="button small" title="<?php esc_html_e( 'Cancel and return to the Contacts List page', 'disciple_tools' )?>"><?php esc_html_e( 'Cancel', 'disciple_tools' )?></a>
+                    <a href="/contacts/" class="button small" title="<?php esc_html_e( 'Cancel and return to the Contacts List page', 'disciple_tools' )?>"><?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?></a>
                     <button class="button loader js-create-contact-button dt-green" type="submit" disabled title="<?php esc_html_e( 'Save and continue editing the new contact', 'disciple_tools' )?>"><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
                 </div>
             </form>

@@ -159,10 +159,27 @@ jQuery(document).ready(function($) {
     rest_api.update_post( post_type, post_id, update )
   })
 
-  // expand and collapse tiles
-  $(".section-header").on("click", function () {
-    $(this).parent().toggleClass("collapsed")
+  let collapsed_tiles = window.SHAREDFUNCTIONS.get_json_cookie('collapsed_tiles')
+  // expand and collapse tiles, only when a section chevron icon is clicked for that given tile.
+  $(".section-header .section-chevron").on("click", function () {
+    let tile =$(this).closest('.bordered-box')
+    tile.toggleClass("collapsed")
+    let tile_id = tile.attr("id")
+    if ( tile_id && tile_id.includes('-tile')){
+      if ( collapsed_tiles.includes(tile_id) ){
+        collapsed_tiles = _.pull(collapsed_tiles, tile_id)
+      } else {
+        collapsed_tiles.push(tile_id)
+      }
+      window.SHAREDFUNCTIONS.save_json_cookie('collapsed_tiles', collapsed_tiles, detailsSettings.post_type)
+    }
     $('.grid').masonry('layout')
+  })
+  $(".bordered-box").each((index, item)=>{
+    let id = $(item).attr('id')
+    if ( id && id.includes('-tile') && collapsed_tiles.includes(id) ){
+      $(item).addClass('collapsed')
+    }
   })
 
   /**

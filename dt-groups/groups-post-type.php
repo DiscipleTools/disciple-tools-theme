@@ -95,8 +95,8 @@ class Disciple_Tools_Groups_Post_Type
      */
     public function __construct( $post_type = 'groups', $singular = '', $plural = '', $args = [], $taxonomies = [ 'Cities' ] ) {
         $this->post_type = 'groups';
-        $this->singular = __( 'Group', 'disciple_tools' );
-        $this->plural = __( 'Groups', 'disciple_tools' );
+        $this->singular = _x( 'Group', 'singular of group', 'disciple_tools' );
+        $this->plural = _x( 'Groups', 'plural of groups', 'disciple_tools' );
         $this->args = [ 'menu_icon' => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMTIsNkwxMiw2Yy0xLjY1NywwLTMtMS4zNDMtMy0zdjBjMC0xLjY1NywxLjM0My0zLDMtM2gwYzEuNjU3LDAsMywxLjM0MywzLDN2MEMxNSw0LjY1NywxMy42NTcsNiwxMiw2eiI+PC9wYXRoPiA8cGF0aCBkYXRhLWNvbG9yPSJjb2xvci0yIiBmaWxsPSIjZmZmZmZmIiBkPSJNNCwxOXYtOGMwLTEuMTMsMC4zOTEtMi4xNjIsMS4wMjYtM0gyYy0xLjEwNSwwLTIsMC44OTUtMiwydjZoMnY1YzAsMC41NTIsMC40NDgsMSwxLDFoMiBjMC41NTIsMCwxLTAuNDQ4LDEtMXYtMkg0eiI+PC9wYXRoPiA8cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMTQsMjRoLTRjLTAuNTUyLDAtMS0wLjQ0OC0xLTF2LTZINnYtNmMwLTEuNjU3LDEuMzQzLTMsMy0zaDZjMS42NTcsMCwzLDEuMzQzLDMsM3Y2aC0zdjYgQzE1LDIzLjU1MiwxNC41NTIsMjQsMTQsMjR6Ij48L3BhdGg+IDxwYXRoIGRhdGEtY29sb3I9ImNvbG9yLTIiIGZpbGw9IiNmZmZmZmYiIGQ9Ik00LDdMNCw3QzIuODk1LDcsMiw2LjEwNSwyLDV2MGMwLTEuMTA1LDAuODk1LTIsMi0yaDBjMS4xMDUsMCwyLDAuODk1LDIsMnYwIEM2LDYuMTA1LDUuMTA1LDcsNCw3eiI+PC9wYXRoPiA8cGF0aCBkYXRhLWNvbG9yPSJjb2xvci0yIiBmaWxsPSIjZmZmZmZmIiBkPSJNMjAsMTl2LThjMC0xLjEzLTAuMzkxLTIuMTYyLTEuMDI2LTNIMjJjMS4xMDUsMCwyLDAuODk1LDIsMnY2aC0ydjVjMCwwLjU1Mi0wLjQ0OCwxLTEsMWgtMiBjLTAuNTUyLDAtMS0wLjQ0OC0xLTF2LTJIMjB6Ij48L3BhdGg+IDxwYXRoIGRhdGEtY29sb3I9ImNvbG9yLTIiIGZpbGw9IiNmZmZmZmYiIGQ9Ik0yMCw3TDIwLDdjMS4xMDUsMCwyLTAuODk1LDItMnYwYzAtMS4xMDUtMC44OTUtMi0yLTJoMGMtMS4xMDUsMC0yLDAuODk1LTIsMnYwIEMxOCw2LjEwNSwxOC44OTUsNywyMCw3eiI+PC9wYXRoPjwvZz48L3N2Zz4=' ];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
@@ -127,7 +127,7 @@ class Disciple_Tools_Groups_Post_Type
             'name'                  => $this->plural,
             'singular_name'         => $this->singular,
             'menu_name'             => $this->plural,
-            'search_items'          => sprintf( __( 'Search %s', 'disciple_tools' ), $this->plural ),
+            'search_items'          => sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural ),
         ];
         $capabilities = [
             'create_posts'        => 'do_not_allow',
@@ -239,43 +239,43 @@ class Disciple_Tools_Groups_Post_Type
         $fields = [];
 
         $fields['group_status'] = [
-            'name'        => __( 'Group Status', 'disciple_tools' ),
-            'description' => __( 'Set the current status of the group.', 'disciple_tools' ),
+            'name'        => _x( 'Group Status', 'field name', 'disciple_tools' ),
+            'description' => _x( 'Set the current status of the group.', 'field description', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'inactive' => [
-                    'label' => __( 'Inactive', 'disciple_tools' ),
-                    'description' => __( 'The group is no longer meeting at this time.', 'disciple_tools' ),
+                    'label' => _x( 'Inactive', 'field label', 'disciple_tools' ),
+                    'description' => _x( 'The group is no longer meeting.', 'field description', 'disciple_tools' ),
                     'color' => "#F43636"
                 ],
                 'active'   => [
-                    'label' => __( 'Active', 'disciple_tools' ),
-                    'description' => __( 'The group is actively meeting at this time.', 'disciple_tools' ),
+                    'label' => _x( 'Active', 'field label', 'disciple_tools' ),
+                    'description' => _x( 'The group is actively meeting.', 'field description', 'disciple_tools' ),
                     'color' => "#4CAF50"
                 ],
             ],
             'section'     => 'info',
         ];
         $fields['group_type'] = [
-            'name'        => __( 'Group Type', 'disciple_tools' ),
-            'description' => 'The type of group this is e.g. a pre-group, group, church or team.',
+            'name'        => _x( 'Group Type', 'field name', 'disciple_tools' ),
+            'description' => _x( 'The type of group this is e.g. a pre-group, group, church or team.', 'field description', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'pre-group' => [
-                    "label" => __( 'Pre-Group', 'disciple_tools' ),
-                    "description" => _x( "A group predominantly of non-believers.", "Pre-Group", 'disciple_tools' ),
+                    "label" => _x( 'Pre-Group', 'field label', 'disciple_tools' ),
+                    "description" => _x( "A group predominantly of non-believers.", 'field description', 'disciple_tools' ),
                   ],
                 'group'     => [
-                    "label" => __( 'Group', 'disciple_tools' ),
-                    "description" => _x( "A group having 3 or more believers but not identifying as church.", "Group", 'disciple_tools' ),
+                    "label" => _x( 'Group', 'field label', 'disciple_tools' ),
+                    "description" => _x( "A group having 3 or more believers but not identifying as church.", 'field description', 'disciple_tools' ),
                 ],
                 'church'    => [
-                    "label" => __( 'Church', 'disciple_tools' ),
-                    "description" => _x( "A group having 3 or more believers and identifying as church.", "Church", 'disciple_tools' ),
+                    "label" => _x( 'Church', 'field label', 'disciple_tools' ),
+                    "description" => _x( "A group having 3 or more believers and identifying as church.", 'field description', 'disciple_tools' ),
                 ],
                 'team'    => [
-                    "label" => __( 'Team', 'disciple_tools' ),
-                    "description" => _x( "A special group that is not meeting as a church (or trying to become church).", "Team", 'disciple_tools' ),
+                    "label" => _x( 'Team', 'field label', 'disciple_tools' ),
+                    "description" => _x( "A special group that is not meeting as a church (or trying to become church).", 'field description', 'disciple_tools' ),
                 ],
             ],
             'section'     => 'info',
@@ -283,66 +283,66 @@ class Disciple_Tools_Groups_Post_Type
         ];
 
         $fields['assigned_to'] = [
-            'name'        => __( 'Assigned To', 'disciple_tools' ),
-            'description' => 'Select the main person who is responsible for reporting on this group. (a user not a contact).',
+            'name'        => _x( 'Assigned To', 'field name', 'disciple_tools' ),
+            'description' => _x( "Select the main person who is responsible for reporting on this group. (a user not a contact).", 'field description', 'disciple_tools' ),
             'type'        => 'user_select',
             'default'     => '',
             'section'     => 'info',
         ];
 
         $fields['health_metrics'] = [
-            "name" => __( 'Church Health', 'disciple_tools' ),
-            'description' => 'Track the progress and health of a group/church.',
+            "name" => _x( 'Church Health', 'field name', 'disciple_tools' ),
+            'description' => _x( "Track the progress and health of a group/church.", 'field description', 'disciple_tools' ),
             "type" => "multi_select",
             "default" => [
                 "church_baptism" => [
-                    "label" => __( "Baptism", 'disciple_tools' ),
-                    "description" => _x( "The group is baptising.", "Baptism", 'disciple_tools' ),
+                    "label" => _x( "Baptism", 'field label', 'disciple_tools' ),
+                    "description" => _x( "The group is baptising.", 'field description', 'disciple_tools' ),
                     "image" => get_template_directory_uri() . '/dt-assets/images/groups/baptism.svg'
                 ],
                 "church_bible" => [
-                    "label" => __( "Bible Study", 'disciple_tools' ),
-                    "description" => _x( "The group is studying the bible.", "Baptism", 'disciple_tools' ),
+                    "label" => _x( "Bible Study", 'field label', 'disciple_tools' ),
+                    "description" => _x( "The group is studying the bible.", 'field description', 'disciple_tools' ),
                     "image" => get_template_directory_uri() . '/dt-assets/images/groups/word.svg'
                 ],
                 "church_communion" => [
-                    "label" => __( "Communion", 'disciple_tools' ),
-                    "description" => _x( "The group is practicing communion.", "Communion", 'disciple_tools' ),
+                    "label" => _x( "Communion", 'field label', 'disciple_tools' ),
+                    "description" => _x( "The group is practicing communion.", 'field description', 'disciple_tools' ),
                     "image" => get_template_directory_uri() . '/dt-assets/images/groups/communion.svg'
                 ],
                 "church_fellowship" => [
-                    "label" => __( "Fellowship", 'disciple_tools' ),
-                    "description" => _x( "The group is fellowshiping.", "Fellowship", 'disciple_tools' ),
+                    "label" => _x( "Fellowship", 'field label', 'disciple_tools' ),
+                    "description" => _x( "The group is fellowshiping.", 'field description', 'disciple_tools' ),
                     "image" => get_template_directory_uri() . '/dt-assets/images/groups/heart.svg'
                 ],
                 "church_giving" => [
-                    "label" => __( "Giving", 'disciple_tools' ),
-                    "description" => _x( "The group is giving.", "Giving", 'disciple_tools' ),
+                    "label" => _x( "Giving", 'field label', 'disciple_tools' ),
+                    "description" => _x( "The group is giving.", 'field description', 'disciple_tools' ),
                     "image" => get_template_directory_uri() . '/dt-assets/images/groups/giving.svg'
                 ],
                 "church_prayer" => [
-                    "label" => __( "Prayer", 'disciple_tools' ),
-                    "description" => _x( "The group is praying.", "Prayer", 'disciple_tools' ),
+                    "label" => _x( "Prayer", 'field label', 'disciple_tools' ),
+                    "description" => _x( "The group is praying.", 'field description', 'disciple_tools' ),
                     "image" => get_template_directory_uri() . '/dt-assets/images/groups/prayer.svg'
                 ],
                 "church_praise" => [
-                    "label" => __( "Praise", 'disciple_tools' ),
-                    "description" => _x( "The group is praising.", "Praise", 'disciple_tools' ),
+                    "label" => _x( "Praise", 'field label', 'disciple_tools' ),
+                    "description" => _x( "The group is praising.", 'field description', 'disciple_tools' ),
                     "image" => get_template_directory_uri() . '/dt-assets/images/groups/praise.svg'
                 ],
                 "church_sharing" => [
-                    "label" => __( "Sharing the Gospel", 'disciple_tools' ),
-                    "description" => _x( "The group is sharing the gospel.", "Sharing the Gospel", 'disciple_tools' ),
+                    "label" => _x( "Sharing the Gospel", 'field label', 'disciple_tools' ),
+                    "description" => _x( "The group is sharing the gospel.", 'field description', 'disciple_tools' ),
                     "image" => get_template_directory_uri() . '/dt-assets/images/groups/evangelism.svg'
                 ],
                 "church_leaders" => [
-                    "label" => __( "Leaders", 'disciple_tools' ),
-                    "description" => _x( "The group has leaders.", "Leaders", 'disciple_tools' ),
+                    "label" => _x( "Leaders", 'field label', 'disciple_tools' ),
+                    "description" => _x( "The group has leaders.", 'field description', 'disciple_tools' ),
                     "image" => get_template_directory_uri() . '/dt-assets/images/groups/leadership.svg'
                 ],
                 "church_commitment" => [
-                    "label" => __( "Church Commitment", 'disciple_tools' ),
-                    "description" => _x( "The group has committed to be church.", "Church Commitment", 'disciple_tools' ),
+                    "label" => _x( "Church Commitment", 'field label', 'disciple_tools' ),
+                    "description" => _x( "The group has committed to be church.", 'field description', 'disciple_tools' ),
                     "image" => get_template_directory_uri() . '/dt-assets/images/groups/covenant.svg'
                 ],
             ],
@@ -351,66 +351,64 @@ class Disciple_Tools_Groups_Post_Type
 
         /* 4 fields */
         $fields["four_fields_unbelievers"] = [
-            'name' => __( 'Unbelievers', 'disciple_tools' ),
-            'description' => __( 'Number of unbelievers in this group.', 'disciple_tools' ),
+            'name' => _x( 'Unbelievers', 'field name', 'disciple_tools' ),
+            'description' => _x( 'Number of unbelievers in this group.', 'field description', 'disciple_tools' ),
             'type' => 'text',
             'default' => ''
         ];
         $fields["four_fields_believers"] = [
-            'name' => __( 'Believers', 'disciple_tools' ),
-            'description' => __( 'Number of believers in this group.', 'disciple_tools' ),
+            'name' => _x( 'Believers', 'field name', 'disciple_tools' ),
+            'description' => _x( 'Number of believers in this group.', 'field description', 'disciple_tools' ),
             'type' => 'text',
             'default' => ''
         ];
         $fields["four_fields_accountable"] = [
-            'name' => __( 'Accountable', 'disciple_tools' ),
-            'description' => __( 'Number of people in accountability group.', 'disciple_tools' ),
+            'name' => _x( 'Accountable', 'field name', 'disciple_tools' ),
+            'description' => _x( 'Number of people in accountability group.', 'field description', 'disciple_tools' ),
             'type' => 'text',
             'default' => ''
         ];
         $fields["four_fields_church_commitment"] = [
-            'name' => __( 'Church Commitment', 'disciple_tools' ),
-            'description' => __( 'Is this a church - yes or no?', 'disciple_tools' ),
+            'name' => _x( 'Church Commitment', 'field name', 'disciple_tools' ),
+            'description' => _x( 'Is this a church - yes or no?', 'field description', 'disciple_tools' ),
             'type' => 'text',
             'default' => ''
         ];
         $fields["four_fields_multiplying"] = [
-            'name' => __( 'Multiplying', 'disciple_tools' ),
-            'description' => __( 'Number of people helping start other groups. How many members are multiplying?', 'disciple_tools' ),
+            'name' => _x( 'Multiplying', 'field name', 'disciple_tools' ),
+            'description' => _x( 'Number of people helping start other groups. How many members are multiplying?', 'field four_fields_multiplying', 'disciple_tools' ),
             'type' => 'text',
             'default' => ''
         ];
 
         $fields['start_date'] = [
             'name'        => __( 'Start Date', 'disciple_tools' ),
-            'description' => 'The start date when this group began meeting.',
+            'description' => _x( 'The date this group began meeting.', 'group start_date description', 'disciple_tools' ),
             'type'        => 'date',
             'default'     => time(),
             'section'     => 'info',
         ];
         $fields['church_start_date'] =[
             'name' => __( 'Church Start Date', 'disciple_tools' ),
-            'description' => 'The date this group first identified as being a church.',
+            'description' => _x( 'The date this group first identified as being a church.', 'church start_date description', 'disciple_tools' ),
             'type' => 'date',
             'default'     => time()
         ];
         $fields['end_date'] = [
             'name'        => __( 'End Date', 'disciple_tools' ),
-            'description' => 'The date this group stopped meeting. (if applicable)',
+            'description' => _x( 'The date this group stopped meeting (if applicable).', 'group end_date description', 'disciple_tools' ),
             'type'        => 'date',
             'default'     => '',
             'section'     => 'info',
         ];
         $fields["duplicate_data"] = [
             "name" => __( 'Duplicates', 'disciple_tools' ),
-            'description' => 'Possible group duplicates',
             'type' => 'array',
             'default' => [],
             'section' => 'admin'
         ];
         $fields["follow"] = [
             'name'        => __( 'Follow', 'disciple_tools' ),
-            'description' => 'Users following this contact',
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
@@ -418,76 +416,75 @@ class Disciple_Tools_Groups_Post_Type
         ];
         $fields["unfollow"] = [
             'name'        => __( 'Un-Follow', 'disciple_tools' ),
-            'description' => 'Users not following this contact',
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
             'hidden'      => true
         ];
         $fields["parent_groups"] = [
-            "name" => __( "Parent Group", "disciple_tools" ),
-            'description' => 'A group that founded this group.',
+            "name" => __( 'Parent Group', 'disciple_tools' ),
+            'description' => _x( 'A group that founded this group.', 'parent group description', 'disciple_tools' ),
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "groups_to_groups"
         ];
         $fields["peer_groups"] = [
-            "name" => __( "Peer Group", "disciple_tools" ),
-            'description' => "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc.",
+            "name" => __( 'Peer Group', 'disciple_tools' ),
+            'description' => _x( "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc.", 'peer group description', 'disciple_tools' ),
             "type" => "connection",
             "p2p_direction" => "any",
             "p2p_key" => "groups_to_peers"
         ];
         $fields["child_groups"] = [
-            "name" => __( "Child Group", "disciple_tools" ),
-            'description' => 'A group that has been birthed out of this group.',
+            "name" => __( 'Child Group', 'disciple_tools' ),
+            'description' => _x( 'A group that has been birthed out of this group.', 'child group description', 'disciple_tools' ),
             "type" => "connection",
             "p2p_direction" => "to",
             "p2p_key" => "groups_to_groups"
         ];
         $fields["member_count"] = [
             'name' => __( 'Member Count', 'disciple_tools' ),
-            'description' => 'The member count is the number of members in this group and it will automatically adjust when new member names are added or removed in the member list. The number can also be adjusted manually to included people who may not be in the system but are also members of the group.',
+            'description' => _x( 'The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the group.', 'member_count description', 'disciple_tools' ),
             'type' => 'text',
             'default' => ''
         ];
         $fields["members"] = [
-            "name" => __( "Member List", "disciple_tools" ),
-            'description' => 'The member list is a list of members in this group. To remove a member, click the X icon to the right side of the member name. Click the footprint icon next to the members name to signify that this person is a leader of this group. (Multiple leaders can be assigned to a group.',
+            "name" => __( 'Member List', 'disciple_tools' ),
+            'description' => _x( 'The contacts who are members of this group.', 'members list description', 'disciple_tools' ),
             "type" => "connection",
             "p2p_direction" => "to",
             "p2p_key" => "contacts_to_groups"
         ];
         $fields["people_groups"] = [
-            "name" => __( "People Groups", "disciple_tools" ),
-            'description' => 'The people groups that are a part of this group.',
+            "name" => __( 'People Groups', 'disciple_tools' ),
+            'description' => _x( 'The people groups represented by this group.', 'people_groups field description', 'disciple_tools' ),
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "groups_to_peoplegroups"
         ];
         $fields["leaders"] = [
-            "name" => __( "Leaders", "disciple_tools" ),
-            'description' => 'A list of the leaders of the group (contacts). Multiple leaders can be assigned to a group.',
+            "name" => __( 'Leaders', 'disciple_tools' ),
+            'description' => _x( 'A list of the leaders of the group (contacts). Multiple leaders can be assigned to a group.', 'leaders field description', 'disciple_tools' ),
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "groups_to_leaders"
         ];
         $fields["coaches"] = [
-            "name" => __( "Group Coach / Church Planter", "disciple_tools" ),
-            'description' => 'The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group.',
+            "name" => _x( 'Group Coach / Church Planter', 'coaches field name', 'disciple_tools' ),
+            'description' => _x( 'The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group.', 'coaches field description', 'disciple_tools' ),
             "type" => "connection",
             "p2p_direction" => "from",
             "p2p_key" => "groups_to_coaches"
         ];
         $fields["requires_update"] = [
             'name'        => __( 'Requires Update', 'disciple_tools' ),
-            'description' => 'This group requires an update.',
+            'description' => _x( 'This group requires an update.', 'requires_update field description', 'disciple_tools' ),
             'type'        => 'boolean',
             'default'     => false,
         ];
         $fields['location_grid'] = [
             'name'        => __( 'Locations', 'disciple_tools' ),
-            'description' => 'The general location where this group is located.',
+            'description' => _x( 'The general location where this group meets.', 'location_grid field description', 'disciple_tools' ),
             'type'        => 'location',
             'default'     => [],
         ];

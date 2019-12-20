@@ -46,6 +46,18 @@
     <?php do_action( 'dt_contact_detail_notification', $contact ); ?>
 
     <section class="cell bordered-box">
+        <div class="section-header">
+            <?php esc_html_e( "Contact Details", 'disciple_tools' ) ?>
+            <button class="help-button" data-section="contact-details-help-text">
+                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+            </button>
+            <!-- <button class="section-chevron chevron_down">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+            </button>
+            <button class="section-chevron chevron_up">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+            </button> -->
+        </div>
         <div style="display: flex;">
             <div class="item-details-header" style="flex-grow:1">
                 <i class="fi-torso large" style="padding-bottom: 1.2rem"></i>
@@ -58,6 +70,7 @@
                 </button>
             </div>
         </div>
+        <div class="section-body"><!-- start collapse -->
         <div class="grid-x grid-margin-x" style="margin-top: 20px">
             <div class="cell small-12 medium-4">
                 <div class="section-subheader">
@@ -126,7 +139,7 @@
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-assigned_to input-height" dir="auto"
-                                           name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
+                                           name="assigned_to[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
                                            autocomplete="off">
                                 </span>
                                 <span class="typeahead__button">
@@ -144,7 +157,7 @@
             <div class="cell small-12 medium-4">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/subassigned.svg' ?>">
-                    <?php esc_html_e( 'Sub-assigned to', 'disciple_tools' )?>
+                    <?php esc_html_e( "Sub-assigned to", 'disciple_tools' )?>
                     <button class="help-button" data-section="subassigned-to-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
@@ -156,7 +169,7 @@
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-subassigned input-height"
-                                           name="subassigned[query]" placeholder="<?php esc_html_e( "Search multipliers and contacts", 'disciple_tools' ) ?>"
+                                           name="subassigned[query]" placeholder="<?php echo esc_html_x( "Search multipliers and contacts", 'input field placeholder', 'disciple_tools' )?>"
                                            autocomplete="off">
                                 </span>
                             </div>
@@ -282,7 +295,7 @@
                     ?>
                 </ul>
             </div>
-        </div>
+        </div><!-- end collapse --></div>
     </section>
 
     <div class="reveal" id="contact-details-edit" data-reveal data-close-on-click="false">
@@ -349,7 +362,7 @@
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-location_grid"
-                                           name="location_grid[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                           name="location_grid[query]" placeholder="<?php echo esc_html_x( "Search Locations", 'input field placeholder', 'disciple_tools' ) ?>"
                                            autocomplete="off">
                                 </span>
                             </div>
@@ -375,7 +388,7 @@
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
-                    <?php esc_html_e( 'Source', "disciple_tools" ); ?>
+                    <?php esc_html_e( 'Source', 'disciple_tools' ); ?>
                 </div>
                 <span id="sources-result-container" class="result-container"></span>
                 <div id="sources_t" name="form-sources" class="scrollable-typeahead">
@@ -383,7 +396,7 @@
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-sources"
-                                       name="sources[query]" placeholder="<?php esc_html_e( "Search sources", 'disciple_tools' ) ?>"
+                                       name="sources[query]" placeholder="<?php echo esc_html_x( "Search sources", 'input field placeholder', 'disciple_tools' ) ?>"
                                        autocomplete="off">
                             </span>
                         </div>
@@ -448,7 +461,7 @@
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-people_groups"
-                                           name="people_groups[query]" placeholder="<?php esc_html_e( "Search People Groups", 'disciple_tools' ) ?>"
+                                           name="people_groups[query]" placeholder="<?php echo esc_html_x( "Search People Groups", 'input field placeholder', 'disciple_tools' ) ?>"
                                            autocomplete="off">
                                 </span>
                             </div>
@@ -462,7 +475,7 @@
         <!-- Buttons -->
         <div>
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+                <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
             </button>
             <button class="button loader" type="button" id="save-edit-details">
                 <?php esc_html_e( 'Save', 'disciple_tools' )?>

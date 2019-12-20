@@ -31,7 +31,7 @@ get_header(); ?>
                 <h3 class="section-header"><?php esc_html_e( "Notifications", "disciple_tools" ); ?><button class="help-button float-right" data-section="notifications-template-help-text">
                     <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                 </button></h3>
-                
+
                 <div class="grid-x">
                     <div class="cell">
                         <div class="grid-x grid-margin-x " style="border-bottom: 1px solid #ccc;">
@@ -42,7 +42,7 @@ get_header(); ?>
                                 <div class="expanded small button-group">
                                     <button id="all" type="button"
                                             onclick="toggle_buttons('all'); get_notifications( all = true, true, );"
-                                            class="button hollow"><?php esc_html_e( 'All', 'disciple_tools' )?>
+                                            class="button hollow"><?php echo esc_html_x( 'All', 'As in all things', 'disciple_tools' ) ?>
                                     </button>
                                     <button id="new" type="button"
                                             onclick="toggle_buttons('new'); get_notifications( all = false, true );"
@@ -52,13 +52,13 @@ get_header(); ?>
                             </div>
                             <div class="small-4 medium-5 cell" style="text-align:right;">
                                 <span class="hide-for-small-only">
-                                    <a onclick="mark_all_viewed()"><?php esc_html_e( 'Mark All as Read', 'disciple_tools' )?></a>  -
+                                    <a onclick="mark_all_viewed()"><?php esc_html_e( 'Mark All as Read', 'disciple_tools' ) ?></a>  -
                                     <a href="<?php echo esc_url( home_url( '/' ) ); ?>settings/#notifications">
                                         <?php esc_html_e( 'Settings', 'disciple_tools' )?>
                                     </a>
                                 </span>
                                 <span class="show-for-small-only">
-                                    <a onclick="mark_all_viewed()"><?php esc_html_e( 'Mark All', 'disciple_tools' )?></a>
+                                    <a onclick="mark_all_viewed()"><?php esc_html_e( 'Mark All', 'disciple_tools' ) ?></a>
                                 </span>
                             </div>
                         </div>

@@ -264,7 +264,8 @@ function dt_site_scripts() {
                 'template_dir'          => get_template_directory_uri(),
                 'associated_contact_id' => dt_get_associated_user_id( get_current_user_id(), 'user' ),
                 'translations'          => apply_filters( 'dt_settings_js_translations', [
-                    'delete' => __( 'delete', 'disciple_tools' )
+                    'delete' => __( 'delete', 'disciple_tools' ),
+                    'responsible_for_locations' => __( "Locations you are responsible for", 'disciple_tools' )
                 ] ),
                 'custom_data'           => apply_filters( 'dt_settings_js_data', [] ), // nest associated array
             )
@@ -299,6 +300,8 @@ function dt_site_scripts() {
             'filter_meeting_scheduled' => __( 'Meeting scheduled', 'disciple_tools' ),
             'filter_contact_unattempted' => __( 'Contact attempt needed', 'disciple_tools' ),
             'filter_assignment_needed' => __( 'Dispatch needed', 'disciple_tools' ),
+            'filter_new' => __( 'New', 'disciple_tools' ),
+            'filter_active' => __( 'Active', 'disciple_tools' ),
             'range_start' => __( 'start', 'disciple_tools' ),
             'range_end' => __( 'end', 'disciple_tools' ),
             'sorting_by' => __( 'Sorting By', 'disciple_tools' ),
@@ -309,7 +312,7 @@ function dt_site_scripts() {
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'txt_infoEmpty' => __( 'Showing 0 to 0 of 0 entries', 'disciple_tools' ),
-            'txt_infoFiltered' => _x( '(filtered from _MAX_ total entries)', 'just copy `_MAX_`', 'disciple_tools' ),
+            'txt_infoFiltered' => _x( "(filtered from _MAX_ total entries)", "Just copy '_MAX_'", 'disciple_tools' ),
             'custom_fields_settings' => $custom_field_settings,
             'template_directory_uri' => get_template_directory_uri(),
             'current_user_login' => wp_get_current_user()->user_login,

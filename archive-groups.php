@@ -31,9 +31,9 @@ declare(strict_types=1);
                 </a>
                 <a class="button" style="margin-bottom:0" data-open="filter-modal">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
-                    <span class="hide-for-small-only"><?php esc_html_e( "Filter groups", 'disciple_tools' ) ?></span>
+                    <span class="hide-for-small-only"><?php esc_html_e( "Filter Groups", 'disciple_tools' ) ?></span>
                 </a>
-                <input class="search-input" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="search groups">
+                <input class="search-input" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="<?php echo esc_html_x( "Search Groups", 'input field placeholder', 'disciple_tools' ) ?>">
                 <a class="button" style="margin-bottom:0" id="search">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
                     <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
@@ -49,14 +49,14 @@ declare(strict_types=1);
         </a>
         <a class="button" style="margin-bottom:0" data-open="filter-modal">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
-            <span class="hide-for-small-only"><?php esc_html_e( "Filter groups", 'disciple_tools' ) ?></span>
+            <span class="hide-for-small-only"><?php esc_html_e( "Filter Groups", 'disciple_tools' ) ?></span>
         </a>
         <a class="button" style="margin-bottom:0" id="open-search">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
             <span class="hide-for-small-only"><?php esc_html_e( "Search groups", 'disciple_tools' ) ?></span>
         </a>
         <div class="hideable-search" style="display: none; margin-top:5px">
-            <input class="search-input-mobile" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile" placeholder="search groups">
+            <input class="search-input-mobile" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile" placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>">
             <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
         </div>
     </nav>
@@ -89,10 +89,15 @@ declare(strict_types=1);
 
             <div class="reveal js-filters-modal" id="filters-modal">
                 <div class="js-filters-modal-content"><!-- archive-groups -->
-                  <label class="section-header hide-for-small-only"><?php esc_html_e( 'Groups Filters', 'disciple_tools' )?>
-                  <button class="help-button float-right" data-section="filters-help-text">
-                      <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                  </button></label>
+                    <label class="section-header hide-for-small-only">
+                        <span>
+                            <?php esc_html_e( 'Groups Filters', 'disciple_tools' )?>
+                            <span id="count-loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
+                        </span>
+                        <button class="help-button float-right" data-section="filters-help-text">
+                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                        </button>
+                    </label>
                     <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( "Default Filters", "disciple_tools" ); ?></h5>
                     <!-- @todo re-enable when we have more group filters-->
 <!--                    <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion">-->
@@ -142,7 +147,7 @@ declare(strict_types=1);
                         </label>
                     </div>
 
-                    <h5><?php esc_html_e( 'Custom Filters', "disciple_tools" ); ?></h5>
+                    <h5><?php esc_html_e( "Custom Filters", "disciple_tools" ); ?></h5>
                     <div style="margin-bottom: 5px">
                         <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
                     </div>
@@ -168,7 +173,7 @@ declare(strict_types=1);
             <div class="grid-x">
                 <div class="cell small-4" style="padding: 0 5px 5px 5px">
                     <input type="text" id="new-filter-name"
-                           placeholder="<?php esc_html_e( 'Filter Name', 'disciple_tools' )?>"
+                           placeholder="<?php echo esc_html_x( 'Filter Name', 'input field placeholder', 'disciple_tools' )?>"
                            style="margin-bottom: 0"/>
                 </div>
                 <div class="cell small-8">
@@ -223,7 +228,7 @@ declare(strict_types=1);
                                             <div class="typeahead__field">
                                             <span class="typeahead__query">
                                                 <input class="js-typeahead-<?php echo esc_html( $field ) ?>" data-field="<?php echo esc_html( $field ) ?>"
-                                                       name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php esc_html_e( "Type to Search", 'disciple_tools' ) ?>"
+                                                       name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>"
                                                        autocomplete="off">
                                             </span>
                                             </div>
@@ -293,7 +298,7 @@ declare(strict_types=1);
         <div class="grid-x grid-padding-x">
             <div class="cell small-4 filter-modal-left">
                 <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                    <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+                    <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
                 </button>
             </div>
             <div class="cell small-8 filter-modal-right confirm-buttons">

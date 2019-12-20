@@ -105,7 +105,7 @@ function render_field_for_display( $field_key, $fields, $post ){
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-<?php echo esc_html( $field_key ) ?>"
-                                       name="<?php echo esc_html( $field_key ) ?>[query]" placeholder="<?php esc_html_e( "Search", 'disciple_tools' ); echo esc_html( ' ' . $fields[$field_key]['name'] )?>  "
+                                       name="<?php echo esc_html( $field_key ) ?>[query]" placeholder="<?php echo esc_html_x( "Search", 'input field placeholder', 'disciple_tools' ); echo esc_html( ' ' . $fields[$field_key]['name'] )?>  "
                                        autocomplete="off">
                             </span>
                         </div>
