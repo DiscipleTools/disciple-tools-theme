@@ -151,6 +151,30 @@ window.TYPEAHEADS = {
             }
         }
     },
+    typeaheadPeopleGroupSource : function (field, url) {
+      return {
+          contacts: {
+              template: "<span>{{label}}</span>",
+              ajax: {
+                  url: wpApiShare.root + url,
+                  data: {
+                      s: "{{query}}"
+                  },
+                  beforeSend: function (xhr) {
+                      xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+                  },
+                  callback: {
+                      done: function (data) {
+                          if ( typeof typeaheadTotals !== "undefined" ){
+                             typeaheadTotals.field = data.total
+                          }
+                          return data.posts
+                      }
+                  }
+              }
+          }
+      }
+  },
     typeaheadUserSource : function (field, ur) {
         return {
             users: {

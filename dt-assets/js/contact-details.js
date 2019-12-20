@@ -378,15 +378,15 @@ jQuery(document).ready(function($) {
         accent: true,
         searchOnFocus: true,
         maxItem: 20,
-        source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
-        display: "name",
-        templateValue: "{{name}}",
+        source: TYPEAHEADS.typeaheadPeopleGroupSource('people_groups', 'dt/v1/people-groups/compact/'),
+        display: ["name", "label"],
+        templateValue: "{{label}}",
         dynamic: true,
         multiselect: {
           matchOn: ["ID"],
           data: function () {
             return contact.people_groups.map(g=>{
-              return {ID:g.ID, name:g.post_title}
+              return { ID: g.ID, name: g.post_title, label: g.label };
             })
           },
           callback: {
@@ -1098,9 +1098,7 @@ jQuery(document).ready(function($) {
       } else {
         contact[connection].forEach(field=>{
           htmlField.append(`<li class="details-list ${_.escape(field.key || field.id)}">
-            ${_.escape(field.post_title || field.label)}
-              <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/verified.svg"/>
-              <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/broken.svg"/>
+              ${_.escape(field.label || field.post_title)}
             </li>
           `)
         })
