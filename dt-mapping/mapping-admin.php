@@ -1392,7 +1392,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             </div>
             <br>
             <h4>Locations Under <span class="location-name-title"></h4>
-            <p>Only showing locations selected in your Mapping Focus</p>
             <table class="widefat striped">
                 <thead>
                     <tr>
@@ -1435,15 +1434,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
 
             <script>
-                window.DRILLDOWN.get_drill_down('location_grids')
                 let current = {}
                 window.DRILLDOWN.location_grids = function (grid_id, a, selection) {
                     current = selection
                     let list_results = jQuery('#list_results')
-                    let div = 'list_results'
 
                     list_results.empty()
-
 
                     jQuery.each( selection.list, function (i, v) {
                         list_results.append(`<tr>
@@ -1524,13 +1520,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     let update = send_update(data)
                     update.done(function (data) {
                       jQuery('#new-location-spinner').hide()
-                      DRILLDOWN.get_drill_down( 'location_grids', current.selected );
+                      DRILLDOWN.get_drill_down( 'location_grids', current.selected, false );
                       jQuery('.new_location_table input').val('')
                     }).fail(()=>{
                       jQuery('#new-location-spinner').hide()
                     })
                 })
-
+                window.DRILLDOWN.get_drill_down('location_grids')
             </script>
 
             <?php
