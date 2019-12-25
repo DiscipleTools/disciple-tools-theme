@@ -304,6 +304,9 @@ Groups
 
 .members-section {
     border: 1px solid #ccc;
+    #empty-members-list-message {
+        padding: 10px 10px;
+    }
     .member-row {
         padding: 10px 10px;
         display: flex;
