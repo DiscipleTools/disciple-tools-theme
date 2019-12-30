@@ -47,8 +47,8 @@ class Disciple_Tools_Migration_0028 extends Disciple_Tools_Migration {
                     `date` datetime default null,
                     `category` varchar(255) default null,
                     PRIMARY KEY (`id`),
-                    key `meta_key_index` (`meta_key`)
-                    key `category_index` (`category`),
+                    key `meta_key_index` (`meta_key`),
+                    key `category_index` (`category`)
             ) $charset_collate;",
         );
     }
