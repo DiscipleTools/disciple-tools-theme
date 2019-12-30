@@ -285,13 +285,13 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                 <div class="section-subheader cell">
                                     <?php esc_html_e( 'Start Date', 'disciple_tools' )?>
                                 </div>
-                                <div class="start_date"><input type="text" class="date-picker" id="start_date"></div>
+                                <div class="start_date"><input type="text" class="date-picker" id="start_date" autocomplete="off"></div>
                             </div>
                             <div style="margin: 0 20px">
                                 <div class="section-subheader cell">
                                     <?php esc_html_e( 'End Date', 'disciple_tools' )?>
                                 </div>
-                                <div class="end_date"><input type="text" class="date-picker" id="end_date"></div>
+                                <div class="end_date"><input type="text" class="date-picker" id="end_date" autocomplete="off"></div>
                             </div>
                             <div>
                                 <button id="add_unavailable_dates" class="button" disabled><?php esc_html_e( "Add Unavailable dates", 'disciple_tools' ) ?></button>

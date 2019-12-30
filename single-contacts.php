@@ -419,7 +419,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         <div class="baptism_date">
                                             <input type="text" class="dt_date_picker"
                                                    value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>"
-                                                   id="baptism_date">
+                                                   id="baptism_date" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -686,7 +686,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             </div>
 
             <span class="section-subheader"><?php esc_html_e( "Baptism Date", 'disciple_tools' ) ?></span>
-            <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" id="modal-baptism-date-picker">
+            <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" id="modal-baptism-date-picker" autocomplete="off">
 
 <!--            <span class="section-subheader">--><?php //esc_html_e( "Baptism Generation", 'disciple_tools' ) ?><!--</span>-->
 <!--            <input type="number" value="" id="modal-baptism_generation">-->
