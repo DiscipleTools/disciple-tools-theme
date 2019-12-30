@@ -242,11 +242,16 @@ jQuery(document).ready(function($) {
     let html = ``
     tasks.forEach(task=>{
       html += `<li style="${task.value.status === 'reminder_sent' ? 'text-decoration:line-through' : ''}">
-        <strong>${_.escape( moment(task.date).format("MMM D YYYY") )}</strong>: ${_.escape( task.value.note )}
+        <strong>${_.escape( moment(task.date).format("MMM D YYYY") )}</strong> ${ _.escape( task.category )}${ task.value.note ? ': ' + _.escape( task.value.note ) : ''}
       </li>`
     })
-    $('.js-add-task-form .existing-tasks').html(html)
+    if ( html ){
+      $('.js-add-task-form .existing-tasks').html(html)
+    }
     $('#tasks-modal').foundation('open');
+  })
+  $('#task-custom-text').on('click', function () {
+    $('input:radio[name="task-type"]').filter('[value="custom"]').prop('checked', true);
   })
   //init the datepicker
   $('#create-task-date').datepicker({
@@ -255,7 +260,7 @@ jQuery(document).ready(function($) {
     changeYear: true,
     yearRange: "1900:2050",
   })
-  let task_note = $('#tasks-modal #create-task-note')
+  let task_note = $('#tasks-modal #task-custom-text')
   let task_date = $('#tasks-modal #create-task-date')
   //submit the create task form
   $(".js-add-task-form").on("submit", function(e) {
@@ -265,12 +270,14 @@ jQuery(document).ready(function($) {
       .addClass("loading");
     let date = task_date.datepicker('getDate');
     let note = task_note.val()
+    let task_type = $('#tasks-modal input[name="task-type"]:checked').val()
     API.update_post(post_type, post_id, {
       "tasks":{
         values: [
           {
             date: date,
-            value: {note: note}
+            value: {note: note},
+            category: task_type
           }
         ]
       }

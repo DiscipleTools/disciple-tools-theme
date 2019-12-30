@@ -1252,6 +1252,9 @@ class Disciple_Tools_Posts
                                 if ( isset( $value["date"] ) ){
                                     $update["date"] = $value["date"];
                                 }
+                                if ( isset( $value["category"] ) ){
+                                    $update["category"] = $value["category"];
+                                }
                                 $update = $wpdb->update( $wpdb->dt_post_user_meta,
                                     $update,
                                     [
@@ -1274,7 +1277,8 @@ class Disciple_Tools_Posts
                                     "post_id" => $post_id,
                                     "meta_key" => $field_key,
                                     "meta_value" => is_array( $value["value"] ) ? serialize( $value["value"] ) : $value["value"],
-                                    "date" => $date
+                                    "date" => $date,
+                                    "category" => $value["category"] ?? null
                                 ]
                             );
                             if ( !$create ){
@@ -1612,7 +1616,8 @@ class Disciple_Tools_Posts
                 $fields[$m["meta_key"]][] = [
                     "id" => $m["id"],
                     "value" => maybe_unserialize( $m["meta_value"] ),
-                    "date" => $m["date"]
+                    "date" => $m["date"],
+                    "category" => $m["category"]
                 ];
             }
         }
