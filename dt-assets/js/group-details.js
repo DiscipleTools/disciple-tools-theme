@@ -826,6 +826,11 @@ jQuery(document).ready(function($) {
         </div>`
       memberList.append(memberHTML)
     })
+    if (group.members.length === 0) {
+      $("#empty-members-list-message").show()
+    } else {
+      $("#empty-members-list-message").hide()
+    }
     memberCountInput.val( group.member_count )
   }
   populateMembersList()

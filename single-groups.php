@@ -95,7 +95,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                     </button>
                                 </div>
                                 <div class="members-section">
-                                &nbsp;<!--<p class="small"><?php esc_html_e( "No group members yet. Create or Select new members to add them to this group.", 'disciple_tools' ) ?></p>-->
+                                    <div id="empty-members-list-message"><?php esc_html_e( "To add new members, click on 'Create' or 'Select'.", 'disciple_tools' ) ?></div>
                                     <div class="member-list">
 
                                     </div>
