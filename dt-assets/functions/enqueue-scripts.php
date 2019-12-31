@@ -178,7 +178,12 @@ function dt_site_scripts() {
                 'post_id' => get_the_ID(),
                 'post_settings' => $post_settings,
                 'current_user_id' => get_current_user_id(),
-                'post_fields' => $post
+                'post_fields' => $post,
+                'translations' => [
+                    'remove' => _x( 'remove', 'Tasks', 'disciple_tools' ),
+                    'complete' => _x( 'mark as complete', 'Tasks', 'disciple_tools' ),
+                    'no_tasks' => _x( 'No task created', 'Tasks', 'disciple_tools' ),
+                ]
             ]);
 
 

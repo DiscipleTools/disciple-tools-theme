@@ -1225,9 +1225,11 @@ class Disciple_Tools_Posts
                         if ( !empty( $value["id"] ) ) {
                             //see if we find the value with the correct id on this contact for this user.
                             $exists = false;
+                            $existing_field = null;
                             foreach ( $existing_record[$field_key] ?? [] as $v ){
                                 if ( (int) $v["id"] === (int) $value["id"] ){
                                     $exists = true;
+                                    $existing_field = $v;
                                 }
                             }
                             if ( !$exists ){
@@ -1246,9 +1248,15 @@ class Disciple_Tools_Posts
                                 }
                             } else {
                                 //update user meta
-                                $update = [
-                                    "meta_value" => is_array( $value["value"] ) ? serialize( $value["value"] ) : $value["value"]
-                                ];
+                                $update = [];
+                                if ( is_array( $value["value"] ) ){
+                                    foreach ( $value["value"] as $val_key => $val_data ) {
+                                        $existing_field["value"][$val_key] = $val_data;
+                                    }
+                                    $update["meta_value"] = serialize( $existing_field["value"] );
+                                } else {
+                                    $update["meta_value"] = $value["value"];
+                                }
                                 if ( isset( $value["date"] ) ){
                                     $update["date"] = $value["date"];
                                 }

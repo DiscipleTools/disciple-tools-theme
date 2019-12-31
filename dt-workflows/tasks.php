@@ -19,15 +19,18 @@ function set_task_notifications(){
         FROM $wpdb->dt_post_user_meta pum
         WHERE pum.date <= NOW()
         AND meta_key = 'tasks'
-        AND meta_value NOT LIKE '%reminder_sent%'
+        AND meta_value NOT LIKE '%notification_sent%'
+        AND meta_value NOT LIKE '%task_complete%'
     ", ARRAY_A);
     foreach ( $tasks as $task ){
         $val = maybe_unserialize( $task["meta_value"] );
         $message = $val["note"] ?? "";
         $post = get_post( $task["post_id"] );
         $user = get_user_by( "ID", $task["user_id"] );
+        $type = $val["category"] ?? null;
 
-        if ( $post && $message && $user ){
+        $send = ( $type === "reminder" && $val["notification"] !== 'notification_sent' ) || ( $type !== 'reminder' && $val["status"] !== "task_complete" );
+        if ( $post && $send && $user ) {
 
             //enable comments when private comments are available.
 //            $comment_html = esc_html( '@[' . $user->display_name . "](" . $task['user_id']. ") " . __( "You set this task:" ) . " " . $message );
@@ -51,7 +54,7 @@ function set_task_notifications(){
             ];
             do_action( 'send_notification_on_channels', $task["user_id"], $notification, 'tasks', [] );
         }
-        $val["status"] = "reminder_sent";
+        $val["notification"] = "notification_sent";
         $wpdb->update( $wpdb->dt_post_user_meta,
             [
                 "meta_value" => serialize( $val )
@@ -65,6 +68,7 @@ function set_task_notifications(){
         );
     }
 }
+add_action( 'init', 'set_task_notifications', 10, 2 );
 
 
 function dt_custom_notification_note( $note, $notification ){
@@ -73,10 +77,15 @@ function dt_custom_notification_note( $note, $notification ){
         $post_title = isset( $post->post_title ) ? sanitize_text_field( $post->post_title ) : "";
         $link = '<a href="' . home_url( '/' ) . get_post_type( $notification["post_id"] ) . '/' . $notification["post_id"] . '">' . $post_title . '</a>';
         global $wpdb;
-        $task = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM $wpdb->dt_post_user_meta WHERE id = %s", $notification["field_value"] ) );
-        $message = maybe_unserialize( $task )["note"];
-        $note = Disciple_Tools_Notifications::instance()->format_comment( $message );
-        $note = sprintf( esc_html_x( 'You set this task on %1$s: %2$s', 'You set this task on contact1: test', 'disciple_tools' ), $link, $note );
+        $task = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_post_user_meta WHERE id = %s", $notification["field_value"] ), ARRAY_A );
+
+        if ( $task["category"] === "reminder" ){
+            $note = sprintf( esc_html_x( 'You set a reminder on %1$s', 'You set this task on contact1: test', 'disciple_tools' ), $link );
+        } else {
+            $message = maybe_unserialize( $task["meta_value"] )["note"] ?? null;
+            $note = Disciple_Tools_Notifications::instance()->format_comment( $message );
+            $note = sprintf( esc_html_x( 'You set this task on %1$s: %2$s', 'You set this task on contact1: test', 'disciple_tools' ), $link, $note );
+        }
     }
     return $note;
 }

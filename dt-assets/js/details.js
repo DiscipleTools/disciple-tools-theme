@@ -235,19 +235,68 @@ jQuery(document).ready(function($) {
   // details_section_dom.html(details_fields_html)
 
 
-  //open the create task modal
-  $('#open-set-task').on( "click", function () {
-    $('.js-add-task-form .error-text').empty();
+  let build_task_list = ()=>{
     let tasks = _.sortBy(post.tasks || [], ['date']).reverse()
     let html = ``
     tasks.forEach(task=>{
-      html += `<li style="${task.value.status === 'reminder_sent' ? 'text-decoration:line-through' : ''}">
-        <strong>${_.escape( moment(task.date).format("MMM D YYYY") )}</strong> ${ _.escape( task.category )}${ task.value.note ? ': ' + _.escape( task.value.note ) : ''}
+      let task_done = ( task.category === "reminder" && task.value.notification === 'notification_sent' )
+                      || ( task.category !== "reminder" && task.value.status === 'task_complete' )
+      let show_complete_button = task.category !== "reminder" && task.value.status !== 'task_complete'
+      html += `<li>
+        <span style="${task_done ? 'text-decoration:line-through' : ''}">
+          <strong>${_.escape( moment(task.date).format("MMM D YYYY") )}</strong> ${ _.escape( task.category )}${ task.value.note ? ': ' + _.escape( task.value.note ) : ''}</span>
+        ${ show_complete_button ? `<button type="button" data-id="${_.escape(task.id)}" class="existing-task-action complete-task">${_.escape(detailsSettings.translations.complete)}</button>` : '' }
+        <button type="button" data-id="${_.escape(task.id)}" class="existing-task-action remove-task" style="color: red;">${_.escape(detailsSettings.translations.remove)}</button>
       </li>`
     })
-    if ( html ){
-      $('.js-add-task-form .existing-tasks').html(html)
+    if (!html ){
+      $('#tasks-modal .existing-tasks').html(`<li>${_.escape(detailsSettings.translations.no_tasks)}</li>`)
+    } else {
+      $('#tasks-modal .existing-tasks').html(html)
+
     }
+
+    $('.complete-task').on("click", function () {
+      $('#tasks-spinner').addClass('active')
+      let id = $(this).data('id')
+      API.update_post(post_type, post_id, {
+        "tasks": {
+          values: [
+            {
+              id,
+              value: {status: 'task_complete'},
+            }
+          ]
+        }
+      }).then(resp => {
+        post = resp
+        build_task_list()
+        $('#tasks-spinner').removeClass('active')
+      })
+    })
+    $('.remove-task').on("click", function () {
+      $('#tasks-spinner').addClass('active')
+      let id = $(this).data('id')
+      API.update_post(post_type, post_id, {
+        "tasks": {
+          values: [
+            {
+              id,
+              delete: true
+            }
+          ]
+        }
+      }).then(resp => {
+        post = resp
+        build_task_list()
+        $('#tasks-spinner').removeClass('active')
+      })
+    })
+  }
+  //open the create task modal
+  $('#open-set-task').on( "click", function () {
+    $('.js-add-task-form .error-text').empty();
+    build_task_list()
     $('#tasks-modal').foundation('open');
   })
   $('#task-custom-text').on('click', function () {
