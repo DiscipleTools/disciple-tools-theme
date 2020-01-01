@@ -2,7 +2,7 @@
 global $post;
 ?>
 
-<div class="reveal" id="share-contact-modal" data-reveal style="min-height:500px">
+<div class="reveal modal" id="share-contact-modal" data-reveal style="min-height:500px">
 
     <h3><?php esc_html_e( 'Share settings', 'disciple_tools' )?></h3>
     
