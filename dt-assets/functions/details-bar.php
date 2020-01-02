@@ -68,7 +68,7 @@ function dt_print_details_bar(
                     <div class="cell small-4 align-right grid-x grid-margin-x">
                         <?php if ( $task ) : ?>
                         <div class="cell shrink center-items">
-                            <button id="open-set-task" class="button">
+                            <button class="button open-set-task">
                                 <?php esc_html_e( 'Tasks', 'disciple_tools' ); ?>
                                 <i class="fi-clock"></i>
                             </button>
@@ -112,14 +112,15 @@ function dt_print_details_bar(
                     </a>
                 </button>
             </div>
-        <?php endif; ?>
-        <?php if ( $share_button ): ?>
-            <div class="cell shrink">
-                <button class="center-items open-share">
-                    <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
-                    <span style="margin:2px 10px 0 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?></span>
-                </button>
-            </div>
+            <?php endif; ?>
+            <?php if ( $share_button ): ?>
+                <div class="cell shrink">
+                    <button class="center-items open-share">
+                        <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
+                        <span style="margin:2px 10px 0 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?></span>
+                    </button>
+                </div>
+            <?php endif; ?>
             <div class="cell shrink">
                 <?php if ( $disable_following_toggle_function ) : ?>
                     <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
@@ -131,8 +132,15 @@ function dt_print_details_bar(
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
+            <?php if ( $task ) : ?>
+                <div class="cell shrink center-items">
+                    <button class="button open-set-task">
+                        <?php esc_html_e( 'Tasks', 'disciple_tools' ); ?>
+                        <i class="fi-clock"></i>
+                    </button>
+                </div>
+            <?php endif; ?>
         </div>
-        <?php endif; ?>
     </nav>
     <?php endif;
 }

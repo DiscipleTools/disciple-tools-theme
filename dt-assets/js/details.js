@@ -242,9 +242,18 @@ jQuery(document).ready(function($) {
       let task_done = ( task.category === "reminder" && task.value.notification === 'notification_sent' )
                       || ( task.category !== "reminder" && task.value.status === 'task_complete' )
       let show_complete_button = task.category !== "reminder" && task.value.status !== 'task_complete'
+      let task_row = `<strong>${_.escape( moment(task.date).format("MMM D YYYY") )}</strong> `
+      if ( task.category === "reminder" ){
+        task_row += _.escape( detailsSettings.translations.reminder )
+        if ( task.value.note ){
+          task_row += ' ' + _.escape(task.value.note)
+        }
+      } else {
+         task_row += _.escape(task.value.note || detailsSettings.translations.no_note )
+      }
       html += `<li>
         <span style="${task_done ? 'text-decoration:line-through' : ''}">
-          <strong>${_.escape( moment(task.date).format("MMM D YYYY") )}</strong> ${ _.escape( task.category )}${ task.value.note ? ': ' + _.escape( task.value.note ) : ''}</span>
+        ${task_row}  
         ${ show_complete_button ? `<button type="button" data-id="${_.escape(task.id)}" class="existing-task-action complete-task">${_.escape(detailsSettings.translations.complete)}</button>` : '' }
         <button type="button" data-id="${_.escape(task.id)}" class="existing-task-action remove-task" style="color: red;">${_.escape(detailsSettings.translations.remove)}</button>
       </li>`
@@ -253,21 +262,13 @@ jQuery(document).ready(function($) {
       $('#tasks-modal .existing-tasks').html(`<li>${_.escape(detailsSettings.translations.no_tasks)}</li>`)
     } else {
       $('#tasks-modal .existing-tasks').html(html)
-
     }
 
     $('.complete-task').on("click", function () {
       $('#tasks-spinner').addClass('active')
       let id = $(this).data('id')
       API.update_post(post_type, post_id, {
-        "tasks": {
-          values: [
-            {
-              id,
-              value: {status: 'task_complete'},
-            }
-          ]
-        }
+          "tasks": { values: [ { id, value: {status: 'task_complete'}, } ] }
       }).then(resp => {
         post = resp
         build_task_list()
@@ -278,14 +279,7 @@ jQuery(document).ready(function($) {
       $('#tasks-spinner').addClass('active')
       let id = $(this).data('id')
       API.update_post(post_type, post_id, {
-        "tasks": {
-          values: [
-            {
-              id,
-              delete: true
-            }
-          ]
-        }
+          "tasks": { values: [ { id, delete: true } ] }
       }).then(resp => {
         post = resp
         build_task_list()
@@ -294,7 +288,7 @@ jQuery(document).ready(function($) {
     })
   }
   //open the create task modal
-  $('#open-set-task').on( "click", function () {
+  $('.open-set-task').on( "click", function () {
     $('.js-add-task-form .error-text').empty();
     build_task_list()
     $('#tasks-modal').foundation('open');
@@ -302,29 +296,37 @@ jQuery(document).ready(function($) {
   $('#task-custom-text').on('click', function () {
     $('input:radio[name="task-type"]').filter('[value="custom"]').prop('checked', true);
   })
-  //init the datepicker
-  $('#create-task-date').datepicker({
-    dateFormat: 'yy-mm-dd',
-    changeMonth: true,
-    changeYear: true,
-    yearRange: "1900:2050",
-  })
+  $('#create-task-date').daterangepicker({
+    "singleDatePicker": true,
+    // "autoUpdateInput": false,
+    // "timePicker": true,
+    // "timePickerIncrement": 60,
+    "locale": {
+      "format": "YYYY/MM/DD",
+      "separator": " - ",
+      "daysOfWeek": window.wpApiShare.translations.days_of_the_week,
+      "monthNames": window.wpApiShare.translations.month_labels,
+    },
+    "firstDay": 1,
+    "startDate": moment().add(1, "day"),
+    "opens": "center",
+    "drops": "down"
+  });
   let task_note = $('#tasks-modal #task-custom-text')
-  let task_date = $('#tasks-modal #create-task-date')
   //submit the create task form
   $(".js-add-task-form").on("submit", function(e) {
     e.preventDefault();
     $("#create-task")
       .attr("disabled", true)
       .addClass("loading");
-    let date = task_date.datepicker('getDate');
+    let date = $('#create-task-date').data('daterangepicker').startDate
     let note = task_note.val()
     let task_type = $('#tasks-modal input[name="task-type"]:checked').val()
     API.update_post(post_type, post_id, {
       "tasks":{
         values: [
           {
-            date: date,
+            date: date.add(8, 'hours').format(),
             value: {note: note},
             category: task_type
           }
@@ -336,7 +338,6 @@ jQuery(document).ready(function($) {
       .attr("disabled", false)
       .removeClass("loading");
       task_note.val('')
-      task_date.datepicker('setDate', null);
       $('#tasks-modal').foundation('close');
     }).catch(err => {
       $("#create-task")

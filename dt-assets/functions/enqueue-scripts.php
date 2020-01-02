@@ -100,13 +100,41 @@ function dt_site_scripts() {
         return;
     }
 
-    dt_theme_enqueue_script( 'shared-functions', 'dt-assets/js/shared-functions.js', array( 'jquery', 'lodash', 'wp-i18n' ) );
+    wp_register_script( 'datepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', false );
+    wp_enqueue_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css', array() );
+
+    dt_theme_enqueue_script( 'shared-functions', 'dt-assets/js/shared-functions.js', array( 'jquery', 'lodash', 'moment', 'datepicker' ) );
     wp_localize_script(
         'shared-functions', 'wpApiShare', array(
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'site_url' => get_site_url(),
-            'template_dir' => get_template_directory_uri()
+            'template_dir' => get_template_directory_uri(),
+            'translations' => [
+                'days_of_the_week' => [
+                    _x( "Su", 'Dates', 'disciple_tools' ),
+                    _x( "Mo", 'Dates', 'disciple_tools' ),
+                    _x( "Tu", 'Dates', 'disciple_tools' ),
+                    _x( "We", 'Dates', 'disciple_tools' ),
+                    _x( "Th", 'Dates', 'disciple_tools' ),
+                    _x( "Fr", 'Dates', 'disciple_tools' ),
+                    _x( "Sa", 'Dates', 'disciple_tools' )
+                ],
+                'month_labels' => [
+                    _x( "January", 'Dates', 'disciple_tools' ),
+                    _x( "February", 'Dates', 'disciple_tools' ),
+                    _x( "March", 'Dates', 'disciple_tools' ),
+                    _x( "April", 'Dates', 'disciple_tools' ),
+                    _x( "May", 'Dates', 'disciple_tools' ),
+                    _x( "June", 'Dates', 'disciple_tools' ),
+                    _x( "July", 'Dates', 'disciple_tools' ),
+                    _x( "August", 'Dates', 'disciple_tools' ),
+                    _x( "September", 'Dates', 'disciple_tools' ),
+                    _x( "October", 'Dates', 'disciple_tools' ),
+                    _x( "November", 'Dates', 'disciple_tools' ),
+                    _x( "December", 'Dates', 'disciple_tools' )
+                ]
+            ]
         )
     );
 
@@ -183,6 +211,8 @@ function dt_site_scripts() {
                     'remove' => _x( 'remove', 'Tasks', 'disciple_tools' ),
                     'complete' => _x( 'mark as complete', 'Tasks', 'disciple_tools' ),
                     'no_tasks' => _x( 'No task created', 'Tasks', 'disciple_tools' ),
+                    'reminder' => _x( 'Reminder', 'Tasks', 'disciple_tools' ),
+                    'no_note' => _x( 'No note set', 'Tasks', 'disciple_tools' ),
                 ]
             ]);
 

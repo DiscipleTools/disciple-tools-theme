@@ -68,7 +68,6 @@ function set_task_notifications(){
         );
     }
 }
-add_action( 'init', 'set_task_notifications', 10, 2 );
 
 
 function dt_custom_notification_note( $note, $notification ){

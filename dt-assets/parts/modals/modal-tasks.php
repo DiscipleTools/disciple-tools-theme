@@ -8,36 +8,29 @@ global $post;
 
 
     <form class="js-add-task-form">
-        <div>
-            <p style="color: red" class="error-text"></p>
-            <p><?php echo esc_html_x( 'Set a reminder or a task with a note and receive a notification on the due date.', 'Tasks', 'disciple_tools' ); ?></p>
-            <strong><?php echo esc_html_x( "Task type", 'Tasks', "disciple_tools" ); ?></strong>
-            <ul class="ul-no-bullets">
-                <li>
-                    <label>
-                        <input type="radio" name="task-type" value="reminder" checked><?php echo esc_html_x( 'Reminder', 'Tasks', 'disciple_tools' ); ?>
-                    </label>
-                </li>
-<!--                <li>-->
-<!--                    <label>-->
-<!--                        <input type="radio" name="task-type" value="attempt">--><?php //echo esc_html_x( 'Attempt Contact', 'Tasks', 'disciple_tools' ); ?>
-<!--                    </label>-->
-<!--                </li>-->
-                <li>
-                    <label style="display: flex; align-items: baseline">
-                        <input type="radio" name="task-type" value="custom"><?php echo esc_html_x( 'Custom', 'Tasks', 'disciple_tools' ); ?>:&nbsp;
-                        <input type="text" id="task-custom-text" style="">
-                    </label>
-                </li>
-            </ul>
+        <p style="color: red" class="error-text"></p>
+        <p><?php echo esc_html_x( 'Set a reminder or a task with a note and receive a notification on the due date.', 'Tasks', 'disciple_tools' ); ?></p>
+        <strong><?php echo esc_html_x( "Task type", 'Tasks', "disciple_tools" ); ?></strong>
+        <ul class="ul-no-bullets">
+            <li>
+                <label>
+                    <input type="radio" name="task-type" value="reminder" checked><?php echo esc_html_x( 'Reminder', 'Tasks', 'disciple_tools' ); ?>
+                </label>
+            </li>
+            <li>
+                <label style="display: flex; align-items: baseline">
+                    <input type="radio" name="task-type" value="custom"><?php echo esc_html_x( 'Custom', 'Tasks', 'disciple_tools' ); ?>:&nbsp;
+                    <input type="text" id="task-custom-text" style="">
+                </label>
+            </li>
+        </ul>
 
-            <label><strong><?php echo esc_html_x( "Due Date", 'Tasks', "disciple_tools" ); ?></strong>
-                <input id="create-task-date" name="task-date" type="text" class="" required autocomplete="off" style="width: 200px">
-            </label>
-            <button class="button loader" type="submit" id="create-task">
-                <?php echo esc_html_x( 'Create Task', 'Tasks', 'disciple_tools' ); ?>
-            </button>
-        </div>
+        <label><strong><?php echo esc_html_x( "Due Date", 'Tasks', "disciple_tools" ); ?></strong></label>
+        <input id="create-task-date" name="task-date" type="text" class="" required autocomplete="off" >
+
+        <button class="button loader" type="submit" id="create-task">
+            <?php echo esc_html_x( 'Create Task', 'Tasks', 'disciple_tools' ); ?>
+        </button>
     </form>
 
     <hr>
