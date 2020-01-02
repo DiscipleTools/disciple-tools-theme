@@ -393,7 +393,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         $data["posts"] = $records;
 
-        $data = apply_filters( "dt_list_posts_custom_fields", $data );
+        $data = apply_filters( "dt_list_posts_custom_fields", $data, $post_type );
 
         return $data;
     }

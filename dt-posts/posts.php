@@ -1616,7 +1616,7 @@ class Disciple_Tools_Posts
             }
         }
 
-        $fields = apply_filters( "dt_adjust_post_custom_fields", $fields );
+        $fields = apply_filters( "dt_adjust_post_custom_fields", $fields, $post_settings["post_type"] );
     }
 
     /**
