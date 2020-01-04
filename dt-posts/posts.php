@@ -1593,6 +1593,7 @@ class Disciple_Tools_Posts
             }
         }
 
+        //add user fields
         global $wpdb;
         $user_id = get_current_user_id();
         if ( $user_id ){
@@ -1614,6 +1615,8 @@ class Disciple_Tools_Posts
                 ];
             }
         }
+
+        $fields = apply_filters( "dt_adjust_post_custom_fields", $fields, $post_settings["post_type"] );
     }
 
     /**
