@@ -1,5 +1,5 @@
 
-<div class="reveal modal" id="revert-modal" data-reveal>
+<div class="reveal" id="revert-modal" data-reveal>
 
     <h3><?php esc_html_e( 'Revert Activity', 'disciple_tools' )?></h3>
     <h6><?php esc_html_e( "Field", 'disciple_tools' ) ?>:

@@ -555,7 +555,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'revert' ); ?>
 
 
-    <div class="reveal modal" id="closed-contact-modal" data-reveal>
+    <div class="reveal" id="closed-contact-modal" data-reveal>
         <h3><?php esc_html_e( 'Close Contact', 'disciple_tools' )?></h3>
         <p><?php esc_html_e( 'Why do you want to close this contact?', 'disciple_tools' )?></p>
 
@@ -580,7 +580,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         </button>
     </div>
 
-    <div class="reveal modal" id="paused-contact-modal" data-reveal>
+    <div class="reveal" id="paused-contact-modal" data-reveal>
         <h3><?php esc_html_e( 'Pause Contact', 'disciple_tools' )?></h3>
         <p><?php esc_html_e( 'Why do you want to pause this contact?', 'disciple_tools' )?></p>
 
@@ -606,7 +606,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="reveal modal" id="unassignable-contact-modal" data-reveal>
+    <div class="reveal" id="unassignable-contact-modal" data-reveal>
         <h3><?php esc_html_e( 'Contact Not Ready', 'disciple_tools' )?></h3>
         <p><?php esc_html_e( 'Why is this contact `not ready` or unassignable to a user?', 'disciple_tools' )?></p>
 
@@ -633,7 +633,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         </button>
     </div>
 
-    <div class="reveal modal" id="create-tag-modal" data-reveal data-reset-on-close>
+    <div class="reveal" id="create-tag-modal" data-reveal data-reset-on-close>
         <h3><?php esc_html_e( 'Create Tag', 'disciple_tools' )?></h3>
         <p><?php esc_html_e( 'Create a tag and apply it to this contact.', 'disciple_tools' )?></p>
 
@@ -658,7 +658,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         </div>
     </div>
 
-    <div class="reveal modal" id="baptism-modal" data-reveal>
+    <div class="reveal" id="baptism-modal" data-reveal>
 
         <h3><?php esc_html_e( "Baptized", 'disciple_tools' )?></h3>
         <p><?php esc_html_e( "Who was this contact baptized by and when?", 'disciple_tools' )?></p>
@@ -701,7 +701,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         </div>
     </div>
 
-    <div class="reveal modal" id="make-user-from-contact-modal" data-reveal data-reset-on-close>
+    <div class="reveal" id="make-user-from-contact-modal" data-reveal data-reset-on-close>
         <h3><?php echo esc_html_x( 'Make User From Contact', 'Make user modal', 'disciple_tools' )?></h3>
 
         <?php if ( isset( $contact['corresponds_to_user'] ) ) : ?>
@@ -743,7 +743,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     </div>
 
 
-    <div class="reveal modal" id="link-to-user-modal" data-reveal data-reset-on-close style="min-height:500px">
+    <div class="reveal" id="link-to-user-modal" data-reveal data-reset-on-close style="min-height:500px">
 
         <h3><?php esc_html_e( "Link this contact to an existing user", 'disciple_tools' )?></h3>
 
@@ -799,7 +799,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         </div>
     </div>
 
-    <div class="reveal modal" id="merge-with-contact-modal" data-reveal style="min-height:500px">
+    <div class="reveal" id="merge-with-contact-modal" data-reveal style="min-height:500px">
         <h3><?php esc_html_e( "Merge Contact", 'disciple_tools' )?></h3>
         <p><?php esc_html_e( "Merge this contact with another contact.", 'disciple_tools' )?></p>
 

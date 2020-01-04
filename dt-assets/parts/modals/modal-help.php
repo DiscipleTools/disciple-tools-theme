@@ -1,4 +1,4 @@
-<div class="reveal modal" id="help-modal" data-reveal>
+<div class="reveal" id="help-modal" data-reveal>
     <?php
     $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
     $contact_channels = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();

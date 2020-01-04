@@ -317,7 +317,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                 </div>
 
 
-                <div class="reveal modal" id="edit-profile-modal" data-reveal>
+                <div class="reveal" id="edit-profile-modal" data-reveal>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>

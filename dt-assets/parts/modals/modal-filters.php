@@ -1,5 +1,5 @@
 
-<div class="reveal modal" id="save-filter-modal" data-reveal>
+<div class="reveal" id="save-filter-modal" data-reveal>
     <h3><?php esc_html_e( "Save Filter", 'disciple_tools' ) ?></h3>
     <label><?php esc_html_e( "What do you want to call this filter?", 'disciple_tools' ) ?>
         <input id="filter-name">
@@ -18,7 +18,7 @@
 </div>
 
 
-<div class="reveal modal" id="delete-filter-modal" data-reveal>
+<div class="reveal" id="delete-filter-modal" data-reveal>
     <h1><?php esc_html_e( "Delete Filter", 'disciple_tools' ) ?></h1>
 
     <p class="delete-filter-name"></p>

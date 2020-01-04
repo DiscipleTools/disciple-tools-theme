@@ -1,4 +1,4 @@
-<div class="reveal modal" id="create-group-modal" data-reveal data-reset-on-close>
+<div class="reveal" id="create-group-modal" data-reveal data-reset-on-close>
 
     <h3><?php esc_html_e( 'Create Group', 'disciple_tools' )?></h3>
 

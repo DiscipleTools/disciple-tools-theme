@@ -132,7 +132,7 @@
         </div>
     </div>
 
-    <div class="reveal modal" id="delete-comment-modal" data-reveal>
+    <div class="reveal" id="delete-comment-modal" data-reveal>
         <p class="lead"><?php esc_html_e( 'Delete Comment:', 'disciple_tools' ) ?></p>
         <p id="comment-to-delete"></p>
         <div class="grid-x">
@@ -152,7 +152,7 @@
         </div>
     </div>
 
-    <div class="reveal modal" id="edit-comment-modal" data-reveal>
+    <div class="reveal" id="edit-comment-modal" data-reveal>
         <p class="lead"><?php esc_html_e( 'Edit Comment:', 'disciple_tools' ) ?></p>
         <textarea id="comment-to-edit" rows="10" dir="auto"></textarea>
         <div class="grid-x">
