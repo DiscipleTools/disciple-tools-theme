@@ -298,7 +298,7 @@
         </div><!-- end collapse --></div>
     </section>
 
-    <div class="reveal" id="contact-details-edit" data-reveal data-close-on-click="false">
+    <div class="reveal" id="contact-details-edit-modal" data-reveal data-close-on-click="false">
         <h1><?php esc_html_e( "Edit Contact", 'disciple_tools' ) ?></h1>
         <div class="display-fields details-edit-fields">
             <div class="grid-x">
@@ -520,8 +520,8 @@
         <!-- map -->
         <div id="address-click-map"></div>
         <p>
-            <button class="button" data-open="contact-details-edit" onclick="window.GEOCODEFUNCTIONS.getAddressInput()">Select</button>
-            <button class="button" data-open="contact-details-edit" data-close>Cancel</button>
+            <button class="button" data-open="contact-details-edit-modal" onclick="window.GEOCODEFUNCTIONS.getAddressInput()">Select</button>
+            <button class="button" data-open="contact-details-edit-modal" data-close>Cancel</button>
         </p>
     </div>
 
