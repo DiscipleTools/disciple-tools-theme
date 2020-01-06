@@ -326,7 +326,7 @@ jQuery(document).ready(function($) {
       "tasks":{
         values: [
           {
-            date: date.add(8, 'hours').format(),
+            date: date.startOf('day').add(8, "hours").format(), //time 8am
             value: {note: note},
             category: task_type
           }
