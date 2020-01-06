@@ -671,7 +671,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $hidden_fields[] = $field_key;
             }
         }
-        $hidden_keys = dt_array_to_sql( $hidden_fields );
+
+        $hidden_keys = empty( $hidden_fields ) ? "''" : dt_array_to_sql( $hidden_fields );
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
         $activity = $wpdb->get_results( $wpdb->prepare(

@@ -10,7 +10,8 @@ jQuery(document).ready(function($) {
     } else {
         ref = window.location.pathname
     }
-    $(`div.top-bar-left ul.menu [href$=${ref.replace(wpApiShare.site_url, '').split('/')[0]+'\\/'}]`).parent().addClass('active');
+    let page = `${ref.replace(wpApiShare.site_url, '').split('/')[0] + ''}`
+    $(`div.top-bar-left ul.menu [href^="${wpApiShare.site_url + '/' +page}"]`).parent().addClass('active');
 })
 
 
