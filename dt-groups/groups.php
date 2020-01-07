@@ -56,6 +56,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
         add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
+        add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
 
         parent::__construct();
     }
@@ -129,7 +130,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 }
                 //make sure the assigned to is in the right format (user-1)
                 if ( is_numeric( $fields["assigned_to"] ) ||
-                     strpos( $fields["assigned_to"], "user" ) === false ){
+                    strpos( $fields["assigned_to"], "user" ) === false ){
                     $fields["assigned_to"] = "user-" . $fields["assigned_to"];
                 }
                 $user_id = explode( '-', $fields["assigned_to"] )[1];
@@ -349,7 +350,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 }
                 //make sure the assigned to is in the right format (user-1)
                 if ( is_numeric( $fields["assigned_to"] ) ||
-                     strpos( $fields["assigned_to"], "user" ) === false ){
+                    strpos( $fields["assigned_to"], "user" ) === false ){
                     $fields["assigned_to"] = "user-" . $fields["assigned_to"];
                 }
             }
@@ -478,5 +479,235 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             'channels' => self::$channel_list,
             'connection_types' => self::$group_connection_types
         ];
+    }
+
+
+    public static function get_my_groups_status_type(){
+        global $wpdb;
+
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT status.meta_value as group_status, pm.meta_value as group_type, count(pm.meta_value) as count, count(un.post_id) as update_needed
+            FROM $wpdb->postmeta pm
+            INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'group_status' )
+            INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'groups' and a.post_status = 'publish' )
+            INNER JOIN $wpdb->postmeta as assigned_to ON a.ID=assigned_to.post_id
+              AND assigned_to.meta_key = 'assigned_to'
+              AND assigned_to.meta_value = CONCAT( 'user-', %s )
+            LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
+            WHERE pm.meta_key = 'group_type'
+            GROUP BY status.meta_value, pm.meta_value
+        ", get_current_user_id() ), ARRAY_A);
+
+        return $results;
+    }
+
+    public static function get_all_groups_status_type(){
+        global $wpdb;
+        if ( current_user_can( 'view_any_groups' ) ){
+            $results = $wpdb->get_results("
+                SELECT status.meta_value as group_status, pm.meta_value as group_type, count(pm.meta_value) as count, count(un.post_id) as update_needed
+                FROM $wpdb->postmeta pm
+                INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'group_status' )
+                INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'groups' and a.post_status = 'publish' )
+                LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
+                WHERE pm.meta_key = 'group_type'
+                GROUP BY status.meta_value, pm.meta_value
+            ", ARRAY_A);
+        } else {
+            $results = $wpdb->get_results($wpdb->prepare("
+                SELECT status.meta_value as group_status, pm.meta_value as group_type, count(pm.meta_value) as count, count(un.post_id) as update_needed
+                FROM $wpdb->postmeta pm
+                INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'group_status' )
+                INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'groups' and a.post_status = 'publish' )
+                LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = a.ID AND shares.user_id = %s )
+                LEFT JOIN $wpdb->postmeta assigned_to ON ( assigned_to.post_id = pm.post_id AND assigned_to.meta_key = 'assigned_to' && assigned_to.meta_value = %s )
+                LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
+                WHERE pm.meta_key = 'group_type'
+                AND ( shares.user_id IS NOT NULL OR assigned_to.meta_value IS NOT NULL )
+                GROUP BY status.meta_value, pm.meta_value
+            ", get_current_user_id(), 'user-' . get_current_user_id() ), ARRAY_A);
+        }
+
+        return $results;
+    }
+
+    private static function increment( &$var, $val ){
+        if ( !isset( $var ) ){
+            $var = 0;
+        }
+        $var += (int) $val;
+    }
+
+    public static function dt_user_list_filters( $filters, $post_type ){
+        if ( $post_type === 'groups' ){
+            $counts = self::get_my_groups_status_type();
+            $fields = self::$group_fields;
+            /**
+             * Setup my group filters
+             */
+            $active_counts = [];
+            $update_needed = 0;
+            $status_counts = [];
+            $total_my = 0;
+            foreach ( $counts as $count ){
+                $total_my += $count["count"];
+                self::increment( $status_counts[$count["group_status"]], $count["count"] );
+                if ( $count["group_status"] === "active" ){
+                    if ( isset( $count["update_needed"] ) ) {
+                        $update_needed += (int) $count["update_needed"];
+                    }
+                    self::increment( $active_counts[$count["group_type"]], $count["count"] );
+                }
+            }
+
+
+            $filters["tabs"][] = [
+                "key" => "assigned_to_me",
+                "label" => _x( "Assigned to me", 'List Filters', 'disciple_tools' ),
+                "count" => $total_my,
+                "order" => 20
+            ];
+            // add assigned to me filters
+            $filters["filters"][] = [
+                'ID' => 'my_all',
+                'tab' => 'assigned_to_me',
+                'name' => _x( "All", 'List Filters', 'disciple_tools' ),
+                'query' => [
+                    'assigned_to' => [ 'me' ],
+                    'sort' => 'group_status'
+                ],
+                "count" => $total_my,
+            ];
+            foreach ( $fields["group_status"]["default"] as $status_key => $status_value ) {
+                if ( isset( $status_counts[$status_key] ) ){
+                    $filters["filters"][] = [
+                        "ID" => 'my_' . $status_key,
+                        "tab" => 'assigned_to_me',
+                        "name" => $status_value["label"],
+                        "query" => [
+                            'assigned_to' => [ 'me' ],
+                            'group_status' => [ $status_key ],
+                            'sort' => 'group_type'
+                        ],
+                        "count" => $status_counts[$status_key]
+                    ];
+                    if ( $status_key === "active" ){
+                        if ( $update_needed > 0 ){
+                            $filters["filters"][] = [
+                                "ID" => 'my_update_needed',
+                                "tab" => 'assigned_to_me',
+                                "name" => _x( 'Update Needed', 'List Filters', 'disciple_tools' ),
+                                "query" => [
+                                    'assigned_to' => [ 'me' ],
+                                    'group_status' => [ 'active' ],
+                                    'requires_update' => [ true ],
+                                ],
+                                "count" => $update_needed,
+                                'subfilter' => true
+                            ];
+                        }
+                        foreach ( $fields["group_type"]["default"] as $group_type_key => $group_type_value ) {
+                            if ( isset( $active_counts[$group_type_key] ) ) {
+                                $filters["filters"][] = [
+                                    "ID" => 'my_' . $group_type_key,
+                                    "tab" => 'assigned_to_me',
+                                    "name" => $group_type_value["label"],
+                                    "query" => [
+                                        'assigned_to' => [ 'me' ],
+                                        'group_status' => [ 'active' ],
+                                        'group_type' => [ $group_type_key ],
+                                        'sort' => 'name'
+                                    ],
+                                    "count" => $active_counts[$group_type_key],
+                                    'subfilter' => true
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+
+            $counts = self::get_all_groups_status_type();
+            $active_counts = [];
+            $update_needed = 0;
+            $status_counts = [];
+            $total_all = 0;
+            foreach ( $counts as $count ){
+                $total_all += $count["count"];
+                self::increment( $status_counts[$count["group_status"]], $count["count"] );
+                if ( $count["group_status"] === "active" ){
+                    if ( isset( $count["update_needed"] ) ) {
+                        $update_needed += (int) $count["update_needed"];
+                    }
+                    self::increment( $active_counts[$count["group_type"]], $count["count"] );
+                }
+            }
+            $filters["tabs"][] = [
+                "key" => "all",
+                "label" => _x( "All", 'List Filters', 'disciple_tools' ),
+                "count" => $total_all,
+                "order" => 10
+            ];
+            // add assigned to me filters
+            $filters["filters"][] = [
+                'ID' => 'all',
+                'tab' => 'all',
+                'name' => _x( "All", 'List Filters', 'disciple_tools' ),
+                'query' => [
+                    'sort' => 'group_type'
+                ],
+                "count" => $total_all
+            ];
+
+            foreach ( $fields["group_status"]["default"] as $status_key => $status_value ) {
+                if ( isset( $status_counts[$status_key] ) ){
+                    $filters["filters"][] = [
+                        "ID" => 'my_' . $status_key,
+                        "tab" => 'all',
+                        "name" => $status_value["label"],
+                        "query" => [
+                            'assigned_to' => [ 'me' ],
+                            'group_status' => [ $status_key ],
+                            'sort' => 'group_type'
+                        ],
+                        "count" => $status_counts[$status_key]
+                    ];
+                    if ( $status_key === "active" ){
+                        if ( $update_needed > 0 ){
+                            $filters["filters"][] = [
+                                "ID" => 'my_update_needed',
+                                "tab" => 'all',
+                                "name" => _x( 'Update Needed', 'List Filters', 'disciple_tools' ),
+                                "query" => [
+                                    'assigned_to' => [ 'me' ],
+                                    'group_status' => [ 'active' ],
+                                    'requires_update' => [ true ],
+                                ],
+                                "count" => $update_needed,
+                                'subfilter' => true
+                            ];
+                        }
+                        foreach ( $fields["group_type"]["default"] as $group_type_key => $group_type_value ) {
+                            if ( isset( $active_counts[$group_type_key] ) ) {
+                                $filters["filters"][] = [
+                                    "ID" => 'my_' . $group_type_key,
+                                    "tab" => 'all',
+                                    "name" => $group_type_value["label"],
+                                    "query" => [
+                                        'assigned_to' => [ 'me' ],
+                                        'group_status' => [ 'active' ],
+                                        'group_type' => [ $group_type_key ],
+                                        'sort' => 'name'
+                                    ],
+                                    "count" => $active_counts[$group_type_key],
+                                    'subfilter' => true
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $filters;
     }
 }
