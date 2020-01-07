@@ -853,7 +853,7 @@ jQuery(document).ready(function($) {
     })
     $('#edit-social').html(html)
 
-    $('#contact-details-edit').foundation('open');
+    $('#contact-details-edit-modal').foundation('open');
     loadGeonameTypeahead()
     loadPeopleGroupTypeahead()
     leadSourcesTypeahead().catch(err => { console.log(err) })
@@ -918,7 +918,7 @@ jQuery(document).ready(function($) {
     })
     $('#edit-social').html(html)
 
-    $('#merge-dupe-edit').foundation('open');
+    $('#merge-dupe-edit-modal').foundation('open');
     // loadLocationTypeahead()
     loadPeopleGroupTypeahead()
     leadSourcesTypeahead()
@@ -930,7 +930,7 @@ jQuery(document).ready(function($) {
     editFieldsUpdate[key] = $(this).val()
   })
 
-  $('#contact-details-edit').on('change', '.contact-input', function() {
+  $('#contact-details-edit-modal').on('change', '.contact-input', function() {
     let value = $(this).val()
     let field = $(this).data("type")
     let key = $(this).attr('id')
@@ -994,7 +994,7 @@ jQuery(document).ready(function($) {
       contact = updatedContact
       $(this).toggleClass("loading")
       resetDetailsFields(contact)
-      $(`#contact-details-edit`).foundation('close')
+      $(`#contact-details-edit-modal`).foundation('close')
     }).catch(handleAjaxError)
   })
 
@@ -1169,7 +1169,7 @@ jQuery(document).ready(function($) {
     values["corresponds_to_contact"] = contact["ID"];
     window.API.create_user(values).then(()=>{
       $(this).removeClass("loading")
-      $(`#make_user_from_contact`).foundation('close')
+      $(`#make-user-from-contact-modal`).foundation('close')
       location.reload();
     }).catch(err=>{
       $(this).removeClass("loading")
@@ -1267,7 +1267,7 @@ jQuery(document).ready(function($) {
       user_select_input.trigger('input.typeahead')
       user_select_input.focus()
     })
-    $('#merge_with_contact_modal').foundation('open');
+    $('#merge-with-contact-modal').foundation('open');
   })
 
   $('#transfer_confirm_button').on('click',function() {
