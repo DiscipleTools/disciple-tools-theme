@@ -819,10 +819,9 @@ class Disciple_Tools_Posts
                 if ( !empty( $connection_ids ) ){
                     if ( $query_key === "subassigned" ) {
                         if ( !empty( $access_query ) && in_array( "subassigned", $combine ) ){
-                            $access_query .= "OR ( from_p2p.p2p_type = 'contacts_to_subassigned' AND from_p2p.p2p_from in (" . esc_sql( $connection_ids ) .") )";
-                            $connections_sql_from .= " ";
+                            $access_query .= "OR ( $wpdb->posts.ID IN ( SELECT p2p_to FROM $wpdb->p2p WHERE p2p_from IN  (" . esc_sql( $connection_ids ) .")  AND p2p_type = 'contacts_to_subassigned' ) )";
                         } else {
-                            $connections_sql_from .= "AND ( from_p2p.p2p_type = 'contacts_to_subassigned' AND from_p2p.p2p_from in (" . esc_sql( $connection_ids ) .") )";
+                            $connections_sql_from .= "AND ( $wpdb->posts.ID IN ( SELECT p2p_to FROM $wpdb->p2p WHERE p2p_from IN  (" . esc_sql( $connection_ids ) .")  AND p2p_type = 'contacts_to_subassigned' ) )";
                         }
                     } else {
                         if ( $post_fields[$query_key]["p2p_direction"] === "to" ){

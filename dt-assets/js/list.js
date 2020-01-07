@@ -121,7 +121,12 @@
 
 
 
-  function setupFilters(filters){
+  function setupFilters(){
+    if ( !wpApiListSettings.filters.tabs){
+      return;
+    }
+    let selectedTab = $('.accordion-item.is-active').data('id');
+    let selectedFilter = $(".js-list-view:checked").data('id')
     let html = ``;
     wpApiListSettings.filters.tabs.forEach( tab =>{
       html += `
@@ -138,7 +143,7 @@
               if (filter.tab===tab.key && filter.tab !== 'custom') {
                 return `
                 <label class="list-view" style="${ filter.subfilter ? 'margin-left:15px' : ''}">
-                  <input type="radio" name="view" value="${_.escape(filter.ID)}" class="js-list-view" autocomplete="off">
+                  <input type="radio" name="view" value="${_.escape(filter.ID)}" data-id="${_.escape(filter.ID)}" class="js-list-view" autocomplete="off">
                   <span id="total_filter_label">${_.escape(filter.name)}</span>
                   <span class="list-view__count js-list-view-count" data-value="${_.escape(filter.ID)}">${_.escape(filter.count )}</span>
                 </label>
@@ -199,6 +204,12 @@
       slideSpeed: 100,
       allowAllClosed: true
     });
+    if ( selectedTab ){
+      $(`#list-filter-tabs [data-id='${_.escape( selectedTab )}'] a`).click()
+    }
+    if ( selectedFilter ){
+      $(`[data-id="${_.escape( selectedFilter )}"].js-list-view`).prop('checked', true);
+    }
   }
 
   //set the "show closed" checkbox
@@ -231,11 +242,7 @@
 
   $(`#list-filter-tabs [data-id='${_.escape( selectedFilterTab )}'] a`).click()
   if ( selectedFilter ){
-    if ( selectedFilterTab === 'custom' ){
-      $(`.is-active input[name=view][data-id="${_.escape( selectedFilter )}"].js-list-view`).prop('checked', true);
-    } else {
-      $(`.is-active input[name=view][value="${_.escape( selectedFilter )}"].js-list-view`).prop('checked', true);
-    }
+    $(`.is-active input[name=view][data-id="${_.escape( selectedFilter )}"].js-list-view`).prop('checked', true);
   }
 
 
@@ -568,7 +575,7 @@
       API.save_filters(wpApiListSettings.current_post_type,filter).then(()=>{
         $(`.custom-filters [class*="list-view ${filterToSave}`).remove()
         setupFilters()
-        let active_tab = $('accordion-item.is-active ').data('id');
+        let active_tab = $('.accordion-item.is-active ').data('id');
         if ( active_tab !== 'custom' ){
           $(`#list-filter-tabs [data-id='custom'] a`).click()
         }
@@ -1180,16 +1187,7 @@
     })
     getFilterCountsPromise.then(filters=>{
       wpApiListSettings.filters = filters
-      filters.tabs.forEach( tab =>{
-        $(`[data-tab="${_.escape(tab.key)}"].tab-count-span`).html(`
-          ${tab.count || tab.count >= 0 ? `(${_.escape(tab.count)})`:``}
-        `)
-      })
-      filters.filters.forEach( filter => {
-        $(`[data-value="${_.escape(filter.ID)}"].js-list-view-count`).html(`
-          ${_.escape(filter.count)}
-        `)
-      })
+      setupFilters()
     }).catch(err => {
       if ( !_.get( err, "statusText" ) === "abort" ){
         console.error(err)

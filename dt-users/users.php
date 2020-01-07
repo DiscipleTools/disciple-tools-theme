@@ -331,6 +331,7 @@ class Disciple_Tools_Users
         ];
         $contacts = new WP_Query( $args );
         if ( isset( $contacts->post->ID ) ){
+            update_user_option( $user_id, "corresponds_to_contact", $contacts->post->ID );
             return $contacts->post->ID;
         } else {
             return null;
@@ -559,26 +560,12 @@ class Disciple_Tools_Users
             $filters = [
                 "tabs" => [
                     [
-                        "key" => "all",
-                        "label" => _x( "All", 'List Filters', 'disciple_tools' ),
-                        "order" => 10
-                    ],
-                    [
                         "key" => "custom",
                         "label" => _x( "Custom Filters", 'List Filters', 'disciple_tools' ),
                         "order" => 99
                     ]
                 ],
-                "filters" => [
-                    [
-                        "ID" => 'all',
-                        "tab" => 'all',
-                        "name" => _x( "All", 'List Filters', 'disciple_tools' ),
-                        "query" => [
-                            'sort' => 'name'
-                        ]
-                    ],
-                ]
+                "filters" => []
             ];
             foreach ( $custom_filters[$post_type] ?? [] as $filter ){
                 $filter["tab"] = "custom";

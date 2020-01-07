@@ -617,16 +617,23 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 }
             }
             $counts = self::get_all_groups_status_type();
-            foreach ( $filters["tabs"] as $index => $tab ){
-                if ( $tab["key"] === "all" ){
-                    $filters["tabs"][$index]["count"] = $counts["total"];
-                }
-            }
-            foreach ( $filters["filters"] as $index => $filter ){
-                if ( $filter["ID"] === "all" ){
-                    $filters["filters"][$index]["count"] = $counts["total"];
-                }
-            }
+            $filters["tabs"][] = [
+                "key" => "all",
+                "label" => _x( "All", 'List Filters', 'disciple_tools' ),
+                "count" => $counts["total"],
+                "order" => 10
+            ];
+            // add assigned to me filters
+            $filters["filters"][] = [
+                'ID' => 'all',
+                'tab' => 'all',
+                'name' => _x( "All", 'List Filters', 'disciple_tools' ),
+                'query' => [
+                    'sort' => 'group_type'
+                ],
+                "count" => $counts["total"],
+            ];
+
             foreach ( self::$group_fields["group_status"]["default"] as $status_key => $status_value ) {
                 foreach ( $counts["group_status"] as $status => $values ) {
                     if ( $status === $status_key ) {
