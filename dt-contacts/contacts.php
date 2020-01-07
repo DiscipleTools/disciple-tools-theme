@@ -1498,14 +1498,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepare
         $contacts_by_status = $wpdb->get_results( $wpdb->prepare( "
-            SELECT pm.meta_value, count(pm.meta_value) as count, type.meta_value as type
+            SELECT pm.meta_value, count(pm.meta_value) as count
             FROM $wpdb->postmeta pm
             INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'contacts' and a.post_status = 'publish' )
-             " . $access_sql . "
-            INNER JOIN $wpdb->postmeta as type ON ( a.ID=type.post_id AND type.meta_key = 'type' )
+            " . $access_sql . "
             WHERE pm.meta_key = %s
             AND pm.post_id NOT IN ( $user_posts )
-            GROUP BY pm.meta_value, type.meta_value
+            GROUP BY pm.meta_value
         ", esc_sql( 'overall_status' ) ), ARRAY_A );
         $active_seeker_path = $wpdb->get_results( $wpdb->prepare( "
             SELECT pm.meta_value, count(pm.meta_value) as count
@@ -1520,46 +1519,28 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         // phpcs:enable
 
 
-        $numbers = [
-            "active" => 0,
-            "needs_accepted" => 0,
-            "needs_assigned" => 0,
-            "unassigned" => 0,
-            "new" => 0,
-            "unassignable" => 0,
-            "total_all" => 0,
-            "total_my" => 0,
-        ];
-
+        $numbers["total_my"] = 0;
         foreach ( $contacts_by_status as $value ){
             if ( $value["meta_value"] === "closed" && !$show_closed ){
                 continue;
             }
-            $numbers["total_all"] += (int) $value["count"];
-            switch ( $value["type"] ){
-                case "media":
-                case "access":
-                    $numbers["total_my"] += $value["count"];
+            $numbers["total_my"] += (int) $value["count"];
+            switch ( $value["meta_value"] ){
+                case "active":
+                    $numbers["active"] = $value["count"];
                     break;
-            }
-            if ( ( $tab === "my" && $value["type"] == "media" ) || ( $tab !== "my" ) ) {
-                switch ($value["meta_value"]) {
-                    case "active":
-                        $numbers["active"] += (int) $value["count"];
-                        break;
-                    case "assigned":
-                        $numbers["needs_accepted"] += (int) $value["count"];
-                        break;
-                    case "unassigned":
-                        $numbers["needs_assigned"] += (int) $value["count"];
-                        break;
-                    case "new":
-                        $numbers["new"] += (int) $value["count"];
-                        break;
-                    case "unassignable":
-                        $numbers["unassignable"] += (int) $value["count"];
-                        break;
-                }
+                case "assigned":
+                    $numbers["needs_accepted"] = $value["count"];
+                    break;
+                case "unassigned":
+                    $numbers["needs_assigned"] = $value["count"];
+                    break;
+                case "new":
+                    $numbers["new"] = $value["count"];
+                    break;
+                case "unassignable":
+                    $numbers["unassignable"] = $value["count"];
+                    break;
             }
         }
         foreach ( $active_seeker_path as $value ){
@@ -1577,7 +1558,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepare
         $personal_counts = $wpdb->get_results("
-            SELECT 
+            SELECT (
+                SELECT count( DISTINCT( a.ID ) )
+                FROM $wpdb->posts as a
+                  " . $access_sql . $closed . "
+                WHERE a.post_status = 'publish'
+                AND post_type = 'contacts'
+                " . $query_sql . "
+                AND a.ID NOT IN ( $user_posts )
+            ) as total_count,
             (
                 SELECT count(a.ID)
                 FROM $wpdb->posts as a
@@ -1601,16 +1590,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 WHERE a.post_status = 'publish'
                 AND post_type = 'contacts'
                 AND a.ID NOT IN ( $user_posts )
-            ) as my_subassigned,
-            (
-                SELECT count(a.ID)
-                FROM $wpdb->posts as a
-                " . $closed . "
-                WHERE a.post_status = 'publish'
-                AND post_type = 'contacts'
-                AND a.ID IN ( SELECT p2p_from FROM $wpdb->p2p where p2p_type = 'contacts_to_contacts' and p2p_to = '$user_post' )
-                AND a.ID NOT IN ( $user_posts )
-            ) as my_coaching,
+            ) as total_subassigned,
             (
                 SELECT count(a.ID)
                 FROM $wpdb->posts as a
@@ -1618,7 +1598,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 WHERE a.post_status = 'publish'
                 AND post_type = 'contacts'
                 AND a.ID NOT IN ( $user_posts )
-            ) as my_shared,
+            ) as total_shared,
+            (
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                " . $all_access . $closed . "
+                WHERE a.post_status = 'publish'
+                AND post_type = 'contacts'
+                AND a.ID NOT IN ( $user_posts )
+            ) as total_all,
             (
                 SELECT count(a.ID)
                 FROM $wpdb->posts as a
@@ -1642,24 +1630,19 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         foreach ( $personal_counts[0] as $key => $value ) {
             $numbers[$key] = $value;
         }
-
-        if ( $tab === "my"){
-            $numbers["total_count"] = $numbers["total_my"];
-        } else {
-            $numbers["total_count"] = $numbers["total_all"];
-        }
+        // phpcs:enable
 
         $numbers = wp_parse_args( $numbers, [
-            'my_contacts' => 0,
-            'update_needed' => 0,
-            'needs_accepted' => 0,
-            'contact_unattempted' => 0,
-            'meeting_scheduled' => 0,
-            'all_contacts' => 0,
-            'needs_assigned' => 0,
-            'new' => 0,
-            'unassignable' => 0,
-            'unassigned' => 0
+            'my_contacts' => '0',
+            'update_needed' => '0',
+            'needs_accepted' => '0',
+            'contact_unattempted' => '0',
+            'meeting_scheduled' => '0',
+            'all_contacts' => '0',
+            'needs_assigned' => '0',
+            'new' => '0',
+            'unassignable' => '0',
+            'unassigned' => '0'
         ] );
 
         return $numbers;
@@ -1761,7 +1744,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $status_counts = [];
             $total_my = 0;
             foreach ( $counts as $count ){
-                if ( $count["type"] === "access" || $count["type"] === "next_gen" || $count["type"] === "media" ){
+                if ( $count["type"] != "user" ){
                     $total_my += $count["count"];
                     self::increment( $status_counts[$count["overall_status"]], $count["count"] );
                     if ( $count["overall_status"] === "active" ){
@@ -1778,7 +1761,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
             $filters["tabs"][] = [
                 "key" => "assigned_to_me",
-                "label" => _x( "My Follow-up", 'List Filters', 'disciple_tools' ),
+                "label" => _x( "My Contacts", 'List Filters', 'disciple_tools' ),
                 "count" => $total_my,
                 "order" => 20
             ];
@@ -1792,7 +1775,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'subassigned' => [ 'me' ],
                     'combine' => [ 'subassigned' ],
                     'overall_status' => [ '-closed' ],
-                    'type' => [ "access", "next_gen", "media" ],
                     'sort' => 'overall_status'
                 ],
                 "count" => $total_my,
@@ -1807,7 +1789,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                             'assigned_to' => [ 'me' ],
                             'subassigned' => [ 'me' ],
                             'combine' => [ 'subassigned' ],
-                            'type' => [ "access", "next_gen", "media" ],
                             'overall_status' => [ $status_key ],
                             'sort' => 'seeker_path'
                         ],
@@ -1824,7 +1805,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                                     'subassigned' => [ 'me' ],
                                     'combine' => [ 'subassigned' ],
                                     'overall_status' => [ 'active' ],
-                                    'type' => [ "access", "next_gen", "media" ],
                                     'requires_update' => [ true ],
                                     'sort' => 'seeker_path'
                                 ],
@@ -1844,7 +1824,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                                         'combine' => [ 'subassigned' ],
                                         'overall_status' => [ 'active' ],
                                         'seeker_path' => [ $seeker_path_key ],
-                                        'type' => [ "access", "next_gen", "media" ],
                                         'sort' => 'name'
                                     ],
                                     "count" => $active_counts[$seeker_path_key],
@@ -1866,7 +1845,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $all_status_counts = [];
                 $total_all = 0;
                 foreach ( $counts as $count ){
-                    if ( $count["type"] === "access" || $count["type"] === "next_gen" || $count["type"] === "media" ){
+                    if ( $count["type"] !== "user" ){
                         $total_all += $count["count"];
                         self::increment( $all_status_counts[$count["overall_status"]], $count["count"] );
                         if ( $count["overall_status"] === "active" ){
@@ -1882,7 +1861,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 }
                 $filters["tabs"][] = [
                     "key" => "all_dispatch",
-                    "label" => _x( "All Follow-up", 'List Filters', 'disciple_tools' ),
+                    "label" => _x( "All Contacts", 'List Filters', 'disciple_tools' ),
                     "count" => $total_all,
                     "order" => 10
                 ];
@@ -1893,7 +1872,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'name' => _x( "All", 'List Filters', 'disciple_tools' ),
                     'query' => [
                         'overall_status' => [ '-closed' ],
-                        'type' => [ "access", "next_gen", "media" ],
                         'sort' => 'overall_status'
                     ],
                     "count" => $total_all,
@@ -1906,7 +1884,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                             "tab" => 'all_dispatch',
                             "name" => $status_value["label"],
                             "query" => [
-                                'type' => [ "access", "next_gen", "media" ],
                                 'overall_status' => [ $status_key ],
                                 'sort' => 'seeker_path'
                             ],
