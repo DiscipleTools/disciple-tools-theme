@@ -11,12 +11,6 @@ jQuery(document).ready(function($) {
     }
     $(`div.top-bar-left ul.menu [href$=${ref.replace(wpApiShare.site_url, '').split('/')[0]+'\\/'}]`).parent().addClass('active');
 
-  // expand and collapse tiles
-  $(".section-header").on("click", function () {
-    $(this).parent().toggleClass("collapsed")
-    $('.grid').masonry('layout')
-  })
-
 })
 
 
