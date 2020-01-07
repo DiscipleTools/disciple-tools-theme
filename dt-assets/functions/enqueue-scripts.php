@@ -307,6 +307,18 @@ function dt_site_scripts() {
         );
     }
 
+    $translations = [
+        'save' => __( 'Save', 'disciple_tools' ),
+        'edit' => __( 'Edit', 'disciple_tools' ),
+        'delete' => __( 'Delete', 'disciple_tools' ),
+        'txt_info' => _x( 'Showing _START_ of _TOTAL_', 'just copy as they are: _START_ and _TOTAL_', 'disciple_tools' ),
+        'range_start' => __( 'start', 'disciple_tools' ),
+        'range_end' => __( 'end', 'disciple_tools' ),
+        'sorting_by' => __( 'Sorting By', 'disciple_tools' ),
+        'creation_date' => __( 'Creation Date', 'disciple_tools' ),
+        'date_modified' => __( 'Date Modified', 'disciple_tools' ),
+        'empty_custom_filters' => __( 'No filters, create one below', 'disciple_tools' ),
+    ];
     if ( is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" ) ) {
         $post_type = null;
         $custom_field_settings = [];
@@ -319,35 +331,10 @@ function dt_site_scripts() {
             $post_type = "groups";
             $custom_field_settings = Disciple_Tools_Groups_Post_type::instance()->get_custom_fields_settings();
         }
-        $translations = [
-            'save' => __( 'Save', 'disciple_tools' ),
-            'edit' => __( 'Edit', 'disciple_tools' ),
-            'delete' => __( 'Delete', 'disciple_tools' ),
-            'txt_info' => _x( 'Showing _START_ of _TOTAL_', 'just copy as they are: _START_ and _TOTAL_', 'disciple_tools' ),
-            'filter_my' => __( 'Assigned to me', 'disciple_tools' ),
-            'filter_subassigned' => __( 'Subassigned to me', 'disciple_tools' ),
-            'filter_shared' => __( 'Shared with me', 'disciple_tools' ),
-            'filter_all' => sprintf( _x( 'All %s', 'Contacts or Groups', 'disciple_tools' ), Disciple_Tools_Posts::get_label_for_post_type( $post_type ) ),
-            'filter_needs_accepted' => __( 'Waiting to be accepted', 'disciple_tools' ),
-            'filter_unassigned' => __( 'Dispatch needed', 'disciple_tools' ),
-            'filter_unassignable' => __( 'Not Ready', 'disciple_tools' ),
-            'filter_update_needed' => __( 'Update needed', 'disciple_tools' ),
-            'filter_meeting_scheduled' => __( 'Meeting scheduled', 'disciple_tools' ),
-            'filter_contact_unattempted' => __( 'Contact attempt needed', 'disciple_tools' ),
-            'filter_assignment_needed' => __( 'Dispatch needed', 'disciple_tools' ),
-            'filter_new' => __( 'New', 'disciple_tools' ),
-            'filter_active' => __( 'Active', 'disciple_tools' ),
-            'range_start' => __( 'start', 'disciple_tools' ),
-            'range_end' => __( 'end', 'disciple_tools' ),
-            'sorting_by' => __( 'Sorting By', 'disciple_tools' ),
-            'creation_date' => __( 'Creation Date', 'disciple_tools' ),
-            'date_modified' => __( 'Date Modified', 'disciple_tools' ),
-        ];
+        $translations["filter_all"] = sprintf( _x( 'All %s', 'Contacts or Groups', 'disciple_tools' ), Disciple_Tools_Posts::get_label_for_post_type( $post_type ) );
         wp_localize_script( 'list-js', 'wpApiListSettings', array(
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
-            'txt_infoEmpty' => __( 'Showing 0 to 0 of 0 entries', 'disciple_tools' ),
-            'txt_infoFiltered' => _x( "(filtered from _MAX_ total entries)", "Just copy '_MAX_'", 'disciple_tools' ),
             'custom_fields_settings' => $custom_field_settings,
             'template_directory_uri' => get_template_directory_uri(),
             'current_user_login' => wp_get_current_user()->user_login,
@@ -355,7 +342,7 @@ function dt_site_scripts() {
             'current_user_contact_id' => Disciple_Tools_Users::get_contact_for_user( get_current_user_id() ),
             'current_post_type' => $post_type,
             'access_all_contacts' => user_can( get_current_user_id(), 'view_any_contacts' ),
-            'filters' => Disciple_Tools_Users::get_user_filters(),
+            'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
             'additional_filter_options' => apply_filters( 'dt_filters_additional_fields', [], $post_type ),
             'connection_types' => Disciple_Tools_Posts::$connection_types,
             'translations' => apply_filters( 'dt_list_js_translations', $translations ),
@@ -365,9 +352,11 @@ function dt_site_scripts() {
         $post_type = $url_path;
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
         dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/js/modular-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js' ), true );
-        wp_localize_script( 'modular-list-js', 'listSettings', array(
+        wp_localize_script( 'modular-list-js', 'list_settings', array(
             'post_type' => $post_type,
             'post_type_settings' => $post_settings,
+            'translations' => apply_filters( 'dt_list_js_translations', $translations ),
+            'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
         ) );
     }
 
