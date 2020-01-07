@@ -57,8 +57,8 @@ function makeRequestOnPosts (type, url, data) {
       xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
     }
   }
-  if (data) {
-    options.data = JSON.stringify(data)
+  if (data && !_.isEmpty(data) ) {
+    options.data = type === "GET" ? data : JSON.stringify(data)
   }
   return jQuery.ajax(options)
 }

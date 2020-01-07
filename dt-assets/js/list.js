@@ -1,22 +1,7 @@
 (function($, wpApiListSettings, Foundation) {
   "use strict";
 
-  function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) === ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) === 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
-  let cookie = getCookie("last_view");
+  let cookie = window.SHAREDFUNCTIONS.getCookie("last_view");
   let cachedFilter = {}
   try {
     cachedFilter = JSON.parse(cookie)
@@ -32,7 +17,7 @@
 
   let tabQueryParam = $.urlParam( 'list-tab' )
 
-  let showClosedCookie = getCookie("show_closed")
+  let showClosedCookie = window.SHAREDFUNCTIONS.getCookie("show_closed")
   let showClosedCheckbox = $('#show_closed')
   let currentFilter = {}
   let items = []
@@ -241,8 +226,11 @@
   setupFilters()
 
   $(`#list-filter-tabs [data-id='${_.escape( selectedFilterTab )}'] a`).click()
-  if ( selectedFilter ){
+  if ( selectedFilter && selectedFilter !== "no_filter" ){
     $(`.is-active input[name=view][data-id="${_.escape( selectedFilter )}"].js-list-view`).prop('checked', true);
+  } else {
+    $('#list-filter-tabs .accordion-item a')[0].click()
+    $($('.js-list-view')[0]).prop('checked', true)
   }
 
 

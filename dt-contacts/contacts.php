@@ -1844,6 +1844,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                                         'combine' => [ 'subassigned' ],
                                         'overall_status' => [ 'active' ],
                                         'seeker_path' => [ $seeker_path_key ],
+                                        'type' => [ "access", "next_gen", "media" ],
                                         'sort' => 'name'
                                     ],
                                     "count" => $active_counts[$seeker_path_key],
