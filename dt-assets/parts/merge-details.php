@@ -18,7 +18,7 @@
     }
 
     ?>
-    <div class="reveal" id="merge-dupe-edit" style="border-radius:10px; padding:0px; padding-bottom:20px; border: 1px solid #3f729b;;" data-reveal>
+    <div class="reveal" id="merge-dupe-edit-modal" style="border-radius:10px; padding:0px; padding-bottom:20px; border: 1px solid #3f729b;;" data-reveal>
       <div class="merge-modal-header" style="background-color:#3f729b; color:white; text-align:center;">
         <h1 style="font-size:1.5rem; padding:10px 0px;"><?php esc_html_e( "Duplicate Contacts", 'disciple_tools' ) ?></h1>
       </div>
@@ -50,7 +50,7 @@
             var site_url = "<?php echo esc_url( site_url() );?>";
             var contact_id = "<?php echo get_the_ID(); ?>";
 
-            let $display_fields = $("#merge-dupe-edit .display-fields");
+            let $display_fields = $("#merge-dupe-edit-modal .display-fields");
             $display_fields.append("<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:10px 0px 0px; margin-bottom: 0px;'><?php esc_html_e( "Original Contact", 'disciple_tools' ) ?></h4>");
 
             var duplicates = contact.duplicate_data;
@@ -276,7 +276,7 @@
 
         let openedOnce = false
         jQuery(document).ready(function($) {
-            $('#merge-dupe-edit').on("open.zf.reveal", function () {
+            $('#merge-dupe-edit-modal').on("open.zf.reveal", function () {
                 if ( !openedOnce ){
                 loadDuplicates();
                 openedOnce = true;

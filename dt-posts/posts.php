@@ -288,7 +288,7 @@ class Disciple_Tools_Posts
                 $object_note_from = sprintf( esc_html_x( 'Coached by %s', 'Coached by contact1', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( 'No longer coaching %s', 'No longer coaching contact1', 'disciple_tools' ), $from_title );
-                $object_note_from = sprintf( esc_html_x( 'No longed coached by %s', 'No longed coached by contact1', 'disciple_tools' ), $to_title );
+                $object_note_from = sprintf( esc_html_x( 'No longer coached by %s', 'No longer coached by contact1', 'disciple_tools' ), $to_title );
             }
         } else if ( $p2p_type === "contacts_to_subassigned"){
             if ($action === "connected to"){
@@ -296,7 +296,7 @@ class Disciple_Tools_Posts
                 $object_note_from = sprintf( esc_html_x( 'Sub-assigned on %s', 'Sub-assigned on contact1', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( 'Removed sub-assigned %s', 'Removed sub-assigned contact1', 'disciple_tools' ), $from_title );
-                $object_note_from = sprintf( esc_html_x( 'No longed sub-assigned on %s', 'No longed sub-assigned on contact1', 'disciple_tools' ), $to_title );
+                $object_note_from = sprintf( esc_html_x( 'No longer sub-assigned on %s', 'No longer sub-assigned on contact1', 'disciple_tools' ), $to_title );
             }
         } else if ( $p2p_type === "contacts_to_locations" || $p2p_type === "groups_to_locations"){
             if ($action == "connected to"){
@@ -1607,6 +1607,7 @@ class Disciple_Tools_Posts
             }
         }
 
+        //add user fields
         global $wpdb;
         $user_id = get_current_user_id();
         if ( $user_id ){
@@ -1629,6 +1630,8 @@ class Disciple_Tools_Posts
                 ];
             }
         }
+
+        $fields = apply_filters( "dt_adjust_post_custom_fields", $fields, $post_settings["post_type"] );
     }
 
     /**

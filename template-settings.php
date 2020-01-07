@@ -62,7 +62,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 
                         <span class="section-header"><?php esc_html_e( 'Your Profile', 'disciple_tools' )?></span>
 
-                        <button class="float-right" data-open="edit-profile"><i class="fi-pencil"></i> <?php esc_html_e( 'Edit', 'disciple_tools' )?></button>
+                        <button class="float-right" data-open="edit-profile-modal"><i class="fi-pencil"></i> <?php esc_html_e( 'Edit', 'disciple_tools' )?></button>
 
                         <hr size="1" style="max-width:100%"/>
 
@@ -317,7 +317,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                 </div>
 
 
-                <div class="reveal" id="edit-profile" data-reveal>
+                <div class="reveal" id="edit-profile-modal" data-reveal>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
