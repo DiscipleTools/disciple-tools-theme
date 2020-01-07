@@ -160,6 +160,30 @@ window.TYPEAHEADS = {
             }
         }
     },
+    typeaheadPeopleGroupSource : function (field, url) {
+      return {
+          contacts: {
+              template: "<span>{{label}}</span>",
+              ajax: {
+                  url: wpApiShare.root + url,
+                  data: {
+                      s: "{{query}}"
+                  },
+                  beforeSend: function (xhr) {
+                      xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+                  },
+                  callback: {
+                      done: function (data) {
+                          if ( typeof typeaheadTotals !== "undefined" ){
+                             typeaheadTotals.field = data.total
+                          }
+                          return data.posts
+                      }
+                  }
+              }
+          }
+      }
+  },
     typeaheadUserSource : function (field, ur) {
         return {
             users: {
@@ -323,6 +347,16 @@ window.SHAREDFUNCTIONS = {
             }
         }
         return "";
+    },
+    get_json_cookie(cname, default_val = []){
+      let cookie = this.getCookie(cname)
+      try {
+        default_val = JSON.parse(cookie)
+      } catch (e) {}
+      return default_val
+    },
+    save_json_cookie(cname, json, path = ''){
+      document.cookie = `${cname}=${JSON.stringify(json)};path=/${path}`
     }
 }
 

@@ -288,7 +288,7 @@ class Disciple_Tools_Posts
                 $object_note_from = sprintf( esc_html_x( 'Coached by %s', 'Coached by contact1', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( 'No longer coaching %s', 'No longer coaching contact1', 'disciple_tools' ), $from_title );
-                $object_note_from = sprintf( esc_html_x( 'No longed coached by %s', 'No longed coached by contact1', 'disciple_tools' ), $to_title );
+                $object_note_from = sprintf( esc_html_x( 'No longer coached by %s', 'No longer coached by contact1', 'disciple_tools' ), $to_title );
             }
         } else if ( $p2p_type === "contacts_to_subassigned"){
             if ($action === "connected to"){
@@ -296,7 +296,7 @@ class Disciple_Tools_Posts
                 $object_note_from = sprintf( esc_html_x( 'Sub-assigned on %s', 'Sub-assigned on contact1', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( 'Removed sub-assigned %s', 'Removed sub-assigned contact1', 'disciple_tools' ), $from_title );
-                $object_note_from = sprintf( esc_html_x( 'No longed sub-assigned on %s', 'No longed sub-assigned on contact1', 'disciple_tools' ), $to_title );
+                $object_note_from = sprintf( esc_html_x( 'No longer sub-assigned on %s', 'No longer sub-assigned on contact1', 'disciple_tools' ), $to_title );
             }
         } else if ( $p2p_type === "contacts_to_locations" || $p2p_type === "groups_to_locations"){
             if ($action == "connected to"){
@@ -386,7 +386,7 @@ class Disciple_Tools_Posts
                 }
                 if ( $fields[$activity->meta_key]["type"] === "text"){
                     if ( !empty( $activity->meta_value ) && !empty( $activity->old_value ) ){
-                        $message = sprintf( _x( '%1$s changed to %2$s', 'field1 changed to `text`', 'disciple_tools' ), $fields[$activity->meta_key]["name"], $activity->meta_value );
+                        $message = sprintf( _x( '%1$s changed to %2$s', "field1 changed to 'text'", 'disciple_tools' ), $fields[$activity->meta_key]["name"], $activity->meta_value );
                     }
                 }
                 if ( $fields[$activity->meta_key]["type"] === "multi_select" ){
@@ -825,11 +825,11 @@ class Disciple_Tools_Posts
                         }
                     } else {
                         if ( $post_fields[$query_key]["p2p_direction"] === "to" ){
-                            $meta_query .= " AND ( $wpdb->posts.ID IN ( 
+                            $meta_query .= " AND ( $wpdb->posts.ID IN (
                                 SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $post_fields[$query_key]["p2p_key"] ) . "' AND p2p_from IN (" . esc_sql( $connection_ids ) .")
                             ) ) ";
                         } else {
-                            $meta_query .= " AND ( $wpdb->posts.ID IN ( 
+                            $meta_query .= " AND ( $wpdb->posts.ID IN (
                                 SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $post_fields[$query_key]["p2p_key"] ) . "' AND p2p_to IN (" . esc_sql( $connection_ids ) .")
                             ) ) ";
                         }
@@ -918,7 +918,7 @@ class Disciple_Tools_Posts
         } elseif ( $sort === "locations" || $sort === "groups" || $sort === "leaders" ){
             $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = $wpdb->posts.ID AND sort.p2p_type = '" . $post_type . "_to_$sort' )
             LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_to)";
-            $sort_sql = "ISNULL(p2p_post.post_name), p2p_post.post_name $sort_dir";
+            $sort_sql = "ISNULL(p2p_post.post_title), p2p_post.post_title $sort_dir";
         } elseif ( $sort === "post_date" ){
             $sort_sql = "$wpdb->posts.post_date  " . $sort_dir;
         } elseif ( $sort === "location_grid" ){
@@ -1592,6 +1592,7 @@ class Disciple_Tools_Posts
             }
         }
 
+        //add user fields
         global $wpdb;
         $user_id = get_current_user_id();
         if ( $user_id ){
@@ -1613,6 +1614,8 @@ class Disciple_Tools_Posts
                 ];
             }
         }
+
+        $fields = apply_filters( "dt_adjust_post_custom_fields", $fields, $post_settings["post_type"] );
     }
 
     /**
@@ -1622,7 +1625,7 @@ class Disciple_Tools_Posts
      * @return array
      */
     public static function filter_wp_post_object_fields( $post ){
-        return [
+        $filtered_post = [
             "ID" => $post->ID,
             "post_type" => $post->post_type,
             "post_date_gmt" => $post->post_date_gmt,
@@ -1630,6 +1633,14 @@ class Disciple_Tools_Posts
             "post_title" => $post->post_title,
             "permalink" => get_permalink( $post->ID )
         ];
+        if ( $post->post_type === "peoplegroups" ){
+            $locale = get_locale();
+            $translation = get_post_meta( $post->ID, $locale, true );
+            $label  = ( $translation ? $translation : $post->post_title );
+            $filtered_post["label"] = $label;
+        }
+
+        return $filtered_post;
     }
 
     public static function format_post_contact_details( $post_settings, $meta_fields, $type, $key, $value ) {

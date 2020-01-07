@@ -1,13 +1,8 @@
 (function($, wpApiListSettings, Foundation) {
   "use strict";
 
-  let cookie = window.SHAREDFUNCTIONS.getCookie("last_view");
-  let cachedFilter = {}
-  try {
-    cachedFilter = JSON.parse(cookie)
-  } catch (e) {
-    cachedFilter = {}
-  }
+  let cachedFilter = window.SHAREDFUNCTIONS.get_json_cookie("last_view")
+
   $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)')
       .exec(window.location.search);

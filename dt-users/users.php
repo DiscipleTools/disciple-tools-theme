@@ -154,7 +154,6 @@ class Disciple_Tools_Users
                 $u = [
                     "name" => $user->display_name,
                     "ID"   => $user->ID,
-                    "user" => $user->user_login,
                     "avatar" => get_avatar_url( $user->ID, [ 'size' => '16' ] )
                 ];
                 //extra information for the dispatcher

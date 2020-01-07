@@ -378,15 +378,15 @@ jQuery(document).ready(function($) {
         accent: true,
         searchOnFocus: true,
         maxItem: 20,
-        source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
-        display: "name",
-        templateValue: "{{name}}",
+        source: TYPEAHEADS.typeaheadPeopleGroupSource('people_groups', 'dt/v1/people-groups/compact/'),
+        display: ["name", "label"],
+        templateValue: "{{label}}",
         dynamic: true,
         multiselect: {
           matchOn: ["ID"],
           data: function () {
             return contact.people_groups.map(g=>{
-              return {ID:g.ID, name:g.post_title}
+              return { ID: g.ID, name: g.post_title, label: g.label };
             })
           },
           callback: {
@@ -853,7 +853,7 @@ jQuery(document).ready(function($) {
     })
     $('#edit-social').html(html)
 
-    $('#contact-details-edit').foundation('open');
+    $('#contact-details-edit-modal').foundation('open');
     loadGeonameTypeahead()
     loadPeopleGroupTypeahead()
     leadSourcesTypeahead().catch(err => { console.log(err) })
@@ -918,7 +918,7 @@ jQuery(document).ready(function($) {
     })
     $('#edit-social').html(html)
 
-    $('#merge-dupe-edit').foundation('open');
+    $('#merge-dupe-edit-modal').foundation('open');
     // loadLocationTypeahead()
     loadPeopleGroupTypeahead()
     leadSourcesTypeahead()
@@ -930,7 +930,7 @@ jQuery(document).ready(function($) {
     editFieldsUpdate[key] = $(this).val()
   })
 
-  $('#contact-details-edit').on('change', '.contact-input', function() {
+  $('#contact-details-edit-modal').on('change', '.contact-input', function() {
     let value = $(this).val()
     let field = $(this).data("type")
     let key = $(this).attr('id')
@@ -994,7 +994,7 @@ jQuery(document).ready(function($) {
       contact = updatedContact
       $(this).toggleClass("loading")
       resetDetailsFields(contact)
-      $(`#contact-details-edit`).foundation('close')
+      $(`#contact-details-edit-modal`).foundation('close')
     }).catch(handleAjaxError)
   })
 
@@ -1098,9 +1098,7 @@ jQuery(document).ready(function($) {
       } else {
         contact[connection].forEach(field=>{
           htmlField.append(`<li class="details-list ${_.escape(field.key || field.id)}">
-            ${_.escape(field.post_title || field.label)}
-              <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/verified.svg"/>
-              <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/broken.svg"/>
+              ${_.escape(field.label || field.post_title)}
             </li>
           `)
         })
@@ -1171,7 +1169,7 @@ jQuery(document).ready(function($) {
     values["corresponds_to_contact"] = contact["ID"];
     window.API.create_user(values).then(()=>{
       $(this).removeClass("loading")
-      $(`#make_user_from_contact`).foundation('close')
+      $(`#make-user-from-contact-modal`).foundation('close')
       location.reload();
     }).catch(err=>{
       $(this).removeClass("loading")
@@ -1269,7 +1267,7 @@ jQuery(document).ready(function($) {
       user_select_input.trigger('input.typeahead')
       user_select_input.focus()
     })
-    $('#merge_with_contact_modal').foundation('open');
+    $('#merge-with-contact-modal').foundation('open');
   })
 
   $('#transfer_confirm_button').on('click',function() {

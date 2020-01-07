@@ -385,7 +385,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $ignore_keys = preg_grep( "/$field/", $ignore );
             $sql = "delete
                 from
-                    wp_postmeta
+                    $wpdb->postmeta
                 where
                     post_id = %d and
                     meta_key like %s";
@@ -1023,7 +1023,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 select
                     *
                 from
-                    wp_posts p join wp_postmeta m on p.ID = m.post_id
+                    $wpdb->posts p join $wpdb->postmeta m on p.ID = m.post_id
                 where
                     p.post_type = %s and
                     m.meta_key = %s
@@ -1178,8 +1178,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 select
                     *
                 from
-                    wp_posts p join
-                    wp_postmeta m on p.ID = m.post_id
+                    $wpdb->posts p join
+                    $wpdb->postmeta m on p.ID = m.post_id
                 where
                     ID != %d and
                     (meta_key regexp %s and meta_key not like %s) and

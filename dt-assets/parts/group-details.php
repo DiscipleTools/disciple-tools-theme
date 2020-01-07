@@ -21,6 +21,12 @@
             <button class="help-button" data-section="group-details-help-text">
                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
             </button>
+            <!-- <button class="section-chevron chevron_down">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+            </button>
+            <button class="section-chevron chevron_up">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+            </button> -->
         </div>
     <div style="display: flex;">
         <div class="item-details-header" style="flex-grow:1">
@@ -34,6 +40,7 @@
             </button>
         </div>
     </div>
+    <div class="section-body"><!-- start collapse -->
     <div class="grid-x grid-margin-x" style="margin-top: 20px">
         <div class="cell small-12 medium-4">
             <div class="section-subheader">
@@ -75,7 +82,7 @@
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-assigned_to input-height"
-                                       name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
+                                       name="assigned_to[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
                                        autocomplete="off">
                             </span>
                             <span class="typeahead__button">
@@ -103,7 +110,7 @@
                         <div class="typeahead__field">
                                             <span class="typeahead__query">
                                                 <input class="js-typeahead-coaches"
-                                                       name="coaches[query]" placeholder="<?php esc_html_e( "Search Users and Contacts", 'disciple_tools' ) ?>"
+                                                       name="coaches[query]" placeholder="<?php echo esc_html_x( "Search Users and Contacts", 'input field placeholder', 'disciple_tools' ) ?>"
                                                        autocomplete="off">
                                             </span>
                         </div>
@@ -203,12 +210,12 @@
             </ul>
         </div>
 
-    </div>
+    </div><!-- end collapse --></div>
 
 
 </section> <!-- end article -->
 
-<div class="reveal" id="group-details-edit" data-reveal data-close-on-click="false">
+<div class="reveal" id="group-details-edit-modal" data-reveal data-close-on-click="false">
     <h1><?php esc_html_e( "Edit Group", 'disciple_tools' ) ?></h1>
     <div class="display-fields">
         <div class="grid-x">
@@ -244,7 +251,7 @@
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-location_grid"
-                                       name="location_grid[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                       name="location_grid[query]" placeholder="<?php echo esc_html_x( "Search Locations", 'input field placeholder', 'disciple_tools' ) ?>"
                                        autocomplete="off">
                             </span>
                         </div>
@@ -259,7 +266,7 @@
               <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-start.svg' ?>">
               <?php esc_html_e( 'Start Date', 'disciple_tools' )?>
             </div>
-            <div class="start_date"><input type="text" class="date-picker" id="start_date"></div>
+            <div class="start_date"><input type="text" class="date-picker" id="start_date" autocomplete="off"></div>
         </div>
 
         <div class="grix-x">
@@ -267,7 +274,7 @@
               <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-success.svg' ?>">
               <?php esc_html_e( 'Church Start Date', 'disciple_tools' )?>
             </div>
-            <div class="church_start_date"><input type="text" class="date-picker" id="church_start_date"></div>
+            <div class="church_start_date"><input type="text" class="date-picker" id="church_start_date" autocomplete="off"></div>
         </div>
 
         <div class="grix-x">
@@ -275,7 +282,7 @@
               <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-end.svg' ?>">
               <?php esc_html_e( 'End Date', 'disciple_tools' )?>
             </div>
-            <div class="end_date"><input type="text" class="date-picker" id="end_date"></div>
+            <div class="end_date"><input type="text" class="date-picker" id="end_date" autocomplete="off"></div>
         </div>
 
         <!-- People Groups -->
@@ -291,7 +298,7 @@
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-people_groups"
-                                       name="people_groups[query]" placeholder="<?php esc_html_e( "Search People Groups", 'disciple_tools' ) ?>"
+                                       name="people_groups[query]" placeholder="<?php echo esc_html_x( "Search People Groups", 'input field placeholder', 'disciple_tools' ) ?>"
                                        autocomplete="off">
                             </span>
                         </div>
@@ -303,7 +310,7 @@
     </div>
     <div>
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-            <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+            <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
         </button>
         <button class="button loader" type="button" id="save-edit-details">
             <?php esc_html_e( 'Save', 'disciple_tools' )?>

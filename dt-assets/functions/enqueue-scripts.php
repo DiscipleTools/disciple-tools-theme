@@ -264,7 +264,8 @@ function dt_site_scripts() {
                 'template_dir'          => get_template_directory_uri(),
                 'associated_contact_id' => dt_get_associated_user_id( get_current_user_id(), 'user' ),
                 'translations'          => apply_filters( 'dt_settings_js_translations', [
-                    'delete' => __( 'delete', 'disciple_tools' )
+                    'delete' => __( 'delete', 'disciple_tools' ),
+                    'responsible_for_locations' => __( "Locations you are responsible for", 'disciple_tools' )
                 ] ),
                 'custom_data'           => apply_filters( 'dt_settings_js_data', [] ), // nest associated array
             )

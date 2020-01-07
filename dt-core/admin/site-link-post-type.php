@@ -764,7 +764,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             $fields['site1'] = [
                 'name'        => __( 'Site 1' ),
-                'description' => __( 'Use just the host name. Example: www.website.com' ),
+                'description' => __( 'Use the host name or the path of the instance. Example: www.website.com or website.com/site1' ),
                 'type'        => 'url',
                 'default'     => '',
                 'section'     => 'site',
@@ -772,7 +772,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             $fields['site2'] = [
                 'name'        => __( 'Site 2' ),
-                'description' => __( 'Use just the host name. Example: www.website.com' ),
+                'description' => __( 'Use the host name or the path of the instance. Example: www.website.com or website.com/site1' ),
                 'type'        => 'url',
                 'default'     => '',
                 'section'     => 'site',
