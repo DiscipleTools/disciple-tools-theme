@@ -49,7 +49,9 @@ class Disciple_Tools_Migration_0026 extends Disciple_Tools_Migration {
                     `meta_parent` BIGINT(20) NOT NULL DEFAULT '0',
                     `old_value` VARCHAR(255) NOT NULL DEFAULT '',
                     `field_type` VARCHAR(255) NOT NULL DEFAULT '',
-                    PRIMARY KEY (`histid`)
+                    PRIMARY KEY (`histid`),
+                    key `object_id_index` (`object_id`),
+                    key `meta_key_index` (`meta_key`)
                 ) $charset_collate;"
         );
     }

@@ -830,6 +830,11 @@ div.help-more h5 {
         margin: 5px;
     }
 }
+.daterangepicker {
+  th, td {
+    padding: 0;
+  }
+}
 
 #metrics-sidemenu ul.menu.vertical.nested {
     display: none;
