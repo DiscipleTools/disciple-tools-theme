@@ -87,6 +87,7 @@
       } else  {
         items = data[wpApiListSettings.current_post_type] || []
       }
+      $('#load-more').toggle(items.length !== parseInt( data.total ))
       let result_text = wpApiListSettings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", data.total)
       $('.filter-result-text').html(result_text)
       displayRows();

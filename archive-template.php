@@ -18,9 +18,6 @@ declare(strict_types=1);
             <aside class="cell large-3" id="list-filters">
                 <div class="bordered-box">
                     <div class="section-header"><?php esc_html_e( 'Filters', 'disciple_tools' )?>
-                        <button class="help-button float-right" data-section="filters-help-text">
-                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                        </button>
                         <button class="section-chevron chevron_down">
                             <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                         </button>
@@ -42,7 +39,10 @@ declare(strict_types=1);
 
             <main id="main" class="large-9 cell padding-bottom" role="main">
                 <div class="bordered-box">
-                    <div id="table-content">
+                    <div id="table-content"></div>
+                    <div class="center">
+                        <button id="load-more" class="button"><?php esc_html_e( "Load More", 'disciple_tools' ) ?></button>
+                    </div>
                 </div>
             </main>
         </div>

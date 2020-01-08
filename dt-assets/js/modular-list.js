@@ -10,6 +10,9 @@
   let saved_filters = list_settings.filters || {[list_settings.post_type]:{}}
   let cookie = window.SHAREDFUNCTIONS.getCookie("last_view");
   let cached_filter
+  let get_records_promise = null
+
+  let items = []
   try {
     cached_filter = JSON.parse(cookie)
   } catch (e) {
@@ -55,6 +58,9 @@
       current_filter = _.find(saved_filters.filters, {ID:filter_id}) || _.find(saved_filters.filters, {ID:filter_id.toString()}) || current_filter
       current_filter.type = 'default'
     }
+    if ( Array.isArray(current_filter.query) ){
+      current_filter.query = {}; //make sure query is an object instead of an array.
+    }
 
     get_records()
   }
@@ -78,16 +84,16 @@
         <div class="accordion-content" data-tab-content>
           <div class="list-views">
             ${  list_settings.filters.filters.map( filter =>{
-        if (filter.tab===tab.key && filter.tab !== 'custom') {
-          return `
-                <label class="list-view" style="${ filter.subfilter ? 'margin-left:15px' : ''}">
-                  <input type="radio" name="view" value="${_.escape(filter.ID)}" data-id="${_.escape(filter.ID)}" class="js-list-view" autocomplete="off">
-                  <span id="total_filter_label">${_.escape(filter.name)}</span>
-                  <span class="list-view__count js-list-view-count" data-value="${_.escape(filter.ID)}">${_.escape(filter.count )}</span>
-                </label>
-                `
-        }
-      }).join('')}
+              if (filter.tab===tab.key && filter.tab !== 'custom') {
+                return `
+                      <label class="list-view" style="${ filter.subfilter ? 'margin-left:15px' : ''}">
+                        <input type="radio" name="view" value="${_.escape(filter.ID)}" data-id="${_.escape(filter.ID)}" class="js-list-view" autocomplete="off">
+                        <span id="total_filter_label">${_.escape(filter.name)}</span>
+                        <span class="list-view__count js-list-view-count" data-value="${_.escape(filter.ID)}">${_.escape(filter.count )}</span>
+                      </label>
+                      `
+              }
+            }).join('')}
           </div>
         </div>
       </li>
@@ -174,7 +180,7 @@
 
   let build_table = (records)=>{
 
-    let header_fields = '<th>Name</th>'
+    let header_fields = '<th></th><th>Name</th>'
     let table_rows = ``
     _.forOwn( list_settings.post_type_settings.fields, (field_settings)=> {
       if (_.get(field_settings, 'show_in_table') === true) {
@@ -187,7 +193,7 @@
       }
     })
 
-    records.forEach( record =>{
+    records.forEach( ( record, index )=>{
       let row_fields_html = ''
       _.forOwn( list_settings.post_type_settings.fields, (field_settings, field_key)=>{
         if ( _.get( field_settings, 'show_in_table' ) === true ) {
@@ -201,9 +207,12 @@
             } else if (field_settings.type === 'key_select') {
               values_html = _.escape(field_value.label)
             } else if (field_settings.type === 'multi_select') {
-              field_value.push('test')
               values_html = field_value.map(v => {
                 return `<li>${_.escape(_.get(field_settings, `default[${v}].label`, v))}</li>`;
+              }).join('')
+            } else if ( field_settings.type === "location" ){
+              values_html = field_value.map(v => {
+                return `<li>${_.escape( v.label )}</li>`;
               }).join('')
             }
           }
@@ -219,6 +228,7 @@
       })
 
       table_rows += `<tr>
+        <td>${index+1}</td>
         <td><a href="${ _.escape( record.permalink ) }">${ _.escape( record.post_title ) }</a></td>
         ${ row_fields_html }
       `
@@ -249,13 +259,32 @@
     // });
   }
 
-  function get_records(){
+
+  function get_records( offset = 0 ){
+    let query = current_filter.query
 
     document.cookie = `last_view=${JSON.stringify(current_filter)}`
-    window.makeRequestOnPosts( 'GET', `${list_settings.post_type}`, current_filter.query).then(response=>{
-      build_table(response.posts)
+    if ( offset ){
+      query["offset"] = offset
+    }
+    if ( get_records_promise && _.get(get_records_promise, "readyState") !== 4){
+      get_records_promise.abort()
+    }
+    get_records_promise = window.makeRequestOnPosts( 'GET', `${list_settings.post_type}`, JSON.parse(JSON.stringify(query)))
+    get_records_promise.then(response=>{
+      if (offset){
+        items = _.unionBy(items, response.posts || [], "ID")
+      } else  {
+        items = response.posts || []
+      }
+      $('#load-more').toggle(items.length !== parseInt( response.total ))
+      build_table(items)
     })
   }
+
+  $('#load-more').on('click', function () {
+    get_records( items.length )
+  })
 
 
   /**
