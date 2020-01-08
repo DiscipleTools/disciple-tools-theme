@@ -51,7 +51,7 @@
 
     let currentView = $(".js-list-view:checked").val()
     let showClosed = showClosedCheckbox.prop("checked")
-    if ( !showClosed && ( currentView === 'custom_filter' || currentView === 'saved-filters' ) ){
+    if ( !showClosed && ( currentView === 'custom_filter' || currentView === 'saved-filters' ) && !data.text ){
       if ( wpApiListSettings.current_post_type === "contacts" ){
         if ( !data.overall_status ){
           data.overall_status = [];
