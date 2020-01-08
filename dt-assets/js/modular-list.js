@@ -24,7 +24,7 @@
   }
   if ( cached_filter && !_.isEmpty(cached_filter)){
     if ( cached_filter.type === "custom_filter" ){
-      add_custom_filter(cached_filter.name, "default", cached_filter.query, cached_filter.labels)
+      add_custom_filter(cached_filter.name, "default", cached_filter.query, cached_filter.labels, false)
     }
     current_filter = cached_filter
   }
@@ -308,7 +308,7 @@
 
 
   //add the new filter in the filters list
-  function add_custom_filter(name, type, query, labels) {
+  function add_custom_filter(name, type, query, labels, load_records) {
     query = query || current_filter.query
     let ID = new Date().getTime() / 1000;
     current_filter = {ID, type, name: _.escape( name ), query:JSON.parse(JSON.stringify(query)), labels:labels}
@@ -329,7 +329,9 @@
     $(".custom-filters input").on("change", function () {
       get_records_for_current_filter()
     })
-    get_records_for_current_filter()
+    if ( load_records ){
+      get_records_for_current_filter()
+    }
   }
   let get_custom_filter_search_query = ()=>{
     let search_query = {}
