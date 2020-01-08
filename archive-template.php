@@ -27,8 +27,6 @@ declare(strict_types=1);
                     </div>
                     <div class="section-body">
                         <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion"></ul>
-
-                        <!--                        <h5>--><?php //esc_html_e( 'Custom Filters', 'disciple_tools' ); ?><!--</h5>-->
                         <div style="margin-bottom: 5px">
                             <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
                         </div>
@@ -39,9 +37,16 @@ declare(strict_types=1);
 
             <main id="main" class="large-9 cell padding-bottom" role="main">
                 <div class="bordered-box">
+                    <div class="section-header" style="display: inline-block">
+                        <span>
+                            <?php esc_html_e( 'Records List', 'disciple_tools' )?>
+                            <span id="list-loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
+                        </span>
+                    </div>
+                    <p style="display: inline-block" class="filter-result-text"></p>
                     <div id="table-content"></div>
                     <div class="center">
-                        <button id="load-more" class="button"><?php esc_html_e( "Load More", 'disciple_tools' ) ?></button>
+                        <button id="load-more" class="button" style="display: none"><?php esc_html_e( "Load More", 'disciple_tools' ) ?></button>
                     </div>
                 </div>
             </main>

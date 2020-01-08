@@ -318,6 +318,7 @@ function dt_site_scripts() {
         'creation_date' => __( 'Creation Date', 'disciple_tools' ),
         'date_modified' => __( 'Date Modified', 'disciple_tools' ),
         'empty_custom_filters' => __( 'No filters, create one below', 'disciple_tools' ),
+        'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' )
     ];
     if ( is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" ) ) {
         $post_type = null;
@@ -361,6 +362,9 @@ function dt_site_scripts() {
     }
 
     add_action( 'wp_footer', function() {
+        if ( WP_DEBUG ){
+            return;
+        }
         ?>
         <!-- BEGIN GROOVE WIDGET CODE -->
         <script id="grv-widget">

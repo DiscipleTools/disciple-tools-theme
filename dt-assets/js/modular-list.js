@@ -7,10 +7,11 @@
   let filter_to_delete = "";
   let filterToEdit = "";
   let filter_accordions = $('#list-filter-tabs')
-  let saved_filters = list_settings.filters || {[list_settings.post_type]:{}}
+  let saved_filters = list_settings.filters
   let cookie = window.SHAREDFUNCTIONS.getCookie("last_view");
   let cached_filter
   let get_records_promise = null
+  let loading_spinner = $("#list-loading-spinner")
 
   let items = []
   try {
@@ -55,7 +56,7 @@
       current_filter = _.find(custom_filters, {ID:filterId})
       current_filter.type = current_view
     } else {
-      current_filter = _.find(saved_filters.filters, {ID:filter_id}) || _.find(saved_filters.filters, {ID:filter_id.toString()}) || current_filter
+      current_filter = _.find(list_settings.filters.filters, {ID:filter_id}) || _.find(list_settings.filters.filters, {ID:filter_id.toString()}) || current_filter
       current_filter.type = 'default'
     }
     if ( Array.isArray(current_filter.query) ){
@@ -103,10 +104,10 @@
 
     let saved_filters_list = $(`#list-filter-tabs [data-id='custom'] .list-views`)
     saved_filters_list.empty()
-    if ( saved_filters.filters.filter(t=>t.tab==='custom').length === 0 ) {
+    if ( list_settings.filters.filters.filter(t=>t.tab==='custom').length === 0 ) {
       saved_filters_list.html(`<span>${_.escape(list_settings.translations.empty_custom_filters)}</span>`)
     }
-    saved_filters.filters.filter(t=>t.tab==='custom').forEach(filter=>{
+    list_settings.filters.filters.filter(t=>t.tab==='custom').forEach(filter=>{
       if ( filter && filter.visible === ''){
         return
       }
@@ -171,7 +172,7 @@
       list_settings.filters = filters
       setup_filters()
     }).catch(err => {
-      if ( !_.get( err, "statusText" ) === "abort" ){
+      if ( _.get( err, "statusText" ) !== "abort" ){
         console.error(err)
       }
     })
@@ -180,16 +181,18 @@
 
   let build_table = (records)=>{
 
-    let header_fields = '<th></th><th>Name</th>'
+    let header_fields = '<th onclick="sortTable( 0 )"></th><th onclick="sortTable( 1 )">Name</th>'
     let table_rows = ``
+    let index = 2;
     _.forOwn( list_settings.post_type_settings.fields, (field_settings)=> {
       if (_.get(field_settings, 'show_in_table') === true) {
         header_fields += `
-          <th class="section-subheader">
+          <th class="section-subheader" onclick="sortTable( ${index} )">
             <img src="${_.escape( field_settings.icon )}">
             ${ _.escape( field_settings.name )}
           </th>
         `
+        index++
       }
     })
 
@@ -233,11 +236,14 @@
         ${ row_fields_html }
       `
     })
+    if ( records.length === 0 ){
+      table_rows = `<tr><td colspan="10">${_.escape(list_settings.translations.empty_list)}</td></tr>`
+    }
 
     let table_html = `
-      <table>
+      <table id="records-table">
         <thead>
-          <tr>
+          <tr">
             ${header_fields}
           </tr>
         </thead>
@@ -261,6 +267,7 @@
 
 
   function get_records( offset = 0 ){
+    loading_spinner.addClass("active")
     let query = current_filter.query
 
     document.cookie = `last_view=${JSON.stringify(current_filter)}`
@@ -278,7 +285,15 @@
         items = response.posts || []
       }
       $('#load-more').toggle(items.length !== parseInt( response.total ))
+      let result_text = list_settings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", response.total)
+      $('.filter-result-text').html(result_text)
       build_table(items)
+      loading_spinner.removeClass("active")
+    }).catch(err => {
+      loading_spinner.removeClass("active")
+      if ( _.get( err, "statusText" ) !== "abort" ) {
+        console.error(err)
+      }
     })
   }
 
@@ -625,7 +640,7 @@
   $('#save-filter-edits').on('click', function () {
     let search_query = get_custom_filter_search_query()
     let filter_id = $('#save-filter-edits').data("filter-id")
-    let filter = _.find(saved_filters.filters, {ID:filter_id})
+    let filter = _.find(list_settings.filters.filters, {ID:filter_id})
     filter.name = $('#new-filter-name').val()
     $(`.filter-list-name[data-filter="${filter_id}"]`).text(filter.name)
     filter.query = search_query
@@ -713,7 +728,7 @@
     filter.name = _.escape( filterName )
     filter.tab = 'custom'
     if (filter.query){
-      saved_filters.filters.push(filter)
+      list_settings.filters.filters.push(filter)
       API.save_filters(list_settings.post_type,filter).then(()=>{
         $(`.custom-filters [class*="list-view ${filter_to_save}`).remove()
         setup_filters()
@@ -731,21 +746,84 @@
   //delete a filter
   $(`#confirm-filter-delete`).on('click', function () {
 
-    let filter = _.find(saved_filters.filters, {ID:filter_to_delete})
+    let filter = _.find(list_settings.filters.filters, {ID:filter_to_delete})
     if ( filter && ( filter.visible === true || filter.visible === '1' ) ){
       filter.visible = false;
       API.save_filters(list_settings.post_type,filter).then(()=>{
-        _.pullAllBy(saved_filters.filters, [{ID:filter_to_delete}], "ID")
+        _.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
         setup_filters()
         $(`#list-filter-tabs [data-id='custom'] a`).click()
       }).catch(err => { console.error(err) })
     } else {
       API.delete_filter(list_settings.post_type, filter_to_delete).then(()=>{
-        _.pullAllBy(saved_filters.filters, [{ID:filter_to_delete}], "ID")
+        _.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
         setup_filters()
         $(`#list-filter-tabs [data-id='custom'] a`).click()
       }).catch(err => { console.error(err) })
     }
   })
+
+  window.sortTable = function sortTable(n) {
+    let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("records-table");
+    switching = true;
+    //Set the sorting direction to ascending:
+    dir = "asc";
+    /*Make a loop that will continue until
+    no switching has been done:*/
+    while (switching) {
+      //start by saying: no switching is done:
+      switching = false;
+      rows = table.rows;
+      /*Loop through all table rows (except the
+      first, which contains table headers):*/
+      for (i = 1; i < (rows.length - 1); i++) {
+        //start by saying there should be no switching:
+        shouldSwitch = false;
+        /*Get the two elements you want to compare,
+        one from current row and one from the next:*/
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        /*check if the two rows should switch place,
+        based on the direction, asc or desc:*/
+        if (dir === "asc") {
+
+          if (Number.isInteger(parseInt(x.innerHTML))){
+            if (parseInt(x.innerHTML.replace("-", "")) > parseInt(y.innerHTML.replace("-", ""))) {
+              shouldSwitch = true;
+              break;
+            }
+          } else {
+            if (x.innerHTML.toLowerCase().replace("-", "") > y.innerHTML.toLowerCase().replace("-", "")) {
+              //if so, mark as a switch and break the loop:
+              shouldSwitch= true;
+              break;
+            }
+          }
+        } else if (dir === "desc") {
+          if (Number.isInteger(parseInt(x.innerHTML)) ? (parseInt(x.innerHTML.replace("-", "")) < parseInt(y.innerHTML.replace("-", ""))) : (x.innerHTML.toLowerCase().replace("-", "") < y.innerHTML.toLowerCase().replace("-", ""))) {
+            //if so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        }
+      }
+      if (shouldSwitch) {
+        /*If a switch has been marked, make the switch
+        and mark that a switch has been done:*/
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        //Each time a switch is done, increase this count by 1:
+        switchcount ++;
+      } else {
+        /*If no switching has been done AND the direction is "asc",
+        set the direction to "desc" and run the while loop again.*/
+        if (switchcount === 0 && dir === "asc") {
+          dir = "desc";
+          switching = true;
+        }
+      }
+    }
+  }
 
 })(window.jQuery, window.list_settings, window.Foundation);

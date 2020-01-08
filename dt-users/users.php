@@ -602,6 +602,7 @@ class Disciple_Tools_Users
                 $filters[$post_type][] = $filter;
             }
             update_user_option( $current_user_id, "saved_filters", $filters );
+            update_user_option( $current_user_id, "dt_cached_filters_$post_type", [] );
         }
         return true;
     }

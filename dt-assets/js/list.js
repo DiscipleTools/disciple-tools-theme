@@ -4,7 +4,7 @@
   let cachedFilter = window.SHAREDFUNCTIONS.get_json_cookie("last_view")
 
   $.urlParam = function (name) {
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+    let results = new RegExp('[\?&]' + name + '=([^&#]*)')
       .exec(window.location.search);
 
     return (results !== null) ? results[1] || 0 : false;
@@ -17,10 +17,6 @@
   let currentFilter = {}
   let items = []
   let customFilters = []
-  let savedFilters = wpApiListSettings.filters || {[wpApiListSettings.current_post_type]:[]}
-  if (Array.isArray(savedFilters)){
-    savedFilters = {}
-  }
   let filterToSave = ""
   let filterToDelete = ""
   let filterToEdit = ""
@@ -94,7 +90,7 @@
       setupCurrentFilterLabels()
       loading_spinner.removeClass("active")
     }).catch(err => {
-      if ( !_.get( err, "statusText" ) === "abort" ) {
+      if ( _.get( err, "statusText" ) !== "abort" ) {
         console.error(err)
       }
     })
@@ -140,15 +136,15 @@
 
     let savedFiltersList = $(`#list-filter-tabs [data-id='custom'] .list-views`)
     savedFiltersList.empty()
-    if ( savedFilters.filters.filter(t=>t.tab==='custom').length === 0 ) {
+    if ( wpApiListSettings.filters.filters.filter(t=>t.tab==='custom').length === 0 ) {
       savedFiltersList.html(`<span>${_.escape(wpApiListSettings.translations.empty_custom_filters)}</span>`)
     }
-    savedFilters.filters.filter(t=>t.tab==='custom').forEach(filter=>{
+    wpApiListSettings.filters.filters.filter(t=>t.tab==='custom').forEach(filter=>{
       if ( filter && filter.visible === ''){
         return
       }
       let deleteFilter = $(`<span style="float:right" data-filter="${_.escape( filter.ID )}">
-        <img style="padding: 0 4px" src="${wpApiShare.template_dir}/dt-assets/images/trash.svg">
+        <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/images/trash.svg">
       </span>`)
       deleteFilter.on("click", function () {
           $(`.delete-filter-name`).html(filter.name)
@@ -156,7 +152,7 @@
           filterToDelete = filter.ID;
         })
       let editFilter = $(`<span style="float:right" data-filter="${_.escape( filter.ID )}">
-          <img style="padding: 0 4px" src="${wpApiShare.template_dir}/dt-assets/images/edit.svg">
+          <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/images/edit.svg">
       </span>`)
       editFilter.on("click", function () {
         editSavedFilter( filter )
@@ -250,7 +246,7 @@
       <td class="hide-for-small-only">
         <span class="status status--<%- overall_status %>"><%- status %>
         <% if (update_needed){ %>
-            <img style="" src="${_.escape( wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+            <img style="" src="${_.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
         <% } %>
         </span>
       </td>
@@ -285,7 +281,7 @@
       <td class="hide-for-small-only">
         <span class="group-status group-status--<%- group_status %>"><%- status %>
         <% if (update_needed){ %>
-            <img style="" src="${_.escape( wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+            <img style="" src="${_.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
         <% } %>
         </span>
       </td>
@@ -359,7 +355,7 @@
     return $.parseHTML(template(context));
   }
 
-  function buildGroupRow(group, index) {
+  function buildGroupRow(group) {
     const template = templates[wpApiListSettings.current_post_type];
     const leader_links = _.map(group.leaders, function(leader) {
       return '<a href="' + _.escape(leader.permalink) + '">' + _.escape(leader.post_title) + "</a>";
@@ -376,7 +372,7 @@
     return $.parseHTML(template(context));
   }
 
-  $(document).on('change', '.js-list-view', e => {
+  $(document).on('change', '.js-list-view', () => {
     getContactForCurrentView()
   });
 
@@ -437,7 +433,7 @@
       filter.type = currentView
       query = filter.query
     } else if ( currentView ) {
-      filter = _.find(savedFilters.filters, {ID:filterId}) || _.find(savedFilters.filters, {ID:filterId.toString()}) || filter
+      filter = _.find(wpApiListSettings.filters.filters, {ID:filterId}) || _.find(wpApiListSettings.filters.filters, {ID:filterId.toString()}) || filter
       if ( filter ){
         filter.type = 'default'
         filter.labels =  [{ id:filterId, name:filter.name}]
@@ -555,7 +551,7 @@
     filter.name = _.escape( filterName )
     filter.tab = 'custom'
     if (filter.query){
-      savedFilters.filters.push(filter)
+      wpApiListSettings.filters.filters.push(filter)
       API.save_filters(wpApiListSettings.current_post_type,filter).then(()=>{
         $(`.custom-filters [class*="list-view ${filterToSave}`).remove()
         setupFilters()
@@ -572,17 +568,17 @@
 
   //delete a filter
   $(`#confirm-filter-delete`).on('click', function () {
-    let filter = _.find(savedFilters.filters, {ID:filterToDelete})
+    let filter = _.find(wpApiListSettings.filters.filters, {ID:filterToDelete})
     if ( filter && ( filter.visible === true || filter.visible === '1' ) ){
       filter.visible = false;
       API.save_filters(wpApiListSettings.current_post_type,filter).then(()=>{
-        _.pullAllBy(savedFilters.filters, [{ID:filterToDelete}], "ID")
+        _.pullAllBy(wpApiListSettings.filters.filters, [{ID:filterToDelete}], "ID")
         setupFilters()
         $(`#list-filter-tabs [data-id='custom'] a`).click()
       }).catch(err => { console.error(err) })
     } else {
       API.delete_filter(wpApiListSettings.current_post_type, filterToDelete).then(()=>{
-        _.pullAllBy(savedFilters.filters, [{ID:filterToDelete}], "ID")
+        _.pullAllBy(wpApiListSettings.filters.filters, [{ID:filterToDelete}], "ID")
         setupFilters()
         $(`#list-filter-tabs [data-id='custom'] a`).click()
       }).catch(err => { console.error(err) })
@@ -677,7 +673,7 @@
           used: {
             display: "name",
             ajax: {
-              url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+              url: window.wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
               data: {
                 s: "{{query}}",
                 filter: function () {
@@ -685,7 +681,7 @@
                 }
               },
               beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+                xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
               },
               callback: {
                 done: function (data) {
@@ -770,7 +766,7 @@
           onHideLayout: function () {
             $('#leaders-result-container').html("");
           },
-          onClick: function (node, a, item, event) {
+          onClick: function (node, a, item) {
             newFilterLabels.push({id: item.ID, name: item.name, field: "leaders"})
             selectedFilters.append(`<span class="current-filter leaders" data-id="${_.escape( item.ID )}">${_.escape( item.name )}</span>`)
           }
@@ -813,7 +809,7 @@
           onHideLayout: function () {
             $('#subassigned-result-container').html("");
           },
-          onClick: function (node, a, item, event) {
+          onClick: function (node, a, item) {
             let name = _.get(wpApiListSettings, `custom_fields_settings.subassigned.name`, 'subassigned')
             newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "subassigned"})
             selectedFilters.append(`<span class="current-filter subassigned" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
@@ -848,7 +844,7 @@
           onHideLayout: function () {
             $('#coached_by-result-container').html("");
           },
-          onClick: function (node, a, item, event) {
+          onClick: function (node, a, item) {
             let name = _.get(wpApiListSettings, `custom_fields_settings.coached_by.name`, 'coached_by')
             newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "coached_by"})
             selectedFilters.append(`<span class="current-filter coached_by" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
@@ -908,7 +904,7 @@
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $('#assigned_to-result-container').html(text);
           },
-          onClick: function(node, a, item, event) {
+          onClick: function(node, a, item) {
             let name = _.get(wpApiListSettings, `custom_fields_settings.assigned_to.name`, 'assigned_to')
             selectedFilters.append(`<span class="current-filter assigned_to" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
             newFilterLabels.push({id:item.ID, name:`${name}:${item.name}`, field:"assigned_to"})
@@ -919,7 +915,6 @@
     }
   }
 
-  let sourcesTypeahead = $(".js-typeahead-sources")
   let loadMultiSelectTypeaheads = async function loadMultiSelectTypeaheads() {
     for (let input of $(".multi_select .typeahead__query input")) {
       let field = $(input).data('field')
@@ -952,7 +947,7 @@
                 field
               },
               beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+                xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
               },
               callback: {
                 done: function (data) {
@@ -989,7 +984,7 @@
           }
         },
         callback: {
-          onClick: function(node, a, item, event){
+          onClick: function(node, a, item){
             let name = _.get(wpApiListSettings, `custom_fields_settings.${field}.name`, field)
             selectedFilters.append(`<span class="current-filter ${_.escape( field )}" data-id="${_.escape( item.key )}">${_.escape( name )}:${_.escape( item.value )}</span>`)
             newFilterLabels.push({id:item.key, name:`${name}:${item.value}`, field})
@@ -1077,7 +1072,7 @@
   $('#save-filter-edits').on('click', function () {
     let searchQuery = getSearchQuery()
     let filterId = $('#save-filter-edits').data("filter-id")
-    let filter = _.find(savedFilters.filters, {ID:filterId})
+    let filter = _.find(wpApiListSettings.filters.filters, {ID:filterId})
     filter.name = $('#new-filter-name').val()
     $(`.filter-list-name[data-filter="${filterId}"]`).text(filter.name)
     filter.query = searchQuery
@@ -1173,7 +1168,7 @@
       wpApiListSettings.filters = filters
       setupFilters()
     }).catch(err => {
-      if ( !_.get( err, "statusText" ) === "abort" ){
+      if ( _.get( err, "statusText" ) !== "abort" ){
         console.error(err)
       }
     })
