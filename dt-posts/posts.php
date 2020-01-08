@@ -819,10 +819,9 @@ class Disciple_Tools_Posts
                 if ( !empty( $connection_ids ) ){
                     if ( $query_key === "subassigned" ) {
                         if ( !empty( $access_query ) && in_array( "subassigned", $combine ) ){
-                            $access_query .= "OR ( from_p2p.p2p_type = 'contacts_to_subassigned' AND from_p2p.p2p_from in (" . esc_sql( $connection_ids ) .") )";
-                            $connections_sql_from .= " ";
+                            $access_query .= "OR ( $wpdb->posts.ID IN ( SELECT p2p_to FROM $wpdb->p2p WHERE p2p_from IN  (" . esc_sql( $connection_ids ) .")  AND p2p_type = 'contacts_to_subassigned' ) )";
                         } else {
-                            $connections_sql_from .= "AND ( from_p2p.p2p_type = 'contacts_to_subassigned' AND from_p2p.p2p_from in (" . esc_sql( $connection_ids ) .") )";
+                            $connections_sql_from .= "AND ( $wpdb->posts.ID IN ( SELECT p2p_to FROM $wpdb->p2p WHERE p2p_from IN  (" . esc_sql( $connection_ids ) .")  AND p2p_type = 'contacts_to_subassigned' ) )";
                         }
                     } else {
                         if ( $post_fields[$query_key]["p2p_direction"] === "to" ){
@@ -1220,14 +1219,16 @@ class Disciple_Tools_Posts
                     if ( isset( $value["value"] ) || ( !empty( $value["delete"] && !empty( $value['id'] ) ) ) ){
                         $current_user_id = get_current_user_id();
                         if ( !$current_user_id ){
-                            return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user." . $field_key );
+                            return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user." );
                         }
                         if ( !empty( $value["id"] ) ) {
                             //see if we find the value with the correct id on this contact for this user.
                             $exists = false;
+                            $existing_field = null;
                             foreach ( $existing_record[$field_key] ?? [] as $v ){
                                 if ( (int) $v["id"] === (int) $value["id"] ){
                                     $exists = true;
+                                    $existing_field = $v;
                                 }
                             }
                             if ( !$exists ){
@@ -1246,12 +1247,23 @@ class Disciple_Tools_Posts
                                 }
                             } else {
                                 //update user meta
-                                $date   = $value["date"] ?? null;
+                                $update = [];
+                                if ( is_array( $value["value"] ) ){
+                                    foreach ( $value["value"] as $val_key => $val_data ) {
+                                        $existing_field["value"][$val_key] = $val_data;
+                                    }
+                                    $update["meta_value"] = serialize( $existing_field["value"] );
+                                } else {
+                                    $update["meta_value"] = $value["value"];
+                                }
+                                if ( isset( $value["date"] ) ){
+                                    $update["date"] = $value["date"];
+                                }
+                                if ( isset( $value["category"] ) ){
+                                    $update["category"] = $value["category"];
+                                }
                                 $update = $wpdb->update( $wpdb->dt_post_user_meta,
-                                    [
-                                        "meta_value" => $value["value"],
-                                        "date"       => $date
-                                    ],
+                                    $update,
                                     [
                                         "id"       => $value["id"],
                                         "user_id"  => $current_user_id,
@@ -1271,8 +1283,9 @@ class Disciple_Tools_Posts
                                     "user_id" => $current_user_id,
                                     "post_id" => $post_id,
                                     "meta_key" => $field_key,
-                                    "meta_value" => $value["value"],
-                                    "date" => $date
+                                    "meta_value" => is_array( $value["value"] ) ? serialize( $value["value"] ) : $value["value"],
+                                    "date" => $date,
+                                    "category" => $value["category"] ?? null
                                 ]
                             );
                             if ( !$create ){
@@ -1610,8 +1623,9 @@ class Disciple_Tools_Posts
                 }
                 $fields[$m["meta_key"]][] = [
                     "id" => $m["id"],
-                    "value" => $m["meta_value"],
-                    "date" => $m["date"]
+                    "value" => maybe_unserialize( $m["meta_value"] ),
+                    "date" => $m["date"],
+                    "category" => $m["category"]
                 ];
             }
         }

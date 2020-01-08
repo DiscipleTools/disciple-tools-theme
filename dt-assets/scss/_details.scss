@@ -444,3 +444,11 @@ select.color-select {
         margin-right: 10px;
     }
 }
+
+#tasks-modal {
+  .existing-task-action {
+    font-size: 10px;
+    color: $primary-color;
+    margin: 0 5px;
+  }
+}

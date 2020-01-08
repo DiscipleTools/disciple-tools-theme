@@ -751,6 +751,8 @@ class Disciple_Tools_Notifications
         } elseif ( $notification["notification_name"] === "assignment_declined" ){
             $user_who_declined = get_userdata( $notification["source_user_id"] );
             $notification_note = sprintf( esc_html_x( '%1$s declined assignment on: %2$s.', 'User1 declined assignment on: contact1', 'disciple_tools' ), $user_who_declined->display_name, $link );
+        } else {
+            $notification_note = apply_filters( 'dt_custom_notification_note', '', $notification );
         }
         return $notification_note;
     }

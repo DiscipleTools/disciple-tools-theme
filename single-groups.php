@@ -27,7 +27,9 @@ if ( ! current_user_can( 'access_groups' ) ) {
         true,
         isset( $group["requires_update"] ) && $group["requires_update"] === true,
         in_array( $current_user_id, $following ),
-        isset( $group["assigned_to"]["id"] ) ? $group["assigned_to"]["id"] == $current_user_id : false
+        isset( $group["assigned_to"]["id"] ) ? $group["assigned_to"]["id"] == $current_user_id : false,
+        [],
+        true
     ); ?>
 
 <!--<div id="errors"> </div>-->
@@ -366,6 +368,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'share' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-group' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-contact' ); ?>
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'tasks' ); ?>
 
     <div class="reveal" id="add-new-group-member-modal" data-reveal style="min-height:500px">
         <h3><?php echo esc_html_x( "Add members from existing contacts", 'Add members modal', 'disciple_tools' )?></h3>

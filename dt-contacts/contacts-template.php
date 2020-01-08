@@ -113,6 +113,21 @@ function render_field_for_display( $field_key, $fields, $post ){
                     </div>
                 </div>
             </div>
+        <?php elseif ( $field_type === "location" ) :?>
+            <div class="dt_location_grid">
+                <var id="location_grid-result-container" class="result-container"></var>
+                <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
+                    <div class="typeahead__container">
+                        <div class="typeahead__field">
+                            <span class="typeahead__query">
+                                <input class="js-typeahead-location_grid input-height"
+                                       name="location_grid[query]" placeholder="<?php echo esc_html_x( "Search Locations", 'input field placeholder', 'disciple_tools' ) ?>"
+                                       autocomplete="off">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <?php endif;
     }
 }

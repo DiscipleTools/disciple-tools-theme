@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Disciple Tools\n"
-"POT-Creation-Date: 2019-12-19 13:43+0100\n"
+"POT-Creation-Date: 2020-01-07 14:35+0100\n"
 "PO-Revision-Date: 2018-01-09 14:10-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -119,7 +119,7 @@ msgid "View Duplicates"
 msgstr ""
 
 #: archive-contacts.php:84 archive-contacts.php:104 archive-contacts.php:107
-#: single-groups.php:380
+#: single-groups.php:381
 msgctxt "input field placeholder"
 msgid "Search Contacts"
 msgstr ""
@@ -162,9 +162,9 @@ msgstr ""
 msgid "Add new filter"
 msgstr ""
 
-#: archive-contacts.php:220
+#: archive-contacts.php:220 archive-groups.php:176
 msgctxt "input field placeholder"
-msgid "Fliter Name"
+msgid "Filter Name"
 msgstr ""
 
 #: archive-contacts.php:239 archive-groups.php:194
@@ -278,11 +278,6 @@ msgstr ""
 
 #: archive-groups.php:145
 msgid "Groups shared with me"
-msgstr ""
-
-#: archive-groups.php:176
-msgctxt "input field placeholder"
-msgid "Filter Name"
 msgstr ""
 
 #: archive-groups.php:267
@@ -1332,7 +1327,7 @@ msgstr ""
 #: dt-assets/parts/modals/modal-help.php:457
 #: dt-assets/parts/modals/modal-revert.php:15
 #: dt-assets/parts/modals/modal-share.php:49 single-contacts.php:696
-#: single-groups.php:392
+#: single-groups.php:393
 msgctxt "button"
 msgid "Close"
 msgstr ""
@@ -2336,13 +2331,13 @@ msgid "Mobile"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:860
-#: dt-contacts/contacts-post-type.php:870 dt-posts/posts.php:1744
+#: dt-contacts/contacts-post-type.php:870 dt-posts/posts.php:1755
 msgctxt "field label"
 msgid "Work"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:861
-#: dt-contacts/contacts-post-type.php:871 dt-posts/posts.php:1743
+#: dt-contacts/contacts-post-type.php:871 dt-posts/posts.php:1754
 msgctxt "field label"
 msgid "Home"
 msgstr ""
@@ -2350,7 +2345,7 @@ msgstr ""
 #: dt-contacts/contacts-post-type.php:862
 #: dt-contacts/contacts-post-type.php:872
 #: dt-contacts/contacts-post-type.php:915
-#: dt-contacts/contacts-post-type.php:917 dt-posts/posts.php:1745
+#: dt-contacts/contacts-post-type.php:917 dt-posts/posts.php:1756
 msgctxt "field label"
 msgid "Other"
 msgstr ""
@@ -2407,7 +2402,7 @@ msgctxt "post_type title"
 msgid "Enter the contact name here"
 msgstr ""
 
-#: dt-contacts/contacts-template.php:108
+#: dt-contacts/contacts-template.php:109
 msgctxt "input field placeholder"
 msgid "Search"
 msgstr ""
@@ -3265,7 +3260,7 @@ msgstr ""
 msgid "Seeker path"
 msgstr ""
 
-#: dt-metrics/contacts/sources.php:83 dt-users/users.php:651
+#: dt-metrics/contacts/sources.php:83 dt-users/users.php:650
 msgid "Sources"
 msgstr ""
 
@@ -3790,7 +3785,11 @@ msgstr ""
 msgid "People Group Details"
 msgstr ""
 
-#: dt-people-groups/people-groups-post-type.php:557
+#: dt-people-groups/people-groups-post-type.php:275
+msgid "Translations"
+msgstr ""
+
+#: dt-people-groups/people-groups-post-type.php:581
 msgid "Enter the People Group title here"
 msgstr ""
 
@@ -3799,11 +3798,11 @@ msgstr ""
 msgid "New %s"
 msgstr ""
 
-#: dt-posts/dt-posts.php:838
+#: dt-posts/dt-posts.php:840
 msgid "Record not deleted."
 msgstr ""
 
-#: dt-posts/dt-posts.php:935
+#: dt-posts/dt-posts.php:937
 msgid "Post already shared with user."
 msgstr ""
 
@@ -3940,8 +3939,8 @@ msgstr ""
 
 #: dt-posts/posts.php:291
 #, php-format
-msgctxt "No longed coached by contact1"
-msgid "No longed coached by %s"
+msgctxt "No longer coached by contact1"
+msgid "No longer coached by %s"
 msgstr ""
 
 #: dt-posts/posts.php:295
@@ -3964,8 +3963,8 @@ msgstr ""
 
 #: dt-posts/posts.php:299
 #, php-format
-msgctxt "No longed sub-assigned on contact1"
-msgid "No longed sub-assigned on %s"
+msgctxt "No longer sub-assigned on contact1"
+msgid "No longer sub-assigned on %s"
 msgstr ""
 
 #: dt-posts/posts.php:303
@@ -4258,12 +4257,12 @@ msgctxt "message"
 msgid "You do not have access to these %s"
 msgstr ""
 
-#: dt-posts/posts.php:1752 dt-posts/posts.php:1760
+#: dt-posts/posts.php:1763 dt-posts/posts.php:1771
 msgctxt "field label"
 msgid "Main"
 msgstr ""
 
-#: dt-posts/posts.php:1753
+#: dt-posts/posts.php:1764
 msgctxt "field label"
 msgid "Alternate"
 msgstr ""
@@ -4272,31 +4271,31 @@ msgstr ""
 msgid "No permissions to assign"
 msgstr ""
 
-#: dt-users/users.php:312
+#: dt-users/users.php:311
 msgid "Insufficient permissions"
 msgstr ""
 
-#: dt-users/users.php:622
+#: dt-users/users.php:621
 msgid "Extra Disciple.Tools Information"
 msgstr ""
 
-#: dt-users/users.php:625
+#: dt-users/users.php:624
 msgid "Corresponds to Contact"
 msgstr ""
 
-#: dt-users/users.php:633
+#: dt-users/users.php:632
 msgid "View contact"
 msgstr ""
 
-#: dt-users/users.php:635
+#: dt-users/users.php:634
 msgid "Add the name of the contact record this user corresponds to."
 msgstr ""
 
-#: dt-users/users.php:636
+#: dt-users/users.php:635
 msgid "Learn more."
 msgstr ""
 
-#: dt-users/users.php:726
+#: dt-users/users.php:725
 #, php-format
 msgid ""
 "Hi,\n"
@@ -4309,20 +4308,20 @@ msgid ""
 msgstr ""
 
 #. translators: Joining confirmation notification email subject. %s: Site title
-#: dt-users/users.php:736
+#: dt-users/users.php:735
 #, php-format
 msgid "[%s] Joining Confirmation"
 msgstr ""
 
-#: dt-users/users.php:759
+#: dt-users/users.php:758
 msgid "Email already exists"
 msgstr ""
 
-#: dt-users/users.php:764
+#: dt-users/users.php:763
 msgid "Username already exists"
 msgstr ""
 
-#: dt-users/users.php:794
+#: dt-users/users.php:793
 msgid "View contact record"
 msgstr ""
 
@@ -4560,23 +4559,22 @@ msgid "Select"
 msgstr ""
 
 #: single-groups.php:98
-msgid ""
-"No group members yet. Create or Select new members to add them to this group."
+msgid "To add new members, click on 'Create' or 'Select'."
 msgstr ""
 
-#: single-groups.php:370
+#: single-groups.php:371
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr ""
 
-#: single-groups.php:371
+#: single-groups.php:372
 msgctxt "Add members modal"
 msgid ""
 "In the 'Members List' field, type the name of an existing contact to add "
 "them to this group."
 msgstr ""
 
-#: single-groups.php:372
+#: single-groups.php:373
 msgid "Members List"
 msgstr ""
 
