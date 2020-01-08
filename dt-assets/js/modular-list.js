@@ -7,7 +7,6 @@
   let filter_to_delete = "";
   let filterToEdit = "";
   let filter_accordions = $('#list-filter-tabs')
-  let saved_filters = list_settings.filters
   let cookie = window.SHAREDFUNCTIONS.getCookie("last_view");
   let cached_filter
   let get_records_promise = null
