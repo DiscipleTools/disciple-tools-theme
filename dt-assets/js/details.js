@@ -3,10 +3,7 @@ jQuery(document).ready(function($) {
   let post_type = detailsSettings.post_type
   let post = detailsSettings.post_fields
   let rest_api = window.API
-  // if ( ['contacts', 'groups'].includes(detailsSettings.post_type ) ){
-  //   post_type = post_type.substring(0, detailsSettings.post_type.length - 1);
-  //   rest_api = window.API
-  // }
+  let typeaheadTotals = {}
 
   let masonGrid = $('.grid') // responsible for resizing and moving the tiles
 
@@ -143,6 +140,89 @@ jQuery(document).ready(function($) {
     })
   })
 
+  $('.dt_location_grid').each((key, el)=> {
+    let field_id = 'location_grid'
+    $.typeahead({
+      input: '.js-typeahead-location_grid',
+      minLength: 0,
+      accent: true,
+      searchOnFocus: true,
+      maxItem: 20,
+      dropdownFilter: [{
+        key: 'group',
+        value: 'focus',
+        template: 'Regions of Focus',
+        all: 'All Locations'
+      }],
+      source: {
+        focus: {
+          display: "name",
+          ajax: {
+            url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+            data: {
+              s: "{{query}}",
+              filter: function () {
+                return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+              }
+            },
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+            },
+            callback: {
+              done: function (data) {
+                if (typeof typeaheadTotals!=="undefined") {
+                  typeaheadTotals.field = data.total
+                }
+                return data.location_grid
+              }
+            }
+          }
+        }
+      },
+      display: "name",
+      templateValue: "{{name}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["ID"],
+        data: function () {
+          return (post.location_grid || []).map(g => {
+            return {ID: g.id, name: g.label}
+          })
+
+        }, callback: {
+          onCancel: function (node, item) {
+            API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}})
+            .catch(err => { console.error(err) })
+          }
+        }
+      },
+      callback: {
+        onClick: function (node, a, item, event) {
+          API.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).catch(err => { console.error(err) })
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
+          masonGrid.masonry('layout')
+        },
+        onReady() {
+          this.filters.dropdown = {key: "group", value: "focus", template: "Regions of Focus"}
+          this.container
+          .removeClass("filter")
+          .find("." + this.options.selector.filterButton)
+          .html("Regions of Focus");
+        },
+        onResult: function (node, query, result, resultCount) {
+          resultCount = typeaheadTotals.location_grid
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $('#location_grid-result-container').html(text);
+        },
+        onHideLayout: function () {
+          $('#location_grid-result-container').html("");
+        }
+      }
+    });
+  })
 
   /**
    * Follow
