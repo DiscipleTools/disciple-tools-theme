@@ -12,11 +12,6 @@ jQuery(document).ready(function($) {
     let page = `${ref.replace(wpApiShare.site_url, '').split('/')[0] + ''}`
     $(`div.top-bar-left ul.menu [href^="${wpApiShare.site_url + '/' +page}"]`).parent().addClass('active');
 
-      // expand and collapse tiles
-    $(".section-header").on("click", function () {
-      $(this).parent().toggleClass("collapsed")
-      $('.grid').masonry('layout')
-    })
 })
 
 
