@@ -380,12 +380,6 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                     <td><input type="text" class="profile-input" id="nickname" name="nickname" dir="auto"
                                                value=" <?php echo esc_html( $dt_user->nickname ); ?>"/></td>
                                 </tr>
-                                <tr>
-                                    <td><label for="nickname"><?php esc_html_e( 'Locations', 'disciple_tools' )?></label></td>
-                                    <td><?php esc_html_e( '(Edit on contact record)', 'disciple_tools' )?>
-                                        <a href="/contacts/<?php //@todo  ?>"><i class="fi-link"></i></a>
-                                    </td>
-                                </tr>
 
                                 <?php // site defined fields
                                 foreach ( $dt_user_fields as $dt_field ) {
