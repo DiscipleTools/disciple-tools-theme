@@ -37,6 +37,7 @@ else {
         require_once( get_template_directory() . '/dt-core/admin/class-roles.php' );
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
+        disciple_tools();
         /**
          * We want to make sure migrations are run on updates.
          *
@@ -50,7 +51,6 @@ else {
         }
 
 
-        disciple_tools();
 
         /**
          * Load Language Files
