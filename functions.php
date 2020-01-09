@@ -38,17 +38,7 @@ else {
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
 
-        /**
-         * We want to make sure migrations are run on updates.
-         *
-         * @see https://www.sitepoint.com/wordpress-plugin-updates-right-way/
-         */
-        try {
-            require_once( get_template_directory() . '/dt-core/admin/class-migration-engine.php' );
-            Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
-        } catch ( Throwable $e ) {
-            new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
-        }
+
 
         disciple_tools();
 
@@ -143,6 +133,18 @@ else {
             $this->token = 'disciple_tools';
             $this->version = '0.27.1';
             $this->migration_number = 29;
+
+            /**
+             * We want to make sure migrations are run on updates.
+             *
+             * @see https://www.sitepoint.com/wordpress-plugin-updates-right-way/
+             */
+            try {
+                require_once( get_template_directory() . '/dt-core/admin/class-migration-engine.php' );
+                Disciple_Tools_Migration_Engine::migrate( $this->migration_number );
+            } catch ( Throwable $e ) {
+                new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
+            }
 
 
             $this->theme_url = get_template_directory_uri() . '/';
