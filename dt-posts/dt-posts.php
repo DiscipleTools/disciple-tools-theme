@@ -431,41 +431,67 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        if ( !self::can_view_all( $post_type ) ) {
-//            @todo better way to get the contact records for users my contacts are shared with
-            $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID, $search_string );
-            $query_args['meta_key'] = 'assigned_to';
-            $query_args['meta_value'] = "user-" . $current_user->ID;
+        if ( empty( $search_string ) ){
+            //find the most recent posts interacted with by the user
             $posts = $wpdb->get_results( $wpdb->prepare( "
-                SELECT *, statusReport.meta_value as overall_status FROM $wpdb->posts
-                INNER JOIN $wpdb->postmeta as assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id AND assigned_to.meta_key = 'assigned_to')
-                LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = $wpdb->posts.ID AND statusReport.meta_key = 'overall_status')
-                WHERE assigned_to.meta_value = %s
-                AND $wpdb->posts.post_title LIKE %s
-                AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
-                ORDER BY CASE
-                    WHEN $wpdb->posts.post_title LIKE %s then 1
-                    ELSE 2
-                END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
-                LIMIT 0, 30
-            ", "user-". $current_user->ID, '%' . $search_string . '%', $post_type, '%' . $search_string . '%'
-            ), OBJECT );
+                SELECT *, statusReport.meta_value as overall_status, pm.meta_value as corresponds_to_user
+                FROM $wpdb->posts p
+                INNER JOIN (
+                    SELECT log.object_id
+                    FROM $wpdb->dt_activity_log log
+                    WHERE log.histid IN (
+                        SELECT max(l.histid) FROM $wpdb->dt_activity_log l 
+                        WHERE l.user_id = %s  AND l.object_type = %s
+                        GROUP BY l.object_id
+                    )
+                    ORDER BY log.histid desc
+                    LIMIT 30
+                ) as log
+                ON log.object_id = p.ID
+                LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = p.ID AND statusReport.meta_key = 'overall_status')
+                LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = p.ID AND pm.meta_key = 'corresponds_to_user' )
+                WHERE p.post_type = %s AND (p.post_status = 'publish' OR p.post_status = 'private')
+            ", $current_user->ID, $post_type, $post_type ), OBJECT );
         } else {
-            $posts = $wpdb->get_results( $wpdb->prepare( "
-                SELECT ID, post_title, pm.meta_value as corresponds_to_user, statusReport.meta_value as overall_status
-                FROM $wpdb->posts
-                LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = $wpdb->posts.ID AND pm.meta_key = 'corresponds_to_user' )
-                LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = $wpdb->posts.ID AND statusReport.meta_key = 'overall_status')
-                WHERE $wpdb->posts.post_title LIKE %s
-                AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
-                ORDER BY  CASE
-                    WHEN pm.meta_value > 0 then 1
-                    WHEN CHAR_LENGTH(%s) > 0 && $wpdb->posts.post_title LIKE %s then 2
-                    ELSE 3
-                END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
-                LIMIT 0, 30
-            ", '%' . $search_string . '%', $post_type, $search_string, '%' . $search_string . '%'
-            ), OBJECT );
+
+            if ( !self::can_view_all( $post_type ) ) {
+                //@todo better way to get the contact records for users my contacts are shared with
+                $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID, $search_string );
+                $query_args['meta_key'] = 'assigned_to';
+                $query_args['meta_value'] = "user-" . $current_user->ID;
+                $posts = $wpdb->get_results( $wpdb->prepare( "
+                    SELECT *, statusReport.meta_value as overall_status, pm.meta_value as corresponds_to_user 
+                    FROM $wpdb->posts
+                    INNER JOIN $wpdb->postmeta as assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id AND assigned_to.meta_key = 'assigned_to')
+                    LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = $wpdb->posts.ID AND statusReport.meta_key = 'overall_status')
+                    LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = $wpdb->posts.ID AND pm.meta_key = 'corresponds_to_user' )
+                    WHERE assigned_to.meta_value = %s
+                    AND $wpdb->posts.post_title LIKE %s
+                    AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
+                    ORDER BY CASE
+                        WHEN $wpdb->posts.post_title LIKE %s then 1
+                        ELSE 2
+                    END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
+                    LIMIT 0, 30
+                ", "user-". $current_user->ID, '%' . $search_string . '%', $post_type, '%' . $search_string . '%'
+                ), OBJECT );
+            } else {
+                $posts = $wpdb->get_results( $wpdb->prepare( "
+                    SELECT ID, post_title, pm.meta_value as corresponds_to_user, statusReport.meta_value as overall_status
+                    FROM $wpdb->posts p
+                    LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = p.ID AND pm.meta_key = 'corresponds_to_user' )
+                    LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = p.ID AND statusReport.meta_key = 'overall_status')
+                    WHERE p.ID IN ( SELECT ID FROM $wpdb->posts WHERE post_title LIKE %s )
+                    AND p.post_type = %s AND (p.post_status = 'publish' OR p.post_status = 'private')
+                    ORDER BY  CASE
+                        WHEN pm.meta_value > 0 then 1
+                        WHEN CHAR_LENGTH(%s) > 0 && p.post_title LIKE %s then 2
+                        ELSE 3
+                    END, CHAR_LENGTH(p.post_title), p.post_title
+                    LIMIT 0, 30
+                ", '%' . $search_string . '%', $post_type, $search_string, '%' . $search_string . '%'
+                ), OBJECT );
+            }
         }
         if ( is_wp_error( $posts ) ) {
             return $posts;
@@ -477,7 +503,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             },
             $posts
         );
-        if ( $post_type === 'contacts' && !self::can_view_all( $post_type ) ) {
+        if ( $post_type === 'contacts' && !self::can_view_all( $post_type ) && sizeof( $posts ) < 30 ) {
             $users_interacted_with = Disciple_Tools_Users::get_assignable_users_compact( $search_string );
             foreach ( $users_interacted_with as $user ) {
                 $post_id = Disciple_Tools_Users::get_contact_for_user( $user["ID"] );
