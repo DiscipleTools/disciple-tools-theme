@@ -53,9 +53,9 @@ class Disciple_Tools_Migration_0029 extends Disciple_Tools_Migration {
                     `field_type` VARCHAR(255) NOT NULL DEFAULT '',
                     PRIMARY KEY (`histid`),
                     key `object_id_index` (`object_id`),
-                    key `meta_key_index` (`meta_key`)
+                    key `meta_key_index` (`meta_key`),
+                    key `object_type_index` (`object_type`),
                     key `user_id_index` (`user_id`)
-                    key `object_type_index` (`object_type`)
                 ) $charset_collate;"
         );
     }
