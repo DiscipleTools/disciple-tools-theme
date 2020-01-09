@@ -514,6 +514,9 @@ button.loader {
         }
     }
 }
+.typeahead__filter .typeahead__filter-button {
+  @extend .input-height
+}
 
 .last-typeahead-in-section {
     margin-bottom: 150px;
@@ -523,8 +526,7 @@ button.loader {
 .typeahead__field [contenteditable],
 .typeahead__field input.input-height,
 .typeahead__field textarea.input-height .typeahead__field button.input-height {
-    $height: ($input-font-size * unitless-calc($input-line-height)) + (get-side($input-padding, 'top') + get-side($input-padding, 'bottom')) - rem-calc(1);
-    min-height: $height;
+    @extend .input-height
 }
 
 .typeahead__dropdown > li > a,
@@ -829,6 +831,11 @@ div.help-more h5 {
         float: right;
         margin: 5px;
     }
+}
+.daterangepicker {
+  th, td {
+    padding: 0;
+  }
 }
 
 #metrics-sidemenu ul.menu.vertical.nested {

@@ -27,7 +27,9 @@ if ( ! current_user_can( 'access_groups' ) ) {
         true,
         isset( $group["requires_update"] ) && $group["requires_update"] === true,
         in_array( $current_user_id, $following ),
-        isset( $group["assigned_to"]["id"] ) ? $group["assigned_to"]["id"] == $current_user_id : false
+        isset( $group["assigned_to"]["id"] ) ? $group["assigned_to"]["id"] == $current_user_id : false,
+        [],
+        true
     ); ?>
 
 <!--<div id="errors"> </div>-->
@@ -95,7 +97,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                     </button>
                                 </div>
                                 <div class="members-section">
-                                &nbsp;<!--<p class="small"><?php esc_html_e( "No group members yet. Create or Select new members to add them to this group.", 'disciple_tools' ) ?></p>-->
+                                    <div id="empty-members-list-message"><?php esc_html_e( "To add new members, click on 'Create' or 'Select'.", 'disciple_tools' ) ?></div>
                                     <div class="member-list">
 
                                     </div>
@@ -334,7 +336,8 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                             <?php elseif ( $field["type"] === "date" ) :?>
                                                 <input type="text" class="date-picker dt_date_picker"
                                                        id="<?php echo esc_html( $field_key ) ?>"
-                                                       value="<?php echo esc_html( $group[$field_key]["formatted"] ?? '' )?>">
+                                                       value="<?php echo esc_html( $group[$field_key]["formatted"] ?? '' )?>"
+                                                       autocomplete="off">
                                             <?php endif;
                                         }
                                     }
@@ -365,8 +368,9 @@ if ( ! current_user_can( 'access_groups' ) ) {
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'share' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-group' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-contact' ); ?>
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'tasks' ); ?>
 
-    <div class="reveal" id="add-new-group-member" data-reveal style="min-height:500px">
+    <div class="reveal" id="add-new-group-member-modal" data-reveal style="min-height:500px">
         <h3><?php echo esc_html_x( "Add members from existing contacts", 'Add members modal', 'disciple_tools' )?></h3>
         <p><?php echo esc_html_x( "In the 'Members List' field, type the name of an existing contact to add them to this group.", 'Add members modal', 'disciple_tools' )?></p>
         <div class="section-subheader"><?php esc_html_e( "Members List", 'disciple_tools' ) ?></div>

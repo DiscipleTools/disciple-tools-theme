@@ -203,7 +203,7 @@
         <!-- Members Tile -->
         <div class="help-section" id="members-help-text" style="display: none">
             <h3><?php esc_html_e( "Members", 'disciple_tools' ) ?></h3>
-            <p><?php esc_html_e( "This is the area where you list the number of contacts that are a part of the group.", 'disciple_tools' ) ?></p>
+            <p><?php esc_html_e( "This is the area where you manage the contacts that are a part of the group.", 'disciple_tools' ) ?></p>
             <h4><?php echo esc_html( $group_fields["member_count"]["name"] ) ?></h4>
             <p><?php echo esc_html( $group_fields["member_count"]["description"] ) ?></p>
             <h4><?php echo esc_html( $group_fields["members"]["name"] ) ?></h4>
@@ -280,7 +280,7 @@
     <!--    Comments and Activity - contact & group  -->
     <div class="help-section" id="comments-activity-help-text" style="display: none">
         <h3><?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?></h3>
-        <p><?php esc_html_e( "This is where you will want to record important notes from meetings and conversations.", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "This is where you can record notes from meetings and conversations.", 'disciple_tools' ) ?></p>
         <p><?php esc_html_e( "Type @ and the name of a user to mention them in a comment. This user will then receive a notification.", 'disciple_tools' ) ?></p>
         <p><?php esc_html_e( "This section also includes the history of activity, such as when the contact or group status became active etc.", 'disciple_tools' ) ?></p>
         <p><?php esc_html_e( "You can filter this section either by 'All', 'Comments', or 'Activity'.", 'disciple_tools' ) ?></p>

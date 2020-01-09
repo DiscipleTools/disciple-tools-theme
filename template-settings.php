@@ -62,7 +62,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 
                         <span class="section-header"><?php esc_html_e( 'Your Profile', 'disciple_tools' )?></span>
 
-                        <button class="float-right" data-open="edit-profile"><i class="fi-pencil"></i> <?php esc_html_e( 'Edit', 'disciple_tools' )?></button>
+                        <button class="float-right" data-open="edit-profile-modal"><i class="fi-pencil"></i> <?php esc_html_e( 'Edit', 'disciple_tools' )?></button>
 
                         <hr size="1" style="max-width:100%"/>
 
@@ -285,13 +285,13 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                 <div class="section-subheader cell">
                                     <?php esc_html_e( 'Start Date', 'disciple_tools' )?>
                                 </div>
-                                <div class="start_date"><input type="text" class="date-picker" id="start_date"></div>
+                                <div class="start_date"><input type="text" class="date-picker" id="start_date" autocomplete="off"></div>
                             </div>
                             <div style="margin: 0 20px">
                                 <div class="section-subheader cell">
                                     <?php esc_html_e( 'End Date', 'disciple_tools' )?>
                                 </div>
-                                <div class="end_date"><input type="text" class="date-picker" id="end_date"></div>
+                                <div class="end_date"><input type="text" class="date-picker" id="end_date" autocomplete="off"></div>
                             </div>
                             <div>
                                 <button id="add_unavailable_dates" class="button" disabled><?php esc_html_e( "Add Unavailable dates", 'disciple_tools' ) ?></button>
@@ -317,7 +317,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                 </div>
 
 
-                <div class="reveal" id="edit-profile" data-reveal>
+                <div class="reveal" id="edit-profile-modal" data-reveal>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -379,12 +379,6 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                     <td><label for="nickname"><span dir="auto"><?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' )?></span></label></td>
                                     <td><input type="text" class="profile-input" id="nickname" name="nickname" dir="auto"
                                                value=" <?php echo esc_html( $dt_user->nickname ); ?>"/></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="nickname"><?php esc_html_e( 'Locations', 'disciple_tools' )?></label></td>
-                                    <td><?php esc_html_e( '(Edit on contact record)', 'disciple_tools' )?>
-                                        <a href="/contacts/<?php //@todo  ?>"><i class="fi-link"></i></a>
-                                    </td>
                                 </tr>
 
                                 <?php // site defined fields

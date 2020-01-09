@@ -288,7 +288,7 @@ class Disciple_Tools_Posts
                 $object_note_from = sprintf( esc_html_x( 'Coached by %s', 'Coached by contact1', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( 'No longer coaching %s', 'No longer coaching contact1', 'disciple_tools' ), $from_title );
-                $object_note_from = sprintf( esc_html_x( 'No longed coached by %s', 'No longed coached by contact1', 'disciple_tools' ), $to_title );
+                $object_note_from = sprintf( esc_html_x( 'No longer coached by %s', 'No longer coached by contact1', 'disciple_tools' ), $to_title );
             }
         } else if ( $p2p_type === "contacts_to_subassigned"){
             if ($action === "connected to"){
@@ -296,7 +296,7 @@ class Disciple_Tools_Posts
                 $object_note_from = sprintf( esc_html_x( 'Sub-assigned on %s', 'Sub-assigned on contact1', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( 'Removed sub-assigned %s', 'Removed sub-assigned contact1', 'disciple_tools' ), $from_title );
-                $object_note_from = sprintf( esc_html_x( 'No longed sub-assigned on %s', 'No longed sub-assigned on contact1', 'disciple_tools' ), $to_title );
+                $object_note_from = sprintf( esc_html_x( 'No longer sub-assigned on %s', 'No longer sub-assigned on contact1', 'disciple_tools' ), $to_title );
             }
         } else if ( $p2p_type === "contacts_to_locations" || $p2p_type === "groups_to_locations"){
             if ($action == "connected to"){
@@ -819,10 +819,9 @@ class Disciple_Tools_Posts
                 if ( !empty( $connection_ids ) ){
                     if ( $query_key === "subassigned" ) {
                         if ( !empty( $access_query ) && in_array( "subassigned", $combine ) ){
-                            $access_query .= "OR ( from_p2p.p2p_type = 'contacts_to_subassigned' AND from_p2p.p2p_from in (" . esc_sql( $connection_ids ) .") )";
-                            $connections_sql_from .= " ";
+                            $access_query .= "OR ( $wpdb->posts.ID IN ( SELECT p2p_to FROM $wpdb->p2p WHERE p2p_from IN  (" . esc_sql( $connection_ids ) .")  AND p2p_type = 'contacts_to_subassigned' ) )";
                         } else {
-                            $connections_sql_from .= "AND ( from_p2p.p2p_type = 'contacts_to_subassigned' AND from_p2p.p2p_from in (" . esc_sql( $connection_ids ) .") )";
+                            $connections_sql_from .= "AND ( $wpdb->posts.ID IN ( SELECT p2p_to FROM $wpdb->p2p WHERE p2p_from IN  (" . esc_sql( $connection_ids ) .")  AND p2p_type = 'contacts_to_subassigned' ) )";
                         }
                     } else {
                         if ( $post_fields[$query_key]["p2p_direction"] === "to" ){
@@ -919,7 +918,7 @@ class Disciple_Tools_Posts
         } elseif ( $sort === "locations" || $sort === "groups" || $sort === "leaders" ){
             $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = $wpdb->posts.ID AND sort.p2p_type = '" . $post_type . "_to_$sort' )
             LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_to)";
-            $sort_sql = "ISNULL(p2p_post.post_name), p2p_post.post_name $sort_dir";
+            $sort_sql = "ISNULL(p2p_post.post_title), p2p_post.post_title $sort_dir";
         } elseif ( $sort === "post_date" ){
             $sort_sql = "$wpdb->posts.post_date  " . $sort_dir;
         } elseif ( $sort === "location_grid" ){
@@ -1220,14 +1219,16 @@ class Disciple_Tools_Posts
                     if ( isset( $value["value"] ) || ( !empty( $value["delete"] && !empty( $value['id'] ) ) ) ){
                         $current_user_id = get_current_user_id();
                         if ( !$current_user_id ){
-                            return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user." . $field_key );
+                            return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user." );
                         }
                         if ( !empty( $value["id"] ) ) {
                             //see if we find the value with the correct id on this contact for this user.
                             $exists = false;
+                            $existing_field = null;
                             foreach ( $existing_record[$field_key] ?? [] as $v ){
                                 if ( (int) $v["id"] === (int) $value["id"] ){
                                     $exists = true;
+                                    $existing_field = $v;
                                 }
                             }
                             if ( !$exists ){
@@ -1246,12 +1247,23 @@ class Disciple_Tools_Posts
                                 }
                             } else {
                                 //update user meta
-                                $date   = $value["date"] ?? null;
+                                $update = [];
+                                if ( is_array( $value["value"] ) ){
+                                    foreach ( $value["value"] as $val_key => $val_data ) {
+                                        $existing_field["value"][$val_key] = $val_data;
+                                    }
+                                    $update["meta_value"] = serialize( $existing_field["value"] );
+                                } else {
+                                    $update["meta_value"] = $value["value"];
+                                }
+                                if ( isset( $value["date"] ) ){
+                                    $update["date"] = $value["date"];
+                                }
+                                if ( isset( $value["category"] ) ){
+                                    $update["category"] = $value["category"];
+                                }
                                 $update = $wpdb->update( $wpdb->dt_post_user_meta,
-                                    [
-                                        "meta_value" => $value["value"],
-                                        "date"       => $date
-                                    ],
+                                    $update,
                                     [
                                         "id"       => $value["id"],
                                         "user_id"  => $current_user_id,
@@ -1271,8 +1283,9 @@ class Disciple_Tools_Posts
                                     "user_id" => $current_user_id,
                                     "post_id" => $post_id,
                                     "meta_key" => $field_key,
-                                    "meta_value" => $value["value"],
-                                    "date" => $date
+                                    "meta_value" => is_array( $value["value"] ) ? serialize( $value["value"] ) : $value["value"],
+                                    "date" => $date,
+                                    "category" => $value["category"] ?? null
                                 ]
                             );
                             if ( !$create ){
@@ -1593,6 +1606,7 @@ class Disciple_Tools_Posts
             }
         }
 
+        //add user fields
         global $wpdb;
         $user_id = get_current_user_id();
         if ( $user_id ){
@@ -1609,11 +1623,14 @@ class Disciple_Tools_Posts
                 }
                 $fields[$m["meta_key"]][] = [
                     "id" => $m["id"],
-                    "value" => $m["meta_value"],
-                    "date" => $m["date"]
+                    "value" => maybe_unserialize( $m["meta_value"] ),
+                    "date" => $m["date"],
+                    "category" => $m["category"]
                 ];
             }
         }
+
+        $fields = apply_filters( "dt_adjust_post_custom_fields", $fields, $post_settings["post_type"] );
     }
 
     /**

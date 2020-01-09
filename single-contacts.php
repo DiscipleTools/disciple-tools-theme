@@ -193,8 +193,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     $following = DT_Posts::get_users_following_post( "contacts", get_the_ID() );
     $dispatcher_actions = [];
     if ( current_user_can( "create_users" )){
-        $dispatcher_actions[] = "make_user_from_contact";
-        $dispatcher_actions[] = "link_to_user";
+        $dispatcher_actions[] = "make-user-from-contact-modal";
+        $dispatcher_actions[] = "link-to-user-modal";
     }
     if ( current_user_can( "view_any_contacts" )){
         $dispatcher_actions[] = "merge_with_contact";
@@ -206,7 +206,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         isset( $contact["requires_update"] ) && $contact["requires_update"] === true,
         in_array( $current_user_id, $following ),
         isset( $contact["assigned_to"]["id"] ) ? $contact["assigned_to"]["id"] == $current_user_id : false,
-        $dispatcher_actions
+        $dispatcher_actions,
+        true
     ); ?>
 
 <!--    <div id="errors"></div>-->
@@ -418,7 +419,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         <div class="baptism_date">
                                             <input type="text" class="dt_date_picker"
                                                    value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>"
-                                                   id="baptism_date">
+                                                   id="baptism_date" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -553,6 +554,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-group' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-contact' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'revert' ); ?>
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'tasks' ); ?>
 
 
     <div class="reveal" id="closed-contact-modal" data-reveal>
@@ -684,7 +686,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             </div>
 
             <span class="section-subheader"><?php esc_html_e( "Baptism Date", 'disciple_tools' ) ?></span>
-            <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" id="modal-baptism-date-picker">
+            <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" id="modal-baptism-date-picker" autocomplete="off">
 
 <!--            <span class="section-subheader">--><?php //esc_html_e( "Baptism Generation", 'disciple_tools' ) ?><!--</span>-->
 <!--            <input type="number" value="" id="modal-baptism_generation">-->
@@ -701,7 +703,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         </div>
     </div>
 
-    <div class="reveal" id="make_user_from_contact" data-reveal data-reset-on-close>
+    <div class="reveal" id="make-user-from-contact-modal" data-reveal data-reset-on-close>
         <h3><?php echo esc_html_x( 'Make User From Contact', 'Make user modal', 'disciple_tools' )?></h3>
 
         <?php if ( isset( $contact['corresponds_to_user'] ) ) : ?>
@@ -743,7 +745,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     </div>
 
 
-    <div class="reveal" id="link_to_user" data-reveal data-reset-on-close style="min-height:500px">
+    <div class="reveal" id="link-to-user-modal" data-reveal data-reset-on-close style="min-height:500px">
 
         <h3><?php esc_html_e( "Link this contact to an existing user", 'disciple_tools' )?></h3>
 
@@ -799,7 +801,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         </div>
     </div>
 
-    <div class="reveal" id="merge_with_contact_modal" data-reveal style="min-height:500px">
+    <div class="reveal" id="merge-with-contact-modal" data-reveal style="min-height:500px">
         <h3><?php esc_html_e( "Merge Contact", 'disciple_tools' )?></h3>
         <p><?php esc_html_e( "Merge this contact with another contact.", 'disciple_tools' )?></p>
 

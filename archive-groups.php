@@ -9,15 +9,7 @@ declare(strict_types=1);
     $dt_group_field_options = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( false );
     get_header();
 
-    function print_filters(){ ?>
-        <div class="list-views">
-            <label class="list-view">
-                <input type="radio" name="view" value="no_filter" class="js-list-view" autocomplete="off">
-                <span id="total_filter_label"><?php esc_html_e( "All", "disciple_tools" ); ?></span>
-                <span class="list-view__count js-list-view-count" data-value="total_count">.</span>
-            </label>
-        </div>
-    <?php } ?>
+    ?>
 
     <div id="errors"> </div>
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
@@ -66,94 +58,29 @@ declare(strict_types=1);
 
         <div id="inner-content" class="grid-x grid-margin-x">
 
-            <aside class="large-3 cell padding-bottom hide-for-small-only">
-                <div class="bordered-box js-pane-filters">
-                    <?php /* Javascript my move .js-filters-modal-content to this location. */ ?>
-                </div>
-            </aside>
-
-            <aside class="cell padding-bottom show-for-small-only">
-                <div class="bordered-box" style="padding-top:5px;padding-bottom:5px">
-                    <label class="section-header"><?php esc_html_e( 'Groups Filters', 'disciple_tools' )?>
-                    <button class="help-button float-right" data-section="filters-help-text">
-                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                    </button></label>
-                    <div class="js-list-filter filter--closed">
-                        <div class="filter__title js-list-filter-title" style="margin-bottom:0"><?php esc_html_e( "Default Filters", "disciple_tools" ); ?>
-                            <div style="display: inline-block" class="loading-spinner active"></div>
-                        </div>
-                        <div class="js-filters-accordion"></div>
-                    </div>
-                </div>
-            </aside>
-
-            <div class="reveal js-filters-modal" id="filters-modal">
-                <div class="js-filters-modal-content"><!-- archive-groups -->
-                    <label class="section-header hide-for-small-only">
-                        <span>
-                            <?php esc_html_e( 'Groups Filters', 'disciple_tools' )?>
-                            <span id="count-loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
-                        </span>
+            <div class="large-3 cell" id="filters-modal">
+                <div class="bordered-box">
+                    <div class="section-header"><?php esc_html_e( 'Groups Filters', 'disciple_tools' )?>
                         <button class="help-button float-right" data-section="filters-help-text">
                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                         </button>
-                    </label>
-                    <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( "Default Filters", "disciple_tools" ); ?></h5>
-                    <!-- @todo re-enable when we have more group filters-->
-<!--                    <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion">-->
-<!--                        <li class="accordion-item" data-accordion-item data-id="my">-->
-<!--                            <a href="#" class="accordion-title">-->
-<!--                                --><?php //esc_html_e( "Groups Assigned to me", 'disciple_tools' ) ?>
-<!--                                <span class="tab-count-span" data-tab="total_my"></span>-->
-<!--                            </a>-->
-<!--                            <div class="accordion-content" data-tab-content>-->
-<!--                                --><?php //print_filters() ?>
-<!--                            </div>-->
-<!--                        </li>-->
-<!--                        <li class="accordion-item" data-accordion-item data-id="shared">-->
-<!--                            <a href="#" class="accordion-title">-->
-<!--                                --><?php //esc_html_e( "Groups Shared with me", 'disciple_tools' ) ?>
-<!--                                <span class="tab-count-span" data-tab="total_shared"></span>-->
-<!--                            </a>-->
-<!--                            <div class="accordion-content" data-tab-content>-->
-<!--                                --><?php //print_filters() ?>
-<!--                            </div>-->
-<!--                        </li>-->
-<!--                        <li class="accordion-item" data-accordion-item data-id="all">-->
-<!--                            <a href="#" class="accordion-title">-->
-<!--                                --><?php //esc_html_e( "All my groups", 'disciple_tools' ) ?>
-<!--                                <span class="tab-count-span" data-tab="total_all"></span>-->
-<!--                            </a>-->
-<!--                            <div class="accordion-content" data-tab-content>-->
-<!--                                --><?php //print_filters() ?>
-<!--                            </div>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-                    <div class="list-views is-active">
-                        <label class="list-view ">
-                            <input type="radio" name="view" value="all" class="js-list-view" autocomplete="off">
-                            <?php esc_html_e( "All groups", "disciple_tools" ); ?>
-                            <span class="list-view__count js-list-view-count tab-count-span" data-value="all_groups" data-tab="total_all">.</span>
-                        </label>
-                        <label class="list-view">
-                            <input type="radio" name="view" value="my" class="js-list-view" checked autocomplete="off">
-                            <?php esc_html_e( "My groups", "disciple_tools" ); ?>
-                            <span class="list-view__count js-list-view-count tab-count-span" data-value="my_groups" data-tab="total_my">.</span>
-                        </label>
-                        <label class="list-view">
-                            <input type="radio" name="view" value="shared" class="js-list-view" autocomplete="off">
-                            <?php esc_html_e( "Groups shared with me", "disciple_tools" ); ?>
-                            <span class="list-view__count js-list-view-count tab-count-span" data-value="shared" data-tab="total_shared">.</span>
-                        </label>
+                        <button class="section-chevron chevron_down">
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                        </button>
+                        <button class="section-chevron chevron_up">
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                        </button>
                     </div>
 
-                    <h5><?php esc_html_e( "Custom Filters", "disciple_tools" ); ?></h5>
-                    <div style="margin-bottom: 5px">
-                        <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
+                    <div class="section-body">
+                        <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion"></ul>
+
+<!--                        <h5>--><?php //esc_html_e( "Custom Filters", "disciple_tools" ); ?><!--</h5>-->
+                        <div style="margin-bottom: 5px">
+                            <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
+                        </div>
+                        <div class="custom-filters"></div>
                     </div>
-                    <div class="custom-filters">
-                    </div>
-                    <div id="saved-filters"></div>
                 </div>
             </div>
 

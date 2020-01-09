@@ -578,7 +578,7 @@ jQuery(document).ready(function($) {
       people_groups : { values: [] },
       location_grid : { values: [] }
     }
-    $('#group-details-edit #title').html( _.escape(group.name) );
+    $('#group-details-edit-modal #title').html( _.escape(group.name) );
     let addressHTML = "";
     (group.contact_address|| []).forEach(field=>{
       addressHTML += `<li style="display: flex">
@@ -591,7 +591,7 @@ jQuery(document).ready(function($) {
     $("#edit-contact_address").html(addressHTML)
 
 
-    $('#group-details-edit').foundation('open');
+    $('#group-details-edit-modal').foundation('open');
     ["location_grid", "people_groups"].forEach(t=>{
       Typeahead[`.js-typeahead-${t}`].adjustInputSize()
     })
@@ -618,11 +618,11 @@ jQuery(document).ready(function($) {
       group = updatedGroup
       $(this).toggleClass("loading")
       resetDetailsFields(group)
-      $(`#group-details-edit`).foundation('close')
+      $(`#group-details-edit-modal`).foundation('close')
     }).catch(handleAjaxError)
   })
 
-  $("#group-details-edit").on('change', '.contact-input', function() {
+  $("#group-details-edit-modal").on('change', '.contact-input', function() {
     let value = $(this).val()
     let field = $(this).data("type")
     let key = $(this).attr('id')
@@ -826,6 +826,11 @@ jQuery(document).ready(function($) {
         </div>`
       memberList.append(memberHTML)
     })
+    if (group.members.length === 0) {
+      $("#empty-members-list-message").show()
+    } else {
+      $("#empty-members-list-message").hide()
+    }
     memberCountInput.val( group.member_count )
   }
   populateMembersList()
@@ -886,7 +891,7 @@ jQuery(document).ready(function($) {
     })
   })
   $('.add-new-member').on("click", function () {
-    $('#add-new-group-member').foundation('open');
+    $('#add-new-group-member-modal').foundation('open');
     ["members"].forEach(t=>{
       Typeahead[`.js-typeahead-${t}`].adjustInputSize()
     })

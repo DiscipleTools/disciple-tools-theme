@@ -215,7 +215,7 @@
 
 </section> <!-- end article -->
 
-<div class="reveal" id="group-details-edit" data-reveal data-close-on-click="false">
+<div class="reveal" id="group-details-edit-modal" data-reveal data-close-on-click="false">
     <h1><?php esc_html_e( "Edit Group", 'disciple_tools' ) ?></h1>
     <div class="display-fields">
         <div class="grid-x">
@@ -266,7 +266,7 @@
               <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-start.svg' ?>">
               <?php esc_html_e( 'Start Date', 'disciple_tools' )?>
             </div>
-            <div class="start_date"><input type="text" class="date-picker" id="start_date"></div>
+            <div class="start_date"><input type="text" class="date-picker" id="start_date" autocomplete="off"></div>
         </div>
 
         <div class="grix-x">
@@ -274,7 +274,7 @@
               <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-success.svg' ?>">
               <?php esc_html_e( 'Church Start Date', 'disciple_tools' )?>
             </div>
-            <div class="church_start_date"><input type="text" class="date-picker" id="church_start_date"></div>
+            <div class="church_start_date"><input type="text" class="date-picker" id="church_start_date" autocomplete="off"></div>
         </div>
 
         <div class="grix-x">
@@ -282,7 +282,7 @@
               <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-end.svg' ?>">
               <?php esc_html_e( 'End Date', 'disciple_tools' )?>
             </div>
-            <div class="end_date"><input type="text" class="date-picker" id="end_date"></div>
+            <div class="end_date"><input type="text" class="date-picker" id="end_date" autocomplete="off"></div>
         </div>
 
         <!-- People Groups -->
