@@ -28,6 +28,7 @@
   let tableHeaderRow = $('.js-list thead .sortable th')
   let getContactsPromise = null
   let selectedFilterTab = "all"
+  let old_filters = JSON.stringify(wpApiListSettings.filters)
 
   function get_contacts( offset = 0, sort ) {
     loading_spinner.addClass("active")
@@ -1165,8 +1166,10 @@
       }
     })
     getFilterCountsPromise.then(filters=>{
-      wpApiListSettings.filters = filters
-      setupFilters()
+      if ( old_filters !== JSON.stringify(filters) ){
+        wpApiListSettings.filters = filters
+        setupFilters()
+      }
     }).catch(err => {
       if ( _.get( err, "statusText" ) !== "abort" ){
         console.error(err)

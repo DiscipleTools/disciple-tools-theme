@@ -11,6 +11,7 @@
   let cached_filter
   let get_records_promise = null
   let loading_spinner = $("#list-loading-spinner")
+  let old_filters = JSON.stringify(list_settings.filters)
 
   let items = []
   try {
@@ -168,8 +169,10 @@
       }
     })
     getFilterCountsPromise.then(filters=>{
-      list_settings.filters = filters
-      setup_filters()
+      if ( old_filters !== JSON.stringify(filters) ){
+        list_settings.filters = filters
+        setup_filters()
+      }
     }).catch(err => {
       if ( _.get( err, "statusText" ) !== "abort" ){
         console.error(err)
