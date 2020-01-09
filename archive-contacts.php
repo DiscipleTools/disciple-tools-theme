@@ -160,7 +160,7 @@ declare(strict_types=1);
                                         <div class="typeahead__container">
                                             <div class="typeahead__field">
                                             <span class="typeahead__query">
-                                                <input class="js-typeahead-<?php echo esc_html( $field ) ?>" data-field="<?php echo esc_html( $field ) ?>"
+                                                <input class="js-typeahead-<?php echo esc_html( $field ) ?> input-height" data-field="<?php echo esc_html( $field ) ?>"
                                                        name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>"
                                                        autocomplete="off">
                                             </span>

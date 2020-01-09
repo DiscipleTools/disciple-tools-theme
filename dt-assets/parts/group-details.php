@@ -250,7 +250,7 @@
                     <div class="typeahead__container">
                         <div class="typeahead__field">
                             <span class="typeahead__query">
-                                <input class="js-typeahead-location_grid"
+                                <input class="js-typeahead-location_grid input-height"
                                        name="location_grid[query]" placeholder="<?php echo esc_html_x( "Search Locations", 'input field placeholder', 'disciple_tools' ) ?>"
                                        autocomplete="off">
                             </span>

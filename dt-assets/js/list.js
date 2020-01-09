@@ -666,8 +666,8 @@
         dropdownFilter: [{
           key: 'group',
           value: 'used',
-          template: 'Used Locations',
-          all: 'All Locations'
+          template: _.escape(window.wpApiShare.translations.used_locations),
+          all: _.escape(window.wpApiShare.translations.all_locations)
         }],
         source: {
           used: {

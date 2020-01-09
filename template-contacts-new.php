@@ -77,7 +77,7 @@ get_header();
                         <div class="typeahead__container">
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
-                                    <input class="js-typeahead-location_grid"
+                                    <input class="js-typeahead-location_grid input-height"
                                            name="location_grid[query]" placeholder="<?php echo esc_html_x( "Search Locations", 'input field placeholder', 'disciple_tools' ) ?>"
                                            autocomplete="off">
                                 </span>
@@ -148,8 +148,8 @@ get_header();
         dropdownFilter: [{
             key: 'group',
             value: 'focus',
-            template: 'Regions of Focus',
-            all: 'All Locations'
+            template: _.escape(window.wpApiShare.translations.regions_of_focus),
+            all: _.escape(window.wpApiShare.translations.all_locations),
         }],
         source: {
             focus: {
@@ -197,11 +197,11 @@ get_header();
                 this.resetInput();
             },
             onReady(){
-                this.filters.dropdown = {key: "group", value: "focus", template: "Regions of Focus"}
+                this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
                 this.container
                     .removeClass("filter")
                     .find("." + this.options.selector.filterButton)
-                    .html("Regions of Focus");
+                    .html(_.escape(window.wpApiShare.translations.regions_of_focus));
             },
             onResult: function (node, query, result, resultCount) {
                 resultCount = typeaheadTotals.location_grid

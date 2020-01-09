@@ -133,7 +133,10 @@ function dt_site_scripts() {
                     _x( "October", 'Dates', 'disciple_tools' ),
                     _x( "November", 'Dates', 'disciple_tools' ),
                     _x( "December", 'Dates', 'disciple_tools' )
-                ]
+                ],
+                'regions_of_focus' => __( 'Regions of Focus', 'disciple_tools' ),
+                'all_locations' => __( 'All Locations', 'disciple_tools' ),
+                'used_locations' => __( 'Used Locations', 'disciple_tools' ),
             ]
         )
     );

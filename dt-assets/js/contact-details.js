@@ -287,8 +287,8 @@ jQuery(document).ready(function($) {
         dropdownFilter: [{
           key: 'group',
           value: 'focus',
-          template: 'Regions of Focus',
-          all: 'All Locations'
+          template: _.escape(window.wpApiShare.translations.regions_of_focus),
+          all: _.escape(window.wpApiShare.translations.all_locations),
         }],
         source: {
           focus: {
@@ -345,11 +345,11 @@ jQuery(document).ready(function($) {
             this.resetInput();
           },
           onReady(){
-            this.filters.dropdown = {key: "group", value: "focus", template: "Regions of Focus"}
+            this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
             this.container
               .removeClass("filter")
               .find("." + this.options.selector.filterButton)
-              .html("Regions of Focus");
+              .html(_.escape(window.wpApiShare.translations.regions_of_focus));
           },
           onResult: function (node, query, result, resultCount) {
             resultCount = typeaheadTotals.location_grid
