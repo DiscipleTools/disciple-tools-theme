@@ -45,7 +45,7 @@ else {
          */
         try {
             require_once( get_template_directory() . '/dt-core/admin/class-migration-engine.php' );
-            Disciple_Tools_Migration_Engine::migrate( 29 );
+            Disciple_Tools_Migration_Engine::migrate( Disciple_Tools::instance()->migration_number );
         } catch ( Throwable $e ) {
             new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
         }
