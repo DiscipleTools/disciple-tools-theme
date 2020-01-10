@@ -37,7 +37,7 @@ else {
         require_once( get_template_directory() . '/dt-core/admin/class-roles.php' );
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
-
+        disciple_tools();
         /**
          * We want to make sure migrations are run on updates.
          *
@@ -45,12 +45,12 @@ else {
          */
         try {
             require_once( get_template_directory() . '/dt-core/admin/class-migration-engine.php' );
-            Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
+            Disciple_Tools_Migration_Engine::migrate( Disciple_Tools::instance()->migration_number );
         } catch ( Throwable $e ) {
             new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
         }
 
-        disciple_tools();
+
 
         /**
          * Load Language Files
@@ -143,6 +143,8 @@ else {
             $this->token = 'disciple_tools';
             $this->version = '0.27.1';
             $this->migration_number = 29;
+
+
 
 
             $this->theme_url = get_template_directory_uri() . '/';
