@@ -347,22 +347,21 @@ class Disciple_Tools_Notifications
             $diff = date_diff( $current, $stamp );
             $friendly_time = gmdate( "i", mktime( $diff->h, $diff->i, $diff->s ) ) . ' minutes ago';
         } elseif ( $timestamp > $hours_ago) {
-            $friendly_time = "hours ago";
+            $friendly_time = __( 'hours ago', 'disciple_tools' );
         } elseif ( $timestamp > $yesterday ) {
-            $friendly_time = "over a day ago";
+            $friendly_time = __( 'a day ago', 'disciple_tools' );
         } elseif ( $timestamp > $seven_days_ago ) {
-            $friendly_time = "over a week ago";
+            $friendly_time = __( 'a week ago', 'disciple_tools' );
         } elseif ( $timestamp > $month_ago ) {
-            $friendly_time = "over a month ago";
+            $friendly_time = __( 'a month ago', 'disciple_tools' );
         } elseif ( $timestamp > $year_ago) {
-            $friendly_time = "over a year ago";
+            $friendly_time = __( 'a year ago', 'disciple_tools' );
         } elseif ($timestamp > $twoyear_ago) {
-            $friendly_time = "over two years ago";
+            $friendly_time = __( 'two years ago', 'disciple_tools' );
         } else {
-            $friendly_time = "a long time ago";
+            $friendly_time = __( 'a long time ago', 'disciple_tools' );
         }
-
-        return $friendly_time;
+        return array( $timestamp, $friendly_time );
     }
 
     /**
