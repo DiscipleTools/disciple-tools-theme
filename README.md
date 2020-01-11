@@ -45,7 +45,7 @@ The goal of the project is to create a disciple-making CRM that is incredibly si
 **Note: You must have PHP 7.0 or above. PHP 5.6 will not work.**
 
 ### Step 1
-- Download the theme .zip file from the Disciple-Tools-Theme GitHub release page (https://github.com/DiscipleTools/disciple-tools-theme/releases)
+- Download the theme disciple-tools-theme.zip file from the Disciple-Tools-Theme GitHub release page (https://github.com/DiscipleTools/disciple-tools-theme/releases)
 
 ### Step 2
 - Open up your Wordpress site.

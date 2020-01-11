@@ -1,23 +1,25 @@
 <?php
 
-class Disciple_Tools_Migration_0026 extends Disciple_Tools_Migration {
+class Disciple_Tools_Migration_0029 extends Disciple_Tools_Migration {
     public function up() {
         global $wpdb;
-        $meta_key_index_exists = $wpdb->query( $wpdb->prepare("
+        $object_type_index_exists = $wpdb->query( $wpdb->prepare("
                 select distinct index_name
                 from information_schema.statistics
                 where table_schema = %s
                 and table_name = '$wpdb->dt_activity_log'
                 and index_name like %s 
-            ", DB_NAME, 'meta_key_index' ));
-        if ( $meta_key_index_exists === 0 ){
-            $wpdb->query( "ALTER TABLE `{$wpdb->prefix}dt_activity_log` ADD INDEX meta_key_index (meta_key)" );
+            ", DB_NAME, 'object_type_index' ));
+        if ( $object_type_index_exists === 0 ){
+            $wpdb->query( "ALTER TABLE `{$wpdb->prefix}dt_activity_log` ADD INDEX object_type_index (object_type)" );
+            $wpdb->query( "ALTER TABLE `{$wpdb->prefix}dt_activity_log` ADD INDEX user_id_index (user_id)" );
         }
     }
 
     public function down() {
         global $wpdb;
-        $wpdb->query( "ALTER TABLE `{$wpdb->prefix}dt_activity_log` DROP INDEX meta_key_index (meta_key)" );
+        $wpdb->query( "ALTER TABLE `{$wpdb->prefix}dt_activity_log` DROP INDEX meta_key_index (object_type)" );
+        $wpdb->query( "ALTER TABLE `{$wpdb->prefix}dt_activity_log` DROP INDEX meta_key_index (user_id)" );
     }
 
     public function test() {
@@ -51,7 +53,9 @@ class Disciple_Tools_Migration_0026 extends Disciple_Tools_Migration {
                     `field_type` VARCHAR(255) NOT NULL DEFAULT '',
                     PRIMARY KEY (`histid`),
                     key `object_id_index` (`object_id`),
-                    key `meta_key_index` (`meta_key`)
+                    key `meta_key_index` (`meta_key`),
+                    key `object_type_index` (`object_type`),
+                    key `user_id_index` (`user_id`)
                 ) $charset_collate;"
         );
     }

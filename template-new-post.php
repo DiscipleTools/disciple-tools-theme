@@ -21,7 +21,7 @@ get_header();
                     <label for="title">
                         <?php esc_html_e( "Name", "disciple_tools" ); ?>
                     </label>
-                    <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
+                    <input name="title" type="text" placeholder="<?php echo esc_html_x( "Name", 'input field placeholder', 'disciple_tools' ); ?>" required aria-describedby="name-help-text">
                     <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
 
                     <div style="text-align: center">

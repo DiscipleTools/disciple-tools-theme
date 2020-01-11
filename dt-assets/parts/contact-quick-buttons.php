@@ -6,14 +6,7 @@
 
 
 <div style="width:100%">
-    <div style="height: 0; float:right; position:relative">
-        <button class="help-button float-right" data-section="quick-action-help-text">
-            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-        </button>
-
-    </div>
     <div class="contact-quick-buttons" style="float:left">
-
     <?php
     foreach ( $contact_fields as $field => $val ) {
         if ( strpos( $field, "quick_button" ) === 0 ) {

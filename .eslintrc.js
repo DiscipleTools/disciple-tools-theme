@@ -17,4 +17,5 @@ module.exports = {
     "no-empty": "off",
     "no-useless-escape": "off",
   },
+  "parser": "babel-eslint"
 };

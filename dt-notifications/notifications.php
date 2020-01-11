@@ -675,9 +675,10 @@ class Disciple_Tools_Notifications
     /**
      * @param $notification
      *
+     * @param bool $html
      * @return string $notification_note the return value is expected to contain HTML.
      */
-    public static function get_notification_message_html( $notification ){
+    public static function get_notification_message_html( $notification, $html = true ){
         // load the local for the destination usr so emails are sent our correctly.
         $destination_user = get_user_by( 'id', $notification["user_id"] );
         $destination_user_locale = "en_US";
@@ -698,7 +699,11 @@ class Disciple_Tools_Notifications
         $post = get_post( $object_id );
         $post_title = isset( $post->post_title ) ? sanitize_text_field( $post->post_title ) : "";
         $notification_note = $notification["notification_note"]; // $notification_note is expected to contain HTML
-        $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . $post_title . '</a>';
+        if ( $html ){
+            $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . $post_title . '</a>';
+        } else {
+            $link = $post_title;
+        }
         if ( $notification["notification_name"] === "created" ) {
             $notification_note = sprintf( esc_html_x( '%s was created and assigned to you.', '%s was created and assigned to you.', 'disciple_tools' ), $link );
         } elseif ( $notification["notification_name"] === "assigned_to" ) {
@@ -751,6 +756,8 @@ class Disciple_Tools_Notifications
         } elseif ( $notification["notification_name"] === "assignment_declined" ){
             $user_who_declined = get_userdata( $notification["source_user_id"] );
             $notification_note = sprintf( esc_html_x( '%1$s declined assignment on: %2$s.', 'User1 declined assignment on: contact1', 'disciple_tools' ), $user_who_declined->display_name, $link );
+        } else {
+            $notification_note = apply_filters( 'dt_custom_notification_note', '', $notification );
         }
         return $notification_note;
     }

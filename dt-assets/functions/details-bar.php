@@ -10,6 +10,7 @@ declare(strict_types=1);
  * @param bool $following
  * @param bool $disable_following_toggle_function
  * @param array $dispatcher_actions
+ * @param bool $task
  */
 function dt_print_details_bar(
     bool $share_button = false,
@@ -18,7 +19,8 @@ function dt_print_details_bar(
     bool $update_needed = false,
     bool $following = false,
     bool $disable_following_toggle_function = false,
-    array $dispatcher_actions = []
+    array $dispatcher_actions = [],
+    bool $task = false
 ) {
     ?>
 
@@ -46,10 +48,10 @@ function dt_print_details_bar(
                                         <?php esc_html_e( "Dispatcher actions", 'disciple_tools' ) ?></a>
                                     <ul class="menu">
                                         <?php foreach ( $dispatcher_actions as $action ) :
-                                            if ( $action == "make_user_from_contact" ) : ?>
-                                                <li><a data-open="make_user_from_contact"><?php esc_html_e( "Make a user from this contact", 'disciple_tools' ) ?></a></li>
-                                            <?php elseif ( $action == "link_to_user") : ?>
-                                                <li><a data-open="link_to_user"><?php esc_html_e( "Link to an existing user", 'disciple_tools' ) ?></a></li>
+                                            if ( $action == "make-user-from-contact-modal" ) : ?>
+                                                <li><a data-open="make-user-from-contact-modal"><?php esc_html_e( "Make a user from this contact", 'disciple_tools' ) ?></a></li>
+                                            <?php elseif ( $action == "link-to-user-modal") : ?>
+                                                <li><a data-open="link-to-user-modal"><?php esc_html_e( "Link to an existing user", 'disciple_tools' ) ?></a></li>
                                             <?php elseif ( $action == "merge_with_contact") : ?>
                                                 <li><a id="open_merge_with_contact"><?php esc_html_e( "Merge with another contact", 'disciple_tools' ) ?></a></li>
                                             <?php endif; ?>
@@ -64,7 +66,15 @@ function dt_print_details_bar(
                         <strong><?php the_title_attribute(); ?></strong>
                     </div>
                     <div class="cell small-4 align-right grid-x grid-margin-x">
-                        <div class="cell shrink center-items ">
+                        <?php if ( $task ) : ?>
+                        <div class="cell shrink center-items">
+                            <button class="button open-set-task">
+                                <?php esc_html_e( 'Tasks', 'disciple_tools' ); ?>
+                                <i class="fi-clock"></i>
+                            </button>
+                        </div>
+                        <?php endif; ?>
+                        <div class="cell shrink center-items">
                         <?php if ( $disable_following_toggle_function ) : ?>
                             <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
                         <?php else :
@@ -102,14 +112,15 @@ function dt_print_details_bar(
                     </a>
                 </button>
             </div>
-        <?php endif; ?>
-        <?php if ( $share_button ): ?>
-            <div class="cell shrink">
-                <button class="center-items open-share">
-                    <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
-                    <span style="margin:2px 10px 0 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?></span>
-                </button>
-            </div>
+            <?php endif; ?>
+            <?php if ( $share_button ): ?>
+                <div class="cell shrink">
+                    <button class="center-items open-share">
+                        <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
+                        <span style="margin:2px 10px 0 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?></span>
+                    </button>
+                </div>
+            <?php endif; ?>
             <div class="cell shrink">
                 <?php if ( $disable_following_toggle_function ) : ?>
                     <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
@@ -121,8 +132,15 @@ function dt_print_details_bar(
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
+            <?php if ( $task ) : ?>
+                <div class="cell shrink center-items">
+                    <button class="button open-set-task">
+                        <?php esc_html_e( 'Tasks', 'disciple_tools' ); ?>
+                        <i class="fi-clock"></i>
+                    </button>
+                </div>
+            <?php endif; ?>
         </div>
-        <?php endif; ?>
     </nav>
     <?php endif;
 }

@@ -65,6 +65,9 @@
     }
 }
 
+#records-table th {
+  cursor: pointer;
+}
 
 #list-filter-tabs {
     margin-top: 10px;
@@ -126,6 +129,7 @@ table.table-remove-top-border thead {
 #content table thead .sortable .sorting_asc {
     background-image: url("../../../dt-assets/images/sort_asc.png")
 }
+
 
 
 #filter-modal {

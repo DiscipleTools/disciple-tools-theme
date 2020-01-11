@@ -48,7 +48,13 @@ class Disciple_Tools_Users_Endpoints
         register_rest_route(
             $this->namespace, '/users/save_filters', [
                 'methods' => "POST",
-                'callback' => [ $this, 'save_user_filters' ]
+                'callback' => [ $this, 'save_user_filter' ]
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/users/save_filters', [
+                'methods' => "DELETE",
+                'callback' => [ $this, 'delete_user_filter' ]
             ]
         );
         register_rest_route(
@@ -149,13 +155,28 @@ class Disciple_Tools_Users_Endpoints
 
 
     public function get_user_filters( WP_REST_Request $request ){
-        return Disciple_Tools_Users::get_user_filters();
+        $params = $request->get_params();
+        $force_refresh = false;
+        if ( isset( $params["force_refresh"] ) && !empty( $params["force_refresh"] ) ) {
+            $force_refresh = true;
+        }
+        if ( isset( $params["post_type"] ) ) {
+            return Disciple_Tools_Users::get_user_filters( $params["post_type"], $force_refresh );
+        }
     }
 
-    public function save_user_filters( WP_REST_Request $request ){
+    public function save_user_filter( WP_REST_Request $request ){
         $params = $request->get_params();
-        if ( isset( $params["filters"] )){
-            return Disciple_Tools_Users::save_user_filters( $params["filters"] );
+        if ( isset( $params["filter"], $params["post_type"] )){
+            return Disciple_Tools_Users::save_user_filter( $params["filter"], $params["post_type"] );
+        } else {
+            return new WP_Error( "missing_error", "Missing filters", [ 'status' => 400 ] );
+        }
+    }
+    public function delete_user_filter( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if ( isset( $params["id"], $params["post_type"] ) ) {
+            return Disciple_Tools_Users::delete_user_filter( $params["id"], $params["post_type"] );
         } else {
             return new WP_Error( "missing_error", "Missing filters", [ 'status' => 400 ] );
         }
