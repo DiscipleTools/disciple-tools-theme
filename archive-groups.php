@@ -59,7 +59,7 @@ declare(strict_types=1);
         <div id="inner-content" class="grid-x grid-margin-x">
 
             <div class="large-3 cell" id="filters-modal">
-                <div class="bordered-box">
+                <div class="bordered-box collapsed" id="filters-tile">
                     <div class="section-header"><?php esc_html_e( 'Groups Filters', 'disciple_tools' )?>
                         <button class="help-button float-right" data-section="filters-help-text">
                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>

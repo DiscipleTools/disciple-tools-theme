@@ -1179,15 +1179,15 @@
   get_filter_counts()
 
   //collapse the filters on small view.
-  $(function() {
-    $(window).resize(function() {
-      if (Foundation.MediaQuery.is('small only') || Foundation.MediaQuery.is('medium only')) {
-        setTimeout(()=>{
-          $("#list-filters .bordered-box").toggleClass("collapsed");
-        },100)
-      }
-    }).trigger("resize");
-  });
+  // $(function() {
+  //   $(window).resize(function() {
+  //     if (Foundation.MediaQuery.is('small only') || Foundation.MediaQuery.is('medium only')) {
+  //       setTimeout(()=>{
+  //         $("#list-filters .bordered-box").toggleClass("collapsed");
+  //       },100)
+  //     }
+  //   }).trigger("resize");
+  // });
 
 
 })(window.jQuery, window.wpApiListSettings, window.Foundation);

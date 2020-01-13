@@ -103,6 +103,9 @@ function dt_site_scripts() {
     wp_register_script( 'datepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', false );
     wp_enqueue_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css', array() );
 
+    $post_type = get_post_type();
+    $url_path = dt_get_url_path();
+
     dt_theme_enqueue_script( 'shared-functions', 'dt-assets/js/shared-functions.js', array( 'jquery', 'lodash', 'moment', 'datepicker' ) );
     wp_localize_script(
         'shared-functions', 'wpApiShare', array(
@@ -137,7 +140,8 @@ function dt_site_scripts() {
                 'regions_of_focus' => __( 'Regions of Focus', 'disciple_tools' ),
                 'all_locations' => __( 'All Locations', 'disciple_tools' ),
                 'used_locations' => __( 'Used Locations', 'disciple_tools' ),
-            ]
+            ],
+            'post_type' => $post_type ? $post_type : $url_path
         )
     );
 
@@ -160,7 +164,6 @@ function dt_site_scripts() {
 
     $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
     if ( is_singular( $post_types ) ) {
-        $post_type = get_post_type();
         if ( is_singular( "contacts" )){
             $post = Disciple_Tools_Contacts::get_contact( get_the_ID(), true, true );
         } elseif ( is_singular( "groups" ) ){
@@ -289,7 +292,7 @@ function dt_site_scripts() {
         }
     }
 
-    $url_path = dt_get_url_path();
+
     if ( 'settings' === $url_path ) {
         DT_Mapping_Module::instance()->drilldown_script();
         dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash', 'mapping-drill-down', 'moment' ), true );

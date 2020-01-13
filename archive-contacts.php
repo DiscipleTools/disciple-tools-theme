@@ -62,7 +62,7 @@ declare(strict_types=1);
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
             <aside class="cell large-3" id="list-filters">
-                <div class="bordered-box">
+                <div class="bordered-box collapsed" id="filters-tile">
                     <div class="section-header"><?php esc_html_e( 'Contacts Filters', 'disciple_tools' )?>
                         <button class="help-button float-right" data-section="filters-help-text">
                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
