@@ -310,7 +310,7 @@
 
 
   //add the new filter in the filters list
-  function add_custom_filter(name, type, query, labels, load_records) {
+  function add_custom_filter(name, type, query, labels, load_records = true) {
     query = query || current_filter.query
     let ID = new Date().getTime() / 1000;
     current_filter = {ID, type, name: _.escape( name ), query:JSON.parse(JSON.stringify(query)), labels:labels}
