@@ -899,7 +899,7 @@
         },
         dynamic: true,
         hint: true,
-        emptyTemplate: 'No users found "{{query}}"',
+        emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
         callback: {
           onResult: function (node, query, result, resultCount) {
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)

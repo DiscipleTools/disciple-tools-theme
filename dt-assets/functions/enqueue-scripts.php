@@ -140,6 +140,7 @@ function dt_site_scripts() {
                 'regions_of_focus' => __( 'Regions of Focus', 'disciple_tools' ),
                 'all_locations' => __( 'All Locations', 'disciple_tools' ),
                 'used_locations' => __( 'Used Locations', 'disciple_tools' ),
+                'no_records_found' => _x( 'No results found matching "{{query}}"', "Empty list results. Keep {{query}} as is in english", 'disciple_tools' )
             ],
             'post_type' => $post_type ? $post_type : $url_path
         )
