@@ -14,6 +14,7 @@
 
   let showClosedCookie = window.SHAREDFUNCTIONS.getCookie("show_closed")
   let showClosedCheckbox = $('#show_closed')
+  let closedSwitch = $(".show-closed-switch");
   let currentFilter = {}
   let items = []
   let customFilters = []
@@ -194,6 +195,9 @@
   if ( showClosedCookie === "true" ){
     showClosedCheckbox.prop('checked', true)
   }
+  showClosedCheckbox.on('change', function () {
+    getContactForCurrentView()
+  })
 
   //look at the cookie to see what was the last selected view
   if ( tabQueryParam ){
@@ -442,7 +446,6 @@
       }
     }
 
-    let closedSwitch = $(".show-closed-switch");
     if (currentView === "custom_filter" || currentView === "saved-filters" ){
       closedSwitch.show()
     } else {
