@@ -338,8 +338,17 @@ class Disciple_Tools_Notifications
         $yesterday = gmdate( 'Y-m-d', strtotime( '-1 day', strtotime( $current_time ) ) );
         $seven_days_ago = gmdate( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
         $month_ago = gmdate( 'Y-m-d', strtotime( '-30 days', strtotime( $current_time ) ) );
+        $twomonths_ago = gmdate( 'Y-m-d', strtotime( '-60 days', strtotime( $current_time ) ) );
+        $threemonths_ago = gmdate( 'Y-m-d', strtotime( '-90 days', strtotime( $current_time ) ) );
+        $fourmonths_ago = gmdate( 'Y-m-d', strtotime( '-120 days', strtotime( $current_time ) ) );
+        $fivemonths_ago = gmdate( 'Y-m-d', strtotime( '-150 days', strtotime( $current_time ) ) );
+        $sixmonths_ago = gmdate( 'Y-m-d', strtotime( '-180 days', strtotime( $current_time ) ) );
+        $sevenmonths_ago = gmdate( 'Y-m-d', strtotime( '-210 days', strtotime( $current_time ) ) );
+        $eightmonths_ago = gmdate( 'Y-m-d', strtotime( '-240 days', strtotime( $current_time ) ) );
+        $ninemonths_ago = gmdate( 'Y-m-d', strtotime( '-270 days', strtotime( $current_time ) ) );
+        $tenmonths_ago = gmdate( 'Y-m-d', strtotime( '-300 days', strtotime( $current_time ) ) );
+        $elevenmonths_ago = gmdate( 'Y-m-d', strtotime( '-330 days', strtotime( $current_time ) ) );
         $year_ago = gmdate( 'Y-m-d', strtotime( '-365 days', strtotime( $current_time ) ) );
-        $twoyear_ago = gmdate( 'Y-m-d', strtotime( '-730 days', strtotime( $current_time ) ) );
 
         if ( $timestamp > $one_hour_ago ) {
             $current = new DateTime( $current_time );
@@ -353,11 +362,29 @@ class Disciple_Tools_Notifications
         } elseif ( $timestamp > $seven_days_ago ) {
             $friendly_time = __( 'a week ago', 'disciple_tools' );
         } elseif ( $timestamp > $month_ago ) {
-            $friendly_time = __( 'a month ago', 'disciple_tools' );
+            $friendly_time = __( '30 days ago', 'disciple_tools' );
+        } elseif ( $timestamp > $twomonths_ago ) {
+            $friendly_time = __( '60 days ago', 'disciple_tools' );
+        } elseif ( $timestamp > $threemonths_ago ) {
+            $friendly_time = __( '90 days ago', 'disciple_tools' );
+        } elseif ( $timestamp > $fourmonths_ago ) {
+            $friendly_time = __( '120 days ago', 'disciple_tools' );
+        } elseif ( $timestamp > $fivemonths_ago ) {
+            $friendly_time = __( '150 days ago', 'disciple_tools' );
+        } elseif ( $timestamp > $sixmonths_ago ) {
+            $friendly_time = __( '180 days ago', 'disciple_tools' );
+        } elseif ( $timestamp > $sevenmonths_ago ) {
+            $friendly_time = __( '210 days ago', 'disciple_tools' );
+        } elseif ( $timestamp > $eightmonths_ago ) {
+            $friendly_time = __( '240 days ago', 'disciple_tools' );
+        } elseif ( $timestamp > $ninemonths_ago ) {
+            $friendly_time = __( '270 days ago', 'disciple_tools' );
+        } elseif ( $timestamp > $tenmonths_ago ) {
+            $friendly_time = __( '300 days ago', 'disciple_tools' );
+        } elseif ( $timestamp > $elevenmonths_ago ) {
+            $friendly_time = __( '330 days ago', 'disciple_tools' );
         } elseif ( $timestamp > $year_ago) {
-            $friendly_time = __( 'a year ago', 'disciple_tools' );
-        } elseif ($timestamp > $twoyear_ago) {
-            $friendly_time = __( 'two years ago', 'disciple_tools' );
+            $friendly_time = __( '365 days ago', 'disciple_tools' );
         } else {
             $friendly_time = __( 'a long time ago', 'disciple_tools' );
         }
