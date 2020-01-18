@@ -44,7 +44,7 @@ jQuery(document).ready(function($) {
     },
     dynamic: true,
     hint: true,
-    emptyTemplate: 'No users found "{{query}}"',
+    emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
     callback: {
       onClick: function(node, a, item){
         API.update_post( 'groups', groupId, {assigned_to: 'user-' + item.ID}).then(function (response) {

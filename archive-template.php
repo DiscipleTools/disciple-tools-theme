@@ -106,11 +106,11 @@ declare(strict_types=1);
                                     <div id="<?php echo esc_html( $field ) ?>_t" name="form-<?php echo esc_html( $field ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
                                         <div class="typeahead__container">
                                             <div class="typeahead__field">
-                                            <span class="typeahead__query">
-                                                <input class="js-typeahead-<?php echo esc_html( $field ) ?>" data-field="<?php echo esc_html( $field )?>" data-type="<?php echo esc_html( $field_options[$field]["type"] ) ?>"
-                                                       name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php esc_html_e( "Type to Search", 'disciple_tools' ) ?>"
-                                                       autocomplete="off">
-                                            </span>
+                                                <span class="typeahead__query">
+                                                    <input class="js-typeahead-<?php echo esc_html( $field ) ?> input-height    " data-field="<?php echo esc_html( $field )?>" data-type="<?php echo esc_html( $field_options[$field]["type"] ) ?>"
+                                                           name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php esc_html_e( "Type to Search", 'disciple_tools' ) ?>"
+                                                           autocomplete="off">
+                                                </span>
                                             </div>
                                         </div>
                                     </div>

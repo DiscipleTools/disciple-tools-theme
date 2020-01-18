@@ -62,7 +62,7 @@ declare(strict_types=1);
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
             <aside class="cell large-3" id="list-filters">
-                <div class="bordered-box">
+                <div class="bordered-box collapsed" id="filters-tile">
                     <div class="section-header"><?php esc_html_e( 'Contacts Filters', 'disciple_tools' )?>
                         <button class="help-button float-right" data-section="filters-help-text">
                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
@@ -159,11 +159,11 @@ declare(strict_types=1);
                                     <div id="<?php echo esc_html( $field ) ?>_t" name="form-<?php echo esc_html( $field ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
                                         <div class="typeahead__container">
                                             <div class="typeahead__field">
-                                            <span class="typeahead__query">
-                                                <input class="js-typeahead-<?php echo esc_html( $field ) ?> input-height" data-field="<?php echo esc_html( $field ) ?>"
-                                                       name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>"
-                                                       autocomplete="off">
-                                            </span>
+                                                <span class="typeahead__query">
+                                                    <input class="js-typeahead-<?php echo esc_html( $field ) ?> input-height" data-field="<?php echo esc_html( $field ) ?>"
+                                                           name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>"
+                                                           autocomplete="off">
+                                                </span>
                                             </div>
                                         </div>
                                     </div>

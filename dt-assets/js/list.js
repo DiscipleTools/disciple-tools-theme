@@ -14,6 +14,7 @@
 
   let showClosedCookie = window.SHAREDFUNCTIONS.getCookie("show_closed")
   let showClosedCheckbox = $('#show_closed')
+  let closedSwitch = $(".show-closed-switch");
   let currentFilter = {}
   let items = []
   let customFilters = []
@@ -194,6 +195,9 @@
   if ( showClosedCookie === "true" ){
     showClosedCheckbox.prop('checked', true)
   }
+  showClosedCheckbox.on('change', function () {
+    getContactForCurrentView()
+  })
 
   //look at the cookie to see what was the last selected view
   if ( tabQueryParam ){
@@ -442,7 +446,6 @@
       }
     }
 
-    let closedSwitch = $(".show-closed-switch");
     if (currentView === "custom_filter" || currentView === "saved-filters" ){
       closedSwitch.show()
     } else {
@@ -899,7 +902,7 @@
         },
         dynamic: true,
         hint: true,
-        emptyTemplate: 'No users found "{{query}}"',
+        emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
         callback: {
           onResult: function (node, query, result, resultCount) {
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
@@ -1179,15 +1182,15 @@
   get_filter_counts()
 
   //collapse the filters on small view.
-  $(function() {
-    $(window).resize(function() {
-      if (Foundation.MediaQuery.is('small only') || Foundation.MediaQuery.is('medium only')) {
-        setTimeout(()=>{
-          $("#list-filters .bordered-box").toggleClass("collapsed");
-        },100)
-      }
-    }).trigger("resize");
-  });
+  // $(function() {
+  //   $(window).resize(function() {
+  //     if (Foundation.MediaQuery.is('small only') || Foundation.MediaQuery.is('medium only')) {
+  //       setTimeout(()=>{
+  //         $("#list-filters .bordered-box").toggleClass("collapsed");
+  //       },100)
+  //     }
+  //   }).trigger("resize");
+  // });
 
 
 })(window.jQuery, window.wpApiListSettings, window.Foundation);

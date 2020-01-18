@@ -339,13 +339,12 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        self::adjust_post_custom_fields( $post_settings, $post_id, $fields );
-
-
         $fields["ID"] = $post_id;
         $fields["title"] = $wp_post->post_title;
         $fields["created_date"] = $wp_post->post_date;
         $fields["permalink"] = get_permalink( $post_id );
+
+        self::adjust_post_custom_fields( $post_settings, $post_id, $fields );
 
         $fields = apply_filters( 'dt_after_get_post_fields_filter', $fields, $post_type );
         wp_cache_set( "post_" . $current_user_id . '_' . $post_id, $fields );
