@@ -53,20 +53,19 @@ function load_settings_locations( reload = false ) {
 
     let cl = jQuery('#current_locations')
 
-    if ( wpApiSettingsPage.custom_data.current_locations !== undefined && ! reload ) {
-        cl.append(`<strong>Current Locations:</strong><br>`)
+      if ( wpApiSettingsPage.custom_data.current_locations !== undefined && ! reload ) {
+        cl.append(`<strong>${_.escape(wpApiSettingsPage.translations.responsible_for_locations)}:</strong><br>`)
         jQuery.each( wpApiSettingsPage.custom_data.current_locations, function(i,v) {
-            cl.append(`${v.name}, ${v.country_code} <a style="padding:0 10px;" onclick="delete_location(${v.grid_id})"><img src="${wpApiSettingsPage.template_dir}/dt-assets/images/invalid.svg"></a><br>`)
+            cl.append(`${_.escape(v.name)}, ${_.escape(v.country_code)} <a style="padding:0 10px;" onclick="delete_location(${_.escape(v.grid_id)})"><img src="${_.escape(wpApiSettingsPage.template_dir)}/dt-assets/images/invalid.svg"></a><br>`)
         })
         cl.append(`<br>`)
     } else {
 
         makeRequest('get', 'users/current_locations', { "contact_id": wpApiSettingsPage.associated_contact_id } ).done(data => {
-            console.log( data )
             if (data ) {
-                cl.append(`<strong>Current Locations:</strong><br>`)
+                cl.append(`<strong>${_.escape(wpApiSettingsPage.translations.responsible_for_locations)}:</strong><br>`)
                 jQuery.each( data, function(i,v) {
-                    cl.append(`${v.name}, ${v.country_code} <a style="padding:0 10px;" onclick="delete_location(${v.grid_id})"><img src="${wpApiSettingsPage.template_dir}/dt-assets/images/invalid.svg"></a><br>`)
+                    cl.append(`${_.escape(v.name)}, ${_.escape(v.country_code)} <a style="padding:0 10px;" onclick="delete_location(${_.escape(v.grid_id)})"><img src="${_.escape(wpApiSettingsPage.template_dir)}/dt-assets/images/invalid.svg"></a><br>`)
                 })
                 cl.append(`<br>`)
             }

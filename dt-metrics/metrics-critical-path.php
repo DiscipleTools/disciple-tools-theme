@@ -283,7 +283,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         $data[] = [
             "key" => "active_groups",
             "label" => __( "Active Groups", "disciple_tools" ),
-            "description" => __( "Groups active and the end of the time range", "disciple_tools" ),
+            "description" => __( "Groups active at the end of the time range", "disciple_tools" ),
             "value" => (int) $active_groups,
             "total" => (int) $current_groups,
             "type" => "ongoing"
@@ -293,7 +293,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         $data[] = [
             "key" => "active_churches",
             "label" => __( "Active Churches", "disciple_tools" ),
-            "description" => __( "Churches active and the end of the time range", "disciple_tools" ),
+            "description" => __( "Churches active at the end of the time range", "disciple_tools" ),
             "value" => (int) $active_churches,
             "total" => (int) $current_churches,
             "type" => "ongoing"

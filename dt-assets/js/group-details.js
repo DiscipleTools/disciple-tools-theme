@@ -44,7 +44,7 @@ jQuery(document).ready(function($) {
     },
     dynamic: true,
     hint: true,
-    emptyTemplate: 'No users found "{{query}}"',
+    emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
     callback: {
       onClick: function(node, a, item){
         API.update_post( 'groups', groupId, {assigned_to: 'user-' + item.ID}).then(function (response) {
@@ -113,8 +113,8 @@ jQuery(document).ready(function($) {
         dropdownFilter: [{
           key: 'group',
           value: 'focus',
-          template: 'Regions of Focus',
-          all: 'All Locations'
+          template: _.escape(window.wpApiShare.translations.regions_of_focus),
+          all: _.escape(window.wpApiShare.translations.all_locations),
         }],
         source: {
           focus: {
@@ -171,11 +171,11 @@ jQuery(document).ready(function($) {
             this.resetInput();
           },
           onReady(){
-            this.filters.dropdown = {key: "group", value: "focus", template: "Regions of Focus"}
+            this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
             this.container
               .removeClass("filter")
               .find("." + this.options.selector.filterButton)
-              .html("Regions of Focus");
+              .html(_.escape(window.wpApiShare.translations.regions_of_focus));
           },
           onResult: function (node, query, result, resultCount) {
             resultCount = typeaheadTotals.location_grid
@@ -203,15 +203,15 @@ jQuery(document).ready(function($) {
     accent: true,
     searchOnFocus: true,
     maxItem: 20,
-    source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
-    display: "name",
-    templateValue: "{{name}}",
+    source: TYPEAHEADS.typeaheadPeopleGroupSource('people_groups', 'dt/v1/people-groups/compact/'),
+    display: ["name", "label"],
+    templateValue: "{{label}}",
     dynamic: true,
     multiselect: {
       matchOn: ["ID"],
       data: function () {
         return group.people_groups.map(g=>{
-          return {ID:g.ID, name:g.post_title}
+          return {ID:g.ID, name:g.post_title, label: g.label}
         })
       },
       callback: {
@@ -578,7 +578,7 @@ jQuery(document).ready(function($) {
       people_groups : { values: [] },
       location_grid : { values: [] }
     }
-    $('#group-details-edit #title').html( _.escape(group.name) );
+    $('#group-details-edit-modal #title').html( _.escape(group.name) );
     let addressHTML = "";
     (group.contact_address|| []).forEach(field=>{
       addressHTML += `<li style="display: flex">
@@ -591,7 +591,7 @@ jQuery(document).ready(function($) {
     $("#edit-contact_address").html(addressHTML)
 
 
-    $('#group-details-edit').foundation('open');
+    $('#group-details-edit-modal').foundation('open');
     ["location_grid", "people_groups"].forEach(t=>{
       Typeahead[`.js-typeahead-${t}`].adjustInputSize()
     })
@@ -618,11 +618,11 @@ jQuery(document).ready(function($) {
       group = updatedGroup
       $(this).toggleClass("loading")
       resetDetailsFields(group)
-      $(`#group-details-edit`).foundation('close')
+      $(`#group-details-edit-modal`).foundation('close')
     }).catch(handleAjaxError)
   })
 
-  $("#group-details-edit").on('change', '.contact-input', function() {
+  $("#group-details-edit-modal").on('change', '.contact-input', function() {
     let value = $(this).val()
     let field = $(this).data("type")
     let key = $(this).attr('id')
@@ -685,14 +685,12 @@ jQuery(document).ready(function($) {
         htmlField.append(`<li id="no-${_.escape( connection )}">${_.escape( wpApiGroupsSettings.translations["not-set"][connection] )}</li>`)
       } else {
         group[connection].forEach(field=>{
-          let title = `${_.escape(field.post_title||field.label)}`
+          let title = `${_.escape(field.label || field.post_title )}`
           if ( connection === "leaders" ){
             title = `<a href="${_.escape(field.permalink)}">${_.escape( title )}</a>`
           }
           htmlField.append(`<li class="details-list ${_.escape(field.key || field.id)}">
-            ${title}
-              <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/verified.svg"/>
-              <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${_.escape(wpApiGroupsSettings.template_dir)}/dt-assets/images/broken.svg"/>
+              ${title}
             </li>
           `)
         })
@@ -828,6 +826,11 @@ jQuery(document).ready(function($) {
         </div>`
       memberList.append(memberHTML)
     })
+    if (group.members.length === 0) {
+      $("#empty-members-list-message").show()
+    } else {
+      $("#empty-members-list-message").hide()
+    }
     memberCountInput.val( group.member_count )
   }
   populateMembersList()
@@ -888,7 +891,7 @@ jQuery(document).ready(function($) {
     })
   })
   $('.add-new-member').on("click", function () {
-    $('#add-new-group-member').foundation('open');
+    $('#add-new-group-member-modal').foundation('open');
     ["members"].forEach(t=>{
       Typeahead[`.js-typeahead-${t}`].adjustInputSize()
     })
