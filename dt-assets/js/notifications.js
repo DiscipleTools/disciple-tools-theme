@@ -68,7 +68,7 @@ function notification_template (id, note, is_new, pretty_time) {
 
         <div class="auto cell">
            ${note}<br>
-           <span class="grey">${_.escape( pretty_time )}</span>
+           <span class="grey test">${_.escape( pretty_time )}</span>
         </div>
         <div class="small-2 medium-1 cell padding-5 ${_.escape( label )}" id="toggle-area-${_.escape( id )}">
             ${button}

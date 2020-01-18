@@ -334,7 +334,7 @@ class Disciple_Tools_Notifications
         $one_hour_ago = gmdate( 'Y-m-d H:i:s', strtotime( '-1 hour', strtotime( $current_time ) ) );
         $yesterday = gmdate( 'Y-m-d', strtotime( '-1 day', strtotime( $current_time ) ) );
         $seven_days_ago = gmdate( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
-
+        /*test*/
         if ( $timestamp > $one_hour_ago ) {
             $current = new DateTime( $current_time );
             $stamp = new DateTime( $timestamp );
