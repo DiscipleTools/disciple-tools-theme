@@ -685,6 +685,13 @@ a.dt-green:hover {
     .grey {
         cursor: pointer;
     }
+    
+    .grey:hover + .inline.time {
+        display:inline-block;
+        font-size: 0.8em;
+        font-weight:bold;
+        color:#666;
+    }
 
 }
 
