@@ -985,5 +985,3 @@ class DT_Posts extends Disciple_Tools_Posts {
         return array_unique( $users );
     }
 }
-
-

@@ -340,19 +340,49 @@ function dt_site_scripts() {
 
     add_action( 'wp_footer', function() {
         ?>
-        <!-- BEGIN GROOVE WIDGET CODE -->
-        <script id="grv-widget">
-            /*<![CDATA[*/
-            window.groove = window.groove || {}; groove.widget = function(){ groove._widgetQueue.push(Array.prototype.slice.call(arguments)); }; groove._widgetQueue = [];
-            groove.widget('setWidgetId', 'fbdef482-8bc6-b65d-1f25-bef642edf597');
-            <?php if (is_user_logged_in()): ?>
-            groove.widget('setCustomer', {email: "<?php echo esc_js( wp_get_current_user()->user_email ); ?>"});
-            <?php endif; ?>
-            !function(g,r,v){var a,n,c=r.createElement("iframe");(c.frameElement||c).style.cssText="width: 0; height: 0; border: 0",c.title="",c.role="presentation",c.src="javascript:false",r.body.appendChild(c);try{a=c.contentWindow.document}catch(i){n=r.domain;var b=["javascript:document.write('<he","ad><scri","pt>document.domain=","\"",n,"\";</scri","pt></he","ad><bo","dy></bo","dy>')"];c.src=b.join(""),a=c.contentWindow.document}var d="https:"==r.location.protocol?"https://":"http://",s="http://groove-widget-production.s3.amazonaws.com".replace("http://",d);c.className="grv-widget-tag",a.open()._l=function(){n&&(this.domain=n);var t=this.createElement("script");t.type="text/javascript",t.charset="utf-8",t.async=!0,t.src=s+"/loader.js",this.body.appendChild(t)};var p=["<bo",'dy onload="document._l();">'];a.write(p.join("")),a.close()}(window,document)
-            /*]]>*/
-        </script>
-        <!-- END GROOVE WIDGET CODE -->
-        <?php
+<!-- BEGIN GROOVE WIDGET CODE -->
+<script id="grv-widget">
+/*<![CDATA[*/
+window.groove = window.groove || {};
+groove.widget = function() {
+    groove._widgetQueue.push(Array.prototype.slice.call(arguments));
+};
+groove._widgetQueue = [];
+groove.widget('setWidgetId', 'fbdef482-8bc6-b65d-1f25-bef642edf597'); <
+? php
+if (is_user_logged_in()): ? >
+    groove.widget('setCustomer', {
+        email: "<?php echo esc_js( wp_get_current_user()->user_email ); ?>"
+    }); <
+? php endif; ? >
+! function(g, r, v) {
+    var a, n, c = r.createElement("iframe");
+    (c.frameElement || c).style.cssText = "width: 0; height: 0; border: 0", c.title = "", c.role = "presentation", c
+        .src = "javascript:false", r.body.appendChild(c);
+    try {
+        a = c.contentWindow.document
+    } catch (i) {
+        n = r.domain;
+        var b = ["javascript:document.write('<he", "ad><scri", "pt>document.domain=", "\"", n, "\";</scri", "pt></he",
+            "ad><bo", "dy></bo", "dy>')"
+        ];
+        c.src = b.join(""), a = c.contentWindow.document
+    }
+    var d = "https:" == r.location.protocol ? "https://" : "http://",
+        s = "http://groove-widget-production.s3.amazonaws.com".replace("http://", d);
+    c.className = "grv-widget-tag", a.open()._l = function() {
+        n && (this.domain = n);
+        var t = this.createElement("script");
+        t.type = "text/javascript", t.charset = "utf-8", t.async = !0, t.src = s + "/loader.js", this.body
+            .appendChild(t)
+    };
+    var p = ["<bo", 'dy onload="document._l();">'];
+    a.write(p.join("")), a.close()
+}(window, document)
+/*]]>*/
+</script>
+<!-- END GROOVE WIDGET CODE -->
+<?php
     } );
 
 
