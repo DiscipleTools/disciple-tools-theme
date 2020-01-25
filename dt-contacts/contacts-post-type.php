@@ -349,7 +349,6 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['baptism_generation'] = [
             'name'        => _x( 'Baptism Generation', 'field name', 'disciple_tools' ),
-            'description' => _x( 'The generation of baptism.', 'Baptism Generation field description', 'disciple_tools' ),
             'type'        => 'text',
             'default'     => '',
             'section'     => 'misc',

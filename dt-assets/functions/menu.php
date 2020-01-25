@@ -1,11 +1,11 @@
 <?php
 // Register menus
-register_nav_menus(
-    [
-        //      'main-nav' => __( 'The Main Menu', 'disciple_tools' ),   // Main nav in header
-        'footer-links' => __( 'Footer Links', 'disciple_tools' ) // Secondary nav in footer
-    ]
-);
+//register_nav_menus(
+//    [
+//        //      'main-nav' => __( 'The Main Menu', 'disciple_tools' ),   // Main nav in header
+////        'footer-links' => __( 'Footer Links', 'disciple_tools' ) // Secondary nav in footer
+//    ]
+//);
 
 // The Top Menu
 function disciple_tools_top_nav_desktop() {
