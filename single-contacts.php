@@ -9,180 +9,180 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true, true );
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 
-    if (isset( $_POST['unsure_all'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
-        if (isset( $_POST['id'] ) ) {
-            $id = (int) $_POST['id'];
-            Disciple_Tools_Contacts::unsure_all( $id );
-        }
-        header( "location: " . site_url( '/contacts/' . get_the_ID() ) );
+if (isset( $_POST['unsure_all'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
+    if (isset( $_POST['id'] ) ) {
+        $id = (int) $_POST['id'];
+        Disciple_Tools_Contacts::unsure_all( $id );
     }
-    if (isset( $_POST['dismiss_all'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
-        if (isset( $_POST['id'] ) ) {
-            $id = (int) $_POST['id'];
-            Disciple_Tools_Contacts::dismiss_all( $id );
-        }
-        header( "location: " . site_url( '/contacts/' . get_the_ID() ) );
+    header( "location: " . site_url( '/contacts/' . get_the_ID() ) );
+}
+if (isset( $_POST['dismiss_all'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
+    if (isset( $_POST['id'] ) ) {
+        $id = (int) $_POST['id'];
+        Disciple_Tools_Contacts::dismiss_all( $id );
     }
-    if (isset( $_POST['dismiss'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
-        if (isset( $_POST['currentId'], $_POST['id'] ) ) {
-            $current_id = (int) $_POST['currentId'];
-            $id = (int) $_POST['id'];
-            ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $current_id, $id );
-            header( "location: " . site_url( '/contacts/' . $current_id ) );
-        }
+    header( "location: " . site_url( '/contacts/' . get_the_ID() ) );
+}
+if (isset( $_POST['dismiss'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
+    if (isset( $_POST['currentId'], $_POST['id'] ) ) {
+        $current_id = (int) $_POST['currentId'];
+        $id = (int) $_POST['id'];
+        ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $current_id, $id );
+        header( "location: " . site_url( '/contacts/' . $current_id ) );
     }
-    if (isset( $_POST['unsure'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
-        if (isset( $_POST['currentId'], $_POST['id'] ) ) {
-            $current_id = (int) $_POST['currentId'];
-            $id = (int) $_POST['id'];
-            ( new Disciple_Tools_Contacts() )->unsure_duplicate( $current_id, $id );
-            header( "location: " . site_url( '/contacts/' . $current_id ) );
-        }
+}
+if (isset( $_POST['unsure'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
+    if (isset( $_POST['currentId'], $_POST['id'] ) ) {
+        $current_id = (int) $_POST['currentId'];
+        $id = (int) $_POST['id'];
+        ( new Disciple_Tools_Contacts() )->unsure_duplicate( $current_id, $id );
+        header( "location: " . site_url( '/contacts/' . $current_id ) );
     }
+}
 
-    if (isset( $_POST['merge-submit'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) )){
-        if (isset( $_POST['currentid'], $_POST['duplicateId'] ) ) {
-            $contact_id = (int) sanitize_text_field( wp_unslash( $_POST['currentid'] ) );
-            $dupe_id = (int) $_POST['duplicateId'];
-            $phones = isset( $_POST['phone'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['phone'] ) ) : array();
-            $emails = isset( $_POST['email'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['email'] ) ) : array();
-            $addresses = isset( $_POST['address'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['address'] ) ) : array();
-            $master = isset( $_POST['master-record'] ) ? sanitize_text_field( wp_unslash( $_POST['master-record'] ) ) : null;
+if (isset( $_POST['merge-submit'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) )){
+    if (isset( $_POST['currentid'], $_POST['duplicateId'] ) ) {
+        $contact_id = (int) sanitize_text_field( wp_unslash( $_POST['currentid'] ) );
+        $dupe_id = (int) $_POST['duplicateId'];
+        $phones = isset( $_POST['phone'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['phone'] ) ) : array();
+        $emails = isset( $_POST['email'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['email'] ) ) : array();
+        $addresses = isset( $_POST['address'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['address'] ) ) : array();
+        $master = isset( $_POST['master-record'] ) ? sanitize_text_field( wp_unslash( $_POST['master-record'] ) ) : null;
 
-            $master_id = ( $master === 'contact1' ) ? $contact_id : $dupe_id;
-            $non_master_id = ( $master_id === $contact_id ) ? $dupe_id : $contact_id;
-            $contact = Disciple_Tools_Contacts::get_contact( $master_id, true );
-            $non_master = Disciple_Tools_Contacts::get_contact( $non_master_id, true );
+        $master_id = ( $master === 'contact1' ) ? $contact_id : $dupe_id;
+        $non_master_id = ( $master_id === $contact_id ) ? $dupe_id : $contact_id;
+        $contact = Disciple_Tools_Contacts::get_contact( $master_id, true );
+        $non_master = Disciple_Tools_Contacts::get_contact( $non_master_id, true );
 
-            $current = array(
-                'contact_phone' => array(),
-                'contact_email' => array(),
-                'contact_address' => array(),
-                // 'contact_facebook' => array()
-            );
+        $current = array(
+            'contact_phone' => array(),
+            'contact_email' => array(),
+            'contact_address' => array(),
+            // 'contact_facebook' => array()
+        );
 
-            foreach ( $contact as $key => $fields ) {
-                if ( strpos( $key, "contact_" ) === 0 ) {
-                    $split = explode( "_", $key );
-                    if ( !isset( $split[1] ) ) {
-                        continue;
-                    }
-                    $new_key = $split[0] . "_" . $split[1];
-                    foreach ( $contact[ $new_key ] ?? array() as $values ) {
-                        $current[ $new_key ][ $values['key'] ] = $values['value'];
-                    }
+        foreach ( $contact as $key => $fields ) {
+            if ( strpos( $key, "contact_" ) === 0 ) {
+                $split = explode( "_", $key );
+                if ( !isset( $split[1] ) ) {
+                    continue;
+                }
+                $new_key = $split[0] . "_" . $split[1];
+                foreach ( $contact[ $new_key ] ?? array() as $values ) {
+                    $current[ $new_key ][ $values['key'] ] = $values['value'];
                 }
             }
+        }
 
-            $update = array(
-                'contact_phone' => array( 'values' => array() ),
-                'contact_email' => array( 'values' => array() ),
-                'contact_address' => array( 'values' => array() ),
-                // 'contact_facebook' => array( 'values' => array() )
-            );
+        $update = array(
+            'contact_phone' => array( 'values' => array() ),
+            'contact_email' => array( 'values' => array() ),
+            'contact_address' => array( 'values' => array() ),
+            // 'contact_facebook' => array( 'values' => array() )
+        );
 
-            $ignore_keys = array();
+        $ignore_keys = array();
 
-            foreach ($phones as $phone) {
-                $index = array_search( $phone, $current['contact_phone'] );
-                if ($index !== false) { $ignore_keys[] = $index;
-                    continue; }
-                array_push( $update['contact_phone']['values'], [ 'value' => $phone ] );
-            }
-            foreach ($emails as $email) {
-                $index = array_search( $email, $current['contact_email'] );
-                if ($index !== false) { $ignore_keys[] = $index;
-                    continue; }
-                array_push( $update['contact_email']['values'], [ 'value' => $email ] );
-            }
-            foreach ($addresses as $address) {
-                $index = array_search( $address, $current['contact_address'] );
-                if ($index !== false) { $ignore_keys[] = $index;
-                    continue; }
-                array_push( $update['contact_address']['values'], [ 'value' => $address ] );
-            }
+        foreach ($phones as $phone) {
+            $index = array_search( $phone, $current['contact_phone'] );
+            if ($index !== false) { $ignore_keys[] = $index;
+                continue; }
+            array_push( $update['contact_phone']['values'], [ 'value' => $phone ] );
+        }
+        foreach ($emails as $email) {
+            $index = array_search( $email, $current['contact_email'] );
+            if ($index !== false) { $ignore_keys[] = $index;
+                continue; }
+            array_push( $update['contact_email']['values'], [ 'value' => $email ] );
+        }
+        foreach ($addresses as $address) {
+            $index = array_search( $address, $current['contact_address'] );
+            if ($index !== false) { $ignore_keys[] = $index;
+                continue; }
+            array_push( $update['contact_address']['values'], [ 'value' => $address ] );
+        }
 
-            /*
-                Merge social media + other contact data
-            */
-            foreach ( $non_master as $key => $fields ) {
-                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "multi_select" ){
-                    $update[$key]["values"] = [];
-                    foreach ( $fields as $field_value ){
-                        $update[$key]["values"][] = [ "value" => $field_value ];
-                    }
+        /*
+            Merge social media + other contact data
+        */
+        foreach ( $non_master as $key => $fields ) {
+            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "multi_select" ){
+                $update[$key]["values"] = [];
+                foreach ( $fields as $field_value ){
+                    $update[$key]["values"][] = [ "value" => $field_value ];
                 }
-                if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]["type"] === "key_select" && ( !isset( $contact[ $key ] ) || $key === "none" || $key === "" ) ) {
-                    $update[$key] = $fields["key"];
-                }
-                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "text" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
+            }
+            if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]["type"] === "key_select" && ( !isset( $contact[ $key ] ) || $key === "none" || $key === "" ) ) {
+                $update[$key] = $fields["key"];
+            }
+            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "text" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
+                $update[$key] = $fields;
+            }
+            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "number" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
+                $update[$key] = $fields;
+            }
+            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "date" && ( !isset( $contact[$key] ) || empty( $contact[$key]["timestamp"] ) )){
+                $update[$key] = $fields["timestamp"] ?? "";
+            }
+            if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "array" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
+                if ( $key != "duplicate_data" ){
                     $update[$key] = $fields;
                 }
-                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "number" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
-                    $update[$key] = $fields;
-                }
-                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "date" && ( !isset( $contact[$key] ) || empty( $contact[$key]["timestamp"] ) )){
-                    $update[$key] = $fields["timestamp"] ?? "";
-                }
-                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "array" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
-                    if ( $key != "duplicate_data" ){
-                        $update[$key] = $fields;
-                    }
-                }
-
-                if ( strpos( $key, "contact_" ) === 0 ) {
-                    $split = explode( "_", $key );
-                    if ( !isset( $split[1] ) ) {
-                        continue;
-                    }
-                    $new_key = $split[0] . "_" . $split[1];
-                    if ( in_array( $new_key, array_keys( $update ) ) ) {
-                        continue;
-                    }
-                    $update[ $new_key ] = array(
-                        'values' => array()
-                    );
-                    foreach ( $non_master[ $new_key ] ?? array() as $values ) {
-                        $index = array_search( $values['value'], $current[ $new_key ] ?? array() );
-                        if ( $index !== false ) {
-                            $ignore_keys[] = $index;
-                            continue;
-                        }
-                        array_push( $update[ $new_key ]['values'], array(
-                            'value' => $values['value']
-                        ) );
-                    }
-                }
             }
 
-            $delete_fields = array();
-            if ($update['contact_phone']['values']) { $delete_fields[] = 'contact_phone'; }
-            if ($update['contact_email']['values']) { $delete_fields[] = 'contact_email'; }
-            if ($update['contact_address']['values']) { $delete_fields[] = 'contact_address'; }
-
-            if ( !empty( $delete_fields )) {
-                Disciple_Tools_Contacts::remove_fields( $master_id, $delete_fields, $ignore_keys );
+            if ( strpos( $key, "contact_" ) === 0 ) {
+                $split = explode( "_", $key );
+                if ( !isset( $split[1] ) ) {
+                    continue;
+                }
+                $new_key = $split[0] . "_" . $split[1];
+                if ( in_array( $new_key, array_keys( $update ) ) ) {
+                    continue;
+                }
+                $update[ $new_key ] = array(
+                    'values' => array()
+                );
+                foreach ( $non_master[ $new_key ] ?? array() as $values ) {
+                    $index = array_search( $values['value'], $current[ $new_key ] ?? array() );
+                    if ( $index !== false ) {
+                        $ignore_keys[] = $index;
+                        continue;
+                    }
+                    array_push( $update[ $new_key ]['values'], array(
+                        'value' => $values['value']
+                    ) );
+                }
             }
+        }
+
+        $delete_fields = array();
+        if ($update['contact_phone']['values']) { $delete_fields[] = 'contact_phone'; }
+        if ($update['contact_email']['values']) { $delete_fields[] = 'contact_email'; }
+        if ($update['contact_address']['values']) { $delete_fields[] = 'contact_address'; }
+
+        if ( !empty( $delete_fields )) {
+            Disciple_Tools_Contacts::remove_fields( $master_id, $delete_fields, $ignore_keys );
+        }
 
 //            @todo return error if update fails
-            Disciple_Tools_Contacts::update_contact( $master_id, $update, true );
-            Disciple_Tools_Contacts::merge_p2p( $master_id, $non_master_id );
-            Disciple_Tools_Contacts::copy_comments( $master_id, $non_master_id );
-            ( new Disciple_Tools_Contacts() )->recheck_duplicates( $master_id );
-            ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $master_id, $non_master_id );
-            ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $non_master_id, $master_id );
-            Disciple_Tools_Contacts::close_duplicate_contact( $non_master_id, $master_id );
+        Disciple_Tools_Contacts::update_contact( $master_id, $update, true );
+        Disciple_Tools_Contacts::merge_p2p( $master_id, $non_master_id );
+        Disciple_Tools_Contacts::copy_comments( $master_id, $non_master_id );
+        ( new Disciple_Tools_Contacts() )->recheck_duplicates( $master_id );
+        ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $master_id, $non_master_id );
+        ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $non_master_id, $master_id );
+        Disciple_Tools_Contacts::close_duplicate_contact( $non_master_id, $master_id );
 
-            do_action( "dt_contact_merged", $master_id, $non_master_id );
-        }
-        header( "location: " . site_url( '/contacts/' .get_the_ID() ) );
-        exit;
+        do_action( "dt_contact_merged", $master_id, $non_master_id );
     }
+    header( "location: " . site_url( '/contacts/' .get_the_ID() ) );
+    exit;
+}
 
-    if ( !Disciple_Tools_Contacts::can_view( 'contacts', get_the_ID() )) {
-        get_template_part( "403" );
-        die();
-    }
+if ( !Disciple_Tools_Contacts::can_view( 'contacts', get_the_ID() )) {
+    get_template_part( "403" );
+    die();
+}
     Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
 
 
@@ -192,13 +192,13 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     $current_user_id = get_current_user_id();
     $following = DT_Posts::get_users_following_post( "contacts", get_the_ID() );
     $dispatcher_actions = [];
-    if ( current_user_can( "create_users" )){
-        $dispatcher_actions[] = "make-user-from-contact-modal";
-        $dispatcher_actions[] = "link-to-user-modal";
-    }
-    if ( current_user_can( "view_any_contacts" )){
-        $dispatcher_actions[] = "merge_with_contact";
-    }
+if ( current_user_can( "create_users" )){
+    $dispatcher_actions[] = "make-user-from-contact-modal";
+    $dispatcher_actions[] = "link-to-user-modal";
+}
+if ( current_user_can( "view_any_contacts" )){
+    $dispatcher_actions[] = "merge_with_contact";
+}
     dt_print_details_bar(
         true,
         true,
@@ -349,7 +349,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                             </div>
                                         </div>
                                     </div>
-                                    <?php
+                                        <?php
                                     }
                                     ?>
                                 </div><!-- end collapse --></div>
@@ -381,21 +381,21 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                     <select class="select-field" id="seeker_path" style="margin-bottom: 0">
                                         <?php
 
-                                    foreach ($contact_fields["seeker_path"]["default"] as $key => $option){
-                                        $value = $option["label"] ?? "";
-                                        if ( $contact["seeker_path"]["key"] === $key ) {
-                                            ?>
+                                        foreach ($contact_fields["seeker_path"]["default"] as $key => $option){
+                                            $value = $option["label"] ?? "";
+                                            if ( $contact["seeker_path"]["key"] === $key ) {
+                                                ?>
                                         <option value="<?php echo esc_html( $key ) ?>" selected>
-                                            <?php echo esc_html( $value ); ?></option>
-                                        <?php } else { ?>
+                                                <?php echo esc_html( $value ); ?></option>
+                                            <?php } else { ?>
                                         <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?>
                                         </option>
                                         <?php }
-                                    }
-                                    $keys = array_keys( $contact_fields["seeker_path"]["default"] );
-                                    $path_index = array_search( $contact["seeker_path"]["key"], $keys ) ?? 0;
-                                    $percentage = $path_index / ( sizeof( $keys ) -1 ) *100
-                                    ?>
+                                        }
+                                        $keys = array_keys( $contact_fields["seeker_path"]["default"] );
+                                        $path_index = array_search( $contact["seeker_path"]["key"], $keys ) ?? 0;
+                                        $percentage = $path_index / ( sizeof( $keys ) -1 ) *100
+                                        ?>
                                     </select>
                                     <div class="progress" role="progressbar" tabindex="0"
                                         aria-valuenow="<?php echo 4 ?>" aria-valuemin="0" aria-valuetext="50 percent"
@@ -413,7 +413,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                     </div>
                                     <div class="small button-group" style="display: inline-block">
                                         <?php foreach ( $contact_fields["milestones"]["default"] as $option_key => $option_value ): ?>
-                                        <?php
+                                            <?php
                                                 $class = ( in_array( $option_key, $contact["milestones"] ?? [] ) ) ?
                                                     "selected-select-button" : "empty-select-button"; ?>
                                         <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="milestones"
@@ -445,26 +445,26 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             $sections = apply_filters( 'dt_details_additional_section_ids', [], "contacts" );
                             //get custom sections
                             $custom_tiles = dt_get_option( "dt_custom_tiles" );
-                            foreach ( $custom_tiles["contacts"] as $tile_key => $tile_options ){
-                                if ( !in_array( $tile_key, $sections ) ){
-                                    $sections[] = $tile_key;
-                                }
-                                //remove section if hidden
-                                if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
-                                    $index = array_search( $tile_key, $sections );
-                                    if ( $index !== false) {
-                                        unset( $sections[ $index ] );
-                                    }
+                        foreach ( $custom_tiles["contacts"] as $tile_key => $tile_options ){
+                            if ( !in_array( $tile_key, $sections ) ){
+                                $sections[] = $tile_key;
+                            }
+                            //remove section if hidden
+                            if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
+                                $index = array_search( $tile_key, $sections );
+                                if ( $index !== false) {
+                                    unset( $sections[ $index ] );
                                 }
                             }
+                        }
 
-                            foreach ( $sections as $section ){
-                                ?>
+                        foreach ( $sections as $section ){
+                            ?>
                                 <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
                                     <div class="bordered-box" id="<?php echo esc_html( $section )?>-tile">
-                                        <?php
-                                        //setup tile label if see by customizations
-                                        if ( isset( $custom_tiles["contacts"][$section]["label"] ) ){ ?>
+                                    <?php
+                                    //setup tile label if see by customizations
+                                    if ( isset( $custom_tiles["contacts"][$section]["label"] ) ){ ?>
                                             <h3 class="section-header">
                                                 <?php echo esc_html( $custom_tiles["contacts"][$section]["label"] )?>
                                                 <button class="section-chevron chevron_down">
@@ -475,38 +475,38 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                                 </button>
                                             </h3>
                                         <?php }
-                                        // let the plugin add section content
-                                        do_action( "dt_details_additional_section", $section, "contacts" );
+                                    // let the plugin add section content
+                                    do_action( "dt_details_additional_section", $section, "contacts" );
 
-                                        ?>
+                                    ?>
                                 <div class="section-body">
                                     <?php
-                                            //setup the order of the tile fields
-                                            $order = $custom_tiles["contacts"][$section]["order"] ?? [];
-                                            foreach ( $contact_fields as $key => $option ){
-                                                if ( isset( $option["tile"] ) && $option["tile"] === $section ){
-                                                    if ( !in_array( $key, $order )){
-                                                        $order[] = $key;
-                                                    }
-                                                }
+                                        //setup the order of the tile fields
+                                        $order = $custom_tiles["contacts"][$section]["order"] ?? [];
+                                    foreach ( $contact_fields as $key => $option ){
+                                        if ( isset( $option["tile"] ) && $option["tile"] === $section ){
+                                            if ( !in_array( $key, $order )){
+                                                $order[] = $key;
                                             }
-                                            foreach ( $order as $field_key ) {
-                                                if ( !isset( $contact_fields[$field_key] ) ){
-                                                    continue;
-                                                }
+                                        }
+                                    }
+                                    foreach ( $order as $field_key ) {
+                                        if ( !isset( $contact_fields[$field_key] ) ){
+                                            continue;
+                                        }
 
-                                                $field = $contact_fields[$field_key];
-                                                if ( isset( $field["tile"] ) && $field["tile"] === $section){
-                                                    render_field_for_display( $field_key, $contact_fields, $contact );
-                                                }
-                                            }
-                                            ?>
+                                        $field = $contact_fields[$field_key];
+                                        if ( isset( $field["tile"] ) && $field["tile"] === $section){
+                                            render_field_for_display( $field_key, $contact_fields, $contact );
+                                        }
+                                    }
+                                    ?>
                                 </div>
                             </div>
                         </section>
-                        <?php
-                            }
-                            ?>
+                            <?php
+                        }
+                        ?>
                         <!-- OTHER TILE -->
                             <section id="other" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box" id="other-tile">
@@ -581,14 +581,14 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
     <select id="reason-closed-options">
         <?php
-            foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $option ) {
-                $selected = ( $reason_key === ( $contact["reason_closed"]["key"] ?? "" ) ) ? "selected" : "";
-                ?>
+        foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $option ) {
+            $selected = ( $reason_key === ( $contact["reason_closed"]["key"] ?? "" ) ) ? "selected" : "";
+            ?>
         <option value="<?php echo esc_attr( $reason_key )?>" <?php echo esc_html( $selected ) ?>>
             <?php echo esc_html( $option["label"] ?? "" )?></option>
-        <?php
-            }
-            ?>
+            <?php
+        }
+        ?>
         </select>
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
             <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
@@ -610,10 +610,10 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             foreach ( $contact_fields["reason_paused"]["default"] as $reason_key => $option ) {
                 ?>
         <option value="<?php echo esc_attr( $reason_key )?>"
-            <?php if ( ( $contact["reason_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";} ?>>
-            <?php echo esc_html( $option["label"] ?? "" )?>
+                <?php if ( ( $contact["reason_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";} ?>>
+                <?php echo esc_html( $option["label"] ?? "" )?>
         </option>
-        <?php
+                <?php
             }
             ?>
         </select>
@@ -636,10 +636,10 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $option ) {
                 ?>
         <option value="<?php echo esc_attr( $reason_key )?>"
-            <?php if ( ( $contact["unassignable_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";} ?>>
-            <?php echo esc_html( $option["label"] ?? "" )?>
+                <?php if ( ( $contact["unassignable_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";} ?>>
+                <?php echo esc_html( $option["label"] ?? "" )?>
         </option>
-        <?php
+                <?php
             }
             ?>
     </select>
@@ -964,8 +964,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     </div>
 </div>
 
-<?php
-} )();
+        <?php
+    } )();
 
 if ( isset( $_POST['merge'], $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_contact_nonce'] ) ) ?? null ) ) {
     echo "<script type='text/javascript'>$(document).ready(function() { $('#merge-dupe-modal').click(); });</script>";

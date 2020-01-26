@@ -1,7 +1,7 @@
 <?php
 ( function() {
     ?>
-<?php
+    <?php
     $group = Disciple_Tools_Groups::get_group( get_the_ID(), true, true );
 
     $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
@@ -15,7 +15,7 @@
 <img id="<?php echo esc_attr( $id . '-invalid', 'disciple_tools' ); ?>" class="details-status"
     style="display: <?php echo esc_attr( $invalid, 'disciple_tools' ); ?>"
     src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/broken.svg'; ?>" />
-<?php
+        <?php
     }
     ?>
 
@@ -357,5 +357,5 @@
     </div>
 </div>
 
-<?php
+    <?php
 } )();
