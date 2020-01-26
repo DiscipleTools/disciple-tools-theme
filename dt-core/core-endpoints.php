@@ -39,14 +39,7 @@ class Disciple_Tools_Core_Endpoints {
     public function get_settings() {
         $user = wp_get_current_user();
         if ( $user ){
-            $translations = dt_get_translations();
-            $available_language_codes = get_available_languages( get_template_directory() .'/dt-assets/translation' );
-            $available_translations = [];
-            foreach ( $available_language_codes as $code ){
-                if ( isset( $translations[$code] )){
-                    $available_translations[] = $translations[$code];
-                }
-            }
+            $available_translations = dt_get_available_languages();
             return [
                 "available_translations" => $available_translations
             ];

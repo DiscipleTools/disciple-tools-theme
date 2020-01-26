@@ -94,6 +94,8 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
             $auth_token = sanitize_text_field( wp_unslash( $_SERVER['HTTP_AUTHORIZATION'] ) );
         } elseif ( function_exists( "apache_request_headers" ) && isset( apache_request_headers()['Authorization'] ) ){
             $auth_token = sanitize_text_field( wp_unslash( apache_request_headers()['Authorization'] ) );
+        }  elseif ( function_exists( "apache_request_headers" ) && isset( apache_request_headers()['authorization'] ) ){
+            $auth_token = sanitize_text_field( wp_unslash( apache_request_headers()['authorization'] ) );
         }
         if ( $auth_token ) {
             $site_link_token = str_replace( 'Bearer ', '', $auth_token );
