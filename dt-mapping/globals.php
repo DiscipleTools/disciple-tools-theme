@@ -190,13 +190,15 @@ $wpdb->dt_location_grid = $wpdb->prefix .'dt_location_grid';
 /*******************************************************************************************************************
  * MIGRATION ENGINE
  ******************************************************************************************************************/
-require_once( 'class-migration-engine.php' );
-try {
-    DT_Mapping_Module_Migration_Engine::migrate( DT_Mapping_Module_Migration_Engine::$migration_number );
-} catch ( Throwable $e ) {
-    $migration_error = new WP_Error( 'migration_error', 'Migration engine for mapping module failed to migrate.', [ 'error' => $e ] );
-    dt_write_log( $migration_error );
-}
+add_action( 'after_setup_theme', function (){
+    require_once( 'class-migration-engine.php' );
+    try {
+        DT_Mapping_Module_Migration_Engine::migrate( DT_Mapping_Module_Migration_Engine::$migration_number );
+    } catch ( Throwable $e ) {
+        $migration_error = new WP_Error( 'migration_error', 'Migration engine for mapping module failed to migrate.', [ 'error' => $e ] );
+        dt_write_log( $migration_error );
+    }
+}, 99 );
 /*******************************************************************************************************************/
 
 /** Global variable dependent functions */

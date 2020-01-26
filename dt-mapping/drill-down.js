@@ -81,20 +81,17 @@ let rebuild_drill_down = ( response, bindFunction, grid_id )=>{
     return final_list;
 }
 window.DRILLDOWN = {
-    get_drill_down( bindFunction, grid_id, cached ) {
+    get_drill_down( bindFunction, grid_id, cached = true ) {
         DRILLDOWN.show_spinner()
+
 
         if ( ! grid_id ) {
             grid_id = window.drilldownModule.current_map || 'world'
         }
 
-        if ( ! cached ) {
-          cached = false
-        }
-
         let rest = window.drilldownModule.settings.endpoints.get_drilldown_endpoint
         
-        if ( window.drilldownModule.drilldown && window.drilldownModule.drilldown[grid_id] ){
+        if ( cached && window.drilldownModule.drilldown && window.drilldownModule.drilldown[grid_id] ){
             rebuild_drill_down( window.drilldownModule.drilldown[grid_id], bindFunction, grid_id )
         } else {
             return jQuery.ajax({

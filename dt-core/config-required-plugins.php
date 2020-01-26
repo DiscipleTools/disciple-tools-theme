@@ -44,10 +44,10 @@ function dt_register_required_plugins() {
             'version'               => '7.2.0',
         ),
         array(
-            'name'                  => 'Easy WP SMTP',
-            'slug'                  => 'easy-wp-smtp',
+            'name'                  => 'WP Mail SMTP',
+            'slug'                  => 'wp-mail-smtp',
             'required'              => false,
-            'version'               => '1.3.7',
+            'version'               => '1.8.1',
         ),
     );
 

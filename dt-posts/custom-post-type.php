@@ -30,7 +30,7 @@ class Disciple_Tools_Post_Type_Template {
             'name'                  => $this->plural,
             'singular_name'         => $this->singular,
             'menu_name'             => $this->plural,
-            'search_items'          => sprintf( _x( 'Search %s', 'Search `something`', 'disciple_tools' ), $this->plural ),
+            'search_items'          => sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural ),
         ];
         $rewrite = [
             'slug'       => $this->post_type,
@@ -82,7 +82,7 @@ class Disciple_Tools_Post_Type_Template {
             $role = get_role( $role );
             $role->add_cap( 'access_' . $this->post_type );
             $role->add_cap( 'create_' . $this->post_type );
-            if ( $role != "multiplier" ){
+            if ( $role->name != "multiplier" ){
                 $role->add_cap( 'view_any_' . $this->post_type );
                 $role->add_cap( 'update_any_' . $this->post_type );
                 $role->add_cap( 'delete_any_' . $this->post_type );

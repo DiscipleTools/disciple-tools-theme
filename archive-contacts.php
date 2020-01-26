@@ -10,57 +10,6 @@ declare(strict_types=1);
 
     get_header();
 
-    function print_filters(){ ?>
-        <div class="list-views">
-            <label class="list-view">
-                <input type="radio" name="view" value="no_filter" class="js-list-view" autocomplete="off">
-                <span id="total_filter_label"><?php esc_html_e( "All", "disciple_tools" ); ?></span>
-                <span class="list-view__count js-list-view-count" data-value="total_count">.</span>
-            </label>
-            <label class="list-view">
-                <input type="radio" name="view" value="active" class="js-list-view" autocomplete="off">
-                <span id="total_filter_label"><?php esc_html_e( "Active", "disciple_tools" ); ?></span>
-                <span class="list-view__count js-list-view-count" data-value="active">.</span>
-            </label>
-            <?php if (user_can( get_current_user_id(), 'view_any_contacts' ) ){ ?>
-                <label class="list-view">
-                    <input type="radio" name="view" value="new" class="js-list-view" autocomplete="off">
-                    <?php esc_html_e( "New", "disciple_tools" ); ?>
-                    <span class="list-view__count js-list-view-count" data-value="new">.</span>
-                </label>
-                <label class="list-view">
-                    <input type="radio" name="view" value="assignment_needed" class="js-list-view">
-                    <?php esc_html_e( "Dispatch needed", "disciple_tools" ); ?>
-                    <span class="list-view__count js-list-view-count" data-value="needs_assigned">.</span>
-                </label>
-                <label class="list-view">
-                    <input type="radio" name="view" value="unassignable" class="js-list-view">
-                    <?php esc_html_e( "Not Ready", "disciple_tools" ); ?>
-                    <span class="list-view__count js-list-view-count" data-value="unassignable">.</span>
-                </label>
-            <?php } ?>
-            <label class="list-view">
-                <input type="radio" name="view" value="needs_accepted" class="js-list-view" autocomplete="off">
-                <?php esc_html_e( "Waiting to be accepted", "disciple_tools" ); ?>
-                <span class="list-view__count js-list-view-count" data-value="needs_accepted">.</span>
-            </label>
-            <label class="list-view">
-                <input type="radio" name="view" value="update_needed" class="js-list-view" autocomplete="off">
-                <?php esc_html_e( "Update needed", "disciple_tools" ); ?>
-                <span class="list-view__count js-list-view-count" data-value="update_needed">.</span>
-            </label>
-            <label class="list-view">
-                <input type="radio" name="view" value="contact_unattempted" class="js-list-view" autocomplete="off">
-                <?php esc_html_e( "Contact attempt needed", "disciple_tools" ); ?>
-                <span class="list-view__count js-list-view-count" data-value="contact_unattempted">.</span>
-            </label>
-            <label class="list-view">
-                <input type="radio" name="view" value="meeting_scheduled" class="js-list-view" autocomplete="off">
-                <?php esc_html_e( "Meeting scheduled", "disciple_tools" ); ?>
-                <span class="list-view__count js-list-view-count" data-value="meeting_scheduled">.</span>
-            </label>
-        </div>
-    <?php }
 
     ?>
     <div id="errors"> </div>
@@ -81,7 +30,7 @@ declare(strict_types=1);
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php esc_html_e( "View Duplicates", 'disciple_tools' ) ?></span>
                 </a>
-                <input class="search-input" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="search contacts">
+                <input class="search-input" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="<?php echo esc_html_x( "Search Contacts", 'input field placeholder', 'disciple_tools' ) ?>">
                 <a class="button" style="margin-bottom:0" id="search">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
                     <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
@@ -101,104 +50,41 @@ declare(strict_types=1);
         </a>
         <a class="button" style="margin-bottom:0" id="open-search">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
-            <span class="hide-for-small-only"><?php esc_html_e( "Search contacts", 'disciple_tools' ) ?></span>
+            <span class="hide-for-small-only"><?php echo esc_html_x( "Search Contacts", 'input field placeholder', 'disciple_tools' ) ?></span>
         </a>
         <div class="hideable-search" style="display: none; margin-top:5px">
-            <input class="search-input-mobile" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile" placeholder="search contacts">
+            <input class="search-input-mobile" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile" placeholder="<?php echo esc_html_x( "Search Contacts", 'input field placeholder', 'disciple_tools' ) ?>">
             <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
         </div>
     </nav>
     <div id="content" class="archive-contacts">
 
-        <div id="inner-content" class="grid-x grid-margin-x">
+        <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
-            <aside class="large-3 cell padding-bottom show-for-large">
-                <div class="bordered-box js-pane-filters">
-                    <?php /* Javascript may move .js-filters-modal-content to this location. */ ?>
-                </div>
-            </aside>
-
-            <aside class="cell padding-bottom hide-for-large">
-                <div class="bordered-box" style="padding-top:5px;padding-bottom:5px">
-                    <label class="section-header"><?php esc_html_e( 'Contacts Filters', 'disciple_tools' )?>
-                    <button class="help-button float-right" data-section="filters-help-text">
-                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                    </button>
-                    </label>
-                    <div class="js-list-filter filter--closed">
-                        <div class="filter__title js-list-filter-title" style="margin-bottom:0"><?php esc_html_e( "Default Filters", "disciple_tools" ); ?>
-
-                        </div>
-                        <div class="js-filters-accordion"></div>
-                    </div>
-                </div>
-            </aside>
-
-            <div class="reveal js-filters-modal" id="filters-modal">
-                <div class="js-filters-modal-content"><!-- archive-contacts -->
-                    <label class="section-header hide-for-small-only hide-for-medium-only">
-                        <span>
-                            <?php esc_html_e( 'Contacts Filters', 'disciple_tools' )?>
-                            <span id="count-loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
-                        </span>
+            <aside class="cell large-3" id="list-filters">
+                <div class="bordered-box collapsed" id="filters-tile">
+                    <div class="section-header"><?php esc_html_e( 'Contacts Filters', 'disciple_tools' )?>
                         <button class="help-button float-right" data-section="filters-help-text">
                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                         </button>
-                    </label>
-
-                    <h5 class="hide-for-small-only hide-for-medium-only" style="display: inline-block"><?php esc_html_e( 'Default Filters', "disciple_tools" ); ?></h5>
-
-                    <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion">
-                        <li class="accordion-item" data-accordion-item data-id="all">
-                            <a href="#" class="accordion-title">
-                                <?php esc_html_e( "All contacts", 'disciple_tools' ) ?>
-                                <span class="tab-count-span" data-tab="total_all"></span>
-                            </a>
-                            <div class="accordion-content" data-tab-content>
-                                <?php print_filters() ?>
-                            </div>
-                        </li>
-                        <li class="accordion-item" data-accordion-item data-id="my">
-                            <a href="#" class="accordion-title">
-                                <?php esc_html_e( "Assigned to me", 'disciple_tools' ) ?>
-                                <span class="tab-count-span" data-tab="total_my"></span>
-                            </a>
-                            <div class="accordion-content" data-tab-content>
-                                <?php print_filters() ?>
-                            </div>
-                        </li>
-                        <li class="accordion-item" data-accordion-item data-id="subassigned">
-                            <a href="#" class="accordion-title">
-                                <?php esc_html_e( "Subassigned to me", 'disciple_tools' ) ?>
-                                <span class="tab-count-span" data-tab="total_subassigned"></span>
-                            </a>
-                            <div class="accordion-content" data-tab-content>
-                                <?php print_filters() ?>
-                            </div>
-                        </li>
-                        <li class="accordion-item" data-accordion-item data-id="shared">
-                            <a href="#" class="accordion-title">
-                                <?php esc_html_e( "Shared with me", 'disciple_tools' ) ?>
-                                <span class="tab-count-span" data-tab="total_shared"></span>
-                            </a>
-                            <div class="accordion-content" data-tab-content>
-                                <?php print_filters() ?>
-                            </div>
-                        </li>
-                    </ul>
-
-
-                    <h5><?php esc_html_e( 'Custom Filters', 'disciple_tools' ); ?></h5>
-                    <div style="margin-bottom: 5px">
-                        <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
+                        <button class="section-chevron chevron_down">
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                        </button>
+                        <button class="section-chevron chevron_up">
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                        </button>
                     </div>
-                    <div class="custom-filters">
+                    <div class="section-body">
+                        <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion"></ul>
 
+<!--                        <h5>--><?php //esc_html_e( 'Custom Filters', 'disciple_tools' ); ?><!--</h5>-->
+                        <div style="margin-bottom: 5px">
+                            <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
+                        </div>
+                        <div class="custom-filters"></div>
                     </div>
-                    <div id="saved-filters"></div>
-
                 </div>
-            </div>
+            </aside>
 
             <main id="main" class="large-9 cell padding-bottom" role="main">
 
@@ -217,7 +103,7 @@ declare(strict_types=1);
             <div class="grid-x">
                 <div class="cell small-4" style="padding: 0 5px 5px 5px">
                     <input type="text" id="new-filter-name"
-                           placeholder="<?php esc_html_e( 'Filter Name', 'disciple_tools' )?>"
+                           placeholder="<?php echo esc_html_x( 'Filter Name', 'input field placeholder', 'disciple_tools' ) ?>"
                            style="margin-bottom: 0"/>
                 </div>
                 <div class="cell small-8">
@@ -227,7 +113,7 @@ declare(strict_types=1);
 
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
-                    <?php $fields = [ "assigned_to", "subassigned",  "created_on", "location_grid", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
+                    <?php $fields = [ "assigned_to", "subassigned", "coached_by", "created_on", "location_grid", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
                     $allowed_types = [ "multi_select", "key_select", "boolean", "date", "location" ];
                     foreach ( $dt_contact_field_options as $field_key => $field){
                         if ( $field_key && in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
@@ -273,11 +159,11 @@ declare(strict_types=1);
                                     <div id="<?php echo esc_html( $field ) ?>_t" name="form-<?php echo esc_html( $field ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
                                         <div class="typeahead__container">
                                             <div class="typeahead__field">
-                                            <span class="typeahead__query">
-                                                <input class="js-typeahead-<?php echo esc_html( $field ) ?>" data-field="<?php echo esc_html( $field ) ?>"
-                                                       name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php esc_html_e( "Type to Search", 'disciple_tools' ) ?>"
-                                                       autocomplete="off">
-                                            </span>
+                                                <span class="typeahead__query">
+                                                    <input class="js-typeahead-<?php echo esc_html( $field ) ?> input-height" data-field="<?php echo esc_html( $field ) ?>"
+                                                           name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>"
+                                                           autocomplete="off">
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -352,7 +238,7 @@ declare(strict_types=1);
         <div class="grid-x grid-padding-x">
             <div class="cell small-4 filter-modal-left">
                 <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                    <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+                    <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
                 </button>
             </div>
             <div class="cell small-8 filter-modal-right confirm-buttons">

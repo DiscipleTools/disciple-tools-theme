@@ -304,6 +304,9 @@ Groups
 
 .members-section {
     border: 1px solid #ccc;
+    #empty-members-list-message {
+        padding: 10px 10px;
+    }
     .member-row {
         padding: 10px 10px;
         display: flex;
@@ -440,4 +443,12 @@ select.color-select {
     > span {
         margin-right: 10px;
     }
+}
+
+#tasks-modal {
+  .existing-task-action {
+    font-size: 10px;
+    color: $primary-color;
+    margin: 0 5px;
+  }
 }
