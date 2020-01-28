@@ -898,5 +898,45 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             return $query;
         }
 
+        public function convert_ip_result_to_location_grid_meta( $ip_result ) {
+            if ( empty( $ip_result ) ) {
+                return $ip_result;
+            }
+
+            // prioritize the smallest unit
+            if ( ! empty( $ip_result['city'] ) ) {
+                $label = $ip_result['city'];
+            }
+            elseif ( ! empty( $ip_result['region_name'] ) ) {
+                $label = $ip_result['region_name'];
+            }
+            elseif ( ! empty( $ip_result['country_name'] ) ) {
+                $label = $ip_result['country_name'];
+            }
+            elseif ( ! empty( $ip_result['continent_name'] ) ) {
+                $label = $ip_result['continent_name'];
+            }
+            else {
+                $label = '';
+            }
+
+            $grid_id = $this->get_grid_id_by_lnglat( $ip_result['longitude'], $ip_result['latitude'], $ip_result['country_code'] );
+
+            if ( empty( $label ) ) {
+                $label = $grid_id['name'] ?? '';
+            }
+
+            $location_grid_meta = [
+                'lng' => $ip_result['longitude'],
+                'lat' => $ip_result['latitude'],
+                'level' => 'place',
+                'label' => $label,
+                'source' => 'ip',
+                'grid_id' => (int) $grid_id['grid_id'] ?? '',
+            ];
+
+            return $location_grid_meta;
+        }
+
     }
 }
