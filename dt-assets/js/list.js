@@ -209,11 +209,11 @@
   }
   let selectedFilter = ""
   if ( cachedFilter && !_.isEmpty(cachedFilter)){
+    selectedFilter = cachedFilter.ID || "no_filter"
     if ( cachedFilter.type==="default" ){
       if ( cachedFilter.tab ){
         selectedFilterTab = cachedFilter.tab
       }
-      selectedFilter = cachedFilter.ID || "no_filter"
     } else if ( cachedFilter.type === "custom_filter" ){
       addCustomFilter(cachedFilter.name, "default", cachedFilter.query, cachedFilter.labels)
     }
@@ -737,126 +737,56 @@
   }
 
   /**
-   * Leaders
+   * Post Types
    */
-  let loadLeadersTypeahead = ()=> {
-    if (!window.Typeahead['.js-typeahead-leaders']) {
-      $.typeahead({
-        input: '.js-typeahead-leaders',
-        minLength: 0,
-        accent: true,
-        searchOnFocus: true,
-        maxItem: 20,
-        template: window.TYPEAHEADS.contactListRowTemplate,
-        source: TYPEAHEADS.typeaheadContactsSource(),
-        display: "name",
-        templateValue: "{{name}}",
-        dynamic: true,
-        multiselect: {
-          matchOn: ["ID"],
-          data: [],
+  let load_post_type_typeaheads = ()=>{
+    $(".typeahead__query [data-type='connection']").each((key, el)=>{
+      let field = $(el).data('field')
+      let post_type = _.get(wpApiListSettings, `custom_fields_settings.${field}.post_type`)
+      if ( post_type && !window.Typeahead[`.js-typeahead-${field}`]) {
+        $.typeahead({
+          input: `.js-typeahead-${field}`,
+          minLength: 0,
+          accent: true,
+          searchOnFocus: true,
+          maxItem: 20,
+          template: post_type === 'contacts' ?
+            window.TYPEAHEADS.contactListRowTemplate :
+            function (query, item) {
+              return `<span dir="auto">${_.escape(item.name)} (###${_.escape( item.ID )})</span>`
+          },
+          source: TYPEAHEADS.typeaheadPostsSource(post_type),
+          display: "name",
+          templateValue: "{{name}}",
+          dynamic: true,
+          multiselect: {
+            matchOn: ["ID"],
+            data: [],
+            callback: {
+              onCancel: function (node, item) {
+                $(`.current-filter[data-id="${item.ID}"].${field}`).remove()
+                _.pullAllBy(newFilterLabels, [{id: item.ID}], "id")
+              }
+            }
+          },
           callback: {
-            onCancel: function (node, item) {
-              $(`.current-filter[data-id="${item.ID}"].leaders`).remove()
-              _.pullAllBy(newFilterLabels, [{id: item.ID}], "id")
+            onResult: function (node, query, result, resultCount) {
+              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              $(`#${field}-result-container`).html(text);
+            },
+            onHideLayout: function () {
+              $(`#${field}-result-container`).html("");
+            },
+            onClick: function (node, a, item) {
+              newFilterLabels.push({id: item.ID, name: item.name, field: field})
+              selectedFilters.append(`<span class="current-filter ${field}" data-id="${_.escape( item.ID )}">${_.escape( item.name )}</span>`)
             }
           }
-        },
-        callback: {
-          onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#leaders-result-container').html(text);
-          },
-          onHideLayout: function () {
-            $('#leaders-result-container').html("");
-          },
-          onClick: function (node, a, item) {
-            newFilterLabels.push({id: item.ID, name: item.name, field: "leaders"})
-            selectedFilters.append(`<span class="current-filter leaders" data-id="${_.escape( item.ID )}">${_.escape( item.name )}</span>`)
-          }
-        }
-      });
-    }
+        });
+      }
+    })
   }
 
-  /**
-   * Subassigned
-   */
-  let loadSubassignedTypeahead = ()=> {
-    if (!window.Typeahead['.js-typeahead-subassigned']) {
-      $.typeahead({
-        input: '.js-typeahead-subassigned',
-        minLength: 0,
-        accent: true,
-        searchOnFocus: true,
-        maxItem: 20,
-        template: window.TYPEAHEADS.contactListRowTemplate,
-        source: TYPEAHEADS.typeaheadContactsSource(),
-        display: "name",
-        templateValue: "{{name}}",
-        dynamic: true,
-        multiselect: {
-          matchOn: ["ID"],
-          data: [],
-          callback: {
-            onCancel: function (node, item) {
-              $(`.current-filter[data-id="${_.escape( item.ID )}"].subassigned`).remove()
-              _.pullAllBy(newFilterLabels, [{id: item.ID}], "id")
-            }
-          }
-        },
-        callback: {
-          onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#subassigned-result-container').html(text);
-          },
-          onHideLayout: function () {
-            $('#subassigned-result-container').html("");
-          },
-          onClick: function (node, a, item) {
-            let name = _.get(wpApiListSettings, `custom_fields_settings.subassigned.name`, 'subassigned')
-            newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "subassigned"})
-            selectedFilters.append(`<span class="current-filter subassigned" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
-          }
-        }
-      });
-    }
-  }
-    /**
-   * Coached By
-   */
-  let loadCoachedByTypeahead = ()=> {
-    if (!window.Typeahead['.js-typeahead-coached_by']) {
-      $.typeahead({
-        ...TYPEAHEADS.defaultContactTypeahead(),
-        input: '.js-typeahead-coached_by',
-        multiselect: {
-          matchOn: ["ID"],
-          data: [],
-          callback: {
-            onCancel: function (node, item) {
-              $(`.current-filter[data-id="${_.escape( item.ID )}"].coached_by`).remove()
-              _.pullAllBy(newFilterLabels, [{id: item.ID}], "id")
-            }
-          }
-        },
-        callback: {
-          onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#coached_by-result-container').html(text);
-          },
-          onHideLayout: function () {
-            $('#coached_by-result-container').html("");
-          },
-          onClick: function (node, a, item) {
-            let name = _.get(wpApiListSettings, `custom_fields_settings.coached_by.name`, 'coached_by')
-            newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "coached_by"})
-            selectedFilters.append(`<span class="current-filter coached_by" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
-          }
-        }
-      });
-    }
-  }
 
   /**
    * Assigned_to
@@ -1011,18 +941,10 @@
   let typeaheadsLoaded = null
   $('#filter-modal').on("open.zf.reveal", function () {
     newFilterLabels=[]
-    if ( wpApiListSettings.current_post_type === "groups" ){
-      loadLocationTypeahead()
-      loadAssignedToTypeahead()
-      // loadLeadersTypeahead()
-      typeaheadsLoaded = loadMultiSelectTypeaheads().catch(err => { console.error(err) })
-    } else if ( wpApiListSettings.current_post_type === "contacts" ){
-      loadLocationTypeahead()
-      loadAssignedToTypeahead()
-      loadSubassignedTypeahead()
-      loadCoachedByTypeahead()
-      typeaheadsLoaded = loadMultiSelectTypeaheads().catch(err => { console.error(err) })
-    }
+    loadLocationTypeahead()
+    loadAssignedToTypeahead()
+    load_post_type_typeaheads()
+    typeaheadsLoaded = loadMultiSelectTypeaheads().catch(err => { console.error(err) })
     $('#new-filter-name').val('')
     $("#filter-modal input.dt_date_picker").each(function () {
       $(this).val('')
