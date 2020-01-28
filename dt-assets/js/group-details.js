@@ -196,47 +196,7 @@ jQuery(document).ready(function ($) {
             }
           }
         },
-        display: "name",
-        ajax: {
-          url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
-          data: {
-            s: "{{query}}",
-            filter: function () {
-              return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
-            }
-          }
-        },
-        callback: {
-          onClick: function(node, a, item, event) {
-            if (!editFieldsUpdate.location_grid){
-              editFieldsUpdate.location_grid = { "values": [] }
-            }
-            _.pullAllBy(editFieldsUpdate.location_grid.values, [{value:item.ID}], "value")
-            editFieldsUpdate.location_grid.values.push({value:item.ID})
-            this.addMultiselectItemLayout(item)
-            event.preventDefault()
-            this.hideLayout();
-            this.resetInput();
-          },
-          onReady() {
-            this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
-            this.container
-              .removeClass("filter")
-              .find("." + this.options.selector.filterButton)
-              .html(_.escape(window.wpApiShare.translations.regions_of_focus));
-          },
-          beforeSend: function (xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-          },
-          callback: {
-            done: function (data) {
-              if (typeof typeaheadTotals !== "undefined") {
-                typeaheadTotals.field = data.total
-              }
-              return data.location_grid
-            }
-          }
-        },
+        
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
