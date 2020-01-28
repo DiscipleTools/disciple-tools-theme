@@ -1,7 +1,7 @@
 
 <div class="reveal" id="revert-modal" data-reveal>
 
-    <p class="lead"><?php esc_html_e( 'Revert Activity', 'disciple_tools' )?></p>
+    <h3><?php esc_html_e( 'Revert Activity', 'disciple_tools' )?></h3>
     <h6><?php esc_html_e( "Field", 'disciple_tools' ) ?>:
         <span class="revert-field"></span>
     </h6>
@@ -12,7 +12,7 @@
 
     <div class="grid-x">
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-            <?php esc_html_e( 'Close', 'disciple_tools' )?>
+            <?php echo esc_html_x( 'Close', 'button', 'disciple_tools' )?>
         </button>
         <button class="button" aria-label="confirm" type="button" id="confirm-revert">
             <?php esc_html_e( 'Revert to old value?', 'disciple_tools' )?>

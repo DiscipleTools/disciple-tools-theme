@@ -52,7 +52,7 @@ class Disciple_Tools_Counter_Outreach extends Disciple_Tools_Counter_Base
                 $results = $wpdb->get_results( $wpdb->prepare("
                     SELECT report_source, report_subsource, SUM(meta_value) as critical_path_total 
                     FROM $wpdb->dt_reports 
-                    INNER JOIN wp_dt_reportmeta ON $wpdb->dt_reports.id=wp_dt_reportmeta.report_id 
+                    INNER JOIN $wpdb->dt_reportmeta rm ON $wpdb->dt_reports.id = rm.report_id 
                     WHERE focus = 'outreach' 
                     AND category = 'social' 
                     AND report_date LIKE %s 
@@ -76,7 +76,7 @@ class Disciple_Tools_Counter_Outreach extends Disciple_Tools_Counter_Base
                 $results = $wpdb->get_results( $wpdb->prepare("
                     SELECT report_source, report_subsource, SUM(meta_value) as critical_path_total 
                     FROM $wpdb->dt_reports 
-                    INNER JOIN wp_dt_reportmeta ON $wpdb->dt_reports.id=wp_dt_reportmeta.report_id 
+                    INNER JOIN $wpdb->dt_reportmeta rm  ON $wpdb->dt_reports.id = rm.report_id 
                     WHERE focus = 'outreach' 
                     AND category = 'website' 
                     AND report_date LIKE %s 
@@ -142,8 +142,8 @@ class Disciple_Tools_Counter_Outreach extends Disciple_Tools_Counter_Base
                 $results = $wpdb->get_results( "
                     SELECT report_source, report_subsource, max(report_date) as latest_report, meta_value as critical_path_total 
                     FROM $wpdb->dt_reports 
-                    INNER JOIN wp_dt_reportmeta 
-                        ON $wpdb->dt_reports.id=wp_dt_reportmeta.report_id 
+                    INNER JOIN $wpdb->dt_reportmeta rm  
+                        ON $wpdb->dt_reports.id = rm.report_id 
                     WHERE focus = 'outreach'
                         AND meta_key = 'critical_path_total' 
                     GROUP BY report_source, report_subsource 

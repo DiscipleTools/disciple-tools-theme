@@ -7,10 +7,11 @@ require('dotenv').config();
 // Most packages are lazy loaded
 var gulp = require('gulp'),
   log = require('fancy-log');
-browserSync = require('browser-sync'),
+  browserSync = require('browser-sync'),
   plugin = require('gulp-load-plugins')(),
   touch = require('gulp-touch-cmd'),
   rename = require('gulp-rename'),
+  frep = require('gulp-frep'),
   merge = require('merge-stream'),
   postcss = require('gulp-postcss'),
   cssnano = require('cssnano');
@@ -84,6 +85,14 @@ const BUILD_DIRS = {
   scripts: 'dt-assets/build/js/',
 };
 
+const patterns = [
+  {
+    // normalize line endings
+    pattern: /\\r\\n/g,
+    replacement: '\\n'
+  }
+];
+
 // GULP FUNCTIONS
 // concat, and minify JavaScript
 gulp.task('scripts', function () {
@@ -103,6 +112,7 @@ gulp.task('scripts', function () {
     .pipe(plugin.uglify())
     .pipe(rename({ suffix: '.min' }))
     .pipe(plugin.sourcemaps.write('.')) // Creates sourcemap for minified JS
+    .pipe(frep(patterns))
     .pipe(gulp.dest(BUILD_DIRS.scripts));
 });
 
@@ -121,6 +131,7 @@ gulp.task('styles', function () {
     .pipe(rename({ suffix: '.min' }))
     .pipe(postcss([cssnano()]))
     .pipe(plugin.sourcemaps.write('.'))
+    .pipe(frep(patterns))
     .pipe(gulp.dest(BUILD_DIRS.styles))
     .pipe(touch());
 });

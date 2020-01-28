@@ -170,7 +170,7 @@ class PostsTest extends WP_UnitTestCase {
 
         $contact1 = DT_Posts::create_post( "contacts", [
             "title"     => "contact1",
-            "reminders" => [
+            "tasks" => [
                 "values" => [
                     [
                         "value" => "hello",
@@ -180,16 +180,16 @@ class PostsTest extends WP_UnitTestCase {
             ]
         ] );
         $this->assertNotWPError( $contact1 );
-        $this->assertArrayHasKey( 'reminders', $contact1 );
-        $this->assertCount( 1, $contact1['reminders'] );
-        $this->assertSame( "hello", $contact1["reminders"][0]["value"] );
+        $this->assertArrayHasKey( 'tasks', $contact1 );
+        $this->assertCount( 1, $contact1['tasks'] );
+        $this->assertSame( "hello", $contact1["tasks"][0]["value"] );
 
-        $reminder_id = $contact1["reminders"][0]["id"];
+        $task_id = $contact1["tasks"][0]["id"];
         $contact = DT_Posts::update_post( "contacts", $contact1["ID"], [
-            "reminders" => [
+            "tasks" => [
                 "values" => [
                     [
-                        "id" => $reminder_id,
+                        "id" => $task_id,
                         "value" => "a new value",
                         "date"  => "2017-01-01",
                     ]
@@ -197,28 +197,28 @@ class PostsTest extends WP_UnitTestCase {
             ]
         ] );
         $this->assertNotWPError( $contact );
-        $this->assertCount( 1, $contact['reminders'] );
-        $this->assertSame( "a new value", $contact["reminders"][0]["value"] );
-        $this->assertNotSame( $contact1["reminders"][0]["date"], $contact["reminders"][0]["date"] );
+        $this->assertCount( 1, $contact['tasks'] );
+        $this->assertSame( "a new value", $contact["tasks"][0]["value"] );
+        $this->assertNotSame( $contact1["tasks"][0]["date"], $contact["tasks"][0]["date"] );
 
         $this->assertNotWPError( $contact );
         $deleted = DT_Posts::update_post( "contacts", $contact1["ID"], [
-            "reminders" => [
+            "tasks" => [
                 "values" => [
                     [
-                        "id" => $reminder_id,
+                        "id" => $task_id,
                         "delete" => true
                     ]
                 ]
             ]
         ] );
         $this->assertNotWPError( $deleted );
-        $this->assertArrayNotHasKey( 'reminders', $deleted );
+        $this->assertArrayNotHasKey( 'tasks', $deleted );
 
         //now try to break things
         $contact2 = DT_Posts::create_post( "contacts", [
             "title"     => "contact2",
-            "reminders" => [
+            "tasks" => [
                 "values" => [
                     [
                         "value" => "hello contact 2",
@@ -227,10 +227,10 @@ class PostsTest extends WP_UnitTestCase {
                 ]
             ]
         ] );
-        $contact2_reminder_id = $contact2["reminders"][0]["id"];
+        $contact2_task_id = $contact2["tasks"][0]["id"];
 
         $update_non_existing_id = DT_Posts::update_post( "contacts", $contact2["ID"], [
-            "reminders" => [
+            "tasks" => [
                 "values" => [
                     [
                         "id" => 1000,
@@ -242,7 +242,7 @@ class PostsTest extends WP_UnitTestCase {
         ] );
         $this->assertWPError( $update_non_existing_id );
         $delete_non_existing_id = DT_Posts::update_post( "contacts", $contact2["ID"], [
-            "reminders" => [
+            "tasks" => [
                 "values" => [
                     [
                         "id" => 1000,
@@ -253,7 +253,7 @@ class PostsTest extends WP_UnitTestCase {
         ] );
         $this->assertWPError( $delete_non_existing_id );
         $bad_delete = DT_Posts::update_post( "contacts", $contact2["ID"], [
-            "reminders" => [
+            "tasks" => [
                 "values" => [
                     [
                         "delete" => true
@@ -266,7 +266,7 @@ class PostsTest extends WP_UnitTestCase {
         // update ids of another post
         $contact3 = DT_Posts::create_post( "contacts", [
             "title"     => "contact3",
-            "reminders" => [
+            "tasks" => [
                 "values" => [
                     [
                         "value" => "hello from contact 3",
@@ -276,10 +276,10 @@ class PostsTest extends WP_UnitTestCase {
             ]
         ] );
         $update_another_post = DT_Posts::update_post( "contacts", $contact3["ID"], [
-            "reminders" => [
+            "tasks" => [
                 "values" => [
                     [
-                        "id"    => $contact2_reminder_id,
+                        "id"    => $contact2_task_id,
                         "value" => "a new value",
                         "date"  => "2017-01-01",
                     ]
@@ -287,7 +287,7 @@ class PostsTest extends WP_UnitTestCase {
             ]
         ] );
         $this->assertWPError( $update_another_post );
-        $this->assertCount( 1, $contact2["reminders"] );
+        $this->assertCount( 1, $contact2["tasks"] );
 
         //switch to user2
         wp_set_current_user( $user2_id );
@@ -295,26 +295,26 @@ class PostsTest extends WP_UnitTestCase {
         $user2->set_role( 'dispatcher' );
         $dispatch_contact_2 = DT_Posts::get_post( "contacts", $contact2["ID"] );
         $this->assertNotWPError( $dispatch_contact_2 );
-        //access user1's reminders
-        $this->assertArrayNotHasKey( 'reminders', $dispatch_contact_2 );
-        //update user1's reminders
-        $update_anothers_reminder = DT_Posts::update_post( "contacts", $contact2["ID"], [
-            "reminders" => [
+        //access user1's tasks
+        $this->assertArrayNotHasKey( 'tasks', $dispatch_contact_2 );
+        //update user1's tasks
+        $update_anothers_task = DT_Posts::update_post( "contacts", $contact2["ID"], [
+            "tasks" => [
                 "values" => [
                     [
-                        "id" => $contact2_reminder_id,
+                        "id" => $contact2_task_id,
                         "value" => "a new value",
                         "date"  => "2017-01-01",
                     ]
                 ]
             ]
         ] );
-        $this->assertWPError( $update_anothers_reminder );
-        $delete_anothers_reminder = DT_Posts::update_post( "contacts", $contact2["ID"], [
-            "reminders" => [
+        $this->assertWPError( $update_anothers_task );
+        $delete_anothers_task = DT_Posts::update_post( "contacts", $contact2["ID"], [
+            "tasks" => [
                 "values" => [
                     [
-                        "id" => $contact2_reminder_id,
+                        "id" => $contact2_task_id,
                         "value" => "a new value",
                         "date"  => "2017-01-01",
                         "delete" => true
@@ -322,7 +322,7 @@ class PostsTest extends WP_UnitTestCase {
                 ]
             ]
         ] );
-        $this->assertWPError( $delete_anothers_reminder );
+        $this->assertWPError( $delete_anothers_task );
     }
 
 }

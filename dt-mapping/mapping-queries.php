@@ -801,7 +801,7 @@ class Disciple_Tools_Mapping_Queries {
                         JOIN $wpdb->posts as pp ON p.post_id=pp.ID
                         LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value             
                         LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
-                        LEFT JOIN wp_postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'group_type'
+                        LEFT JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'group_type'
                     WHERE p.meta_key = 'location_grid' AND g.admin0_grid_id != ''
                 ) as t1
                 GROUP BY admin0_grid_id, type

@@ -59,7 +59,7 @@ class DT_Metrics_Seeker_Path_Chart extends DT_Metrics_Chart_Base
                     'seeker_path' => $this->seeker_path()
                 ],
                 'translations' => [
-                    'seeker_path' => __( "Seeker path", 'disciple_tools' ),
+                    'seeker_path' => __( "Seeker Path", 'disciple_tools' ),
                     'filter_contacts_to_date_range' => __( "Filter contacts to date range:", 'disciple_tools' ),
                     'all_time' => __( "All time", 'disciple_tools' ),
                     'filter_to_date_range' => __( "Filter to date range", 'disciple_tools' ),
