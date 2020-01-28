@@ -753,7 +753,7 @@
           template: post_type === 'contacts' ?
             window.TYPEAHEADS.contactListRowTemplate :
             function (query, item) {
-              return `<span dir="auto">${_.escape(item.name)} (###${_.escape( item.ID )})</span>`
+              return `<span dir="auto">${_.escape(item.name)} (#${_.escape( item.ID )})</span>`
           },
           source: TYPEAHEADS.typeaheadPostsSource(post_type),
           display: "name",

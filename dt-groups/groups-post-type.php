@@ -463,6 +463,7 @@ class Disciple_Tools_Groups_Post_Type
             "name" => __( 'People Groups', 'disciple_tools' ),
             'description' => _x( 'The people groups represented by this group.', 'people_groups field description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "peoplegroups",
             "p2p_direction" => "from",
             "p2p_key" => "groups_to_peoplegroups"
         ];

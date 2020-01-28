@@ -635,6 +635,7 @@ class Disciple_Tools_Contact_Post_Type
             "name" => _x( "People Groups", 'field name', 'disciple_tools' ),
             "description" => _x( "People Groups this contact belongs to.", 'field description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "peoplegroups",
             "p2p_direction" => "from",
             "p2p_key" => "contacts_to_peoplegroups"
         ];
