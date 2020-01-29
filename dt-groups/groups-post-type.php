@@ -495,6 +495,12 @@ class Disciple_Tools_Groups_Post_Type
             'type'        => 'location',
             'default'     => [],
         ];
+        $fields['location_grid_meta'] = [
+            'name'        => _x( 'Location Grid Meta', 'field name', 'disciple_tools' ),
+            'type'        => 'location',
+            'default'     => [],
+            'hidden' => true
+        ];
         $fields['tasks'] = [
             'name' => __( 'Tasks', 'disciple_tools' ),
             'description' => __( 'Tasks related to this group.', 'disciple_tools' ),
