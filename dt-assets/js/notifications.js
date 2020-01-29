@@ -68,8 +68,8 @@ function notification_template (id, note, is_new, pretty_time) {
 
         <div class="auto cell">
            ${note}<br>
-           <span class="grey test">${_.escape( pretty_time )}</span>
-           <span class="inline time"> | ${_.escape( pretty_time[0] ).slice(0,-8)}</span>
+           <span class="grey test">${_.escape( pretty_time[0] )} | ${_.escape( pretty_time[2] )} hours ago | ${_.escape( pretty_time[3] )} weeks ago | ${_.escape( pretty_time[4] )} months ago | ${_.escape( pretty_time[5] )} years ago </span>
+           <span class="inline time"> | ${_.escape( pretty_time[1] ).slice(0,-8)}</span>
         </div>
         <div class="small-2 medium-1 cell padding-5 ${_.escape( label )}" id="toggle-area-${_.escape( id )}">
             ${button}
