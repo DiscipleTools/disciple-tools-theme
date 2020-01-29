@@ -381,7 +381,7 @@ class Disciple_Tools_Notifications
             $message = sprintf( __( '%s years ago', 'disciple_tools' ), $range->years );
         }
 
-        return array( $message, date( "m/d/Y", $notification_date ) );
+        return array( $message, gmdate( "m/d/Y", $notification_date ) );
     }
 
     /**
