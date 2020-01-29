@@ -359,7 +359,7 @@ class Disciple_Tools_Notifications
           );
           $range = (object) $range;
 
-        //determine which condition meets "this" notifcation timestamp
+        //determine which condition meets "this" notification timestamp
         //the following 6 sprintf() items are the only items in this function that need to be translated in WP
         if ($range->minutes < 60) {
             // the exact number our minutes if this timestamp is < 60 minutes ago
