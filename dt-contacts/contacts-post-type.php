@@ -661,7 +661,13 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'location',
             'default'     => [],
         ];
-        $fields['location_lnglat'] = [
+        $fields['location_grid_meta'] = [
+            'name'        => _x( 'Location Grid Meta', 'field name', 'disciple_tools' ),
+            'type'        => 'location',
+            'default'     => [],
+            'hidden' => true
+        ];
+        $fields['location_lnglat'] = [ // @todo remove supports a small amount of web forms
             'name'        => _x( 'Coordinates', 'field name', 'disciple_tools' ),
             'type'        => 'location',
             'default'     => [],
