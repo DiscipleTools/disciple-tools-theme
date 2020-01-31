@@ -126,7 +126,7 @@
             <div class="cell small-12 medium-4">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
-                    <?php esc_html_e( 'Assigned to', 'disciple_tools' )?>
+                    <?php echo esc_html( $contact_fields["assigned_to"]["name"] )?>
                     <button class="help-button" data-section="assigned-to-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
@@ -157,7 +157,7 @@
             <div class="cell small-12 medium-4">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/subassigned.svg' ?>">
-                    <?php esc_html_e( "Sub-assigned to", 'disciple_tools' )?>
+                    <?php echo esc_html( $contact_fields["subassigned"]["name"] )?>
                     <button class="help-button" data-section="subassigned-to-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
@@ -215,7 +215,7 @@
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
-                    <?php esc_html_e( 'Address', 'disciple_tools' )?>
+                    <?php echo esc_html( $channel_list["address"]["label"] )?>
                 </div>
                 <ul class="address"></ul>
             </div>
@@ -224,7 +224,7 @@
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                    <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
+                    <?php echo esc_html( $contact_fields["location_grid"]["name"] )?>
                 </div>
                 <ul class="location_grid-list"></ul>
             </div>
@@ -233,7 +233,7 @@
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
-                    <?php esc_html_e( 'People Groups', 'disciple_tools' )?>
+                    <?php echo esc_html( $contact_fields["people_groups"]["name"] )?>
                 </div>
                 <ul class="people_groups-list details-list"></ul>
             </div>
@@ -242,7 +242,7 @@
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/contact-age.svg" ?>">
-                    <?php esc_html_e( 'Age', 'disciple_tools' )?>
+                    <?php echo esc_html( $contact_fields["age"]["name"] )?>
                 </div>
                 <ul class="details-list">
                     <li class="age">
@@ -261,7 +261,7 @@
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/gender.svg' ?>">
-                    <?php esc_html_e( 'Gender', 'disciple_tools' )?>
+                    <?php echo esc_html( $contact_fields["gender"]["name"] )?>
                 </div>
                 <ul class="details-list">
                     <li class="gender">
@@ -341,7 +341,7 @@
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
-                    <?php esc_html_e( 'Address', 'disciple_tools' )?>
+                    <?php echo esc_html( $channel_list["address"]["label"] )?>
                     <button id="add-new-address">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
@@ -353,7 +353,7 @@
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                    <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
+                    <?php echo esc_html( $contact_fields["location_grid"]["name"] )?>
                 </div>
                 <div class="location_grid">
                     <var id="location_grid-result-container" class="result-container"></var>
@@ -362,7 +362,8 @@
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-location_grid input-height"
-                                           name="location_grid[query]" placeholder="<?php echo esc_html_x( "Search Locations", 'input field placeholder', 'disciple_tools' ) ?>"
+                                           name="location_grid[query]"
+                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["location_grid"]["name"] ) )?>"
                                            autocomplete="off">
                                 </span>
                             </div>
@@ -388,7 +389,7 @@
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
-                    <?php esc_html_e( 'Source', 'disciple_tools' ); ?>
+                    <?php echo esc_html( $contact_fields["sources"]["name"] )?>
                 </div>
                 <span id="sources-result-container" class="result-container"></span>
                 <div id="sources_t" name="form-sources" class="scrollable-typeahead">
@@ -396,7 +397,8 @@
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-sources"
-                                       name="sources[query]" placeholder="<?php echo esc_html_x( "Search sources", 'input field placeholder', 'disciple_tools' ) ?>"
+                                       name="sources[query]"
+                                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["sources"]["name"] ) )?>"
                                        autocomplete="off">
                             </span>
                         </div>
@@ -409,7 +411,7 @@
                 <div class="cell small-6">
                     <div class="section-subheader cell">
                         <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/gender.svg' ?>">
-                        <?php esc_html_e( 'Gender', 'disciple_tools' )?>
+                        <?php echo esc_html( $contact_fields["gender"]["name"] )?>
                     </div>
                     <select id="gender" class="select-input">
                         <?php
@@ -430,7 +432,7 @@
                 <div class="cell small-6">
                     <div class="section-subheader cell">
                         <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/contact-age.svg" ?>">
-                        <?php esc_html_e( 'Age', 'disciple_tools' )?>
+                        <?php echo esc_html( $contact_fields["age"]["name"] )?>
                     </div>
                     <select id="age" class="select-input">
                         <?php
@@ -452,7 +454,7 @@
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
-                    <?php esc_html_e( 'People Groups', 'disciple_tools' )?>
+                    <?php echo esc_html( $contact_fields["people_groups"]["name"] )?>
                 </div>
                 <div class="people_groups">
                     <var id="people_groups-result-container" class="result-container"></var>
@@ -461,7 +463,8 @@
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-people_groups"
-                                           name="people_groups[query]" placeholder="<?php echo esc_html_x( "Search People Groups", 'input field placeholder', 'disciple_tools' ) ?>"
+                                           name="people_groups[query]"
+                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["people_groups"]["name"] ) )?>"
                                            autocomplete="off">
                                 </span>
                             </div>
