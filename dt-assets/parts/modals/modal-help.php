@@ -384,7 +384,7 @@
 
         <!--  Group name -->
         <div class="help-section" id="group-name-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Name of Group", 'page heading', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html__( "Name of Group", 'disciple_tools' ) ?></h3>
             <p><?php esc_html_e( "The name of the group is searchable and can be used to help you filter your contacts in the Groups List page.", 'disciple_tools' ) ?></p>
         </div>
     <?php endif; ?>

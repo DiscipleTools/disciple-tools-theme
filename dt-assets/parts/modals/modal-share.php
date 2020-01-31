@@ -23,7 +23,8 @@ global $post;
                 <div class="typeahead__field">
                     <span class="typeahead__query">
                         <input class="js-typeahead-share input-height"
-                               name="share[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
+                               name="share[query]"
+                               placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
                                autocomplete="off">
                     </span>
                 </div>

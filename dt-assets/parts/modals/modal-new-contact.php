@@ -4,12 +4,12 @@
 
     <form class="js-create-contact hide-after-contact-create">
         <label for="title">
-            <?php esc_html_e( "Name of Contact", "disciple_tools" ); ?>
+            <?php esc_html_e( "Name", "disciple_tools" ); ?>
         </label>
-        <input name="title" type="text" placeholder="<?php echo esc_html_x( "Name", 'input field placeholder', 'disciple_tools' ); ?>" required aria-describedby="name-help-text">
+        <input name="title" type="text" placeholder="<?php echo esc_html__( "Name", 'disciple_tools' ); ?>" required aria-describedby="name-help-text">
 
         <div>
-            <button class="button loader js-create-contact-button" type="submit"><?php echo esc_html_x( "Create Contact", 'button', 'disciple_tools' ); ?></button>
+            <button class="button loader js-create-contact-button" type="submit"><?php echo esc_html__( "Create Contact", 'disciple_tools' ); ?></button>
             <button class="button button-cancel clear hide-after-contact-create" data-close aria-label="Close reveal" type="button">
                 <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
             </button>
@@ -27,13 +27,7 @@
         </a>
         <button class="button reveal-after-contact-create button-cancel clear" data-close type="button" id="create-contact-return" style="display: none">
             <?php
-            if ( is_singular( "contacts" )){
-                echo esc_html_x( 'Back to Contact', 'Link button', 'disciple_tools' );
-            } elseif ( is_singular( "groups" )){
-                echo esc_html_x( 'Back to Group', 'Link button', 'disciple_tools' );
-            } else {
-                echo esc_html_x( 'Back', 'Link button', 'disciple_tools' );
-            }
+                echo esc_html( sprintf( _x( "Back to %s", "back to record", 'disciple_tools' ), DT_Posts::get_label_for_post_type( "contacts", false ) ) );
             ?>
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">

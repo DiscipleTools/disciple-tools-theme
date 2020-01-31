@@ -172,18 +172,17 @@ class Disciple_Tools_Posts
     }
 
     public static function get_label_for_post_type( $post_type, $singular = false ){
-        switch ( $post_type ) {
-            case "contacts":
-            case "contact":
-                return $singular ? Disciple_Tools_Contact_Post_Type::instance()->singular : Disciple_Tools_Contact_Post_Type::instance()->plural;
-                break;
-            case "groups":
-            case "group":
-                return $singular ? Disciple_Tools_Groups_Post_Type::instance()->singular : Disciple_Tools_Groups_Post_Type::instance()->plural;
-                break;
-            default:
-                return $post_type;
+        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+        if ( $singular ){
+            if ( isset( $post_settings["label_singular"] ) ){
+                return $post_settings["label_singular"];
+            }
+        } else {
+            if ( isset( $post_settings["label_plural"] ) ){
+                return $post_settings["label_plural"];
+            }
         }
+        return $post_type;
     }
 
     /**
