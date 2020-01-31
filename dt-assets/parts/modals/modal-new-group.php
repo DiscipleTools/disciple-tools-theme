@@ -11,7 +11,7 @@
         <div>
             <button class="button loader js-create-group-button" type="submit"><?php echo esc_html__( "Create Group", 'disciple_tools' ); ?></button>
             <button class="button button-cancel clear hide-after-group-create" data-close aria-label="Close reveal" type="button">
-                <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
+                <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
             </button>
         </div>
     </form>
@@ -26,7 +26,7 @@
         </a>
         <button class="button reveal-after-group-create button-cancel clear" data-close type="button" id="create-group-return" style="display: none">
             <?php
-            echo esc_html( sprintf( _x( "Back to %s", "Back to record", 'disciple_tools' ), DT_Posts::get_label_for_post_type( "groups", false ) ) );
+            echo esc_html( sprintf( _x( "Back to %s", "back to record", 'disciple_tools' ), DT_Posts::get_label_for_post_type( "groups", false ) ) );
             ?>
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">

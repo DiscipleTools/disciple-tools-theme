@@ -577,10 +577,10 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             ?>
         </select>
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-            <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
         </button>
         <button class="button loader confirm-reason-button" type="button" id="confirm-close" data-field="closed">
-            <?php echo esc_html_x( 'Confirm', 'button', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
@@ -609,10 +609,10 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             ?>
         </select>
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-            <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
         </button>
         <button class="button loader confirm-reason-button" type="button" id="confirm-pause" data-field="paused">
-            <?php echo esc_html_x( 'Confirm', 'button', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
@@ -640,10 +640,10 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             ?>
         </select>
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-            <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
         </button>
         <button class="button loader confirm-reason-button" type="button" id="confirm-unassignable" data-field="unassignable">
-            <?php echo esc_html_x( 'Confirm', 'button', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
@@ -664,7 +664,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
         <div class="grid-x">
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
+                <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
             </button>
             <button class="button" data-close type="button" id="create-tag-return">
                 <?php esc_html_e( 'Create and apply tag', 'disciple_tools' ); ?>
@@ -708,7 +708,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
         <div class="grid-x">
             <button class="button" data-close type="button" id="close-baptism-modal">
-                <?php echo esc_html_x( 'Close', 'button', 'disciple_tools' )?>
+                <?php echo esc_html__( 'Close', 'disciple_tools' )?>
             </button>
             <button class="close-button" data-close aria-label="Close modal" type="button">
                 <span aria-hidden="true">&times;</span>
@@ -744,7 +744,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             </div>
             <div class="grid-x">
                 <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                    <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
+                    <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
                 </button>
                 <button class="button loader" type="submit" id="create-user-return">
                     <?php esc_html_e( 'Create user', 'disciple_tools' ); ?>
@@ -798,14 +798,14 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
         <div class="grid-x">
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
+                <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
             </button>
             <form action='<?php echo esc_url( site_url() );?>/contacts/mergedetails' method='post'>
                 <input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr( wp_create_nonce() ); ?>'/>
                 <input type='hidden' name='currentid' value='<?php echo esc_html( $contact["ID"] );?>'/>
                 <input id="confirm-merge-with-user-dupe-id" type='hidden' name='dupeid' value=''/>
                 <button type='submit' class="button confirm-merge-with-user" style="display: none">
-                    <?php echo esc_html_x( 'Merge', 'button', 'disciple_tools' )?>
+                    <?php echo esc_html__( 'Merge', 'disciple_tools' )?>
                 </button>
             </form>
             <button class="close-button" data-close aria-label="Close modal" type="button">
@@ -846,14 +846,14 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
             <div class="grid-x">
                 <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                    <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
+                    <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
                 </button>
                 <form action='<?php echo esc_url( site_url() );?>/contacts/mergedetails' method='post'>
                     <input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr( wp_create_nonce() ); ?>'/>
                     <input type='hidden' name='currentid' value='<?php echo esc_html( $contact["ID"] );?>'/>
                     <input id="confirm-merge-with-contact-id" type='hidden' name='dupeid' value=''/>
                     <button type='submit' class="button confirm-merge-with-contact" style="display: none">
-                        <?php echo esc_html_x( 'Merge', 'button', 'disciple_tools' )?>
+                        <?php echo esc_html__( 'Merge', 'disciple_tools' )?>
                     </button>
                 </form>
                 <button class="close-button" data-close aria-label="Close modal" type="button">

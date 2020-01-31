@@ -47,7 +47,7 @@ global $post;
             <hr size="1px">
             <span style="float:right; bottom: 0;">
             <button class="button" data-close aria-label="Close reveal" type="button">
-                <?php echo esc_html_x( 'Close', 'button', 'disciple_tools' )?>
+                <?php echo esc_html__( 'Close', 'disciple_tools' )?>
             </button>
         </span>
         </div>

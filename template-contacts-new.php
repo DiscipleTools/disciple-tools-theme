@@ -91,15 +91,15 @@ get_header();
                     </div>
                 </label>
                 <label for="comment-input">
-                    <?php esc_html_e( "Initial comment", "disciple_tools" ); ?>
+                    <?php esc_html_e( "Initial Comment", "disciple_tools" ); ?>
                     <button class="help-button" type="button" data-section="initial-comment-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
-                    <textarea id="comment-input" name="initial_comment" dir="auto" placeholder="<?php echo esc_html_x( "Initial comment", 'input field placeholder', "disciple_tools" ); ?>"></textarea>
+                    <textarea id="comment-input" name="initial_comment" dir="auto" placeholder="<?php echo esc_html_x( "Initial Comment", "disciple_tools" ); ?>"></textarea>
                 </label>
 
                 <div style="text-align: center">
-                    <a href="/contacts/" class="button small clear"><?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?></a>
+                    <a href="/contacts/" class="button small clear"><?php echo esc_html__( 'Cancel', 'disciple_tools' )?></a>
                     <button class="button loader js-create-contact-button dt-green" type="submit" disabled title="<?php esc_html_e( 'Save and continue editing', 'disciple_tools' )?>"><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
                 </div>
             </form>

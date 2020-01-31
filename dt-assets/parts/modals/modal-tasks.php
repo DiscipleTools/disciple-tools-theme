@@ -43,7 +43,7 @@ global $post;
     <div class="grid-x">
         <hr size="1px">
         <button class="button clear" data-close aria-label="Close reveal" type="button">
-            <?php echo esc_html_x( 'Close', 'Tasks', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Close', 'disciple_tools' )?>
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>

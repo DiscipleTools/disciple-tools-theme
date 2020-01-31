@@ -863,7 +863,7 @@ class Disciple_Tools_Contact_Post_Type
                 "description" => ''
             ],
             "address" => [
-                "label" => _x( "Address", 'field label', 'disciple_tools' ),
+                "label" => _x( "Address", 'disciple_tools' ),
                 "types" => dt_get_option( "dt_site_custom_lists" )["contact_address_types"],
                 "description" => ''
             ],

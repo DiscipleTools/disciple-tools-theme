@@ -478,7 +478,7 @@
         <!-- Buttons -->
         <div>
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
+                <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
             </button>
             <button class="button loader" type="button" id="save-edit-details">
                 <?php esc_html_e( 'Save', 'disciple_tools' )?>

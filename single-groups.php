@@ -86,12 +86,12 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                         <?php esc_html_e( "Member List", 'disciple_tools' ) ?>
                                     </div>
                                     <button type="button" class="create-new-contact" style="height: 36px;">
-                                        <?php echo esc_html_x( 'Create', 'button', 'disciple_tools' )?>
+                                        <?php echo esc_html__( 'Create', 'disciple_tools' )?>
                                         <img style="height: 14px; width: 14px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                                     </button>
                                     <button type="button"
                                             class="add-new-member">
-                                        <?php echo esc_html_x( 'Select', 'button', 'disciple_tools' )?>
+                                        <?php echo esc_html__( 'Select', 'disciple_tools' )?>
                                         <img style="height: 16px; width: 16px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group.svg' ) ?>"/>
                                     </button>
                                 </div>
@@ -396,7 +396,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                 <hr size="1px">
                 <span style="float:right; bottom: 0;">
                     <button class="button" data-close aria-label="Close reveal" type="button">
-                        <?php echo esc_html_x( 'Close', 'button', 'disciple_tools' )?>
+                        <?php echo esc_html__( 'Close', 'disciple_tools' )?>
                     </button>
                 </span>
             </div>

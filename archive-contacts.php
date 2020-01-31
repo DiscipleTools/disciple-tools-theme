@@ -237,12 +237,12 @@ declare(strict_types=1);
         <div class="grid-x grid-padding-x">
             <div class="cell small-4 filter-modal-left">
                 <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                    <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
+                    <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
                 </button>
             </div>
             <div class="cell small-8 filter-modal-right confirm-buttons">
                 <button style="display: inline-block" class="button loader confirm-filter-contacts" type="button" id="confirm-filter-contacts" data-close >
-                    <?php esc_html_e( 'Filter contacts', 'disciple_tools' )?>
+                    <?php esc_html_e( 'Filter Contacts', 'disciple_tools' )?>
                 </button>
                 <button class="button loader confirm-filter-contacts" type="button" id="save-filter-edits" data-close style="display: none">
                     <?php esc_html_e( 'Save', 'disciple_tools' )?>

@@ -349,7 +349,7 @@
 
         <!--  Contact name -->
         <div class="help-section" id="contact-name-help-text" style="display: none">
-            <h3><?php esc_html_e( "Name of contact", 'disciple_tools' ) ?></h3>
+            <h3><?php esc_html_e( "Name of Contact", 'disciple_tools' ) ?></h3>
             <p><?php esc_html_e( "The name of the contact is searchable and can be used to help you filter your contacts in the Contacts List page.", 'disciple_tools' ) ?></p>
         </div>
 
@@ -443,7 +443,7 @@
         <div class="cell small-4">
             <h5>&nbsp;</h5>
             <button class="button small" data-close aria-label="Close reveal" type="button">
-                <?php echo esc_html_x( 'Close', 'button', 'disciple_tools' )?>
+                <?php echo esc_html__( 'Close', 'disciple_tools' )?>
             </button>
         </div>
         <div class="cell small-8">

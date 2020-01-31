@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Disciple Tools\n"
-"POT-Creation-Date: 2020-01-31 16:12+0100\n"
+"POT-Creation-Date: 2020-01-31 16:58+0100\n"
 "PO-Revision-Date: 2018-01-09 14:10-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -61,7 +61,7 @@ msgid "The page you were looking for was not found or was deleted"
 msgstr ""
 
 #: archive-contacts.php:23 archive-contacts.php:45
-#: dt-assets/parts/modals/modal-help.php:357
+#: dt-assets/parts/modals/modal-help.php:346
 msgid "Create new contact"
 msgstr ""
 
@@ -164,7 +164,7 @@ msgid "Save"
 msgstr ""
 
 #: archive-groups.php:22 archive-groups.php:40
-#: dt-assets/parts/modals/modal-help.php:381 template-groups-new.php:19
+#: dt-assets/parts/modals/modal-help.php:370 template-groups-new.php:19
 msgid "Create New Group"
 msgstr ""
 
@@ -568,7 +568,7 @@ msgstr ""
 msgid "Notifications"
 msgstr ""
 
-#: dt-assets/functions/menu.php:90 dt-assets/parts/modals/modal-help.php:442
+#: dt-assets/functions/menu.php:90 dt-assets/parts/modals/modal-help.php:431
 #: dt-assets/parts/nav-offcanvas-topbar.php:44
 #: dt-assets/parts/nav-offcanvas-topbar.php:104 template-notifications.php:57
 msgid "Settings"
@@ -750,7 +750,7 @@ msgid "Search Locations"
 msgstr ""
 
 #: dt-assets/parts/loop-activity-comment.php:8
-#: dt-assets/parts/modals/modal-help.php:282
+#: dt-assets/parts/modals/modal-help.php:271
 msgid "Comments and Activity"
 msgstr ""
 
@@ -882,24 +882,16 @@ msgstr ""
 msgid "Contact Name"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:17
-msgid ""
-"The name of the contact is searchable and can be used to help you filter "
-"your contacts in the Contacts List page. The system uses this name to check "
-"for duplicate contacts."
-msgstr ""
-
 #: dt-assets/parts/modals/modal-help.php:24
 msgid "Social media accounts for this contact."
 msgstr ""
 
 #: dt-assets/parts/modals/modal-help.php:51
-#: dt-assets/parts/modals/modal-help.php:163
 msgid "User workload status icons legend:"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-help.php:57
-msgid "2 contacts need an update."
+msgid "2 contacts need an update"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-help.php:70
@@ -958,50 +950,46 @@ msgid "Group Name"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-help.php:153
-#: dt-assets/parts/modals/modal-help.php:388
+#: dt-assets/parts/modals/modal-help.php:377
 msgid ""
 "The name of the group is searchable and can be used to help you filter your "
 "contacts in the Groups List page."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:169
-msgid "2 contacts need an update"
-msgstr ""
-
-#: dt-assets/parts/modals/modal-help.php:176
+#: dt-assets/parts/modals/modal-help.php:165
 #: dt-core/admin/config-site-defaults.php:493
 #: dt-groups/groups-post-type.php:581 template-settings.php:126
 msgid "Address"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:176
+#: dt-assets/parts/modals/modal-help.php:165
 msgid ""
 "The address where this group meets. (e.g., 124 Market St or “Jon’s Famous "
 "Coffee Shop)."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:199
+#: dt-assets/parts/modals/modal-help.php:188
 msgid ""
 "If the group/church regularly practices any of the elements listed, then "
 "click each element to add them inside the circle."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:200
+#: dt-assets/parts/modals/modal-help.php:189
 msgid ""
 "If the group has committed to be a church, indicate this by clicking the "
 "\"Church Commitment\" button to make the dotted line circle solid."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:205
+#: dt-assets/parts/modals/modal-help.php:194
 msgid "Members"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:206
+#: dt-assets/parts/modals/modal-help.php:195
 msgid ""
 "This is the area where you manage the contacts that are a part of the group."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:211
+#: dt-assets/parts/modals/modal-help.php:200
 msgid ""
 "To remove a member, click the X icon to the right side of the member name. "
 "Click the footprint icon next to the members name to signify that this "
@@ -1009,76 +997,76 @@ msgid ""
 "group)."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:212
+#: dt-assets/parts/modals/modal-help.php:201
 msgid ""
 "To add new members, click on the 'Create' or 'Select' and click on the name "
 "or search for them."
 msgstr ""
 
+#: dt-assets/parts/modals/modal-help.php:231
 #: dt-assets/parts/modals/modal-help.php:242
-#: dt-assets/parts/modals/modal-help.php:253
 msgid "Group Connections"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:243
+#: dt-assets/parts/modals/modal-help.php:232
 msgid ""
 "Here you can select what type of group this is and how it is related to "
 "other groups in the system."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:254
+#: dt-assets/parts/modals/modal-help.php:243
 msgid "Connections this group has with other groups in this system."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:265 single-groups.php:240
+#: dt-assets/parts/modals/modal-help.php:254 single-groups.php:240
 msgid "Four Fields"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:266
+#: dt-assets/parts/modals/modal-help.php:255
 msgid ""
 "There are 5 squares in the Four Fields diagram. Starting in the top left "
 "quadrant and going clockwise and the fifth being in the middle, they stand "
 "for:"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:283
+#: dt-assets/parts/modals/modal-help.php:272
 msgid "This is where you can record notes from meetings and conversations."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:284
+#: dt-assets/parts/modals/modal-help.php:273
 msgid ""
 "Type @ and the name of a user to mention them in a comment. This user will "
 "then receive a notification."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:285
+#: dt-assets/parts/modals/modal-help.php:274
 msgid ""
 "This section also includes the history of activity, such as when the contact "
 "or group status became active etc."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:286
+#: dt-assets/parts/modals/modal-help.php:275
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:296
+#: dt-assets/parts/modals/modal-help.php:285
 msgctxt "heading"
 msgid "Default and Custom Filters"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:297
+#: dt-assets/parts/modals/modal-help.php:286
 msgid ""
 "Use these filters to focus in on the contacts or groups you are responsible "
 "for. If the default filters do not fit your needs you can create your own "
 "custom filter."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:302
+#: dt-assets/parts/modals/modal-help.php:291
 msgctxt "page heading"
 msgid "Contacts List Tile"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:303
+#: dt-assets/parts/modals/modal-help.php:292
 msgid ""
 "Your list of contacts will show up here. Whenever you filter contacts, the "
 "list will also be changed in this section too. You can sort your contacts by "
@@ -1088,12 +1076,12 @@ msgid ""
 "more."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:308
+#: dt-assets/parts/modals/modal-help.php:297
 msgctxt "page heading"
 msgid "Groups List Tile"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:309
+#: dt-assets/parts/modals/modal-help.php:298
 msgid ""
 "Your list of groups will show up here. Whenever you filter groups, the list "
 "will also be changed in this section too. You can sort your groups by "
@@ -1103,37 +1091,37 @@ msgid ""
 "more."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:314
+#: dt-assets/parts/modals/modal-help.php:303
 msgid "Closed contacts switch"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:315
+#: dt-assets/parts/modals/modal-help.php:304
 msgid ""
 "Use this toggle switch to either show or not show closed contacts in the "
 "list."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:320
+#: dt-assets/parts/modals/modal-help.php:309
 msgid "Inactive Groups switch"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:321
+#: dt-assets/parts/modals/modal-help.php:310
 msgid ""
 "Use this toggle switch to either show or not show inactive groups in the "
 "list."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:351
+#: dt-assets/parts/modals/modal-help.php:340
 msgid "Initial Comment"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:352
+#: dt-assets/parts/modals/modal-help.php:341
 msgid ""
 "The Initial Comment field is for any extra information. It will be saved as "
 "the first comment under the Activity and Comments Tile."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:358
+#: dt-assets/parts/modals/modal-help.php:347
 msgid ""
 "After writing the name of the contact, complete as many other fields as you "
 "can, before clicking 'Save and continue editing'. On the next screen you can "
@@ -1141,85 +1129,85 @@ msgid ""
 "created."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:363
+#: dt-assets/parts/modals/modal-help.php:352
 msgid "Name of contact"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:364
+#: dt-assets/parts/modals/modal-help.php:353
 msgid ""
 "The name of the contact is searchable and can be used to help you filter "
 "your contacts in the Contacts List page."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:382
+#: dt-assets/parts/modals/modal-help.php:371
 msgid ""
 "After writing the name of the group, complete as many other fields as you "
 "can, before clicking 'Save and continue editing'. On the next screen you can "
 "edit and add more information about this new group has just been created."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:387 template-groups-new.php:24
+#: dt-assets/parts/modals/modal-help.php:376 template-groups-new.php:24
 msgid "Name of Group"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:401 template-settings.php:63
+#: dt-assets/parts/modals/modal-help.php:390 template-settings.php:63
 msgid "Your Profile"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:402
+#: dt-assets/parts/modals/modal-help.php:391
 msgid "In this area you can see your user profile."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:403
+#: dt-assets/parts/modals/modal-help.php:392
 msgid ""
 "You are not required to fill out any of these profile fields. They are "
 "optional to meet your team’s needs."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:404
+#: dt-assets/parts/modals/modal-help.php:393
 msgid ""
 "By clicking 'Edit', you will be able adjust things like the language that "
 "this system operates in."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:409 dt-groups/groups-post-type.php:429
+#: dt-assets/parts/modals/modal-help.php:398 dt-groups/groups-post-type.php:429
 #: template-settings.php:38 template-settings.php:186
 msgid "Locations"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:410
+#: dt-assets/parts/modals/modal-help.php:399
 msgid ""
 "These are the areas you are responsible for. Clicking the 'Add' button will "
 "bring up a list of locations to choose from."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:415
+#: dt-assets/parts/modals/modal-help.php:404
 msgctxt "page heading"
 msgid "Your Notifications"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:416
+#: dt-assets/parts/modals/modal-help.php:405
 msgid ""
 "You will receive web notifications and email notifications based on your "
 "notification preferences. To change your preference, click the toggle "
 "buttons."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:418
+#: dt-assets/parts/modals/modal-help.php:407
 msgid "Notifications Turned On: The toggle will appear blue."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:419
+#: dt-assets/parts/modals/modal-help.php:408
 msgid "Notifications Turned Off: The toggle will appear grey."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:421
+#: dt-assets/parts/modals/modal-help.php:410
 msgid ""
 "Some of the types of notifications cannot be adjusted because they are "
 "required by the system."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:422
+#: dt-assets/parts/modals/modal-help.php:411
 msgid ""
 "Adjust whether you want to see notifications about new comments, contact "
 "information changes, Contact Milestones and Group Health metrics, and "
@@ -1227,37 +1215,37 @@ msgid ""
 "the system."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:435
+#: dt-assets/parts/modals/modal-help.php:424
 msgctxt "page heading"
 msgid "Notifications Page"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:436
+#: dt-assets/parts/modals/modal-help.php:425
 msgid ""
 "This Notifications Page is where you can read updates to users and groups. "
 "It displays notifications about activity on your records."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:437
+#: dt-assets/parts/modals/modal-help.php:426
 msgid "All / Unread"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:438
+#: dt-assets/parts/modals/modal-help.php:427
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:439
+#: dt-assets/parts/modals/modal-help.php:428
 msgid ""
 "Click the 'Unread' button to show the list of all of your unread "
 "notifications."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:440 template-notifications.php:55
+#: dt-assets/parts/modals/modal-help.php:429 template-notifications.php:55
 msgid "Mark All as Read"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:441
+#: dt-assets/parts/modals/modal-help.php:430
 msgid ""
 "If you don't want to click each filled in circle on the right side of each "
 "row to indicate the notification has been read, then click the 'Mark All as "
@@ -1265,7 +1253,7 @@ msgid ""
 "been read."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:443
+#: dt-assets/parts/modals/modal-help.php:432
 msgid ""
 "Click the 'Settings' link to go to the notifications settings area to adjust "
 "whether you want to see notifications about new comments, contact "
@@ -1274,12 +1262,12 @@ msgid ""
 "the system."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:448
+#: dt-assets/parts/modals/modal-help.php:437
 msgctxt "page heading"
 msgid "Duplicate Contact page"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:449
+#: dt-assets/parts/modals/modal-help.php:438
 msgctxt "page description"
 msgid ""
 "This Duplicate Contact Page is where you can review, decline or merge "
@@ -1288,7 +1276,7 @@ msgid ""
 "existing contact."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:457
+#: dt-assets/parts/modals/modal-help.php:446
 #: dt-assets/parts/modals/modal-revert.php:15
 #: dt-assets/parts/modals/modal-share.php:50 single-contacts.php:711
 #: single-groups.php:399
@@ -1296,11 +1284,11 @@ msgctxt "button"
 msgid "Close"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:463
+#: dt-assets/parts/modals/modal-help.php:452
 msgid "Need more help?"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:464
+#: dt-assets/parts/modals/modal-help.php:453
 msgid "Read the documentation"
 msgstr ""
 
@@ -1476,11 +1464,6 @@ msgctxt "Contact Status field name"
 msgid "Contact Status"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:192
-msgctxt "Contact Status field description"
-msgid "This is where you set the current status of the contact."
-msgstr ""
-
 #: dt-contacts/contacts-post-type.php:196
 msgctxt "Contact Status label"
 msgid "New Contact"
@@ -1574,19 +1557,9 @@ msgctxt "Seeker Path label"
 msgid "Contact Attempt Needed"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:243
-msgctxt "Contact Attempt Needed field description"
-msgid "Communication with this contact needs to be attempted."
-msgstr ""
-
 #: dt-contacts/contacts-post-type.php:246
 msgctxt "Seeker Path label"
 msgid "Contact Attempted"
-msgstr ""
-
-#: dt-contacts/contacts-post-type.php:247
-msgctxt "Contact Attempted field description"
-msgid "Communication with this contact was attempted."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:250
@@ -1594,19 +1567,9 @@ msgctxt "Seeker Path label"
 msgid "Contact Established"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:251
-msgctxt "Contact Established field description"
-msgid "Communication with this contact was established."
-msgstr ""
-
 #: dt-contacts/contacts-post-type.php:254
 msgctxt "Seeker Path label"
 msgid "First Meeting Scheduled"
-msgstr ""
-
-#: dt-contacts/contacts-post-type.php:255
-msgctxt "Seeker Path field description"
-msgid "The first meeting with this contact has been scheduled."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:258
@@ -1614,29 +1577,14 @@ msgctxt "Seeker Path label"
 msgid "First Meeting Complete"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:259
-msgctxt "Seeker Path field description"
-msgid "The first meeting with this contact has been completed."
-msgstr ""
-
 #: dt-contacts/contacts-post-type.php:262
 msgctxt "Seeker Path label"
 msgid "Ongoing Meetings"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:263
-msgctxt "Seeker Path field description"
-msgid "This contact is continuing in meetings."
-msgstr ""
-
 #: dt-contacts/contacts-post-type.php:266
 msgctxt "Seeker Path label"
 msgid "Being Coached"
-msgstr ""
-
-#: dt-contacts/contacts-post-type.php:267
-msgctxt "Seeker Path field description"
-msgid "This contact is being coached."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:275
@@ -1667,19 +1615,9 @@ msgctxt "milestone field label"
 msgid "Has Bible"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:304
-msgctxt "Faith Milestone field description"
-msgid "This contact has a bible."
-msgstr ""
-
 #: dt-contacts/contacts-post-type.php:307
 msgctxt "milestone field label"
 msgid "Reading Bible"
-msgstr ""
-
-#: dt-contacts/contacts-post-type.php:308
-msgctxt "Faith Milestone field description"
-msgid "This contact is reading the bible."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:311
@@ -1687,19 +1625,9 @@ msgctxt "milestone field label"
 msgid "States Belief"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:312
-msgctxt "Faith Milestone field description"
-msgid "This contact states belief. i.e. they have repented and believed."
-msgstr ""
-
 #: dt-contacts/contacts-post-type.php:315
 msgctxt "milestone field label"
 msgid "Can Share Gospel/Testimony"
-msgstr ""
-
-#: dt-contacts/contacts-post-type.php:316
-msgctxt "Faith Milestone field description"
-msgid "This contact has been trained to share the Gospel and their testimony."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:319
@@ -1707,19 +1635,9 @@ msgctxt "milestone field label"
 msgid "Sharing Gospel/Testimony"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:320
-msgctxt "Faith Milestone field description"
-msgid "This contact is sharing the Gospel and their testimony."
-msgstr ""
-
 #: dt-contacts/contacts-post-type.php:323
 msgctxt "milestone field label"
 msgid "Baptized"
-msgstr ""
-
-#: dt-contacts/contacts-post-type.php:324
-msgctxt "Faith Milestone field description"
-msgid "This contact has been baptized."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:327
@@ -1727,19 +1645,9 @@ msgctxt "milestone field label"
 msgid "Baptizing"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:328
-msgctxt "Faith Milestone field description"
-msgid "This contact is baptizing others."
-msgstr ""
-
 #: dt-contacts/contacts-post-type.php:331
 msgctxt "milestone field label"
 msgid "In Church/Group"
-msgstr ""
-
-#: dt-contacts/contacts-post-type.php:332
-msgctxt "Faith Milestone field description"
-msgid "This contact is in a church or group."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:335
@@ -1747,19 +1655,9 @@ msgctxt "milestone field label"
 msgid "Starting Churches"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:336
-msgctxt "Faith Milestone field description"
-msgid "This contact is planting Churches."
-msgstr ""
-
 #: dt-contacts/contacts-post-type.php:343
 msgctxt "field name"
 msgid "Baptism Date"
-msgstr ""
-
-#: dt-contacts/contacts-post-type.php:344
-msgctxt "Baptism Date field description"
-msgid "The date the contact was baptised."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:351
@@ -1999,19 +1897,9 @@ msgctxt "quick button response name"
 msgid "No Answer"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:490
-msgctxt "quick button response description"
-msgid "Call was attempted by not answered"
-msgstr ""
-
 #: dt-contacts/contacts-post-type.php:497
 msgctxt "quick button response name"
 msgid "Contact Established"
-msgstr ""
-
-#: dt-contacts/contacts-post-type.php:498
-msgctxt "quick button response description"
-msgid "Contact was successfully established"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:505
@@ -2019,29 +1907,14 @@ msgctxt "quick button response name"
 msgid "Meeting Scheduled"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:506
-msgctxt "quick button response description"
-msgid "A meeting has been scheduled"
-msgstr ""
-
 #: dt-contacts/contacts-post-type.php:513
 msgctxt "quick button response name"
 msgid "Meeting Complete"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:514
-msgctxt "quick button response description"
-msgid "A meeting was completed"
-msgstr ""
-
 #: dt-contacts/contacts-post-type.php:521
 msgctxt "quick button response name"
 msgid "Meeting No-show"
-msgstr ""
-
-#: dt-contacts/contacts-post-type.php:522
-msgctxt "quick button response description"
-msgid "Did not attend a scheduled meeting"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:530
@@ -2157,11 +2030,6 @@ msgstr ""
 msgid "People Groups"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:630
-msgctxt "field description"
-msgid "People Groups this contact belongs to."
-msgstr ""
-
 #: dt-contacts/contacts-post-type.php:637
 msgctxt "field name"
 msgid "Groups"
@@ -2180,10 +2048,7 @@ msgstr ""
 #: dt-contacts/contacts-post-type.php:646
 msgctxt "field description"
 msgid ""
-"This is someone working alongside of the main person assigned to the "
-"contact. You may find that you are partnering with others in your "
-"discipleship relationships. Only one person can be assigned while multiple "
-"people can be sub-assigned."
+"Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:653
@@ -2206,29 +2071,14 @@ msgctxt "field label"
 msgid "Phone"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:858
-msgctxt "contact information description"
-msgid "A phone number for this contact."
-msgstr ""
-
 #: dt-contacts/contacts-post-type.php:861
 msgctxt "field label"
 msgid "Email"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:863
-msgctxt "contact information description"
-msgid "An email address for this contact"
-msgstr ""
-
 #: dt-contacts/contacts-post-type.php:866
 msgctxt "field label"
 msgid "Address"
-msgstr ""
-
-#: dt-contacts/contacts-post-type.php:868
-msgctxt "contact information description"
-msgid "A physical address for this contact"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:871
@@ -2644,11 +2494,6 @@ msgctxt "field name"
 msgid "Group Type"
 msgstr ""
 
-#: dt-groups/groups-post-type.php:197
-msgctxt "field description"
-msgid "The type of group this is e.g. a pre-group, group, church or team."
-msgstr ""
-
 #: dt-groups/groups-post-type.php:201
 msgctxt "field label"
 msgid "Pre-Group"
@@ -2950,13 +2795,6 @@ msgstr ""
 msgid "Leaders"
 msgstr ""
 
-#: dt-groups/groups-post-type.php:408
-msgctxt "leaders field description"
-msgid ""
-"A list of the leaders of the group (contacts). Multiple leaders can be "
-"assigned to a group."
-msgstr ""
-
 #: dt-groups/groups-post-type.php:415
 msgctxt "coaches field name"
 msgid "Group Coach / Church Planter"
@@ -2972,11 +2810,6 @@ msgstr ""
 
 #: dt-groups/groups-post-type.php:423
 msgid "Requires Update"
-msgstr ""
-
-#: dt-groups/groups-post-type.php:424
-msgctxt "requires_update field description"
-msgid "This group requires an update."
 msgstr ""
 
 #: dt-groups/groups-post-type.php:430

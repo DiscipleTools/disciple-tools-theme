@@ -11,7 +11,7 @@
         <div>
             <button class="button loader js-create-contact-button" type="submit"><?php echo esc_html__( "Create Contact", 'disciple_tools' ); ?></button>
             <button class="button button-cancel clear hide-after-contact-create" data-close aria-label="Close reveal" type="button">
-                <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
+                <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
             </button>
         </div>
         <p style="color: red" class="error-text"></p>
