@@ -211,7 +211,6 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     ); ?>
 
 <!--    <div id="errors"></div>-->
-<!-- <div><a class="button small" id="backlink" href="../" style="margin:.9rem 0 0 1.3em"><?php esc_html_e( 'Back to Contacts List', 'disciple_tools' )?></a></div> -->
     <div id="content" class="single-contacts">
         <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
         <span id="post-id" style="display: none"><?php echo get_the_ID()?></span>
@@ -293,7 +292,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         </button>
                                     </h3>
                                     <div class="section-body"><!-- start collapse -->
-                                    <div class="section-subheader"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></div>
+                                    <div class="section-subheader"><?php echo esc_html( $contact_fields["groups"]['name'] ) ?></div>
 
                                   <var id="groups-result-container" class="result-container"></var>
                                     <div id="groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
@@ -301,7 +300,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                             <div class="typeahead__field">
                                                 <span class="typeahead__query">
                                                     <input class="js-typeahead-groups input-height"
-                                                           name="groups[query]" placeholder="<?php echo esc_html_x( "Search Groups", 'input field placeholder', 'disciple_tools' ) ?>"
+                                                           name="groups[query]"
+                                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["groups"]['name'] ) )?>"
                                                            autocomplete="off">
                                                 </span>
                                                 <span class="typeahead__button">
@@ -315,11 +315,11 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
                                     <?php
                                     $connections = [
-                                        "relation" => esc_html__( "Connection or Relation", 'disciple_tools' ),
-                                        "baptized_by" => esc_html__( "Baptized By", 'disciple_tools' ),
-                                        "baptized" => esc_html__( "Baptized", 'disciple_tools' ),
-                                        "coached_by" => esc_html__( "Coached By", 'disciple_tools' ),
-                                        "coaching" => esc_html__( "Coaching", 'disciple_tools' )
+                                        "relation" => $contact_fields['relation']["name"],
+                                        "baptized_by" => $contact_fields['baptized_by']["name"],
+                                        "baptized" => $contact_fields['baptized']["name"],
+                                        "coached_by" => $contact_fields['coached_by']["name"],
+                                        "coaching" => $contact_fields['coaching']["name"]
                                     ];
                                     foreach ( $connections as $connection => $connection_label ) {
                                         ?>
@@ -411,7 +411,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                     </div>
 
                                     <div class="baptism_date">
-                                        <div class="section-subheader"><?php esc_html_e( 'Baptism Date', 'disciple_tools' )?>
+                                        <div class="section-subheader"><?php echo esc_html( $contact_fields["baptism_date"]["name"] )?>
                                             <button class="help-button" data-section="baptism-date-help-text">
                                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                             </button>
@@ -518,7 +518,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                                 <div class="typeahead__field">
                                                     <span class="typeahead__query">
                                                         <input class="js-typeahead-tags input-height"
-                                                               name="tags[query]" placeholder="<?php echo esc_html_x( "Search Tags", 'input field placeholder', 'disciple_tools' ) ?>"
+                                                               name="tags[query]"
+                                                               placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["tags"]['name'] ) )?>"
                                                                autocomplete="off">
                                                     </span>
                                                     <span class="typeahead__button">
@@ -676,12 +677,12 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
     <div class="reveal" id="baptism-modal" data-reveal>
 
-        <h3><?php esc_html_e( "Baptized", 'disciple_tools' )?></h3>
+        <h3><?php echo esc_html( $contact_fields["baptized"]["name"] )?></h3>
         <p><?php esc_html_e( "Who was this contact baptized by and when?", 'disciple_tools' )?></p>
 
         <div>
             <div class="section-subheader">
-                <?php esc_html_e( "Baptized By", 'disciple_tools' )?>
+                <?php echo esc_html( $contact_fields["baptized_by"]["name"] )?>
             </div>
             <div class="modal_baptized_by details">
                 <var id="modal_baptized_by-result-container" class="result-container modal_baptized_by-result-container"></var>
@@ -699,11 +700,9 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                 </div>
             </div>
 
-            <span class="section-subheader"><?php esc_html_e( "Baptism Date", 'disciple_tools' ) ?></span>
+            <span class="section-subheader"><?php echo esc_html( $contact_fields["baptism_date"]["name"] )?></span>
             <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" id="modal-baptism-date-picker" autocomplete="off">
 
-<!--            <span class="section-subheader">--><?php //esc_html_e( "Baptism Generation", 'disciple_tools' ) ?><!--</span>-->
-<!--            <input type="number" value="" id="modal-baptism_generation">-->
         </div>
 
 
@@ -737,7 +736,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                 <?php esc_html_e( "Display Name", "disciple_tools" ); ?>
                 <input name="user-display" id="user-display" type="text"
                        value="<?php the_title_attribute(); ?>"
-                       placeholder="<?php echo esc_html_x( "Display name", 'input field placeholder', 'disciple_tools' ) ?>">
+                       placeholder="<?php echo esc_html_x( "Display Name", 'disciple_tools' ) ?>">
             </label>
 
             <div class="grid-x">
