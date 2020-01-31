@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Disciple Tools\n"
-"POT-Creation-Date: 2020-01-31 15:44+0100\n"
+"POT-Creation-Date: 2020-01-31 16:12+0100\n"
 "PO-Revision-Date: 2018-01-09 14:10-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -112,13 +112,13 @@ msgstr ""
 
 #: archive-contacts.php:195 archive-contacts.php:196 archive-groups.php:184
 #: archive-groups.php:185 archive-template.php:140 archive-template.php:141
-#: template-settings.php:254
+#: template-settings.php:253
 msgid "No"
 msgstr ""
 
 #: archive-contacts.php:201 archive-contacts.php:202 archive-groups.php:190
 #: archive-groups.php:191 archive-template.php:147 archive-template.php:148
-#: template-settings.php:253
+#: template-settings.php:252
 msgid "Yes"
 msgstr ""
 
@@ -159,7 +159,7 @@ msgstr ""
 #: archive-contacts.php:248 archive-groups.php:239 archive-template.php:194
 #: dt-assets/functions/enqueue-scripts.php:316
 #: dt-assets/parts/contact-details.php:484
-#: dt-assets/parts/group-details.php:317 template-settings.php:433
+#: dt-assets/parts/group-details.php:317 template-settings.php:432
 msgid "Save"
 msgstr ""
 
@@ -505,7 +505,7 @@ msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:317
 #: dt-assets/parts/contact-details.php:69 dt-assets/parts/group-details.php:39
-#: template-settings.php:65 template-settings.php:324
+#: template-settings.php:65 template-settings.php:323
 msgid "Edit"
 msgstr ""
 
@@ -2595,10 +2595,6 @@ msgstr ""
 msgid "Weekly"
 msgstr ""
 
-#: dt-core/admin/restrict-rest-api.php:113
-msgid "Only authenticated users can access the REST API."
-msgstr ""
-
 #: dt-core/logging/hooks/class-hook-posts.php:28
 msgid "(no title)"
 msgstr ""
@@ -2861,8 +2857,8 @@ msgid ""
 "multiplying?"
 msgstr ""
 
-#: dt-groups/groups-post-type.php:321 template-settings.php:286
-#: template-settings.php:305
+#: dt-groups/groups-post-type.php:321 template-settings.php:285
+#: template-settings.php:304
 msgid "Start Date"
 msgstr ""
 
@@ -2880,8 +2876,8 @@ msgctxt "church start_date description"
 msgid "The date this group first identified as being a church."
 msgstr ""
 
-#: dt-groups/groups-post-type.php:334 template-settings.php:292
-#: template-settings.php:306
+#: dt-groups/groups-post-type.php:334 template-settings.php:291
+#: template-settings.php:305
 msgid "End Date"
 msgstr ""
 
@@ -3170,7 +3166,7 @@ msgstr ""
 msgid "Number of contacts assigned for a face-to-face visit"
 msgstr ""
 
-#: dt-metrics/metrics-critical-path.php:217 dt-metrics/metrics-personal.php:74
+#: dt-metrics/metrics-critical-path.php:217 dt-metrics/metrics-personal.php:72
 #: dt-metrics/metrics-project.php:82
 msgid "Active Contacts"
 msgstr ""
@@ -3253,90 +3249,58 @@ msgstr ""
 msgid "Waiting on Update"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:68 dt-metrics/metrics-personal.php:75
-#: dt-metrics/metrics-project.php:86
+#: dt-metrics/metrics-personal.php:68 dt-metrics/metrics-personal.php:73
+#: dt-metrics/metrics-project.php:85
 msgid "Total Groups"
 msgstr ""
 
 #: dt-metrics/metrics-personal.php:69 dt-metrics/metrics-project.php:87
-msgid "Needs Training"
-msgstr ""
-
-#: dt-metrics/metrics-personal.php:70 dt-metrics/metrics-project.php:88
-msgid "Fully Practicing"
-msgstr ""
-
-#: dt-metrics/metrics-personal.php:71 dt-metrics/metrics-project.php:90
-#: dt-metrics/metrics-project.php:102
+#: dt-metrics/metrics-project.php:97
 msgid "Group Types"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:72 dt-metrics/metrics-project.php:89
+#: dt-metrics/metrics-personal.php:70 dt-metrics/metrics-project.php:86
 msgid "Group and Church Generations"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:73
+#: dt-metrics/metrics-personal.php:71
 msgid "Lead Teams"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:76
+#: dt-metrics/metrics-personal.php:74
 msgid "Updates Needed"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:77
+#: dt-metrics/metrics-personal.php:75
 msgid "Attempts Needed"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:78 dt-metrics/metrics-project.php:101
-msgid "groups by type"
-msgstr ""
-
-#: dt-metrics/metrics-personal.php:79 dt-metrics/metrics-project.php:95
-msgid "number of contacts"
-msgstr ""
-
-#: dt-metrics/metrics-personal.php:80
+#: dt-metrics/metrics-personal.php:76
 msgid "Follow-up of my active contacts"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:81 dt-metrics/metrics-project.php:97
+#: dt-metrics/metrics-personal.php:77 dt-metrics/metrics-project.php:93
 msgid "Active Group Health Metrics"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:82
+#: dt-metrics/metrics-personal.php:78
 msgid "stats as of"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:83 dt-metrics/metrics-project.php:103
+#: dt-metrics/metrics-personal.php:79 dt-metrics/metrics-project.php:98
 msgid "Pre-Group"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:84 dt-metrics/metrics-project.php:104
+#: dt-metrics/metrics-personal.php:80 dt-metrics/metrics-project.php:99
 msgid "Group"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:85 dt-metrics/metrics-project.php:105
+#: dt-metrics/metrics-personal.php:81 dt-metrics/metrics-project.php:100
 msgid "Church"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:86 dt-metrics/metrics-project.php:100
+#: dt-metrics/metrics-personal.php:82 dt-metrics/metrics-project.php:96
 msgid "Generation"
-msgstr ""
-
-#: dt-metrics/metrics-prayer.php:41
-msgid "Prayer List"
-msgstr ""
-
-#: dt-metrics/metrics-prayer.php:67
-msgid "Prayer Lists"
-msgstr ""
-
-#: dt-metrics/metrics-prayer.php:68
-msgid "Praises for Steps Taken"
-msgstr ""
-
-#: dt-metrics/metrics-prayer.php:69
-msgid "Requests for Next Steps Needed"
 msgstr ""
 
 #: dt-metrics/metrics-project.php:41
@@ -3367,35 +3331,31 @@ msgstr ""
 msgid "All Contacts"
 msgstr ""
 
-#: dt-metrics/metrics-project.php:85
-msgid "Project Groups"
-msgstr ""
-
-#: dt-metrics/metrics-project.php:91
+#: dt-metrics/metrics-project.php:88
 msgid "Group Generation Tree"
 msgstr ""
 
-#: dt-metrics/metrics-project.php:92
+#: dt-metrics/metrics-project.php:89
 msgid "Baptism Generation Tree"
 msgstr ""
 
-#: dt-metrics/metrics-project.php:93
+#: dt-metrics/metrics-project.php:90
 msgid "Coaching Generation Tree"
 msgstr ""
 
-#: dt-metrics/metrics-project.php:94
+#: dt-metrics/metrics-project.php:91
 msgid "Teams"
 msgstr ""
 
-#: dt-metrics/metrics-project.php:96
+#: dt-metrics/metrics-project.php:92
 msgid "Follow-up of all active contacts"
 msgstr ""
 
-#: dt-metrics/metrics-project.php:98
+#: dt-metrics/metrics-project.php:94
 msgid "groups"
 msgstr ""
 
-#: dt-metrics/metrics-project.php:99
+#: dt-metrics/metrics-project.php:95
 msgid "generations"
 msgstr ""
 
@@ -4317,7 +4277,7 @@ msgstr ""
 msgid "load more notifications"
 msgstr ""
 
-#: template-settings.php:40 template-settings.php:273
+#: template-settings.php:40 template-settings.php:272
 msgid "Availability"
 msgstr ""
 
@@ -4325,7 +4285,7 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: template-settings.php:90 template-settings.php:379
+#: template-settings.php:90 template-settings.php:378
 msgid "Nickname (Display Name)"
 msgstr ""
 
@@ -4337,7 +4297,7 @@ msgstr ""
 msgid "Social"
 msgstr ""
 
-#: template-settings.php:162 template-settings.php:410
+#: template-settings.php:162 template-settings.php:409
 msgid "Language"
 msgstr ""
 
@@ -4357,38 +4317,38 @@ msgstr ""
 msgid "required"
 msgstr ""
 
-#: template-settings.php:245
+#: template-settings.php:244
 msgid "Follow all contacts"
 msgstr ""
 
-#: template-settings.php:247
+#: template-settings.php:246
 msgid ""
 "You will receive a notification for any update that happens in the system."
 msgstr ""
 
-#: template-settings.php:252
+#: template-settings.php:251
 msgid "Enable"
 msgstr ""
 
-#: template-settings.php:276
+#: template-settings.php:275
 msgid ""
 "Set the dates you will be traveling or unavailable so the Dispatcher will "
 "know your availability to receive new contacts"
 msgstr ""
 
-#: template-settings.php:280
+#: template-settings.php:279
 msgid "Schedule Travel or Dates Unavailable"
 msgstr ""
 
-#: template-settings.php:297
+#: template-settings.php:296
 msgid "Add Unavailable dates"
 msgstr ""
 
-#: template-settings.php:311
+#: template-settings.php:310
 msgid "No Travel Scheduled"
 msgstr ""
 
-#: template-settings.php:338
+#: template-settings.php:337
 msgid ""
 "Disciple Tools System does not store images. For profile images we use "
 "Gravatar (Globally Recognized Avatar). If you have security concerns, we "
@@ -4396,46 +4356,50 @@ msgid ""
 "or alias photo to represent you."
 msgstr ""
 
-#: template-settings.php:339
+#: template-settings.php:338
 msgid "edit image on gravatar.com"
 msgstr ""
 
-#: template-settings.php:344
+#: template-settings.php:343
 msgid "User Name"
 msgstr ""
 
-#: template-settings.php:345 template-settings.php:346
+#: template-settings.php:344 template-settings.php:345
 msgid "Username cannot be changed"
 msgstr ""
 
-#: template-settings.php:350
+#: template-settings.php:349
 msgid "System Email"
 msgstr ""
 
-#: template-settings.php:351
+#: template-settings.php:350
 msgid "User email can be changed by site administrator."
 msgstr ""
 
-#: template-settings.php:358
+#: template-settings.php:357
 msgid "Password"
 msgstr ""
 
-#: template-settings.php:359
+#: template-settings.php:358
 msgid "Use this email reset form to create a new password."
 msgstr ""
 
-#: template-settings.php:361
+#: template-settings.php:360
 msgid "go to password change form"
 msgstr ""
 
-#: template-settings.php:368
+#: template-settings.php:367
 msgid "First Name"
 msgstr ""
 
-#: template-settings.php:374
+#: template-settings.php:373
 msgid "Last Name"
 msgstr ""
 
-#: template-settings.php:403
+#: template-settings.php:402
 msgid "Description"
+msgstr ""
+
+#: template-view-duplicates.php:31
+msgid "duplicates"
 msgstr ""
