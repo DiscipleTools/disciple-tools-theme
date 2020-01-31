@@ -1762,7 +1762,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
             $filters["tabs"][] = [
                 "key" => "assigned_to_me",
-                "label" => _x( "My Contacts", 'List Filters', 'disciple_tools' ),
+                "label" => sprintf( _x( "My %s", 'My records', 'disciple_tools' ), Disciple_Tools_Contact_Post_Type::instance()->plural ),
                 "count" => $total_my,
                 "order" => 20
             ];
@@ -1800,7 +1800,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                             $filters["filters"][] = [
                                 "ID" => 'my_update_needed',
                                 "tab" => 'assigned_to_me',
-                                "name" => _x( 'Update Needed', 'List Filters', 'disciple_tools' ),
+                                "name" => $fields["requires_update"]["name"],
                                 "query" => [
                                     'assigned_to' => [ 'me' ],
                                     'subassigned' => [ 'me' ],
@@ -1862,7 +1862,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 }
                 $filters["tabs"][] = [
                     "key" => "all_dispatch",
-                    "label" => _x( "All Contacts", 'List Filters', 'disciple_tools' ),
+                    "label" => sprintf( _x( "All %s", 'All records', 'disciple_tools' ), Disciple_Tools_Contact_Post_Type::instance()->plural ),
                     "count" => $total_all,
                     "order" => 10
                 ];
@@ -1895,7 +1895,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                                 $filters["filters"][] = [
                                     "ID" => 'all_update_needed',
                                     "tab" => 'all_dispatch',
-                                    "name" => _x( 'Update Needed', 'List Filters', 'disciple_tools' ),
+                                    "name" => $fields["requires_update"]["name"],
                                     "query" => [
                                         'overall_status' => [ 'active' ],
                                         'requires_update' => [ true ],
