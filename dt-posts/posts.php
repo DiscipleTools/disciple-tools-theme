@@ -16,31 +16,10 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Posts
 {
-
-    public static $connection_types;
-    public static $channel_list;
-
     /**
      * Disciple_Tools_Posts constructor.
      */
-    public function __construct() {
-        self::$connection_types = [
-            "locations" => [ "name" => _x( "Locations", 'label name', 'disciple_tools' ) ],
-            "groups" => [ "name" => _x( "Groups", 'label name', 'disciple_tools' ) ],
-            "people_groups" => [ "name" => _x( "People Groups", 'label name', 'disciple_tools' ) ],
-            "baptized_by" => [ "name" => _x( "Baptized By", 'label name', 'disciple_tools' ) ],
-            "baptized" => [ "name" => _x( "Baptized", 'label name', 'disciple_tools' ) ],
-            "coached_by" => [ "name" => _x( "Coached By", 'label name', 'disciple_tools' ) ],
-            "coaching" => [ "name" => _x( "Coaching", 'label name', 'disciple_tools' ) ],
-            "subassigned" => [ "name" => _x( "Sub Assigned", 'label name', 'disciple_tools' ) ],
-            "leaders" => [ "name" => _x( "Leaders", 'label name', 'disciple_tools' ) ],
-            "coaches" => [ "name" => _x( "Coaches/Church Planters", 'label name', 'disciple_tools' ) ],
-            "parent_groups" => [ "name" => _x( "Parent Groups", 'label name', 'disciple_tools' ) ],
-            "child_groups" => [ "name" => _x( "Child Groups", 'label name', 'disciple_tools' ) ],
-            "peer_groups" => [ "name" => _x( "Peer Groups", 'label name', 'disciple_tools' ) ],
-        ];
-        self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
-    }
+    public function __construct() {}
 
     /**
      * Permissions for interaction with contacts Custom Post Types
@@ -1702,39 +1681,6 @@ class Disciple_Tools_Metabox_Address
     } // End __construct()
 
     /**
-     * Add Address fields html for adding a new contact channel
-     *
-     * @usage Added to the bottom of the Contact Details Metabox.
-     */
-    public function add_new_address_field() {
-        global $post;
-
-        echo '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-address\').toggle();"><strong>+ Address Detail</strong></a></p>';
-        echo '<table class="form-table" id="new-address" style="display: none;"><tbody>' . "\n";
-
-        $address_types = $this->get_address_type_list( $post->post_type );
-
-        echo '<tr><th>
-                <select name="new-key-address" class="edit-input"><option value=""></option> ';
-        foreach ( $address_types as $type => $value ) {
-
-            $key = "address_" . $type;
-
-            echo '<option value="' . esc_attr( $key ) . '">' . esc_html( $value["label"] ) . '</option>';
-        }
-        echo '</select></th>';
-        echo '<td>
-                <input type="text" name="new-value-address" id="new-address" class="edit-input" placeholder="i.e. 888 West Street, Los Angelos CO 90210" />
-            </td>
-            <td>
-                <button type="submit" class="button">Save</button>
-            </td>
-            </tr>';
-
-        echo '</tbody></table>';
-    }
-
-    /**
      * Helper function to create the unique metakey for contacts channels.
      *
      * @param  $channel
@@ -1752,45 +1698,6 @@ class Disciple_Tools_Metabox_Address
      */
     public function unique_hash() {
         return substr( md5( rand( 10000, 100000 ) ), 0, 3 ); // create a unique 3 digit key
-    }
-
-    /**
-     * Selectable values for different channels of contact information.
-     * @param $post_type
-     *
-     * @return array
-     */
-    public function get_address_type_list( $post_type ) {
-
-        switch ( $post_type ) {
-            case 'contacts':
-                $addresses = [
-                    "home"  => [ "label" => _x( 'Home', 'field label', 'disciple_tools' ) ],
-                    "work"  => [ "label" => _x( 'Work', 'field label', 'disciple_tools' ) ],
-                    "other" => [ "label" => _x( 'Other', 'field label', 'disciple_tools' ) ],
-                ];
-
-                return $addresses;
-                break;
-            case 'groups':
-                $addresses = [
-                    "main"      => [ "label" => _x( 'Main', 'field label', 'disciple_tools' ) ],
-                    "alternate" => [ "label" => _x( 'Alternate', 'field label', 'disciple_tools' ) ],
-                ];
-
-                return $addresses;
-                break;
-            case 'locations':
-                $addresses = [
-                    "main" => [ "label" => _x( 'Main', 'field label', 'disciple_tools' ) ],
-                ];
-
-                return $addresses;
-                break;
-            default:
-                return [];
-                break;
-        }
     }
 
     /**

@@ -579,6 +579,7 @@ class Disciple_Tools_Groups_Post_Type
         return [
             "address" => [
                 "label" => __( "Address", 'disciple_tools' ),
+                "types" => []
             ]
         ];
     }
@@ -588,7 +589,7 @@ class Disciple_Tools_Groups_Post_Type
             $fields = $this->get_custom_fields_settings();
             $settings = [
                 'fields' => $fields,
-                'address_types' => dt_address_metabox()->get_address_type_list( "groups" ),
+                'address_types' => $this->get_channels_list()["address"]["types"],
                 'channels' => $this->get_channels_list(),
                 'connection_types' => array_keys( array_filter( $fields, function ( $a ) {
                     return $a["type"] === "connection";

@@ -626,7 +626,7 @@ class Disciple_Tools_Contact_Post_Type
             "p2p_key" => "baptizer_to_baptized"
         ];
         $fields["people_groups"] = [
-            "name" => Disciple_Tools_People_Groups_Post_Type::instance()->plural,
+            "name" => __( 'People Groups', 'disciple_tools' ),
             "description" => _x( "People Groups this contact belongs to.", 'field description', 'disciple_tools' ),
             "type" => "connection",
             "post_type" => "peoplegroups",

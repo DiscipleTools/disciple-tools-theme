@@ -17,19 +17,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * Disciple_Tools_Contacts constructor.
      */
     public function __construct() {
-        self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
-        self::$address_types = dt_get_option( "dt_site_custom_lists" )["contact_address_types"];
-        self::$contact_connection_types = [
-            "locations",
-            "groups",
-            "people_groups",
-            "baptized_by",
-            "baptized",
-            "coached_by",
-            "coaching",
-            "subassigned",
-            "relation"
-        ];
+        $contact_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
+        self::$address_types = $contact_settings["address_types"];
+        self::$contact_connection_types = $contact_settings['connection_types'];
+        self::$channel_list = $contact_settings["channels"];
+
         add_action( "dt_contact_created", [ $this, "check_for_duplicates" ], 10, 2 );
         add_action( "dt_contact_updated", [ $this, "check_for_duplicates" ], 10, 2 );
         add_action( "dt_contact_updated", [ $this, "check_seeker_path" ], 10, 4 );
