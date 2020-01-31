@@ -106,7 +106,7 @@ function disciple_tools_footer_links() {
     wp_nav_menu(
         [
             'container'      => 'false',                         // Remove nav container
-            'menu'           => __( 'Footer Links', 'disciple_tools' ),       // Nav name
+            'menu'           => 'Footer Links',       // Nav name
             'menu_class'     => 'menu',                          // Adding custom nav class
             'theme_location' => 'footer-links',             // Where it's located in the theme
             'depth'          => 0,                                   // Limit the depth of the nav

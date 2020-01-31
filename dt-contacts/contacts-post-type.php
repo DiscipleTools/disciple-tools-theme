@@ -662,8 +662,7 @@ class Disciple_Tools_Contact_Post_Type
             'hidden' => true
         ];
         $fields['tasks'] = [
-            'name' => _x( 'Tasks', 'field name', 'disciple_tools' ),
-            'description' => _x( 'Tasks related to this contact.', 'field description', 'disciple_tools' ),
+            'name' => _x( 'Tasks', 'Tasks', 'disciple_tools' ),
             'type' => 'post_user_meta',
         ];
 

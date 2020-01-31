@@ -135,7 +135,7 @@ function dt_print_details_bar(
             <?php if ( $task ) : ?>
                 <div class="cell shrink center-items">
                     <button class="button open-set-task">
-                        <?php esc_html_e( 'Tasks', 'disciple_tools' ); ?>
+                        <?php echo esc_html_x( 'Tasks', 'Tasks', 'disciple_tools' ); ?>
                         <i class="fi-clock"></i>
                     </button>
                 </div>
