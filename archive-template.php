@@ -107,8 +107,11 @@ declare(strict_types=1);
                                         <div class="typeahead__container">
                                             <div class="typeahead__field">
                                                 <span class="typeahead__query">
-                                                    <input class="js-typeahead-<?php echo esc_html( $field ) ?> input-height    " data-field="<?php echo esc_html( $field )?>" data-type="<?php echo esc_html( $field_options[$field]["type"] ) ?>"
-                                                           name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php esc_html_e( "Type to Search", 'disciple_tools' ) ?>"
+                                                    <input class="js-typeahead-<?php echo esc_html( $field ) ?> input-height"
+                                                           data-field="<?php echo esc_html( $field )?>"
+                                                           data-type="<?php echo esc_html( $field_options[$field]["type"] ) ?>"
+                                                           name="<?php echo esc_html( $field ) ?>[query]"
+                                                           placeholder="<?php esc_html_e( "Type to Search", 'disciple_tools' ) ?>"
                                                            autocomplete="off">
                                                 </span>
                                             </div>
@@ -133,13 +136,15 @@ declare(strict_types=1);
                                     <?php elseif ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "boolean" ) : ?>
                                         <div class="boolean_options">
                                             <label style="cursor: pointer">
-                                                <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>" data-label="<?php esc_html_e( "No", 'disciple_tools' ) ?>"
+                                                <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
+                                                       data-label="<?php esc_html_e( "No", 'disciple_tools' ) ?>"
                                                        value="0"> <?php esc_html_e( "No", 'disciple_tools' ) ?>
                                             </label>
                                         </div>
                                         <div class="boolean_options">
                                             <label style="cursor: pointer">
-                                                <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>" data-label="<?php esc_html_e( "Yes", 'disciple_tools' ) ?>"
+                                                <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
+                                                       data-label="<?php esc_html_e( "Yes", 'disciple_tools' ) ?>"
                                                        value="1"> <?php esc_html_e( "Yes", 'disciple_tools' ) ?>
                                             </label>
                                         </div>

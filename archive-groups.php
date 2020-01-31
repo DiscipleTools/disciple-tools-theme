@@ -45,7 +45,7 @@ declare(strict_types=1);
         </a>
         <a class="button" style="margin-bottom:0" id="open-search">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
-            <span class="hide-for-small-only"><?php esc_html_e( "Search groups", 'disciple_tools' ) ?></span>
+            <span class="hide-for-small-only"><?php esc_html_e( "Search Groups", 'disciple_tools' ) ?></span>
         </a>
         <div class="hideable-search" style="display: none; margin-top:5px">
             <input class="search-input-mobile" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile" placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>">
@@ -156,7 +156,7 @@ declare(strict_types=1);
                                                            data-field="<?php echo esc_html( $field ) ?>"
                                                            name="<?php echo esc_html( $field ) ?>[query]"
                                                            placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>"
-                                                            data-type="<?php echo esc_html( $dt_group_field_options[$field]["type"] ) ?>"
+                                                           data-type="<?php echo esc_html( $dt_group_field_options[$field]["type"] ) ?>"
                                                            autocomplete="off">
                                                 </span>
                                             </div>

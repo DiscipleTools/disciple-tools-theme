@@ -545,7 +545,7 @@ class Disciple_Tools_Contact_Post_Type
             'hidden'      => true
         ];
         $fields["last_modified"] =[
-            'name' => 'Last modified', //system string does not need translation
+            'name' => _x( 'Last modified', 'field name', 'disciple_tools' ), //system string does not need translation
             'type' => 'number',
             'default' => 0,
             'section' => 'admin'
