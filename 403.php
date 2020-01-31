@@ -15,9 +15,9 @@
                         <?php
                         $dt_post_type = "item";
                         if ( is_singular( "contacts" )){
-                            $dt_post_type = __( "contact", "disciple_tools" );
+                            $dt_post_type = Disciple_Tools_Contact_Post_Type::instance()->singular;
                         } elseif ( is_singular( "groups" )){
-                            $dt_post_type = __( "group", "disciple_tools" );
+                            $dt_post_type = Disciple_Tools_Groups_Post_Type::instance()->singular;
                         }
                         $dt_id = GET_THE_ID();
                         echo sprintf( esc_html__( 'Sorry, you don\'t have permission to view the %1$s with id %2$s.', 'disciple_tools' ), esc_html( $dt_post_type ), esc_html( $dt_id ) ) . ' ';
