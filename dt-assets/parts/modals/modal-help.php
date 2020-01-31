@@ -14,18 +14,18 @@
             <h3><?php esc_html_e( "Contact Details", 'disciple_tools' ) ?></h3>
             <p><?php esc_html_e( "This is the area where you can view and edit the contact details for this contact.", 'disciple_tools' ) ?></p>
             <ul>
-                <li><strong><?php esc_html_e( "Contact Name", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "The name of the contact is searchable and can be used to help you filter your contacts in the Contacts List page. The system uses this name to check for duplicate contacts.", 'disciple_tools' ) ?></li>
+                <li><strong><?php esc_html_e( "Contact Name", 'disciple_tools' ) ?></strong></li>
                 <li><strong><?php echo esc_html( $contact_fields["overall_status"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["overall_status"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_fields["assigned_to"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["assigned_to"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_fields["subassigned"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["subassigned"]["description"] ) ?></li>
-                <li><strong><?php echo esc_html( $contact_channels["phone"]["label"] ) ?></strong> - <?php echo esc_html( $contact_channels["phone"]["description"] ) ?></li>
-                <li><strong><?php echo esc_html( $contact_channels["email"]["label"] ) ?></strong> - <?php echo esc_html( $contact_channels["email"]["description"] ) ?></li>
-                <li><strong><?php echo esc_html( $contact_channels["address"]["label"] ) ?></strong> - <?php echo esc_html( $contact_channels["address"]["description"] ) ?></li>
+                <li><strong><?php echo esc_html( $contact_channels["phone"]["label"] ) ?></strong> <?php echo esc_html( $contact_channels["phone"]["description"] ) ?></li>
+                <li><strong><?php echo esc_html( $contact_channels["email"]["label"] ) ?></strong> <?php echo esc_html( $contact_channels["email"]["description"] ) ?></li>
+                <li><strong><?php echo esc_html( $contact_channels["address"]["label"] ) ?></strong> <?php echo esc_html( $contact_channels["address"]["description"] ) ?></li>
                 <li><strong><?php esc_html_e( "Social Media", 'disciple_tools' ) ?></strong> - <?php esc_html_e( "Social media accounts for this contact.", 'disciple_tools' ) ?></li>
                 <li><strong><?php echo esc_html( $contact_fields["location_grid"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["location_grid"]["description"] ) ?></li>
-                <li><strong><?php echo esc_html( $contact_fields["people_groups"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["people_groups"]["description"] ) ?></li>
-                <li><strong><?php echo esc_html( $contact_fields["age"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["age"]["description"] ) ?></li>
-                <li><strong><?php echo esc_html( $contact_fields["gender"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["gender"]["description"] ) ?></li>
+                <li><strong><?php echo esc_html( $contact_fields["people_groups"]["name"] ) ?></strong> <?php echo esc_html( $contact_fields["people_groups"]["description"] ) ?></li>
+                <li><strong><?php echo esc_html( $contact_fields["age"]["name"] ) ?></strong> <?php echo esc_html( $contact_fields["age"]["description"] ?? "" ) ?></li>
+                <li><strong><?php echo esc_html( $contact_fields["gender"]["name"] ) ?></strong> <?php echo esc_html( $contact_fields["gender"]["description"] ?? "" ) ?></li>
                 <li><strong><?php echo esc_html( $contact_fields["sources"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["sources"]["description"] ) ?></li>
 
             </ul>
@@ -54,7 +54,7 @@
                     foreach ( $workload_status_options as $option_key =>$option_val ): ?>
                         <li><span style="background-color: <?php echo esc_html( $option_val["color"] ) ?>; height:10px; padding: 0 5px; border-radius: 2px">&nbsp;</span> <?php echo esc_html( $option_val["label"] ) ?></li>
                     <?php endforeach ?>
-                    <li><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" /> 2: <?php esc_html_e( "2 contacts need an update.", 'disciple_tools' ) ?> </li>
+                    <li><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" /> 2: <?php esc_html_e( "2 contacts need an update", 'disciple_tools' ) ?> </li>
                 </ul>
             <?php endif; ?>
         </div>
@@ -81,7 +81,7 @@
             <ul>
                 <li><strong><?php echo esc_html( $contact_fields["seeker_path"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["seeker_path"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_fields["milestones"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["milestones"]["description"] ) ?></li>
-                <li><strong><?php echo esc_html( $contact_fields["baptism_date"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["baptism_date"]["description"] ); ?></li>
+                <li><strong><?php echo esc_html( $contact_fields["baptism_date"]["name"] ) ?></strong>
             </ul>
         </div>
 
@@ -158,18 +158,7 @@
                         <?php endforeach; ?>
                     </ul>
                 </li>
-                <li><strong><?php echo esc_html( $group_fields["assigned_to"]["name"] ) ?></strong> - <?php echo esc_html( $group_fields["assigned_to"]["description"] ) ?>
-                    <?php if ( current_user_can( "view_any_contacts" ) ) : ?>
-                        <p><strong><?php esc_html_e( "User workload status icons legend:", 'disciple_tools' ) ?></strong></p>
-                        <ul style="list-style-type:none">
-                            <?php $workload_status_options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
-                            foreach ( $workload_status_options as $option_key =>$option_val ): ?>
-                                <li><span style="background-color: <?php echo esc_html( $option_val["color"] ) ?>; height:10px; padding: 0 5px; border-radius: 2px">&nbsp;</span> <?php echo esc_html( $option_val["label"] ) ?></li>
-                            <?php endforeach ?>
-                            <li><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" /> 2: <?php esc_html_e( "2 contacts need an update", 'disciple_tools' ) ?> </li>
-                        </ul>
-                    <?php endif; ?>
-                </li>
+                <li><strong><?php echo esc_html( $group_fields["assigned_to"]["name"] ) ?></strong> - <?php echo esc_html( $group_fields["assigned_to"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $group_fields["coaches"]["name"] ) ?></strong> - <?php echo esc_html( $group_fields["coaches"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $group_fields["location_grid"]["name"] ) ?></strong> - <?php echo esc_html( $group_fields["location_grid"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $group_fields["people_groups"]["name"] ) ?></strong> - <?php echo esc_html( $group_fields["people_groups"]["description"] ) ?></li>

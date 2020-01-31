@@ -194,7 +194,7 @@ class Disciple_Tools_Groups_Post_Type
         ];
         $fields['group_type'] = [
             'name'        => _x( 'Group Type', 'field name', 'disciple_tools' ),
-            'description' => _x( 'The type of group this is e.g. a pre-group, group, church or team.', 'field description', 'disciple_tools' ),
+            'description' => '',
             'type'        => 'key_select',
             'default'     => [
                 'pre-group' => [
@@ -405,7 +405,7 @@ class Disciple_Tools_Groups_Post_Type
         ];
         $fields["leaders"] = [
             "name" => __( 'Leaders', 'disciple_tools' ),
-            'description' => _x( 'A list of the leaders of the group (contacts). Multiple leaders can be assigned to a group.', 'leaders field description', 'disciple_tools' ),
+            'description' => '',
             "type" => "connection",
             "post_type" => "contacts",
             "p2p_direction" => "from",
@@ -421,7 +421,7 @@ class Disciple_Tools_Groups_Post_Type
         ];
         $fields["requires_update"] = [
             'name'        => __( 'Requires Update', 'disciple_tools' ),
-            'description' => _x( 'This group requires an update.', 'requires_update field description', 'disciple_tools' ),
+            'description' => '',
             'type'        => 'boolean',
             'default'     => false,
         ];
