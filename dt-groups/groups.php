@@ -596,7 +596,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                             $filters["filters"][] = [
                                 "ID" => 'my_update_needed',
                                 "tab" => 'assigned_to_me',
-                                "name" => _x( 'Update Needed', 'List Filters', 'disciple_tools' ),
+                                "name" => $fields["requires_update"]["name"],
                                 "query" => [
                                     'assigned_to' => [ 'me' ],
                                     'group_status' => [ 'active' ],
@@ -676,7 +676,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                             $filters["filters"][] = [
                                 "ID" => 'all_update_needed',
                                 "tab" => 'all',
-                                "name" => _x( 'Update Needed', 'List Filters', 'disciple_tools' ),
+                                "name" => $fields["requires_update"]["name"],
                                 "query" => [
                                     'group_status' => [ 'active' ],
                                     'requires_update' => [ true ],
