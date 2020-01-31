@@ -558,16 +558,20 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
 
     <div class="reveal" id="closed-contact-modal" data-reveal>
-        <h3><?php esc_html_e( 'Close Contact', 'disciple_tools' )?></h3>
-        <p><?php esc_html_e( 'Why do you want to close this contact?', 'disciple_tools' )?></p>
+        <h3><?php echo esc_html( $contact_fields["reason_closed"]["name"] ?? '' )?></h3>
+        <p><?php echo esc_html( $contact_fields["reason_closed"]["description"] ?? '' )?></p>
+        <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
 
         <select id="reason-closed-options">
             <?php
             foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $option ) {
-                $selected = ( $reason_key === ( $contact["reason_closed"]["key"] ?? "" ) ) ? "selected" : "";
-                ?>
-                <option value="<?php echo esc_attr( $reason_key )?>" <?php echo esc_html( $selected ) ?>> <?php echo esc_html( $option["label"] ?? "" )?></option>
-                <?php
+                if ( $option["label"] ) {
+                    $selected = ( $reason_key === ( $contact["reason_closed"]["key"] ?? "" ) ) ? "selected" : "";
+                    ?>
+                    <option
+                        value="<?php echo esc_attr( $reason_key ) ?>" <?php echo esc_html( $selected ) ?>> <?php echo esc_html( $option["label"] ?? "" ) ?></option>
+                    <?php
+                }
             }
             ?>
         </select>
@@ -583,18 +587,23 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     </div>
 
     <div class="reveal" id="paused-contact-modal" data-reveal>
-        <h3><?php esc_html_e( 'Pause Contact', 'disciple_tools' )?></h3>
-        <p><?php esc_html_e( 'Why do you want to pause this contact?', 'disciple_tools' )?></p>
+        <h3><?php echo esc_html( $contact_fields["reason_paused"]["name"] ?? '' )?></h3>
+        <p><?php echo esc_html( $contact_fields["reason_paused"]["description"] ?? '' )?></p>
+        <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
 
         <select id="reason-paused-options">
             <?php
             foreach ( $contact_fields["reason_paused"]["default"] as $reason_key => $option ) {
-                ?>
-                <option value="<?php echo esc_attr( $reason_key )?>"
-                    <?php if ( ( $contact["reason_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";} ?>>
-                    <?php echo esc_html( $option["label"] ?? "" )?>
-                </option>
-                <?php
+                if ( $option["label"] ) {
+                    ?>
+                    <option value="<?php echo esc_attr( $reason_key ) ?>"
+                        <?php if ( ( $contact["reason_paused"]["key"] ?? "" ) === $reason_key ) {
+                            echo "selected";
+                        } ?>>
+                        <?php echo esc_html( $option["label"] ?? "" ) ?>
+                    </option>
+                    <?php
+                }
             }
             ?>
         </select>
@@ -609,18 +618,23 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         </button>
     </div>
     <div class="reveal" id="unassignable-contact-modal" data-reveal>
-        <h3><?php esc_html_e( 'Contact Not Ready', 'disciple_tools' )?></h3>
-        <p><?php esc_html_e( 'Why is this contact `not ready` or unassignable to a user?', 'disciple_tools' )?></p>
+        <h3><?php echo esc_html( $contact_fields["reason_unassignable"]["name"] ?? '' )?></h3>
+        <p><?php echo esc_html( $contact_fields["reason_unassignable"]["description"] ?? '' )?></p>
+        <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
 
         <select id="reason-unassignable-options">
             <?php
             foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $option ) {
-                ?>
-                <option value="<?php echo esc_attr( $reason_key )?>"
-                    <?php if ( ( $contact["unassignable_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";} ?>>
-                    <?php echo esc_html( $option["label"] ?? "" )?>
-                </option>
-                <?php
+                if ( $option["label"] ) {
+                    ?>
+                    <option value="<?php echo esc_attr( $reason_key ) ?>"
+                        <?php if ( ( $contact["unassignable_paused"]["key"] ?? "" ) === $reason_key ) {
+                            echo "selected";
+                        } ?>>
+                        <?php echo esc_html( $option["label"] ?? "" ) ?>
+                    </option>
+                    <?php
+                }
             }
             ?>
         </select>
