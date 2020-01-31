@@ -41,6 +41,8 @@ class Disciple_Tools_Groups_Post_Type
      */
     public $plural;
 
+    public $search_items;
+
     /**
      * The post type args.
      *
@@ -97,6 +99,7 @@ class Disciple_Tools_Groups_Post_Type
         $this->post_type = 'groups';
         $this->singular = _x( 'Group', 'singular of group', 'disciple_tools' );
         $this->plural = _x( 'Groups', 'plural of groups', 'disciple_tools' );
+        $this->search_items = sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural );
         $this->args = [ 'menu_icon' => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMTIsNkwxMiw2Yy0xLjY1NywwLTMtMS4zNDMtMy0zdjBjMC0xLjY1NywxLjM0My0zLDMtM2gwYzEuNjU3LDAsMywxLjM0MywzLDN2MEMxNSw0LjY1NywxMy42NTcsNiwxMiw2eiI+PC9wYXRoPiA8cGF0aCBkYXRhLWNvbG9yPSJjb2xvci0yIiBmaWxsPSIjZmZmZmZmIiBkPSJNNCwxOXYtOGMwLTEuMTMsMC4zOTEtMi4xNjIsMS4wMjYtM0gyYy0xLjEwNSwwLTIsMC44OTUtMiwydjZoMnY1YzAsMC41NTIsMC40NDgsMSwxLDFoMiBjMC41NTIsMCwxLTAuNDQ4LDEtMXYtMkg0eiI+PC9wYXRoPiA8cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMTQsMjRoLTRjLTAuNTUyLDAtMS0wLjQ0OC0xLTF2LTZINnYtNmMwLTEuNjU3LDEuMzQzLTMsMy0zaDZjMS42NTcsMCwzLDEuMzQzLDMsM3Y2aC0zdjYgQzE1LDIzLjU1MiwxNC41NTIsMjQsMTQsMjR6Ij48L3BhdGg+IDxwYXRoIGRhdGEtY29sb3I9ImNvbG9yLTIiIGZpbGw9IiNmZmZmZmYiIGQ9Ik00LDdMNCw3QzIuODk1LDcsMiw2LjEwNSwyLDV2MGMwLTEuMTA1LDAuODk1LTIsMi0yaDBjMS4xMDUsMCwyLDAuODk1LDIsMnYwIEM2LDYuMTA1LDUuMTA1LDcsNCw3eiI+PC9wYXRoPiA8cGF0aCBkYXRhLWNvbG9yPSJjb2xvci0yIiBmaWxsPSIjZmZmZmZmIiBkPSJNMjAsMTl2LThjMC0xLjEzLTAuMzkxLTIuMTYyLTEuMDI2LTNIMjJjMS4xMDUsMCwyLDAuODk1LDIsMnY2aC0ydjVjMCwwLjU1Mi0wLjQ0OCwxLTEsMWgtMiBjLTAuNTUyLDAtMS0wLjQ0OC0xLTF2LTJIMjB6Ij48L3BhdGg+IDxwYXRoIGRhdGEtY29sb3I9ImNvbG9yLTIiIGZpbGw9IiNmZmZmZmYiIGQ9Ik0yMCw3TDIwLDdjMS4xMDUsMCwyLTAuODk1LDItMnYwYzAtMS4xMDUtMC44OTUtMi0yLTJoMGMtMS4xMDUsMC0yLDAuODk1LTIsMnYwIEMxOCw2LjEwNSwxOC44OTUsNywyMCw3eiI+PC9wYXRoPjwvZz48L3N2Zz4=' ];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
@@ -104,16 +107,6 @@ class Disciple_Tools_Groups_Post_Type
         add_filter( 'post_type_link', [ $this, 'groups_permalink' ], 1, 3 );
         add_filter( 'dt_get_post_type_settings', [ $this, 'get_post_type_settings_hook' ], 10, 2 );
 
-        if ( is_admin() ) {
-            global $pagenow;
-
-            add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
-
-            if ( $pagenow == 'edit.php' && isset( $_GET['post_type'] ) && esc_attr( sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) ) == $this->post_type ) {
-                add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
-                add_action( 'manage_posts_custom_column', [ $this, 'register_custom_columns' ], 10, 2 );
-            }
-        }
     } // End __construct()
 
     /**
@@ -127,7 +120,7 @@ class Disciple_Tools_Groups_Post_Type
             'name'                  => $this->plural,
             'singular_name'         => $this->singular,
             'menu_name'             => $this->plural,
-            'search_items'          => sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural ),
+            'search_items'          => $this->search_items,
         ];
         $capabilities = [
             'create_posts'        => 'do_not_allow',
@@ -173,63 +166,6 @@ class Disciple_Tools_Groups_Post_Type
 
         register_post_type( $this->post_type, $args );
     } // End register_post_type()
-
-
-    /**
-     * Add custom columns for the "manage" screen of this post type.
-     *
-     * @access public
-     *
-     * @param  string $column_name
-     *
-     * @since  0.1.0
-     * @return void
-     */
-    public function register_custom_columns( $column_name ) {
-        //        global $post;
-
-        switch ( $column_name ) {
-            case 'image':
-                break;
-
-            default:
-                break;
-        }
-    } // End register_custom_columns()
-
-    /**
-     * Add custom column headings for the "manage" screen of this post type.
-     *
-     * @access public
-     *
-     * @param  array $defaults
-     *
-     * @since  0.1.0
-     * @return mixed
-     */
-    public function register_custom_column_headings( $defaults ) {
-        $new_columns = [ 'location' => __( 'Location', 'disciple_tools' ) ];
-
-        $last_item = [];
-
-        //      if ( isset( $defaults['date'] ) ) { unset( $defaults['date'] ); }
-
-        if ( count( $defaults ) > 2 ) {
-            $last_item = array_slice( $defaults, -1 );
-
-            array_pop( $defaults );
-        }
-        $defaults = array_merge( $defaults, $new_columns );
-
-        if ( is_array( $last_item ) && 0 < count( $last_item ) ) {
-            foreach ( $last_item as $k => $v ) {
-                $defaults[ $k ] = $v;
-                break;
-            }
-        }
-
-        return $defaults;
-    } // End register_custom_column_headings()
 
 
 
@@ -284,7 +220,7 @@ class Disciple_Tools_Groups_Post_Type
 
         $fields['assigned_to'] = [
             'name'        => _x( 'Assigned To', 'field name', 'disciple_tools' ),
-            'description' => _x( "Select the main person who is responsible for reporting on this group. (a user not a contact).", 'field description', 'disciple_tools' ),
+            'description' => _x( "Select the main person who is responsible for reporting on this group.", 'field description', 'disciple_tools' ),
             'type'        => 'user_select',
             'default'     => '',
             'section'     => 'info',
@@ -402,7 +338,7 @@ class Disciple_Tools_Groups_Post_Type
             'section'     => 'info',
         ];
         $fields["duplicate_data"] = [
-            "name" => __( 'Duplicates', 'disciple_tools' ),
+            "name" => 'Duplicates', //system string does not need translation
             'type' => 'array',
             'default' => [],
             'section' => 'admin'
@@ -599,23 +535,6 @@ class Disciple_Tools_Groups_Post_Type
         return $fields;
     } // End get_custom_fields_settings()
 
-    /**
-     * Customise the "Enter title here" text.
-     *
-     * @access public
-     * @since  0.1.0
-     *
-     * @param string $title
-     *
-     * @return string
-     */
-    public function enter_title_here( string $title ) {
-        if ( get_post_type() == $this->post_type ) {
-            $title = __( 'Enter the group here', 'disciple_tools' );
-        }
-
-        return $title;
-    } // End enter_title_here()
 
     /**
      * Run on activation.
