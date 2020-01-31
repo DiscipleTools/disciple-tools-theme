@@ -241,8 +241,6 @@ function dt_site_scripts() {
                 "valid"       => __( 'Valid', 'disciple_tools' ),
                 "invalid"     => __( 'Invalid', 'disciple_tools' ),
                 "unconfirmed" => __( 'Unconfirmed', 'disciple_tools' ),
-                'delete'      => __( 'Delete item', 'disciple_tools' ),
-                'email'       => __( 'email' ),
                 'transfer_error' => __( 'Transfer failed. Check site-to-site configuration.', 'disciple_tools' )
             ];
             if ( is_singular( "contacts" ) ) {
@@ -319,8 +317,6 @@ function dt_site_scripts() {
         'edit' => __( 'Edit', 'disciple_tools' ),
         'delete' => __( 'Delete', 'disciple_tools' ),
         'txt_info' => _x( 'Showing _START_ of _TOTAL_', 'just copy as they are: _START_ and _TOTAL_', 'disciple_tools' ),
-        'range_start' => __( 'start', 'disciple_tools' ),
-        'range_end' => __( 'end', 'disciple_tools' ),
         'sorting_by' => __( 'Sorting By', 'disciple_tools' ),
         'creation_date' => __( 'Creation Date', 'disciple_tools' ),
         'date_modified' => __( 'Date Modified', 'disciple_tools' ),
