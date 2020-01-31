@@ -33,7 +33,6 @@ if ( ! current_user_can( 'access_groups' ) ) {
     ); ?>
 
 <!--<div id="errors"> </div>-->
-<!-- <div><a class="button small" id="backlink" href="../" style="margin:.9rem 0 0 1.3em"><?php esc_html_e( 'Back to Groups List', 'disciple_tools' )?></a></div> -->
 <div id="content" class="single-groups">
     <span id="group-id" style="display: none"><?php echo get_the_ID()?></span>
     <span id="post-id" style="display: none"><?php echo get_the_ID()?></span>
@@ -63,7 +62,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                         <!-- MEMBERS TILE -->
                         <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item" >
                             <div class="bordered-box" id="members-tile">
-                                <h3 class="section-header"><?php esc_html_e( 'Members', 'disciple_tools' )?>
+                                <h3 class="section-header"><?php echo esc_html( $group_fields["members"]["name"] )?>
                                     <button class="help-button" data-section="members-help-text">
                                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                     </button>
@@ -75,7 +74,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                     </button>
                                 </h3>
                                 <div class="section-body"><!-- start collapse -->
-                                <div class="section-subheader"><?php esc_html_e( "Member Count", 'disciple_tools' ) ?></div>
+                                <div class="section-subheader"><?php echo esc_html( $group_fields["member_count"]["name"] )?>
                                 <input id="member_count"
                                        class="number-input" type="number" min="0"
                                        placeholder="<?php echo esc_html( sizeof( $group["members"] ) )?>"
@@ -139,29 +138,31 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                 </select>
                                 <div class="section-subheader">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/group-parent.svg' ) ?>"/>
-                                <?php esc_html_e( "Parent Group", 'disciple_tools' ) ?></div>
+                                <?php echo esc_html( $group_fields["parent_groups"]["name"] )?>
                                 <var id="parent_groups-result-container" class="result-container"></var>
                                 <div id="parent_groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
                                     <div class="typeahead__container">
                                         <div class="typeahead__field">
                                         <span class="typeahead__query">
                                             <input class="js-typeahead-parent_groups input-height"
-                                                    name="groups[query]" placeholder="<?php echo esc_html_x( "Search Groups", 'input field placeholder', 'disciple_tools' ) ?>"
-                                                    autocomplete="off">
+                                                   name="groups[query]"
+                                                   placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), Disciple_Tools_Groups_Post_Type::instance()->plural ) )?>"
+                                                   autocomplete="off">
                                         </span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="section-subheader">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/group-peer.svg' ) ?>"/>
-                                <?php esc_html_e( "Peer Group", 'disciple_tools' ) ?></div>
+                                <?php echo esc_html( $group_fields["peer_groups"]["name"] )?>
                                 <var id="peer_groups-result-container" class="result-container"></var>
                                 <div id="peer_groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
                                     <div class="typeahead__container">
                                         <div class="typeahead__field">
                                         <span class="typeahead__query">
                                             <input class="js-typeahead-peer_groups input-height"
-                                                   name="groups[query]" placeholder="<?php echo esc_html_x( "Search Groups", 'input field placeholder', 'disciple_tools' ) ?>"
+                                                   name="groups[query]"
+                                                   placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), Disciple_Tools_Groups_Post_Type::instance()->plural ) )?>"
                                                    autocomplete="off">
                                         </span>
                                         </div>
@@ -169,15 +170,16 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                 </div>
                                 <div class="section-subheader">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/group-child.svg' ) ?>"/>
-                                <?php esc_html_e( "Child Group", 'disciple_tools' ) ?></div>
+                                <?php echo esc_html( $group_fields["child_groups"]["name"] )?>
                                 <var id="child_groups-result-container" class="result-container"></var>
                                 <div id="child_groups_t" name="form-child_groups" class="scrollable-typeahead typeahead-margin-when-active">
                                     <div class="typeahead__container">
                                         <div class="typeahead__field">
                                         <span class="typeahead__query">
                                             <input class="js-typeahead-child_groups input-height"
-                                                    name="groups[query]" placeholder="<?php echo esc_html_x( "Search Groups", 'input field placeholder', 'disciple_tools' ) ?>"
-                                                    autocomplete="off">
+                                                   name="groups[query]"
+                                                   placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), Disciple_Tools_Groups_Post_Type::instance()->plural ) )?>"
+                                                   autocomplete="off">
                                         </span>
                                             <span class="typeahead__button">
                                             <button type="button" data-open="create-group-modal" class="create-new-group typeahead__image_button input-height">
@@ -210,7 +212,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
                                     <div class="grid-x">
                                         <div style="margin-right:auto; margin-left:auto;min-height:302px">
-                                            <object id="church-svg-wrapper" type="image/svg+xml" data="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/church-wheel.svg', 'disciple_tools' ); ?>"></object>
+                                            <object id="church-svg-wrapper" type="image/svg+xml" data="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/church-wheel.svg' ); ?>"></object>
                                         </div>
                                     </div>
                                     <div style="display:flex;flex-wrap:wrap;margin-top:10px">
@@ -249,7 +251,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                     <div class="section-body"><!-- start collapse -->
 
                                     <div class="grid-x" id="four-fields-inputs">
-                                        <div style="width:100%; height:375px;background-image:url('<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/four-fields.svg', 'disciple_tools' ); ?>');background-repeat:no-repeat;"></div>
+                                        <div style="width:100%; height:375px;background-image:url('<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/four-fields.svg' ); ?>');background-repeat:no-repeat;"></div>
                                     </div>
                                 </div><!-- end collapse --></div>
                             </section>
@@ -381,7 +383,8 @@ if ( ! current_user_can( 'access_groups' ) ) {
                     <div class="typeahead__field">
                         <span class="typeahead__query">
                             <input class="js-typeahead-members"
-                                   name="members[query]" placeholder="<?php echo esc_html_x( "Search Contacts", 'input field placeholder', 'disciple_tools' ) ?>"
+                                   name="members[query]"
+                                   placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), Disciple_Tools_Contact_Post_Type::instance()->plural ) )?>"
                                    autocomplete="off">
                         </span>
                     </div>
