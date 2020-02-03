@@ -71,8 +71,6 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
                 'title_teams' => __( 'Lead Teams', 'disciple_tools' ),
                 'label_active_contacts'  => __( 'Active Contacts', 'disciple_tools' ),
                 'total_groups'    => __( 'Total Groups', 'disciple_tools' ),
-                'updates_needed'  => __( 'Updates Needed', 'disciple_tools' ),
-                'attempts_needed' => __( 'Attempts Needed', 'disciple_tools' ),
                 'label_my_follow_up_progress' => __( 'Follow-up of my active contacts', 'disciple_tools' ),
                 'label_group_needing_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
                 'label_stats_as_of' => strtolower( __( 'stats as of', 'disciple_tools' ) ),
