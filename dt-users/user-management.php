@@ -261,7 +261,7 @@ class DT_User_Management
         $daily_activity = [];
         while ( $current < time() ) {
 
-            $activity = $days_active[date( 'Y-m-d', $current )]["activity_count"] ?? 0;
+            $activity = $days_active[gmdate( 'Y-m-d', $current )]["activity_count"] ?? 0;
 
             $daily_activity[] = [
                 "day" => dt_format_date( $current ),
