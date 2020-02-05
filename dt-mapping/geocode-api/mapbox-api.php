@@ -257,7 +257,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             $key = self::get_key();
             $url = self::$mapbox_endpoint . 'Denver.json?access_token=' . $key;
             $response = wp_remote_get( esc_url_raw( $url ) );
-            $data_result = json_decode( wp_remote_retrieve_body( $response ), true);
+            $data_result = json_decode( wp_remote_retrieve_body( $response ), true );
 
             if ( isset( $data_result['features'] ) && ! empty( $data_result['features'] ) ) {
                 return true;

@@ -193,7 +193,7 @@ class DT_User_Management
             }
         }
 
-        $month_start = strtotime( date( 'Y-m-01' ) );
+        $month_start = strtotime( gmdate( 'Y-m-01' ) );
         $last_month_start = strtotime( 'first day of last month' );
         $this_year = strtotime( "first day of january this year" );
         //number of assigned contacts
@@ -256,7 +256,7 @@ class DT_User_Management
             $days_active[$a["day"]] = $a;
         }
         $first = isset( $days_active_results[0]['day'] ) ? strtotime( $days_active_results[0]['day'] ) : time();
-        $first_week_start = date( 'Y-m-d', strtotime( '-' . date( 'w', $first )  . ' days', $first ) );
+        $first_week_start = gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $first )  . ' days', $first ) );
         $current = strtotime( $first_week_start );
         $daily_activity = [];
         while ( $current < time() ) {
@@ -265,8 +265,8 @@ class DT_User_Management
 
             $daily_activity[] = [
                 "day" => dt_format_date( $current ),
-                "weekday" => date( 'l', $current ),
-                "week_start" => date( 'Y-m-d', strtotime( '-' . date( 'w', $current ) . ' days', $current ) ),
+                "weekday" => gmdate( 'l', $current ),
+                "week_start" => gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $current ) . ' days', $current ) ),
                 "activity_count" => $activity,
                 "activity" => $activity > 0 ? 1 : 0
             ];

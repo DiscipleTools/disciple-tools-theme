@@ -231,7 +231,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
     public function get_assigned_to_multipliers_counts(){
         global $wpdb;
-        $month_start = strtotime( date( 'Y-m-01' ) );
+        $month_start = strtotime( gmdate( 'Y-m-01' ) );
         $last_month_start = strtotime( 'first day of last month' );
         $this_year = strtotime( "first day of january this year" );
         $last_year = strtotime( "first day of january last year" );
