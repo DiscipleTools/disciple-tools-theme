@@ -157,10 +157,10 @@ $user_management_options = DT_User_Management::user_management_options();
                     <div class="bordered-box">
                         <div class="section-subheader"><?php esc_html_e( 'Contacts Assigned', 'disciple_tools' ); ?></div>
                         <ul class="ul-no-bullets">
-                            <li><?php esc_html_e( 'This month', 'disciple_tools' ); ?>: <span id="assigned_this_month"></span></li>
-                            <li><?php esc_html_e( 'Last month', 'disciple_tools' ); ?>: <span id="assigned_last_month"></span></li>
-                            <li><?php esc_html_e( 'This year', 'disciple_tools' ); ?>: <span id="assigned_this_year"></span></li>
-                            <li><?php esc_html_e( 'All time', 'disciple_tools' ); ?>: <span id="assigned_all_time"></span></li>
+                            <li><?php esc_html_e( 'This Month', 'disciple_tools' ); ?>: <span id="assigned_this_month"></span></li>
+                            <li><?php esc_html_e( 'Last Month', 'disciple_tools' ); ?>: <span id="assigned_last_month"></span></li>
+                            <li><?php esc_html_e( 'This Year', 'disciple_tools' ); ?>: <span id="assigned_this_year"></span></li>
+                            <li><?php esc_html_e( 'All Time', 'disciple_tools' ); ?>: <span id="assigned_all_time"></span></li>
                         </ul>
                     </div>
 
