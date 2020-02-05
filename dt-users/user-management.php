@@ -91,6 +91,18 @@ class DT_User_Management
     }
 
 
+    public static function user_management_options(){
+        return [
+            "user_status_options" => [
+                "new" => __( 'New', 'disciple_tools' ),
+                "active" => __( 'Active', 'disciple_tools' ),
+                "away" => __( 'Away', 'disciple_tools' ),
+                "inconsistent" => __( 'Inconsistent', 'disciple_tools' ),
+                "inactive" => __( 'Inactive', 'disciple_tools' ),
+            ]
+        ];
+    }
+
     public function scripts() {
 
         wp_register_style( 'datatable-css', '//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css', [], '1.10.19' );
@@ -121,7 +133,7 @@ class DT_User_Management
                 'url_path'           => dt_get_url_path(),
                 'translations'       => [
                     'accept_time' => _x( '%1$s was accepted on %2$s after %3$s days', 'Bob was accepted on Jul 8 after 10 days', 'disciple_tools' ),
-                    'no_contact_attempt_time' => _x( '%1$s waiting for contact for %2$s days', 'Bob waiting for contact for 10 days', 'disciple_tools' ),
+                    'no_contact_attempt_time' => _x( '%1$s waiting for Contact Attempt for %2$s days', 'Bob waiting for contact for 10 days', 'disciple_tools' ),
                     'contact_attempt_time' => _x( 'Contact with %1$s was attempted on %2$s after %3$s days', 'Contact with Bob was attempted on Jul 8 after 10 days', 'disciple_tools' ),
                 ]
             ]
@@ -163,33 +175,33 @@ class DT_User_Management
         foreach ( $user_activity as $a ){
             if ( $a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from' ){
                 if ( $a->object_type === "contacts" ){
-                    $a->object_note = "Updated contact " . $a->object_name;
+                    $a->object_note = sprintf( _x( "Updated contact %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
                 }
                 if ( $a->object_type === "groups" ){
-                    $a->object_note = "Updated group " . $a->object_name;
+                    $a->object_note = sprintf( _x( "Updated group %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
                 }
             }
             if ( $a->action == 'comment' ){
                 if ( $a->meta_key === "contacts" ){
-                    $a->object_note = "Commented on contact " . $a->object_name;
+                    $a->object_note = sprintf( _x( "Commented on contact %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
                 }
                 if ( $a->meta_key === "groups" ){
-                    $a->object_note = "Commented on group " . $a->object_name;
+                    $a->object_note = sprintf( _x( "Commented on group %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
                 }
             }
             if ( $a->action == 'created' ){
                 if ( $a->object_type === "contacts" ){
-                    $a->object_note = "Created contact " . $a->object_name;
+                    $a->object_note = sprintf( _x( "Created contact %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
                 }
                 if ( $a->object_type === "groups" ){
-                    $a->object_note = "Created group " . $a->object_name;
+                    $a->object_note = sprintf( _x( "Created group %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
                 }
             }
             if ( $a->action === "logged_in" ){
-                $a->object_note = "Logged In";
+                $a->object_note = __( "Logged In", 'disciple_tools' );
             }
             if ( $a->action === 'assignment_decline' ){
-                $a->object_note = "Declined assignment on " . $a->object_name;
+                $a->object_note = sprintf( _x( "Declined assignment on %s", 'Declined assignment on Bob', 'disciple_tools' ), $a->object_name );
             }
         }
 

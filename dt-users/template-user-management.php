@@ -6,6 +6,7 @@ if ( !current_user_can( 'list_users' ) && !current_user_can( 'manage_dt' ) ) {
     wp_safe_redirect( '/settings' );
 }
 $dt_url_path = dt_get_url_path();
+$user_management_options = DT_User_Management::user_management_options();
 ?>
 
 <?php get_header(); ?>
@@ -72,10 +73,10 @@ $dt_url_path = dt_get_url_path();
                             $workload_status_options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
                             $index = 0;
                             foreach ( $users as $user_i => $user ) : ?>
-                            <tr class="user_row" style="cursor: pointer"data-user="<?php echo esc_html( $user["ID"] ) ?>">
+                            <tr class="user_row" style="cursor: pointer" data-user="<?php echo esc_html( $user["ID"] ) ?>">
                                 <td></td>
                                 <td data-user="<?php echo esc_html( $user["ID"] ) ?>"><?php echo esc_html( $user["display_name"] ) ?></td>
-                                <td><?php echo esc_html( $user["user_status"] ?? "" ) ?></td>
+                                <td><?php echo esc_html( isset( $user["user_status"] ) ? $user_management_options["user_status_options"][$user["user_status"]] : "" ) ?></td>
                                 <td><?php echo esc_html( isset( $user["workload_status"], $workload_status_options[ $user["workload_status"] ] ) ? $workload_status_options[ $user["workload_status"] ]["label"] : "" ) ?></td>
                                 <td><?php echo esc_html( $user["number_new_assigned"] ) ?></td>
                                 <td>
@@ -172,11 +173,9 @@ $dt_url_path = dt_get_url_path();
                             <h3><?php esc_html_e( 'User Status', 'disciple_tools' ); ?></h3>
                             <select id="status-select" class="user-select">
                                 <option></option>
-                                <option value="new"><?php esc_html_e( 'New', 'disciple_tools' ); ?></option>
-                                <option value="active"><?php esc_html_e( 'Active', 'disciple_tools' ); ?></option>
-                                <option value="away"><?php esc_html_e( 'Away', 'disciple_tools' ); ?></option>
-                                <option value="away"><?php esc_html_e( 'Fading', 'disciple_tools' ); ?></option>
-                                <option value="inactive"><?php esc_html_e( 'Inactive', 'disciple_tools' ); ?></option>
+                                <?php foreach ( $user_management_options["user_status_options"] as $status_key => $status_value ) : ?>
+                                <option value="<?php echo esc_html( $status_key ); ?>"><?php echo esc_html( $status_value ); ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="bordered-box">
