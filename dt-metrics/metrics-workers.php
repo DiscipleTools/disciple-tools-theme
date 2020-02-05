@@ -151,10 +151,12 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         return [
             'hero_stats' => $this->chart_user_hero_stats(),
             'recent_activity' => $this->chart_recent_activity(),
+            'assigned_to_multipliers' => $this->get_assigned_to_multipliers_counts(),
             'translations' => [
                 'title_activity' => __( 'Workers Activity', 'disciple_tools' ),
                 'title_recent_activity' => __( 'Worker System Engagement for the Last 30 Days', 'disciple_tools' ),
                 'title_response' => __( 'Follow-up Pace', 'disciple_tools' ),
+                'title_assigned_to' => __( 'Contacts assigned to multipliers', 'disciple_tools' ),
                 'label_total_workers' => __( 'Total Workers', 'disciple_tools' ),
                 'label_total_multipliers' => __( 'Multipliers', 'disciple_tools' ),
                 'label_total_dispatchers' => __( 'Dispatchers', 'disciple_tools' ),
@@ -164,7 +166,11 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 'label_least_active' => __( 'Least Active', 'disciple_tools' ),
                 'label_most_active' => __( 'Most Active', 'disciple_tools' ),
                 'label_select_year' => __( 'Select All time or a specific year to display', 'disciple_tools' ),
-                'label_all_time' => __( 'All time', 'disciple_tools' ),
+                'label_all_time' => __( 'All Time', 'disciple_tools' ),
+                'label_this_year' => __( 'This Year', 'disciple_tools' ),
+                'label_last_year' => __( 'Last Year', 'disciple_tools' ),
+                'label_last_month' => __( 'Last Month', 'disciple_tools' ),
+                'label_this_month' => __( 'This Month', 'disciple_tools' ),
             ],
         ];
     }
@@ -221,6 +227,45 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         }
 
         return $chart;
+    }
+
+    public function get_assigned_to_multipliers_counts(){
+        global $wpdb;
+        $month_start = strtotime( date( 'Y-m-01' ) );
+        $last_month_start = strtotime( 'first day of last month' );
+        $this_year = strtotime( "first day of january this year" );
+        $last_year = strtotime( "first day of january last year" );
+        //number of assigned contacts
+        $assigned_counts = $wpdb->get_results( $wpdb->prepare( "
+            SELECT 
+            COUNT( CASE WHEN date_assigned.hist_time >= %d THEN 1 END ) as this_month,
+            COUNT( CASE WHEN date_assigned.hist_time >= %d AND date_assigned.hist_time < %d THEN 1 END ) as last_month,
+            COUNT( CASE WHEN date_assigned.hist_time >= %d THEN 1 END ) as this_year,
+            COUNT( CASE WHEN date_assigned.hist_time >= %d AND date_assigned.hist_time < %d THEN 1 END  ) as last_year,
+            COUNT( date_assigned.histid ) as all_time
+            FROM $wpdb->dt_activity_log as date_assigned
+            INNER JOIN $wpdb->postmeta as type ON ( date_assigned.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
+            WHERE date_assigned.meta_key = 'assigned_to'
+                AND date_assigned.object_type = 'contacts' 
+                AND date_assigned.old_value <> ''
+                AND date_assigned.meta_value NOT IN ( 
+                    SELECT CONCAT( 'user-', u.user_id ) 
+                    FROM wp_usermeta u 
+                    WHERE u.meta_key = %s
+                    AND u.meta_value LIKE %s
+                    AND u.meta_value NOT LIKE %s
+                    AND u.meta_value NOT LIKE %s
+                    AND u.meta_value NOT LIKE %s
+                )
+        ", $month_start,
+            $last_month_start, $month_start,
+            $this_year,
+            $last_year, $this_year,
+            $wpdb->prefix . 'capabilities',
+            '%multiplier%', '%admin%', '%dispatcher%', '%marketer%'
+        ), ARRAY_A );
+
+        return isset( $assigned_counts[0] ) ? $assigned_counts[0] : [];
     }
 
     public function chart_contact_progress_per_worker( $force_refresh = false ) {
