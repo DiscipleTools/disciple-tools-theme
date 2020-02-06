@@ -14,7 +14,7 @@ class DT_User_Management
 
     public function __construct() {
         if ( $this->has_permission() ){
-            add_action( 'dt_top_nav_desktop', [ $this, 'add_nav_bar_link' ] );
+//            add_action( 'dt_top_nav_desktop', [ $this, 'add_nav_bar_link' ] );
             add_action( "template_redirect", [ $this, 'my_theme_redirect' ] );
             $url_path = dt_get_url_path();
             if ( strpos( $url_path, 'user-management' ) !== false ) {

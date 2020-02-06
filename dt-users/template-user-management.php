@@ -127,7 +127,7 @@ $user_management_options = DT_User_Management::user_management_options();
 
                 <hr>
 
-                <div style="display: flex; justify-content: flex-start" id="hero_stats">
+                <div style="display: flex; justify-content: space-between; flex-wrap: wrap;" id="hero_stats">
 
                     <div class="bordered-box">
                         <div class="section-subheader">
@@ -166,9 +166,9 @@ $user_management_options = DT_User_Management::user_management_options();
 
                 </div>
 
-                <div style="display: flex; justify-content: space-between">
+                <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
 
-                    <div style="flex-basis: 50%; padding-right:10px" class="user_modal_column">
+                    <div style="padding-right:10px" class="user_modal_column">
                         <div class="bordered-box">
                             <h3><?php esc_html_e( 'User Status', 'disciple_tools' ); ?></h3>
                             <select id="status-select" class="user-select">
@@ -201,7 +201,7 @@ $user_management_options = DT_User_Management::user_management_options();
                             $dt_roles = dt_multi_role_get_editable_role_names();
                             ?>
 
-                            <p> <a href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/roles.html" target="_blank"><?php esc_html_e( 'Click here to see a description for role', 'disciple_tools' ); ?></a>  </p>
+                            <p> <a href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/roles.html" target="_blank"><?php esc_html_e( 'Click here to see roles documentation', 'disciple_tools' ); ?></a>  </p>
 
                             <ul id="user_roles_list" class="no-bullet">
                             <?php foreach ( $dt_roles as $role_key => $name ) : ?>
@@ -248,10 +248,10 @@ $user_management_options = DT_User_Management::user_management_options();
                                 </div>
                                 <div style="flex-shrink: 1; margin: 0 10px">
                                     <div class="date_range">
-                                        <input type="text" class="date-picker" id="date_range" autocomplete="off" placeholder="<?php esc_html_e( '2020-01-01 - 2020-02-03', 'disciple_tools' )?>">
+                                        <input type="text" class="date-picker" id="date_range" autocomplete="off" placeholder="2020-01-01 - 2020-02-03">
                                     </div>
-                                    <div id="add_unavailable_dates_spinner" style="display: inline-block" class="loading-spinner"></div>
                                 </div>
+                                <div id="add_unavailable_dates_spinner" style="display: inline-block" class="loading-spinner"></div>
 
                             </div>
                             <p><?php esc_html_e( "Travel or Away Dates", 'disciple_tools' ) ?></p>
@@ -292,7 +292,7 @@ $user_management_options = DT_User_Management::user_management_options();
                             <div id="status_chart_div" style="height:300px"></div>
                         </div>
                     </div>
-                    <div style="flex-basis: 50%; padding-left: 10px" class="user_modal_column">
+                    <div style="padding-left: 10px" class="user_modal_column">
                         <div class="bordered-box">
                             <h3><?php esc_html_e( 'Activity', 'disciple_tools' ); ?></h3>
                             <div id="activity"></div>
