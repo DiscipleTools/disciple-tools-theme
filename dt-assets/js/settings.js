@@ -150,7 +150,7 @@ let display_dates_unavailable = (list = [], first_run )=>{
         <td>${_.escape(range.start_date)}</td>
         <td>${_.escape(range.end_date)}</td>
         <td>
-            <button class="button hollow tiny alert remove_dates_unavailable" data-id="${_.escape(range.id)}">
+            <button class="button hollow tiny alert remove_dates_unavailable" data-id="${_.escape(range.id)}" style="margin-bottom: 0">
             <i class="fi-x"></i> ${_.escape( wpApiSettingsPage.translations.delete )}</button>
         </td>
       </tr>`
