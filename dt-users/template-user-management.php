@@ -244,7 +244,7 @@ $user_management_options = DT_User_Management::user_management_options();
                             <p><?php esc_html_e( "Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts", 'disciple_tools' ) ?></p>
                             <div style="display: flex; align-items: center">
                                 <div>
-                                    <strong><?php esc_html_e( 'Start and End Dates', 'disciple_tools' )?>:</strong>
+                                    <strong><?php esc_html_e( 'Schedule Travel or Dates Unavailable', 'disciple_tools' )?>:</strong>
                                 </div>
                                 <div style="flex-shrink: 1; margin: 0 10px">
                                     <div class="date_range">
