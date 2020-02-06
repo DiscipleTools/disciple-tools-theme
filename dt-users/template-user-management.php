@@ -55,17 +55,17 @@ $user_management_options = DT_User_Management::user_management_options();
                         <?php endif; ?>
                         <span><a href="#" id="refresh_cached_data"><?php esc_html_e( 'Refresh Cached Data', 'disciple_tools' ); ?></a><span id="loading-page" class="loading-spinner"></span></span>
                         <div style="display: inline-block" class="loading-spinner users-spinner"></div>
-                        <table id="multipliers_table" class="display">
+                        <table id="multipliers_table" class="display" style="width: 100%">
                             <thead>
                                 <tr>
-                                    <th></th>
-                                    <th><?php esc_html_e( 'Display Name', 'disciple_tools' ); ?></th>
-                                    <th class="select-filter"><?php esc_html_e( 'Status', 'disciple_tools' ); ?></th>
-                                    <th class="select-filter"><?php esc_html_e( 'Workload Status', 'disciple_tools' ); ?></th>
-                                    <th><?php esc_html_e( 'Accept Needed', 'disciple_tools' ); ?></th>
-                                    <th><?php esc_html_e( 'Update Needed', 'disciple_tools' ); ?></th>
-                                    <th><?php esc_html_e( 'Active', 'disciple_tools' ); ?></th>
-                                    <th><?php esc_html_e( 'Last Activity', 'disciple_tools' ); ?></th>
+                                    <th class="all"></th>
+                                    <th class="all"><?php esc_html_e( 'Display Name', 'disciple_tools' ); ?></th>
+                                    <th class="select-filter desktop"><?php esc_html_e( 'Status', 'disciple_tools' ); ?></th>
+                                    <th class="select-filter desktop"><?php esc_html_e( 'Workload Status', 'disciple_tools' ); ?></th>
+                                    <th class="desktop"><?php esc_html_e( 'Accept Needed', 'disciple_tools' ); ?></th>
+                                    <th class="desktop"><?php esc_html_e( 'Update Needed', 'disciple_tools' ); ?></th>
+                                    <th class="desktop"><?php esc_html_e( 'Active', 'disciple_tools' ); ?></th>
+                                    <th class="desktop"><?php esc_html_e( 'Last Activity', 'disciple_tools' ); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
