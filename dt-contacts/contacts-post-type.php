@@ -349,7 +349,6 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['baptism_generation'] = [
             'name'        => _x( 'Baptism Generation', 'field name', 'disciple_tools' ),
-            'description' => _x( 'The generation of baptism.', 'Baptism Generation field description', 'disciple_tools' ),
             'type'        => 'text',
             'default'     => '',
             'section'     => 'misc',
@@ -596,6 +595,7 @@ class Disciple_Tools_Contact_Post_Type
             "name" => _x( "Relation", 'field name', 'disciple_tools' ),
             "description" => _x( "Relationship this contact has with another contact in the system.", 'field description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "contacts",
             "p2p_direction" => "any",
             "p2p_key" => "contacts_to_relation"
         ];
@@ -603,6 +603,7 @@ class Disciple_Tools_Contact_Post_Type
             "name" => _x( "Coached by", 'field name', 'disciple_tools' ),
             "description" => _x( "Who is coaching this contact", 'field description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "contacts",
             "p2p_direction" => "from",
             "p2p_key" => "contacts_to_contacts"
         ];
@@ -610,6 +611,7 @@ class Disciple_Tools_Contact_Post_Type
             "name" => _x( "Coached", 'field name', 'disciple_tools' ),
             "description" => _x( "Who is this contact coaching", 'field description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "contacts",
             "p2p_direction" => "to",
             "p2p_key" => "contacts_to_contacts"
         ];
@@ -617,6 +619,7 @@ class Disciple_Tools_Contact_Post_Type
             "name" => _x( "Baptized by", 'field name', 'disciple_tools' ),
             "description" => _x( "Who baptized this contact", 'field description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "contacts",
             "p2p_direction" => "from",
             "p2p_key" => "baptizer_to_baptized"
         ];
@@ -624,6 +627,7 @@ class Disciple_Tools_Contact_Post_Type
             "name" => _x( "Baptized", 'field name', 'disciple_tools' ),
             "description" => _x( "Who this contact has baptized", 'field description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "contacts",
             "p2p_direction" => "to",
             "p2p_key" => "baptizer_to_baptized"
         ];
@@ -631,6 +635,7 @@ class Disciple_Tools_Contact_Post_Type
             "name" => _x( "People Groups", 'field name', 'disciple_tools' ),
             "description" => _x( "People Groups this contact belongs to.", 'field description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "peoplegroups",
             "p2p_direction" => "from",
             "p2p_key" => "contacts_to_peoplegroups"
         ];
@@ -638,6 +643,7 @@ class Disciple_Tools_Contact_Post_Type
             "name" => _x( "Groups", 'field name', 'disciple_tools' ),
             "description" => _x( "Groups this contact is a member of.", 'field description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "groups",
             "p2p_direction" => "from",
             "p2p_key" => "contacts_to_groups"
         ];
@@ -645,6 +651,7 @@ class Disciple_Tools_Contact_Post_Type
             "name" => _x( "Sub-assigned to", 'field name', 'disciple_tools' ),
             "description" => _x( "This is someone working alongside of the main person assigned to the contact. You may find that you are partnering with others in your discipleship relationships. Only one person can be assigned while multiple people can be sub-assigned.", 'field description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "contacts",
             "p2p_direction" => "to",
             "p2p_key" => "contacts_to_subassigned"
         ];
@@ -654,7 +661,13 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'location',
             'default'     => [],
         ];
-        $fields['location_lnglat'] = [
+        $fields['location_grid_meta'] = [
+            'name'        => _x( 'Location Grid Meta', 'field name', 'disciple_tools' ),
+            'type'        => 'location',
+            'default'     => [],
+            'hidden' => true
+        ];
+        $fields['location_lnglat'] = [ // @todo remove supports a small amount of web forms
             'name'        => _x( 'Coordinates', 'field name', 'disciple_tools' ),
             'type'        => 'location',
             'default'     => [],

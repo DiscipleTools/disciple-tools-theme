@@ -425,6 +425,7 @@ class Disciple_Tools_Groups_Post_Type
             "name" => __( 'Parent Group', 'disciple_tools' ),
             'description' => _x( 'A group that founded this group.', 'parent group description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "groups",
             "p2p_direction" => "from",
             "p2p_key" => "groups_to_groups"
         ];
@@ -432,6 +433,7 @@ class Disciple_Tools_Groups_Post_Type
             "name" => __( 'Peer Group', 'disciple_tools' ),
             'description' => _x( "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc.", 'peer group description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "groups",
             "p2p_direction" => "any",
             "p2p_key" => "groups_to_peers"
         ];
@@ -439,6 +441,7 @@ class Disciple_Tools_Groups_Post_Type
             "name" => __( 'Child Group', 'disciple_tools' ),
             'description' => _x( 'A group that has been birthed out of this group.', 'child group description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "groups",
             "p2p_direction" => "to",
             "p2p_key" => "groups_to_groups"
         ];
@@ -452,6 +455,7 @@ class Disciple_Tools_Groups_Post_Type
             "name" => __( 'Member List', 'disciple_tools' ),
             'description' => _x( 'The contacts who are members of this group.', 'members list description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "contacts",
             "p2p_direction" => "to",
             "p2p_key" => "contacts_to_groups"
         ];
@@ -459,6 +463,7 @@ class Disciple_Tools_Groups_Post_Type
             "name" => __( 'People Groups', 'disciple_tools' ),
             'description' => _x( 'The people groups represented by this group.', 'people_groups field description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "peoplegroups",
             "p2p_direction" => "from",
             "p2p_key" => "groups_to_peoplegroups"
         ];
@@ -466,6 +471,7 @@ class Disciple_Tools_Groups_Post_Type
             "name" => __( 'Leaders', 'disciple_tools' ),
             'description' => _x( 'A list of the leaders of the group (contacts). Multiple leaders can be assigned to a group.', 'leaders field description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "contacts",
             "p2p_direction" => "from",
             "p2p_key" => "groups_to_leaders"
         ];
@@ -473,6 +479,7 @@ class Disciple_Tools_Groups_Post_Type
             "name" => _x( 'Group Coach / Church Planter', 'coaches field name', 'disciple_tools' ),
             'description' => _x( 'The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group.', 'coaches field description', 'disciple_tools' ),
             "type" => "connection",
+            "post_type" => "contacts",
             "p2p_direction" => "from",
             "p2p_key" => "groups_to_coaches"
         ];
@@ -487,6 +494,12 @@ class Disciple_Tools_Groups_Post_Type
             'description' => _x( 'The general location where this group meets.', 'location_grid field description', 'disciple_tools' ),
             'type'        => 'location',
             'default'     => [],
+        ];
+        $fields['location_grid_meta'] = [
+            'name'        => _x( 'Location Grid Meta', 'field name', 'disciple_tools' ),
+            'type'        => 'location',
+            'default'     => [],
+            'hidden' => true
         ];
         $fields['tasks'] = [
             'name' => __( 'Tasks', 'disciple_tools' ),

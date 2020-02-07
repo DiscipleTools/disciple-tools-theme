@@ -113,37 +113,28 @@ declare(strict_types=1);
 
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
-                    <?php $fields = [ "assigned_to", "subassigned", "coached_by", "created_on", "location_grid", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
-                    $allowed_types = [ "multi_select", "key_select", "boolean", "date", "location" ];
+                    <?php $fields = [ "assigned_to", "subassigned", "created_on", "location_grid", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
+                    $allowed_types = [ "multi_select", "key_select", "boolean", "date", "location", "connection" ];
                     foreach ( $dt_contact_field_options as $field_key => $field){
                         if ( $field_key && in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
                             $fields[] = $field_key;
                         }
                     }
                     $fields = apply_filters( 'dt_filters_additional_fields', $fields, "contacts" ) ?? [];
-                    $connections = Disciple_Tools_Posts::$connection_types;
-                    $connections["assigned_to"] = [ "name" => __( "Assigned To", 'disciple_tools' ) ];
-                    $connections["location_grid"] = [ "name" => __( "Locations", 'disciple_tools' ) ];
                     ?>
                     <ul class="vertical tabs" data-tabs id="filter-tabs">
                         <?php foreach ( $fields as $index => $field ) :
-                            if ( isset( $dt_contact_field_options[$field]["name"] ) ) : ?>
+                            $connection = ( isset( $dt_contact_field_options[$field]["type"] ) && $dt_contact_field_options[$field]["type"] === "connection" ) ? isset( $dt_contact_field_options[$field]["post_type"] ) : true;
+                            if ( isset( $dt_contact_field_options[$field]["name"] ) && $connection ) : ?>
                                 <li class="tabs-title <?php if ( $index === 0 ){ echo "is-active"; } ?>" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>" <?php if ( $index === 0 ){ echo 'aria-selected="true"'; } ?>>
                                         <?php echo esc_html( $dt_contact_field_options[$field]["name"] ) ?></a>
-                                </li>
-                            <?php elseif ( in_array( $field, array_keys( $connections ) ) ) : ?>
-                                <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
-                                    <a href="#<?php echo esc_html( $field )?>">
-                                        <?php echo esc_html( $connections[$field]["name"] ) ?></a>
                                 </li>
                             <?php elseif ( $field === "created_on" ) : ?>
                                 <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>">
                                         <?php esc_html_e( "Creation Date", 'disciple_tools' ) ?></a>
                                 </li>
-                            <?php else : ?>
-                                <?php wp_die( "Cannot implement filter options for field " . esc_html( $field ) ); ?>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </ul>
@@ -152,7 +143,12 @@ declare(strict_types=1);
                 <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="filter-tabs">
                     <?php foreach ( $fields as $index => $field ) :
                         $is_multi_select = isset( $dt_contact_field_options[$field] ) && $dt_contact_field_options[$field]["type"] == "multi_select";
-                        if ( in_array( $field, array_keys( $connections ) ) || $is_multi_select ) : ?>
+                        if ( isset( $dt_contact_field_options[$field] ) && (
+                                ( $dt_contact_field_options[$field]["type"] === "connection" && isset( $dt_contact_field_options[$field]["post_type"] ) ) ||
+                                $dt_contact_field_options[$field]["type"] === "location" ||
+                                $dt_contact_field_options[$field]["type"] === "user_select" ||
+                                $is_multi_select
+                            ) ): ?>
                             <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>" id="<?php echo esc_html( $field ) ?>">
                                 <div class="<?php echo esc_html( $field );?>  <?php echo esc_html( $is_multi_select ? "multi_select" : "" ) ?> details" >
                                     <var id="<?php echo esc_html( $field ) ?>-result-container" class="result-container <?php echo esc_html( $field ) ?>-result-container"></var>
@@ -160,8 +156,11 @@ declare(strict_types=1);
                                         <div class="typeahead__container">
                                             <div class="typeahead__field">
                                                 <span class="typeahead__query">
-                                                    <input class="js-typeahead-<?php echo esc_html( $field ) ?> input-height" data-field="<?php echo esc_html( $field ) ?>"
-                                                           name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>"
+                                                    <input class="js-typeahead-<?php echo esc_html( $field ) ?> input-height"
+                                                           data-field="<?php echo esc_html( $field ) ?>"
+                                                           name="<?php echo esc_html( $field ) ?>[query]"
+                                                           placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>"
+                                                           data-type="<?php echo esc_html( $dt_contact_field_options[$field]["type"] ) ?>"
                                                            autocomplete="off">
                                                 </span>
                                             </div>
