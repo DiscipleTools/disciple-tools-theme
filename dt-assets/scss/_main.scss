@@ -141,6 +141,18 @@ NAVIGATION STYLES
         left: -15px;
     }
 }
+.add-new-items-dropdown {
+    background-color: #3f729b;
+    text-align: left;
+    a {
+        vertical-align: middle;
+        color: white;
+        font-weight: 700;
+        img {
+            width:25px; margin:0 10px 0 0
+        }
+    }
+}
 
 nav.second-bar {
     padding: 0.5em;
