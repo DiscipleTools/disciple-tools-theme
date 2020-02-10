@@ -14,7 +14,7 @@ class DT_User_Management
 
     public function __construct() {
         if ( $this->has_permission() ){
-            add_action( 'dt_top_nav_desktop', [ $this, 'add_nav_bar_link' ] );
+//            add_action( 'dt_top_nav_desktop', [ $this, 'add_nav_bar_link' ] );
             add_action( "template_redirect", [ $this, 'my_theme_redirect' ] );
             $url_path = dt_get_url_path();
             if ( strpos( $url_path, 'user-management' ) !== false ) {
@@ -107,7 +107,10 @@ class DT_User_Management
 
         wp_register_style( 'datatable-css', '//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css', [], '1.10.19' );
         wp_enqueue_style( 'datatable-css' );
+        wp_register_style( 'datatable-responsive-css', '//cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css', [], '2.2.3' );
+        wp_enqueue_style( 'datatable-responsive-css' );
         wp_register_script( 'datatable', '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', false, '1.10' );
+        wp_register_script( 'datatable-responsive', '//cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js', [ 'datatable' ], '2.2.3' );
         wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
@@ -116,6 +119,7 @@ class DT_User_Management
             'jquery-ui-core',
             'moment',
             'datatable',
+            'datatable-responsive',
             'amcharts-core',
             'amcharts-charts',
             'amcharts-animated',

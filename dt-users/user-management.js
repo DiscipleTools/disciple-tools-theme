@@ -21,6 +21,7 @@ jQuery(document).ready(function($) {
         "class": "index",
         targets: 0
       } ],
+      responsive: true
     });
 
     multipliers_table.columns( '.select-filter' ).every( function () {
@@ -193,9 +194,11 @@ jQuery(document).ready(function($) {
       })
     })
 
-    $('.user_row').on("click", function () {
-      user_id = $(this).data("user")
-      open_multiplier_modal(user_id)
+    $('.user_row').on("click", function (a) {
+      if ( a.target._DT_CellIndex.column !== 0 ){
+        user_id = $(this).data("user")
+        open_multiplier_modal(user_id)
+      }
     })
 
     let update_user = ( user_id, key, value )=>{
