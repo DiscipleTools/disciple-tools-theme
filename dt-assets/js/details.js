@@ -75,6 +75,14 @@ jQuery(document).ready(function($) {
     }).catch(handleAjaxError)
   })
 
+  $('.dt_contenteditable').on('blur', function () {
+    const id = $(this).attr('id')
+    let val = $(this).html()
+    rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
+      $( document ).trigger( "contenteditable-updated", [ resp, id, val ] );
+    }).catch(handleAjaxError)
+  })
+
 
   $('.dt_typeahead').each((key, el)=>{
     let field_id = $(el).attr('id').replace('_connection', '')
