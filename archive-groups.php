@@ -17,16 +17,17 @@ declare(strict_types=1);
              data-sticky data-options="marginTop:3;" style="width:100%" data-top-anchor="1"
              class="second-bar">
             <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
-                <a class="button dt-green" style="margin-bottom:0" href="<?php echo esc_url( home_url( '/' ) ) . "groups/new" ?>">
+                <a class="button dt-green" href="<?php echo esc_url( home_url( '/' ) ) . "groups/new" ?>">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group-white.svg' ) ?>"/>
-                    <span class="hide-for-small-only"><?php esc_html_e( "Create new group", "disciple_tools" ); ?></span>
+                    <span><?php esc_html_e( "Create new group", "disciple_tools" ); ?></span>
                 </a>
-                <a class="button" style="margin-bottom:0" data-open="filter-modal">
+                <a class="button" data-open="filter-modal">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
-                    <span class="hide-for-small-only"><?php esc_html_e( "Filter Groups", 'disciple_tools' ) ?></span>
+                    <span><?php esc_html_e( "Filter Groups", 'disciple_tools' ) ?></span>
                 </a>
-                <input class="search-input" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="<?php echo esc_html_x( "Search Groups", 'input field placeholder', 'disciple_tools' ) ?>">
-                <a class="button" style="margin-bottom:0" id="search">
+                <input class="search-input" style="max-width:200px;display: inline-block;" type="search" id="search-query"
+                       placeholder="<?php echo esc_html_x( "Search Groups", 'input field placeholder', 'disciple_tools' ) ?>">
+                <a class="button" id="search">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
                     <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
                 </a>
@@ -35,17 +36,14 @@ declare(strict_types=1);
     </div>
     <nav  role="navigation" style="width:100%;"
           class="second-bar show-for-small-only center"><!--  /* MOBILE VIEW BUTTON AREA */ -->
-        <a class="button dt-green" style="margin-bottom:0" href="<?php echo esc_url( home_url( '/' ) ) . "groups/new" ?>">
+        <a class="button dt-green" href="<?php echo esc_url( home_url( '/' ) ) . "groups/new" ?>">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group-white.svg' ) ?>"/>
-            <span class="hide-for-small-only"><?php esc_html_e( "Create new group", "disciple_tools" ); ?></span>
         </a>
-        <a class="button" style="margin-bottom:0" data-open="filter-modal">
+        <a class="button" data-open="filter-modal">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
-            <span class="hide-for-small-only"><?php esc_html_e( "Filter Groups", 'disciple_tools' ) ?></span>
         </a>
-        <a class="button" style="margin-bottom:0" id="open-search">
+        <a class="button" id="open-search">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
-            <span class="hide-for-small-only"><?php esc_html_e( "Search groups", 'disciple_tools' ) ?></span>
         </a>
         <div class="hideable-search" style="display: none; margin-top:5px">
             <input class="search-input-mobile" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile" placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>">

@@ -7,6 +7,7 @@
   let filter_to_delete = "";
   let filterToEdit = "";
   let filter_accordions = $('#list-filter-tabs')
+  let currentFilters = $("#current-filters")
   let cookie = window.SHAREDFUNCTIONS.getCookie("last_view");
   let cached_filter
   let get_records_promise = null
@@ -181,8 +182,47 @@
   }
   get_filter_counts()
 
-  let build_table = (records)=>{
 
+  function setup_current_filter_labels() {
+    let html = ""
+    let filter = current_filter
+    if (filter && filter.labels){
+      filter.labels.forEach(label=>{
+        html+= `<span class="current-filter ${_.escape( label.field )}">${_.escape( label.name )}</span>`
+      })
+    } else {
+      let query = filter.query
+      _.forOwn( query, query_key=> {
+        if (Array.isArray(query[query_key])) {
+
+          query[query_key].forEach(q => {
+
+            html += `<span class="current-filter ${_.escape( query_key )}">${_.escape( q )}</span>`
+          })
+        } else {
+          html += `<span class="current-filter search">${_.escape( query[query_key] )}</span>`
+        }
+      })
+    }
+
+    // if ( filter.query.sort ){
+    //   let sortLabel = filter.query.sort
+    //   if ( sortLabel.includes('last_modified') ){
+    //     sortLabel = wpApiListSettings.translations.date_modified
+    //   } else if (  sortLabel.includes('post_date') ) {
+    //     sortLabel = wpApiListSettings.translations.creation_date
+    //   } else  {
+    //     //get label for table header
+    //     sortLabel = $(`.sortable [data-id="${_.escape( sortLabel.replace('-', '') )}"]`).text()
+    //   }
+    //   html += `<span class="current-filter" data-id="sort">
+    //       ${_.escape( wpApiListSettings.translations.sorting_by )}: ${_.escape( sortLabel )}
+    //   </span>`
+    // }
+    currentFilters.html(html)
+  }
+
+  let build_table = (records)=>{
     let header_fields = '<th onclick="sortTable( 0 )"></th><th onclick="sortTable( 1 )">Name</th>'
     let table_rows = ``
     let index = 2;
@@ -290,6 +330,7 @@
       let result_text = list_settings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", response.total)
       $('.filter-result-text').html(result_text)
       build_table(items)
+      setup_current_filter_labels()
       loading_spinner.removeClass("active")
     }).catch(err => {
       loading_spinner.removeClass("active")
@@ -766,6 +807,38 @@
       }).catch(err => { console.error(err) })
     }
   })
+
+  $("#search").on("click", function () {
+    let searchText = _.escape( $("#search-query").val() )
+    let query = {text:searchText, assigned_to:["all"]}
+    let labels = [{ id:"search", name:searchText, field: "search"}]
+    add_custom_filter(searchText, "search", query, labels)
+  })
+
+  $("#search-mobile").on("click", function () {
+    let searchText = _.escape( $("#search-query-mobile").val() )
+    let query = {text:searchText, assigned_to:["all"]}
+    let labels = [{ id:"search", name:searchText, field: "search"}]
+    add_custom_filter(searchText, "search", query, labels)
+  })
+
+  $('.search-input').on('keyup', function (e) {
+    if ( e.keyCode === 13 ){
+      $("#search").trigger("click")
+    }
+  })
+
+  $('.search-input-mobile').on('keyup', function (e) {
+    if ( e.keyCode === 13 ){
+      $("#search-mobile").trigger("click")
+    }
+  })
+
+  //toggle show search input on mobile
+  $("#open-search").on("click", function () {
+    $(".hideable-search").toggle()
+  })
+
 
   window.sortTable = function sortTable(n) {
     let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
