@@ -936,6 +936,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 'lat' => $ip_result['latitude'],
                 'level' => $level,
                 'label' => $label,
+                'source' => 'ip',
                 'grid_id' => $grid_id['grid_id'] ?? '',
             ];
 
@@ -951,6 +952,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             $filtered_array['lat'] = sanitize_text_field( wp_unslash( $location_grid_meta['lat'] ) ) ?? '';
             $filtered_array['level'] = sanitize_text_field( wp_unslash( $location_grid_meta['level'] ) ) ?? '';
             $filtered_array['label'] = sanitize_text_field( wp_unslash( $location_grid_meta['label'] ) ) ?? '';
+            $filtered_array['source'] = sanitize_text_field( wp_unslash( $location_grid_meta['source'] ) ) ?? '';
             $filtered_array['grid_id'] = sanitize_text_field( wp_unslash( $location_grid_meta['grid_id'] ) ) ?? '';
 
             return $filtered_array;
