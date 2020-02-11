@@ -202,18 +202,29 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             neighborhood    - Colloquial sub-city features often referred to in local parlance. Unlike locality features, these typically lack official status and may lack universally agreed-upon boundaries.
             address         - Individual residential or business addresses.
             poi             - Points of interest. These include restaurants, stores, concert venues, parks, museums, etc.
+            admin0-admin5   - Used by Location Grid for administrative levels
              */
             switch ( $code ) {
+                case 'world':
+                case 'continent':
+                    $level = 1;
+                    break;
+                case 'admin0':
                 case 'country':
                     $level = 2;
                     break;
+                case 'admin1':
                 case 'region':
                 case 'postcode':
                     $level = 5;
                     break;
+                case 'admin2':
                 case 'district':
                     $level = 8;
                     break;
+                case 'admin3':
+                case 'admin4':
+                case 'admin5':
                 case 'neighborhood':
                     $level = 10;
                     break;
