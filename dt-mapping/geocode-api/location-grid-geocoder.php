@@ -939,7 +939,21 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 'grid_id' => $grid_id['grid_id'] ?? '',
             ];
 
+            self::verify_location_grid_meta_filter( $location_grid_meta );
+
             return $location_grid_meta;
+        }
+
+        public static function verify_location_grid_meta_filter( array &$location_grid_meta ) : array {
+            $filtered_array = [];
+
+            $filtered_array['lng'] = sanitize_text_field( wp_unslash( $location_grid_meta['lng'] ) ) ?? '';
+            $filtered_array['lat'] = sanitize_text_field( wp_unslash( $location_grid_meta['lat'] ) ) ?? '';
+            $filtered_array['level'] = sanitize_text_field( wp_unslash( $location_grid_meta['level'] ) ) ?? '';
+            $filtered_array['label'] = sanitize_text_field( wp_unslash( $location_grid_meta['label'] ) ) ?? '';
+            $filtered_array['grid_id'] = sanitize_text_field( wp_unslash( $location_grid_meta['grid_id'] ) ) ?? '';
+
+            return $filtered_array;
         }
 
     }
