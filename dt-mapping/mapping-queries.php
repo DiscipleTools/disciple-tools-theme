@@ -1077,7 +1077,7 @@ class Disciple_Tools_Mapping_Queries {
         $full_name = '';
 
         // get record and level
-        $grid_record = self::get_by_grid_id( $grid_id );
+        $grid_record = self::get_drilldown_by_grid_id( $grid_id );
         if ( empty( $grid_record ) ) {
             return $full_name;
         }
@@ -1087,16 +1087,13 @@ class Disciple_Tools_Mapping_Queries {
                 $full_name = $grid_record['name'];
                 break;
             case 'admin1':
-                $admin0 = self::get_by_grid_id( $grid_record['admin0_grid_id'] );
-                $full_name = $grid_record['name'] . ', ' . $admin0['name'];
+                $full_name = $grid_record['name'] . ', ' . $grid_record['admin0_name'];
                 break;
             case 'admin2':
             case 'admin3':
             case 'admin4':
             default:
-                $admin0 = self::get_by_grid_id( $grid_record['admin0_grid_id'] );
-                $admin1 = self::get_by_grid_id( $grid_record['admin1_grid_id'] );
-                $full_name = $grid_record['name'] . ', ' . $admin1['name'] . ', ' . $admin0['name'];
+                $full_name = $grid_record['name'] . ', ' . $grid_record['admin1_name'] . ', ' . $grid_record['admin0_name'];
                 break;
         }
 

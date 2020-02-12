@@ -620,7 +620,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     break;
                 case 'place_type':
                     if ( $first_result_only ) {
-                        return $raw_response['features'][0]['place_type'] ?? false;
+                        return $raw_response['features'][0]['place_type'][0] ?? false;
                     }
                     else {
                         foreach ( $raw_response['features'] as $feature ) {
