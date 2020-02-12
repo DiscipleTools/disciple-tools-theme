@@ -921,6 +921,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             }
             else {
                 $label = '';
+                $level = '';
             }
 
             $grid_id = $this->get_grid_id_by_lnglat( $ip_result['longitude'], $ip_result['latitude'], $ip_result['country_code'] );
@@ -931,8 +932,8 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             }
 
             $location_grid_meta = [
-                'lng' => $ip_result['longitude'],
-                'lat' => $ip_result['latitude'],
+                'lng' => $ip_result['longitude'] ?? '',
+                'lat' => $ip_result['latitude'] ?? '',
                 'level' => $level,
                 'label' => $label,
                 'source' => 'ip',
