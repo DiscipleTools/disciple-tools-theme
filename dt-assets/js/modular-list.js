@@ -501,10 +501,11 @@
 
   let load_post_type_typeaheads = ()=>{
     $(".typeahead__query [data-type='connection']").each((key, el)=>{
-      let post_type = $(el).data('field')
-      if (!window.Typeahead[`.js-typeahead-${post_type}`]) {
+      let field_key = $(el).data('field')
+      let post_type = _.get( list_settings, `post_type_settings.fields.${field_key}.post_type`, field_key)
+      if (!window.Typeahead[`.js-typeahead-${field_key}`]) {
         $.typeahead({
-          input: `.js-typeahead-${post_type}`,
+          input: `.js-typeahead-${field_key}`,
           minLength: 0,
           accent: true,
           searchOnFocus: true,
@@ -521,7 +522,7 @@
             data: [],
             callback: {
               onCancel: function (node, item) {
-                $(`.current-filter[data-id="${item.ID}"].${post_type}`).remove()
+                $(`.current-filter[data-id="${item.ID}"].${field_key}`).remove()
                 _.pullAllBy(new_filter_labels, [{id: item.ID}], "id")
               }
             }
@@ -529,14 +530,14 @@
           callback: {
             onResult: function (node, query, result, resultCount) {
               let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-              $(`#${post_type}-result-container`).html(text);
+              $(`#${field_key}-result-container`).html(text);
             },
             onHideLayout: function () {
-              $(`#${post_type}-result-container`).html("");
+              $(`#${field_key}-result-container`).html("");
             },
             onClick: function (node, a, item) {
-              new_filter_labels.push({id: item.ID, name: item.name, field: post_type})
-              selected_filters.append(`<span class="current-filter ${post_type}" data-id="${_.escape( item.ID )}">${_.escape( item.name )}</span>`)
+              new_filter_labels.push({id: item.ID, name: item.name, field: field_key})
+              selected_filters.append(`<span class="current-filter ${field_key}" data-id="${_.escape( item.ID )}">${_.escape( item.name )}</span>`)
             }
           }
         });
