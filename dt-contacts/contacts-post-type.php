@@ -296,7 +296,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields["milestones"] = [
             "name"    => __( 'Faith Milestones', 'disciple_tools' ),
-            "description" => _x( 'Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order.', 'Faith Milestone field description', 'disciple_tools' ),
+            "description" => _x( 'Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order.', 'Optional Documentation', 'disciple_tools' ),
             "type"    => "multi_select",
             "default" => [
                 "milestone_has_bible"     => [
@@ -381,7 +381,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields["reason_unassignable"] = [
             'name'        => __( 'Reason Not Ready', 'disciple_tools' ),
-            'description' => _x( 'The main reason the contact is not ready to be assigned to a user.', 'Reason Not Ready field description', 'disciple_tools' ),
+            'description' => _x( 'The main reason the contact is not ready to be assigned to a user.', 'Optional Documentation', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'none'         => [
@@ -412,7 +412,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['reason_paused'] = [
             'name'        => __( 'Reason Paused', 'disciple_tools' ),
-            'description' => _x( 'A paused contact is one you are not currently interacting with but expect to in the future.', 'Reason Paused description', 'disciple_tools' ),
+            'description' => _x( 'A paused contact is one you are not currently interacting with but expect to in the future.', 'Optional Documentation', 'disciple_tools' ),
             'type'        => 'key_select',
             'default' => [
                 'none'                 => [ "label" => '' ],
@@ -431,7 +431,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['reason_closed'] = [
             'name'        => __( 'Reason Closed', 'disciple_tools' ),
-            'description' => _x( "A closed contact is one you can't or don't wish to interact with.", 'Reason Closed field description', 'disciple_tools' ),
+            'description' => _x( "A closed contact is one you can't or don't wish to interact with.", 'Optional Documentation', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'none'                 => [ "label" => '' ],
@@ -470,7 +470,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['sources'] = [
             'name'        => __( 'Sources', 'disciple_tools' ),
-            'description' => _x( 'The website, event or location this contact came from.', 'Sources field description', 'disciple_tools' ),
+            'description' => _x( 'The website, event or location this contact came from.', 'Optional Documentation', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => $sources_default,
             'section'     => 'misc',
@@ -528,7 +528,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['corresponds_to_user'] = [
             'name' => __( 'Corresponds to user', 'disciple_tools' ),
-            'description' => _x( 'The id of the user this contact corresponds to', 'field description', 'disciple_tools' ),
+            'description' => _x( 'The id of the user this contact corresponds to', 'Optional Documentation', 'disciple_tools' ),
             'type' => 'number',
             'default' => 0,
             'section' => 'misc'
@@ -559,7 +559,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['tags'] = [
             'name'        => __( 'Tags', 'disciple_tools' ),
-            'description' => _x( 'A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags.', 'field description', 'disciple_tools' ),
+            'description' => _x( 'A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags.', 'Optional Documentation', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
@@ -587,7 +587,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["relation"] = [
             "name" => __( "Relation", 'disciple_tools' ),
-            "description" => _x( "Relationship this contact has with another contact in the system.", 'field description', 'disciple_tools' ),
+            "description" => _x( "Relationship this contact has with another contact in the system.", 'Optional Documentation', 'disciple_tools' ),
             "type" => "connection",
             "post_type" => "contacts",
             "p2p_direction" => "any",
@@ -595,7 +595,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["coached_by"] = [
             "name" => __( "Coached by", 'disciple_tools' ),
-            "description" => _x( "Who is coaching this contact", 'field description', 'disciple_tools' ),
+            "description" => _x( "Who is coaching this contact", 'Optional Documentation', 'disciple_tools' ),
             "type" => "connection",
             "post_type" => "contacts",
             "p2p_direction" => "from",
@@ -603,7 +603,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["coaching"] = [
             "name" => __( "Coached", 'disciple_tools' ),
-            "description" => _x( "Who is this contact coaching", 'field description', 'disciple_tools' ),
+            "description" => _x( "Who is this contact coaching", 'Optional Documentation', 'disciple_tools' ),
             "type" => "connection",
             "post_type" => "contacts",
             "p2p_direction" => "to",
@@ -611,7 +611,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["baptized_by"] = [
             "name" => __( "Baptized by", 'disciple_tools' ),
-            "description" => _x( "Who baptized this contact", 'field description', 'disciple_tools' ),
+            "description" => _x( "Who baptized this contact", 'Optional Documentation', 'disciple_tools' ),
             "type" => "connection",
             "post_type" => "contacts",
             "p2p_direction" => "from",
@@ -619,7 +619,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["baptized"] = [
             "name" => __( "Baptized", 'disciple_tools' ),
-            "description" => _x( "Who this contact has baptized", 'field description', 'disciple_tools' ),
+            "description" => _x( "Who this contact has baptized", 'Optional Documentation', 'disciple_tools' ),
             "type" => "connection",
             "post_type" => "contacts",
             "p2p_direction" => "to",
@@ -627,7 +627,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["people_groups"] = [
             "name" => __( 'People Groups', 'disciple_tools' ),
-            "description" => '',
+            'description' => _x( 'The people groups represented by this group.', 'Optional Documentation', 'disciple_tools' ),
             "type" => "connection",
             "post_type" => "peoplegroups",
             "p2p_direction" => "from",
@@ -635,7 +635,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["groups"] = [
             "name" => __( "Groups", 'disciple_tools' ),
-            "description" => _x( "Groups this contact is a member of.", 'field description', 'disciple_tools' ),
+            "description" => _x( "Groups this contact is a member of.", 'Optional Documentation', 'disciple_tools' ),
             "type" => "connection",
             "post_type" => "groups",
             "p2p_direction" => "from",
@@ -643,7 +643,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["subassigned"] = [
             "name" => __( "Sub-assigned to", 'disciple_tools' ),
-            "description" => _x( "Contact or User assisting the Assigned To user to follow up with the contact.", 'field description', 'disciple_tools' ),
+            "description" => _x( "Contact or User assisting the Assigned To user to follow up with the contact.", 'Optional Documentation', 'disciple_tools' ),
             "type" => "connection",
             "post_type" => "contacts",
             "p2p_direction" => "to",
@@ -651,7 +651,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['location_grid'] = [
             'name'        => __( 'Locations', 'disciple_tools' ),
-            'description' => _x( 'The general location where this contact is located.', 'field description', 'disciple_tools' ),
+            'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
             'type'        => 'location',
             'default'     => [],
         ];
@@ -882,6 +882,21 @@ class Disciple_Tools_Contact_Post_Type
                 "types" => [],
                 "icon" => get_template_directory_uri() . "/dt-assets/images/twitter.svg",
                 "hide_domain" => true
+            ],
+            "instagram" => [
+                "label" => __( 'Instagram', 'disciple_tools' ),
+                "types" => [
+                    "instagram" => [ "label" => __( 'Instagram', 'disciple_tools' ) ],
+                ],
+                "icon" => get_template_directory_uri() . "/dt-assets/images/instagram.svg",
+                "hide_domain" => true
+            ],
+            "skype"     => [
+                "label" => __( 'Skype', 'disciple_tools' ),
+                "types" => [
+                    "skype" => [ "label" => __( 'Skype', 'disciple_tools' ) ],
+                ],
+                "icon" => get_template_directory_uri() . "/dt-assets/images/skype.svg",
             ],
             "other"     => [
                 "label" => __( 'Other', 'disciple_tools' ),

@@ -9,18 +9,11 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 {
-    public static $channel_list;
-    public static $address_types;
-    public static $contact_connection_types;
 
     /**
      * Disciple_Tools_Contacts constructor.
      */
     public function __construct() {
-        $contact_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
-        self::$address_types = $contact_settings["address_types"];
-        self::$contact_connection_types = $contact_settings['connection_types'];
-        self::$channel_list = $contact_settings["channels"];
 
         add_action( "dt_contact_created", [ $this, "check_for_duplicates" ], 10, 2 );
         add_action( "dt_contact_updated", [ $this, "check_for_duplicates" ], 10, 2 );
@@ -99,12 +92,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return mixed
      */
     public static function get_channel_list() {
-        return self::$channel_list;
+        $contact_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
+        return $contact_settings["channels"];
     }
 
 
 
     public function get_field_details( $field, $contact_id ){
+        $contact_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
         if ( $field === "title" ){
             return [
                 "type" => "text",
@@ -113,15 +108,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
         if ( strpos( $field, "contact_" ) === 0 ){
             $channel = explode( '_', $field );
-            if ( isset( $channel[1] ) && self::$channel_list[ $channel[1] ] ){
+            if ( isset( $channel[1] ) && $contact_settings["channels"][ $channel[1] ] ){
                 return [
                     "type" => "contact_method",
-                    "name" => self::$channel_list[ $channel[1] ]["label"],
+                    "name" => $contact_settings["channels"][ $channel[1] ]["label"],
                     "channel" => $channel[1]
                 ];
             }
         }
-        if ( in_array( $field, self::$contact_connection_types ) ){
+        if ( in_array( $field, $contact_settings["connection_types"] ) ){
             return [
                 "type" => "connection",
                 "name" => $field
@@ -131,7 +126,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( $contact_id ){
             $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( isset( $contact_id ), $contact_id );
         } else {
-            $contact_fields = $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+            $contact_fields = $contact_settings["fields"];
         }
         if ( isset( $contact_fields[$field] ) ){
             return $contact_fields[ $field ];
@@ -1645,13 +1640,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, "Permission denied.", [ 'status' => 403 ] );
         }
 
-        $fields = self::get_contact_fields();
+        $contact_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
         return [
-            'sources' => $fields["sources"]["default"],
-            'fields' => $fields,
-            'address_types' => self::$address_types,
-            'channels' => self::$channel_list,
-            'connection_types' => self::$contact_connection_types
+            'sources' => $contact_settings["sources"],
+            'fields' => $contact_settings["fields"],
+            'address_types' => $contact_settings["address_types"],
+            'channels' => $contact_settings["channels"],
+            'connection_types' => $contact_settings['connection_types'],
         ];
     }
 
