@@ -620,7 +620,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     break;
                 case 'place_type':
                     if ( $first_result_only ) {
-                        return $raw_response['features'][0]['place_type'] ?? false;
+                        return $raw_response['features'][0]['place_type'][0] ?? false;
                     }
                     else {
                         foreach ( $raw_response['features'] as $feature ) {
@@ -787,6 +787,23 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         sort( $data );
                         return $data;
                     }
+                    break;
+                case 'full_location_name':
+                    $country = self::context_filter( $raw_response['features'][0]['context'], 'country' );
+                    $state = self::context_filter( $raw_response['features'][0]['context'], 'region' );
+                    $city = self::context_filter( $raw_response['features'][0]['context'], 'place' );
+
+                    if ( ! empty( $city['text'] ) ) {
+                        $full_location_name = $city['text'] . ', ' . $state['text'] . ', ' . $country['text'];
+                    }
+                    else if ( ! empty( $state['text'] ) ) {
+                        $full_location_name = $state['text'] . ', ' . $country['text'];
+                    }
+                    else if ( ! empty( $country['text'] ) ) {
+                        $full_location_name = $country['text'];
+                    }
+                    return $full_location_name;
+
                     break;
 
                 case 'lng':
