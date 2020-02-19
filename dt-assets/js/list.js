@@ -113,7 +113,7 @@
         <a href="#" class="accordion-title">
           ${_.escape(tab.label)}
           <span class="tab-count-span" data-tab="${_.escape(tab.key)}">
-              ${tab.count || tab.count >= 0 ? `(${_.escape(tab.count)})`: ``} 
+              ${tab.count || tab.count >= 0 ? `(${_.escape(tab.count)})`: ``}
           </span>
         </a>
         <div class="accordion-content" data-tab-content>
@@ -126,7 +126,7 @@
                   <span id="total_filter_label">${_.escape(filter.name)}</span>
                   <span class="list-view__count js-list-view-count" data-value="${_.escape(filter.ID)}">${_.escape(filter.count )}</span>
                 </label>
-                `  
+                `
               }
             }).join('')}
           </div>
@@ -341,7 +341,9 @@
       return '<a href="' + _.escape(group.permalink) + '">' + group.post_title + "</a>";
     }).join(", ");
 
-    const last_modified = new Date(contact.last_modified*1000).toString().slice(0, 15);
+const langcode = document.querySelector('html').getAttribute('lang').replace('_', '-');
+const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }
+const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, options).format(new Date(contact.last_modified*1000))
 
     const context = _.assign({last_modified: 0}, contact, wpApiListSettings, {
       index,

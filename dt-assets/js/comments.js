@@ -173,7 +173,7 @@ function unescapeHtml(safe) {
       .replace(/&#39;/g, "'")
       .replace(/&#039;/g, "'");
 }
- 
+
     // textarea deos not render HTML, so using _.unescape is safe. Note that
     // _.unescape will silently ignore invalid HTML, for instance,
     // _.unescape("Tom & Jerry") will return "Tom & Jerry"
@@ -204,7 +204,12 @@ function unescapeHtml(safe) {
   })
 
   function formatDate(date) {
-    return date.format("MMM D, YYYY h:mm a")
+
+    const langcode = document.querySelector('html').getAttribute('lang').replace('_', '-');
+    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' }
+    const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, options).format(new Date (date));
+
+    return last_modified;
   }
 
   function display_activity_comment() {
@@ -384,7 +389,7 @@ function unescapeHtml(safe) {
        * that. This is not sufficient for malicious input, but hopefully we
        * can trust the contents of the database to have been sanitized
        * thanks to wp_new_comment . */
-    
+
         // .DT lets strip out the tags provided from the submited comment and treat it as pure text.
        comment.comment_content = $("<div>").html(comment.comment_content).text()
 
