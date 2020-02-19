@@ -53,7 +53,7 @@
 
     let currentView = $(".js-list-view:checked").val()
     let showClosed = showClosedCheckbox.prop("checked")
-    if ( !showClosed && ( currentView === 'custom_filter' || currentView === 'saved-filters' ) && !data.text ){
+    if ( !showClosed && ( currentView === 'custom_filter' || currentView === 'saved-filters' ) ){
       if ( wpApiListSettings.current_post_type === "contacts" ){
         if ( !data.overall_status ){
           data.overall_status = [];
@@ -591,12 +591,14 @@
 
   $("#search").on("click", function () {
     let searchText = _.escape( $("#search-query").val() )
+    showClosedCheckbox.prop('checked', true)
     let query = {text:searchText, assigned_to:["all"]}
     let labels = [{ id:"search", name:searchText, field: "search"}]
     addCustomFilter(searchText, "search", query, labels)
   })
 
   $("#search-mobile").on("click", function () {
+    showClosedCheckbox.prop('checked', true)
     let searchText = _.escape( $("#search-query-mobile").val() )
     let query = {text:searchText, assigned_to:["all"]}
     let labels = [{ id:"search", name:searchText, field: "search"}]
