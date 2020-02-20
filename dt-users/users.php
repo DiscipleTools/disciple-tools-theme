@@ -263,9 +263,8 @@ class Disciple_Tools_Users
         if ( isset( $_POST['locale'] ) ) {
             $args['locale'] = sanitize_text_field( wp_unslash( $_POST['locale'] ) );
         } else {
-            $args['locale'] = "en_US";
+            $args['locale'] = get_user_locale();
         }
-
         // _user table defaults
         $result = wp_update_user( $args );
 
