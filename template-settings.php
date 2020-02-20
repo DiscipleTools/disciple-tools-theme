@@ -165,7 +165,7 @@ $translations = dt_get_translations();
                                 <strong><?php esc_html_e( 'Language', 'disciple_tools' )?></strong>
                                 <p>
                                 <?php
-                                if ( !empty( $dt_user_locale ) ){
+                                if ( !empty( $dt_user_locale ) && $dt_user_locale !== 'en_US' ){
                                     echo esc_html( $translations[$dt_user_locale]['native_name'] );
                                 } else {
                                     echo esc_html__( 'English', 'disciple_tools' );
@@ -420,7 +420,7 @@ $translations = dt_get_translations();
                                             'languages'                   => $dt_available_languages,
                                             'show_available_translations' => false,
                                             'show_option_site_default'    => false,
-                                            'show_option_en_us'  => true,
+                                            'show_option_en_us'           => true,
                                             'translations'                => $translations
                                         ) );
                                         ?>
