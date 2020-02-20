@@ -89,7 +89,6 @@ jQuery(document).ready(function($) {
     text += ` (${formatNumber(activityData.length, langcode)})`
     tab.text(text)
 
-    console.log(activityData);
   }
   $(".show-tabs").on("click", function () {
     let id = $(this).attr("id")
