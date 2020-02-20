@@ -1649,7 +1649,7 @@ class Disciple_Tools_Posts
             "permalink" => get_permalink( $post->ID )
         ];
         if ( $post->post_type === "peoplegroups" ){
-            $locale = get_locale();
+            $locale = get_user_locale();
             $translation = get_post_meta( $post->ID, $locale, true );
             $label  = ( $translation ? $translation : $post->post_title );
             $filtered_post["label"] = $label;
