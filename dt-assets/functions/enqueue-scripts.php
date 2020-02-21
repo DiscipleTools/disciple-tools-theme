@@ -215,11 +215,11 @@ function dt_site_scripts() {
                 'current_user_id' => get_current_user_id(),
                 'post_fields' => $post,
                 'translations' => [
-                    'remove' => _x( 'remove', 'Tasks', 'disciple_tools' ),
-                    'complete' => _x( 'mark as complete', 'Tasks', 'disciple_tools' ),
-                    'no_tasks' => _x( 'No task created', 'Tasks', 'disciple_tools' ),
-                    'reminder' => _x( 'Reminder', 'Tasks', 'disciple_tools' ),
-                    'no_note' => _x( 'No note set', 'Tasks', 'disciple_tools' ),
+                    'remove' => __( 'remove', 'disciple_tools' ),
+                    'complete' => __( 'mark as complete', 'disciple_tools' ),
+                    'no_tasks' => __( 'No task created', 'disciple_tools' ),
+                    'reminder' => __( 'Reminder', 'disciple_tools' ),
+                    'no_note' => __( 'No note set', 'disciple_tools' ),
                 ]
             ]);
 
