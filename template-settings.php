@@ -226,8 +226,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                                 <input class="switch-input" id="<?php echo esc_html( $channel_notification_key ) ?>" type="checkbox"
                                                        name="<?php echo esc_html( $channel_notification_key ) ?>"
                                                        onclick="switch_preference( '<?php echo esc_html( $channel_notification_key ) ?>', 'notifications' );"
-                                                    <?php ( isset( $dt_user_meta[$channel_notification_key ] ) && $dt_user_meta[$channel_notification_key ][0] == false ) ?
-                                                        print esc_attr( '', 'disciple_tools' ) : print esc_attr( 'checked', 'disciple_tools' ); ?>>
+                                                    <?php print esc_attr( ( isset( $dt_user_meta[$channel_notification_key ] ) && $dt_user_meta[$channel_notification_key ][0] == false ) ? '' : 'checked' ); ?>>
                                                 <label class="switch-paddle inactive" for="<?php echo esc_html( $channel_notification_key ) ?>">
                                                     <span class="show-for-sr"><?php echo esc_html( $dt_notification_default['label'] ) ?></span>
                                                 </label>
@@ -390,8 +389,8 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                         </td>
                                         <td><input type="text"
                                                    class="profile-input"
-                                                   id="<?php echo esc_attr( $dt_field['key'], 'disciple_tools' ) ?>"
-                                                   name="<?php echo esc_attr( $dt_field['key'], 'disciple_tools' ) ?>"
+                                                   id="<?php echo esc_attr( $dt_field['key'] ) ?>"
+                                                   name="<?php echo esc_attr( $dt_field['key'] ) ?>"
                                                    value="<?php echo esc_html( $dt_field['value'] ) ?>"/>
                                         </td>
                                     </tr>

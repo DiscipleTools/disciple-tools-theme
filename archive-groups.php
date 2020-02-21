@@ -19,7 +19,7 @@ declare(strict_types=1);
             <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
                 <a class="button dt-green" href="<?php echo esc_url( home_url( '/' ) ) . "groups/new" ?>">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group-white.svg' ) ?>"/>
-                    <span><?php esc_html_e( "Create new group", "disciple_tools" ); ?></span>
+                    <span><?php esc_html_e( "Create New Group", "disciple_tools" ); ?></span>
                 </a>
                 <a class="button" data-open="filter-modal">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
@@ -154,7 +154,7 @@ declare(strict_types=1);
                                                            data-field="<?php echo esc_html( $field ) ?>"
                                                            name="<?php echo esc_html( $field ) ?>[query]"
                                                            placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>"
-                                                            data-type="<?php echo esc_html( $dt_group_field_options[$field]["type"] ) ?>"
+                                                           data-type="<?php echo esc_html( $dt_group_field_options[$field]["type"] ) ?>"
                                                            autocomplete="off">
                                                 </span>
                                             </div>
@@ -224,7 +224,7 @@ declare(strict_types=1);
         <div class="grid-x grid-padding-x">
             <div class="cell small-4 filter-modal-left">
                 <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                    <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
+                    <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
                 </button>
             </div>
             <div class="cell small-8 filter-modal-right confirm-buttons">
