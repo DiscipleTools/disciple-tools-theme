@@ -681,10 +681,9 @@ class Disciple_Tools_Notifications
     public static function get_notification_message_html( $notification, $html = true ){
         // load the local for the destination usr so emails are sent our correctly.
         $destination_user = get_user_by( 'id', $notification["user_id"] );
-        $destination_user_locale = "en_US";
-        if ( $destination_user && !empty( $destination_user->locale ) ){
-            $destination_user_locale = $destination_user->locale;
-        }
+
+        $destination_user_locale = get_user_locale( $notification["user_id"] );
+
         add_filter( "determine_locale", function ( $locale ) use ( $destination_user_locale ) {
             if ( $destination_user_locale ){
                 $locale = $destination_user_locale;
