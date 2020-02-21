@@ -897,7 +897,15 @@ Please click the following link to confirm the invite:
         return $custom_data;
     }
     public function add_date_availability( $custom_data ) {
-        $custom_data['availability'] = get_user_option( "user_dates_unavailable", get_current_user_id() );
+        $dates_unavailable = get_user_option( "user_dates_unavailable", get_current_user_id() );
+        if ( !$dates_unavailable ) {
+            $dates_unavailable = [];
+        }
+        foreach ( $dates_unavailable ?? [] as &$range ) {
+            $range["start_date"] = dt_format_date( $range["start_date"] );
+            $range["end_date"] = dt_format_date( $range["end_date"] );
+        }
+        $custom_data['availability'] = $dates_unavailable;
         return $custom_data;
     }
 

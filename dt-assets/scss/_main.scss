@@ -919,3 +919,32 @@ label.dt-switch:active:after {
     list-style-type: none;
     margin: 0;
 }
+
+#user_modal_content{
+  .bordered-box {
+    margin-bottom: 20px;
+  }
+  #hero_stats .bordered-box {
+    flex-basis: 19%;
+  }
+  .user_modal_column {
+    flex-basis: 50%;
+  }
+}
+
+@media screen and (max-width : 640px) {
+  #user_modal_content {
+    #hero_stats .bordered-box {
+      margin: 5px;
+      flex-grow:1;
+    }
+    #hero_stats {
+      margin-bottom: 20px;
+    }
+    .user_modal_column {
+      flex-basis: 100%;
+      padding: 0 !important;
+    }
+  }
+
+}
