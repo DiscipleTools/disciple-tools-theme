@@ -372,8 +372,8 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
     <div class="reveal" id="add-new-group-member-modal" data-reveal style="min-height:500px">
         <h3><?php echo esc_html_x( "Add members from existing contacts", 'Add members modal', 'disciple_tools' )?></h3>
-        <p><?php echo esc_html_x( "In the 'Members List' field, type the name of an existing contact to add them to this group.", 'Add members modal', 'disciple_tools' )?></p>
-        <div class="section-subheader"><?php esc_html_e( "Members List", 'disciple_tools' ) ?></div>
+        <p><?php echo esc_html_x( "In the 'Member List' field, type the name of an existing contact to add them to this group.", 'Add members modal', 'disciple_tools' )?></p>
+        <div class="section-subheader"><?php esc_html_e( "Member List", 'disciple_tools' ) ?></div>
         <div class="members">
             <var id="members-result-container" class="result-container"></var>
             <div id="members_t" name="form-members" class="scrollable-typeahead typeahead-margin-when-active">

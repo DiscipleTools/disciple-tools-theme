@@ -18,6 +18,7 @@ class Disciple_Tools_Post_Type_Template {
         add_action( 'init', [ $this, 'rewrite_init' ] );
         add_filter( 'post_type_link', [ $this, 'permalink' ], 1, 3 );
         add_action( 'dt_top_nav_desktop', [ $this, 'add_menu_link' ] );
+        add_filter( 'off_canvas_menu_options', [ $this, 'add_hamburger_menu' ] );
         add_filter( 'dt_templates_for_urls', [ $this, 'add_template_for_url' ] );
         add_action( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ] );
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 2 );
@@ -125,6 +126,16 @@ class Disciple_Tools_Post_Type_Template {
         <?php endif;
     }
 
+    public function add_hamburger_menu( $tabs ) {
+        if ( current_user_can( 'access_' . $this->post_type ) ) {
+            $tabs[] = [
+                "link" => site_url( "/$this->post_type/" ),
+                "label" => $this->plural
+            ];
+        }
+        return $tabs;
+    }
+
     public function add_template_for_url( $template_for_url ){
         $template_for_url[$this->post_type] = 'archive-template.php';
         $template_for_url[$this->post_type . '/new'] = 'template-new-post.php';
@@ -134,7 +145,10 @@ class Disciple_Tools_Post_Type_Template {
     public function dt_nav_add_post_menu(){
         ?>
         <li>
-            <a href="<?php echo esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new'; ?>"><?php echo sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ) ?></a>
+            <a class="add-new-menu-item" href="<?php echo esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new'; ?>">
+                <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-plus.svg" ?>">
+                <?php echo sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ) ?>
+            </a>
         </li>
         <?php
     }

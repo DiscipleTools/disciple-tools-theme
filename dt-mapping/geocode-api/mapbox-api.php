@@ -202,18 +202,29 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             neighborhood    - Colloquial sub-city features often referred to in local parlance. Unlike locality features, these typically lack official status and may lack universally agreed-upon boundaries.
             address         - Individual residential or business addresses.
             poi             - Points of interest. These include restaurants, stores, concert venues, parks, museums, etc.
+            admin0-admin5   - Used by Location Grid for administrative levels
              */
             switch ( $code ) {
+                case 'world':
+                case 'continent':
+                    $level = 1;
+                    break;
+                case 'admin0':
                 case 'country':
                     $level = 2;
                     break;
+                case 'admin1':
                 case 'region':
                 case 'postcode':
                     $level = 5;
                     break;
+                case 'admin2':
                 case 'district':
                     $level = 8;
                     break;
+                case 'admin3':
+                case 'admin4':
+                case 'admin5':
                 case 'neighborhood':
                     $level = 10;
                     break;
@@ -609,7 +620,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     break;
                 case 'place_type':
                     if ( $first_result_only ) {
-                        return $raw_response['features'][0]['place_type'] ?? false;
+                        return $raw_response['features'][0]['place_type'][0] ?? false;
                     }
                     else {
                         foreach ( $raw_response['features'] as $feature ) {
@@ -776,6 +787,23 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         sort( $data );
                         return $data;
                     }
+                    break;
+                case 'full_location_name':
+                    $country = self::context_filter( $raw_response['features'][0]['context'], 'country' );
+                    $state = self::context_filter( $raw_response['features'][0]['context'], 'region' );
+                    $city = self::context_filter( $raw_response['features'][0]['context'], 'place' );
+
+                    if ( ! empty( $city['text'] ) ) {
+                        $full_location_name = $city['text'] . ', ' . $state['text'] . ', ' . $country['text'];
+                    }
+                    else if ( ! empty( $state['text'] ) ) {
+                        $full_location_name = $state['text'] . ', ' . $country['text'];
+                    }
+                    else if ( ! empty( $country['text'] ) ) {
+                        $full_location_name = $country['text'];
+                    }
+                    return $full_location_name;
+
                     break;
 
                 case 'lng':
