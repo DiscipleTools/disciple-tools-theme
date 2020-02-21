@@ -77,6 +77,19 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
         </div>
         <div class="top-bar-right">
             <ul class="dropdown menu" data-dropdown-menu>
+                <?php
+                if ( current_user_can( "update_core" ) ){
+                    $update = maybe_unserialize( get_site_option( "puc_external_updates_theme-disciple-tools-theme", "" ) );
+                    if ( !empty( $update ) && isset( $update->update->version ) && version_compare( $update->update->version, wp_get_theme()->version, '>' ) ) : ?>
+                        <li class="image-menu-nav">
+                            <a href="<?php echo esc_url( network_admin_url( 'update-core.php' ) ); ?>">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" />
+                                <span><?php esc_html_e( 'Theme Update Available!', 'disciple_tools' ); ?></span>
+                            </a>
+                        </li>
+                    <?php endif;
+                }
+                ?>
                 <li class="image-menu-nav">
                     <a href="<?php echo esc_url( site_url( '/' ) ) . 'settings/'; ?>">
                         <img title="<?php esc_html_e( "Profile", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/profile.svg" ?>">
