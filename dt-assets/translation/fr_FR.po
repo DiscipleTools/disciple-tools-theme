@@ -372,7 +372,7 @@ msgstr "Date de Modification"
 msgid "Showing 0 to 0 of 0 entries"
 msgstr "Affiche 0 à 0 de 0 entrées"
 
-#: dt-assets/functions/menu.php:6 dt-assets/functions/menu.php:109
+#: dt-assets/functions/menu.php:109
 msgid "Footer Links"
 msgstr "Liens pied de page"
 
@@ -911,25 +911,25 @@ msgstr "Autre"
 msgid "Email"
 msgstr "Email"
 
-#: dt-contacts/contacts-post-type.php:882
-#: dt-contacts/contacts-post-type.php:885
+#: dt-contacts/contacts-post-type.php:881
+#: dt-contacts/contacts-post-type.php:884
 #: dt-core/admin/config-site-defaults.php:522
 msgid "Facebook"
 msgstr "Facebook"
 
-#: dt-contacts/contacts-post-type.php:892
-#: dt-contacts/contacts-post-type.php:894
+#: dt-contacts/contacts-post-type.php:891
+#: dt-contacts/contacts-post-type.php:893
 #: dt-core/admin/config-site-defaults.php:528
 msgid "Twitter"
 msgstr "Twitter"
 
-#: dt-contacts/contacts-post-type.php:900
-#: dt-contacts/contacts-post-type.php:902
+#: dt-contacts/contacts-post-type.php:899
+#: dt-contacts/contacts-post-type.php:901
 msgid "Instagram"
 msgstr "Instagram"
 
-#: dt-contacts/contacts-post-type.php:908
-#: dt-contacts/contacts-post-type.php:910
+#: dt-contacts/contacts-post-type.php:907
+#: dt-contacts/contacts-post-type.php:909
 msgid "Skype"
 msgstr "Skype"
 
@@ -1154,7 +1154,7 @@ msgstr "Êtes-vous sûr de vouloir supprimer ce rôle ? Ceci est une action perm
 msgid "None"
 msgstr "Aucune"
 
-#: dt-core/admin/restrict-rest-api.php:111
+#: dt-core/admin/restrict-rest-api.php:113
 msgid "Only authenticated users can access the REST API."
 msgstr "Seuls les utilisateurs authentifiés peuvent accéder à l'API REST."
 
@@ -1233,11 +1233,6 @@ msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
 msgstr "N'entraîne plus %s"
 
-#: dt-posts/posts.php:291
-msgctxt "No longed coached by contact1"
-msgid "No longed coached by %s"
-msgstr "N'est plus entraîné par %s"
-
 #: dt-posts/posts.php:295
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
@@ -1252,11 +1247,6 @@ msgstr "Sous-assigné à %s"
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
 msgstr "%s supprimé des sous-assignés"
-
-#: dt-posts/posts.php:299
-msgctxt "No longed sub-assigned on contact1"
-msgid "No longed sub-assigned on %s"
-msgstr "N'est plus sous-assigné sur %s"
 
 #: dt-posts/posts.php:303
 msgctxt "Paris added as location on contact1"
@@ -1623,10 +1613,6 @@ msgstr "Louanges pour les mesures prises"
 msgid "Requests for Next Steps Needed"
 msgstr "Demandes pour les prochaines étapes nécessaires"
 
-#: dt-metrics/metrics-project.php:111
-msgid "Counties"
-msgstr "Comtés"
-
 #: dt-metrics/metrics-project.php:41
 msgid "Project"
 msgstr "Projet"
@@ -1660,10 +1646,6 @@ msgid "Follow Up"
 msgstr "Suivi"
 
 #: dt-metrics/metrics-project.php:81
-msgid "Multiplication"
-msgstr "Multiplication"
-
-#: dt-metrics/metrics-project.php:81
 msgid "All Contacts"
 msgstr "Tous les contacts"
 
@@ -1694,26 +1676,6 @@ msgstr "groupes"
 #: dt-metrics/metrics-project.php:99
 msgid "generations"
 msgstr "générations"
-
-#: dt-metrics/metrics-project.php:106
-msgid "Total Locations"
-msgstr "Emplacements total"
-
-#: dt-metrics/metrics-project.php:107
-msgid "Active Locations"
-msgstr "Emplacements actifs"
-
-#: dt-metrics/metrics-project.php:108
-msgid "Inactive Locations"
-msgstr "Emplacements inactifs"
-
-#: dt-metrics/metrics-project.php:109
-msgid "Countries"
-msgstr "Pays"
-
-#: dt-metrics/metrics-project.php:110
-msgid "States"
-msgstr "États"
 
 #. Template Name of the plugin/theme
 #: dt-mapping/columns/add-users-column.php:56
@@ -2150,10 +2112,6 @@ msgstr "Prénom"
 msgid "Last Name"
 msgstr "Nom"
 
-#: template-settings.php:385
-msgid "(Edit on contact record)"
-msgstr "(Modifier sur la fiche du contact)"
-
 #: template-settings.php:403
 msgid "Description"
 msgstr "Description"
@@ -2162,10 +2120,6 @@ msgstr "Description"
 msgid "Do not reply directly to this email."
 msgstr "Ne pas répondre directement à cet email."
 
-#: dt-metrics/metrics-project.php:96
-msgid "Location Tree"
-msgstr "Arbre d'emplacements"
-
 #: dt-core/admin/config-site-defaults.php:747
 msgid "<strong>ERROR</strong>: Invalid username/password combination."
 msgstr "<strong> ERREUR </ strong>: combinaison nom d'utilisateur / mot de passe non valide."
@@ -2173,10 +2127,6 @@ msgstr "<strong> ERREUR </ strong>: combinaison nom d'utilisateur / mot de passe
 #: dt-core/admin/config-site-defaults.php:751
 msgid "Reset password"
 msgstr "Réinitialiser le mot de passe"
-
-#: dt-metrics/contacts/seeker-path.php:62
-msgid "Seeker path"
-msgstr "Chemin du chercheur"
 
 #: dt-metrics/contacts/sources.php:84
 msgid "Showing contacts created during"
@@ -2397,14 +2347,6 @@ msgstr "Nombre de baptêmes de génération %s"
 msgid "Number of contacts or users who have baptized a contact"
 msgstr "Nombre de contacts ou d'utilisateurs qui ont baptisé un contact"
 
-#: dt-metrics/metrics-critical-path.php:286
-msgid "Groups active and the end of the time range"
-msgstr "Groupes actifs et fin de la plage horaire"
-
-#: dt-metrics/metrics-critical-path.php:296
-msgid "Churches active and the end of the time range"
-msgstr "Églises actives et fin de la période"
-
 #: dt-metrics/metrics-critical-path.php:308
 msgid "Generation %s Churches"
 msgstr "Églises de génération %s"
@@ -2421,10 +2363,6 @@ msgstr "Nombre de contacts ou d'utilisateurs qui ont commencé une église et so
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
 msgstr "Vous avez été assigé: %1$s."
-
-#: single-groups.php:98
-msgid "No group members yet. Create or Select new members to add them to this group."
-msgstr "Aucun membres  pour le moment. Créez ou sélectionnez de nouveaux membres pour les ajouter à ce groupe."
 
 #: dt-groups/groups-post-type.php:439 single-groups.php:172
 msgid "Child Group"
@@ -2514,10 +2452,6 @@ msgstr "L'adresse où ce groupe se réunit."
 msgid "2 contacts need an update."
 msgstr "2 contacts ont besoin d'une mise à jour."
 
-#: dt-assets/parts/modals/modal-help.php:283
-msgid "This is where you will want to record important notes from meetings and conversations."
-msgstr "C'est là que vous voudrez enregistrer des notes importantes de vos réunions et conversations."
-
 #: dt-assets/parts/modals/modal-help.php:284
 msgid "Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
 msgstr "Tapez @ et le nom d'un utilisateur pour les mentionner dans un commentaire. Cet utilisateur recevra alors une notification."
@@ -2533,10 +2467,6 @@ msgstr "Si le groupe / l'église pratique régulièrement l'un des éléments é
 #: dt-assets/parts/modals/modal-help.php:200
 msgid "If the group has committed to be a church, indicate this by clicking the \"Church Commitment\" button to make the dotted line circle solid."
 msgstr "Si le groupe s'est engagé à être une église, indiquez-le en cliquant sur le bouton \"Engagement de l'Église\" pour rendre le cercle en pointillés solide."
-
-#: dt-assets/parts/modals/modal-help.php:206
-msgid "This is the area where you list the number of contacts that are a part of the group."
-msgstr "Ceci est la zone où vous répertoriez le nombre de contacts qui font partie du groupe."
 
 #: dt-assets/parts/modals/modal-help.php:242
 #: dt-assets/parts/modals/modal-help.php:253
@@ -3019,548 +2949,533 @@ msgctxt "field name"
 msgid "Baptism Generation"
 msgstr "Génération de baptême"
 
-#: dt-contacts/contacts-post-type.php:352
-msgctxt "Baptism Generation field description"
-msgid "The generation of baptism."
-msgstr "La génération du baptême."
-
-#: dt-contacts/contacts-post-type.php:361
+#: dt-contacts/contacts-post-type.php:360
 msgctxt "field name"
 msgid "Gender"
 msgstr "Sexe"
 
-#: dt-contacts/contacts-post-type.php:362
+#: dt-contacts/contacts-post-type.php:361
 msgctxt "Gender field description"
 msgid "Male or Female."
 msgstr "Masculin ou féminin."
 
-#: dt-contacts/contacts-post-type.php:366
+#: dt-contacts/contacts-post-type.php:365
 msgctxt "Gender label"
 msgid "Male"
 msgstr "Mâle"
 
-#: dt-contacts/contacts-post-type.php:367
+#: dt-contacts/contacts-post-type.php:366
 msgctxt "Gender label"
 msgid "Female"
 msgstr "Femelle"
 
-#: dt-contacts/contacts-post-type.php:372
+#: dt-contacts/contacts-post-type.php:371
 msgctxt "field name"
 msgid "Age"
 msgstr "Âge"
 
-#: dt-contacts/contacts-post-type.php:373
+#: dt-contacts/contacts-post-type.php:372
 msgctxt "field description"
 msgid "Age range of contact."
 msgstr "Gamme d'âge de contact."
 
-#: dt-contacts/contacts-post-type.php:377
+#: dt-contacts/contacts-post-type.php:376
 msgctxt "Age label"
 msgid "Under 18 years old"
 msgstr "Moins de 18 ans"
 
-#: dt-contacts/contacts-post-type.php:378
+#: dt-contacts/contacts-post-type.php:377
 msgctxt "Age label"
 msgid "18-25 years old"
 msgstr "18-25 ans"
 
-#: dt-contacts/contacts-post-type.php:379
+#: dt-contacts/contacts-post-type.php:378
 msgctxt "Age label"
 msgid "26-40 years old"
 msgstr "26-40 ans"
 
-#: dt-contacts/contacts-post-type.php:380
+#: dt-contacts/contacts-post-type.php:379
 msgctxt "Age label"
 msgid "Over 40 years old"
 msgstr "Plus de 40 ans"
 
-#: dt-contacts/contacts-post-type.php:386
+#: dt-contacts/contacts-post-type.php:385
 msgctxt "field name"
 msgid "Reason Not Ready"
 msgstr "Raison pas prêt"
 
-#: dt-contacts/contacts-post-type.php:394
+#: dt-contacts/contacts-post-type.php:393
 msgctxt "Reason Not Ready label"
 msgid "Insufficient Contact Information"
 msgstr "Informations de contact insuffisantes"
 
-#: dt-contacts/contacts-post-type.php:397
+#: dt-contacts/contacts-post-type.php:396
 msgctxt "Reason Not Ready label"
 msgid "Unknown Location"
 msgstr "Lieu inconnu"
 
-#: dt-contacts/contacts-post-type.php:400
+#: dt-contacts/contacts-post-type.php:399
 msgctxt "Reason Not Ready label"
 msgid "Only wants media"
 msgstr "Ne veut que des médias"
 
-#: dt-contacts/contacts-post-type.php:403
+#: dt-contacts/contacts-post-type.php:402
 msgctxt "Reason Not Ready label"
 msgid "Outside Area"
 msgstr "Hors-zone"
 
-#: dt-contacts/contacts-post-type.php:406
+#: dt-contacts/contacts-post-type.php:405
 msgctxt "Reason Not Ready label"
 msgid "Needs Review"
 msgstr "Besoin d’un revue"
 
-#: dt-contacts/contacts-post-type.php:409
+#: dt-contacts/contacts-post-type.php:408
 msgctxt "Reason Not Ready label"
 msgid "Waiting for Confirmation"
 msgstr "Attente de confirmation"
 
-#: dt-contacts/contacts-post-type.php:417
+#: dt-contacts/contacts-post-type.php:416
 msgctxt "field name"
 msgid "Reason Paused"
 msgstr "Raison Suspendue"
 
-#: dt-contacts/contacts-post-type.php:418
+#: dt-contacts/contacts-post-type.php:417
 msgctxt "Reason Paused description"
 msgid "The current main reason the contact is has been paused."
 msgstr "La principale raison actuelle du contact a été interrompue."
 
-#: dt-contacts/contacts-post-type.php:422
+#: dt-contacts/contacts-post-type.php:421
 msgctxt "Reason Paused label"
 msgid "Contact on vacation"
 msgstr "Contact en vacances"
 
-#: dt-contacts/contacts-post-type.php:423
+#: dt-contacts/contacts-post-type.php:422
 msgctxt "Reason Paused label"
 msgid "Contact not responding"
 msgstr "Contact ne répond pas"
 
-#: dt-contacts/contacts-post-type.php:424
+#: dt-contacts/contacts-post-type.php:423
 msgctxt "Reason Paused label"
 msgid "Contact not available"
 msgstr "Contact indisponible"
 
-#: dt-contacts/contacts-post-type.php:425
+#: dt-contacts/contacts-post-type.php:424
 msgctxt "Reason Paused label"
 msgid "Contact has little interest/hunger"
 msgstr "Contact n'a pas l'intérêt"
 
-#: dt-contacts/contacts-post-type.php:426
+#: dt-contacts/contacts-post-type.php:425
 msgctxt "Reason Paused label"
 msgid "Contact shows no initiative"
 msgstr "Contact ne prend aucune initiative"
 
-#: dt-contacts/contacts-post-type.php:427
+#: dt-contacts/contacts-post-type.php:426
 msgctxt "Reason Paused label"
 msgid "Contact has questionable motives"
 msgstr "Contact a des motifs discutables"
 
-#: dt-contacts/contacts-post-type.php:428
+#: dt-contacts/contacts-post-type.php:427
 msgctxt "Reason Paused label"
 msgid "Ball is in the contact's court"
 msgstr "La balle est dans le camp de contact"
 
-#: dt-contacts/contacts-post-type.php:429
+#: dt-contacts/contacts-post-type.php:428
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
 msgstr "Nous attendons de voir s'il répond à des messages automatisés"
 
-#: dt-contacts/contacts-post-type.php:436
+#: dt-contacts/contacts-post-type.php:435
 msgctxt "field name"
 msgid "Reason Closed"
 msgstr "Raison Fermé"
 
-#: dt-contacts/contacts-post-type.php:437
+#: dt-contacts/contacts-post-type.php:436
 msgctxt "Reason Closed field description"
 msgid "The reason this contact has been closed"
 msgstr "Ce contact a été transféré"
 
-#: dt-contacts/contacts-post-type.php:441
+#: dt-contacts/contacts-post-type.php:440
 msgctxt "Reason Closed label"
 msgid "Duplicate"
 msgstr "Dupliquer"
 
-#: dt-contacts/contacts-post-type.php:442
+#: dt-contacts/contacts-post-type.php:441
 msgctxt "Reason Closed label"
 msgid "Insufficient contact info"
 msgstr "Informations de contact insuffisantes"
 
-#: dt-contacts/contacts-post-type.php:443
+#: dt-contacts/contacts-post-type.php:442
 msgctxt "Reason Closed label"
 msgid "Denies submitting contact request"
 msgstr "Nie d'avoir soumis une demande de contact"
 
-#: dt-contacts/contacts-post-type.php:444
+#: dt-contacts/contacts-post-type.php:443
 msgctxt "Reason Closed label"
 msgid "Hostile, playing game or self gain"
 msgstr "Hostile, joue é des jeux ou à l'auto-gain"
 
-#: dt-contacts/contacts-post-type.php:445
+#: dt-contacts/contacts-post-type.php:444
 msgctxt "Reason Closed label"
 msgid "Playing games"
 msgstr "Joue à des Jeux"
 
-#: dt-contacts/contacts-post-type.php:446
+#: dt-contacts/contacts-post-type.php:445
 msgctxt "Reason Closed label"
 msgid "Only wants to argue or debate"
 msgstr "Ne veut que argumenter ou débattre"
 
-#: dt-contacts/contacts-post-type.php:447
+#: dt-contacts/contacts-post-type.php:446
 msgctxt "Reason Closed label"
 msgid "Just wanted media or book"
 msgstr "À juste voulu du média ou un livre"
 
-#: dt-contacts/contacts-post-type.php:448
+#: dt-contacts/contacts-post-type.php:447
 msgctxt "Reason Closed label"
 msgid "No longer interested"
 msgstr "Ne sont plus intéressés"
 
-#: dt-contacts/contacts-post-type.php:449
+#: dt-contacts/contacts-post-type.php:448
 msgctxt "Reason Closed label"
 msgid "No longer responding"
 msgstr "Ne répond plus"
 
-#: dt-contacts/contacts-post-type.php:450
+#: dt-contacts/contacts-post-type.php:449
 msgctxt "Reason Closed label"
 msgid "Already in church or connected with others"
 msgstr "Déjà dans une église ou en relation avec d'autres"
 
-#: dt-contacts/contacts-post-type.php:451
+#: dt-contacts/contacts-post-type.php:450
 msgctxt "Reason Closed label"
 msgid "Transferred contact to partner"
 msgstr "Contact transféré au partenaire"
 
-#: dt-contacts/contacts-post-type.php:452
+#: dt-contacts/contacts-post-type.php:451
 msgctxt "Reason Closed label"
 msgid "Martyred"
 msgstr "Martyrisé"
 
-#: dt-contacts/contacts-post-type.php:453
+#: dt-contacts/contacts-post-type.php:452
 msgctxt "Reason Closed label"
 msgid "Moved or relocated"
 msgstr "Déplacé ou déménagé"
 
-#: dt-contacts/contacts-post-type.php:454
+#: dt-contacts/contacts-post-type.php:453
 msgctxt "Reason Closed label"
 msgid "Unknown"
 msgstr "Inconnue"
 
-#: dt-contacts/contacts-post-type.php:460
+#: dt-contacts/contacts-post-type.php:459
 msgctxt "field name"
 msgid "Accepted"
 msgstr "Accepté"
 
-#: dt-contacts/contacts-post-type.php:461
+#: dt-contacts/contacts-post-type.php:460
 msgctxt "Accepted assignment field description"
 msgid "The assignment has been accepted."
 msgstr "La mission a été acceptée."
 
-#: dt-contacts/contacts-post-type.php:477
+#: dt-contacts/contacts-post-type.php:476
 msgctxt "field name"
 msgid "Sources"
 msgstr "Sources"
 
-#: dt-contacts/contacts-post-type.php:478
+#: dt-contacts/contacts-post-type.php:477
 msgctxt "Sources field description"
 msgid "The website, event or location this contact came from."
 msgstr "Le site Web, l'événement ou le lieu d'origine de ce contact."
 
-#: dt-contacts/contacts-post-type.php:486
+#: dt-contacts/contacts-post-type.php:485
 msgctxt "field name"
 msgid "Source Details"
 msgstr "Détails de la source"
 
-#: dt-contacts/contacts-post-type.php:494
+#: dt-contacts/contacts-post-type.php:493
 msgctxt "quick button response name"
 msgid "No Answer"
 msgstr "Pas de réponse"
 
-#: dt-contacts/contacts-post-type.php:495
+#: dt-contacts/contacts-post-type.php:494
 msgctxt "quick button response description"
 msgid "Call was attempted by not answered"
 msgstr "L'appel a été tenté par sans réponse"
 
-#: dt-contacts/contacts-post-type.php:502
+#: dt-contacts/contacts-post-type.php:501
 msgctxt "quick button response name"
 msgid "Contact Established"
 msgstr "Contact établi"
 
-#: dt-contacts/contacts-post-type.php:503
+#: dt-contacts/contacts-post-type.php:502
 msgctxt "quick button response description"
 msgid "Contact was successfully established"
 msgstr "Contact établi"
 
-#: dt-contacts/contacts-post-type.php:510
+#: dt-contacts/contacts-post-type.php:509
 msgctxt "quick button response name"
 msgid "Meeting Scheduled"
 msgstr "Rendez-vous planifié"
 
-#: dt-contacts/contacts-post-type.php:511
+#: dt-contacts/contacts-post-type.php:510
 msgctxt "quick button response description"
 msgid "A meeting has been scheduled"
 msgstr "Rendez-vous planifié"
 
-#: dt-contacts/contacts-post-type.php:518
+#: dt-contacts/contacts-post-type.php:517
 msgctxt "quick button response name"
 msgid "Meeting Complete"
 msgstr "Rendez-vous terminé"
 
-#: dt-contacts/contacts-post-type.php:519
+#: dt-contacts/contacts-post-type.php:518
 msgctxt "quick button response description"
 msgid "A meeting was completed"
 msgstr "Rendez-vous terminé"
 
-#: dt-contacts/contacts-post-type.php:526
+#: dt-contacts/contacts-post-type.php:525
 msgctxt "quick button response name"
 msgid "Meeting No-show"
 msgstr "Rendez-vous manqué"
 
-#: dt-contacts/contacts-post-type.php:527
+#: dt-contacts/contacts-post-type.php:526
 msgctxt "quick button response description"
 msgid "Did not attend a scheduled meeting"
 msgstr "N'a pas assisté à une réunion prévue"
 
-#: dt-contacts/contacts-post-type.php:535
+#: dt-contacts/contacts-post-type.php:534
 msgctxt "field name"
 msgid "Corresponds to user"
 msgstr "Correspond à l’utilisateur"
 
-#: dt-contacts/contacts-post-type.php:536
+#: dt-contacts/contacts-post-type.php:535
 msgctxt "field description"
 msgid "The id of the user this contact corresponds to"
 msgstr "L'identifiant de l'utilisateur auquel ce contact correspond"
 
-#: dt-contacts/contacts-post-type.php:542
+#: dt-contacts/contacts-post-type.php:541
 msgctxt "field name"
 msgid "Contact type"
 msgstr "Type de contact"
 
-#: dt-contacts/contacts-post-type.php:543
+#: dt-contacts/contacts-post-type.php:542
 msgctxt "field description"
 msgid "Type of contact"
 msgstr "Nom du contact"
 
-#: dt-contacts/contacts-post-type.php:546
+#: dt-contacts/contacts-post-type.php:545
 msgctxt "Type of contact label"
 msgid "Media"
 msgstr "Média"
 
-#: dt-contacts/contacts-post-type.php:547
+#: dt-contacts/contacts-post-type.php:546
 msgctxt "Type of contact label"
 msgid "Next Generation"
 msgstr "Nouvelle génération"
 
-#: dt-contacts/contacts-post-type.php:548
+#: dt-contacts/contacts-post-type.php:547
 msgctxt "Type of contact label"
 msgid "User"
 msgstr "Utilisateur"
 
-#: dt-contacts/contacts-post-type.php:549
+#: dt-contacts/contacts-post-type.php:548
 msgctxt "Type of contact label"
 msgid "Partner"
 msgstr "Partenaire"
 
-#: dt-contacts/contacts-post-type.php:555
+#: dt-contacts/contacts-post-type.php:554
 msgctxt "last_modified field name"
 msgid "Last modified"
 msgstr "Dernière modification"
 
-#: dt-contacts/contacts-post-type.php:556
+#: dt-contacts/contacts-post-type.php:555
 msgctxt "last_modified field description"
 msgid "The time of the last modification"
 msgstr "Type de Notification"
 
-#: dt-contacts/contacts-post-type.php:562
+#: dt-contacts/contacts-post-type.php:561
 msgctxt "duplicate_data field name"
 msgid "Duplicates"
 msgstr "Doublons"
 
-#: dt-contacts/contacts-post-type.php:569
+#: dt-contacts/contacts-post-type.php:568
 msgctxt "field name"
 msgid "Tags"
 msgstr "Étiquettes"
 
-#: dt-contacts/contacts-post-type.php:570
+#: dt-contacts/contacts-post-type.php:569
 msgctxt "field description"
 msgid "A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags."
 msgstr "Un moyen utile de regrouper des éléments connexes et peut aider les contacts de groupe associés à des caractéristiques remarquables. par exemple. propriétaire d'entreprise, amateur de sport. Les contacts peuvent également être filtrés à l'aide de ces balises."
 
-#: dt-contacts/contacts-post-type.php:576
+#: dt-contacts/contacts-post-type.php:575
 msgctxt "field name"
 msgid "Follow"
 msgstr "Suivre"
 
-#: dt-contacts/contacts-post-type.php:583
+#: dt-contacts/contacts-post-type.php:582
 msgctxt "field name"
 msgid "Un-Follow"
 msgstr "Ne plus suivre"
 
-#: dt-contacts/contacts-post-type.php:590
+#: dt-contacts/contacts-post-type.php:589
 msgctxt "field name"
 msgid "Duplicate of"
 msgstr "Duplication de"
 
-#: dt-contacts/contacts-post-type.php:596
+#: dt-contacts/contacts-post-type.php:595
 msgctxt "field name"
 msgid "Relation"
 msgstr "Relation"
 
-#: dt-contacts/contacts-post-type.php:597
+#: dt-contacts/contacts-post-type.php:596
 msgctxt "field description"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "Relation entre ce contact et un autre contact du système."
 
-#: dt-contacts/contacts-post-type.php:603
+#: dt-contacts/contacts-post-type.php:602
 msgctxt "field name"
 msgid "Coached by"
 msgstr "Entraîné par"
 
-#: dt-contacts/contacts-post-type.php:604
+#: dt-contacts/contacts-post-type.php:603
 msgctxt "field description"
 msgid "Who is coaching this contact"
 msgstr "Qui encadre ce contact"
 
-#: dt-contacts/contacts-post-type.php:610
+#: dt-contacts/contacts-post-type.php:609
 msgctxt "field name"
 msgid "Coached"
 msgstr "Entraînée"
 
-#: dt-contacts/contacts-post-type.php:611
+#: dt-contacts/contacts-post-type.php:610
 msgctxt "field description"
 msgid "Who is this contact coaching"
 msgstr "Lier ce contact à un utilisateur existant"
 
-#: dt-contacts/contacts-post-type.php:617
+#: dt-contacts/contacts-post-type.php:616
 msgctxt "field name"
 msgid "Baptized by"
 msgstr "Baptisé par"
 
-#: dt-contacts/contacts-post-type.php:618
+#: dt-contacts/contacts-post-type.php:617
 msgctxt "field description"
 msgid "Who baptized this contact"
 msgstr "Qui a baptisé ce contact"
 
-#: dt-contacts/contacts-post-type.php:624
+#: dt-contacts/contacts-post-type.php:623
 msgctxt "field name"
 msgid "Baptized"
 msgstr "A baptisé"
 
-#: dt-contacts/contacts-post-type.php:625
+#: dt-contacts/contacts-post-type.php:624
 msgctxt "field description"
 msgid "Who this contact has baptized"
 msgstr "Ce contact a été transféré"
 
-#: dt-contacts/contacts-post-type.php:631
+#: dt-contacts/contacts-post-type.php:630
 msgctxt "field name"
 msgid "People Groups"
 msgstr "Groupes ethniques"
 
-#: dt-contacts/contacts-post-type.php:632
+#: dt-contacts/contacts-post-type.php:631
 msgctxt "field description"
 msgid "People Groups this contact belongs to."
 msgstr "Groupes de personnes auxquels ce contact appartient."
 
-#: dt-contacts/contacts-post-type.php:638
+#: dt-contacts/contacts-post-type.php:637
 msgctxt "field name"
 msgid "Groups"
 msgstr "Groupes"
 
-#: dt-contacts/contacts-post-type.php:639
+#: dt-contacts/contacts-post-type.php:638
 msgctxt "field description"
 msgid "Groups this contact is a member of."
 msgstr "Groupes dont ce contact est membre."
 
-#: dt-contacts/contacts-post-type.php:645
+#: dt-contacts/contacts-post-type.php:644
 msgctxt "field name"
 msgid "Sub-assigned to"
 msgstr "Sous-assigné à"
 
-#: dt-contacts/contacts-post-type.php:646
+#: dt-contacts/contacts-post-type.php:645
 msgctxt "field description"
 msgid "This is someone working alongside of the main person assigned to the contact. You may find that you are partnering with others in your discipleship relationships. Only one person can be assigned while multiple people can be sub-assigned."
 msgstr "Il s'agit d'une personne travaillant aux côtés de la personne principale affectée au contact. Vous pouvez constater que vous vous associez à d'autres dans vos relations de disciple. Une seule personne peut être affectée tandis que plusieurs personnes peuvent être sous-affectées."
 
-#: dt-contacts/contacts-post-type.php:652
+#: dt-contacts/contacts-post-type.php:651
 msgctxt "field name"
 msgid "Locations"
 msgstr "Emplacements"
 
-#: dt-contacts/contacts-post-type.php:653
+#: dt-contacts/contacts-post-type.php:652
 msgctxt "field description"
 msgid "The general location where this contact is located."
 msgstr "L'emplacement général où se trouve ce contact."
 
-#: dt-contacts/contacts-post-type.php:658
+#: dt-contacts/contacts-post-type.php:657
 msgctxt "field name"
 msgid "Coordinates"
 msgstr "Les coordonnées"
 
-#: dt-contacts/contacts-post-type.php:664
-msgctxt "field name"
-msgid "Reminders"
-msgstr "Rappels"
-
-#: dt-contacts/contacts-post-type.php:665
-msgctxt "field description"
-msgid "Reminders related to this contact."
-msgstr "Rappels liés à ce contact."
-
-#: dt-contacts/contacts-post-type.php:856
+#: dt-contacts/contacts-post-type.php:855
 msgctxt "field label"
 msgid "Phone"
 msgstr "Téléphone"
 
-#: dt-contacts/contacts-post-type.php:858
-#: dt-contacts/contacts-post-type.php:869
+#: dt-contacts/contacts-post-type.php:857
+#: dt-contacts/contacts-post-type.php:868
 msgctxt "field label"
 msgid "Primary"
 msgstr "Primaire"
 
-#: dt-contacts/contacts-post-type.php:859
+#: dt-contacts/contacts-post-type.php:858
 msgctxt "field label"
 msgid "Mobile"
 msgstr "Mobile"
 
-#: dt-contacts/contacts-post-type.php:860
-#: dt-contacts/contacts-post-type.php:870 dt-posts/posts.php:1769
+#: dt-contacts/contacts-post-type.php:859
+#: dt-contacts/contacts-post-type.php:869 dt-posts/posts.php:1769
 msgctxt "field label"
 msgid "Work"
 msgstr "Travail"
 
-#: dt-contacts/contacts-post-type.php:861
-#: dt-contacts/contacts-post-type.php:871 dt-posts/posts.php:1768
+#: dt-contacts/contacts-post-type.php:860
+#: dt-contacts/contacts-post-type.php:870 dt-posts/posts.php:1768
 msgctxt "field label"
 msgid "Home"
 msgstr "Domicile"
 
-#: dt-contacts/contacts-post-type.php:862
-#: dt-contacts/contacts-post-type.php:872
-#: dt-contacts/contacts-post-type.php:915
-#: dt-contacts/contacts-post-type.php:917 dt-posts/posts.php:1770
+#: dt-contacts/contacts-post-type.php:861
+#: dt-contacts/contacts-post-type.php:871
+#: dt-contacts/contacts-post-type.php:914
+#: dt-contacts/contacts-post-type.php:916 dt-posts/posts.php:1770
 msgctxt "field label"
 msgid "Other"
 msgstr "Autre"
 
-#: dt-contacts/contacts-post-type.php:864
+#: dt-contacts/contacts-post-type.php:863
 msgctxt "contact information description"
 msgid "A phone number for this contact."
 msgstr "Un numéro de téléphone pour ce contact."
 
-#: dt-contacts/contacts-post-type.php:867
+#: dt-contacts/contacts-post-type.php:866
 msgctxt "field label"
 msgid "Email"
 msgstr "Email"
 
-#: dt-contacts/contacts-post-type.php:874
+#: dt-contacts/contacts-post-type.php:873
 msgctxt "contact information description"
 msgid "An email address for this contact"
 msgstr "Créé un utilisateur à partir de ce contact"
 
-#: dt-contacts/contacts-post-type.php:877
+#: dt-contacts/contacts-post-type.php:876
 msgctxt "field label"
 msgid "Address"
 msgstr "Adresse"
 
-#: dt-contacts/contacts-post-type.php:879
+#: dt-contacts/contacts-post-type.php:878
 msgctxt "contact information description"
 msgid "A physical address for this contact"
 msgstr "Créé un utilisateur à partir de ce contact"
 
-#: dt-contacts/contacts-post-type.php:942
+#: dt-contacts/contacts-post-type.php:941
 msgctxt "post_type title"
 msgid "Enter the contact name here"
 msgstr "Entrez le nom du contact ici"
@@ -4153,11 +4068,6 @@ msgctxt "input field placeholder"
 msgid "Search Contacts"
 msgstr "Rechercher des contacts"
 
-#: archive-contacts.php:220
-msgctxt "input field placeholder"
-msgid "Fliter Name"
-msgstr "Nom du filtre"
-
 #: archive-contacts.php:164 archive-groups.php:51 archive-groups.php:158
 msgctxt "input field placeholder"
 msgid "Type to search"
@@ -4187,11 +4097,6 @@ msgstr "Rechercher des groupes"
 msgctxt "input field placeholder"
 msgid "Filter Name"
 msgstr "Nom du filtre"
-
-#: dt-assets/functions/enqueue-scripts.php:315
-msgctxt "Just copy '_MAX_'"
-msgid "(filtered from _MAX_ total entries)"
-msgstr "(filtré à partir des entrées totales _MAX_)"
 
 #: dt-assets/parts/contact-details.php:142 dt-assets/parts/group-details.php:85
 #: dt-assets/parts/modals/modal-share.php:26 single-contacts.php:766
@@ -4386,7 +4291,7 @@ msgctxt "Baptism Date field description"
 msgid "The date the contact was baptised. For metrics reporting, it is important to always note the day a person is baptised."
 msgstr "La date du baptême du contact. Pour les rapports de mesures, il est important de toujours noter le jour où une personne est baptisée."
 
-#: dt-contacts/contacts-post-type.php:387
+#: dt-contacts/contacts-post-type.php:386
 msgctxt "Reason Not Ready field description"
 msgid "The main reason the contact is not ready to be assigned to a user."
 msgstr "Ce contact doit être assigné à un multiplicateur."
@@ -4768,12 +4673,12 @@ msgctxt "Tasks"
 msgid "Close"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:664
+#: dt-contacts/contacts-post-type.php:663
 msgctxt "field name"
 msgid "Tasks"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:665
+#: dt-contacts/contacts-post-type.php:664
 msgctxt "field description"
 msgid "Tasks related to this contact."
 msgstr ""
