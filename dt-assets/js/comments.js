@@ -10,6 +10,8 @@ jQuery(document).ready(function($) {
 
   let comments = []
   let activity = [] // not guaranteed to be in any particular order
+  let langcode = document.querySelector('html').getAttribute('lang') ? document.querySelector('html').getAttribute('lang').replace('_', '-') : "en";// get the language attribute from the HTML or default to english if it doesn't exists.
+
   function post_comment(postId) {
     let commentInput = jQuery("#comment-input")
     let commentButton = jQuery("#add-comment-button")
@@ -49,7 +51,7 @@ jQuery(document).ready(function($) {
     let createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
     const createdContactActivityItem = {
       hist_time: createdDate.unix(),
-      object_note: settings.txt_created.replace("{}", formatDate(createdDate.local())),
+      object_note: settings.txt_created.replace("{}", formatDate(createdDate.local(), langcode)),
       name: settings.contact_author_name,
       user_id: currentContact.post_author,
     }
@@ -84,8 +86,9 @@ jQuery(document).ready(function($) {
     let tab = $(`[data-id="activity"].tab-button-label`)
     let text = tab.text()
     text = text.substring(0, text.indexOf('(')) || text
-    text += ` (${activityData.length})`
+    text += ` (${formatNumber(activityData.length, langcode)})`
     tab.text(text)
+
   }
   $(".show-tabs").on("click", function () {
     let id = $(this).attr("id")
@@ -173,7 +176,7 @@ function unescapeHtml(safe) {
       .replace(/&#39;/g, "'")
       .replace(/&#039;/g, "'");
 }
- 
+
     // textarea deos not render HTML, so using _.unescape is safe. Note that
     // _.unescape will silently ignore invalid HTML, for instance,
     // _.unescape("Tom & Jerry") will return "Tom & Jerry"
@@ -203,8 +206,15 @@ function unescapeHtml(safe) {
     })
   })
 
-  function formatDate(date) {
-    return date.format("MMM D, YYYY h:mm a")
+  function formatDate(date, langcode) {
+    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' }
+    const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, options).format(new Date (date));
+
+    return last_modified;
+  }
+
+  function formatNumber(num, lang) {
+    return num.toLocaleString(lang);
   }
 
   function display_activity_comment() {
@@ -262,7 +272,7 @@ function unescapeHtml(safe) {
         commentsWrapper.append(commentTemplate({
           name: array[0].name,
           gravatar: array[0].gravatar,
-          date:formatDate(array[0].date),
+          date:formatDate(array[0].date, langcode),
           activity: array
         }))
         array = [obj]
@@ -272,7 +282,7 @@ function unescapeHtml(safe) {
       commentsWrapper.append(commentTemplate({
         gravatar: array[0].gravatar,
         name: array[0].name,
-        date:formatDate(array[0].date),
+        date:formatDate(array[0].date, langcode),
         activity: array
       }))
     }
@@ -384,7 +394,7 @@ function unescapeHtml(safe) {
        * that. This is not sufficient for malicious input, but hopefully we
        * can trust the contents of the database to have been sanitized
        * thanks to wp_new_comment . */
-    
+
         // .DT lets strip out the tags provided from the submited comment and treat it as pure text.
        comment.comment_content = $("<div>").html(comment.comment_content).text()
 
@@ -397,7 +407,7 @@ function unescapeHtml(safe) {
       let tab = $(`[data-id="${key}"].tab-button-label`)
       let text = tab.text()
       text = text.substring(0, text.indexOf('(')) || text
-      text += ` (${val})`
+      text += ` (${formatNumber(val, langcode)})`
       tab.text(text)
     })
     comments = commentData

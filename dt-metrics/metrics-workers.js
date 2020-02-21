@@ -28,22 +28,42 @@ function workers_activity() {
             <div class="cell center callout">
                 <div class="grid-x">
                     <div class="medium-3 cell center">
-                        <h4>${sourceData.translations.label_total_workers}<br><span id="total_workers">0</span></h4>
+                        <h5>${sourceData.translations.label_total_workers}<br><span id="total_workers">0</span></h5>
                     </div>
-                    <div class="medium-2 cell left-border-grey">
-                        <h4>${sourceData.translations.label_total_multipliers}<br><span id="total_multipliers">0</span></h4>
+                    <div class="auto cell left-border-grey">
+                        <h5>${sourceData.translations.label_total_multipliers}<br><span id="total_multipliers">0</span></h5>
                     </div>
-                    <div class="medium-2 cell center">
-                        <h4>${sourceData.translations.label_total_dispatchers}<br><span id="total_dispatchers">0</span></h4>
+                    <div class="auto cell center">
+                        <h5>${sourceData.translations.label_total_dispatchers}<br><span id="total_dispatchers">0</span></h5>
                     </div>
-                    <div class="medium-2 cell center">
-                        <h4>${sourceData.translations.label_total_administrators}<br><span id="total_administrators">0</span></h4>
+                    <div class="auto cell center">
+                        <h5>${sourceData.translations.label_total_administrators}<br><span id="total_administrators">0</span></h5>
                     </div>
-                    <div class="medium-2 cell center">
-                        <h4>${sourceData.translations.label_total_strategists}<br><span id="total_strategists">0</span>
-                        </h4>
+                    <div class="auto cell center">
+                        <h5>${sourceData.translations.label_total_strategists}<br><span id="total_strategists">0</span>
+                        </h5>
                     </div>
-                    
+                </div>
+            </div>
+            
+            <span class="section-subheader">${sourceData.translations.title_assigned_to}</span>
+            <div class="cell center callout">
+                <div class="grid-x">
+                    <div class="auto cell center">
+                        <h5>${sourceData.translations.label_all_time}<br><span>${sourceData.assigned_to_multipliers.all_time}</span></h5>
+                    </div>
+                    <div class="auto cell center left-border-grey">
+                        <h5>${sourceData.translations.label_last_year}<br><span>${sourceData.assigned_to_multipliers.last_year}</span></h5>
+                    </div>
+                    <div class="auto cell center left-border-grey ">
+                        <h5>${sourceData.translations.label_this_year}<br><span>${sourceData.assigned_to_multipliers.this_year}</span></h5>
+                    </div>
+                    <div class="auto cell center left-border-grey">
+                        <h5>${sourceData.translations.label_last_month}<br><span>${sourceData.assigned_to_multipliers.last_month}</span></h5>
+                    </div>
+                    <div class="auto cell center left-border-grey">
+                        <h5>${sourceData.translations.label_this_month}<br><span>${sourceData.assigned_to_multipliers.this_month}</span></h5>
+                    </div>
                 </div>
             </div>
             <div class="cell">

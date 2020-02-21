@@ -53,11 +53,13 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
     public function scripts() {
         wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
+        wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . '/dt-metrics/metrics-project.js', [
             'jquery',
             'jquery-ui-core',
             'amcharts-core',
             'amcharts-charts',
+            'amcharts-animated',
         ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-project.js' ), true );
 
         wp_localize_script(
@@ -73,6 +75,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function data() {
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         return [
             'translations' => [
                 'title_overview' => __( 'Project Overview', 'disciple_tools' ),
@@ -89,6 +92,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'title_baptism_tree' => __( 'Baptism Generation Tree', 'disciple_tools' ),
                 'title_coaching_tree' => __( 'Coaching Generation Tree', 'disciple_tools' ),
                 'title_teams' => __( 'Teams', 'disciple_tools' ),
+                'title_status_chart' => $contact_fields["overall_status"]["name"],
                 'label_follow_up_progress' => __( 'Follow-up of all active contacts', 'disciple_tools' ),
                 'label_group_needs_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
                 'label_groups' => strtolower( __( 'groups', 'disciple_tools' ) ),
@@ -108,7 +112,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             'group_generation_tree' => $this->get_group_generations_tree(),
             'baptism_generation_tree' => $this->get_baptism_generations_tree(),
             'coaching_generation_tree' => $this->get_coaching_generations_tree(),
-
+            'contact_statuses' => Disciple_Tools_Counter_Contacts::get_contact_statuses()
         ];
     }
 
