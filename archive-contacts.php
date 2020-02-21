@@ -15,7 +15,7 @@ declare(strict_types=1);
     <div id="errors"> </div>
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
         <nav role="navigation"
-             data-sticky data-options="marginTop:3;" style="width:100%" data-top-anchor="1"
+             data-sticky data-options="marginTop:0;" style="width:100%" data-top-anchor="1"
              class="second-bar">
             <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
                 <a class="button dt-green"  href="<?php echo esc_url( home_url( '/' ) ) . "contacts/new" ?>">
