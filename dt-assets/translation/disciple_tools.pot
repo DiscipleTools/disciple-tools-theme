@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Disciple Tools\n"
-"POT-Creation-Date: 2020-02-20 15:56+0100\n"
+"POT-Creation-Date: 2020-02-21 16:01+0100\n"
 "PO-Revision-Date: 2018-01-09 14:10-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -143,9 +143,9 @@ msgstr ""
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-assets/parts/modals/modal-new-group.php:14 single-contacts.php:580
-#: single-contacts.php:612 single-contacts.php:643 single-contacts.php:667
-#: single-contacts.php:747 single-contacts.php:801 single-contacts.php:849
+#: dt-assets/parts/modals/modal-new-group.php:14 single-contacts.php:576
+#: single-contacts.php:608 single-contacts.php:639 single-contacts.php:663
+#: single-contacts.php:743 single-contacts.php:797 single-contacts.php:845
 #: template-contacts-new.php:102 template-groups-new.php:46
 msgid "Cancel"
 msgstr ""
@@ -549,26 +549,26 @@ msgstr ""
 msgid "Metrics"
 msgstr ""
 
-#: dt-assets/functions/menu.php:51 dt-assets/parts/nav-offcanvas-topbar.php:22
-msgid "Disciple Tools"
+#: dt-assets/functions/menu.php:51
+msgid "Disciple.Tools"
 msgstr ""
 
-#: dt-assets/functions/menu.php:87 dt-assets/parts/nav-offcanvas-topbar.php:39
-#: dt-assets/parts/nav-offcanvas-topbar.php:91 template-notifications.php:31
+#: dt-assets/functions/menu.php:87 dt-assets/parts/nav-offcanvas-topbar.php:47
+#: dt-assets/parts/nav-offcanvas-topbar.php:99 template-notifications.php:31
 #: template-settings.php:39 template-settings.php:202
 msgid "Notifications"
 msgstr ""
 
-#: dt-assets/functions/menu.php:90 dt-assets/parts/nav-offcanvas-topbar.php:44
-#: dt-assets/parts/nav-offcanvas-topbar.php:104 template-notifications.php:57
+#: dt-assets/functions/menu.php:90 dt-assets/parts/nav-offcanvas-topbar.php:52
+#: dt-assets/parts/nav-offcanvas-topbar.php:112 template-notifications.php:57
 msgid "Settings"
 msgstr ""
 
-#: dt-assets/functions/menu.php:93 dt-assets/parts/nav-offcanvas-topbar.php:107
+#: dt-assets/functions/menu.php:93 dt-assets/parts/nav-offcanvas-topbar.php:115
 msgid "Admin"
 msgstr ""
 
-#: dt-assets/functions/menu.php:96 dt-assets/parts/nav-offcanvas-topbar.php:113
+#: dt-assets/functions/menu.php:96 dt-assets/parts/nav-offcanvas-topbar.php:121
 msgid "Log Off"
 msgstr ""
 
@@ -605,14 +605,14 @@ msgid "Status"
 msgstr ""
 
 #: dt-assets/parts/contact-details.php:142 dt-assets/parts/group-details.php:85
-#: dt-assets/parts/modals/modal-share.php:27 single-contacts.php:779
+#: dt-assets/parts/modals/modal-share.php:27 single-contacts.php:775
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr ""
 
 #: dt-assets/parts/contact-details.php:172
 #: dt-assets/parts/group-details.php:113 single-contacts.php:334
-#: single-contacts.php:695 single-contacts.php:828
+#: single-contacts.php:691 single-contacts.php:824
 msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr ""
@@ -650,7 +650,7 @@ msgstr ""
 #: dt-groups/groups-post-type.php:102
 #: dt-people-groups/people-groups-post-type.php:98
 #: dt-posts/custom-post-type.php:18 single-contacts.php:304
-#: single-contacts.php:522 single-groups.php:149 single-groups.php:165
+#: single-contacts.php:518 single-groups.php:149 single-groups.php:165
 #: single-groups.php:181 single-groups.php:387 template-contacts-new.php:85
 #, php-format
 msgctxt "Search 'something'"
@@ -779,7 +779,7 @@ msgstr ""
 #: dt-assets/parts/modals/modal-help.php:453
 #: dt-assets/parts/modals/modal-revert.php:15
 #: dt-assets/parts/modals/modal-share.php:50
-#: dt-assets/parts/modals/modal-tasks.php:46 single-contacts.php:711
+#: dt-assets/parts/modals/modal-tasks.php:46 single-contacts.php:707
 #: single-groups.php:399
 msgid "Close"
 msgstr ""
@@ -833,8 +833,8 @@ msgstr ""
 msgid "Unsure"
 msgstr ""
 
-#: dt-assets/parts/merge-details.php:184 single-contacts.php:808
-#: single-contacts.php:856
+#: dt-assets/parts/merge-details.php:184 single-contacts.php:804
+#: single-contacts.php:852
 msgid "Merge"
 msgstr ""
 
@@ -889,7 +889,7 @@ msgid "User workload status icons legend:"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-help.php:58
-msgctxt "Optional Documentation"
+msgctxt "disciple_tools"
 msgid "2 contacts need an update"
 msgstr ""
 
@@ -1452,37 +1452,37 @@ msgctxt "Tasks"
 msgid "Existing tasks for this record:"
 msgstr ""
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:28
-#: dt-assets/parts/nav-offcanvas-topbar.php:79
+#: dt-assets/parts/nav-offcanvas-topbar.php:36
+#: dt-assets/parts/nav-offcanvas-topbar.php:87
 msgid "Add New"
 msgstr ""
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:31
-#: dt-assets/parts/nav-offcanvas-topbar.php:83
+#: dt-assets/parts/nav-offcanvas-topbar.php:39
+#: dt-assets/parts/nav-offcanvas-topbar.php:91
 msgid "Add New Contact"
 msgstr ""
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:31
-#: dt-assets/parts/nav-offcanvas-topbar.php:83
+#: dt-assets/parts/nav-offcanvas-topbar.php:39
+#: dt-assets/parts/nav-offcanvas-topbar.php:91
 #: dt-contacts/contacts-post-type.php:196
 msgid "New Contact"
 msgstr ""
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:32
-#: dt-assets/parts/nav-offcanvas-topbar.php:84
+#: dt-assets/parts/nav-offcanvas-topbar.php:40
+#: dt-assets/parts/nav-offcanvas-topbar.php:92
 msgid "Add New Group"
 msgstr ""
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:32
-#: dt-assets/parts/nav-offcanvas-topbar.php:84
+#: dt-assets/parts/nav-offcanvas-topbar.php:40
+#: dt-assets/parts/nav-offcanvas-topbar.php:92
 msgid "New Group"
 msgstr ""
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:72 template-settings.php:37
+#: dt-assets/parts/nav-offcanvas-topbar.php:80 template-settings.php:37
 msgid "Profile"
 msgstr ""
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:109
+#: dt-assets/parts/nav-offcanvas-topbar.php:117
 msgid "Help"
 msgstr ""
 
@@ -1501,13 +1501,18 @@ msgid "Assigned To"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:183
-msgctxt "field description"
 msgid ""
 "Select the main person who is responsible for reporting on this contact."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:191
 msgid "Contact Status"
+msgstr ""
+
+#: dt-contacts/contacts-post-type.php:192
+msgctxt "Contact Status field description"
+msgid ""
+"The Contact Status describes our progress in communicating with the contact"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:197
@@ -2007,7 +2012,6 @@ msgid "Sub-assigned to"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:646
-msgctxt "Optional Documentation"
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr ""
@@ -2033,7 +2037,7 @@ msgstr ""
 
 #: dt-contacts/contacts-post-type.php:861
 #: dt-core/admin/config-site-defaults.php:285
-#: dt-core/admin/config-site-defaults.php:485 single-contacts.php:731
+#: dt-core/admin/config-site-defaults.php:485 single-contacts.php:727
 #: template-contacts-new.php:44 template-settings.php:103
 msgid "Email"
 msgstr ""
@@ -2067,7 +2071,7 @@ msgstr ""
 
 #: dt-contacts/contacts-post-type.php:902
 #: dt-core/admin/config-site-defaults.php:497
-#: dt-core/admin/config-site-defaults.php:534 single-contacts.php:499
+#: dt-core/admin/config-site-defaults.php:534 single-contacts.php:495
 #: template-settings.php:148
 msgid "Other"
 msgstr ""
@@ -3764,115 +3768,115 @@ msgstr ""
 msgid "Progress"
 msgstr ""
 
-#: single-contacts.php:564 single-contacts.php:593 single-contacts.php:624
+#: single-contacts.php:560 single-contacts.php:589 single-contacts.php:620
 msgid "Choose an option:"
 msgstr ""
 
-#: single-contacts.php:583 single-contacts.php:615 single-contacts.php:646
+#: single-contacts.php:579 single-contacts.php:611 single-contacts.php:642
 msgid "Confirm"
 msgstr ""
 
-#: single-contacts.php:654
+#: single-contacts.php:650
 msgid "Create Tag"
 msgstr ""
 
-#: single-contacts.php:655
+#: single-contacts.php:651
 msgid "Create a tag and apply it to this contact."
 msgstr ""
 
-#: single-contacts.php:659
+#: single-contacts.php:655
 msgid "Tag"
 msgstr ""
 
-#: single-contacts.php:661
+#: single-contacts.php:657
 msgctxt "input field placeholder"
 msgid "tag"
 msgstr ""
 
-#: single-contacts.php:662 single-contacts.php:734 template-contacts-new.php:31
+#: single-contacts.php:658 single-contacts.php:730 template-contacts-new.php:31
 #: template-groups-new.php:30 template-new-post.php:25
 msgid "This is required"
 msgstr ""
 
-#: single-contacts.php:670
+#: single-contacts.php:666
 msgid "Create and apply tag"
 msgstr ""
 
-#: single-contacts.php:681
+#: single-contacts.php:677
 msgid "Who was this contact baptized by and when?"
 msgstr ""
 
-#: single-contacts.php:720
+#: single-contacts.php:716
 msgctxt "Make user modal"
 msgid "Make User From Contact"
 msgstr ""
 
-#: single-contacts.php:723
+#: single-contacts.php:719
 msgctxt "Make user modal"
 msgid "This contact is already connected to a user."
 msgstr ""
 
-#: single-contacts.php:726
+#: single-contacts.php:722
 msgctxt "Make user modal"
 msgid ""
 "This will invite this contact to become a user of this system. By default, "
 "they will be given the role of a 'multiplier'."
 msgstr ""
 
-#: single-contacts.php:727
+#: single-contacts.php:723
 msgctxt "Make user modal"
 msgid ""
 "In the fields below, enter their email address and a 'Display Name' which "
 "they can change later."
 msgstr ""
 
-#: single-contacts.php:736
+#: single-contacts.php:732
 msgid "Display Name"
 msgstr ""
 
-#: single-contacts.php:739
+#: single-contacts.php:735
 msgctxt "disciple_tools"
 msgid "Display Name"
 msgstr ""
 
-#: single-contacts.php:750
+#: single-contacts.php:746
 msgid "Create user"
 msgstr ""
 
-#: single-contacts.php:763
+#: single-contacts.php:759
 msgid "Link this contact to an existing user"
 msgstr ""
 
-#: single-contacts.php:766
+#: single-contacts.php:762
 msgid "This contact already represents a user."
 msgstr ""
 
-#: single-contacts.php:770
+#: single-contacts.php:766
 msgctxt "Step 1 of link user"
 msgid ""
 "To link to an existing user, first, find the user using the field below."
 msgstr ""
 
-#: single-contacts.php:794
+#: single-contacts.php:790
 msgctxt "Step 2 of link user"
 msgid ""
 "To finish the linking, merge this contact with the existing user details."
 msgstr ""
 
-#: single-contacts.php:818
+#: single-contacts.php:814
 msgid "Merge Contact"
 msgstr ""
 
-#: single-contacts.php:819
+#: single-contacts.php:815
 msgid "Merge this contact with another contact."
 msgstr ""
 
-#: single-contacts.php:843
+#: single-contacts.php:839
 msgctxt "added to the end of a sentence"
 msgid "selected."
 msgstr ""
 
-#: single-contacts.php:844
+#: single-contacts.php:840
 msgid "Click merge to continue."
 msgstr ""
 
