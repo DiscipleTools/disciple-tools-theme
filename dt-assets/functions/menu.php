@@ -48,7 +48,7 @@ function disciple_tools_off_canvas_nav() {
 
         <li class="nav-title">
             <div>
-                <span class="title"><?php esc_html_e( 'Disciple Tools', 'disciple_tools' )  ?></span>
+                <span class="title"><?php esc_html_e( 'Disciple.Tools', 'disciple_tools' )  ?></span>
             </div>
             <hr/>
         </li>
