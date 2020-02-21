@@ -55,7 +55,7 @@
                     foreach ( $workload_status_options as $option_key => $option_val ): ?>
                         <li><span style="background-color: <?php echo esc_html( $option_val["color"] ) ?>; height:10px; padding: 0 5px; border-radius: 2px">&nbsp;</span> <?php echo esc_html( $option_val["label"] ) ?></li>
                     <?php endforeach ?>
-                    <li><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" /> 2: <?php echo esc_html_x( "2 contacts need an update", 'Optional Documentation', 'disciple_tools' ) ?> </li>
+                    <li><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" /> 2: <?php echo esc_html_x( "2 contacts need an update", 'disciple_tools' ) ?> </li>
                 </ul>
             <?php endif; ?>
         </div>
@@ -103,11 +103,11 @@
             <h3><?php echo esc_html( $contact_fields["milestones"]["name"] ) ?></h3>
             <p><?php echo esc_html( $contact_fields["milestones"]["description"] ) ?></p>
             <!-- <?php echo esc_html( $contact_fields["milestones"]["name"] ) ?> list -->
-            <ul>
-                <?php foreach ( $contact_fields["milestones"]["default"] as $option ): ?>
-                    <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ) ?? "" ?></li>
-                <?php endforeach; ?>
-            </ul>
+<!--            <ul>-->
+<!--                --><?php //foreach ( $contact_fields["milestones"]["default"] as $option ): ?>
+<!--                    <li><strong>--><?php //echo esc_html( $option["label"] ) ?><!--</strong> - --><?php //echo esc_html( $option["description"] ) ?? "" ?><!--</li>-->
+<!--                --><?php //endforeach; ?>
+<!--            </ul>-->
         </div>
 
         <!-- Baptism Date -->

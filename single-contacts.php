@@ -411,11 +411,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                     </div>
 
                                     <div class="baptism_date">
-                                        <div class="section-subheader"><?php echo esc_html( $contact_fields["baptism_date"]["name"] )?>
-                                            <button class="help-button" data-section="baptism-date-help-text">
-                                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                            </button>
-                                        </div>
+                                        <div class="section-subheader"><?php echo esc_html( $contact_fields["baptism_date"]["name"] )?></div>
                                         <div class="baptism_date">
                                             <input type="text" class="dt_date_picker"
                                                    value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>"

@@ -180,7 +180,7 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields['assigned_to'] = [
             'name'        => __( 'Assigned To', 'disciple_tools' ),
-            'description' => _x( 'Select the main person who is responsible for reporting on this contact.', 'field description', 'disciple_tools' ),
+            'description' => __( 'Select the main person who is responsible for reporting on this contact.', 'disciple_tools' ),
             'type'        => 'user_select',
             'default'     => '',
             'section'     => 'status',
@@ -189,7 +189,7 @@ class Disciple_Tools_Contact_Post_Type
         // Status Section
         $fields['overall_status'] = [
             'name'        => __( 'Contact Status', 'disciple_tools' ),
-            'description' => '',
+            'description' => _x( 'The Contact Status describes our progress in communicating with the contact', "Contact Status field description", 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'new'   => [
@@ -643,7 +643,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["subassigned"] = [
             "name" => __( "Sub-assigned to", 'disciple_tools' ),
-            "description" => _x( "Contact or User assisting the Assigned To user to follow up with the contact.", 'Optional Documentation', 'disciple_tools' ),
+            "description" => __( "Contact or User assisting the Assigned To user to follow up with the contact.", 'disciple_tools' ),
             "type" => "connection",
             "post_type" => "contacts",
             "p2p_direction" => "to",
