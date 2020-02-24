@@ -710,11 +710,20 @@ class Disciple_Tools_Users
             $sources = $site_custom_lists['sources'] ?? [];
             ?>
             <h3>Digital Responder Access</h3>
+            <p>Restrict the user to only access the selected sources</p>
             <table class="form-table">
                 <tr>
                     <th><?php esc_html_e( "Sources", 'disciple_tools' ) ?></th>
                     <td>
                         <ul>
+                            <li>
+                                <?php $checked = in_array( 'all', $selected_sources === false ? [ 'all' ] : $selected_sources ) ? "checked" : ''; ?>
+                                <input type="checkbox" name="allowed_sources[]" value="all" <?php echo esc_html( $checked ) ?>/>
+                                All Sources
+                            </li>
+                            <li>
+                                &nbsp;
+                            </li>
                         <?php foreach ( $sources as $source ) :
                             $checked = in_array( $source["key"], $selected_sources === false ? [] : $selected_sources ) ? "checked" : '';
                             ?>

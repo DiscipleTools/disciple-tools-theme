@@ -1826,7 +1826,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             /**
              * Setup dispatcher filters
              */
-            if ( current_user_can( "view_any_contacts" ) ) {
+            if ( current_user_can( "view_any_contacts" ) || current_user_can( 'access_specific_sources' ) ) {
                 $counts = self::get_all_contacts_status_seeker_path();
                 $all_active_counts = [];
                 $all_update_needed = 0;
