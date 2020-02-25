@@ -673,7 +673,7 @@ class Disciple_Tools_Posts
         foreach ( $query as $query_key => $query_value ){
             $meta_field_sql = "";
             if ( !is_array( $query_value )){
-                return new WP_Error( __FUNCTION__, "Filter queries must be arrays", [ 'status' => 403 ] );
+                return new WP_Error( __FUNCTION__, "Filter queries must be arrays", [ 'status' => 400 ] );
             }
             if ( !in_array( $query_key, $post_settings["connection_types"] ) && strpos( $query_key, "contact_" ) !== 0 && $query_key !== "location_grid" ){
                 if ( $query_key == "assigned_to" ){
