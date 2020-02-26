@@ -673,7 +673,7 @@ class Disciple_Tools_Posts
         foreach ( $query as $query_key => $query_value ){
             $meta_field_sql = "";
             if ( !is_array( $query_value )){
-                return new WP_Error( __FUNCTION__, "Filter queries must be arrays", [ 'status' => 403 ] );
+                return new WP_Error( __FUNCTION__, "Filter queries must be arrays for $query_key. Got " . strval( $query_value ), [ 'status' => 400 ] );
             }
             if ( !in_array( $query_key, $post_settings["connection_types"] ) && strpos( $query_key, "contact_" ) !== 0 && $query_key !== "location_grid" ){
                 if ( $query_key == "assigned_to" ){
@@ -1091,7 +1091,7 @@ class Disciple_Tools_Posts
         foreach ( $fields as $field_key => $field ){
             if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "multi_select" || $field_settings[$field_key]["type"] === "location" ) ){
                 if ( !isset( $field["values"] )){
-                    return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key );
+                    return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
                 }
                 if ( isset( $field["force_values"] ) && $field["force_values"] == true ){
                     delete_post_meta( $post_id, $field_key );
@@ -1108,7 +1108,7 @@ class Disciple_Tools_Posts
                             }
                         }
                     } else {
-                        return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key );
+                        return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
                     }
                 }
             }
@@ -1152,7 +1152,7 @@ class Disciple_Tools_Posts
             foreach ( $values as $field ){
                 if ( isset( $field["delete"] ) && $field["delete"] == true){
                     if ( !isset( $field["key"] )){
-                        return new WP_Error( __FUNCTION__, "missing key on: " . $details_key );
+                        return new WP_Error( __FUNCTION__, "missing key on: " . $details_key, [ 'status' => 400 ] );
                     }
                     //delete field
                     $potential_error = delete_post_meta( $post_id, $field["key"] );
@@ -1172,7 +1172,7 @@ class Disciple_Tools_Posts
                     $potential_error = self::add_post_contact_method( $post_settings, $post_id, $field["key"], $field["value"], $field );
 
                 } else {
-                    return new WP_Error( __FUNCTION__, "Is not an array or missing value on: " . $details_key );
+                    return new WP_Error( __FUNCTION__, "Is not an array or missing value on: " . $details_key, [ 'status' => 400 ] );
                 }
                 if ( isset( $potential_error ) && is_wp_error( $potential_error ) ) {
                     return $potential_error;
@@ -1190,14 +1190,14 @@ class Disciple_Tools_Posts
         foreach ( $fields as $field_key => $field ) {
             if ( isset( $field_settings[ $field_key ] ) && ( $field_settings[ $field_key ]["type"] === "post_user_meta" ) ) {
                 if ( !isset( $field["values"] )){
-                    return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key );
+                    return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
                 }
 
                 foreach ( $field["values"] as $value ){
                     if ( isset( $value["value"] ) || ( !empty( $value["delete"] && !empty( $value['id'] ) ) ) ){
                         $current_user_id = get_current_user_id();
                         if ( !$current_user_id ){
-                            return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user." );
+                            return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
                         }
                         if ( !empty( $value["id"] ) ) {
                             //see if we find the value with the correct id on this contact for this user.
@@ -1210,7 +1210,7 @@ class Disciple_Tools_Posts
                                 }
                             }
                             if ( !$exists ){
-                                return new WP_Error( __FUNCTION__, "A field for key $field_key with id " . $value["id"] . " was not found for this user on this post" );
+                                return new WP_Error( __FUNCTION__, "A field for key $field_key with id " . $value["id"] . " was not found for this user on this post", [ 'status' => 400 ] );
                             }
                             if ( isset( $value["delete"] ) && $value["delete"] == true ) {
                                 //delete user meta
@@ -1221,7 +1221,7 @@ class Disciple_Tools_Posts
                                     AND post_id = %s
                             ", $value["id"], $current_user_id, $post_id ) );
                                 if ( !$delete ){
-                                    return new WP_Error( __FUNCTION__, "Something wrong deleting post user meta on field: " . $field_key );
+                                    return new WP_Error( __FUNCTION__, "Something wrong deleting post user meta on field: " . $field_key, [ 'status' => 500 ] );
                                 }
                             } else {
                                 //update user meta
@@ -1250,7 +1250,7 @@ class Disciple_Tools_Posts
                                     ]
                                 );
                                 if ( !$update ) {
-                                    return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key );
+                                    return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
                                 }
                             }
                         } else {
@@ -1267,11 +1267,11 @@ class Disciple_Tools_Posts
                                 ]
                             );
                             if ( !$create ){
-                                return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key );
+                                return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
                             }
                         }
                     } else {
-                        return new WP_Error( __FUNCTION__, "Missing 'value' or 'id' key on field: " . $field_key );
+                        return new WP_Error( __FUNCTION__, "Missing 'value' or 'id' key on field: " . $field_key, [ 'status' => 400 ] );
                     }
                 }
             }
