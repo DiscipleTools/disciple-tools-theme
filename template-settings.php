@@ -17,7 +17,10 @@ $dt_user_contact_id = dt_get_associated_user_id( $dt_user->ID, 'user' );
 
 $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the site settings in the config area with the fields available in the user meta table.
 $dt_site_notification_defaults = dt_get_site_notification_defaults(); // Array of site default settings
-$dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' )
+$dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+
+$dt_user_locale = get_user_locale( $dt_user->ID );
+$translations = dt_get_translations();
 
 ?>
 
@@ -162,8 +165,8 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                 <strong><?php esc_html_e( 'Language', 'disciple_tools' )?></strong>
                                 <p>
                                 <?php
-                                if ( !empty( $dt_user->locale ) ){
-                                    echo esc_html( $dt_user->locale );
+                                if ( !empty( $dt_user_locale ) && $dt_user_locale !== 'en_US' ){
+                                    echo esc_html( $translations[$dt_user_locale]['native_name'] );
                                 } else {
                                     echo esc_html__( 'English', 'disciple_tools' );
                                 }
@@ -409,14 +412,14 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                     <td><label for="description"><?php esc_html_e( 'Language', 'disciple_tools' )?></label></td>
                                     <td dir="auto">
                                         <?php
-                                        $translations = dt_get_translations();
                                         wp_dropdown_languages( array(
                                             'name'                        => 'locale',
                                             'id'                          => 'locale',
-                                            'selected'                    => esc_html( $dt_user->locale ),
+                                            'selected'                    => esc_html( $dt_user_locale ),
                                             'languages'                   => $dt_available_languages,
                                             'show_available_translations' => false,
                                             'show_option_site_default'    => false,
+                                            'show_option_en_us'           => true,
                                             'translations'                => $translations
                                         ) );
                                         ?>

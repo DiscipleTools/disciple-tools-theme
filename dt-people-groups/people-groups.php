@@ -289,8 +289,7 @@ class Disciple_Tools_People_Groups
         if ( !current_user_can( "access_contacts" )){
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
-        $locale = get_locale();
-
+        $locale = get_user_locale();
         $query_args = [
             'post_type' => 'peoplegroups',
             'orderby'   => 'title',
