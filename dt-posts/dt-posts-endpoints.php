@@ -388,7 +388,7 @@ class Disciple_Tools_Posts_Endpoints {
     }
 
     public function create_post( WP_REST_Request $request ){
-        $fields = $request->get_json_params() ?? $request->get_query_params();
+        $fields = $request->get_json_params() ?? $request->get_body_params();
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
         $silent = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
