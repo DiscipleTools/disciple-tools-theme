@@ -23,7 +23,8 @@ global $post;
                 <div class="typeahead__field">
                     <span class="typeahead__query">
                         <input class="js-typeahead-share input-height"
-                               name="share[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
+                               name="share[query]"
+                               placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
                                autocomplete="off">
                     </span>
                 </div>
@@ -46,7 +47,7 @@ global $post;
             <hr size="1px">
             <span style="float:right; bottom: 0;">
             <button class="button" data-close aria-label="Close reveal" type="button">
-                <?php echo esc_html_x( 'Close', 'button', 'disciple_tools' )?>
+                <?php echo esc_html__( 'Close', 'disciple_tools' )?>
             </button>
         </span>
         </div>

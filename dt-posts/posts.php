@@ -16,31 +16,10 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Posts
 {
-
-    public static $connection_types;
-    public static $channel_list;
-
     /**
      * Disciple_Tools_Posts constructor.
      */
-    public function __construct() {
-        self::$connection_types = [
-            "locations" => [ "name" => _x( "Locations", 'label name', 'disciple_tools' ) ],
-            "groups" => [ "name" => _x( "Groups", 'label name', 'disciple_tools' ) ],
-            "people_groups" => [ "name" => _x( "People Groups", 'label name', 'disciple_tools' ) ],
-            "baptized_by" => [ "name" => _x( "Baptized By", 'label name', 'disciple_tools' ) ],
-            "baptized" => [ "name" => _x( "Baptized", 'label name', 'disciple_tools' ) ],
-            "coached_by" => [ "name" => _x( "Coached By", 'label name', 'disciple_tools' ) ],
-            "coaching" => [ "name" => _x( "Coaching", 'label name', 'disciple_tools' ) ],
-            "subassigned" => [ "name" => _x( "Sub Assigned", 'label name', 'disciple_tools' ) ],
-            "leaders" => [ "name" => _x( "Leaders", 'label name', 'disciple_tools' ) ],
-            "coaches" => [ "name" => _x( "Coaches/Church Planters", 'label name', 'disciple_tools' ) ],
-            "parent_groups" => [ "name" => _x( "Parent Groups", 'label name', 'disciple_tools' ) ],
-            "child_groups" => [ "name" => _x( "Child Groups", 'label name', 'disciple_tools' ) ],
-            "peer_groups" => [ "name" => _x( "Peer Groups", 'label name', 'disciple_tools' ) ],
-        ];
-        self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
-    }
+    public function __construct() {}
 
     /**
      * Permissions for interaction with contacts Custom Post Types
@@ -193,18 +172,17 @@ class Disciple_Tools_Posts
     }
 
     public static function get_label_for_post_type( $post_type, $singular = false ){
-        switch ( $post_type ) {
-            case "contacts":
-            case "contact":
-                return $singular ? Disciple_Tools_Contact_Post_Type::instance()->singular : Disciple_Tools_Contact_Post_Type::instance()->plural;
-                break;
-            case "groups":
-            case "group":
-                return $singular ? Disciple_Tools_Groups_Post_Type::instance()->singular : Disciple_Tools_Groups_Post_Type::instance()->plural;
-                break;
-            default:
-                return $post_type;
+        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+        if ( $singular ){
+            if ( isset( $post_settings["label_singular"] ) ){
+                return $post_settings["label_singular"];
+            }
+        } else {
+            if ( isset( $post_settings["label_plural"] ) ){
+                return $post_settings["label_plural"];
+            }
         }
+        return $post_type;
     }
 
     /**
@@ -695,7 +673,7 @@ class Disciple_Tools_Posts
         foreach ( $query as $query_key => $query_value ){
             $meta_field_sql = "";
             if ( !is_array( $query_value )){
-                return new WP_Error( __FUNCTION__, "Filter queries must be arrays", [ 'status' => 403 ] );
+                return new WP_Error( __FUNCTION__, "Filter queries must be arrays for $query_key. Got " . strval( $query_value ), [ 'status' => 400 ] );
             }
             if ( !in_array( $query_key, $post_settings["connection_types"] ) && strpos( $query_key, "contact_" ) !== 0 && $query_key !== "location_grid" ){
                 if ( $query_key == "assigned_to" ){
@@ -1113,7 +1091,7 @@ class Disciple_Tools_Posts
         foreach ( $fields as $field_key => $field ){
             if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "multi_select" || $field_settings[$field_key]["type"] === "location" ) ){
                 if ( !isset( $field["values"] )){
-                    return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key );
+                    return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
                 }
                 if ( isset( $field["force_values"] ) && $field["force_values"] == true ){
                     delete_post_meta( $post_id, $field_key );
@@ -1130,7 +1108,7 @@ class Disciple_Tools_Posts
                             }
                         }
                     } else {
-                        return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key );
+                        return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
                     }
                 }
             }
@@ -1174,7 +1152,7 @@ class Disciple_Tools_Posts
             foreach ( $values as $field ){
                 if ( isset( $field["delete"] ) && $field["delete"] == true){
                     if ( !isset( $field["key"] )){
-                        return new WP_Error( __FUNCTION__, "missing key on: " . $details_key );
+                        return new WP_Error( __FUNCTION__, "missing key on: " . $details_key, [ 'status' => 400 ] );
                     }
                     //delete field
                     $potential_error = delete_post_meta( $post_id, $field["key"] );
@@ -1194,7 +1172,7 @@ class Disciple_Tools_Posts
                     $potential_error = self::add_post_contact_method( $post_settings, $post_id, $field["key"], $field["value"], $field );
 
                 } else {
-                    return new WP_Error( __FUNCTION__, "Is not an array or missing value on: " . $details_key );
+                    return new WP_Error( __FUNCTION__, "Is not an array or missing value on: " . $details_key, [ 'status' => 400 ] );
                 }
                 if ( isset( $potential_error ) && is_wp_error( $potential_error ) ) {
                     return $potential_error;
@@ -1212,14 +1190,14 @@ class Disciple_Tools_Posts
         foreach ( $fields as $field_key => $field ) {
             if ( isset( $field_settings[ $field_key ] ) && ( $field_settings[ $field_key ]["type"] === "post_user_meta" ) ) {
                 if ( !isset( $field["values"] )){
-                    return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key );
+                    return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
                 }
 
                 foreach ( $field["values"] as $value ){
                     if ( isset( $value["value"] ) || ( !empty( $value["delete"] && !empty( $value['id'] ) ) ) ){
                         $current_user_id = get_current_user_id();
                         if ( !$current_user_id ){
-                            return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user." );
+                            return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user.", [ 'status' => 400 ] );
                         }
                         if ( !empty( $value["id"] ) ) {
                             //see if we find the value with the correct id on this contact for this user.
@@ -1232,7 +1210,7 @@ class Disciple_Tools_Posts
                                 }
                             }
                             if ( !$exists ){
-                                return new WP_Error( __FUNCTION__, "A field for key $field_key with id " . $value["id"] . " was not found for this user on this post" );
+                                return new WP_Error( __FUNCTION__, "A field for key $field_key with id " . $value["id"] . " was not found for this user on this post", [ 'status' => 400 ] );
                             }
                             if ( isset( $value["delete"] ) && $value["delete"] == true ) {
                                 //delete user meta
@@ -1243,7 +1221,7 @@ class Disciple_Tools_Posts
                                     AND post_id = %s
                             ", $value["id"], $current_user_id, $post_id ) );
                                 if ( !$delete ){
-                                    return new WP_Error( __FUNCTION__, "Something wrong deleting post user meta on field: " . $field_key );
+                                    return new WP_Error( __FUNCTION__, "Something wrong deleting post user meta on field: " . $field_key, [ 'status' => 500 ] );
                                 }
                             } else {
                                 //update user meta
@@ -1272,7 +1250,7 @@ class Disciple_Tools_Posts
                                     ]
                                 );
                                 if ( !$update ) {
-                                    return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key );
+                                    return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
                                 }
                             }
                         } else {
@@ -1289,11 +1267,11 @@ class Disciple_Tools_Posts
                                 ]
                             );
                             if ( !$create ){
-                                return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key );
+                                return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
                             }
                         }
                     } else {
-                        return new WP_Error( __FUNCTION__, "Missing 'value' or 'id' key on field: " . $field_key );
+                        return new WP_Error( __FUNCTION__, "Missing 'value' or 'id' key on field: " . $field_key, [ 'status' => 400 ] );
                     }
                 }
             }
@@ -1649,7 +1627,7 @@ class Disciple_Tools_Posts
             "permalink" => get_permalink( $post->ID )
         ];
         if ( $post->post_type === "peoplegroups" ){
-            $locale = get_locale();
+            $locale = get_user_locale();
             $translation = get_post_meta( $post->ID, $locale, true );
             $label  = ( $translation ? $translation : $post->post_title );
             $filtered_post["label"] = $label;
@@ -1702,39 +1680,6 @@ class Disciple_Tools_Metabox_Address
     } // End __construct()
 
     /**
-     * Add Address fields html for adding a new contact channel
-     *
-     * @usage Added to the bottom of the Contact Details Metabox.
-     */
-    public function add_new_address_field() {
-        global $post;
-
-        echo '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-address\').toggle();"><strong>+ Address Detail</strong></a></p>';
-        echo '<table class="form-table" id="new-address" style="display: none;"><tbody>' . "\n";
-
-        $address_types = $this->get_address_type_list( $post->post_type );
-
-        echo '<tr><th>
-                <select name="new-key-address" class="edit-input"><option value=""></option> ';
-        foreach ( $address_types as $type => $value ) {
-
-            $key = "address_" . $type;
-
-            echo '<option value="' . esc_attr( $key ) . '">' . esc_html( $value["label"] ) . '</option>';
-        }
-        echo '</select></th>';
-        echo '<td>
-                <input type="text" name="new-value-address" id="new-address" class="edit-input" placeholder="i.e. 888 West Street, Los Angelos CO 90210" />
-            </td>
-            <td>
-                <button type="submit" class="button">Save</button>
-            </td>
-            </tr>';
-
-        echo '</tbody></table>';
-    }
-
-    /**
      * Helper function to create the unique metakey for contacts channels.
      *
      * @param  $channel
@@ -1752,45 +1697,6 @@ class Disciple_Tools_Metabox_Address
      */
     public function unique_hash() {
         return substr( md5( rand( 10000, 100000 ) ), 0, 3 ); // create a unique 3 digit key
-    }
-
-    /**
-     * Selectable values for different channels of contact information.
-     * @param $post_type
-     *
-     * @return array
-     */
-    public function get_address_type_list( $post_type ) {
-
-        switch ( $post_type ) {
-            case 'contacts':
-                $addresses = [
-                    "home"  => [ "label" => _x( 'Home', 'field label', 'disciple_tools' ) ],
-                    "work"  => [ "label" => _x( 'Work', 'field label', 'disciple_tools' ) ],
-                    "other" => [ "label" => _x( 'Other', 'field label', 'disciple_tools' ) ],
-                ];
-
-                return $addresses;
-                break;
-            case 'groups':
-                $addresses = [
-                    "main"      => [ "label" => _x( 'Main', 'field label', 'disciple_tools' ) ],
-                    "alternate" => [ "label" => _x( 'Alternate', 'field label', 'disciple_tools' ) ],
-                ];
-
-                return $addresses;
-                break;
-            case 'locations':
-                $addresses = [
-                    "main" => [ "label" => _x( 'Main', 'field label', 'disciple_tools' ) ],
-                ];
-
-                return $addresses;
-                break;
-            default:
-                return [];
-                break;
-        }
     }
 
     /**

@@ -9,11 +9,13 @@ class Disciple_Tools_Post_Type_Template {
     public $post_type;
     public $singular;
     public $plural;
+    public $search_items;
 
     public function __construct( string $post_type, string $singular, string $plural ) {
         $this->post_type = $post_type;
         $this->singular = $singular;
         $this->plural = $plural;
+        $this->search_items = sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural );
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'rewrite_init' ] );
         add_filter( 'post_type_link', [ $this, 'permalink' ], 1, 3 );
@@ -31,7 +33,7 @@ class Disciple_Tools_Post_Type_Template {
             'name'                  => $this->plural,
             'singular_name'         => $this->singular,
             'menu_name'             => $this->plural,
-            'search_items'          => sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural ),
+            'search_items'          => $this->search_items,
         ];
         $rewrite = [
             'slug'       => $this->post_type,

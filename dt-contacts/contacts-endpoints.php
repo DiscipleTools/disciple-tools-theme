@@ -766,14 +766,14 @@ class Disciple_Tools_Contacts_Endpoints
         if ( is_wp_error( $params ) ) {
             return [
                 'status' => 'FAIL',
-                'error' => __( 'Transfer token error.', 'disciple_tools' ),
+                'error' => 'Transfer token error.'
             ];
         }
 
         if ( ! current_user_can( 'create_contacts' ) ) {
             return [
                 'status' => 'FAIL',
-                'error' => __( 'Permission error.', 'disciple_tools' ),
+                'error' => 'Permission error.'
             ];
         }
 

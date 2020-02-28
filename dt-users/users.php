@@ -253,19 +253,15 @@ class Disciple_Tools_Users
         if ( isset( $_POST['nickname'] ) ) {
             $args['nickname'] = sanitize_text_field( wp_unslash( $_POST['nickname'] ) );
         }
-        if ( isset( $_POST['locale'] ) ) {
-            $args['locale'] = sanitize_text_field( wp_unslash( $_POST['locale'] ) );
-        }
         if ( isset( $_POST['display_name'] ) && !empty( $_POST['display_name'] ) ) {
             $args['display_name'] = $args['nickname'];
         }
         //locale
-        if ( isset( $_POST['locale'] ) ) {
+        if ( isset( $_POST['locale'] ) && !empty( $_POST['locale'] ) ) {
             $args['locale'] = sanitize_text_field( wp_unslash( $_POST['locale'] ) );
         } else {
             $args['locale'] = "en_US";
         }
-
         // _user table defaults
         $result = wp_update_user( $args );
 
@@ -897,7 +893,15 @@ Please click the following link to confirm the invite:
         return $custom_data;
     }
     public function add_date_availability( $custom_data ) {
-        $custom_data['availability'] = get_user_option( "user_dates_unavailable", get_current_user_id() );
+        $dates_unavailable = get_user_option( "user_dates_unavailable", get_current_user_id() );
+        if ( !$dates_unavailable ) {
+            $dates_unavailable = [];
+        }
+        foreach ( $dates_unavailable ?? [] as &$range ) {
+            $range["start_date"] = dt_format_date( $range["start_date"] );
+            $range["end_date"] = dt_format_date( $range["end_date"] );
+        }
+        $custom_data['availability'] = $dates_unavailable;
         return $custom_data;
     }
 

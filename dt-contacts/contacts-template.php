@@ -106,7 +106,8 @@ function render_field_for_display( $field_key, $fields, $post ){
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-<?php echo esc_html( $field_key ) ?>"
-                                       name="<?php echo esc_html( $field_key ) ?>[query]" placeholder="<?php echo esc_html_x( "Search", 'input field placeholder', 'disciple_tools' ); echo esc_html( ' ' . $fields[$field_key]['name'] )?>  "
+                                       name="<?php echo esc_html( $field_key ) ?>[query]"
+                                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                        autocomplete="off">
                             </span>
                         </div>
@@ -121,7 +122,8 @@ function render_field_for_display( $field_key, $fields, $post ){
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-location_grid input-height"
-                                       name="location_grid[query]" placeholder="<?php echo esc_html_x( "Search Locations", 'input field placeholder', 'disciple_tools' ) ?>"
+                                       name="location_grid[query]"
+                                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                        autocomplete="off">
                             </span>
                         </div>

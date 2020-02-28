@@ -19,7 +19,15 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
         <button class="" type="button" data-open="off-canvas">
             <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/hamburger.svg" ?>">
         </button>
-        <div class="title-bar-title" style="margin-left: 5px"><?php esc_html_e( "Disciple Tools", "disciple_tools" ); ?></div>
+        <div class="title-bar-title" style="margin-left: 5px">
+            <a href="<?php echo esc_url( site_url() )?>" style="padding-left:0;vertical-align: middle"><img src="<?php
+            /**
+             * Filter for replacing the logo
+             */
+            $url = apply_filters( 'dt_default_logo', get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png" );
+            echo esc_url( $url );
+            ?>" style="margin:0; height: 20px" alt="logo-image"></a>
+        </div>
     </div>
     <div class="title-bar-right">
         <ul class="dropdown menu" data-dropdown-menu style="display:inline-block; margin-left: 10px">
@@ -77,6 +85,19 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
         </div>
         <div class="top-bar-right">
             <ul class="dropdown menu" data-dropdown-menu>
+                <?php
+                if ( current_user_can( "update_core" ) ){
+                    $update = maybe_unserialize( get_site_option( "puc_external_updates_theme-disciple-tools-theme", "" ) );
+                    if ( !empty( $update ) && isset( $update->update->version ) && version_compare( $update->update->version, wp_get_theme()->version, '>' ) ) : ?>
+                        <li class="image-menu-nav">
+                            <a href="<?php echo esc_url( network_admin_url( 'update-core.php' ) ); ?>">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" />
+                                <span><?php esc_html_e( 'Theme Update Available!', 'disciple_tools' ); ?></span>
+                            </a>
+                        </li>
+                    <?php endif;
+                }
+                ?>
                 <li class="image-menu-nav">
                     <a href="<?php echo esc_url( site_url( '/' ) ) . 'settings/'; ?>">
                         <img title="<?php esc_html_e( "Profile", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/profile.svg" ?>">
@@ -123,8 +144,12 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
 
                         <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'settings/'; ?>"><?php esc_html_e( 'Settings', 'disciple_tools' )?></a></li>
 
-                        <?php if ( user_can( get_current_user_id(), 'manage_dt' ) ) : ?>
+                        <?php if ( current_user_can( 'manage_dt' ) ) : ?>
                             <li><a href="<?php echo esc_url( get_admin_url() ); ?>"><?php esc_html_e( "Admin", "disciple_tools" ); ?></a></li>
+                        <?php endif; ?>
+
+                        <?php if ( current_user_can( 'manage_dt' ) || current_user_can( 'list_users' ) ) : ?>
+                            <li><a href="<?php echo esc_url( site_url( '/user-management/' ) ); ?>"><?php esc_html_e( "Users", "disciple_tools" ); ?></a></li>
                         <?php endif; ?>
                         <li><a href="https://disciple-tools.readthedocs.io/en/latest/index.html" target="_blank" rel="noreferrer"><?php esc_html_e( 'Help', 'disciple_tools' ) ?></a></li>
 

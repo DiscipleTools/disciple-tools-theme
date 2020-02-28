@@ -58,6 +58,9 @@ function project_overview() {
             <div class="cell">
                 <div id="my_contacts_progress" style="height: 350px; width=100%"></div>
             </div>
+            <div class="cell">
+                <div id="status_chart_div" style="height: 500px; width=100%"></div>
+            </div>
             <h3 class="section-header" style="margin-top:40px;">${ translations.title_groups }</h3>
             <div class="cell">
                 <div class="cell center callout">
@@ -109,6 +112,7 @@ function project_overview() {
     }
     drawGroupTypes();
     drawGroupGenerations();
+    draw_status_pie_chart()
 
     function drawMyContactsProgress() {
       let chart = am4core.create("my_contacts_progress", am4charts.XYChart)
@@ -242,6 +246,112 @@ function project_overview() {
       createSeries("group", dtMetricsProject.data.translations.label_group );
       createSeries("church", dtMetricsProject.data.translations.label_church );
       chart.legend = new am4charts.Legend();
+    }
+
+    function draw_status_pie_chart(){
+      let contact_statuses = sourceData.contact_statuses
+      am4core.useTheme(am4themes_animated);
+
+      let container = am4core.create("status_chart_div", am4core.Container);
+      container.width = am4core.percent(100);
+      container.height = am4core.percent(100);
+      container.layout = "horizontal";
+
+
+      let chart = container.createChild(am4charts.PieChart);
+      let title = chart.titles.create()
+      title.text = `[bold]${ window.dtMetricsProject.data.translations.title_status_chart }[/]`
+      // Add data
+      chart.data = contact_statuses
+
+      // Add and configure Series
+      let pieSeries = chart.series.push(new am4charts.PieSeries());
+      pieSeries.dataFields.value = "count";
+      pieSeries.dataFields.category = "status";
+      pieSeries.slices.template.states.getKey("active").properties.shiftRadius = 0;
+      pieSeries.labels.template.text = "{category}: {value.percent.formatNumber('#.#')}% ({value}) ";
+
+      pieSeries.slices.template.events.on("hit", function(event) {
+        selectSlice(event.target.dataItem);
+      })
+
+      let chart2 = container.createChild(am4charts.PieChart);
+      chart2.width = am4core.percent(30);
+      chart2.radius = am4core.percent(80);
+
+      // Add and configure Series
+      let pieSeries2 = chart2.series.push(new am4charts.PieSeries());
+      pieSeries2.dataFields.value = "count";
+      pieSeries2.dataFields.category = "reason";
+      pieSeries2.slices.template.states.getKey("active").properties.shiftRadius = 0;
+      pieSeries2.labels.template.disabled = true;
+      pieSeries2.ticks.template.disabled = true;
+      pieSeries2.alignLabels = false;
+      pieSeries2.events.on("positionchanged", updateLines);
+
+      let interfaceColors = new am4core.InterfaceColorSet();
+
+      let line1 = container.createChild(am4core.Line);
+      line1.strokeDasharray = "2,2";
+      line1.strokeOpacity = 0.5;
+      line1.stroke = interfaceColors.getFor("alternativeBackground");
+      line1.isMeasured = false;
+
+      let line2 = container.createChild(am4core.Line);
+      line2.strokeDasharray = "2,2";
+      line2.strokeOpacity = 0.5;
+      line2.stroke = interfaceColors.getFor("alternativeBackground");
+      line2.isMeasured = false;
+
+      let selectedSlice;
+
+      function selectSlice(dataItem) {
+        selectedSlice = dataItem.slice;
+        let fill = selectedSlice.fill;
+        let count = dataItem.dataContext.reasons.length;
+        pieSeries2.colors.list = [];
+        for (let i = 0; i < count; i++) {
+          pieSeries2.colors.list.push(fill.brighten(i * 2 / count));
+        }
+        chart2.data = dataItem.dataContext.reasons;
+        pieSeries2.appear();
+
+        let middleAngle = selectedSlice.middleAngle;
+        let firstAngle = pieSeries.slices.getIndex(0).startAngle;
+        let animation = pieSeries.animate([{ property: "startAngle", to: firstAngle - middleAngle }, { property: "endAngle", to: firstAngle - middleAngle + 360 }], 600, am4core.ease.sinOut);
+        animation.events.on("animationprogress", updateLines);
+
+        selectedSlice.events.on("transformed", updateLines);
+
+      }
+
+
+      function updateLines() {
+        if (selectedSlice) {
+          let p11 = { x: selectedSlice.radius * am4core.math.cos(selectedSlice.startAngle), y: selectedSlice.radius * am4core.math.sin(selectedSlice.startAngle) };
+          let p12 = { x: selectedSlice.radius * am4core.math.cos(selectedSlice.startAngle + selectedSlice.arc), y: selectedSlice.radius * am4core.math.sin(selectedSlice.startAngle + selectedSlice.arc) };
+
+          p11 = am4core.utils.spritePointToSvg(p11, selectedSlice);
+          p12 = am4core.utils.spritePointToSvg(p12, selectedSlice);
+
+          let p21 = { x: 0, y: -pieSeries2.pixelRadius };
+          let p22 = { x: 0, y: pieSeries2.pixelRadius };
+
+          p21 = am4core.utils.spritePointToSvg(p21, pieSeries2);
+          p22 = am4core.utils.spritePointToSvg(p22, pieSeries2);
+
+          line1.x1 = p11.x;
+          line1.x2 = p21.x;
+          line1.y1 = p11.y;
+          line1.y2 = p21.y;
+
+          line2.x1 = p12.x;
+          line2.x2 = p22.x;
+          line2.y1 = p12.y;
+          line2.y2 = p22.y;
+        }
+      }
+
     }
 
 
