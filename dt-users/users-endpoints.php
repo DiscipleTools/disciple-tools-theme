@@ -306,7 +306,7 @@ class Disciple_Tools_Users_Endpoints
                 "ID" => $user->ID,
                 "user_email" => $user->user_email,
                 "display_name" => $user->display_name,
-                "locale" => get_locale()
+                "locale" => get_user_locale( $user->ID )
             ];
         } else {
             return new WP_Error( "get_my_info", "Something went wrong. Are you a user?", [ 'status' => 400 ] );

@@ -17,16 +17,17 @@ declare(strict_types=1);
              data-sticky data-options="marginTop:3;" style="width:100%" data-top-anchor="1"
              class="second-bar">
             <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
-                <a class="button dt-green" style="margin-bottom:0" href="<?php echo esc_url( home_url( '/' ) ) . "groups/new" ?>">
+                <a class="button dt-green" href="<?php echo esc_url( home_url( '/' ) ) . "groups/new" ?>">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group-white.svg' ) ?>"/>
-                    <span class="hide-for-small-only"><?php esc_html_e( "Create new group", "disciple_tools" ); ?></span>
+                    <span><?php esc_html_e( "Create New Group", "disciple_tools" ); ?></span>
                 </a>
-                <a class="button" style="margin-bottom:0" data-open="filter-modal">
+                <a class="button" data-open="filter-modal">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
-                    <span class="hide-for-small-only"><?php esc_html_e( "Filter Groups", 'disciple_tools' ) ?></span>
+                    <span><?php esc_html_e( "Filter Groups", 'disciple_tools' ) ?></span>
                 </a>
-                <input class="search-input" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="<?php echo esc_html_x( "Search Groups", 'input field placeholder', 'disciple_tools' ) ?>">
-                <a class="button" style="margin-bottom:0" id="search">
+                <input class="search-input" style="max-width:200px;display: inline-block;" type="search" id="search-query"
+                       placeholder="<?php echo esc_html_x( "Search Groups", 'input field placeholder', 'disciple_tools' ) ?>">
+                <a class="button" id="search">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
                     <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
                 </a>
@@ -35,17 +36,14 @@ declare(strict_types=1);
     </div>
     <nav  role="navigation" style="width:100%;"
           class="second-bar show-for-small-only center"><!--  /* MOBILE VIEW BUTTON AREA */ -->
-        <a class="button dt-green" style="margin-bottom:0" href="<?php echo esc_url( home_url( '/' ) ) . "groups/new" ?>">
+        <a class="button dt-green" href="<?php echo esc_url( home_url( '/' ) ) . "groups/new" ?>">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group-white.svg' ) ?>"/>
-            <span class="hide-for-small-only"><?php esc_html_e( "Create new group", "disciple_tools" ); ?></span>
         </a>
-        <a class="button" style="margin-bottom:0" data-open="filter-modal">
+        <a class="button" data-open="filter-modal">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
-            <span class="hide-for-small-only"><?php esc_html_e( "Filter Groups", 'disciple_tools' ) ?></span>
         </a>
-        <a class="button" style="margin-bottom:0" id="open-search">
+        <a class="button" id="open-search">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
-            <span class="hide-for-small-only"><?php esc_html_e( "Search groups", 'disciple_tools' ) ?></span>
         </a>
         <div class="hideable-search" style="display: none; margin-top:5px">
             <input class="search-input-mobile" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile" placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>">
@@ -111,27 +109,20 @@ declare(strict_types=1);
                 <div class="cell small-4 filter-modal-left">
                     <?php $fields = [ "assigned_to", "created_on", "group_status", "group_type", "location_grid" ];
                     $fields = apply_filters( 'dt_filters_additional_fields', $fields, "groups" );
-                    $allowed_types = [ "multi_select", "key_select", "boolean", "date", "location" ];
+                    $allowed_types = [ "multi_select", "key_select", "boolean", "date", "location", "connection" ];
                     foreach ( $dt_group_field_options as $field_key => $field){
                         if ( in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
                             $fields[] = $field_key;
                         }
                     }
-                    $connections = Disciple_Tools_Posts::$connection_types;
-                    $connections["assigned_to"] = [ "name" => __( "Assigned To", 'disciple_tools' ) ];
-                    $connections["location_grid"] = [ "name" => __( "Locations", 'disciple_tools' ) ];
                     ?>
                     <ul class="vertical tabs" data-tabs id="filter-tabs">
                         <?php foreach ( $fields as $index => $field ) :
-                            if ( isset( $dt_group_field_options[$field]["name"] ) ) : ?>
+                            $connection = ( isset( $dt_group_field_options[$field]["type"] ) && $dt_group_field_options[$field]["type"] === "connection" ) ? isset( $dt_group_field_options[$field]["post_type"] ) : true;
+                            if ( isset( $dt_group_field_options[$field]["name"] ) && $connection ) : ?>
                                 <li class="tabs-title <?php if ( $index === 0 ){ echo "is-active"; } ?>" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>" <?php if ( $index === 0 ){ echo 'aria-selected="true"'; } ?>>
                                         <?php echo esc_html( $dt_group_field_options[$field]["name"] ) ?></a>
-                                </li>
-                            <?php elseif ( in_array( $field, array_keys( $connections ) ) ) : ?>
-                                <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
-                                    <a href="#<?php echo esc_html( $field )?>">
-                                        <?php echo esc_html( $connections[$field]["name"] ) ?></a>
                                 </li>
                             <?php elseif ( $field === "created_on" ) : ?>
                                 <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
@@ -146,7 +137,12 @@ declare(strict_types=1);
                 <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="filter-tabs">
                     <?php foreach ( $fields as $index => $field ) :
                         $is_multi_select = isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "multi_select";
-                        if ( in_array( $field, array_keys( $connections ) ) || $is_multi_select ) : ?>
+                        if ( isset( $dt_group_field_options[$field] ) && (
+                                ( $dt_group_field_options[$field]["type"] === "connection" && isset( $dt_group_field_options[$field]["post_type"] ) ) ||
+                                $dt_group_field_options[$field]["type"] === "location" ||
+                                $dt_group_field_options[$field]["type"] === "user_select" ||
+                                $is_multi_select
+                            ) ): ?>
                             <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>" id="<?php echo esc_html( $field ) ?>">
                                 <div class="<?php echo esc_html( $field );?>  <?php echo esc_html( $is_multi_select ? "multi_select" : "" ) ?> details" >
                                     <var id="<?php echo esc_html( $field ) ?>-result-container" class="result-container <?php echo esc_html( $field ) ?>-result-container"></var>
@@ -154,8 +150,11 @@ declare(strict_types=1);
                                         <div class="typeahead__container">
                                             <div class="typeahead__field">
                                                 <span class="typeahead__query">
-                                                    <input class="js-typeahead-<?php echo esc_html( $field ) ?> input-height" data-field="<?php echo esc_html( $field ) ?>"
-                                                           name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>"
+                                                    <input class="js-typeahead-<?php echo esc_html( $field ) ?> input-height"
+                                                           data-field="<?php echo esc_html( $field ) ?>"
+                                                           name="<?php echo esc_html( $field ) ?>[query]"
+                                                           placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>"
+                                                           data-type="<?php echo esc_html( $dt_group_field_options[$field]["type"] ) ?>"
                                                            autocomplete="off">
                                                 </span>
                                             </div>
@@ -225,7 +224,7 @@ declare(strict_types=1);
         <div class="grid-x grid-padding-x">
             <div class="cell small-4 filter-modal-left">
                 <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                    <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
+                    <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
                 </button>
             </div>
             <div class="cell small-8 filter-modal-right confirm-buttons">

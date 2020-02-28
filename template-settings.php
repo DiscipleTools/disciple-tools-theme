@@ -17,7 +17,10 @@ $dt_user_contact_id = dt_get_associated_user_id( $dt_user->ID, 'user' );
 
 $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the site settings in the config area with the fields available in the user meta table.
 $dt_site_notification_defaults = dt_get_site_notification_defaults(); // Array of site default settings
-$dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' )
+$dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+
+$dt_user_locale = get_user_locale( $dt_user->ID );
+$translations = dt_get_translations();
 
 ?>
 
@@ -162,8 +165,8 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                 <strong><?php esc_html_e( 'Language', 'disciple_tools' )?></strong>
                                 <p>
                                 <?php
-                                if ( !empty( $dt_user->locale ) ){
-                                    echo esc_html( $dt_user->locale );
+                                if ( !empty( $dt_user_locale ) && $dt_user_locale !== 'en_US' ){
+                                    echo esc_html( $translations[$dt_user_locale]['native_name'] );
                                 } else {
                                     echo esc_html__( 'English', 'disciple_tools' );
                                 }
@@ -226,8 +229,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                                 <input class="switch-input" id="<?php echo esc_html( $channel_notification_key ) ?>" type="checkbox"
                                                        name="<?php echo esc_html( $channel_notification_key ) ?>"
                                                        onclick="switch_preference( '<?php echo esc_html( $channel_notification_key ) ?>', 'notifications' );"
-                                                    <?php ( isset( $dt_user_meta[$channel_notification_key ] ) && $dt_user_meta[$channel_notification_key ][0] == false ) ?
-                                                        print esc_attr( '', 'disciple_tools' ) : print esc_attr( 'checked', 'disciple_tools' ); ?>>
+                                                    <?php print esc_attr( ( isset( $dt_user_meta[$channel_notification_key ] ) && $dt_user_meta[$channel_notification_key ][0] == false ) ? '' : 'checked' ); ?>>
                                                 <label class="switch-paddle inactive" for="<?php echo esc_html( $channel_notification_key ) ?>">
                                                     <span class="show-for-sr"><?php echo esc_html( $dt_notification_default['label'] ) ?></span>
                                                 </label>
@@ -390,8 +392,8 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                         </td>
                                         <td><input type="text"
                                                    class="profile-input"
-                                                   id="<?php echo esc_attr( $dt_field['key'], 'disciple_tools' ) ?>"
-                                                   name="<?php echo esc_attr( $dt_field['key'], 'disciple_tools' ) ?>"
+                                                   id="<?php echo esc_attr( $dt_field['key'] ) ?>"
+                                                   name="<?php echo esc_attr( $dt_field['key'] ) ?>"
                                                    value="<?php echo esc_html( $dt_field['value'] ) ?>"/>
                                         </td>
                                     </tr>
@@ -410,14 +412,14 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                     <td><label for="description"><?php esc_html_e( 'Language', 'disciple_tools' )?></label></td>
                                     <td dir="auto">
                                         <?php
-                                        $translations = dt_get_translations();
                                         wp_dropdown_languages( array(
                                             'name'                        => 'locale',
                                             'id'                          => 'locale',
-                                            'selected'                    => esc_html( $dt_user->locale ),
+                                            'selected'                    => esc_html( $dt_user_locale ),
                                             'languages'                   => $dt_available_languages,
                                             'show_available_translations' => false,
                                             'show_option_site_default'    => false,
+                                            'show_option_en_us'           => true,
                                             'translations'                => $translations
                                         ) );
                                         ?>
