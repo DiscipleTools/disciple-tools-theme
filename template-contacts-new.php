@@ -7,9 +7,7 @@ if ( ! current_user_can( 'create_contacts' ) ) {
 
 get_header();
 
-( function() {
-    $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
-    ?>
+( function() { ?>
 
 <div id="content" class="template-contacts-new">
     <div id="inner-content" class="grid-x grid-margin-x">
@@ -17,12 +15,12 @@ get_header();
 
         <div class="large-8 medium-12 small-12 cell">
             <form class="js-create-contact bordered-box" style="margin-bottom:200px">
-                <h3 class="section-header"><?php esc_html_e( "Create New Contact", "disciple_tools" ); ?><button class="help-button float-right" data-section="new-contact-help-text">
+                <h3 class="section-header"><?php esc_html_e( "Create new contact", "disciple_tools" ); ?><button class="help-button float-right" data-section="new-contact-help-text">
                     <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                 </button></h3>
                 <label for="name-field">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/name.svg' ?>">
-                    <?php esc_html_e( "Name of Contact", "disciple_tools" ); ?>
+                    <?php esc_html_e( "Name of contact", "disciple_tools" ); ?>
                     <button class="help-button" type="button" data-section="contact-name-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
@@ -50,7 +48,7 @@ get_header();
 
                 <label for="source-input">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
-                    <?php echo esc_html( $contact_fields["sources"]["name"] ) ?>
+                    <?php esc_html_e( "Source", "disciple_tools" ); ?>
                     <button class="help-button" type="button" data-section="source-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
@@ -70,7 +68,7 @@ get_header();
 
                 <label for="location-input">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                    <?php echo esc_html( $contact_fields["location_grid"]["name"] ) ?>
+                    <?php esc_html_e( "Location", "disciple_tools" ); ?>
                     <button class="help-button" type="button" data-section="location-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
@@ -81,8 +79,7 @@ get_header();
                                 <div class="typeahead__field">
                                     <span class="typeahead__query">
                                         <input id="location-input" class="js-typeahead-location_grid input-height"
-                                               name="location_grid[query]"
-                                               placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["location_grid"]["name"] ) )?>"
+                                               name="location_grid[query]" placeholder="<?php echo esc_html_x( "Search Locations", 'input field placeholder', 'disciple_tools' ) ?>"
                                                autocomplete="off">
                                     </span>
                                 </div>
@@ -91,16 +88,16 @@ get_header();
                     </div>
                 </label>
                 <label for="comment-input">
-                    <?php esc_html_e( "Initial Comment", "disciple_tools" ); ?>
+                    <?php esc_html_e( "Initial comment", "disciple_tools" ); ?>
                     <button class="help-button" type="button" data-section="initial-comment-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
-                    <textarea id="comment-input" name="initial_comment" dir="auto" placeholder="<?php echo esc_html_x( "Initial Comment", "disciple_tools" ); ?>"></textarea>
+                    <textarea id="comment-input" name="initial_comment" dir="auto" placeholder="<?php echo esc_html_x( "Initial comment", 'input field placeholder', "disciple_tools" ); ?>"></textarea>
                 </label>
 
                 <div style="text-align: center">
-                    <a href="/contacts/" class="button small clear"><?php echo esc_html__( 'Cancel', 'disciple_tools' )?></a>
-                    <button class="button loader js-create-contact-button dt-green" type="submit" disabled title="<?php esc_html_e( 'Save and continue editing', 'disciple_tools' )?>"><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
+                    <a href="/contacts/" class="button small clear" title="<?php esc_html_e( 'Cancel and return to the Contacts List page', 'disciple_tools' )?>"><?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?></a>
+                    <button class="button loader js-create-contact-button dt-green" type="submit" disabled title="<?php esc_html_e( 'Save and continue editing the new contact', 'disciple_tools' )?>"><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
                 </div>
             </form>
         </div>
@@ -111,6 +108,7 @@ get_header();
 </div>
 
 <script>jQuery(function($) {
+    $('input:enabled:visible:first').focus();
     $(".js-create-contact-button").removeAttr("disabled");
     let selectedLocations = []
     $(".js-create-contact").on("submit", function(event) {
