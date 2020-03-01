@@ -1579,6 +1579,10 @@ class Disciple_Tools_Posts
                         "label" => $name
                     ];
                 }
+            } else if ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]['type'] === 'location_meta' ){
+
+                $fields[ $key ] = [ maybe_unserialize( $value[0] ) ];
+
             } else {
                 $fields[ $key ] = $value[0];
             }
