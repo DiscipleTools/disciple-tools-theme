@@ -384,7 +384,7 @@ class Disciple_Tools_Notifications
         } elseif ( $range->years > 1 ) {
             // the exact number of years if this timestamp is > 1 year
             $message = sprintf( _n( '%s year ago', '%s years ago', $range->years, 'disciple_tools' ), $range->years );
-         }
+        }
         /**
          * use this as a test for future issues
          *  else {
