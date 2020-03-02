@@ -949,3 +949,46 @@ label.dt-switch:active:after {
   }
 
 }
+
+/* mapbox autocomplete elements*/
+#mapbox-search {
+    margin:0;
+}
+#mapbox-search-wrapper {
+    margin: 0 0 1rem;
+}
+.mapbox-autocomplete {
+    /*the container must be positioned relative:*/
+    position: relative;
+}
+.mapbox-autocomplete-items {
+    position: absolute;
+    border: 1px solid $light-gray;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+}
+.mapbox-autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid $light-gray;
+}
+.mapbox-autocomplete-items div:hover {
+    /*when hovering an item:*/
+    background-color: $secondary-color;
+}
+.mapbox-autocomplete-active {
+    /*when navigating through the items using the arrow keys:*/
+    background-color: $secondary-color !important;
+    color: #ffffff;
+}
+#mapbox-spinner-button {
+    border-radius:0;
+    display:none;
+}
+/* end mapbox elements*/

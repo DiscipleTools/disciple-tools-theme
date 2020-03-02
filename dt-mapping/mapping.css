@@ -18,8 +18,8 @@
     text-align:right;
 }
 .child_list_container {
-    overflow-y: scroll; 
-    height:500px; 
+    overflow-y: scroll;
+    height:500px;
     padding:0 .4em;
 }
 .minimap {
@@ -27,7 +27,7 @@
     margin-bottom: 20px;
 }
 .refresh_data {
-    font-size:.8em; 
+    font-size:.8em;
     margin-left:20px;
 }
 #data_type_list {
@@ -75,4 +75,44 @@ margin-bottom: 20px;
     display: inline-block;
     vertical-align: middle;
     box-sizing: border-box;
+}
+#mapbox-search {
+    margin:0;
+}
+#mapbox-search-wrapper {
+    margin: 0 0 1rem;
+}
+.mapbox-autocomplete {
+    /*the container must be positioned relative:*/
+    position: relative;
+}
+.mapbox-autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+}
+.mapbox-autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
+}
+.mapbox-autocomplete-items div:hover {
+    /*when hovering an item:*/
+    background-color: #e9e9e9;
+}
+.mapbox-autocomplete-active {
+    /*when navigating through the items using the arrow keys:*/
+    background-color: DodgerBlue !important;
+    color: #ffffff;
+}
+#mapbox-spinner-button {
+    border-radius:0;
+    display:none;
 }
