@@ -323,6 +323,8 @@ else {
             if ( !$is_rest ){
                 require_once( get_template_directory() . '/dt-users/users-product-tour.php' );
             }
+            require_once( get_template_directory() . '/dt-users/user-management.php' );
+            new DT_User_Management();
 
             /**
              * dt-notifications

@@ -1072,4 +1072,31 @@ class Disciple_Tools_Mapping_Queries {
         }
         return $prepared;
     }
+
+    public static function get_full_name_by_grid_id( $grid_id ) {
+        $full_name = '';
+
+        // get record and level
+        $grid_record = self::get_drilldown_by_grid_id( $grid_id );
+        if ( empty( $grid_record ) ) {
+            return $full_name;
+        }
+
+        switch ( $grid_record['level_name'] ) {
+            case 'admin0':
+                $full_name = $grid_record['name'];
+                break;
+            case 'admin1':
+                $full_name = $grid_record['name'] . ', ' . $grid_record['admin0_name'];
+                break;
+            case 'admin2':
+            case 'admin3':
+            case 'admin4':
+            default:
+                $full_name = $grid_record['name'] . ', ' . $grid_record['admin1_name'] . ', ' . $grid_record['admin0_name'];
+                break;
+        }
+
+        return $full_name;
+    }
 }

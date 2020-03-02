@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+$fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
 ?>
 <div class="bordered-box list-box" >
     <!-- content-contacts -->
@@ -49,13 +50,13 @@ declare(strict_types=1);
         <thead>
             <tr class="sortable">
                 <th class="all" data-id="name"><?php esc_html_e( "Name", "disciple_tools" ); ?></th>
-                <th class="not-mobile" data-id="overall_status" data-sort="asc"><?php esc_html_e( "Status", "disciple_tools" ); ?></th>
-                <th class="not-mobile" data-id="seeker_path"><?php esc_html_e( "Seeker Path", "disciple_tools" ); ?></th>
-                <th class="desktop" data-id="faith_milestones"><?php esc_html_e( "Faith Milestones", "disciple_tools" ); ?></th>
-                <th class="desktop" data-id="assigned_to"><?php esc_html_e( "Assigned to", "disciple_tools" ); ?></th>
-                <th class="not-mobile" data-id="location_grid"><?php esc_html_e( "Location", "disciple_tools" ); ?></th>
-                <th class="not-mobile" data-id="groups"><?php esc_html_e( "Group", "disciple_tools" ); ?></th>
-                <th class="not-mobile" data-id="last_modified"><?php esc_html_e( "Last Modified", "disciple_tools" ); ?></th>
+                <th class="not-mobile" data-id="overall_status" data-sort="asc"><?php echo esc_html( $fields["overall_status"]["name"] ) ?></th>
+                <th class="not-mobile" data-id="seeker_path"><?php echo esc_html( $fields["seeker_path"]["name"] ) ?></th>
+                <th class="desktop" data-id="faith_milestones"><?php echo esc_html( $fields["milestones"]["name"] ) ?></th>
+                <th class="desktop" data-id="assigned_to"><?php echo esc_html( $fields["assigned_to"]["name"] ) ?></th>
+                <th class="not-mobile" data-id="location_grid"><?php echo esc_html( $fields["location_grid"]["name"] ) ?></th>
+                <th class="not-mobile" data-id="groups"><?php echo esc_html( $fields["groups"]["name"] ) ?></th>
+                <th class="not-mobile" data-id="last_modified"><?php echo esc_html( $fields["last_modified"]["name"] ) ?></th>
             </tr>
         </thead>
         <tbody>
