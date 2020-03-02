@@ -443,7 +443,7 @@ const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, option
       filter = _.find(wpApiListSettings.filters.filters, {ID:filterId}) || _.find(wpApiListSettings.filters.filters, {ID:filterId.toString()}) || filter
       if ( filter ){
         filter.type = 'default'
-        filter.labels =  [{ id:filterId, name:filter.name}]
+        filter.labels =  filter.labels || [{ id:filterId, name:filter.name}]
         query = filter.query
       }
     }
@@ -1006,7 +1006,7 @@ const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, option
     filter.name = $('#new-filter-name').val()
     $(`.filter-list-name[data-filter="${filterId}"]`).text(filter.name)
     filter.query = searchQuery
-    filter.label = newFilterLabels
+    filter.labels = newFilterLabels
     API.save_filters( wpApiListSettings.current_post_type, filter )
     getContactForCurrentView()
   })
