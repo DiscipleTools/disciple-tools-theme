@@ -256,6 +256,15 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             wp_enqueue_style( 'mapbox-gl-css', self::$mapbox_gl_css, [], self::$mapbox_gl_version );
         }
 
+        public static function load_mapbox_search_widget() {
+//            if ( file_exists( get_stylesheet_directory() . 'dt-mapping') ) {
+//                dt_write_log('true, dt mapping exists');
+//            }
+            /* Loads the search widget. This widget creates the search box, dropdown, and save to post */
+//            wp_enqueue_script( 'mapbox-search-widget', self::$mapbox_gl_js, [ 'jquery' ], self::$mapbox_gl_version, true );
+            return;
+        }
+
         public static function load_header() {
             add_action( "enqueue_scripts", [ 'DT_Mapbox_API', 'load_mapbox_header_scripts' ] );
         }
