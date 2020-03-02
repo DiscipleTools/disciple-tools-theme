@@ -347,12 +347,12 @@ class Disciple_Tools_Notifications
         $min_date = min( $now, $notification_date );
         $max_date = max( $now, $notification_date );
         $i = 0;
-        while (( $min_date = strtotime( "+1 MONTH", $min_date )) <= $max_date ) {
+        while ( ( $min_date = strtotime( "+1 MONTH", $min_date ) ) <= $max_date ) {
             $i++;
         }
         $months = $i;
         //get number of years
-        $years = ceil( abs( $now - $notification_date ) / (60 * 60 * 24 * 365.25) );
+        $years = ceil( abs( $now - $notification_date ) / ( 60 * 60 * 24 * 365.25 ) );
         //cast an object onto our array of values for readability purposes moving forward
         $range = array(
             'minutes' => $minutes,
@@ -368,7 +368,7 @@ class Disciple_Tools_Notifications
         //the following 6 sprintf() items are the only items in this function that need to be translated in WP
         if ($range->minutes < 60) {
             // the exact number our minutes if this timestamp is < 60 minutes ago
-            $message = sprintf( _n( '%s minute ago', '%s minutes ago',  $range->minutes, 'disciple_tools' ), $range->minutes );
+            $message = sprintf( _n( '%s minute ago', '%s minutes ago', $range->minutes, 'disciple_tools' ), $range->minutes );
         } elseif (( $range->hours > 0 ) && ( $range->hours < 24 )) {
             // the exact number our hours if this timestamp is < 24 hours ago
             $message = sprintf( _n( '%s hour ago', '%s hours ago', $range->hours, 'disciple_tools' ), $range->hours );
@@ -383,8 +383,8 @@ class Disciple_Tools_Notifications
             $message = sprintf( _n( '%s month ago', '%s months ago', $range->months, 'disciple_tools' ), $range->months );
         } elseif ( $range->years > 1 ) {
             // the exact number of years if this timestamp is > 1 year
-             $message = sprintf( _n( '%s year ago', '%s years ago', $range->years, 'disciple_tools' ), $range->years );
-         } 
+            $message = sprintf( _n( '%s year ago', '%s years ago', $range->years, 'disciple_tools' ), $range->years );
+         }
         /**
          * use this as a test for future issues
          *  else {
