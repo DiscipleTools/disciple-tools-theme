@@ -329,26 +329,70 @@ class Disciple_Tools_Notifications
      *
      * @return false|string
      */
+
+
     public static function pretty_timestamp( $timestamp ) {
-        $current_time = current_time( 'mysql' );
-        $one_hour_ago = gmdate( 'Y-m-d H:i:s', strtotime( '-1 hour', strtotime( $current_time ) ) );
-        $yesterday = gmdate( 'Y-m-d', strtotime( '-1 day', strtotime( $current_time ) ) );
-        $seven_days_ago = gmdate( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
+        $now = time(); //current_time( 'mysql' ); //get current time
+        $notification_date = strtotime( $timestamp ); //get "this" notification timestamp
 
-        if ( $timestamp > $one_hour_ago ) {
-            $current = new DateTime( $current_time );
-            $stamp = new DateTime( $timestamp );
-            $diff = date_diff( $current, $stamp );
-            $friendly_time = gmdate( "i", mktime( $diff->h, $diff->i, $diff->s ) ) . ' minutes ago';
-        } elseif ( $timestamp > $yesterday ) {
-            $friendly_time = gmdate( "g:i a", strtotime( $timestamp ) );
-        } elseif ( $timestamp > $seven_days_ago ) {
-            $friendly_time = gmdate( "l g:i a", strtotime( $timestamp ) );
-        } else {
-            $friendly_time = gmdate( 'F j, Y, g:i a', strtotime( $timestamp ) );
+        //initalize vars
+        $minutes = $hours = $days = $weeks = $diff = $months = $years = $message = "";
+
+        //calculate time
+        $minutes = round( abs( $now - $notification_date ) / 60, 0 );
+        $hours = round( ( $now - $notification_date ) / ( 60 * 60 ) );
+        $days = round( ( $now - $notification_date ) / ( 60 * 60 * 24 ) );
+        $weeks = ceil( abs( $now - $notification_date ) / 60 / 60 / 24 / 7 );
+        //get number of months between now and timestamp | this was tricky...
+        $min_date = min( $now, $notification_date );
+        $max_date = max( $now, $notification_date );
+        $i = 0;
+        while ( ( $min_date = strtotime( "+1 MONTH", $min_date ) ) <= $max_date ) {
+            $i++;
         }
+        $months = $i;
+        //get number of years
+        $years = ceil( abs( $now - $notification_date ) / ( 60 * 60 * 24 * 365.25 ) );
+        //cast an object onto our array of values for readability purposes moving forward
+        $range = array(
+            'minutes' => $minutes,
+            'hours' => $hours,
+            'days' => $days,
+            'weeks' => $weeks,
+            'months' => $months,
+            'years' => $years,
+          );
+          $range = (object) $range;
 
-        return $friendly_time;
+        //determine which condition meets "this" notification timestamp
+        //the following 6 sprintf() items are the only items in this function that need to be translated in WP
+        if ($range->minutes < 60) {
+            // the exact number our minutes if this timestamp is < 60 minutes ago
+            $message = sprintf( _n( '%s minute ago', '%s minutes ago', $range->minutes, 'disciple_tools' ), $range->minutes );
+        } elseif (( $range->hours > 0 ) && ( $range->hours < 24 )) {
+            // the exact number our hours if this timestamp is < 24 hours ago
+            $message = sprintf( _n( '%s hour ago', '%s hours ago', $range->hours, 'disciple_tools' ), $range->hours );
+        } elseif (( $range->days > 0 ) && ( $range->days < 14 )) {
+            // the exact number of days if this timestamp is < 2 weeks ago
+            $message = sprintf( _n( '%s day ago', '%s days ago', $range->days, 'disciple_tools' ), $range->days );
+        } elseif (( $range->weeks > 0 ) && ( $range->weeks < 8 )) {
+            // the exact number of weeks if this timestamp is < 2 months ago
+            $message = sprintf( _n( '%s week ago', '%s weeks ago', $range->weeks, 'disciple_tools' ), $range->weeks );
+        } elseif (( $range->months > 0 ) && ( $range->months < 12 )) {
+            // the exact number of months if this timestamp is < 1 year
+            $message = sprintf( _n( '%s month ago', '%s months ago', $range->months, 'disciple_tools' ), $range->months );
+        } elseif ( $range->years > 1 ) {
+            // the exact number of years if this timestamp is > 1 year
+            $message = sprintf( _n( '%s year ago', '%s years ago', $range->years, 'disciple_tools' ), $range->years );
+        }
+        /**
+         * use this as a test for future issues
+         *  else {
+         * $message = "the now : " . $now . " | the notification date : " . $notification_date . " | the minutes : " .$range->minutes . " | the hours : " .$range->hours . " | the days : " .$range->days. " | the weeks : " .$range->weeks. " | the months : ".$range->months. " |  the years : ".$range->years;
+         *  }
+         *
+         */
+        return array( $message, gmdate( "m/d/Y", $notification_date ) );
     }
 
     /**
