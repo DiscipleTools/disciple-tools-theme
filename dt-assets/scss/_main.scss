@@ -691,22 +691,6 @@ a.dt-green:hover {
     .unread-notification-row {
         background-color: rgba(63, 114, 155, 0.19);
     }
-
-    .inline.time {
-        display:none;
-    }
-    
-    .grey {
-        cursor: pointer;
-    }
-    
-    .grey:hover + .inline.time {
-        display:inline-block;
-        font-size: 0.8em;
-        font-weight:bold;
-        color:#666;
-    }
-
 }
 
 /* keeps buttons from touching each other */
