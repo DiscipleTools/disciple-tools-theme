@@ -94,6 +94,8 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
             $auth_token = sanitize_text_field( wp_unslash( $_SERVER['HTTP_AUTHORIZATION'] ) );
         } elseif ( function_exists( "apache_request_headers" ) && isset( apache_request_headers()['Authorization'] ) ){
             $auth_token = sanitize_text_field( wp_unslash( apache_request_headers()['Authorization'] ) );
+        }  elseif ( function_exists( "apache_request_headers" ) && isset( apache_request_headers()['authorization'] ) ){
+            $auth_token = sanitize_text_field( wp_unslash( apache_request_headers()['authorization'] ) );
         }
         if ( $auth_token ) {
             $site_link_token = str_replace( 'Bearer ', '', $auth_token );
@@ -108,7 +110,7 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
      * All other requests to the REST API require a person to be logged in to make a REST Request.
      */
     if ( !is_user_logged_in() && !$authorized ) {
-        return new WP_Error( 'rest_cannot_access', __( 'Only authenticated users can access the REST API.', 'disciple_tools' ), [ 'status' => rest_authorization_required_code() ] );
+        return new WP_Error( 'rest_cannot_access', 'Only authenticated users can access the REST API.', [ 'status' => rest_authorization_required_code() ] );
     }
 
     return $access;

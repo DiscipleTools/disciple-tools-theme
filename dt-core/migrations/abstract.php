@@ -112,6 +112,7 @@ abstract class Disciple_Tools_Migration {
         $rv = preg_replace( '/\s*$/m', '', $rv );
         $rv = preg_replace( '/\bcollate [^\s]+\b/i', '', $rv );
         $rv = preg_replace( '/\bcollate=[^\s]+\b/i', '', $rv );
+        $rv = preg_replace( '/\bauto_increment=[^\s]+\b/i', '', $rv );
         $rv = preg_replace( '/\bengine=innodb\b/', '', $rv );
         $rv = preg_replace( '/\bdefault character set\s/', 'default charset=', $rv );
         $rv = preg_replace( '/\s+,/', ',', $rv );

@@ -1,5 +1,4 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Class Location_Grid_Geocoder
  *
@@ -896,6 +895,67 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             }
 
             return $query;
+        }
+
+        public function convert_ip_result_to_location_grid_meta( $ip_result ) {
+            if ( empty( $ip_result['longitude'] ) ) {
+                return false;
+            }
+
+            // prioritize the smallest unit
+            if ( ! empty( $ip_result['city'] ) ) {
+                $label = $ip_result['city'] . ', ' . $ip_result['region_name'] . ', ' . $ip_result['country_name'];
+                $level = "district";
+            }
+            elseif ( ! empty( $ip_result['region_name'] ) ) {
+                $label = $ip_result['region_name'] . ', ' . $ip_result['country_name'];
+                $level = "region";
+            }
+            elseif ( ! empty( $ip_result['country_name'] ) ) {
+                $label = $ip_result['country_name'];
+                $level = "country";
+            }
+            elseif ( ! empty( $ip_result['continent_name'] ) ) {
+                $label = $ip_result['continent_name'];
+                $level = 'world';
+            }
+            else {
+                $label = '';
+                $level = '';
+            }
+
+            $grid_id = $this->get_grid_id_by_lnglat( $ip_result['longitude'], $ip_result['latitude'], $ip_result['country_code'] );
+
+            if ( empty( $label ) ) {
+                $admin0_grid_id = Disciple_Tools_Mapping_Queries::get_by_grid_id( $grid_id['admin0_grid_id'] );
+                $label = $grid_id['name'] . ', ' . $admin0_grid_id['name'];
+            }
+
+            $location_grid_meta = [
+                'lng' => $ip_result['longitude'] ?? '',
+                'lat' => $ip_result['latitude'] ?? '',
+                'level' => $level,
+                'label' => $label,
+                'source' => 'ip',
+                'grid_id' => $grid_id['grid_id'] ?? '',
+            ];
+
+            self::verify_location_grid_meta_filter( $location_grid_meta );
+
+            return $location_grid_meta;
+        }
+
+        public static function verify_location_grid_meta_filter( array &$location_grid_meta ) : array {
+            $filtered_array = [];
+
+            $filtered_array['lng'] = sanitize_text_field( wp_unslash( $location_grid_meta['lng'] ) ) ?? '';
+            $filtered_array['lat'] = sanitize_text_field( wp_unslash( $location_grid_meta['lat'] ) ) ?? '';
+            $filtered_array['level'] = sanitize_text_field( wp_unslash( $location_grid_meta['level'] ) ) ?? '';
+            $filtered_array['label'] = sanitize_text_field( wp_unslash( $location_grid_meta['label'] ) ) ?? '';
+            $filtered_array['source'] = sanitize_text_field( wp_unslash( $location_grid_meta['source'] ) ) ?? '';
+            $filtered_array['grid_id'] = sanitize_text_field( wp_unslash( $location_grid_meta['grid_id'] ) ) ?? '';
+
+            return $filtered_array;
         }
 
     }

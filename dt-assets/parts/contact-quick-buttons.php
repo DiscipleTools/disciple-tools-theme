@@ -15,7 +15,7 @@
                 $current_value = $contact[ $field ];
             } ?>
 
-            <button class="contact-quick-button <?php echo esc_attr( $field, 'disciple_tools' ) ?>"
+            <button class="contact-quick-button <?php echo esc_attr( $field ) ?>"
                     onclick="save_quick_action(<?php echo intval( get_the_ID() ); ?>, '<?php echo esc_js( $field ) ?>')">
                 <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/" . $val['icon'] ); ?>">
                 <span class="contact-quick-button-number"><?php echo esc_html( $current_value ); ?></span>

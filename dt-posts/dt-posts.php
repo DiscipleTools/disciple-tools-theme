@@ -340,11 +340,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         $fields["ID"] = $post_id;
-        $fields["title"] = $wp_post->post_title;
         $fields["created_date"] = $wp_post->post_date;
         $fields["permalink"] = get_permalink( $post_id );
 
         self::adjust_post_custom_fields( $post_settings, $post_id, $fields );
+        $fields["title"] = $wp_post->post_title;
 
         $fields = apply_filters( 'dt_after_get_post_fields_filter', $fields, $post_type );
         wp_cache_set( "post_" . $current_user_id . '_' . $post_id, $fields );
@@ -430,6 +430,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
+        $send_quick_results = false;
         if ( empty( $search_string ) ){
             //find the most recent posts interacted with by the user
             $posts = $wpdb->get_results( $wpdb->prepare( "
@@ -451,8 +452,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                 LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = p.ID AND pm.meta_key = 'corresponds_to_user' )
                 WHERE p.post_type = %s AND (p.post_status = 'publish' OR p.post_status = 'private')
             ", $current_user->ID, $post_type, $post_type ), OBJECT );
-        } else {
-
+            if ( !empty( $posts ) ){
+                $send_quick_results = true;
+            }
+        }
+        if ( !$send_quick_results ){
             if ( !self::can_view_all( $post_type ) ) {
                 //@todo better way to get the contact records for users my contacts are shared with
                 $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID, $search_string );
@@ -529,7 +533,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             $compact[] = [
                 "ID" => $post->ID,
                 "name" => $post->post_title,
-                "user" => $post->corresponds_to_user > 1,
+                "user" => $post->corresponds_to_user >= 1,
                 "status" => $post->overall_status
             ];
         }

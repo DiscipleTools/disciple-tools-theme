@@ -75,19 +75,18 @@ jQuery(document).ready(function($) {
     }).catch(handleAjaxError)
   })
 
-  $('input.four_fields').on("blur", function(){
+  $('.dt_contenteditable').on('blur', function () {
     const id = $(this).attr('id')
-    const val = $(this).val()
-
+    let val = $(this).html()
     rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
-      $( document ).trigger( "text-input-updated", [ resp, id, val ] );
+      $( document ).trigger( "contenteditable-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
   })
 
 
   $('.dt_typeahead').each((key, el)=>{
     let field_id = $(el).attr('id').replace('_connection', '')
-    let listing_post_type = _.get(detailsSettings.post_settings.fields[field_id], "p2p_listing", 'contacts')
+    let listing_post_type = _.get(detailsSettings.post_settings.fields[field_id], "post_type", 'contacts')
     $.typeahead({
       input: `.js-typeahead-${field_id}`,
       minLength: 0,

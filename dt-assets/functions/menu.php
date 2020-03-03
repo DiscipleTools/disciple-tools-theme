@@ -1,11 +1,11 @@
 <?php
 // Register menus
-register_nav_menus(
-    [
-        //      'main-nav' => __( 'The Main Menu', 'disciple_tools' ),   // Main nav in header
-        'footer-links' => __( 'Footer Links', 'disciple_tools' ) // Secondary nav in footer
-    ]
-);
+//register_nav_menus(
+//    [
+//        //      'main-nav' => __( 'The Main Menu', 'disciple_tools' ),   // Main nav in header
+////        'footer-links' => __( 'Footer Links', 'disciple_tools' ) // Secondary nav in footer
+//    ]
+//);
 
 // The Top Menu
 function disciple_tools_top_nav_desktop() {
@@ -48,7 +48,7 @@ function disciple_tools_off_canvas_nav() {
 
         <li class="nav-title">
             <div>
-                <span class="title"><?php esc_html_e( 'Disciple Tools', 'disciple_tools' )  ?></span>
+                <span class="title"><?php esc_html_e( 'Disciple.Tools', 'disciple_tools' )  ?></span>
             </div>
             <hr/>
         </li>
@@ -106,7 +106,7 @@ function disciple_tools_footer_links() {
     wp_nav_menu(
         [
             'container'      => 'false',                         // Remove nav container
-            'menu'           => __( 'Footer Links', 'disciple_tools' ),       // Nav name
+            'menu'           => 'Footer Links',       // Nav name
             'menu_class'     => 'menu',                          // Adding custom nav class
             'theme_location' => 'footer-links',             // Where it's located in the theme
             'depth'          => 0,                                   // Limit the depth of the nav
