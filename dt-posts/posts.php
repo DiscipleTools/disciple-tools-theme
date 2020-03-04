@@ -407,6 +407,15 @@ class Disciple_Tools_Posts
                         $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $location_grid ? $location_grid["name"] : $activity->meta_value );
                     }
                 }
+                if ( $fields[$activity->meta_key]["type"] === "location_meta" ){
+                    if ( $activity->meta_value === "value_deleted" ){
+                        $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $activity->old_value );
+                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $location_grid ? $location_grid["name"] : $activity->old_value );
+                    } else {
+                        $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $activity->meta_value );
+                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $location_grid ? $location_grid["name"] : $activity->meta_value );
+                    }
+                }
             } else {
                 if ( strpos( $activity->meta_key, "_details" ) !== false ) {
                     $meta_value = maybe_unserialize( $activity->meta_value );
@@ -1116,6 +1125,38 @@ class Disciple_Tools_Posts
         return $fields;
     }
 
+    public static function update_location_grid_meta_fields( array $field_settings, int $post_id, array $fields, array $existing_post = null ){
+        foreach ( $fields as $field_key => $field ){
+            if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "location_meta" ) ){
+
+
+                dt_write_log(__METHOD__);
+                dt_write_log($fields);
+                dt_write_log($existing_post);
+
+                $previous_field = $field;
+
+                // get existing location_grid list
+                $location_grids = get_post_meta( $post_id, 'location_grid' );
+                if ( empty( $location_grids) ) {
+                    $location_grids = [];
+                }
+                dt_write_log($location_grids);
+
+                $field = Location_Grid_Geocoder::verify_location_grid_meta_filter( $field, $post_id );
+
+                dt_write_log($field);
+                if ( ! in_array( $field['grid_id'], $location_grids ) && ! empty( $field['grid_id'] ) ) {
+                    add_post_meta( $post_id, 'location_grid', $field['grid_id'] );
+                }
+
+                update_post_meta( $post_id, $field_key, $field, $previous_field );
+
+            }
+        }
+        return $fields;
+    }
+
     public static function update_post_contact_methods( array $post_settings, int $post_id, array $fields, array $existing_contact = null ){
         // update contact details (phone, facebook, etc)
         foreach ( array_keys( $post_settings["channels"] ) as $channel_key ){
@@ -1580,9 +1621,10 @@ class Disciple_Tools_Posts
                     ];
                 }
             } else if ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]['type'] === 'location_meta' ){
-
-                $fields[ $key ] = [ maybe_unserialize( $value[0] ) ];
-
+                $fields[ $key ] = [];
+                foreach ( $value as $meta ) {
+                    $fields[ $key ][] = maybe_unserialize( $meta );
+                }
             } else {
                 $fields[ $key ] = $value[0];
             }

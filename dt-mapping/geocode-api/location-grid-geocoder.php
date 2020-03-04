@@ -945,15 +945,30 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             return $location_grid_meta;
         }
 
-        public static function verify_location_grid_meta_filter( array &$location_grid_meta ) : array {
+        public static function verify_location_grid_meta_filter( $location_grid_meta, $post_id = null ) : array {
+
+            if ( is_serialized( $location_grid_meta ) ) {
+                $location_grid_meta = maybe_unserialize( $location_grid_meta );
+            }
+
             $filtered_array = [];
 
-            $filtered_array['lng'] = sanitize_text_field( wp_unslash( $location_grid_meta['lng'] ) ) ?? '';
-            $filtered_array['lat'] = sanitize_text_field( wp_unslash( $location_grid_meta['lat'] ) ) ?? '';
+            $filtered_array['lng'] = sanitize_text_field( wp_unslash( $location_grid_meta['lng'] ) ) ?? '0';
+            $filtered_array['lat'] = sanitize_text_field( wp_unslash( $location_grid_meta['lat'] ) ) ?? '0';
             $filtered_array['level'] = sanitize_text_field( wp_unslash( $location_grid_meta['level'] ) ) ?? '';
             $filtered_array['label'] = sanitize_text_field( wp_unslash( $location_grid_meta['label'] ) ) ?? '';
             $filtered_array['source'] = sanitize_text_field( wp_unslash( $location_grid_meta['source'] ) ) ?? '';
             $filtered_array['grid_id'] = sanitize_text_field( wp_unslash( $location_grid_meta['grid_id'] ) ) ?? '';
+
+            if ( empty( $filtered_array['grid_id'] ) && ! empty( $filtered_array['lng'] ) && ! empty( $filtered_array['lat'] ) && ! empty( $post_id )  ) {
+                $geocoder = new Location_Grid_Geocoder();
+                $grid = $geocoder->get_grid_id_by_lnglat( $filtered_array['lng'], $filtered_array['lat'] );
+                if ( ! empty( $grid ) ) {
+                    $previous_value = $filtered_array;
+                    $filtered_array['grid_id'] = $grid['grid_id'];
+                    update_post_meta( $post_id, 'location_grid_meta', $filtered_array, $previous_value );
+                }
+            }
 
             return $filtered_array;
         }
