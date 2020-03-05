@@ -62,6 +62,7 @@ class Disciple_Tools_Usage {
                 'total_churches' => (string) $system_usage['total_churches'] ?: '0',
                 'active_users' => (string) $activity['active_users'] ?: '0',
                 'total_users' => (string) $users->get_total() ?: '0',
+                'has_demo_data' => !empty( $system_usage['has_demo_data'] ),
 
                 'regions' => $regions ?: '0',
                 'timestamp' => gmdate( 'Y-m-d' ),
@@ -123,7 +124,14 @@ class Disciple_Tools_Usage {
             JOIN $wpdb->postmeta as c ON $wpdb->posts.ID=c.post_id AND c.meta_key = 'group_type' AND c.meta_value = 'church'
             WHERE post_type = 'groups'
             AND post_status = 'publish'
-            ) as total_churches;
+            ) as total_churches,
+            
+            (
+            SELECT COUNT(*)
+            FROM $wpdb->postmeta pm
+            WHERE pm.meta_key = '_sample'
+            ) as has_demo_data;
+            
             ", ARRAY_A );
 
         return $results;
