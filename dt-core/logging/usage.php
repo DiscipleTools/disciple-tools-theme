@@ -38,19 +38,20 @@ class Disciple_Tools_Usage {
         $regions = $this->regions();
         $users = new WP_User_Query( [ 'count_total' => true ] );
 
+        $site_url = get_site_url( null, '', 'https' );
         $data = [
             'validator' => hash( 'sha256', time() ),
-            'site_id' => hash( 'sha256', get_site_url() ),
+            'site_id' => hash( 'sha256', $site_url ),
             'usage_version' => $this->version,
             'payload' => [
 
                 // BASIC STATS
-                'site_id' => hash( 'sha256', get_site_url() ),
+                'site_id' => hash( 'sha256', $site_url ),
                 'usage_version' => $this->version,
                 'php_version' => phpversion(),
                 'wp_version' => $wp_version,
                 'wp_db_version' => $wp_db_version,
-                'site_url' => get_site_url(),
+                'site_url' => $site_url,
                 'theme_version' => disciple_tools()->version,
 
                 // SYSTEM USAGE
