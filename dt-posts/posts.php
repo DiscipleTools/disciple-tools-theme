@@ -1128,7 +1128,31 @@ class Disciple_Tools_Posts
     public static function update_location_grid_meta_fields( array $field_settings, int $post_id, array $fields, array $existing_post = null ){
         foreach ( $fields as $field_key => $field ){
             if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "location_meta" ) ){
+                if ( !isset( $field["values"] )){
+                    return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
+                }
+                if ( isset( $field["force_values"] ) && $field["force_values"] == true ){
+                    delete_post_meta( $post_id, $field_key );
+                    $existing_contact[ $field_key ] = [];
+                }
+                foreach ( $field["values"] as $value ){
+                    if ( isset( $value["value"] )){
+                        if ( isset( $value["delete"] ) && $value["delete"] == true ){
+                            delete_post_meta( $post_id, $field_key, $value["value"] );
+                        } else {
+                            $existing_array = isset( $existing_contact[ $field_key ] ) ? $existing_contact[ $field_key ] : [];
+                            if ( !in_array( $value["value"], $existing_array ) ){
+                                add_post_meta( $post_id, $field_key, $value["value"] );
+                            }
+                        }
+                    } else {
+                        return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
+                    }
+                }
 
+                // validate array
+                // compare to existing records (new or update or delete)
+                // check for matching location_grid
 
                 dt_write_log(__METHOD__);
                 dt_write_log($fields);

@@ -18,11 +18,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
         public function __construct() {
             $this->geojson         = [];
             $this->geometry_folder = $this->_geometry_folder();
-            if ( function_exists( 'dt_get_location_grid_mirror' ) ) {
-                $this->mirror_source = dt_get_location_grid_mirror();
-            } else {
-                $this->mirror_source = get_option( 'dt_location_grid_mirror' );
-            }
+            $this->mirror_source = get_option( 'dt_location_grid_mirror' );
         }
 
         /**
@@ -37,6 +33,15 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
 
             $longitude = (float) $longitude;
             $latitude  = (float) $latitude;
+
+           if ( $longitude > 180 ) {
+               $longitude =  $longitude - 180;
+               $longitude = -1 * abs($longitude);
+            }
+            else if ( $longitude < -180 ) {
+                $longitude =  $longitude + 180;
+                $longitude = abs($longitude);
+            }
 
             // get results
             if ( $level === 'admin5' ) { // get admin2 only
@@ -224,7 +229,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 error_log( '2' );
 
                 foreach ( $results as $result ) {
-                    if ( $this->_this_grid_id( (int) $result['grid_id'], $longitude, $latitude ) ) {
+                    if ( $this->_this_grid_id( $result['grid_id'], $longitude, $latitude ) ) {
                         // return test 2 results
                         if ( ! isset( $result['grid_id'] ) ) {
                             $result = $result[0];
@@ -335,7 +340,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             // build flat associative array of all coordinates
             foreach ( $results as $result ) {
                 $grid_id  = $result['grid_id'];
-                $features = $geojson[ $grid_id ]['features'];
+                $features = $geojson[ $grid_id ]['features'] ?? [];
 
                 // handle Polygon and MultiPolygon geometries
                 foreach ( $features as $feature ) {
@@ -428,7 +433,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             // get location_grid geojson
             $raw_geojson = @file_get_contents( $this->geometry_folder . $grid_id . '.geojson' );
             if ( $raw_geojson === false ) {
-                $raw_geojson = @file_get_contents( $this->mirror_source . 'low/' . $grid_id . '.geojson' );
+                $raw_geojson = @file_get_contents( $this->mirror_source['url'] . 'low/' . $grid_id . '.geojson' );
                 if ( $raw_geojson === false ) {
                     return false;
                 }
@@ -973,5 +978,25 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             return $filtered_array;
         }
 
+    }
+}
+if ( ! function_exists( 'dt_write_log' ) ) {
+    // @note Included here because the module can be used independently
+    function dt_write_log( $log ) {
+        if ( true === WP_DEBUG ) {
+            global $dt_write_log_microtime;
+            $now = microtime( true );
+            if ( $dt_write_log_microtime > 0 ) {
+                $elapsed_log = sprintf( "[elapsed:%5dms]", ( $now - $dt_write_log_microtime ) * 1000 );
+            } else {
+                $elapsed_log = "[elapsed:-------]";
+            }
+            $dt_write_log_microtime = $now;
+            if ( is_array( $log ) || is_object( $log ) ) {
+                error_log( $elapsed_log . " " . print_r( $log, true ) );
+            } else {
+                error_log( "$elapsed_log $log" );
+            }
+        }
     }
 }

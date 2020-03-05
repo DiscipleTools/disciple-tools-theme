@@ -66,7 +66,7 @@ if ( isset( $_GET['type'] ) && isset( $_GET['longitude'] ) && isset( $_GET['lati
         $longitude = sanitize_text_field( wp_unslash( $_GET['longitude'] ) );
         $latitude  = sanitize_text_field( wp_unslash( $_GET['latitude'] ) );
 
-        $response = $geocoder->get_grid_id_by_lnglat( $longitude, $latitude, $country_code );
+        $response = $geocoder->get_grid_id_by_lnglat( $longitude, $latitude, $country_code, $level );
 
         header( 'Content-type: application/json' );
         echo json_encode( $response );

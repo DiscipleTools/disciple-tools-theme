@@ -31,6 +31,8 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             }
         }
+
+        parent::__construct();
     }
 
     public function add_url( $template_for_url ) {
