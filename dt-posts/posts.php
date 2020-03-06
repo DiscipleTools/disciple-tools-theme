@@ -1127,20 +1127,22 @@ class Disciple_Tools_Posts
 
     public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, array $existing_post = null ){
         foreach ( $fields as $field_key => $field ){
+
+            // begin default location_grid processing
             if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "location" ) ){
                 if ( !isset( $field["values"] ) ) {
                     return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
                 }
                 if ( isset( $field["force_values"] ) && $field["force_values"] == true ){
                     delete_post_meta( $post_id, $field_key );
-                    $existing_contact[ $field_key ] = [];
+                    $existing_post[ $field_key ] = [];
                 }
                 foreach ( $field["values"] as $value ){
                     if ( isset( $value["value"] )){
                         if ( isset( $value["delete"] ) && $value["delete"] == true ){
                             delete_post_meta( $post_id, $field_key, $value["value"] );
                         } else {
-                            $existing_array = isset( $existing_contact[ $field_key ] ) ? $existing_contact[ $field_key ] : [];
+                            $existing_array = isset( $existing_post[ $field_key ] ) ? $existing_post[ $field_key ] : [];
                             if ( !in_array( $value["value"], $existing_array ) ){
                                 add_post_meta( $post_id, $field_key, $value["value"] );
                             }
@@ -1149,61 +1151,95 @@ class Disciple_Tools_Posts
                         return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
                     }
                 }
-            }
+            } // end default location_grid processing
 
-//            if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "location_meta" ) ){
-//                if ( !isset( $field["values"] )){
-//                    return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
-//                }
-//                if ( isset( $field["force_values"] ) && $field["force_values"] == true ){
-//                    delete_post_meta( $post_id, $field_key );
-//                    $existing_contact[ $field_key ] = [];
-//                }
-//                foreach ( $field["values"] as $value ){
-//                    if ( isset( $value["value"] )){
-//                        if ( isset( $value["delete"] ) && $value["delete"] == true ){
-//                            delete_post_meta( $post_id, $field_key, $value["value"] );
-//                        } else {
-//                            $existing_array = isset( $existing_contact[ $field_key ] ) ? $existing_contact[ $field_key ] : [];
-//                            if ( !in_array( $value["value"], $existing_array ) ){
-//                                add_post_meta( $post_id, $field_key, $value["value"] );
-//                            }
-//                        }
-//                    } else {
-//                        return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key, [ 'status' => 500 ] );
-//                    }
-//                }
-//
-//                // get location_grid
-//                // process CRUD for location grid
-//
-//                // validate array
-//                // compare to existing records (new or update or delete)
-//                // check for matching location_grid
-//
-//                dt_write_log( __METHOD__ );
-//                dt_write_log( $fields );
-//                dt_write_log( $existing_post );
-//
-//                $previous_field = $field;
-//
-//                // get existing location_grid list
-//                $location_grids = get_post_meta( $post_id, 'location_grid' );
-//                if ( empty( $location_grids ) ) {
-//                    $location_grids = [];
-//                }
-//                dt_write_log( $location_grids );
-//
-//                $field = Location_Grid_Geocoder::verify_location_grid_meta_filter( $field, $post_id );
-//
-//                dt_write_log( $field );
-//                if ( ! in_array( $field['grid_id'], $location_grids ) && ! empty( $field['grid_id'] ) ) {
-//                    add_post_meta( $post_id, 'location_grid', $field['grid_id'] );
-//                }
-//
-//                update_post_meta( $post_id, $field_key, $field, $previous_field );
-//
-//            }
+
+            /********************************************************
+             *
+             *
+             ********************************************************/
+            if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "location_meta" ) ){
+                if ( !isset( $field["values"] ) ) {
+                    return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
+                }
+                $geocoder = new Location_Grid_Geocoder();
+
+                // delete everything
+                if ( isset( $field["force_values"] ) && $field["force_values"] == true ){
+                    delete_post_meta( $post_id, 'location_grid' );
+                    delete_post_meta( $post_id, 'location_grid_meta' );
+                    $geocoder->delete_location_grid_meta( $post_id, 'all', null );
+                    $existing_post[ $field_key ] = [];
+                }
+
+                // process crud
+                foreach ( $field["values"] as $value ){
+
+                        // delete
+                        if ( isset($value["delete"]) && $value["delete"] == true ) {
+                            $geocoder->delete_location_grid_meta( $post_id, 'meta_grid_id', $value["value"], $existing_post );
+
+                        }
+
+                        // has grid_meta_id
+                        else if ( isset( $value["grid_meta_id"] ) &&  ! empty( $value["grid_meta_id"] ) ) {
+
+                            // Delete
+
+                            // Update
+
+                        }
+
+
+                        // is new but has provided grid_id
+                        else if ( isset( $value["grid_id"] ) && ! empty( $value["grid_id"] ) ) {
+                            $geocoder->validate_location_grid_meta( $value );
+
+                            if ( empty( $value["lng"] ) || empty( $value["lng"] ) ) {
+                                // Create with location_grid data values
+
+                            }
+                            else {
+                                // Create with provided values
+
+                            }
+                        }
+
+
+                        // new
+                        else {
+
+                            $geocoder->validate_location_grid_meta( $value );
+
+                            $grid = $geocoder->get_grid_id_by_lnglat( $value['lng'], $value['lat'] );
+                            if ( $grid ) {
+                                $value['grid_id'] = $grid['grid_id'];
+                                add_post_meta( $post_id, 'location_grid', $grid['grid_id'] );
+
+                                $grid_meta_id = $geocoder->add_location_grid_meta( $post_id, $value );
+
+                                add_post_meta( $post_id, 'location_grid_meta', $grid_meta_id );
+                            }
+                        }
+
+
+
+                }
+            } // end location_grid processing
+
+            // begin location_grid_meta
+            if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "location_meta" ) ){
+
+                dt_write_log( __FUNCTION__ );
+                dt_write_log('EXISTING POST');
+                dt_write_log( $existing_post );
+                dt_write_log('FIELDS');
+                dt_write_log( $fields );
+                dt_write_log('FIELD');
+                dt_write_log( $field );
+
+
+            }
         }
         return $fields;
     }
@@ -1674,7 +1710,10 @@ class Disciple_Tools_Posts
             } else if ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]['type'] === 'location_meta' ){
                 $fields[ $key ] = [];
                 foreach ( $value as $meta ) {
-                    $fields[ $key ][] = maybe_unserialize( $meta );
+                    $location_grid_meta = Location_Grid_Geocoder::get_location_grid_meta_by_id( $meta );
+                    if ( $location_grid_meta ) {
+                        $fields[ $key ][] = $location_grid_meta;
+                    }
                 }
             } else {
                 $fields[ $key ] = $value[0];

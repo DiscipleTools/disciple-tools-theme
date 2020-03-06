@@ -258,10 +258,12 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
 
         public static function load_mapbox_search_widget() {
             if ( file_exists( get_template_directory() . '/dt-mapping/geocode-api/mapbox.js' ) ) {
+                global $post;
                 wp_enqueue_script( 'mapbox-search-widget', trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/geocode-api/mapbox.js', [ 'jquery', 'mapbox-gl', 'shared-functions' ], filemtime( get_template_directory() . '/dt-mapping/geocode-api/mapbox.js' ), true );
                 wp_localize_script(
                     "mapbox-search-widget", "dtMapbox", array(
                         'post_type' => get_post_type(),
+                        "post_id" => $post->ID ?? 0,
                         "map_key" => self::get_key(),
                         "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
                         "translations" => array(
