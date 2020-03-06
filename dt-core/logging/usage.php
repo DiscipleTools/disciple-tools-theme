@@ -11,7 +11,7 @@ class Disciple_Tools_Usage {
      *
      * @var int
      */
-    public $version = 1;
+    public $version = 2;
 
     public function send_usage() {
         $disabled = apply_filters( 'dt_disable_usage_report', false );
