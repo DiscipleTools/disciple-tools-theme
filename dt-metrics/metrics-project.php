@@ -93,7 +93,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 DT_Mapbox_API::load_mapbox_header_scripts();
 
             }
-
         }
     }
 
@@ -178,7 +177,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
         );
     }
 
-    public function contacts_map(  WP_REST_Request $request  ) {
+    public function contacts_map( WP_REST_Request $request ) {
         if ( !$this->has_permission() ){
             return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
         }
@@ -193,10 +192,10 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             ", ARRAY_A );
 
         $features = [];
-        foreach( $results as $result ) {
+        foreach ( $results as $result ) {
             $features[] = array(
                 'type' => 'Feature',
-                'properties' => array("location_grid" => $result['location_grid']),
+                'properties' => array( "location_grid" => $result['location_grid'] ),
                 'geometry' => array(
                     'type' => 'Point',
                     'coordinates' => array(

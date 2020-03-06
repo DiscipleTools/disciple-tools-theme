@@ -1154,22 +1154,22 @@ class Disciple_Tools_Posts
                 // compare to existing records (new or update or delete)
                 // check for matching location_grid
 
-                dt_write_log(__METHOD__);
-                dt_write_log($fields);
-                dt_write_log($existing_post);
+                dt_write_log( __METHOD__ );
+                dt_write_log( $fields );
+                dt_write_log( $existing_post );
 
                 $previous_field = $field;
 
                 // get existing location_grid list
                 $location_grids = get_post_meta( $post_id, 'location_grid' );
-                if ( empty( $location_grids) ) {
+                if ( empty( $location_grids ) ) {
                     $location_grids = [];
                 }
-                dt_write_log($location_grids);
+                dt_write_log( $location_grids );
 
                 $field = Location_Grid_Geocoder::verify_location_grid_meta_filter( $field, $post_id );
 
-                dt_write_log($field);
+                dt_write_log( $field );
                 if ( ! in_array( $field['grid_id'], $location_grids ) && ! empty( $field['grid_id'] ) ) {
                     add_post_meta( $post_id, 'location_grid', $field['grid_id'] );
                 }

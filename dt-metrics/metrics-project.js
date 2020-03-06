@@ -776,6 +776,7 @@ function contacts_map() {
 
           let searchParameters = {
             location_grid: [ e.features[0].properties.location_grid ]
+            // overall_status: [ 'active', 'new', 'unassigned', 'assigned', 'paused' ]
           }
 
           jQuery.ajax({

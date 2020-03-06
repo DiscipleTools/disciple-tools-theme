@@ -34,13 +34,13 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             $longitude = (float) $longitude;
             $latitude  = (float) $latitude;
 
-           if ( $longitude > 180 ) {
-               $longitude =  $longitude - 180;
-               $longitude = -1 * abs($longitude);
+            if ( $longitude > 180 ) {
+                $longitude = $longitude - 180;
+                $longitude = -1 * abs( $longitude );
             }
             else if ( $longitude < -180 ) {
-                $longitude =  $longitude + 180;
-                $longitude = abs($longitude);
+                $longitude = $longitude + 180;
+                $longitude = abs( $longitude );
             }
 
             // get results
@@ -965,7 +965,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             $filtered_array['source'] = sanitize_text_field( wp_unslash( $location_grid_meta['source'] ) ) ?? '';
             $filtered_array['grid_id'] = sanitize_text_field( wp_unslash( $location_grid_meta['grid_id'] ) ) ?? '';
 
-            if ( empty( $filtered_array['grid_id'] ) && ! empty( $filtered_array['lng'] ) && ! empty( $filtered_array['lat'] ) && ! empty( $post_id )  ) {
+            if ( empty( $filtered_array['grid_id'] ) && ! empty( $filtered_array['lng'] ) && ! empty( $filtered_array['lat'] ) && ! empty( $post_id ) ) {
                 $geocoder = new Location_Grid_Geocoder();
                 $grid = $geocoder->get_grid_id_by_lnglat( $filtered_array['lng'], $filtered_array['lat'] );
                 if ( ! empty( $grid ) ) {
