@@ -144,11 +144,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $potential_error;
         }
 
-        if ( DT_Mapbox_API::get_key() ) {
-            $potential_error = self::update_location_grid_meta_fields( $post_settings["fields"], $post_id, $location_meta, null );
-            if (is_wp_error( $potential_error )) {
-                return $potential_error;
-            }
+        $potential_error = self::update_location_grid_fields( $post_settings["fields"], $post_id, $location_meta, null );
+        if (is_wp_error( $potential_error )) {
+            return $potential_error;
         }
 
         $potential_error = self::update_post_user_meta_fields( $post_settings["fields"], $post_id, $post_user_meta, [] );
@@ -272,11 +270,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $potential_error;
         }
 
-        if ( DT_Mapbox_API::get_key() ) {
-            $potential_error = self::update_location_grid_meta_fields( $post_settings["fields"], $post_id, $fields, $existing_post );
-            if (is_wp_error( $potential_error )) {
-                return $potential_error;
-            }
+        $potential_error = self::update_location_grid_fields( $post_settings["fields"], $post_id, $fields, $existing_post );
+        if (is_wp_error( $potential_error )) {
+            return $potential_error;
         }
 
         $potential_error = self::update_post_user_meta_fields( $post_settings["fields"], $post_id, $fields, $existing_post );
