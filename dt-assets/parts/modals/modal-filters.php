@@ -6,7 +6,7 @@
     </label>
     <div style="margin-top:20px">
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-            <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
         </button>
         <button class="button loader confirm-filter-save" type="button" id="confirm-filter-save" data-close >
             <?php esc_html_e( "Save Filter", 'disciple_tools' )?>
@@ -25,7 +25,7 @@
 
     <div style="margin-top:20px">
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-            <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
         </button>
         <button class="button loader confirm-filter-delete" type="button" id="confirm-filter-delete" data-close >
             <?php esc_html_e( 'Delete Filter', 'disciple_tools' )?>

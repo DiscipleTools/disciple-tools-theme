@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+$fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
 ?>
 <div class="bordered-box list-box">
     <!-- content-groups -->
@@ -49,11 +50,11 @@ declare(strict_types=1);
         <thead>
             <tr class="sortable">
                 <th data-id="name" data-priority="2"><?php esc_html_e( "Name", "disciple_tools" ); ?></th>
-                <th data-id="group_status" data-sort="asc"><?php esc_html_e( "Status", "disciple_tools" ); ?></th>
-                <th data-id="group_type"><?php esc_html_e( "Type", "disciple_tools" ); ?></th>
-                <th data-id="members"><?php esc_html_e( "Members", "disciple_tools" ); ?></th>
-                <th data-id="leaders"><?php esc_html_e( "Leader", "disciple_tools" ); ?></th>
-                <th data-id="location_grid"><?php esc_html_e( "Location", "disciple_tools" ); ?></th>
+                <th data-id="group_status" data-sort="asc"><?php echo esc_html( $fields["group_status"]["name"] ) ?></th>
+                <th data-id="group_type"><?php echo esc_html( $fields["group_type"]["name"] ) ?></th>
+                <th data-id="members"><?php echo esc_html( $fields["member_count"]["name"] ) ?></th>
+                <th data-id="leaders"><?php echo esc_html( $fields["leaders"]["name"] ) ?></th>
+                <th data-id="location_grid"><?php echo esc_html( $fields["location_grid"]["name"] ) ?></th>
             </tr>
         </thead>
         <tbody>

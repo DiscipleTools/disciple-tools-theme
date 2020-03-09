@@ -38,7 +38,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             -->
                             <div id="name-row" style="display: flex;">
                                 <div class="item-details-header" style="flex-grow:1; text-align: center">
-                                    <span class="title"><?php the_title_attribute(); ?></span>
+                                    <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
                                 </div>
                             </div>
 

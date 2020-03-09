@@ -75,19 +75,18 @@ jQuery(document).ready(function($) {
     }).catch(handleAjaxError)
   })
 
-  $('input.four_fields').on("blur", function(){
+  $('.dt_contenteditable').on('blur', function () {
     const id = $(this).attr('id')
-    const val = $(this).val()
-
+    let val = $(this).html()
     rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
-      $( document ).trigger( "text-input-updated", [ resp, id, val ] );
+      $( document ).trigger( "contenteditable-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
   })
 
 
   $('.dt_typeahead').each((key, el)=>{
     let field_id = $(el).attr('id').replace('_connection', '')
-    let listing_post_type = _.get(detailsSettings.post_settings.fields[field_id], "p2p_listing", 'contacts')
+    let listing_post_type = _.get(detailsSettings.post_settings.fields[field_id], "post_type", 'contacts')
     $.typeahead({
       input: `.js-typeahead-${field_id}`,
       minLength: 0,
@@ -151,8 +150,8 @@ jQuery(document).ready(function($) {
       dropdownFilter: [{
         key: 'group',
         value: 'focus',
-        template: 'Regions of Focus',
-        all: 'All Locations'
+        template: _.escape(window.wpApiShare.translations.regions_of_focus),
+        all: _.escape(window.wpApiShare.translations.all_locations),
       }],
       source: {
         focus: {
@@ -206,11 +205,11 @@ jQuery(document).ready(function($) {
           masonGrid.masonry('layout')
         },
         onReady() {
-          this.filters.dropdown = {key: "group", value: "focus", template: "Regions of Focus"}
+          this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
           this.container
           .removeClass("filter")
           .find("." + this.options.selector.filterButton)
-          .html("Regions of Focus");
+          .html(_.escape(window.wpApiShare.translations.regions_of_focus));
         },
         onResult: function (node, query, result, resultCount) {
           resultCount = typeaheadTotals.location_grid
@@ -239,28 +238,7 @@ jQuery(document).ready(function($) {
     rest_api.update_post( post_type, post_id, update )
   })
 
-  let collapsed_tiles = window.SHAREDFUNCTIONS.get_json_cookie('collapsed_tiles')
-  // expand and collapse tiles, only when a section chevron icon is clicked for that given tile.
-  $(".section-header .section-chevron").on("click", function () {
-    let tile =$(this).closest('.bordered-box')
-    tile.toggleClass("collapsed")
-    let tile_id = tile.attr("id")
-    if ( tile_id && tile_id.includes('-tile')){
-      if ( collapsed_tiles.includes(tile_id) ){
-        collapsed_tiles = _.pull(collapsed_tiles, tile_id)
-      } else {
-        collapsed_tiles.push(tile_id)
-      }
-      window.SHAREDFUNCTIONS.save_json_cookie('collapsed_tiles', collapsed_tiles, detailsSettings.post_type)
-    }
-    $('.grid').masonry('layout')
-  })
-  $(".bordered-box").each((index, item)=>{
-    let id = $(item).attr('id')
-    if ( id && id.includes('-tile') && collapsed_tiles.includes(id) ){
-      $(item).addClass('collapsed')
-    }
-  })
+
 
   /**
    * Share

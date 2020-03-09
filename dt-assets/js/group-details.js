@@ -44,7 +44,7 @@ jQuery(document).ready(function($) {
     },
     dynamic: true,
     hint: true,
-    emptyTemplate: 'No users found "{{query}}"',
+    emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
     callback: {
       onClick: function(node, a, item){
         API.update_post( 'groups', groupId, {assigned_to: 'user-' + item.ID}).then(function (response) {
@@ -113,8 +113,8 @@ jQuery(document).ready(function($) {
         dropdownFilter: [{
           key: 'group',
           value: 'focus',
-          template: 'Regions of Focus',
-          all: 'All Locations'
+          template: _.escape(window.wpApiShare.translations.regions_of_focus),
+          all: _.escape(window.wpApiShare.translations.all_locations),
         }],
         source: {
           focus: {
@@ -171,11 +171,11 @@ jQuery(document).ready(function($) {
             this.resetInput();
           },
           onReady(){
-            this.filters.dropdown = {key: "group", value: "focus", template: "Regions of Focus"}
+            this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
             this.container
               .removeClass("filter")
               .find("." + this.options.selector.filterButton)
-              .html("Regions of Focus");
+              .html(_.escape(window.wpApiShare.translations.regions_of_focus));
           },
           onResult: function (node, query, result, resultCount) {
             resultCount = typeaheadTotals.location_grid
@@ -838,27 +838,32 @@ jQuery(document).ready(function($) {
 
   /* Four Fields */
   let loadFourFields = ()=>{
-    $(document).ready(function(){
-      if ( jQuery('#four-fields').length ) {
-        jQuery('#four_fields_unbelievers').val( group.four_fields_unbelievers )
-        jQuery('#four_fields_believers').val( group.four_fields_believers )
-        jQuery('#four_fields_accountable').val( group.four_fields_accountable )
-        jQuery('#four_fields_church_commitment').val( group.four_fields_church_commitment )
-        jQuery('#four_fields_multiplying').val( group.four_fields_multiplying )
-      }
-     })
+    if ( $('#four-fields').length ) {
+      $('#four_fields_unbelievers').val( group.four_fields_unbelievers )
+      $('#four_fields_believers').val( group.four_fields_believers )
+      $('#four_fields_accountable').val( group.four_fields_accountable )
+      $('#four_fields_church_commitment').val( group.four_fields_church_commitment )
+      $('#four_fields_multiplying').val( group.four_fields_multiplying )
+    }
   }
 
-  $(document).ready( function() {
-    let ffInputs = `
+  let ffInputs = `
     <input type="text" name="four_fields_unbelievers" id="four_fields_unbelievers" class="four_fields" style="width:60px; position:absolute; top:120px; left:75px;" />
     <input type="text" name="four_fields_believers" id="four_fields_believers" class="four_fields" style="width:60px; position:absolute; top:120px; right:75px;" />
     <input type="text" name="four_fields_accountable" id="four_fields_accountable" class="four_fields" style="width:60px; position:absolute; bottom:80px; right:75px;" />
     <input type="text" name="four_fields_church_commitment" id="four_fields_church_commitment" class="four_fields" style="width:60px; position:absolute; bottom:80px; left:75px;" />
     <input type="text" name="four_fields_multiplying" id="four_fields_multiplying" class="four_fields" style="width:60px; position:absolute; top:220px; left:170px;" />
-    `
-    $('#four-fields-inputs').append(ffInputs)
-    loadFourFields()
+  `
+  $('#four-fields-inputs').append(ffInputs)
+  loadFourFields()
+
+  $('input.four_fields').on("blur", function(){
+    const id = $(this).attr('id')
+    const val = $(this).val()
+
+    window.API.update_post("groups", groupId, { [id]: val }).then((resp)=>{
+      $( document ).trigger( "text-input-updated", [ resp, id, val ] );
+    }).catch(handleAjaxError)
   })
   /* End Four Fields */
 

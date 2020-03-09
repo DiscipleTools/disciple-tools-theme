@@ -12,7 +12,7 @@
 
     <div class="grid-x">
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-            <?php echo esc_html_x( 'Close', 'button', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Close', 'disciple_tools' )?>
         </button>
         <button class="button" aria-label="confirm" type="button" id="confirm-revert">
             <?php esc_html_e( 'Revert to old value?', 'disciple_tools' )?>

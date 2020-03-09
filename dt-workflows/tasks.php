@@ -79,11 +79,11 @@ function dt_custom_notification_note( $note, $notification ){
         $task = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_post_user_meta WHERE id = %s", $notification["field_value"] ), ARRAY_A );
 
         if ( $task["category"] === "reminder" ){
-            $note = sprintf( esc_html_x( 'You set a reminder for today on %1$s', 'Tasks', 'disciple_tools' ), $link );
+            $note = sprintf( esc_html_x( 'You set a reminder for today on %1$s', 'You set a reminder for today on contact1', 'disciple_tools' ), $link );
         } else {
             $message = maybe_unserialize( $task["meta_value"] )["note"] ?? null;
             $note = Disciple_Tools_Notifications::instance()->format_comment( $message );
-            $note = sprintf( esc_html_x( 'You set this task on %1$s: %2$s', 'Tasks: You set this task on contact1: task note', 'disciple_tools' ), $link, $note );
+            $note = sprintf( esc_html_x( 'You set this task on %1$s: %2$s', 'You set this task on contact1: task note', 'disciple_tools' ), $link, $note );
         }
     }
     return $note;

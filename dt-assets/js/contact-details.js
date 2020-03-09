@@ -287,8 +287,8 @@ jQuery(document).ready(function($) {
         dropdownFilter: [{
           key: 'group',
           value: 'focus',
-          template: 'Regions of Focus',
-          all: 'All Locations'
+          template: _.escape(window.wpApiShare.translations.regions_of_focus),
+          all: _.escape(window.wpApiShare.translations.all_locations),
         }],
         source: {
           focus: {
@@ -345,11 +345,11 @@ jQuery(document).ready(function($) {
             this.resetInput();
           },
           onReady(){
-            this.filters.dropdown = {key: "group", value: "focus", template: "Regions of Focus"}
+            this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
             this.container
               .removeClass("filter")
               .find("." + this.options.selector.filterButton)
-              .html("Regions of Focus");
+              .html(_.escape(window.wpApiShare.translations.regions_of_focus));
           },
           onResult: function (node, query, result, resultCount) {
             resultCount = typeaheadTotals.location_grid
@@ -443,7 +443,7 @@ jQuery(document).ready(function($) {
     },
     dynamic: true,
     hint: true,
-    emptyTemplate: 'No users found "{{query}}"',
+    emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
     callback: {
       onClick: function(node, a, item){
         API.update_post('contacts', contactId, {assigned_to: 'user-' + item.ID}).then(function (response) {
@@ -1197,7 +1197,7 @@ jQuery(document).ready(function($) {
       },
       dynamic: true,
       hint: true,
-      emptyTemplate: 'No users found "{{query}}"',
+      emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
       callback: {
         onClick: function (node, a, item) {
           jQuery.ajax({
@@ -1243,10 +1243,9 @@ jQuery(document).ready(function($) {
         template: window.TYPEAHEADS.contactListRowTemplate,
         dynamic: true,
         hint: true,
-        emptyTemplate: _x( 'No contacts found matching "{{query}}"', 'disciple_tools', "Keep {{query}} as is" ),
+        emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
         callback: {
           onClick: function (node, a, item) {
-            console.log(item);
             $('.confirm-merge-with-contact').show()
             $('#confirm-merge-with-contact-id').val(item.ID)
             $('#name-of-contact-to-merge').html(item.name)
@@ -1318,7 +1317,7 @@ jQuery(document).ready(function($) {
           },
           dynamic: true,
           hint: true,
-          emptyTemplate: 'No users found "{{query}}"',
+          emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
           multiselect: {
             matchOn: ["ID"],
             data: function () {

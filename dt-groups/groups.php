@@ -31,20 +31,11 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         add_action(
             'init',
             function() {
-                self::$address_types = dt_address_metabox()->get_address_type_list( "groups" );
-                self::$group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
-                self::$group_connection_types = [
-                    "members",
-                    "parent_groups",
-                    "child_groups",
-                    "peer_groups",
-                    "people_groups",
-                    "leaders",
-                    "coaches"
-                ];
-                self::$channel_list = [
-                    "address"
-                ];
+                $group_settings = apply_filters( "dt_get_post_type_settings", [], "groups" );
+                self::$address_types = $group_settings["address_types"];
+                self::$group_fields = $group_settings["fields"];
+                self::$group_connection_types = $group_settings['connection_types'];
+                self::$channel_list = $group_settings["channels"];
             }
         );
         add_filter( "dt_post_create_fields", [ $this, "create_post_field_hook" ], 10, 2 );
@@ -596,7 +587,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                             $filters["filters"][] = [
                                 "ID" => 'my_update_needed',
                                 "tab" => 'assigned_to_me',
-                                "name" => _x( 'Update Needed', 'List Filters', 'disciple_tools' ),
+                                "name" => $fields["requires_update"]["name"],
                                 "query" => [
                                     'assigned_to' => [ 'me' ],
                                     'group_status' => [ 'active' ],
@@ -662,11 +653,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             foreach ( $fields["group_status"]["default"] as $status_key => $status_value ) {
                 if ( isset( $status_counts[$status_key] ) ){
                     $filters["filters"][] = [
-                        "ID" => 'my_' . $status_key,
+                        "ID" => 'all_' . $status_key,
                         "tab" => 'all',
                         "name" => $status_value["label"],
                         "query" => [
-                            'assigned_to' => [ 'me' ],
                             'group_status' => [ $status_key ],
                             'sort' => 'group_type'
                         ],
@@ -675,11 +665,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     if ( $status_key === "active" ){
                         if ( $update_needed > 0 ){
                             $filters["filters"][] = [
-                                "ID" => 'my_update_needed',
+                                "ID" => 'all_update_needed',
                                 "tab" => 'all',
-                                "name" => _x( 'Update Needed', 'List Filters', 'disciple_tools' ),
+                                "name" => $fields["requires_update"]["name"],
                                 "query" => [
-                                    'assigned_to' => [ 'me' ],
                                     'group_status' => [ 'active' ],
                                     'requires_update' => [ true ],
                                 ],
@@ -690,11 +679,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                         foreach ( $fields["group_type"]["default"] as $group_type_key => $group_type_value ) {
                             if ( isset( $active_counts[$group_type_key] ) ) {
                                 $filters["filters"][] = [
-                                    "ID" => 'my_' . $group_type_key,
+                                    "ID" => 'all_' . $group_type_key,
                                     "tab" => 'all',
                                     "name" => $group_type_value["label"],
                                     "query" => [
-                                        'assigned_to' => [ 'me' ],
                                         'group_status' => [ 'active' ],
                                         'group_type' => [ $group_type_key ],
                                         'sort' => 'name'

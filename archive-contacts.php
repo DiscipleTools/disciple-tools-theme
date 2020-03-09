@@ -15,23 +15,24 @@ declare(strict_types=1);
     <div id="errors"> </div>
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
         <nav role="navigation"
-             data-sticky data-options="marginTop:3;" style="width:100%" data-top-anchor="1"
+             data-sticky data-options="marginTop:0;" style="width:100%" data-top-anchor="1"
              class="second-bar">
             <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
-                <a class="button dt-green" style="margin-bottom:0" href="<?php echo esc_url( home_url( '/' ) ) . "contacts/new" ?>">
+                <a class="button dt-green"  href="<?php echo esc_url( home_url( '/' ) ) . "contacts/new" ?>">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-contact-white.svg' ) ?>"/>
-                    <span class="hide-for-small-only"><?php esc_html_e( "Create new contact", "disciple_tools" ); ?></span>
+                    <span><?php esc_html_e( "Create new contact", "disciple_tools" ); ?></span>
                 </a>
-                <a class="button" style="margin-bottom:0" data-open="filter-modal">
+                <a class="button" data-open="filter-modal">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
-                    <span class="hide-for-small-only"><?php esc_html_e( "Filter Contacts", 'disciple_tools' ) ?></span>
+                    <span><?php esc_html_e( "Filter Contacts", 'disciple_tools' ) ?></span>
                 </a>
-                <a class="button" style="margin-bottom:0" href="<?php echo esc_url( site_url( '/view-duplicates' ) ); ?>">
+                <a class="button" href="<?php echo esc_url( site_url( '/view-duplicates' ) ); ?>">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
-                    <span class="hide-for-small-only"><?php esc_html_e( "View Duplicates", 'disciple_tools' ) ?></span>
+                    <span><?php esc_html_e( "View Duplicates", 'disciple_tools' ) ?></span>
                 </a>
-                <input class="search-input" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="<?php echo esc_html_x( "Search Contacts", 'input field placeholder', 'disciple_tools' ) ?>">
-                <a class="button" style="margin-bottom:0" id="search">
+                <input class="search-input" style="max-width:200px;display: inline-block;" type="search" id="search-query"
+                       placeholder="<?php echo esc_html_x( "Search Contacts", 'input field placeholder', 'disciple_tools' ) ?>">
+                <a class="button" id="search">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
                     <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
                 </a>
@@ -40,20 +41,18 @@ declare(strict_types=1);
     </div>
     <nav  role="navigation" style="width:100%;"
           class="second-bar show-for-small-only center"><!--  /* MOBILE VIEW BUTTON AREA */ -->
-        <a class="button dt-green" style="margin-bottom:0" href="<?php echo esc_url( home_url( '/' ) ) . "contacts/new" ?>">
+        <a class="button dt-green" href="<?php echo esc_url( home_url( '/' ) ) . "contacts/new" ?>">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-contact-white.svg' ) ?>"/>
-            <span class="hide-for-small-only"><?php esc_html_e( "Create new contact", "disciple_tools" ); ?></span>
         </a>
-        <a class="button" style="margin-bottom:0" data-open="filter-modal">
+        <a class="button" data-open="filter-modal">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
-            <span class="hide-for-small-only"><?php esc_html_e( "Filter Contacts", 'disciple_tools' ) ?></span>
         </a>
-        <a class="button" style="margin-bottom:0" id="open-search">
+        <a class="button" id="open-search">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
-            <span class="hide-for-small-only"><?php echo esc_html_x( "Search Contacts", 'input field placeholder', 'disciple_tools' ) ?></span>
         </a>
         <div class="hideable-search" style="display: none; margin-top:5px">
-            <input class="search-input-mobile" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile" placeholder="<?php echo esc_html_x( "Search Contacts", 'input field placeholder', 'disciple_tools' ) ?>">
+            <input class="search-input-mobile" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile"
+                   placeholder="<?php echo esc_html_x( "Search Contacts", 'input field placeholder', 'disciple_tools' ) ?>">
             <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
         </div>
     </nav>
@@ -62,7 +61,7 @@ declare(strict_types=1);
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
             <aside class="cell large-3" id="list-filters">
-                <div class="bordered-box">
+                <div class="bordered-box collapsed" id="filters-tile">
                     <div class="section-header"><?php esc_html_e( 'Contacts Filters', 'disciple_tools' )?>
                         <button class="help-button float-right" data-section="filters-help-text">
                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
@@ -113,37 +112,28 @@ declare(strict_types=1);
 
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
-                    <?php $fields = [ "assigned_to", "subassigned", "coached_by", "created_on", "location_grid", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
-                    $allowed_types = [ "multi_select", "key_select", "boolean", "date", "location" ];
+                    <?php $fields = [ "assigned_to", "subassigned", "created_on", "location_grid", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
+                    $allowed_types = [ "multi_select", "key_select", "boolean", "date", "location", "connection" ];
                     foreach ( $dt_contact_field_options as $field_key => $field){
                         if ( $field_key && in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
                             $fields[] = $field_key;
                         }
                     }
                     $fields = apply_filters( 'dt_filters_additional_fields', $fields, "contacts" ) ?? [];
-                    $connections = Disciple_Tools_Posts::$connection_types;
-                    $connections["assigned_to"] = [ "name" => __( "Assigned To", 'disciple_tools' ) ];
-                    $connections["location_grid"] = [ "name" => __( "Locations", 'disciple_tools' ) ];
                     ?>
                     <ul class="vertical tabs" data-tabs id="filter-tabs">
                         <?php foreach ( $fields as $index => $field ) :
-                            if ( isset( $dt_contact_field_options[$field]["name"] ) ) : ?>
+                            $connection = ( isset( $dt_contact_field_options[$field]["type"] ) && $dt_contact_field_options[$field]["type"] === "connection" ) ? isset( $dt_contact_field_options[$field]["post_type"] ) : true;
+                            if ( isset( $dt_contact_field_options[$field]["name"] ) && $connection ) : ?>
                                 <li class="tabs-title <?php if ( $index === 0 ){ echo "is-active"; } ?>" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>" <?php if ( $index === 0 ){ echo 'aria-selected="true"'; } ?>>
                                         <?php echo esc_html( $dt_contact_field_options[$field]["name"] ) ?></a>
-                                </li>
-                            <?php elseif ( in_array( $field, array_keys( $connections ) ) ) : ?>
-                                <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
-                                    <a href="#<?php echo esc_html( $field )?>">
-                                        <?php echo esc_html( $connections[$field]["name"] ) ?></a>
                                 </li>
                             <?php elseif ( $field === "created_on" ) : ?>
                                 <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>">
                                         <?php esc_html_e( "Creation Date", 'disciple_tools' ) ?></a>
                                 </li>
-                            <?php else : ?>
-                                <?php wp_die( "Cannot implement filter options for field " . esc_html( $field ) ); ?>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </ul>
@@ -152,18 +142,26 @@ declare(strict_types=1);
                 <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="filter-tabs">
                     <?php foreach ( $fields as $index => $field ) :
                         $is_multi_select = isset( $dt_contact_field_options[$field] ) && $dt_contact_field_options[$field]["type"] == "multi_select";
-                        if ( in_array( $field, array_keys( $connections ) ) || $is_multi_select ) : ?>
+                        if ( isset( $dt_contact_field_options[$field] ) && (
+                                ( $dt_contact_field_options[$field]["type"] === "connection" && isset( $dt_contact_field_options[$field]["post_type"] ) ) ||
+                                $dt_contact_field_options[$field]["type"] === "location" ||
+                                $dt_contact_field_options[$field]["type"] === "user_select" ||
+                                $is_multi_select
+                            ) ): ?>
                             <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>" id="<?php echo esc_html( $field ) ?>">
                                 <div class="<?php echo esc_html( $field );?>  <?php echo esc_html( $is_multi_select ? "multi_select" : "" ) ?> details" >
                                     <var id="<?php echo esc_html( $field ) ?>-result-container" class="result-container <?php echo esc_html( $field ) ?>-result-container"></var>
                                     <div id="<?php echo esc_html( $field ) ?>_t" name="form-<?php echo esc_html( $field ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
                                         <div class="typeahead__container">
                                             <div class="typeahead__field">
-                                            <span class="typeahead__query">
-                                                <input class="js-typeahead-<?php echo esc_html( $field ) ?>" data-field="<?php echo esc_html( $field ) ?>"
-                                                       name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>"
-                                                       autocomplete="off">
-                                            </span>
+                                                <span class="typeahead__query">
+                                                    <input class="js-typeahead-<?php echo esc_html( $field ) ?> input-height"
+                                                           data-field="<?php echo esc_html( $field ) ?>"
+                                                           name="<?php echo esc_html( $field ) ?>[query]"
+                                                           placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>"
+                                                           data-type="<?php echo esc_html( $dt_contact_field_options[$field]["type"] ) ?>"
+                                                           autocomplete="off">
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -238,12 +236,12 @@ declare(strict_types=1);
         <div class="grid-x grid-padding-x">
             <div class="cell small-4 filter-modal-left">
                 <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                    <?php echo esc_html_x( 'Cancel', 'button', 'disciple_tools' )?>
+                    <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
                 </button>
             </div>
             <div class="cell small-8 filter-modal-right confirm-buttons">
                 <button style="display: inline-block" class="button loader confirm-filter-contacts" type="button" id="confirm-filter-contacts" data-close >
-                    <?php esc_html_e( 'Filter contacts', 'disciple_tools' )?>
+                    <?php esc_html_e( 'Filter Contacts', 'disciple_tools' )?>
                 </button>
                 <button class="button loader confirm-filter-contacts" type="button" id="save-filter-edits" data-close style="display: none">
                     <?php esc_html_e( 'Save', 'disciple_tools' )?>

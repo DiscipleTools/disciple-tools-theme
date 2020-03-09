@@ -13,8 +13,48 @@ declare(strict_types=1);
     get_header();
     ?>
 
+    <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
+        <nav role="navigation"
+             data-sticky data-options="marginTop:0;" data-top-anchor="1"
+             class="second-bar list-actions-bar">
+            <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
+                <a class="button dt-green" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
+                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-white.svg' ) ?>"/>
+                    <span class="hide-for-small-only"><?php echo esc_html( sprintf( _x( "Create New %s", "Create New record", 'disciple_tools' ), $post_settings["label_singular"] ?? $post_type ) ) ?></span>
+                </a>
+                <a class="button" data-open="filter-modal">
+                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
+                    <span class="hide-for-small-only"><?php esc_html_e( "Filters", 'disciple_tools' ) ?></span>
+                </a>
+                <input class="search-input" style="max-width:200px;display: inline-block;"
+                       type="search" id="search-query"
+                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $post_settings["label_plural"] ?? $post_type ) ) ?>">
+                <a class="button" id="search">
+                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
+                    <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
+                </a>
+            </div>
+        </nav>
+    </div>
+    <nav  role="navigation" style="width:100%;"
+          class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
+        <a class="button dt-green" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . "/new" ?>">
+            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-contact-white.svg' ) ?>"/>
+        </a>
+        <a class="button" data-open="filter-modal">
+            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
+        </a>
+        <a class="button" id="open-search">
+            <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
+        </a>
+        <div class="hideable-search" style="display: none; margin-top:5px">
+            <input class="search-input-mobile" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile"
+                   placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $post_settings["label_plural"] ?? $post_type ) ) ?>">
+            <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
+        </div>
+    </nav>
     <div id="content" class="archive-template">
-        <div id="inner-content" class="grid-x grid-margin-x">
+        <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
             <aside class="cell large-3" id="list-filters">
                 <div class="bordered-box">
                     <div class="section-header"><?php esc_html_e( 'Filters', 'disciple_tools' )?>
@@ -44,6 +84,7 @@ declare(strict_types=1);
                         </span>
                     </div>
                     <p style="display: inline-block" class="filter-result-text"></p>
+                    <div style="display: inline-block" id="current-filters"></div>
                     <div id="table-content"></div>
                     <div class="center">
                         <button id="load-more" class="button" style="display: none"><?php esc_html_e( "Load More", 'disciple_tools' ) ?></button>
@@ -106,11 +147,14 @@ declare(strict_types=1);
                                     <div id="<?php echo esc_html( $field ) ?>_t" name="form-<?php echo esc_html( $field ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
                                         <div class="typeahead__container">
                                             <div class="typeahead__field">
-                                            <span class="typeahead__query">
-                                                <input class="js-typeahead-<?php echo esc_html( $field ) ?>" data-field="<?php echo esc_html( $field )?>" data-type="<?php echo esc_html( $field_options[$field]["type"] ) ?>"
-                                                       name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php esc_html_e( "Type to Search", 'disciple_tools' ) ?>"
-                                                       autocomplete="off">
-                                            </span>
+                                                <span class="typeahead__query">
+                                                    <input class="js-typeahead-<?php echo esc_html( $field ) ?> input-height"
+                                                           data-field="<?php echo esc_html( $field )?>"
+                                                           data-type="<?php echo esc_html( $field_options[$field]["type"] ) ?>"
+                                                           name="<?php echo esc_html( $field ) ?>[query]"
+                                                           placeholder="<?php esc_html_e( "Type to Search", 'disciple_tools' ) ?>"
+                                                           autocomplete="off">
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -133,13 +177,15 @@ declare(strict_types=1);
                                     <?php elseif ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "boolean" ) : ?>
                                         <div class="boolean_options">
                                             <label style="cursor: pointer">
-                                                <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>" data-label="<?php esc_html_e( "No", 'disciple_tools' ) ?>"
+                                                <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
+                                                       data-label="<?php esc_html_e( "No", 'disciple_tools' ) ?>"
                                                        value="0"> <?php esc_html_e( "No", 'disciple_tools' ) ?>
                                             </label>
                                         </div>
                                         <div class="boolean_options">
                                             <label style="cursor: pointer">
-                                                <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>" data-label="<?php esc_html_e( "Yes", 'disciple_tools' ) ?>"
+                                                <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
+                                                       data-label="<?php esc_html_e( "Yes", 'disciple_tools' ) ?>"
                                                        value="1"> <?php esc_html_e( "Yes", 'disciple_tools' ) ?>
                                             </label>
                                         </div>

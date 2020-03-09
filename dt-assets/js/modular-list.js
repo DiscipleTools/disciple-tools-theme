@@ -7,10 +7,12 @@
   let filter_to_delete = "";
   let filterToEdit = "";
   let filter_accordions = $('#list-filter-tabs')
+  let currentFilters = $("#current-filters")
   let cookie = window.SHAREDFUNCTIONS.getCookie("last_view");
   let cached_filter
   let get_records_promise = null
   let loading_spinner = $("#list-loading-spinner")
+  let old_filters = JSON.stringify(list_settings.filters)
 
   let items = []
   try {
@@ -168,8 +170,10 @@
       }
     })
     getFilterCountsPromise.then(filters=>{
-      list_settings.filters = filters
-      setup_filters()
+      if ( old_filters !== JSON.stringify(filters) ){
+        list_settings.filters = filters
+        setup_filters()
+      }
     }).catch(err => {
       if ( _.get( err, "statusText" ) !== "abort" ){
         console.error(err)
@@ -178,8 +182,47 @@
   }
   get_filter_counts()
 
-  let build_table = (records)=>{
 
+  function setup_current_filter_labels() {
+    let html = ""
+    let filter = current_filter
+    if (filter && filter.labels){
+      filter.labels.forEach(label=>{
+        html+= `<span class="current-filter ${_.escape( label.field )}">${_.escape( label.name )}</span>`
+      })
+    } else {
+      let query = filter.query
+      _.forOwn( query, query_key=> {
+        if (Array.isArray(query[query_key])) {
+
+          query[query_key].forEach(q => {
+
+            html += `<span class="current-filter ${_.escape( query_key )}">${_.escape( q )}</span>`
+          })
+        } else {
+          html += `<span class="current-filter search">${_.escape( query[query_key] )}</span>`
+        }
+      })
+    }
+
+    // if ( filter.query.sort ){
+    //   let sortLabel = filter.query.sort
+    //   if ( sortLabel.includes('last_modified') ){
+    //     sortLabel = wpApiListSettings.translations.date_modified
+    //   } else if (  sortLabel.includes('post_date') ) {
+    //     sortLabel = wpApiListSettings.translations.creation_date
+    //   } else  {
+    //     //get label for table header
+    //     sortLabel = $(`.sortable [data-id="${_.escape( sortLabel.replace('-', '') )}"]`).text()
+    //   }
+    //   html += `<span class="current-filter" data-id="sort">
+    //       ${_.escape( wpApiListSettings.translations.sorting_by )}: ${_.escape( sortLabel )}
+    //   </span>`
+    // }
+    currentFilters.html(html)
+  }
+
+  let build_table = (records)=>{
     let header_fields = '<th onclick="sortTable( 0 )"></th><th onclick="sortTable( 1 )">Name</th>'
     let table_rows = ``
     let index = 2;
@@ -287,6 +330,7 @@
       let result_text = list_settings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", response.total)
       $('.filter-result-text').html(result_text)
       build_table(items)
+      setup_current_filter_labels()
       loading_spinner.removeClass("active")
     }).catch(err => {
       loading_spinner.removeClass("active")
@@ -307,7 +351,7 @@
 
 
   //add the new filter in the filters list
-  function add_custom_filter(name, type, query, labels, load_records) {
+  function add_custom_filter(name, type, query, labels, load_records = true) {
     query = query || current_filter.query
     let ID = new Date().getTime() / 1000;
     current_filter = {ID, type, name: _.escape( name ), query:JSON.parse(JSON.stringify(query)), labels:labels}
@@ -457,10 +501,11 @@
 
   let load_post_type_typeaheads = ()=>{
     $(".typeahead__query [data-type='connection']").each((key, el)=>{
-      let post_type = $(el).data('field')
-      if (!window.Typeahead[`.js-typeahead-${post_type}`]) {
+      let field_key = $(el).data('field')
+      let post_type = _.get( list_settings, `post_type_settings.fields.${field_key}.post_type`, field_key)
+      if (!window.Typeahead[`.js-typeahead-${field_key}`]) {
         $.typeahead({
-          input: `.js-typeahead-${post_type}`,
+          input: `.js-typeahead-${field_key}`,
           minLength: 0,
           accent: true,
           searchOnFocus: true,
@@ -477,7 +522,7 @@
             data: [],
             callback: {
               onCancel: function (node, item) {
-                $(`.current-filter[data-id="${item.ID}"].${post_type}`).remove()
+                $(`.current-filter[data-id="${item.ID}"].${field_key}`).remove()
                 _.pullAllBy(new_filter_labels, [{id: item.ID}], "id")
               }
             }
@@ -485,14 +530,14 @@
           callback: {
             onResult: function (node, query, result, resultCount) {
               let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-              $(`#${post_type}-result-container`).html(text);
+              $(`#${field_key}-result-container`).html(text);
             },
             onHideLayout: function () {
-              $(`#${post_type}-result-container`).html("");
+              $(`#${field_key}-result-container`).html("");
             },
             onClick: function (node, a, item) {
-              new_filter_labels.push({id: item.ID, name: item.name, field: post_type})
-              selected_filters.append(`<span class="current-filter ${post_type}" data-id="${_.escape( item.ID )}">${_.escape( item.name )}</span>`)
+              new_filter_labels.push({id: item.ID, name: item.name, field: field_key})
+              selected_filters.append(`<span class="current-filter ${field_key}" data-id="${_.escape( item.ID )}">${_.escape( item.name )}</span>`)
             }
           }
         });
@@ -514,8 +559,8 @@
         dropdownFilter: [{
           key: 'group',
           value: 'used',
-          template: 'Used Locations',
-          all: 'All Locations'
+          template: _.escape(window.wpApiShare.translations.used_locations),
+          all: _.escape(window.wpApiShare.translations.all_locations)
         }],
         source: {
           used: {
@@ -763,6 +808,38 @@
       }).catch(err => { console.error(err) })
     }
   })
+
+  $("#search").on("click", function () {
+    let searchText = _.escape( $("#search-query").val() )
+    let query = {text:searchText, assigned_to:["all"]}
+    let labels = [{ id:"search", name:searchText, field: "search"}]
+    add_custom_filter(searchText, "search", query, labels)
+  })
+
+  $("#search-mobile").on("click", function () {
+    let searchText = _.escape( $("#search-query-mobile").val() )
+    let query = {text:searchText, assigned_to:["all"]}
+    let labels = [{ id:"search", name:searchText, field: "search"}]
+    add_custom_filter(searchText, "search", query, labels)
+  })
+
+  $('.search-input').on('keyup', function (e) {
+    if ( e.keyCode === 13 ){
+      $("#search").trigger("click")
+    }
+  })
+
+  $('.search-input-mobile').on('keyup', function (e) {
+    if ( e.keyCode === 13 ){
+      $("#search-mobile").trigger("click")
+    }
+  })
+
+  //toggle show search input on mobile
+  $("#open-search").on("click", function () {
+    $(".hideable-search").toggle()
+  })
+
 
   window.sortTable = function sortTable(n) {
     let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
