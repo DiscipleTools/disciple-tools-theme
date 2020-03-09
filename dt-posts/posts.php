@@ -1128,7 +1128,10 @@ class Disciple_Tools_Posts
     public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, array $existing_post = null ){
         foreach ( $fields as $field_key => $field ){
 
-            // begin default location_grid processing
+
+            /********************************************************
+             * Basic Locations
+             ********************************************************/
             if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "location" ) ){
                 if ( !isset( $field["values"] ) ) {
                     return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
@@ -1155,7 +1158,21 @@ class Disciple_Tools_Posts
 
 
             /********************************************************
+             * Location Meta Grid - Mapbox Extension
              *
+             * Delete
+             *  grid_meta_id: 0,
+                delete: true
+             *
+             * Add by grid_id
+             * location_grid => 12345
+             *
+             * Add by Mabox Response
+             * lng => 0,
+             * lat => 0,
+             * level => (country,local,place,nieghborhood,address,admin0,admin1,admin2,admin3,admin4, or admin5),
+             * label: readable address,
+             * source: (ip, user),
              *
              ********************************************************/
             if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "location_meta" ) ){
@@ -1175,71 +1192,45 @@ class Disciple_Tools_Posts
                 // process crud
                 foreach ( $field["values"] as $value ){
 
-                        // delete
-                        if ( isset($value["delete"]) && $value["delete"] == true ) {
-                            $geocoder->delete_location_grid_meta( $post_id, 'meta_grid_id', $value["value"], $existing_post );
+                    // delete
+                    if ( isset($value["delete"]) && $value["delete"] == true ) {
+                        $geocoder->delete_location_grid_meta( $post_id, 'grid_meta_id', $value["grid_meta_id"], $existing_post );
+                    }
+
+                    // is new but has provided grid_id
+                    else if ( isset( $value["grid_id"] ) && ! empty( $value["grid_id"] ) ) {
+                        $grid = $geocoder->query_by_grid_id( $value["grid_id"] );
+                        if ( $grid ) {
+                            $location_meta_grid = [];
+                            $geocoder->validate_location_grid_meta( $location_meta_grid );
+
+                            $location_meta_grid['post_id'] = $post_id;
+                            $location_meta_grid['grid_id'] = $grid["grid_id"];
+                            $location_meta_grid['lng'] = $grid["longitude"];
+                            $location_meta_grid['lat'] = $grid["latitude"];
+                            $location_meta_grid['level'] = $grid["level_name"];
+                            $location_meta_grid['label'] = $grid["name"];
+
+                            $grid_meta_id = $geocoder->add_location_grid_meta( $post_id, $location_meta_grid );
+                        }
+                    }
+
+
+                    // new
+                    else {
+
+                        $geocoder->validate_location_grid_meta( $value );
+
+                        $grid = $geocoder->get_grid_id_by_lnglat( $value['lng'], $value['lat'] );
+                        if ( $grid ) {
+                            $value['grid_id'] = $grid['grid_id'];
+                            $grid_meta_id = $geocoder->add_location_grid_meta( $post_id, $value );
 
                         }
-
-                        // has grid_meta_id
-                        else if ( isset( $value["grid_meta_id"] ) &&  ! empty( $value["grid_meta_id"] ) ) {
-
-                            // Delete
-
-                            // Update
-
-                        }
-
-
-                        // is new but has provided grid_id
-                        else if ( isset( $value["grid_id"] ) && ! empty( $value["grid_id"] ) ) {
-                            $geocoder->validate_location_grid_meta( $value );
-
-                            if ( empty( $value["lng"] ) || empty( $value["lng"] ) ) {
-                                // Create with location_grid data values
-
-                            }
-                            else {
-                                // Create with provided values
-
-                            }
-                        }
-
-
-                        // new
-                        else {
-
-                            $geocoder->validate_location_grid_meta( $value );
-
-                            $grid = $geocoder->get_grid_id_by_lnglat( $value['lng'], $value['lat'] );
-                            if ( $grid ) {
-                                $value['grid_id'] = $grid['grid_id'];
-                                add_post_meta( $post_id, 'location_grid', $grid['grid_id'] );
-
-                                $grid_meta_id = $geocoder->add_location_grid_meta( $post_id, $value );
-
-                                add_post_meta( $post_id, 'location_grid_meta', $grid_meta_id );
-                            }
-                        }
-
-
-
+                    }
                 }
             } // end location_grid processing
 
-            // begin location_grid_meta
-            if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "location_meta" ) ){
-
-                dt_write_log( __FUNCTION__ );
-                dt_write_log('EXISTING POST');
-                dt_write_log( $existing_post );
-                dt_write_log('FIELDS');
-                dt_write_log( $fields );
-                dt_write_log('FIELD');
-                dt_write_log( $field );
-
-
-            }
         }
         return $fields;
     }

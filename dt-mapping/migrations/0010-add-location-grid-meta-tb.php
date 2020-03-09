@@ -47,6 +47,7 @@ class DT_Mapping_Module_Migration_0010 extends DT_Mapping_Module_Migration {
                 "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}dt_location_grid_meta` (
                     `grid_meta_id` BIGINT(22) unsigned NOT NULL AUTO_INCREMENT,
                     `post_id` BIGINT(20) NOT NULL,
+                    `postmeta_id_location_grid` BIGINT(20) NOT NULL,
                     `grid_id` BIGINT(22) NOT NULL,
                     `lng` VARCHAR(20) NOT NULL,
                     `lat` VARCHAR(20) NOT NULL,

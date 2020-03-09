@@ -1,24 +1,75 @@
 jQuery(document).ready(function(){
 
+  console.log(dtMapbox)
+
+  if ( dtMapbox.post.length !== 0 ) {
+    write_results_box()
+  }
   jQuery( '#new-mapbox-search' ).on( "click", function() {
     write_input_widget()
   });
 
 })
 
-function write_input_widget() {
-  jQuery('#mapbox-search-wrapper').empty().html(`
-  <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group">
-      <input id="mapbox-search" type="text" name="mapbox_search" placeholder="Search Location" />
-      <div class="input-group-button">
-          <button class="button hollow" id="mapbox-spinner-button" style="display:none;"><img src="${dtMapbox.spinner_url}" alt="spinner" style="width: 18px;" /></button>
-      </div>
-      <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
-  </div>
-  `)
+function write_results_box() {
+  if ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) {
 
-  // var countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua &amp; Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia &amp; Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central Arfrican Republic","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Cote D Ivoire","Croatia","Cuba","Curacao","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nauro","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","North Korea","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre &amp; Miquelon","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","St Kitts &amp; Nevis","St Lucia","St Vincent","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga","Trinidad &amp; Tobago","Tunisia","Turkey","Turkmenistan","Turks &amp; Caicos","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States of America","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Virgin Islands (US)","Yemen","Zambia","Zimbabwe"];
-  // mapbox_autocomplete_1(document.getElementById("mapbox-search"), countries);
+    jQuery('#mapbox-wrapper').append(`<div class="grid-x" id="location-grid-meta-results"></div>`)
+    let lgm_results = jQuery('#location-grid-meta-results')
+    jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
+      lgm_results.append(`<div class="cell small-10">
+                                <a data-open="map-reveal">${v.label}</a>
+                            </div>
+                            <div class="cell small-2 float-right">
+                                <button class="button clear delete-button mapbox-delete-button small" data-id="${v.grid_meta_id}">
+                                    <img src="${dtMapbox.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
+                                </button>
+                            </div>`)
+    })
+
+    console.log(dtMapbox.post.location_grid_meta)
+
+    jQuery( '.mapbox-delete-button' ).on( "click", function(e) {
+
+      let data = {
+        location_grid_meta: {
+          values: [
+            {
+              grid_meta_id: jQuery(this).data("id"),
+              delete: true,
+            }
+          ]
+        }
+      }
+
+      API.update_post( dtMapbox.post_type, dtMapbox.post_id, data ).then(function (response) {
+        console.log( response )
+        location.reload()
+      }).catch(err => { console.error(err) })
+
+    });
+
+    let masonGrid = jQuery('.grid')
+    masonGrid.masonry({
+      itemSelector: '.grid-item',
+      percentPosition: true
+    });
+
+  } /*end valid check*/
+}
+
+function write_input_widget() {
+  if ( jQuery('#mapbox-autocomplete').length === 0 ) {
+    jQuery('#mapbox-wrapper').prepend(`
+    <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group">
+        <input id="mapbox-search" type="text" name="mapbox_search" placeholder="Search Location" />
+        <div class="input-group-button">
+            <button class="button hollow" id="mapbox-spinner-button" style="display:none;"><img src="${dtMapbox.spinner_url}" alt="spinner" style="width: 18px;" /></button>
+        </div>
+        <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
+    </div>
+  `)
+  }
 
   window.currentfocus = -1
 
@@ -32,20 +83,20 @@ function write_input_widget() {
       console.log('down')
       window.currentfocus++;
       /*and and make the current item more visible:*/
-      addActive(x);
+      add_active(x);
     } else if (e.which === 38) { //up
       /*If the arrow UP key is pressed,
       decrease the currentFocus variable:*/
       console.log('up')
       window.currentfocus--;
       /*and and make the current item more visible:*/
-      addActive(x);
+      add_active(x);
     } else if (e.which === 13) {
       /*If the ENTER key is pressed, prevent the form from being submitted,*/
       e.preventDefault();
       if (window.currentfocus > -1) {
         /*and simulate a click on the "active" item:*/
-        closeAllLists(window.currentfocus);
+        close_all_lists(window.currentfocus);
       }
     } else {
       validate_timer()
@@ -114,7 +165,7 @@ function mapbox_autocomplete(address){
     })
 
     jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
-      closeAllLists(e.target.attributes['data-value'].value);
+      close_all_lists(e.target.attributes['data-value'].value);
     });
 
     // Set globals
@@ -124,23 +175,23 @@ function mapbox_autocomplete(address){
   }); // end get request
 } // end validate
 
-function addActive(x) {
+function add_active(x) {
   /*a function to classify an item as "active":*/
   if (!x) return false;
   /*start by removing the "active" class on all items:*/
-  removeActive(x);
+  remove_active(x);
   if (window.currentfocus >= x.length) window.currentfocus = 0;
   if (window.currentfocus < 0) window.currentfocus = (x.length - 1);
   /*add class "autocomplete-active":*/
   x[window.currentfocus].classList.add("mapbox-autocomplete-active");
 }
-function removeActive(x) {
+function remove_active(x) {
   /*a function to remove the "active" class from all autocomplete items:*/
   for (var i = 0; i < x.length; i++) {
     x[i].classList.remove("mapbox-autocomplete-active");
   }
 }
-function closeAllLists(selection_id) {
+function close_all_lists(selection_id) {
 
   jQuery('#mapbox-search').val(window.mapbox_result_features[selection_id].place_name)
   jQuery('#mapbox-autocomplete-list').empty()
@@ -162,10 +213,7 @@ function closeAllLists(selection_id) {
 
   API.update_post( dtMapbox.post_type, dtMapbox.post_id, data ).then(function (response) {
     console.log( response )
-    // location.reload()
+    location.reload()
   }).catch(err => { console.error(err) })
 
-
 }
-
-
