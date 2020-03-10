@@ -981,20 +981,10 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
 
             return $filtered_array;
         }
-
-        public function get_location_grid_meta( $type, array $args ) { // @todo not finished
+        
+        public static function get_location_grid_meta_by_id( int $grid_meta_id ) {
             global $wpdb;
-
-            switch ( $type ) {
-                case 'grid_meta_id':
-
-                    break;
-
-                default:
-                    return [];
-                    break;
-            }
-
+            return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $grid_meta_id ), ARRAY_A );
         }
 
         public function delete_location_grid_meta( int $post_id, $type, int $value, array $existing_post = null ) {
@@ -1024,16 +1014,6 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
 
             return false;
         }
-
-        public function update_location_grid_meta( $grid_meta_id ) {
-
-        }
-
-        public static function get_location_grid_meta_by_id( int $grid_meta_id ) {
-            global $wpdb;
-            return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $grid_meta_id ), ARRAY_A );
-        }
-
 
         public function add_location_grid_meta( int $post_id, array $location_grid_meta ) {
             global $wpdb;
