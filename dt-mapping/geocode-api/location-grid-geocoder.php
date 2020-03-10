@@ -981,7 +981,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
 
             return $filtered_array;
         }
-        
+
         public static function get_location_grid_meta_by_id( int $grid_meta_id ) {
             global $wpdb;
             return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $grid_meta_id ), ARRAY_A );
