@@ -1,7 +1,7 @@
 jQuery(document).ready(function(){
-
   console.log(dtMapbox)
 
+  // load widget
   if ( dtMapbox.post.length !== 0 ) {
     write_results_box()
   }
@@ -18,47 +18,54 @@ function write_results_box() {
     let lgm_results = jQuery('#location-grid-meta-results')
     jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
       lgm_results.append(`<div class="cell small-10">
-                                <a data-open="map-reveal">${v.label}</a>
-                            </div>
-                            <div class="cell small-2 float-right">
-                                <button class="button clear delete-button mapbox-delete-button small" data-id="${v.grid_meta_id}">
-                                    <img src="${dtMapbox.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
-                                </button>
-                            </div>`)
+                             ${v.label}
+                          </div>
+                          <div class="cell small-2 float-right">
+                              <button class="button clear delete-button mapbox-delete-button small" data-id="${v.grid_meta_id}">
+                                  <img src="${dtMapbox.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
+                              </button>
+                          </div>`)
     })
 
-    console.log(dtMapbox.post.location_grid_meta)
+    delete_location_listener()
 
-    jQuery( '.mapbox-delete-button' ).on( "click", function(e) {
-
-      let data = {
-        location_grid_meta: {
-          values: [
-            {
-              grid_meta_id: jQuery(this).data("id"),
-              delete: true,
-            }
-          ]
-        }
-      }
-
-      API.update_post( dtMapbox.post_type, dtMapbox.post_id, data ).then(function (response) {
-        console.log( response )
-        location.reload()
-      }).catch(err => { console.error(err) })
-
-    });
-
-    let masonGrid = jQuery('.grid')
-    masonGrid.masonry({
-      itemSelector: '.grid-item',
-      percentPosition: true
-    });
+    reset_tile_spacing()
 
   } /*end valid check*/
 }
 
+function delete_location_listener() {
+  jQuery( '.mapbox-delete-button' ).on( "click", function(e) {
+
+    let data = {
+      location_grid_meta: {
+        values: [
+          {
+            grid_meta_id: jQuery(this).data("id"),
+            delete: true,
+          }
+        ]
+      }
+    }
+
+    API.update_post( dtMapbox.post_type, dtMapbox.post_id, data ).then(function (response) {
+      console.log( response )
+      location.reload()
+    }).catch(err => { console.error(err) })
+
+  });
+}
+
+function reset_tile_spacing() {
+  let masonGrid = jQuery('.grid')
+  masonGrid.masonry({
+    itemSelector: '.grid-item',
+    percentPosition: true
+  });
+}
+
 function write_input_widget() {
+
   if ( jQuery('#mapbox-autocomplete').length === 0 ) {
     jQuery('#mapbox-wrapper').prepend(`
     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group">
@@ -104,12 +111,7 @@ function write_input_widget() {
 
   })
 
-
-  let masonGrid = jQuery('.grid')
-  masonGrid.masonry({
-    itemSelector: '.grid-item',
-    percentPosition: true
-  });
+  reset_tile_spacing()
 
 }
 
@@ -213,7 +215,27 @@ function close_all_lists(selection_id) {
 
   API.update_post( dtMapbox.post_type, dtMapbox.post_id, data ).then(function (response) {
     console.log( response )
-    location.reload()
+
+    dtMapbox.post = response
+    jQuery('#mapbox-wrapper').empty()
+    write_results_box()
+
   }).catch(err => { console.error(err) })
 
+}
+
+function get_label_without_country( label, feature ) {
+
+  if ( feature.context !== undefined ) {
+    let newLabel = ''
+    jQuery.each( feature.context, function(i,v) {
+
+      if ( v.id.substring(0,7) === 'country' ) {
+        label = label.replace( ', ' + v.text, '' ).trim()
+      }
+
+    } )
+  }
+
+  return label
 }
