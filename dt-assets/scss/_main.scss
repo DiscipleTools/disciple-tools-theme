@@ -132,14 +132,14 @@ NAVIGATION STYLES
     .submenu.menu.vertical.is-dropdown-submenu.js-dropdown-active {
         display: block;
     }
+}
 
-    .notification-count {
-        display: none;
-        vertical-align: top;
-        position: relative;
-        top: -5px;
-        left: -15px;
-    }
+.notification-count {
+    display: none;
+    vertical-align: top;
+    position: relative;
+    top: -5px;
+    left: -15px;
 }
 .add-new-items-dropdown {
     background-color: #3f729b;
@@ -629,6 +629,10 @@ html[dir='rtl'] {
 
     .float-left {
         float: right !important;
+    }
+    .notification-count {
+        right: -15px;
+        left: 0;
     }
 }
 
