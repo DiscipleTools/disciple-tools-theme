@@ -1197,7 +1197,7 @@ class Disciple_Tools_Posts
                 foreach ( $field["values"] as $value ){
 
                     // delete
-                    if ( isset($value["delete"]) && $value["delete"] == true ) {
+                    if ( isset( $value["delete"] ) && $value["delete"] == true ) {
                         $geocoder->delete_location_grid_meta( $post_id, 'grid_meta_id', $value["grid_meta_id"], $existing_post );
                     }
 
@@ -1234,7 +1234,6 @@ class Disciple_Tools_Posts
                     }
                 }
             } // end location_grid processing
-
         }
         return $fields;
     }

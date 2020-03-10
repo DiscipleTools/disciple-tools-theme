@@ -260,7 +260,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             if ( file_exists( get_template_directory() . '/dt-mapping/geocode-api/mapbox.js' ) ) {
                 global $post;
                 if ( is_single() ) {
-                    $post_record = DT_Posts::get_post(get_post_type(), $post->ID );
+                    $post_record = DT_Posts::get_post( get_post_type(), $post->ID );
                 } else {
                     $post_record = false;
                 }
@@ -280,7 +280,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         )
                     )
                 );
-                add_action('wp_head', [ 'DT_Mapbox_API', 'mapbox_search_widget_css' ] );
+                add_action( 'wp_head', [ 'DT_Mapbox_API', 'mapbox_search_widget_css' ] );
             }
         }
 

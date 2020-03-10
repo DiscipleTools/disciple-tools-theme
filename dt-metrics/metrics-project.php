@@ -38,12 +38,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function add_menu( $content ) {
-        $maps = '';
-        if ( DT_Mapbox_API::get_key() ) {
-            $maps = '<li><a href="'. site_url( '/metrics/project/' ) .'#contacts_map" onclick="contacts_map()">'. esc_html__( 'Contacts Map', 'disciple_tools' ) .'</a></li>';
-        }
-
-
         $content .= '
             <li><a href="">' .  esc_html__( 'Project', 'disciple_tools' ) . '</a>
                 <ul class="menu vertical nested" id="project-menu">
@@ -51,7 +45,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                     <li><a href="'. site_url( '/metrics/project/' ) .'#group_tree" onclick="project_group_tree()">'. esc_html__( 'Group Tree', 'disciple_tools' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#baptism_tree" onclick="project_baptism_tree()">'. esc_html__( 'Baptism Tree', 'disciple_tools' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#coaching_tree" onclick="project_coaching_tree()">'. esc_html__( 'Coaching Tree', 'disciple_tools' ) .'</a></li>
-                    '.$maps.'
                 </ul>
             </li>
             ';
@@ -82,18 +75,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             ]
         );
 
-        if ( ! empty( DT_Mapbox_API::get_key() ) ) {
 
-            if ( class_exists( 'DT_Mapbox_API' ) ) {
-                DT_Mapbox_API::load_mapbox_header_scripts();
-            }
-            else if ( ! class_exists( 'DT_Mapbox_API' ) && file_exists( get_stylesheet_directory() . 'dt-mapping/geocode-api/mapbox-api.php' ) ) {
-                require_once( get_stylesheet_directory() . 'dt-mapping/geocode-api/mapbox-api.php' );
-
-                DT_Mapbox_API::load_mapbox_header_scripts();
-
-            }
-        }
     }
 
     public function data() {
@@ -167,54 +149,8 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 ],
             ]
         );
-        register_rest_route(
-            $namespace, '/metrics/project/contacts_map', [
-                [
-                    'methods'  => WP_REST_Server::READABLE,
-                    'callback' => [ $this, 'contacts_map' ],
-                ],
-            ]
-        );
+
     }
-
-    public function contacts_map( WP_REST_Request $request ) {
-        if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
-        }
-
-        global $wpdb;
-        $results = $wpdb->get_results("
-            SELECT lg.longitude as lng, lg.latitude as lat, p.meta_value as location_grid
-            FROM $wpdb->postmeta as p 
-                INNER JOIN $wpdb->dt_location_grid as lg ON p.meta_value=lg.grid_id 
-                JOIN $wpdb->posts as ps ON ps.ID=p.post_id
-            WHERE p.meta_key = 'location_grid' AND ps.post_type = 'contacts'
-            ", ARRAY_A );
-
-        $features = [];
-        foreach ( $results as $result ) {
-            $features[] = array(
-                'type' => 'Feature',
-                'properties' => array( "location_grid" => $result['location_grid'] ),
-                'geometry' => array(
-                    'type' => 'Point',
-                    'coordinates' => array(
-                        $result['lng'],
-                        $result['lat'],
-                        1
-                    ),
-                ),
-            );
-        }
-
-        $new_data = array(
-            'type' => 'FeatureCollection',
-            'features' => $features,
-        );
-
-        return $new_data;
-    }
-
 
     public function tree( WP_REST_Request $request ) {
         if ( !$this->has_permission() ){

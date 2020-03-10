@@ -147,6 +147,19 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 'data' => $this->workers(),
             ]
         );
+
+        if ( ! empty( DT_Mapbox_API::get_key() ) ) {
+
+            if ( class_exists( 'DT_Mapbox_API' ) ) {
+                DT_Mapbox_API::load_mapbox_header_scripts();
+            }
+            else if ( ! class_exists( 'DT_Mapbox_API' ) && file_exists( get_stylesheet_directory() . 'dt-mapping/geocode-api/mapbox-api.php' ) ) {
+                require_once( get_stylesheet_directory() . 'dt-mapping/geocode-api/mapbox-api.php' );
+
+                DT_Mapbox_API::load_mapbox_header_scripts();
+
+            }
+        }
     }
 
     public function workers() {
