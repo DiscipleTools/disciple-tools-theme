@@ -726,7 +726,7 @@ class Disciple_Tools_Notifications
         // load the local for the destination usr so emails are sent our correctly.
         $destination_user = get_user_by( 'id', $notification["user_id"] );
 
-        $destination_user_locale = get_user_locale( $notification["user_id"] );
+        $destination_user_locale = !empty( $destination_user->locale ) ? $destination_user->locale : Disciple_Tools::instance()->site_locale;
 
         add_filter( "determine_locale", function ( $locale ) use ( $destination_user_locale ) {
             if ( $destination_user_locale ){
