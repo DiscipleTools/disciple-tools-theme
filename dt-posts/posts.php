@@ -1206,9 +1206,10 @@ class Disciple_Tools_Posts
                         $grid = $geocoder->query_by_grid_id( $value["grid_id"] );
                         if ( $grid ) {
                             $location_meta_grid = [];
-                            $geocoder->validate_location_grid_meta( $location_meta_grid );
 
+                            $geocoder->validate_location_grid_meta( $location_meta_grid );
                             $location_meta_grid['post_id'] = $post_id;
+                            $location_meta_grid['post_type'] = get_post_type($post_id);
                             $location_meta_grid['grid_id'] = $grid["grid_id"];
                             $location_meta_grid['lng'] = $grid["longitude"];
                             $location_meta_grid['lat'] = $grid["latitude"];

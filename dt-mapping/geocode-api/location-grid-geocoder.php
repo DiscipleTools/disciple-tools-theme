@@ -956,6 +956,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 $location_grid_meta = [
                     'grid_meta_id' => '',
                     'post_id' => '',
+                    'post_type' => '',
                     'grid_id' => '',
                     'lng' => '',
                     'lat' => '',
@@ -972,6 +973,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
 
             $filtered_array['grid_meta_id'] = isset( $location_grid_meta['grid_meta_id'] ) ? sanitize_text_field( wp_unslash( $location_grid_meta['grid_meta_id'] ) ) : '';
             $filtered_array['post_id'] = isset( $location_grid_meta['post_id'] ) ? sanitize_text_field( wp_unslash( $location_grid_meta['post_id'] ) ) : '';
+            $filtered_array['post_type'] = isset( $location_grid_meta['post_type'] ) ? sanitize_text_field( wp_unslash( $location_grid_meta['post_type'] ) ) : '';
             $filtered_array['grid_id'] = isset( $location_grid_meta['grid_id'] ) ? sanitize_text_field( wp_unslash( $location_grid_meta['grid_id'] ) ) : '';
             $filtered_array['lng'] = isset( $location_grid_meta['lng'] ) ? sanitize_text_field( wp_unslash( $location_grid_meta['lng'] ) ) : '';
             $filtered_array['lat'] = isset( $location_grid_meta['lat'] ) ? sanitize_text_field( wp_unslash( $location_grid_meta['lat'] ) ) : '';
@@ -1049,6 +1051,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
 
             $data = [
                 'post_id' => $post_id,
+                'post_type' => empty( $location_grid_meta['post_type'] ) ? get_post_type( $post_id ) : $location_grid_meta['post_type'],
                 'postmeta_id_location_grid' => $postmeta_id_location_grid,
                 'grid_id' => $location_grid_meta['grid_id'],
                 'lng' => $location_grid_meta['lng'],
@@ -1060,6 +1063,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
 
             $format = [
                 '%d',
+                '%s',
                 '%d',
                 '%d',
                 '%s',
