@@ -110,7 +110,14 @@ jQuery(document).ready(function($) {
     <div class="activity-text">
     <% _.forEach(activity, function(a){
         if (a.comment){ %>
-            <div dir="auto" class="comment-bubble <%- a.comment_ID %>" style="white-space: pre-wrap"><div dir=auto><%= a.text.replace(/\\n/g, '</div><div dir=auto>') /* not escaped on purpose */ %></div></div>
+            <div dir="auto" class="comment-bubble <%- a.comment_ID %>">
+              <div dir=auto><%= a.text.replace(/\\n/g, '</div><div dir=auto>') /* not escaped on purpose */ %></div>
+              <% if ( a.comment_ID ) { %>
+                <div class="translation-bubble  <%- a.comment_ID %>" dir=auto></div>
+                <a class="translate-button showTranslation <%- a.comment_ID %>" onClick="translateText('<%- a.text.replace(/\\n/g, ' ') %>', 'auto', '${langcode}',  '<%- a.comment_ID %>')">See Translation</a>
+                <a class="translate-button hideTranslation <%- a.comment_ID %> hide" onClick="translateHide('<%- a.comment_ID %>')">Hide Translation</a>
+              <% } %>
+            </div>
             <p class="comment-controls">
                <% if ( a.comment_ID ) { %>
                   <a class="open-edit-comment" data-id="<%- a.comment_ID %>" style="margin-right:5px">
@@ -511,3 +518,25 @@ function unescapeHtml(safe) {
   };
 
 });
+
+function translateText(sourceText, sourceLang, targetLang, commentID) {
+  var url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl="
+            + sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
+
+  var result = fetch(url)
+  .then((response) => {
+    return response.json();
+  }).then((result) => {
+    console.log(result);
+   jQuery(`.translation-bubble.${commentID}`).append(result[0][0][0]);
+   jQuery(`.translate-button.hideTranslation.hide.${commentID}`).removeClass('hide');
+   jQuery(`.translate-button.showTranslation.${commentID}`).addClass('hide');
+
+  });
+}
+
+function translateHide(commentID) {
+  jQuery(`.translation-bubble.${commentID}`).empty();
+  jQuery(`.translate-button.hideTranslation.${commentID}`).addClass('hide');
+   jQuery(`.translate-button.showTranslation.${commentID}`).removeClass('hide');
+}
