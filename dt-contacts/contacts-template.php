@@ -96,6 +96,7 @@ function render_field_for_display( $field_key, $fields, $post ){
         <?php elseif ( $field_type === "date" ) :?>
             <input type="text" class="date-picker dt_date_picker"
                    id="<?php echo esc_html( $field_key ) ?>"
+                   autocomplete="off"
                    value="<?php echo esc_html( isset( $post[$field_key] ) ? $post[$field_key]["formatted"] : '' )?>">
         <?php elseif ( $field_type === "connection" ) :?>
             <div id="<?php echo esc_attr( $field_key . '_connection' ) ?>" class="dt_typeahead">
@@ -105,7 +106,24 @@ function render_field_for_display( $field_key, $fields, $post ){
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-<?php echo esc_html( $field_key ) ?>"
-                                       name="<?php echo esc_html( $field_key ) ?>[query]" placeholder="<?php esc_html_e( "Search", 'disciple_tools' ); echo esc_html( ' ' . $fields[$field_key]['name'] )?>  "
+                                       name="<?php echo esc_html( $field_key ) ?>[query]"
+                                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
+                                       autocomplete="off">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php elseif ( $field_type === "location" ) :?>
+            <div class="dt_location_grid">
+                <var id="location_grid-result-container" class="result-container"></var>
+                <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
+                    <div class="typeahead__container">
+                        <div class="typeahead__field">
+                            <span class="typeahead__query">
+                                <input class="js-typeahead-location_grid input-height"
+                                       name="location_grid[query]"
+                                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                        autocomplete="off">
                             </span>
                         </div>

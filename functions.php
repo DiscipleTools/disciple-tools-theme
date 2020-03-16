@@ -37,7 +37,7 @@ else {
         require_once( get_template_directory() . '/dt-core/admin/class-roles.php' );
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
-
+        disciple_tools();
         /**
          * We want to make sure migrations are run on updates.
          *
@@ -45,12 +45,12 @@ else {
          */
         try {
             require_once( get_template_directory() . '/dt-core/admin/class-migration-engine.php' );
-            Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
+            Disciple_Tools_Migration_Engine::migrate( Disciple_Tools::instance()->migration_number );
         } catch ( Throwable $e ) {
             new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
         }
 
-        disciple_tools();
+
 
         /**
          * Load Language Files
@@ -100,7 +100,8 @@ else {
         public $core = [];
         public $hooks = [];
         public $logging = [];
-        public $user_local;
+        public $user_locale;
+        public $site_locale;
 
         /**
          * Disciple_Tools The single instance of Disciple_Tools.
@@ -141,8 +142,10 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '0.26.0';
-            $this->migration_number = 27;
+            $this->version = '0.28.0';
+            $this->migration_number = 29;
+
+
 
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -154,7 +157,8 @@ else {
             $this->admin_css_url = get_template_directory_uri() . '/dt-core/admin/css/';
             $this->admin_css_path = get_template_directory() . '/dt-core/admin/css/';
 
-            $this->user_local = get_user_locale();
+            $this->user_locale = get_user_locale();
+            $this->site_locale = get_locale();
 
             set_up_wpdb_tables();
 
@@ -223,7 +227,11 @@ else {
              * @return string
              */
             add_filter( 'locale', function() {
-                return $this->user_local;
+                if ( is_admin() ) {
+                    return $this->site_locale;
+                } else {
+                    return $this->user_locale;
+                }
             } );
 
             /**
@@ -321,6 +329,8 @@ else {
             if ( !$is_rest ){
                 require_once( get_template_directory() . '/dt-users/users-product-tour.php' );
             }
+            require_once( get_template_directory() . '/dt-users/user-management.php' );
+            new DT_User_Management();
 
             /**
              * dt-notifications

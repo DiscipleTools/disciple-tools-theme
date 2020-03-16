@@ -764,7 +764,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             $fields['site1'] = [
                 'name'        => __( 'Site 1' ),
-                'description' => __( 'Use just the host name. Example: www.website.com' ),
+                'description' => __( 'Use the host name or the path of the instance. Example: www.website.com or website.com/site1' ),
                 'type'        => 'url',
                 'default'     => '',
                 'section'     => 'site',
@@ -772,7 +772,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             $fields['site2'] = [
                 'name'        => __( 'Site 2' ),
-                'description' => __( 'Use just the host name. Example: www.website.com' ),
+                'description' => __( 'Use the host name or the path of the instance. Example: www.website.com or website.com/site1' ),
                 'type'        => 'url',
                 'default'     => '',
                 'section'     => 'site',
@@ -1228,9 +1228,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             foreach ( $keys as $key => $array ) {
                 $current_hour = md5( $key . current_time( 'Y-m-dH', 1 ) );
-                $past = date( 'Y-m-dH', strtotime( current_time( 'Y-m-d H:i:s', 1 ) . '-1 hour' ) );
+                $past = gmdate( 'Y-m-dH', strtotime( current_time( 'Y-m-d H:i:s', 1 ) . '-1 hour' ) );
                 $past_hour = md5( $key . $past );
-                $next = date( 'Y-m-dH', strtotime( current_time( 'Y-m-d H:i:s', 1 ) .  '+1 hour' ) );
+                $next = gmdate( 'Y-m-dH', strtotime( current_time( 'Y-m-d H:i:s', 1 ) .  '+1 hour' ) );
                 $next_hour = md5( $key . $next );
 
                 if ( $current_hour == $transfer_token

@@ -53,20 +53,19 @@ function load_settings_locations( reload = false ) {
 
     let cl = jQuery('#current_locations')
 
-    if ( wpApiSettingsPage.custom_data.current_locations !== undefined && ! reload ) {
-        cl.append(`<strong>Current Locations:</strong><br>`)
+      if ( wpApiSettingsPage.custom_data.current_locations !== undefined && ! reload ) {
+        cl.append(`<strong>${_.escape(wpApiSettingsPage.translations.responsible_for_locations)}:</strong><br>`)
         jQuery.each( wpApiSettingsPage.custom_data.current_locations, function(i,v) {
-            cl.append(`${v.name}, ${v.country_code} <a style="padding:0 10px;" onclick="delete_location(${v.grid_id})"><img src="${wpApiSettingsPage.template_dir}/dt-assets/images/invalid.svg"></a><br>`)
+            cl.append(`${_.escape(v.name)}, ${_.escape(v.country_code)} <a style="padding:0 10px;" onclick="delete_location(${_.escape(v.grid_id)})"><img src="${_.escape(wpApiSettingsPage.template_dir)}/dt-assets/images/invalid.svg"></a><br>`)
         })
         cl.append(`<br>`)
     } else {
 
         makeRequest('get', 'users/current_locations', { "contact_id": wpApiSettingsPage.associated_contact_id } ).done(data => {
-            console.log( data )
             if (data ) {
-                cl.append(`<strong>Current Locations:</strong><br>`)
+                cl.append(`<strong>${_.escape(wpApiSettingsPage.translations.responsible_for_locations)}:</strong><br>`)
                 jQuery.each( data, function(i,v) {
-                    cl.append(`${v.name}, ${v.country_code} <a style="padding:0 10px;" onclick="delete_location(${v.grid_id})"><img src="${wpApiSettingsPage.template_dir}/dt-assets/images/invalid.svg"></a><br>`)
+                    cl.append(`${_.escape(v.name)}, ${_.escape(v.country_code)} <a style="padding:0 10px;" onclick="delete_location(${_.escape(v.grid_id)})"><img src="${_.escape(wpApiSettingsPage.template_dir)}/dt-assets/images/invalid.svg"></a><br>`)
                 })
                 cl.append(`<br>`)
             }
@@ -151,7 +150,7 @@ let display_dates_unavailable = (list = [], first_run )=>{
         <td>${_.escape(range.start_date)}</td>
         <td>${_.escape(range.end_date)}</td>
         <td>
-            <button class="button hollow tiny alert remove_dates_unavailable" data-id="${_.escape(range.id)}">
+            <button class="button hollow tiny alert remove_dates_unavailable" data-id="${_.escape(range.id)}" style="margin-bottom: 0">
             <i class="fi-x"></i> ${_.escape( wpApiSettingsPage.translations.delete )}</button>
         </td>
       </tr>`

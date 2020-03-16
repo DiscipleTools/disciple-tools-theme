@@ -1,17 +1,17 @@
 <div class="reveal" id="create-contact-modal" data-reveal data-reset-on-close>
 
-    <p class="lead"><?php esc_html_e( 'Create Contact', 'disciple_tools' )?></p>
+    <h3><?php esc_html_e( 'Create Contact', 'disciple_tools' )?></h3>
 
     <form class="js-create-contact hide-after-contact-create">
         <label for="title">
-            <?php esc_html_e( "Name of Contact", "disciple_tools" ); ?>
+            <?php esc_html_e( "Name", "disciple_tools" ); ?>
         </label>
-        <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
+        <input name="title" type="text" placeholder="<?php echo esc_html__( "Name", 'disciple_tools' ); ?>" required aria-describedby="name-help-text">
 
         <div>
-            <button class="button loader js-create-contact-button" type="submit"><?php esc_html_e( "Create Contact", "disciple_tools" ); ?></button>
+            <button class="button loader js-create-contact-button" type="submit"><?php echo esc_html__( "Create Contact", 'disciple_tools' ); ?></button>
             <button class="button button-cancel clear hide-after-contact-create" data-close aria-label="Close reveal" type="button">
-                <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+                <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
             </button>
         </div>
         <p style="color: red" class="error-text"></p>
@@ -27,13 +27,7 @@
         </a>
         <button class="button reveal-after-contact-create button-cancel clear" data-close type="button" id="create-contact-return" style="display: none">
             <?php
-            if ( is_singular( "contacts" )){
-                esc_html_e( 'Return to Contact', 'disciple_tools' );
-            } elseif ( is_singular( "groups" )){
-                esc_html_e( 'Return to Group', 'disciple_tools' );
-            } else {
-                esc_html_e( 'Return', 'disciple_tools' );
-            }
+                echo esc_html( sprintf( _x( "Back to %s", "back to record", 'disciple_tools' ), DT_Posts::get_label_for_post_type( "contacts", false ) ) );
             ?>
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">

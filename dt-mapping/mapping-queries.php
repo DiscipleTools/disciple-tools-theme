@@ -801,7 +801,7 @@ class Disciple_Tools_Mapping_Queries {
                         JOIN $wpdb->posts as pp ON p.post_id=pp.ID
                         LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value             
                         LEFT JOIN $wpdb->postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'corresponds_to_user'
-                        LEFT JOIN wp_postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'group_type'
+                        LEFT JOIN $wpdb->postmeta as gt ON gt.post_id=p.post_id AND gt.meta_key = 'group_type'
                     WHERE p.meta_key = 'location_grid' AND g.admin0_grid_id != ''
                 ) as t1
                 GROUP BY admin0_grid_id, type
@@ -1071,5 +1071,32 @@ class Disciple_Tools_Mapping_Queries {
             }
         }
         return $prepared;
+    }
+
+    public static function get_full_name_by_grid_id( $grid_id ) {
+        $full_name = '';
+
+        // get record and level
+        $grid_record = self::get_drilldown_by_grid_id( $grid_id );
+        if ( empty( $grid_record ) ) {
+            return $full_name;
+        }
+
+        switch ( $grid_record['level_name'] ) {
+            case 'admin0':
+                $full_name = $grid_record['name'];
+                break;
+            case 'admin1':
+                $full_name = $grid_record['name'] . ', ' . $grid_record['admin0_name'];
+                break;
+            case 'admin2':
+            case 'admin3':
+            case 'admin4':
+            default:
+                $full_name = $grid_record['name'] . ', ' . $grid_record['admin1_name'] . ', ' . $grid_record['admin0_name'];
+                break;
+        }
+
+        return $full_name;
     }
 }

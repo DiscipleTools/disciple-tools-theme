@@ -58,7 +58,7 @@ function dt_set_permalink_structure() {
 function dt_warn_user_about_permalink_settings() {
     ?>
     <div class="error notices">
-        <p><?php esc_html_e( 'You may only set your permalink settings to "Post name"', 'disciple_tools' ); ?></p>
+        <p>You may only set your permalink settings to "Post name"'</p>
     </div>
     <?php
 }
@@ -503,49 +503,21 @@ function dt_get_site_custom_lists( string $list_title = null ) {
         'personal'           => [
             'label'       => __( 'Personal', 'disciple_tools' ),
             'key'         => 'personal',
-            'description' => __( 'Personal contacts.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'web'           => [
             'label'       => __( 'Web', 'disciple_tools' ),
             'key'         => 'web',
-            'description' => __( 'Contacts coming from the website.', 'disciple_tools' ),
-            'enabled'     => true,
-        ],
-        'phone'         => [
-            'label'       => __( 'Phone', 'disciple_tools' ),
-            'key'         => 'phone',
-            'description' => __( 'Contacts coming from phone.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'facebook'      => [
             'label'       => __( 'Facebook', 'disciple_tools' ),
             'key'         => 'facebook',
-            'description' => __( 'Contacts coming from Facebook.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'twitter'       => [
             'label'       => __( 'Twitter', 'disciple_tools' ),
             'key'         => 'twitter',
-            'description' => __( 'Contacts coming from Twitter.', 'disciple_tools' ),
-            'enabled'     => true,
-        ],
-        'linkedin'      => [
-            'label'       => __( 'LinkedIn', 'disciple_tools' ),
-            'key'         => 'linkedin',
-            'description' => __( 'Contacts coming from the LinkedIn.', 'disciple_tools' ),
-            'enabled'     => true,
-        ],
-        'referral'      => [
-            'label'       => __( 'Referral', 'disciple_tools' ),
-            'key'         => 'referral',
-            'description' => __( 'Contacts coming from relational network.', 'disciple_tools' ),
-            'enabled'     => true,
-        ],
-        'advertisement' => [
-            'label'       => __( 'Advertisement', 'disciple_tools' ),
-            'key'         => 'advertisement',
-            'description' => __( 'Contacts coming an advertisement campaign.', 'disciple_tools' ),
             'enabled'     => true,
         ],
         'transfer' => [
@@ -642,35 +614,6 @@ function dt_site_options_upgrade_version( string $name ) {
     return update_option( $name, $new_options, "no" );
 }
 
-/**
- * Prepare input "type" from custom list types
- *
- * @param $type
- *
- * @return string
- */
-function dt_prepare_user_fields_types_for_input( $type ) {
-    switch ( $type ) {
-        case 'phone':
-            return 'tel';
-            break;
-        case 'email':
-            return 'email';
-            break;
-        case 'social':
-            return 'text';
-            break;
-        case 'address':
-            return 'text';
-            break;
-        case 'other':
-            return 'text';
-            break;
-        default:
-            return 'text';
-            break;
-    }
-}
 
 /**
  * @param $approved
@@ -690,14 +633,17 @@ function dt_custom_dir_attr( $lang ){
     }
 
     $current_user = wp_get_current_user();
-    $user_language = $current_user->locale;
+    $user_language = get_user_locale( $current_user->ID );
+    /* translators: If your language is written right to left make this tranlation as 'rtl', if it is written ltr make the translated text 'ltr' or leave it blank */
     $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
+
     if ( $dir === 'ltr' || $dir === 'text direction' || !$dir || empty( $dir ) ){
         $dir = "ltr";
     } else {
         $dir = "rtl";
     }
     $dir_attr = 'dir="' . $dir . '"';
+
     return 'lang="' . $user_language .'" ' .$dir_attr;
 }
 
@@ -744,7 +690,7 @@ function dt_wpmu_signup_blog_notification_email( $message, $domain, $path, $titl
 function login_error_messages( $message ){
     global $errors;
     if ( isset( $errors->errors['invalid_username'] ) || isset( $errors->errors['incorrect_password'] ) ) {
-        $message = __( '<strong>ERROR</strong>: Invalid username/password combination.', 'disciple_tools' ) . ' ' .
+        $message = __( 'ERROR: Invalid username/password combination.', 'disciple_tools' ) . ' ' .
         sprintf(
             ( '<a href="%1$s" title="%2$s">%3$s</a>?' ),
             site_url( 'wp-login.php?action=lostpassword', 'login' ),

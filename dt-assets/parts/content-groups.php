@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
+$fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
 ?>
 <div class="bordered-box list-box">
     <!-- content-groups -->
-    <label class="section-header">
+    <div class="section-header">
         <span>
             <?php esc_html_e( 'Groups List', 'disciple_tools' )?>
             <span id="list-loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
@@ -11,7 +12,7 @@ declare(strict_types=1);
         <button class="help-button float-right" data-section="groups-list-help-text">
             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
         </button>
-    </label>
+    </div>
     <span style="display: inline-block" class="filter-result-text"></span>
     <div style="display: inline-block" id="current-filters"></div>
     <div class="js-sort-dropdown" style="display: inline-block">
@@ -49,11 +50,11 @@ declare(strict_types=1);
         <thead>
             <tr class="sortable">
                 <th data-id="name" data-priority="2"><?php esc_html_e( "Name", "disciple_tools" ); ?></th>
-                <th data-id="group_status" data-sort="asc"><?php esc_html_e( "Status", "disciple_tools" ); ?></th>
-                <th data-id="group_type"><?php esc_html_e( "Type", "disciple_tools" ); ?></th>
-                <th data-id="members"><?php esc_html_e( "Members", "disciple_tools" ); ?></th>
-                <th data-id="leaders"><?php esc_html_e( "Leader", "disciple_tools" ); ?></th>
-                <th data-id="location_grid"><?php esc_html_e( "Location", "disciple_tools" ); ?></th>
+                <th data-id="group_status" data-sort="asc"><?php echo esc_html( $fields["group_status"]["name"] ) ?></th>
+                <th data-id="group_type"><?php echo esc_html( $fields["group_type"]["name"] ) ?></th>
+                <th data-id="members"><?php echo esc_html( $fields["member_count"]["name"] ) ?></th>
+                <th data-id="leaders"><?php echo esc_html( $fields["leaders"]["name"] ) ?></th>
+                <th data-id="location_grid"><?php echo esc_html( $fields["location_grid"]["name"] ) ?></th>
             </tr>
         </thead>
         <tbody>

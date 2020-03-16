@@ -1,30 +1,10 @@
 (function($, wpApiListSettings, Foundation) {
   "use strict";
 
-  function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) === ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) === 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
-  let cookie = getCookie("last_view");
-  let cachedFilter = {}
-  try {
-    cachedFilter = JSON.parse(cookie)
-  } catch (e) {
-    cachedFilter = {}
-  }
+  let cachedFilter = window.SHAREDFUNCTIONS.get_json_cookie("last_view")
+
   $.urlParam = function (name) {
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+    let results = new RegExp('[\?&]' + name + '=([^&#]*)')
       .exec(window.location.search);
 
     return (results !== null) ? results[1] || 0 : false;
@@ -32,18 +12,12 @@
 
   let tabQueryParam = $.urlParam( 'list-tab' )
 
-  let showClosedCookie = getCookie("show_closed")
+  let showClosedCookie = window.SHAREDFUNCTIONS.getCookie("show_closed")
   let showClosedCheckbox = $('#show_closed')
+  let closedSwitch = $(".show-closed-switch");
   let currentFilter = {}
   let items = []
   let customFilters = []
-  let savedFilters = wpApiListSettings.filters || {[wpApiListSettings.current_post_type]:[]}
-  if (Array.isArray(savedFilters)){
-    savedFilters = {}
-  }
-  if ( !savedFilters[wpApiListSettings.current_post_type]){
-    savedFilters[wpApiListSettings.current_post_type] = []
-  }
   let filterToSave = ""
   let filterToDelete = ""
   let filterToEdit = ""
@@ -51,9 +25,11 @@
   let newFilterLabels = []
   let loading_spinner = $("#list-loading-spinner")
   let count_spinner = $("#count-loading-spinner")
+  let filter_accordions = $('#list-filter-tabs')
   let tableHeaderRow = $('.js-list thead .sortable th')
   let getContactsPromise = null
   let selectedFilterTab = "all"
+  let old_filters = JSON.stringify(wpApiListSettings.filters)
 
   function get_contacts( offset = 0, sort ) {
     loading_spinner.addClass("active")
@@ -65,12 +41,19 @@
       data.sort = sort
       data.offset = 0
     } else if (!data.sort) {
-      data.sort = wpApiListSettings.current_post_type === "contacts" ? "overall_status" : "group_type";
+      data.sort = 'name';
+      if ( wpApiListSettings.current_post_type === "contacts" ){
+        data.sort = 'overall_status'
+      } else if ( wpApiListSettings.current_post_type === "groups" ){
+        data.sort = "group_type";
+      }
     }
     currentFilter.query = data
     document.cookie = `last_view=${JSON.stringify(currentFilter)}`
+
+    let currentView = $(".js-list-view:checked").val()
     let showClosed = showClosedCheckbox.prop("checked")
-    if ( !showClosed ){
+    if ( !showClosed && ( currentView === 'custom_filter' || currentView === 'saved-filters' ) ){
       if ( wpApiListSettings.current_post_type === "contacts" ){
         if ( !data.overall_status ){
           data.overall_status = [];
@@ -78,14 +61,13 @@
         if ( !data.overall_status.includes("-closed") ){
           data.overall_status.push( "-closed" )
         }
-      } else {
+      } else if ( wpApiListSettings.current_post_type === "groups") {
         if ( !data.group_status ){
           data.group_status = [];
         }
         data.group_status.push( "-inactive" )
       }
     }
-
     //abort previous promise if it is not finished.
     if (getContactsPromise && _.get(getContactsPromise, "readyState") !== 4){
       getContactsPromise.abort()
@@ -103,65 +85,120 @@
       } else  {
         items = data[wpApiListSettings.current_post_type] || []
       }
+      $('#load-more').toggle(items.length !== parseInt( data.total ))
       let result_text = wpApiListSettings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", data.total)
       $('.filter-result-text').html(result_text)
       displayRows();
       setupCurrentFilterLabels()
       loading_spinner.removeClass("active")
     }).catch(err => {
-      if ( !_.get( err, "statusText" ) === "abort" ) {
+      if ( _.get( err, "statusText" ) !== "abort" ) {
         console.error(err)
       }
     })
   }
 
-  let savedFiltersList = $("#saved-filters")
-  function setupFilters(filters){
+
+
+  function setupFilters(){
+    if ( !wpApiListSettings.filters.tabs){
+      return;
+    }
+    let selectedTab = $('.accordion-item.is-active').data('id');
+    let selectedFilter = $(".js-list-view:checked").data('id')
+    let html = ``;
+    wpApiListSettings.filters.tabs.forEach( tab =>{
+      html += `
+      <li class="accordion-item" data-accordion-item data-id="${_.escape(tab.key)}">
+        <a href="#" class="accordion-title">
+          ${_.escape(tab.label)}
+          <span class="tab-count-span" data-tab="${_.escape(tab.key)}">
+              ${tab.count || tab.count >= 0 ? `(${_.escape(tab.count)})`: ``}
+          </span>
+        </a>
+        <div class="accordion-content" data-tab-content>
+          <div class="list-views">
+            ${  wpApiListSettings.filters.filters.map( filter =>{
+              if (filter.tab===tab.key && filter.tab !== 'custom') {
+                return `
+                <label class="list-view" style="${ filter.subfilter ? 'margin-left:15px' : ''}">
+                  <input type="radio" name="view" value="${_.escape(filter.ID)}" data-id="${_.escape(filter.ID)}" class="js-list-view" autocomplete="off">
+                  <span id="total_filter_label">${_.escape(filter.name)}</span>
+                  <span class="list-view__count js-list-view-count" data-value="${_.escape(filter.ID)}">${_.escape(filter.count )}</span>
+                </label>
+                `
+              }
+            }).join('')}
+          </div>
+        </div>
+      </li>
+      `
+    } )
+    filter_accordions.html(html)
+
+    let savedFiltersList = $(`#list-filter-tabs [data-id='custom'] .list-views`)
     savedFiltersList.empty()
-    filters.forEach(filter=>{
-      if (filter){
-        let deleteFilter = $(`<span style="float:right" data-filter="${_.escape( filter.ID )}">
-            <img style="padding: 0 4px" src="${wpApiShare.template_dir}/dt-assets/images/trash.svg">
-        </span>`).on("click", function () {
+    if ( wpApiListSettings.filters.filters.filter(t=>t.tab==='custom').length === 0 ) {
+      savedFiltersList.html(`<span>${_.escape(wpApiListSettings.translations.empty_custom_filters)}</span>`)
+    }
+    wpApiListSettings.filters.filters.filter(t=>t.tab==='custom').forEach(filter=>{
+      if ( filter && filter.visible === ''){
+        return
+      }
+      let deleteFilter = $(`<span style="float:right" data-filter="${_.escape( filter.ID )}">
+        <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/images/trash.svg">
+      </span>`)
+      deleteFilter.on("click", function () {
           $(`.delete-filter-name`).html(filter.name)
           $('#delete-filter-modal').foundation('open');
           filterToDelete = filter.ID;
         })
-        let editFilter = $(`<span style="float:right" data-filter="${_.escape( filter.ID )}">
-            <img style="padding: 0 4px" src="${wpApiShare.template_dir}/dt-assets/images/edit.svg">
-        </span>`).on("click", function () {
-          editSavedFilter( filter )
-          filterToEdit = filter.ID;
-        })
-        let filterName =  `<span class="filter-list-name" data-filter="${_.escape( filter.ID )}">${_.escape( filter.name )}</span>`
-        const radio = $(`<input name='view' class='js-list-view' autocomplete='off' data-id="${_.escape( filter.ID )}" >`)
-          .attr("type", "radio")
-          .val("saved-filters")
-          .on("change", function() {
-          });
-        savedFiltersList.append(
-          $("<div>").append(
-            $("<label>")
-              .css("cursor", "pointer")
-              .addClass("js-filter-checkbox-label")
-              // .data("filter-type", filterType)
-              .data("filter-value", status)
-              .append(radio)
-              .append(filterName)
-              .append(deleteFilter)
-              .append(editFilter)
-
-          )
+      let editFilter = $(`<span style="float:right" data-filter="${_.escape( filter.ID )}">
+          <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/images/edit.svg">
+      </span>`)
+      editFilter.on("click", function () {
+        editSavedFilter( filter )
+        filterToEdit = filter.ID;
+      })
+      let filterName =  `<span class="filter-list-name" data-filter="${_.escape( filter.ID )}">${_.escape( filter.name )}</span>`
+      const radio = $(`<input name='view' class='js-list-view' autocomplete='off' data-id="${_.escape( filter.ID )}" >`)
+        .attr("type", "radio")
+        .val("saved-filters")
+        .on("change", function() {
+      });
+      savedFiltersList.append(
+        $("<div>").append(
+          $("<label>")
+            .css("cursor", "pointer")
+            .addClass("js-filter-checkbox-label")
+            .data("filter-value", status)
+            .append(radio)
+            .append(filterName)
+            .append(deleteFilter)
+            .append(editFilter)
         )
-      }
+      )
     })
+    new Foundation.Accordion(filter_accordions, {
+      slideSpeed: 100,
+      allowAllClosed: true
+    });
+    if ( selectedTab ){
+      $(`#list-filter-tabs [data-id='${_.escape( selectedTab )}'] a`).click()
+    }
+    if ( selectedFilter ){
+      $(`[data-id="${_.escape( selectedFilter )}"].js-list-view`).prop('checked', true);
+    }
   }
 
   //set the "show closed" checkbox
   if ( showClosedCookie === "true" ){
     showClosedCheckbox.prop('checked', true)
   }
-  setupFilters(savedFilters[wpApiListSettings.current_post_type])
+  showClosedCheckbox.on('change', function () {
+    getContactForCurrentView()
+  })
+
   //look at the cookie to see what was the last selected view
   if ( tabQueryParam ){
     cachedFilter = {
@@ -172,55 +209,26 @@
   }
   let selectedFilter = ""
   if ( cachedFilter && !_.isEmpty(cachedFilter)){
-    if (cachedFilter.type==="saved-filters"){
-      if ( _.find(savedFilters[wpApiListSettings.current_post_type], {ID: cachedFilter.ID})){
-        $(`input[name=view][value=saved-filters][data-id='${_.escape( cachedFilter.ID )}']`).prop('checked', true);
-      }
-    } else if ( cachedFilter.type==="default" ){
+    selectedFilter = cachedFilter.ID || "no_filter"
+    if ( cachedFilter.type==="default" ){
       if ( cachedFilter.tab ){
         selectedFilterTab = cachedFilter.tab
       }
-      selectedFilter = cachedFilter.ID || "no_filter"
     } else if ( cachedFilter.type === "custom_filter" ){
       addCustomFilter(cachedFilter.name, "default", cachedFilter.query, cachedFilter.labels)
     }
   } else {
     selectedFilter = "no_filter"
   }
+  setupFilters()
+
   $(`#list-filter-tabs [data-id='${_.escape( selectedFilterTab )}'] a`).click()
-  if ( selectedFilter ){
-    $(`.is-active input[name=view][value="${_.escape( selectedFilter )}"].js-list-view`).prop('checked', true);
+  if ( selectedFilter && selectedFilter !== "no_filter" ){
+    $(`.is-active input[name=view][data-id="${_.escape( selectedFilter )}"].js-list-view`).prop('checked', true);
+  } else {
+    $('#list-filter-tabs .accordion-item a')[0].click()
+    $($('.js-list-view')[0]).prop('checked', true)
   }
-
-  $(function() {
-    $(window).resize(function() {
-      if (Foundation.MediaQuery.is('small only') || Foundation.MediaQuery.is('medium only')) {
-        if ($(".js-filters-accordion .js-filters-modal-content").length === 0) {
-          $(".js-filters-accordion").append($(".js-filters-modal-content").detach());
-        }
-      } else {
-        if ($(".js-pane-filters .js-filters-modal-contact").length === 0) {
-          $(".js-pane-filters").append($(".js-filters-modal-content").detach());
-        }
-      }
-    }).trigger("resize");
-  });
-
-  $("#list-filter-tabs .accordion-item").on("click", function (a, b) {
-
-    let newFilterTab = $(this).data("id")
-    if ( selectedFilterTab !== newFilterTab ){
-      selectedFilterTab = newFilterTab
-      let checked = $(".js-list-view:checked").val() || "no_filter"
-      if ( checked === "saved-filters" || checked === "custom-filter"){
-        checked = "no_filter"
-      }
-      $(".js-list-view-count").text("")
-      $(`.is-active input[name="view"][value="${checked}"].js-list-view`).prop("checked", true)
-      getContactForCurrentView()
-      get_filter_counts()
-    }
-  })
 
 
   const templates = {
@@ -243,7 +251,7 @@
       <td class="hide-for-small-only">
         <span class="status status--<%- overall_status %>"><%- status %>
         <% if (update_needed){ %>
-            <img style="" src="${_.escape( wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+            <img style="" src="${_.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
         <% } %>
         </span>
       </td>
@@ -278,7 +286,7 @@
       <td class="hide-for-small-only">
         <span class="group-status group-status--<%- group_status %>"><%- status %>
         <% if (update_needed){ %>
-            <img style="" src="${_.escape( wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+            <img style="" src="${_.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
         <% } %>
         </span>
       </td>
@@ -333,7 +341,9 @@
       return '<a href="' + _.escape(group.permalink) + '">' + group.post_title + "</a>";
     }).join(", ");
 
-    const last_modified = new Date(contact.last_modified*1000).toString().slice(0, 15);
+const langcode = document.querySelector('html').getAttribute('lang').replace('_', '-');
+const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }
+const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, options).format(new Date(contact.last_modified*1000))
 
     const context = _.assign({last_modified: 0}, contact, wpApiListSettings, {
       index,
@@ -352,7 +362,7 @@
     return $.parseHTML(template(context));
   }
 
-  function buildGroupRow(group, index) {
+  function buildGroupRow(group) {
     const template = templates[wpApiListSettings.current_post_type];
     const leader_links = _.map(group.leaders, function(leader) {
       return '<a href="' + _.escape(leader.permalink) + '">' + _.escape(leader.post_title) + "</a>";
@@ -369,7 +379,7 @@
     return $.parseHTML(template(context));
   }
 
-  $(document).on('change', '.js-list-view', e => {
+  $(document).on('change', '.js-list-view', () => {
     getContactForCurrentView()
   });
 
@@ -424,62 +434,24 @@
       query:{},
       labels:[{ id:"all", name:wpApiListSettings.translations.filter_all, field: "assigned"}]
     }
-    if ( currentView !== "custom_filter"){
-      if ( wpApiListSettings.current_post_type === "groups" ){
-        selectedFilterTab = currentView
-      }
-      filter.tab = selectedFilterTab
-      if ( selectedFilterTab === "all" ){
-        query.assigned_to = ["all"]
-        filter.labels = [{ id:"all", name:wpApiListSettings.translations.filter_all, field: "assigned"}]
-      } else if ( selectedFilterTab === "shared" ){
-        query.assigned_to = ["shared"]
-        filter.labels = [{ id:"shared", name:wpApiListSettings.translations.filter_shared, field: "assigned"}]
-      } else if ( selectedFilterTab === "subassigned" ){
-        query.subassigned = [wpApiListSettings.current_user_contact_id]
-        filter.labels = [{ id:"subbassigned", name:wpApiListSettings.translations.filter_subassigned, field: "assigned"}]
-      }
-      else if ( selectedFilterTab === "my" ){
-        query.assigned_to = ["me"]
-        filter.labels = [{ id:"me", name:wpApiListSettings.translations.filter_my, field: "assigned"}]
-      }
-    }
-    let filter_name = wpApiListSettings.translations[`filter_${currentView}`]
-    if ( currentView === "needs_accepted" ){
-      query.overall_status = ["assigned"]
-      filter.labels = [{ id:"needs_accepted", name:filter_name, field: "accepted"}]
-    } else if ( currentView === "new") {
-      query.overall_status = ["new"]
-      filter.labels = [{ id:"new", name:filter_name, field: "overall_status"}]
-    } else if ( currentView === "active") {
-      query.overall_status = ["active"]
-      filter.labels = [{ id:"active", name:filter_name, field: "overall_status"}]
-    } else if ( currentView === "assignment_needed" ){
-      query.overall_status = ["unassigned"]
-      filter.labels = [{ id:"unassigned", name:filter_name, field: "assigned"}]
-    } else if ( currentView === "unassignable" ){
-      query.overall_status = ["unassignable"]
-      filter.labels = [{ id:"unassignable", name:filter_name, field: "overall_status"}]
-    } else if ( currentView === "update_needed" ){
-      filter.labels = [{ id:"update_needed", name:filter_name, field: "requires_update"}]
-      query.requires_update = [true]
-    } else if ( currentView === "meeting_scheduled" ){
-      query.overall_status = ["active"]
-      query.seeker_path = ["scheduled"]
-      filter.labels = [{ id:"active", name:filter_name, field: "seeker_path"}]
-    } else if ( currentView === "contact_unattempted" ){
-      query.overall_status = ["active"]
-      query.seeker_path = ["none"]
-      filter.labels = [{ id:"all", name:filter_name, field: "seeker_path"}]
-    } else if ( currentView === "custom_filter"){
+    if ( currentView === "custom_filter"){
       let filterId = checked.data("id")
       filter = _.find(customFilters, {ID:filterId})
       filter.type = currentView
       query = filter.query
-    } else if ( currentView === "saved-filters" ){
-      filter = _.find(savedFilters[wpApiListSettings.current_post_type], {ID:filterId}) || _.find(savedFilters[wpApiListSettings.current_post_type], {ID:filterId.toString()})
-      filter.type = currentView
-      query = filter.query
+    } else if ( currentView ) {
+      filter = _.find(wpApiListSettings.filters.filters, {ID:filterId}) || _.find(wpApiListSettings.filters.filters, {ID:filterId.toString()}) || filter
+      if ( filter ){
+        filter.type = 'default'
+        filter.labels =  filter.labels || [{ id:filterId, name:filter.name}]
+        query = filter.query
+      }
+    }
+
+    if (currentView === "custom_filter" || currentView === "saved-filters" ){
+      closedSwitch.show()
+    } else {
+      closedSwitch.hide()
     }
 
     filter.query = query
@@ -487,7 +459,7 @@
     filter.query.sort = _.get(currentFilter, "query.sort", "overall_status");
     if ( _.get( cachedFilter, "query.sort") ){
       filter.query.sort = cachedFilter.query.sort;
-      sortField = cachedFilter.query.sort.replace("-", "");
+      sortField = _.get(cachedFilter, "query.sort", "overall_status").replace("-", "");
     }
     //reset sorting in table header
     tableHeaderRow.removeClass("sorting_asc")
@@ -583,11 +555,16 @@
     let filterName = $('#filter-name').val()
     let filter = _.find(customFilters, {ID:filterToSave})
     filter.name = _.escape( filterName )
+    filter.tab = 'custom'
     if (filter.query){
-      savedFilters[wpApiListSettings.current_post_type].push(filter)
-      API.save_filters(savedFilters).then(()=>{
+      wpApiListSettings.filters.filters.push(filter)
+      API.save_filters(wpApiListSettings.current_post_type,filter).then(()=>{
         $(`.custom-filters [class*="list-view ${filterToSave}`).remove()
-        setupFilters(savedFilters[wpApiListSettings.current_post_type])
+        setupFilters()
+        let active_tab = $('.accordion-item.is-active ').data('id');
+        if ( active_tab !== 'custom' ){
+          $(`#list-filter-tabs [data-id='custom'] a`).click()
+        }
         $(`input[name="view"][value="saved-filters"][data-id='${filterToSave}']`).prop('checked', true);
         getContactForCurrentView()
         $('#filter-name').val("")
@@ -597,20 +574,33 @@
 
   //delete a filter
   $(`#confirm-filter-delete`).on('click', function () {
-    _.pullAllBy(savedFilters[wpApiListSettings.current_post_type], [{ID:filterToDelete}], "ID")
-    API.save_filters(savedFilters).then(()=>{
-      setupFilters(savedFilters[wpApiListSettings.current_post_type])
-    }).catch(err => { console.error(err) })
+    let filter = _.find(wpApiListSettings.filters.filters, {ID:filterToDelete})
+    if ( filter && ( filter.visible === true || filter.visible === '1' ) ){
+      filter.visible = false;
+      API.save_filters(wpApiListSettings.current_post_type,filter).then(()=>{
+        _.pullAllBy(wpApiListSettings.filters.filters, [{ID:filterToDelete}], "ID")
+        setupFilters()
+        $(`#list-filter-tabs [data-id='custom'] a`).click()
+      }).catch(err => { console.error(err) })
+    } else {
+      API.delete_filter(wpApiListSettings.current_post_type, filterToDelete).then(()=>{
+        _.pullAllBy(wpApiListSettings.filters.filters, [{ID:filterToDelete}], "ID")
+        setupFilters()
+        $(`#list-filter-tabs [data-id='custom'] a`).click()
+      }).catch(err => { console.error(err) })
+    }
   })
 
   $("#search").on("click", function () {
     let searchText = _.escape( $("#search-query").val() )
+    showClosedCheckbox.prop('checked', true)
     let query = {text:searchText, assigned_to:["all"]}
     let labels = [{ id:"search", name:searchText, field: "search"}]
     addCustomFilter(searchText, "search", query, labels)
   })
 
   $("#search-mobile").on("click", function () {
+    showClosedCheckbox.prop('checked', true)
     let searchText = _.escape( $("#search-query-mobile").val() )
     let query = {text:searchText, assigned_to:["all"]}
     let labels = [{ id:"search", name:searchText, field: "search"}]
@@ -628,16 +618,6 @@
       $("#search-mobile").trigger("click")
     }
   })
-
-  //pressing enter launches a search
-  $(".js-list-filter-title").on("click", function() {
-    const $title = $(this);
-    $title.parents(".js-list-filter").toggleClass("filter--closed");
-  }).on("keydown", function(event) {
-    if (event.keyCode === 13) {
-      $(this).trigger("click");
-    }
-  });
 
   //toggle show search input on mobile
   $("#open-search").on("click", function () {
@@ -694,14 +674,14 @@
         dropdownFilter: [{
           key: 'group',
           value: 'used',
-          template: 'Used Locations',
-          all: 'All Locations'
+          template: _.escape(window.wpApiShare.translations.used_locations),
+          all: _.escape(window.wpApiShare.translations.all_locations)
         }],
         source: {
           used: {
             display: "name",
             ajax: {
-              url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+              url: window.wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
               data: {
                 s: "{{query}}",
                 filter: function () {
@@ -709,7 +689,7 @@
                 }
               },
               beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+                xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
               },
               callback: {
                 done: function (data) {
@@ -761,91 +741,56 @@
   }
 
   /**
-   * Leaders
+   * Post Types
    */
-  let loadLeadersTypeahead = ()=> {
-    if (!window.Typeahead['.js-typeahead-leaders']) {
-      $.typeahead({
-        input: '.js-typeahead-leaders',
-        minLength: 0,
-        accent: true,
-        searchOnFocus: true,
-        maxItem: 20,
-        template: window.TYPEAHEADS.contactListRowTemplate,
-        source: TYPEAHEADS.typeaheadContactsSource(),
-        display: "name",
-        templateValue: "{{name}}",
-        dynamic: true,
-        multiselect: {
-          matchOn: ["ID"],
-          data: [],
+  let load_post_type_typeaheads = ()=>{
+    $(".typeahead__query [data-type='connection']").each((key, el)=>{
+      let field = $(el).data('field')
+      let post_type = _.get(wpApiListSettings, `custom_fields_settings.${field}.post_type`)
+      if ( post_type && !window.Typeahead[`.js-typeahead-${field}`]) {
+        $.typeahead({
+          input: `.js-typeahead-${field}`,
+          minLength: 0,
+          accent: true,
+          searchOnFocus: true,
+          maxItem: 20,
+          template: post_type === 'contacts' ?
+            window.TYPEAHEADS.contactListRowTemplate :
+            function (query, item) {
+              return `<span dir="auto">${_.escape(item.name)} (#${_.escape( item.ID )})</span>`
+          },
+          source: TYPEAHEADS.typeaheadPostsSource(post_type),
+          display: "name",
+          templateValue: "{{name}}",
+          dynamic: true,
+          multiselect: {
+            matchOn: ["ID"],
+            data: [],
+            callback: {
+              onCancel: function (node, item) {
+                $(`.current-filter[data-id="${item.ID}"].${field}`).remove()
+                _.pullAllBy(newFilterLabels, [{id: item.ID}], "id")
+              }
+            }
+          },
           callback: {
-            onCancel: function (node, item) {
-              $(`.current-filter[data-id="${item.ID}"].leaders`).remove()
-              _.pullAllBy(newFilterLabels, [{id: item.ID}], "id")
+            onResult: function (node, query, result, resultCount) {
+              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              $(`#${field}-result-container`).html(text);
+            },
+            onHideLayout: function () {
+              $(`#${field}-result-container`).html("");
+            },
+            onClick: function (node, a, item) {
+              newFilterLabels.push({id: item.ID, name: item.name, field: field})
+              selectedFilters.append(`<span class="current-filter ${field}" data-id="${_.escape( item.ID )}">${_.escape( item.name )}</span>`)
             }
           }
-        },
-        callback: {
-          onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#leaders-result-container').html(text);
-          },
-          onHideLayout: function () {
-            $('#leaders-result-container').html("");
-          },
-          onClick: function (node, a, item, event) {
-            newFilterLabels.push({id: item.ID, name: item.name, field: "leaders"})
-            selectedFilters.append(`<span class="current-filter leaders" data-id="${_.escape( item.ID )}">${_.escape( item.name )}</span>`)
-          }
-        }
-      });
-    }
+        });
+      }
+    })
   }
 
-  /**
-   * Leaders
-   */
-  let loadSubassignedTypeahead = ()=> {
-    if (!window.Typeahead['.js-typeahead-subassigned']) {
-      $.typeahead({
-        input: '.js-typeahead-subassigned',
-        minLength: 0,
-        accent: true,
-        searchOnFocus: true,
-        maxItem: 20,
-        template: window.TYPEAHEADS.contactListRowTemplate,
-        source: TYPEAHEADS.typeaheadContactsSource(),
-        display: "name",
-        templateValue: "{{name}}",
-        dynamic: true,
-        multiselect: {
-          matchOn: ["ID"],
-          data: [],
-          callback: {
-            onCancel: function (node, item) {
-              $(`.current-filter[data-id="${_.escape( item.ID )}"].subassigned`).remove()
-              _.pullAllBy(newFilterLabels, [{id: item.ID}], "id")
-            }
-          }
-        },
-        callback: {
-          onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#subassigned-result-container').html(text);
-          },
-          onHideLayout: function () {
-            $('#subassigned-result-container').html("");
-          },
-          onClick: function (node, a, item, event) {
-            let name = _.get(wpApiListSettings, `custom_fields_settings.subassigned.name`, 'subassigned')
-            newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "subassigned"})
-            selectedFilters.append(`<span class="current-filter subassigned" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
-          }
-        }
-      });
-    }
-  }
 
   /**
    * Assigned_to
@@ -891,13 +836,13 @@
         },
         dynamic: true,
         hint: true,
-        emptyTemplate: 'No users found "{{query}}"',
+        emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
         callback: {
           onResult: function (node, query, result, resultCount) {
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $('#assigned_to-result-container').html(text);
           },
-          onClick: function(node, a, item, event) {
+          onClick: function(node, a, item) {
             let name = _.get(wpApiListSettings, `custom_fields_settings.assigned_to.name`, 'assigned_to')
             selectedFilters.append(`<span class="current-filter assigned_to" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
             newFilterLabels.push({id:item.ID, name:`${name}:${item.name}`, field:"assigned_to"})
@@ -908,7 +853,6 @@
     }
   }
 
-  let sourcesTypeahead = $(".js-typeahead-sources")
   let loadMultiSelectTypeaheads = async function loadMultiSelectTypeaheads() {
     for (let input of $(".multi_select .typeahead__query input")) {
       let field = $(input).data('field')
@@ -941,7 +885,7 @@
                 field
               },
               beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+                xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
               },
               callback: {
                 done: function (data) {
@@ -978,7 +922,7 @@
           }
         },
         callback: {
-          onClick: function(node, a, item, event){
+          onClick: function(node, a, item){
             let name = _.get(wpApiListSettings, `custom_fields_settings.${field}.name`, field)
             selectedFilters.append(`<span class="current-filter ${_.escape( field )}" data-id="${_.escape( item.key )}">${_.escape( name )}:${_.escape( item.value )}</span>`)
             newFilterLabels.push({id:item.key, name:`${name}:${item.value}`, field})
@@ -1001,17 +945,10 @@
   let typeaheadsLoaded = null
   $('#filter-modal').on("open.zf.reveal", function () {
     newFilterLabels=[]
-    if ( wpApiListSettings.current_post_type === "groups" ){
-      loadLocationTypeahead()
-      loadAssignedToTypeahead()
-      // loadLeadersTypeahead()
-      typeaheadsLoaded = loadMultiSelectTypeaheads().catch(err => { console.error(err) })
-    } else if ( wpApiListSettings.current_post_type === "contacts" ){
-      loadLocationTypeahead()
-      loadAssignedToTypeahead()
-      loadSubassignedTypeahead()
-      typeaheadsLoaded = loadMultiSelectTypeaheads().catch(err => { console.error(err) })
-    }
+    loadLocationTypeahead()
+    loadAssignedToTypeahead()
+    load_post_type_typeaheads()
+    typeaheadsLoaded = loadMultiSelectTypeaheads().catch(err => { console.error(err) })
     $('#new-filter-name').val('')
     $("#filter-modal input.dt_date_picker").each(function () {
       $(this).val('')
@@ -1065,12 +1002,12 @@
   $('#save-filter-edits').on('click', function () {
     let searchQuery = getSearchQuery()
     let filterId = $('#save-filter-edits').data("filter-id")
-    let filter = _.find(savedFilters[wpApiListSettings.current_post_type], {ID:filterId})
+    let filter = _.find(wpApiListSettings.filters.filters, {ID:filterId})
     filter.name = $('#new-filter-name').val()
     $(`.filter-list-name[data-filter="${filterId}"]`).text(filter.name)
     filter.query = searchQuery
-    filter.label = newFilterLabels
-    API.save_filters(savedFilters)
+    filter.labels = newFilterLabels
+    API.save_filters( wpApiListSettings.current_post_type, filter )
     getContactForCurrentView()
   })
 
@@ -1146,84 +1083,40 @@
       $(`.current-filter[data-id="${id}"]`).remove()
   })
 
-  let type = "contact"
-  if ( wpApiListSettings.current_post_type === "groups"){
-    type = "group"
-  }
-
   let getFilterCountsPromise = null
   let get_filter_counts = ()=>{
-    count_spinner.addClass("active")
-    let showClosed = showClosedCheckbox.prop("checked")
     if ( getFilterCountsPromise && _.get( getFilterCountsPromise, "readyState") !== 4 ){
       getFilterCountsPromise.abort()
     }
     getFilterCountsPromise = $.ajax({
-      url: `${wpApiListSettings.root}dt/v1/${type}/counts?tab=${selectedFilterTab}&closed=${showClosed}`,
+      url: `${wpApiListSettings.root}dt/v1/users/get_filters?post_type=${wpApiListSettings.current_post_type}&force_refresh=1`,
       beforeSend: function (xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiListSettings.nonce);
       }
     })
-    getFilterCountsPromise.then(counts=>{
-      count_spinner.removeClass("active")
-      $(".js-list-view-count").each(function() {
-        const $el = $(this);
-        let view_id = $el.data("value")
-        if ( counts && counts[view_id] && parseInt( counts[view_id] ) > 0 ){
-          $el.text( counts[view_id] );
-        } else {
-          $el.text( '0' );
-        }
-      });
-      $(".tab-count-span").each(function () {
-        const $el = $(this)
-        let tab = $el.data("tab")
-        if ( counts && counts[tab] ){
-          if ( wpApiListSettings.current_post_type === "groups" ){
-            $el.text( ` ${counts[tab]}` )
-          } else {
-            $el.text( ` (${counts[tab]})` )
-          }
-        }
-      })
+    getFilterCountsPromise.then(filters=>{
+      if ( old_filters !== JSON.stringify(filters) ){
+        wpApiListSettings.filters = filters
+        setupFilters()
+      }
     }).catch(err => {
-      if ( !_.get( err, "statusText" ) === "abort" ){
+      if ( _.get( err, "statusText" ) !== "abort" ){
         console.error(err)
       }
     })
   }
   get_filter_counts()
-  showClosedCheckbox.on("click", function () {
-    document.cookie = `show_closed=${$(this).prop('checked')}`
-    get_filter_counts()
-    getContactForCurrentView()
-  })
 
-
-$(document).ready(function () {
-
-  /**
-   * Managing the "Contact Filters" Accordion optons
-   * Helpful Resource Guides to look over
-   * https://foundation.zurb.com/sites/docs/javascript.html
-   * https://foundation.zurb.com/sites/docs/javascript.html#programmatic-use
-   * https://foundation.zurb.com/sites/docs/accordion-menu.html
-   * https://foundation.zurb.com/sites/docs/v/5.5.3/javascript.html
-   * https://www.sitepoint.com/foundation-6-menu-component/
-   */
-
-  function contactFilterAccordion() {
-
-    //Set speed and expansion options for the Contact Filter accordion
-    var $accordion = new Foundation.Accordion($('#list-filter-tabs'), {
-      slideSpeed: 100,
-      allowAllClosed: true
-    });
-  }
-
-  //run Contact Filters accordion options
-  contactFilterAccordion();
-})
+  //collapse the filters on small view.
+  // $(function() {
+  //   $(window).resize(function() {
+  //     if (Foundation.MediaQuery.is('small only') || Foundation.MediaQuery.is('medium only')) {
+  //       setTimeout(()=>{
+  //         $("#list-filters .bordered-box").toggleClass("collapsed");
+  //       },100)
+  //     }
+  //   }).trigger("resize");
+  // });
 
 
 })(window.jQuery, window.wpApiListSettings, window.Foundation);

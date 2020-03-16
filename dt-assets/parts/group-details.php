@@ -9,18 +9,24 @@
 
     function dt_contact_details_status( $id, $verified, $invalid ){
         ?>
-    <img id="<?php echo esc_attr( $id . '-verified', 'disciple_tools' ); ?>" class="details-status" style="display: <?php echo esc_attr( $verified, 'disciple_tools' ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/verified.svg'; ?>"/>
-    <img id="<?php echo esc_attr( $id . '-invalid', 'disciple_tools' ); ?>"  class="details-status" style="display: <?php echo esc_attr( $invalid, 'disciple_tools' ); ?>"  src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/broken.svg'; ?>" />
+        <img id="<?php echo esc_attr( $id . '-verified' ); ?>" class="details-status" style="display: <?php echo esc_attr( $verified ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/verified.svg'; ?>"/>
+        <img id="<?php echo esc_attr( $id . '-invalid' ); ?>"  class="details-status" style="display: <?php echo esc_attr( $invalid ); ?>"  src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/broken.svg'; ?>" />
         <?php
     }
     ?>
 
-<section class="bordered-box">
+    <section class="bordered-box">
        <div class="section-header">
             <?php esc_html_e( "Group Details", 'disciple_tools' ) ?>
             <button class="help-button" data-section="group-details-help-text">
                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
             </button>
+            <!-- <button class="section-chevron chevron_down">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+            </button>
+            <button class="section-chevron chevron_up">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+            </button> -->
         </div>
     <div style="display: flex;">
         <div class="item-details-header" style="flex-grow:1">
@@ -34,11 +40,12 @@
             </button>
         </div>
     </div>
+    <div class="section-body"><!-- start collapse -->
     <div class="grid-x grid-margin-x" style="margin-top: 20px">
         <div class="cell small-12 medium-4">
             <div class="section-subheader">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
-                <?php esc_html_e( "Status", 'disciple_tools' ) ?>
+                <?php echo esc_html( $group_fields["group_status"]["name"] )?>
                 <button class="help-button" data-section="group-status-help-text">
                     <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                 </button>
@@ -52,8 +59,8 @@
             ?>
             <select id="group_status" class="status select-field color-select" style="background-color: <?php echo esc_html( $active_color ) ?>">
                 <?php foreach ( $group_fields["group_status"]["default"] as $status_key => $option ) { ?>
-                    <option value="<?php echo esc_attr( $status_key, 'disciple_tools' ); ?>"
-                        <?php echo esc_attr( $status_key === $group['group_status']['key'] ? 'selected' : '', 'disciple_tools' ); ?>>
+                    <option value="<?php echo esc_attr( $status_key ); ?>"
+                        <?php echo esc_attr( $status_key === $group['group_status']['key'] ? 'selected' : '' ); ?>>
                         <?php echo esc_html( $option["label"] ?? "" ) ?>
                     </option>
                 <?php } ?>
@@ -62,7 +69,7 @@
         <div class="cell small-12 medium-4">
             <div class="section-subheader">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
-                <?php esc_html_e( 'Assigned to', 'disciple_tools' )?>
+                <?php echo esc_html( $group_fields["assigned_to"]["name"] )?>
                 <button class="help-button" data-section="assigned-to-help-text">
                     <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                 </button>
@@ -75,7 +82,7 @@
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-assigned_to input-height"
-                                       name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
+                                       name="assigned_to[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
                                        autocomplete="off">
                             </span>
                             <span class="typeahead__button">
@@ -91,7 +98,7 @@
         <div class="cell small-12 medium-4">
             <div class="section-subheader">
             <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/coach.svg' ?>">
-            <?php esc_html_e( "Group Coach / Church Planter", 'disciple_tools' ) ?>
+            <?php echo esc_html( $group_fields["coaches"]["name"] )?>
             <button class="help-button" data-section="coaches-help-text">
                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
             </button>
@@ -101,11 +108,11 @@
                 <div id="coaches_t" name="form-coaches" class="scrollable-typeahead">
                     <div class="typeahead__container">
                         <div class="typeahead__field">
-                                            <span class="typeahead__query">
-                                                <input class="js-typeahead-coaches"
-                                                       name="coaches[query]" placeholder="<?php esc_html_e( "Search Users and Contacts", 'disciple_tools' ) ?>"
-                                                       autocomplete="off">
-                                            </span>
+                            <span class="typeahead__query">
+                                <input class="js-typeahead-coaches"
+                                       name="coaches[query]" placeholder="<?php echo esc_html_x( "Search multipliers and contacts", 'input field placeholder', 'disciple_tools' ) ?>"
+                                       autocomplete="off">
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -120,14 +127,14 @@
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
             <div class="section-subheader">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
+                <?php echo esc_html( $group_fields["location_grid"]["name"] )?>
             </div>
             <ul class="location_grid-list"></ul>
         </div>
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
             <div class="section-subheader">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
-                <?php esc_html_e( 'People Groups', 'disciple_tools' )?>
+                <?php echo esc_html( $group_fields["people_groups"]["name"] )?>
             </div>
             <ul class="people_groups-list details-list">
                 <?php
@@ -149,7 +156,7 @@
 
             <div class="section-subheader">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
-                <?php esc_html_e( 'Address', 'disciple_tools' )?>
+                <?php echo esc_html( Disciple_Tools_Groups_Post_Type::instance()->get_channels_list()["address"]["label"] )?>
             </div>
             <ul class="address details-list">
                 <?php
@@ -169,7 +176,7 @@
         </div>
 
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
-            <div class="section-subheader"><img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-start.svg' ?>"> <?php esc_html_e( 'Start Date', 'disciple_tools' )?></div>
+            <div class="section-subheader"><img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-start.svg' ?>"> <?php echo esc_html( $group_fields["start_date"]["name"] )?></div>
             <ul class="date-list start_date details-list"><?php
             if ( isset( $group["start_date"] ) ) {
                 echo esc_html( $group["start_date"]["formatted"] );
@@ -180,7 +187,7 @@
         </div>
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
             <div class="section-subheader">
-            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-success.svg' ?>"> <?php esc_html_e( 'Church Start Date', 'disciple_tools' ) ?>
+            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-success.svg' ?>"> <?php echo esc_html( $group_fields["church_start_date"]["name"] )?>
             </div>
             <ul class="date-list church_start_date details-list"><?php
             if ( isset( $group["church_start_date"] ) ) {
@@ -192,7 +199,7 @@
         </div>
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
             <div class="section-subheader">
-            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-end.svg' ?>"> <?php esc_html_e( 'End Date', 'disciple_tools' ) ?>
+            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-end.svg' ?>"> <?php echo esc_html( $group_fields["end_date"]["name"] )?>
             </div>
             <ul class="date-list end_date details-list"><?php
             if ( isset( $group["end_date"] ) ) {
@@ -203,12 +210,12 @@
             </ul>
         </div>
 
-    </div>
+    </div><!-- end collapse --></div>
 
 
 </section> <!-- end article -->
 
-<div class="reveal" id="group-details-edit" data-reveal data-close-on-click="false">
+<div class="reveal" id="group-details-edit-modal" data-reveal data-close-on-click="false">
     <h1><?php esc_html_e( "Edit Group", 'disciple_tools' ) ?></h1>
     <div class="display-fields">
         <div class="grid-x">
@@ -223,7 +230,7 @@
         <div class="grix-x">
             <div class="section-subheader cell">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
-                <?php esc_html_e( 'Address', 'disciple_tools' )?>
+                <?php echo esc_html( Disciple_Tools_Groups_Post_Type::instance()->get_channels_list()["address"]["label"] )?>
                 <button id="add-new-address">
                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                 </button>
@@ -235,7 +242,7 @@
         <div class="grix-x">
             <div class="section-subheader cell">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
+                <?php echo esc_html( $group_fields["location_grid"]["name"] )?>
             </div>
             <div class="location_grid">
                 <var id="location_grid-result-container" class="result-container"></var>
@@ -243,8 +250,8 @@
                     <div class="typeahead__container">
                         <div class="typeahead__field">
                             <span class="typeahead__query">
-                                <input class="js-typeahead-location_grid"
-                                       name="location_grid[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                <input class="js-typeahead-location_grid input-height"
+                                       name="location_grid[query]" placeholder="<?php echo esc_html_x( "Search Locations", 'input field placeholder', 'disciple_tools' ) ?>"
                                        autocomplete="off">
                             </span>
                         </div>
@@ -256,33 +263,33 @@
         <!-- Dates -->
         <div class="grix-x">
             <div class="section-subheader cell">
-              <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-start.svg' ?>">
-              <?php esc_html_e( 'Start Date', 'disciple_tools' )?>
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-start.svg' ?>">
+                <?php echo esc_html( $group_fields["start_date"]["name"] )?>
             </div>
-            <div class="start_date"><input type="text" class="date-picker" id="start_date"></div>
+            <div class="start_date"><input type="text" class="date-picker" id="start_date" autocomplete="off"></div>
         </div>
 
         <div class="grix-x">
             <div class="section-subheader cell">
-              <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-success.svg' ?>">
-              <?php esc_html_e( 'Church Start Date', 'disciple_tools' )?>
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-success.svg' ?>">
+                <?php echo esc_html( $group_fields["church_start_date"]["name"] )?>
             </div>
-            <div class="church_start_date"><input type="text" class="date-picker" id="church_start_date"></div>
+            <div class="church_start_date"><input type="text" class="date-picker" id="church_start_date" autocomplete="off"></div>
         </div>
 
         <div class="grix-x">
             <div class="section-subheader cell">
-              <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-end.svg' ?>">
-              <?php esc_html_e( 'End Date', 'disciple_tools' )?>
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-end.svg' ?>">
+                <?php echo esc_html( $group_fields["end_date"]["name"] )?>
             </div>
-            <div class="end_date"><input type="text" class="date-picker" id="end_date"></div>
+            <div class="end_date"><input type="text" class="date-picker" id="end_date" autocomplete="off"></div>
         </div>
 
         <!-- People Groups -->
         <div class="grix-x">
             <div class="section-subheader cell">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
-                <?php esc_html_e( 'People Groups', 'disciple_tools' )?>
+                <?php echo esc_html( $group_fields["people_groups"]["name"] )?>
             </div>
             <div class="people_groups">
                 <var id="people_groups-result-container" class="result-container"></var>
@@ -291,7 +298,8 @@
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-people_groups"
-                                       name="people_groups[query]" placeholder="<?php esc_html_e( "Search People Groups", 'disciple_tools' ) ?>"
+                                       name="people_groups[query]"
+                                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $group_fields["people_groups"]['name'] ) )?>"
                                        autocomplete="off">
                             </span>
                         </div>
@@ -303,7 +311,7 @@
     </div>
     <div>
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-            <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
         </button>
         <button class="button loader" type="button" id="save-edit-details">
             <?php esc_html_e( 'Save', 'disciple_tools' )?>

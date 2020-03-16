@@ -85,9 +85,9 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
                     'sources_all_contacts_by_source_and_status' => __( "All contacts, by source and status", 'disciple_tools' ),
                     'sources_contacts_warning' => __( "A contact can come from more than one source.", 'disciple_tools' ),
                     'sources_active_by_seeker_path' => __( "Active contacts, by source and seeker path", 'disciple_tools' ),
-                    'sources_only_active' => __( "This is displaying only the contacts with an active status right now.", 'disciple_tools' ),
+                    'sources_only_active' => __( "This is displaying only the contacts with an 'active' status right now.", 'disciple_tools' ),
                     'sources_active_milestone' => __( "Active contacts, by source and faith milestone", 'disciple_tools' ),
-                    'sources_active_status_warning' => __( "This is displaying only the contacts with an \"active\" status right now.", 'disciple_tools' ),
+                    'sources_active_status_warning' => __( "This is displaying only the contacts with an 'active' status right now.", 'disciple_tools' ),
                     'sources_contacts_warning_milestones' => __( "A contact can come from more than one source, and it can have more than one faith milestone at the same time.", 'disciple_tools' ),
                 ]
             ]

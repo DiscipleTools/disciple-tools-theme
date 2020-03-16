@@ -23,7 +23,8 @@ class Disciple_Tools_People_Groups
      */
     public static function get_jp_source() {
         $jp_csv = [];
-        if (( $handle = fopen( __DIR__ . "/csv/jp.csv", "r" ) ) !== false) {
+        $handle = fopen( __DIR__ . "/csv/jp.csv", "r" );
+        if ( $handle !== false ) {
             while (( $data = fgetcsv( $handle, 0, "," ) ) !== false) {
                 $jp_csv[] = $data;
             }
@@ -38,7 +39,8 @@ class Disciple_Tools_People_Groups
      */
     public static function get_imb_source() {
         $imb_csv = [];
-        if (( $handle = fopen( __DIR__ . "/csv/imb.csv", "r" ) ) !== false) {
+        $handle = fopen( __DIR__ . "/csv/imb.csv", "r" );
+        if ( $handle !== false ) {
             while (( $data = fgetcsv( $handle, 0, "," ) ) !== false) {
                 $imb_csv[] = $data;
             }
@@ -287,6 +289,7 @@ class Disciple_Tools_People_Groups
         if ( !current_user_can( "access_contacts" )){
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
+        $locale = get_user_locale();
         $query_args = [
             'post_type' => 'peoplegroups',
             'orderby'   => 'title',
@@ -295,16 +298,55 @@ class Disciple_Tools_People_Groups
             's'         => $search,
         ];
         $query = new WP_Query( $query_args );
+
         $list = [];
         foreach ( $query->posts as $post ) {
+            $translation = get_post_meta( $post->ID, $locale, true );
+            if ($translation !== "") {
+                $label = $translation;
+            } else {
+                $label = $post->post_title;
+            }
+
             $list[] = [
             "ID" => $post->ID,
-            "name" => $post->post_title
+            "name" => $post->post_title,
+            "label" => $label
+            ];
+        }
+        $meta_query_args = [
+            'post_type' => 'peoplegroups',
+            'orderby'   => 'title',
+            'order' => 'ASC',
+            'nopaging'  => true,
+            'meta_query' => array(
+                array(
+                    'key' => $locale,
+                    'value' => $search,
+                    'compare' => 'LIKE'
+                )
+            ),
+        ];
+
+        $meta_query = new WP_Query( $meta_query_args );
+        foreach ( $meta_query->posts as $post ) {
+            $translation = get_post_meta( $post->ID, $locale, true );
+            if ($translation !== "") {
+                $label = $translation;
+            } else {
+                $label = $post->post_title;
+            }
+            $list[] = [
+            "ID" => $post->ID,
+            "name" => $post->post_title,
+            "label" => $label
             ];
         }
 
+        $total_found_posts = $query->found_posts + $meta_query->found_posts;
+
         return [
-        "total" => $query->found_posts,
+        "total" => $total_found_posts,
         "posts" => $list
         ];
     }

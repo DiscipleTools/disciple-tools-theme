@@ -18,7 +18,7 @@
     }
 
     ?>
-    <div class="reveal" id="merge-dupe-edit" style="border-radius:10px; padding:0px; padding-bottom:20px; border: 1px solid #3f729b;;" data-reveal>
+    <div class="reveal" id="merge-dupe-edit-modal" style="border-radius:10px; padding:0px; padding-bottom:20px; border: 1px solid #3f729b;;" data-reveal>
       <div class="merge-modal-header" style="background-color:#3f729b; color:white; text-align:center;">
         <h1 style="font-size:1.5rem; padding:10px 0px;"><?php esc_html_e( "Duplicate Contacts", 'disciple_tools' ) ?></h1>
       </div>
@@ -50,7 +50,7 @@
             var site_url = "<?php echo esc_url( site_url() );?>";
             var contact_id = "<?php echo get_the_ID(); ?>";
 
-            let $display_fields = $("#merge-dupe-edit .display-fields");
+            let $display_fields = $("#merge-dupe-edit-modal .display-fields");
             $display_fields.append("<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:10px 0px 0px; margin-bottom: 0px;'><?php esc_html_e( "Original Contact", 'disciple_tools' ) ?></h4>");
 
             var duplicates = contact.duplicate_data;
@@ -171,17 +171,17 @@
                                 });
                             });
                             duplicate_contact_html.append(
-                                `<button class='mergelinks' onclick='$("#dismiss-id").val(${id}); $("#form-dismiss input[type=submit]").click();' style='float: right; padding-left: 10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>`);
+                                `<button class='mergelinks' onclick='$("#dismiss-id").val(${id}); $("#form-dismiss input[type=submit]").click();' style='float: right; padding-left: 10%;'><a><?php echo esc_html__( "Dismiss", 'disciple_tools' ) ?></a></button>`);
 
                             duplicate_contact_html.append(
-                                `<button class='mergelinks' onclick='$("#unsure-id").val(${id}); $("#form-unsure input[type=submit]").click();' style='float: right; padding-left: 10%;'><a><?php esc_html_e( "Unsure", 'disciple_tools' ) ?></a></button>`);
+                                `<button class='mergelinks' onclick='$("#unsure-id").val(${id}); $("#form-unsure input[type=submit]").click();' style='float: right; padding-left: 10%;'><a><?php echo esc_html__( "Unsure", 'disciple_tools' ) ?></a></button>`);
 
                             duplicate_contact_html.append(`<form action='${site_url}/contacts/mergedetails' method='post'>
                                 <input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr( wp_create_nonce() ); ?>'/>
                                 <input type='hidden' name='currentid' value='${contact_id}'/>
                                 <input type='hidden' name='dupeid' value='${id}'/>
                                 <button type='submit' style='float:right; padding-left: 10%;'>
-                                    <a><?php esc_html_e( 'Merge', 'disciple_tools' ) ?></a>
+                                    <a><?php echo esc_html__( 'Merge', 'disciple_tools' ) ?></a>
                                 </button>
                                 </form>`
                             );
@@ -276,7 +276,7 @@
 
         let openedOnce = false
         jQuery(document).ready(function($) {
-            $('#merge-dupe-edit').on("open.zf.reveal", function () {
+            $('#merge-dupe-edit-modal').on("open.zf.reveal", function () {
                 if ( !openedOnce ){
                 loadDuplicates();
                 openedOnce = true;

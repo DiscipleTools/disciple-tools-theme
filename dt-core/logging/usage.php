@@ -11,7 +11,7 @@ class Disciple_Tools_Usage {
      *
      * @var int
      */
-    public $version = 1;
+    public $version = 2;
 
     public function send_usage() {
         $disabled = apply_filters( 'dt_disable_usage_report', false );
@@ -38,19 +38,20 @@ class Disciple_Tools_Usage {
         $regions = $this->regions();
         $users = new WP_User_Query( [ 'count_total' => true ] );
 
+        $site_url = get_site_url( null, '', 'https' );
         $data = [
             'validator' => hash( 'sha256', time() ),
-            'site_id' => hash( 'sha256', get_site_url() ),
+            'site_id' => hash( 'sha256', $site_url ),
             'usage_version' => $this->version,
             'payload' => [
 
                 // BASIC STATS
-                'site_id' => hash( 'sha256', get_site_url() ),
+                'site_id' => hash( 'sha256', $site_url ),
                 'usage_version' => $this->version,
                 'php_version' => phpversion(),
                 'wp_version' => $wp_version,
                 'wp_db_version' => $wp_db_version,
-                'site_url' => get_site_url(),
+                'site_url' => $site_url,
                 'theme_version' => disciple_tools()->version,
 
                 // SYSTEM USAGE
@@ -62,9 +63,10 @@ class Disciple_Tools_Usage {
                 'total_churches' => (string) $system_usage['total_churches'] ?: '0',
                 'active_users' => (string) $activity['active_users'] ?: '0',
                 'total_users' => (string) $users->get_total() ?: '0',
+                'has_demo_data' => !empty( $system_usage['has_demo_data'] ),
 
                 'regions' => $regions ?: '0',
-                'timestamp' => date( 'Y-m-d' ),
+                'timestamp' => gmdate( 'Y-m-d' ),
 
             ],
         ];
@@ -123,7 +125,14 @@ class Disciple_Tools_Usage {
             JOIN $wpdb->postmeta as c ON $wpdb->posts.ID=c.post_id AND c.meta_key = 'group_type' AND c.meta_value = 'church'
             WHERE post_type = 'groups'
             AND post_status = 'publish'
-            ) as total_churches;
+            ) as total_churches,
+            
+            (
+            SELECT COUNT(*)
+            FROM $wpdb->postmeta pm
+            WHERE pm.meta_key = '_sample'
+            ) as has_demo_data;
+            
             ", ARRAY_A );
 
         return $results;
@@ -146,8 +155,8 @@ class Disciple_Tools_Usage {
 
     public function regions() {
         $data = '';
-
-        if ( $map_level = get_option( 'dt_mapping_module_starting_map_level' ) ) {
+        $map_level = get_option( 'dt_mapping_module_starting_map_level' );
+        if ( $map_level ) {
 
             if ( ! empty( $map_level['children'] ) ) {
                 $data .= implode( ',', $map_level['children'] );

@@ -2,7 +2,7 @@
 ( function () {
     ?>
 
-    <div class="grid-y">
+    <div class="grid-y bordered-box">
         <h3 class="section-header">
             <span>
                 <?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?>
@@ -12,11 +12,17 @@
                 <img class="help-icon"
                      src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
             </button>
+            <!-- <button class="section-chevron chevron_down">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+            </button>
+            <button class="section-chevron chevron_up">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+            </button> -->
         </h3>
         <div class="cell grid-x grid-margin-x" id="add-comment-section">
             <div class="auto cell">
                 <textarea class="mention" dir="auto" id="comment-input"
-                          placeholder="<?php esc_html_e( "Write your comment or note here", 'disciple_tools' ) ?>"
+                          placeholder="<?php echo esc_html_x( "Write your comment or note here", 'input field placeholder', 'disciple_tools' ) ?>"
                 ></textarea>
             </div>
         </div>
@@ -69,6 +75,7 @@
                 </button>
             </div>
         </div>
+        <div class="section-body"><!-- start collapse -->
         <div class="cell">
 
             <div>
@@ -101,7 +108,7 @@
                                            class="tabs-section"
                                         <?php echo esc_html( ( isset( $section["selected_by_default"] ) && $section["selected_by_default"] === true ) ? 'checked' : '' ) ?>
                                     >
-                                    <span class="tab-button-label"
+                                    <span class="tab-button-label" dir="auto"
                                           data-id="<?php echo esc_html( $section["key"] ) ?>"> <?php echo esc_html( $section["label"] ) ?></span>
                                 </label>
 
@@ -124,7 +131,6 @@
 
         </div>
     </div>
-
 
     <div class="reveal" id="delete-comment-modal" data-reveal>
         <p class="lead"><?php esc_html_e( 'Delete Comment:', 'disciple_tools' ) ?></p>
@@ -166,6 +172,7 @@
         </div>
     </div>
 
+<!-- end collapse --></div>
 
     <?php
 } )();

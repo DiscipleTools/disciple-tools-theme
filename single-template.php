@@ -38,14 +38,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             -->
                             <div id="name-row" style="display: flex;">
                                 <div class="item-details-header" style="flex-grow:1; text-align: center">
-<!--                                    <i class="fi-home large" style="padding-bottom: 1.2rem"></i>-->
-                                    <span class="title"><?php the_title_attribute(); ?></span>
-                                </div>
-                                <div>
-<!--                                    <button class="" id="open-edit">-->
-<!--                                        <i class="fi-pencil"></i>-->
-<!--                                        <span>--><?php //esc_html_e( 'Edit', 'disciple_tools' )?><!--</span>-->
-<!--                                    </button>-->
+                                    <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
                                 </div>
                             </div>
 
@@ -61,8 +54,35 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             <!--
                                 Details section
                             -->
-                            <div id="details-section" class="display-fields" style="display: flex; flex-wrap: wrap">
-                                <!-- Fill out by js -->
+                            <div id="details-section" class="display-fields" style="">
+                                <?php
+                                // let the plugin add section content
+                                do_action( "dt_details_additional_section", 'details', $post_type );
+
+                                ?>
+                                <div class="section-body">
+                                    <?php
+                                    //setup the order of the tile fields
+                                    $order = $custom_tiles[$post_type]['details']["order"] ?? [];
+                                    foreach ( $post_settings["fields"] as $key => $option ){
+                                        if ( isset( $option["tile"] ) && $option["tile"] === 'details' ){
+                                            if ( !in_array( $key, $order )){
+                                                $order[] = $key;
+                                            }
+                                        }
+                                    }
+                                    foreach ( $order as $field_key ) {
+                                        if ( !isset( $post_settings["fields"][$field_key] ) ){
+                                            continue;
+                                        }
+
+                                        $field = $post_settings["fields"][$field_key];
+                                        if ( isset( $field["tile"] ) && $field["tile"] === 'details'){
+                                            render_field_for_display( $field_key, $post_settings["fields"], $dt_post );
+                                        }
+                                    }
+                                    ?>
+                                </div>
                             </div>
                         </section>
                     </div>
@@ -84,7 +104,8 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                 }
                                 //remove section if hidden
                                 if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
-                                    if ( ( $index = array_search( $tile_key, $sections ) ) !== false) {
+                                    $index = array_search( $tile_key, $sections );
+                                    if ( $index !== false) {
                                         unset( $sections[ $index ] );
                                     }
                                 }
@@ -146,7 +167,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
             </main>
 
             <aside class="auto cell grid-x">
-                <section class="bordered-box comment-activity-section cell"
+                <section class="comment-activity-section cell"
                          id="comment-activity-section">
                     <?php get_template_part( 'dt-assets/parts/loop', 'activity-comment' ); ?>
                 </section>

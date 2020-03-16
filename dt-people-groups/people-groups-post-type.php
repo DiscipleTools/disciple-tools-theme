@@ -40,6 +40,8 @@ class Disciple_Tools_People_Groups_Post_Type
      */
     public $plural;
 
+    public $search_items;
+
     /**
      * The post type args.
      *
@@ -93,9 +95,12 @@ class Disciple_Tools_People_Groups_Post_Type
         $this->post_type = 'peoplegroups';
         $this->singular = __( 'People Group', 'disciple_tools' );
         $this->plural = __( 'People Groups', 'disciple_tools' );
+        $this->search_items = sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural );
         $this->args = [ 'menu_icon' => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBkYXRhLWNvbG9yPSJjb2xvci0yIiBmaWxsPSIjZmZmZmZmIiBkPSJNMTIsMEM5LjU0MiwwLDcsMS44MDIsNyw0LjgxN2MwLDIuNzE2LDMuODY5LDYuNDg2LDQuMzEsNi45MDdMMTIsMTIuMzgybDAuNjktMC42NTkgQzEzLjEzMSwxMS4zMDMsMTcsNy41MzMsMTcsNC44MTdDMTcsMS44MDIsMTQuNDU4LDAsMTIsMHogTTEyLDdjLTEuMTA1LDAtMi0wLjg5Ni0yLTJjMC0xLjEwNSwwLjg5NS0yLDItMnMyLDAuODk1LDIsMiBDMTQsNi4xMDQsMTMuMTA1LDcsMTIsN3oiPjwvcGF0aD4gPHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTkuODg0LDE5LjQ5OUM5LjAyMywxOC44MTUsNy41NjMsMTgsNS41LDE4cy0zLjUyMywwLjgxNS00LjM4MywxLjQ5OEMwLjQwNywyMC4wNjEsMCwyMC45MTMsMCwyMS44MzZWMjRoMTEgdi0yLjE2NEMxMSwyMC45MTMsMTAuNTkzLDIwLjA2MSw5Ljg4NCwxOS40OTl6Ij48L3BhdGg+IDxjaXJjbGUgZmlsbD0iI2ZmZmZmZiIgY3g9IjUuNSIgY3k9IjEzLjUiIHI9IjMuNSI+PC9jaXJjbGU+IDxwYXRoIGZpbGw9IiNmZmZmZmYiIGQ9Ik0yMi44ODQsMTkuNDk5QzIyLjAyMywxOC44MTUsMjAuNTYzLDE4LDE4LjUsMThzLTMuNTIzLDAuODE1LTQuMzgzLDEuNDk4IEMxMy40MDcsMjAuMDYxLDEzLDIwLjkxMywxMywyMS44MzZWMjRoMTF2LTIuMTY0QzI0LDIwLjkxMywyMy41OTMsMjAuMDYxLDIyLjg4NCwxOS40OTl6Ij48L3BhdGg+IDxjaXJjbGUgZmlsbD0iI2ZmZmZmZiIgY3g9IjE4LjUiIGN5PSIxMy41IiByPSIzLjUiPjwvY2lyY2xlPjwvZz48L3N2Zz4=' ];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
+        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 2 );
+        add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
 
         if ( is_admin() ) {
             global $pagenow;
@@ -128,7 +133,7 @@ class Disciple_Tools_People_Groups_Post_Type
             'name'                  => $this->plural,
             'singular_name'         => $this->singular,
             'menu_name'             => $this->plural,
-            'search_items'          => sprintf( _x( 'Search %s', 'Search `something`', 'disciple_tools' ), $this->plural ),
+            'search_items'          => $this->search_items,
         ];
 
         $rewrite = [
@@ -272,6 +277,7 @@ class Disciple_Tools_People_Groups_Post_Type
     public function meta_box_setup() {
           add_meta_box( $this->post_type . '_update', __( 'Add/Update People Group', 'disciple_tools' ), [ $this, 'load_add_update_meta_box' ], $this->post_type, 'normal', 'high' );
           add_meta_box( $this->post_type . '_data', __( 'People Group Details', 'disciple_tools' ), [ $this, 'load_details_meta_box' ], $this->post_type, 'normal', 'high' );
+          add_meta_box( $this->post_type . '_translate', __( 'Translations', 'disciple_tools' ), [ $this, 'load_translation_meta_box' ], $this->post_type, 'side', 'low' );
     } // End meta_box_setup()
 
     public function load_add_update_meta_box( $post ) {
@@ -361,6 +367,20 @@ class Disciple_Tools_People_Groups_Post_Type
         }
     }
 
+     /**
+     * Load translation metabox
+     */
+    public function load_translation_meta_box() {
+        global $post;
+        $dt_available_languages = dt_get_available_languages();
+
+        echo '<input type="hidden" name="dt_' . esc_attr( $this->post_type ) . '_noonce" id="dt_' . esc_attr( $this->post_type ) . '_noonce" value="' . esc_attr( wp_create_nonce( 'update_peoplegroup_info' ) ) . '" />';
+        ?>
+        <?php foreach ($dt_available_languages as $language) {
+            echo '<label for="dt_translation_' . esc_attr( $language["language"] ) . '">' . esc_attr( $language["native_name"] ) . '</label><br/>';
+            echo '<input type="text" name="dt_translation_' . esc_attr( $language["language"] ) . '" id="dt_translation_' . esc_attr( $language["language"] ) . '" class="text-input" value="' . esc_attr( get_post_meta( $post->ID, $language["language"], true ) ). '" /><br/>';
+        }
+    }
     /**
      * Load activity metabox
      */
@@ -522,7 +542,6 @@ class Disciple_Tools_People_Groups_Post_Type
             add_post_meta( $post_id, strtolower( $number_key ), sanitize_text_field( wp_unslash( $_POST['new-value-address'] ) ), true );
             add_post_meta( $post_id, strtolower( $details_key ), $details, true );
         }
-
         foreach ( $fields as $f ) {
             if ( !isset( $_POST[ $f ] ) ) {
                 continue;
@@ -536,6 +555,16 @@ class Disciple_Tools_People_Groups_Post_Type
                 delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
             } elseif ( ${$f} != get_post_meta( $post_id, $f, true ) ) {
                 update_post_meta( $post_id, $f, ${$f} );
+            }
+        }
+
+        $dt_available_languages = Disciple_Tools_Core_Endpoints::get_settings();
+
+        foreach ($dt_available_languages["available_translations"] as $language) {
+            if ( isset( $_POST['dt_translation_' . $language["language"]] ) )
+            {
+                $translated_text_value = sanitize_text_field( wp_unslash( $_POST['dt_translation_' . $language["language"]] ) );
+                update_post_meta( $post_id, $language["language"], $translated_text_value );
             }
         }
 
@@ -581,6 +610,27 @@ class Disciple_Tools_People_Groups_Post_Type
         //        ];
 
         return apply_filters( 'dt_custom_fields_settings', $fields, "people_groups" );
+    }
+
+    public function dt_registered_post_types( $post_types ){
+        $post_types[] = $this->post_type;
+        return $post_types;
+    }
+    public function dt_get_post_type_settings( $settings, $post_type ){
+        if ( $post_type === $this->post_type){
+            $fields = $this->get_custom_fields_settings();
+            $settings = [
+                'fields' => $fields,
+                'channels' => [],
+                'connection_types' => array_keys( array_filter( $fields, function ( $a ) {
+                    return $a["type"] === "connection";
+                } ) ),
+                'label_singular' => $this->singular,
+                'label_plural' => $this->plural,
+                'post_type' => $this->post_type
+            ];
+        }
+        return $settings;
     }
 
     /**

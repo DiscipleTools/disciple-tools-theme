@@ -17,7 +17,10 @@ $dt_user_contact_id = dt_get_associated_user_id( $dt_user->ID, 'user' );
 
 $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the site settings in the config area with the fields available in the user meta table.
 $dt_site_notification_defaults = dt_get_site_notification_defaults(); // Array of site default settings
-$dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' )
+$dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' );
+
+$dt_user_locale = get_user_locale( $dt_user->ID );
+$translations = dt_get_translations();
 
 ?>
 
@@ -62,7 +65,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 
                         <span class="section-header"><?php esc_html_e( 'Your Profile', 'disciple_tools' )?></span>
 
-                        <button class="float-right" data-open="edit-profile"><i class="fi-pencil"></i> <?php esc_html_e( 'Edit', 'disciple_tools' )?></button>
+                        <button class="float-right" data-open="edit-profile-modal"><i class="fi-pencil"></i> <?php esc_html_e( 'Edit', 'disciple_tools' )?></button>
 
                         <hr size="1" style="max-width:100%"/>
 
@@ -162,8 +165,8 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                 <strong><?php esc_html_e( 'Language', 'disciple_tools' )?></strong>
                                 <p>
                                 <?php
-                                if ( !empty( $dt_user->locale ) ){
-                                    echo esc_html( $dt_user->locale );
+                                if ( !empty( $dt_user_locale ) && $dt_user_locale !== 'en_US' ){
+                                    echo esc_html( $translations[$dt_user_locale]['native_name'] );
                                 } else {
                                     echo esc_html__( 'English', 'disciple_tools' );
                                 }
@@ -226,8 +229,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                                 <input class="switch-input" id="<?php echo esc_html( $channel_notification_key ) ?>" type="checkbox"
                                                        name="<?php echo esc_html( $channel_notification_key ) ?>"
                                                        onclick="switch_preference( '<?php echo esc_html( $channel_notification_key ) ?>', 'notifications' );"
-                                                    <?php ( isset( $dt_user_meta[$channel_notification_key ] ) && $dt_user_meta[$channel_notification_key ][0] == false ) ?
-                                                        print esc_attr( '', 'disciple_tools' ) : print esc_attr( 'checked', 'disciple_tools' ); ?>>
+                                                    <?php print esc_attr( ( isset( $dt_user_meta[$channel_notification_key ] ) && $dt_user_meta[$channel_notification_key ][0] == false ) ? '' : 'checked' ); ?>>
                                                 <label class="switch-paddle inactive" for="<?php echo esc_html( $channel_notification_key ) ?>">
                                                     <span class="show-for-sr"><?php echo esc_html( $dt_notification_default['label'] ) ?></span>
                                                 </label>
@@ -265,9 +267,9 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                 <div class="small-12 cell">
 
                     <div class="bordered-box cell" id="availability" data-magellan-target="availability">
-                      <button class="help-button float-right" data-section="availability-help-text">
-                          <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                      </button>
+<!--                      <button class="help-button float-right" data-section="availability-help-text">-->
+<!--                          <img class="help-icon" src="--><?php //echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?><!--"/>-->
+<!--                      </button>-->
 
                         <!-- section header-->
                         <span class="section-header"><?php esc_html_e( 'Availability', 'disciple_tools' )?></span>
@@ -285,13 +287,13 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                 <div class="section-subheader cell">
                                     <?php esc_html_e( 'Start Date', 'disciple_tools' )?>
                                 </div>
-                                <div class="start_date"><input type="text" class="date-picker" id="start_date"></div>
+                                <div class="start_date"><input type="text" class="date-picker" id="start_date" autocomplete="off"></div>
                             </div>
                             <div style="margin: 0 20px">
                                 <div class="section-subheader cell">
                                     <?php esc_html_e( 'End Date', 'disciple_tools' )?>
                                 </div>
-                                <div class="end_date"><input type="text" class="date-picker" id="end_date"></div>
+                                <div class="end_date"><input type="text" class="date-picker" id="end_date" autocomplete="off"></div>
                             </div>
                             <div>
                                 <button id="add_unavailable_dates" class="button" disabled><?php esc_html_e( "Add Unavailable dates", 'disciple_tools' ) ?></button>
@@ -317,7 +319,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                 </div>
 
 
-                <div class="reveal" id="edit-profile" data-reveal>
+                <div class="reveal" id="edit-profile-modal" data-reveal>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -357,7 +359,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                 <tr>
                                     <td><?php esc_html_e( 'Password', 'disciple_tools' )?></td>
                                     <td><span data-tooltip data-click-open="true" class="top" tabindex="1" title="<?php esc_html_e( 'Use this email reset form to create a new password.' ) ?>">
-                                            <a href="/wp-login.php?action=lostpassword" target="_blank" rel="nofollow noopener">
+                                            <a href="<?php echo esc_url( wp_logout_url( '/wp-login.php?action=lostpassword' ) ); ?>" target="_blank" rel="nofollow noopener">
                                                 <?php esc_html_e( 'go to password change form' ) ?> <i class="fi-link"></i>
                                             </a>
                                         </span>
@@ -380,12 +382,6 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                     <td><input type="text" class="profile-input" id="nickname" name="nickname" dir="auto"
                                                value=" <?php echo esc_html( $dt_user->nickname ); ?>"/></td>
                                 </tr>
-                                <tr>
-                                    <td><label for="nickname"><?php esc_html_e( 'Locations', 'disciple_tools' )?></label></td>
-                                    <td><?php esc_html_e( '(Edit on contact record)', 'disciple_tools' )?>
-                                        <a href="/contacts/<?php //@todo  ?>"><i class="fi-link"></i></a>
-                                    </td>
-                                </tr>
 
                                 <?php // site defined fields
                                 foreach ( $dt_user_fields as $dt_field ) {
@@ -396,8 +392,8 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                         </td>
                                         <td><input type="text"
                                                    class="profile-input"
-                                                   id="<?php echo esc_attr( $dt_field['key'], 'disciple_tools' ) ?>"
-                                                   name="<?php echo esc_attr( $dt_field['key'], 'disciple_tools' ) ?>"
+                                                   id="<?php echo esc_attr( $dt_field['key'] ) ?>"
+                                                   name="<?php echo esc_attr( $dt_field['key'] ) ?>"
                                                    value="<?php echo esc_html( $dt_field['value'] ) ?>"/>
                                         </td>
                                     </tr>
@@ -416,14 +412,14 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                     <td><label for="description"><?php esc_html_e( 'Language', 'disciple_tools' )?></label></td>
                                     <td dir="auto">
                                         <?php
-                                        $translations = dt_get_translations();
                                         wp_dropdown_languages( array(
                                             'name'                        => 'locale',
                                             'id'                          => 'locale',
-                                            'selected'                    => esc_html( $dt_user->locale ),
+                                            'selected'                    => esc_html( $dt_user_locale ),
                                             'languages'                   => $dt_available_languages,
                                             'show_available_translations' => false,
                                             'show_option_site_default'    => false,
+                                            'show_option_en_us'           => true,
                                             'translations'                => $translations
                                         ) );
                                         ?>

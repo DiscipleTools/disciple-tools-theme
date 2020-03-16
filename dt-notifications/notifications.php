@@ -329,26 +329,70 @@ class Disciple_Tools_Notifications
      *
      * @return false|string
      */
+
+
     public static function pretty_timestamp( $timestamp ) {
-        $current_time = current_time( 'mysql' );
-        $one_hour_ago = date( 'Y-m-d H:i:s', strtotime( '-1 hour', strtotime( $current_time ) ) );
-        $yesterday = date( 'Y-m-d', strtotime( '-1 day', strtotime( $current_time ) ) );
-        $seven_days_ago = date( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
+        $now = time(); //current_time( 'mysql' ); //get current time
+        $notification_date = strtotime( $timestamp ); //get "this" notification timestamp
 
-        if ( $timestamp > $one_hour_ago ) {
-            $current = new DateTime( $current_time );
-            $stamp = new DateTime( $timestamp );
-            $diff = date_diff( $current, $stamp );
-            $friendly_time = date( "i", mktime( $diff->h, $diff->i, $diff->s ) ) . ' minutes ago';
-        } elseif ( $timestamp > $yesterday ) {
-            $friendly_time = date( "g:i a", strtotime( $timestamp ) );
-        } elseif ( $timestamp > $seven_days_ago ) {
-            $friendly_time = date( "l g:i a", strtotime( $timestamp ) );
-        } else {
-            $friendly_time = date( 'F j, Y, g:i a', strtotime( $timestamp ) );
+        //initalize vars
+        $minutes = $hours = $days = $weeks = $diff = $months = $years = $message = "";
+
+        //calculate time
+        $minutes = round( abs( $now - $notification_date ) / 60, 0 );
+        $hours = round( ( $now - $notification_date ) / ( 60 * 60 ) );
+        $days = round( ( $now - $notification_date ) / ( 60 * 60 * 24 ) );
+        $weeks = ceil( abs( $now - $notification_date ) / 60 / 60 / 24 / 7 );
+        //get number of months between now and timestamp | this was tricky...
+        $min_date = min( $now, $notification_date );
+        $max_date = max( $now, $notification_date );
+        $i = 0;
+        while ( ( $min_date = strtotime( "+1 MONTH", $min_date ) ) <= $max_date ) {
+            $i++;
         }
+        $months = $i;
+        //get number of years
+        $years = ceil( abs( $now - $notification_date ) / ( 60 * 60 * 24 * 365.25 ) );
+        //cast an object onto our array of values for readability purposes moving forward
+        $range = array(
+            'minutes' => $minutes,
+            'hours' => $hours,
+            'days' => $days,
+            'weeks' => $weeks,
+            'months' => $months,
+            'years' => $years,
+          );
+          $range = (object) $range;
 
-        return $friendly_time;
+        //determine which condition meets "this" notification timestamp
+        //the following 6 sprintf() items are the only items in this function that need to be translated in WP
+        if ($range->minutes < 60) {
+            // the exact number our minutes if this timestamp is < 60 minutes ago
+            $message = sprintf( _n( '%s minute ago', '%s minutes ago', $range->minutes, 'disciple_tools' ), $range->minutes );
+        } elseif (( $range->hours > 0 ) && ( $range->hours < 24 )) {
+            // the exact number our hours if this timestamp is < 24 hours ago
+            $message = sprintf( _n( '%s hour ago', '%s hours ago', $range->hours, 'disciple_tools' ), $range->hours );
+        } elseif (( $range->days > 0 ) && ( $range->days < 14 )) {
+            // the exact number of days if this timestamp is < 2 weeks ago
+            $message = sprintf( _n( '%s day ago', '%s days ago', $range->days, 'disciple_tools' ), $range->days );
+        } elseif (( $range->weeks > 0 ) && ( $range->weeks < 8 )) {
+            // the exact number of weeks if this timestamp is < 2 months ago
+            $message = sprintf( _n( '%s week ago', '%s weeks ago', $range->weeks, 'disciple_tools' ), $range->weeks );
+        } elseif (( $range->months > 0 ) && ( $range->months < 12 )) {
+            // the exact number of months if this timestamp is < 1 year
+            $message = sprintf( _n( '%s month ago', '%s months ago', $range->months, 'disciple_tools' ), $range->months );
+        } elseif ( $range->years > 1 ) {
+            // the exact number of years if this timestamp is > 1 year
+            $message = sprintf( _n( '%s year ago', '%s years ago', $range->years, 'disciple_tools' ), $range->years );
+        }
+        /**
+         * use this as a test for future issues
+         *  else {
+         * $message = "the now : " . $now . " | the notification date : " . $notification_date . " | the minutes : " .$range->minutes . " | the hours : " .$range->hours . " | the days : " .$range->days. " | the weeks : " .$range->weeks. " | the months : ".$range->months. " |  the years : ".$range->years;
+         *  }
+         *
+         */
+        return array( $message, gmdate( "m/d/Y", $notification_date ) );
     }
 
     /**
@@ -675,15 +719,15 @@ class Disciple_Tools_Notifications
     /**
      * @param $notification
      *
+     * @param bool $html
      * @return string $notification_note the return value is expected to contain HTML.
      */
-    public static function get_notification_message_html( $notification ){
+    public static function get_notification_message_html( $notification, $html = true ){
         // load the local for the destination usr so emails are sent our correctly.
         $destination_user = get_user_by( 'id', $notification["user_id"] );
-        $destination_user_locale = "en_US";
-        if ( $destination_user && !empty( $destination_user->locale ) ){
-            $destination_user_locale = $destination_user->locale;
-        }
+
+        $destination_user_locale = !empty( $destination_user->locale ) ? $destination_user->locale : Disciple_Tools::instance()->site_locale;
+
         add_filter( "determine_locale", function ( $locale ) use ( $destination_user_locale ) {
             if ( $destination_user_locale ){
                 $locale = $destination_user_locale;
@@ -698,7 +742,11 @@ class Disciple_Tools_Notifications
         $post = get_post( $object_id );
         $post_title = isset( $post->post_title ) ? sanitize_text_field( $post->post_title ) : "";
         $notification_note = $notification["notification_note"]; // $notification_note is expected to contain HTML
-        $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . $post_title . '</a>';
+        if ( $html ){
+            $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . $post_title . '</a>';
+        } else {
+            $link = $post_title;
+        }
         if ( $notification["notification_name"] === "created" ) {
             $notification_note = sprintf( esc_html_x( '%s was created and assigned to you.', '%s was created and assigned to you.', 'disciple_tools' ), $link );
         } elseif ( $notification["notification_name"] === "assigned_to" ) {
@@ -751,6 +799,8 @@ class Disciple_Tools_Notifications
         } elseif ( $notification["notification_name"] === "assignment_declined" ){
             $user_who_declined = get_userdata( $notification["source_user_id"] );
             $notification_note = sprintf( esc_html_x( '%1$s declined assignment on: %2$s.', 'User1 declined assignment on: contact1', 'disciple_tools' ), $user_who_declined->display_name, $link );
+        } else {
+            $notification_note = apply_filters( 'dt_custom_notification_note', '', $notification );
         }
         return $notification_note;
     }

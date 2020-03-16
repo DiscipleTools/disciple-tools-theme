@@ -132,19 +132,33 @@ NAVIGATION STYLES
     .submenu.menu.vertical.is-dropdown-submenu.js-dropdown-active {
         display: block;
     }
+}
 
-    .notification-count {
-        display: none;
-        vertical-align: top;
-        position: relative;
-        top: -5px;
-        left: -15px;
+.notification-count {
+    display: none;
+    vertical-align: top;
+    position: relative;
+    top: -5px;
+    left: -15px;
+}
+.add-new-items-dropdown {
+    background-color: #3f729b;
+    text-align: left;
+    a {
+        vertical-align: middle;
+        color: white;
+        font-weight: 700;
+        img {
+            width:25px; margin:0 10px 0 0
+        }
     }
 }
 
 nav.second-bar {
     padding: 0.5em;
     background-color: white;
+    width: 100%;
+    top: auto !important;
 
     .breadcrumbs {
         margin-bottom: 0;
@@ -514,6 +528,9 @@ button.loader {
         }
     }
 }
+.typeahead__filter .typeahead__filter-button {
+  @extend .input-height
+}
 
 .last-typeahead-in-section {
     margin-bottom: 150px;
@@ -523,8 +540,7 @@ button.loader {
 .typeahead__field [contenteditable],
 .typeahead__field input.input-height,
 .typeahead__field textarea.input-height .typeahead__field button.input-height {
-    $height: ($input-font-size * unitless-calc($input-line-height)) + (get-side($input-padding, 'top') + get-side($input-padding, 'bottom')) - rem-calc(1);
-    min-height: $height;
+    @extend .input-height
 }
 
 .typeahead__dropdown > li > a,
@@ -613,6 +629,10 @@ html[dir='rtl'] {
 
     .float-left {
         float: right !important;
+    }
+    .notification-count {
+        right: -15px;
+        left: 0;
     }
 }
 
@@ -830,6 +850,11 @@ div.help-more h5 {
         margin: 5px;
     }
 }
+.daterangepicker {
+  th, td {
+    padding: 0;
+  }
+}
 
 #metrics-sidemenu ul.menu.vertical.nested {
     display: none;
@@ -898,4 +923,33 @@ label.dt-switch:active:after {
 .ul-no-bullets {
     list-style-type: none;
     margin: 0;
+}
+
+#user_modal_content{
+  .bordered-box {
+    margin-bottom: 20px;
+  }
+  #hero_stats .bordered-box {
+    flex-basis: 19%;
+  }
+  .user_modal_column {
+    flex-basis: 50%;
+  }
+}
+
+@media screen and (max-width : 640px) {
+  #user_modal_content {
+    #hero_stats .bordered-box {
+      margin: 5px;
+      flex-grow:1;
+    }
+    #hero_stats {
+      margin-bottom: 20px;
+    }
+    .user_modal_column {
+      flex-basis: 100%;
+      padding: 0 !important;
+    }
+  }
+
 }
