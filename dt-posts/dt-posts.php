@@ -99,11 +99,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                 unset( $fields[$field_key] );
             }
             $field_type = $post_settings["fields"][$field_key]["type"] ?? '';
-            if ( $field_type === "multi_select" || $field_type === "location" ){
+            if ( $field_type === "multi_select" ){
                 $multi_select_fields[$field_key] = $field_value;
                 unset( $fields[$field_key] );
             }
-            if ( $field_type === "location_meta" ){
+            if ( $field_type === "location_meta" || $field_type === "location" ){
                 $location_meta[$field_key] = $field_value;
                 unset( $fields[$field_key] );
             }
@@ -144,7 +144,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $potential_error;
         }
 
-        $potential_error = self::update_location_grid_fields( $post_settings["fields"], $post_id, $location_meta, null );
+        $potential_error = self::update_location_grid_fields( $post_settings["fields"], $post_id, $location_meta, $post_type, null );
         if (is_wp_error( $potential_error )) {
             return $potential_error;
         }
@@ -270,7 +270,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $potential_error;
         }
 
-        $potential_error = self::update_location_grid_fields( $post_settings["fields"], $post_id, $fields, $existing_post );
+        $potential_error = self::update_location_grid_fields( $post_settings["fields"], $post_id, $fields, $post_type, $existing_post );
         if (is_wp_error( $potential_error )) {
             return $potential_error;
         }

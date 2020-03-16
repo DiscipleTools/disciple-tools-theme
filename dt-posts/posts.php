@@ -1129,14 +1129,16 @@ class Disciple_Tools_Posts
         return $fields;
     }
 
-    public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, array $existing_post = null ){
-        foreach ( $fields as $field_key => $field ){
+    public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, $post_type, array $existing_post = null ){
 
+        foreach ( $fields as $field_key => $field ){
 
             /********************************************************
              * Basic Locations
              ********************************************************/
             if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "location" ) ){
+                dt_write_log( 'location_grid' );
+                dt_write_log( $fields );
                 if ( !isset( $field["values"] ) ) {
                     return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
                 }
@@ -1209,18 +1211,19 @@ class Disciple_Tools_Posts
 
                             $geocoder->validate_location_grid_meta( $location_meta_grid );
                             $location_meta_grid['post_id'] = $post_id;
-                            $location_meta_grid['post_type'] = get_post_type($post_id);
+                            $location_meta_grid['post_type'] = $post_type;
                             $location_meta_grid['grid_id'] = $grid["grid_id"];
                             $location_meta_grid['lng'] = $grid["longitude"];
                             $location_meta_grid['lat'] = $grid["latitude"];
                             $location_meta_grid['level'] = $grid["level_name"];
                             $location_meta_grid['label'] = $grid["name"];
 
-                            $grid_meta_id = $geocoder->add_location_grid_meta( $post_id, $location_meta_grid );
+                            $potential_error = $geocoder->add_location_grid_meta( $post_id, $location_meta_grid );
+                            if ( is_wp_error( $potential_error ) ){
+                                return $potential_error;
+                            }
                         }
                     }
-
-
                     // new
                     else {
 
@@ -1229,8 +1232,12 @@ class Disciple_Tools_Posts
                         $grid = $geocoder->get_grid_id_by_lnglat( $value['lng'], $value['lat'] );
                         if ( $grid ) {
                             $value['grid_id'] = $grid['grid_id'];
-                            $grid_meta_id = $geocoder->add_location_grid_meta( $post_id, $value );
+                            $value['post_type'] = $post_type;
 
+                            $potential_error = $geocoder->add_location_grid_meta( $post_id, $value );
+                            if ( is_wp_error( $potential_error ) ){
+                                return $potential_error;
+                            }
                         }
                     }
                 }

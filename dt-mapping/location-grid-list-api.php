@@ -92,6 +92,8 @@ if ( isset( $_GET['type'] ) && isset( $_GET['longitude'] ) && isset( $_GET['lati
         echo json_encode( $response );
     }
 
+
+
 endif; // html
 
 // geocodes bounding box

@@ -657,7 +657,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields['location_grid_meta'] = [
             'name'        => __( 'Location Grid Meta', 'disciple_tools' ),
-            'type'        => 'location',
+            'type'        => 'location_meta',
             'default'     => [],
             'hidden' => true
         ];
