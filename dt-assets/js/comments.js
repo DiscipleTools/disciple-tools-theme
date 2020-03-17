@@ -519,16 +519,25 @@ function unescapeHtml(safe) {
 
 });
 
-function translateText(sourceText, sourceLang, targetLang, commentID) {
-  var url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl="
-            + sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
 
-  var result = fetch(url)
-  .then((response) => {
+function translateText(sourceText, sourceLang, targetLang, commentID) {
+
+
+  let url = `https://translation.googleapis.com/language/translate/v2?key=${API_KEY}`
+console.log(targetLang);
+  let postData = {
+    "q": [sourceText],
+    "target": "en"
+  }
+
+  fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(postData),
+  }).then((response) => {
     return response.json();
   }).then((result) => {
     console.log(result);
-   jQuery(`.translation-bubble.${commentID}`).append(result[0][0][0]);
+   jQuery(`.translation-bubble.${commentID}`).append(result.data.translations[0].translatedText);
    jQuery(`.translate-button.hideTranslation.hide.${commentID}`).removeClass('hide');
    jQuery(`.translate-button.showTranslation.${commentID}`).addClass('hide');
 
