@@ -164,9 +164,11 @@ class DT_User_Management
         }
 
         $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
-        foreach ( $dates_unavailable as &$range ) {
-            $range["start_date"] = dt_format_date( $range["start_date"] );
-            $range["end_date"] = dt_format_date( $range["end_date"] );
+        if ( ! empty( $dates_unavailable ) ) {
+            foreach ( $dates_unavailable as &$range ) {
+                $range["start_date"] = dt_format_date( $range["start_date"] );
+                $range["end_date"] = dt_format_date( $range["end_date"] );
+            }
         }
         $user_activity = $wpdb->get_results( $wpdb->prepare("
             SELECT * from $wpdb->dt_activity_log

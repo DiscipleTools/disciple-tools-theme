@@ -27,11 +27,29 @@ function write_results_box() {
                           </div>`)
     })
 
-    delete_location_listener()
+    lgm_results.append(`
+      <div class="cell center">
+        <button type="button" class="button clear small padding-bottom-0" onclick="open_map()">show map</button>
+      </div>
+      <!-- reveal -->
+      <div class="reveal large" id="show-map" data-reveal>
+          <div id="map-reveal-content"><!-- load content here --><div class="loader">Loading...</div></div>
+          <button class="close-button" data-close aria-label="Close modal" type="button">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+    `)
 
+    delete_location_listener()
     reset_tile_spacing()
+    jQuery('#show-map').foundation()
+
 
   } /*end valid check*/
+}
+
+function open_map() {
+  jQuery('#show-map').foundation('open')
 }
 
 function delete_location_listener() {
