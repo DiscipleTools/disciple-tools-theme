@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
 
+  /* List Table */
   multipliers_js()
-
   function multipliers_js(){
     let multipliers_table = $('#multipliers_table').DataTable({
       "paging":   false,
@@ -52,50 +52,138 @@ jQuery(document).ready(function($) {
       } );
     } ).draw();
 
+
+    /* Load Modal */
     let user_id = 0;
     let open_multiplier_modal = (user_id)=>{
       $('#user_modal').foundation('open');
+
       $('.users-spinner').addClass("active")
-      $('#user_modal_content').hide()
-      makeRequest( "get", `user?user=${user_id}`, null , 'user-management/v1/')
-      .then(response=>{
-        $('#user_modal_content').show()
-        $('.users-spinner').removeClass("active")
-        $("#user_name").html(_.escape(response.display_name))
+      // $('#user_modal_content').hide()
 
-        //status
-        $('#status-select').val(response.user_status)
-        if ( response.user_status !== "0" ){
-        }
-        $('#workload-select').val(response.workload_status)
+      // load spinners
+      let spinner = ' <span class="loading-spinner users-spinner active"></span>'
+      $("#user_name").html(spinner)
+      $('#update_needed_count').html(spinner)
+      $('#needs_accepted_count').html(spinner)
+      $('#active_contacts').html(spinner)
+      $('#unread_notifications').html(spinner)
+      $('#assigned_this_month').html(spinner)
+      $('#assigned_last_month').html(spinner)
+      $('#assigned_this_year').html(spinner)
+      $('#assigned_all_time').html(spinner)
+      $('#unaccepted_contacts').html(spinner)
+      $('#contact_accepts').html(spinner)
+      $('#avg_contact_accept').html(spinner)
+      $('#unattempted_contacts').html(spinner)
+      $('#contact_attempts').html(spinner)
+      $('#avg_contact_attempt').html(spinner)
+      $('#update_needed_list').html(spinner)
+      $('#status_chart_div').html(spinner)
+      $('#activity').html(spinner)
+      $('#day_activity_chart').html(spinner)
 
-        //locations
-        let typeahead = Typeahead['.js-typeahead-location_grid']
-        if ( typeahead ){
-          for (let i = 0; i < typeahead.items.length; i ){
-            typeahead.cancelMultiselectItem(0)
+      /* details */
+      makeRequest( "get", `user?user=${user_id}&section=details`, null , 'user-management/v1/')
+        .done(details=>{
+          console.log('details')
+          console.log(details)
+
+          $("#user_name").html(_.escape(details.display_name))
+
+          $('#status-select').val(details.user_status)
+          if ( details.user_status !== "0" ){
+          }
+          $('#workload-select').val(details.workload_status)
+
+          //stats
+          $('#update_needed_count').html(details.update_needed["total"])
+          $('#needs_accepted_count').html(details.needs_accepted["total"])
+          $('#active_contacts').html(details.active_contacts)
+          $('#unread_notifications').html(details.unread_notifications)
+          $('#assigned_this_month').text(details.assigned_counts.this_month)
+          $('#assigned_last_month').text(details.assigned_counts.last_month)
+          $('#assigned_this_year').text(details.assigned_counts.this_year)
+          $('#assigned_all_time').text(details.assigned_counts.all_time)
+
+          status_pie_chart( details.contact_statuses )
+          setup_user_roles( details );
+
+          //availability
+          if ( details.dates_unavailable ) {
+            display_dates_unavailable( details.dates_unavailable )
           }
 
-        }
-        response.locations.forEach( location=>{
-          typeahead.addMultiselectItemLayout({ID:location.grid_id.toString(), name:location.name})
+        }).catch(()=>{
+          console.log( 'error in details')
+          // $('#user_modal').foundation('close');
         })
 
-        //availability
-        display_dates_unavailable( response.dates_unavailable )
+      /* locations */
+      makeRequest( "get", `user?user=${user_id}&section=locations`, null , 'user-management/v1/')
+        .done(locations=>{
+          console.log('locations')
+          console.log(locations)
 
-        //stats
-        $('#update_needed_count').html(response.update_needed["total"])
-        $('#needs_accepted_count').html(response.needs_accepted["total"])
-        $('#active_contacts').html(response.active_contacts)
-        $('#unread_notifications').html(response.unread_notifications)
-        $('#assigned_this_month').text(response.assigned_counts.this_month)
-        $('#assigned_last_month').text(response.assigned_counts.last_month)
-        $('#assigned_this_year').text(response.assigned_counts.this_year)
-        $('#assigned_all_time').text(response.assigned_counts.all_time)
+          //locations
+          let typeahead = Typeahead['.js-typeahead-location_grid']
+          if ( typeahead ){
+            for (let i = 0; i < typeahead.items.length; i ){
+              typeahead.cancelMultiselectItem(0)
+            }
+          }
+          locations.locations.forEach( location=>{
+            typeahead.addMultiselectItemLayout({ID:location.grid_id.toString(), name:location.name})
+          })
 
-        day_activity_chart(response.days_active)
-        status_pie_chart( response.contact_statuses )
+        }).catch(()=>{
+        console.log( 'error in locations')
+        // $('#user_modal').foundation('close');
+      })
+
+      /* activity */
+      makeRequest( "get", `user?user=${user_id}&section=activity`, null , 'user-management/v1/')
+        .done(activity=>{
+          console.log('activity')
+          console.log(activity)
+
+          //Activity history
+          let activity_div = $('#activity')
+          let activity_html = ``;
+          activity.user_activity.forEach((a)=>{
+            activity_html += `<div>
+              <strong>${moment.unix(a.hist_time).format('YYYY-MM-DD')}</strong>
+              ${a.object_note}
+            </div>`
+          })
+          activity_div.html(activity_html)
+
+
+        }).catch(()=>{
+        console.log( 'error in locations')
+        // $('#user_modal').foundation('close');
+      })
+
+      /* activity */
+      makeRequest( "get", `user?user=${user_id}&section=days_active`, null , 'user-management/v1/')
+        .done(days_active=>{
+          console.log('days_active')
+          console.log(days_active)
+
+          day_activity_chart(days_active.days_active)
+
+        }).catch(()=>{
+        console.log( 'error in locations')
+        // $('#user_modal').foundation('close');
+      })
+
+      /* all */
+      makeRequest( "get", `user?user=${user_id}&section=pace`, null , 'user-management/v1/')
+      .done(response=>{
+        console.log('pace')
+        console.log(response)
+
+
 
         // 10s
         // contacts assigned but not accepted
@@ -169,23 +257,16 @@ jQuery(document).ready(function($) {
         })
         $('#update_needed_list').html(update_needed_list_html)
 
-
-        //Activity history
-        let activity_div = $('#activity')
-        let activity_html = ``;
-        response.user_activity.forEach((a)=>{
-          activity_html += `<div>
-              <strong>${moment.unix(a.hist_time).format('YYYY-MM-DD')}</strong>
-              ${a.object_note}
-            </div>`
-        })
-        activity_div.html(activity_html)
-
-        setup_user_roles(response);
-      }).catch(()=>{
-        $('#user_modal').foundation('close');
+      }).catch((e)=>{
+        console.log( 'error in all')
+        console.log( e)
+        // $('#user_modal').foundation('close'); // @todo re enable
       })
     }
+
+
+
+
 
     $('#refresh_cached_data').on('click', function () {
       $('#loading-page').addClass('active')

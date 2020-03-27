@@ -111,12 +111,9 @@ $user_management_options = DT_User_Management::user_management_options();
             </section>
         </div>
 
-
-
         <?php if ( strpos( $dt_url_path, 'user-management' ) !== false ) : ?>
             <!-- REVEAL SECTION-->
             <div class="large reveal" id="user_modal" data-reveal data-v-offset="10">
-                <span class="loading-spinner users-spinner"></span>
 
                 <div id="user_modal_content">
 
@@ -129,7 +126,9 @@ $user_management_options = DT_User_Management::user_management_options();
                     <hr>
 
                     <div class="grid-x grid-margin-x">
-                        <div class="cell medium-4"><!-- left column -->
+
+                        <!-- left column -->
+                        <div class="cell medium-4">
 
                             <div class="bordered-box" id="hero_status">
 
@@ -164,7 +163,6 @@ $user_management_options = DT_User_Management::user_management_options();
                                         <p class="hero-number" id="unread_notifications"></p>
                                     </div>
 
-
                                     <div class="cell">
                                         <hr>
                                         <h4><?php esc_html_e( 'Assignments', 'disciple_tools' ); ?></h4>
@@ -193,11 +191,10 @@ $user_management_options = DT_User_Management::user_management_options();
                                 </div>
                             </div>
 
-
-
                             <!-- Stats -->
                             <div class="bordered-box">
                                 <h4><?php esc_html_e( 'Pace', 'disciple_tools' ); ?></h4>
+                                <div id="status_chart_div" style="width:100%"></div>
                                 <div class="subheader"><?php esc_html_e( 'Assigned and not Accepted', 'disciple_tools' ); ?></div>
                                 <ul id="unaccepted_contacts"></ul>
                                 <div class="subheader"><?php esc_html_e( 'Time from Assigned to Contact Accepted for the last 10 contacts', 'disciple_tools' ); ?> (<span id="avg_contact_accept"></span> days average)</div>
@@ -209,14 +206,13 @@ $user_management_options = DT_User_Management::user_management_options();
                                 <div class="subheader"><?php esc_html_e( 'Oldest 10 Update Needed', 'disciple_tools' ); ?></div>
                                 <ul id="update_needed_list"></ul>
                                 <div class="subheader"><?php esc_html_e( 'Contact Status', 'disciple_tools' ); ?></div>
-                                <div id="status_chart_div" style="width:100%"></div>
+
                             </div>
 
+                        </div><!-- end left -->
 
-                        </div>
 
-
-            <!-- center column-->
+                        <!-- center column-->
                         <div class="cell medium-4">
 
                             <!-- User Status -->
@@ -267,42 +263,6 @@ $user_management_options = DT_User_Management::user_management_options();
                                     </div>
                                 </div>
                                 <?php endif; ?>
-
-
-                            </div>
-
-                            <!-- Availability -->
-                            <div class="bordered-box">
-                                <h4><?php esc_html_e( "Availability", 'disciple_tools' ) ?></h4>
-                                <p><?php esc_html_e( "Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts", 'disciple_tools' ) ?></p>
-                                <div style="display: flex; align-items: center">
-                                    <div>
-                                        <strong><?php esc_html_e( 'Schedule Travel or Dates Unavailable', 'disciple_tools' )?>:</strong>
-                                    </div>
-                                    <div style="flex-shrink: 1; margin: 0 10px">
-                                        <div class="date_range">
-                                            <input type="text" class="date-picker" id="date_range" autocomplete="off" placeholder="2020-01-01 - 2020-02-03">
-                                        </div>
-                                    </div>
-                                    <div id="add_unavailable_dates_spinner" style="display: inline-block" class="loading-spinner"></div>
-
-                                </div>
-                                <p><?php esc_html_e( "Travel or Away Dates", 'disciple_tools' ) ?></p>
-                                <div >
-                                    <table>
-                                        <thead>
-                                        <tr>
-                                            <th><?php esc_html_e( "Start Date", 'disciple_tools' ) ?></th>
-                                            <th><?php esc_html_e( "End Date", 'disciple_tools' ) ?></th>
-                                            <th></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="unavailable-list">
-
-                                        </tbody>
-
-                                    </table>
-                                </div>
                             </div>
 
                             <!-- Roles -->
@@ -334,9 +294,38 @@ $user_management_options = DT_User_Management::user_management_options();
                                 </div>
                             <?php endif; ?>
 
-                        </div>
+                            <!-- Availability -->
+                            <div class="bordered-box">
+                                <h4><?php esc_html_e( "Availability", 'disciple_tools' ) ?></h4>
+                                <p><?php esc_html_e( "Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts", 'disciple_tools' ) ?></p>
+                                <div>
+                                    <?php esc_html_e( 'Schedule Unavailability', 'disciple_tools' )?>:
+                                </div>
+                                <div>
+                                    <div class="date_range">
+                                        <input type="text" class="date-picker" id="date_range" autocomplete="off" placeholder="2020-01-01 - 2020-02-03" />
+                                    </div>
+                                </div>
+                                <div id="add_unavailable_dates_spinner" class="loading-spinner"></div>
 
-                <!-- right column -->
+                                <div><?php esc_html_e("Travel or Away Dates", 'disciple_tools') ?></div>
+                                <div>
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th><?php esc_html_e( "Start Date", 'disciple_tools' ) ?></th>
+                                            <th><?php esc_html_e( "End Date", 'disciple_tools' ) ?></th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="unavailable-list"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div> <!-- end center -->
+
+                        <!-- right column -->
                         <div class="cell medium-4">
 
                             <!-- Daily Activity -->
@@ -350,7 +339,9 @@ $user_management_options = DT_User_Management::user_management_options();
                                 <h4><?php esc_html_e( 'Activity', 'disciple_tools' ); ?></h4>
                                 <div id="activity"></div>
                             </div>
-                        </div>
+
+                        </div><!-- end right -->
+
                     </div>
                 </div>
 
