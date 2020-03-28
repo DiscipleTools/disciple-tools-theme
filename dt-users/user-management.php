@@ -169,7 +169,7 @@ class DT_User_Management
         ];
 
         /* details section */
-        if ( $section === 'details' ) {
+        if ( $section === 'details' || $section === null ) {
             /* user status */
             $user_status = get_user_option( 'user_status', $user->ID );
             $user_response['user_status'] = $user_status;
@@ -228,7 +228,7 @@ class DT_User_Management
             $user_response['unread_notifications'] = $notification_count;
         }
 
-        if ( $section === 'details' || $section === 'pace' ) {
+        if ( $section === 'details' || $section === 'pace' || $section === null  ) {
             $to_accept = Disciple_Tools_Contacts::search_viewable_contacts([
                 'overall_status' => ['assigned'],
                 'assigned_to' => [$user->ID]
@@ -257,7 +257,7 @@ class DT_User_Management
         }
 
         /* Locations section */
-        if ( $section === 'locations' ) {
+        if ( $section === 'locations' || $section === null  ) {
             $location_grids = DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( $user->ID, 'user' ) );
             $locations = [];
             foreach ( $location_grids as $l ){
@@ -270,7 +270,7 @@ class DT_User_Management
         }
 
 
-        if ( $section === 'activity' ) {
+        if ( $section === 'activity' || $section === null  ) {
             $user_activity = $wpdb->get_results($wpdb->prepare("
                 SELECT hist_time, action, object_name, meta_key, object_type, object_note  
                 FROM $wpdb->dt_activity_log
@@ -316,13 +316,13 @@ class DT_User_Management
             $user_response['user_activity'] = $user_activity;
         }
 
-        if ( $section === 'pace' ) {
+        if ( $section === 'pace' || $section === null  ) {
             $times = self::times($user->ID);
             $user_response['times'] = $times;
         }
 
 
-        if ( $section === 'days_active'  ) {
+        if ( $section === 'days_active' || $section === null   ) {
 
             $days_active_results = $wpdb->get_results($wpdb->prepare("
                 SELECT FROM_UNIXTIME(`hist_time`, '%%Y-%%m-%%d') as day,
@@ -359,24 +359,6 @@ class DT_User_Management
             $user_response['days_active'] = $daily_activity;
         }
 
-
-
-//        $user_response = [
-//            "display_name" => $user->display_name,
-//            "user_status" => $user_status ?? '',
-//            "workload_status" => $workload_status ?? '',
-//            "dates_unavailable" => $dates_unavailable,
-//            "locations" => $locations ?? [],
-//            "user_activity" => $user_activity ?? [],
-//            "active_contacts" => $my_active_contacts,
-//            "update_needed" => $update_needed,
-//            "unread_notifications" => $notification_count ? $notification_count : 0,
-//            "needs_accepted" => $to_accept,
-//            "days_active" => $daily_activity,
-//            "times" => $times,
-//            "assigned_counts" => isset( $assigned_counts[0] ) ? $assigned_counts[0] : [],
-//            "contact_statuses" => $contact_statuses
-//        ];
 
         if ( current_user_can( "promote_users" ) ){
             $user_response["roles"] = $user->roles;
