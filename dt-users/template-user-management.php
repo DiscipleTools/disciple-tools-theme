@@ -244,12 +244,12 @@ $user_management_options = DT_User_Management::user_management_options();
 
                             <!-- Locations -->
                             <div class="bordered-box">
-                                <h4><?php esc_html_e("Location Responsibility", 'zume' ) ?></h4>
+                                <h4><?php esc_html_e( "Location Responsibility", 'zume' ) ?></h4>
 
                                 <?php if ( false ) : ?>
                                 <!-- mapbox location widget -->
 
-                                <?php else: ?>
+                                <?php else : ?>
                                 <!-- default location widget -->
                                 <div class="location_grid">
                                     <var id="location_grid-result-container" class="result-container"></var>
@@ -312,7 +312,7 @@ $user_management_options = DT_User_Management::user_management_options();
                                 </div>
                                 <div id="add_unavailable_dates_spinner" class="loading-spinner"></div>
 
-                                <div><?php esc_html_e("Travel or Away Dates", 'disciple_tools') ?></div>
+                                <div><?php esc_html_e( "Travel or Away Dates", 'disciple_tools' ) ?></div>
                                 <div>
                                     <table>
                                         <thead>

@@ -189,9 +189,9 @@ class DT_User_Management
             $user_response['dates_unavailable'] = $dates_unavailable;
 
             /* counts section */
-            $month_start = strtotime(gmdate('Y-m-01'));
-            $last_month_start = strtotime('first day of last month');
-            $this_year = strtotime("first day of january this year");
+            $month_start = strtotime( gmdate( 'Y-m-01' ) );
+            $last_month_start = strtotime( 'first day of last month' );
+            $this_year = strtotime( "first day of january this year" );
             //number of assigned contacts
             $assigned_counts = $wpdb->get_results($wpdb->prepare("
                 SELECT 
@@ -219,7 +219,7 @@ class DT_User_Management
                 $user->ID
             ));
 
-            $contact_statuses = Disciple_Tools_Counter_Contacts::get_contact_statuses($user->ID);
+            $contact_statuses = Disciple_Tools_Counter_Contacts::get_contact_statuses( $user->ID );
 
             $user_response['contact_statuses'] = $contact_statuses;
             $user_response['active_contacts'] = $my_active_contacts;
@@ -228,28 +228,28 @@ class DT_User_Management
             $user_response['unread_notifications'] = $notification_count;
         }
 
-        if ( $section === 'details' || $section === 'pace' || $section === null  ) {
+        if ( $section === 'details' || $section === 'pace' || $section === null ) {
             $to_accept = Disciple_Tools_Contacts::search_viewable_contacts([
-                'overall_status' => ['assigned'],
-                'assigned_to' => [$user->ID]
+                'overall_status' => [ 'assigned' ],
+                'assigned_to' => [ $user->ID ]
             ]);
             $update_needed = Disciple_Tools_Contacts::search_viewable_contacts([
-                'requires_update' => ["true"],
-                'assigned_to' => [$user->ID],
-                'overall_status' => ['-closed'],
+                'requires_update' => [ "true" ],
+                'assigned_to' => [ $user->ID ],
+                'overall_status' => [ '-closed' ],
                 'sort' => 'last_modified'
             ]);
-            if (sizeof($update_needed["contacts"]) > 5) {
-                $update_needed["contacts"] = array_slice($update_needed["contacts"], 0, 5);
+            if (sizeof( $update_needed["contacts"] ) > 5) {
+                $update_needed["contacts"] = array_slice( $update_needed["contacts"], 0, 5 );
             }
-            if (sizeof($to_accept["contacts"]) > 10) {
-                $to_accept["contacts"] = array_slice($to_accept["contacts"], 0, 10);
+            if (sizeof( $to_accept["contacts"] ) > 10) {
+                $to_accept["contacts"] = array_slice( $to_accept["contacts"], 0, 10 );
             }
             foreach ($update_needed["contacts"] as &$contact) {
                 $now = time();
-                $last_modified = get_post_meta($contact->ID, "last_modified", true);
-                $days_different = (int)round(($now - (int)$last_modified) / (60 * 60 * 24));
-                $contact->last_modified_msg = esc_attr(sprintf(__('%s days since last update', 'disciple_tools'), $days_different), 'disciple_tools');
+                $last_modified = get_post_meta( $contact->ID, "last_modified", true );
+                $days_different = (int) round( ( $now - (int) $last_modified ) / ( 60 * 60 * 24 ) );
+                $contact->last_modified_msg = esc_attr( sprintf( __( '%s days since last update', 'disciple_tools' ), $days_different ), 'disciple_tools' );
             }
 
             $user_response['update_needed'] = $update_needed;
@@ -257,7 +257,7 @@ class DT_User_Management
         }
 
         /* Locations section */
-        if ( $section === 'locations' || $section === null  ) {
+        if ( $section === 'locations' || $section === null ) {
             $location_grids = DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( $user->ID, 'user' ) );
             $locations = [];
             foreach ( $location_grids as $l ){
@@ -270,7 +270,7 @@ class DT_User_Management
         }
 
 
-        if ( $section === 'activity' || $section === null  ) {
+        if ( $section === 'activity' || $section === null ) {
             $user_activity = $wpdb->get_results($wpdb->prepare("
                 SELECT hist_time, action, object_name, meta_key, object_type, object_note  
                 FROM $wpdb->dt_activity_log
@@ -283,46 +283,46 @@ class DT_User_Management
                 foreach ($user_activity as $a) {
                     if ($a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from') {
                         if ($a->object_type === "contacts") {
-                            $a->object_note = sprintf(_x("Updated contact %s", 'Updated record Bob', 'disciple_tools'), $a->object_name);
+                            $a->object_note = sprintf( _x( "Updated contact %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
                         }
                         if ($a->object_type === "groups") {
-                            $a->object_note = sprintf(_x("Updated group %s", 'Updated record Bob', 'disciple_tools'), $a->object_name);
+                            $a->object_note = sprintf( _x( "Updated group %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
                         }
                     }
                     if ($a->action == 'comment') {
                         if ($a->meta_key === "contacts") {
-                            $a->object_note = sprintf(_x("Commented on contact %s", 'Commented on record Bob', 'disciple_tools'), $a->object_name);
+                            $a->object_note = sprintf( _x( "Commented on contact %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
                         }
                         if ($a->meta_key === "groups") {
-                            $a->object_note = sprintf(_x("Commented on group %s", 'Commented on record Bob', 'disciple_tools'), $a->object_name);
+                            $a->object_note = sprintf( _x( "Commented on group %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
                         }
                     }
                     if ($a->action == 'created') {
                         if ($a->object_type === "contacts") {
-                            $a->object_note = sprintf(_x("Created contact %s", 'Created record Bob', 'disciple_tools'), $a->object_name);
+                            $a->object_note = sprintf( _x( "Created contact %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
                         }
                         if ($a->object_type === "groups") {
-                            $a->object_note = sprintf(_x("Created group %s", 'Created record Bob', 'disciple_tools'), $a->object_name);
+                            $a->object_note = sprintf( _x( "Created group %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
                         }
                     }
                     if ($a->action === "logged_in") {
-                        $a->object_note = __("Logged In", 'disciple_tools');
+                        $a->object_note = __( "Logged In", 'disciple_tools' );
                     }
                     if ($a->action === 'assignment_decline') {
-                        $a->object_note = sprintf(_x("Declined assignment on %s", 'Declined assignment on Bob', 'disciple_tools'), $a->object_name);
+                        $a->object_note = sprintf( _x( "Declined assignment on %s", 'Declined assignment on Bob', 'disciple_tools' ), $a->object_name );
                     }
                 }
             }
             $user_response['user_activity'] = $user_activity;
         }
 
-        if ( $section === 'pace' || $section === null  ) {
-            $times = self::times($user->ID);
+        if ( $section === 'pace' || $section === null ) {
+            $times = self::times( $user->ID );
             $user_response['times'] = $times;
         }
 
 
-        if ( $section === 'days_active' || $section === null   ) {
+        if ( $section === 'days_active' || $section === null ) {
 
             $days_active_results = $wpdb->get_results($wpdb->prepare("
                 SELECT FROM_UNIXTIME(`hist_time`, '%%Y-%%m-%%d') as day,
@@ -337,18 +337,18 @@ class DT_User_Management
             foreach ($days_active_results as $a) {
                 $days_active[$a["day"]] = $a;
             }
-            $first = isset($days_active_results[0]['day']) ? strtotime($days_active_results[0]['day']) : time();
-            $first_week_start = gmdate('Y-m-d', strtotime('-' . gmdate('w', $first) . ' days', $first));
-            $current = strtotime($first_week_start);
+            $first = isset( $days_active_results[0]['day'] ) ? strtotime( $days_active_results[0]['day'] ) : time();
+            $first_week_start = gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $first ) . ' days', $first ) );
+            $current = strtotime( $first_week_start );
             $daily_activity = [];
             while ($current < time()) {
 
-                $activity = $days_active[gmdate('Y-m-d', $current)]["activity_count"] ?? 0;
+                $activity = $days_active[gmdate( 'Y-m-d', $current )]["activity_count"] ?? 0;
 
                 $daily_activity[] = [
-                    "day" => dt_format_date($current),
-                    "weekday" => gmdate('l', $current),
-                    "week_start" => gmdate('Y-m-d', strtotime('-' . gmdate('w', $current) . ' days', $current)),
+                    "day" => dt_format_date( $current ),
+                    "weekday" => gmdate( 'l', $current ),
+                    "week_start" => gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $current ) . ' days', $current ) ),
                     "activity_count" => $activity,
                     "activity" => $activity > 0 ? 1 : 0
                 ];
