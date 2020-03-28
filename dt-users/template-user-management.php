@@ -194,7 +194,6 @@ $user_management_options = DT_User_Management::user_management_options();
                             <!-- Stats -->
                             <div class="bordered-box">
                                 <h4><?php esc_html_e( 'Pace', 'disciple_tools' ); ?></h4>
-                                <div id="status_chart_div" style="width:100%"></div>
                                 <div class="subheader"><?php esc_html_e( 'Assigned and not Accepted', 'disciple_tools' ); ?></div>
                                 <ul id="unaccepted_contacts"></ul>
                                 <div class="subheader"><?php esc_html_e( 'Time from Assigned to Contact Accepted for the last 10 contacts', 'disciple_tools' ); ?> (<span id="avg_contact_accept"></span> days average)</div>
@@ -206,7 +205,12 @@ $user_management_options = DT_User_Management::user_management_options();
                                 <div class="subheader"><?php esc_html_e( 'Oldest 10 Update Needed', 'disciple_tools' ); ?></div>
                                 <ul id="update_needed_list"></ul>
                                 <div class="subheader"><?php esc_html_e( 'Contact Status', 'disciple_tools' ); ?></div>
+                            </div>
 
+                            <!-- Contacts -->
+                            <div class="bordered-box">
+                                <h4><?php esc_html_e( 'Contacts', 'disciple_tools' ); ?></h4>
+                                <div id="status_chart_div"></div>
                             </div>
 
                         </div><!-- end left -->
