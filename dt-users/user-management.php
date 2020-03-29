@@ -144,173 +144,221 @@ class DT_User_Management
         );
     }
 
-    public function get_dt_user( $user_id ) {
+    public function get_dt_user( $user_id, $section = null ) {
         global $wpdb;
         $user = get_user_by( "ID", $user_id );
         if ( empty( $user->caps ) ) {
             return new WP_Error( "user_id", "Cannot get this user", [ 'status' => 400 ] );
         }
 
-        $user_status = get_user_option( 'user_status', $user->ID );
-        $workload_status = get_user_option( 'workload_status', $user->ID );
+        $user_response = [
+            "display_name" => $user->display_name,
+            "user_status" => '',
+            "workload_status" => '',
+            "dates_unavailable" => false,
+            "locations" => [],
+            "user_activity" => [],
+            "active_contacts" => 0,
+            "update_needed" => 0,
+            "unread_notifications" => 0,
+            "needs_accepted" => 0,
+            "days_active" => [],
+            "times" => [],
+            "assigned_counts" => [],
+            "contact_statuses" => []
+        ];
 
-        $location_grids = DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( $user->ID, 'user' ) );
-        $locations = [];
-        foreach ( $location_grids as $l ){
-            $locations[] = [
-                "grid_id" => $l["grid_id"],
-                "name" => $l["name"]
-            ];
-        }
+        /* details section */
+        if ( $section === 'details' || $section === null ) {
+            /* user status */
+            $user_status = get_user_option( 'user_status', $user->ID );
+            $user_response['user_status'] = $user_status;
 
-        $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
-        foreach ( $dates_unavailable as &$range ) {
-            $range["start_date"] = dt_format_date( $range["start_date"] );
-            $range["end_date"] = dt_format_date( $range["end_date"] );
-        }
-        $user_activity = $wpdb->get_results( $wpdb->prepare("
-            SELECT * from $wpdb->dt_activity_log
-            WHERE user_id = %s
-            AND action IN ( 'comment', 'field_update', 'connected_to', 'logged_in', 'created', 'disconnected_from', 'decline', 'assignment_decline' )
-            ORDER BY `hist_time` DESC
-            LIMIT 100
-        ", $user->ID));
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
-        foreach ( $user_activity as $a ){
-            if ( $a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from' ){
-                if ( $a->object_type === "contacts" ){
-                    $a->object_note = sprintf( _x( "Updated contact %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
-                }
-                if ( $a->object_type === "groups" ){
-                    $a->object_note = sprintf( _x( "Updated group %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
-                }
-            }
-            if ( $a->action == 'comment' ){
-                if ( $a->meta_key === "contacts" ){
-                    $a->object_note = sprintf( _x( "Commented on contact %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
-                }
-                if ( $a->meta_key === "groups" ){
-                    $a->object_note = sprintf( _x( "Commented on group %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
-                }
-            }
-            if ( $a->action == 'created' ){
-                if ( $a->object_type === "contacts" ){
-                    $a->object_note = sprintf( _x( "Created contact %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
-                }
-                if ( $a->object_type === "groups" ){
-                    $a->object_note = sprintf( _x( "Created group %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
-                }
-            }
-            if ( $a->action === "logged_in" ){
-                $a->object_note = __( "Logged In", 'disciple_tools' );
-            }
-            if ( $a->action === 'assignment_decline' ){
-                $a->object_note = sprintf( _x( "Declined assignment on %s", 'Declined assignment on Bob', 'disciple_tools' ), $a->object_name );
-            }
-        }
+            /* workload status */
+            $workload_status = get_user_option( 'workload_status', $user->ID );
+            $user_response['workload_status'] = $workload_status;
 
-        $month_start = strtotime( gmdate( 'Y-m-01' ) );
-        $last_month_start = strtotime( 'first day of last month' );
-        $this_year = strtotime( "first day of january this year" );
-        //number of assigned contacts
-        $assigned_counts = $wpdb->get_results( $wpdb->prepare( "
-            SELECT 
-            COUNT( CASE WHEN date_assigned.hist_time >= %d THEN 1 END ) as this_month,
-            COUNT( CASE WHEN date_assigned.hist_time >= %d AND date_assigned.hist_time < %d THEN 1 END ) as last_month,
-            COUNT( CASE WHEN date_assigned.hist_time >= %d THEN 1 END ) as this_year,
-            COUNT( date_assigned.histid ) as all_time
-            FROM $wpdb->dt_activity_log as date_assigned
-            INNER JOIN $wpdb->postmeta as type ON ( date_assigned.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
-            WHERE date_assigned.meta_key = 'assigned_to' 
-                AND date_assigned.object_type = 'contacts' 
-                AND date_assigned.meta_value = %s
-        ", $month_start, $last_month_start, $month_start, $this_year, 'user-' . $user->ID ), ARRAY_A );
+            /* dates unavailable */
+            $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
+            if ( ! empty( $dates_unavailable ) ) {
+                foreach ( $dates_unavailable as &$range ) {
+                    $range["start_date"] = dt_format_date( $range["start_date"] );
+                    $range["end_date"] = dt_format_date( $range["end_date"] );
+                }
+            }
+            $user_response['dates_unavailable'] = $dates_unavailable;
 
-        $to_accept = Disciple_Tools_Contacts::search_viewable_contacts( [
-            'overall_status' => [ 'assigned' ],
-            'assigned_to'    => [ $user->ID ]
-        ] );
-        $update_needed = Disciple_Tools_Contacts::search_viewable_contacts( [
-            'requires_update' => [ "true" ],
-            'assigned_to'     => [ $user->ID ],
-            'overall_status' => [ '-closed' ],
-            'sort' => 'last_modified'
-        ] );
-        if ( sizeof( $update_needed["contacts"] ) > 5 ) {
-            $update_needed["contacts"] = array_slice( $update_needed["contacts"], 0, 5 );
-        }
-        if ( sizeof( $to_accept["contacts"] ) > 10 ) {
-            $to_accept["contacts"] = array_slice( $to_accept["contacts"], 0, 10 );
-        }
-        foreach ( $update_needed["contacts"] as &$contact ){
-            $now = time();
-            $last_modified = get_post_meta( $contact->ID, "last_modified", true );
-            $days_different = (int) round( ( $now - (int) $last_modified ) / ( 60 * 60 * 24 ) );
-            $contact->last_modified_msg = esc_attr( sprintf( __( '%s days since last update', 'disciple_tools' ), $days_different ), 'disciple_tools' );
-        }
-        $my_active_contacts = self::count_active_contacts();
-        $notification_count = $wpdb->get_var( $wpdb->prepare(
-            "SELECT count(id)
+            /* counts section */
+            $month_start = strtotime( gmdate( 'Y-m-01' ) );
+            $last_month_start = strtotime( 'first day of last month' );
+            $this_year = strtotime( "first day of january this year" );
+            //number of assigned contacts
+            $assigned_counts = $wpdb->get_results($wpdb->prepare("
+                SELECT 
+                COUNT( CASE WHEN date_assigned.hist_time >= %d THEN 1 END ) as this_month,
+                COUNT( CASE WHEN date_assigned.hist_time >= %d AND date_assigned.hist_time < %d THEN 1 END ) as last_month,
+                COUNT( CASE WHEN date_assigned.hist_time >= %d THEN 1 END ) as this_year,
+                COUNT( date_assigned.histid ) as all_time
+                FROM $wpdb->dt_activity_log as date_assigned
+                INNER JOIN $wpdb->postmeta as type ON ( date_assigned.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
+                WHERE date_assigned.meta_key = 'assigned_to' 
+                    AND date_assigned.object_type = 'contacts' 
+                    AND date_assigned.meta_value = %s
+            ", $month_start, $last_month_start, $month_start, $this_year, 'user-' . $user->ID), ARRAY_A);
+
+
+
+
+            $my_active_contacts = self::count_active_contacts();
+            $notification_count = $wpdb->get_var($wpdb->prepare(
+                "SELECT count(id)
             FROM `$wpdb->dt_notifications`
             WHERE
                 user_id = %d
                 AND is_new = '1'",
-            $user->ID
-        ) );
+                $user->ID
+            ));
 
-        $days_active_results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT FROM_UNIXTIME(`hist_time`, '%%Y-%%m-%%d') as day,
-            count(histid) as activity_count
-            FROM $wpdb->dt_activity_log 
-            WHERE user_id = %s 
-            group by day 
-            ORDER BY `day` ASC",
-            $user->ID
-        ), ARRAY_A);
-        $days_active = [];
-        foreach ( $days_active_results as $a ){
-            $days_active[$a["day"]] = $a;
-        }
-        $first = isset( $days_active_results[0]['day'] ) ? strtotime( $days_active_results[0]['day'] ) : time();
-        $first_week_start = gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $first )  . ' days', $first ) );
-        $current = strtotime( $first_week_start );
-        $daily_activity = [];
-        while ( $current < time() ) {
+            $contact_statuses = Disciple_Tools_Counter_Contacts::get_contact_statuses( $user->ID );
 
-            $activity = $days_active[gmdate( 'Y-m-d', $current )]["activity_count"] ?? 0;
+            $user_response['contact_statuses'] = $contact_statuses;
+            $user_response['active_contacts'] = $my_active_contacts;
 
-            $daily_activity[] = [
-                "day" => dt_format_date( $current ),
-                "weekday" => gmdate( 'l', $current ),
-                "week_start" => gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $current ) . ' days', $current ) ),
-                "activity_count" => $activity,
-                "activity" => $activity > 0 ? 1 : 0
-            ];
-
-
-            $current += 24 * 60 * 60;
+            $user_response['assigned_counts'] = isset( $assigned_counts[0] ) ? $assigned_counts[0] : [];
+            $user_response['unread_notifications'] = $notification_count;
         }
 
-        $times = self::times( $user->ID );
+        if ( $section === 'details' || $section === 'pace' || $section === null ) {
+            $to_accept = Disciple_Tools_Contacts::search_viewable_contacts([
+                'overall_status' => [ 'assigned' ],
+                'assigned_to' => [ $user->ID ]
+            ]);
+            $update_needed = Disciple_Tools_Contacts::search_viewable_contacts([
+                'requires_update' => [ "true" ],
+                'assigned_to' => [ $user->ID ],
+                'overall_status' => [ '-closed' ],
+                'sort' => 'last_modified'
+            ]);
+            if (sizeof( $update_needed["contacts"] ) > 5) {
+                $update_needed["contacts"] = array_slice( $update_needed["contacts"], 0, 5 );
+            }
+            if (sizeof( $to_accept["contacts"] ) > 10) {
+                $to_accept["contacts"] = array_slice( $to_accept["contacts"], 0, 10 );
+            }
+            foreach ($update_needed["contacts"] as &$contact) {
+                $now = time();
+                $last_modified = get_post_meta( $contact->ID, "last_modified", true );
+                $days_different = (int) round( ( $now - (int) $last_modified ) / ( 60 * 60 * 24 ) );
+                $contact->last_modified_msg = esc_attr( sprintf( __( '%s days since last update', 'disciple_tools' ), $days_different ), 'disciple_tools' );
+            }
 
-        $contact_statuses = Disciple_Tools_Counter_Contacts::get_contact_statuses( $user->ID );
+            $user_response['update_needed'] = $update_needed;
+            $user_response['needs_accepted'] = $to_accept;
+        }
 
-        $user_response = [
-            "display_name" => $user->display_name,
-            "user_status" => $user_status,
-            "workload_status" => $workload_status,
-            "locations" => $locations,
-            "dates_unavailable" => $dates_unavailable ? $dates_unavailable : [],
-            "user_activity" => $user_activity,
-            "active_contacts" => $my_active_contacts,
-            "update_needed" => $update_needed,
-            "unread_notifications" => $notification_count ? $notification_count : 0,
-            "needs_accepted" => $to_accept,
-            "days_active" => $daily_activity,
-            "times" => $times,
-            "assigned_counts" => isset( $assigned_counts[0] ) ? $assigned_counts[0] : [],
-            "contact_statuses" => $contact_statuses
-        ];
+        /* Locations section */
+        if ( $section === 'locations' || $section === null ) {
+            $location_grids = DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( $user->ID, 'user' ) );
+            $locations = [];
+            foreach ( $location_grids as $l ){
+                $locations[] = [
+                    "grid_id" => $l["grid_id"],
+                    "name" => $l["name"]
+                ];
+            }
+            $user_response['locations'] = $locations;
+        }
+
+
+        if ( $section === 'activity' || $section === null ) {
+            $user_activity = $wpdb->get_results($wpdb->prepare("
+                SELECT hist_time, action, object_name, meta_key, object_type, object_note  
+                FROM $wpdb->dt_activity_log
+                WHERE user_id = %s
+                AND action IN ( 'comment', 'field_update', 'connected_to', 'logged_in', 'created', 'disconnected_from', 'decline', 'assignment_decline' )
+                ORDER BY `hist_time` DESC
+                LIMIT 100
+            ", $user->ID));
+            if ( ! empty( $user_activity ) ) {
+                foreach ($user_activity as $a) {
+                    if ($a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from') {
+                        if ($a->object_type === "contacts") {
+                            $a->object_note = sprintf( _x( "Updated contact %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
+                        }
+                        if ($a->object_type === "groups") {
+                            $a->object_note = sprintf( _x( "Updated group %s", 'Updated record Bob', 'disciple_tools' ), $a->object_name );
+                        }
+                    }
+                    if ($a->action == 'comment') {
+                        if ($a->meta_key === "contacts") {
+                            $a->object_note = sprintf( _x( "Commented on contact %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
+                        }
+                        if ($a->meta_key === "groups") {
+                            $a->object_note = sprintf( _x( "Commented on group %s", 'Commented on record Bob', 'disciple_tools' ), $a->object_name );
+                        }
+                    }
+                    if ($a->action == 'created') {
+                        if ($a->object_type === "contacts") {
+                            $a->object_note = sprintf( _x( "Created contact %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
+                        }
+                        if ($a->object_type === "groups") {
+                            $a->object_note = sprintf( _x( "Created group %s", 'Created record Bob', 'disciple_tools' ), $a->object_name );
+                        }
+                    }
+                    if ($a->action === "logged_in") {
+                        $a->object_note = __( "Logged In", 'disciple_tools' );
+                    }
+                    if ($a->action === 'assignment_decline') {
+                        $a->object_note = sprintf( _x( "Declined assignment on %s", 'Declined assignment on Bob', 'disciple_tools' ), $a->object_name );
+                    }
+                }
+            }
+            $user_response['user_activity'] = $user_activity;
+        }
+
+        if ( $section === 'pace' || $section === null ) {
+            $times = self::times( $user->ID );
+            $user_response['times'] = $times;
+        }
+
+
+        if ( $section === 'days_active' || $section === null ) {
+
+            $days_active_results = $wpdb->get_results($wpdb->prepare("
+                SELECT FROM_UNIXTIME(`hist_time`, '%%Y-%%m-%%d') as day,
+                count(histid) as activity_count
+                FROM $wpdb->dt_activity_log 
+                WHERE user_id = %s 
+                group by day 
+                ORDER BY `day` ASC",
+                $user->ID
+            ), ARRAY_A);
+            $days_active = [];
+            foreach ($days_active_results as $a) {
+                $days_active[$a["day"]] = $a;
+            }
+            $first = isset( $days_active_results[0]['day'] ) ? strtotime( $days_active_results[0]['day'] ) : time();
+            $first_week_start = gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $first ) . ' days', $first ) );
+            $current = strtotime( $first_week_start );
+            $daily_activity = [];
+            while ($current < time()) {
+
+                $activity = $days_active[gmdate( 'Y-m-d', $current )]["activity_count"] ?? 0;
+
+                $daily_activity[] = [
+                    "day" => dt_format_date( $current ),
+                    "weekday" => gmdate( 'l', $current ),
+                    "week_start" => gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $current ) . ' days', $current ) ),
+                    "activity_count" => $activity,
+                    "activity" => $activity > 0 ? 1 : 0
+                ];
+
+                $current += 24 * 60 * 60;
+            }
+
+            $user_response['days_active'] = $daily_activity;
+        }
+
 
         if ( current_user_can( "promote_users" ) ){
             $user_response["roles"] = $user->roles;
@@ -327,10 +375,13 @@ class DT_User_Management
         }
 
         $params = $request->get_params();
-        if ( !isset( $params["user"] ) ) {
-            return new WP_Error( "get_user", "Missing user id", [ 'status' => 400 ] );
+        if ( ! isset( $params["user"] ) ) {
+            return new WP_Error( __METHOD__, "Missing user id", [ 'status' => 400 ] );
         }
-        return $this->get_dt_user( $params["user"] );
+        if ( ! isset( $params["section"] ) ) {
+            return new WP_Error( __METHOD__, "Missing collection id", [ 'status' => 400 ] );
+        }
+        return $this->get_dt_user( $params["user"], $params["section"] );
     }
 
     private static function count_active_contacts(){

@@ -256,6 +256,84 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             wp_enqueue_style( 'mapbox-gl-css', self::$mapbox_gl_css, [], self::$mapbox_gl_version );
         }
 
+        public static function load_mapbox_search_widget() {
+            if ( file_exists( get_template_directory() . '/dt-mapping/geocode-api/mapbox.js' ) ) {
+                global $post;
+                if ( is_single() ) {
+                    $post_record = DT_Posts::get_post( get_post_type(), $post->ID );
+                } else {
+                    $post_record = false;
+                }
+
+
+                wp_enqueue_script( 'mapbox-search-widget', trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/geocode-api/mapbox.js', [ 'jquery', 'mapbox-gl', 'shared-functions' ], filemtime( get_template_directory() . '/dt-mapping/geocode-api/mapbox.js' ), true );
+                wp_localize_script(
+                    "mapbox-search-widget", "dtMapbox", array(
+                        'post_type' => get_post_type(),
+                        "post_id" => $post->ID ?? 0,
+                        "post" => $post_record ?? false,
+                        "map_key" => self::get_key(),
+                        "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
+                        "theme_uri" => get_stylesheet_directory_uri(),
+                        "translations" => array(
+                            'add' => __( 'add', 'disciple-tools' )
+                        )
+                    )
+                );
+                add_action( 'wp_head', [ 'DT_Mapbox_API', 'mapbox_search_widget_css' ] );
+            }
+        }
+
+        public static function mapbox_search_widget_css() {
+            /* Added these few style classes inline vers css file. */
+            ?>
+            <style>
+                /* mapbox autocomplete elements*/
+                #mapbox-search {
+                    margin:0;
+                }
+                #mapbox-search-wrapper {
+                    margin: 0 0 1rem;
+                }
+                .mapbox-autocomplete {
+                    /*the container must be positioned relative:*/
+                    position: relative;
+                }
+                .mapbox-autocomplete-items {
+                    position: absolute;
+                    border: 1px solid #e6e6e6;
+                    border-bottom: none;
+                    border-top: none;
+                    z-index: 99;
+                    /*position the autocomplete items to be the same width as the container:*/
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                }
+                .mapbox-autocomplete-items div {
+                    padding: 10px;
+                    cursor: pointer;
+                    background-color: #fff;
+                    border-bottom: 1px solid #e6e6e6;
+                }
+                .mapbox-autocomplete-items div:hover {
+                    /*when hovering an item:*/
+                    background-color: #00aeff;
+                }
+                .mapbox-autocomplete-active {
+                    /*when navigating through the items using the arrow keys:*/
+                    background-color: #00aeff !important;
+                    color: #ffffff;
+                }
+                #mapbox-spinner-button {
+                    border-radius:0;
+                    display:none;
+                }
+                /* end mapbox elements*/
+            </style>
+            <?php
+        }
+
         public static function load_header() {
             add_action( "enqueue_scripts", [ 'DT_Mapbox_API', 'load_mapbox_header_scripts' ] );
         }
