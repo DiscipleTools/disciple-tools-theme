@@ -269,6 +269,35 @@ $user_management_options = DT_User_Management::user_management_options();
                                 <?php endif; ?>
                             </div>
 
+                            <!-- Availability -->
+                            <div class="bordered-box">
+                                <h4><?php esc_html_e( "Availability", 'disciple_tools' ) ?></h4>
+                                <p><?php esc_html_e( "Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts", 'disciple_tools' ) ?></p>
+                                <div>
+                                    <?php esc_html_e( 'Schedule Unavailability', 'disciple_tools' )?>:
+                                </div>
+                                <div>
+                                    <div class="date_range">
+                                        <input type="text" class="date-picker" id="date_range" autocomplete="off" placeholder="2020-01-01 - 2020-02-03" />
+                                    </div>
+                                </div>
+                                <div id="add_unavailable_dates_spinner" class="loading-spinner"></div>
+
+                                <div><?php esc_html_e( "Travel or Away Dates", 'disciple_tools' ) ?></div>
+                                <div>
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th><?php esc_html_e( "Start Date", 'disciple_tools' ) ?></th>
+                                            <th><?php esc_html_e( "End Date", 'disciple_tools' ) ?></th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="unavailable-list"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                             <!-- Roles -->
                             <?php if ( current_user_can( "promote_users" ) ) : ?>
                                 <div class="bordered-box">
@@ -298,34 +327,7 @@ $user_management_options = DT_User_Management::user_management_options();
                                 </div>
                             <?php endif; ?>
 
-                            <!-- Availability -->
-                            <div class="bordered-box">
-                                <h4><?php esc_html_e( "Availability", 'disciple_tools' ) ?></h4>
-                                <p><?php esc_html_e( "Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts", 'disciple_tools' ) ?></p>
-                                <div>
-                                    <?php esc_html_e( 'Schedule Unavailability', 'disciple_tools' )?>:
-                                </div>
-                                <div>
-                                    <div class="date_range">
-                                        <input type="text" class="date-picker" id="date_range" autocomplete="off" placeholder="2020-01-01 - 2020-02-03" />
-                                    </div>
-                                </div>
-                                <div id="add_unavailable_dates_spinner" class="loading-spinner"></div>
 
-                                <div><?php esc_html_e( "Travel or Away Dates", 'disciple_tools' ) ?></div>
-                                <div>
-                                    <table>
-                                        <thead>
-                                        <tr>
-                                            <th><?php esc_html_e( "Start Date", 'disciple_tools' ) ?></th>
-                                            <th><?php esc_html_e( "End Date", 'disciple_tools' ) ?></th>
-                                            <th></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="unavailable-list"></tbody>
-                                    </table>
-                                </div>
-                            </div>
 
                         </div> <!-- end center -->
 

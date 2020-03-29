@@ -61,7 +61,7 @@ jQuery(document).ready(function($) {
       $('#user_modal').foundation('open');
 
       $('.users-spinner').addClass("active")
-      
+
       // load spinners
       let spinner = ' <span class="loading-spinner users-spinner active"></span>'
       $("#user_name").html(spinner)
