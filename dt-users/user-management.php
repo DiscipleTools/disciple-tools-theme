@@ -82,7 +82,6 @@ class DT_User_Management
         <?php endif;
     }
 
-
     public function add_menu( $content ) {
         $content .= '<li>
             <a href="'. site_url( '/user-management/users' ) .'" >' .  esc_html__( 'Users', 'disciple_tools' ) . '</a>
@@ -124,7 +123,6 @@ class DT_User_Management
             'amcharts-charts',
             'amcharts-animated',
         ], filemtime( plugin_dir_path( __FILE__ ) . '/user-management.js' ), true );
-
 
         wp_localize_script(
             'dt_dispatcher_tools', 'dt_user_management_localized', [
@@ -205,9 +203,6 @@ class DT_User_Management
                     AND date_assigned.object_type = 'contacts' 
                     AND date_assigned.meta_value = %s
             ", $month_start, $last_month_start, $month_start, $this_year, 'user-' . $user->ID), ARRAY_A);
-
-
-
 
             $my_active_contacts = self::count_active_contacts();
             $notification_count = $wpdb->get_var($wpdb->prepare(
@@ -365,7 +360,6 @@ class DT_User_Management
         }
 
         return $user_response;
-
 
     }
 
