@@ -15,7 +15,7 @@ $user_management_options = DT_User_Management::user_management_options();
 
     <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
-        <div class="large-2 medium-3 small-12 cell" id="side-nav-container">
+        <div class="large-2 medium-3 small-12 cell hide-for-small-only" id="side-nav-container">
 
             <section id="metrics-side-section" class="medium-12 cell">
 
@@ -244,29 +244,56 @@ $user_management_options = DT_User_Management::user_management_options();
 
                             <!-- Locations -->
                             <div class="bordered-box">
-                                <h4><?php esc_html_e( "Location Responsibility", 'zume' ) ?></h4>
-
-                                <?php if ( false ) : ?>
-                                <!-- mapbox location widget -->
-
+                                <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
+                                    <h4><?php esc_html_e( "Location Responsibility", 'zume' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( "add", 'zume' ) ?></a></h4>
+                                    <div id="mapbox-wrapper"></div>
                                 <?php else : ?>
-                                <!-- default location widget -->
-                                <div class="location_grid">
-                                    <var id="location_grid-result-container" class="result-container"></var>
-                                    <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
-                                        <div class="typeahead__container">
-                                            <div class="typeahead__field">
-                                            <span class="typeahead__query">
-                                                <input class="js-typeahead-location_grid input-height"
-                                                       name="location_grid[query]"
-                                                       placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
-                                                       autocomplete="off">
-                                            </span>
+                                    <h4><?php esc_html_e( "Location Responsibility", 'zume' ) ?></h4>
+                                    <div class="location_grid">
+                                        <var id="location_grid-result-container" class="result-container"></var>
+                                        <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
+                                            <div class="typeahead__container">
+                                                <div class="typeahead__field">
+                                                <span class="typeahead__query">
+                                                    <input class="js-typeahead-location_grid input-height"
+                                                           name="location_grid[query]"
+                                                           placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                                           autocomplete="off">
+                                                </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 <?php endif; ?>
+                            </div>
+
+                            <!-- Availability -->
+                            <div class="bordered-box">
+                                <h4><?php esc_html_e( "Availability", 'disciple_tools' ) ?></h4>
+                                <p><?php esc_html_e( "Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts", 'disciple_tools' ) ?></p>
+                                <div>
+                                    <?php esc_html_e( 'Schedule Unavailability', 'disciple_tools' )?>:
+                                </div>
+                                <div>
+                                    <div class="date_range">
+                                        <input type="text" class="date-picker" id="date_range" autocomplete="off" placeholder="2020-01-01 - 2020-02-03" />
+                                    </div>
+                                </div>
+                                <div id="add_unavailable_dates_spinner" class="loading-spinner"></div>
+
+                                <div><?php esc_html_e( "Travel or Away Dates", 'disciple_tools' ) ?></div>
+                                <div>
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th><?php esc_html_e( "Start Date", 'disciple_tools' ) ?></th>
+                                            <th><?php esc_html_e( "End Date", 'disciple_tools' ) ?></th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="unavailable-list"></tbody>
+                                    </table>
+                                </div>
                             </div>
 
                             <!-- Roles -->
@@ -298,34 +325,7 @@ $user_management_options = DT_User_Management::user_management_options();
                                 </div>
                             <?php endif; ?>
 
-                            <!-- Availability -->
-                            <div class="bordered-box">
-                                <h4><?php esc_html_e( "Availability", 'disciple_tools' ) ?></h4>
-                                <p><?php esc_html_e( "Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts", 'disciple_tools' ) ?></p>
-                                <div>
-                                    <?php esc_html_e( 'Schedule Unavailability', 'disciple_tools' )?>:
-                                </div>
-                                <div>
-                                    <div class="date_range">
-                                        <input type="text" class="date-picker" id="date_range" autocomplete="off" placeholder="2020-01-01 - 2020-02-03" />
-                                    </div>
-                                </div>
-                                <div id="add_unavailable_dates_spinner" class="loading-spinner"></div>
 
-                                <div><?php esc_html_e( "Travel or Away Dates", 'disciple_tools' ) ?></div>
-                                <div>
-                                    <table>
-                                        <thead>
-                                        <tr>
-                                            <th><?php esc_html_e( "Start Date", 'disciple_tools' ) ?></th>
-                                            <th><?php esc_html_e( "End Date", 'disciple_tools' ) ?></th>
-                                            <th></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="unavailable-list"></tbody>
-                                    </table>
-                                </div>
-                            </div>
 
                         </div> <!-- end center -->
 
