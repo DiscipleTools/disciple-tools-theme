@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-  if ( typeof dtMapbox ) {
+  if ( typeof dtMapbox !== 'undefined' ) {
 
     dtMapbox.post_type = 'contacts'
     dtMapbox.post_id = wpApiSettingsPage.associated_contact_id
