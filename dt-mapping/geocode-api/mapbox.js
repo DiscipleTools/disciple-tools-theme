@@ -12,44 +12,25 @@ jQuery(document).ready(function(){
 })
 
 function write_results_box() {
-  if ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) {
+  jQuery('#mapbox-wrapper').empty().append(`<div class="grid-x" style="width:100%;" id="location-grid-meta-results"></div>`)
 
-    jQuery('#mapbox-wrapper').append(`<div class="grid-x" id="location-grid-meta-results"></div>`)
+  if ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) {
     let lgm_results = jQuery('#location-grid-meta-results')
     jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
       lgm_results.append(`<div class="cell small-10">
                              ${v.label}
                           </div>
-                          <div class="cell small-2 float-right">
+                          <div class="cell small-2 float-right align-right">
                               <button class="button clear delete-button mapbox-delete-button small" data-id="${v.grid_meta_id}">
                                   <img src="${dtMapbox.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
                               </button>
                           </div>`)
     })
 
-    lgm_results.append(`
-      <div class="cell center">
-        <button type="button" class="button clear small padding-bottom-0" onclick="open_map()">show map</button>
-      </div>
-      <!-- reveal -->
-      <div class="reveal large" id="show-map" data-reveal>
-          <div id="map-reveal-content"><!-- load content here --><div class="loader">Loading...</div></div>
-          <button class="close-button" data-close aria-label="Close modal" type="button">
-              <span aria-hidden="true">&times;</span>
-          </button>
-      </div>
-    `)
-
     delete_location_listener()
     reset_tile_spacing()
-    jQuery('#show-map').foundation()
-
 
   } /*end valid check*/
-}
-
-function open_map() {
-  jQuery('#show-map').foundation('open')
 }
 
 function delete_location_listener() {
@@ -68,7 +49,8 @@ function delete_location_listener() {
 
     API.update_post( dtMapbox.post_type, dtMapbox.post_id, data ).then(function (response) {
       console.log( response )
-      location.reload()
+      dtMapbox.post = response
+      write_results_box()
     }).catch(err => { console.error(err) })
 
   });
@@ -231,14 +213,15 @@ function close_all_lists(selection_id) {
       }
     }
 
-  API.update_post( dtMapbox.post_type, dtMapbox.post_id, data ).then(function (response) {
-    console.log( response )
+    /* if post_type = user, else all other post types */
+    API.update_post( dtMapbox.post_type, dtMapbox.post_id, data ).then(function (response) {
+      console.log( response )
 
-    dtMapbox.post = response
-    jQuery('#mapbox-wrapper').empty()
-    write_results_box()
+      dtMapbox.post = response
+      jQuery('#mapbox-wrapper').empty()
+      write_results_box()
 
-  }).catch(err => { console.error(err) })
+    }).catch(err => { console.error(err) })
 
 }
 

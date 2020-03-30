@@ -2,7 +2,7 @@
 
 class DT_User_Management
 {
-    public $permissions = [ 'list_users', 'manage_dt' ];
+    public $permissions = [ 'list_users', 'manage_dt', 'update_any_contacts' ];
 
     private static $_instance = null;
     public static function instance() {
@@ -131,6 +131,7 @@ class DT_User_Management
                 'nonce'              => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id'    => get_current_user_id(),
+                'map_key'            => DT_Mapbox_API::get_key(),
                 'data'               => [],
                 'url_path'           => dt_get_url_path(),
                 'translations'       => [
@@ -140,6 +141,11 @@ class DT_User_Management
                 ]
             ]
         );
+
+        if ( DT_Mapbox_API::get_key() ) {
+            DT_Mapbox_API::load_mapbox_header_scripts();
+            DT_Mapbox_API::load_mapbox_search_widget();
+        }
     }
 
     public function get_dt_user( $user_id, $section = null ) {
@@ -149,12 +155,16 @@ class DT_User_Management
             return new WP_Error( "user_id", "Cannot get this user", [ 'status' => 400 ] );
         }
 
+
+
         $user_response = [
             "display_name" => $user->display_name,
+            "contact_id" => 0,
+            "contact" => [],
             "user_status" => '',
             "workload_status" => '',
             "dates_unavailable" => false,
-            "locations" => [],
+            "location_grid" => [],
             "user_activity" => [],
             "active_contacts" => 0,
             "update_needed" => 0,
@@ -253,15 +263,37 @@ class DT_User_Management
 
         /* Locations section */
         if ( $section === 'locations' || $section === null ) {
-            $location_grids = DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( $user->ID, 'user' ) );
-            $locations = [];
-            foreach ( $location_grids as $l ){
-                $locations[] = [
-                    "grid_id" => $l["grid_id"],
-                    "name" => $l["name"]
-                ];
+
+            $contact_id = Disciple_Tools_Users::get_contact_for_user( $user->ID );
+            if ( empty( $contact_id ) ) {
+                $contact_id = Disciple_Tools_Users::create_contact_for_user( $user->ID );
             }
-            $user_response['locations'] = $locations;
+            $user_response['contact_id'] = $contact_id;
+
+            $contact = DT_Posts::get_post('contacts', $contact_id, false, false );
+            if ( ! is_wp_error( $contact ) ) {
+                $user_response['contact'] = $contact;
+            }
+
+            dt_write_log($user_response);
+
+            if ( ! is_wp_error( $contact ) && isset( $contact['location_grid'] ) && ! empty( $user_response['contact']['location_grid'] ) ) {
+                dt_write_log( $user_response['contact']['location_grid'] );
+
+//                $location_grids = DT_Mapping_Module::instance()->get_post_locations( $contact_id );
+//                $locations = [];
+//                foreach ( $location_grids as $l ){
+//                    $locations[] = [
+//                        "grid_id" => $l["grid_id"],
+//                        "name" => $l["name"]
+//                    ];
+//                }
+                $user_response['location_grid'] = $user_response['contact']['location_grid'];
+            }
+
+            if ( DT_Mapbox_API::get_key() && isset( $user_response['contact']['location_grid_meta'] ) ) {
+                $user_response['locations_grid_meta'] = $user_response['contact']['location_grid_meta'];
+            }
         }
 
 

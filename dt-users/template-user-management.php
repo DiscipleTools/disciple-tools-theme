@@ -15,7 +15,7 @@ $user_management_options = DT_User_Management::user_management_options();
 
     <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
-        <div class="large-2 medium-3 small-12 cell" id="side-nav-container">
+        <div class="large-2 medium-3 small-12 cell hide-for-small-only" id="side-nav-container">
 
             <section id="metrics-side-section" class="medium-12 cell">
 
@@ -244,12 +244,19 @@ $user_management_options = DT_User_Management::user_management_options();
 
                             <!-- Locations -->
                             <div class="bordered-box">
-                                <h4><?php esc_html_e( "Location Responsibility", 'zume' ) ?></h4>
-
-                                <?php if ( false ) : ?>
-                                <!-- mapbox location widget -->
+                                <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
+                                    <h4><?php esc_html_e( "Location Responsibility", 'zume' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( "add", 'zume' ) ?></a></h4>
+                                    <!-- mapbox location widget -->
+                                    <div id="mapbox-wrapper"></div>
+                                    <div class="reveal" id="map-reveal" data-reveal>
+                                        <div id="map-reveal-content"><!-- load content here --><div class="loader">Loading...</div></div>
+                                        <button class="close-button" data-close aria-label="Close modal" type="button">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
 
                                 <?php else : ?>
+                                    <h4><?php esc_html_e( "Location Responsibility", 'zume' ) ?></h4>
                                 <!-- default location widget -->
                                 <div class="location_grid">
                                     <var id="location_grid-result-container" class="result-container"></var>

@@ -123,16 +123,35 @@ jQuery(document).ready(function($) {
       makeRequest( "get", `user?user=${user_id}&section=locations`, null , 'user-management/v1/')
         .done(locations=>{
           if ( window.current_user_lookup === user_id ) {
-            //locations
-            let typeahead = Typeahead['.js-typeahead-location_grid']
-            if (typeahead) {
-              for (let i = 0; i < typeahead.items.length; i) {
-                typeahead.cancelMultiselectItem(0)
+            console.log('locations')
+            console.log(locations)
+
+            if ( typeof dtMapbox !== "undefined" ) {
+              dtMapbox.post_type = 'contacts'
+              dtMapbox.post_id = locations.contact_id
+              dtMapbox.post = locations.contact
+              write_results_box()
+
+              jQuery( '#new-mapbox-search' ).on( "click", function() {
+                dtMapbox.post_type = 'contacts'
+                dtMapbox.post_id = locations.contact_id
+                dtMapbox.post = locations.contact
+                write_input_widget()
+              });
+            } else {
+              //locations
+              let typeahead = Typeahead['.js-typeahead-location_grid']
+              if (typeahead) {
+                for (let i = 0; i < typeahead.items.length; i) {
+                  typeahead.cancelMultiselectItem(0)
+                }
               }
+              locations.location_grid.forEach(location => {
+                typeahead.addMultiselectItemLayout({ID: location.id.toString(), name: location.label})
+              })
             }
-            locations.locations.forEach(location => {
-              typeahead.addMultiselectItemLayout({ID: location.grid_id.toString(), name: location.name})
-            })
+
+
           }
         }).catch((e)=>{
         console.log( 'error in locations')
@@ -162,11 +181,12 @@ jQuery(document).ready(function($) {
         // $('#user_modal').foundation('close');
       })
 
-      /* activity */
+      /* days active */
       makeRequest( "get", `user?user=${user_id}&section=days_active`, null , 'user-management/v1/')
-        .done(days_active=>{
+        .done(days=>{
           if ( window.current_user_lookup === user_id ) {
-            day_activity_chart(days_active.days_active)
+            console.log(days)
+            day_activity_chart(days.days_active)
           }
         }).catch((e)=>{
         console.log( 'error in locations')
@@ -174,7 +194,7 @@ jQuery(document).ready(function($) {
         // $('#user_modal').foundation('close');
       })
 
-      /* all */
+      /* pace */
       makeRequest( "get", `user?user=${user_id}&section=pace`, null , 'user-management/v1/')
       .done(response=>{
         if ( window.current_user_lookup === user_id ) {
@@ -254,6 +274,8 @@ jQuery(document).ready(function($) {
         console.log( e)
       })
     }
+
+
 
 
     $('#refresh_cached_data').on('click', function () {
@@ -364,133 +386,141 @@ jQuery(document).ready(function($) {
     /**
      * Locations
      */
-    let typeaheadTotals = {}
-    if (!window.Typeahead['.js-typeahead-location_grid']){
-      $.typeahead({
-        input: '.js-typeahead-location_grid',
-        minLength: 0,
-        accent: true,
-        searchOnFocus: true,
-        maxItem: 20,
-        dropdownFilter: [{
-          key: 'group',
-          value: 'focus',
-          template: _.escape(window.wpApiShare.translations.regions_of_focus),
-          all: _.escape(window.wpApiShare.translations.all_locations),
-        }],
-        source: {
-          focus: {
-            display: "name",
-            ajax: {
-              url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
-              data: {
-                s: "{{query}}",
-                filter: function () {
-                  return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
-                }
-              },
-              beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-              },
-              callback: {
-                done: function (data) {
-                  if (typeof typeaheadTotals !== "undefined") {
-                    typeaheadTotals.field = data.total
+    if ( typeof dtMapbox === "undefined" ) {
+      let typeaheadTotals = {}
+      if (!window.Typeahead['.js-typeahead-location_grid'] ){
+        $.typeahead({
+          input: '.js-typeahead-location_grid',
+          minLength: 0,
+          accent: true,
+          searchOnFocus: true,
+          maxItem: 20,
+          dropdownFilter: [{
+            key: 'group',
+            value: 'focus',
+            template: _.escape(window.wpApiShare.translations.regions_of_focus),
+            all: _.escape(window.wpApiShare.translations.all_locations),
+          }],
+          source: {
+            focus: {
+              display: "name",
+              ajax: {
+                url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+                data: {
+                  s: "{{query}}",
+                  filter: function () {
+                    return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
                   }
-                  return data.location_grid
+                },
+                beforeSend: function (xhr) {
+                  xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+                },
+                callback: {
+                  done: function (data) {
+                    if (typeof typeaheadTotals !== "undefined") {
+                      typeaheadTotals.field = data.total
+                    }
+                    return data.location_grid
+                  }
                 }
               }
             }
-          }
-        },
-        display: "name",
-        templateValue: "{{name}}",
-        dynamic: true,
-        multiselect: {
-          matchOn: ["ID"],
-          data: function () {
-            return [];
-          }, callback: {
-            onCancel: function (node, item) {
-              update_user( user_id, 'remove_location', item.ID)
+          },
+          display: "name",
+          templateValue: "{{name}}",
+          dynamic: true,
+          multiselect: {
+            matchOn: ["ID"],
+            data: function () {
+              return [];
+            }, callback: {
+              onCancel: function (node, item) {
+                update_user( user_id, 'remove_location', item.ID)
+              }
+            }
+          },
+          callback: {
+            onClick: function(node, a, item, event){
+              update_user( user_id, 'add_location', item.ID)
+            },
+            onReady(){
+              this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
+              this.container
+                .removeClass("filter")
+                .find("." + this.options.selector.filterButton)
+                .html(_.escape(window.wpApiShare.translations.regions_of_focus));
+            },
+            onResult: function (node, query, result, resultCount) {
+              resultCount = typeaheadTotals.location_grid
+              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              $('#location_grid-result-container').html(text);
+            },
+            onHideLayout: function () {
+              $('#location_grid-result-container').html("");
             }
           }
-        },
-        callback: {
-          onClick: function(node, a, item, event){
-            update_user( user_id, 'add_location', item.ID)
-          },
-          onReady(){
-            this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
-            this.container
-            .removeClass("filter")
-            .find("." + this.options.selector.filterButton)
-            .html(_.escape(window.wpApiShare.translations.regions_of_focus));
-          },
-          onResult: function (node, query, result, resultCount) {
-            resultCount = typeaheadTotals.location_grid
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#location_grid-result-container').html(text);
-          },
-          onHideLayout: function () {
-            $('#location_grid-result-container').html("");
-          }
-        }
-      });
-    }
-
-    let day_activity_chart = (days_active)=>{
-      am4core.ready(function() {
-
-        am4core.useTheme(am4themes_animated);
-
-        let chart = am4core.create("day_activity_chart", am4charts.XYChart);
-        chart.maskBullets = false;
-
-        let xAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-        let yAxis = chart.yAxes.push(new am4charts.CategoryAxis());
-
-        xAxis.dataFields.category = "week_start";
-        yAxis.dataFields.category = "weekday";
-
-        // xAxis.renderer.grid.template.disabled = true;
-        xAxis.renderer.minGridDistance = 100;
-
-        // yAxis.renderer.grid.template.disabled = true;
-        yAxis.renderer.inversed = true;
-        yAxis.renderer.minGridDistance = 10;
-
-        let series = chart.series.push(new am4charts.ColumnSeries());
-        series.dataFields.categoryY = "weekday";
-        series.dataFields.categoryX = "week_start";
-        series.dataFields.value = "activity";
-        series.sequencedInterpolation = true;
-        series.defaultState.transitionDuration = 3000;
-
-        let bgColor = new am4core.InterfaceColorSet().getFor("background");
-
-        let columnTemplate = series.columns.template;
-        columnTemplate.strokeWidth = 1;
-        columnTemplate.strokeOpacity = 0.2;
-        // columnTemplate.stroke = bgColor;
-        columnTemplate.tooltipText = "{weekday}, {day}: {activity_count}";
-        columnTemplate.width = am4core.percent(100);
-        columnTemplate.height = am4core.percent(100);
-
-        series.heatRules.push({
-          target: columnTemplate,
-          property: "fill",
-          // min: am4core.color('#deeff8'),
-          min: am4core.color(bgColor),
-          max: chart.colors.getIndex(0)
         });
-
-        chart.data = days_active
-      });
+      }
     }
+
+  }
+
+  function day_activity_chart( days_active ) {
+    am4core.ready(function() {
+
+      am4core.useTheme(am4themes_animated);
+
+      let chart = am4core.create("day_activity_chart", am4charts.XYChart);
+      chart.maskBullets = false;
+
+      let xAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+      let yAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+
+      xAxis.dataFields.category = "week_start";
+      yAxis.dataFields.category = "weekday";
+
+      // xAxis.renderer.grid.template.disabled = true;
+      xAxis.renderer.minGridDistance = 100;
+
+      // yAxis.renderer.grid.template.disabled = true;
+      yAxis.renderer.inversed = true;
+      yAxis.renderer.minGridDistance = 10;
+
+      let series = chart.series.push(new am4charts.ColumnSeries());
+      series.dataFields.categoryY = "weekday";
+      series.dataFields.categoryX = "week_start";
+      series.dataFields.value = "activity";
+      series.sequencedInterpolation = true;
+      series.defaultState.transitionDuration = 3000;
+
+      let bgColor = new am4core.InterfaceColorSet().getFor("background");
+
+      let columnTemplate = series.columns.template;
+      columnTemplate.strokeWidth = 1;
+      columnTemplate.strokeOpacity = 0.2;
+      // columnTemplate.stroke = bgColor;
+      columnTemplate.tooltipText = "{weekday}, {day}: {activity_count}";
+      columnTemplate.width = am4core.percent(100);
+      columnTemplate.height = am4core.percent(100);
+
+      series.heatRules.push({
+        target: columnTemplate,
+        property: "fill",
+        // min: am4core.color('#deeff8'),
+        min: am4core.color(bgColor),
+        max: chart.colors.getIndex(0)
+      });
+
+      chart.data = days_active
+    });
   }
 
   function status_pie_chart(contact_statuses){
+
+    if ( contact_statuses.length === 0 ) {
+      $('#status_chart_div').empty()
+      return
+    }
 
     am4core.useTheme(am4themes_animated);
 
@@ -594,6 +624,5 @@ jQuery(document).ready(function($) {
     }
 
   }
-
 
 })
