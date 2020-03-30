@@ -83,9 +83,16 @@ class DT_User_Management
     }
 
     public function add_menu( $content ) {
-        $content .= '<li>
-            <a href="'. site_url( '/user-management/users' ) .'" >' .  esc_html__( 'Users', 'disciple_tools' ) . '</a>
-        </li>';
+        $content .= '<li>';
+
+        $content .= '<a href="'. site_url( '/user-management/users' ) .'" >' .  esc_html__( 'Users', 'disciple_tools' ) . '</a>';
+
+//        if ( DT_Mapbox_API::get_key() ) {
+//            $content .= '<a href="'. site_url( '/user-management/map' ) .'" >' .  esc_html__( 'Map', 'disciple_tools' ) . '</a>';
+//        }
+
+        $content .= '</li>';
+
         return $content;
     }
 
@@ -154,8 +161,6 @@ class DT_User_Management
         if ( empty( $user->caps ) ) {
             return new WP_Error( "user_id", "Cannot get this user", [ 'status' => 400 ] );
         }
-
-
 
         $user_response = [
             "display_name" => $user->display_name,
@@ -270,29 +275,17 @@ class DT_User_Management
             }
             $user_response['contact_id'] = $contact_id;
 
-            $contact = DT_Posts::get_post('contacts', $contact_id, false, false );
+            $contact = DT_Posts::get_post( 'contacts', $contact_id, false, false );
             if ( ! is_wp_error( $contact ) ) {
                 $user_response['contact'] = $contact;
             }
 
-            dt_write_log($user_response);
-
             if ( ! is_wp_error( $contact ) && isset( $contact['location_grid'] ) && ! empty( $user_response['contact']['location_grid'] ) ) {
-                dt_write_log( $user_response['contact']['location_grid'] );
-
-//                $location_grids = DT_Mapping_Module::instance()->get_post_locations( $contact_id );
-//                $locations = [];
-//                foreach ( $location_grids as $l ){
-//                    $locations[] = [
-//                        "grid_id" => $l["grid_id"],
-//                        "name" => $l["name"]
-//                    ];
-//                }
-                $user_response['location_grid'] = $user_response['contact']['location_grid'];
+                $user_response['location_grid'] = $contact['location_grid'];
             }
 
-            if ( DT_Mapbox_API::get_key() && isset( $user_response['contact']['location_grid_meta'] ) ) {
-                $user_response['locations_grid_meta'] = $user_response['contact']['location_grid_meta'];
+            if ( DT_Mapbox_API::get_key() && isset( $contact['location_grid_meta'] ) ) {
+                $user_response['locations_grid_meta'] = $contact['location_grid_meta'];
             }
         }
 

@@ -246,33 +246,24 @@ $user_management_options = DT_User_Management::user_management_options();
                             <div class="bordered-box">
                                 <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
                                     <h4><?php esc_html_e( "Location Responsibility", 'zume' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( "add", 'zume' ) ?></a></h4>
-                                    <!-- mapbox location widget -->
                                     <div id="mapbox-wrapper"></div>
-                                    <div class="reveal" id="map-reveal" data-reveal>
-                                        <div id="map-reveal-content"><!-- load content here --><div class="loader">Loading...</div></div>
-                                        <button class="close-button" data-close aria-label="Close modal" type="button">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-
                                 <?php else : ?>
                                     <h4><?php esc_html_e( "Location Responsibility", 'zume' ) ?></h4>
-                                <!-- default location widget -->
-                                <div class="location_grid">
-                                    <var id="location_grid-result-container" class="result-container"></var>
-                                    <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
-                                        <div class="typeahead__container">
-                                            <div class="typeahead__field">
-                                            <span class="typeahead__query">
-                                                <input class="js-typeahead-location_grid input-height"
-                                                       name="location_grid[query]"
-                                                       placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
-                                                       autocomplete="off">
-                                            </span>
+                                    <div class="location_grid">
+                                        <var id="location_grid-result-container" class="result-container"></var>
+                                        <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
+                                            <div class="typeahead__container">
+                                                <div class="typeahead__field">
+                                                <span class="typeahead__query">
+                                                    <input class="js-typeahead-location_grid input-height"
+                                                           name="location_grid[query]"
+                                                           placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                                           autocomplete="off">
+                                                </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 <?php endif; ?>
                             </div>
 

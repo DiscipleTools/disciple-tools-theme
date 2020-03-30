@@ -168,10 +168,12 @@ jQuery(document).ready(function($) {
             let activity_div = $('#activity')
             let activity_html = ``;
             activity.user_activity.forEach((a) => {
-              activity_html += `<div>
-              <strong>${moment.unix(a.hist_time).format('YYYY-MM-DD')}</strong>
-              ${a.object_note}
-            </div>`
+              if ( a.object_note !== '' ) {
+                activity_html += `<div>
+                  <strong>${moment.unix(a.hist_time).format('YYYY-MM-DD')}</strong>
+                  ${a.object_note}
+                </div>`
+              }
             })
             activity_div.html(activity_html)
           }
