@@ -83,6 +83,8 @@ jQuery(document).ready(function($) {
       $('#status_chart_div').html(spinner)
       $('#activity').html(spinner)
       $('#day_activity_chart').html(spinner)
+      $('#mapbox-wrapper').html(spinner)
+      $('#location-grid-meta-results').html(spinner)
 
       /* details */
       makeRequest( "get", `user?user=${user_id}&section=details`, null , 'user-management/v1/')

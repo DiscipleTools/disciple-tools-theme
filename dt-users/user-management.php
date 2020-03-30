@@ -219,20 +219,41 @@ class DT_User_Management
                     AND date_assigned.meta_value = %s
             ", $month_start, $last_month_start, $month_start, $this_year, 'user-' . $user->ID), ARRAY_A);
 
-            $my_active_contacts = self::count_active_contacts();
+            $active_contacts = $wpdb->get_var( $wpdb->prepare( "
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                INNER JOIN $wpdb->postmeta as assigned_to
+                ON a.ID=assigned_to.post_id
+                  AND assigned_to.meta_key = 'assigned_to'
+                  AND assigned_to.meta_value = CONCAT( 'user-', %s )
+                JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                     AND b.meta_key = 'overall_status'
+                         AND b.meta_value = 'active'
+                WHERE a.post_status = 'publish'
+                AND post_type = 'contacts'
+                AND a.ID NOT IN (
+                    SELECT post_id FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND meta_value = 'user'
+                    GROUP BY post_id
+                )
+            ", $user->ID ) );
+
+
             $notification_count = $wpdb->get_var($wpdb->prepare(
                 "SELECT count(id)
-            FROM `$wpdb->dt_notifications`
-            WHERE
-                user_id = %d
-                AND is_new = '1'",
-                $user->ID
-            ));
+                        FROM `$wpdb->dt_notifications`
+                        WHERE
+                            user_id = %d
+                            AND is_new = '1'",
+                            $user->ID
+                        ));
+            dt_write_log($active_contacts);
 
             $contact_statuses = Disciple_Tools_Counter_Contacts::get_contact_statuses( $user->ID );
 
             $user_response['contact_statuses'] = $contact_statuses;
-            $user_response['active_contacts'] = $my_active_contacts;
+            $user_response['active_contacts'] = $active_contacts;
 
             $user_response['assigned_counts'] = isset( $assigned_counts[0] ) ? $assigned_counts[0] : [];
             $user_response['unread_notifications'] = $notification_count;

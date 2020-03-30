@@ -19,9 +19,9 @@ function write_results_box() {
     jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
       lgm_results.append(`<div class="cell small-10">${v.label}</div>
                           <div class="cell small-2">
-                              <button class="button clear delete-button mapbox-delete-button small float-right" data-id="${v.grid_meta_id}">
+                              <a class="button clear delete-button mapbox-delete-button small float-right" data-id="${v.grid_meta_id}">
                                   <img src="${dtMapbox.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
-                              </button>
+                              </a>
                           </div>`)
     })
     delete_location_listener()

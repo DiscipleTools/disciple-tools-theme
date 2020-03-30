@@ -102,7 +102,7 @@ jQuery(document).ready(function($) {
   /**
    * Location Grid
    */
-  // let loadGeonameTypeahead = ()=>{
+  // let loadLocationGridTypeahead = ()=>{
   //   if (!window.Typeahead['.js-typeahead-location_grid']){
       $.typeahead({
         input: '.js-typeahead-location_grid',
