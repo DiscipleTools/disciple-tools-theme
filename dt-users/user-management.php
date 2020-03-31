@@ -77,7 +77,7 @@ class DT_User_Management
     public function add_nav_bar_link(){
         if ( $this->has_permission() ) : ?>
             <li>
-                <a href="<?php echo esc_url( site_url( '/user-management/' ) ); ?>"><?php echo esc_html__( "Users", 'disciple_tools' ); ?></a>
+                <a href="<?php echo esc_url( site_url( '/user-management/users' ) ); ?>"><?php echo esc_html__( "Users", 'disciple_tools' ); ?></a>
             </li>
         <?php endif;
     }
