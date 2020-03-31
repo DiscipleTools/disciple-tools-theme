@@ -363,6 +363,7 @@ class DT_User_Management
 
         if ( $section === 'contact_attempts' || $section === null ) {
 //            $user_response['contact_attempts'] = $this->query_contact_attempts( $user->ID ); // @todo query running super slow, needs rewrite
+            $user_response['contact_attempts'] = [];
         }
 
         if ( $section === 'contact_accepts' || $section === null ) {
@@ -785,7 +786,7 @@ class DT_User_Management
             LIMIT 10
         ", time(), $user_assigned_to, $user_assigned_to ), ARRAY_A);
 
-        dt_write_log($response);
+        dt_write_log( $response );
         return $response;
     }
 }
