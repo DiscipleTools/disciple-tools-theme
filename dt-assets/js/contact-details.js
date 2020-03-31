@@ -96,6 +96,8 @@ jQuery(document).ready(function($) {
     }
   }).ajaxError(handleAjaxError)
 
+
+
   /**
    * Groups
    */
@@ -363,7 +365,6 @@ jQuery(document).ready(function($) {
       });
     }
   }
-
 
 
   /**

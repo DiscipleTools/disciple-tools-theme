@@ -29,6 +29,19 @@ function write_results_box() {
   } /*end valid check*/
 }
 
+function write_result_list() {
+  jQuery('#mapbox-list').empty()
+
+  if ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) {
+    let lgm_results = jQuery('#location-grid-meta-results')
+    jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
+      lgm_results.append(`<li>${v.label}</li>`)
+    })
+
+    reset_tile_spacing()
+  }
+}
+
 function delete_location_listener() {
   jQuery( '.mapbox-delete-button' ).on( "click", function(e) {
 

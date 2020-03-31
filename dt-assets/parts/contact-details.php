@@ -46,22 +46,13 @@
     <?php do_action( 'dt_contact_detail_notification', $contact ); ?>
 
     <section class="cell bordered-box">
-        <div class="section-header">
-            <?php esc_html_e( "Contact Details", 'disciple_tools' ) ?>
-            <button class="help-button" data-section="contact-details-help-text">
-                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-            </button>
-            <!-- <button class="section-chevron chevron_down">
-                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-            </button>
-            <button class="section-chevron chevron_up">
-                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
-            </button> -->
-        </div>
         <div style="display: flex;">
             <div class="item-details-header" style="flex-grow:1">
                 <i class="fi-torso large" style="padding-bottom: 1.2rem"></i>
                 <span class="title"><?php the_title_attribute(); ?></span>
+                <button class="help-button" data-section="contact-details-help-text">
+                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                </button>
             </div>
             <div>
                 <button class="" id="open-edit">
@@ -211,25 +202,27 @@
                 <ul class="social"></ul>
             </div>
 
+            <!-- Address -->
+            <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
+                    <?php echo esc_html( $channel_list["address"]["label"] )?>
+                </div>
+                <ul class="address"></ul>
+            </div>
+
             <!-- Mapbox enabled locations -->
             <?php if ( DT_Mapbox_API::get_key() ) : ?>
+
                 <div class="xlarge-4 large-6 medium-6 small-12 cell">
                     <div class="section-subheader">
                         <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>" alt="location">
                         <?php echo esc_html( $contact_fields["location_grid"]["name"] )?>
                     </div>
-                    <div id="mapbox-list"></div>
+                    <ul id="mapbox-list" class="location_grid-list"></ul>
                 </div>
 
             <?php else : ?>
-                <!-- Address -->
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
-                        <?php echo esc_html( $channel_list["address"]["label"] )?>
-                    </div>
-                    <ul class="address"></ul>
-                </div>
 
                 <!-- Location Grid -->
                 <div class="xlarge-4 large-6 medium-6 small-12 cell">
@@ -400,20 +393,20 @@
                     </div>
                 </div>
 
-                <!-- Address -->
-                <div class="grid-x">
-                    <div class="section-subheader cell">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
-                        <?php echo esc_html( $channel_list["address"]["label"] )?>
-                        <button id="add-new-address">
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
-                        </button>
-                    </div>
-                    <!-- list of addresses -->
-                    <ul id="edit-contact_address" class="cell"></ul>
-                </div>
-
             <?php endif; ?>
+
+            <!-- Address -->
+            <div class="grid-x">
+                <div class="section-subheader cell">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
+                    <?php echo esc_html( $channel_list["address"]["label"] )?>
+                    <button id="add-new-address">
+                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
+                    </button>
+                </div>
+                <!-- list of addresses -->
+                <ul id="edit-contact_address" class="cell"></ul>
+            </div>
 
 
             <!-- Sources -->
