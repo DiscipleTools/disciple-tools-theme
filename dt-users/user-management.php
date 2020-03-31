@@ -172,13 +172,17 @@ class DT_User_Management
             "location_grid" => [],
             "user_activity" => [],
             "active_contacts" => 0,
-            "update_needed" => 0,
+            "update_needed" => [],
             "unread_notifications" => 0,
             "needs_accepted" => 0,
             "days_active" => [],
             "times" => [],
             "assigned_counts" => [],
-            "contact_statuses" => []
+            "contact_statuses" => [],
+            "contact_attempts" => [],
+            "contact_accepts" => [],
+            "unaccepted_contacts" => [],
+            "unattempted_contacts" => [],
         ];
 
         /* details section */
@@ -219,20 +223,41 @@ class DT_User_Management
                     AND date_assigned.meta_value = %s
             ", $month_start, $last_month_start, $month_start, $this_year, 'user-' . $user->ID), ARRAY_A);
 
-            $my_active_contacts = self::count_active_contacts();
+            $active_contacts = $wpdb->get_var( $wpdb->prepare( "
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                INNER JOIN $wpdb->postmeta as assigned_to
+                ON a.ID=assigned_to.post_id
+                  AND assigned_to.meta_key = 'assigned_to'
+                  AND assigned_to.meta_value = CONCAT( 'user-', %s )
+                JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                     AND b.meta_key = 'overall_status'
+                         AND b.meta_value = 'active'
+                WHERE a.post_status = 'publish'
+                AND post_type = 'contacts'
+                AND a.ID NOT IN (
+                    SELECT post_id FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND meta_value = 'user'
+                    GROUP BY post_id
+                )
+            ", $user->ID ) );
+
+
             $notification_count = $wpdb->get_var($wpdb->prepare(
                 "SELECT count(id)
-            FROM `$wpdb->dt_notifications`
-            WHERE
-                user_id = %d
-                AND is_new = '1'",
+                        FROM `$wpdb->dt_notifications`
+                        WHERE
+                            user_id = %d
+                            AND is_new = '1'",
                 $user->ID
             ));
+            dt_write_log( $active_contacts );
 
             $contact_statuses = Disciple_Tools_Counter_Contacts::get_contact_statuses( $user->ID );
 
             $user_response['contact_statuses'] = $contact_statuses;
-            $user_response['active_contacts'] = $my_active_contacts;
+            $user_response['active_contacts'] = $active_contacts;
 
             $user_response['assigned_counts'] = isset( $assigned_counts[0] ) ? $assigned_counts[0] : [];
             $user_response['unread_notifications'] = $notification_count;
@@ -336,9 +361,21 @@ class DT_User_Management
             $user_response['user_activity'] = $user_activity;
         }
 
-        if ( $section === 'pace' || $section === null ) {
-            $times = self::times( $user->ID );
-            $user_response['times'] = $times;
+        if ( $section === 'contact_attempts' || $section === null ) {
+//            $user_response['contact_attempts'] = $this->query_contact_attempts( $user->ID ); // @todo query running super slow, needs rewrite
+            $user_response['contact_attempts'] = [];
+        }
+
+        if ( $section === 'contact_accepts' || $section === null ) {
+            $user_response['contact_accepts'] = $this->query_contact_accepts( $user->ID );
+        }
+
+        if ( $section === 'unaccepted_contacts' || $section === null ) {
+            $user_response['unaccepted_contacts'] = $this->query_unaccepted_contacts( $user->ID );
+        }
+
+        if ( $section === 'unattempted_contacts' || $section === null ) {
+            $user_response['unattempted_contacts'] = $this->query_unattempted_contacts( $user->ID );
         }
 
 
@@ -401,30 +438,6 @@ class DT_User_Management
             return new WP_Error( __METHOD__, "Missing collection id", [ 'status' => 400 ] );
         }
         return $this->get_dt_user( $params["user"], $params["section"] );
-    }
-
-    private static function count_active_contacts(){
-        global $wpdb;
-        $my_active_contacts = $wpdb->get_var( $wpdb->prepare( "
-            SELECT count(a.ID)
-            FROM $wpdb->posts as a
-            INNER JOIN $wpdb->postmeta as assigned_to
-            ON a.ID=assigned_to.post_id
-              AND assigned_to.meta_key = 'assigned_to'
-              AND assigned_to.meta_value = CONCAT( 'user-', %s )
-            JOIN $wpdb->postmeta as b
-              ON a.ID=b.post_id
-                 AND b.meta_key = 'overall_status'
-                     AND b.meta_value = 'active'
-            WHERE a.post_status = 'publish'
-            AND post_type = 'contacts'
-            AND a.ID NOT IN (
-                SELECT post_id FROM $wpdb->postmeta
-                WHERE meta_key = 'type' AND meta_value = 'user'
-                GROUP BY post_id
-            )
-        ", get_current_user_id() ) );
-        return $my_active_contacts;
     }
 
     public function get_users_endpoints( WP_REST_Request $request ){
@@ -642,10 +655,11 @@ class DT_User_Management
         return false;
     }
 
-    private static function times( $user_id ){
+    public function query_contact_attempts( $user_id ) {
         global $wpdb;
         $user_assigned_to = 'user-' . esc_sql( $user_id );
-        $contact_attempts = $wpdb->get_results( $wpdb->prepare( "
+
+        return $wpdb->get_results( $wpdb->prepare( "
             SELECT contacts.ID,
                 MAX(date_assigned.hist_time) as date_assigned, 
                 MIN(date_attempted.hist_time) as date_attempted, 
@@ -674,7 +688,13 @@ class DT_User_Management
             ORDER BY date_attempted desc
             LIMIT 10
         ", $user_assigned_to, $user_assigned_to ), ARRAY_A);
-        $un_attempted_contacts = $wpdb->get_results( $wpdb->prepare( "
+    }
+
+    public function query_unattempted_contacts( $user_id ) {
+        global $wpdb;
+        $user_assigned_to = 'user-' . esc_sql( $user_id );
+
+        return $wpdb->get_results( $wpdb->prepare( "
             SELECT contacts.ID,
                 MAX(date_assigned.hist_time) as date_assigned, 
                 %d - MAX(date_assigned.hist_time) as time,
@@ -697,7 +717,13 @@ class DT_User_Management
             ORDER BY date_assigned asc
             LIMIT 10
         ", time(), $user_assigned_to, $user_assigned_to ), ARRAY_A);
-        $contact_accepts = $wpdb->get_results( $wpdb->prepare( "
+    }
+
+    public function query_contact_accepts( $user_id ) {
+        global $wpdb;
+        $user_assigned_to = 'user-' . esc_sql( $user_id );
+
+        return $wpdb->get_results( $wpdb->prepare( "
             SELECT contacts.ID,
                 MAX(date_assigned.hist_time) as date_assigned, 
                 MIN(date_accepted.hist_time) as date_accepted, 
@@ -731,7 +757,13 @@ class DT_User_Management
             ORDER BY date_accepted desc
             LIMIT 10
         ", esc_sql( $user_id ), $user_assigned_to, $user_assigned_to ), ARRAY_A);
-        $un_accepted_contacts = $wpdb->get_results( $wpdb->prepare( "
+    }
+
+    public function query_unaccepted_contacts( $user_id ) {
+        global $wpdb;
+        $user_assigned_to = 'user-' . esc_sql( $user_id );
+
+        $response = $wpdb->get_results( $wpdb->prepare( "
             SELECT contacts.ID,
                 MAX(date_assigned.hist_time) as date_assigned, 
                 %d - MAX(date_assigned.hist_time) as time,
@@ -754,12 +786,7 @@ class DT_User_Management
             LIMIT 10
         ", time(), $user_assigned_to, $user_assigned_to ), ARRAY_A);
 
-
-        return [
-            'contact_attempts' => $contact_attempts,
-            'contact_accepts' => $contact_accepts,
-            'unaccepted_contacts' => $un_accepted_contacts,
-            'unattempted_contacts' => $un_attempted_contacts
-        ];
+        dt_write_log( $response );
+        return $response;
     }
 }

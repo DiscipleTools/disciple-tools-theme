@@ -19,14 +19,27 @@ function write_results_box() {
     jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
       lgm_results.append(`<div class="cell small-10">${v.label}</div>
                           <div class="cell small-2">
-                              <button class="button clear delete-button mapbox-delete-button small float-right" data-id="${v.grid_meta_id}">
+                              <a class="button clear delete-button mapbox-delete-button small float-right" data-id="${v.grid_meta_id}">
                                   <img src="${dtMapbox.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
-                              </button>
+                              </a>
                           </div>`)
     })
     delete_location_listener()
     reset_tile_spacing()
   } /*end valid check*/
+}
+
+function write_result_list() {
+  jQuery('#mapbox-list').empty()
+
+  if ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) {
+    let lgm_results = jQuery('#location-grid-meta-results')
+    jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
+      lgm_results.append(`<li>${v.label}</li>`)
+    })
+
+    reset_tile_spacing()
+  }
 }
 
 function delete_location_listener() {
