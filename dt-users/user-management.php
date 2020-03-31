@@ -252,7 +252,6 @@ class DT_User_Management
                             AND is_new = '1'",
                 $user->ID
             ));
-            dt_write_log( $active_contacts );
 
             $contact_statuses = Disciple_Tools_Counter_Contacts::get_contact_statuses( $user->ID );
 
@@ -451,9 +450,6 @@ class DT_User_Management
 
     public static function get_users( $refresh = false ) {
         $users = [];
-        if ( !$refresh && get_transient( 'dispatcher_user_data' ) ) {
-            $users = maybe_unserialize( get_transient( 'dispatcher_user_data' ) );
-        }
 
         if ( empty( $users ) ) {
             global $wpdb;
@@ -465,7 +461,7 @@ class DT_User_Management
                     count(new_assigned.post_id) as number_new_assigned,
                     count(update_needed.post_id) as number_update,
                     um.meta_value as roles
-                from $wpdb->users as users
+                FROM $wpdb->users as users
                 INNER JOIN $wpdb->usermeta as um on ( um.user_id = users.ID AND um.meta_key = %s )
                 LEFT JOIN $wpdb->postmeta as pm on ( pm.meta_key = 'assigned_to' and pm.meta_value = CONCAT( 'user-', users.ID ) AND pm.post_id NOT IN (
                     SELECT post_id
@@ -481,9 +477,12 @@ class DT_User_Management
             ", $wpdb->prefix . 'capabilities' ),
             ARRAY_A );
 
+
             $users = [];
             foreach ( $user_data as $user ) {
                 $users[ $user["ID"] ] = $user;
+                $users[ $user["ID"] ]['location_grid'] = false;
+                $users[ $user["ID"] ]['location_grid_meta'] = false;
             }
             $user_statuses = $wpdb->get_results( $wpdb->prepare( "
                 SELECT * FROM $wpdb->usermeta
@@ -501,6 +500,28 @@ class DT_User_Management
             foreach ( $user_workloads as $meta_row ){
                 if ( isset( $users[ $meta_row["user_id"] ] ) ) {
                     $users[$meta_row["user_id"]]["workload_status"] = $meta_row["meta_value"];
+                }
+            }
+            $user_locations_grid_meta = $wpdb->get_results( "
+                SELECT post_id as contact_id, meta_value as user_id 
+                FROM $wpdb->postmeta 
+                WHERE meta_key = 'corresponds_to_user'
+                AND post_id IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'location_grid_meta'  )
+            ", ARRAY_A );
+            foreach ( $user_locations_grid_meta as $user_with_location ){
+                if ( isset( $users[ $user_with_location['user_id'] ] ) ) {
+                    $users[$user_with_location['user_id']]["location_grid_meta"] = true;
+                }
+            }
+            $user_locations_grid = $wpdb->get_results( "
+                SELECT post_id as contact_id, meta_value as user_id 
+                FROM $wpdb->postmeta 
+                WHERE meta_key = 'corresponds_to_user'
+                AND post_id IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'location_grid'  )
+            ", ARRAY_A);
+            foreach ( $user_locations_grid as $user_with_location ){
+                if ( isset( $users[ $user_with_location['user_id'] ] ) ) {
+                    $users[$user_with_location['user_id']]["location_grid"] = true;
                 }
             }
 
@@ -521,6 +542,7 @@ class DT_User_Management
                 set_transient( 'dispatcher_user_data', maybe_serialize( $users ), 60 * 60 * 24 );
             }
         }
+        dt_write_log( $users );
         if ( current_user_can( "list_users" ) ) {
             return $users;
         } else {

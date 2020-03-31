@@ -14,6 +14,7 @@ jQuery(document).ready(function($) {
         { "orderSequence": [ "desc", "asc" ] },
         { "orderSequence": [ "desc", "asc" ] },
         { "orderSequence": [ "desc", "asc" ] },
+        { "orderSequence": [ "desc", "asc" ] },
         { "orderSequence": [ "asc", "desc" ] },
       ],
       columnDefs: [ {

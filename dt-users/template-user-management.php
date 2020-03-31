@@ -35,7 +35,6 @@ $user_management_options = DT_User_Management::user_management_options();
 
                 </div>
 
-                <div class="center"><br><a href="#" id="refresh_cached_data"><?php esc_html_e( 'Refresh Cached Data', 'disciple_tools' ); ?></a></div>
             </section>
 
         </div>
@@ -47,7 +46,7 @@ $user_management_options = DT_User_Management::user_management_options();
                     <div id="chart">
                     <div id="user-chart" class="user-list-wrapper">
 
-                    <?php if ( strpos( $dt_url_path, 'user-management' ) !== false ) :
+                    <?php if ( strpos( $dt_url_path, 'user-management/users' ) !== false ) :
                         $users = DT_User_Management::get_users(); ?>
 
                         <!-- Title Section-->
@@ -71,6 +70,7 @@ $user_management_options = DT_User_Management::user_management_options();
                                     <th class="desktop"><?php esc_html_e( 'Accept Needed', 'disciple_tools' ); ?></th>
                                     <th class="desktop"><?php esc_html_e( 'Update Needed', 'disciple_tools' ); ?></th>
                                     <th class="desktop"><?php esc_html_e( 'Active', 'disciple_tools' ); ?></th>
+                                    <th class="desktop"><?php esc_html_e( 'Location', 'disciple_tools' ); ?></th>
                                     <th class="desktop"><?php esc_html_e( 'Last Activity', 'disciple_tools' ); ?></th>
                                 </tr>
                             </thead>
@@ -92,6 +92,23 @@ $user_management_options = DT_User_Management::user_management_options();
                                     <?php echo esc_html( $user["number_update"] ) ?>
                                 </td>
                                 <td><?php echo esc_html( $user["number_active"] ) ?></td>
+                                <td>
+                                    <?php
+                                    if ( DT_Mapbox_API::get_key() ) {
+                                        if ( isset( $user["location_grid_meta"] ) && ! empty( $user["location_grid_meta"] ) ) {
+                                            echo '&#10004;';
+                                        } else {
+                                            echo '&#10008;';
+                                        }
+                                    } else {
+                                        if ( isset( $user["location_grid"] ) && ! empty( $user["location_grid"] ) ) {
+                                            echo '&#10004;';
+                                        } else {
+                                            echo '&#10008;';
+                                        }
+                                    }
+                                    ?>
+                                </td>
                                 <td data-sort="<?php echo esc_html( $user["last_activity"] ?? "" ) ?>">
                                     <?php if ( !isset( $user["last_activity"] ) ) :
                                         esc_html_e( "No activity", 'disciple_tools' );
