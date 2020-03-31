@@ -246,9 +246,9 @@ class DT_User_Management
                         WHERE
                             user_id = %d
                             AND is_new = '1'",
-                            $user->ID
-                        ));
-            dt_write_log($active_contacts);
+                $user->ID
+            ));
+            dt_write_log( $active_contacts );
 
             $contact_statuses = Disciple_Tools_Counter_Contacts::get_contact_statuses( $user->ID );
 
