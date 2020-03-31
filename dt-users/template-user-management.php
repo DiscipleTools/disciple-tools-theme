@@ -194,17 +194,16 @@ $user_management_options = DT_User_Management::user_management_options();
                             <!-- Stats -->
                             <div class="bordered-box">
                                 <h4><?php esc_html_e( 'Pace', 'disciple_tools' ); ?></h4>
-                                <div class="subheader"><?php esc_html_e( 'Assigned and not Accepted', 'disciple_tools' ); ?></div>
+                                <div class="subheader"><?php esc_html_e( 'Assigned and not accepted', 'disciple_tools' ); ?></div>
                                 <ul id="unaccepted_contacts"></ul>
-                                <div class="subheader"><?php esc_html_e( 'Time from Assigned to Contact Accepted for the last 10 contacts', 'disciple_tools' ); ?> (<span id="avg_contact_accept"></span> days average)</div>
+                                <div class="subheader"><?php esc_html_e( 'Time from assigned to contact accepted for the last 10 contacts', 'disciple_tools' ); ?> (<span id="avg_contact_accept"></span> days average)</div>
                                 <ul id="contact_accepts"></ul>
-                                <div class="subheader"><?php esc_html_e( 'Accepted with no Contact Attempt', 'disciple_tools' ); ?></div>
+                                <div class="subheader"><?php esc_html_e( 'Accepted with no contact attempt', 'disciple_tools' ); ?></div>
                                 <ul id="unattempted_contacts"></ul>
-                                <div class="subheader"><?php esc_html_e( 'Time from Assigned to Contact Attempt for the last 10 contacts', 'disciple_tools' ); ?> (<span id="avg_contact_attempt"></span> days average)</div>
-                                <ul id="contact_attempts"></ul>
-                                <div class="subheader"><?php esc_html_e( 'Oldest 10 Update Needed', 'disciple_tools' ); ?></div>
+                                <div class="subheader"><?php esc_html_e( 'Oldest 10 update needed', 'disciple_tools' ); ?></div>
                                 <ul id="update_needed_list"></ul>
-                                <div class="subheader"><?php esc_html_e( 'Contact Status', 'disciple_tools' ); ?></div>
+                                <div class="subheader"><?php esc_html_e( 'Time from assigned to contact attempt for the last 10 contacts', 'disciple_tools' ); ?> (<span id="avg_contact_attempt"></span> days average)</div>
+                                <ul id="contact_attempts"></ul>
                             </div>
 
                             <!-- Contacts -->

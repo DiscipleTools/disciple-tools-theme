@@ -114,6 +114,19 @@ jQuery(document).ready(function($) {
             if ( details.dates_unavailable ) {
               display_dates_unavailable( details.dates_unavailable )
             }
+
+            let update_needed_list_html = ``
+            details.update_needed.contacts.forEach(contact => {
+              update_needed_list_html += `<li>
+            <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target="_blank">
+                ${_.escape(contact.post_title)}:  ${_.escape(contact.last_modified_msg)}
+            </a>
+          </li>`
+            })
+            $('#update_needed_list').html(update_needed_list_html)
+
+            // console.log('details')
+            // console.log(details)
           }
         }).catch((e)=>{
           console.log( 'error in details')
@@ -125,9 +138,6 @@ jQuery(document).ready(function($) {
       makeRequest( "get", `user?user=${user_id}&section=locations`, null , 'user-management/v1/')
         .done(locations=>{
           if ( window.current_user_lookup === user_id ) {
-            console.log('locations')
-            console.log(locations)
-
             if ( typeof dtMapbox !== "undefined" ) {
               dtMapbox.post_type = 'contacts'
               dtMapbox.post_id = locations.contact_id
@@ -153,7 +163,8 @@ jQuery(document).ready(function($) {
               })
             }
 
-
+            // console.log('locations')
+            // console.log(locations)
           }
         }).catch((e)=>{
         console.log( 'error in locations')
@@ -165,8 +176,6 @@ jQuery(document).ready(function($) {
       makeRequest( "get", `user?user=${user_id}&section=activity`, null , 'user-management/v1/')
         .done(activity=>{
           if ( window.current_user_lookup === user_id ) {
-
-            //Activity history
             let activity_div = $('#activity')
             let activity_html = ``;
             activity.user_activity.forEach((a) => {
@@ -178,9 +187,12 @@ jQuery(document).ready(function($) {
               }
             })
             activity_div.html(activity_html)
+
+            // console.log('activity')
+            // console.log(activity)
           }
         }).catch((e)=>{
-        console.log( 'error in locations')
+        console.log( 'error in activity')
         console.log( e)
         // $('#user_modal').foundation('close');
       })
@@ -189,97 +201,145 @@ jQuery(document).ready(function($) {
       makeRequest( "get", `user?user=${user_id}&section=days_active`, null , 'user-management/v1/')
         .done(days=>{
           if ( window.current_user_lookup === user_id ) {
-            console.log(days)
             day_activity_chart(days.days_active)
+
+            // console.log('days_active')
+            // console.log(days)
           }
         }).catch((e)=>{
-        console.log( 'error in locations')
+        console.log( 'error in days active')
         console.log( e)
         // $('#user_modal').foundation('close');
       })
 
-      /* pace */
-      makeRequest( "get", `user?user=${user_id}&section=pace`, null , 'user-management/v1/')
-      .done(response=>{
-        if ( window.current_user_lookup === user_id ) {
+      /* unaccepted_contacts */
+      makeRequest( "get", `user?user=${user_id}&section=unaccepted_contacts`, null , 'user-management/v1/')
+        .done(response=>{
+          // console.log('unaccepted_contacts')
+          // console.log(response)
 
-          let unaccepted_contacts_html = ``
-          response.times.unaccepted_contacts.forEach(contact => {
-            let days = contact.time / 60 / 60 / 24;
-            unaccepted_contacts_html += `<li>
+          if ( window.current_user_lookup === user_id && response.unaccepted_contacts.length > 0 ) {
+              let unaccepted_contacts_html = ``
+            response.unaccepted_contacts.forEach(contact => {
+                let days = contact.time / 60 / 60 / 24;
+                unaccepted_contacts_html += `<li>
             <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target="_blank">
                 ${_.escape(contact.name)} has be waiting to be accepted for ${days.toFixed(1)} days
                 </a> </li>`
-          })
-          $('#unaccepted_contacts').html(unaccepted_contacts_html)
+              })
+              $('#unaccepted_contacts').html(unaccepted_contacts_html)
+          } else {
+            $('#unaccepted_contacts').html('')
+          }
 
-          // assigned to contact accept
-          let accepted_contacts_html = ``
-          let avg_contact_accept = 0
-          response.times.contact_accepts.forEach(contact => {
-            let days = contact.time / 60 / 60 / 24;
-            avg_contact_accept += days
-            let accept_line = dt_user_management_localized.translations.accept_time
-              .replace('%1$s', contact.name)
-              .replace('%2$s', moment.unix(contact.date_accepted).format("MMM Do"))
-              .replace('%3$s', days.toFixed(1))
-            accepted_contacts_html += `<li>
+        }).catch((e)=>{
+        console.log( 'error in unaccepted_contacts')
+        console.log( e)
+        // $('#user_modal').foundation('close');
+      })
+
+      /* contact_accepts */
+      makeRequest( "get", `user?user=${user_id}&section=contact_accepts`, null , 'user-management/v1/')
+        .done(response=>{
+          // console.log('contact_accepts')
+          // console.log(response)
+
+          if ( window.current_user_lookup === user_id && response.contact_accepts.length > 0 ) {
+            // assigned to contact accept
+            let accepted_contacts_html = ``
+            let avg_contact_accept = 0
+            response.contact_accepts.forEach(contact => {
+              let days = contact.time / 60 / 60 / 24;
+              avg_contact_accept += days
+              let accept_line = dt_user_management_localized.translations.accept_time
+                .replace('%1$s', contact.name)
+                .replace('%2$s', moment.unix(contact.date_accepted).format("MMM Do"))
+                .replace('%3$s', days.toFixed(1))
+              accepted_contacts_html += `<li>
             <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target="_blank">
                 ${_.escape(accept_line)}
             </a> </li>`
-          })
-          $('#contact_accepts').html(accepted_contacts_html)
-          $('#avg_contact_accept').html(avg_contact_accept === 0 ? '-' : (avg_contact_accept / response.times.contact_accepts.length).toFixed(1))
+            })
+            $('#contact_accepts').html(accepted_contacts_html)
+            $('#avg_contact_accept').html(avg_contact_accept === 0 ? '-' : (avg_contact_accept / response.contact_accepts.length).toFixed(1))
+          } else {
+            $('#contact_accepts').html('')
+            $('#avg_contact_accept').html('')
+          }
 
-          //contacts assigned with no contact attempt
-          let unattemped_contacts_html = ``
-          response.times.unattempted_contacts.forEach(contact => {
-            let days = contact.time / 60 / 60 / 24;
-            let line = dt_user_management_localized.translations.no_contact_attempt_time
-              .replace('%1$s', contact.name)
-              .replace('%2$s', days.toFixed(1))
-            unattemped_contacts_html += `<li>
-            <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target="_blank">
-                ${_.escape(line)}
-            </a> </li>`
-          })
-          $('#unattempted_contacts').html(unattemped_contacts_html)
-
-          //contact assigned to contact attempt
-          let attempted_contacts_html = ``
-          let avg_contact_attempt = 0
-          response.times.contact_attempts.forEach(contact => {
-            let days = contact.time / 60 / 60 / 24;
-            avg_contact_attempt += days
-            let line = dt_user_management_localized.translations.contact_attempt_time
-              .replace('%1$s', contact.name)
-              .replace('%2$s', moment.unix(contact.date_attempted).format("MMM Do"))
-              .replace('%3$s', days.toFixed(1))
-            attempted_contacts_html += `<li>
-            <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target="_blank">
-                ${_.escape(line)}
-            </a> </li>`
-          })
-          $('#contact_attempts').html(attempted_contacts_html)
-          $('#avg_contact_attempt').html(avg_contact_attempt === 0 ? '-' : (avg_contact_attempt / response.times.contact_attempts.length).toFixed(1))
-
-          let update_needed_list_html = ``
-          response.update_needed.contacts.forEach(contact => {
-            update_needed_list_html += `<li>
-            <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target="_blank">
-                ${_.escape(contact.post_title)}:  ${_.escape(contact.last_modified_msg)}
-            </a>
-          </li>`
-          })
-          $('#update_needed_list').html(update_needed_list_html)
-        }
-      }).catch((e)=>{
-        console.log( 'error in all')
+        }).catch((e)=>{
+        console.log( 'error in contact_accepts')
         console.log( e)
+        // $('#user_modal').foundation('close');
       })
+
+      /* unattempted_contacts */
+      makeRequest( "get", `user?user=${user_id}&section=unattempted_contacts`, null , 'user-management/v1/')
+        .done(response=>{
+          // console.log('unattempted_contacts')
+          // console.log(response)
+
+          if ( window.current_user_lookup === user_id && response.unattempted_contacts.length > 0 ) {
+            //contacts assigned with no contact attempt
+            let unattemped_contacts_html = ``
+            response.unattempted_contacts.forEach(contact => {
+              let days = contact.time / 60 / 60 / 24;
+              let line = dt_user_management_localized.translations.no_contact_attempt_time
+                .replace('%1$s', contact.name)
+                .replace('%2$s', days.toFixed(1))
+              unattemped_contacts_html += `<li>
+            <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target="_blank">
+                ${_.escape(line)}
+            </a> </li>`
+            })
+            $('#unattempted_contacts').html(unattemped_contacts_html)
+          } else {
+            $('#unattempted_contacts').html('')
+          }
+
+        }).catch((e)=>{
+        console.log( 'error in unattempted_contacts')
+        console.log( e)
+        // $('#user_modal').foundation('close');
+      })
+
+      /* contact_attempts */
+      makeRequest( "get", `user?user=${user_id}&section=contact_attempts`, null , 'user-management/v1/')
+        .done(response=>{
+          // console.log('contact_attempts')
+          // console.log(response)
+
+          if ( window.current_user_lookup === user_id && response.contact_attempts.length > 0 ) {
+            //contact assigned to contact attempt
+            let attempted_contacts_html = ``
+            let avg_contact_attempt = 0
+            response.contact_attempts.forEach(contact => {
+              let days = contact.time / 60 / 60 / 24;
+              avg_contact_attempt += days
+              let line = dt_user_management_localized.translations.contact_attempt_time
+                .replace('%1$s', contact.name)
+                .replace('%2$s', moment.unix(contact.date_attempted).format("MMM Do"))
+                .replace('%3$s', days.toFixed(1))
+              attempted_contacts_html += `<li>
+            <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target="_blank">
+                ${_.escape(line)}
+            </a> </li>`
+            })
+            $('#contact_attempts').html(attempted_contacts_html)
+            $('#avg_contact_attempt').html(avg_contact_attempt === 0 ? '-' : (avg_contact_attempt / response.contact_attempts.length).toFixed(1))
+          } else {
+            $('#contact_attempts').html('')
+            $('#avg_contact_attempt').html('')
+          }
+
+        }).catch((e)=>{
+        console.log( 'error in contact_attempts')
+        console.log( e)
+        // $('#user_modal').foundation('close');
+      })
+
+
     }
-
-
 
 
     $('#refresh_cached_data').on('click', function () {
@@ -551,7 +611,7 @@ jQuery(document).ready(function($) {
     })
 
     let chart2 = container.createChild(am4charts.PieChart);
-    chart2.width = am4core.percent(30);
+    chart2.width = am4core.percent(80);
     chart2.radius = am4core.percent(80);
 
     // Add and configure Series
