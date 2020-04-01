@@ -175,7 +175,7 @@
             <div class="section-subheader"><img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-start.svg' ?>"> <?php echo esc_html( $group_fields["start_date"]["name"] )?></div>
             <ul class="date-list start_date details-list"><?php
             if ( isset( $group["start_date"] ) ) {
-                echo strftime( '%x' , $group['start_date']['timestamp'] );
+                echo esc_html( strftime( '%x', $group['start_date']['timestamp'] ) );
             } else {
                 esc_html_e( "No start date", 'disciple_tools' );
             } ?>
