@@ -44,14 +44,13 @@ $user_management_options = DT_User_Management::user_management_options();
             <section id="metrics-container" class="medium-12 cell">
                 <div class="bordered-box">
                     <div id="chart">
-                    <div id="user-chart" class="user-list-wrapper">
 
                     <?php if ( strpos( $dt_url_path, 'user-management/users' ) !== false ) :
                         $users = DT_User_Management::get_users(); ?>
+                    <div id="user-chart" class="user-list-wrapper">
 
                         <!-- Title Section-->
-                        <div id="page-title">
-                            <span id="loading-page" class="loading-spinner"></span>
+                        <div id="page-title" style="display:none;">
                             <?php if ( current_user_can( "list_users" ) ) :?>
                                 <h3><?php esc_html_e( 'Users', 'disciple_tools' ); ?></h3>
                             <?php else : ?>
@@ -96,15 +95,11 @@ $user_management_options = DT_User_Management::user_management_options();
                                     <?php
                                     if ( DT_Mapbox_API::get_key() ) {
                                         if ( isset( $user["location_grid_meta"] ) && ! empty( $user["location_grid_meta"] ) ) {
-                                            echo '&#10004;';
-                                        } else {
-                                            echo '&#10008;';
+                                            echo '<span style="color:limegreen">&#10004;</span>';
                                         }
                                     } else {
                                         if ( isset( $user["location_grid"] ) && ! empty( $user["location_grid"] ) ) {
-                                            echo '&#10004;';
-                                        } else {
-                                            echo '&#10008;';
+                                            echo '<span style="color:limegreen">&#10004;</span>';
                                         }
                                     }
                                     ?>
@@ -121,9 +116,9 @@ $user_management_options = DT_User_Management::user_management_options();
                             <?php endforeach; ?>
                             </tbody>
                         </table>
+                    </div>
                     <?php endif; ?>
                     </div><!-- Container for charts -->
-                </div>
                 </div>
             </section>
         </div>
