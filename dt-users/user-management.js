@@ -730,6 +730,7 @@ jQuery(document).ready(function($) {
                     #geocode-details {
                         height: ${window.innerHeight - 250}px !important;
                         overflow: hidden;
+                        opacity: 100%;
                     }
                 </style>
                 <div id="map-wrapper">
@@ -971,7 +972,7 @@ jQuery(document).ready(function($) {
             .done(function (data) {
 
               // default layer to world
-              if ( data.grid_id === undefined ) {
+              if ( data.grid_id === undefined || level === 'world' ) {
                 data.grid_id = '1'
               }
 
