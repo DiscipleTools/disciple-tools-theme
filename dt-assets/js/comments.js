@@ -112,7 +112,7 @@ jQuery(document).ready(function($) {
         if (a.comment){ %>
             <div dir="auto" class="comment-bubble <%- a.comment_ID %>">
               <div class="comment-text"dir=auto><%= a.text.replace(/\\n/g, '</div><div dir=auto>') /* not escaped on purpose */ %></div>
-            <% if ( !a.comment_ID ) { %>
+            <% if ( commentsSettings.google_translate_key !== "" ) { %>
                 <div class="translation-bubble" dir=auto></div>
                 <a class="translate-button showTranslation">See Translation</a>
                 <a class="translate-button hideTranslation hide">Hide Translation</a>
