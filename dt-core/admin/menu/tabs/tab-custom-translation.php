@@ -55,15 +55,17 @@ class Disciple_Tools_Tab_Custom_Translations extends Disciple_Tools_Abstract_Men
         <?php
     }
 
-    private function get_post_fields( $post_type ){
-        if ( $post_type === "groups" ){
-            return Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( null, null, true, false );
-        } elseif ( $post_type === "contacts" ){
-            return Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( null, null, true, false );
-        } else {
-            $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type, false );
-            return isset( $post_settings["fields"] ) ? $post_settings["fields"] : null;
-        }
+    /**
+     * Google Translate API Key options storage
+     */
+    public static function get_key() {
+        return get_option( 'dt_googletranslate_api_key' );
+    }
+    public static function delete_key() {
+        return delete_option( 'dt_googletranslate_api_key' );
+    }
+    public static function update_key( $key ) {
+        return update_option( 'dt_googletranslate_api_key', $key, true );
     }
 
     /**
@@ -79,10 +81,11 @@ class Disciple_Tools_Tab_Custom_Translations extends Disciple_Tools_Abstract_Men
 
 
 
-            $this->box( 'top' );
+            $this->box( 'top', __( 'Google Translate API Key', 'disciple_tools' ) );
+
+            $this->googleTranslateAPIkey();
 
             $this->box( 'bottom' );
-
             $this->template( 'right_column' );
 
             $this->template( 'end' );
@@ -90,7 +93,38 @@ class Disciple_Tools_Tab_Custom_Translations extends Disciple_Tools_Abstract_Men
     }
 
 
+    private function googleTranslateAPIkey() {
+        if ( isset( $_POST['googleTranslate_key'] )
+                 && ( isset( $_POST['googletranslate_key_nonce'] )
+                      && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['googletranslate_key_nonce'] ) ), 'googletranslate_key_nonce' . get_current_user_id() ) ) ) {
 
+            $key = sanitize_text_field( wp_unslash( $_POST['googleTranslate_key'] ) );
+            if ( empty( $key ) ) {
+                self::delete_key();
+            } else {
+                self::update_key( $key );
+            }
+        }
+        $key = self::get_key();
+        ?> <form method="post">
+
+
+
+                            <?php wp_nonce_field( 'googletranslate_key_nonce' . get_current_user_id(), 'googletranslate_key_nonce' ); ?>
+                            Google Translate API Token: <input type="text" class="regular-text" name="googleTranslate_key" value="<?php echo ( $key ) ? esc_attr( $key ) : ''; ?>" /> <button type="submit" class="button">Update</button>
+
+
+
+
+                            <?php if ( empty( self::get_key() ) ) : ?>
+                                <h2>Google Translate API Instructions</h2>
+                                <ol>
+                                    <li>
+                                        Go to <a href="">Link to GT</a>.
+                                    </li>
+                                </ol>
+                            <?php endif;
+    }
 
     /**
      * Display admin notice

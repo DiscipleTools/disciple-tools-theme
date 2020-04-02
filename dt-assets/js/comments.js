@@ -523,11 +523,15 @@ function unescapeHtml(safe) {
 function translateText(sourceText, sourceLang, targetLang, commentID) {
 
 
-  let url = `https://translation.googleapis.com/language/translate/v2?key=${API_KEY}`
-console.log(targetLang);
+  let url = `https://translation.googleapis.com/language/translate/v2?key=${commentsSettings.google_translate_key}`
+
+  if (targetLang !== "zh-TW") {
+    targetLang = targetLang.substr(0,2);
+  }
+
   let postData = {
     "q": [sourceText],
-    "target": "en"
+    "target": targetLang
   }
 
   fetch(url, {
