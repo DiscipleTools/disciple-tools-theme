@@ -111,11 +111,12 @@ jQuery(document).ready(function($) {
     <% _.forEach(activity, function(a){
         if (a.comment){ %>
             <div dir="auto" class="comment-bubble <%- a.comment_ID %>">
-              <div dir=auto><%= a.text.replace(/\\n/g, '</div><div dir=auto>') /* not escaped on purpose */ %></div>
-              <% if ( a.comment_ID ) { %>
-                <div class="translation-bubble  <%- a.comment_ID %>" dir=auto></div>
-                <a class="translate-button showTranslation <%- a.comment_ID %>" onClick="translateText('<%- a.text.replace(/\\n/g, ' ') %>', 'auto', '${langcode}',  '<%- a.comment_ID %>')">See Translation</a>
-                <a class="translate-button hideTranslation <%- a.comment_ID %> hide" onClick="translateHide('<%- a.comment_ID %>')">Hide Translation</a>
+              <div class="comment-text"dir=auto><%= a.text.replace(/\\n/g, '</div><div dir=auto>') /* not escaped on purpose */ %></div>
+            <% if ( !a.comment_ID ) { %>
+                <div class="translation-bubble" dir=auto></div>
+                <a class="translate-button showTranslation">See Translation</a>
+                <a class="translate-button hideTranslation hide">Hide Translation</a>
+                </div>
               <% } %>
             </div>
             <p class="comment-controls">
@@ -137,6 +138,46 @@ jQuery(document).ready(function($) {
     </div>
   </div>`
   )
+
+  $(document).on("click", '.translate-button.showTranslation', function() {
+    var sourceText = $(this).siblings('.comment-text').text();
+    var translation_bubble = $(this).siblings('.translation-bubble');
+    var translation_hide = $(this).siblings('.translate-button.hideTranslation');
+
+    let url = `https://translation.googleapis.com/language/translate/v2?key=${commentsSettings.google_translate_key}`
+
+    if (langcode !== "zh-TW") {
+      var targetLang = langcode.substr(0,2);
+    } else {
+      var targetLang = langcode;
+    }
+
+    let postData = {
+      "q": [sourceText],
+      "target": targetLang
+    }
+
+    fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(postData),
+    })
+    .then(response => response.json())
+    .then((result) => {
+      translation_bubble.append(result.data.translations[0].translatedText);
+      translation_hide.removeClass('hide');
+      $(this).addClass('hide');
+
+    })
+  })
+
+  $(document).on("click", '.translate-button.hideTranslation', function() {
+    var translation_bubble = $(this).siblings('.translation-bubble');
+    var translate_button = $(this).siblings('.translate-button.showTranslation')
+
+    translation_bubble.empty();
+    $(this).addClass('hide');
+    translate_button.removeClass('hide');
+  })
 
   $(document).on("click", ".open-delete-comment", function () {
     let id = $(this).data("id")
@@ -518,38 +559,3 @@ function unescapeHtml(safe) {
   };
 
 });
-
-
-function translateText(sourceText, sourceLang, targetLang, commentID) {
-
-
-  let url = `https://translation.googleapis.com/language/translate/v2?key=${commentsSettings.google_translate_key}`
-
-  if (targetLang !== "zh-TW") {
-    targetLang = targetLang.substr(0,2);
-  }
-
-  let postData = {
-    "q": [sourceText],
-    "target": targetLang
-  }
-
-  fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(postData),
-  }).then((response) => {
-    return response.json();
-  }).then((result) => {
-    console.log(result);
-   jQuery(`.translation-bubble.${commentID}`).append(result.data.translations[0].translatedText);
-   jQuery(`.translate-button.hideTranslation.hide.${commentID}`).removeClass('hide');
-   jQuery(`.translate-button.showTranslation.${commentID}`).addClass('hide');
-
-  });
-}
-
-function translateHide(commentID) {
-  jQuery(`.translation-bubble.${commentID}`).empty();
-  jQuery(`.translate-button.hideTranslation.${commentID}`).addClass('hide');
-   jQuery(`.translate-button.showTranslation.${commentID}`).removeClass('hide');
-}
