@@ -140,16 +140,17 @@ jQuery(document).ready(function($) {
   )
 
   $(document).on("click", '.translate-button.showTranslation', function() {
-    var sourceText = $(this).siblings('.comment-text').text();
-    var translation_bubble = $(this).siblings('.translation-bubble');
-    var translation_hide = $(this).siblings('.translate-button.hideTranslation');
+    let sourceText = $(this).siblings('.comment-text').text();
+    let translation_bubble = $(this).siblings('.translation-bubble');
+    let translation_hide = $(this).siblings('.translate-button.hideTranslation');
 
     let url = `https://translation.googleapis.com/language/translate/v2?key=${commentsSettings.google_translate_key}`
+    let targetLang;
 
     if (langcode !== "zh-TW") {
-      var targetLang = langcode.substr(0,2);
+      targetLang = langcode.substr(0,2);
     } else {
-      var targetLang = langcode;
+      targetLang = langcode;
     }
 
     let postData = {
@@ -171,8 +172,8 @@ jQuery(document).ready(function($) {
   })
 
   $(document).on("click", '.translate-button.hideTranslation', function() {
-    var translation_bubble = $(this).siblings('.translation-bubble');
-    var translate_button = $(this).siblings('.translate-button.showTranslation')
+    let translation_bubble = $(this).siblings('.translation-bubble');
+    let translate_button = $(this).siblings('.translate-button.showTranslation')
 
     translation_bubble.empty();
     $(this).addClass('hide');
