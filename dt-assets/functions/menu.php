@@ -89,6 +89,9 @@ function disciple_tools_off_canvas_nav() {
         <li>
             <a href="<?php echo esc_url( site_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings", 'disciple_tools' ); ?></a>
         </li>
+        <?php if ( current_user_can( 'manage_dt' ) || current_user_can( 'list_users' ) ) : ?>
+            <li><a href="<?php echo esc_url( site_url( '/user-management/users/' ) ); ?>"><?php esc_html_e( "Users", "disciple_tools" ); ?></a></li>
+        <?php endif; ?>
         <?php if ( user_can( get_current_user_id(), 'manage_dt' ) ) : ?>
             <li><a href="<?php echo esc_url( get_admin_url() ); ?>"><?php esc_html_e( "Admin", 'disciple_tools' ); ?></a></li>
         <?php endif; ?>

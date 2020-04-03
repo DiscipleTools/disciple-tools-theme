@@ -27,6 +27,10 @@ GENERAL STYLES
     float: right;
 }
 
+.full-width {
+    width: 100%;
+}
+
 body {
     background-color: #e2e2e2;
 }
@@ -132,14 +136,14 @@ NAVIGATION STYLES
     .submenu.menu.vertical.is-dropdown-submenu.js-dropdown-active {
         display: block;
     }
+}
 
-    .notification-count {
-        display: none;
-        vertical-align: top;
-        position: relative;
-        top: -5px;
-        left: -15px;
-    }
+.notification-count {
+    display: none;
+    vertical-align: top;
+    position: relative;
+    top: -5px;
+    left: -15px;
 }
 .add-new-items-dropdown {
     background-color: #3f729b;
@@ -354,6 +358,8 @@ Title for boxed section
 .section-subheader {
     font-weight: 700;
     font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
 }
 /*********************
 JQUERY OVERRIDES
@@ -629,6 +635,10 @@ html[dir='rtl'] {
 
     .float-left {
         float: right !important;
+    }
+    .notification-count {
+        right: -15px;
+        left: 0;
     }
 }
 

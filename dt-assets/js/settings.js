@@ -1,5 +1,22 @@
 jQuery(document).ready(function() {
+  if ( typeof dtMapbox !== 'undefined' ) {
+
+    dtMapbox.post_type = 'contacts'
+    dtMapbox.post_id = wpApiSettingsPage.associated_contact_id
+    dtMapbox.post = wpApiSettingsPage.associated_contact
+    load_mapbox_location()
+    write_results_box()
+    jQuery( '#new-mapbox-search' ).on( "click", function() {
+      write_input_widget()
+    });
+
+  } else {
+    window.DRILLDOWN.add_user_location = function( grid_id ) {
+      jQuery('#add_location_location_grid_value').val(grid_id)
+    }
     load_settings_locations()
+  }
+
 })
 
 /**
@@ -33,12 +50,11 @@ function change_password() {
     }).fail(handleAjaxError)
 }
 
-/**
- * Locations
- */
-window.DRILLDOWN.add_user_location = function( grid_id ) {
-    jQuery('#add_location_location_grid_value').val(grid_id)
+/* Locations with or without mapbox */
+function load_mapbox_location() {
+    jQuery('#manage_locations_section' ).empty().html(`<div id="mapbox-wrapper"></div><button id="new-mapbox-search" class="button">${_.escape( wpApiSettingsPage.translations.add ) /* Add */}</button>`)
 }
+
 
 function load_settings_locations( reload = false ) {
     let section = jQuery('#manage_locations_section')
@@ -72,19 +88,15 @@ function load_settings_locations( reload = false ) {
         }).fail(handleAjaxError)
     }
 }
-
-
-
 function add_drill_down_selector() {
     jQuery('#new_locations').empty().append(
             `<div id="add_user_location"><ul class="drill_down"></ul></div>
             <input type="hidden" id="add_location_location_grid_value" />
-            <button type="button" class="button" onclick="save_new_location()">Save</button>`
+            <button type="button" class="button" onclick="save_new_location()">${_.escape( wpApiSettingsPage.translations.save ) /* Save */}</button>`
     )
     window.DRILLDOWN.get_drill_down( 'add_user_location' )
     jQuery('#locations_add_button').hide()
 }
-
 function save_new_location() {
     let grid_id = jQuery('#add_location_location_grid_value').val()
 
@@ -92,15 +104,17 @@ function save_new_location() {
         console.log( data )
         load_settings_locations( true )
     }).fail(handleAjaxError)
-
 }
-
 function delete_location( grid_id ) {
     makeRequest('delete', 'users/user_location', { grid_id: grid_id } ).done(data => {
         console.log( data )
         load_settings_locations( true )
     }).fail(handleAjaxError)
 }
+
+
+
+
 
 let update_user = ( key, value )=>{
     let data =  {

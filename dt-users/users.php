@@ -341,7 +341,7 @@ class Disciple_Tools_Users
     public static function create_contact_for_user( $user_id ) {
         $user = get_user_by( 'id', $user_id );
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
-        if ( $user && $user->has_cap( 'access_contacts' ) ) {
+        if ( $user ) {
             if ( empty( $corresponds_to_contact )){
                 $args = [
                     'post_type'  => 'contacts',
@@ -393,6 +393,7 @@ class Disciple_Tools_Users
                 if ( !is_wp_error( $new_id )){
                     update_user_option( $user_id, "corresponds_to_contact", $new_id );
                 }
+                return $new_id;
             } else {
                 $contact = get_post( $corresponds_to_contact );
                 if ( $contact && $contact->post_title != $user->display_name && $user->display_name != $user->user_login ){
@@ -400,8 +401,10 @@ class Disciple_Tools_Users
                         "title" => $user->display_name
                     ], false, true );
                 }
+                return $contact->ID;
             }
         }
+        return false;
     }
 
     /**

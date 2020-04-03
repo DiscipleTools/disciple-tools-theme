@@ -15,6 +15,7 @@ jQuery(document).ready(function() {
       jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
       project_coaching_tree()
     }
+
 })
 
 function project_overview() {
