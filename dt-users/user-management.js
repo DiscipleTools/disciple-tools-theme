@@ -710,8 +710,8 @@ jQuery(document).ready(function($) {
         makeRequest( "GET", `get_user_list`, null , 'user-management/v1/')
           .done(response=>{
             window.user_list = response
-            console.log('admin0 list')
-            console.log(response)
+            // console.log('admin0 list')
+            // console.log(response)
           }).catch((e)=>{
           console.log( 'error in activity')
           console.log( e)
@@ -731,6 +731,9 @@ jQuery(document).ready(function($) {
                         height: ${window.innerHeight - 250}px !important;
                         overflow: hidden;
                         opacity: 100%;
+                    }
+                    .accordion {
+                        list-style-type:none;
                     }
                 </style>
                 <div id="map-wrapper">
@@ -922,7 +925,6 @@ jQuery(document).ready(function($) {
 
           userLocationAPI.grid_totals( { status: window.current_status } )
             .then(grid_data=>{
-              console.log( grid_data )
 
               window.previous_grid_id = 0
               clear_layers()
@@ -1079,64 +1081,73 @@ jQuery(document).ready(function($) {
           // geocode
           userLocationAPI.geocode( { lng: lng, lat: lat, level: level } )
             .then(details=>{
-              content.empty()
+              content.empty().append(`<ul id="hierarchy-list" class="accordion" data-accordion></ul>`)
+              let list = jQuery('#hierarchy-list')
 
-              if ( window.grid_data[details.admin0_grid_id] ) {
-                jQuery.each()
-                content.append( `
-                            <h5>
-                            ${details.admin0_name} : ${window.grid_data[details.admin0_grid_id].count}
-                            </h5>
-                            <div id="admin0_list">${spinner}</div>
+              console.log('grid_data')
+              console.log(details)
+              console.log(window.grid_data[details.admin0_grid_id])
+              console.log(window.grid_data[details.admin1_grid_id])
+              console.log(window.grid_data[details.admin2_grid_id])
+
+              console.log('user_list')
+              console.log(window.user_list[details.admin0_grid_id])
+              console.log(window.user_list[details.admin1_grid_id])
+              console.log(window.user_list[details.admin2_grid_id])
+
+
+              if ( details.admin0_grid_id ) {
+                list.append( `
+                              <li id="admin0_wrapper" class="accordion-item" data-accordion-item>
+                               <a href="#" class="accordion-title">${details.admin0_name} :  <span id="admin0_count">0</span></a>
+                                <div class="accordion-content" data-tab-content id="admin0_list"></div>
+                              </li>
                             `)
                 let a0list = jQuery('#admin0_list')
                 if ( window.user_list[details.admin0_grid_id] !== 'undefined' ) {
-                  a0list.html('')
                   jQuery.each(window.user_list[details.admin0_grid_id], function(i,v) {
                     a0list.append(`<p>${v.name}</p>`)
                   })
-                } else {
-                  a0list.html('')
                 }
-
+                a0list.append(`<p><button class="add-user small button hollow">add user to ${details.admin0_name}</button></p>`)
 
               }
-              if ( window.grid_data[details.admin1_grid_id] ) {
-                content.append( `
-                            <h5>
-                            ${details.admin1_name} : ${window.grid_data[details.admin1_grid_id].count}
-                            </h5>
-                            <div id="admin1_list">${spinner}</div>
+              if ( details.admin1_grid_id ) {
+                list.append( `
+                              <li id="admin1_wrapper" class="accordion-item" data-accordion-item >
+                                <a href="#" class="accordion-title">${details.admin1_name} : <span id="admin1_count">0</span></a>
+                                <div class="accordion-content" data-tab-content id="admin1_list"></div>
+                              </li>
                             `)
 
-
-                let admin1_list = jQuery('#admin1_list')
-                if ( window.user_list[details.admin1_grid_id] !== 'undefined' ) {
-                  admin1_list.html('')
-                  jQuery.each(window.user_list[details.admin1_grid_id], function(i,v) {
-                    admin1_list.append(`<p>${v.name}</p>`)
-                  })
-                } else {
-                  admin1_list.html('')
-                }
+                  let admin1_list = jQuery('#admin1_list')
+                  if ( window.user_list[details.admin1_grid_id] !== 'undefined' ) {
+                    jQuery.each(window.user_list[details.admin1_grid_id], function(i,v) {
+                      admin1_list.append(`<p>${v.name}</p>`)
+                    })
+                  }
+                admin1_list.append(`<p><button class="add-user small button hollow">add user to ${details.admin1_name}</button></p>`)
               }
-              if ( window.grid_data[details.admin2_grid_id] ) {
-                content.append( `
-                            <h5>
-                            ${details.admin2_name} : ${window.grid_data[details.admin2_grid_id].count}
-                            </h5>
-                            <div id="admin2_list">${spinner}</div>
+              if ( details.admin2_grid_id ) {
+                list.append( `
+                              <li id="admin2_wrapper" class="accordion-item" data-accordion-item>
+                                <a href="#" class="accordion-title">${details.admin2_name} : <span id="admin2_count">0</span></a>
+                                <div class="accordion-content" data-tab-content id="admin2_list"></div>
+                              </li>
                             `)
-                let a0list = jQuery('#admin2_list')
-                if ( window.user_list[details.admin2_grid_id] !== 'undefined' ) {
-                  a0list.html('')
-                  jQuery.each(window.user_list[details.admin2_grid_id], function(i,v) {
-                    a0list.append(`<p>${v.name}</p>`)
-                  })
-                } else {
-                  a0list.html('')
-                }
+
+                  let a2list = jQuery('#admin2_list')
+                  if ( window.user_list[details.admin2_grid_id] !== 'undefined' ) {
+                    jQuery.each(window.user_list[details.admin2_grid_id], function(i,v) {
+                      a2list.append(`<p>${v.name}</p>`)
+                    })
+                  }
+                  a2list.append(`<p><button class="add-user small button hollow">add user to ${details.admin2_name}</button></p>`)
               }
+
+              jQuery('.accordion-item').last().addClass('is-active')
+
+              list.foundation()
 
             }); // end geocode
         }
