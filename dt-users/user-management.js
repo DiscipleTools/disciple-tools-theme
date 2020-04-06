@@ -367,6 +367,18 @@ jQuery(document).ready(function($) {
       }
     })
 
+    $.urlParam = function(name){
+      var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+      if ( results == null ) {
+        return 0;
+      }
+      return results[1] || 0;
+    }
+    if ( $.urlParam('user_id') ) {
+      open_multiplier_modal(decodeURIComponent($.urlParam('user_id') ) )
+    }
+
+
     let update_user = ( user_id, key, value )=>{
       let data =  {
         [key]: value
@@ -1108,7 +1120,7 @@ jQuery(document).ready(function($) {
                   jQuery.each(window.user_list[details.admin0_grid_id], function(i,v) {
                     level_list.append(`
                               <div class="cell small-10 align-self-middle">
-                                <a data-contactid="${v.contact_id}">
+                                <a href="/user-management/users/?user_id=${v.user_id}">
                                   ${v.name}
                                 </a>
                               </div>
@@ -1136,7 +1148,7 @@ jQuery(document).ready(function($) {
                     jQuery.each(window.user_list[details.admin1_grid_id], function(i,v) {
                       level_list.append(`
                               <div class="cell small-10 align-self-middle">
-                                <a data-contactid="${v.contact_id}">
+                                <a href="/user-management/users/?user_id=${v.user_id}">
                                   ${v.name}
                                 </a>
                               </div>
@@ -1163,7 +1175,7 @@ jQuery(document).ready(function($) {
                     jQuery.each(window.user_list[details.admin2_grid_id], function(i,v) {
                       level_list.append(`
                               <div class="cell small-10 align-self-middle">
-                                <a data-contactid="${v.contact_id}">
+                                <a href="/user-management/users/?user_id=${v.user_id}">
                                   ${v.name}
                                 </a>
                               </div>
@@ -1281,7 +1293,7 @@ jQuery(document).ready(function($) {
                              }
                           })
                           jQuery('#'+list_level+'_list').prepend(`<div class="cell small-10 align-self-middle">
-                                <a data-contactid="${response.ID}">
+                                <a  href="/user-management/users/?user_id=${response.corresponds_to_user}">
                                   ${response.title}
                                 </a>
                               </div>
@@ -1403,9 +1415,72 @@ jQuery(document).ready(function($) {
     let chart = jQuery('#chart')
     let spinner = ' <span class="loading-spinner users-spinner active"></span> '
 
-    chart.empty().html(spinner)
+    chart.empty().html(`
+    
+      <div class="grid-x">
+        <div id="page-title" class="cell"><h3>Add New User</h3></div>
+        <div class="cell medium-6">
+          <form data-abide id="new-user-form">
+            <div data-abide-error class="alert callout" style="display: none;">
+              <p><i class="fi-alert"></i> There are some errors in your form.</p>
+            </div>
+            <dl>    
+                <dt>Create user from contact</dt>
+                <dd><input type="text" class="input" id="contact" placeholder="search for contact to reach user from" /> </dd>
+                <dt>Email</dt>
+                <dd><input type="email" class="input" id="email" placeholder="email address" required /> </dd>
+                <dt>Nickname</dt>
+                <dd><input type="text" class="input" id="name" placeholder="nick name" required /> </dd>
+            </dl>
+            <button type="submit" class="submit button" id="create-user">Create User</button> <span class="spinner"></span>
+          </form>
+        </div>
+        <div class="cell medium-6"></div>
+        <div class="cell" id="result-link"></div>
+      </div>
+    
+    `)
 
+    jQuery(document).on("submit", function(ev) {
+        ev.preventDefault();
+        let name = jQuery('#name').val()
+        let email = jQuery('#email').val()
+        let corresponds_to_contact = jQuery('#contact').val()
 
+        let result_div = jQuery('#result-link')
+        let submit_button = jQuery('#create-user')
+        let spinner_span = jQuery('.spinner')
+
+        if ( name !== '' && email !== '' )  {
+          spinner_span.html(spinner)
+          submit_button.prop('disabled', true)
+
+          makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "corresponds_to_contact": corresponds_to_contact })
+            .done(response=>{
+              console.log(response)
+              result_div.html(`<a href="/user-management/users/?user_id=${response}">View New User</a>`)
+              jQuery('#new-user-form').empty()
+            })
+            .catch(err=>{
+              if ( err.status === 409) {
+                spinner_span.html(``)
+                submit_button.prop('disabled', false)
+
+                if ( err.responseJSON.code === 'email_exists' ) {
+                  result_div.html(`Email address is already in the system!`)
+                }
+                else if ( err.responseJSON.code === 'username_exists' ) {
+                  result_div.html(`Username is already in the system!`)
+                }
+
+              } else {
+                spinner_span.html(``)
+                submit_button.prop('disabled', false)
+                result_div.html(`Oops. Something went wrong.`)
+              }
+            })
+        }
+      });
   }
 
 })

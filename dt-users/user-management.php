@@ -127,26 +127,33 @@ class DT_User_Management
 
     public function scripts() {
 
-        wp_register_style( 'datatable-css', '//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css', [], '1.10.19' );
-        wp_enqueue_style( 'datatable-css' );
-        wp_register_style( 'datatable-responsive-css', '//cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css', [], '2.2.3' );
-        wp_enqueue_style( 'datatable-responsive-css' );
-        wp_register_script( 'datatable', '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', false, '1.10' );
-        wp_register_script( 'datatable-responsive', '//cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js', [ 'datatable' ], '2.2.3' );
-        wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
-        wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
-        wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
-        wp_enqueue_script( 'dt_dispatcher_tools', get_template_directory_uri() . '/dt-users/user-management.js', [
+        $dependencies = [
             'jquery',
-            'jquery-ui-core',
-            'moment',
-            'datatable',
-            'datatable-responsive',
-            'amcharts-core',
-            'amcharts-charts',
-            'amcharts-animated',
-        ], filemtime( plugin_dir_path( __FILE__ ) . '/user-management.js' ), true );
+            'moment'
+        ];
 
+        $url_path = dt_get_url_path();
+        if ( strpos( $url_path, 'user-management/users' ) !== false ) {
+            array_push( $dependencies,
+                'datatable',
+                'datatable-responsive',
+                'amcharts-core',
+                'amcharts-charts',
+                'amcharts-animated'
+            );
+
+            wp_register_style( 'datatable-css', '//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css', [], '1.10.19' );
+            wp_enqueue_style( 'datatable-css' );
+            wp_register_style( 'datatable-responsive-css', '//cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css', [], '2.2.3' );
+            wp_enqueue_style( 'datatable-responsive-css' );
+            wp_register_script( 'datatable', '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', false, '1.10' );
+            wp_register_script( 'datatable-responsive', '//cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js', [ 'datatable' ], '2.2.3' );
+            wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
+            wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
+            wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
+        }
+
+        wp_enqueue_script( 'dt_dispatcher_tools', get_template_directory_uri() . '/dt-users/user-management.js', $dependencies, filemtime( plugin_dir_path( __FILE__ ) . '/user-management.js' ), true );
         wp_localize_script(
             'dt_dispatcher_tools', 'dt_user_management_localized', [
                 'root'               => esc_url_raw( rest_url() ),
@@ -916,7 +923,7 @@ class DT_User_Management
                 $status,
                 $status,
                 $status,
-                $status ),  ARRAY_A );
+            $status ), ARRAY_A );
 
         } else {
 
@@ -966,14 +973,13 @@ class DT_User_Management
         }
 
         return $results;
-
     }
 
     public function get_user_list( WP_REST_Request $request ){
         if ( !$this->has_permission() ){
             return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
         }
-        $results = $this->query_user_location_list( );
+        $results = $this->query_user_location_list();
 
         $list = [];
         foreach ( $results as $result ) {
@@ -983,11 +989,7 @@ class DT_User_Management
             $list[$result['grid_id']][] = $result;
         }
 
-        dt_write_log($list);
-
         return $list;
-
-
     }
 
     public function query_user_location_list() {

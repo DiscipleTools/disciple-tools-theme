@@ -810,7 +810,6 @@ Please click the following link to confirm the invite:
             return new WP_Error( "create_user", "You don't have permissions to create users", [ 'status' => 401 ] );
         }
 
-
         $user_id = null;
         $email_exists = email_exists( $user_email );
         if ( $email_exists ){
@@ -820,12 +819,12 @@ Please click the following link to confirm the invite:
             if ( !is_user_member_of_blog( $user->ID ) ){
                 $user_id = self::invite_existing_user_to_site( $user->ID, $user_email, 'multiplier' );
             } else {
-                return new WP_Error( "create_user", __( "Email already exists", 'disciple_tools' ), [ 'status' => 403 ] );
+                return new WP_Error( "email_exists", __( "Email already exists", 'disciple_tools' ), [ 'status' => 409 ] );
             }
         } else {
             $user_id = username_exists( $user_name );
             if ( $user_id ){
-                return new WP_Error( "create_user", __( "Username already exists", 'disciple_tools' ), [ 'status' => 403 ] );
+                return new WP_Error( "username_exists", __( "Username already exists", 'disciple_tools' ), [ 'status' => 409 ] );
             }
         }
 
