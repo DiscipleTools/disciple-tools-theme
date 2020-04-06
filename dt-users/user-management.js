@@ -933,17 +933,18 @@ jQuery(document).ready(function($) {
         jQuery('#status').on('change', function() {
           window.current_status = jQuery('#status').val()
 
-          userLocationAPI.grid_totals( { status: window.current_status } )
-            .then(grid_data=>{
-
+          makeRequest( "POST", `grid_totals`, { status: window.current_status }, 'user-management/v1/')
+            .done(grid_data=>{
               window.previous_grid_id = 0
               clear_layers()
               window.grid_data = grid_data
 
               let lnglat = map.getCenter()
               load_layer( lnglat.lng, lnglat.lat )
-
-            })
+            }).catch((e)=>{
+            console.log('error getting grid_totals')
+            console.log(e)
+          })
 
         })
         // load new layer on event
@@ -1089,10 +1090,8 @@ jQuery(document).ready(function($) {
           jQuery('#geocode-details').show()
 
           // geocode
-          userLocationAPI.geocode( { lng: lng, lat: lat, level: level } )
-            .then(details=>{
-
-
+          makeRequest('GET', obj.theme_uri + 'dt-mapping/location-grid-list-api.php?type=geocode&longitude='+lng+'&latitude='+lat+'&level='+level+'&nonce='+obj.nonce )
+            .done(details=>{
               /* hierarchy list*/
               content.empty().append(`<ul id="hierarchy-list" class="accordion" data-accordion></ul>`)
               let list = jQuery('#hierarchy-list')
@@ -1399,53 +1398,14 @@ jQuery(document).ready(function($) {
 
   }
 
+  function write_add_user() {
+    let obj = dt_user_management_localized
+    let chart = jQuery('#chart')
+    let spinner = ' <span class="loading-spinner users-spinner active"></span> '
+
+    chart.empty().html(spinner)
+
+
+  }
+
 })
-
-
-function write_add_user() {
-  let obj = dt_user_management_localized
-  let chart = jQuery('#chart')
-  let spinner = ' <span class="loading-spinner users-spinner active"></span> '
-
-  chart.empty().html(spinner)
-
-
-}
-
-
-window.userLocationAPI = {
-
-  grid_totals: ( data ) => makeUserRequest('POST', 'grid_totals', data ),
-
-  geocode: ( data ) => makeUserRequest('GET', dt_user_management_localized.theme_uri + 'dt-mapping/location-grid-list-api.php?type=geocode&longitude='+data.lng+'&latitude='+data.lat+'&level='+data.level+'&nonce='+dt_user_management_localized.nonce ),
-
-}
-function makeUserRequest (type, url, data, base = 'user-management/v1/') {
-  const options = {
-    type: type,
-    contentType: 'application/json; charset=utf-8',
-    dataType: 'json',
-    url: url.startsWith('http') ? url : `${dt_user_management_localized.root}${base}${url}`,
-    beforeSend: xhr => {
-      xhr.setRequestHeader('X-WP-Nonce', dt_user_management_localized.nonce);
-    }
-  }
-
-  if (data) {
-    options.data = JSON.stringify(data)
-  }
-
-  return jQuery.ajax(options)
-}
-jQuery(document).ajaxComplete((event, xhr, settings) => {
-  if (_.get(xhr, 'responseJSON.data.status') === 401) {
-    console.log('401 error')
-    console.log(xhr)
-  }
-}).ajaxError((event, xhr) => {
-  handleAjaxError(xhr)
-})
-function handleAjaxError (err) {
-  if (_.get(err, "statusText") !== "abortPromise" && err.responseText){
-  }
-}
