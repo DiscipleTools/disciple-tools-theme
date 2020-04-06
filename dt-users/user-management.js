@@ -6,6 +6,9 @@ jQuery(document).ready(function($) {
   if( '/user-management/map/' === window.location.pathname ) {
     write_users_map()
   }
+  if( '/user-management/add-user/' === window.location.pathname ) {
+    write_add_user()
+  }
 
   /* List Table */
   function write_users_list(){
@@ -702,21 +705,22 @@ jQuery(document).ready(function($) {
     let chart = jQuery('#chart')
     let spinner = ' <span class="loading-spinner users-spinner active"></span> '
 
-    chart.empty().html(`<img src="${obj.theme_uri}spinner.svg" width="30px" alt="spinner" />`)
+    chart.empty().html(spinner)
 
-    userLocationAPI.grid_totals()
-      .then(grid_data=>{
+    makeRequest( "GET", `get_user_list`, null , 'user-management/v1/')
+      .done(response=>{
+        window.user_list = response
+        console.log('USER LIST')
+        console.log(response)
+      }).catch((e)=>{
+      console.log( 'error in activity')
+      console.log( e)
+    })
 
-        makeRequest( "GET", `get_user_list`, null , 'user-management/v1/')
-          .done(response=>{
-            window.user_list = response
-            // console.log('admin0 list')
-            // console.log(response)
-          }).catch((e)=>{
-          console.log( 'error in activity')
-          console.log( e)
-        })
-
+    makeRequest( "POST", `grid_totals`, { status: null }, 'user-management/v1/')
+      .done(grid_data=>{
+        console.log('GRID TOTALS')
+        console.log(grid_data)
         window.grid_data = grid_data
 
         chart.empty().html(`
@@ -734,6 +738,12 @@ jQuery(document).ready(function($) {
                     }
                     .accordion {
                         list-style-type:none;
+                    }
+                    .delete-button {
+                        margin-bottom: 0 !important;
+                    }
+                    .add-user-button {
+                        padding-top: 10px;
                     }
                 </style>
                 <div id="map-wrapper">
@@ -786,7 +796,7 @@ jQuery(document).ready(function($) {
                             </div>
                         </div>
                     </div>
-                    <div id="spinner"><img src="${obj.theme_uri}spinner.svg" class="spinner-image" alt="spinner"/></div>
+                    <div id="spinner">${spinner}</div>
                     <div id="cross-hair">&#8982</div>
                     <div id="geocode-details" class="geocode-details">
                         Responsibility<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
@@ -1081,73 +1091,245 @@ jQuery(document).ready(function($) {
           // geocode
           userLocationAPI.geocode( { lng: lng, lat: lat, level: level } )
             .then(details=>{
+
+
+              /* hierarchy list*/
               content.empty().append(`<ul id="hierarchy-list" class="accordion" data-accordion></ul>`)
               let list = jQuery('#hierarchy-list')
-
-              console.log('grid_data')
-              console.log(details)
-              console.log(window.grid_data[details.admin0_grid_id])
-              console.log(window.grid_data[details.admin1_grid_id])
-              console.log(window.grid_data[details.admin2_grid_id])
-
-              console.log('user_list')
-              console.log(window.user_list[details.admin0_grid_id])
-              console.log(window.user_list[details.admin1_grid_id])
-              console.log(window.user_list[details.admin2_grid_id])
-
-
               if ( details.admin0_grid_id ) {
                 list.append( `
                               <li id="admin0_wrapper" class="accordion-item" data-accordion-item>
                                <a href="#" class="accordion-title">${details.admin0_name} :  <span id="admin0_count">0</span></a>
-                                <div class="accordion-content" data-tab-content id="admin0_list"></div>
+                                <div class="accordion-content grid-x" data-tab-content><div id="admin0_list" class="grid-x"></div></div>
                               </li>
                             `)
-                let a0list = jQuery('#admin0_list')
-                if ( window.user_list[details.admin0_grid_id] !== 'undefined' ) {
+                let level_list = jQuery('#admin0_list')
+                if ( details.admin0_grid_id in window.user_list ) {
+                  jQuery('#admin0_count').html(window.user_list[details.admin0_grid_id].length)
                   jQuery.each(window.user_list[details.admin0_grid_id], function(i,v) {
-                    a0list.append(`<p>${v.name}</p>`)
+                    level_list.append(`
+                              <div class="cell small-10 align-self-middle">
+                                <a data-contactid="${v.contact_id}">
+                                  ${v.name}
+                                </a>
+                              </div>
+                              <div class="cell small-2">
+                                <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${v.contact_id}" data-id="${v.grid_meta_id}">
+                                  <img src="${obj.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
+                                </a>
+                              </div>`)
                   })
                 }
-                a0list.append(`<p><button class="add-user small button hollow">add user to ${details.admin0_name}</button></p>`)
+                level_list.append(`<div class="cell add-user-button"><button class="add-user small expanded button hollow" data-level="admin0" data-location="${details.admin0_grid_id}">add user to ${details.admin0_name}</button></div>`)
 
               }
               if ( details.admin1_grid_id ) {
                 list.append( `
                               <li id="admin1_wrapper" class="accordion-item" data-accordion-item >
                                 <a href="#" class="accordion-title">${details.admin1_name} : <span id="admin1_count">0</span></a>
-                                <div class="accordion-content" data-tab-content id="admin1_list"></div>
+                                <div class="accordion-content" data-tab-content><div id="admin1_list" class="grid-x"></div></div>
                               </li>
                             `)
 
-                  let admin1_list = jQuery('#admin1_list')
-                  if ( window.user_list[details.admin1_grid_id] !== 'undefined' ) {
+                  let level_list = jQuery('#admin1_list')
+                  if ( details.admin1_grid_id in window.user_list ) {
+                    jQuery('#admin1_count').html(window.user_list[details.admin1_grid_id].length)
                     jQuery.each(window.user_list[details.admin1_grid_id], function(i,v) {
-                      admin1_list.append(`<p>${v.name}</p>`)
+                      level_list.append(`
+                              <div class="cell small-10 align-self-middle">
+                                <a data-contactid="${v.contact_id}">
+                                  ${v.name}
+                                </a>
+                              </div>
+                              <div class="cell small-2">
+                                <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${v.contact_id}" data-id="${v.grid_meta_id}">
+                                  <img src="${obj.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
+                                </a>
+                              </div>`)
                     })
                   }
-                admin1_list.append(`<p><button class="add-user small button hollow">add user to ${details.admin1_name}</button></p>`)
+                level_list.append(`<div class="cell add-user-button"><button class="add-user small expanded button hollow" data-level="admin1" data-location="${details.admin1_grid_id}">add user to ${details.admin1_name}</button></div>`)
               }
               if ( details.admin2_grid_id ) {
                 list.append( `
                               <li id="admin2_wrapper" class="accordion-item" data-accordion-item>
                                 <a href="#" class="accordion-title">${details.admin2_name} : <span id="admin2_count">0</span></a>
-                                <div class="accordion-content" data-tab-content id="admin2_list"></div>
+                                <div class="accordion-content" data-tab-content><div id="admin2_list"  class="grid-x"></div></div>
                               </li>
                             `)
 
-                  let a2list = jQuery('#admin2_list')
-                  if ( window.user_list[details.admin2_grid_id] !== 'undefined' ) {
+                  let level_list = jQuery('#admin2_list')
+                  if ( details.admin2_grid_id in window.user_list ) {
+                    jQuery('#admin2_count').html(window.user_list[details.admin2_grid_id].length)
                     jQuery.each(window.user_list[details.admin2_grid_id], function(i,v) {
-                      a2list.append(`<p>${v.name}</p>`)
+                      level_list.append(`
+                              <div class="cell small-10 align-self-middle">
+                                <a data-contactid="${v.contact_id}">
+                                  ${v.name}
+                                </a>
+                              </div>
+                              <div class="cell small-2">
+                                <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${v.contact_id}" data-id="${v.grid_meta_id}">
+                                  <img src="${obj.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
+                                </a>
+                              </div>`)
                     })
                   }
-                  a2list.append(`<p><button class="add-user small button hollow">add user to ${details.admin2_name}</button></p>`)
+                level_list.append(`<div class="cell add-user-button"><button class="add-user expanded small button hollow" data-level="admin2" data-location="${details.admin2_grid_id}">add user to ${details.admin2_name}</button></div>`)
               }
 
               jQuery('.accordion-item').last().addClass('is-active')
-
               list.foundation()
+              /* end hierarchy list */
+
+              /* build click function to add user to location */
+              jQuery('.add-user').on('click', function() {
+                jQuery('#add-user-wrapper').remove()
+                let selected_location = jQuery(this).data('location')
+                let list_level = jQuery(this).data('level')
+
+                jQuery(this).parent().append(`
+                <div id="add-user-wrapper">
+                    <var id="add-user-location-result-container" class="result-container add-user-location-result-container"></var>
+                    <div id="assigned_to_t" name="form-assigned_to">
+                        <div class="typeahead__container">
+                            <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-add-user input-height" dir="auto"
+                                           name="assigned_to[query]" placeholder="Search Users"
+                                           autocomplete="off">
+                                </span>
+                                <span class="typeahead__button">
+                                    <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
+                                        <img src="${obj.theme_uri}/dt-assets/images/chevron_down.svg" alt="chevron"/>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `)
+                jQuery.typeahead({
+                  input: '.js-typeahead-add-user',
+                  minLength: 0,
+                  accent: true,
+                  searchOnFocus: true,
+                  source: TYPEAHEADS.typeaheadUserSource(),
+                  templateValue: "{{name}}",
+                  template: function (query, item) {
+                    return `<div class="assigned-to-row" dir="auto">
+                              <span>
+                                  <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
+                                  ${_.escape( item.name )}
+                              </span>
+                              ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
+                              ${ item.update_needed ? `<span>
+                                <img style="height: 12px;" src="${_.escape( obj.theme_uri )}/dt-assets/images/broken.svg"/>
+                                <span style="font-size: 14px">${_.escape(item.update_needed)}</span>
+                              </span>` : '' }
+                            </div>`
+                  },
+                  dynamic: true,
+                  hint: true,
+                  emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
+                  callback: {
+                    onClick: function(node, a, item){
+                      API.update_post('contacts', item.contact_id, {
+                        location_grid_meta: {
+                          values: [
+                            {
+                              grid_id: selected_location
+                            }
+                          ]
+                        }}).then(function (response) {
+                          console.log(response)
+
+                          // update user list
+                          makeRequest( "GET", `get_user_list`, null , 'user-management/v1/')
+                            .done(response=>{
+                              window.user_list = response
+                              if ( selected_location in window.user_list ) {
+                                jQuery('#'+list_level+'_count').html(response[selected_location].length)
+                              }
+
+                            }).catch((e)=>{
+                            console.log( 'error in activity')
+                            console.log( e)
+                          })
+
+                          // update grid totals
+                          makeRequest( "POST", `grid_totals`, { status: window.current_status }, 'user-management/v1/')
+                            .done(grid_data=>{
+                              window.previous_grid_id = 0
+                              clear_layers()
+                              window.grid_data = grid_data
+
+                              let lnglat = map.getCenter()
+                              load_layer( lnglat.lng, lnglat.lat )
+                            }).catch((e)=>{
+                            console.log('error getting grid_totals')
+                            console.log(e)
+                          })
+
+                          // remove user add input
+                          jQuery('#add-user-wrapper').remove()
+
+                          // add new user to list
+                        let grid_meta = ''
+                          jQuery.each(response.location_grid_meta, function(i,v) {
+                             if ( v.grid_id === selected_location ) {
+                               grid_meta = v.grid_meta_id
+                             }
+                          })
+                          jQuery('#'+list_level+'_list').prepend(`<div class="cell small-10 align-self-middle">
+                                <a data-contactid="${response.ID}">
+                                  ${response.title}
+                                </a>
+                              </div>
+                              <div class="cell small-2">
+                                <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${response.ID}" data-id="${grid_meta}">
+                                  <img src="${obj.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
+                                </a>
+                              </div>`)
+
+                      }).catch(err => { console.error(err) })
+                    },
+                    onResult: function (node, query, result, resultCount) {
+                      let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+                      $('#add-user-location-result-container').html(text);
+                    },
+                    onHideLayout: function () {
+                      $('.add-user-location-result-container').html("");
+                    },
+                    onReady: function () {
+
+                    }
+                  },
+                });
+
+              })
+              /* end click add function */
+
+              jQuery( '.mapbox-delete-button' ).on( "click", function(e) {
+
+                let data = {
+                  location_grid_meta: {
+                    values: [
+                      {
+                        grid_meta_id: jQuery(this).data("id"),
+                        delete: true,
+                      }
+                    ]
+                  }
+                }
+
+                let post_id = jQuery(this).data("postid")
+
+                API.update_post( 'contacts', post_id, data ).then(function (response) {
+                  // @todo
+                }).catch(err => { console.error(err) })
+
+              });
 
             }); // end geocode
         }
@@ -1217,8 +1399,19 @@ jQuery(document).ready(function($) {
 
   }
 
-
 })
+
+
+function write_add_user() {
+  let obj = dt_user_management_localized
+  let chart = jQuery('#chart')
+  let spinner = ' <span class="loading-spinner users-spinner active"></span> '
+
+  chart.empty().html(spinner)
+
+
+}
+
 
 window.userLocationAPI = {
 

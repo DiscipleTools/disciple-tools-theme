@@ -154,7 +154,8 @@ class Disciple_Tools_Users
                 $u = [
                     "name" => $user->display_name,
                     "ID"   => $user->ID,
-                    "avatar" => get_avatar_url( $user->ID, [ 'size' => '16' ] )
+                    "avatar" => get_avatar_url( $user->ID, [ 'size' => '16' ] ),
+                    "contact_id" => self::get_contact_for_user( $user->ID )
                 ];
                 //extra information for the dispatcher
                 if ( current_user_can( 'view_any_contacts' ) && !$get_all ){

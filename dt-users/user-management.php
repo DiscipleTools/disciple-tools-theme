@@ -100,15 +100,14 @@ class DT_User_Management
     }
 
     public function add_menu( $content ) {
-        $content .= '<li>';
 
-        $content .= '<a href="'. site_url( '/user-management/users/' ) .'" >' .  esc_html__( 'Users', 'disciple_tools' ) . '</a>';
+        $content .= '<li><a href="'. site_url( '/user-management/users/' ) .'" >' .  esc_html__( 'Users', 'disciple_tools' ) . '</a></li>';
 
         if ( DT_Mapbox_API::get_key() ) {
-            $content .= '<a href="'. site_url( '/user-management/map/' ) .'" >' .  esc_html__( 'Map', 'disciple_tools' ) . '</a>';
+            $content .= '<li><a href="'. site_url( '/user-management/map/' ) .'" >' .  esc_html__( 'Map', 'disciple_tools' ) . '</a></li>';
         }
 
-        $content .= '</li>';
+        $content .= '<li><a href="'. site_url( '/user-management/add-user/' ) .'" >' .  esc_html__( 'Add User', 'disciple_tools' ) . '</a></li>';
 
         return $content;
     }
@@ -994,58 +993,12 @@ class DT_User_Management
     public function query_user_location_list() {
         global $wpdb;
 
-//        $result =  $wpdb->get_results("
-//            SELECT DISTINCT lg.admin0_grid_id as grid_id, lgm.post_id as contact_id, pm.meta_value as user_id, po.post_title as name
-//            FROM $wpdb->dt_location_grid_meta as lgm
-//            LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
-//            LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id
-//            JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'corresponds_to_user' AND pm.meta_value != ''
-//            WHERE lgm.post_type = 'contacts' AND lg.admin0_grid_id IS NOT NULL
-//            UNION
-//            SELECT DISTINCT lg.admin1_grid_id as grid_id, lgm.post_id as contact_id, pm.meta_value as user_id, po.post_title as name
-//            FROM $wpdb->dt_location_grid_meta as lgm
-//            LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
-//            LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id
-//            JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'corresponds_to_user' AND pm.meta_value != ''
-//            WHERE lgm.post_type = 'contacts' AND lg.admin1_grid_id IS NOT NULL
-//            UNION
-//            SELECT DISTINCT lg.admin2_grid_id as grid_id, lgm.post_id as contact_id, pm.meta_value as user_id, po.post_title as name
-//            FROM $wpdb->dt_location_grid_meta as lgm
-//            LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
-//            LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id
-//            JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'corresponds_to_user' AND pm.meta_value != ''
-//            WHERE lgm.post_type = 'contacts' AND lg.admin2_grid_id IS NOT NULL
-//            UNION
-//            SELECT DISTINCT lg.admin3_grid_id as grid_id, lgm.post_id as contact_id, pm.meta_value as user_id, po.post_title as name
-//            FROM $wpdb->dt_location_grid_meta as lgm
-//            LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
-//            LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id
-//            JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'corresponds_to_user' AND pm.meta_value != ''
-//            WHERE lgm.post_type = 'contacts' AND lg.admin3_grid_id IS NOT NULL
-//            UNION
-//            SELECT DISTINCT lg.admin4_grid_id as grid_id, lgm.post_id as contact_id, pm.meta_value as user_id, po.post_title as name
-//            FROM $wpdb->dt_location_grid_meta as lgm
-//            LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
-//            LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id
-//            JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'corresponds_to_user' AND pm.meta_value != ''
-//            WHERE lgm.post_type = 'contacts' AND lg.admin4_grid_id IS NOT NULL
-//            UNION
-//            SELECT DISTINCT lg.admin5_grid_id as grid_id, lgm.post_id as contact_id, pm.meta_value as user_id, po.post_title as name
-//            FROM $wpdb->dt_location_grid_meta as lgm
-//            LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
-//            LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id
-//            JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'corresponds_to_user' AND pm.meta_value != ''
-//            WHERE lgm.post_type = 'contacts' AND lg.admin5_grid_id IS NOT NULL
-//        ", ARRAY_A );
-
         $result = $wpdb->get_results("
-            SELECT DISTINCT lgm.grid_id as grid_id, lgm.post_id as contact_id, pm.meta_value as user_id, po.post_title as name 
+            SELECT DISTINCT lgm.grid_id as grid_id, lgm.grid_meta_id, lgm.post_id as contact_id, pm.meta_value as user_id, po.post_title as name 
             FROM $wpdb->dt_location_grid_meta as lgm 
             LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id
             JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'corresponds_to_user' AND pm.meta_value != ''
             WHERE lgm.post_type = 'contacts' AND lgm.grid_id IS NOT NULL", ARRAY_A );
-
-//        dt_write_log($result);
 
         return $result;
     }
