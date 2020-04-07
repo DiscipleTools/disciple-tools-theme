@@ -865,8 +865,8 @@ class DT_User_Management
              SELECT lg.admin0_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
              AND lgm.post_id IN (SELECT t3.meta_value as contact_id
              	FROM wp_usermeta as t1
-             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = 'wp_3_user_status' AND t2.meta_value = %s
-             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = 'wp_3_corresponds_to_contact')
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = %s AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = %s )
             ) as t0
             GROUP BY t0.admin0_grid_id
             UNION
@@ -875,8 +875,8 @@ class DT_User_Management
              SELECT lg.admin1_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
              AND lgm.post_id IN (SELECT t3.meta_value as contact_id
              	FROM wp_usermeta as t1
-             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = 'wp_3_user_status' AND t2.meta_value = %s
-             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = 'wp_3_corresponds_to_contact')
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = %s AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = %s )
             ) as t1
             GROUP BY t1.admin1_grid_id
             UNION
@@ -885,8 +885,8 @@ class DT_User_Management
              SELECT lg.admin2_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
              AND lgm.post_id IN (SELECT t3.meta_value as contact_id
              	FROM wp_usermeta as t1
-             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = 'wp_3_user_status' AND t2.meta_value = %s
-             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = 'wp_3_corresponds_to_contact')
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = %s AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = %s )
             ) as t2
             GROUP BY t2.admin2_grid_id
             UNION
@@ -895,8 +895,8 @@ class DT_User_Management
              SELECT lg.admin3_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
              AND lgm.post_id IN (SELECT t3.meta_value as contact_id
              	FROM wp_usermeta as t1
-             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = 'wp_3_user_status' AND t2.meta_value = %s
-             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = 'wp_3_corresponds_to_contact')
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = %s AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = %s )
             ) as t3
             GROUP BY t3.admin3_grid_id
             UNION
@@ -905,8 +905,8 @@ class DT_User_Management
              SELECT lg.admin4_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
              AND lgm.post_id IN (SELECT t3.meta_value as contact_id
              	FROM wp_usermeta as t1
-             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = 'wp_3_user_status' AND t2.meta_value = %s
-             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = 'wp_3_corresponds_to_contact')
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = %s AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = %s )
             ) as t4
             GROUP BY t4.admin4_grid_id
             UNION
@@ -915,17 +915,30 @@ class DT_User_Management
              SELECT lg.admin5_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
              AND lgm.post_id IN (SELECT t3.meta_value as contact_id
              	FROM wp_usermeta as t1
-             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = 'wp_3_user_status' AND t2.meta_value = %s
-             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = 'wp_3_corresponds_to_contact')
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = %s AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = %s )
             ) as t5
             GROUP BY t5.admin5_grid_id;
             ",
+                $wpdb->prefix . 'user_status',
                 $status,
+                $wpdb->prefix . 'corresponds_to_contact',
+                $wpdb->prefix . 'user_status',
                 $status,
+                $wpdb->prefix . 'corresponds_to_contact',
+                $wpdb->prefix . 'user_status',
                 $status,
+                $wpdb->prefix . 'corresponds_to_contact',
+                $wpdb->prefix . 'user_status',
                 $status,
+                $wpdb->prefix . 'corresponds_to_contact',
+                $wpdb->prefix . 'user_status',
                 $status,
-            $status ), ARRAY_A );
+                $wpdb->prefix . 'corresponds_to_contact',
+                $wpdb->prefix . 'user_status',
+                $status,
+                $wpdb->prefix . 'corresponds_to_contact'
+            ), ARRAY_A );
 
         } else {
 
@@ -973,7 +986,7 @@ class DT_User_Management
             GROUP BY t5.admin5_grid_id;
             ", ARRAY_A );
         }
-
+        dt_write_log( $results );
         return $results;
     }
 
