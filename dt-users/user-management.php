@@ -14,7 +14,6 @@ class DT_User_Management
 
     public function __construct() {
         if ( $this->has_permission() ){
-//            add_action( 'dt_top_nav_desktop', [ $this, 'add_nav_bar_link' ] );
             add_action( "template_redirect", [ $this, 'my_theme_redirect' ] );
             $url_path = dt_get_url_path();
             if ( strpos( $url_path, 'user-management' ) !== false ) {
@@ -178,10 +177,14 @@ class DT_User_Management
     }
 
     public function get_dt_user( $user_id, $section = null ) {
+        if ( ! $this->has_permission() ) {
+            return new WP_Error( __METHOD__, "Permission error", [ 'status' => 403 ] );
+        }
+
         global $wpdb;
         $user = get_user_by( "ID", $user_id );
-        if ( empty( $user->caps ) ) {
-            return new WP_Error( "user_id", "Cannot get this user", [ 'status' => 400 ] );
+        if ( ! $user ) {
+            return new WP_Error( __METHOD__, "No User", [ 'status' => 400 ] );
         }
 
         $user_response = [

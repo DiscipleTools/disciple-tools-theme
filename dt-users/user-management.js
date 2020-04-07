@@ -379,6 +379,7 @@ jQuery(document).ready(function($) {
     }
 
 
+
     let update_user = ( user_id, key, value )=>{
       let data =  {
         [key]: value
@@ -800,7 +801,6 @@ jQuery(document).ready(function($) {
                                 <div class="grid-y">
                                     <div class="cell center" id="admin">World</div>
                                     <div class="cell center" id="zoom" >0</div>
-                                    <div class="cell center"><a onclick="write_users_map()">reset</a></div>
                                 </div>
                             </div>
                         </div>
@@ -854,6 +854,7 @@ jQuery(document).ready(function($) {
 
         // default load state
         map.on('load', function() {
+
           window.previous_grid_id = '1'
           window.previous_grid_list.push('1')
           jQuery.get('https://storage.googleapis.com/location-grid-mirror/collection/1.geojson', null, null, 'json')
@@ -1422,32 +1423,61 @@ jQuery(document).ready(function($) {
             <div data-abide-error class="alert callout" style="display: none;">
               <p><i class="fi-alert"></i> There are some errors in your form.</p>
             </div>
-            <dl>    
-                <dt>Create user from contact</dt>
-                <dd><input type="text" class="input" id="contact" placeholder="search for contact to reach user from" /> </dd>
-                <dt>Email</dt>
-                <dd><input type="email" class="input" id="email" placeholder="email address" required /> </dd>
-                <dt>Nickname</dt>
-                <dd><input type="text" class="input" id="name" placeholder="nick name" required /> </dd>
+            
+            <dl>
+              <dt>Contact to make a user (optional)</dt>
+              <dd>
+                <div class="subassigned details">
+                    <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
+                    <div id="subassigned_t" name="form-subassigned" class="scrollable-typeahead">
+                        <div class="typeahead__container">
+                            <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-subassigned input-height"
+                                           name="subassigned[query]" placeholder="Search multipliers and contacts"
+                                           autocomplete="off">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </dd>
             </dl>
+            <div id="contact-result"></div>
+          
+            <dl>  
+              <dt>Nickname</dt>
+              <dd><input type="text" class="input" id="name" placeholder="nick name" required /> </dd>
+              <dt>Email</dt>
+              <dd><input type="email" class="input" id="email" placeholder="email address" required /> </dd>
+              
+            </dl>
+            
             <button type="submit" class="submit button" id="create-user">Create User</button> <span class="spinner"></span>
+            
           </form>
+          
         </div>
         <div class="cell medium-6"></div>
         <div class="cell" id="result-link"></div>
+        <div class="cell" style="height:20rem;"></div>
       </div>
     
     `)
+
+    let result_div = jQuery('#result-link')
+    let submit_button = jQuery('#create-user')
+    let spinner_span = jQuery('.spinner')
 
     jQuery(document).on("submit", function(ev) {
         ev.preventDefault();
         let name = jQuery('#name').val()
         let email = jQuery('#email').val()
-        let corresponds_to_contact = jQuery('#contact').val()
 
-        let result_div = jQuery('#result-link')
-        let submit_button = jQuery('#create-user')
-        let spinner_span = jQuery('.spinner')
+        let corresponds_to_contact = null
+        if ( typeof window.contact_record !== 'undefined' ) {
+          corresponds_to_contact = window.contact_record.ID
+        }
 
         if ( name !== '' && email !== '' )  {
           spinner_span.html(spinner)
@@ -1465,10 +1495,10 @@ jQuery(document).ready(function($) {
                 submit_button.prop('disabled', false)
 
                 if ( err.responseJSON.code === 'email_exists' ) {
-                  result_div.html(`Email address is already in the system!`)
+                  result_div.html(`Email address is already in the system as a user!`)
                 }
                 else if ( err.responseJSON.code === 'username_exists' ) {
-                  result_div.html(`Username is already in the system!`)
+                  result_div.html(`Username is already in the system as a user!`)
                 }
 
               } else {
@@ -1479,6 +1509,59 @@ jQuery(document).ready(function($) {
             })
         }
       });
+
+    ["subassigned"].forEach(field_id=>{
+      $.typeahead({
+        input: `.js-typeahead-${field_id}`,
+        minLength: 0,
+        accent: true,
+        maxItem: 30,
+        searchOnFocus: true,
+        template: window.TYPEAHEADS.contactListRowTemplate,
+        source: window.TYPEAHEADS.typeaheadContactsSource(),
+        display: "name",
+        templateValue: "{{name}}",
+        dynamic: true,
+        callback: {
+          onClick: function(node, a, item, event){
+            console.log(item)
+            spinner_span.html(spinner)
+            submit_button.prop('disabled', true)
+
+            makeRequest('GET', 'contacts/'+item.ID, null, 'dt-posts/v2/' )
+              .done(function(response){
+                if ( item.user ) {
+                  jQuery('#contact-result').html(`This contact is already a user. <a href="/user-management/users/?user_id=${response.corresponds_to_user}">View User</a>`)
+                } else {
+                  window.contact_record = response
+                  submit_button.prop('disabled', false)
+                  jQuery('#name').val( response.title)
+                  if ( response.contact_email[0] !== 'undefined' ) {
+                    jQuery('#email').val( response.contact_email[0].value )
+                  }
+
+                }
+                spinner_span.html(``)
+              })
+          },
+          onResult: function (node, query, result, resultCount) {
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $(`#${field_id}-result-container`).html(text);
+            submit_button.prop('disabled', false)
+            $('#contact-result').html(``)
+          },
+          onHideLayout: function () {
+            $(`#${field_id}-result-container`).html("");
+          },
+          onReady: function () {
+            if (field_id === "subassigned"){
+            }
+          },
+          onShowLayout (){
+          }
+        }
+      })
+    })
   }
 
 })
