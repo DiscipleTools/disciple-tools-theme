@@ -722,8 +722,8 @@ jQuery(document).ready(function($) {
     makeRequest( "GET", `get_user_list`, null , 'user-management/v1/')
       .done(response=>{
         window.user_list = response
-        console.log('USER LIST')
-        console.log(response)
+        // console.log('USER LIST')
+        // console.log(response)
       }).catch((e)=>{
       console.log( 'error in activity')
       console.log( e)
@@ -731,8 +731,8 @@ jQuery(document).ready(function($) {
 
     makeRequest( "POST", `grid_totals`, { status: null }, 'user-management/v1/')
       .done(grid_data=>{
-        console.log('GRID TOTALS')
-        console.log(grid_data)
+        // console.log('GRID TOTALS')
+        // console.log(grid_data)
         window.grid_data = grid_data
 
         chart.empty().html(`
@@ -762,8 +762,8 @@ jQuery(document).ready(function($) {
                     <div id='map'></div>
                     <div id='legend' class='legend'>
                         <div class="grid-x grid-margin-x grid-padding-x">
-                            <div class="cell small-1 center info-bar-font">
-                                Users 
+                            <div class="cell small-2 center info-bar-font">
+                                Responsibility 
                             </div>
                             <div class="cell small-2 center border-left">
                                 <select id="level" class="small" style="width:170px;">
@@ -785,17 +785,14 @@ jQuery(document).ready(function($) {
                                     <option value="none"></option>
                                     <option value="all" selected>Status - All</option>
                                     <option value="none" disabled>-----</option>
-                                    <option value="new">New</option>
-                                    <option value="proposed">Proposed</option>
-                                    <option value="scheduled">Scheduled</option>
-                                    <option value="in_progress">In-Progress</option>
-                                    <option value="complete">Completed</option>
-                                    <option value="paused">Paused</option>
-                                    <option value="closed">Closed</option>
+                                    <option value="active">Active</option>
+                                    <option value="away">Away</option>
+                                    <option value="inconsistent">Inconsistent</option>
+                                    <option value="inactive">Inactive</option>
                                     <option value="none" disabled></option>
                                 </select> 
                             </div>
-                            <div class="cell small-6 center border-left info-bar-font">
+                            <div class="cell small-5 center border-left info-bar-font">
                                 
                             </div>
                             
@@ -811,7 +808,7 @@ jQuery(document).ready(function($) {
                     <div id="spinner">${spinner}</div>
                     <div id="cross-hair">&#8982</div>
                     <div id="geocode-details" class="geocode-details">
-                        Responsibility<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
+                        Leadership<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
                         <hr style="margin:10px 5px;">
                         <div id="geocode-details-content"></div>
                     </div>
@@ -1119,12 +1116,12 @@ jQuery(document).ready(function($) {
                   jQuery('#admin0_count').html(window.user_list[details.admin0_grid_id].length)
                   jQuery.each(window.user_list[details.admin0_grid_id], function(i,v) {
                     level_list.append(`
-                              <div class="cell small-10 align-self-middle">
+                              <div class="cell small-10 align-self-middle" data-id="${v.grid_meta_id}">
                                 <a href="/user-management/users/?user_id=${v.user_id}">
                                   ${v.name}
                                 </a>
                               </div>
-                              <div class="cell small-2">
+                              <div class="cell small-2" data-id="${v.grid_meta_id}">
                                 <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${v.contact_id}" data-id="${v.grid_meta_id}">
                                   <img src="${obj.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
                                 </a>
@@ -1147,12 +1144,12 @@ jQuery(document).ready(function($) {
                     jQuery('#admin1_count').html(window.user_list[details.admin1_grid_id].length)
                     jQuery.each(window.user_list[details.admin1_grid_id], function(i,v) {
                       level_list.append(`
-                              <div class="cell small-10 align-self-middle">
+                              <div class="cell small-10 align-self-middle" data-id="${v.grid_meta_id}">
                                 <a href="/user-management/users/?user_id=${v.user_id}">
                                   ${v.name}
                                 </a>
                               </div>
-                              <div class="cell small-2">
+                              <div class="cell small-2" data-id="${v.grid_meta_id}">
                                 <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${v.contact_id}" data-id="${v.grid_meta_id}">
                                   <img src="${obj.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
                                 </a>
@@ -1174,12 +1171,12 @@ jQuery(document).ready(function($) {
                     jQuery('#admin2_count').html(window.user_list[details.admin2_grid_id].length)
                     jQuery.each(window.user_list[details.admin2_grid_id], function(i,v) {
                       level_list.append(`
-                              <div class="cell small-10 align-self-middle">
+                              <div class="cell small-10 align-self-middle" data-id="${v.grid_meta_id}">
                                 <a href="/user-management/users/?user_id=${v.user_id}">
                                   ${v.name}
                                 </a>
                               </div>
-                              <div class="cell small-2">
+                              <div class="cell small-2" data-id="${v.grid_meta_id}">
                                 <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${v.contact_id}" data-id="${v.grid_meta_id}">
                                   <img src="${obj.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
                                 </a>
@@ -1292,12 +1289,13 @@ jQuery(document).ready(function($) {
                                grid_meta = v.grid_meta_id
                              }
                           })
-                          jQuery('#'+list_level+'_list').prepend(`<div class="cell small-10 align-self-middle">
+                          jQuery('#'+list_level+'_list').prepend(`
+                              <div class="cell small-10 align-self-middle" data-id="${grid_meta}">
                                 <a  href="/user-management/users/?user_id=${response.corresponds_to_user}">
                                   ${response.title}
                                 </a>
                               </div>
-                              <div class="cell small-2">
+                              <div class="cell small-2" data-id="${grid_meta}">
                                 <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${response.ID}" data-id="${grid_meta}">
                                   <img src="${obj.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
                                 </a>
@@ -1327,17 +1325,17 @@ jQuery(document).ready(function($) {
                   location_grid_meta: {
                     values: [
                       {
-                        grid_meta_id: jQuery(this).data("id"),
+                        grid_meta_id: e.currentTarget.dataset.id,
                         delete: true,
                       }
                     ]
                   }
                 }
 
-                let post_id = jQuery(this).data("postid")
+                let post_id = e.currentTarget.dataset.postid
 
                 API.update_post( 'contacts', post_id, data ).then(function (response) {
-                  // @todo
+                  jQuery('div[data-id='+e.currentTarget.dataset.id+']').remove()
                 }).catch(err => { console.error(err) })
 
               });

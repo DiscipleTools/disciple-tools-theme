@@ -116,7 +116,6 @@ class DT_User_Management
     public static function user_management_options(){
         return [
             "user_status_options" => [
-                "new" => __( 'New', 'disciple_tools' ),
                 "active" => __( 'Active', 'disciple_tools' ),
                 "away" => __( 'Away', 'disciple_tools' ),
                 "inconsistent" => __( 'Inconsistent', 'disciple_tools' ),
@@ -162,7 +161,7 @@ class DT_User_Management
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id'    => get_current_user_id(),
                 'map_key'            => DT_Mapbox_API::get_key(),
-                'data'               => [],
+                'options'            => self::user_management_options(),
                 'url_path'           => dt_get_url_path(),
                 'translations'       => [
                     'accept_time' => _x( '%1$s was accepted on %2$s after %3$s days', 'Bob was accepted on Jul 8 after 10 days', 'disciple_tools' ),
@@ -856,65 +855,65 @@ class DT_User_Management
 
         global $wpdb;
 
-        if ( false ) {
+        if ( $status ) {
             $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT t0.admin0_grid_id as grid_id, count(t0.admin0_grid_id) as count 
             FROM (
-             SELECT lg.admin0_grid_id 
-             FROM $wpdb->dt_location_grid_meta as lgm 
-                LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
-                INNER JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'status' AND pm.meta_value = %s
-             WHERE lgm.post_type = 'trainings'
+             SELECT lg.admin0_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT t3.meta_value as contact_id
+             	FROM wp_usermeta as t1
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = 'wp_3_user_status' AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = 'wp_3_corresponds_to_contact')
             ) as t0
             GROUP BY t0.admin0_grid_id
             UNION
             SELECT t1.admin1_grid_id as grid_id, count(t1.admin1_grid_id) as count 
             FROM (
-             SELECT lg.admin1_grid_id 
-             FROM $wpdb->dt_location_grid_meta as lgm 
-                LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
-                INNER JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'status' AND pm.meta_value = %s
-             WHERE lgm.post_type = 'trainings'
+             SELECT lg.admin1_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT t3.meta_value as contact_id
+             	FROM wp_usermeta as t1
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = 'wp_3_user_status' AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = 'wp_3_corresponds_to_contact')
             ) as t1
             GROUP BY t1.admin1_grid_id
             UNION
             SELECT t2.admin2_grid_id as grid_id, count(t2.admin2_grid_id) as count 
             FROM (
-             SELECT lg.admin2_grid_id 
-             FROM $wpdb->dt_location_grid_meta as lgm 
-                LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
-                INNER JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'status' AND pm.meta_value = %s
-             WHERE lgm.post_type = 'trainings'
+             SELECT lg.admin2_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT t3.meta_value as contact_id
+             	FROM wp_usermeta as t1
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = 'wp_3_user_status' AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = 'wp_3_corresponds_to_contact')
             ) as t2
             GROUP BY t2.admin2_grid_id
             UNION
             SELECT t3.admin3_grid_id as grid_id, count(t3.admin3_grid_id) as count 
             FROM (
-             SELECT lg.admin3_grid_id 
-             FROM $wpdb->dt_location_grid_meta as lgm 
-                LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
-                INNER JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'status' AND pm.meta_value = %s
-             WHERE lgm.post_type = 'trainings'
+             SELECT lg.admin3_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT t3.meta_value as contact_id
+             	FROM wp_usermeta as t1
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = 'wp_3_user_status' AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = 'wp_3_corresponds_to_contact')
             ) as t3
             GROUP BY t3.admin3_grid_id
             UNION
             SELECT t4.admin4_grid_id as grid_id, count(t4.admin4_grid_id) as count 
             FROM (
-             SELECT lg.admin4_grid_id 
-             FROM $wpdb->dt_location_grid_meta as lgm 
-                LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
-                INNER JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'status' AND pm.meta_value = %s
-             WHERE lgm.post_type = 'trainings'
+             SELECT lg.admin4_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT t3.meta_value as contact_id
+             	FROM wp_usermeta as t1
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = 'wp_3_user_status' AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = 'wp_3_corresponds_to_contact')
             ) as t4
             GROUP BY t4.admin4_grid_id
             UNION
             SELECT t5.admin5_grid_id as grid_id, count(t5.admin5_grid_id) as count 
             FROM (
-             SELECT lg.admin5_grid_id 
-             FROM $wpdb->dt_location_grid_meta as lgm 
-                LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
-                INNER JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'status' AND pm.meta_value = %s
-             WHERE lgm.post_type = 'trainings'
+             SELECT lg.admin5_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT t3.meta_value as contact_id
+             	FROM wp_usermeta as t1
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = 'wp_3_user_status' AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = 'wp_3_corresponds_to_contact')
             ) as t5
             GROUP BY t5.admin5_grid_id;
             ",
@@ -1000,7 +999,7 @@ class DT_User_Management
             FROM $wpdb->dt_location_grid_meta as lgm 
             LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id
             JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'corresponds_to_user' AND pm.meta_value != ''
-            WHERE lgm.post_type = 'contacts' AND lgm.grid_id IS NOT NULL", ARRAY_A );
+            WHERE lgm.post_type = 'contacts' AND lgm.grid_id IS NOT NULL ORDER BY po.post_title", ARRAY_A );
 
         return $result;
     }

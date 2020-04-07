@@ -838,6 +838,11 @@ Please click the following link to confirm the invite:
             $user->set_role( "multiplier" );
             wp_update_user( $user );
         }
+
+        global $wpdb;
+        update_user_meta( $user_id, $wpdb->prefix . 'user_status', 'active' );
+        update_user_meta( $user_id, $wpdb->prefix . 'workload_status', 'active' );
+
         return $user_id;
     }
 

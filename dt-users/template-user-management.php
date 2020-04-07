@@ -81,7 +81,7 @@ $user_management_options = DT_User_Management::user_management_options();
                             <tr class="user_row"  data-user="<?php echo esc_html( $user["ID"] ) ?>">
                                 <td></td>
                                 <td data-user="<?php echo esc_html( $user["ID"] ) ?>"><?php echo esc_html( $user["display_name"] ) ?></td>
-                                <td><?php echo esc_html( isset( $user["user_status"] ) ? $user_management_options["user_status_options"][$user["user_status"]] : "" ) ?></td>
+                                <td><?php echo esc_html( ( isset( $user["user_status"] ) && isset( $user_management_options["user_status_options"][$user["user_status"]] ) ) ? $user_management_options["user_status_options"][$user["user_status"]] : "" ) ?></td>
                                 <td><?php echo esc_html( isset( $user["workload_status"], $workload_status_options[ $user["workload_status"] ] ) ? $workload_status_options[ $user["workload_status"] ]["label"] : "" ) ?></td>
                                 <td><?php echo esc_html( $user["number_new_assigned"] ) ?></td>
                                 <td>
