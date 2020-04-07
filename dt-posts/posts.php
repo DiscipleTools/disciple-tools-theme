@@ -1229,7 +1229,14 @@ class Disciple_Tools_Posts
 
                         $geocoder->validate_location_grid_meta( $value );
 
-                        $grid = $geocoder->get_grid_id_by_lnglat( $value['lng'], $value['lat'] );
+                        if ( $value['level'] === 'country' ) {
+                            $value['level'] = 'admin0';
+                        } else if ( $value['level'] === 'region' ) {
+                            $value['level'] = 'admin1';
+                        }
+
+
+                        $grid = $geocoder->get_grid_id_by_lnglat( $value['lng'], $value['lat'], null, $value['level'] );
                         if ( $grid ) {
                             $value['grid_id'] = $grid['grid_id'];
                             $value['post_type'] = $post_type;
