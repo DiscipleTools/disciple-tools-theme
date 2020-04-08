@@ -131,6 +131,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
             /* End DEFAULT MAPPING DEFINITION */
 
+            add_action( 'delete_post', [ $this, 'delete_grid_meta_on_post_delete' ] );
+
         }
 
         /**
@@ -1216,6 +1218,29 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
 
             return $list;
+        }
+
+        public function delete_grid_meta_on_post_delete( $post_id ) {
+            if ( wp_is_post_revision( $post_id ) ) {
+                return;
+            }
+
+            $post = get_post( $post_id );
+
+            if ( in_array( $post->post_status, [ 'auto-draft', 'inherit' ] ) ) {
+                return;
+            }
+
+            // Skip for menu items.
+            if ( 'nav_menu_item' === get_post_type( $post->ID ) ) {
+                return;
+            }
+
+            if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
+                require_once( 'geocode-api/location-grid-geocoder.php' );
+            }
+            $geocoder = new Location_Grid_Geocoder();
+            $geocoder->delete_location_grid_meta( $post_id, 'all', 0 );
         }
     }
     DT_Mapping_Module::instance(); // end DT_Mapping_Module class

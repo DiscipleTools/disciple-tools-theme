@@ -986,7 +986,7 @@ class DT_User_Management
             GROUP BY t5.admin5_grid_id;
             ", ARRAY_A );
         }
-        dt_write_log( $results );
+
         return $results;
     }
 

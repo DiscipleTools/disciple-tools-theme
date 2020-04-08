@@ -902,6 +902,52 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             return $query;
         }
 
+        /**
+         * Use a full result row to get a fully formatted location string
+         * @param array $row
+         * @return mixed|string
+         */
+        public function _format_full_name( array $row ) {
+
+            $label = '';
+
+            /* lookup and then use name fields */
+            if ( ! isset( $row['admin0_name'] ) && isset( $row['grid_id'] ) && ! empty( $row['grid_id'] ) ) {
+                $row = Disciple_Tools_Mapping_Queries::get_drilldown_by_grid_id( $row['grid_id'] );
+            }
+
+            /* use the names fields if they are set */
+            if ( isset( $row['admin0_name'] ) ) {
+                $admin0_name = $row['admin0_name'] ?? '';
+                $admin1_name = $row['admin1_name'] ?? '';
+                $admin2_name = $row['admin2_name'] ?? '';
+                $admin3_name = $row['admin3_name'] ?? '';
+                $admin4_name = $row['admin4_name'] ?? '';
+                $admin5_name = $row['admin5_name'] ?? '';
+
+                if ( $admin0_name ) {
+                    $label = $admin0_name;
+                }
+                if ( $admin1_name ) {
+                    $label = $admin1_name . ', ' . $admin0_name;
+                }
+                if ( $admin2_name ) {
+                    $label = $admin2_name . ', ' . $admin1_name . ', ' . $admin0_name;
+                }
+                if ( $admin3_name ) {
+                    $label = $admin3_name . ', ' . $admin1_name . ', ' . $admin0_name;
+                }
+                if ( $admin4_name ) {
+                    $label = $admin4_name . ', ' . $admin1_name . ', ' . $admin0_name;
+                }
+                if ( $admin5_name ) {
+                    $label = $admin5_name . ', ' . $admin1_name . ', ' . $admin0_name;
+                }
+            }
+
+            return $label;
+        }
+
         public function convert_ip_result_to_location_grid_meta( $ip_result ) {
             if ( empty( $ip_result['longitude'] ) ) {
                 return false;
@@ -1026,7 +1072,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             return $status;
         }
 
-        public function add_location_grid_meta( int $post_id, array $location_grid_meta ) {
+        public function add_location_grid_meta( $post_id, array $location_grid_meta, $postmeta_id_location_grid = null ) {
             global $wpdb;
 
             $this->validate_location_grid_meta( $location_grid_meta );
@@ -1044,7 +1090,9 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 }
             }
 
-            $postmeta_id_location_grid = add_post_meta( $post_id, 'location_grid', $location_grid_meta['grid_id'] );
+            if ( ! $postmeta_id_location_grid ) {
+                $postmeta_id_location_grid = add_post_meta( $post_id, 'location_grid', $location_grid_meta['grid_id'] );
+            }
             if ( ! $postmeta_id_location_grid ) {
                 return new WP_Error( __METHOD__, 'Unable to create location_grid post meta and retrieve a key.' );
             }
