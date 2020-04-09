@@ -18,8 +18,8 @@
     text-align:right;
 }
 .child_list_container {
-    overflow-y: scroll; 
-    height:500px; 
+    overflow-y: scroll;
+    height:500px;
     padding:0 .4em;
 }
 .minimap {
@@ -27,7 +27,7 @@
     margin-bottom: 20px;
 }
 .refresh_data {
-    font-size:.8em; 
+    font-size:.8em;
     margin-left:20px;
 }
 #data_type_list {
@@ -76,3 +76,4 @@ margin-bottom: 20px;
     vertical-align: middle;
     box-sizing: border-box;
 }
+

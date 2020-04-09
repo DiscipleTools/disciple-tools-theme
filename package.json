@@ -30,8 +30,8 @@
     "gulp-sourcemaps": "^1.12.1",
     "gulp-touch-cmd": "0.0.1",
     "gulp-uglify": "^3.0.2",
-    "gulp-wp-pot": "^2.3.5",
-    "jshint": "^2.10.3",
+    "gulp-wp-pot": "^2.3.6",
+    "jshint": "^2.11.0",
     "jshint-stylish": "^2.2.0",
     "motion-ui": "^1.2.2"
   },

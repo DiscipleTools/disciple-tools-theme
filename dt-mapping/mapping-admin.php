@@ -568,8 +568,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <!-- Main Column -->
 
                             <?php $this->box_mapbox(); ?>
-                            <br>
-                            <?php $this->box_ipstack(); ?>
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->

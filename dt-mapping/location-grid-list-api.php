@@ -6,6 +6,8 @@
  * loading the most minimal of WP services.
  */
 
+// @todo may not be needed. Should be able to just use the disciple tools geocoder and ditch this one.
+
 if ( defined( 'ABSPATH' ) ) { exit; }
 /**
  * @link https://stackoverflow.com/questions/45421976/wordpress-rest-api-slow-response-time
@@ -45,6 +47,7 @@ if ( file_exists( $mapping_url . 'geocode-api/location-grid-geocoder.php' ) ) {
 // register global database
 global $wpdb;
 $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
+$wpdb->dt_location_grid_meta = $wpdb->prefix . 'dt_location_grid_meta';
 
 
 $geocoder = new Location_Grid_Geocoder();
@@ -66,7 +69,7 @@ if ( isset( $_GET['type'] ) && isset( $_GET['longitude'] ) && isset( $_GET['lati
         $longitude = sanitize_text_field( wp_unslash( $_GET['longitude'] ) );
         $latitude  = sanitize_text_field( wp_unslash( $_GET['latitude'] ) );
 
-        $response = $geocoder->get_grid_id_by_lnglat( $longitude, $latitude, $country_code );
+        $response = $geocoder->get_grid_id_by_lnglat( $longitude, $latitude, $country_code, $level );
 
         header( 'Content-type: application/json' );
         echo json_encode( $response );
@@ -91,6 +94,8 @@ if ( isset( $_GET['type'] ) && isset( $_GET['longitude'] ) && isset( $_GET['lati
         header( 'Content-type: application/json' );
         echo json_encode( $response );
     }
+
+
 
 endif; // html
 
