@@ -859,7 +859,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     JOIN $wpdb->postmeta as b
                     ON a.ID=b.post_id
                        AND b.meta_key = 'accepted'
-                       AND b.meta_value = ''
+                       AND (b.meta_value = '' OR b.meta_value = 'no')
                 JOIN $wpdb->postmeta as d
                 ON a.ID=d.post_id
                    AND d.meta_key = 'overall_status'
