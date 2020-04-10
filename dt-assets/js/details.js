@@ -54,7 +54,10 @@ jQuery(document).ready(function($) {
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
       let id = $(this).attr('id')
-      rest_api.update_post( post_type, post_id, { [id]: date }).then((resp)=>{
+      rest_api.update_post( post_type, post_id, { [id]: moment(date).unix() }).then((resp)=>{
+        if (this.value) {
+          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
+        }
         $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
       }).catch(handleAjaxError)
     },
