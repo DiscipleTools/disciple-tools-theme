@@ -114,8 +114,8 @@ jQuery(document).ready(function($) {
               <div class="comment-text"dir=auto><%= a.text.replace(/\\n/g, '</div><div dir=auto>') /* not escaped on purpose */ %></div>
             <% if ( commentsSettings.google_translate_key !== "" ) { %>
                 <div class="translation-bubble" dir=auto></div>
-                <a class="translate-button showTranslation">Translate with Google Translate"</a>
-                <a class="translate-button hideTranslation hide">Hide Translation</a>
+                <a class="translate-button showTranslation">${commentsSettings.translations.translate}"</a>
+                <a class="translate-button hideTranslation hide">${commentsSettings.translations.hide_translation}</a>
                 </div>
               <% } %>
             </div>

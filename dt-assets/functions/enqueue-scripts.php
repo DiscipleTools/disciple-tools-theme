@@ -190,7 +190,9 @@ function dt_site_scripts() {
                     'contact_author_name' => isset( $post->post_author ) && (int) $post->post_author > 0 ? get_user_by( 'id', intval( $post->post_author ) )->display_name : "",
                     'translations' => [
                         "edit" => __( "edit", "disciple_tools" ),
-                        "delete" => __( "delete", "disciple_tools" )
+                        "delete" => __( "delete", "disciple_tools" ),
+                        "translate" => __( "Translate with Google Translate", "disciple_tools" ),
+                        "hide_translation" => __( "Hide Translation", "disciple_tools" )
                     ],
                     'current_user_id' => get_current_user_id(),
                     'additional_sections' => apply_filters( 'dt_comments_additional_sections', [], $post_type ),
