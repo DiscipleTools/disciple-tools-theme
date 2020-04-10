@@ -284,7 +284,7 @@
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
-                    <?php esc_html_e( 'Source' ); ?>
+                    <?php echo esc_html( $contact_fields["sources"]["name"] )?>
                 </div>
                 <ul class="sources-list <?php echo esc_html( user_can( get_current_user_id(), 'view_any_contacts' ) ? 'details-list' : '' ) ?>">
                     <?php
