@@ -114,8 +114,8 @@ jQuery(document).ready(function($) {
               <div class="comment-text"dir=auto><%= a.text.replace(/\\n/g, '</div><div dir=auto>') /* not escaped on purpose */ %></div>
             <% if ( commentsSettings.google_translate_key !== "" ) { %>
                 <div class="translation-bubble" dir=auto></div>
-                <a class="translate-button showTranslation">${commentsSettings.translations.translate}"</a>
-                <a class="translate-button hideTranslation hide">${commentsSettings.translations.hide_translation}</a>
+                <a class="translate-button showTranslation">${_.escape(commentsSettings.translations.translate)}</a>
+                <a class="translate-button hideTranslation hide">${_.escape(commentsSettings.translations.hide_translation)}</a>
                 </div>
               <% } %>
             </div>
@@ -123,11 +123,11 @@ jQuery(document).ready(function($) {
                <% if ( a.comment_ID ) { %>
                   <a class="open-edit-comment" data-id="<%- a.comment_ID %>" style="margin-right:5px">
                       <img src="${commentsSettings.template_dir}/dt-assets/images/edit-blue.svg">
-                      ${commentsSettings.translations.edit}
+                      ${_.escape(commentsSettings.translations.edit)}
                   </a>
                   <a class="open-delete-comment" data-id="<%- a.comment_ID %>">
                       <img src="${commentsSettings.template_dir}/dt-assets/images/trash-blue.svg">
-                      ${commentsSettings.translations.delete}
+                      ${_.escape(commentsSettings.translations.delete)}
                   </a>
                <% } %>
             </p>
@@ -144,7 +144,7 @@ jQuery(document).ready(function($) {
     let translation_bubble = $(this).siblings('.translation-bubble');
     let translation_hide = $(this).siblings('.translate-button.hideTranslation');
 
-    let url = `https://translation.googleapis.com/language/translate/v2?key=${commentsSettings.google_translate_key}`
+    let url = `https://translation.googleapis.com/language/translate/v2?key=${_.escape(commentsSettings.google_translate_key)}`
     let targetLang;
 
     if (langcode !== "zh-TW") {
