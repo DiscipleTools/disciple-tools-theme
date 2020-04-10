@@ -7,7 +7,6 @@ jQuery(document).ready(function($) {
   let masonGrid = $('.grid')
   let groupId = group.ID
   let editFieldsUpdate = {}
-  let langcode = document.querySelector('html').getAttribute('lang') ? document.querySelector('html').getAttribute('lang').replace('_', '-') : "en";// get the language attribute from the HTML or default to english if it doesn't exists.
 
   /**
    * Date pickers
@@ -714,18 +713,12 @@ jQuery(document).ready(function($) {
     dateFields.forEach(dateField=>{
       if ( group[dateField] ){
         $(`#${dateField}.date-picker`).datepicker('setDate', moment.unix(group[dateField]["timestamp"]).format("YYYY-MM-DD"))
-        $(`.${dateField}.details-list`).html(formatDate( group[dateField]["timestamp"], langcode ))
+        $(`.${dateField}.details-list`).html(window.SHAREDFUNCTIONS.formatDate( group[dateField]["timestamp"] ))
       } else {
         $(`.${dateField}.details-list`).html(wpApiGroupsSettings.translations["not-set"][dateField])
       }
     })
 
-    function formatDate(date, langcode) {
-      const options = { year: 'numeric', month: 'short', day: 'numeric' }
-      const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`).format(date * 1000);
-
-      return last_modified;
-    }
   })
   resetDetailsFields(group)
 
