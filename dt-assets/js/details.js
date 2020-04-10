@@ -55,7 +55,7 @@ jQuery(document).ready(function ($) {
     dateFormat: 'yy-mm-dd',
     onClose: function (date) {
       if (!$(this).val()) {
-        date = null;
+        date = " ";//null;
       }
       let id = $(this).attr('id');
       rest_api.update_post(post_type, post_id, { [id]: date }).then((resp) => {

@@ -11,6 +11,18 @@ GENERAL STYLES
     font-weight: 400;
 }
 
+.txt-gray-light {
+color:$light-gray;
+}
+
+.txt-gray-mid {
+    color: $medium-gray;
+}
+
+.txt-gray-dark {
+    color: $dark-gray;
+}
+
 .primary-color {
     color: $primary-color;
 }
