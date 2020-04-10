@@ -246,9 +246,6 @@ function unescapeHtml(safe) {
       baptismDateRegex = /\{(\d+)\}+/;
 
       if (baptismDateRegex.test(d.object_note)) {
-        function baptismTimestamptoDate(match, timestamp) {
-          return window.SHAREDFUNCTIONS.formatDate(timestamp)
-        }
         d.object_note = d.object_note.replace(baptismDateRegex, baptismTimestamptoDate);
       }
       let first = _.first(array)
@@ -288,6 +285,9 @@ function unescapeHtml(safe) {
     }
   }
 
+  function baptismTimestamptoDate(match, timestamp) {
+    return window.SHAREDFUNCTIONS.formatDate(timestamp)
+  }
 
   /**
    * Comments and activity
