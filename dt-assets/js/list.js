@@ -455,17 +455,17 @@ const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, option
     }
 
     filter.query = query
-    let sortField = _.get(currentFilter, "query.sort", "overall_status").replace("-", "");
+    let sortField = _.get(currentFilter, "query.sort", "overall_status")
     filter.query.sort = _.get(currentFilter, "query.sort", "overall_status");
     if ( _.get( cachedFilter, "query.sort") ){
       filter.query.sort = cachedFilter.query.sort;
-      sortField = _.get(cachedFilter, "query.sort", "overall_status").replace("-", "");
+      sortField = _.get(cachedFilter, "query.sort", "overall_status")
     }
     //reset sorting in table header
     tableHeaderRow.removeClass("sorting_asc")
     tableHeaderRow.removeClass("sorting_desc")
-    let headerCell = $(`.js-list thead .sortable th[data-id="${_.escape( sortField )}"]`)
-    headerCell.addClass("sorting_asc")
+    let headerCell = $(`.js-list thead .sortable th[data-id="${_.escape( sortField.replace("-", "") )}"]`)
+    headerCell.addClass(`sorting_${ sortField.startsWith('-') ? 'desc' : 'asc'}`)
     tableHeaderRow.data("sort", '')
     headerCell.data("sort", 'asc')
 

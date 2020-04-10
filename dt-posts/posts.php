@@ -852,7 +852,7 @@ class Disciple_Tools_Posts
 
         $access_query = $access_query ? ( "AND ( " . $access_query . " ) " ) : "";
 
-        $sort_sql = "$wpdb->posts.post_date asc";
+        $sort_sql = "";
         $sort_join = "";
         $post_type_check = "";
         if ( $post_type == "contacts" ){
@@ -861,9 +861,8 @@ class Disciple_Tools_Posts
                 WHERE meta_key = 'type' AND meta_value = 'user'
                 GROUP BY post_id
             )";
-            $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
-            if ( $sort === "overall_status" || $sort === "seeker_path" ) {
-                $keys = array_keys( $contact_fields[$sort]["default"] );
+            if ( $sort === "overall_status" ) {
+                $keys = array_keys( $post_fields[$sort]["default"] );
                 $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql  = "CASE ";
                 foreach ( $keys as $index => $key ) {
@@ -872,23 +871,22 @@ class Disciple_Tools_Posts
                 }
                 $sort_sql .= "else 98 end ";
                 $sort_sql .= $sort_dir;
-            } elseif ( $sort === "faith_milestones" ){
-                $sort_sql = "CASE ";
-                $sort_join = "";
-                $milestone_keys = array_reverse( array_keys( $contact_fields["milestones"]["default"] ) );
-                foreach ( $milestone_keys as $index  => $key ){
-                    $alias = 'faith_' . esc_sql( $key );
-                    $sort_join .= "LEFT JOIN $wpdb->postmeta as $alias ON
-                    ( $wpdb->posts.ID = $alias.post_id AND $alias.meta_key = 'milestones' AND $alias.meta_value = '" . esc_sql( $key ) . "') ";
-                    $sort_sql .= "WHEN ( $alias.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
-                }
-                $sort_sql .= "else 1000 end ";
-                $sort_sql .= $sort_dir;
             }
         } elseif ( $post_type === "groups" ){
-            $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
-            if ( $sort === "group_status" || $sort === "group_type" ) {
-                $keys      = array_keys( $group_fields[ $sort ]["default"] );
+            if ( $sort === "member_count" ){
+                $sort_join = "LEFT JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $sort_sql = "cast(sort.meta_value as unsigned) $sort_dir";
+            }
+        }
+        if ( $sort === "name" || $sort === "post_title"){
+            $sort_sql = "$wpdb->posts.post_title  " . $sort_dir;
+        } elseif ( $sort === "post_date" ){
+            $sort_sql = "$wpdb->posts.post_date  " . $sort_dir;
+        }
+
+        if ( empty( $sort_sql ) && isset( $sort, $post_fields[$sort] ) ) {
+            if ( $post_fields[$sort]["type"] === "key_select" ) {
+                $keys = array_keys( $post_fields[ $sort ]["default"] );
                 $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql  = "CASE ";
                 foreach ( $keys as $index => $key ) {
@@ -896,26 +894,38 @@ class Disciple_Tools_Posts
                 }
                 $sort_sql .= "else 98 end ";
                 $sort_sql .= $sort_dir;
-            } elseif ( $sort === "members" ){
-                $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_to = $wpdb->posts.ID AND sort.p2p_type = 'contacts_to_groups' )";
-                $sort_sql = "COUNT(sort.p2p_id) $sort_dir";
+            } elseif ( $post_fields[$sort]["type"] === "multi_select" ){
+                $sort_sql = "CASE ";
+                $sort_join = "";
+                $keys = array_reverse( array_keys( $post_fields[$sort]["default"] ) );
+                foreach ( $keys as $index  => $key ){
+                    $alias = $sort . '_' . esc_sql( $key );
+                    $sort_join .= "LEFT JOIN $wpdb->postmeta as $alias ON
+                    ( $wpdb->posts.ID = $alias.post_id AND $alias.meta_key = '$sort' AND $alias.meta_value = '" . esc_sql( $key ) . "') ";
+                    $sort_sql .= "WHEN ( $alias.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
+                }
+                $sort_sql .= "else 1000 end ";
+                $sort_sql .= $sort_dir;
+            } elseif ( $post_fields[$sort]["type"] === "connection" ){
+                if ( isset( $post_fields[$sort]["p2p_key"], $post_fields[$sort]["p2p_direction"] ) ){
+                    if ( $post_fields[$sort]["p2p_direction"] === "from" ){
+                        $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = $wpdb->posts.ID AND sort.p2p_type = '" .  esc_sql( $post_fields[$sort]["p2p_key"] ) . "' )
+                        LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_to)";
+                    } else {
+                        $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_to = $wpdb->posts.ID AND sort.p2p_type = '" .  esc_sql( $post_fields[$sort]["p2p_key"] ) . "' )
+                        LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_from)";
+                    }
+                    $sort_sql = "ISNULL(p2p_post.post_title), p2p_post.post_title $sort_dir";
+                }
+            } else {
+                $sort_join = "LEFT JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $sort_sql = "sort.meta_value $sort_dir";
             }
         }
-        if ( $sort === "name" ){
-            $sort_sql = "$wpdb->posts.post_title  " . $sort_dir;
-        } elseif ( $sort === "assigned_to" || $sort === "last_modified" ){
-            $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
-            $sort_sql = "sort.meta_value $sort_dir";
-        } elseif ( $sort === "locations" || $sort === "groups" || $sort === "leaders" ){
-            $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = $wpdb->posts.ID AND sort.p2p_type = '" . $post_type . "_to_$sort' )
-            LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_to)";
-            $sort_sql = "ISNULL(p2p_post.post_title), p2p_post.post_title $sort_dir";
-        } elseif ( $sort === "post_date" ){
-            $sort_sql = "$wpdb->posts.post_date  " . $sort_dir;
-        } elseif ( $sort === "location_grid" ){
-            $sort_join = "LEFT JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
-            $sort_sql = "sort.meta_value $sort_dir";
+        if ( empty( $sort_sql ) ){
+            $sort_sql = "$wpdb->posts.post_title asc";
         }
+
 
         $group_by_sql = "";
         if ( strpos( $sort_sql, 'sort.meta_value' ) != false ){
