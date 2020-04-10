@@ -32,6 +32,12 @@
   }
 
   setup_filters()
+  let fields_to_show_in_table = [];
+  _.forOwn( list_settings.post_type_settings.fields, (field_settings, field_key)=> {
+    if (_.get(field_settings, 'show_in_table')===true) {
+      fields_to_show_in_table.push(field_key)
+    }
+  })
 
   //open the filter tabs
   $(`#list-filter-tabs [data-id='${_.escape( current_filter.tab )}'] a`).click()
@@ -331,6 +337,7 @@
     if ( get_records_promise && _.get(get_records_promise, "readyState") !== 4){
       get_records_promise.abort()
     }
+    query.fields_to_return = fields_to_show_in_table
     get_records_promise = window.makeRequestOnPosts( 'GET', `${list_settings.post_type}`, JSON.parse(JSON.stringify(query)))
     get_records_promise.then(response=>{
       if (offset){
