@@ -6,6 +6,8 @@
  * loading the most minimal of WP services.
  */
 
+// @todo may not be needed. Should be able to just use the disciple tools geocoder and ditch this one.
+
 if ( defined( 'ABSPATH' ) ) { exit; }
 /**
  * @link https://stackoverflow.com/questions/45421976/wordpress-rest-api-slow-response-time
@@ -45,6 +47,7 @@ if ( file_exists( $mapping_url . 'geocode-api/location-grid-geocoder.php' ) ) {
 // register global database
 global $wpdb;
 $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
+$wpdb->dt_location_grid_meta = $wpdb->prefix . 'dt_location_grid_meta';
 
 
 $geocoder = new Location_Grid_Geocoder();

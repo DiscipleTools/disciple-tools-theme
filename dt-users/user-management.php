@@ -14,7 +14,6 @@ class DT_User_Management
 
     public function __construct() {
         if ( $this->has_permission() ){
-//            add_action( 'dt_top_nav_desktop', [ $this, 'add_nav_bar_link' ] );
             add_action( "template_redirect", [ $this, 'my_theme_redirect' ] );
             $url_path = dt_get_url_path();
             if ( strpos( $url_path, 'user-management' ) !== false ) {
@@ -62,6 +61,23 @@ class DT_User_Management
                 ],
             ]
         );
+        register_rest_route(
+            $namespace, '/grid_totals', [
+                [
+                    'methods'  => "POST",
+                    'callback' => [ $this, 'grid_totals' ],
+                ],
+            ]
+        );
+        register_rest_route(
+            $namespace, '/get_user_list', [
+                [
+                    'methods'  => "GET",
+                    'callback' => [ $this, 'get_user_list' ],
+                ],
+            ]
+        );
+
     }
 
     public function my_theme_redirect() {
@@ -77,21 +93,20 @@ class DT_User_Management
     public function add_nav_bar_link(){
         if ( $this->has_permission() ) : ?>
             <li>
-                <a href="<?php echo esc_url( site_url( '/user-management/users' ) ); ?>"><?php echo esc_html__( "Users", 'disciple_tools' ); ?></a>
+                <a href="<?php echo esc_url( site_url( '/user-management/users/' ) ); ?>"><?php echo esc_html__( "Users", 'disciple_tools' ); ?></a>
             </li>
         <?php endif;
     }
 
     public function add_menu( $content ) {
-        $content .= '<li>';
 
-        $content .= '<a href="'. site_url( '/user-management/users' ) .'" >' .  esc_html__( 'Users', 'disciple_tools' ) . '</a>';
+        $content .= '<li><a href="'. site_url( '/user-management/users/' ) .'" >' .  esc_html__( 'Users', 'disciple_tools' ) . '</a></li>';
 
-//        if ( DT_Mapbox_API::get_key() ) {
-//            $content .= '<a href="'. site_url( '/user-management/map' ) .'" >' .  esc_html__( 'Map', 'disciple_tools' ) . '</a>';
-//        }
+        if ( DT_Mapbox_API::get_key() ) {
+            $content .= '<li><a href="'. site_url( '/user-management/map/' ) .'" >' .  esc_html__( 'Map', 'disciple_tools' ) . '</a></li>';
+        }
 
-        $content .= '</li>';
+        $content .= '<li><a href="'. site_url( '/user-management/add-user/' ) .'" >' .  esc_html__( 'Add User', 'disciple_tools' ) . '</a></li>';
 
         return $content;
     }
@@ -100,7 +115,6 @@ class DT_User_Management
     public static function user_management_options(){
         return [
             "user_status_options" => [
-                "new" => __( 'New', 'disciple_tools' ),
                 "active" => __( 'Active', 'disciple_tools' ),
                 "away" => __( 'Away', 'disciple_tools' ),
                 "inconsistent" => __( 'Inconsistent', 'disciple_tools' ),
@@ -111,35 +125,42 @@ class DT_User_Management
 
     public function scripts() {
 
-        wp_register_style( 'datatable-css', '//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css', [], '1.10.19' );
-        wp_enqueue_style( 'datatable-css' );
-        wp_register_style( 'datatable-responsive-css', '//cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css', [], '2.2.3' );
-        wp_enqueue_style( 'datatable-responsive-css' );
-        wp_register_script( 'datatable', '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', false, '1.10' );
-        wp_register_script( 'datatable-responsive', '//cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js', [ 'datatable' ], '2.2.3' );
-        wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
-        wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
-        wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
-        wp_enqueue_script( 'dt_dispatcher_tools', get_template_directory_uri() . '/dt-users/user-management.js', [
+        $dependencies = [
             'jquery',
-            'jquery-ui-core',
-            'moment',
-            'datatable',
-            'datatable-responsive',
-            'amcharts-core',
-            'amcharts-charts',
-            'amcharts-animated',
-        ], filemtime( plugin_dir_path( __FILE__ ) . '/user-management.js' ), true );
+            'moment'
+        ];
 
+        $url_path = dt_get_url_path();
+        if ( strpos( $url_path, 'user-management/users' ) !== false ) {
+            array_push( $dependencies,
+                'datatable',
+                'datatable-responsive',
+                'amcharts-core',
+                'amcharts-charts',
+                'amcharts-animated'
+            );
+
+            wp_register_style( 'datatable-css', '//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css', [], '1.10.19' );
+            wp_enqueue_style( 'datatable-css' );
+            wp_register_style( 'datatable-responsive-css', '//cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css', [], '2.2.3' );
+            wp_enqueue_style( 'datatable-responsive-css' );
+            wp_register_script( 'datatable', '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', false, '1.10' );
+            wp_register_script( 'datatable-responsive', '//cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js', [ 'datatable' ], '2.2.3' );
+            wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
+            wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
+            wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
+        }
+
+        wp_enqueue_script( 'dt_dispatcher_tools', get_template_directory_uri() . '/dt-users/user-management.js', $dependencies, filemtime( plugin_dir_path( __FILE__ ) . '/user-management.js' ), true );
         wp_localize_script(
             'dt_dispatcher_tools', 'dt_user_management_localized', [
                 'root'               => esc_url_raw( rest_url() ),
-                'theme_uri'          => get_stylesheet_directory_uri(),
+                'theme_uri'          => trailingslashit( get_stylesheet_directory_uri() ),
                 'nonce'              => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id'    => get_current_user_id(),
                 'map_key'            => DT_Mapbox_API::get_key(),
-                'data'               => [],
+                'options'            => self::user_management_options(),
                 'url_path'           => dt_get_url_path(),
                 'translations'       => [
                     'accept_time' => _x( '%1$s was accepted on %2$s after %3$s days', 'Bob was accepted on Jul 8 after 10 days', 'disciple_tools' ),
@@ -156,10 +177,14 @@ class DT_User_Management
     }
 
     public function get_dt_user( $user_id, $section = null ) {
+        if ( ! $this->has_permission() ) {
+            return new WP_Error( __METHOD__, "Permission error", [ 'status' => 403 ] );
+        }
+
         global $wpdb;
         $user = get_user_by( "ID", $user_id );
-        if ( empty( $user->caps ) ) {
-            return new WP_Error( "user_id", "Cannot get this user", [ 'status' => 400 ] );
+        if ( ! $user ) {
+            return new WP_Error( __METHOD__, "No User", [ 'status' => 400 ] );
         }
 
         $user_response = [
@@ -377,7 +402,6 @@ class DT_User_Management
             $user_response['unattempted_contacts'] = $this->query_unattempted_contacts( $user->ID );
         }
 
-
         if ( $section === 'days_active' || $section === null ) {
 
             $days_active_results = $wpdb->get_results($wpdb->prepare("
@@ -542,7 +566,6 @@ class DT_User_Management
                 set_transient( 'dispatcher_user_data', maybe_serialize( $users ), 60 * 60 * 24 );
             }
         }
-        dt_write_log( $users );
         if ( current_user_can( "list_users" ) ) {
             return $users;
         } else {
@@ -785,7 +808,7 @@ class DT_User_Management
         global $wpdb;
         $user_assigned_to = 'user-' . esc_sql( $user_id );
 
-        $response = $wpdb->get_results( $wpdb->prepare( "
+        return $wpdb->get_results( $wpdb->prepare( "
             SELECT contacts.ID,
                 MAX(date_assigned.hist_time) as date_assigned, 
                 %d - MAX(date_assigned.hist_time) as time,
@@ -808,7 +831,192 @@ class DT_User_Management
             LIMIT 10
         ", time(), $user_assigned_to, $user_assigned_to ), ARRAY_A);
 
-        dt_write_log( $response );
-        return $response;
+    }
+
+    public function grid_totals( WP_REST_Request $request ) {
+        if ( !$this->has_permission() ){
+            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+        }
+        $params = $request->get_json_params() ?? $request->get_body_params();
+        $status = null;
+        if ( isset( $params['status'] ) && $params['status'] !== 'all' ) {
+            $status = sanitize_text_field( wp_unslash( $params['status'] ) );
+        }
+
+        $results = $this->query_totals( $status );
+
+        $list = [];
+        foreach ( $results as $result ) {
+            $list[$result['grid_id']] = $result;
+        }
+
+        return $list;
+
+    }
+
+    public function query_totals( $status = null ) {
+
+        global $wpdb;
+
+        if ( $status ) {
+            $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT t0.admin0_grid_id as grid_id, count(t0.admin0_grid_id) as count 
+            FROM (
+             SELECT lg.admin0_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT t3.meta_value as contact_id
+             	FROM wp_usermeta as t1
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = %s AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = %s )
+            ) as t0
+            GROUP BY t0.admin0_grid_id
+            UNION
+            SELECT t1.admin1_grid_id as grid_id, count(t1.admin1_grid_id) as count 
+            FROM (
+             SELECT lg.admin1_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT t3.meta_value as contact_id
+             	FROM wp_usermeta as t1
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = %s AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = %s )
+            ) as t1
+            GROUP BY t1.admin1_grid_id
+            UNION
+            SELECT t2.admin2_grid_id as grid_id, count(t2.admin2_grid_id) as count 
+            FROM (
+             SELECT lg.admin2_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT t3.meta_value as contact_id
+             	FROM wp_usermeta as t1
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = %s AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = %s )
+            ) as t2
+            GROUP BY t2.admin2_grid_id
+            UNION
+            SELECT t3.admin3_grid_id as grid_id, count(t3.admin3_grid_id) as count 
+            FROM (
+             SELECT lg.admin3_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT t3.meta_value as contact_id
+             	FROM wp_usermeta as t1
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = %s AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = %s )
+            ) as t3
+            GROUP BY t3.admin3_grid_id
+            UNION
+            SELECT t4.admin4_grid_id as grid_id, count(t4.admin4_grid_id) as count 
+            FROM (
+             SELECT lg.admin4_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT t3.meta_value as contact_id
+             	FROM wp_usermeta as t1
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = %s AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = %s )
+            ) as t4
+            GROUP BY t4.admin4_grid_id
+            UNION
+            SELECT t5.admin5_grid_id as grid_id, count(t5.admin5_grid_id) as count 
+            FROM (
+             SELECT lg.admin5_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT t3.meta_value as contact_id
+             	FROM wp_usermeta as t1
+             	JOIN wp_usermeta as t2 ON t1.umeta_id=t2.umeta_id AND t2.meta_key = %s AND t2.meta_value = %s
+             	JOIN wp_usermeta as t3 ON t3.user_id=t2.user_id AND t3.meta_key = %s )
+            ) as t5
+            GROUP BY t5.admin5_grid_id;
+            ",
+                $wpdb->prefix . 'user_status',
+                $status,
+                $wpdb->prefix . 'corresponds_to_contact',
+                $wpdb->prefix . 'user_status',
+                $status,
+                $wpdb->prefix . 'corresponds_to_contact',
+                $wpdb->prefix . 'user_status',
+                $status,
+                $wpdb->prefix . 'corresponds_to_contact',
+                $wpdb->prefix . 'user_status',
+                $status,
+                $wpdb->prefix . 'corresponds_to_contact',
+                $wpdb->prefix . 'user_status',
+                $status,
+                $wpdb->prefix . 'corresponds_to_contact',
+                $wpdb->prefix . 'user_status',
+                $status,
+                $wpdb->prefix . 'corresponds_to_contact'
+            ), ARRAY_A );
+
+        } else {
+
+            $results = $wpdb->get_results( "
+            SELECT t0.admin0_grid_id as grid_id, count(t0.admin0_grid_id) as count 
+            FROM (
+             SELECT lg.admin0_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'corresponds_to_user' AND p.meta_value != '')
+            ) as t0
+            GROUP BY t0.admin0_grid_id
+            UNION
+            SELECT t1.admin1_grid_id as grid_id, count(t1.admin1_grid_id) as count 
+            FROM (
+             SELECT lg.admin1_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'corresponds_to_user' AND p.meta_value != '')
+            ) as t1
+            GROUP BY t1.admin1_grid_id
+            UNION
+            SELECT t2.admin2_grid_id as grid_id, count(t2.admin2_grid_id) as count 
+            FROM (
+             SELECT lg.admin2_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'corresponds_to_user' AND p.meta_value != '')
+            ) as t2
+            GROUP BY t2.admin2_grid_id
+            UNION
+            SELECT t3.admin3_grid_id as grid_id, count(t3.admin3_grid_id) as count 
+            FROM (
+             SELECT lg.admin3_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'corresponds_to_user' AND p.meta_value != '')
+            ) as t3
+            GROUP BY t3.admin3_grid_id
+            UNION
+            SELECT t4.admin4_grid_id as grid_id, count(t4.admin4_grid_id) as count 
+            FROM (
+             SELECT lg.admin4_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'corresponds_to_user' AND p.meta_value != '')
+            ) as t4
+            GROUP BY t4.admin4_grid_id
+            UNION
+            SELECT t5.admin5_grid_id as grid_id, count(t5.admin5_grid_id) as count 
+            FROM (
+             SELECT lg.admin5_grid_id FROM $wpdb->dt_location_grid as lg LEFT JOIN $wpdb->dt_location_grid_meta as lgm ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'contacts'
+             AND lgm.post_id IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'corresponds_to_user' AND p.meta_value != '')
+            ) as t5
+            GROUP BY t5.admin5_grid_id;
+            ", ARRAY_A );
+        }
+        dt_write_log( $results );
+        return $results;
+    }
+
+    public function get_user_list( WP_REST_Request $request ){
+        if ( !$this->has_permission() ){
+            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+        }
+        $results = $this->query_user_location_list();
+
+        $list = [];
+        foreach ( $results as $result ) {
+            if ( ! isset( $list[$result['grid_id']] ) ) {
+                $list[$result['grid_id']] = [];
+            }
+            $list[$result['grid_id']][] = $result;
+        }
+
+        return $list;
+    }
+
+    public function query_user_location_list() {
+        global $wpdb;
+
+        $result = $wpdb->get_results("
+            SELECT DISTINCT lgm.grid_id as grid_id, lgm.grid_meta_id, lgm.post_id as contact_id, pm.meta_value as user_id, po.post_title as name 
+            FROM $wpdb->dt_location_grid_meta as lgm 
+            LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id
+            JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'corresponds_to_user' AND pm.meta_value != ''
+            WHERE lgm.post_type = 'contacts' AND lgm.grid_id IS NOT NULL ORDER BY po.post_title", ARRAY_A );
+
+        return $result;
     }
 }
