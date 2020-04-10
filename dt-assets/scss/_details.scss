@@ -161,6 +161,15 @@ DT comments and activity
     font-size:12px;
 }
 
+.translation-bubble {
+    border-left: 2px solid $dark-gray;
+    padding-left: 1em;
+}
+
+.translate-button {
+    font-size: .85em;
+}
+
 .activity-block {
     margin-top: 15px;
 }
