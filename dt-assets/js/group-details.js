@@ -155,7 +155,7 @@ jQuery(document).ready(function ($) {
     $('#update-needed').prop("checked", updateNeeded)
   }
   /**
-   * Location Grid
+   * Location Grid 
    */
   // let loadGeonameTypeahead = ()=>{
   //   if (!window.Typeahead['.js-typeahead-location_grid']){
