@@ -166,6 +166,7 @@ class DT_User_Management
                     'accept_time' => _x( '%1$s was accepted on %2$s after %3$s days', 'Bob was accepted on Jul 8 after 10 days', 'disciple_tools' ),
                     'no_contact_attempt_time' => _x( '%1$s waiting for Contact Attempt for %2$s days', 'Bob waiting for contact for 10 days', 'disciple_tools' ),
                     'contact_attempt_time' => _x( 'Contact with %1$s was attempted on %2$s after %3$s days', 'Contact with Bob was attempted on Jul 8 after 10 days', 'disciple_tools' ),
+                    'unable_to_update' => _x( 'Unable to update', 'disciple_tools' ),
                 ]
             ]
         );
@@ -695,6 +696,18 @@ class DT_User_Management
                     }
                 }
                 return $this->get_dt_user( $user->ID );
+            }
+            if ( isset( $body['update_nickname'] ) ) {
+                $display_name = sanitize_text_field( wp_unslash( $body['update_nickname'] ) );
+                $result = wp_update_user( array(
+                    'ID' => $user->ID,
+                    'display_name' => $display_name
+                ) );
+                if ( is_wp_error( $result ) ) {
+                    return false;
+                } else {
+                    return $result;
+                }
             }
         }
         return false;
