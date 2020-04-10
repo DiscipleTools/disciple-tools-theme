@@ -1644,98 +1644,106 @@ class Disciple_Tools_Posts
      * @param array $post_settings This is what get_custom_fields_settings() returns
      * @param int $post_id The ID number of the contact
      * @param array $fields This array will be mutated with the results
+     * @param array $fields_to_return if not empty only add the fields that are specified (optional)
+     * @param null $meta_fields a way to pass in the post's meta fields instead of getting in from the database (optional)
+     * @param null $post_user_meta pass in the user post meta if already available (optional)
      *
      * @return void
      */
-    public static function adjust_post_custom_fields( $post_settings, int $post_id, array &$fields ) {
-        $meta_fields = get_post_custom( $post_id );
+    public static function adjust_post_custom_fields( $post_settings, int $post_id, array &$fields, array $fields_to_return = [], $meta_fields = null, $post_user_meta = null ) {
         $field_settings = $post_settings["fields"];
-        foreach ( $meta_fields as $key => $value ) {
-            //if is contact details and is in a channel
-            if ( strpos( $key, "contact_" ) === 0 && isset( $post_settings["channels"][ explode( '_', $key )[1] ] ) ) {
-                if ( strpos( $key, "details" ) === false ) {
-                    $type = explode( '_', $key )[1];
-                    $fields[ "contact_" . $type ][] = self::format_post_contact_details( $post_settings, $meta_fields, $type, $key, $value[0] );
-                }
-            } elseif ( strpos( $key, "address" ) === 0 ) {
-                if ( strpos( $key, "_details" ) === false ) {
 
-                    $details = [];
-                    if ( isset( $meta_fields[ $key . '_details' ][0] ) ) {
-                        $details = maybe_unserialize( $meta_fields[ $key . '_details' ][0] );
+        if ( $meta_fields === null ){
+            $meta_fields = get_post_custom( $post_id );
+        }
+        foreach ( $meta_fields as $key => $value ) {
+            if ( empty( $fields_to_return ) || in_array( $key, $fields_to_return ) ) {
+                //if is contact details and is in a channel
+                if ( strpos( $key, "contact_" ) === 0 && isset( $post_settings["channels"][explode( '_', $key )[1]] ) ) {
+                    if ( strpos( $key, "details" ) === false ) {
+                        $type = explode( '_', $key )[1];
+                        $fields["contact_" . $type][] = self::format_post_contact_details( $post_settings, $meta_fields, $type, $key, $value[0] );
                     }
-                    $details["value"] = $value[0];
-                    $details["key"] = $key;
-                    if ( isset( $details["type"] ) ) {
-                        $details["type_label"] = $post_settings["channels"][ $details["type"] ]["label"];
+                } elseif ( strpos( $key, "address" ) === 0 ) {
+                    if ( strpos( $key, "_details" ) === false ) {
+
+                        $details = [];
+                        if ( isset( $meta_fields[$key . '_details'][0] ) ) {
+                            $details = maybe_unserialize( $meta_fields[$key . '_details'][0] );
+                        }
+                        $details["value"] = $value[0];
+                        $details["key"] = $key;
+                        if ( isset( $details["type"] ) ) {
+                            $details["type_label"] = $post_settings["channels"][$details["type"]]["label"];
+                        }
+                        $fields["address"][] = $details;
                     }
-                    $fields["address"][] = $details;
-                }
-            } elseif ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]["type"] == "key_select" && !empty( $value[0] )) {
-                if ( empty( $value[0] ) ){
-                    unset( $fields[$key] );
-                    continue;
-                }
-                $value_options = $field_settings[ $key ]["default"][ $value[0] ] ?? $value[0];
-                if ( isset( $value_options["label"] ) ){
-                    $label = $value_options["label"];
-                } elseif ( is_string( $value_options ) ) {
-                    $label = $value_options;
-                } else {
-                    $label = $value[0];
-                }
+                } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]["type"] == "key_select" && !empty( $value[0] ) ) {
+                    if ( empty( $value[0] ) ) {
+                        unset( $fields[$key] );
+                        continue;
+                    }
+                    $value_options = $field_settings[$key]["default"][$value[0]] ?? $value[0];
+                    if ( isset( $value_options["label"] ) ) {
+                        $label = $value_options["label"];
+                    } elseif ( is_string( $value_options ) ) {
+                        $label = $value_options;
+                    } else {
+                        $label = $value[0];
+                    }
 //                        $label = $field_settings[ $key ]["default"][ $value[0] ]["label"] ?? $value[0];
-                $fields[ $key ] = [
-                    "key" => $value[0],
-                    "label" => $label
-                ];
-            } elseif ( $key === "assigned_to" ) {
-                if ( $value ) {
-                    $meta_array = explode( '-', $value[0] ); // Separate the type and id
-                    $type = $meta_array[0]; // Build variables
-                    if ( isset( $meta_array[1] ) ) {
-                        $id = $meta_array[1];
-                        if ( $type == 'user' && $id) {
-                            $user = get_user_by( 'id', $id );
-                            $fields[ $key ] = [
-                                "id" => $id,
-                                "type" => $type,
-                                "display" => ( $user ? $user->display_name : "Nobody" ) ,
-                                "assigned-to" => $value[0]
-                            ];
+                    $fields[$key] = [
+                        "key" => $value[0],
+                        "label" => $label
+                    ];
+                } elseif ( $key === "assigned_to" ) {
+                    if ( $value ) {
+                        $meta_array = explode( '-', $value[0] ); // Separate the type and id
+                        $type = $meta_array[0]; // Build variables
+                        if ( isset( $meta_array[1] ) ) {
+                            $id = $meta_array[1];
+                            if ( $type == 'user' && $id ) {
+                                $user = get_user_by( 'id', $id );
+                                $fields[$key] = [
+                                    "id" => $id,
+                                    "type" => $type,
+                                    "display" => ( $user ? $user->display_name : "Nobody" ),
+                                    "assigned-to" => $value[0]
+                                ];
+                            }
                         }
                     }
-                }
-            } else if ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]['type'] === 'multi_select' ){
-                $fields[ $key ] = $value;
-            } else if ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]['type'] === 'boolean' ){
-                $fields[ $key ] = $value[0] === "1";
-            } else if ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]['type'] === 'array' ){
-                $fields[ $key ] = maybe_unserialize( $value[0] );
-            } else if ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]['type'] === 'date' ){
-                $fields[ $key ] = [
-                    "timestamp" => $value[0],
-                    "formatted" => dt_format_date( $value[0] ),
-                ];
-            } else if ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]['type'] === 'location' ){
-                $names = Disciple_Tools_Mapping_Queries::get_names_from_ids( $value );
-                $fields[ $key ] = [];
-                foreach ( $names as $id => $name ){
-                    $fields[ $key ][] = [
-                        "id" => $id,
-                        "label" => $name
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'multi_select' ) {
+                    $fields[$key] = $value;
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'boolean' ) {
+                    $fields[$key] = $value[0] === "1";
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'array' ) {
+                    $fields[$key] = maybe_unserialize( $value[0] );
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'date' ) {
+                    $fields[$key] = [
+                        "timestamp" => $value[0],
+                        "formatted" => dt_format_date( $value[0] ),
                     ];
-                }
-            } else if ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]['type'] === 'location_meta' ){
-                $fields[ $key ] = [];
-                foreach ( $value as $meta ) {
-                    $location_grid_meta = Location_Grid_Geocoder::get_location_grid_meta_by_id( $meta );
-                    if ( $location_grid_meta ) {
-                        $fields[ $key ][] = $location_grid_meta;
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'location' ) {
+                    $names = Disciple_Tools_Mapping_Queries::get_names_from_ids( $value );
+                    $fields[$key] = [];
+                    foreach ( $names as $id => $name ) {
+                        $fields[$key][] = [
+                            "id" => $id,
+                            "label" => $name
+                        ];
                     }
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'location_meta' ) {
+                    $fields[$key] = [];
+                    foreach ( $value as $meta ) {
+                        $location_grid_meta = Location_Grid_Geocoder::get_location_grid_meta_by_id( $meta );
+                        if ( $location_grid_meta ) {
+                            $fields[$key][] = $location_grid_meta;
+                        }
+                    }
+                } else {
+                    $fields[$key] = $value[0];
                 }
-            } else {
-                $fields[ $key ] = $value[0];
             }
         }
 
@@ -1743,13 +1751,15 @@ class Disciple_Tools_Posts
         global $wpdb;
         $user_id = get_current_user_id();
         if ( $user_id ){
-            $post_user_meta = $wpdb->get_results( $wpdb->prepare(
-                "
-                    SELECT * FROM $wpdb->dt_post_user_meta
-                    WHERE post_id = %s
-                    AND user_id = %s
-                ", $post_id, $user_id
-            ), ARRAY_A );
+            if ( $post_user_meta === null ){
+                $post_user_meta = $wpdb->get_results( $wpdb->prepare(
+                    "
+                        SELECT * FROM $wpdb->dt_post_user_meta
+                        WHERE post_id = %s
+                        AND user_id = %s
+                    ", $post_id, $user_id
+                ), ARRAY_A );
+            }
             foreach ( $post_user_meta as $m ){
                 if ( !isset( $fields[ $m["meta_key"] ] ) ) {
                     $fields[$m["meta_key"]] = [];
