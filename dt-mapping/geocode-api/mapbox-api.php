@@ -256,6 +256,84 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             wp_enqueue_style( 'mapbox-gl-css', self::$mapbox_gl_css, [], self::$mapbox_gl_version );
         }
 
+        public static function load_mapbox_search_widget() {
+            if ( file_exists( get_template_directory() . '/dt-mapping/geocode-api/mapbox.js' ) ) {
+                global $post;
+                if ( is_single() ) {
+                    $post_record = DT_Posts::get_post( get_post_type(), $post->ID );
+                } else {
+                    $post_record = false;
+                }
+
+
+                wp_enqueue_script( 'mapbox-search-widget', trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/geocode-api/mapbox.js', [ 'jquery', 'mapbox-gl', 'shared-functions' ], filemtime( get_template_directory() . '/dt-mapping/geocode-api/mapbox.js' ), true );
+                wp_localize_script(
+                    "mapbox-search-widget", "dtMapbox", array(
+                        'post_type' => get_post_type(),
+                        "post_id" => $post->ID ?? 0,
+                        "post" => $post_record ?? false,
+                        "map_key" => self::get_key(),
+                        "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
+                        "theme_uri" => get_stylesheet_directory_uri(),
+                        "translations" => array(
+                            'add' => __( 'add', 'disciple-tools' )
+                        )
+                    )
+                );
+                add_action( 'wp_head', [ 'DT_Mapbox_API', 'mapbox_search_widget_css' ] );
+            }
+        }
+
+        public static function mapbox_search_widget_css() {
+            /* Added these few style classes inline vers css file. */
+            ?>
+            <style>
+                /* mapbox autocomplete elements*/
+                #mapbox-search {
+                    margin:0;
+                }
+                #mapbox-search-wrapper {
+                    margin: 0 0 1rem;
+                }
+                .mapbox-autocomplete {
+                    /*the container must be positioned relative:*/
+                    position: relative;
+                }
+                .mapbox-autocomplete-items {
+                    position: absolute;
+                    border: 1px solid #e6e6e6;
+                    border-bottom: none;
+                    border-top: none;
+                    z-index: 99;
+                    /*position the autocomplete items to be the same width as the container:*/
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                }
+                .mapbox-autocomplete-items div {
+                    padding: 10px;
+                    cursor: pointer;
+                    background-color: #fff;
+                    border-bottom: 1px solid #e6e6e6;
+                }
+                .mapbox-autocomplete-items div:hover {
+                    /*when hovering an item:*/
+                    background-color: #00aeff;
+                }
+                .mapbox-autocomplete-active {
+                    /*when navigating through the items using the arrow keys:*/
+                    background-color: #00aeff !important;
+                    color: #ffffff;
+                }
+                #mapbox-spinner-button {
+                    border-radius:0;
+                    display:none;
+                }
+                /* end mapbox elements*/
+            </style>
+            <?php
+        }
+
         public static function load_header() {
             add_action( "enqueue_scripts", [ 'DT_Mapbox_API', 'load_mapbox_header_scripts' ] );
         }
@@ -347,229 +425,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                     </li>
                                 </ol>
                             <?php endif; ?>
-                            <?php if ( ! empty( self::get_key() ) ) : ?>
 
-                                <!-- Geocoder Input Section -->
-                                <?php self::geocoder_scripts() ?>
-                                <style>
-                                    .mapboxgl-ctrl-geocoder {
-                                        min-width:100%;
-                                    }
-                                    #geocoder {
-                                        padding-bottom: 10px;
-                                    }
-                                    #map {
-                                        width:66%;
-                                        height:400px;
-                                        float:left;
-                                    }
-                                    #list {
-                                        width:33%;
-                                        float:right;
-                                    }
-                                    #selected_values {
-                                        width:66%;
-                                        float:left;
-                                    }
-                                    .result_box {
-                                        padding: 15px 10px;
-                                        border: 1px solid lightgray;
-                                        margin: 5px 0 0;
-                                        font-weight: bold;
-                                    }
-                                    .add-column {
-                                        width:10px;
-                                    }
-                                </style>
-
-                                <!-- Widget -->
-                                <div id='geocoder' class='geocoder'></div>
-                                <div>
-                                    <div id='map'></div>
-                                    <div id="list"></div>
-                                </div>
-                                <div id="selected_values"></div>
-
-                                <!-- Mapbox script -->
-                                <script>
-                                    window.spinner = '<img class="load-spinner" src="<?php echo esc_url( $dt_mapping['spinner'] ) ?>" width="20px" />'
-                                    mapboxgl.accessToken = '<?php echo esc_html( self::get_key() ) ?>';
-                                    var map = new mapboxgl.Map({
-                                        container: 'map',
-                                        style: 'mapbox://styles/mapbox/streets-v11',
-                                        center: [-20, 30],
-                                        zoom: 1
-                                    });
-
-                                    map.addControl(new mapboxgl.NavigationControl());
-
-                                    var geocoder = new MapboxGeocoder({
-                                        accessToken: mapboxgl.accessToken,
-                                        types: 'country region district postcode locality neighborhood address place', //'country region district postcode locality neighborhood address place',
-                                        marker: {color: 'orange'},
-                                        mapboxgl: mapboxgl
-                                    });
-
-                                    document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
-
-                                    // After Search Result
-                                    geocoder.on('result', function(e) { // respond to search
-                                        geocoder._removeMarker()
-                                        console.log(e)
-                                    })
-
-
-                                    map.on('click', function (e) {
-                                        console.log(e)
-                                        jQuery('#list').empty().append(window.spinner);
-
-                                        let lng = e.lngLat.lng
-                                        let lat = e.lngLat.lat
-                                        window.active_lnglat = [lng,lat]
-
-                                        // add marker
-                                        if ( window.active_marker ) {
-                                            window.active_marker.remove()
-                                        }
-                                        window.active_marker = new mapboxgl.Marker()
-                                            .setLngLat(e.lngLat )
-                                            .addTo(map);
-                                        console.log(active_marker)
-
-                                        // add polygon
-                                        jQuery.get('<?php echo esc_url( $dt_mapping['location_api_url'] ) ?>',
-                                            {
-                                                type: 'possible_matches',
-                                                longitude: lng,
-                                                latitude:  lat,
-                                                nonce: '<?php echo esc_html( wp_create_nonce( 'location_grid' ) ) ?>'
-                                            }, null, 'json' ).done(function(data) {
-
-                                            console.log(data)
-                                            if ( data !== undefined ) {
-                                                print_click_results( data )
-                                            }
-
-                                        })
-                                    });
-
-
-                                    // User Personal Geocode Control
-                                    let userGeocode = new mapboxgl.GeolocateControl({
-                                        positionOptions: {
-                                            enableHighAccuracy: true
-                                        },
-                                        marker: {
-                                            color: 'orange'
-                                        },
-                                        trackUserLocation: false
-                                    })
-                                    map.addControl(userGeocode);
-                                    userGeocode.on('geolocate', function(e) { // respond to search
-                                        console.log(e)
-                                        jQuery('#list').empty().append(window.spinner);
-                                        let lat = e.coords.latitude
-                                        let lng = e.coords.longitude
-                                        window.active_lnglat = [lng,lat]
-
-                                        // add polygon
-                                        jQuery.get('<?php echo esc_url( $dt_mapping['location_api_url'] ) ?>',
-                                            {
-                                                type: 'possible_matches',
-                                                longitude: lng,
-                                                latitude:  lat,
-                                                nonce: '<?php echo esc_html( wp_create_nonce( 'location_grid' ) ) ?>'
-                                            }, null, 'json' ).done(function(data) {
-                                            console.log(data)
-
-                                            if ( data !== undefined ) {
-                                                print_click_results(data)
-                                            }
-                                        })
-                                    })
-
-                                    jQuery(document).ready(function() {
-                                        jQuery('input.mapboxgl-ctrl-geocoder--input').attr("placeholder", "Enter Country")
-                                    })
-
-
-                                    function print_click_results( data ) {
-                                        if ( data !== undefined ) {
-
-                                            // print click results
-                                            window.MBresponse = data
-
-                                            let print = jQuery('#list')
-                                            print.empty();
-                                            print.append('<strong>Click Results</strong><br><hr>')
-                                            let table_body = ''
-                                            jQuery.each( data, function(i,v) {
-                                                let string = '<tr><td class="add-column">'
-                                                string += '<button type="button" onclick="add_selection(' + v.grid_id +')">Add</button></td> '
-                                                string += '<td><strong style="font-size:1.2em;">'+v.name+'</strong> <br>'
-                                                if ( v.admin0_name !== v.name ) {
-                                                    string += v.admin0_name
-                                                }
-                                                if ( v.admin1_name !== null ) {
-                                                    string += ' > ' + v.admin1_name
-                                                }
-                                                if ( v.admin2_name !== null ) {
-                                                    string += ' > ' + v.admin2_name
-                                                }
-                                                if ( v.admin3_name !== null ) {
-                                                    string += ' > ' + v.admin3_name
-                                                }
-                                                if ( v.admin4_name !== null ) {
-                                                    string += ' > ' + v.admin4_name
-                                                }
-                                                if ( v.admin5_name !== null ) {
-                                                    string += ' > ' + v.admin5_name
-                                                }
-                                                string += '</td></tr>'
-                                                table_body += string
-                                            })
-                                            print.append('<table>' + table_body + '</table><div><h2>Success!</h2></div>')
-                                        }
-                                    }
-
-                                    function add_selection( grid_id ) {
-                                        console.log(window.MBresponse[grid_id])
-
-                                        let div = jQuery('#selected_values')
-                                        let response = window.MBresponse[grid_id]
-
-                                        if ( window.selected_locations === undefined ) {
-                                            window.selected_locations = []
-                                        }
-                                        window.selected_locations[grid_id] = new mapboxgl.Marker()
-                                            .setLngLat( [ window.active_lnglat[0], window.active_lnglat[1] ] )
-                                            .addTo(map);
-
-                                        let name = ''
-                                        name += response.name
-                                        if ( response.admin1_name !== undefined && response.level > '1' ) {
-                                            name += ', ' + response.admin1_name
-                                        }
-                                        if ( response.admin0_name && response.level > '0' ) {
-                                            name += ', ' + response.admin0_name
-                                        }
-
-                                        div.append('<div class="result_box" id="'+grid_id+'">' +
-                                            '<span>'+name+'</span>' +
-                                            '<span style="float:right;cursor:pointer;" onclick="remove_selection(\''+grid_id+'\')">X</span>' +
-                                            '<input type="hidden" name="selected_grid_id['+grid_id+']" value="' + grid_id + '" />' +
-                                            '<input type="hidden" name="selected_lnglat['+grid_id+']" value="' + window.active_lnglat[0] + ',' + window.active_lnglat[1] + '" />' +
-                                            '</div>')
-
-                                    }
-
-                                    function remove_selection( grid_id ) {
-                                        window.selected_locations[grid_id].remove()
-                                        jQuery('#' + grid_id ).remove()
-                                    }
-                                </script>
-
-                            <?php endif; ?>
                         </td>
                     </tr>
                     </tbody>

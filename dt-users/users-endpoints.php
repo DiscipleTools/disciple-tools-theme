@@ -247,7 +247,7 @@ class Disciple_Tools_Users_Endpoints
 
     public function update_user( WP_REST_Request $request ){
         $get_params = $request->get_params();
-        $body = $request->get_json_params() ?? $request->get_params();
+        $body = $request->get_json_params() ?? $request->get_body_params();
         $user = wp_get_current_user();
         if ( !$user ) {
             return new WP_Error( "update_user", "Something went wrong. Are you a user?", [ 'status' => 400 ] );

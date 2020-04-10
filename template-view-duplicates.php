@@ -27,8 +27,13 @@ $dt_duplicates = wp_unslash( $dt_contacts->get_all_duplicates() );
                         <?php
                         foreach ( $dt_duplicates as $dt_id => $dt_duplicate ) {
                             if ($dt_duplicate['count'] <= 0) { continue; }
-                            echo "<form name='merge_".esc_html( $dt_id )."' method='POST' action='".esc_html( site_url() )."/contacts/".esc_html( $dt_id )."'><input type='hidden' name='dt_contact_nonce' value='".esc_attr( wp_create_nonce() )."'/></form><tr id='".esc_html( $dt_id )."'><td><a>".esc_html( $dt_duplicate['name'] )."</a></td><td>
-                            <a>".esc_html( $dt_duplicate['count'] )." ".esc_html_e( 'duplicates', 'disciple_tools' )."</a></td></tr>";
+
+                            echo "<form name='merge_".esc_html( $dt_id )."' method='POST' action='".esc_html( site_url() )."/contacts/".esc_html( $dt_id )."'>
+                            <input type='hidden' name='dt_contact_nonce' value='".esc_attr( wp_create_nonce() )."'/></form>
+                            <tr id='".esc_html( $dt_id )."'>
+                            <td><a>".esc_html( $dt_duplicate['name'] )."</a></td>
+                            <td><a>".esc_html( $dt_duplicate['count'] )." ".esc_html__( 'duplicates', 'disciple_tools' )."</a></td>
+                            </tr>";
                         }
                         ?>
                     </table>
