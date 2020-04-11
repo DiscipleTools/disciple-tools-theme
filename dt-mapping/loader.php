@@ -69,7 +69,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Loader' ) ) {
 
             /** Core */
             require_once( 'mapping.php' );
-            require_once( 'mapping-metrics.php' );
+            if ( DT_Mapbox_API::get_key() ) {
+                require_once( 'mapbox-metrics.php' );
+            } else {
+                require_once( 'mapping-metrics.php' );
+            }
         }
     }
 }

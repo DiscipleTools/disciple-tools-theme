@@ -780,7 +780,7 @@ jQuery(document).ready(function($) {
                     }
                     #geocode-details {
                         height: ${window.innerHeight - 250}px !important;
-                        overflow: hidden;
+                        overflow: scroll;
                         opacity: 100%;
                     }
                     .accordion {
