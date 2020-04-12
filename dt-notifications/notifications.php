@@ -760,25 +760,25 @@ class Disciple_Tools_Notifications
         } elseif ( $notification["notification_name"] ==="share" ){
             $source_user = get_userdata( $notification["source_user_id"] );
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
-            $notification_note = sprintf( esc_html_x( '%1$s shared %2$s with you.', 'User1 shared contact1 with you.', 'disciple_tools' ), $display_name, $link );
+            $notification_note = sprintf( esc_html_x( '%1$s shared %2$s with you.', 'user1 shared contact1 with you.', 'disciple_tools' ), $display_name, $link );
         } elseif ( $notification["notification_name"] ==="mention" ){
             $source_user = get_userdata( $notification["source_user_id"] );
             $comment = get_comment( $notification["secondary_item_id"] );
             $comment_content = $comment ? self::format_comment( $comment->comment_content ) : "";
             $comment_content = "\r\n\r\n " . $comment_content;
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
-            $notification_note = sprintf( esc_html_x( '%1$s mentioned you on %2$s saying: %3$s', 'User1 mentioned you on contact1 saying: test', 'disciple_tools' ), $display_name, $link, $comment_content );
+            $notification_note = sprintf( esc_html_x( '%1$s mentioned you on %2$s saying: %3$s', 'user1 mentioned you on contact1 saying: test', 'disciple_tools' ), $display_name, $link, $comment_content );
         } elseif ( $notification["notification_name"] ==="comment" ){
             $source_user = get_userdata( $notification["source_user_id"] );
             $comment = get_comment( $notification["secondary_item_id"] );
             $comment_content = $comment ? self::format_comment( $comment->comment_content ) : "";
             $comment_content = "\r\n\r\n " . $comment_content;
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
-            $notification_note = sprintf( esc_html_x( '%1$s commented on %2$s saying: %3$s', 'User1 commented on contact1 saying: test', 'disciple_tools' ), $display_name, $link, $comment_content );
+            $notification_note = sprintf( esc_html_x( '%1$s commented on %2$s saying: %3$s', 'user1 commented on contact1 saying: test', 'disciple_tools' ), $display_name, $link, $comment_content );
         } elseif ( $notification["notification_name"] === "subassigned" ){
             $source_user = get_userdata( $notification["source_user_id"] );
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
-            $notification_note = sprintf( esc_html_x( '%1$s subassigned %2$s to you.', 'User1 subassigned contact1 to you.', 'disciple_tools' ), $display_name, $link );
+            $notification_note = sprintf( esc_html_x( '%1$s subassigned %2$s to you.', 'user1 subassigned contact1 to you.', 'disciple_tools' ), $display_name, $link );
         } elseif ( $notification["notification_name"] ==="milestone" ){
             $meta_value = $notification["field_value"] ?? '';
             $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( true, null, false, false ); //no cache to get the labels in the correct language
@@ -788,17 +788,17 @@ class Disciple_Tools_Notifications
             }
             $source_user = get_userdata( $notification["source_user_id"] );
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
-            $notification_note = sprintf( esc_html_x( '%1$s added milestone %2$s on %3$s.', 'User1 added milestone Baptizing on contact1.', 'disciple_tools' ), $display_name, $label, $link );
+            $notification_note = sprintf( esc_html_x( '%1$s added milestone %2$s on %3$s.', 'user1 added milestone Baptizing on contact1.', 'disciple_tools' ), $display_name, $label, $link );
         } elseif ( $notification["notification_name"] ==="requires_update" ) {
             $assigned_to = dt_get_assigned_name( $notification["post_id"], true );
             $notification_note = $notification_note = sprintf( esc_html_x( '@%1$s, an update is requested on %2$s.', '@Multiplier1, an update is requested on contact1.', 'disciple_tools' ), $assigned_to, $link );
         } elseif ( $notification["notification_name"] ==="contact_info_update" ){
             $source_user = get_userdata( $notification["source_user_id"] );
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
-            $notification_note = sprintf( esc_html_x( '%1$s modified contact details on %2$s.', 'User1 modified contact details on contact1.', 'disciple_tools' ), $display_name, $link );
+            $notification_note = sprintf( esc_html_x( '%1$s modified contact details on %2$s.', 'user1 modified contact details on contact1.', 'disciple_tools' ), $display_name, $link );
         } elseif ( $notification["notification_name"] === "assignment_declined" ){
             $user_who_declined = get_userdata( $notification["source_user_id"] );
-            $notification_note = sprintf( esc_html_x( '%1$s declined assignment on: %2$s.', 'User1 declined assignment on: contact1', 'disciple_tools' ), $user_who_declined->display_name, $link );
+            $notification_note = sprintf( esc_html_x( '%1$s declined assignment on: %2$s.', 'user1 declined assignment on: contact1', 'disciple_tools' ), $user_who_declined->display_name, $link );
         } else {
             $notification_note = apply_filters( 'dt_custom_notification_note', '', $notification );
         }

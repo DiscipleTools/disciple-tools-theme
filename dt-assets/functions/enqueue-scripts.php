@@ -110,13 +110,13 @@ function dt_site_scripts() {
             'template_dir' => get_template_directory_uri(),
             'translations' => [
                 'days_of_the_week' => [
-                    _x( "Su", 'Dates', 'disciple_tools' ),
-                    _x( "Mo", 'Dates', 'disciple_tools' ),
-                    _x( "Tu", 'Dates', 'disciple_tools' ),
-                    _x( "We", 'Dates', 'disciple_tools' ),
-                    _x( "Th", 'Dates', 'disciple_tools' ),
-                    _x( "Fr", 'Dates', 'disciple_tools' ),
-                    _x( "Sa", 'Dates', 'disciple_tools' )
+                    _x( "Su", 'Abbreviation of Sunday', 'disciple_tools' ),
+                    _x( "Mo", 'Abbreviation of Monday', 'disciple_tools' ),
+                    _x( "Tu", 'Abbreviation of Tuesday', 'disciple_tools' ),
+                    _x( "We", 'Abbreviation of Wednesday', 'disciple_tools' ),
+                    _x( "Th", 'Abbreviation of Thursday', 'disciple_tools' ),
+                    _x( "Fr", 'Abbreviation of Friday', 'disciple_tools' ),
+                    _x( "Sa", 'Abbreviation of Saturday', 'disciple_tools' )
                 ],
                 'month_labels' => [
                     _x( "January", 'Dates', 'disciple_tools' ),
@@ -337,7 +337,7 @@ function dt_site_scripts() {
         'save' => __( 'Save', 'disciple_tools' ),
         'edit' => __( 'Edit', 'disciple_tools' ),
         'delete' => __( 'Delete', 'disciple_tools' ),
-        'txt_info' => _x( 'Showing _START_ of _TOTAL_', 'just copy as they are: _START_ and _TOTAL_', 'disciple_tools' ),
+        'txt_info' => _x( 'Showing _START_ of _TOTAL_', 'Just copy as they are: _START_ and _TOTAL_', 'disciple_tools' ),
         'sorting_by' => __( 'Sorting By', 'disciple_tools' ),
         'creation_date' => __( 'Creation Date', 'disciple_tools' ),
         'date_modified' => __( 'Date Modified', 'disciple_tools' ),

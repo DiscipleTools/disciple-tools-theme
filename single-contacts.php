@@ -732,7 +732,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                 <?php esc_html_e( "Display Name", "disciple_tools" ); ?>
                 <input name="user-display" id="user-display" type="text"
                        value="<?php the_title_attribute(); ?>"
-                       placeholder="<?php echo esc_html_x( "Display Name", 'disciple_tools' ) ?>">
+                       placeholder="<?php echo esc_html( "Display Name", 'disciple_tools' ) ?>">
             </label>
 
             <div class="grid-x">
@@ -836,7 +836,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
             <br>
             <div class="confirm-merge-with-contact" style="display: none">
-                <p><span  id="name-of-contact-to-merge"></span> <?php echo esc_html_x( "selected.", 'added to the end of a sentence', 'disciple_tools' ) ?></p>
+                <p><span  id="name-of-contact-to-merge"></span> <?php echo esc_html_x( "selected.", 'Added to the end of a sentence', 'disciple_tools' ) ?></p>
                 <p><?php esc_html_e( "Click merge to continue.", 'disciple_tools' ) ?></p>
             </div>
 

@@ -95,7 +95,7 @@ get_header();
                     <button class="help-button" type="button" data-section="initial-comment-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
-                    <textarea id="comment-input" name="initial_comment" dir="auto" placeholder="<?php echo esc_html_x( "Initial Comment", "disciple_tools" ); ?>"></textarea>
+                    <textarea id="comment-input" name="initial_comment" dir="auto" placeholder="<?php echo esc_html( "Initial Comment", "disciple_tools" ); ?>"></textarea>
                 </label>
 
                 <div style="text-align: center">

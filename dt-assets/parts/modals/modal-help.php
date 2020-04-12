@@ -12,17 +12,17 @@
         ?>
         <!--    Contact Details Tile  -->
         <div class="help-section" id="contact-details-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Contact Details", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html( "Contact Details", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "This is the area where you can view and edit the contact details for this contact.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <ul>
-                <li><strong><?php echo esc_html_x( "Contact Name", 'disciple_tools' ) ?></strong></li>
+                <li><strong><?php echo esc_html( "Contact Name", 'disciple_tools' ) ?></strong></li>
                 <li><strong><?php echo esc_html( $contact_fields["overall_status"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["overall_status"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_fields["assigned_to"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["assigned_to"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_fields["subassigned"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["subassigned"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_channels["phone"]["label"] ) ?></strong> <?php echo esc_html( $contact_channels["phone"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_channels["email"]["label"] ) ?></strong> <?php echo esc_html( $contact_channels["email"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_channels["address"]["label"] ) ?></strong> <?php echo esc_html( $contact_channels["address"]["description"] ) ?></li>
-                <li><strong><?php echo esc_html_x( "Social Media", 'disciple_tools' ) ?></strong> - <?php echo esc_html_x( "Social media accounts for this contact.", 'Optional Documentation', 'disciple_tools' ) ?></li>
+                <li><strong><?php echo esc_html( "Social Media", 'disciple_tools' ) ?></strong> - <?php echo esc_html_x( "Social media accounts for this contact.", 'Optional Documentation', 'disciple_tools' ) ?></li>
                 <li><strong><?php echo esc_html( $contact_fields["location_grid"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["location_grid"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_fields["people_groups"]["name"] ) ?></strong> <?php echo esc_html( $contact_fields["people_groups"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_fields["age"]["name"] ) ?></strong> <?php echo esc_html( $contact_fields["age"]["description"] ?? "" ) ?></li>
@@ -55,7 +55,7 @@
                     foreach ( $workload_status_options as $option_key => $option_val ): ?>
                         <li><span style="background-color: <?php echo esc_html( $option_val["color"] ) ?>; height:10px; padding: 0 5px; border-radius: 2px">&nbsp;</span> <?php echo esc_html( $option_val["label"] ) ?></li>
                     <?php endforeach ?>
-                    <li><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" /> 2: <?php echo esc_html_x( "2 contacts need an update", 'disciple_tools' ) ?> </li>
+                    <li><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" /> 2: <?php echo esc_html( "2 contacts need an update", 'disciple_tools' ) ?> </li>
                 </ul>
             <?php endif; ?>
         </div>
@@ -77,7 +77,7 @@
 
         <!-- Contact Progress Tile -->
         <div class="help-section" id="contact-progress-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Progress", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html( "Progress", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Here you can track the progress of the contact's faith journey.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <ul>
                 <li><strong><?php echo esc_html( $contact_fields["seeker_path"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["seeker_path"]["description"] ) ?></li>
@@ -132,7 +132,7 @@
 
         <!--  Other tile  -->
         <div class="help-section" id="other-tile-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Other", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html( "Other", 'disciple_tools' ) ?></h3>
             <h4><?php echo esc_html( $contact_fields["tags"]["name"] ) ?></h4>
             <p><?php echo esc_html( $contact_fields["tags"]["description"] ) ?></p>
         </div>
@@ -147,11 +147,11 @@
 
         <!-- Group Details Tile -->
         <div class="help-section" id="group-details-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Group Details", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html( "Group Details", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "This is the area where you can view and edit the contact details for this group.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <ul>
                 <?php //$field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_name"]; ?>
-                <li><strong><?php echo esc_html_x( "Group Name", 'disciple_tools' ) ?></strong> - <?php echo esc_html_x( "The name of the group is searchable and can be used to help you filter your contacts in the Groups List page.", 'Optional Documentation', 'disciple_tools' ) ?></li>
+                <li><strong><?php echo esc_html( "Group Name", 'disciple_tools' ) ?></strong> - <?php echo esc_html_x( "The name of the group is searchable and can be used to help you filter your contacts in the Groups List page.", 'Optional Documentation', 'disciple_tools' ) ?></li>
                 <li><strong><?php echo esc_html( $group_fields["group_status"]["name"] ) ?></strong> - <?php echo esc_html( $group_fields["group_status"]["description"] ) ?>
                     <ul>
                         <?php foreach ( $group_fields["group_status"]["default"] as $option ): ?>
@@ -198,7 +198,7 @@
 
         <!-- Members Tile -->
         <div class="help-section" id="members-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Members", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html( "Members", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "This is the area where you manage the contacts that are a part of the group.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <h4><?php echo esc_html( $group_fields["member_count"]["name"] ) ?></h4>
             <p><?php echo esc_html( $group_fields["member_count"]["description"] ) ?></p>
