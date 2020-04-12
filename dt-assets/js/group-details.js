@@ -628,7 +628,7 @@ jQuery(document).ready(function($) {
         editFieldsUpdate[channelType].values.push({value:val})
       }
     })
-    if (typeof editFieldsUpdate[undefined] ) {
+    if ( editFieldsUpdate[undefined] !== 'undefined') {
       delete editFieldsUpdate[undefined]
     }
     API.update_post( 'groups', groupId, editFieldsUpdate).then((updatedGroup)=>{

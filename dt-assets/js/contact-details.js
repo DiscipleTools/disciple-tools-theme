@@ -1003,7 +1003,7 @@ jQuery(document).ready(function($) {
         editFieldsUpdate[`contact_${channelType}`].values.push({value:val})
       }
     })
-    if (typeof editFieldsUpdate[undefined] ) {
+    if ( editFieldsUpdate[undefined] !== 'undefined' ) {
       delete editFieldsUpdate[undefined]
     }
     API.update_post('contacts', contactId, editFieldsUpdate).then((updatedContact)=>{
