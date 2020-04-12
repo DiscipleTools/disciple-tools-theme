@@ -123,10 +123,10 @@ class DT_Mapbox_Metrics {
             ]
         );
         register_rest_route(
-            $this->namespace, 'post_type_list', [
+            $this->namespace, 'get_grid_list', [
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'get_post_type_list' ],
+                    'callback' => [ $this, 'get_grid_list' ],
                 ],
             ]
         );
@@ -157,7 +157,6 @@ class DT_Mapbox_Metrics {
         $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
 
         $status = null;
-
         if ( isset( $params['status'] ) && $params['status'] !== 'all' ) {
             $status = sanitize_text_field( wp_unslash( $params['status'] ) );
         }
@@ -183,44 +182,55 @@ class DT_Mapbox_Metrics {
         if ( ! $this->has_permission() ){
             return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
         }
-        global $wpdb;
 
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
             return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
         }
 
+        $status = null;
+        if ( isset( $params['status'] ) && $params['status'] !== 'all' ) {
+            $status = sanitize_text_field( wp_unslash( $params['status'] ) );
+        }
+
         $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
         if ( $post_type === 'contacts' ) {
-            $query = $wpdb->prepare( "
-            SELECT lg.label as address, p.post_title as name, lg.post_id, lg.lng, lg.lat 
-            FROM $wpdb->dt_location_grid_meta as lg 
-                JOIN $wpdb->posts as p ON p.ID=lg.post_id 
-                LEFT JOIN $wpdb->postmeta as pm ON pm.post_id=p.ID AND pm.meta_key = 'overall_status'
-            WHERE lg.post_type = %s 
-              AND pm.post_id NOT IN (
-                  SELECT ppm.post_id 
-                  FROM $wpdb->postmeta as ppm 
-                  WHERE meta_key = 'corresponds_to_user' 
-                    AND meta_value != ''
-                  )", $post_type );
+            return $this->get_contacts_geojson( $status );
         } else if ( $post_type === 'groups' ) {
-            $query = $wpdb->prepare( "
+            return $this->get_groups_geojson( $status );
+        } else {
+            return new WP_Error( __METHOD__, "Invalid post type", [ 'status' => 400 ] );
+        }
+    }
+
+    public function _empty_geojson() {
+        return array(
+            'type' => 'FeatureCollection',
+            'features' => []
+        );
+    }
+
+    public function get_groups_geojson( $status = null ) {
+        if ( ! $this->has_permission() ){
+            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+        }
+        global $wpdb;
+
+        if ( $status ) {
+            $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT lg.label as address, p.post_title as name, lg.post_id, lg.lng, lg.lat 
             FROM $wpdb->dt_location_grid_meta as lg 
                 JOIN $wpdb->posts as p ON p.ID=lg.post_id 
                 LEFT JOIN $wpdb->postmeta as pm ON pm.post_id=p.ID AND pm.meta_key = 'group_status'
-            WHERE lg.post_type = %s ", $post_type );
+            WHERE lg.post_type = 'groups' AND pm.meta_value = %s", $status),ARRAY_A );
+        } else {
+            $results = $wpdb->get_results("
+            SELECT lg.label as address, p.post_title as name, lg.post_id, lg.lng, lg.lat 
+            FROM $wpdb->dt_location_grid_meta as lg 
+                JOIN $wpdb->posts as p ON p.ID=lg.post_id 
+                LEFT JOIN $wpdb->postmeta as pm ON pm.post_id=p.ID AND pm.meta_key = 'group_status'
+            WHERE lg.post_type = 'groups'",ARRAY_A);
         }
-
-        if ( isset( $params['status'] ) && ! empty( $params['status'] ) ) {
-            $query .= $wpdb->prepare( " AND pm.meta_value = %s ", $params['status'] );
-        }
-
-        $query .= " LIMIT 40000";
-
-        // @codingStandardsIgnoreLine
-        $results = $wpdb->get_results( $query, ARRAY_A );
 
         $features = [];
         foreach ( $results as $result ) {
@@ -250,40 +260,114 @@ class DT_Mapbox_Metrics {
         return $new_data;
     }
 
-    public function get_post_type_list( WP_REST_Request $request ){
+    public function get_contacts_geojson( $status = null ) {
+        if ( ! $this->has_permission() ){
+            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+        }
+        global $wpdb;
+
+        if ( $status ) {
+            $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT lg.label as address, p.post_title as name, lg.post_id, lg.lng, lg.lat 
+            FROM $wpdb->dt_location_grid_meta as lg 
+                JOIN $wpdb->posts as p ON p.ID=lg.post_id 
+                LEFT JOIN $wpdb->postmeta as pm ON pm.post_id=p.ID AND pm.meta_key = 'overall_status'
+            WHERE lg.post_type = 'contacts'
+            AND pm.post_id NOT IN (SELECT u.post_id FROM $wpdb->postmeta as u WHERE u.meta_key = 'corresponds_to_user' AND u.meta_value != '' )
+            AND pm.meta_value = %s ", $status),ARRAY_A );
+        } else {
+            $results = $wpdb->get_results("
+            SELECT lg.label as address, p.post_title as name, lg.post_id, lg.lng, lg.lat 
+            FROM $wpdb->dt_location_grid_meta as lg 
+                JOIN $wpdb->posts as p ON p.ID=lg.post_id 
+                LEFT JOIN $wpdb->postmeta as pm ON pm.post_id=p.ID AND pm.meta_key = 'overall_status'
+            WHERE lg.post_type = 'contacts'
+            AND pm.post_id NOT IN (SELECT u.post_id FROM $wpdb->postmeta as u WHERE ( u.meta_key = 'corresponds_to_user' AND u.meta_value != '') OR ( u.meta_key = 'overall_status' AND u.meta_value = 'closed') )",ARRAY_A);
+        }
+
+        $features = [];
+        foreach ( $results as $result ) {
+            $features[] = array(
+                'type' => 'Feature',
+                'properties' => array(
+                    "address" => $result['address'],
+                    "post_id" => $result['post_id'],
+                    "name" => $result['name']
+                ),
+                'geometry' => array(
+                    'type' => 'Point',
+                    'coordinates' => array(
+                        $result['lng'],
+                        $result['lat'],
+                        1
+                    ),
+                ),
+            );
+        }
+
+        $new_data = array(
+            'type' => 'FeatureCollection',
+            'features' => $features,
+        );
+
+        return $new_data;
+    }
+
+    public function get_grid_list( WP_REST_Request $request ){
         if ( !$this->has_permission() ){
             return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
         }
-
-        global $wpdb;
 
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
             return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
         }
 
+        $status = null;
+        if ( isset( $params['status'] ) && $params['status'] !== 'all' ) {
+            $status = sanitize_text_field( wp_unslash( $params['status'] ) );
+        }
+
         $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
         if ( $post_type === 'contacts' ) {
-            $results = $wpdb->get_results($wpdb->prepare( "
-                SELECT DISTINCT lgm.grid_id as grid_id, lgm.grid_meta_id, lgm.post_id, po.post_title as name 
+            return $this->get_contacts_grid_list( $status );
+        } else if ( $post_type === 'groups' ) {
+            return $this->get_groups_grid_list( $status );
+        } else {
+            return new WP_Error( __METHOD__, "Invalid post type", [ 'status' => 400 ] );
+        }
+
+    }
+
+    public function get_contacts_grid_list( $status = null ) {
+        if ( !$this->has_permission() ){
+            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+        }
+
+        global $wpdb;
+        if ( $status ) {
+            $results = $wpdb->get_results( $wpdb->prepare ( "
+            SELECT DISTINCT lgm.grid_id as grid_id, lgm.grid_meta_id, lgm.post_id, po.post_title as name 
+            FROM $wpdb->dt_location_grid_meta as lgm 
+            LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id  
+            JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND meta_key = 'overall_status' AND meta_value = 'active'
+            WHERE lgm.post_type ='contacts'
+            AND po.ID NOT IN (SELECT DISTINCT(u.post_id) FROM $wpdb->postmeta as u WHERE u.meta_key = 'corresponds_to_user' AND u.meta_value != '')
+                AND lgm.grid_id IS NOT NULL 
+                ORDER BY po.post_title
+            ;", $status ), ARRAY_A );
+        } else {
+            $results = $wpdb->get_results( "
+            SELECT DISTINCT lgm.grid_id as grid_id, lgm.grid_meta_id, lgm.post_id, po.post_title as name 
             FROM $wpdb->dt_location_grid_meta as lgm 
             LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id          
             WHERE lgm.post_type ='contacts' 
-            	AND po.ID NOT IN (SELECT DISTINCT(u.post_id) FROM $wpdb->postmeta as u WHERE ( u.meta_key = 'corresponds_to_user' AND u.meta_value != '') OR ( u.meta_key = 'overall_status' AND u.meta_value = 'closed'))
-            	AND lgm.grid_id IS NOT NULL 
-            	ORDER BY po.post_title
-            ;", $post_type ), ARRAY_A );
-
-        } else if ( $post_type === 'groups' ) {
-            $results = $wpdb->get_results($wpdb->prepare( "
-                SELECT DISTINCT lgm.grid_id as grid_id, lgm.grid_meta_id, lgm.post_id, po.post_title as name 
-            FROM $wpdb->dt_location_grid_meta as lgm 
-            LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id          
-            WHERE lgm.post_type ='groups' 
-            	AND lgm.grid_id IS NOT NULL 
-            	ORDER BY po.post_title
-            ;", $post_type ), ARRAY_A );
+                AND po.ID NOT IN (SELECT DISTINCT(u.post_id) FROM $wpdb->postmeta as u WHERE ( u.meta_key = 'corresponds_to_user' AND u.meta_value != '') OR ( u.meta_key = 'overall_status' AND u.meta_value = 'closed'))
+                AND lgm.grid_id IS NOT NULL 
+                ORDER BY po.post_title
+            ;", ARRAY_A );
         }
+
 
         $list = [];
         foreach ( $results as $result ) {
@@ -295,6 +379,35 @@ class DT_Mapbox_Metrics {
 
         return $list;
     }
+
+    public function get_groups_grid_list( $status = null ) {
+        if ( !$this->has_permission() ){
+            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+        }
+
+        global $wpdb;
+
+        $results = $wpdb->get_results( "
+            SELECT DISTINCT lgm.grid_id as grid_id, lgm.grid_meta_id, lgm.post_id, po.post_title as name 
+            FROM $wpdb->dt_location_grid_meta as lgm 
+            LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id          
+            WHERE lgm.post_type ='groups' 
+            	AND lgm.grid_id IS NOT NULL 
+            	ORDER BY po.post_title
+            ;", ARRAY_A );
+
+        $list = [];
+        foreach ( $results as $result ) {
+            if ( ! isset( $list[$result['grid_id']] ) ) {
+                $list[$result['grid_id']] = [];
+            }
+            $list[$result['grid_id']][] = $result;
+        }
+
+        return $list;
+    }
+
+
 }
 new DT_Mapbox_Metrics();
 

@@ -310,7 +310,7 @@ jQuery(document).ready(function() {
 
     chart.empty().html(spinner)
 
-    makeRequest( "POST", `post_type_list`, { post_type: post_type, status: null} , 'dt-metrics/mapbox/' )
+    makeRequest( "POST", `get_grid_list`, { post_type: post_type, status: null} , 'dt-metrics/mapbox/' )
       .done(response=>{
         window.user_list = response
         console.log('LIST')

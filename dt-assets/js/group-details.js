@@ -615,6 +615,8 @@ jQuery(document).ready(function($) {
    * Save group details updates
    */
   $('#save-edit-details').on('click', function () {
+    $(this).toggleClass("loading")
+
     let contactInput = $(".contact-input")
     contactInput.each((index, entry)=>{
       if ( !$(entry).attr("id") ){
@@ -626,8 +628,10 @@ jQuery(document).ready(function($) {
         editFieldsUpdate[channelType].values.push({value:val})
       }
     })
-    $(this).toggleClass("loading")
-      API.update_post( 'groups', groupId, editFieldsUpdate).then((updatedGroup)=>{
+    if (typeof editFieldsUpdate[undefined] ) {
+      delete editFieldsUpdate[undefined]
+    }
+    API.update_post( 'groups', groupId, editFieldsUpdate).then((updatedGroup)=>{
       group = updatedGroup
       $(this).toggleClass("loading")
       resetDetailsFields(group)
