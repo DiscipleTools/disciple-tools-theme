@@ -79,6 +79,8 @@ class DT_Mapbox_Metrics {
             filemtime( get_theme_file_path() . '/dt-mapping/' . $this->js_file_name ),
             true
         );
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_contact_field_defaults();
+        $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_group_field_defaults();
         wp_localize_script(
             'dt_mapbox_script', 'dt_mapbox_metrics', [
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/",
@@ -89,7 +91,17 @@ class DT_Mapbox_Metrics {
                 'map_key' => DT_Mapbox_API::get_key(),
                 "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
                 "theme_uri" => trailingslashit( get_stylesheet_directory_uri() ),
-                'translations' => $this->translations()
+                'translations' => $this->translations(),
+                'contact_settings' => [
+                    'post_type' => 'contacts',
+                    'title' => __( 'Contacts', "disciple_tools" ),
+                    'status_list' => $contact_fields['overall_status']['default'] ?? []
+                ],
+                'group_settings' => [
+                    'post_type' => 'groups',
+                    'title' => __( 'Groups', "disciple_tools" ),
+                    'status_list' => $group_fields['group_status']['default'] ?? []
+                ]
             ]
         );
     }
@@ -222,14 +234,14 @@ class DT_Mapbox_Metrics {
             FROM $wpdb->dt_location_grid_meta as lg 
                 JOIN $wpdb->posts as p ON p.ID=lg.post_id 
                 LEFT JOIN $wpdb->postmeta as pm ON pm.post_id=p.ID AND pm.meta_key = 'group_status'
-            WHERE lg.post_type = 'groups' AND pm.meta_value = %s", $status),ARRAY_A );
+            WHERE lg.post_type = 'groups' AND pm.meta_value = %s", $status), ARRAY_A );
         } else {
             $results = $wpdb->get_results("
             SELECT lg.label as address, p.post_title as name, lg.post_id, lg.lng, lg.lat 
             FROM $wpdb->dt_location_grid_meta as lg 
                 JOIN $wpdb->posts as p ON p.ID=lg.post_id 
                 LEFT JOIN $wpdb->postmeta as pm ON pm.post_id=p.ID AND pm.meta_key = 'group_status'
-            WHERE lg.post_type = 'groups'",ARRAY_A);
+            WHERE lg.post_type = 'groups'", ARRAY_A);
         }
 
         $features = [];
@@ -274,7 +286,7 @@ class DT_Mapbox_Metrics {
                 LEFT JOIN $wpdb->postmeta as pm ON pm.post_id=p.ID AND pm.meta_key = 'overall_status'
             WHERE lg.post_type = 'contacts'
             AND pm.post_id NOT IN (SELECT u.post_id FROM $wpdb->postmeta as u WHERE u.meta_key = 'corresponds_to_user' AND u.meta_value != '' )
-            AND pm.meta_value = %s ", $status),ARRAY_A );
+            AND pm.meta_value = %s ", $status), ARRAY_A );
         } else {
             $results = $wpdb->get_results("
             SELECT lg.label as address, p.post_title as name, lg.post_id, lg.lng, lg.lat 
@@ -282,7 +294,7 @@ class DT_Mapbox_Metrics {
                 JOIN $wpdb->posts as p ON p.ID=lg.post_id 
                 LEFT JOIN $wpdb->postmeta as pm ON pm.post_id=p.ID AND pm.meta_key = 'overall_status'
             WHERE lg.post_type = 'contacts'
-            AND pm.post_id NOT IN (SELECT u.post_id FROM $wpdb->postmeta as u WHERE ( u.meta_key = 'corresponds_to_user' AND u.meta_value != '') OR ( u.meta_key = 'overall_status' AND u.meta_value = 'closed') )",ARRAY_A);
+            AND pm.post_id NOT IN (SELECT u.post_id FROM $wpdb->postmeta as u WHERE ( u.meta_key = 'corresponds_to_user' AND u.meta_value != '') OR ( u.meta_key = 'overall_status' AND u.meta_value = 'closed') )", ARRAY_A);
         }
 
         $features = [];
@@ -346,7 +358,7 @@ class DT_Mapbox_Metrics {
 
         global $wpdb;
         if ( $status ) {
-            $results = $wpdb->get_results( $wpdb->prepare ( "
+            $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT DISTINCT lgm.grid_id as grid_id, lgm.grid_meta_id, lgm.post_id, po.post_title as name 
             FROM $wpdb->dt_location_grid_meta as lgm 
             LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id  

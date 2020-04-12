@@ -1,28 +1,45 @@
 jQuery(document).ready(function() {
   jQuery('#metrics-sidemenu').foundation('down', jQuery(`#mapbox-menu`));
-
-
+  console.log(dt_mapbox_metrics)
 
   if('/metrics/mapbox/cluster-contacts/' === window.location.pathname) {
-    write_cluster('contacts', 'Contacts')
+    write_cluster('contact_settings' )
   }
   if('/metrics/mapbox/cluster-groups/' === window.location.pathname) {
-    write_cluster('groups', 'Groups')
+    write_cluster('group_settings' )
   }
   if('/metrics/mapbox/boundary-contacts/' === window.location.pathname) {
-    write_cloropleth('contacts', 'Contacts')
+    write_cloropleth('contact_settings' )
   }
   if('/metrics/mapbox/boundary-groups/' === window.location.pathname) {
-    write_cloropleth('groups', 'Groups')
+    write_cloropleth('group_settings' )
   }
 
 
-  function write_cluster( post_type, title) {
+  function write_cluster( settings ) {
     let obj = dt_mapbox_metrics
+
+    let post_type = obj[settings].post_type
+    let title = obj[settings].title
+    let status = obj[settings].status_list
+
     let chart = jQuery('#chart')
     let spinner = ' <span class="loading-spinner users-spinner active"></span> '
 
     chart.empty().html(spinner)
+
+    /* build status list */
+    let status_list = `<option value="none" disabled></option>
+                      <option value="none" disabled>Status</option>
+                      <option value="none"></option>
+                      <option value="all" selected>Status - All</option>
+                      <option value="none" disabled>-----</option>
+                      `
+    jQuery.each(status, function(i,v){
+      status_list += `<option value="${i}">${v.label}</option>`
+    })
+    status_list += `<option value="none"></option>`
+
 
     makeRequest( "POST", `cluster_geojson`, { post_type: post_type, status: null} , 'dt-metrics/mapbox/' )
       .then(data=>{
@@ -117,40 +134,28 @@ jQuery(document).ready(function() {
                         cursor:pointer;
                     }
                 </style>
-                <div id="map-wrapper">
-                    <div id='map'></div>
-                    <div id='legend' class='legend'>
-                        <div class="grid-x grid-margin-x grid-padding-x">
-                            <div class="cell small-1 center info-bar-font">
-                                ${title} 
-                            </div>
-                            <div class="cell small-2 center border-left">
-                                <select id="status" class="small" style="width:170px;">
-                                    <option value="none" disabled></option>
-                                    <option value="none" disabled>Status</option>
-                                    <option value="none"></option>
-                                    <option value="all" selected>Status - All</option>
-                                    <option value="none" disabled>-----</option>
-                                    <option value="new">New</option>
-                                    <option value="proposed">Proposed</option>
-                                    <option value="scheduled">Scheduled</option>
-                                    <option value="in_progress">In-Progress</option>
-                                    <option value="complete">Completed</option>
-                                    <option value="paused">Paused</option>
-                                    <option value="closed">Closed</option>
-                                    <option value="none" disabled></option>
-                                </select> 
-                            </div>
+            <div id="map-wrapper">
+                <div id='map'></div>
+                <div id='legend' class='legend'>
+                    <div class="grid-x grid-margin-x grid-padding-x">
+                        <div class="cell small-1 center info-bar-font">
+                            ${title} 
+                        </div>
+                        <div class="cell small-2 center border-left">
+                            <select id="status" class="small" style="width:170px;">
+                                ${status_list}
+                            </select> 
                         </div>
                     </div>
-                    <div id="spinner"><img src="${obj.spinner_url}" class="spinner-image" alt="spinner"/></div>
-                    <div id="cross-hair">&#8982</div>
-                    <div id="geocode-details" class="geocode-details">
-                        ${title}<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
-                        <hr style="margin:10px 5px;">
-                        <div id="geocode-details-content"></div>
-                    </div>
                 </div>
+                <div id="spinner"><img src="${obj.spinner_url}" class="spinner-image" alt="spinner"/></div>
+                <div id="cross-hair">&#8982</div>
+                <div id="geocode-details" class="geocode-details">
+                    ${title}<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
+                    <hr style="margin:10px 5px;">
+                    <div id="geocode-details-content"></div>
+                </div>
+            </div>
             `)
 
         set_info_boxes()
@@ -177,11 +182,8 @@ jQuery(document).ready(function() {
 
         jQuery('#status').on('change', function() {
           window.current_status = jQuery('#status').val()
-          tAPI.cluster_geojson( { status: window.current_status } )
+          makeRequest( "POST", `cluster_geojson`, { post_type: post_type, status: window.current_status} , 'dt-metrics/mapbox/' )
             .then(data=> {
-              console.log(window.current_status)
-              console.log(data)
-
               clear_layer()
               load_layer( data )
             })
@@ -303,18 +305,35 @@ jQuery(document).ready(function() {
     })
   }
 
-  function write_cloropleth( post_type, title) {
+  function write_cloropleth( settings ) {
     let obj = dt_mapbox_metrics
+
+    let post_type = obj[settings].post_type
+    let title = obj[settings].title
+    let status = obj[settings].status_list
+
     let chart = jQuery('#chart')
     let spinner = ' <span class="loading-spinner users-spinner active"></span> '
 
     chart.empty().html(spinner)
 
+    /* build status list */
+    let status_list = `<option value="none" disabled></option>
+                      <option value="none" disabled>Status</option>
+                      <option value="none"></option>
+                      <option value="all" selected>Status - All</option>
+                      <option value="none" disabled>-----</option>
+                      `
+    jQuery.each(status, function(i,v){
+      status_list += `<option value="${i}">${v.label}</option>`
+    })
+    status_list += `<option value="none"></option>`
+
     makeRequest( "POST", `get_grid_list`, { post_type: post_type, status: null} , 'dt-metrics/mapbox/' )
       .done(response=>{
         window.user_list = response
-        console.log('LIST')
-        console.log(response)
+        // console.log('LIST')
+        // console.log(response)
       }).catch((e)=>{
       console.log( 'error in activity')
       console.log( e)
@@ -322,9 +341,9 @@ jQuery(document).ready(function() {
 
     makeRequest( "POST", `grid_totals`, { post_type: post_type, status: null} , 'dt-metrics/mapbox/' )
       .done(grid_data=>{
-        console.log('GRID TOTALS')
-        console.log(grid_data)
         window.grid_data = grid_data
+        // console.log('GRID TOTALS')
+        // console.log(grid_data)
 
         chart.empty().html(`
                 <style>
@@ -371,16 +390,7 @@ jQuery(document).ready(function() {
                             </div>
                             <div class="cell small-2 center border-left">
                                 <select id="status" class="small" style="width:170px;">
-                                    <option value="none" disabled></option>
-                                    <option value="none" disabled>Status</option>
-                                    <option value="none"></option>
-                                    <option value="all" selected>Status - All</option>
-                                    <option value="none" disabled>-----</option>
-                                    <option value="active">Active</option>
-                                    <option value="away">Away</option>
-                                    <option value="inconsistent">Inconsistent</option>
-                                    <option value="inactive">Inactive</option>
-                                    <option value="none" disabled></option>
+                                    ${status_list}
                                 </select> 
                             </div>
                             <div class="cell small-5 center border-left info-bar-font">
@@ -533,7 +543,8 @@ jQuery(document).ready(function() {
         jQuery('#status').on('change', function() {
           window.current_status = jQuery('#status').val()
 
-          makeRequest( "POST", `grid_totals`, { status: window.current_status }, 'user-management/v1/')
+          // makeRequest( "POST", `grid_totals`, { status: window.current_status }, 'user-management/v1/')
+          makeRequest( "POST", `grid_totals`, { post_type: post_type, status: window.current_status} , 'dt-metrics/mapbox/' )
             .done(grid_data=>{
               window.previous_grid_id = 0
               clear_layers()
