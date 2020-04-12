@@ -144,6 +144,12 @@ if ( ! isset( $dt_mapping['mapping_css_url'] ) ) {
 if ( ! isset( $dt_mapping['mapping_css_version'] ) ) {
     $dt_mapping['mapping_css_version'] = 0.2;
 }
+if ( ! isset( $dt_mapping['mapbox_js_url'] ) ) {
+    $dt_mapping['mapbox_js_url'] = $dt_mapping['url'] . 'mapbox-metrics.js';
+}
+if ( ! isset( $dt_mapping['mapbox_js_version'] ) ) {
+    $dt_mapping['mapbox_js_version'] = 4;
+}
 
 /** Add configuration module */
 if ( ! isset( $dt_mapping['module_config_path'] ) ) {
