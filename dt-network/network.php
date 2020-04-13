@@ -113,8 +113,10 @@ class Disciple_Tools_Network {
     }
 
     public static function admin_test_send_box() {
+        $report = false;
         if ( isset( $_POST['test_send_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['test_send_nonce'] ) ), 'test_send_'.get_current_user_id() ) ) {
-            dt_write_log( 'Test Send' );
+            $report = Disciple_Tools_Snapshot_Report::snapshot_report( true );
+
         }
         ?>
 
@@ -123,6 +125,9 @@ class Disciple_Tools_Network {
             <button type="submit" name="send_test" class="button"><?php esc_html_e( 'Send Test' ) ?></button>
         </form>
         <?php
+        if ( $report ) {
+            echo maybe_serialize($report);
+        }
     }
 
     public static function admin_partner_profile_box() {
@@ -270,7 +275,7 @@ try {
 class Disciple_Tools_Snapshot_Report {
     public static function snapshot_report( $force_refresh = false ) {
 
-        //        $force_refresh = true; // @todo @development mode. remove line for production
+//        $force_refresh = true; // @todo @development mode. remove line for production
 
         if ( $force_refresh ) {
             delete_transient( 'dt_snapshot_report' );
