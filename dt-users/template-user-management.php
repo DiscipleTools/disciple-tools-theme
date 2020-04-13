@@ -128,8 +128,10 @@ $user_management_options = DT_User_Management::user_management_options();
             <div class="large reveal" id="user_modal" data-reveal data-v-offset="10">
 
                 <div id="user_modal_content">
+                    <div id="user-name-wrapper">
+                        <h3 id="user_name"><?php esc_html_e( "Multiplier Name", 'disciple_tools' ) ?></h3>
+                    </div>
 
-                    <h3 id="user_name"><?php esc_html_e( "Multiplier Name", 'disciple_tools' ) ?></h3>
 
                     <button class="close-button" data-close aria-label="Close reveal" type="button">
                         <span aria-hidden="true">&times;</span>
