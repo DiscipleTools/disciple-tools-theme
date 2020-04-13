@@ -432,7 +432,7 @@ class Disciple_Tools_Groups_Post_Type
             'default'     => [],
         ];
         $fields['location_grid_meta'] = [
-            'name'        => _x( 'Location Grid Meta', 'field name', 'disciple_tools' ),
+            'name'        => 'Location Grid Meta', //system string does not need translation
             'type'        => 'location_meta',
             'default'     => [],
             'hidden' => true
