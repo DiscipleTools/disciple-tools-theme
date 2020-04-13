@@ -277,12 +277,12 @@ class Disciple_Tools_Snapshot_Report {
 
 //        $force_refresh = true; // @todo @development mode. remove line for production
 
-        if ( $force_refresh ) {
-            delete_transient( 'dt_snapshot_report' );
-        }
-        if ( get_transient( 'dt_snapshot_report' ) ) {
-            return get_transient( 'dt_snapshot_report' );
-        }
+//        if ( $force_refresh ) {
+//            delete_transient( 'dt_snapshot_report' );
+//        }
+//        if ( get_transient( 'dt_snapshot_report' ) ) {
+//            return get_transient( 'dt_snapshot_report' );
+//        }
 
         $profile = dt_get_partner_profile();
 
