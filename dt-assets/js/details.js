@@ -78,8 +78,10 @@ jQuery(document).ready(function ($) {
   }
 
   if (document.body.classList.contains('contacts-template-default')) {
-    let mcleardate = document.getElementById("clear-date-button");
-    mcleardate.onclick = initActions;
+    let mcleardate = $(".clear-date-button");
+    mcleardate.click(function() {
+      initActions()
+    });
   }
 
 
@@ -337,7 +339,7 @@ jQuery(document).ready(function ($) {
       }
       html += `<li>
         <span style="${task_done ? 'text-decoration:line-through' : ''}">
-        ${task_row}  
+        ${task_row}
         ${ show_complete_button ? `<button type="button" data-id="${_.escape(task.id)}" class="existing-task-action complete-task">${_.escape(detailsSettings.translations.complete)}</button>` : '' }
         <button type="button" data-id="${_.escape(task.id)}" class="existing-task-action remove-task" style="color: red;">${_.escape(detailsSettings.translations.remove)}</button>
       </li>`
