@@ -275,13 +275,13 @@ try {
 class Disciple_Tools_Snapshot_Report {
     public static function snapshot_report( $force_refresh = false ) {
 
-//        $force_refresh = true; // @todo @development mode. remove line for production
-
-        if ( $force_refresh ) {
-            delete_transient( 'dt_snapshot_report' );
+        $time = get_option( 'dt_snapshot_report_timestamp' );
+        if ( $time < (time() - (24 * 60 * 60) ) ) {
+            $force_refresh = true;
         }
-        if ( get_transient( 'dt_snapshot_report' ) ) {
-            return get_transient( 'dt_snapshot_report' );
+
+        if ( ! $force_refresh ) {
+            return get_option( 'dt_snapshot_report' );
         }
 
         $profile = dt_get_partner_profile();
@@ -341,7 +341,8 @@ class Disciple_Tools_Snapshot_Report {
         ];
 
         if ( $report_data ) {
-            set_transient( 'dt_snapshot_report', $report_data, 60 * 60 * 24 );
+            update_option( 'dt_snapshot_report', $report_data, false );
+            update_option( 'dt_snapshot_report_timestamp', time(), false );
 
             return $report_data;
         } else {
