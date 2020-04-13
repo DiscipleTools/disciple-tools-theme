@@ -644,7 +644,7 @@ jQuery(document).ready(function($) {
   $( document ).on( 'text-input-updated', function (e, newContact){})
 
   $( document ).on( 'dt_date_picker-updated', function (e, newContact, id, date){
-    if ( id === 'baptism_date' && newContact.baptism_date.timestamp){
+    if (id === 'baptism_date' && newContact.baptism_date && newContact.baptism_date.timestamp) {
       openBaptismModal(newContact)
     }
   })
@@ -940,6 +940,7 @@ jQuery(document).ready(function($) {
   $('.select-input').on("change", function () {
     let key = $(this).attr('id')
     editFieldsUpdate[key] = $(this).val()
+
   })
 
   $('#contact-details-edit-modal').on('change', '.contact-input', function() {
@@ -1002,6 +1003,9 @@ jQuery(document).ready(function($) {
         editFieldsUpdate[`contact_${channelType}`].values.push({value:val})
       }
     })
+    if ( editFieldsUpdate[undefined] !== 'undefined' ) {
+      delete editFieldsUpdate[undefined]
+    }
     API.update_post('contacts', contactId, editFieldsUpdate).then((updatedContact)=>{
       contact = updatedContact
       $(this).toggleClass("loading")
