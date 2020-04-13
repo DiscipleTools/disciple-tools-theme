@@ -115,7 +115,7 @@ class Disciple_Tools_Network {
     public static function admin_test_send_box() {
         $report = false;
         if ( isset( $_POST['test_send_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['test_send_nonce'] ) ), 'test_send_'.get_current_user_id() ) ) {
-            $report = Disciple_Tools_Snapshot_Report::snapshot_report( true );
+            $report = Disciple_Tools_Snapshot_Report::snapshot_report( );
 
         }
         ?>
@@ -277,12 +277,12 @@ class Disciple_Tools_Snapshot_Report {
 
 //        $force_refresh = true; // @todo @development mode. remove line for production
 
-//        if ( $force_refresh ) {
-//            delete_transient( 'dt_snapshot_report' );
-//        }
-//        if ( get_transient( 'dt_snapshot_report' ) ) {
-//            return get_transient( 'dt_snapshot_report' );
-//        }
+        if ( $force_refresh ) {
+            delete_transient( 'dt_snapshot_report' );
+        }
+        if ( get_transient( 'dt_snapshot_report' ) ) {
+            return get_transient( 'dt_snapshot_report' );
+        }
 
         $profile = dt_get_partner_profile();
 
