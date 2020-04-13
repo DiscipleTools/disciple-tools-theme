@@ -117,69 +117,55 @@
 
     <div class="display-fields grid-x grid-margin-x">
 
-        <!-- Locations -->
-        <div class="xlarge-4 large-6 medium-6 small-12 cell">
-            <div class="section-subheader">
-                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                <?php echo esc_html( $group_fields["location_grid"]["name"] )?>
-            </div>
-            <ul class="location_grid-list"></ul>
-        </div>
-
-        <!-- Address -->
-        <div class="xlarge-4 large-6 medium-6 small-12 cell">
-            <div class="section-subheader">
-                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
-                <?php echo esc_html( Disciple_Tools_Groups_Post_Type::instance()->get_channels_list()["address"]["label"] )?>
-            </div>
-            <ul class="address details-list">
-                <?php
-                if (sizeof( $group["contact_address"] ?? [] ) === 0 ){
-                    ?> <li id="no-address"><?php esc_html_e( 'No address set', 'disciple_tools' )?></li> <?php
-                }
-                foreach ($group["contact_address"] ?? [] as $value){
-                    $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
-                    $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
-                    ?>
-                    <li class="<?php echo esc_html( $value["key"] ) ?> address-row">
-                        <div class="address-text" dir="auto"><?php echo esc_html( $value["value"] );?></div>
-                        <?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
-                    </li>
-                <?php } ?>
-            </ul>
-        </div>
-
         <!-- people groups -->
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
             <div class="section-subheader">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
                 <?php echo esc_html( $group_fields["people_groups"]["name"] )?>
             </div>
-            <ul class="people_groups-list details-list">
-                <?php
-                foreach ($group["people_groups"] ?? [] as $value){
-                    ?>
-                    <li class="<?php echo esc_html( $value["ID"] )?>">
-                        <a href="<?php echo esc_url( $value["permalink"] ) ?>"><?php echo esc_html( $value["post_title"] ) ?></a>
-                    </li>
-                <?php }
-                if (sizeof( $group["people_groups"] ) === 0){
-                    ?> <li id="no-people_groups"><?php esc_html_e( "No people group set", 'disciple_tools' ) ?></li><?php
-                }
-                ?>
-            </ul>
+            <ul class="people_groups-list details-list"></ul>
         </div>
+
+        <!-- Mapbox enabled locations -->
+        <?php if ( DT_Mapbox_API::get_key() ) : ?>
+
+            <!-- Locations -->
+            <div class="xlarge-8 large-12 medium-12 small-12 cell">
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
+                    <?php echo esc_html( $group_fields["location_grid"]["name"] )?>
+                </div>
+                <ul class="location_grid-list"></ul>
+                <ul class="address details-list"></ul>
+                <style>#no-address{display:none;}</style>
+            </div>
+
+        <?php else : ?>
+
+            <!-- Locations -->
+            <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
+                    <?php echo esc_html( $group_fields["location_grid"]["name"] )?>
+                </div>
+                <ul class="location_grid-list"></ul>
+            </div>
+
+            <!-- Address -->
+            <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
+                    <?php echo esc_html( Disciple_Tools_Groups_Post_Type::instance()->get_channels_list()["address"]["label"] )?>
+                </div>
+                <ul class="address details-list"></ul>
+            </div>
+
+        <?php endif; ?>
 
         <!-- start date -->
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
             <div class="section-subheader"><img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-start.svg' ?>"> <?php echo esc_html( $group_fields["start_date"]["name"] )?></div>
-            <ul class="date-list start_date details-list"><?php
-            if ( isset( $group["start_date"] ) ) {
-                echo esc_html( $group["start_date"]["formatted"] );
-            } else {
-                esc_html_e( "No start date", 'disciple_tools' );
-            } ?>
-            </ul>
+            <ul class="date-list start_date details-list"></ul>
         </div>
 
         <!-- church start date-->
