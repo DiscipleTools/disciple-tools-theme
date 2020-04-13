@@ -392,7 +392,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         <div class="baptism_date input-group">
                                             <input id="baptism_date" class="input-group-field dt_date_picker" type="text" value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" >
                                             <div class="input-group-button">
-                                                <button id="clear-date-button" class="button alert" title="Delete Date">x</button>
+                                                <button id="baptism-date-clear-button" class="button alert clear-date-button" title="Delete Date">x</button>
                                             </div>
                                         </div>
 
