@@ -54,7 +54,7 @@ jQuery(document).ready(function ($) {
       dateFormat: 'yy-mm-dd',
       onClose: function (date) {
         editFieldsUpdate[key] = date
-        console.log('the date value stored into editfieldsupdate[key] is now: ' + date);
+        // console.log('the date value stored into editfieldsupdate[key] is now: ' + date);
       },
       changeMonth: true,
       changeYear: true
