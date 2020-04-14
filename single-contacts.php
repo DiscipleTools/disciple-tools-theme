@@ -193,8 +193,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     $following = DT_Posts::get_users_following_post( "contacts", get_the_ID() );
     $dispatcher_actions = [];
     if ( current_user_can( "create_users" )){
-        $dispatcher_actions[] = "make_user_from_contact";
-        $dispatcher_actions[] = "link_to_user";
+        $dispatcher_actions[] = "make-user-from-contact-modal";
+        $dispatcher_actions[] = "link-to-user-modal";
     }
     if ( current_user_can( "view_any_contacts" )){
         $dispatcher_actions[] = "merge_with_contact";
@@ -206,39 +206,51 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         isset( $contact["requires_update"] ) && $contact["requires_update"] === true,
         in_array( $current_user_id, $following ),
         isset( $contact["assigned_to"]["id"] ) ? $contact["assigned_to"]["id"] == $current_user_id : false,
-        $dispatcher_actions
+        $dispatcher_actions,
+        true
     ); ?>
 
 <!--    <div id="errors"></div>-->
-<!-- <div><a class="button small" id="backlink" href="../" style="margin:.9rem 0 0 1.3em"><?php esc_html_e( 'Back to Contacts List', 'disciple_tools' )?></a></div> -->
     <div id="content" class="single-contacts">
         <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
         <span id="post-id" style="display: none"><?php echo get_the_ID()?></span>
         <span id="post-type" style="display: none">contact</span>
 
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
-
-
             <section class="hide-for-large small-12 cell">
                 <div class="bordered-box">
+                    <h3 class="section-header"><?php esc_html_e( 'Quick Actions', 'disciple_tools' ) ?>
+                        <button class="help-button float-right" data-section="quick-action-help-text">
+                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                        </button>
+                        <button class="section-chevron chevron_down">
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                        </button>
+                        <button class="section-chevron chevron_up">
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                        </button>
+                    </h3>
+                    <div class="section-body"><!-- start collapse -->
                     <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
-
                     <div style="text-align: center">
                         <a class="button small" href="#comment-activity-section" style="margin-bottom: 0">
                             <?php esc_html_e( 'View Comments', 'disciple_tools' ) ?>
                         </a>
                     </div>
+                    <!-- end collapse --></div>
                 </div>
             </section>
             <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell" role="main" style="padding:0">
 
-              <div class="cell grid-y grid-margin-y" style="display: block">
+                <div class="cell grid-y grid-margin-y" style="display: block">
                 <?php
                 if ( current_user_can( "view_any_contacts" ) ){
                     $duplicate_post_meta = get_post_meta( get_the_Id(), 'duplicate_data' );
                     $duplicates = false;
-                    foreach ($duplicate_post_meta[0] ?? [] as $key => $array) {
-                        if ($key === 'override') { continue; }
+                    foreach ( $duplicate_post_meta[0] ?? [] as $key => $array ) {
+                        if ($key === 'override') {
+                            continue;
+                        }
                         if ( !empty( $array )) {
                             $duplicates = true;
                         }
@@ -267,12 +279,20 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item">
             <!--                    <div class="bordered-box last-typeahead-in-section">-->
 
-                                <div class="bordered-box"><h3 class="section-header"><?php esc_html_e( "Connections", 'disciple_tools' ) ?>
+                                <div class="bordered-box" id="connections-tile">
+                                    <h3 class="section-header"><?php esc_html_e( "Connections", 'disciple_tools' ) ?>
                                         <button class="help-button float-right" data-section="connections-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
+                                        <button class="section-chevron chevron_down">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
+                                        <button class="section-chevron chevron_up">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                        </button>
                                     </h3>
-                                    <div class="section-subheader"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></div>
+                                    <div class="section-body"><!-- start collapse -->
+                                    <div class="section-subheader"><?php echo esc_html( $contact_fields["groups"]['name'] ) ?></div>
 
                                   <var id="groups-result-container" class="result-container"></var>
                                     <div id="groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
@@ -280,7 +300,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                             <div class="typeahead__field">
                                                 <span class="typeahead__query">
                                                     <input class="js-typeahead-groups input-height"
-                                                           name="groups[query]" placeholder="<?php esc_html_e( "Search groups", 'disciple_tools' ) ?>"
+                                                           name="groups[query]"
+                                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["groups"]['name'] ) )?>"
                                                            autocomplete="off">
                                                 </span>
                                                 <span class="typeahead__button">
@@ -294,11 +315,11 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
                                     <?php
                                     $connections = [
-                                        "relation" => esc_html__( "Connection or Relation", 'disciple_tools' ),
-                                        "baptized_by" => esc_html__( "Baptized By", 'disciple_tools' ),
-                                        "baptized" => esc_html__( "Baptized", 'disciple_tools' ),
-                                        "coached_by" => esc_html__( "Coached By", 'disciple_tools' ),
-                                        "coaching" => esc_html__( "Coaching", 'disciple_tools' )
+                                        "relation" => $contact_fields['relation']["name"],
+                                        "baptized_by" => $contact_fields['baptized_by']["name"],
+                                        "baptized" => $contact_fields['baptized']["name"],
+                                        "coached_by" => $contact_fields['coached_by']["name"],
+                                        "coaching" => $contact_fields['coaching']["name"]
                                     ];
                                     foreach ( $connections as $connection => $connection_label ) {
                                         ?>
@@ -310,7 +331,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                                     <div class="typeahead__field">
                                                         <span class="typeahead__query">
                                                             <input class="js-typeahead-<?php echo esc_html( $connection ) ?> input-height"
-                                                                   name="<?php echo esc_html( $connection ) ?>[query]" placeholder="<?php esc_html_e( "Search multipliers and contacts", 'disciple_tools' ) ?>"
+                                                                   name="<?php echo esc_html( $connection ) ?>[query]" placeholder="<?php echo esc_html_x( "Search multipliers and contacts", 'input field placeholder', 'disciple_tools' ) ?>"
                                                                    autocomplete="off">
                                                         </span>
                                                         <span class="typeahead__button">
@@ -325,17 +346,24 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         <?php
                                     }
                                     ?>
-                                </div>
+                                </div><!-- end collapse --></div>
                             </section>
 
                         <!-- PROGRESS TILE -->
                             <section id="faith" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                <div class="bordered-box">
-                                    <label class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?>
+                                <div class="bordered-box" id="progress-tile">
+                                    <h3 class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?>
                                         <button class="help-button float-right" data-section="contact-progress-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
-                                    </label>
+                                        <button class="section-chevron chevron_down">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
+                                        <button class="section-chevron chevron_up">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                        </button>
+                                    </h3>
+                                    <div class="section-body"><!-- start collapse -->
                                     <div class="section-subheader">
                                         <?php echo esc_html( $contact_fields["seeker_path"]["name"] )?>
                                         <button class="help-button" data-section="seeker-path-help-text">
@@ -383,21 +411,15 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                     </div>
 
                                     <div class="baptism_date">
-                                        <div class="section-subheader"><?php esc_html_e( 'Baptism Date', 'disciple_tools' )?>
-                                            <button class="help-button" data-section="baptism-date-help-text">
-                                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                            </button>
-                                        </div>
-
                                         <div class="baptism_date input-group">
                                             <input id="baptism_date" class="input-group-field dt_date_picker" type="text" value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" >
                                             <div class="input-group-button">
                                                 <button id="baptism-date-clear-button" class="button alert clear-date-button" title="Delete Date">x</button>
                                             </div>
                                         </div>
-
                                     </div>
-                                </div>
+
+                                </div><!-- end collapse --></div>
                             </section>
 
                             <?php
@@ -412,7 +434,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                 //remove section if hidden
                                 if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
                                     $index = array_search( $tile_key, $sections );
-                                    if ( ( $index ) !== false ) {
+                                    if ( $index !== false) {
                                         unset( $sections[ $index ] );
                                     }
                                 }
@@ -421,7 +443,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             foreach ( $sections as $section ){
                                 ?>
                                 <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                    <div class="bordered-box">
+                                    <div class="bordered-box" id="<?php echo esc_html( $section )?>-tile">
                                         <?php
                                         //setup tile label if see by customizations
                                         if ( isset( $custom_tiles["contacts"][$section]["label"] ) ){ ?>
@@ -433,7 +455,6 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                                 <button class="section-chevron chevron_up">
                                                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
                                                 </button>
-
                                             </h3>
                                         <?php }
                                         // let the plugin add section content
@@ -470,13 +491,19 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             ?>
                         <!-- OTHER TILE -->
                             <section id="other" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                <div class="bordered-box">
-                                    <label class="section-header"><?php esc_html_e( 'Other', 'disciple_tools' )?>
+                                <div class="bordered-box" id="other-tile">
+                                    <h3 class="section-header"><?php esc_html_e( 'Other', 'disciple_tools' )?>
                                         <button class="help-button" data-section="other-tile-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
-                                    </label>
-
+                                        <button class="section-chevron chevron_down">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
+                                        <button class="section-chevron chevron_up">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                        </button>
+                                    </h3>
+                                    <div class="section-body"><!-- start collapse -->
                                     <div class="section-subheader">
                                         <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
                                     </div>
@@ -487,7 +514,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                                 <div class="typeahead__field">
                                                     <span class="typeahead__query">
                                                         <input class="js-typeahead-tags input-height"
-                                                               name="tags[query]" placeholder="<?php esc_html_e( "Search Tags", 'disciple_tools' ) ?>"
+                                                               name="tags[query]"
+                                                               placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["tags"]['name'] ) )?>"
                                                                autocomplete="off">
                                                     </span>
                                                     <span class="typeahead__button">
@@ -500,7 +528,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         </div>
                                     </div>
                                 </div>
-
+                                <!-- end collapse --></div>
                             </section>
                         </div>
                     </div>
@@ -508,7 +536,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             </main> <!-- end #main -->
 
             <aside class="auto cell grid-x">
-                <section class="bordered-box comment-activity-section cell"
+                <section class="comment-activity-section cell"
                          id="comment-activity-section">
                     <?php get_template_part( 'dt-assets/parts/loop', 'activity-comment' ); ?>
                 </section>
@@ -523,27 +551,32 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-group' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-contact' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'revert' ); ?>
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'tasks' ); ?>
 
 
     <div class="reveal" id="closed-contact-modal" data-reveal>
-        <h1><?php esc_html_e( 'Close Contact', 'disciple_tools' )?></h1>
-        <p class="lead"><?php esc_html_e( 'Why do you want to close this contact?', 'disciple_tools' )?></p>
+        <h3><?php echo esc_html( $contact_fields["reason_closed"]["name"] ?? '' )?></h3>
+        <p><?php echo esc_html( $contact_fields["reason_closed"]["description"] ?? '' )?></p>
+        <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
 
         <select id="reason-closed-options">
             <?php
             foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $option ) {
-                $selected = ( $reason_key === ( $contact["reason_closed"]["key"] ?? "" ) ) ? "selected" : "";
-                ?>
-                <option value="<?php echo esc_attr( $reason_key )?>" <?php echo esc_html( $selected ) ?>> <?php echo esc_html( $option["label"] ?? "" )?></option>
-                <?php
+                if ( $option["label"] ) {
+                    $selected = ( $reason_key === ( $contact["reason_closed"]["key"] ?? "" ) ) ? "selected" : "";
+                    ?>
+                    <option
+                        value="<?php echo esc_attr( $reason_key ) ?>" <?php echo esc_html( $selected ) ?>> <?php echo esc_html( $option["label"] ?? "" ) ?></option>
+                    <?php
+                }
             }
             ?>
         </select>
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-            <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
         </button>
         <button class="button loader confirm-reason-button" type="button" id="confirm-close" data-field="closed">
-            <?php esc_html_e( 'Confirm', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
@@ -551,52 +584,62 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     </div>
 
     <div class="reveal" id="paused-contact-modal" data-reveal>
-        <h1><?php esc_html_e( 'Pause Contact', 'disciple_tools' )?></h1>
-        <p class="lead"><?php esc_html_e( 'Why do you want to pause this contact?', 'disciple_tools' )?></p>
+        <h3><?php echo esc_html( $contact_fields["reason_paused"]["name"] ?? '' )?></h3>
+        <p><?php echo esc_html( $contact_fields["reason_paused"]["description"] ?? '' )?></p>
+        <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
 
         <select id="reason-paused-options">
             <?php
             foreach ( $contact_fields["reason_paused"]["default"] as $reason_key => $option ) {
-                ?>
-                <option value="<?php echo esc_attr( $reason_key )?>"
-                    <?php if ( ( $contact["reason_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";} ?>>
-                    <?php echo esc_html( $option["label"] ?? "" )?>
-                </option>
-                <?php
+                if ( $option["label"] ) {
+                    ?>
+                    <option value="<?php echo esc_attr( $reason_key ) ?>"
+                        <?php if ( ( $contact["reason_paused"]["key"] ?? "" ) === $reason_key ) {
+                            echo "selected";
+                        } ?>>
+                        <?php echo esc_html( $option["label"] ?? "" ) ?>
+                    </option>
+                    <?php
+                }
             }
             ?>
         </select>
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-            <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
         </button>
         <button class="button loader confirm-reason-button" type="button" id="confirm-pause" data-field="paused">
-            <?php esc_html_e( 'Confirm', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="reveal" id="unassignable-contact-modal" data-reveal>
-        <h1><?php echo esc_html( $contact_fields["reason_unassignable"]["name"] )?></h1>
-<!--        <p class="lead">--><?php //esc_html_e( 'How is this contact unassignable', 'disciple_tools' )?><!--</p>-->
+        <h3><?php echo esc_html( $contact_fields["reason_unassignable"]["name"] ?? '' )?></h3>
+        <p><?php echo esc_html( $contact_fields["reason_unassignable"]["description"] ?? '' )?></p>
+        <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
 
         <select id="reason-unassignable-options">
             <?php
             foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $option ) {
-                ?>
-                <option value="<?php echo esc_attr( $reason_key )?>"
-                    <?php if ( ( $contact["unassignable_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";} ?>>
-                    <?php echo esc_html( $option["label"] ?? "" )?>
-                </option>
-                <?php
+                if ( $option["label"] ) {
+                    ?>
+                    <option value="<?php echo esc_attr( $reason_key ) ?>"
+                        <?php if ( ( $contact["unassignable_paused"]["key"] ?? "" ) === $reason_key ) {
+                            echo "selected";
+                        } ?>>
+                        <?php echo esc_html( $option["label"] ?? "" ) ?>
+                    </option>
+                    <?php
+                }
             }
             ?>
         </select>
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-            <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
         </button>
         <button class="button loader confirm-reason-button" type="button" id="confirm-unassignable" data-field="unassignable">
-            <?php esc_html_e( 'Confirm', 'disciple_tools' )?>
+            <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
@@ -604,20 +647,20 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     </div>
 
     <div class="reveal" id="create-tag-modal" data-reveal data-reset-on-close>
-
-        <p class="lead"><?php esc_html_e( 'Create Tag', 'disciple_tools' )?></p>
+        <h3><?php esc_html_e( 'Create Tag', 'disciple_tools' )?></h3>
+        <p><?php esc_html_e( 'Create a tag and apply it to this contact.', 'disciple_tools' )?></p>
 
         <form class="js-create-tag">
             <label for="title">
                 <?php esc_html_e( "Tag", "disciple_tools" ); ?>
             </label>
-            <input name="title" id="new-tag" type="text" placeholder="<?php esc_html_e( "tag", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
+            <input name="title" id="new-tag" type="text" placeholder="<?php echo esc_html_x( "tag", 'input field placeholder', 'disciple_tools' ); ?>" required aria-describedby="name-help-text">
             <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
         </form>
 
         <div class="grid-x">
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+                <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
             </button>
             <button class="button" data-close type="button" id="create-tag-return">
                 <?php esc_html_e( 'Create and apply tag', 'disciple_tools' ); ?>
@@ -630,11 +673,12 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
     <div class="reveal" id="baptism-modal" data-reveal>
 
-        <p class="lead"><?php esc_html_e( 'Baptized', 'disciple_tools' )?></p>
+        <h3><?php echo esc_html( $contact_fields["baptized"]["name"] )?></h3>
+        <p><?php esc_html_e( "Who was this contact baptized by and when?", 'disciple_tools' )?></p>
 
         <div>
             <div class="section-subheader">
-                <?php esc_html_e( 'Baptized By', 'disciple_tools' )?>
+                <?php echo esc_html( $contact_fields["baptized_by"]["name"] )?>
             </div>
             <div class="modal_baptized_by details">
                 <var id="modal_baptized_by-result-container" class="result-container modal_baptized_by-result-container"></var>
@@ -644,7 +688,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             <span class="typeahead__query">
                                 <input class="js-typeahead-modal_baptized_by input-height"
                                        name="modal_baptized_by[query]"
-                                       placeholder="<?php esc_html_e( "Search multipliers and contacts", 'disciple_tools' ) ?>"
+                                       placeholder="<?php echo esc_html_x( "Search multipliers and contacts", 'input field placeholder', 'disciple_tools' ) ?>"
                                        autocomplete="off">
                             </span>
                         </div>
@@ -652,17 +696,15 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                 </div>
             </div>
 
-            <span class="section-subheader"><?php esc_html_e( "Baptism Date", 'disciple_tools' ) ?></span>
-            <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" id="modal-baptism-date-picker">
+            <span class="section-subheader"><?php echo esc_html( $contact_fields["baptism_date"]["name"] )?></span>
+            <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" id="modal-baptism-date-picker" autocomplete="off">
 
-<!--            <span class="section-subheader">--><?php //esc_html_e( "Baptism Generation", 'disciple_tools' ) ?><!--</span>-->
-<!--            <input type="number" value="" id="modal-baptism_generation">-->
         </div>
 
 
         <div class="grid-x">
             <button class="button" data-close type="button" id="close-baptism-modal">
-                <?php esc_html_e( 'Close', 'disciple_tools' )?>
+                <?php echo esc_html__( 'Close', 'disciple_tools' )?>
             </button>
             <button class="close-button" data-close aria-label="Close modal" type="button">
                 <span aria-hidden="true">&times;</span>
@@ -670,15 +712,15 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         </div>
     </div>
 
-    <div class="reveal" id="make_user_from_contact" data-reveal data-reset-on-close>
-
-        <p class="lead"><?php esc_html_e( 'Create User', 'disciple_tools' )?></p>
+    <div class="reveal" id="make-user-from-contact-modal" data-reveal data-reset-on-close>
+        <h3><?php echo esc_html_x( 'Make User From Contact', 'Make user modal', 'disciple_tools' )?></h3>
 
         <?php if ( isset( $contact['corresponds_to_user'] ) ) : ?>
-            <p><?php esc_html_e( "This contact already represents a user", 'disciple_tools' ) ?></p>
+            <p><strong><?php echo esc_html_x( "This contact is already connected to a user.", 'Make user modal', 'disciple_tools' ) ?></strong></p>
         <?php else : ?>
 
-        <p><?php esc_html_e( "This will invite this contact to Disciple.Tools as a multiplier", 'disciple_tools' ) ?></p>
+        <p><?php echo esc_html_x( "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'.", 'Make user modal', 'disciple_tools' ) ?></p>
+        <p><?php echo esc_html_x( "In the fields below, enter their email address and a 'Display Name' which they can change later.", 'Make user modal', 'disciple_tools' ) ?></p>
 
         <form id="create-user-form">
             <label for="user-email">
@@ -690,7 +732,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                 <?php esc_html_e( "Display Name", "disciple_tools" ); ?>
                 <input name="user-display" id="user-display" type="text"
                        value="<?php the_title_attribute(); ?>"
-                       placeholder="<?php esc_html_e( "Display name", 'disciple_tools' ) ?>">
+                       placeholder="<?php echo esc_html_x( "Display Name", 'disciple_tools' ) ?>">
             </label>
 
             <div class="grid-x">
@@ -698,7 +740,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             </div>
             <div class="grid-x">
                 <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                    <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+                    <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
                 </button>
                 <button class="button loader" type="submit" id="create-user-return">
                     <?php esc_html_e( 'Create user', 'disciple_tools' ); ?>
@@ -712,16 +754,16 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     </div>
 
 
-    <div class="reveal" id="link_to_user" data-reveal data-reset-on-close style="min-height:500px">
+    <div class="reveal" id="link-to-user-modal" data-reveal data-reset-on-close style="min-height:500px">
 
-        <p class="lead"><?php esc_html_e( 'Link this contact to an existing user', 'disciple_tools' )?></p>
+        <h3><?php esc_html_e( "Link this contact to an existing user", 'disciple_tools' )?></h3>
 
         <?php if ( isset( $contact['corresponds_to_user'] ) ) : ?>
-            <p><?php esc_html_e( "This contact already represents a user", 'disciple_tools' ) ?></p>
+            <p><?php esc_html_e( "This contact already represents a user.", 'disciple_tools' ) ?></p>
         <?php else : ?>
 
 
-        <p><?php esc_html_e( "First, find the user", 'disciple_tools' ) ?></p>
+        <p><?php echo esc_html_x( "To link to an existing user, first, find the user using the field below.", 'Step 1 of link user', 'disciple_tools' ) ?></p>
 
         <div class="user-select details">
             <var id="user-select-result-container" class="result-container user-select-result-container"></var>
@@ -730,7 +772,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                     <div class="typeahead__field">
                         <span class="typeahead__query">
                             <input class="js-typeahead-user-select input-height"
-                                   name="user-select[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
+                                   name="user-select[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
                                    autocomplete="off">
                         </span>
                         <span class="typeahead__button">
@@ -745,21 +787,21 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
         <br>
         <div class="confirm-merge-with-user" style="display: none">
-            <p><?php esc_html_e( "To finish the linking, merge this contact with the existing user details.", 'disciple_tools' ) ?></p>
+            <p><?php echo esc_html_x( "To finish the linking, merge this contact with the existing user details.", 'Step 2 of link user', 'disciple_tools' ) ?></p>
         </div>
 
         <?php endif; ?>
 
         <div class="grid-x">
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+                <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
             </button>
             <form action='<?php echo esc_url( site_url() );?>/contacts/mergedetails' method='post'>
                 <input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr( wp_create_nonce() ); ?>'/>
                 <input type='hidden' name='currentid' value='<?php echo esc_html( $contact["ID"] );?>'/>
                 <input id="confirm-merge-with-user-dupe-id" type='hidden' name='dupeid' value=''/>
                 <button type='submit' class="button confirm-merge-with-user" style="display: none">
-                    <?php esc_html_e( 'Merge', 'disciple_tools' ) ?>
+                    <?php echo esc_html__( 'Merge', 'disciple_tools' )?>
                 </button>
             </form>
             <button class="close-button" data-close aria-label="Close modal" type="button">
@@ -768,10 +810,9 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         </div>
     </div>
 
-    <div class="reveal" id="merge_with_contact_modal" data-reveal style="min-height:500px">
-
-        <p class="lead"><?php esc_html_e( 'Merge this contact with another contact', 'disciple_tools' )?></p>
-
+    <div class="reveal" id="merge-with-contact-modal" data-reveal style="min-height:500px">
+        <h3><?php esc_html_e( "Merge Contact", 'disciple_tools' )?></h3>
+        <p><?php esc_html_e( "Merge this contact with another contact.", 'disciple_tools' )?></p>
 
             <div class="merge_with details">
                 <var id="merge_with-result-container" class="result-container merge_with-result-container"></var>
@@ -780,7 +821,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-merge_with input-height"
-                                       name="merge_with[query]" placeholder="<?php esc_html_e( "Search multipliers and contacts", 'disciple_tools' ) ?>"
+                                       name="merge_with[query]" placeholder="<?php echo esc_html_x( "Search multipliers and contacts", 'input field placeholder', 'disciple_tools' ) ?>"
                                        autocomplete="off">
                             </span>
                             <span class="typeahead__button">
@@ -795,20 +836,20 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
             <br>
             <div class="confirm-merge-with-contact" style="display: none">
-                <p><span  id="name-of-contact-to-merge"></span> <?php esc_html_e( "selected.", 'disciple_tools' ) ?></p>
+                <p><span  id="name-of-contact-to-merge"></span> <?php echo esc_html_x( "selected.", 'added to the end of a sentence', 'disciple_tools' ) ?></p>
                 <p><?php esc_html_e( "Click merge to continue.", 'disciple_tools' ) ?></p>
             </div>
 
             <div class="grid-x">
                 <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                    <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+                    <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
                 </button>
                 <form action='<?php echo esc_url( site_url() );?>/contacts/mergedetails' method='post'>
                     <input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr( wp_create_nonce() ); ?>'/>
                     <input type='hidden' name='currentid' value='<?php echo esc_html( $contact["ID"] );?>'/>
                     <input id="confirm-merge-with-contact-id" type='hidden' name='dupeid' value=''/>
                     <button type='submit' class="button confirm-merge-with-contact" style="display: none">
-                        <?php esc_html_e( 'Merge', 'disciple_tools' ) ?>
+                        <?php echo esc_html__( 'Merge', 'disciple_tools' )?>
                     </button>
                 </form>
                 <button class="close-button" data-close aria-label="Close modal" type="button">
