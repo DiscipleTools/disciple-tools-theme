@@ -111,6 +111,7 @@ get_header();
 </div>
 
 <script>jQuery(function($) {
+    $('input:enabled:visible:first').focus();
     $(".js-create-contact-button").removeAttr("disabled");
     let selectedLocations = []
     $(".js-create-contact").on("submit", function(event) {

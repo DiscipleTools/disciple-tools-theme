@@ -523,7 +523,7 @@ function dt_get_site_custom_lists( string $list_title = null ) {
         'transfer' => [
             'label'       => __( 'Transfer', 'disciple_tools' ),
             'key'         => 'transfer',
-            'description' => __( 'Contacts coming an contact transfer partnership with another Disciple.Tools site.', 'disciple_tools' ),
+            'description' => __( 'Contacts transferred from a partnership with another Disciple.Tools site.', 'disciple_tools' ),
             'enabled'     => true,
         ],
 

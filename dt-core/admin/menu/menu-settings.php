@@ -21,7 +21,7 @@ require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-site-link
 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-critical-path.php' );
 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-network.php' );
 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-security.php' );
-
+require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-translation.php' );
 /**
  * Class Disciple_Tools_Settings_Menu
  */

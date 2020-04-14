@@ -96,6 +96,8 @@ jQuery(document).ready(function($) {
     }
   }).ajaxError(handleAjaxError)
 
+
+
   /**
    * Groups
    */
@@ -276,7 +278,7 @@ jQuery(document).ready(function($) {
   /**
    * Locations
    */
-  let loadGeonameTypeahead = ()=>{
+  let loadLocationGridTypeahead = ()=>{
     if (!window.Typeahead['.js-typeahead-location_grid']){
       $.typeahead({
         input: '.js-typeahead-location_grid',
@@ -363,7 +365,6 @@ jQuery(document).ready(function($) {
       });
     }
   }
-
 
 
   /**
@@ -643,7 +644,7 @@ jQuery(document).ready(function($) {
   $( document ).on( 'text-input-updated', function (e, newContact){})
 
   $( document ).on( 'dt_date_picker-updated', function (e, newContact, id, date){
-    if ( id === 'baptism_date' && newContact.baptism_date.timestamp){
+    if (id === 'baptism_date' && newContact.baptism_date && newContact.baptism_date.timestamp) {
       openBaptismModal(newContact)
     }
   })
@@ -819,16 +820,6 @@ jQuery(document).ready(function($) {
       </li>`
     })
     $("#edit-contact_email").html(emailHTML)
-    let addressHTML = "";
-    (contact.contact_address|| []).forEach(field=>{
-      addressHTML += `<li style="display: flex">
-        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${_.escape(field.value)}</textarea>
-        <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
-            <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
-        </button>
-      </li>`
-    })
-    $("#edit-contact_address").html(addressHTML)
 
     let html = ""
     _.forOwn( contact, (fieldVal, field)=>{
@@ -853,10 +844,31 @@ jQuery(document).ready(function($) {
     })
     $('#edit-social').html(html)
 
+    let addressHTML = "";
+    (contact.contact_address|| []).forEach(field=>{
+      addressHTML += `<li style="display: flex">
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${_.escape(field.value)}</textarea>
+        <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
+            <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
+        </button>
+      </li>`
+    })
+    $("#edit-contact_address").html(addressHTML)
+
     $('#contact-details-edit-modal').foundation('open');
-    loadGeonameTypeahead()
+
     loadPeopleGroupTypeahead()
     leadSourcesTypeahead().catch(err => { console.log(err) })
+
+    /* locations */
+    if ( typeof dtMapbox !== 'undefined' ) {
+      // @todo add mapbox logic
+
+
+    } else {
+      loadLocationGridTypeahead()
+    }
+
   })
 
 
@@ -922,12 +934,13 @@ jQuery(document).ready(function($) {
     // loadLocationTypeahead()
     loadPeopleGroupTypeahead()
     leadSourcesTypeahead()
-    loadGeonameTypeahead()
+    loadLocationGridTypeahead()
   })
 
   $('.select-input').on("change", function () {
     let key = $(this).attr('id')
     editFieldsUpdate[key] = $(this).val()
+
   })
 
   $('#contact-details-edit-modal').on('change', '.contact-input', function() {
@@ -990,6 +1003,9 @@ jQuery(document).ready(function($) {
         editFieldsUpdate[`contact_${channelType}`].values.push({value:val})
       }
     })
+    if ( editFieldsUpdate[undefined] !== 'undefined' ) {
+      delete editFieldsUpdate[undefined]
+    }
     API.update_post('contacts', contactId, editFieldsUpdate).then((updatedContact)=>{
       contact = updatedContact
       $(this).toggleClass("loading")

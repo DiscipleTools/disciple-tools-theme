@@ -29,6 +29,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             }
         }
+        parent::__construct();
     }
 
     public function add_url( $template_for_url ) {
@@ -69,9 +70,12 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
+                'map_key' => empty( DT_Mapbox_API::get_key() ) ? '' : DT_Mapbox_API::get_key(),
                 'data' => $this->data(),
             ]
         );
+
+
     }
 
     public function data() {
@@ -145,8 +149,8 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 ],
             ]
         );
-    }
 
+    }
 
     public function tree( WP_REST_Request $request ) {
         if ( !$this->has_permission() ){

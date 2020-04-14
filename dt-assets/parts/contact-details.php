@@ -46,22 +46,13 @@
     <?php do_action( 'dt_contact_detail_notification', $contact ); ?>
 
     <section class="cell bordered-box">
-        <div class="section-header">
-            <?php esc_html_e( "Contact Details", 'disciple_tools' ) ?>
-            <button class="help-button" data-section="contact-details-help-text">
-                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-            </button>
-            <!-- <button class="section-chevron chevron_down">
-                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-            </button>
-            <button class="section-chevron chevron_up">
-                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
-            </button> -->
-        </div>
         <div style="display: flex;">
             <div class="item-details-header" style="flex-grow:1">
                 <i class="fi-torso large" style="padding-bottom: 1.2rem"></i>
                 <span class="title"><?php the_title_attribute(); ?></span>
+                <button class="help-button" data-section="contact-details-help-text">
+                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                </button>
             </div>
             <div>
                 <button class="" id="open-edit">
@@ -211,6 +202,31 @@
                 <ul class="social"></ul>
             </div>
 
+
+
+            <!-- Mapbox enabled locations -->
+            <?php if ( DT_Mapbox_API::get_key() ) : ?>
+
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>" alt="location">
+                        <?php echo esc_html( $contact_fields["location_grid"]["name"] )?>
+                    </div>
+                    <ul id="mapbox-list" class="location_grid-list"></ul>
+                </div>
+
+            <?php else : ?>
+
+                <!-- Location Grid -->
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>" alt="location">
+                        <?php echo esc_html( $contact_fields["location_grid"]["name"] )?>
+                    </div>
+                    <ul class="location_grid-list"></ul>
+                </div>
+            <?php endif; ?>
+
             <!-- Address -->
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
                 <div class="section-subheader">
@@ -218,15 +234,6 @@
                     <?php echo esc_html( $channel_list["address"]["label"] )?>
                 </div>
                 <ul class="address"></ul>
-            </div>
-
-            <!-- Location Grid -->
-            <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                <div class="section-subheader">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                    <?php echo esc_html( $contact_fields["location_grid"]["name"] )?>
-                </div>
-                <ul class="location_grid-list"></ul>
             </div>
 
             <!-- People Groups -->
@@ -279,7 +286,7 @@
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
-                    <?php esc_html_e( 'Source' ); ?>
+                    <?php echo esc_html( $contact_fields["sources"]["name"] )?>
                 </div>
                 <ul class="sources-list <?php echo esc_html( user_can( get_current_user_id(), 'view_any_contacts' ) ? 'details-list' : '' ) ?>">
                     <?php
@@ -337,43 +344,8 @@
                 <ul id="edit-contact_email" class="cell"></ul>
             </div>
 
-            <!-- Address -->
-            <div class="grix-x">
-                <div class="section-subheader cell">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
-                    <?php echo esc_html( $channel_list["address"]["label"] )?>
-                    <button id="add-new-address">
-                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
-                    </button>
-                </div>
-                <!-- list of addresses -->
-                <ul id="edit-contact_address" class="cell"></ul>
-            </div>
-
-            <div class="grix-x">
-                <div class="section-subheader cell">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                    <?php echo esc_html( $contact_fields["location_grid"]["name"] )?>
-                </div>
-                <div class="location_grid">
-                    <var id="location_grid-result-container" class="result-container"></var>
-                    <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-location_grid input-height"
-                                           name="location_grid[query]"
-                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["location_grid"]["name"] ) )?>"
-                                           autocomplete="off">
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Social Media -->
-            <div class="grix-x">
+            <div class="grid-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/socialmedia.svg' ?>">
                     <?php esc_html_e( 'Social Media', 'disciple_tools' ) ?>
@@ -385,14 +357,68 @@
                 <ul id="edit-social" class="cell"></ul>
             </div>
 
+            <?php if ( DT_Mapbox_API::get_key() ) : ?>
+
+                <div class="grid-x">
+                    <div class="section-subheader cell" style="padding-bottom:10px;">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>" alt="location">
+                        <?php echo esc_html( $contact_fields["location_grid"]["name"] )?>
+                        <button id="new-mapbox-search">
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>" alt="add"/>
+                        </button>
+                    </div>
+                    <div id="mapbox-wrapper" class="cell"></div>
+                </div>
+
+            <?php else : ?>
+
+                <!-- Locations -->
+                <div class="grid-x">
+                    <div class="section-subheader cell">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
+                        <?php echo esc_html( $contact_fields["location_grid"]["name"] )?>
+                    </div>
+                    <div class="location_grid full-width">
+                        <var id="location_grid-result-container" class="result-container"></var>
+                        <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
+                            <div class="typeahead__container">
+                                <div class="typeahead__field">
+                                    <span class="typeahead__query">
+                                        <input class="js-typeahead-location_grid input-height"
+                                               name="location_grid[query]"
+                                               placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["location_grid"]["name"] ) )?>"
+                                               autocomplete="off">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <?php endif; ?>
+
+            <!-- Address -->
+            <div class="grid-x">
+                <div class="section-subheader cell">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
+                    <?php echo esc_html( $channel_list["address"]["label"] )?>
+                    <button id="add-new-address">
+                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
+                    </button>
+                </div>
+                <!-- list of addresses -->
+                <ul id="edit-contact_address" class="cell"></ul>
+            </div>
+
+
             <!-- Sources -->
-            <div class="grix-x">
+            <div class="grid-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
                     <?php echo esc_html( $contact_fields["sources"]["name"] )?>
                 </div>
                 <span id="sources-result-container" class="result-container"></span>
-                <div id="sources_t" name="form-sources" class="scrollable-typeahead">
+                <div id="sources_t" name="form-sources" class="scrollable-typeahead full-width">
                     <div class="typeahead__container">
                         <div class="typeahead__field">
                             <span class="typeahead__query">
@@ -401,6 +427,29 @@
                                        placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["sources"]["name"] ) )?>"
                                        autocomplete="off">
                             </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- People Groups -->
+            <div class="grid-x">
+                <div class="section-subheader cell">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
+                    <?php echo esc_html( $contact_fields["people_groups"]["name"] )?>
+                </div>
+                <div class="people_groups full-width">
+                    <var id="people_groups-result-container" class="result-container"></var>
+                    <div id="people_groups_t" name="form-people_groups" class="scrollable-typeahead">
+                        <div class="typeahead__container">
+                            <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-people_groups"
+                                           name="people_groups[query]"
+                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["people_groups"]["name"] ) )?>"
+                                           autocomplete="off">
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -450,29 +499,6 @@
                 </div>
             </div>
 
-            <!-- People Groups -->
-            <div class="grix-x">
-                <div class="section-subheader cell">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
-                    <?php echo esc_html( $contact_fields["people_groups"]["name"] )?>
-                </div>
-                <div class="people_groups">
-                    <var id="people_groups-result-container" class="result-container"></var>
-                    <div id="people_groups_t" name="form-people_groups" class="scrollable-typeahead">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-people_groups"
-                                           name="people_groups[query]"
-                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["people_groups"]["name"] ) )?>"
-                                           autocomplete="off">
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
         <!-- Buttons -->
@@ -487,45 +513,6 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-    </div>
-
-    <!-- Address Reveal -->
-    <div class="medium reveal geocode-address" id="geocode-address" data-reveal>
-        <h1>Add Address</h1>
-
-        <!-- address and validation-->
-        <label for="validate_addressnew">Address</label>
-        <div class="input-group">
-            <input type="text"
-                   placeholder="example: 1000 Broadway, Denver, CO 80126"
-                   class="profile-input input-group-field contact-input"
-                   name="validate_address"
-                   id="validate_addressnew"
-                   data-type="contact_address"
-                   value=""
-            />
-            <div class="input-group-button">
-                <input type="button" class="button"
-                       onclick="validate_group_address( jQuery('#validate_addressnew').val(), 'new')"
-                       value="Validate"
-                       id="validate_address_buttonnew">
-            </div>
-        </div>
-        <div id="possible-resultsnew">
-            <input type="hidden" name="address" id="address_new" value=""/>
-        </div>
-
-        <!-- drill down -->
-        <div id="location_grid-encode-contact">
-
-        </div>
-
-        <!-- map -->
-        <div id="address-click-map"></div>
-        <p>
-            <button class="button" data-open="contact-details-edit-modal" onclick="window.GEOCODEFUNCTIONS.getAddressInput()">Select</button>
-            <button class="button" data-open="contact-details-edit-modal" data-close>Cancel</button>
-        </p>
     </div>
 
 

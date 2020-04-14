@@ -91,6 +91,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $contact_methods_and_connections = [];
         $multi_select_fields = [];
+        $location_meta = [];
         $post_user_meta = [];
         foreach ( $fields as $field_key => $field_value ){
             if ( self::is_post_key_contact_method_or_connection( $post_settings, $field_key ) ) {
@@ -98,8 +99,12 @@ class DT_Posts extends Disciple_Tools_Posts {
                 unset( $fields[$field_key] );
             }
             $field_type = $post_settings["fields"][$field_key]["type"] ?? '';
-            if ( $field_type === "multi_select" || $field_type === "location" ){
+            if ( $field_type === "multi_select" ){
                 $multi_select_fields[$field_key] = $field_value;
+                unset( $fields[$field_key] );
+            }
+            if ( $field_type === "location_meta" || $field_type === "location" ){
+                $location_meta[$field_key] = $field_value;
                 unset( $fields[$field_key] );
             }
             if ( $field_type === "post_user_meta" ){
@@ -136,6 +141,11 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $potential_error = self::update_multi_select_fields( $post_settings["fields"], $post_id, $multi_select_fields, null );
         if ( is_wp_error( $potential_error )){
+            return $potential_error;
+        }
+
+        $potential_error = self::update_location_grid_fields( $post_settings["fields"], $post_id, $location_meta, $post_type, null );
+        if (is_wp_error( $potential_error )) {
             return $potential_error;
         }
 
@@ -260,6 +270,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $potential_error;
         }
 
+        $potential_error = self::update_location_grid_fields( $post_settings["fields"], $post_id, $fields, $post_type, $existing_post );
+        if (is_wp_error( $potential_error )) {
+            return $potential_error;
+        }
+
         $potential_error = self::update_post_user_meta_fields( $post_settings["fields"], $post_id, $fields, $existing_post );
         if ( is_wp_error( $potential_error )){
             return $potential_error;
@@ -276,7 +291,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     }
                     $field_value = strtotime( $field_value );
                 }
-                $already_handled = [ "multi_select", "post_user_meta", "location" ];
+                $already_handled = [ "multi_select", "post_user_meta", "location", "location_meta" ];
                 if ( $field_type && !in_array( $field_type, $already_handled ) ) {
                     update_post_meta( $post_id, $field_key, $field_value );
                 }

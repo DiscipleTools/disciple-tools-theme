@@ -30,6 +30,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             }
         }
+        parent::__construct();
     }
 
     public function add_url( $template_for_url ) {
@@ -42,12 +43,6 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         $content .= '
             <li><a href="' . site_url( '/metrics/critical-path/' ) . '#project_critical_path" onclick="project_critical_path()">' . esc_html__( 'Critical Path', 'disciple_tools' ) . '</a></li>
             ';
-//            <li><a href="">' . esc_html__( 'Critical Path', 'disciple_tools' ) . '</a>
-//                <ul class="menu vertical nested" id="path-menu" aria-expanded="true">
-//                    <li><a href="' . site_url( '/metrics/critical-path/' ) . '#project_critical_path" onclick="project_critical_path()">' . esc_html__( 'Critical Path', 'disciple_tools' ) . '</a></li>
-//                </ul>
-//            </li>
-
         return $content;
     }
 
