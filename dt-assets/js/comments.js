@@ -15,12 +15,13 @@ jQuery(document).ready(function($) {
   function post_comment(postId) {
     let commentInput = jQuery("#comment-input")
     let commentButton = jQuery("#add-comment-button")
+    let commentType = "twitter"; //FOR TESTING
     getCommentWithMentions(comment_plain_text=>{
       if (comment_plain_text) {
         commentButton.toggleClass('loading')
         commentInput.attr("disabled", true)
         commentButton.attr("disabled", true)
-        rest_api.post_comment(postType, postId, _.escape(comment_plain_text)).then(data => {
+        rest_api.post_comment(postType, postId, _.escape(comment_plain_text), commentType ).then(data => {
           let updated_comment = data.comment || data
           commentInput.val("").trigger( "change" )
           commentButton.toggleClass('loading')
@@ -238,7 +239,8 @@ function unescapeHtml(safe) {
     $(this).toggleClass('loading')
     let id = $(this).data("id")
     let updated_comment = $('#comment-to-edit').val()
-    rest_api.update_comment( postType, postId, id, updated_comment).then((response)=>{
+    let commentType = "twitter"; //FOR TESTING;
+    rest_api.update_comment( postType, postId, id, updated_comment, commentType).then((response)=>{
       $(this).toggleClass('loading')
       if (response === 1 || response === 0 || response.comment_ID){
         $('#edit-comment-modal').foundation('close')
