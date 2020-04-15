@@ -382,6 +382,11 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|WP_Error
      */
     public static function list_posts( $post_type, $search_and_filter_query ){
+        $fields_to_return = [];
+        if ( isset( $search_and_filter_query["fields_to_return"] ) ){
+            $fields_to_return = $search_and_filter_query["fields_to_return"];
+            unset( $search_and_filter_query["fields_to_return"] );
+        }
         $data = self::search_viewable_post( $post_type, $search_and_filter_query );
         if ( is_wp_error( $data ) ) {
             return $data;
@@ -389,25 +394,83 @@ class DT_Posts extends Disciple_Tools_Posts {
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
         $records = $data["posts"];
         foreach ( $post_settings["connection_types"] as $connection_type ){
-            $p2p_type = $post_settings["fields"][$connection_type]["p2p_key"];
-            $p2p_direction = $post_settings["fields"][$connection_type]["p2p_direction"];
-            $q = p2p_type( $p2p_type )->set_direction( $p2p_direction )->get_connected( $records, [ "nopaging" => true ], 'abstract' );
-            $raw_connected = array();
-            foreach ( $q->items as $item ){
-                $raw_connected[] = $item->get_object();
+            if ( empty( $fields_to_return ) || in_array( $connection_type, $fields_to_return ) ){
+                $p2p_type = $post_settings["fields"][$connection_type]["p2p_key"];
+                $p2p_direction = $post_settings["fields"][$connection_type]["p2p_direction"];
+                $q = p2p_type( $p2p_type )->set_direction( $p2p_direction )->get_connected( $records, [ "nopaging" => true ], 'abstract' );
+                $raw_connected = array();
+                foreach ( $q->items as $item ){
+                    $raw_connected[] = $item->get_object();
+                }
+                p2p_distribute_connected( $records, $raw_connected, $connection_type );
             }
-            p2p_distribute_connected( $records, $raw_connected, $connection_type );
         }
 
+        $ids = [];
+        foreach ( $records as $record ) {
+            $ids[] = $record->ID;
+        }
+        $ids_sql = dt_array_to_sql( $ids );
+        $field_keys = [];
+        if ( !in_array( 'all_fields', $fields_to_return ) ){
+            $field_keys = empty( $fields_to_return ) ? array_keys( $post_settings["fields"] ) : $fields_to_return;
+        }
+        $field_keys_sql = dt_array_to_sql( $field_keys );
+
+        global $wpdb;
+        $all_posts = [];
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
+        $all_post_meta = $wpdb->get_results( "
+            SELECT *
+                FROM $wpdb->postmeta pm
+                WHERE pm.post_id IN ( $ids_sql )
+                AND pm.meta_key IN ( $field_keys_sql )
+            UNION SELECT *
+                FROM $wpdb->postmeta pm 
+                WHERE pm.post_id IN ( $ids_sql )
+                AND pm.meta_key LIKE 'contact_%'
+        ", ARRAY_A);
+        $user_id = get_current_user_id();
+        $all_user_meta = $wpdb->get_results( $wpdb->prepare( "
+            SELECT *
+            FROM $wpdb->dt_post_user_meta um
+            WHERE um.post_id IN ( $ids_sql )
+            AND user_id = %s
+            AND um.meta_key IN ( $field_keys_sql )
+        ", $user_id ), ARRAY_A);
+        // phpcs:disable
+
+        foreach ( $all_post_meta as $index => $meta_row ) {
+            if ( !isset( $all_posts[$meta_row["post_id"]] ) ) {
+                $all_posts[$meta_row["post_id"]] = [];
+            }
+            if ( !isset( $all_posts[$meta_row["post_id"]][$meta_row["meta_key"]] ) ) {
+                $all_posts[$meta_row["post_id"]][$meta_row["meta_key"]] = [];
+            }
+            $all_posts[$meta_row["post_id"]][$meta_row["meta_key"]][] = $meta_row["meta_value"];
+        }
+        $all_post_user_meta =[];
+        foreach ( $all_user_meta as $index => $meta_row ){
+            if ( !isset( $all_post_user_meta[$meta_row["post_id"]] ) ) {
+                $all_post_user_meta[$meta_row["post_id"]] = [];
+            }
+            $all_post_user_meta[$meta_row["post_id"]][] = $meta_row;
+        }
+
+        $site_url = site_url();
         foreach ( $records as  &$record ){
             foreach ( $post_settings["connection_types"] as $connection_type ){
-                foreach ( $record->$connection_type as &$post ) {
-                    $post = self::filter_wp_post_object_fields( $post );
+                if ( empty( $fields_to_return ) || in_array( $connection_type, $fields_to_return ) ) {
+                    foreach ( $record->$connection_type as &$post ) {
+                        $post = self::filter_wp_post_object_fields( $post );
+                    }
                 }
             }
             $record = (array) $record;
-            self::adjust_post_custom_fields( $post_settings, $record["ID"], $record );
-            $record["permalink"] = get_permalink( $record["ID"] );
+
+            self::adjust_post_custom_fields( $post_settings, $record["ID"], $record, $fields_to_return, $all_posts[$record["ID"]] ?? [], $all_post_user_meta[$record["ID"]] ?? [] );
+            $record["permalink"] = $site_url . '/' . $post_type .'/' . $record["ID"];
         }
         $data["posts"] = $records;
 
