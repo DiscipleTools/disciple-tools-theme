@@ -396,7 +396,7 @@ class Disciple_Tools_Posts
                     $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
                 }
                 if ( $fields[$activity->meta_key]["type"] === "date" ){
-                    $message = $fields[$activity->meta_key]["name"] . ": " . dt_format_date( $activity->meta_value );
+                    $message = $fields[$activity->meta_key]["name"] . ": {" . $activity->meta_value . "}";
                 }
                 if ( $fields[$activity->meta_key]["type"] === "location" ){
                     if ( $activity->meta_value === "value_deleted" ){

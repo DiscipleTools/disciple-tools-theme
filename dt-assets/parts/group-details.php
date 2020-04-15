@@ -175,7 +175,7 @@
             <div class="section-subheader"><img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-start.svg' ?>"> <?php echo esc_html( $group_fields["start_date"]["name"] )?></div>
             <ul class="date-list start_date details-list"><?php
             if ( isset( $group["start_date"] ) ) {
-                echo esc_html( $group["start_date"]["formatted"] );
+                echo esc_html( strftime( '%x', $group['start_date']['timestamp'] ) );
             } else {
                 esc_html_e( "No start date", 'disciple_tools' );
             } ?>
@@ -189,7 +189,7 @@
             </div>
             <ul class="date-list church_start_date details-list"><?php
             if ( isset( $group["church_start_date"] ) ) {
-                echo esc_html( $group["church_start_date"]["formatted"] );
+                echo esc_html( strftime( '%x', $group["church_start_date"]["timestamp"] ) );
             } else {
                 esc_html_e( "No church start date", 'disciple_tools' );
             } ?>
@@ -203,7 +203,7 @@
             </div>
             <ul class="date-list end_date details-list"><?php
             if ( isset( $group["end_date"] ) ) {
-                echo esc_html( $group["end_date"]["formatted"] );
+                echo esc_html( strftime( '%x', $group["end_date"]["timestamp"] ) );
             } else {
                 esc_html_e( "No end date", 'disciple_tools' );
             } ?>

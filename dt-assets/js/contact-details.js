@@ -1306,11 +1306,15 @@ jQuery(document).ready(function($) {
   });
 
   // Baptism date
-  let modalBaptismDatePicker = $('input#modal-baptism-date-picker')
+  let modalBaptismDatePicker = $('input#modal-baptism-date-picker');
   modalBaptismDatePicker.datepicker({
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
-      API.update_post('contacts', contactId, { baptism_date: date }).catch(handleAjaxError)
+      API.update_post('contacts', contactId, { baptism_date: date }).then((resp)=>{
+        if (this.value) {
+          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
+        }
+      }).catch(handleAjaxError)
     },
     changeMonth: true,
     changeYear: true
@@ -1369,7 +1373,7 @@ jQuery(document).ready(function($) {
         });
       }
       if ( _.get(newContact, "baptism_date.timestamp", 0) > 0){
-        modalBaptismDatePicker.datepicker('setDate', moment.unix(newContact['baptism_date']["timestamp"]).format("YYYY-MM-DD"))
+        modalBaptismDatePicker.datepicker('setDate', moment.unix(newContact['baptism_date']["timestamp"]).format("YYYY-MM-DD"));
       }
       modalBaptismGeneration.val(newContact["baptism_generation"] || 0)
     }

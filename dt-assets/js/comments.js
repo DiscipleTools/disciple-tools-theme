@@ -51,7 +51,7 @@ jQuery(document).ready(function($) {
     let createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
     const createdContactActivityItem = {
       hist_time: createdDate.unix(),
-      object_note: settings.txt_created.replace("{}", formatDate(createdDate.local(), langcode)),
+      object_note: settings.txt_created.replace("{}", window.SHAREDFUNCTIONS.formatDate(createdDate.unix())),
       name: settings.contact_author_name,
       user_id: currentContact.post_author,
     }
@@ -88,7 +88,6 @@ jQuery(document).ready(function($) {
     text = text.substring(0, text.indexOf('(')) || text
     text += ` (${formatNumber(activityData.length, langcode)})`
     tab.text(text)
-
   }
   $(".show-tabs").on("click", function () {
     let id = $(this).attr("id")
@@ -255,13 +254,6 @@ function unescapeHtml(safe) {
     })
   })
 
-  function formatDate(date, langcode) {
-    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' }
-    const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, options).format(new Date (date));
-
-    return last_modified;
-  }
-
   function formatNumber(num, lang) {
     return num.toLocaleString(lang);
   }
@@ -300,6 +292,11 @@ function unescapeHtml(safe) {
     let array = []
 
     displayed.forEach(d=>{
+      baptismDateRegex = /\{(\d+)\}+/;
+
+      if (baptismDateRegex.test(d.object_note)) {
+        d.object_note = d.object_note.replace(baptismDateRegex, baptismTimestamptoDate);
+      }
       let first = _.first(array)
       let name = d.comment_author || d.name
       let gravatar = d.gravatar || ""
@@ -321,7 +318,7 @@ function unescapeHtml(safe) {
         commentsWrapper.append(commentTemplate({
           name: array[0].name,
           gravatar: array[0].gravatar,
-          date:formatDate(array[0].date, langcode),
+          date:window.SHAREDFUNCTIONS.formatDate(moment(array[0].date).unix()),
           activity: array
         }))
         array = [obj]
@@ -331,12 +328,15 @@ function unescapeHtml(safe) {
       commentsWrapper.append(commentTemplate({
         gravatar: array[0].gravatar,
         name: array[0].name,
-        date:formatDate(array[0].date, langcode),
+        date:window.SHAREDFUNCTIONS.formatDate(moment(array[0].date).unix()),
         activity: array
       }))
     }
   }
 
+  function baptismTimestamptoDate(match, timestamp) {
+    return window.SHAREDFUNCTIONS.formatDate(timestamp)
+  }
 
   /**
    * Comments and activity
