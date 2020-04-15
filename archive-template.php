@@ -85,7 +85,53 @@ declare(strict_types=1);
                     </div>
                     <p style="display: inline-block" class="filter-result-text"></p>
                     <div style="display: inline-block" id="current-filters"></div>
-                    <div id="table-content"></div>
+                    <div class="js-sort-dropdown" style="display: inline-block">
+                        <ul class="dropdown menu" data-dropdown-menu>
+                            <li>
+                                <a href="#"><?php esc_html_e( "Sort", "disciple_tools" ); ?></a>
+                                <ul class="menu">
+                                    <li>
+                                        <a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="post_date">
+                                            <?php esc_html_e( "Newest", "disciple_tools" ); ?></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="js-sort-by" data-column-index="6" data-order="asc" data-field="post_date">
+                                            <?php esc_html_e( "Oldest", "disciple_tools" ); ?></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="last_modified">
+                                            <?php esc_html_e( "Most recently modified", "disciple_tools" ); ?></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="js-sort-by" data-column-index="6" data-order="asc" data-field="last_modified">
+                                            <?php esc_html_e( "Least recently modified", "disciple_tools" ); ?></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <table class="table-remove-top-border js-list stack striped" id="records-table">
+                            <thead>
+                                <tr class="sortable">
+                                    <th></th>
+                                    <th class="all" data-id="name"><?php esc_html_e( "Name", "disciple_tools" ); ?></th>
+                                    <?php foreach ( $field_options as $field_key => $field_value ){
+                                        if ( isset( $field_value["show_in_table"] ) && $field_value["show_in_table"] ) : ?>
+                                            <th class="all" data-id="<?php echo esc_html( $field_key ) ?>">
+                                                <?php echo esc_html( $field_value["name"] ) ?>
+                                            </th>
+                                        <?php endif;
+                                    }
+                                    ?>
+                                </tr>
+                            </thead>
+                            <tbody id="table-content">
+                                <tr class="js-list-loading"><td colspan=7><?php esc_html_e( "Loading...", "disciple_tools" ); ?></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="center">
                         <button id="load-more" class="button" style="display: none"><?php esc_html_e( "Load More", 'disciple_tools' ) ?></button>
                     </div>

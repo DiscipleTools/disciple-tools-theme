@@ -44,17 +44,17 @@ jQuery(document).ready(function($) {
     })
   })
 
-  $('.dt_date_picker').each(function( index ) {
-    if (this.value) {
-      this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
-    }
-  });
-
    /**
    * .DT - baptism date  management
    * - check for the right location
    * - save and/or clear date value, even if member leaves it blank
    */
+
+  $('.dt_date_picker').each(function( index ) {
+    if (this.value) {
+      this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
+    }
+  });
 
   $('.dt_date_picker').datepicker({
     dateFormat: 'yy-mm-dd',
@@ -75,9 +75,9 @@ jQuery(document).ready(function($) {
     yearRange: "1900:2050",
   })
 
-  function initActions() {
-    $('#baptism_date').val("");
-    let id = $('#baptism_date').attr('id');
+  function initActions(inputid) {
+    $(`#${inputid}`).val("");
+    let id = $(`#${inputid}`).attr('id');
     date = null;
 
     rest_api.update_post(post_type, post_id, { [id]: date }).then((resp) => {
@@ -85,13 +85,13 @@ jQuery(document).ready(function($) {
     }).catch(handleAjaxError)
   }
 
-  if (document.body.classList.contains('contacts-template-default')) {
+  if (document.body.classList.contains('contacts-template-default') || document.body.classList.contains('groups-template-default')) {
     let mcleardate = $(".clear-date-button");
     mcleardate.click(function() {
-      initActions()
+      inputid = this.dataset.inputid;
+      initActions(inputid);
     });
   }
-
 
   $('select.select-field').change(e => {
     const id = $(e.currentTarget).attr('id')

@@ -1374,6 +1374,7 @@ jQuery(document).ready(function($) {
       }
       if ( _.get(newContact, "baptism_date.timestamp", 0) > 0){
         modalBaptismDatePicker.datepicker('setDate', moment.unix(newContact['baptism_date']["timestamp"]).format("YYYY-MM-DD"));
+        modalBaptismDatePicker.val(window.SHAREDFUNCTIONS.formatDate(newContact['baptism_date']["timestamp"]) )
       }
       modalBaptismGeneration.val(newContact["baptism_generation"] || 0)
     }
