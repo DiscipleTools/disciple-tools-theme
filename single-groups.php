@@ -338,7 +338,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                             <?php elseif ( $field["type"] === "date" ) :?>
                                                 <input type="text" class="date-picker dt_date_picker"
                                                        id="<?php echo esc_html( $field_key ) ?>"
-                                                       value="<?php echo esc_html( $group[$field_key]["formatted"] ?? '' )?>"
+                                                       value="<?php echo esc_html( $group[$field_key]["timestamp"] ?? '' ) ?>"
                                                        autocomplete="off">
                                             <?php endif;
                                         }

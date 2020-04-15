@@ -396,7 +396,7 @@ class Disciple_Tools_Posts
                     $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
                 }
                 if ( $fields[$activity->meta_key]["type"] === "date" ){
-                    $message = $fields[$activity->meta_key]["name"] . ": " . dt_format_date( $activity->meta_value );
+                    $message = $fields[$activity->meta_key]["name"] . ": {" . $activity->meta_value . "}";
                 }
                 if ( $fields[$activity->meta_key]["type"] === "location" ){
                     if ( $activity->meta_value === "value_deleted" ){
@@ -925,7 +925,7 @@ class Disciple_Tools_Posts
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
         $prepared_sql = $wpdb->prepare("
-            SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, $wpdb->posts.post_title, $wpdb->posts.post_type FROM $wpdb->posts
+            SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, $wpdb->posts.post_title, $wpdb->posts.post_type, $wpdb->posts.post_date FROM $wpdb->posts
             " . $inner_joins . " " . $share_joins . " " . $access_joins . " " . $sort_join . "
             WHERE 1=1
             " . $post_type_check . " " . $connections_sql_to . " ". $connections_sql_from . " " . $location_sql . " " . $meta_query . " " . $includes_query . " " . $access_query . "
