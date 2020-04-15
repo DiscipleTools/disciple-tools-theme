@@ -8,80 +8,6 @@ jQuery(document).ready(function ($) {
   let groupId = group.ID
   let editFieldsUpdate = {}
 
-
-  /**
-   * date field management
-   */
-
-  //1 - set initial string data and create helpers functions
-  let dateFields = ["start_date", "church_start_date", "end_date"]
-
-  function format(date) {
-    let d = date.getDate();
-    let m = date.getMonth() + 1;
-    let y = date.getFullYear();
-    return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
-  }
-
-  function getinitialdates(...args) {
-    let initialdates = [];
-    for (const [index, dateField] of dateFields.entries()) {
-      let initdate = $(`.date-list.${dateField}.details-list`).text();
-      let initconvert = new Date(initdate);
-      initconvert = format(initconvert);
-      if (initconvert === "NaN-NaN-NaN") {
-        initconvert = "";
-      }
-      initialdates.push(initconvert);
-    }
-    return initialdates;
-  }
-
-  //2 - on click "edit" check read-only values, and assign them to our data fields in edit mode
-  let meditbtn = document.getElementById("open-edit");
-  meditbtn.onclick = editActions;
-  function editActions() {
-    let checkdates = getinitialdates(dateFields);
-    for (const [index, dateField] of dateFields.entries()) {
-      $('#' + dateField).val(checkdates[index]);
-    }
-  }
-
-  //3A - while in edit mode, allow the member to modify date values via datepicker
-  dateFields.forEach(key => {
-    let datePicker = $(`#${key}.date-picker`)
-    datePicker.datepicker({
-      dateFormat: 'yy-mm-dd',
-      onClose: function (date) {
-        editFieldsUpdate[key] = date
-        // console.log('the date value stored into editfieldsupdate[key] is now: ' + date);
-      },
-      changeMonth: true,
-      changeYear: true
-    });
-  });
-
-  //3B - if the user wants to clear any of the dates by pressing x, then let them do so...
-  dateFields.forEach(key => {
-    let deleteBtn = $(`#${key}_clear`);
-    deleteBtn.on('click', function(e){
-      $(`#${key}`).val("");
-      editFieldsUpdate[key] = '';
-    });
-  });
-
-  //4 - on click "save" re-check read-only values again, and assign them to our data fields in edit mode
-  let msavebtn = document.getElementById("save-edit-details");
-  msavebtn.onclick = saveActions;
-  function saveActions() {
-    $(document).ajaxStop(function () {
-      let recheckdates = getinitialdates(dateFields);
-      for (const [index, dateField] of dateFields.entries()) {
-        $('#' + dateField).val(recheckdates[index]);
-      }
-    });
-  }
-
   /**
    * Assigned_to
    */
@@ -768,9 +694,15 @@ jQuery(document).ready(function ($) {
       }
     })
 
+    /**
+   * date field management
+   */
+  let dateFields = ["start_date", "church_start_date", "end_date"]
+
     dateFields.forEach(dateField => {
       if (group[dateField]) {
-        $(`#${dateField}.date-picker`).datepicker('setDate', moment.unix(group[dateField]["timestamp"]).format("YYYY-MM-DD"))
+        $(`#${dateField}.date-picker`).datepicker('setDate', moment.unix(group[dateField]["timestamp"]).format("YYYY-MM-DD"));
+        $(`#${dateField}.date-picker`).val(window.SHAREDFUNCTIONS.formatDate( group[dateField]["timestamp"] ))
         $(`.${dateField}.details-list`).html(window.SHAREDFUNCTIONS.formatDate( group[dateField]["timestamp"] ))
       } else {
         $(`.${dateField}.details-list`).html(wpApiGroupsSettings.translations["not-set"][dateField])
