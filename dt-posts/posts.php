@@ -1147,8 +1147,6 @@ class Disciple_Tools_Posts
              * Basic Locations
              ********************************************************/
             if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "location" ) ){
-                dt_write_log( 'location_grid' );
-                dt_write_log( $fields );
                 if ( !isset( $field["values"] ) ) {
                     return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
                 }
