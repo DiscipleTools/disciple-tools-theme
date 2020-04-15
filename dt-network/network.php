@@ -115,7 +115,7 @@ class Disciple_Tools_Network {
     public static function admin_test_send_box() {
         $report = false;
         if ( isset( $_POST['test_send_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['test_send_nonce'] ) ), 'test_send_'.get_current_user_id() ) ) {
-            $report = Disciple_Tools_Snapshot_Report::snapshot_report( );
+            $report = Disciple_Tools_Snapshot_Report::snapshot_report();
 
         }
         ?>
@@ -126,7 +126,7 @@ class Disciple_Tools_Network {
         </form>
         <?php
         if ( $report ) {
-            echo maybe_serialize($report);
+            echo esc_html( maybe_serialize( $report ) );
         }
     }
 
@@ -276,7 +276,7 @@ class Disciple_Tools_Snapshot_Report {
     public static function snapshot_report( $force_refresh = false ) {
 
         $time = get_option( 'dt_snapshot_report_timestamp' );
-        if ( $time < (time() - (24 * 60 * 60) ) ) {
+        if ( $time < ( time() - ( 24 * 60 * 60 ) ) ) {
             $force_refresh = true;
         }
 
@@ -335,6 +335,27 @@ class Disciple_Tools_Snapshot_Report {
                 'countries'     => self::get_locations_list( true ),
                 'current_state' => self::get_locations_current_state(),
                 'list'          => self::get_locations_list(),
+                'contacts'      => [
+                    'all'       => Disciple_Tools_Mapping_Queries::get_contacts_grid_totals(),
+                    'active'    => Disciple_Tools_Mapping_Queries::get_contacts_grid_totals( 'active' ),
+                    'paused'    => Disciple_Tools_Mapping_Queries::get_contacts_grid_totals( 'paused' ),
+                    'closed'    => Disciple_Tools_Mapping_Queries::get_contacts_grid_totals( 'closed' ),
+                ],
+                'groups'        => [
+                    'all'       => Disciple_Tools_Mapping_Queries::get_groups_grid_totals(),
+                    'active'    => Disciple_Tools_Mapping_Queries::get_groups_grid_totals( 'active' ),
+                    'inactive'  => Disciple_Tools_Mapping_Queries::get_groups_grid_totals( 'inactive' ),
+                ],
+                'churches'      => [
+                    'all'       => Disciple_Tools_Mapping_Queries::get_church_grid_totals(),
+                    'active'    => Disciple_Tools_Mapping_Queries::get_church_grid_totals( 'active' ),
+                    'inactive'  => Disciple_Tools_Mapping_Queries::get_church_grid_totals( 'inactive' ),
+                ],
+                'users'         => [
+                    'all'       => Disciple_Tools_Mapping_Queries::get_user_grid_totals(),
+                    'active'    => Disciple_Tools_Mapping_Queries::get_user_grid_totals( 'active' ),
+                    'inactive'  => Disciple_Tools_Mapping_Queries::get_user_grid_totals( 'inactive' ),
+                ]
             ],
             'date'       => current_time( 'timestamp' ),
             'status'     => 'OK',

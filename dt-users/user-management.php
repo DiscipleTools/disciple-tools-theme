@@ -858,12 +858,7 @@ class DT_User_Management
 
         $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals( $status );
 
-        $list = [];
-        foreach ( $results as $result ) {
-            $list[$result['grid_id']] = $result;
-        }
-
-        return $list;
+        return $results;
 
     }
 
