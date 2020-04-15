@@ -338,7 +338,7 @@
                 <?php echo esc_html( $group_fields["end_date"]["name"] ); ?>
             </div>
             <div class="end_date input-group">
-                <input id="end_date" class="input-group-field dt_date_picker date-picker" type="text" autocomplete="off" data-date-format='yy-mm-dd' value="<?php echo esc_html( $group["end_date"]["timestamp"] ?? ''); ?>">
+                <input id="end_date" class="input-group-field dt_date_picker date-picker" type="text" autocomplete="off" data-date-format='yy-mm-dd' value="<?php echo esc_html( $group["end_date"]["timestamp"] ?? '' ); ?>">
 
                 <div class="input-group-button">
                     <button id="end_date_clear" class="button alert clear-date-button"
