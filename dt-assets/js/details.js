@@ -1,4 +1,4 @@
-jQuery(document).ready(function ($) {
+jQuery(document).ready(function($) {
   let post_id = detailsSettings.post_id
   let post_type = detailsSettings.post_type
   let post = detailsSettings.post_fields
@@ -7,15 +7,15 @@ jQuery(document).ready(function ($) {
 
   let masonGrid = $('.grid') // responsible for resizing and moving the tiles
 
-  $('input.text-input').change(function () {
+  $('input.text-input').change(function(){
     const id = $(this).attr('id')
     const val = $(this).val()
-    rest_api.update_post(post_type, post_id, { [id]: val }).then((newPost) => {
-      $(document).trigger("text-input-updated", [newPost, id, val]);
+    rest_api.update_post(post_type, post_id, { [id]: val }).then((newPost)=>{
+      $( document ).trigger( "text-input-updated", [ newPost, id, val ] );
     }).catch(handleAjaxError)
   })
 
-  $('button.dt_multi_select').on('click', function () {
+  $('button.dt_multi_select').on('click',function () {
     let fieldKey = $(this).data("field-key")
     let optionKey = $(this).attr('id')
     let fieldValue = {}
@@ -23,23 +23,23 @@ jQuery(document).ready(function ($) {
     let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`)
     field.addClass("submitting-select-button")
     let action = "add"
-    if (field.hasClass("selected-select-button")) {
-      fieldValue = { values: [{ value: optionKey, delete: true }] }
+    if (field.hasClass("selected-select-button")){
+      fieldValue = {values:[{value:optionKey,delete:true}]}
       action = "delete"
     } else {
       field.removeClass("empty-select-button")
       field.addClass("selected-select-button")
-      fieldValue = { values: [{ value: optionKey }] }
+      fieldValue = {values:[{value:optionKey}]}
     }
     data[optionKey] = fieldValue
-    rest_api.update_post(post_type, post_id, { [fieldKey]: fieldValue }).then((resp) => {
+    rest_api.update_post(post_type, post_id, {[fieldKey]: fieldValue}).then((resp)=>{
       field.removeClass("submitting-select-button selected-select-button")
       field.blur();
-      field.addClass(action === "delete" ? "empty-select-button" : "selected-select-button");
-      $(document).trigger("dt_multi_select-updated", [resp, fieldKey, optionKey, action]);
-    }).catch(err => {
+      field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
+      $( document ).trigger( "dt_multi_select-updated", [ resp, fieldKey, optionKey, action ] );
+    }).catch(err=>{
       field.removeClass("submitting-select-button selected-select-button")
-      field.addClass(action === "add" ? "empty-select-button" : "selected-select-button")
+      field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
       handleAjaxError(err)
     })
   })
@@ -90,16 +90,16 @@ jQuery(document).ready(function ($) {
     const val = $(e.currentTarget).val()
 
     rest_api.update_post(post_type, post_id, { [id]: val }).then(resp => {
-      $(document).trigger("select-field-updated", [resp, id, val]);
+      $( document ).trigger( "select-field-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
   })
 
-  $('input.number-input').on("blur", function () {
+  $('input.number-input').on("blur", function(){
     const id = $(this).attr('id')
     const val = $(this).val()
 
-    rest_api.update_post(post_type, post_id, { [id]: val }).then((resp) => {
-      $(document).trigger("number-input-updated", [resp, id, val]);
+    rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
+      $( document ).trigger( "number-input-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
   })
 
@@ -112,7 +112,7 @@ jQuery(document).ready(function ($) {
   })
 
 
-  $('.dt_typeahead').each((key, el) => {
+  $('.dt_typeahead').each((key, el)=>{
     let field_id = $(el).attr('id').replace('_connection', '')
     let listing_post_type = _.get(detailsSettings.post_settings.fields[field_id], "post_type", 'contacts')
     $.typeahead({
@@ -132,20 +132,20 @@ jQuery(document).ready(function ($) {
       multiselect: {
         matchOn: ["ID"],
         data: function () {
-          return (post[field_id] || []).map(g => {
-            return { ID: g.ID, name: g.post_title }
+          return (post[field_id] || [] ).map(g=>{
+            return {ID:g.ID, name:g.post_title}
           })
         }, callback: {
           onCancel: function (node, item) {
-            API.update_post(post_type, post_id, { [field_id]: { values: [{ value: item.ID, delete: true }] } })
-              .catch(err => { console.error(err) })
+            API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}})
+            .catch(err => { console.error(err) })
           }
         },
         href: window.wpApiShare.site_url + `/${listing_post_type}/{{ID}}`
       },
       callback: {
-        onClick: function (node, a, item, event) {
-          API.update_post(post_type, post_id, { [field_id]: { values: [{ "value": item.ID }] } }).catch(err => { console.error(err) })
+        onClick: function(node, a, item, event){
+          API.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).catch(err => { console.error(err) })
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();
@@ -160,7 +160,7 @@ jQuery(document).ready(function ($) {
           $(`#${field_id}-result-container`).html("");
           masonGrid.masonry('layout')
         },
-        onShowLayout() {
+        onShowLayout (){
           masonGrid.masonry('layout')
         }
       }
@@ -256,14 +256,14 @@ jQuery(document).ready(function ($) {
    */
   $('button.follow').on("click", function () {
     let following = !($(this).data('value') === "following")
-    $(this).data("value", following ? "following" : "")
-    $(this).html(following ? "Following" : "Follow")
-    $(this).toggleClass("hollow")
+    $(this).data("value", following ? "following" : "" )
+    $(this).html( following ? "Following" : "Follow")
+    $(this).toggleClass( "hollow" )
     let update = {
-      follow: { values: [{ value: detailsSettings.current_user_id, delete: !following }] },
-      unfollow: { values: [{ value: detailsSettings.current_user_id, delete: following }] }
+      follow: {values:[{value:detailsSettings.current_user_id, delete:!following}]},
+      unfollow: {values:[{value:detailsSettings.current_user_id, delete:following}]}
     }
-    rest_api.update_post(post_type, post_id, update)
+    rest_api.update_post( post_type, post_id, update )
   })
 
 
@@ -272,10 +272,10 @@ jQuery(document).ready(function ($) {
    * Share
    */
   let shareTypeahead = null
-  $('.open-share').on("click", function () {
+  $('.open-share').on("click", function(){
     $('#share-contact-modal').foundation('open');
-    if (!shareTypeahead) {
-      shareTypeahead = TYPEAHEADS.share(post_type, post_id, !['contacts', 'groups'].includes(detailsSettings.post_type))
+    if  (!shareTypeahead) {
+      shareTypeahead = TYPEAHEADS.share(post_type, post_id, !['contacts', 'groups'].includes(detailsSettings.post_type ) )
     }
   })
 
@@ -326,7 +326,7 @@ jQuery(document).ready(function ($) {
     let html = ``
     tasks.forEach(task=>{
       let task_done = ( task.category === "reminder" && task.value.notification === 'notification_sent' )
-                      || ( task.category !== "reminder" && task.value.status === 'task_complete' )
+        || ( task.category !== "reminder" && task.value.status === 'task_complete' )
       let show_complete_button = task.category !== "reminder" && task.value.status !== 'task_complete'
       let task_row = `<strong>${_.escape( moment(task.date).format("MMM D YYYY") )}</strong> `
       if ( task.category === "reminder" ){
@@ -335,11 +335,11 @@ jQuery(document).ready(function ($) {
           task_row += ' ' + _.escape(task.value.note)
         }
       } else {
-         task_row += _.escape(task.value.note || detailsSettings.translations.no_note )
+        task_row += _.escape(task.value.note || detailsSettings.translations.no_note )
       }
       html += `<li>
         <span style="${task_done ? 'text-decoration:line-through' : ''}">
-        ${task_row}
+        ${task_row}  
         ${ show_complete_button ? `<button type="button" data-id="${_.escape(task.id)}" class="existing-task-action complete-task">${_.escape(detailsSettings.translations.complete)}</button>` : '' }
         <button type="button" data-id="${_.escape(task.id)}" class="existing-task-action remove-task" style="color: red;">${_.escape(detailsSettings.translations.remove)}</button>
       </li>`
@@ -354,7 +354,7 @@ jQuery(document).ready(function ($) {
       $('#tasks-spinner').addClass('active')
       let id = $(this).data('id')
       API.update_post(post_type, post_id, {
-          "tasks": { values: [ { id, value: {status: 'task_complete'}, } ] }
+        "tasks": { values: [ { id, value: {status: 'task_complete'}, } ] }
       }).then(resp => {
         post = resp
         build_task_list()
@@ -365,7 +365,7 @@ jQuery(document).ready(function ($) {
       $('#tasks-spinner').addClass('active')
       let id = $(this).data('id')
       API.update_post(post_type, post_id, {
-          "tasks": { values: [ { id, delete: true } ] }
+        "tasks": { values: [ { id, delete: true } ] }
       }).then(resp => {
         post = resp
         build_task_list()
@@ -403,8 +403,8 @@ jQuery(document).ready(function ($) {
   $(".js-add-task-form").on("submit", function(e) {
     e.preventDefault();
     $("#create-task")
-      .attr("disabled", true)
-      .addClass("loading");
+    .attr("disabled", true)
+    .addClass("loading");
     let date = $('#create-task-date').data('daterangepicker').startDate
     let note = task_note.val()
     let task_type = $('#tasks-modal input[name="task-type"]:checked').val()
