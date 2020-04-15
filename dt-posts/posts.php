@@ -852,7 +852,7 @@ class Disciple_Tools_Posts
 
         $access_query = $access_query ? ( "AND ( " . $access_query . " ) " ) : "";
 
-        $sort_sql = "$wpdb->posts.post_date asc";
+        $sort_sql = "";
         $sort_join = "";
         $post_type_check = "";
         if ( $post_type == "contacts" ){
@@ -861,9 +861,8 @@ class Disciple_Tools_Posts
                 WHERE meta_key = 'type' AND meta_value = 'user'
                 GROUP BY post_id
             )";
-            $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
-            if ( $sort === "overall_status" || $sort === "seeker_path" ) {
-                $keys = array_keys( $contact_fields[$sort]["default"] );
+            if ( $sort === "overall_status" ) {
+                $keys = array_keys( $post_fields[$sort]["default"] );
                 $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql  = "CASE ";
                 foreach ( $keys as $index => $key ) {
@@ -872,23 +871,22 @@ class Disciple_Tools_Posts
                 }
                 $sort_sql .= "else 98 end ";
                 $sort_sql .= $sort_dir;
-            } elseif ( $sort === "faith_milestones" ){
-                $sort_sql = "CASE ";
-                $sort_join = "";
-                $milestone_keys = array_reverse( array_keys( $contact_fields["milestones"]["default"] ) );
-                foreach ( $milestone_keys as $index  => $key ){
-                    $alias = 'faith_' . esc_sql( $key );
-                    $sort_join .= "LEFT JOIN $wpdb->postmeta as $alias ON
-                    ( $wpdb->posts.ID = $alias.post_id AND $alias.meta_key = 'milestones' AND $alias.meta_value = '" . esc_sql( $key ) . "') ";
-                    $sort_sql .= "WHEN ( $alias.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
-                }
-                $sort_sql .= "else 1000 end ";
-                $sort_sql .= $sort_dir;
             }
         } elseif ( $post_type === "groups" ){
-            $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
-            if ( $sort === "group_status" || $sort === "group_type" ) {
-                $keys      = array_keys( $group_fields[ $sort ]["default"] );
+            if ( $sort === "member_count" ){
+                $sort_join = "LEFT JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $sort_sql = "cast(sort.meta_value as unsigned) $sort_dir";
+            }
+        }
+        if ( $sort === "name" || $sort === "post_title"){
+            $sort_sql = "$wpdb->posts.post_title  " . $sort_dir;
+        } elseif ( $sort === "post_date" ){
+            $sort_sql = "$wpdb->posts.post_date  " . $sort_dir;
+        }
+
+        if ( empty( $sort_sql ) && isset( $sort, $post_fields[$sort] ) ) {
+            if ( $post_fields[$sort]["type"] === "key_select" ) {
+                $keys = array_keys( $post_fields[ $sort ]["default"] );
                 $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql  = "CASE ";
                 foreach ( $keys as $index => $key ) {
@@ -896,26 +894,38 @@ class Disciple_Tools_Posts
                 }
                 $sort_sql .= "else 98 end ";
                 $sort_sql .= $sort_dir;
-            } elseif ( $sort === "members" ){
-                $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_to = $wpdb->posts.ID AND sort.p2p_type = 'contacts_to_groups' )";
-                $sort_sql = "COUNT(sort.p2p_id) $sort_dir";
+            } elseif ( $post_fields[$sort]["type"] === "multi_select" ){
+                $sort_sql = "CASE ";
+                $sort_join = "";
+                $keys = array_reverse( array_keys( $post_fields[$sort]["default"] ) );
+                foreach ( $keys as $index  => $key ){
+                    $alias = $sort . '_' . esc_sql( $key );
+                    $sort_join .= "LEFT JOIN $wpdb->postmeta as $alias ON
+                    ( $wpdb->posts.ID = $alias.post_id AND $alias.meta_key = '$sort' AND $alias.meta_value = '" . esc_sql( $key ) . "') ";
+                    $sort_sql .= "WHEN ( $alias.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
+                }
+                $sort_sql .= "else 1000 end ";
+                $sort_sql .= $sort_dir;
+            } elseif ( $post_fields[$sort]["type"] === "connection" ){
+                if ( isset( $post_fields[$sort]["p2p_key"], $post_fields[$sort]["p2p_direction"] ) ){
+                    if ( $post_fields[$sort]["p2p_direction"] === "from" ){
+                        $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = $wpdb->posts.ID AND sort.p2p_type = '" .  esc_sql( $post_fields[$sort]["p2p_key"] ) . "' )
+                        LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_to)";
+                    } else {
+                        $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_to = $wpdb->posts.ID AND sort.p2p_type = '" .  esc_sql( $post_fields[$sort]["p2p_key"] ) . "' )
+                        LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_from)";
+                    }
+                    $sort_sql = "ISNULL(p2p_post.post_title), p2p_post.post_title $sort_dir";
+                }
+            } else {
+                $sort_join = "LEFT JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $sort_sql = "sort.meta_value $sort_dir";
             }
         }
-        if ( $sort === "name" ){
-            $sort_sql = "$wpdb->posts.post_title  " . $sort_dir;
-        } elseif ( $sort === "assigned_to" || $sort === "last_modified" ){
-            $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
-            $sort_sql = "sort.meta_value $sort_dir";
-        } elseif ( $sort === "locations" || $sort === "groups" || $sort === "leaders" ){
-            $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = $wpdb->posts.ID AND sort.p2p_type = '" . $post_type . "_to_$sort' )
-            LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_to)";
-            $sort_sql = "ISNULL(p2p_post.post_title), p2p_post.post_title $sort_dir";
-        } elseif ( $sort === "post_date" ){
-            $sort_sql = "$wpdb->posts.post_date  " . $sort_dir;
-        } elseif ( $sort === "location_grid" ){
-            $sort_join = "LEFT JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
-            $sort_sql = "sort.meta_value $sort_dir";
+        if ( empty( $sort_sql ) ){
+            $sort_sql = "$wpdb->posts.post_title asc";
         }
+
 
         $group_by_sql = "";
         if ( strpos( $sort_sql, 'sort.meta_value' ) != false ){
@@ -1634,98 +1644,108 @@ class Disciple_Tools_Posts
      * @param array $post_settings This is what get_custom_fields_settings() returns
      * @param int $post_id The ID number of the contact
      * @param array $fields This array will be mutated with the results
+     * @param array $fields_to_return if not empty only add the fields that are specified (optional)
+     * @param null $meta_fields a way to pass in the post's meta fields instead of getting in from the database (optional)
+     * @param null $post_user_meta pass in the user post meta if already available (optional)
      *
      * @return void
      */
-    public static function adjust_post_custom_fields( $post_settings, int $post_id, array &$fields ) {
-        $meta_fields = get_post_custom( $post_id );
+    public static function adjust_post_custom_fields( $post_settings, int $post_id, array &$fields, array $fields_to_return = [], $meta_fields = null, $post_user_meta = null ) {
         $field_settings = $post_settings["fields"];
-        foreach ( $meta_fields as $key => $value ) {
-            //if is contact details and is in a channel
-            if ( strpos( $key, "contact_" ) === 0 && isset( $post_settings["channels"][ explode( '_', $key )[1] ] ) ) {
-                if ( strpos( $key, "details" ) === false ) {
-                    $type = explode( '_', $key )[1];
-                    $fields[ "contact_" . $type ][] = self::format_post_contact_details( $post_settings, $meta_fields, $type, $key, $value[0] );
-                }
-            } elseif ( strpos( $key, "address" ) === 0 ) {
-                if ( strpos( $key, "_details" ) === false ) {
 
-                    $details = [];
-                    if ( isset( $meta_fields[ $key . '_details' ][0] ) ) {
-                        $details = maybe_unserialize( $meta_fields[ $key . '_details' ][0] );
-                    }
-                    $details["value"] = $value[0];
-                    $details["key"] = $key;
-                    if ( isset( $details["type"] ) ) {
-                        $details["type_label"] = $post_settings["channels"][ $details["type"] ]["label"];
-                    }
-                    $fields["address"][] = $details;
-                }
-            } elseif ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]["type"] == "key_select" && !empty( $value[0] )) {
-                if ( empty( $value[0] ) ){
-                    unset( $fields[$key] );
-                    continue;
-                }
-                $value_options = $field_settings[ $key ]["default"][ $value[0] ] ?? $value[0];
-                if ( isset( $value_options["label"] ) ){
-                    $label = $value_options["label"];
-                } elseif ( is_string( $value_options ) ) {
-                    $label = $value_options;
-                } else {
-                    $label = $value[0];
-                }
-//                        $label = $field_settings[ $key ]["default"][ $value[0] ]["label"] ?? $value[0];
-                $fields[ $key ] = [
-                    "key" => $value[0],
-                    "label" => $label
-                ];
-            } elseif ( $key === "assigned_to" ) {
-                if ( $value ) {
-                    $meta_array = explode( '-', $value[0] ); // Separate the type and id
-                    $type = $meta_array[0]; // Build variables
-                    if ( isset( $meta_array[1] ) ) {
-                        $id = $meta_array[1];
-                        if ( $type == 'user' && $id) {
-                            $user = get_user_by( 'id', $id );
-                            $fields[ $key ] = [
-                                "id" => $id,
-                                "type" => $type,
-                                "display" => ( $user ? $user->display_name : "Nobody" ) ,
-                                "assigned-to" => $value[0]
-                            ];
+        if ( $meta_fields === null ){
+            $meta_fields = get_post_custom( $post_id );
+        }
+        foreach ( $meta_fields as $key => $value ) {
+            if ( empty( $fields_to_return ) || in_array( $key, $fields_to_return ) || strpos( $key, "contact_" ) === 0) {
+                //if is contact details and is in a channel
+                if ( strpos( $key, "contact_" ) === 0 && isset( $post_settings["channels"][explode( '_', $key )[1]] ) ) {
+                    if ( strpos( $key, "details" ) === false ) {
+                        $type = explode( '_', $key )[1];
+                        if ( empty( $fields_to_return ) || in_array( 'contact_' . $type, $fields_to_return ) ) {
+                            $fields["contact_" . $type][] = self::format_post_contact_details( $post_settings, $meta_fields, $type, $key, $value[0] );
                         }
                     }
-                }
-            } else if ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]['type'] === 'multi_select' ){
-                $fields[ $key ] = $value;
-            } else if ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]['type'] === 'boolean' ){
-                $fields[ $key ] = $value[0] === "1";
-            } else if ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]['type'] === 'array' ){
-                $fields[ $key ] = maybe_unserialize( $value[0] );
-            } else if ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]['type'] === 'date' ){
-                $fields[ $key ] = [
-                    "timestamp" => $value[0],
-                    "formatted" => dt_format_date( $value[0] ),
-                ];
-            } else if ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]['type'] === 'location' ){
-                $names = Disciple_Tools_Mapping_Queries::get_names_from_ids( $value );
-                $fields[ $key ] = [];
-                foreach ( $names as $id => $name ){
-                    $fields[ $key ][] = [
-                        "id" => $id,
-                        "label" => $name
-                    ];
-                }
-            } else if ( isset( $field_settings[ $key ] ) && $field_settings[ $key ]['type'] === 'location_meta' ){
-                $fields[ $key ] = [];
-                foreach ( $value as $meta ) {
-                    $location_grid_meta = Location_Grid_Geocoder::get_location_grid_meta_by_id( $meta );
-                    if ( $location_grid_meta ) {
-                        $fields[ $key ][] = $location_grid_meta;
+                } elseif ( strpos( $key, "address" ) === 0 ) {
+                    if ( strpos( $key, "_details" ) === false ) {
+
+                        $details = [];
+                        if ( isset( $meta_fields[$key . '_details'][0] ) ) {
+                            $details = maybe_unserialize( $meta_fields[$key . '_details'][0] );
+                        }
+                        $details["value"] = $value[0];
+                        $details["key"] = $key;
+                        if ( isset( $details["type"] ) ) {
+                            $details["type_label"] = $post_settings["channels"][$details["type"]]["label"];
+                        }
+                        $fields["address"][] = $details;
                     }
+                } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]["type"] == "key_select" && !empty( $value[0] ) ) {
+                    if ( empty( $value[0] ) ) {
+                        unset( $fields[$key] );
+                        continue;
+                    }
+                    $value_options = $field_settings[$key]["default"][$value[0]] ?? $value[0];
+                    if ( isset( $value_options["label"] ) ) {
+                        $label = $value_options["label"];
+                    } elseif ( is_string( $value_options ) ) {
+                        $label = $value_options;
+                    } else {
+                        $label = $value[0];
+                    }
+//                        $label = $field_settings[ $key ]["default"][ $value[0] ]["label"] ?? $value[0];
+                    $fields[$key] = [
+                        "key" => $value[0],
+                        "label" => $label
+                    ];
+                } elseif ( $key === "assigned_to" ) {
+                    if ( $value ) {
+                        $meta_array = explode( '-', $value[0] ); // Separate the type and id
+                        $type = $meta_array[0]; // Build variables
+                        if ( isset( $meta_array[1] ) ) {
+                            $id = $meta_array[1];
+                            if ( $type == 'user' && $id ) {
+                                $user = get_user_by( 'id', $id );
+                                $fields[$key] = [
+                                    "id" => $id,
+                                    "type" => $type,
+                                    "display" => ( $user ? $user->display_name : "Nobody" ),
+                                    "assigned-to" => $value[0]
+                                ];
+                            }
+                        }
+                    }
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'multi_select' ) {
+                    $fields[$key] = $value;
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'boolean' ) {
+                    $fields[$key] = $value[0] === "1";
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'array' ) {
+                    $fields[$key] = maybe_unserialize( $value[0] );
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'date' ) {
+                    $fields[$key] = [
+                        "timestamp" => $value[0],
+                        "formatted" => dt_format_date( $value[0] ),
+                    ];
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'location' ) {
+                    $names = Disciple_Tools_Mapping_Queries::get_names_from_ids( $value );
+                    $fields[$key] = [];
+                    foreach ( $names as $id => $name ) {
+                        $fields[$key][] = [
+                            "id" => $id,
+                            "label" => $name
+                        ];
+                    }
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'location_meta' ) {
+                    $fields[$key] = [];
+                    foreach ( $value as $meta ) {
+                        $location_grid_meta = Location_Grid_Geocoder::get_location_grid_meta_by_id( $meta );
+                        if ( $location_grid_meta ) {
+                            $fields[$key][] = $location_grid_meta;
+                        }
+                    }
+                } else {
+                    $fields[$key] = $value[0];
                 }
-            } else {
-                $fields[ $key ] = $value[0];
             }
         }
 
@@ -1733,13 +1753,15 @@ class Disciple_Tools_Posts
         global $wpdb;
         $user_id = get_current_user_id();
         if ( $user_id ){
-            $post_user_meta = $wpdb->get_results( $wpdb->prepare(
-                "
-                    SELECT * FROM $wpdb->dt_post_user_meta
-                    WHERE post_id = %s
-                    AND user_id = %s
-                ", $post_id, $user_id
-            ), ARRAY_A );
+            if ( $post_user_meta === null ){
+                $post_user_meta = $wpdb->get_results( $wpdb->prepare(
+                    "
+                        SELECT * FROM $wpdb->dt_post_user_meta
+                        WHERE post_id = %s
+                        AND user_id = %s
+                    ", $post_id, $user_id
+                ), ARRAY_A );
+            }
             foreach ( $post_user_meta as $m ){
                 if ( !isset( $fields[ $m["meta_key"] ] ) ) {
                     $fields[$m["meta_key"]] = [];

@@ -442,6 +442,12 @@ class Disciple_Tools_Groups_Post_Type
             'description' => __( 'Tasks related to this group.', 'disciple_tools' ),
             'type' => 'post_user_meta',
         ];
+        $fields["last_modified"] =[
+            'name' => __( 'Last modified', 'disciple_tools' ),
+            'type' => 'number',
+            'default' => 0,
+            'section' => 'admin'
+        ];
 
 
         $id = isset( $post->ID ) ? $post->ID : $post_id;
