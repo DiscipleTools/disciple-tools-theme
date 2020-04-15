@@ -75,12 +75,12 @@
     let fields = [];
     if ( wpApiListSettings.current_post_type === "contacts" ){
       fields = [ 'milestones', 'overall_status', 'seeker_path', 'assigned_to', 'location_grid', 'groups', 'last_modified', 'contact_phone', 'requires_update' ]
+    } else {
+      fields = [ 'group_status', 'group_type', 'member_count', 'leaders', 'location_grid', 'last_modified', 'requires_updated' ]
     }
-    // data.fields_to_return = fields
-    data.limit = 2000
+    data.fields_to_return = fields
 
     getContactsPromise = $.ajax({
-      // url: wpApiListSettings.root + "dt/v1/" + wpApiListSettings.current_post_type + "/search",
       url: wpApiListSettings.root + "dt-posts/v2/" + wpApiListSettings.current_post_type + "/",
       beforeSend: function (xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiListSettings.nonce);
