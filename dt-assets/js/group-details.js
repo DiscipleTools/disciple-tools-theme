@@ -235,9 +235,9 @@ jQuery(document).ready(function($) {
             template: _.escape(window.wpApiShare.translations.regions_of_focus)
           }
           this.container
-          .removeClass("filter")
-          .find("." + this.options.selector.filterButton)
-          .html(_.escape(window.wpApiShare.translations.regions_of_focus));
+            .removeClass("filter")
+            .find("." + this.options.selector.filterButton)
+            .html(_.escape(window.wpApiShare.translations.regions_of_focus));
         },
         onResult: function (node, query, result, resultCount) {
           resultCount = typeaheadTotals.location_grid
@@ -455,8 +455,8 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.update_post( 'groups', groupId, {'child_groups': {values:[{value:item.ID, delete:true}]}})
-        }
+            API.update_post( 'groups', groupId, {'child_groups': {values:[{value:item.ID, delete:true}]}})
+          }
       },
       href: function(item){
         if (item){
@@ -508,20 +508,20 @@ jQuery(document).ready(function($) {
     e.preventDefault();
     let title = $(".js-create-group input[name=title]").val()
     API.create_post('groups', {title, parent_groups: {values:[{ value:groupId }]}, group_type:"group"})
-    .then((newGroup)=>{
-      $(".reveal-after-group-create").show()
-      $("#new-group-link").html(`<a href="${_.escape( newGroup.permalink )}">${_.escape( title )}</a>`)
-      $(".hide-after-group-create").hide()
-      $('#go-to-group').attr('href', newGroup.permalink);
-      Typeahead['.js-typeahead-child_groups'].addMultiselectItemLayout({ID:newGroup.ID.toString(), name:title})
-    })
-    .catch(function(error) {
-      $(".js-create-group-button").removeClass("loading").addClass("alert");
-      $(".js-create-group").append(
-        $("<div>").html(error.responseText)
-      );
-      console.error(error);
-    });
+      .then((newGroup)=>{
+        $(".reveal-after-group-create").show()
+        $("#new-group-link").html(`<a href="${_.escape( newGroup.permalink )}">${_.escape( title )}</a>`)
+        $(".hide-after-group-create").hide()
+        $('#go-to-group').attr('href', newGroup.permalink);
+        Typeahead['.js-typeahead-child_groups'].addMultiselectItemLayout({ID:newGroup.ID.toString(), name:title})
+      })
+      .catch(function(error) {
+        $(".js-create-group-button").removeClass("loading").addClass("alert");
+        $(".js-create-group").append(
+          $("<div>").html(error.responseText)
+        );
+        console.error(error);
+      });
   })
 
   $("#add-new-address").on("click", function () {
@@ -672,6 +672,8 @@ jQuery(document).ready(function($) {
    * Save group details updates
    */
   $('#save-edit-details').on('click', function () {
+    $(this).toggleClass("loading")
+
     let contactInput = $(".contact-input")
     contactInput.each((index, entry)=>{
       if ( !$(entry).attr("id") ){
@@ -683,7 +685,9 @@ jQuery(document).ready(function($) {
         editFieldsUpdate[channelType].values.push({value:val})
       }
     })
-    $(this).toggleClass("loading")
+    if ( editFieldsUpdate[undefined] !== 'undefined') {
+      delete editFieldsUpdate[undefined]
+    }
     API.update_post( 'groups', groupId, editFieldsUpdate).then((updatedGroup)=>{
       group = updatedGroup
       $(this).toggleClass("loading")
@@ -855,11 +859,11 @@ jQuery(document).ready(function($) {
       update.values[0].delete = true;
     }
     API.update_post( 'groups', groupId, {"health_metrics": update })
-    .then(groupData=>{
-      group = groupData
-      fillOutChurchHealthMetrics()
-    }).catch(err=>{
-      console.log(err)
+      .then(groupData=>{
+        group = groupData
+        fillOutChurchHealthMetrics()
+      }).catch(err=>{
+        console.log(err)
     })
   })
   /* end Church fields*/
@@ -987,25 +991,25 @@ jQuery(document).ready(function($) {
       requires_update: true,
       overall_status: "active"
     }).then((newContact)=>{
-      $(".js-create-contact-button").attr("disabled", false).removeClass("loading");
-      $(".reveal-after-contact-create").show()
-      $("#new-contact-link").html(`<a href="${_.escape( newContact.permalink )}">${_.escape( title )}</a>`)
-      $(".hide-after-contact-create").hide()
-      $('#go-to-contact').attr('href', _.escape( newContact.permalink ));
-      group.members.push({post_title:title, ID:newContact.ID})
-      if ( group.members.length > group.member_count ){
-        group.member_count = group.members.length
-      }
-      populateMembersList()
-      masonGrid.masonry('layout')
-    })
-    .catch(function(error) {
-      $(".js-create-contact-button").removeClass("loading").addClass("alert");
-      $(".js-create-contact .error-text").text(
-        _.get( error, "responseJSON.message", "Something went wrong. Please refresh and try again" )
-      );
-      console.error(error);
-    });
+        $(".js-create-contact-button").attr("disabled", false).removeClass("loading");
+        $(".reveal-after-contact-create").show()
+        $("#new-contact-link").html(`<a href="${_.escape( newContact.permalink )}">${_.escape( title )}</a>`)
+        $(".hide-after-contact-create").hide()
+        $('#go-to-contact').attr('href', _.escape( newContact.permalink ));
+        group.members.push({post_title:title, ID:newContact.ID})
+        if ( group.members.length > group.member_count ){
+          group.member_count = group.members.length
+        }
+        populateMembersList()
+        masonGrid.masonry('layout')
+      })
+      .catch(function(error) {
+        $(".js-create-contact-button").removeClass("loading").addClass("alert");
+        $(".js-create-contact .error-text").text(
+          _.get( error, "responseJSON.message", "Something went wrong. Please refresh and try again" )
+        );
+        console.error(error);
+      });
   })
 
 

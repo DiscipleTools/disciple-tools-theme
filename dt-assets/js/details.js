@@ -138,7 +138,7 @@ jQuery(document).ready(function($) {
         }, callback: {
           onCancel: function (node, item) {
             API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}})
-            .catch(err => { console.error(err) })
+              .catch(err => { console.error(err) })
           }
         },
         href: window.wpApiShare.site_url + `/${listing_post_type}/{{ID}}`
@@ -326,7 +326,7 @@ jQuery(document).ready(function($) {
     let html = ``
     tasks.forEach(task=>{
       let task_done = ( task.category === "reminder" && task.value.notification === 'notification_sent' )
-        || ( task.category !== "reminder" && task.value.status === 'task_complete' )
+                      || ( task.category !== "reminder" && task.value.status === 'task_complete' )
       let show_complete_button = task.category !== "reminder" && task.value.status !== 'task_complete'
       let task_row = `<strong>${_.escape( moment(task.date).format("MMM D YYYY") )}</strong> `
       if ( task.category === "reminder" ){
@@ -335,7 +335,7 @@ jQuery(document).ready(function($) {
           task_row += ' ' + _.escape(task.value.note)
         }
       } else {
-        task_row += _.escape(task.value.note || detailsSettings.translations.no_note )
+         task_row += _.escape(task.value.note || detailsSettings.translations.no_note )
       }
       html += `<li>
         <span style="${task_done ? 'text-decoration:line-through' : ''}">
@@ -354,7 +354,7 @@ jQuery(document).ready(function($) {
       $('#tasks-spinner').addClass('active')
       let id = $(this).data('id')
       API.update_post(post_type, post_id, {
-        "tasks": { values: [ { id, value: {status: 'task_complete'}, } ] }
+          "tasks": { values: [ { id, value: {status: 'task_complete'}, } ] }
       }).then(resp => {
         post = resp
         build_task_list()
@@ -365,7 +365,7 @@ jQuery(document).ready(function($) {
       $('#tasks-spinner').addClass('active')
       let id = $(this).data('id')
       API.update_post(post_type, post_id, {
-        "tasks": { values: [ { id, delete: true } ] }
+          "tasks": { values: [ { id, delete: true } ] }
       }).then(resp => {
         post = resp
         build_task_list()
@@ -403,8 +403,8 @@ jQuery(document).ready(function($) {
   $(".js-add-task-form").on("submit", function(e) {
     e.preventDefault();
     $("#create-task")
-    .attr("disabled", true)
-    .addClass("loading");
+      .attr("disabled", true)
+      .addClass("loading");
     let date = $('#create-task-date').data('daterangepicker').startDate
     let note = task_note.val()
     let task_type = $('#tasks-modal input[name="task-type"]:checked').val()
