@@ -44,8 +44,13 @@ jQuery(document).ready(function ($) {
     })
   })
 
+  $('.dt_date_picker').each(function( index ) {
+    if (this.value) {
+      this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
+    }
+  });
 
-  /**
+   /**
    * .DT - baptism date  management
    * - check for the right location
    * - save and/or clear date value, even if member leaves it blank
@@ -57,9 +62,12 @@ jQuery(document).ready(function ($) {
       if (!$(this).val()) {
         date = " ";//null;
       }
-      let id = $(this).attr('id');
-      rest_api.update_post(post_type, post_id, { [id]: date }).then((resp) => {
-        $(document).trigger("dt_date_picker-updated", [resp, id, date]);
+      let id = $(this).attr('id')
+      rest_api.update_post( post_type, post_id, { [id]: moment(date).unix() }).then((resp)=>{
+        if (this.value) {
+          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
+        }
+        $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
       }).catch(handleAjaxError)
     },
     changeMonth: true,

@@ -771,7 +771,7 @@ jQuery(document).ready(function ($) {
     dateFields.forEach(dateField => {
       if (group[dateField]) {
         $(`#${dateField}.date-picker`).datepicker('setDate', moment.unix(group[dateField]["timestamp"]).format("YYYY-MM-DD"))
-        $(`.${dateField}.details-list`).html(group[dateField]["formatted"])
+        $(`.${dateField}.details-list`).html(window.SHAREDFUNCTIONS.formatDate( group[dateField]["timestamp"] ))
       } else {
         $(`.${dateField}.details-list`).html(wpApiGroupsSettings.translations["not-set"][dateField])
       }
@@ -779,7 +779,6 @@ jQuery(document).ready(function ($) {
 
   })
   resetDetailsFields(group)
-
 
   /**
    * Group Status
