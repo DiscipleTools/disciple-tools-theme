@@ -419,9 +419,13 @@ class DT_Posts extends Disciple_Tools_Posts {
         // WordPress.WP.PreparedSQL.NotPrepared
         $all_post_meta = $wpdb->get_results( "
             SELECT *
-            FROM $wpdb->postmeta pm
-            WHERE pm.post_id IN ( $ids_sql )
-            AND pm.meta_key IN ( $field_keys_sql )
+                FROM $wpdb->postmeta pm
+                WHERE pm.post_id IN ( $ids_sql )
+                AND pm.meta_key IN ( $field_keys_sql )
+            UNION SELECT *
+                FROM $wpdb->postmeta pm 
+                WHERE pm.post_id IN ( $ids_sql )
+                AND pm.meta_key LIKE 'contact_%'
         ", ARRAY_A);
         $user_id = get_current_user_id();
         $all_user_meta = $wpdb->get_results( $wpdb->prepare( "

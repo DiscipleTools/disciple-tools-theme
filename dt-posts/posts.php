@@ -1657,12 +1657,14 @@ class Disciple_Tools_Posts
             $meta_fields = get_post_custom( $post_id );
         }
         foreach ( $meta_fields as $key => $value ) {
-            if ( empty( $fields_to_return ) || in_array( $key, $fields_to_return ) ) {
+            if ( empty( $fields_to_return ) || in_array( $key, $fields_to_return ) || strpos( $key, "contact_" ) === 0) {
                 //if is contact details and is in a channel
                 if ( strpos( $key, "contact_" ) === 0 && isset( $post_settings["channels"][explode( '_', $key )[1]] ) ) {
                     if ( strpos( $key, "details" ) === false ) {
                         $type = explode( '_', $key )[1];
-                        $fields["contact_" . $type][] = self::format_post_contact_details( $post_settings, $meta_fields, $type, $key, $value[0] );
+                        if ( empty( $fields_to_return ) || in_array( 'contact_' . $type, $fields_to_return ) ) {
+                            $fields["contact_" . $type][] = self::format_post_contact_details( $post_settings, $meta_fields, $type, $key, $value[0] );
+                        }
                     }
                 } elseif ( strpos( $key, "address" ) === 0 ) {
                     if ( strpos( $key, "_details" ) === false ) {
