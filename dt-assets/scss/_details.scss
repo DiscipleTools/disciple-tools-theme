@@ -156,6 +156,10 @@ DT comments and activity
 .comment-bubble {
     word-wrap: break-word;
     margin: 0 10px 0 0;
+
+    .comment-text {
+        min-height: 1em;
+    }
 }
 
 .comment-controls {
