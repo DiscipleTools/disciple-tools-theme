@@ -415,6 +415,10 @@ select.color-select {
         margin-bottom: 0;
         border: none;
     }
+    select {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
     .section-subheader {
         padding-top: .53333rem;
         padding-left: .5rem;
