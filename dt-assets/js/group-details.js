@@ -615,6 +615,8 @@ jQuery(document).ready(function($) {
    * Save group details updates
    */
   $('#save-edit-details').on('click', function () {
+    $(this).toggleClass("loading")
+
     let contactInput = $(".contact-input")
     contactInput.each((index, entry)=>{
       if ( !$(entry).attr("id") ){
@@ -626,8 +628,10 @@ jQuery(document).ready(function($) {
         editFieldsUpdate[channelType].values.push({value:val})
       }
     })
-    $(this).toggleClass("loading")
-      API.update_post( 'groups', groupId, editFieldsUpdate).then((updatedGroup)=>{
+    if ( editFieldsUpdate[undefined] !== 'undefined') {
+      delete editFieldsUpdate[undefined]
+    }
+    API.update_post( 'groups', groupId, editFieldsUpdate).then((updatedGroup)=>{
       group = updatedGroup
       $(this).toggleClass("loading")
       resetDetailsFields(group)
@@ -713,7 +717,7 @@ jQuery(document).ready(function($) {
     dateFields.forEach(dateField=>{
       if ( group[dateField] ){
         $(`#${dateField}.date-picker`).datepicker('setDate', moment.unix(group[dateField]["timestamp"]).format("YYYY-MM-DD"))
-        $(`.${dateField}.details-list`).html(group[dateField]["formatted"])
+        $(`.${dateField}.details-list`).html(window.SHAREDFUNCTIONS.formatDate( group[dateField]["timestamp"] ))
       } else {
         $(`.${dateField}.details-list`).html(wpApiGroupsSettings.translations["not-set"][dateField])
       }
@@ -721,7 +725,6 @@ jQuery(document).ready(function($) {
 
   })
   resetDetailsFields(group)
-
 
   /**
    * Group Status

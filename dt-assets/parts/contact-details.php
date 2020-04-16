@@ -202,14 +202,7 @@
                 <ul class="social"></ul>
             </div>
 
-            <!-- Address -->
-            <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                <div class="section-subheader">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
-                    <?php echo esc_html( $channel_list["address"]["label"] )?>
-                </div>
-                <ul class="address"></ul>
-            </div>
+
 
             <!-- Mapbox enabled locations -->
             <?php if ( DT_Mapbox_API::get_key() ) : ?>
@@ -233,6 +226,15 @@
                     <ul class="location_grid-list"></ul>
                 </div>
             <?php endif; ?>
+
+            <!-- Address -->
+            <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
+                    <?php echo esc_html( $channel_list["address"]["label"] )?>
+                </div>
+                <ul class="address"></ul>
+            </div>
 
             <!-- People Groups -->
             <div class="xlarge-4 large-6 medium-6 small-12 cell">

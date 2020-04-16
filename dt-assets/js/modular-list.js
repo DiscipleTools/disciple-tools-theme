@@ -13,6 +13,7 @@
   let get_records_promise = null
   let loading_spinner = $("#list-loading-spinner")
   let old_filters = JSON.stringify(list_settings.filters)
+  let table_header_row = $('.js-list thead .sortable th')
 
   let items = []
   try {
@@ -31,6 +32,12 @@
   }
 
   setup_filters()
+  let fields_to_show_in_table = [];
+  _.forOwn( list_settings.post_type_settings.fields, (field_settings, field_key)=> {
+    if (_.get(field_settings, 'show_in_table')===true) {
+      fields_to_show_in_table.push(field_key)
+    }
+  })
 
   //open the filter tabs
   $(`#list-filter-tabs [data-id='${_.escape( current_filter.tab )}'] a`).click()
@@ -59,6 +66,7 @@
     } else {
       current_filter = _.find(list_settings.filters.filters, {ID:filter_id}) || _.find(list_settings.filters.filters, {ID:filter_id.toString()}) || current_filter
       current_filter.type = 'default'
+      current_filter.labels = current_filter.labels || [{ id:filter_id, name:current_filter.name}]
     }
     if ( Array.isArray(current_filter.query) ){
       current_filter.query = {}; //make sure query is an object instead of an array.
@@ -205,38 +213,63 @@
       })
     }
 
-    // if ( filter.query.sort ){
-    //   let sortLabel = filter.query.sort
-    //   if ( sortLabel.includes('last_modified') ){
-    //     sortLabel = wpApiListSettings.translations.date_modified
-    //   } else if (  sortLabel.includes('post_date') ) {
-    //     sortLabel = wpApiListSettings.translations.creation_date
-    //   } else  {
-    //     //get label for table header
-    //     sortLabel = $(`.sortable [data-id="${_.escape( sortLabel.replace('-', '') )}"]`).text()
-    //   }
-    //   html += `<span class="current-filter" data-id="sort">
-    //       ${_.escape( wpApiListSettings.translations.sorting_by )}: ${_.escape( sortLabel )}
-    //   </span>`
-    // }
+    if ( filter.query.sort ){
+      let sortLabel = filter.query.sort
+      if ( sortLabel.includes('last_modified') ){
+        sortLabel = list_settings.translations.date_modified
+      } else if (  sortLabel.includes('post_date') ) {
+        sortLabel = list_settings.translations.creation_date
+      } else  {
+        //get label for table header
+        sortLabel = $(`.sortable [data-id="${_.escape( sortLabel.replace('-', '') )}"]`).text()
+      }
+      html += `<span class="current-filter" data-id="sort">
+          ${_.escape( list_settings.translations.sorting_by )}: ${_.escape( sortLabel )}
+      </span>`
+    }
     currentFilters.html(html)
   }
 
+  
+  let sort_field = _.get( current_filter, "query.sort", "name" )
+  //reset sorting in table header
+  table_header_row.removeClass("sorting_asc")
+  table_header_row.removeClass("sorting_desc")
+  let header_cell = $(`.js-list thead .sortable th[data-id="${_.escape( sort_field.replace("-", "") )}"]`)
+  header_cell.addClass(`sorting_${ sort_field.startsWith('-') ? 'desc' : 'asc'}`)
+  table_header_row.data("sort", '')
+  header_cell.data("sort", 'asc')
+  
+  $('.js-sort-by').on("click", function () {
+    table_header_row.removeClass("sorting_asc")
+    table_header_row.removeClass("sorting_desc")
+    let dir = $(this).data('order')
+    let field = $(this).data('field')
+    get_records( 0, (dir === "asc" ? "" : '-') + field )
+  })
+
+  //sort the table by clicking the header
+  $('.js-list th').on("click", function () {
+    let id = $(this).data('id')
+    let sort = $(this).data('sort')
+    table_header_row.removeClass("sorting_asc")
+    table_header_row.removeClass("sorting_desc")
+    table_header_row.data("sort", '')
+    if ( !sort || sort === 'desc' ){
+      $(this).data('sort', 'asc')
+      $(this).addClass("sorting_asc")
+      $(this).removeClass("sorting_desc")
+    } else {
+      $(this).data('sort', 'desc')
+      $(this).removeClass("sorting_asc")
+      $(this).addClass("sorting_desc")
+      id = `-${id}`
+    }
+    get_records(0, id)
+  })
+
   let build_table = (records)=>{
-    let header_fields = '<th onclick="sortTable( 0 )"></th><th onclick="sortTable( 1 )">Name</th>'
     let table_rows = ``
-    let index = 2;
-    _.forOwn( list_settings.post_type_settings.fields, (field_settings)=> {
-      if (_.get(field_settings, 'show_in_table') === true) {
-        header_fields += `
-          <th class="section-subheader" onclick="sortTable( ${index} )">
-            <img src="${_.escape( field_settings.icon )}">
-            ${ _.escape( field_settings.name )}
-          </th>
-        `
-        index++
-      }
-    })
 
     records.forEach( ( record, index )=>{
       let row_fields_html = ''
@@ -273,7 +306,7 @@
       })
 
       table_rows += `<tr>
-        <td>${index+1}</td>
+        <td>${index+1}.</td>
         <td><a href="${ _.escape( record.permalink ) }">${ _.escape( record.post_title ) }</a></td>
         ${ row_fields_html }
       `
@@ -283,32 +316,13 @@
     }
 
     let table_html = `
-      <table id="records-table">
-        <thead>
-          <tr">
-            ${header_fields}
-          </tr>
-        </thead>
-        <tbody>
-          ${table_rows}
-        </tbody>
-      </table>
+      ${table_rows}
     `
     $('#table-content').html(table_html)
-
-    // $("#table-content").click(function(event) {
-    //   event.stopPropagation();
-    //   var $target = $(event.target);
-    //   if ( $target.closest("tr").hasClass("fields") ) {
-    //       $target.closest("tr").toggle()
-    //   } else {
-    //       $target.closest("tr").next().toggle();
-    //   }
-    // });
   }
 
 
-  function get_records( offset = 0 ){
+  function get_records( offset = 0, sort = null ){
     loading_spinner.addClass("active")
     let query = current_filter.query
 
@@ -316,9 +330,14 @@
     if ( offset ){
       query["offset"] = offset
     }
+    if ( sort ){
+      query.sort = sort
+      query.offset = 0
+    }
     if ( get_records_promise && _.get(get_records_promise, "readyState") !== 4){
       get_records_promise.abort()
     }
+    query.fields_to_return = fields_to_show_in_table
     get_records_promise = window.makeRequestOnPosts( 'GET', `${list_settings.post_type}`, JSON.parse(JSON.stringify(query)))
     get_records_promise.then(response=>{
       if (offset){
@@ -690,7 +709,7 @@
     filter.name = $('#new-filter-name').val()
     $(`.filter-list-name[data-filter="${filter_id}"]`).text(filter.name)
     filter.query = search_query
-    filter.label = new_filter_labels
+    filter.labels = new_filter_labels
     API.save_filters( list_settings.post_type, filter )
     get_records_for_current_filter()
   })
@@ -840,68 +859,5 @@
     $(".hideable-search").toggle()
   })
 
-
-  window.sortTable = function sortTable(n) {
-    let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById("records-table");
-    switching = true;
-    //Set the sorting direction to ascending:
-    dir = "asc";
-    /*Make a loop that will continue until
-    no switching has been done:*/
-    while (switching) {
-      //start by saying: no switching is done:
-      switching = false;
-      rows = table.rows;
-      /*Loop through all table rows (except the
-      first, which contains table headers):*/
-      for (i = 1; i < (rows.length - 1); i++) {
-        //start by saying there should be no switching:
-        shouldSwitch = false;
-        /*Get the two elements you want to compare,
-        one from current row and one from the next:*/
-        x = rows[i].getElementsByTagName("TD")[n];
-        y = rows[i + 1].getElementsByTagName("TD")[n];
-        /*check if the two rows should switch place,
-        based on the direction, asc or desc:*/
-        if (dir === "asc") {
-
-          if (Number.isInteger(parseInt(x.innerHTML))){
-            if (parseInt(x.innerHTML.replace("-", "")) > parseInt(y.innerHTML.replace("-", ""))) {
-              shouldSwitch = true;
-              break;
-            }
-          } else {
-            if (x.innerHTML.toLowerCase().replace("-", "") > y.innerHTML.toLowerCase().replace("-", "")) {
-              //if so, mark as a switch and break the loop:
-              shouldSwitch= true;
-              break;
-            }
-          }
-        } else if (dir === "desc") {
-          if (Number.isInteger(parseInt(x.innerHTML)) ? (parseInt(x.innerHTML.replace("-", "")) < parseInt(y.innerHTML.replace("-", ""))) : (x.innerHTML.toLowerCase().replace("-", "") < y.innerHTML.toLowerCase().replace("-", ""))) {
-            //if so, mark as a switch and break the loop:
-            shouldSwitch = true;
-            break;
-          }
-        }
-      }
-      if (shouldSwitch) {
-        /*If a switch has been marked, make the switch
-        and mark that a switch has been done:*/
-        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-        switching = true;
-        //Each time a switch is done, increase this count by 1:
-        switchcount ++;
-      } else {
-        /*If no switching has been done AND the direction is "asc",
-        set the direction to "desc" and run the while loop again.*/
-        if (switchcount === 0 && dir === "asc") {
-          dir = "desc";
-          switching = true;
-        }
-      }
-    }
-  }
 
 })(window.jQuery, window.list_settings, window.Foundation);

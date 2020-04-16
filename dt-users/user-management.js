@@ -367,6 +367,40 @@ jQuery(document).ready(function($) {
       }
     })
 
+    $('#user_name').on( "click", function(e) {
+      window.user_name = $(this).text()
+      $(this).parent().prepend(`
+              <div class="input-group" id="user-name-input-wrapper">
+                  <input type="text" class="input-group-field" style="max-width: 50%;" id="user-name-input" value="${window.user_name}" />
+                  <div class="input-group-button">
+                      <input type="button" class="button hollow" id="reset-user-name" value="Reset">
+                      <input type="button" class="button" id="update-user-name" value="Save">
+                  </div>
+              </div>`)
+      $(this).hide()
+      $('#reset-user-name').on("click", function(){
+        $('#user_name').show()
+        $('#user-name-input-wrapper').hide()
+      })
+      $('#update-user-name').on('click', function(){
+        let new_name = $('#user-name-input').val()
+        if ( window.user_name !== new_name ) {
+          update_user(user_id, 'update_nickname', new_name )
+            .done(function(data) {
+              if ( data ) {
+                window.user_name = new_name
+                $('#user_name').html(new_name).show()
+                $('#user-name-input-wrapper').hide()
+              } else {
+                $('#user_name').show().append(' <span class="error"><i class="fi-alert"></i></span>')
+                $('#user-name-input-wrapper').hide()
+              }
+            })
+        }
+      })
+    })
+
+
     $.urlParam = function(name){
       var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
       if ( results == null ) {
@@ -746,7 +780,7 @@ jQuery(document).ready(function($) {
                     }
                     #geocode-details {
                         height: ${window.innerHeight - 250}px !important;
-                        overflow: hidden;
+                        overflow: scroll;
                         opacity: 100%;
                     }
                     .accordion {

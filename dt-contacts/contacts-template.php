@@ -97,7 +97,7 @@ function render_field_for_display( $field_key, $fields, $post ){
             <input type="text" class="date-picker dt_date_picker"
                    id="<?php echo esc_html( $field_key ) ?>"
                    autocomplete="off"
-                   value="<?php echo esc_html( isset( $post[$field_key] ) ? $post[$field_key]["formatted"] : '' )?>">
+                   value="<?php echo esc_html( $post[$field_key]["timestamp"] ?? '' )?>">
         <?php elseif ( $field_type === "connection" ) :?>
             <div id="<?php echo esc_attr( $field_key . '_connection' ) ?>" class="dt_typeahead">
                 <var id="<?php echo esc_html( $field_key ) ?>-result-container" class="result-container"></var>
