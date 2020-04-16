@@ -674,7 +674,7 @@ jQuery(document).ready(function($) {
     let channelOptions = ``
     _.forOwn( contactsDetailsWpApiSettings.channels, (val, key)=>{
       if ( ![ "phone", "email", "address"].includes( key ) ){
-        channelOptions += `<option value="${_.escape(key)}">${escape(val.label)}</option>`
+        channelOptions += `<option value="${_.escape(key)}">${_.escape(val.label)}</option>`
       }
     })
     idOfNextNewField++
