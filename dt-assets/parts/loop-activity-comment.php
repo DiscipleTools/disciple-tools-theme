@@ -187,6 +187,36 @@
         <p class="lead"><?php esc_html_e( 'Edit Comment:', 'disciple_tools' ) ?></p>
         <textarea id="comment-to-edit" rows="10" dir="auto"></textarea>
         <div class="grid-x">
+        <div class="cell small-12" id="edit_typeOfComment">
+                <?php if ( is_singular( "contacts" ) ) :
+                     $sections = [
+                         [
+                             "key" => "comment",
+                             "label" => __( "Comments", 'disciple_tools' ),
+                             "selected_by_default" => true
+                         ],
+                         [
+                             "key" => "activity",
+                             "label" => __( "Activity", 'disciple_tools' ),
+                             "selected_by_default" => true
+                         ]
+                     ];
+                     $post_type = get_post_type();
+                     $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
+
+
+                            <div class="section-subheader">
+                                <?php esc_html_e( "Type of Comment", 'disciple_tools' ) ?>
+                            </div>
+                            <select id="edit_comment_type_selector" class="select-field">
+                                <?php
+                                foreach ( $sections as $section ) {?>
+                                    <option value="<?php echo esc_html( $section["key"] ); ?>">
+                                    <?php echo esc_html( $section["label"] ); ?>
+                                <?php } ?>
+                            </select>
+                <?php endif; ?>
+            </div>
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
                 <?php esc_html_e( 'Close', 'disciple_tools' ) ?>
             </button>

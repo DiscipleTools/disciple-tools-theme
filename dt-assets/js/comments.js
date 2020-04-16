@@ -121,7 +121,7 @@ jQuery(document).ready(function($) {
             </div>
             <p class="comment-controls">
                <% if ( a.comment_ID ) { %>
-                  <a class="open-edit-comment" data-id="<%- a.comment_ID %>" style="margin-right:5px">
+                  <a class="open-edit-comment" data-id="<%- a.comment_ID %>" data-type="<%- a.comment_type %>" style="margin-right:5px">
                       <img src="${commentsSettings.template_dir}/dt-assets/images/edit-blue.svg">
                       ${_.escape(commentsSettings.translations.edit)}
                   </a>
@@ -208,6 +208,8 @@ jQuery(document).ready(function($) {
 
   $(document).on("click", ".open-edit-comment", function () {
     let id = $(this).data("id")
+    let comment_type = $(this).data("type");
+    console.log(comment_type);
     let comment = _.find(comments, {comment_ID:id.toString()})
 
     let comment_html = comment.comment_content // eg: "Tom &amp; Jerry"
@@ -231,6 +233,8 @@ function unescapeHtml(safe) {
     // _.unescape("Tom & Jerry") will return "Tom & Jerry"
     $('#comment-to-edit').val(unescapeHtml(comment_html));
 
+    $('#edit_comment_type_selector').val(comment_type);
+
     $('.edit-comment.callout').hide()
     $('#edit-comment-modal').foundation('open')
     $('#confirm-comment-edit').data("id", id)
@@ -239,7 +243,7 @@ function unescapeHtml(safe) {
     $(this).toggleClass('loading')
     let id = $(this).data("id")
     let updated_comment = $('#comment-to-edit').val()
-    let commentType = "twitter"; //FOR TESTING;
+    let commentType = $('#edit_comment_type_selector').val();
     rest_api.update_comment( postType, postId, id, updated_comment, commentType).then((response)=>{
       $(this).toggleClass('loading')
       if (response === 1 || response === 0 || response.comment_ID){
@@ -309,6 +313,7 @@ function unescapeHtml(safe) {
         text:d.object_note || formatComment(d.comment_content),
         comment: !!d.comment_content,
         comment_ID : d.user_id === commentsSettings.current_user_id ? d.comment_ID : false,
+        comment_type : d.comment_type,
         action: d.action
       }
 
