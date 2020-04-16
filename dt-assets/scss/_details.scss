@@ -177,16 +177,15 @@ DT comments and activity
 .activity-block {
     margin-top: 15px;
 }
-.activity-text {
-    margin-left: 30px;
-}
+
 .activity-bubble {
     word-wrap: break-word;
     color:gray;
     font-style: italic;
-    border-left: 3px solid gainsboro;
-    padding-left: 15px;
+    border-inline-start: 3px solid gainsboro;
+    padding-inline-start: 15px;
     margin: 0;
+    margin-inline-start: 2em;
     padding-bottom: 2px;
 }
 

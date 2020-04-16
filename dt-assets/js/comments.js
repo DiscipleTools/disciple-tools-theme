@@ -108,7 +108,8 @@ jQuery(document).ready(function($) {
       </div>
     <div class="activity-text">
     <% _.forEach(activity, function(a){
-        if (a.comment){ %>
+        if (a.comment){
+          console.log(a); %>
             <div dir="auto" class="comment-bubble <%- a.comment_ID %>">
               <div class="comment-text" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
             <% if ( commentsSettings.google_translate_key !== "" ) { %>
