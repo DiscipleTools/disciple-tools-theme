@@ -89,6 +89,7 @@ jQuery(document).ready(function($) {
     text = text.substring(0, text.indexOf('(')) || text
     text += ` (${formatNumber(activityData.length, langcode)})`
     tab.text(text)
+    tab.parent().parent('.hide').removeClass('hide')
   }
   $(".show-tabs").on("click", function () {
     let id = $(this).attr("id")
@@ -465,6 +466,7 @@ function unescapeHtml(safe) {
       text = text.substring(0, text.indexOf('(')) || text
       text += ` (${formatNumber(val, langcode)})`
       tab.text(text)
+      tab.parent().parent('.hide').removeClass('hide')
     })
     comments = commentData
     activity = activityData

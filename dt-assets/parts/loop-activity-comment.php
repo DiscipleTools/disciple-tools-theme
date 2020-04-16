@@ -130,7 +130,7 @@
                     $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );
                     foreach ( $sections as $section ) :
                         if ( isset( $section["key"] ) && isset( $section["label"] ) ) : ?>
-                            <li class="tabs-title">
+                            <li class="tabs-title hide">
                                 <label for="tab-button-<?php echo esc_html( $section["key"] ) ?>">
                                     <input type="checkbox"
                                            name="<?php echo esc_html( $section["key"] ) ?>"
