@@ -15,7 +15,7 @@ jQuery(document).ready(function($) {
   function post_comment(postId) {
     let commentInput = jQuery("#comment-input")
     let commentButton = jQuery("#add-comment-button")
-    let commentType = "twitter"; //FOR TESTING
+    let commentType = $('#comment_type_selector').val()
     getCommentWithMentions(comment_plain_text=>{
       if (comment_plain_text) {
         commentButton.toggleClass('loading')

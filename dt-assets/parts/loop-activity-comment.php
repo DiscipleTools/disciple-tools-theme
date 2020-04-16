@@ -25,6 +25,36 @@
                           placeholder="<?php echo esc_html_x( "Write your comment or note here", 'input field placeholder', 'disciple_tools' ) ?>"
                 ></textarea>
             </div>
+            <div class="cell small-12" id="typeOfcomment">
+                <?php if ( is_singular( "contacts" ) ) :
+                     $sections = [
+                         [
+                             "key" => "comment",
+                             "label" => __( "Comments", 'disciple_tools' ),
+                             "selected_by_default" => true
+                         ],
+                         [
+                             "key" => "activity",
+                             "label" => __( "Activity", 'disciple_tools' ),
+                             "selected_by_default" => true
+                         ]
+                     ];
+                     $post_type = get_post_type();
+                     $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
+
+
+                            <div class="section-subheader">
+                                <?php esc_html_e( "Type of Comment", 'disciple_tools' ) ?>
+                            </div>
+                            <select id="comment_type_selector" class="select-field">
+                                <?php
+                                foreach ( $sections as $section ) {?>
+                                    <option value="<?php echo esc_html( $section["key"] ); ?>">
+                                    <?php echo esc_html( $section["label"] ); ?>
+                                <?php } ?>
+                            </select>
+                <?php endif; ?>
+            </div>
         </div>
         <div class="cell grid-x" style="margin-bottom: 20px">
             <div class="cell auto">
@@ -69,6 +99,7 @@
 
 
             </div>
+
             <div class="shrink cell" id="add-comment-button-container">
                 <button id="add-comment-button" class="button loader">
                     <?php esc_html_e( "Submit comment", 'disciple_tools' ) ?>
