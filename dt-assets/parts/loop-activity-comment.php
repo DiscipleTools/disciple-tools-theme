@@ -19,13 +19,12 @@
                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
             </button> -->
         </h3>
-        <div class="cell grid-x grid-margin-x" id="add-comment-section">
+        <div class="cell grid-x " id="add-comment-section">
             <div class="auto cell">
                 <textarea class="mention" dir="auto" id="comment-input"
                           placeholder="<?php echo esc_html_x( "Write your comment or note here", 'input field placeholder', 'disciple_tools' ) ?>"
                 ></textarea>
-            </div>
-            <div class="cell small-12" id="typeOfcomment">
+
                 <?php if ( is_singular( "contacts" ) ) :
                      $sections = [
                          [
@@ -42,17 +41,18 @@
                      $post_type = get_post_type();
                      $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
 
-
-                            <div class="section-subheader">
-                                <?php esc_html_e( "Type of Comment", 'disciple_tools' ) ?>
+                        <div class="grid-x">
+                            <div class="section-subheader cell shrink">
+                                <?php esc_html_e( "Type:", 'disciple_tools' ) ?>
                             </div>
-                            <select id="comment_type_selector" class="select-field">
+                            <select id="comment_type_selector" class="select-field cell auto">
                                 <?php
                                 foreach ( $sections as $section ) {?>
                                     <option value="<?php echo esc_html( $section["key"] ); ?>">
                                     <?php echo esc_html( $section["label"] ); ?>
                                 <?php } ?>
                             </select>
+                        </div>
                 <?php endif; ?>
             </div>
         </div>

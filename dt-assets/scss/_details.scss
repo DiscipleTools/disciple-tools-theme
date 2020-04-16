@@ -407,6 +407,21 @@ select.color-select {
     font-weight: 300;
 }
 
+#add-comment-section {
+    border: 1px solid #dcdcdc;
+    border-radius: 3px;
+    margin: 0 0 01.06667rem;
+    textarea,  select {
+        margin-bottom: 0;
+        border: none;
+    }
+    .section-subheader {
+        padding-top: .53333rem;
+        padding-left: .5rem;
+        padding-right: .15rem;
+    }
+}
+
 
 .bordered-box{
     .section-header {
