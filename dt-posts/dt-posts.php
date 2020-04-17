@@ -285,6 +285,10 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !self::is_post_key_contact_method_or_connection( $post_settings, $field_key ) ) {
                 $field_type = $post_settings["fields"][ $field_key ]["type"] ?? '';
                 if ( $field_type === 'date' && !is_numeric( $field_value ) ) {
+                    if ( empty( $field_value ) ) { // remove date
+                        delete_post_meta( $post_id, $field_key );
+                        continue;
+                    }
                     $field_value = strtotime( $field_value );
                 }
                 $already_handled = [ "multi_select", "post_user_meta", "location", "location_meta" ];
