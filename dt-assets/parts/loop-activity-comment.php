@@ -40,7 +40,7 @@
                             <div class="section-subheader cell shrink">
                                 <?php esc_html_e( "Type:", 'disciple_tools' ) ?>
                             </div>
-                            <select id="comment_type_selector" class="select-field cell auto">
+                            <select id="comment_type_selector" class="cell auto">
                                 <?php
                                 foreach ( $sections as $section ) {?>
                                     <option value="<?php echo esc_html( $section["key"] ); ?>">
@@ -198,7 +198,7 @@
                             <div class="section-subheader">
                                 <?php esc_html_e( "Type of Comment", 'disciple_tools' ) ?>
                             </div>
-                            <select id="edit_comment_type_selector" class="select-field">
+                            <select id="edit_comment_type_selector" class="">
                                 <?php
                                 foreach ( $sections as $section ) {?>
                                     <option value="<?php echo esc_html( $section["key"] ); ?>">
