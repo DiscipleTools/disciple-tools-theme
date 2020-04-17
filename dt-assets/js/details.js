@@ -86,7 +86,7 @@ jQuery(document).ready(function($) {
     $(`#${inputid}`).val("");
     let id = $(`#${inputid}`).attr('id');
     date = null;
-    if (!document.querySelector('#group-details-edit-modal') && document.querySelector('#group-details-edit-modal').contains(document.querySelector(`#${inputid}`))) {
+    if (!document.querySelector('#group-details-edit-modal') || !document.querySelector('#group-details-edit-modal').contains(document.querySelector(`#${inputid}`))) {
       rest_api.update_post(post_type, post_id, { [id]: date }).then((resp) => {
         $(document).trigger("dt_date_picker-updated", [resp, id, date]);
 
