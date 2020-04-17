@@ -275,7 +275,7 @@
 
     <!--    Comments and Activity - contact & group  -->
     <div class="help-section" id="comments-activity-help-text" style="display: none">
-        <h3><?php echo esc_html_x( "Comments and Activity", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+        <h3><?php echo esc_html( "Comments and Activity", 'disciple_tools' ) ?></h3>
         <p><?php echo esc_html_x( "This is where you can record notes from meetings and conversations.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         <p><?php echo esc_html_x( "Type @ and the name of a user to mention them in a comment. This user will then receive a notification.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         <p><?php echo esc_html_x( "This section also includes the history of activity, such as when the contact or group status became active etc.", 'Optional Documentation', 'disciple_tools' ) ?></p>
@@ -344,7 +344,7 @@
 
         <!--  Initial Comment  -->
         <div class="help-section" id="initial-comment-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Initial Comment", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html( "Initial Comment", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "The Initial Comment field is for any extra information. It will be saved as the first comment under the Activity and Comments Tile.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 

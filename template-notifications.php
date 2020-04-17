@@ -73,10 +73,10 @@ get_header(); ?>
                         <div class="grid-x grid-margin-x grid-margin-y">
                             <div class="small-12 medium-6 medium-offset-3 cell center">
                                 <a id="next-all" onclick="get_notifications( true, false )" style="display:none;">
-                                    <?php esc_html_e( 'load more notifications', 'disciple_tools' )?>
+                                    <?php esc_html_e( 'Load more notifications', 'disciple_tools' )?>
                                 </a>
                                 <a id="next-new" onclick="get_notifications( false, false )">
-                                    <?php esc_html_e( 'load more notifications', 'disciple_tools' ) ?>
+                                    <?php esc_html_e( 'Load more notifications', 'disciple_tools' ) ?>
                                 </a>
                             </div>
                         </div>

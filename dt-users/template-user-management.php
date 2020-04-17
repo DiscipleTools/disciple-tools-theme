@@ -268,7 +268,7 @@ $user_management_options = DT_User_Management::user_management_options();
                                                 <span class="typeahead__query">
                                                     <input class="js-typeahead-location_grid input-height"
                                                            name="location_grid[query]"
-                                                           placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                                           placeholder="<?php esc_html_x( "Search Locations", 'input field placeholder', 'disciple_tools' ) ?>"
                                                            autocomplete="off">
                                                 </span>
                                                 </div>
@@ -368,4 +368,3 @@ $user_management_options = DT_User_Management::user_management_options();
 </div> <!-- end #content -->
 
 <?php get_footer(); ?>
-
