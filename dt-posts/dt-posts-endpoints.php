@@ -490,7 +490,7 @@ class Disciple_Tools_Posts_Endpoints {
         if ( isset( $body["comment_type"] ) ){
             $type = $body["comment_type"];
         }
-        $result = DT_Posts::update_post_comment( $url_params["comment_id"], $body["comment"], $type );
+        $result = DT_Posts::update_post_comment( $url_params["comment_id"], $body["comment"], true, $type );
         if ( is_wp_error( $result ) ) {
             return $result;
         } else {
