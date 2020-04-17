@@ -42,7 +42,7 @@ $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
       'contact_email' => array()
   );
 
-  $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='". esc_html__( 'Edit', 'disciple_tools' )."' class='fi-pencil'></a><a class='fi-x hide cancel' title='".esc_html__( 'Cancel', 'disciple_tools' )."'></a><a class='fi-check hide save' title='".esc_html__( 'Save', 'disciple_tools'  )."'></a></span>";
+  $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='".esc_html__( 'Edit', 'disciple_tools' )."' class='fi-pencil'></a><a class='fi-x hide cancel' title='".esc_html__( 'Cancel', 'disciple_tools' )."'></a><a class='fi-check hide save' title='".esc_html__( 'Save', 'disciple_tools'  )."'></a></span>";
     ?>
 
     <div id="content"  class="template-merge-details">
