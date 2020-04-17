@@ -81,10 +81,12 @@ jQuery(document).ready(function($) {
     $(`#${inputid}`).val("");
     let id = $(`#${inputid}`).attr('id');
     date = null;
+    if (!document.body.classList.contains('groups-template-default')) {
+      rest_api.update_post(post_type, post_id, { [id]: date }).then((resp) => {
+        $(document).trigger("dt_date_picker-updated", [resp, id, date]);
 
-    rest_api.update_post(post_type, post_id, { [id]: date }).then((resp) => {
-      $(document).trigger("dt_date_picker-updated", [resp, id, date]);
-    }).catch(handleAjaxError)
+      }).catch(handleAjaxError)
+    }
   }
 
   if (document.body.classList.contains('contacts-template-default') || document.body.classList.contains('groups-template-default')) {
