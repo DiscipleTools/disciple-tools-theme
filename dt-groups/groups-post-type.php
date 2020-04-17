@@ -268,17 +268,17 @@ class Disciple_Tools_Groups_Post_Type
                 ],
                 "church_sharing" => [
                     "label" => __( "Sharing the Gospel", 'disciple_tools' ),
-                    "description" => _x( "The group is sharing the gospel.", 'field description', 'disciple_tools' ),
+                    "description" => _x( "The group is sharing the gospel.", 'Optional Documentation', 'disciple_tools' ),
                     "image" => get_template_directory_uri() . '/dt-assets/images/groups/evangelism.svg'
                 ],
                 "church_leaders" => [
                     "label" => __( "Leaders", 'disciple_tools' ),
-                    "description" => _x( "The group has leaders.", 'field description', 'disciple_tools' ),
+                    "description" => _x( "The group has leaders.", 'Optional Documentation', 'disciple_tools' ),
                     "image" => get_template_directory_uri() . '/dt-assets/images/groups/leadership.svg'
                 ],
                 "church_commitment" => [
                     "label" => __( "Church Commitment", 'disciple_tools' ),
-                    "description" => _x( "The group has committed to be church.", 'field description', 'disciple_tools' ),
+                    "description" => _x( "The group has committed to be church.", 'Optional Documentation', 'disciple_tools' ),
                     "image" => get_template_directory_uri() . '/dt-assets/images/groups/covenant.svg'
                 ],
             ],
@@ -288,19 +288,19 @@ class Disciple_Tools_Groups_Post_Type
         /* 4 fields */
         $fields["four_fields_unbelievers"] = [
             'name' => __( 'Unbelievers', 'disciple_tools' ),
-            'description' => _x( 'Number of unbelievers in this group.', 'field description', 'disciple_tools' ),
+            'description' => _x( 'Number of unbelievers in this group.', 'Optional Documentation', 'disciple_tools' ),
             'type' => 'text',
             'default' => ''
         ];
         $fields["four_fields_believers"] = [
             'name' => __( 'Believers', 'disciple_tools' ),
-            'description' => _x( 'Number of believers in this group.', 'field description', 'disciple_tools' ),
+            'description' => _x( 'Number of believers in this group.', 'Optional Documentation', 'disciple_tools' ),
             'type' => 'text',
             'default' => ''
         ];
         $fields["four_fields_accountable"] = [
             'name' => __( 'Accountable', 'disciple_tools' ),
-            'description' => _x( 'Number of people in accountability group.', 'field description', 'disciple_tools' ),
+            'description' => _x( 'Number of people in accountability group.', 'Optional Documentation', 'disciple_tools' ),
             'type' => 'text',
             'default' => ''
         ];

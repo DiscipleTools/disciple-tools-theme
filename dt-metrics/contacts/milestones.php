@@ -61,7 +61,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
                 'translations' => [
                     'milestones' => __( "Milestones", 'disciple_tools' ),
                     'filter_contacts_to_date_range' => __( "Filter contacts to date range:", 'disciple_tools' ),
-                    'all_time' => __( "All time", 'disciple_tools' ),
+                    'all_time' => _x( "All time", 'Dates', 'disciple_tools' ),
                     'filter_to_date_range' => __( "Filter to date range", 'disciple_tools' ),
                 ]
             ]
@@ -113,7 +113,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
             SELECT COUNT( DISTINCT(log.object_id) ) as `value`, log.meta_value as milestones
             FROM $wpdb->dt_activity_log log
             INNER JOIN $wpdb->postmeta as type ON ( log.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
-            INNER JOIN $wpdb->posts post 
+            INNER JOIN $wpdb->posts post
             ON (
                 post.ID = log.object_id
                 AND post.post_type = 'contacts'

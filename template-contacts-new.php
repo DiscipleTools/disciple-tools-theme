@@ -36,7 +36,7 @@ get_header();
                     <button class="help-button" type="button" data-section="phone-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
-                    <input id="tel-input" name="phone" type="tel" placeholder="<?php echo esc_html_x( "Phone number", 'input field placeholder', 'disciple_tools' ); ?>">
+                    <input id="tel-input" name="phone" type="tel" placeholder="<?php echo esc_html_e( "Phone number", 'disciple_tools' ); ?>">
                 </label>
 
                 <label for="email-input">

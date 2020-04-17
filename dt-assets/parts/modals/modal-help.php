@@ -68,7 +68,7 @@
 
         <!--    Quick Actions   -->
         <div class="help-section" id="quick-action-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Quick action buttons", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Quick Action Buttons", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done.", 'Optional Documentation', 'disciple_tools' ) ?>
             <p><?php echo esc_html_x( "For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer.
                 This action will also change the 'Seeker Path' to 'Contact Attempted'.", 'Optional Documentation', 'disciple_tools' ) ?>
@@ -118,7 +118,7 @@
 
         <!--  Connections tile -->
         <div class="help-section" id="connections-help-text" style="display: none">
-            <h4><?php echo esc_html_x( "Contact Connections", 'Optional Documentation', 'disciple_tools' ) ?></h4>
+            <h4><?php echo esc_html_e( "Contact Connections", 'disciple_tools' ) ?></h4>
             <p><?php echo esc_html_x( "Connections this contact has with other contacts (and groups) in this system.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <ul>
                 <li><strong><?php echo esc_html( $contact_fields["groups"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["groups"]["description"] ?? "" ) ?></li>
@@ -151,7 +151,7 @@
             <p><?php echo esc_html_x( "This is the area where you can view and edit the contact details for this group.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <ul>
                 <?php //$field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_name"]; ?>
-                <li><strong><?php echo esc_html( "Group Name", 'disciple_tools' ) ?></strong> - <?php echo esc_html_x( "The name of the group is searchable and can be used to help you filter your contacts in the Groups List page.", 'Optional Documentation', 'disciple_tools' ) ?></li>
+                <li><strong><?php echo esc_html_e( "Group Name", 'disciple_tools' ) ?></strong> - <?php echo esc_html_x( "The name of the group is searchable and can be used to help you filter your contacts in the Groups List page.", 'Optional Documentation', 'disciple_tools' ) ?></li>
                 <li><strong><?php echo esc_html( $group_fields["group_status"]["name"] ) ?></strong> - <?php echo esc_html( $group_fields["group_status"]["description"] ) ?>
                     <ul>
                         <?php foreach ( $group_fields["group_status"]["default"] as $option ): ?>
@@ -235,7 +235,7 @@
 
         <!--  Groups Tile  -->
         <div class="help-section" id="group-connections-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Group Connections", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Group Connections", 'Optional Documentation', 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Here you can select what type of group this is and how it is related to other groups in the system.", 'Optional Documentation', 'disciple_tools' ) ?></p>
 
             <h4><?php echo esc_html( $group_fields["group_type"]["name"] ) ?></h4>
@@ -246,7 +246,7 @@
                 <?php endforeach; ?>
             </ul>
 
-            <h4><?php echo esc_html_x( "Group Connections", 'Optional Documentation', 'disciple_tools' ) ?></h4>
+            <h4><?php echo esc_html_e( "Group Connections", 'disciple_tools' ) ?></h4>
             <p><?php echo esc_html_x( "Connections this group has with other groups in this system.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <ul>
                 <li><strong><?php echo esc_html( $group_fields["parent_groups"]["name"] ) ?></strong> - <?php echo esc_html( $group_fields["parent_groups"]["description"] ?? "" ) ?></li>
@@ -289,25 +289,25 @@
     if ( is_archive() ):?>
         <!--  Filters Tile - left side -->
         <div class="help-section" id="filters-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Default and Custom Filters", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Default and Custom Filters", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Use these filters to focus in on the contacts or groups you are responsible for. If the default filters do not fit your needs you can create your own custom filter.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
         <!--  Contacts List Tile -->
         <div class="help-section" id="contacts-list-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Contacts List Tile", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Contacts List Tile", 'Optional Documentation', 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Your list of contacts will show up here. Whenever you filter contacts, the list will also be changed in this section too. You can sort your contacts by newest, oldest, most recently modified, and least recently modified. If you have a long list of contacts they will not all load at once, so clicking the 'Load more contacts' button at the bottom of the list will allow you to load more.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
         <!--  Groups List Tile -->
         <div class="help-section" id="groups-list-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Groups List Tile", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Groups List Tile", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Your list of groups will show up here. Whenever you filter groups, the list will also be changed in this section too. You can sort your groups by newest, oldest, most recently modified, and least recently modified. If you have a long list of groups they will not all load at once, so clicking the 'Load more groups' button at the bottom of the list will allow you to load more.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
         <!--  Contacts list switch -->
         <div class="help-section" id="contacts-switch-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Closed Contacts switch", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Closed Contacts switch", 'Optional Documentation', 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Use this toggle switch to either show or not show closed contacts in the list.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
@@ -356,7 +356,7 @@
 
         <!--  Contact name -->
         <div class="help-section" id="contact-name-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Name of Contact", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Name of Contact", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "The name of the contact is searchable and can be used to help you filter your contacts in the Contacts List page.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
@@ -394,7 +394,7 @@
     if ( 'settings' === $url_path ) : ?>
         <!--  Your Profile -->
         <div class="help-section" id="profile-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Your Profile", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Your Profile", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "In this area you can see your user profile.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <p><?php echo esc_html_x( "You are not required to fill out any of these profile fields. They are optional to meet your team’s needs.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <p><?php echo esc_html_x( "By clicking 'Edit', you will be able adjust things like the language that this system operates in.", 'Optional Documentation', 'disciple_tools' ) ?></p>
@@ -402,13 +402,13 @@
 
         <!--  Your Locations  -->
         <div class="help-section" id="locations-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Locations", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Locations", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
         <!--  Your notifications -->
         <div class="help-section" id="notifications-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Your Notifications", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Your Notifications", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <ul>
                 <li><?php echo esc_html_x( "Notifications Turned On: The toggle will appear blue.", 'Optional Documentation', 'disciple_tools' ) ?></li>
@@ -428,20 +428,20 @@
 
     <!--   Notifications page -->
     <div class="help-section" id="notifications-template-help-text" style="display: none">
-        <h3><?php echo esc_html_x( "Notifications Page", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+        <h3><?php echo esc_html_e( "Notifications Page", 'disciple_tools' ) ?></h3>
         <p><?php echo esc_html_x( "This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records.", 'Optional Documentation', 'disciple_tools' ) ?></p>
-        <h4><?php echo esc_html_x( "All / Unread", 'Optional Documentation', 'disciple_tools' ) ?></h4>
+        <h4><?php echo esc_html_e( "All / Unread", 'disciple_tools' ) ?></h4>
         <p><?php echo esc_html_x( "Click the 'All' button to show the full list of all of your notifications.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         <p><?php echo esc_html_x( "Click the 'Unread' button to show the list of all of your unread notifications.", 'Optional Documentation', 'disciple_tools' ) ?></p>
-        <h4><?php echo esc_html_x( "Mark All as Read", 'Optional Documentation', 'disciple_tools' ) ?></h4>
+        <h4><?php echo esc_html_e( "Mark All as Read", 'disciple_tools' ) ?></h4>
         <p><?php echo esc_html_x( "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read.", 'Optional Documentation', 'disciple_tools' ) ?></p>
-        <h4><?php echo esc_html_x( "Settings", 'Optional Documentation', 'disciple_tools' ) ?></h4>
+        <h4><?php echo esc_html_e( "Settings", 'disciple_tools' ) ?></h4>
         <p><?php echo esc_html_x( "Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system.", 'Optional Documentation', 'disciple_tools' ) ?></p>
     </div>
 
     <!--   Duplicates view page -->
     <div class="help-section" id="duplicates-template-help-text" style="display: none">
-        <h3><?php echo esc_html_x( "Duplicate Contact page", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+        <h3><?php echo esc_html_e( "Duplicate Contact page", 'Optional Documentation', 'disciple_tools' ) ?></h3>
         <p><?php echo esc_html_x( "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact.", 'Optional Documentation', 'disciple_tools' ) ?></p>
     </div>
 
@@ -456,7 +456,7 @@
         <div class="cell small-8">
             <!-- documentation link -->
             <div class="help-more">
-                <h5><?php echo esc_html_x( "Need more help?", 'Optional Documentation', 'disciple_tools' ) ?></h5>
+                <h5><?php echo esc_html_e( "Need more help?", 'disciple_tools' ) ?></h5>
                 <a class="button small" id="docslink" href="https://disciple-tools.readthedocs.io/en/latest/index.html"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
             </div>
         </div>

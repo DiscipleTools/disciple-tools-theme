@@ -534,7 +534,7 @@ class Disciple_Tools_Contact_Post_Type
             'section' => 'misc'
         ];
         $fields["type"] = [
-            'name'        => __( 'Contact type', 'disciple_tools' ),
+            'name'        => __( 'Contact Type', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'media'    => [ "label" => __( 'Media', 'disciple_tools' ) ],
@@ -545,7 +545,7 @@ class Disciple_Tools_Contact_Post_Type
             'hidden'      => true
         ];
         $fields["last_modified"] =[
-            'name' => __( 'Last modified', 'disciple_tools' ),
+            'name' => __( 'Last Modified', 'disciple_tools' ),
             'type' => 'number',
             'default' => 0,
             'section' => 'admin'
