@@ -19,11 +19,36 @@
                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
             </button> -->
         </h3>
-        <div class="cell grid-x grid-margin-x" id="add-comment-section">
+        <div class="cell grid-x " id="add-comment-section">
             <div class="auto cell">
                 <textarea class="mention" dir="auto" id="comment-input"
                           placeholder="<?php echo esc_html_x( "Write your comment or note here", 'input field placeholder', 'disciple_tools' ) ?>"
                 ></textarea>
+
+                <?php if ( is_singular( "contacts" ) ) :
+                     $sections = [
+                         [
+                             "key" => "comment",
+                             "label" => __( "Comment", 'disciple_tools' ),
+                             "selected_by_default" => true
+                         ]
+                     ];
+                     $post_type = get_post_type();
+                     $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
+
+                        <div class="grid-x">
+                            <div class="section-subheader cell shrink">
+                                <?php esc_html_e( "Type:", 'disciple_tools' ) ?>
+                            </div>
+                            <select id="comment_type_selector" class="cell auto">
+                                <?php
+                                foreach ( $sections as $section ) {?>
+                                    <option value="<?php echo esc_html( $section["key"] ); ?>">
+                                    <?php echo esc_html( $section["label"] ); ?>
+                                <?php } ?>
+                            </select>
+                        </div>
+                <?php endif; ?>
             </div>
         </div>
         <div class="cell grid-x" style="margin-bottom: 20px">
@@ -69,6 +94,7 @@
 
 
             </div>
+
             <div class="shrink cell" id="add-comment-button-container">
                 <button id="add-comment-button" class="button loader">
                     <?php esc_html_e( "Submit comment", 'disciple_tools' ) ?>
@@ -99,7 +125,7 @@
                     $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );
                     foreach ( $sections as $section ) :
                         if ( isset( $section["key"] ) && isset( $section["label"] ) ) : ?>
-                            <li class="tabs-title">
+                            <li class="tabs-title hide">
                                 <label for="tab-button-<?php echo esc_html( $section["key"] ) ?>">
                                     <input type="checkbox"
                                            name="<?php echo esc_html( $section["key"] ) ?>"
@@ -156,6 +182,31 @@
         <p class="lead"><?php esc_html_e( 'Edit Comment:', 'disciple_tools' ) ?></p>
         <textarea id="comment-to-edit" rows="10" dir="auto"></textarea>
         <div class="grid-x">
+        <div class="cell small-12" id="edit_typeOfComment">
+                <?php if ( is_singular( "contacts" ) ) :
+                     $sections = [
+                         [
+                             "key" => "comment",
+                             "label" => __( "Comments", 'disciple_tools' ),
+                             "selected_by_default" => true
+                         ]
+                     ];
+                     $post_type = get_post_type();
+                     $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
+
+
+                            <div class="section-subheader">
+                                <?php esc_html_e( "Type of Comment", 'disciple_tools' ) ?>
+                            </div>
+                            <select id="edit_comment_type_selector" class="">
+                                <?php
+                                foreach ( $sections as $section ) {?>
+                                    <option value="<?php echo esc_html( $section["key"] ); ?>">
+                                    <?php echo esc_html( $section["label"] ); ?>
+                                <?php } ?>
+                            </select>
+                <?php endif; ?>
+            </div>
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
                 <?php esc_html_e( 'Close', 'disciple_tools' ) ?>
             </button>
