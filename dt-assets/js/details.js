@@ -51,15 +51,20 @@ jQuery(document).ready(function($) {
    */
 
   $('.dt_date_picker').each(function( index ) {
-    if (this.value && !document.querySelector('#group-details-edit-modal').contains( this)) {
-       this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
+    if (this.value) {
+      if (document.querySelector('#group-details-edit-modal') && document.querySelector('#group-details-edit-modal').contains( this)) {
+      } else {
+        this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
+      }
     }
   });
 
   $('.dt_date_picker').datepicker({
     dateFormat: 'yy-mm-dd',
     onClose: function (date) {
-      if (!document.querySelector('#group-details-edit-modal').contains( this)) {
+      if (document.querySelector('#group-details-edit-modal') && document.querySelector('#group-details-edit-modal').contains( this)) {
+        // do nothing
+      } else {
         if (!$(this).val()) {
           date = " ";//null;
         }
@@ -81,7 +86,7 @@ jQuery(document).ready(function($) {
     $(`#${inputid}`).val("");
     let id = $(`#${inputid}`).attr('id');
     date = null;
-    if (!document.querySelector('#group-details-edit-modal').contains(document.querySelector(`#${inputid}`))) {
+    if (!document.querySelector('#group-details-edit-modal') && document.querySelector('#group-details-edit-modal').contains(document.querySelector(`#${inputid}`))) {
       rest_api.update_post(post_type, post_id, { [id]: date }).then((resp) => {
         $(document).trigger("dt_date_picker-updated", [resp, id, date]);
 
