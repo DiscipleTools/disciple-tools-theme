@@ -861,11 +861,7 @@ jQuery(document).ready(function($) {
     leadSourcesTypeahead().catch(err => { console.log(err) })
 
     /* locations */
-    if ( typeof dtMapbox !== 'undefined' ) {
-      // @todo add mapbox logic
-
-
-    } else {
+    if ( typeof dtMapbox === 'undefined' ) {
       loadLocationGridTypeahead()
     }
 

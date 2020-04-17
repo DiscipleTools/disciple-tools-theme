@@ -118,7 +118,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             $url_path = trim( str_replace( get_site_url(), "", $url ), '/' );
 
-            if ( 'mapping' === $url_base ) {
+            if ( 'mapping' === $url_base && ! DT_Mapbox_API::get_key() ) {
                 if ( 'mapping' === substr( $url_path, '0', $url_base_length ) ) {
                     add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
                     add_filter( 'dt_metrics_menu', [ $this, 'menu' ], 99 );
@@ -126,7 +126,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
                 }
             }
-            else if ( $url_base === substr( $url_path, '0', $url_base_length ) ) {
+            else if ( $url_base === substr( $url_path, '0', $url_base_length ) && ! DT_Mapbox_API::get_key() ) {
                 add_action( 'wp_enqueue_scripts', [ $this, 'drilldown_script' ], 89 );
             }
             /* End DEFAULT MAPPING DEFINITION */
@@ -143,58 +143,53 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             return $template_for_url;
         }
         public function menu( $content ) {
-            if ( ! DT_Mapbox_API::get_key() ) {
-                $content .= '
-                <li><a href="">' . esc_html__( 'Mapping', 'disciple_tools' ) . '</a>
-                    <ul class="menu vertical nested" id="mapping-menu" aria-expanded="true">
-                        <li><a href="' . esc_url( site_url( '/metrics/mapping/' ) ) . '#mapping_view" onclick="page_mapping_view()">' . esc_html__( 'Map', 'disciple_tools' ) . '</a></li>
-                        <li><a href="' . esc_url( site_url( '/metrics/mapping/' ) ) . '#mapping_list" onclick="page_mapping_list()">' . esc_html__( 'List', 'disciple_tools' ) . '</a></li>
-                    </ul>
-                </li>';
-            }
+            $content .= '
+            <li><a href="">' . esc_html__( 'Mapping', 'disciple_tools' ) . '</a>
+                <ul class="menu vertical nested" id="mapping-menu" aria-expanded="true">
+                    <li><a href="' . esc_url( site_url( '/metrics/mapping/' ) ) . '#mapping_view" onclick="page_mapping_view()">' . esc_html__( 'Map', 'disciple_tools' ) . '</a></li>
+                    <li><a href="' . esc_url( site_url( '/metrics/mapping/' ) ) . '#mapping_list" onclick="page_mapping_list()">' . esc_html__( 'List', 'disciple_tools' ) . '</a></li>
+                </ul>
+            </li>';
             return $content;
         }
 
         public function scripts() {
             global $dt_mapping;
 
-            if ( ! DT_Mapbox_API::get_key() ) {
-                // Amcharts
-                wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, 4, true );
-                wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, 4, true );
-                wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', 4, false, true );
-                wp_register_script( 'amcharts-maps', 'https://www.amcharts.com/lib/4/maps.js', false, 4, true );
+            // Amcharts
+            wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, 4, true );
+            wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, 4, true );
+            wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', 4, false, true );
+            wp_register_script( 'amcharts-maps', 'https://www.amcharts.com/lib/4/maps.js', false, 4, true );
 
-                $this->drilldown_script();
+            $this->drilldown_script();
 
-                // mapping css
-                wp_register_style( 'mapping-css', $dt_mapping["mapping_css_url"] );
-                wp_enqueue_style( 'mapping-css' );
+            // mapping css
+            wp_register_style( 'mapping-css', $dt_mapping["mapping_css_url"] );
+            wp_enqueue_style( 'mapping-css' );
 
-                // Mapping Script
-                wp_enqueue_script( 'dt_mapping_js',
-                    $dt_mapping['mapping_js_url'],
-                    [
-                        'jquery',
-                        'jquery-ui-core',
-                        'amcharts-core',
-                        'amcharts-animated',
-                        'amcharts-maps',
-                        'mapping-drill-down',
-                        'lodash'
-                    ], $dt_mapping['mapping_js_version'], true
-                );
-                wp_localize_script(
-                    'dt_mapping_js', 'mappingModule', [
-                        'root' => esc_url_raw( rest_url() ),
-                        'nonce' => wp_create_nonce( 'wp_rest' ),
-                        'current_user_login' => wp_get_current_user()->user_login,
-                        'current_user_id' => get_current_user_id(),
-                        'mapping_module' => $this->localize_script(),
-                    ]
-                );
-            }
-
+            // Mapping Script
+            wp_enqueue_script( 'dt_mapping_js',
+                $dt_mapping['mapping_js_url'],
+                [
+                    'jquery',
+                    'jquery-ui-core',
+                    'amcharts-core',
+                    'amcharts-animated',
+                    'amcharts-maps',
+                    'mapping-drill-down',
+                    'lodash'
+                ], $dt_mapping['mapping_js_version'], true
+            );
+            wp_localize_script(
+                'dt_mapping_js', 'mappingModule', [
+                    'root' => esc_url_raw( rest_url() ),
+                    'nonce' => wp_create_nonce( 'wp_rest' ),
+                    'current_user_login' => wp_get_current_user()->user_login,
+                    'current_user_id' => get_current_user_id(),
+                    'mapping_module' => $this->localize_script(),
+                ]
+            );
 
         }
 

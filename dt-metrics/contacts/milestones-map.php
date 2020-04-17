@@ -27,6 +27,7 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
         $url_path = dt_get_url_path();
         // only load scripts if exact url
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
+
             add_action( 'wp_enqueue_scripts', [ $this, 'mapping_scripts' ], 89 );
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
@@ -36,7 +37,9 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
 
 
     public function scripts() {
+        DT_Mapping_Module::instance()->scripts();
         global $dt_mapping;
+
 
         // Milestones Script
         wp_enqueue_script( 'dt_'.$this->slug.'_script',

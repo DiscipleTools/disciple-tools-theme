@@ -6,8 +6,7 @@ jQuery(document).ready(function() {
 
   let chartDiv = jQuery('#chart')
   chartDiv.empty().html(`
-    <h2>Contact Milestones</h2>
-    <p>Showing all contacts from all time with any status</p>
+    <span class="section-header" title="Showing all contacts from all time with any status">Contact Milestones</span>
     <div id="mapping_chart"></div>
   `)
 
