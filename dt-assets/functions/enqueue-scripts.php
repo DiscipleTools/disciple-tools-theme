@@ -185,7 +185,7 @@ function dt_site_scripts() {
                 'comments', 'commentsSettings', [
                     "post" => get_post(),
                     'post_with_fields' => $post,
-                    'txt_created' => __( "Created record at {}" ),
+                    'txt_created' => __( "Created record on {}" ),
                     'template_dir' => get_template_directory_uri(),
                     'contact_author_name' => isset( $post->post_author ) && (int) $post->post_author > 0 ? get_user_by( 'id', intval( $post->post_author ) )->display_name : "",
                     'translations' => [

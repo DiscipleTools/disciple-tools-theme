@@ -674,7 +674,7 @@ jQuery(document).ready(function($) {
     let channelOptions = ``
     _.forOwn( contactsDetailsWpApiSettings.channels, (val, key)=>{
       if ( ![ "phone", "email", "address"].includes( key ) ){
-        channelOptions += `<option value="${_.escape(key)}">${escape(val.label)}</option>`
+        channelOptions += `<option value="${_.escape(key)}">${_.escape(val.label)}</option>`
       }
     })
     idOfNextNewField++
@@ -940,6 +940,7 @@ jQuery(document).ready(function($) {
   $('.select-input').on("change", function () {
     let key = $(this).attr('id')
     editFieldsUpdate[key] = $(this).val()
+
   })
 
   $('#contact-details-edit-modal').on('change', '.contact-input', function() {
@@ -1002,6 +1003,9 @@ jQuery(document).ready(function($) {
         editFieldsUpdate[`contact_${channelType}`].values.push({value:val})
       }
     })
+    if ( editFieldsUpdate[undefined] !== 'undefined' ) {
+      delete editFieldsUpdate[undefined]
+    }
     API.update_post('contacts', contactId, editFieldsUpdate).then((updatedContact)=>{
       contact = updatedContact
       $(this).toggleClass("loading")
@@ -1302,11 +1306,15 @@ jQuery(document).ready(function($) {
   });
 
   // Baptism date
-  let modalBaptismDatePicker = $('input#modal-baptism-date-picker')
+  let modalBaptismDatePicker = $('input#modal-baptism-date-picker');
   modalBaptismDatePicker.datepicker({
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
-      API.update_post('contacts', contactId, { baptism_date: date }).catch(handleAjaxError)
+      API.update_post('contacts', contactId, { baptism_date: date }).then((resp)=>{
+        if (this.value) {
+          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
+        }
+      }).catch(handleAjaxError)
     },
     changeMonth: true,
     changeYear: true
@@ -1365,7 +1373,7 @@ jQuery(document).ready(function($) {
         });
       }
       if ( _.get(newContact, "baptism_date.timestamp", 0) > 0){
-        modalBaptismDatePicker.datepicker('setDate', moment.unix(newContact['baptism_date']["timestamp"]).format("YYYY-MM-DD"))
+        modalBaptismDatePicker.datepicker('setDate', moment.unix(newContact['baptism_date']["timestamp"]).format("YYYY-MM-DD"));
       }
       modalBaptismGeneration.val(newContact["baptism_generation"] || 0)
     }

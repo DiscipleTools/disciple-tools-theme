@@ -72,8 +72,16 @@
     if (getContactsPromise && _.get(getContactsPromise, "readyState") !== 4){
       getContactsPromise.abort()
     }
+    let fields = [];
+    if ( wpApiListSettings.current_post_type === "contacts" ){
+      fields = [ 'milestones', 'overall_status', 'seeker_path', 'assigned_to', 'location_grid', 'groups', 'last_modified', 'contact_phone', 'requires_update' ]
+    } else {
+      fields = [ 'group_status', 'group_type', 'member_count', 'leaders', 'location_grid', 'last_modified', 'requires_updated' ]
+    }
+    data.fields_to_return = fields
+
     getContactsPromise = $.ajax({
-      url: wpApiListSettings.root + "dt/v1/" + wpApiListSettings.current_post_type + "/search",
+      url: wpApiListSettings.root + "dt-posts/v2/" + wpApiListSettings.current_post_type + "/",
       beforeSend: function (xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiListSettings.nonce);
       },
@@ -81,9 +89,9 @@
     })
     getContactsPromise.then((data)=>{
       if (offset){
-        items = _.unionBy(items, data[wpApiListSettings.current_post_type] || [], "ID")
+        items = _.unionBy(items, data.posts || [], "ID")
       } else  {
-        items = data[wpApiListSettings.current_post_type] || []
+        items = data.posts || []
       }
       $('#load-more').toggle(items.length !== parseInt( data.total ))
       let result_text = wpApiListSettings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", data.total)
@@ -236,7 +244,7 @@
       <!--<td><img src="<%- template_directory_uri %>/dt-assets/images/star.svg" width=13 height=12></td>-->
       <!--<td></td>-->
       <td>
-        <a href="<%- permalink %>"><%- post_title %></a>
+        <a href="<%- permalink %>" class="list-name-link"><%- post_title %></a>
         <br>
         <%- phone_numbers.join(", ") %>
         <span class="show-for-small-only">
@@ -267,7 +275,7 @@
         <% } %>
         <span class="milestone milestone--<%- belief_milestone_key %>"><%- belief_milestone %></span>
       </td>
-      <td class="hide-for-small-only"><%- assigned_to ? assigned_to.name : "" %></td>
+      <td class="hide-for-small-only"><%- assigned_to ? assigned_to.display : "" %></td>
       <td class="hide-for-small-only"><%= locations.join(", ") %></td>
       <td class="hide-for-small-only"><%= group_links %></td>
       <td class="hide-for-small-only"><%- last_modified %></td>
@@ -276,7 +284,7 @@
       <!--<td><img src="<%- template_directory_uri %>/dt-assets/images/green_flag.svg" width=10 height=12></td>-->
       <!--<td></td>-->
       <td class="show-for-small-only">
-        <a href="<%- permalink %>"><%- post_title %></a>
+        <a href="<%- permalink %>" class="list-name-link"><%- post_title %></a>
         <br>
         <%- status %> <%- type %> <%- member_count %>
         <%- locations.join(", ") %>
@@ -330,20 +338,17 @@
       ['planting', 'in_group', 'sharing', 'can_share'],
       function(key) { return (contact["milestones"] || []).includes(`milestone_${_.escape( key )}`); }
     );
-    let status = _.get( ccfs, `overall_status.default[${_.escape( contact.overall_status )}]["label"]`, contact.overall_status )
-    let seeker_path = _.get( ccfs, `seeker_path.default[${_.escape( contact.seeker_path )}]["label"]`, contact.seeker_path )
-    // if (contact.overall_status === "active") {
-    //   status = ccfs.seeker_path.default[contact.seeker_path];
-    // } else {
-    //   status = ccfs.overall_status.default[contact.overall_status];
-    // }
+    let status = _.escape( _.get(contact.overall_status, 'label') )
+    let seeker_path = _.escape( _.get(contact.seeker_path, 'label') )
+    contact.phone_numbers = (contact.contact_phone || []).map(a=>a.value)
+    contact.locations = (contact.location_grid || []).map(a=>a.label)
     const group_links = _.map(contact.groups, function(group) {
       return '<a href="' + _.escape(group.permalink) + '">' + group.post_title + "</a>";
     }).join(", ");
 
-const langcode = document.querySelector('html').getAttribute('lang').replace('_', '-');
-const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }
-const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, options).format(new Date(contact.last_modified*1000))
+    const langcode = document.querySelector('html').getAttribute('lang').replace('_', '-');
+    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }
+    const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, options).format(new Date(contact.last_modified*1000))
 
     const context = _.assign({last_modified: 0}, contact, wpApiListSettings, {
       index,
@@ -368,9 +373,13 @@ const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, option
       return '<a href="' + _.escape(leader.permalink) + '">' + _.escape(leader.post_title) + "</a>";
     }).join(", ");
     const gcfs = wpApiListSettings.custom_fields_settings;
-    const status = _.get( gcfs, `group_status.default[${group.group_status || "active"}]["label"]`, group.group_status )
-    const type = _.get( gcfs, `group_type.default[${group.group_type || "group"}]["label"]`, group.group_type )
+    let status = _.escape( _.get(group.group_status, 'label') )
+    const type = _.escape( _.get(group.group_type, 'label') )
+    let locations = (group.location_grid || []).map(a=>a.label)
+    let member_count = group.member_count || 0
     const context = _.assign({}, group, wpApiListSettings, {
+      locations,
+      member_count,
       leader_links,
       status,
       type,
@@ -455,17 +464,17 @@ const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, option
     }
 
     filter.query = query
-    let sortField = _.get(currentFilter, "query.sort", "overall_status").replace("-", "");
+    let sortField = _.get(currentFilter, "query.sort", "overall_status")
     filter.query.sort = _.get(currentFilter, "query.sort", "overall_status");
     if ( _.get( cachedFilter, "query.sort") ){
       filter.query.sort = cachedFilter.query.sort;
-      sortField = _.get(cachedFilter, "query.sort", "overall_status").replace("-", "");
+      sortField = _.get(cachedFilter, "query.sort", "overall_status")
     }
     //reset sorting in table header
     tableHeaderRow.removeClass("sorting_asc")
     tableHeaderRow.removeClass("sorting_desc")
-    let headerCell = $(`.js-list thead .sortable th[data-id="${_.escape( sortField )}"]`)
-    headerCell.addClass("sorting_asc")
+    let headerCell = $(`.js-list thead .sortable th[data-id="${_.escape( sortField.replace("-", "") )}"]`)
+    headerCell.addClass(`sorting_${ sortField.startsWith('-') ? 'desc' : 'asc'}`)
     tableHeaderRow.data("sort", '')
     headerCell.data("sort", 'asc')
 

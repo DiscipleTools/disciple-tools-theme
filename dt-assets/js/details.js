@@ -44,11 +44,20 @@ jQuery(document).ready(function($) {
     })
   })
 
+  $('.dt_date_picker').each(function( index ) {
+    if (this.value) {
+      this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
+    }
+  });
+
   $('.dt_date_picker').datepicker({
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
       let id = $(this).attr('id')
-      rest_api.update_post( post_type, post_id, { [id]: date }).then((resp)=>{
+      rest_api.update_post( post_type, post_id, { [id]: moment(date).unix() }).then((resp)=>{
+        if (this.value) {
+          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
+        }
         $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
       }).catch(handleAjaxError)
     },
@@ -311,7 +320,7 @@ jQuery(document).ready(function($) {
       }
       html += `<li>
         <span style="${task_done ? 'text-decoration:line-through' : ''}">
-        ${task_row}  
+        ${task_row}
         ${ show_complete_button ? `<button type="button" data-id="${_.escape(task.id)}" class="existing-task-action complete-task">${_.escape(detailsSettings.translations.complete)}</button>` : '' }
         <button type="button" data-id="${_.escape(task.id)}" class="existing-task-action remove-task" style="color: red;">${_.escape(detailsSettings.translations.remove)}</button>
       </li>`
