@@ -12,7 +12,7 @@
         ?>
         <!--    Contact Details Tile  -->
         <div class="help-section" id="contact-details-help-text" style="display: none">
-            <h3><?php echo esc_html( "Contact Details", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Contact Details", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "This is the area where you can view and edit the contact details for this contact.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <ul>
                 <li><strong><?php echo esc_html( "Contact Name", 'disciple_tools' ) ?></strong></li>
@@ -77,7 +77,7 @@
 
         <!-- Contact Progress Tile -->
         <div class="help-section" id="contact-progress-help-text" style="display: none">
-            <h3><?php echo esc_html( "Progress", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Progress", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Here you can track the progress of the contact's faith journey.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <ul>
                 <li><strong><?php echo esc_html( $contact_fields["seeker_path"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["seeker_path"]["description"] ) ?></li>
@@ -132,7 +132,7 @@
 
         <!--  Other tile  -->
         <div class="help-section" id="other-tile-help-text" style="display: none">
-            <h3><?php echo esc_html( "Other", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Other", 'disciple_tools' ) ?></h3>
             <h4><?php echo esc_html( $contact_fields["tags"]["name"] ) ?></h4>
             <p><?php echo esc_html( $contact_fields["tags"]["description"] ) ?></p>
         </div>
@@ -147,7 +147,7 @@
 
         <!-- Group Details Tile -->
         <div class="help-section" id="group-details-help-text" style="display: none">
-            <h3><?php echo esc_html( "Group Details", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Group Details", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "This is the area where you can view and edit the contact details for this group.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <ul>
                 <?php //$field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_name"]; ?>
@@ -198,7 +198,7 @@
 
         <!-- Members Tile -->
         <div class="help-section" id="members-help-text" style="display: none">
-            <h3><?php echo esc_html( "Members", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Members", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "This is the area where you manage the contacts that are a part of the group.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <h4><?php echo esc_html( $group_fields["member_count"]["name"] ) ?></h4>
             <p><?php echo esc_html( $group_fields["member_count"]["description"] ) ?></p>
@@ -275,7 +275,7 @@
 
     <!--    Comments and Activity - contact & group  -->
     <div class="help-section" id="comments-activity-help-text" style="display: none">
-        <h3><?php echo esc_html( "Comments and Activity", 'disciple_tools' ) ?></h3>
+        <h3><?php echo esc_html_e( "Comments and Activity", 'disciple_tools' ) ?></h3>
         <p><?php echo esc_html_x( "This is where you can record notes from meetings and conversations.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         <p><?php echo esc_html_x( "Type @ and the name of a user to mention them in a comment. This user will then receive a notification.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         <p><?php echo esc_html_x( "This section also includes the history of activity, such as when the contact or group status became active etc.", 'Optional Documentation', 'disciple_tools' ) ?></p>
@@ -307,7 +307,7 @@
 
         <!--  Contacts list switch -->
         <div class="help-section" id="contacts-switch-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Closed contacts switch", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_x( "Closed Contacts switch", 'Optional Documentation', 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Use this toggle switch to either show or not show closed contacts in the list.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
@@ -344,13 +344,13 @@
 
         <!--  Initial Comment  -->
         <div class="help-section" id="initial-comment-help-text" style="display: none">
-            <h3><?php echo esc_html( "Initial Comment", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Initial Comment", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "The Initial Comment field is for any extra information. It will be saved as the first comment under the Activity and Comments Tile.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
         <!--  New Contact -->
         <div class="help-section" id="new-contact-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Create new contact", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Create New Contact", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "After writing the name of the contact, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new contact has just been just created.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
@@ -374,13 +374,13 @@
 
         <!--  New Group -->
         <div class="help-section" id="new-group-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Create New Group", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Create New Group", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "After writing the name of the group, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new group has just been created.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
         <!--  Group name -->
         <div class="help-section" id="group-name-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Name of Group", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Group Name", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "The name of the group is searchable and can be used to help you filter your contacts in the Groups List page.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
     <?php endif; ?>

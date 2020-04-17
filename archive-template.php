@@ -198,7 +198,7 @@ declare(strict_types=1);
                                                            data-field="<?php echo esc_html( $field )?>"
                                                            data-type="<?php echo esc_html( $field_options[$field]["type"] ) ?>"
                                                            name="<?php echo esc_html( $field ) ?>[query]"
-                                                           placeholder="<?php esc_html_e( "Type to Search", 'disciple_tools' ) ?>"
+                                                           placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>"
                                                            autocomplete="off">
                                                 </span>
                                             </div>

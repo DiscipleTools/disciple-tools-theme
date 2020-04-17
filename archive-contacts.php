@@ -212,7 +212,7 @@ declare(strict_types=1);
                                                class="dt_date_picker" data-delimit="start"
                                                data-field="<?php echo esc_html( $field ) ?>">
                                         <br>
-                                        <strong><?php echo esc_html_x( "Range End", 'The end date of a date range', 'disciple_tools' ) ?></strong>
+                                        <strong><?php echo esc_html_x( "Range end", 'The end date of a date range', 'disciple_tools' ) ?></strong>
                                         <button class="clear-date-picker"
                                                 style="color:firebrick"
                                                 data-for="<?php echo esc_html( $field ) ?>_end">

@@ -42,7 +42,7 @@ $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
       'contact_email' => array()
   );
 
-  $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='Edit' class='fi-pencil'></a><a class='fi-x hide cancel' title='Cancel'></a><a class='fi-check hide save' title='Save'></a></span>";
+  $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='". esc_html__( 'Edit', 'disciple_tools' )."' class='fi-pencil'></a><a class='fi-x hide cancel' title='".esc_html__('Cancel', 'disciple_tools')."'></a><a class='fi-check hide save' title='".esc_html__('Save', 'disciple_tools')."'></a></span>";
     ?>
 
     <div id="content"  class="template-merge-details">
@@ -61,8 +61,8 @@ $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                   <div class="merge-column">
                     <a class='contact_name' href="<?php echo esc_html( get_site_url() . "/contacts/" . $dt_current_id ) ?>"><?php echo esc_html( $dt_contact_name ) ?></a>
                     <span class='row-edit'>
-                        <a onclick='editRow(this, edit);' title='Edit' class='fi-pencil'></a><a class='fi-x hide cancel' title='Cancel'></a>
-                        <a class='fi-check hide save' title='Save'></a>
+                        <a onclick='editRow(this, edit);' title='<?php esc_html_e( "Edit", 'disciple_tools' ) ?>' class='fi-pencil'></a><a class='fi-x hide cancel' title='<?php esc_html_e( "Cancel", 'disciple_tools' ) ?>'></a>
+                        <a class='fi-check hide save' title='<?php esc_html_e( "Save", 'disciple_tools' ) ?>'></a>
                     </span>
                     <br>
                     <span><?php echo esc_html( '#' . $dt_contact["ID"] ) ?></span><br>
@@ -72,7 +72,7 @@ $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                   </div>
                   <div class="merge-column">
                     <a class='contact_name' href="<?php echo esc_html( get_site_url() . "/contacts/" . $dt_dupe_id ) ?>"><?php echo esc_html( $dt_duplicate_contact_name ) ?></a>
-                    <span class='row-edit'><a onclick='editRow(this, edit);' title='Edit' class='fi-pencil'></a><a class='fi-x hide cancel' title='Cancel'></a><a class='fi-check hide save' title='Save'></a></span>
+                    <span class='row-edit'><a onclick='editRow(this, edit);' title='<?php esc_html_e( "Edit", 'disciple_tools' ) ?>' class='fi-pencil'></a><a class='fi-x hide cancel' title='<?php esc_html_e( "Cancel", 'disciple_tools' ) ?>'></a><a class='fi-check hide save' title='<?php esc_html_e( "Save", 'disciple_tools' ) ?>'></a></span>
                     <br>
                     <span><?php echo esc_html( '#' . $dt_duplicate_contact["ID"] ) ?></span><br>
                     <span><?php esc_html_e( "Status:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_duplicate_contact["overall_status"]["label"] ?? "" ) ?></span><br>
@@ -108,7 +108,7 @@ $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                             echo "<div class='merge-column'>";
                             if ($dt_value) {
                                 echo "<input type='checkbox' name='" . esc_html( strtolower( $dt_field ) ) . "[]' value='".esc_html( $dt_value )."'> ".esc_html( $dt_value ) .
-                                     "<span class='row-edit'><a onclick='editRow(this, edit);' title='Edit' class='fi-pencil'></a><a class='fi-x hide cancel' title='Cancel'></a><a class='fi-check hide save' title='Save'></a></span>";
+                                     "<span class='row-edit'><a onclick='editRow(this, edit);' title='".esc_html__('Edit', 'disciple_tools')."' class='fi-pencil'></a><a class='fi-x hide cancel' title='".esc_html__('Cancel', 'disciple_tools')."'></a><a class='fi-check hide save' title='".esc_html__('Save', 'disciple_tools')."'></a></span>";
 
                             } else {
                                 echo "<div class='empty'></div>";
