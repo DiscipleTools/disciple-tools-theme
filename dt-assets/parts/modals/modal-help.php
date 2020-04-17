@@ -235,7 +235,7 @@
 
         <!--  Groups Tile  -->
         <div class="help-section" id="group-connections-help-text" style="display: none">
-            <h3><?php echo esc_html_e( "Group Connections", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Group Connections", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Here you can select what type of group this is and how it is related to other groups in the system.", 'Optional Documentation', 'disciple_tools' ) ?></p>
 
             <h4><?php echo esc_html( $group_fields["group_type"]["name"] ) ?></h4>
@@ -295,7 +295,7 @@
 
         <!--  Contacts List Tile -->
         <div class="help-section" id="contacts-list-help-text" style="display: none">
-            <h3><?php echo esc_html_e( "Contacts List Tile", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Contacts List Tile", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Your list of contacts will show up here. Whenever you filter contacts, the list will also be changed in this section too. You can sort your contacts by newest, oldest, most recently modified, and least recently modified. If you have a long list of contacts they will not all load at once, so clicking the 'Load more contacts' button at the bottom of the list will allow you to load more.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
@@ -307,7 +307,7 @@
 
         <!--  Contacts list switch -->
         <div class="help-section" id="contacts-switch-help-text" style="display: none">
-            <h3><?php echo esc_html_e( "Closed Contacts switch", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_e( "Closed Contacts switch", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Use this toggle switch to either show or not show closed contacts in the list.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
@@ -441,7 +441,7 @@
 
     <!--   Duplicates view page -->
     <div class="help-section" id="duplicates-template-help-text" style="display: none">
-        <h3><?php echo esc_html_e( "Duplicate Contact page", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+        <h3><?php echo esc_html_e( "Duplicate Contact page", 'disciple_tools' ) ?></h3>
         <p><?php echo esc_html_x( "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact.", 'Optional Documentation', 'disciple_tools' ) ?></p>
     </div>
 
