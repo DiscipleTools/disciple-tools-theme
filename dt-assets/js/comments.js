@@ -210,7 +210,6 @@ jQuery(document).ready(function($) {
   $(document).on("click", ".open-edit-comment", function () {
     let id = $(this).data("id")
     let comment_type = $(this).data("type");
-    console.log(comment_type);
     let comment = _.find(comments, {comment_ID:id.toString()})
 
     let comment_html = comment.comment_content // eg: "Tom &amp; Jerry"

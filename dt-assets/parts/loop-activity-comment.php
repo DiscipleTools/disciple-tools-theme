@@ -189,11 +189,6 @@
                              "key" => "comment",
                              "label" => __( "Comments", 'disciple_tools' ),
                              "selected_by_default" => true
-                         ],
-                         [
-                             "key" => "activity",
-                             "label" => __( "Activity", 'disciple_tools' ),
-                             "selected_by_default" => true
                          ]
                      ];
                      $post_type = get_post_type();
