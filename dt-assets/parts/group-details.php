@@ -173,7 +173,8 @@
             <div class="section-subheader">
             <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-success.svg' ?>"> <?php echo esc_html( $group_fields["church_start_date"]["name"] )?>
             </div>
-            <ul class="date-list church_start_date details-list"><?php
+            <ul class="date-list church_start_date details-list">
+            <?php
             if ( isset( $group["church_start_date"] ) ) {
                 echo esc_html( strftime( '%x', $group["church_start_date"]["timestamp"] ) );
             } else {
@@ -187,7 +188,8 @@
             <div class="section-subheader">
             <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-end.svg' ?>"> <?php echo esc_html( $group_fields["end_date"]["name"] )?>
             </div>
-            <ul class="date-list end_date details-list"><?php
+            <ul class="date-list end_date details-list">
+            <?php
             if ( isset( $group["end_date"] ) ) {
                 echo esc_html( strftime( '%x', $group["end_date"]["timestamp"] ) );
             } else {
@@ -289,26 +291,46 @@
         <!-- Dates -->
         <div class="grid-x">
             <div class="section-subheader cell">
-                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-start.svg' ?>">
-                <?php echo esc_html( $group_fields["start_date"]["name"] )?>
+                <img src="<?php echo esc_url( get_template_directory_uri() ).'/dt-assets/images/date-start.svg'; ?>">
+                <?php echo esc_html( $group_fields["start_date"]["name"] ); ?>
             </div>
-            <div class="start_date"><input type="text" class="date-picker" id="start_date" autocomplete="off"></div>
+            <div class="start_date input-group">
+                <input id="start_date" class="input-group-field dt_date_picker date-picker" type="text" autocomplete="off" data-date-format='yy-mm-dd' value="<?php echo esc_html( $group["start_date"]["timestamp"] ?? '' ); ?>">
+
+                <div class="input-group-button">
+                    <button id="start_date_clear" class="button alert clear-date-button" data-inputid="start_date" title="Delete Date">x</button>
+                </div>
+            </div>
         </div>
 
         <div class="grid-x">
             <div class="section-subheader cell">
-                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-success.svg' ?>">
-                <?php echo esc_html( $group_fields["church_start_date"]["name"] )?>
+                <img src="<?php echo esc_url( get_template_directory_uri() ).'/dt-assets/images/date-success.svg'; ?>">
+                <?php echo esc_html( $group_fields["church_start_date"]["name"] ); ?>
             </div>
-            <div class="church_start_date"><input type="text" class="date-picker" id="church_start_date" autocomplete="off"></div>
+
+            <div class="church_start_date input-group">
+                <input id="church_start_date" class="input-group-field dt_date_picker date-picker" type="text" autocomplete="off" data-date-format='yy-mm-dd' value="<?php echo esc_html( $group["church_start_date"]["timestamp"] ?? '' ); ?>">
+
+                <div class="input-group-button">
+                    <button id="church_start_date_clear" class="button alert clear-date-button" data-inputid="church_start_date" title="Delete Date">x</button>
+                </div>
+            </div>
         </div>
 
         <div class="grid-x">
             <div class="section-subheader cell">
-                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/date-end.svg' ?>">
-                <?php echo esc_html( $group_fields["end_date"]["name"] )?>
+                <img src="<?php echo esc_url( get_template_directory_uri() ).'/dt-assets/images/date-end.svg'; ?>">
+                <?php echo esc_html( $group_fields["end_date"]["name"] ); ?>
             </div>
-            <div class="end_date"><input type="text" class="date-picker" id="end_date" autocomplete="off"></div>
+            <div class="end_date input-group">
+                <input id="end_date" class="input-group-field dt_date_picker date-picker" type="text" autocomplete="off" data-date-format='yy-mm-dd' value="<?php echo esc_html( $group["end_date"]["timestamp"] ?? '' ); ?>">
+
+                <div class="input-group-button">
+                    <button id="end_date_clear" class="button alert clear-date-button"
+                    data-inputid="end_date" title="Delete Date">x</button>
+                </div>
+            </div>
         </div>
 
 

@@ -237,7 +237,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             <?php esc_html_e( 'View Comments', 'disciple_tools' ) ?>
                         </a>
                     </div>
-                    <!-- end collapse --></div>
+                    <!-- end collapse --></div>
                 </div>
             </section>
             <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell" role="main" style="padding:0">
@@ -346,7 +346,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         <?php
                                     }
                                     ?>
-                                </div><!-- end collapse --></div>
+                                </div><!-- end collapse --></div>
                             </section>
 
                         <!-- PROGRESS TILE -->
@@ -410,16 +410,18 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         <?php endforeach; ?>
                                     </div>
 
+                                    <div class="section-subheader"><?php echo esc_html( $contact_fields["baptism_date"]["name"] )?></div>
                                     <div class="baptism_date">
-                                        <div class="section-subheader"><?php echo esc_html( $contact_fields["baptism_date"]["name"] )?></div>
-                                        <div class="baptism_date">
-                                        <input type="text" class="dt_date_picker"
-                                                   value="<?php echo esc_html( $contact["baptism_date"]["timestamp"] ?? '' )?>"
-                                                   id="baptism_date" autocomplete="off">
+                                        <div class="baptism_date input-group">
+                                            <input id="baptism_date" class="input-group-field dt_date_picker" type="text" autocomplete="off"
+                                                   value="<?php echo esc_html( $contact["baptism_date"]["timestamp"] ?? '' )?>" >
+                                            <div class="input-group-button">
+                                                <button id="baptism-date-clear-button" class="button alert clear-date-button" data-inputid="baptism_date" title="Delete Date">x</button>
+                                            </div>
                                         </div>
                                     </div>
 
-                                </div><!-- end collapse --></div>
+                                </div><!-- end collapse --></div>
                             </section>
 
                             <?php
@@ -528,7 +530,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         </div>
                                     </div>
                                 </div>
-                                <!-- end collapse --></div>
+                                <!-- end collapse --></div>
                             </section>
                         </div>
                     </div>

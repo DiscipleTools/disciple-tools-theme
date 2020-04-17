@@ -644,7 +644,7 @@ jQuery(document).ready(function($) {
   $( document ).on( 'text-input-updated', function (e, newContact){})
 
   $( document ).on( 'dt_date_picker-updated', function (e, newContact, id, date){
-    if ( id === 'baptism_date' ){
+    if (id === 'baptism_date' && newContact.baptism_date && newContact.baptism_date.timestamp) {
       openBaptismModal(newContact)
     }
   })
@@ -674,7 +674,7 @@ jQuery(document).ready(function($) {
     let channelOptions = ``
     _.forOwn( contactsDetailsWpApiSettings.channels, (val, key)=>{
       if ( ![ "phone", "email", "address"].includes( key ) ){
-        channelOptions += `<option value="${_.escape(key)}">${escape(val.label)}</option>`
+        channelOptions += `<option value="${_.escape(key)}">${_.escape(val.label)}</option>`
       }
     })
     idOfNextNewField++
@@ -1370,6 +1370,7 @@ jQuery(document).ready(function($) {
       }
       if ( _.get(newContact, "baptism_date.timestamp", 0) > 0){
         modalBaptismDatePicker.datepicker('setDate', moment.unix(newContact['baptism_date']["timestamp"]).format("YYYY-MM-DD"));
+        modalBaptismDatePicker.val(window.SHAREDFUNCTIONS.formatDate(newContact['baptism_date']["timestamp"]) )
       }
       modalBaptismGeneration.val(newContact["baptism_generation"] || 0)
     }
