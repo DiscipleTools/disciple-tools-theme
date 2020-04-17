@@ -396,7 +396,11 @@ class Disciple_Tools_Posts
                     $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
                 }
                 if ( $fields[$activity->meta_key]["type"] === "date" ){
-                    $message = $fields[$activity->meta_key]["name"] . ": {" . $activity->meta_value . "}";
+                    if ( $activity->meta_value === "value_deleted" ){
+                        $message = sprintf( __( '%s removed', 'disciple_tools' ), $fields[$activity->meta_key]["name"] );
+                    } else {
+                        $message = $fields[$activity->meta_key]["name"] . ": {" . $activity->meta_value . "}";
+                    }
                 }
                 if ( $fields[$activity->meta_key]["type"] === "location" ){
                     if ( $activity->meta_value === "value_deleted" ){
