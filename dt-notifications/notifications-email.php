@@ -33,6 +33,24 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 function dt_send_email( $email, $subject, $message_plain_text ) {
 
+    /**
+     * Filter for developement use.
+     * If set to true this filter will catch all email traffic from the system and generate a log report,
+     * this protects against accidental email sending when working on systems with live data.
+     */
+    $disabled = apply_filters( 'dt_block_development_emails', false );
+    if ( $disabled ) {
+        $email = [];
+        $email['email'] = $email;
+        $email['subject'] = $subject;
+        $email['message'] = $message_plain_text;
+
+        dt_write_log( __METHOD__ );
+        dt_write_log( $email );
+
+        return true;
+    }
+
     // Sanitize
     $email = sanitize_email( $email );
     $subject = sanitize_text_field( $subject );
