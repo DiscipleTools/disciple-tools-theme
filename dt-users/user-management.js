@@ -429,11 +429,11 @@ jQuery(document).ready(function($) {
      */
     $('#status-select').on('change', function () {
       let value = $(this).val()
-      update_user( user_id, 'user_status', value)
+      update_user( window.current_user_lookup, 'user_status', value)
     })
     $('#workload-select').on('change', function () {
       let value = $(this).val()
-      update_user( user_id, 'workload_status', value)
+      update_user( window.current_user_lookup, 'workload_status', value)
     })
 
     /**
@@ -457,7 +457,7 @@ jQuery(document).ready(function($) {
       let start_date = picker.startDate.format('YYYY/MM/DD')
       let end_date = picker.endDate.format('YYYY/MM/DD')
       $('#add_unavailable_dates_spinner').addClass('active')
-      update_user( user_id, 'add_unavailability', {start_date, end_date}).then((resp)=>{
+      update_user( window.current_user_lookup, 'add_unavailability', {start_date, end_date}).then((resp)=>{
         $('#add_unavailable_dates_spinner').removeClass('active')
         unavailable_dates_picker.val('');
         display_dates_unavailable(resp.dates_unavailable)
@@ -477,7 +477,7 @@ jQuery(document).ready(function($) {
       $('#user_roles_list input:checked').each(function () {
         roles.push($(this).val())
       })
-      update_user( user_id, 'save_roles', roles).then(()=>{
+      update_user( window.current_user_lookup, 'save_roles', roles).then(()=>{
         $(this).toggleClass('loading', false)
       }).catch(()=>{
         $(this).toggleClass('loading', false)
@@ -500,7 +500,7 @@ jQuery(document).ready(function($) {
     }
     $( document).on( 'click', '.remove_dates_unavailable', function () {
       let id = $(this).data('id');
-      update_user( user_id, 'remove_unavailability', id).then((resp)=>{
+      update_user( window.current_user_lookup, 'remove_unavailability', id).then((resp)=>{
         display_dates_unavailable(resp)
       })
     })
@@ -558,13 +558,13 @@ jQuery(document).ready(function($) {
               return [];
             }, callback: {
               onCancel: function (node, item) {
-                update_user( user_id, 'remove_location', item.ID)
+                update_user( window.current_user_lookup, 'remove_location', item.ID)
               }
             }
           },
           callback: {
             onClick: function(node, a, item, event){
-              update_user( user_id, 'add_location', item.ID)
+              update_user( window.current_user_lookup, 'add_location', item.ID)
             },
             onReady(){
               this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
