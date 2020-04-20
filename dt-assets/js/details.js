@@ -44,27 +44,63 @@ jQuery(document).ready(function($) {
     })
   })
 
+   /**
+   * .DT - baptism date  management
+   * - check for the right location
+   * - save and/or clear date value, even if member leaves it blank
+   */
+
   $('.dt_date_picker').each(function( index ) {
     if (this.value) {
-      this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
+      if (document.querySelector('#group-details-edit-modal') && document.querySelector('#group-details-edit-modal').contains( this)) {
+      } else {
+        this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
+      }
     }
   });
 
   $('.dt_date_picker').datepicker({
     dateFormat: 'yy-mm-dd',
-    onSelect: function (date) {
-      let id = $(this).attr('id')
-      rest_api.update_post( post_type, post_id, { [id]: moment(date).unix() }).then((resp)=>{
-        if (this.value) {
-          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
+    onClose: function (date) {
+      if (document.querySelector('#group-details-edit-modal') && document.querySelector('#group-details-edit-modal').contains( this)) {
+        // do nothing
+      } else {
+        if (!$(this).val()) {
+          date = " ";//null;
         }
-        $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
-      }).catch(handleAjaxError)
+        let id = $(this).attr('id')
+        rest_api.update_post( post_type, post_id, { [id]: moment(date).unix() }).then((resp)=>{
+          if (this.value) {
+            this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
+          }
+          $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
+        }).catch(handleAjaxError)
+      }
     },
     changeMonth: true,
     changeYear: true,
     yearRange: "1900:2050",
   })
+
+  function initActions(inputid) {
+    $(`#${inputid}`).val("");
+    let id = $(`#${inputid}`).attr('id');
+    date = null;
+    if (!document.querySelector('#group-details-edit-modal') || !document.querySelector('#group-details-edit-modal').contains(document.querySelector(`#${inputid}`))) {
+      rest_api.update_post(post_type, post_id, { [id]: date }).then((resp) => {
+        $(document).trigger("dt_date_picker-updated", [resp, id, date]);
+
+      }).catch(handleAjaxError)
+    }
+  }
+
+  if (document.body.classList.contains('contacts-template-default') || document.body.classList.contains('groups-template-default')) {
+    let mcleardate = $(".clear-date-button");
+    mcleardate.click(function() {
+      inputid = this.dataset.inputid;
+      initActions(inputid);
+    });
+  }
 
   $('select.select-field').change(e => {
     const id = $(e.currentTarget).attr('id')

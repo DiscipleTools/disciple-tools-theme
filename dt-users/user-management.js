@@ -1,5 +1,6 @@
 jQuery(document).ready(function($) {
 
+
   if( '/user-management/users/' === window.location.pathname ) {
     write_users_list()
   }

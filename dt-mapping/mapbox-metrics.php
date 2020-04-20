@@ -22,7 +22,7 @@ class DT_Mapbox_Metrics {
         if ( !$this->has_permission() ){
             return;
         }
-        $this->slugs = [ 'cluster-contacts', 'cluster-groups', 'boundary-contacts', 'boundary-groups' ];
+        $this->slugs = [ 'cluster-contacts', 'cluster-groups', 'area-contacts', 'area-groups' ];
 
         if ( isset( $_SERVER["SERVER_NAME"] ) ) {
             $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) )
@@ -59,8 +59,8 @@ class DT_Mapbox_Metrics {
             <ul class="menu vertical nested" id="mapbox-menu" aria-expanded="true">
                 <li><a href="'. esc_url( site_url( '/metrics/' ) ) . $this->base_slug .'/cluster-contacts/">' .  esc_html__( 'Cluster Contacts', 'disciple_tools' ) . '</a></li>
                 <li><a href="'. esc_url( site_url( '/metrics/' ) ) . $this->base_slug .'/cluster-groups/">' .  esc_html__( 'Cluster Groups', 'disciple_tools' ) . '</a></li>
-                <li><a href="'. esc_url( site_url( '/metrics/' ) ) . $this->base_slug .'/boundary-contacts/">' .  esc_html__( 'Boundary Contacts', 'disciple_tools' ) . '</a></li>
-                <li><a href="'. esc_url( site_url( '/metrics/' ) ) . $this->base_slug .'/boundary-groups/">' .  esc_html__( 'Boundary Groups', 'disciple_tools' ) . '</a></li>
+                <li><a href="'. esc_url( site_url( '/metrics/' ) ) . $this->base_slug .'/area-contacts/">' .  esc_html__( 'Area Contacts', 'disciple_tools' ) . '</a></li>
+                <li><a href="'. esc_url( site_url( '/metrics/' ) ) . $this->base_slug .'/area-groups/">' .  esc_html__( 'Area Groups', 'disciple_tools' ) . '</a></li>
             </ul>
         </li>
         ';

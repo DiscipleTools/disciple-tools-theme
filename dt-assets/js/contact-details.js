@@ -644,7 +644,7 @@ jQuery(document).ready(function($) {
   $( document ).on( 'text-input-updated', function (e, newContact){})
 
   $( document ).on( 'dt_date_picker-updated', function (e, newContact, id, date){
-    if ( id === 'baptism_date' ){
+    if (id === 'baptism_date' && newContact.baptism_date && newContact.baptism_date.timestamp) {
       openBaptismModal(newContact)
     }
   })
@@ -861,11 +861,7 @@ jQuery(document).ready(function($) {
     leadSourcesTypeahead().catch(err => { console.log(err) })
 
     /* locations */
-    if ( typeof dtMapbox !== 'undefined' ) {
-      // @todo add mapbox logic
-
-
-    } else {
+    if ( typeof dtMapbox === 'undefined' ) {
       loadLocationGridTypeahead()
     }
 
@@ -1374,6 +1370,7 @@ jQuery(document).ready(function($) {
       }
       if ( _.get(newContact, "baptism_date.timestamp", 0) > 0){
         modalBaptismDatePicker.datepicker('setDate', moment.unix(newContact['baptism_date']["timestamp"]).format("YYYY-MM-DD"));
+        modalBaptismDatePicker.val(window.SHAREDFUNCTIONS.formatDate(newContact['baptism_date']["timestamp"]) )
       }
       modalBaptismGeneration.val(newContact["baptism_generation"] || 0)
     }

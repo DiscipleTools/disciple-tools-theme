@@ -9,22 +9,6 @@ jQuery(document).ready(function($) {
   let editFieldsUpdate = {}
 
   /**
-   * Date pickers
-   */
-  let dateFields = [ "start_date", "church_start_date", "end_date" ]
-  dateFields.forEach(key=>{
-    let datePicker = $(`#${key}.date-picker`)
-    datePicker.datepicker({
-      dateFormat: 'yy-mm-dd',
-      onSelect: function (date) {
-        editFieldsUpdate[key] = date
-      },
-      changeMonth: true,
-      changeYear: true
-    })
-
-  })
-  /**
    * Assigned_to
    */
   let assignedToInput = $('.js-typeahead-assigned_to');
@@ -616,7 +600,6 @@ jQuery(document).ready(function($) {
    */
   $('#save-edit-details').on('click', function () {
     $(this).toggleClass("loading")
-
     let contactInput = $(".contact-input")
     contactInput.each((index, entry)=>{
       if ( !$(entry).attr("id") ){
@@ -631,6 +614,24 @@ jQuery(document).ready(function($) {
     if ( editFieldsUpdate[undefined] !== 'undefined') {
       delete editFieldsUpdate[undefined]
     }
+
+    $('.dt_date_picker').each(function( index, val ) {
+      var date;
+      if (!$(val).val()) {
+          date = " ";//null;
+        } else {
+          date = $(val).val();
+        }
+        let id = $(val).attr('id')
+        API.update_post( 'groups', groupId, { [id]: moment(date).unix() }).then((resp)=>{
+          if (val.value) {
+              $(val).val(moment.unix(resp[id]["timestamp"]).format("YYYY-MM-DD"));
+          }
+          $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
+          resetDetailsFields(resp);
+        }).catch(handleAjaxError)
+    });
+
     API.update_post( 'groups', groupId, editFieldsUpdate).then((updatedGroup)=>{
       group = updatedGroup
       $(this).toggleClass("loading")
@@ -714,9 +715,14 @@ jQuery(document).ready(function($) {
       }
     })
 
-    dateFields.forEach(dateField=>{
-      if ( group[dateField] ){
-        $(`#${dateField}.date-picker`).datepicker('setDate', moment.unix(group[dateField]["timestamp"]).format("YYYY-MM-DD"))
+    /**
+   * date field management
+   */
+  let dateFields = ["start_date", "church_start_date", "end_date"]
+
+    dateFields.forEach(dateField => {
+      if (group[dateField]) {
+        $(`#${dateField}.date-picker`).datepicker('setDate', moment.unix(group[dateField]["timestamp"]).format("YYYY-MM-DD"));
         $(`.${dateField}.details-list`).html(window.SHAREDFUNCTIONS.formatDate( group[dateField]["timestamp"] ))
       } else {
         $(`.${dateField}.details-list`).html(wpApiGroupsSettings.translations["not-set"][dateField])

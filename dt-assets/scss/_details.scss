@@ -32,7 +32,22 @@
     opacity: .5;
 }
 
-
+.button.clear-date-button {
+    background: #eee;
+    border: 1px solid #cacaca;
+    border-left: 0;
+    color: #cc4b37;
+    &:hover {
+        background-color: #cc4b37;
+    color: #fefefe;
+    }
+}
+html[dir='rtl'] {
+    .button.clear-date-button {
+        border: 1px solid #cacaca;
+        border-right: 0;
+    }
+}
 /**
     Item details
  */
@@ -129,13 +144,15 @@ DT comments and activity
 
 #add-comment-button {
     margin-bottom: 0;
-    //height: 30px;
+    height: 3rem;
     //width: 40px;
     //padding: 0 4px;
 }
 
 #add-comment-button-container {
-    margin: 0 3px 0 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
 }
 
 .comment-bubble {
@@ -427,6 +444,25 @@ select.color-select {
 //make sure the blue boxes around the @mentions in the textarea are the right sizes
 .mentions-input-box .mentions strong span {
     font-weight: 300;
+}
+
+#add-comment-section {
+    border: 1px solid #dcdcdc;
+    border-radius: 3px;
+    margin: 0 0 01.06667rem;
+    textarea,  select {
+        margin-bottom: 0;
+        border: none;
+    }
+    select {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    .section-subheader {
+        padding-top: .53333rem;
+        padding-left: .5rem;
+        padding-right: .15rem;
+    }
 }
 
 
