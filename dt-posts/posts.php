@@ -396,7 +396,11 @@ class Disciple_Tools_Posts
                     $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
                 }
                 if ( $fields[$activity->meta_key]["type"] === "date" ){
-                    $message = $fields[$activity->meta_key]["name"] . ": {" . $activity->meta_value . "}";
+                    if ( $activity->meta_value === "value_deleted" ){
+                        $message = sprintf( __( '%s removed', 'disciple_tools' ), $fields[$activity->meta_key]["name"] );
+                    } else {
+                        $message = $fields[$activity->meta_key]["name"] . ": {" . $activity->meta_value . "}";
+                    }
                 }
                 if ( $fields[$activity->meta_key]["type"] === "location" ){
                     if ( $activity->meta_value === "value_deleted" ){
@@ -1147,8 +1151,6 @@ class Disciple_Tools_Posts
              * Basic Locations
              ********************************************************/
             if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]["type"] === "location" ) ){
-                dt_write_log( 'location_grid' );
-                dt_write_log( $fields );
                 if ( !isset( $field["values"] ) ) {
                     return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
                 }
@@ -1746,6 +1748,16 @@ class Disciple_Tools_Posts
                 } else {
                     $fields[$key] = $value[0];
                 }
+            }
+        }
+
+        if ( DT_Mapbox_API::get_key() && isset( $fields['location_grid_meta'] ) ) {
+            $fields['location_grid'] = [];
+            foreach ( $fields['location_grid_meta'] as $meta ) {
+                $fields['location_grid'][] = [
+                    'id' => (int) $meta['grid_id'],
+                    'label' => $meta['label']
+                ];
             }
         }
 

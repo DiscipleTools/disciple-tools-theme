@@ -15,12 +15,13 @@ jQuery(document).ready(function($) {
   function post_comment(postId) {
     let commentInput = jQuery("#comment-input")
     let commentButton = jQuery("#add-comment-button")
+    let commentType = $('#comment_type_selector').val()
     getCommentWithMentions(comment_plain_text=>{
       if (comment_plain_text) {
         commentButton.toggleClass('loading')
         commentInput.attr("disabled", true)
         commentButton.attr("disabled", true)
-        rest_api.post_comment(postType, postId, _.escape(comment_plain_text)).then(data => {
+        rest_api.post_comment(postType, postId, _.escape(comment_plain_text), commentType ).then(data => {
           let updated_comment = data.comment || data
           commentInput.val("").trigger( "change" )
           commentButton.toggleClass('loading')
@@ -88,6 +89,7 @@ jQuery(document).ready(function($) {
     text = text.substring(0, text.indexOf('(')) || text
     text += ` (${formatNumber(activityData.length, langcode)})`
     tab.text(text)
+    tab.parent().parent('.hide').removeClass('hide')
   }
   $(".show-tabs").on("click", function () {
     let id = $(this).attr("id")
@@ -110,7 +112,7 @@ jQuery(document).ready(function($) {
     <% _.forEach(activity, function(a){
         if (a.comment){ %>
             <div dir="auto" class="comment-bubble <%- a.comment_ID %>">
-              <div class="comment-text"dir=auto><%= a.text.replace(/\\n/g, '</div><div dir=auto>') /* not escaped on purpose */ %></div>
+              <div class="comment-text" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
             <% if ( commentsSettings.google_translate_key !== "" ) { %>
                 <div class="translation-bubble" dir=auto></div>
                 <a class="translate-button showTranslation">${_.escape(commentsSettings.translations.translate)}</a>
@@ -120,7 +122,7 @@ jQuery(document).ready(function($) {
             </div>
             <p class="comment-controls">
                <% if ( a.comment_ID ) { %>
-                  <a class="open-edit-comment" data-id="<%- a.comment_ID %>" style="margin-right:5px">
+                  <a class="open-edit-comment" data-id="<%- a.comment_ID %>" data-type="<%- a.comment_type %>" style="margin-right:5px">
                       <img src="${commentsSettings.template_dir}/dt-assets/images/edit-blue.svg">
                       ${_.escape(commentsSettings.translations.edit)}
                   </a>
@@ -207,6 +209,7 @@ jQuery(document).ready(function($) {
 
   $(document).on("click", ".open-edit-comment", function () {
     let id = $(this).data("id")
+    let comment_type = $(this).data("type");
     let comment = _.find(comments, {comment_ID:id.toString()})
 
     let comment_html = comment.comment_content // eg: "Tom &amp; Jerry"
@@ -230,6 +233,8 @@ function unescapeHtml(safe) {
     // _.unescape("Tom & Jerry") will return "Tom & Jerry"
     $('#comment-to-edit').val(unescapeHtml(comment_html));
 
+    $('#edit_comment_type_selector').val(comment_type);
+
     $('.edit-comment.callout').hide()
     $('#edit-comment-modal').foundation('open')
     $('#confirm-comment-edit').data("id", id)
@@ -238,7 +243,8 @@ function unescapeHtml(safe) {
     $(this).toggleClass('loading')
     let id = $(this).data("id")
     let updated_comment = $('#comment-to-edit').val()
-    rest_api.update_comment( postType, postId, id, updated_comment).then((response)=>{
+    let commentType = $('#edit_comment_type_selector').val();
+    rest_api.update_comment( postType, postId, id, updated_comment, commentType).then((response)=>{
       $(this).toggleClass('loading')
       if (response === 1 || response === 0 || response.comment_ID){
         $('#edit-comment-modal').foundation('close')
@@ -307,6 +313,7 @@ function unescapeHtml(safe) {
         text:d.object_note || formatComment(d.comment_content),
         comment: !!d.comment_content,
         comment_ID : d.user_id === commentsSettings.current_user_id ? d.comment_ID : false,
+        comment_type : d.comment_type,
         action: d.action
       }
 
@@ -452,12 +459,14 @@ function unescapeHtml(safe) {
       }
       typesCount[comment.comment_type]++;
     })
+    $('.tabs-title').addClass('hide')
     _.forOwn(typesCount, (val, key)=>{
       let tab = $(`[data-id="${key}"].tab-button-label`)
       let text = tab.text()
       text = text.substring(0, text.indexOf('(')) || text
       text += ` (${formatNumber(val, langcode)})`
       tab.text(text)
+      tab.parent().parent('.hide').removeClass('hide')
     })
     comments = commentData
     activity = activityData

@@ -28,6 +28,9 @@ function page_mapping_view( rest_endpoints_base = null ) {
   MAPPINGDATA.rest_endpoints_base = rest_endpoints_base
   let chartDiv = jQuery('#mapping_chart')
   chartDiv.empty().html(`
+    <style>#chart { height: ${window.innerHeight - 100}px !important; }
+    #map_chart { height: ${window.innerHeight - 300}px !important; }
+    </style>
     <div id="map_wrapper" class="map_wrapper">
       <div  id="map_header_wrapper" class="grid-x map_header_wrapper">
         <div style="display: inline-block" class="loading-spinner"></div>

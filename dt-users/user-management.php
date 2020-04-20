@@ -2,7 +2,7 @@
 
 class DT_User_Management
 {
-    public $permissions = [ 'list_users', 'manage_dt', 'update_any_contacts' ];
+    public $permissions = [ 'list_users', 'manage_dt' ];
 
     private static $_instance = null;
     public static function instance() {
@@ -860,12 +860,7 @@ class DT_User_Management
 
         $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals( $status );
 
-        $list = [];
-        foreach ( $results as $result ) {
-            $list[$result['grid_id']] = $result;
-        }
-
-        return $list;
+        return $results;
 
     }
 

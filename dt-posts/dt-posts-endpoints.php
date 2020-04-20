@@ -198,6 +198,7 @@ class Disciple_Tools_Posts_Endpoints {
                         "post_type" => $arg_schemas["post_type"],
                         "id" => $arg_schemas["id"],
                         "comment_id" => $arg_schemas["comment_id"],
+                        'comment_type' => $arg_schemas["comment_type"]
                     ]
                 ]
             ]
@@ -485,7 +486,11 @@ class Disciple_Tools_Posts_Endpoints {
     public function update_comment( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
         $body = $request->get_json_params() ?? $request->get_body_params();
-        $result = DT_Posts::update_post_comment( $url_params["comment_id"], $body["comment"] );
+        $type = 'comment';
+        if ( isset( $body["comment_type"] ) ){
+            $type = $body["comment_type"];
+        }
+        $result = DT_Posts::update_post_comment( $url_params["comment_id"], $body["comment"], true, $type );
         if ( is_wp_error( $result ) ) {
             return $result;
         } else {

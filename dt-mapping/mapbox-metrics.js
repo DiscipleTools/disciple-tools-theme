@@ -8,11 +8,11 @@ jQuery(document).ready(function() {
   if('/metrics/mapbox/cluster-groups/' === window.location.pathname) {
     write_cluster('group_settings' )
   }
-  if('/metrics/mapbox/boundary-contacts/' === window.location.pathname) {
-    write_cloropleth('contact_settings' )
+  if('/metrics/mapbox/area-contacts/' === window.location.pathname) {
+    write_area('contact_settings' )
   }
-  if('/metrics/mapbox/boundary-groups/' === window.location.pathname) {
-    write_cloropleth('group_settings' )
+  if('/metrics/mapbox/area-groups/' === window.location.pathname) {
+    write_area('group_settings' )
   }
 
 
@@ -305,7 +305,7 @@ jQuery(document).ready(function() {
     })
   }
 
-  function write_cloropleth( settings ) {
+  function write_area( settings ) {
     let obj = dt_mapbox_metrics
 
     let post_type = obj[settings].post_type

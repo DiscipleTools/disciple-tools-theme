@@ -244,7 +244,7 @@
       <!--<td><img src="<%- template_directory_uri %>/dt-assets/images/star.svg" width=13 height=12></td>-->
       <!--<td></td>-->
       <td>
-        <a href="<%- permalink %>"><%- post_title %></a>
+        <a href="<%- permalink %>" class="list-name-link"><%- post_title %></a>
         <br>
         <%- phone_numbers.join(", ") %>
         <span class="show-for-small-only">
@@ -284,7 +284,7 @@
       <!--<td><img src="<%- template_directory_uri %>/dt-assets/images/green_flag.svg" width=10 height=12></td>-->
       <!--<td></td>-->
       <td class="show-for-small-only">
-        <a href="<%- permalink %>"><%- post_title %></a>
+        <a href="<%- permalink %>" class="list-name-link"><%- post_title %></a>
         <br>
         <%- status %> <%- type %> <%- member_count %>
         <%- locations.join(", ") %>
