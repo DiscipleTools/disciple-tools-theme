@@ -140,8 +140,7 @@ DT comments and activity
 
 .comment-bubble {
     word-wrap: break-word;
-    margin: 0 10px 0 0;
-
+    padding-bottom: 2px;
     .comment-text {
         min-height: 1em;
     }
@@ -159,6 +158,22 @@ DT comments and activity
     }
 }
 
+.comment-bubble, .comment-controls {
+    text-align: left;
+    padding: 0;
+    padding-left: 15px;
+    margin: 0;
+    margin-left: 2em;
+}
+
+html[dir='rtl'] .comment-bubble, html[dir='rtl'] .comment-controls {
+    text-align: right;
+    padding: 0;
+    padding-right: 15px;
+    margin: 0;
+    margin-right: 2em;
+}
+
 .comment-date {
     text-align: right;
     margin-right: 20px;
@@ -166,10 +181,16 @@ DT comments and activity
 }
 
 .translation-bubble {
+    border: 0;
     border-left: 2px solid $dark-gray;
     padding-left: 1em;
 }
 
+html[dir='rtl'] .translation-bubble {
+    border: 0;
+    border-right: 2px solid $dark-gray;
+    padding-right: 1em;
+}
 .translate-button {
     font-size: .85em;
 }
