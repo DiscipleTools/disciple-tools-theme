@@ -77,7 +77,7 @@ function write_input_widget() {
 
   if ( jQuery('#mapbox-autocomplete').length === 0 ) {
     jQuery('#mapbox-wrapper').prepend(`
-    <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group">
+    <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true">
         <input id="mapbox-search" type="text" name="mapbox_search" placeholder="Search Location" />
         <div class="input-group-button">
             <button class="button hollow" id="mapbox-spinner-button" style="display:none;"><img src="${dtMapbox.spinner_url}" alt="spinner" style="width: 18px;" /></button>
@@ -206,22 +206,23 @@ function close_all_lists(selection_id) {
 
   jQuery('#mapbox-search').val(window.mapbox_result_features[selection_id].place_name)
   jQuery('#mapbox-autocomplete-list').empty()
-  jQuery('#mapbox-spinner-button').show()
+  let spinner = jQuery('#mapbox-spinner-button').show()
 
   let data = {
     location_grid_meta: {
       values: [
-          {
-            lng: window.mapbox_result_features[selection_id].center[0],
-            lat: window.mapbox_result_features[selection_id].center[1],
-            level: window.mapbox_result_features[selection_id].place_type[0],
-            label: window.mapbox_result_features[selection_id].place_name,
-            source: 'user'
-          }
-        ]
-      }
+        {
+          lng: window.mapbox_result_features[selection_id].center[0],
+          lat: window.mapbox_result_features[selection_id].center[1],
+          level: window.mapbox_result_features[selection_id].place_type[0],
+          label: window.mapbox_result_features[selection_id].place_name,
+          source: 'user'
+        }
+      ]
     }
+  }
 
+  if ( jQuery('#mapbox-autocomplete').data('autosubmit') ) {
     /* if post_type = user, else all other post types */
     API.update_post( dtMapbox.post_type, dtMapbox.post_id, data ).then(function (response) {
       console.log( response )
@@ -231,6 +232,11 @@ function close_all_lists(selection_id) {
       write_results_box()
 
     }).catch(err => { console.error(err) })
+
+  } else {
+    window.selected_location_grid_meta = data
+    spinner.hide()
+  }
 
 }
 
