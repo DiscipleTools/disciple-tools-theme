@@ -3,14 +3,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: POEditor.com\n"
 "Project-Id-Version: Disciple.Tools\n"
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: Vanessa & Mike Allbutt <mvallbutt@gmail.com>\n"
-"Language-Team: \n"
 
 #: 403.php:9
 msgid "Permission denied"
@@ -34,7 +30,7 @@ msgstr "Épico 404 - No encontrado"
 
 #: 404.php:16
 msgid "The page you were looking for was not found or was deleted"
-msgstr "La página que estaba buscando no se encontró o se eliminó."
+msgstr "La página que estaba buscando no se encontró o se eliminó"
 
 #: dt-contacts/contacts-post-type.php:216 dt-groups/groups-post-type.php:188
 #: dt-users/template-user-management.php:67 dt-users/user-management.php:98
@@ -77,7 +73,7 @@ msgstr "Asignado a"
 #: archive-contacts.php:135 archive-groups.php:130 archive-template.php:131
 #: dt-assets/functions/enqueue-scripts.php:321
 msgid "Creation Date"
-msgstr "Fecha de Creación"
+msgstr "Fecha de creación"
 
 #: archive-contacts.php:171
 msgid "Filter for subassigned OR Assigned To"
@@ -125,7 +121,7 @@ msgstr "Filtrar Grupos"
 #: dt-users/template-user-management.php:66
 #: dt-users/template-user-management.php:134
 msgid "Update Needed"
-msgstr "Actualización Necesaria"
+msgstr "Actualización necesaria"
 
 #: dt-assets/functions/details-bar.php:48
 msgid "Dispatcher actions"
@@ -180,7 +176,7 @@ msgstr "Registro creado en {}"
 
 #: dt-assets/functions/enqueue-scripts.php:197
 msgid "edit"
-msgstr "Editar"
+msgstr "editar"
 
 #: dt-assets/functions/enqueue-scripts.php:198
 #: dt-assets/functions/enqueue-scripts.php:307
@@ -202,9 +198,8 @@ msgstr "Sin líderes establecidos"
 
 #: dt-assets/functions/enqueue-scripts.php:232
 #: dt-assets/parts/group-details.php:148
-#, fuzzy
 msgid "No people group set"
-msgstr "Sin grupo étnico establecidas"
+msgstr "Sin grupo de personas establecidas"
 
 #: dt-assets/functions/enqueue-scripts.php:233
 msgid "No email set"
@@ -315,7 +310,7 @@ msgstr "Administrador"
 
 #: dt-assets/functions/menu.php:96 dt-assets/parts/nav-offcanvas-topbar.php:158
 msgid "Log Off"
-msgstr "Cerrar Sesión"
+msgstr "Cerrar sesión"
 
 #: dt-assets/parts/contact-details.php:20
 msgid "This contact needs an update"
@@ -370,7 +365,7 @@ msgstr "Ubicaciones"
 #: dt-contacts/contacts-post-type.php:629 dt-groups/groups-post-type.php:399
 #: dt-people-groups/people-groups-post-type.php:97
 msgid "People Groups"
-msgstr "Grupos Étnicos"
+msgstr "Grupos de Personas"
 
 #: dt-contacts/contacts-post-type.php:370
 msgid "Age"
@@ -560,7 +555,7 @@ msgstr "El comentario no pudo ser actualizado."
 
 #: dt-assets/parts/merge-details.php:23 template-view-duplicates.php:22
 msgid "Duplicate Contacts"
-msgstr "Contactos Duplicados"
+msgstr "Contactos duplicados"
 
 #: dt-assets/parts/merge-details.php:54
 msgid "Original Contact"
@@ -607,7 +602,7 @@ msgstr "Estado del Grupo"
 #: dt-assets/parts/modals/modal-new-contact.php:3
 #: dt-assets/parts/modals/modal-new-contact.php:12
 msgid "Create Contact"
-msgstr "Crear Contacto"
+msgstr "Crear contacto"
 
 #: template-contacts-new.php:25
 msgid "Name of Contact"
@@ -914,7 +909,7 @@ msgstr "@Menciones"
 
 #: dt-core/admin/config-site-defaults.php:303
 msgid "New comments"
-msgstr "Nuevos Comentarios"
+msgstr "Nuevos comentarios"
 
 #: dt-core/admin/config-site-defaults.php:313
 msgid "Contact Info Changed"
@@ -1078,22 +1073,22 @@ msgstr "%s eliminado de ubicaciones"
 #: dt-posts/posts.php:289
 msgctxt "Deaf added as people group on contact1"
 msgid "%1$s added as people group on %2$s"
-msgstr "%1$s agregado como grupo étnico en %2$s"
+msgstr "%1$s agregado como grupo de personas en %2$s"
 
 #: dt-posts/posts.php:290
 msgctxt "Deaf added to people groups"
 msgid "%s added to people groups"
-msgstr "%s agregado a grupos étnicos"
+msgstr "%s agregado a grupos de personas"
 
 #: dt-posts/posts.php:292
 msgctxt "Deaf removed from people groups on contact1"
 msgid "%1$s removed from people groups on %2$s"
-msgstr "%1$s eliminado de grupos étnicos en %2$s"
+msgstr "%1$s eliminado de grupos de personas en %2$s"
 
 #: dt-posts/posts.php:293
 msgctxt "Deaf removed from people groups"
 msgid "%s removed from people groups"
-msgstr "%s eliminado de grupos étnicos"
+msgstr "%s eliminado de grupos de personas"
 
 #: dt-posts/posts.php:297
 msgctxt "contact1 added as leader on group1"
@@ -1207,13 +1202,12 @@ msgid "%1$s added to %2$s"
 msgstr "%1$s agregado a %2$s"
 
 #: dt-posts/posts.php:390
-#, fuzzy
 msgid "yes"
-msgstr "Si"
+msgstr "sí"
 
 #: dt-posts/posts.php:392
 msgid "no"
-msgstr "No"
+msgstr "no"
 
 #: dt-posts/posts.php:446
 msgctxt "Added Facebook: facebook.com/123"
@@ -1240,7 +1234,7 @@ msgstr "Publicación ya ha sido compartida con usuario."
 
 #: dt-groups/groups-post-type.php:196
 msgid "Group Type"
-msgstr "Tipo de Grupo"
+msgstr "Tipo de grupo"
 
 #: dt-groups/groups-post-type.php:201 dt-metrics/metrics-personal.php:77
 #: dt-metrics/metrics-project.php:102
@@ -1365,7 +1359,7 @@ msgstr "Generaciones de Grupos e Iglesias"
 
 #: dt-metrics/metrics-personal.php:71
 msgid "Lead Teams"
-msgstr "Equipos Líderes"
+msgstr "Equipos líderes"
 
 #: dt-metrics/metrics-personal.php:74
 msgid "Follow-up of my active contacts"
@@ -1455,7 +1449,7 @@ msgstr "Ritmo de seguimiento"
 
 #: dt-metrics/metrics-workers.php:156
 msgid "Workers Activity"
-msgstr "Actividad Obrera"
+msgstr "Actividad obrera"
 
 #: dt-metrics/metrics-workers.php:157
 msgid "Worker System Engagement for the Last 30 Days"
@@ -1487,11 +1481,11 @@ msgstr "Contacto Progreso por Trabajador"
 
 #: dt-metrics/metrics-workers.php:166
 msgid "Least Active"
-msgstr "Menos Activo"
+msgstr "Menos activo"
 
 #: dt-metrics/metrics-workers.php:167
 msgid "Most Active"
-msgstr "Mas Activo"
+msgstr "Mas activo"
 
 #: dt-notifications/notifications-email.php:99
 msgid "Click here to view or reply"
@@ -1558,19 +1552,19 @@ msgstr "%1$s rechazó la asignación en: %2$s."
 
 #: dt-people-groups/people-groups-post-type.php:96
 msgid "People Group"
-msgstr "Grupo Étnico"
+msgstr "Grupos de Personas"
 
 #: dt-people-groups/people-groups-post-type.php:278
 msgid "Add/Update People Group"
-msgstr "Agregar / Actualizar Grupo Étnico"
+msgstr "Agregar / Actualizar Grupo de Personas"
 
 #: dt-people-groups/people-groups-post-type.php:279
 msgid "People Group Details"
-msgstr "Detalles del Grupo Étnicos"
+msgstr "Detalles del Grupo de Personas"
 
 #: dt-people-groups/people-groups-post-type.php:586
 msgid "Enter the People Group title here"
-msgstr "Introduce el título del Grupo Étnico aquí"
+msgstr "Introduce el título del Grupo de Personas aquí"
 
 #: dt-users/users.php:61
 msgid "No permissions to assign"
@@ -1590,7 +1584,7 @@ msgstr "Corresponde a Contacto"
 
 #: dt-users/users.php:693
 msgid "View contact"
-msgstr "Ver Contacto"
+msgstr "Ver contacto"
 
 #: dt-users/users.php:824
 msgid "Username already exists"
@@ -1720,10 +1714,9 @@ msgstr "Creado:"
 
 #: template-merge-details.php:71 template-merge-details.php:80
 msgid "Select All"
-msgstr "Seleccionar Todo"
+msgstr "Seleccionar todo"
 
 #: template-merge-details.php:89
-#, fuzzy
 msgid "Master Record"
 msgstr "Registro Maestro"
 
@@ -1758,7 +1751,7 @@ msgstr "Tu Perfil"
 
 #: template-settings.php:80
 msgid "Username"
-msgstr "Nombre de Usuario"
+msgstr "Nombre de usuario"
 
 #: template-settings.php:93 template-settings.php:381
 msgid "Nickname (Display Name)"
@@ -1787,7 +1780,7 @@ msgstr "Tipo de Notificación"
 #: dt-core/admin/config-site-defaults.php:288
 #: dt-core/admin/config-site-defaults.php:509
 msgid "Web"
-msgstr "Internet"
+msgstr "Web"
 
 #: template-settings.php:224
 msgid "required"
@@ -1912,16 +1905,14 @@ msgid "Learn more."
 msgstr "Aprende más."
 
 #: dt-users/users.php:786
-msgid ""
-"Hi,\n"
+msgid "Hi,\n"
 "\n"
 "You've been invited to join '%1$s' at\n"
 "%2$s with the role of %3$s.\n"
 "\n"
 "Please click the following link to confirm the invite:\n"
 "%4$s"
-msgstr ""
-"Hola,\n"
+msgstr "Hola,\n"
 "\n"
 "Te han invitado a unirte a '%1$s' en\n"
 "%2$s con el rol de %3$s.\n"
@@ -2090,7 +2081,7 @@ msgstr "Contactos Filtros"
 
 #: archive-groups.php:61
 msgid "Groups Filters"
-msgstr "Filtros de Grupos"
+msgstr "Filtros de grupos"
 
 #: dt-assets/parts/contact-details.php:50
 msgid "Contact Details"
@@ -2140,7 +2131,7 @@ msgstr "Ubicaciones de las que usted es responsable"
 
 #: archive-groups.php:22 template-groups-new.php:19
 msgid "Create New Group"
-msgstr "Crear Nuevo Grupo"
+msgstr "Crear nuevo grupo"
 
 #: dt-contacts/contacts-post-type.php:197
 msgctxt "Contact Status field description"
@@ -2480,7 +2471,7 @@ msgstr "Todo"
 #: archive-contacts.php:34 archive-contacts.php:55
 msgctxt "input field placeholder"
 msgid "Search Contacts"
-msgstr "Buscar Contactos"
+msgstr "Buscar contactos"
 
 #: archive-contacts.php:161 archive-groups.php:49 archive-groups.php:156
 msgctxt "input field placeholder"
@@ -2557,7 +2548,7 @@ msgstr "Crea una etiqueta y aplíquela a este contacto."
 #: single-contacts.php:657
 msgctxt "input field placeholder"
 msgid "tag"
-msgstr "Etiqueta"
+msgstr "etiqueta"
 
 #: single-contacts.php:677
 msgid "Who was this contact baptized by and when?"
@@ -2569,10 +2560,9 @@ msgid "Make User From Contact"
 msgstr "Convertir en usuario a este contacto"
 
 #: single-contacts.php:719
-#, fuzzy
 msgctxt "Make user modal"
 msgid "This contact is already connected to a user."
-msgstr "Este contacto ya está conectado a un usuario."
+msgstr "Este contacto ya representa a un usuario."
 
 #: single-contacts.php:722
 msgctxt "Make user modal"
@@ -2855,15 +2845,15 @@ msgstr "Tareas"
 
 #: dt-assets/functions/enqueue-scripts.php:218
 msgid "remove"
-msgstr "Eliminar"
+msgstr "eliminar"
 
 #: dt-assets/functions/enqueue-scripts.php:219
 msgid "mark as complete"
-msgstr "Marca como completo"
+msgstr "marca como completo"
 
 #: dt-assets/functions/enqueue-scripts.php:220
 msgid "No task created"
-msgstr "Tarea no creada"
+msgstr "Contacto creado"
 
 #: dt-assets/functions/enqueue-scripts.php:221
 #: dt-assets/parts/modals/modal-tasks.php:17
@@ -2939,11 +2929,9 @@ msgstr "Estos botones de acción rápida están aquí para ayudarle a actualizar
 
 #: dt-assets/parts/modals/modal-help.php:73
 msgctxt "Optional Documentation"
-msgid ""
-"For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer.\n"
+msgid "For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer.\n"
 "                This action will also change the 'Seeker Path' to 'Contact Attempted'."
-msgstr ""
-"Por ejemplo, si hace clic en el botón \"Sin respuesta\" 4 veces, registraremos que intentó comunicarse con este contacto 4 veces, pero no respondieron.\n"
+msgstr "Por ejemplo, si hace clic en el botón \"Sin respuesta\" 4 veces, registraremos que intentó comunicarse con este contacto 4 veces, pero no respondieron.\n"
 "                Esta acción también cambiará la \"Ruta del Buscador\" a “Se Intentó Contactar“."
 
 #: dt-assets/parts/modals/modal-help.php:80
@@ -3144,7 +3132,6 @@ msgid "After writing the name of the contact, complete as many other fields as y
 msgstr "Después de escribir el nombre del contacto, complete tantos otros campos como pueda, antes de hacer clic en 'Guardar y continuar editando'. En la siguiente pantalla puede editar y agregar más información sobre este nuevo contacto acaba de ser creado."
 
 #: dt-assets/parts/modals/modal-help.php:359
-#, fuzzy
 msgctxt "Optional Documentation"
 msgid "Name of Contact"
 msgstr "Nombre de contacto"
@@ -3165,7 +3152,6 @@ msgid "After writing the name of the group, complete as many other fields as you
 msgstr "Después de escribir el nombre del grupo, complete tantos otros campos como pueda, antes de hacer clic en 'Guardar y continuar editando'. En la siguiente pantalla puede editar y agregar más información sobre este nuevo grupo que se acaba de crear."
 
 #: dt-assets/parts/modals/modal-help.php:383
-#, fuzzy
 msgctxt "Optional Documentation"
 msgid "Name of Group"
 msgstr "Nombre del Grupo"
@@ -3258,7 +3244,7 @@ msgstr "Haga clic en el botón \"No leído\" para mostrar la lista de todas sus 
 #: dt-assets/parts/modals/modal-help.php:436
 msgctxt "Optional Documentation"
 msgid "Mark All as Read"
-msgstr "Marcar Todo como Leído"
+msgstr "Marcar Todo Como Leído"
 
 #: dt-assets/parts/modals/modal-help.php:437
 msgctxt "Optional Documentation"
@@ -3314,7 +3300,6 @@ msgid "Custom"
 msgstr "Personalizado"
 
 #: dt-assets/parts/modals/modal-tasks.php:28
-#, fuzzy
 msgid "Due Date"
 msgstr "Fecha de finalización"
 
@@ -3479,7 +3464,7 @@ msgstr "Necesita Revisión"
 
 #: dt-contacts/contacts-post-type.php:406
 msgid "Waiting for Confirmation"
-msgstr "Esperando Confirmación"
+msgstr "Esperando confirmación"
 
 #: dt-contacts/contacts-post-type.php:414
 msgid "Reason Paused"
@@ -3538,14 +3523,13 @@ msgid "Corresponds to user"
 msgstr "Corresponde a usuario"
 
 #: dt-contacts/contacts-post-type.php:531
-#, fuzzy
 msgctxt "Optional Documentation"
 msgid "The id of the user this contact corresponds to"
 msgstr "La identificación del usuario que este contacto usa"
 
 #: dt-contacts/contacts-post-type.php:537
 msgid "Contact type"
-msgstr "Tipo de Contacto"
+msgstr "Tipo de contacto"
 
 #: dt-contacts/contacts-post-type.php:540
 msgid "Media"
@@ -3561,7 +3545,7 @@ msgstr "Usuario"
 
 #: dt-contacts/contacts-post-type.php:548
 msgid "Last modified"
-msgstr "Última Modificación"
+msgstr "Última modificación"
 
 #: dt-contacts/contacts-post-type.php:561
 msgid "Tags"
@@ -3595,10 +3579,9 @@ msgid "Coached"
 msgstr "Entrenado"
 
 #: dt-contacts/contacts-post-type.php:606
-#, fuzzy
 msgctxt "Optional Documentation"
 msgid "Who is this contact coaching"
-msgstr "Este contacto es entrenando quien"
+msgstr "Quién está entrenando este contacto"
 
 #: dt-contacts/contacts-post-type.php:613
 msgid "Baptized by"
@@ -3633,7 +3616,6 @@ msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
 msgstr "El área general en la que se encuentra este contacto."
 
-# system string does not need translation
 #: dt-contacts/contacts-post-type.php:659
 msgid "Location Grid Meta"
 msgstr "Ubicación Cuadrícula Meta"
@@ -3795,7 +3777,6 @@ msgid "The date this group began meeting."
 msgstr "La fecha en que este grupo comenzó a reunirse."
 
 #: dt-groups/groups-post-type.php:329
-#, fuzzy
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
 msgstr "El grupo se ha comprometido a ser la iglesia."
@@ -3838,10 +3819,9 @@ msgstr "La persona que plantó y/o está entrenando a este grupo. Sólo una pers
 #: dt-groups/groups-post-type.php:430
 msgctxt "Optional Documentation"
 msgid "The general location where this group meets."
-msgstr "El área general en la que se encuentra este grupo."
+msgstr "El área general en la que se encuentra este contacto."
 
 #: dt-groups/groups-post-type.php:435
-#, fuzzy
 msgctxt "field name"
 msgid "Location Grid Meta"
 msgstr "Meta de cuadrícula de ubicación"
@@ -3905,7 +3885,7 @@ msgstr "Notificaciones no leídas"
 
 #: dt-users/template-user-management.php:158
 msgid "Contacts Assigned"
-msgstr "Contactos Asignados"
+msgstr "Contactos asignados"
 
 #: dt-users/template-user-management.php:173
 msgid "User Status"
@@ -3932,7 +3912,6 @@ msgid "Travel or Away Dates"
 msgstr "Fechas de Viaje o Estar de Lejos"
 
 #: dt-users/template-user-management.php:275
-#, fuzzy
 msgid "Stats"
 msgstr "Estadísticas"
 
@@ -4001,7 +3980,7 @@ msgstr "Ha comentado sobre contacto %s"
 #: dt-users/user-management.php:193
 msgctxt "Commented on record Bob"
 msgid "Commented on group %s"
-msgstr "Se comentó al grupo %s"
+msgstr "Añadido al grupo %s"
 
 #: dt-users/user-management.php:198
 msgctxt "Created record Bob"
@@ -4064,7 +4043,7 @@ msgstr "En el campo \"Lista de miembros\", escriba el nombre de un contacto exis
 
 #: template-contacts-new.php:20
 msgid "Create New Contact"
-msgstr "Crear Nuevo Contacto"
+msgstr "Crear nuevo contacto"
 
 #: template-contacts-new.php:98
 msgctxt "disciple_tools"
@@ -4110,3 +4089,4 @@ msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "hace %s año"
 msgstr[1] "hace %s años"
+
