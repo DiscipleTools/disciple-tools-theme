@@ -59,7 +59,13 @@ function dt_get_users_shared_with( $contact_id ) {
 }
 
 
-
+/**
+ * Accepts types: key_select, multi_select, text, date, connection, location
+ *
+ * @param $field_key
+ * @param $fields
+ * @param $post
+ */
 function render_field_for_display( $field_key, $fields, $post ){
     if ( isset( $fields[$field_key]["type"] ) ){
         $field_type = $fields[$field_key]["type"];

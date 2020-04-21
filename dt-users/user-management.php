@@ -475,7 +475,9 @@ class DT_User_Management
 
     public static function get_users( $refresh = false ) {
         $users = [];
-
+        if ( !$refresh && get_transient( 'dispatcher_user_data' ) ) {
+            $users = maybe_unserialize( get_transient( 'dispatcher_user_data' ) );
+        }
         if ( empty( $users ) ) {
             global $wpdb;
             $user_data = $wpdb->get_results( $wpdb->prepare( "

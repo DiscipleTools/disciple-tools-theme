@@ -459,7 +459,7 @@ function unescapeHtml(safe) {
       }
       typesCount[comment.comment_type]++;
     })
-    $('.tabs-title').addClass('hide')
+    $('#comment-activity-tabs .tabs-title').addClass('hide')
     _.forOwn(typesCount, (val, key)=>{
       let tab = $(`[data-id="${key}"].tab-button-label`)
       let text = tab.text()
