@@ -166,7 +166,7 @@ get_header();
             sources: {values:[{value:source || "personal"}]},
             initial_comment: $(".js-create-contact textarea[name=initial_comment]").val()
         }
-        
+
         if ( typeof dtMapbox === 'undefined' ) {
             data['location_grid'] = { values:selectedLocations.map(i=>{return {value:i}}) }
         } else {
