@@ -373,9 +373,13 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
                                     <select class="select-field" id="seeker_path" style="margin-bottom: 0">
                                     <?php
-
+                                    $locale = get_user_locale();
                                     foreach ($contact_fields["seeker_path"]["default"] as $key => $option){
-                                        $value = $option["label"] ?? "";
+                                        if ( empty( $option[$locale] ) ) {
+                                            $value = $option["label"] ?? "";
+                                        } else {
+                                            $value = $option[$locale];
+                                        }
                                         if ( $contact["seeker_path"]["key"] === $key ) :
                                             ?>
                                             <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
