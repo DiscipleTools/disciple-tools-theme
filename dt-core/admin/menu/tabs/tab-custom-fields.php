@@ -341,8 +341,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                     $langs = dt_get_available_languages();
                                     foreach ( $langs as $lang => $val ) : ?>
                                         <div class="<?php echo esc_html( $val['language'] )?>">
-                                            <label for="field_option_<?php echo esc_html( $key )?>_translation_<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?>
-                                            <input name="field_option_<?php echo esc_html( $key )?>_translation_<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $custom_fields[$post_type][$field_key][$key][$val['language']] ?? "" );?>"/>
+                                            <label for="field_option_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?>
+                                            <input name="field_option_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $custom_fields[$post_type][$field_key]["default"][$key][$val['language']] ?? "" );?>"/>
                                             </label>
                                         </div>
                                     <?php endforeach; ?>
@@ -420,16 +420,14 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             }
             if ( $field["type"] === 'multi_select' || $field["type"] === "key_select" ){
                 foreach ( $post_submission as $key => $val ){
-                    if ( strpos( $key, "field_option_" ) === 0 ){
+                    if ( strpos( $key, "field_option_" ) === 0) {
                         if ( strpos( $key, 'translation' ) !== false ) {
                             $option_key = substr( $key, 13, strpos( $key, 'translation' ) - 14 );
                             $translation_langcode = substr( $key, -5 );
-                            if ( strpos( $translation_langcode, '_' ) !== false ) {
+                            if ( strpos( $translation_langcode, '-' ) !== false ) {
                                 $translation_langcode = substr( $translation_langcode, 3 );
                             }
-
-                            $field_options[$option_key][$translation_langcode] = $val;
-                            $custom_field[$option_key][$translation_langcode] = $val;
+                            $custom_field["default"][$option_key][$translation_langcode] = $val;
                         } else {
                             $option_key = substr( $key, 13 );
                             if ( isset( $field_options[$option_key]["label"] ) ){
