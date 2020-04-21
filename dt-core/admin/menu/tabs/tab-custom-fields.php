@@ -308,6 +308,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Move", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Hide/Archive", 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
                     </tr>
                     </thead>
                     <tbody>
@@ -337,15 +338,16 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                     <?php endif; ?>
                                 </td>
                                 <td>
+                                    <button class="button small expand_translations">+</button>
+                                    <div class="translation_container hide">
                                     <?php
                                     $langs = dt_get_available_languages();
                                     foreach ( $langs as $lang => $val ) : ?>
-                                        <div class="<?php echo esc_html( $val['language'] )?>">
                                             <label for="field_option_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?>
                                             <input name="field_option_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $custom_fields[$post_type][$field_key]["default"][$key][$val['language']] ?? "" );?>"/>
                                             </label>
-                                        </div>
                                     <?php endforeach; ?>
+                                    </div>
                                 </td>
                             </tr>
                             <?php $first = false;
