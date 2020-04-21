@@ -337,7 +337,7 @@ function dt_site_scripts() {
         'save' => __( 'Save', 'disciple_tools' ),
         'edit' => __( 'Edit', 'disciple_tools' ),
         'delete' => __( 'Delete', 'disciple_tools' ),
-        'txt_info' => _x( 'Showing _START_ of _TOTAL_', 'Just copy as they are: _START_ and _TOTAL_', 'disciple_tools' ),
+        'txt_info' => _x( 'Showing _START_ of _TOTAL_', 'just copy as they are: _START_ and _TOTAL_', 'disciple_tools' ),
         'sorting_by' => __( 'Sorting By', 'disciple_tools' ),
         'creation_date' => __( 'Creation Date', 'disciple_tools' ),
         'date_modified' => __( 'Date Modified', 'disciple_tools' ),

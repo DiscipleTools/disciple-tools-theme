@@ -98,7 +98,7 @@ declare(strict_types=1);
             <div class="grid-x">
                 <div class="cell small-4" style="padding: 0 5px 5px 5px">
                     <input type="text" id="new-filter-name"
-                           placeholder="<?php echo esc_html_e( 'Filter Name', 'disciple_tools' )?>"
+                           placeholder="<?php esc_html_e( 'Filter Name', 'disciple_tools' )?>"
                            style="margin-bottom: 0"/>
                 </div>
                 <div class="cell small-8">

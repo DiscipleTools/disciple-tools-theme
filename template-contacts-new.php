@@ -36,7 +36,7 @@ get_header();
                     <button class="help-button" type="button" data-section="phone-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
-                    <input id="tel-input" name="phone" type="tel" placeholder="<?php echo esc_html_e( "Phone number", 'disciple_tools' ); ?>">
+                    <input id="tel-input" name="phone" type="tel" placeholder="<?php esc_html_e( "Phone number", 'disciple_tools' ); ?>">
                 </label>
 
                 <label for="email-input">
@@ -45,7 +45,7 @@ get_header();
                     <button class="help-button" type="button" data-section="email-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
-                    <input id="email-input" name="email" type="text"  placeholder="<?php echo esc_html_e( "Email", "disciple_tools" ); ?>">
+                    <input id="email-input" name="email" type="text"  placeholder="<?php esc_html_e( "Email", "disciple_tools" ); ?>">
                 </label>
 
                 <label for="source-input">
@@ -95,7 +95,7 @@ get_header();
                     <button class="help-button" type="button" data-section="initial-comment-help-text">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
-                    <textarea id="comment-input" name="initial_comment" dir="auto" placeholder="<?php echo esc_html_e( "Initial Comment", "disciple_tools" ); ?>"></textarea>
+                    <textarea id="comment-input" name="initial_comment" dir="auto" placeholder="<?php esc_html_e( "Initial Comment", "disciple_tools" ); ?>"></textarea>
                 </label>
 
                 <div style="text-align: center">
