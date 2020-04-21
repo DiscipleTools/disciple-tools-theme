@@ -742,6 +742,8 @@ class Disciple_Tools_Notifications
         $post = get_post( $object_id );
         $post_title = isset( $post->post_title ) ? sanitize_text_field( $post->post_title ) : "";
         $notification_note = $notification["notification_note"]; // $notification_note is expected to contain HTML
+        $user_locale = get_user_locale();
+
         if ( $html ){
             $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . $post_title . '</a>';
         } else {
@@ -784,7 +786,11 @@ class Disciple_Tools_Notifications
             $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( true, null, false, false ); //no cache to get the labels in the correct language
             $label = $meta_value;
             if ( isset( $contact_fields["milestones"]["default"][$meta_value]["label"] ) ){
-                $label = $contact_fields["milestones"]["default"][$meta_value]["label"];
+                if ( !empty( $contact_fields["milestones"]["default"][$meta_value][$user_locale] ) ) {
+                    $label = $contact_fields["milestones"]["default"][$meta_value][$user_locale];
+                } else {
+                    $label = $contact_fields["milestones"]["default"][$meta_value]["label"];
+                }
             }
             $source_user = get_userdata( $notification["source_user_id"] );
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );

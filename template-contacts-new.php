@@ -9,6 +9,7 @@ get_header();
 
 ( function() {
     $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+    $user_locale = get_user_locale();
     ?>
 
 <div id="content" class="template-contacts-new">
@@ -61,7 +62,12 @@ get_header();
                         foreach ( $sources as $source_key => $source ): ?>
                             <?php if ( !isset( $source["deleted"] ) || $source["delete"] !== true ) : ?>
                             <option value="<?php echo esc_attr( $source_key, 'disciple_tools' ); ?>">
-                                <?php echo esc_html( $source['label'] )?>
+                                <?php
+                                if ( !empty( $source[$user_locale] ) ) {
+                                    echo esc_html( $source[$user_locale] );
+                                } else {
+                                    echo esc_html( $source["label"] );
+                                }?>
                             </option>
                             <?php endif; ?>
                         <?php endforeach; ?>

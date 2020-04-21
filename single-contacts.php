@@ -8,6 +8,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 ( function () {
     $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true, true );
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
+    $user_locale = get_user_locale();
 
     if (isset( $_POST['unsure_all'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
         if (isset( $_POST['id'] ) ) {
@@ -373,12 +374,11 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
                                     <select class="select-field" id="seeker_path" style="margin-bottom: 0">
                                     <?php
-                                    $locale = get_user_locale();
                                     foreach ($contact_fields["seeker_path"]["default"] as $key => $option){
-                                        if ( empty( $option[$locale] ) ) {
+                                        if ( empty( $option[$user_locale] ) ) {
                                             $value = $option["label"] ?? "";
                                         } else {
-                                            $value = $option[$locale];
+                                            $value = $option[$user_locale];
                                         }
                                         if ( $contact["seeker_path"]["key"] === $key ) :
                                             ?>
@@ -409,7 +409,13 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                                     "selected-select-button" : "empty-select-button"; ?>
                                                 <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="milestones"
                                                         class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
-                                                    <?php echo esc_html( $contact_fields["milestones"]["default"][$option_key]["label"] ) ?>
+                                                    <?php
+                                                    if ( !empty( $contact_fields["milestones"]["default"][$option_key][$user_locale] ) ) {
+                                                        echo esc_html( $contact_fields["milestones"]["default"][$option_key][$user_locale] );
+                                                    } else {
+                                                        echo esc_html( $contact_fields["milestones"]["default"][$option_key]["label"] );
+                                                    }
+                                                    ?>
                                                 </button>
                                         <?php endforeach; ?>
                                     </div>
@@ -572,7 +578,12 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                     $selected = ( $reason_key === ( $contact["reason_closed"]["key"] ?? "" ) ) ? "selected" : "";
                     ?>
                     <option
-                        value="<?php echo esc_attr( $reason_key ) ?>" <?php echo esc_html( $selected ) ?>> <?php echo esc_html( $option["label"] ?? "" ) ?></option>
+                        value="<?php echo esc_attr( $reason_key ) ?>" <?php echo esc_html( $selected ) ?>><?php
+                        if ( !empty( $option[$user_locale] ) ) {
+                            echo esc_html( $option[$user_locale] );
+                        } else {
+                            echo esc_html( $option["label"] ?? "" );
+                        }?></option>
                     <?php
                 }
             }
@@ -602,8 +613,11 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                     <option value="<?php echo esc_attr( $reason_key ) ?>"
                         <?php if ( ( $contact["reason_paused"]["key"] ?? "" ) === $reason_key ) {
                             echo "selected";
-                        } ?>>
-                        <?php echo esc_html( $option["label"] ?? "" ) ?>
+                        } ?>><?php if ( !empty( $option[$user_locale] ) ) {
+                            echo esc_html( $option[$user_locale] );
+                        } else {
+                            echo esc_html( $option["label"] ?? "" );
+                        }?>
                     </option>
                     <?php
                 }
@@ -634,7 +648,11 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                         <?php if ( ( $contact["unassignable_paused"]["key"] ?? "" ) === $reason_key ) {
                             echo "selected";
                         } ?>>
-                        <?php echo esc_html( $option["label"] ?? "" ) ?>
+                        <?php if ( !empty( $option[$user_locale] ) ) {
+                            echo esc_html( $option[$user_locale] );
+                        } else {
+                            echo esc_html( $option["label"] ?? "" );
+                        }?>
                     </option>
                     <?php
                 }

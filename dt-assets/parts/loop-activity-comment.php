@@ -1,5 +1,6 @@
 <?php
 ( function () {
+    $user_locale = get_user_locale();
     ?>
 
     <div class="grid-y bordered-box">
@@ -44,7 +45,13 @@
                                 <?php
                                 foreach ( $sections as $section ) {?>
                                     <option value="<?php echo esc_html( $section["key"] ); ?>">
-                                    <?php echo esc_html( $section["label"] ); ?>
+                                    <?php
+                                    if ( !empty( $section[$user_locale] ) ) {
+                                        $label = $section[$user_locale];
+                                    } else {
+                                        $label = $section["label"];
+                                    }
+                                    echo esc_html( $label ); ?>
                                 <?php } ?>
                             </select>
                         </div>
@@ -135,7 +142,13 @@
                                         <?php echo esc_html( ( isset( $section["selected_by_default"] ) && $section["selected_by_default"] === true ) ? 'checked' : '' ) ?>
                                     >
                                     <span class="tab-button-label" dir="auto"
-                                          data-id="<?php echo esc_html( $section["key"] ) ?>"> <?php echo esc_html( $section["label"] ) ?></span>
+                                          data-id="<?php echo esc_html( $section["key"] ) ?>"> <?php
+                                            if ( !empty( $section[$user_locale] ) ) {
+                                                $label = $section[$user_locale];
+                                            } else {
+                                                $label = $section["label"];
+                                            }
+                                            echo esc_html( $label ) ?></span>
                                 </label>
 
                             </li>
@@ -202,7 +215,13 @@
                                 <?php
                                 foreach ( $sections as $section ) {?>
                                     <option value="<?php echo esc_html( $section["key"] ); ?>">
-                                    <?php echo esc_html( $section["label"] ); ?>
+                                    <?php
+                                    if ( !empty( $section[$user_locale] ) ) {
+                                        $label = $section[$user_locale];
+                                    } else {
+                                        $label = $section["label"];
+                                    }
+                                    echo esc_html( $label ); ?>
                                 <?php } ?>
                             </select>
                 <?php endif; ?>

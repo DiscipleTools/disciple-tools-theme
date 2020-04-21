@@ -210,7 +210,9 @@ $translations = dt_get_translations();
                             <tr>
                                 <td><?php esc_html_e( 'Type of Notification', 'disciple_tools' )?></td>
                                 <?php foreach ( $dt_site_notification_defaults["channels"] as $channel_key => $channel_value ) : ?>
-                                    <td><?php echo esc_html( $channel_value["label"] )?></td>
+                                    <td><?php if ( !empty( $channel_value[$dt_user_locale] ) ) {
+                                            echo esc_html( $channel_value[$dt_user_locale] );
+                                        } echo esc_html( $channel_value["label"] )?></td>
                                 <?php endforeach; ?>
                             </tr>
                             </thead>

@@ -5,6 +5,7 @@
     $channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
     $current_user = wp_get_current_user();
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
+    $user_locale = get_user_locale();
 
     function dt_contact_details_status( $id, $verified, $invalid ) { ?>
         <img id="<?php echo esc_html( $id )?>-verified" class="details-status" style="display:<?php echo esc_html( $verified )?>" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/verified.svg' )?>" />
@@ -80,7 +81,11 @@
                 ?>
                 <select id="overall_status" class="select-field color-select" style="margin-bottom:0px; background-color: <?php echo esc_html( $active_color ) ?>">
                     <?php foreach ($contact_fields["overall_status"]["default"] as $key => $option){
-                        $value = $option["label"] ?? "";
+                        if ( empty( $option[$user_locale] ) ) {
+                            $value = $option["label"] ?? "";
+                        } else {
+                            $value = $option[$user_locale];
+                        }
                         if ( $contact["overall_status"]["key"] === $key ) {
                             ?>
                             <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
@@ -95,13 +100,28 @@
                         $hide_edit_button = false;
                         if ( $contact["overall_status"]["key"] === "paused" &&
                              isset( $contact["reason_paused"]["label"] )){
-                            echo '(' . esc_html( $contact["reason_paused"]["label"] ) . ')';
+                            if ( !empty( $contact["reason_paused"][$user_locale] ) ) {
+                                $label = $contact["reason_paused"][$user_locale];
+                            } else {
+                                $label = $contact["reason_paused"]["label"];
+                            }
+                            echo '(' . esc_html( $label ) . ')';
                         } else if ( $contact["overall_status"]["key"] === "closed" &&
                                     isset( $contact["reason_closed"]["label"] )){
-                            echo '(' . esc_html( $contact["reason_closed"]["label"] ) . ')';
+                            if ( !empty( $contact["reason_closed"][$user_locale] ) ) {
+                                $label = $contact["reason_closed"][$user_locale];
+                            } else {
+                                $label = $contact["reason_closed"]["label"];
+                            }
+                            echo '(' . esc_html( $label ) . ')';
                         } else if ( $contact["overall_status"]["key"] === "unassignable" &&
                                     isset( $contact["reason_unassignable"]["label"] )){
-                            echo '(' . esc_html( $contact["reason_unassignable"]["label"] ) . ')';
+                            if ( !empty( $contact["reason_unassignable"][$user_locale] ) ) {
+                                $label = $contact["reason_unassignable"][$user_locale];
+                            } else {
+                                $label = $contact["reason_unassignable"]["label"];
+                            }
+                            echo '(' . esc_html( $label ) . ')';
                         } else {
                             if ( !in_array( $contact["overall_status"]["key"], [ "paused", "closed", "unassignable" ] ) ){
                                 $hide_edit_button = true;
@@ -179,7 +199,13 @@
             <div class="xlarge-4 large-6 medium-6 small-12 cell">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/phone.svg' ?>">
-                    <?php echo esc_html( $channel_list["phone"]["label"] ) ?>
+                    <?php
+                    if ( !empty( $channel_list["phone"][$user_locale] ) ) {
+                        $label = $channel_list["phone"][$user_locale];
+                    } else {
+                        $label = $channel_list["phone"]["label"];
+                    }
+                    echo esc_html( $label ) ?>
                 </div>
                 <ul class="phone">
                 </ul>
@@ -215,7 +241,14 @@
                     foreach ($contact['sources'] ?? [] as $value){
                         ?>
                         <li class="<?php echo esc_html( $value )?>">
-                            <?php echo esc_html( $contact_fields['sources']['default'][$value]["label"] ?? $value ) ?>
+                            <?php
+                            if ( !empty( $contact_fields['sources']['default'][$value][$user_locale] ) ) {
+                                $label = $contact_fields['sources']['default'][$value][$user_locale];
+                            } else {
+                                $label = $contact_fields['sources']['default'][$value]["label"];
+                            }
+
+                            echo esc_html( $label ?? $value ) ?>
                         </li>
                     <?php }
                     if ( !isset( $contact['sources'] ) || sizeof( $contact['sources'] ) === 0){
@@ -325,7 +358,13 @@
             <div class="grid-x">
                 <div class="cell section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/phone.svg' ?>">
-                    <?php echo esc_html( $channel_list["phone"]["label"] ) ?>
+                    <?php
+                    if ( !empty( $channel_list["phone"][$user_locale] ) ) {
+                        $label = $channel_list["phone"][$user_locale];
+                    } else {
+                        $label = $channel_list["phone"]["label"];
+                    }
+                    echo esc_html( $label ) ?>
                     <button data-list-class="contact_phone" class="add-button">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
@@ -405,7 +444,13 @@
             <div class="grid-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/address.svg' ?>">
-                    <?php echo esc_html( $channel_list["address"]["label"] )?>
+                    <?php
+                    if ( !empty( $channel_list["address"][$user_locale] ) ) {
+                        $label = $channel_list["address"][$user_locale];
+                    } else {
+                        $label = $channel_list["address"]["label"];
+                    }
+                    echo esc_html( $label )?>
                     <button id="add-new-address">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>

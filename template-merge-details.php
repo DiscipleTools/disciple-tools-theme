@@ -18,7 +18,7 @@ $dt_contact = Disciple_Tools_Contacts::get_contact( $dt_current_id, true );
 $dt_channel_list = Disciple_Tools_Contacts::get_channel_list();
 $dt_current_user = wp_get_current_user();
 $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
-
+$user_locale = get_user_locale();
 
 
   $dt_contact_name =$dt_contact['title'] ?? null;
@@ -66,7 +66,12 @@ $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                     </span>
                     <br>
                     <span><?php echo esc_html( '#' . $dt_contact["ID"] ) ?></span><br>
-                    <span><?php esc_html_e( "Status:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_contact["overall_status"]["label"] ?? "" ) ?></span><br>
+                    <span><?php esc_html_e( "Status:", 'disciple_tools' ) ?> <?php
+                    if ( !empty( $option[$user_locale] ) ) {
+                        echo esc_html( $dt_contact["overall_status"][$user_locale] );
+                    } else {
+                        echo esc_html( $dt_contact["overall_status"]["label"] ?? "" );
+                    } ?></span><br>
                     <span><?php esc_html_e( "Created:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_contact["created_date"] ?? "" ) ?></span><br>
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>
@@ -75,7 +80,12 @@ $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                     <span class='row-edit'><a onclick='editRow(this, edit);' title='Edit' class='fi-pencil'></a><a class='fi-x hide cancel' title='Cancel'></a><a class='fi-check hide save' title='Save'></a></span>
                     <br>
                     <span><?php echo esc_html( '#' . $dt_duplicate_contact["ID"] ) ?></span><br>
-                    <span><?php esc_html_e( "Status:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_duplicate_contact["overall_status"]["label"] ?? "" ) ?></span><br>
+                    <span><?php esc_html_e( "Status:", 'disciple_tools' ) ?> <?php
+                    if ( !empty( $dt_duplicate_contact["overall_status"][$user_locale] ) ) {
+                        echo esc_html( $dt_duplicate_contact["overall_status"][$user_locale] );
+                    } else {
+                        echo esc_html( $dt_duplicate_contact["overall_status"]["label"] ?? "" );
+                    }?></span><br>
                     <span><?php esc_html_e( "Created:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_duplicate_contact["created_date"] ?? "" ) ?></span><br>
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>

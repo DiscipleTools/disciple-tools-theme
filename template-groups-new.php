@@ -8,6 +8,7 @@ if ( ! current_user_can( 'create_groups' ) ) {
 get_header();
 
 $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+$user_locale = get_user_locale();
 ?>
 
 <div id="content" class="template-groups-new">
@@ -38,7 +39,12 @@ $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_s
                 <select class="select-field" id="group_type" name="group_name">
                     <?php
                     foreach ($group_fields["group_type"]["default"] as $key => $option){ ?>
-                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $option["label"] ?? "" ); ?></option>
+                            <option value="<?php echo esc_html( $key ) ?>">
+                            <?php if ( !empty( $source[$user_locale] ) ) {
+                                echo esc_html( $source[$user_locale] );
+                            } else {
+                                echo esc_html( $source["label"] );
+                            }?></option>
                     <?php } ?>
                 </select>
 
