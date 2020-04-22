@@ -296,7 +296,7 @@ class DT_User_Management
             $update_needed = Disciple_Tools_Contacts::search_viewable_contacts([
                 'requires_update' => [ "true" ],
                 'assigned_to' => [ $user->ID ],
-                'overall_status' => [ '-closed' ],
+                'overall_status' => [ '-closed', '-paused' ],
                 'sort' => 'last_modified'
             ]);
             if (sizeof( $update_needed["contacts"] ) > 5) {
