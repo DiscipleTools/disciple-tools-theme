@@ -836,7 +836,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
             <br>
             <div class="confirm-merge-with-contact" style="display: none">
-                <p><span  id="name-of-contact-to-merge"></span> <?php echo esc_html_x( "selected.", 'Added to the end of a sentence', 'disciple_tools' ) ?></p>
+                <p><span  id="name-of-contact-to-merge"></span> <?php echo esc_html_x( "selected.", 'added to the end of a sentence', 'disciple_tools' ) ?></p>
                 <p><?php esc_html_e( "Click merge to continue.", 'disciple_tools' ) ?></p>
             </div>
 

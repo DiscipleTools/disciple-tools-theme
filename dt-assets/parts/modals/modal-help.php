@@ -15,14 +15,14 @@
             <h3><?php esc_html_e( "Contact Details", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "This is the area where you can view and edit the contact details for this contact.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <ul>
-                <li><strong><?php echo esc_html( "Contact Name", 'disciple_tools' ) ?></strong></li>
+                <li><strong><?php esc_html_e( "Contact Name", 'disciple_tools' ) ?></strong></li>
                 <li><strong><?php echo esc_html( $contact_fields["overall_status"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["overall_status"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_fields["assigned_to"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["assigned_to"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_fields["subassigned"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["subassigned"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_channels["phone"]["label"] ) ?></strong> <?php echo esc_html( $contact_channels["phone"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_channels["email"]["label"] ) ?></strong> <?php echo esc_html( $contact_channels["email"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_channels["address"]["label"] ) ?></strong> <?php echo esc_html( $contact_channels["address"]["description"] ) ?></li>
-                <li><strong><?php echo esc_html( "Social Media", 'disciple_tools' ) ?></strong> - <?php echo esc_html_x( "Social media accounts for this contact.", 'Optional Documentation', 'disciple_tools' ) ?></li>
+                <li><strong><?php esc_html_e( "Social Media", 'disciple_tools' ) ?></strong> - <?php echo esc_html_x( "Social media accounts for this contact.", 'Optional Documentation', 'disciple_tools' ) ?></li>
                 <li><strong><?php echo esc_html( $contact_fields["location_grid"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["location_grid"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_fields["people_groups"]["name"] ) ?></strong> <?php echo esc_html( $contact_fields["people_groups"]["description"] ) ?></li>
                 <li><strong><?php echo esc_html( $contact_fields["age"]["name"] ) ?></strong> <?php echo esc_html( $contact_fields["age"]["description"] ?? "" ) ?></li>
@@ -55,7 +55,7 @@
                     foreach ( $workload_status_options as $option_key => $option_val ): ?>
                         <li><span style="background-color: <?php echo esc_html( $option_val["color"] ) ?>; height:10px; padding: 0 5px; border-radius: 2px">&nbsp;</span> <?php echo esc_html( $option_val["label"] ) ?></li>
                     <?php endforeach ?>
-                    <li><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" /> 2: <?php echo esc_html( "2 contacts need an update", 'disciple_tools' ) ?> </li>
+                    <li><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" /> 2: <?php esc_html_e( "2 contacts need an update", 'disciple_tools' ) ?> </li>
                 </ul>
             <?php endif; ?>
         </div>
@@ -307,7 +307,7 @@
 
         <!--  Contacts list switch -->
         <div class="help-section" id="contacts-switch-help-text" style="display: none">
-            <h3><?php esc_html_e( "Closed Contacts switch", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_x( "Closed Contacts switch", 'Optional Documentation', 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Use this toggle switch to either show or not show closed contacts in the list.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
@@ -457,7 +457,7 @@
             <!-- documentation link -->
             <div class="help-more">
                 <h5><?php esc_html_e( "Need more help?", 'disciple_tools' ) ?></h5>
-                <a class="button small" id="docslink" href="https://disciple-tools.readthedocs.io/en/latest/index.html"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
+                <a class="button small" id="docslink" href="https://disciple-tools.readthedocs.io/en/latest/index.html"><?php esc_html_e( 'Read the documentation', 'disciple_tools' )?></a>
             </div>
         </div>
         <button class="close-button" data-close aria-label="Close modal" type="button">

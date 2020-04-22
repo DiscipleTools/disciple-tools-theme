@@ -61,7 +61,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
                 'translations' => [
                     'milestones' => __( "Milestones", 'disciple_tools' ),
                     'filter_contacts_to_date_range' => __( "Filter contacts to date range:", 'disciple_tools' ),
-                    'all_time' => _x( "All time", 'Dates', 'disciple_tools' ),
+                    'all_time' => _x( "All Time", 'Dates', 'disciple_tools' ),
                     'filter_to_date_range' => __( "Filter to date range", 'disciple_tools' ),
                 ]
             ]
