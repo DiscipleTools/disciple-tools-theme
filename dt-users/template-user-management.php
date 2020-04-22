@@ -46,7 +46,7 @@ $user_management_options = DT_User_Management::user_management_options();
                     <div id="chart">
 
                     <?php if ( strpos( $dt_url_path, 'user-management/users' ) !== false ) :
-                        $refresh = false;
+                        $refresh = true; // @todo refresh enabled all the time. evaluate if caching needed on the user list
                         if ( isset( $_GET['refresh'] ) ) {
                             $refresh = true;
                         }
