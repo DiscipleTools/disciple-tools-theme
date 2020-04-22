@@ -78,7 +78,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
                 'milestone_settings' => $milestone_settings,
                 'translations' => [
                     'filter_contacts_to_date_range' => __( "Filter contacts to date range:", 'disciple_tools' ),
-                    'all_time' => _x( "All Time", 'Dates', 'disciple_tools' ),
+                    'all_time' => __( "All Time", 'disciple_tools' ),
                     'filter_to_date_range' => __( "Filter to date range", 'disciple_tools' ),
                     'sources' => __( "Sources", 'disciple_tools' ),
                     'sources_filter_out_text' => __( "Showing contacts created during", 'disciple_tools' ),
