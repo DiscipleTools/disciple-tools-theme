@@ -180,12 +180,12 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 'label_contacts_per_user' => __( 'Contact Progress per Worker', 'disciple_tools' ),
                 'label_least_active' => __( 'Least Active', 'disciple_tools' ),
                 'label_most_active' => __( 'Most Active', 'disciple_tools' ),
-                'label_select_year' => _x( 'Select All Time or a specific year to display', 'Dates', 'disciple_tools' ),
-                'label_all_time' => _x( 'All Time', 'Dates', 'disciple_tools' ),
-                'label_this_year' => _x( 'This Year', 'Dates', 'disciple_tools' ),
-                'label_last_year' => _x( 'Last Year', 'Dates', 'disciple_tools' ),
-                'label_last_month' => _x( 'Last Month', 'Dates', 'disciple_tools' ),
-                'label_this_month' => _x( 'This Month', 'Dates', 'disciple_tools' ),
+                'label_select_year' => __( 'Select All Time or a specific year to display', 'disciple_tools' ),
+                'label_all_time' => __( 'All Time', 'disciple_tools' ),
+                'label_this_year' => __( 'This Year', 'disciple_tools' ),
+                'label_last_year' => __( 'Last Year', 'disciple_tools' ),
+                'label_last_month' => __( 'Last Month', 'disciple_tools' ),
+                'label_this_month' => __( 'This Month', 'disciple_tools' ),
             ],
         ];
     }

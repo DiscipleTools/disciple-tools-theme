@@ -289,31 +289,31 @@
     if ( is_archive() ):?>
         <!--  Filters Tile - left side -->
         <div class="help-section" id="filters-help-text" style="display: none">
-            <h3><?php esc_html_e( "Default and Custom Filters", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_x( "Default and Custom Filters Tile", 'Optional Documentation', 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Use these filters to focus in on the contacts or groups you are responsible for. If the default filters do not fit your needs you can create your own custom filter.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
         <!--  Contacts List Tile -->
         <div class="help-section" id="contacts-list-help-text" style="display: none">
-            <h3><?php esc_html_e( "Contacts List Tile", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_x( "Contacts List Tile", 'Optional Documentation', 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Your list of contacts will show up here. Whenever you filter contacts, the list will also be changed in this section too. You can sort your contacts by newest, oldest, most recently modified, and least recently modified. If you have a long list of contacts they will not all load at once, so clicking the 'Load more contacts' button at the bottom of the list will allow you to load more.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
         <!--  Groups List Tile -->
         <div class="help-section" id="groups-list-help-text" style="display: none">
-            <h3><?php esc_html_e( "Groups List Tile", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_x( "Groups List Tile", 'Optional Documentation', 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Your list of groups will show up here. Whenever you filter groups, the list will also be changed in this section too. You can sort your groups by newest, oldest, most recently modified, and least recently modified. If you have a long list of groups they will not all load at once, so clicking the 'Load more groups' button at the bottom of the list will allow you to load more.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
         <!--  Contacts list switch -->
         <div class="help-section" id="contacts-switch-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Closed Contacts switch", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_x( "Closed Contacts Switch", 'Optional Documentation', 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Use this toggle switch to either show or not show closed contacts in the list.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
 
         <!--  Groups list switch -->
         <div class="help-section" id="groups-switch-help-text" style="display: none">
-            <h3><?php echo esc_html_x( "Inactive Groups switch", 'Optional Documentation', 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_x( "Inactive Groups Switch", 'Optional Documentation', 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Use this toggle switch to either show or not show inactive groups in the list.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         </div>
     <?php endif; ?>
@@ -433,8 +433,8 @@
         <h4><?php esc_html_e( "All / Unread", 'disciple_tools' ) ?></h4>
         <p><?php echo esc_html_x( "Click the 'All' button to show the full list of all of your notifications.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         <p><?php echo esc_html_x( "Click the 'Unread' button to show the list of all of your unread notifications.", 'Optional Documentation', 'disciple_tools' ) ?></p>
-        <h4><?php esc_html_e( "Mark All as Read", 'disciple_tools' ) ?></h4>
-        <p><?php echo esc_html_x( "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read.", 'Optional Documentation', 'disciple_tools' ) ?></p>
+        <h4><?php esc_html_e( "Mark all as read", 'disciple_tools' ) ?></h4>
+        <p><?php echo esc_html_x( "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark all as read' link at the top to quickly adjust all the messages that they have all been read.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         <h4><?php esc_html_e( "Settings", 'disciple_tools' ) ?></h4>
         <p><?php echo esc_html_x( "Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system.", 'Optional Documentation', 'disciple_tools' ) ?></p>
     </div>

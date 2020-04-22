@@ -13,7 +13,7 @@
                     </header> <!-- end article header -->
 
                     <section class="entry-content">
-                        <p><?php esc_html_e( 'The page you were looking for was not found or was deleted.', 'disciple_tools' ); ?></p>
+                        <p><?php esc_html_e( 'The page you were looking for was not found or was deleted', 'disciple_tools' ); ?></p>
                     </section> <!-- end article section -->
 
                 </article> <!-- end article -->
