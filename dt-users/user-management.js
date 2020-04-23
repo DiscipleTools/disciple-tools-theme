@@ -166,17 +166,15 @@ jQuery(document).ready(function($) {
               //locations
               let typeahead = Typeahead['.js-typeahead-location_grid']
               if (typeahead) {
-                for (let i = 0; i < typeahead.items.length; i) {
-                  typeahead.cancelMultiselectItem(0)
-                }
+                typeahead.items = [];
+                typeahead.comparedItems =[];
+                typeahead.label.container.empty();
+                typeahead.adjustInputSize()
               }
               locations.location_grid.forEach(location => {
                 typeahead.addMultiselectItemLayout({ID: location.id.toString(), name: location.label})
               })
             }
-
-            // console.log('locations')
-            // console.log(locations)
           }
         }).catch((e)=>{
         console.log( 'error in locations')
