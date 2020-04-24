@@ -438,6 +438,7 @@ jQuery(document).ready(function($) {
     })
 
     function setup_user_roles(user_data){
+      $('#user_roles_list input').prop('checked', false);
       if ( user_data.roles ){
         _.forOwn( user_data.roles, role=>{
           $(`#user_roles_list [value="${role}"]`).prop('checked', true)
