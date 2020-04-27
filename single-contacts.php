@@ -398,7 +398,6 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
                                     <div class="section-subheader">
                                         <?php
-                                        dt_write_log($contact_fields["milestones"]);
                                         echo esc_html( $contact_fields["milestones"]["name"] )?>
                                         <button class="help-button" data-section="faith-milestones-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
