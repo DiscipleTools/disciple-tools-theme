@@ -59,13 +59,7 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
     public function data() {
         return [
             'translations' => [
-                'label_group_needs_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
-                'label_groups' => strtolower( __( 'groups', 'disciple_tools' ) ),
-                'label_generations' => strtolower( __( 'generations', 'disciple_tools' ) ),
-                'label_generation' => __( 'Generation', 'disciple_tools' ),
-                'label_group_types' => __( 'Group Types', 'disciple_tools' ),
-                'label_pre_group' => __( 'Pre-Group', 'disciple_tools' ),
-                'label_group' => __( 'Group', 'disciple_tools' ),
+                'title_group_tree' => __( 'Group Generation Tree', 'disciple_tools' ),
             ],
             'group_generation_tree' => $this->get_group_generations_tree(),
         ];
