@@ -36,16 +36,43 @@ class Disciple_Tools_Metrics
 
             //load base chart setup
             require_once( get_template_directory() . '/dt-metrics/charts-base.php' );
+
             // load basic charts
             require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
+
             require_once( get_template_directory() . '/dt-metrics/metrics-critical-path.php' );
+
             require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
-            require_once( get_template_directory() . '/dt-metrics/metrics-workers.php' );
+
 //            require_once( get_template_directory() . '/dt-metrics/metrics-prayer.php' );
+
+            /* Contacts */
             require_once( get_template_directory() . '/dt-metrics/contacts/sources.php' );
             require_once( get_template_directory() . '/dt-metrics/contacts/milestones.php' );
             require_once( get_template_directory() . '/dt-metrics/contacts/milestones-map.php' );
-//            require_once( get_template_directory() . '/dt-metrics/contacts/seeker-path.php' );
+            if ( DT_Mapbox_API::get_key() ) {
+                require_once(get_template_directory() . '/dt-metrics/contacts/mapbox-cluster-map.php');
+                require_once(get_template_directory() . '/dt-metrics/contacts/mapbox-point-map.php');
+                require_once(get_template_directory() . '/dt-metrics/contacts/mapbox-area-map.php');
+            }
+            // @todo move baptism tree
+            // @todo move coaching tree
+
+            /* Groups */
+            if ( DT_Mapbox_API::get_key() ) {
+                require_once( get_template_directory() . '/dt-metrics/groups/mapbox-cluster-map.php' );
+                require_once( get_template_directory() . '/dt-metrics/groups/mapbox-point-map.php' );
+                require_once( get_template_directory() . '/dt-metrics/groups/mapbox-area-map.php' );
+            }
+            require_once( get_template_directory() . '/dt-metrics/groups/tree.php' );
+            // @todo move group tree
+
+            /* Generations */
+
+
+            /* People Groups */
+            // @todo
+
         }
     }
 
@@ -588,7 +615,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     GROUP BY post_id
                 ))
               as contacts,
-              
+
               (SELECT count(a.ID)
                 FROM $wpdb->posts as a
                   JOIN $wpdb->postmeta as b
@@ -611,7 +638,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     GROUP BY post_id
                   )
               ) as needs_accept,
-              
+
               (SELECT count(a.ID)
                 FROM $wpdb->posts as a
                   JOIN $wpdb->postmeta as b
@@ -634,7 +661,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     GROUP BY post_id
                 )
               ) as needs_update,
-              
+
               (SELECT count(a.ID)
                 FROM $wpdb->posts as a
                   JOIN $wpdb->postmeta as c
@@ -648,7 +675,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 WHERE a.post_status = 'publish'
                   AND a.post_type = 'groups')
                 as `groups`,
-                
+
                 (SELECT count(a.ID)
                 FROM $wpdb->posts as a
                   JOIN $wpdb->postmeta as c

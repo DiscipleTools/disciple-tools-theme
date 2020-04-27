@@ -1,6 +1,5 @@
 jQuery(document).ready(function($) {
 
-
   if( '/user-management/users/' === window.location.pathname ) {
     write_users_list()
   }
@@ -799,7 +798,7 @@ jQuery(document).ready(function($) {
                     <div id='legend' class='legend'>
                         <div class="grid-x grid-margin-x grid-padding-x">
                             <div class="cell small-2 center info-bar-font">
-                                Responsibility 
+                                Responsibility
                             </div>
                             <div class="cell small-2 center border-left">
                                 <select id="level" class="small" style="width:170px;">
@@ -812,7 +811,7 @@ jQuery(document).ready(function($) {
                                     <option value="admin0">Country</option>
                                     <option value="admin1">State</option>
                                     <option value="none" disabled></option>
-                                </select> 
+                                </select>
                             </div>
                             <div class="cell small-2 center border-left">
                                 <select id="status" class="small" style="width:170px;">
@@ -826,12 +825,12 @@ jQuery(document).ready(function($) {
                                     <option value="inconsistent">Inconsistent</option>
                                     <option value="inactive">Inactive</option>
                                     <option value="none" disabled></option>
-                                </select> 
+                                </select>
                             </div>
                             <div class="cell small-5 center border-left info-bar-font">
-                                
+
                             </div>
-                            
+
                             <div class="cell small-1 center border-left">
                                 <div class="grid-y">
                                     <div class="cell center" id="admin">World</div>
@@ -1450,7 +1449,7 @@ jQuery(document).ready(function($) {
     let spinner = ' <span class="loading-spinner users-spinner active"></span> '
 
     chart.empty().html(`
-    
+
       <div class="grid-x">
         <div id="page-title" class="cell"><h3>Add New User</h3></div>
         <div class="cell medium-6">
@@ -1458,7 +1457,7 @@ jQuery(document).ready(function($) {
             <div data-abide-error class="alert callout" style="display: none;">
               <p><i class="fi-alert"></i> There are some errors in your form.</p>
             </div>
-            
+
             <dl>
               <dt>Contact to make a user (optional)</dt>
               <dd>
@@ -1479,25 +1478,25 @@ jQuery(document).ready(function($) {
               </dd>
             </dl>
             <div id="contact-result"></div>
-          
-            <dl>  
+
+            <dl>
               <dt>Nickname</dt>
               <dd><input type="text" class="input" id="name" placeholder="nick name" required /> </dd>
               <dt>Email</dt>
               <dd><input type="email" class="input" id="email" placeholder="email address" required /> </dd>
-              
+
             </dl>
-            
+
             <button type="submit" class="submit button" id="create-user">Create User</button> <span class="spinner"></span>
-            
+
           </form>
-          
+
         </div>
         <div class="cell medium-6"></div>
         <div class="cell" id="result-link"></div>
         <div class="cell" style="height:20rem;"></div>
       </div>
-    
+
     `)
 
     let result_div = jQuery('#result-link')
