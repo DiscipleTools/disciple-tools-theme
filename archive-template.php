@@ -9,7 +9,6 @@ declare(strict_types=1);
     $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
 
     $field_options = $post_settings["fields"];
-    $user_locale = get_user_locale();
 
     get_header();
     ?>
@@ -213,11 +212,7 @@ declare(strict_types=1);
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "key_select" ) :
                                         foreach ( $field_options[$field]["default"] as $option_key => $option_value ) :
-                                            if ( empty( $option[$user_locale] ) ) {
-                                                $value = $option_value["label"] ?? "";
-                                            } else {
-                                                $value = $option_value[$user_locale];
-                                            }?>
+                                            $label = $option_value["label"] ?? ""?>
                                             <div class="key_select_options">
                                                 <label style="cursor: pointer">
                                                     <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"

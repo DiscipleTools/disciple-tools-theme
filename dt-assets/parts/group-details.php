@@ -6,7 +6,6 @@
 
     $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
 
-    $user_locale = get_user_locale();
 
     function dt_contact_details_status( $id, $verified, $invalid ){
         ?>
@@ -55,13 +54,7 @@
                 <?php foreach ( $group_fields["group_status"]["default"] as $status_key => $option ) { ?>
                     <option value="<?php echo esc_attr( $status_key ); ?>"
                         <?php echo esc_attr( $status_key === $group['group_status']['key'] ? 'selected' : '' ); ?>>
-                        <?php
-                        if ( !empty( $option[$user_locale] ) ) {
-                            $label = $option[$user_locale];
-                        } else {
-                            $label = $option["label"] ?? "";
-                        }
-                        echo esc_html( $label ) ?>
+                        <?php echo esc_html( $option["label"] ?? "" ) ?>
                     </option>
                 <?php } ?>
             </select>

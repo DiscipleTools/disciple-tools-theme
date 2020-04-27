@@ -7,7 +7,6 @@ declare(strict_types=1);
     }
 
     $dt_group_field_options = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( false );
-    $user_locale = get_user_locale();
     get_header();
 
     ?>
@@ -169,11 +168,7 @@ declare(strict_types=1);
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "key_select" ) :
                                         foreach ( $dt_group_field_options[$field]["default"] as $option_key => $option_value ) :
-                                            if ( empty( $option[$user_locale] ) ) {
-                                                $value = $option_value["label"] ?? "";
-                                            } else {
-                                                $value = $option_value[$user_locale];
-                                            }?>
+                                            $label = $option_value["label"] ?>
                                             <div class="key_select_options">
                                                 <label style="cursor: pointer">
                                                     <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"

@@ -21,7 +21,6 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
     $post_type = get_post_type();
     $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
     $dt_post = DT_Posts::get_post( $post_type, get_the_ID() );
-    $user_locale = get_user_locale();
     ?>
     <div id="content" class="single-template">
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
@@ -120,11 +119,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                         //setup tile label if see by customizations
                                         if ( isset( $custom_tiles[$post_type][$section]["label"] ) ){ ?>
                                             <h3 class="section-header">
-                                                <?php if ( empty( $custom_tiles[$post_type][$section][$user_locale] ) ) {
-                                                    echo esc_html( $custom_tiles[$post_type][$section][$user_locale] );
-                                                } else {
-                                                    echo esc_html( $custom_tiles[$post_type][$section]["label"] );
-                                                }?>
+                                                <?php echo esc_html( $custom_tiles[$post_type][$section]["label"] )?>
                                                 <button class="section-chevron chevron_down">
                                                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                                                 </button>

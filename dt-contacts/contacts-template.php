@@ -67,7 +67,6 @@ function dt_get_users_shared_with( $contact_id ) {
  * @param $post
  */
 function render_field_for_display( $field_key, $fields, $post ){
-    $user_locale = get_user_locale();
     if ( isset( $fields[$field_key]["type"] ) ){
         $field_type = $fields[$field_key]["type"];
         ?>
@@ -80,13 +79,7 @@ function render_field_for_display( $field_key, $fields, $post ){
                 <?php foreach ($fields[$field_key]["default"] as $option_key => $option_value):
                     $selected = isset( $post[$field_key]["key"] ) && $post[$field_key]["key"] === $option_key; ?>
                     <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
-                        <?php
-                        if ( !empty( $option_value[$user_locale] ) ) {
-                            $label = $option_value[$user_locale];
-                        } else {
-                            $label = $option_value["label"];
-                        }
-                        echo esc_html( $label );?>
+                        <?php echo esc_html( $option_value["label"] ) ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -98,13 +91,7 @@ function render_field_for_display( $field_key, $fields, $post ){
                         "selected-select-button" : "empty-select-button"; ?>
                     <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( $field_key ) ?>"
                             class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
-                        <?php
-                        if ( !empty( $fields[$field_key]["default"][$option_key][$user_locale] ) ) {
-                            $label = $fields[$field_key]["default"][$option_key][$user_locale];
-                        } else {
-                            $label = $fields[$field_key]["default"][$option_key]["label"];
-                        }
-                        echo esc_html( $label );?>
+                        <?php echo esc_html( $fields[$field_key]["default"][$option_key]["label"] ) ?>
                     </button>
                 <?php endforeach; ?>
             </div>

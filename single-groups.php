@@ -18,7 +18,6 @@ if ( ! current_user_can( 'access_groups' ) ) {
     $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
     $group_preferences = dt_get_option( 'group_preferences' );
     $current_user_id = get_current_user_id();
-    $user_locale = get_user_locale();
     get_header();?>
 
     <?php
@@ -127,11 +126,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                 <select class="select-field" id="group_type">
                                     <?php
                                     foreach ($group_fields["group_type"]["default"] as $key => $option){
-                                        if ( empty( $option[$user_locale] ) ) {
-                                            $value = $option["label"] ?? "";
-                                        } else {
-                                            $value = $option[$user_locale];
-                                        }
+                                        $value = $option["label"] ?? "";
                                         if ( $group["group_type"]["key"] === $key ) {
                                             ?>
                                             <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
@@ -226,12 +221,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                                 <button  class="group-progress-button" id="<?php echo esc_html( $key ) ?>">
                                                     <img src="<?php echo esc_html( $option["image"] ?? "" ) ?>">
                                                 </button>
-                                                <p><?php
-                                                if ( !empty( $group_fields["health_metrics"]["default"][$key][$user_locale] ) ) {
-                                                    echo esc_html( $option[$user_locale] );
-                                                } else {
-                                                    echo esc_html( $option["label"] );
-                                                }?> </p>
+                                                <p><?php echo esc_html( $option["label"] ) ?> </p>
                                             </div>
                                         <?php endforeach; ?>
 
@@ -325,12 +315,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                                     <?php foreach ($field["default"] as $option_key => $option_value):
                                                         $selected = isset( $group[$field_key]["key"] ) && $group[$field_key]["key"] === $option_key; ?>
                                                         <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
-                                                            <?php if ( !empty( $option_value[$user_locale] ) ) {
-                                                                echo esc_html( $option_value[$user_locale] );
-                                                            } else {
-                                                                echo esc_html( $option_value["label"] );
-                                                            }
-                                                            ?>
+                                                            <?php echo esc_html( $option_value["label"] ) ?>
                                                         </option>
                                                     <?php endforeach; ?>
                                                 </select>
@@ -342,13 +327,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                                             "selected-select-button" : "empty-select-button"; ?>
                                                         <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( $field_key ) ?>"
                                                                 class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
-                                                            <?php
-                                                            if ( !empty( $group_fields[$field_key]["default"][$option_key][$user_locale] ) ) {
-                                                                echo esc_html( $group_fields[$field_key]["default"][$option_key][$user_locale] );
-                                                            } else {
-                                                                echo esc_html( $group_fields[$field_key]["default"][$option_key]["label"] );
-                                                            }
-                                                            ?>
+                                                            <?php echo esc_html( $group_fields[$field_key]["default"][$option_key]["label"] ) ?>
                                                         </button>
                                                     <?php endforeach; ?>
                                                 </div>
