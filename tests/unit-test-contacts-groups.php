@@ -23,7 +23,7 @@ class PostsTest extends WP_UnitTestCase {
         $contact1 = DT_Posts::create_post( 'contacts', $this->sample_contact );
         $this->assertSame( 'Bob', $contact1['title'] );
         $this->assertSame( 'France', $contact1['location_grid'][0]["label"] );
-        $this->assertSame( '2018-12-31', $contact1["baptism_date"]["timestamp"] );
+        $this->assertSame( '1546210800', $contact1["baptism_date"]["timestamp"] );
 
     }
 
