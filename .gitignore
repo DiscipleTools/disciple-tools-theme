@@ -11,6 +11,7 @@ composer.phar
 CodeSniffer.conf
 phpcbf.phar
 phpcs.phar
+package-lock.json
 
 */development-only/*
 

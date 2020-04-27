@@ -9,22 +9,6 @@ jQuery(document).ready(function($) {
   let editFieldsUpdate = {}
 
   /**
-   * Date pickers
-   */
-  let dateFields = [ "start_date", "church_start_date", "end_date" ]
-  dateFields.forEach(key=>{
-    let datePicker = $(`#${key}.date-picker`)
-    datePicker.datepicker({
-      dateFormat: 'yy-mm-dd',
-      onSelect: function (date) {
-        editFieldsUpdate[key] = date
-      },
-      changeMonth: true,
-      changeYear: true
-    })
-
-  })
-  /**
    * Assigned_to
    */
   let assignedToInput = $('.js-typeahead-assigned_to');
@@ -102,93 +86,97 @@ jQuery(document).ready(function($) {
   /**
    * Location Grid
    */
-  // let loadGeonameTypeahead = ()=>{
-  //   if (!window.Typeahead['.js-typeahead-location_grid']){
-      $.typeahead({
-        input: '.js-typeahead-location_grid',
-        minLength: 0,
-        accent: true,
-        searchOnFocus: true,
-        maxItem: 20,
-        dropdownFilter: [{
-          key: 'group',
-          value: 'focus',
-          template: _.escape(window.wpApiShare.translations.regions_of_focus),
-          all: _.escape(window.wpApiShare.translations.all_locations),
-        }],
-        source: {
-          focus: {
-            display: "name",
-            ajax: {
-              url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
-              data: {
-                s: "{{query}}",
-                filter: function () {
-                  return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+  if ( typeof dtMapbox !== 'undefined' ) {
+
+  } else {
+    $.typeahead({
+      input: '.js-typeahead-location_grid',
+      minLength: 0,
+      accent: true,
+      searchOnFocus: true,
+      maxItem: 20,
+      dropdownFilter: [{
+        key: 'group',
+        value: 'focus',
+        template: _.escape(window.wpApiShare.translations.regions_of_focus),
+        all: _.escape(window.wpApiShare.translations.all_locations),
+      }],
+      source: {
+        focus: {
+          display: "name",
+          ajax: {
+            url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+            data: {
+              s: "{{query}}",
+              filter: function () {
+                return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+              }
+            },
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+            },
+            callback: {
+              done: function (data) {
+                if (typeof typeaheadTotals !== "undefined") {
+                  typeaheadTotals.field = data.total
                 }
-              },
-              beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-              },
-              callback: {
-                done: function (data) {
-                  if (typeof typeaheadTotals !== "undefined") {
-                    typeaheadTotals.field = data.total
-                  }
-                  return data.location_grid
-                }
+                return data.location_grid
               }
             }
           }
-        },
-        display: "name",
-        templateValue: "{{name}}",
-        dynamic: true,
-        multiselect: {
-          matchOn: ["ID"],
-          data: function () {
-            return (group.location_grid || []).map(g=>{
-              return {ID:g.id, name:g.label}
-            })
+        }
+      },
+      display: "name",
+      templateValue: "{{name}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["ID"],
+        data: function () {
+          return (group.location_grid || []).map(g => {
+            return {ID: g.id, name: g.label}
+          })
 
-          }, callback: {
-            onCancel: function (node, item) {
-              _.pullAllBy(editFieldsUpdate.location_grid.values, [{value:item.ID}], "value")
-              editFieldsUpdate.location_grid.values.push({value:item.ID, delete:true})
-            }
-          }
-        },
-        callback: {
-          onClick: function(node, a, item, event){
-            if (!editFieldsUpdate.location_grid){
-              editFieldsUpdate.location_grid = { "values": [] }
-            }
-            _.pullAllBy(editFieldsUpdate.location_grid.values, [{value:item.ID}], "value")
-            editFieldsUpdate.location_grid.values.push({value:item.ID})
-            this.addMultiselectItemLayout(item)
-            event.preventDefault()
-            this.hideLayout();
-            this.resetInput();
-          },
-          onReady(){
-            this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
-            this.container
-              .removeClass("filter")
-              .find("." + this.options.selector.filterButton)
-              .html(_.escape(window.wpApiShare.translations.regions_of_focus));
-          },
-          onResult: function (node, query, result, resultCount) {
-            resultCount = typeaheadTotals.location_grid
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#location_grid-result-container').html(text);
-          },
-          onHideLayout: function () {
-            $('#location_grid-result-container').html("");
+        }, callback: {
+          onCancel: function (node, item) {
+            _.pullAllBy(editFieldsUpdate.location_grid.values, [{value: item.ID}], "value")
+            editFieldsUpdate.location_grid.values.push({value: item.ID, delete: true})
           }
         }
-      });
-  //   }
-  // }
+      },
+      callback: {
+        onClick: function (node, a, item, event) {
+          if (!editFieldsUpdate.location_grid) {
+            editFieldsUpdate.location_grid = {"values": []}
+          }
+          _.pullAllBy(editFieldsUpdate.location_grid.values, [{value: item.ID}], "value")
+          editFieldsUpdate.location_grid.values.push({value: item.ID})
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
+        },
+        onReady() {
+          this.filters.dropdown = {
+            key: "group",
+            value: "focus",
+            template: _.escape(window.wpApiShare.translations.regions_of_focus)
+          }
+          this.container
+            .removeClass("filter")
+            .find("." + this.options.selector.filterButton)
+            .html(_.escape(window.wpApiShare.translations.regions_of_focus));
+        },
+        onResult: function (node, query, result, resultCount) {
+          resultCount = typeaheadTotals.location_grid
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $('#location_grid-result-container').html(text);
+        },
+        onHideLayout: function () {
+          $('#location_grid-result-container').html("");
+        }
+      }
+    });
+  }
 
 
 
@@ -592,9 +580,18 @@ jQuery(document).ready(function($) {
 
 
     $('#group-details-edit-modal').foundation('open');
-    ["location_grid", "people_groups"].forEach(t=>{
-      Typeahead[`.js-typeahead-${t}`].adjustInputSize()
-    })
+
+
+    if ( typeof dtMapbox !== 'undefined' ){
+      [ "people_groups"].forEach(t=>{
+        Typeahead[`.js-typeahead-${t}`].adjustInputSize()
+      })
+    } else {
+      ["location_grid","people_groups"].forEach(t=>{
+        Typeahead[`.js-typeahead-${t}`].adjustInputSize()
+      })
+    }
+
   })
 
 
@@ -602,6 +599,7 @@ jQuery(document).ready(function($) {
    * Save group details updates
    */
   $('#save-edit-details').on('click', function () {
+    $(this).toggleClass("loading")
     let contactInput = $(".contact-input")
     contactInput.each((index, entry)=>{
       if ( !$(entry).attr("id") ){
@@ -613,8 +611,28 @@ jQuery(document).ready(function($) {
         editFieldsUpdate[channelType].values.push({value:val})
       }
     })
-    $(this).toggleClass("loading")
-      API.update_post( 'groups', groupId, editFieldsUpdate).then((updatedGroup)=>{
+    if ( editFieldsUpdate[undefined] !== 'undefined') {
+      delete editFieldsUpdate[undefined]
+    }
+
+    $('.dt_date_picker').each(function( index, val ) {
+      var date;
+      if (!$(val).val()) {
+          date = " ";//null;
+        } else {
+          date = $(val).val();
+        }
+        let id = $(val).attr('id')
+        API.update_post( 'groups', groupId, { [id]: moment(date).unix() }).then((resp)=>{
+          if (val.value) {
+              $(val).val(moment.unix(resp[id]["timestamp"]).format("YYYY-MM-DD"));
+          }
+          $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
+          resetDetailsFields(resp);
+        }).catch(handleAjaxError)
+    });
+
+    API.update_post( 'groups', groupId, editFieldsUpdate).then((updatedGroup)=>{
       group = updatedGroup
       $(this).toggleClass("loading")
       resetDetailsFields(group)
@@ -697,10 +715,15 @@ jQuery(document).ready(function($) {
       }
     })
 
-    dateFields.forEach(dateField=>{
-      if ( group[dateField] ){
-        $(`#${dateField}.date-picker`).datepicker('setDate', moment.unix(group[dateField]["timestamp"]).format("YYYY-MM-DD"))
-        $(`.${dateField}.details-list`).html(group[dateField]["formatted"])
+    /**
+   * date field management
+   */
+  let dateFields = ["start_date", "church_start_date", "end_date"]
+
+    dateFields.forEach(dateField => {
+      if (group[dateField]) {
+        $(`#${dateField}.date-picker`).datepicker('setDate', moment.unix(group[dateField]["timestamp"]).format("YYYY-MM-DD"));
+        $(`.${dateField}.details-list`).html(window.SHAREDFUNCTIONS.formatDate( group[dateField]["timestamp"] ))
       } else {
         $(`.${dateField}.details-list`).html(wpApiGroupsSettings.translations["not-set"][dateField])
       }
@@ -708,7 +731,6 @@ jQuery(document).ready(function($) {
 
   })
   resetDetailsFields(group)
-
 
   /**
    * Group Status

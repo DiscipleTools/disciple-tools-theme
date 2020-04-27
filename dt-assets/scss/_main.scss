@@ -11,6 +11,18 @@ GENERAL STYLES
     font-weight: 400;
 }
 
+.txt-gray-light {
+color:$light-gray;
+}
+
+.txt-gray-mid {
+    color: $medium-gray;
+}
+
+.txt-gray-dark {
+    color: $dark-gray;
+}
+
 .primary-color {
     color: $primary-color;
 }
@@ -25,6 +37,10 @@ GENERAL STYLES
 
 .float-right {
     float: right;
+}
+
+.full-width {
+    width: 100%;
 }
 
 body {
@@ -354,6 +370,8 @@ Title for boxed section
 .section-subheader {
     font-weight: 700;
     font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
 }
 /*********************
 JQUERY OVERRIDES

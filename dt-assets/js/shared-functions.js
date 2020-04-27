@@ -89,11 +89,11 @@ window.API = {
 
     update_post: (post_type, postId, postData) => makeRequestOnPosts('POST', `${post_type}/${postId}`, postData),
 
-    post_comment: (post_type, postId, comment) => makeRequestOnPosts('POST', `${post_type}/${postId}/comments`, { comment }),
+    post_comment: (post_type, postId, comment, comment_type = "comment") => makeRequestOnPosts('POST', `${post_type}/${postId}/comments`, { comment, comment_type }),
 
     delete_comment: (post_type, postId, comment_ID) => makeRequestOnPosts('DELETE', `${post_type}/${postId}/comments/${comment_ID}`),
 
-    update_comment: (post_type, postId, comment_ID, comment_content) => makeRequestOnPosts('POST', `${post_type}/${postId}/comments/${comment_ID}`, {  comment: comment_content }),
+    update_comment: (post_type, postId, comment_ID, comment_content, commentType = "comment") => makeRequestOnPosts('POST', `${post_type}/${postId}/comments/${comment_ID}`, {  comment: comment_content, comment_type: commentType }),
 
     get_comments: (post_type, postId) => makeRequestOnPosts('GET', `${post_type}/${postId}/comments`),
 
@@ -376,6 +376,17 @@ window.SHAREDFUNCTIONS = {
     },
     save_json_cookie(cname, json, path = ''){
       document.cookie = `${cname}=${JSON.stringify(json)};path=/${path}`
+    },
+    formatDate(date) {
+      let langcode = document.querySelector('html').getAttribute('lang') ? document.querySelector('html').getAttribute('lang').replace('_', '-') : "en";// get the language attribute from the HTML or default to english if it doesn't exists.
+      if (langcode === "fa-IR" ) {
+        //This is a check so that we use the gergorian (Western) calendar if the users locale is Farsi. This is the calendar used primarily by Farsi speakers outside of Iran, and is easily understood by those inside.
+        langcode = `${langcode}-u-ca-gregory`;
+      }
+      const options = { year: 'numeric', month: 'long', day: 'numeric' }
+      const formattedDate = new Intl.DateTimeFormat(langcode, options).format(date * 1000);
+
+      return formattedDate;
     }
 }
 

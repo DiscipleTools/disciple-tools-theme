@@ -237,7 +237,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             <?php esc_html_e( 'View Comments', 'disciple_tools' ) ?>
                         </a>
                     </div>
-                    <!-- end collapse --></div>
+                    <!-- end collapse --></div>
                 </div>
             </section>
             <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell" role="main" style="padding:0">
@@ -346,7 +346,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         <?php
                                     }
                                     ?>
-                                </div><!-- end collapse --></div>
+                                </div><!-- end collapse --></div>
                             </section>
 
                         <!-- PROGRESS TILE -->
@@ -376,12 +376,12 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
                                     foreach ($contact_fields["seeker_path"]["default"] as $key => $option){
                                         $value = $option["label"] ?? "";
-                                        if ( $contact["seeker_path"]["key"] === $key ) {
+                                        if ( $contact["seeker_path"]["key"] === $key ) :
                                             ?>
                                             <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
-                                        <?php } else { ?>
+                                        <?php else : ?>
                                             <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
-                                        <?php }
+                                        <?php endif;
                                     }
                                     $keys = array_keys( $contact_fields["seeker_path"]["default"] );
                                     $path_index = array_search( $contact["seeker_path"]["key"], $keys ) ?? 0;
@@ -410,16 +410,18 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         <?php endforeach; ?>
                                     </div>
 
+                                    <div class="section-subheader"><?php echo esc_html( $contact_fields["baptism_date"]["name"] )?></div>
                                     <div class="baptism_date">
-                                        <div class="section-subheader"><?php echo esc_html( $contact_fields["baptism_date"]["name"] )?></div>
-                                        <div class="baptism_date">
-                                            <input type="text" class="dt_date_picker"
-                                                   value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>"
-                                                   id="baptism_date" autocomplete="off">
+                                        <div class="baptism_date input-group">
+                                            <input id="baptism_date" class="input-group-field dt_date_picker" type="text" autocomplete="off"
+                                                   value="<?php echo esc_html( $contact["baptism_date"]["timestamp"] ?? '' )?>" >
+                                            <div class="input-group-button">
+                                                <button id="baptism-date-clear-button" class="button alert clear-date-button" data-inputid="baptism_date" title="Delete Date">x</button>
+                                            </div>
                                         </div>
                                     </div>
 
-                                </div><!-- end collapse --></div>
+                                </div><!-- end collapse --></div>
                             </section>
 
                             <?php
@@ -528,7 +530,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         </div>
                                     </div>
                                 </div>
-                                <!-- end collapse --></div>
+                                <!-- end collapse --></div>
                             </section>
                         </div>
                     </div>
@@ -697,7 +699,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             </div>
 
             <span class="section-subheader"><?php echo esc_html( $contact_fields["baptism_date"]["name"] )?></span>
-            <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" id="modal-baptism-date-picker" autocomplete="off">
+            <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"]["timestamp"] ?? '' );?>" id="modal-baptism-date-picker" autocomplete="off">
 
         </div>
 

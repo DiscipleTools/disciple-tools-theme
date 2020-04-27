@@ -432,8 +432,8 @@ class Disciple_Tools_Groups_Post_Type
             'default'     => [],
         ];
         $fields['location_grid_meta'] = [
-            'name'        => _x( 'Location Grid Meta', 'field name', 'disciple_tools' ),
-            'type'        => 'location',
+            'name'        => 'Location Grid Meta', //system string does not need translation
+            'type'        => 'location_meta',
             'default'     => [],
             'hidden' => true
         ];
@@ -441,6 +441,12 @@ class Disciple_Tools_Groups_Post_Type
             'name' => __( 'Tasks', 'disciple_tools' ),
             'description' => __( 'Tasks related to this group.', 'disciple_tools' ),
             'type' => 'post_user_meta',
+        ];
+        $fields["last_modified"] =[
+            'name' => __( 'Last modified', 'disciple_tools' ),
+            'type' => 'number',
+            'default' => 0,
+            'section' => 'admin'
         ];
 
 

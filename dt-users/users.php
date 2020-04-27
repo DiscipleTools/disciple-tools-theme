@@ -154,7 +154,8 @@ class Disciple_Tools_Users
                 $u = [
                     "name" => $user->display_name,
                     "ID"   => $user->ID,
-                    "avatar" => get_avatar_url( $user->ID, [ 'size' => '16' ] )
+                    "avatar" => get_avatar_url( $user->ID, [ 'size' => '16' ] ),
+                    "contact_id" => self::get_contact_for_user( $user->ID )
                 ];
                 //extra information for the dispatcher
                 if ( current_user_can( 'view_any_contacts' ) && !$get_all ){
@@ -341,7 +342,7 @@ class Disciple_Tools_Users
     public static function create_contact_for_user( $user_id ) {
         $user = get_user_by( 'id', $user_id );
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
-        if ( $user && $user->has_cap( 'access_contacts' ) ) {
+        if ( $user ) {
             if ( empty( $corresponds_to_contact )){
                 $args = [
                     'post_type'  => 'contacts',
@@ -393,6 +394,7 @@ class Disciple_Tools_Users
                 if ( !is_wp_error( $new_id )){
                     update_user_option( $user_id, "corresponds_to_contact", $new_id );
                 }
+                return $new_id;
             } else {
                 $contact = get_post( $corresponds_to_contact );
                 if ( $contact && $contact->post_title != $user->display_name && $user->display_name != $user->user_login ){
@@ -400,8 +402,10 @@ class Disciple_Tools_Users
                         "title" => $user->display_name
                     ], false, true );
                 }
+                return $contact->ID;
             }
         }
+        return false;
     }
 
     /**
@@ -803,29 +807,33 @@ Please click the following link to confirm the invite:
 
     public static function create_user( $user_name, $user_email, $display_name, $corresponds_to_contact = null ){
         if ( !current_user_can( "create_users" ) ){
-            return new WP_Error( "create_user", "You don't have permissions to create users", [ 'status' => 401 ] );
+            return new WP_Error( "no_permissions", "You don't have permissions to create users", [ 'status' => 401 ] );
         }
+        $user_email = sanitize_email( wp_unslash( $user_email ) );
+        $user_name = sanitize_user( wp_unslash( $user_name ) );
+        $display_name = sanitize_text_field( wp_unslash( $display_name ) );
 
+        $user_id = email_exists( $user_email );
+        if ( $user_id ){
 
-        $user_id = null;
-        $email_exists = email_exists( $user_email );
-        if ( $email_exists ){
+            if ( is_user_member_of_blog( $user_id ) ){
+                $contact_id = self::get_contact_for_user( $user_id );
+                if ( ! $contact_id ) {
+                    self::create_contact_for_user( $user_id );
+                    return $user_id;
+                }
 
-            //check to see if the user is on the server, but not part of this D.T instance
-            $user = get_user_by( "email", $user_email );
-            if ( !is_user_member_of_blog( $user->ID ) ){
-                $user_id = self::invite_existing_user_to_site( $user->ID, $user_email, 'multiplier' );
+                return new WP_Error( "email_exists", __( "Email already exists and is a user on this site", 'disciple_tools' ), [ 'status' => 409 ] );
             } else {
-                return new WP_Error( "create_user", __( "Email already exists", 'disciple_tools' ), [ 'status' => 403 ] );
+
+                $blog_id = get_current_blog_id();
+                $addition = add_user_to_blog( $blog_id, $user_id, 'multiplier' );
+                if ( is_wp_error( $addition ) ) {
+                    return new WP_Error( "failed_to_add_user", __( "Failed to add user to site.", 'disciple_tools' ), [ 'status' => 409 ] );
+                }
             }
         } else {
-            $user_id = username_exists( $user_name );
-            if ( $user_id ){
-                return new WP_Error( "create_user", __( "Username already exists", 'disciple_tools' ), [ 'status' => 403 ] );
-            }
-        }
 
-        if ( !$user_id ){
             $user_id = register_new_user( $user_name, $user_email );
             if ( is_wp_error( $user_id ) ){
                 return $user_id;
@@ -835,6 +843,16 @@ Please click the following link to confirm the invite:
             $user->set_role( "multiplier" );
             wp_update_user( $user );
         }
+
+        global $wpdb;
+        update_user_meta( $user_id, $wpdb->prefix . 'user_status', 'active' );
+        update_user_meta( $user_id, $wpdb->prefix . 'workload_status', 'active' );
+
+        if ( $corresponds_to_contact ) {
+            update_user_meta( $user_id, $wpdb->prefix . 'corresponds_to_contact', $corresponds_to_contact );
+            update_post_meta( $corresponds_to_contact, 'corresponds_to_user', $user_id );
+        }
+
         return $user_id;
     }
 

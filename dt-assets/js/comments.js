@@ -15,12 +15,13 @@ jQuery(document).ready(function($) {
   function post_comment(postId) {
     let commentInput = jQuery("#comment-input")
     let commentButton = jQuery("#add-comment-button")
+    let commentType = $('#comment_type_selector').val()
     getCommentWithMentions(comment_plain_text=>{
       if (comment_plain_text) {
         commentButton.toggleClass('loading')
         commentInput.attr("disabled", true)
         commentButton.attr("disabled", true)
-        rest_api.post_comment(postType, postId, _.escape(comment_plain_text)).then(data => {
+        rest_api.post_comment(postType, postId, _.escape(comment_plain_text), commentType ).then(data => {
           let updated_comment = data.comment || data
           commentInput.val("").trigger( "change" )
           commentButton.toggleClass('loading')
@@ -51,7 +52,7 @@ jQuery(document).ready(function($) {
     let createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
     const createdContactActivityItem = {
       hist_time: createdDate.unix(),
-      object_note: settings.txt_created.replace("{}", formatDate(createdDate.local(), langcode)),
+      object_note: settings.txt_created.replace("{}", window.SHAREDFUNCTIONS.formatDate(createdDate.unix())),
       name: settings.contact_author_name,
       user_id: currentContact.post_author,
     }
@@ -88,7 +89,7 @@ jQuery(document).ready(function($) {
     text = text.substring(0, text.indexOf('(')) || text
     text += ` (${formatNumber(activityData.length, langcode)})`
     tab.text(text)
-
+    tab.parent().parent('.hide').removeClass('hide')
   }
   $(".show-tabs").on("click", function () {
     let id = $(this).attr("id")
@@ -110,16 +111,24 @@ jQuery(document).ready(function($) {
     <div class="activity-text">
     <% _.forEach(activity, function(a){
         if (a.comment){ %>
-            <div dir="auto" class="comment-bubble <%- a.comment_ID %>" style="white-space: pre-wrap"><div dir=auto><%= a.text.replace(/\\n/g, '</div><div dir=auto>') /* not escaped on purpose */ %></div></div>
+            <div dir="auto" class="comment-bubble <%- a.comment_ID %>">
+              <div class="comment-text" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
+            <% if ( commentsSettings.google_translate_key !== "" ) { %>
+                <div class="translation-bubble" dir=auto></div>
+                <a class="translate-button showTranslation">${_.escape(commentsSettings.translations.translate)}</a>
+                <a class="translate-button hideTranslation hide">${_.escape(commentsSettings.translations.hide_translation)}</a>
+                </div>
+              <% } %>
+            </div>
             <p class="comment-controls">
                <% if ( a.comment_ID ) { %>
-                  <a class="open-edit-comment" data-id="<%- a.comment_ID %>" style="margin-right:5px">
+                  <a class="open-edit-comment" data-id="<%- a.comment_ID %>" data-type="<%- a.comment_type %>" style="margin-right:5px">
                       <img src="${commentsSettings.template_dir}/dt-assets/images/edit-blue.svg">
-                      ${commentsSettings.translations.edit}
+                      ${_.escape(commentsSettings.translations.edit)}
                   </a>
                   <a class="open-delete-comment" data-id="<%- a.comment_ID %>">
                       <img src="${commentsSettings.template_dir}/dt-assets/images/trash-blue.svg">
-                      ${commentsSettings.translations.delete}
+                      ${_.escape(commentsSettings.translations.delete)}
                   </a>
                <% } %>
             </p>
@@ -130,6 +139,47 @@ jQuery(document).ready(function($) {
     </div>
   </div>`
   )
+
+  $(document).on("click", '.translate-button.showTranslation', function() {
+    let sourceText = $(this).siblings('.comment-text').text();
+    let translation_bubble = $(this).siblings('.translation-bubble');
+    let translation_hide = $(this).siblings('.translate-button.hideTranslation');
+
+    let url = `https://translation.googleapis.com/language/translate/v2?key=${_.escape(commentsSettings.google_translate_key)}`
+    let targetLang;
+
+    if (langcode !== "zh-TW") {
+      targetLang = langcode.substr(0,2);
+    } else {
+      targetLang = langcode;
+    }
+
+    let postData = {
+      "q": [sourceText],
+      "target": targetLang
+    }
+
+    fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(postData),
+    })
+    .then(response => response.json())
+    .then((result) => {
+      translation_bubble.append(result.data.translations[0].translatedText);
+      translation_hide.removeClass('hide');
+      $(this).addClass('hide');
+
+    })
+  })
+
+  $(document).on("click", '.translate-button.hideTranslation', function() {
+    let translation_bubble = $(this).siblings('.translation-bubble');
+    let translate_button = $(this).siblings('.translate-button.showTranslation')
+
+    translation_bubble.empty();
+    $(this).addClass('hide');
+    translate_button.removeClass('hide');
+  })
 
   $(document).on("click", ".open-delete-comment", function () {
     let id = $(this).data("id")
@@ -159,6 +209,7 @@ jQuery(document).ready(function($) {
 
   $(document).on("click", ".open-edit-comment", function () {
     let id = $(this).data("id")
+    let comment_type = $(this).data("type");
     let comment = _.find(comments, {comment_ID:id.toString()})
 
     let comment_html = comment.comment_content // eg: "Tom &amp; Jerry"
@@ -182,6 +233,8 @@ function unescapeHtml(safe) {
     // _.unescape("Tom & Jerry") will return "Tom & Jerry"
     $('#comment-to-edit').val(unescapeHtml(comment_html));
 
+    $('#edit_comment_type_selector').val(comment_type);
+
     $('.edit-comment.callout').hide()
     $('#edit-comment-modal').foundation('open')
     $('#confirm-comment-edit').data("id", id)
@@ -190,7 +243,8 @@ function unescapeHtml(safe) {
     $(this).toggleClass('loading')
     let id = $(this).data("id")
     let updated_comment = $('#comment-to-edit').val()
-    rest_api.update_comment( postType, postId, id, updated_comment).then((response)=>{
+    let commentType = $('#edit_comment_type_selector').val();
+    rest_api.update_comment( postType, postId, id, updated_comment, commentType).then((response)=>{
       $(this).toggleClass('loading')
       if (response === 1 || response === 0 || response.comment_ID){
         $('#edit-comment-modal').foundation('close')
@@ -205,13 +259,6 @@ function unescapeHtml(safe) {
       }
     })
   })
-
-  function formatDate(date, langcode) {
-    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' }
-    const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, options).format(new Date (date));
-
-    return last_modified;
-  }
 
   function formatNumber(num, lang) {
     return num.toLocaleString(lang);
@@ -251,6 +298,11 @@ function unescapeHtml(safe) {
     let array = []
 
     displayed.forEach(d=>{
+      baptismDateRegex = /\{(\d+)\}+/;
+
+      if (baptismDateRegex.test(d.object_note)) {
+        d.object_note = d.object_note.replace(baptismDateRegex, baptismTimestamptoDate);
+      }
       let first = _.first(array)
       let name = d.comment_author || d.name
       let gravatar = d.gravatar || ""
@@ -261,6 +313,7 @@ function unescapeHtml(safe) {
         text:d.object_note || formatComment(d.comment_content),
         comment: !!d.comment_content,
         comment_ID : d.user_id === commentsSettings.current_user_id ? d.comment_ID : false,
+        comment_type : d.comment_type,
         action: d.action
       }
 
@@ -272,7 +325,7 @@ function unescapeHtml(safe) {
         commentsWrapper.append(commentTemplate({
           name: array[0].name,
           gravatar: array[0].gravatar,
-          date:formatDate(array[0].date, langcode),
+          date:window.SHAREDFUNCTIONS.formatDate(moment(array[0].date).unix()),
           activity: array
         }))
         array = [obj]
@@ -282,12 +335,15 @@ function unescapeHtml(safe) {
       commentsWrapper.append(commentTemplate({
         gravatar: array[0].gravatar,
         name: array[0].name,
-        date:formatDate(array[0].date, langcode),
+        date:window.SHAREDFUNCTIONS.formatDate(moment(array[0].date).unix()),
         activity: array
       }))
     }
   }
 
+  function baptismTimestamptoDate(match, timestamp) {
+    return window.SHAREDFUNCTIONS.formatDate(timestamp)
+  }
 
   /**
    * Comments and activity
@@ -403,12 +459,14 @@ function unescapeHtml(safe) {
       }
       typesCount[comment.comment_type]++;
     })
+    $('#comment-activity-tabs .tabs-title').addClass('hide')
     _.forOwn(typesCount, (val, key)=>{
       let tab = $(`[data-id="${key}"].tab-button-label`)
       let text = tab.text()
       text = text.substring(0, text.indexOf('(')) || text
       text += ` (${formatNumber(val, langcode)})`
       tab.text(text)
+      tab.parent().parent('.hide').removeClass('hide')
     })
     comments = commentData
     activity = activityData
