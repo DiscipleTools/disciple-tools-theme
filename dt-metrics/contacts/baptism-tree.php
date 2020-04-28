@@ -4,13 +4,13 @@ if ( !defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly.
 
 
-class DT_Metrics_Baptism_Tree extends DT_Metrics_Chart_Base
+class DT_Metrics_Contacts_Baptism_Tree extends DT_Metrics_Chart_Base
 {
     //slug and title of the top menu folder
     public $base_slug = 'contacts'; // lowercase
     public $base_title = 'Contacts';
 
-    public $title = 'Baptism GenTree';
+    public $title;
     public $slug = 'baptism-tree'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = 'baptism-tree.js'; // should be full file name plus extension
@@ -22,34 +22,13 @@ class DT_Metrics_Baptism_Tree extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
+        $this->title = __( 'Baptism GenTree', 'disciple_tools' );
         $url_path = dt_get_url_path();
-        // only load scripts if exact url
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
+        $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
-    }
-
-    public function add_api_routes() {
-        $version = '1';
-        $namespace = 'dt/v' . $version;
-        register_rest_route(
-            $namespace, '/metrics/contacts/baptism_tree', [
-                [
-                    'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'tree' ],
-                ],
-            ]
-        );
-
-    }
-
-    public function tree( WP_REST_Request $request ) {
-        if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
-        }
-        return $this->get_baptism_generations_tree();
     }
 
     public function scripts() {
@@ -75,6 +54,26 @@ class DT_Metrics_Baptism_Tree extends DT_Metrics_Chart_Base
                 'title_baptism_tree' => __( 'Baptism Generation Tree', 'disciple_tools' ),
             ],
         ];
+    }
+
+    public function add_api_routes() {
+        $version = '1';
+        $namespace = 'dt/v' . $version;
+        register_rest_route(
+            $namespace, '/metrics/contacts/baptism_tree', [
+                [
+                    'methods'  => WP_REST_Server::CREATABLE,
+                    'callback' => [ $this, 'tree' ],
+                ],
+            ]
+        );
+    }
+
+    public function tree( WP_REST_Request $request ) {
+        if ( !$this->has_permission() ){
+            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+        }
+        return $this->get_baptism_generations_tree();
     }
 
     public function get_baptism_generations_tree(){
@@ -139,4 +138,4 @@ class DT_Metrics_Baptism_Tree extends DT_Metrics_Chart_Base
     }
 
 }
-new DT_Metrics_Baptism_Tree();
+new DT_Metrics_Contacts_Baptism_Tree();

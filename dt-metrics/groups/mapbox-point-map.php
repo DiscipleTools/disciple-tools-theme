@@ -10,11 +10,10 @@ class DT_Metrics_Mapbox_Groups_Points_Map extends DT_Metrics_Chart_Base
     //slug and title of the top menu folder
     public $base_slug = 'groups'; // lowercase
     public $base_title = "Groups";
-
-    public $title = 'Points Map';
+    public $title;
     public $slug = 'mapbox_points_map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $js_file_name = 'points-map.js'; // should be full file name plus extension
+    public $js_file_name = '/dt-metrics/common/points-map.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
     public $namespace = null;
 
@@ -23,13 +22,12 @@ class DT_Metrics_Mapbox_Groups_Points_Map extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
+        $this->title = __( 'Points Map', 'disciple_tools' );
         $url_path = dt_get_url_path();
-        // only load scripts if exact url
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+
     }
 
     public function scripts() {
@@ -43,7 +41,6 @@ class DT_Metrics_Mapbox_Groups_Points_Map extends DT_Metrics_Chart_Base
             filemtime( get_theme_file_path() . '/dt-metrics/common/' . $this->js_file_name ),
             true
         );
-        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_contact_field_defaults();
         $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_group_field_defaults();
         wp_localize_script(
             'dt_mapbox_script', 'dt_mapbox_metrics', [
@@ -55,11 +52,11 @@ class DT_Metrics_Mapbox_Groups_Points_Map extends DT_Metrics_Chart_Base
                 'map_key' => DT_Mapbox_API::get_key(),
                 "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
                 "theme_uri" => trailingslashit( get_stylesheet_directory_uri() ),
-                'translations' => $this->translations(),
-                'contact_settings' => [
-                    'post_type' => 'contacts',
-                    'title' => __( 'Contacts', "disciple_tools" ),
-                    'status_list' => $contact_fields['overall_status']['default'] ?? []
+                'translations' => [
+                    'title' => __( "Mapping", "disciple_tools" ),
+                    'refresh_data' => __( "Refresh Cached Data", "disciple_tools" ),
+                    'population' => __( "Population", "disciple_tools" ),
+                    'name' => __( "Name", "disciple_tools" ),
                 ],
                 'group_settings' => [
                     'post_type' => 'groups',
@@ -68,15 +65,6 @@ class DT_Metrics_Mapbox_Groups_Points_Map extends DT_Metrics_Chart_Base
                 ]
             ]
         );
-    }
-
-    public function translations() {
-        $translations = [];
-        $translations['title'] = __( "Mapping", "disciple_tools" );
-        $translations['refresh_data'] = __( "Refresh Cached Data", "disciple_tools" );
-        $translations['population'] = __( "Population", "disciple_tools" );
-        $translations['name'] = __( "Name", "disciple_tools" );
-        return $translations;
     }
 
 }

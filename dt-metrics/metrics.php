@@ -32,7 +32,7 @@ class Disciple_Tools_Metrics
         $url_path = dt_get_url_path();
         if ( strpos( $url_path, "metrics" ) !== false ) {
 
-            add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 10 );
+            add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 10 ); // @todo remove
 
             //load base chart setup
             require_once( get_template_directory() . '/dt-metrics/charts-base.php' );
@@ -42,7 +42,7 @@ class Disciple_Tools_Metrics
 
             require_once( get_template_directory() . '/dt-metrics/metrics-critical-path.php' );
 
-            require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
+//            require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
 
 //            require_once( get_template_directory() . '/dt-metrics/metrics-prayer.php' );
 
@@ -66,13 +66,8 @@ class Disciple_Tools_Metrics
                 require_once( get_template_directory() . '/dt-metrics/groups/mapbox-point-map.php' );
                 require_once( get_template_directory() . '/dt-metrics/groups/mapbox-area-map.php' );
             }
-            // @todo move group tree
+            require_once( get_template_directory() . '/dt-metrics/groups/overview.php' );
 
-            /* Generations */
-
-
-            /* People Groups */
-            // @todo
 
         }
     }
@@ -324,7 +319,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 $generation_tree  = Disciple_Tools_Counter::critical_path( 'all_group_generations', 0, PHP_INT_MAX, [ 'assigned_to' => $user_id ] );
                 break;
             case 'project':
-                $generation_tree  = Disciple_Tools_Counter::critical_path( 'all_group_generations', 0, PHP_INT_MAX );
+                $generation_tree  = Disciple_Tools_Counter::critical_path( 'all_group_generations', 0, PHP_INT_MAX ); //
                 break;
             default:
                 $generation_tree = [ "Generations", "Pre-Group", "Group", "Church", [ "role" => "Annotation" ] ];
@@ -524,28 +519,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $results;
     }
 
-    public static function query_project_group_types() {
-        global $wpdb;
 
-        $results = $wpdb->get_results( "
-            SELECT c.meta_value as type, count( a.ID ) as count
-                FROM $wpdb->posts as a
-                JOIN $wpdb->postmeta as b
-                    ON a.ID=b.post_id
-                    AND b.meta_key = 'group_status'
-                    AND b.meta_value = 'active'
-                JOIN $wpdb->postmeta as c
-                    ON a.ID=c.post_id
-                    AND c.meta_key = 'group_type'
-                    AND c.meta_value != 'team'
-                WHERE a.post_status = 'publish'
-                    AND a.post_type = 'groups'
-                GROUP BY type
-                ORDER BY type DESC
-        ", ARRAY_A );
-
-        return $results;
-    }
 
     public static function query_my_group_types( $user_id = null ) {
         global $wpdb;
@@ -575,6 +549,45 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             ORDER BY type DESC
         ",
         'user-' . $user_id ), ARRAY_A );
+
+        return $results;
+    }
+
+    public static function query_project_group_health() {
+        global $wpdb;
+
+        $results = $wpdb->get_results( "
+            SELECT d.meta_value as health_key,
+              count(distinct(a.ID)) as count,
+              ( SELECT count(*)
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
+                     AND c.meta_key = 'group_status'
+                     AND c.meta_value = 'active'
+                JOIN $wpdb->postmeta as d
+                  ON a.ID=d.post_id
+                     AND d.meta_key = 'group_type'
+                     AND ( d.meta_value = 'group' OR d.meta_value = 'church' )
+              WHERE a.post_status = 'publish'
+                    AND a.post_type = 'groups'
+              ) as out_of
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
+                     AND c.meta_key = 'group_status'
+                     AND c.meta_value = 'active'
+                JOIN $wpdb->postmeta as d
+                  ON ( a.ID=d.post_id
+                    AND d.meta_key = 'health_metrics' )
+                JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                     AND e.meta_key = 'group_type'
+                     AND ( e.meta_value = 'group' OR e.meta_value = 'church' )
+              WHERE a.post_status = 'publish'
+                    AND a.post_type = 'groups'
+              GROUP BY d.meta_value
+        ", ARRAY_A );
 
         return $results;
     }
@@ -757,44 +770,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $results;
     }
 
-    public static function query_project_group_health() {
-        global $wpdb;
 
-        $results = $wpdb->get_results( "
-            SELECT d.meta_value as health_key,
-              count(distinct(a.ID)) as count,
-              ( SELECT count(*)
-              FROM $wpdb->posts as a
-                JOIN $wpdb->postmeta as c
-                  ON a.ID=c.post_id
-                     AND c.meta_key = 'group_status'
-                     AND c.meta_value = 'active'
-                JOIN $wpdb->postmeta as d
-                  ON a.ID=d.post_id
-                     AND d.meta_key = 'group_type'
-                     AND ( d.meta_value = 'group' OR d.meta_value = 'church' )
-              WHERE a.post_status = 'publish'
-                    AND a.post_type = 'groups'
-              ) as out_of
-              FROM $wpdb->posts as a
-                JOIN $wpdb->postmeta as c
-                  ON a.ID=c.post_id
-                     AND c.meta_key = 'group_status'
-                     AND c.meta_value = 'active'
-                JOIN $wpdb->postmeta as d
-                  ON ( a.ID=d.post_id
-                    AND d.meta_key = 'health_metrics' )
-                JOIN $wpdb->postmeta as e
-                  ON a.ID=e.post_id
-                     AND e.meta_key = 'group_type'
-                     AND ( e.meta_value = 'group' OR e.meta_value = 'church' )
-              WHERE a.post_status = 'publish'
-                    AND a.post_type = 'groups'
-              GROUP BY d.meta_value
-        ", ARRAY_A );
-
-        return $results;
-    }
 
     public static function query_my_group_generations( $user_id = null ) {
         global $wpdb;

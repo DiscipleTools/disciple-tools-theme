@@ -11,10 +11,10 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
     public $base_slug = 'contacts'; // lowercase
     public $base_title = "Contacts";
 
-    public $title = 'Sources';
+    public $title;
     public $slug = 'sources'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $js_file_name = 'sources.js'; // should be full file name plus extension
+    public $js_file_name = '/dt-metrics/contacts/sources.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
 //    public $namespace = "dt-metrics/$this->base_slug/$this->slug";
 
@@ -24,9 +24,10 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
             return;
         }
         $url_path = dt_get_url_path();
-
+        $this->title = __( 'Sources Chart', 'disciple_tools' );
         // only load scripts if exact url
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
+
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
@@ -39,7 +40,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
     public function scripts() {
 
         wp_enqueue_script( 'dt_' . $this->slug . '_script',
-            get_template_directory_uri() . '/dt-metrics/contacts/' . $this->js_file_name,
+            get_template_directory_uri() . $this->js_file_name,
             [
                 'moment',
                 'jquery',
@@ -48,7 +49,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
                 'amcharts-core',
                 'amcharts-charts',
             ],
-            filemtime( get_theme_file_path() . '/dt-metrics/contacts/' . $this->js_file_name )
+            filemtime( get_theme_file_path() . $this->js_file_name )
         );
 
         $contacts_custom_field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false );

@@ -11,7 +11,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
     public $base_slug = 'contacts'; // lowercase
     public $base_title = "Contacts";
 
-    public $title = 'Milestones';
+    public $title = 'Milestones Chart';
     public $slug = 'milestones'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = 'milestones.js'; // should be full file name plus extension
@@ -113,7 +113,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
             SELECT COUNT( DISTINCT(log.object_id) ) as `value`, log.meta_value as milestones
             FROM $wpdb->dt_activity_log log
             INNER JOIN $wpdb->postmeta as type ON ( log.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
-            INNER JOIN $wpdb->posts post 
+            INNER JOIN $wpdb->posts post
             ON (
                 post.ID = log.object_id
                 AND post.post_type = 'contacts'

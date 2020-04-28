@@ -17,10 +17,8 @@ jQuery(document).ready(function() {
         <div class="cell center">
             <h3>${translations.title_contact_overview}</h3>
         </div>
-
-        <br><br>
+        <br>
         <div class="grid-x grid-padding-x grid-padding-y">
-
             <div class="cell center callout">
                 <div class="cell center">
                 </div>
@@ -45,7 +43,6 @@ jQuery(document).ready(function() {
             <div class="cell">
                 <div id="status_chart_div" style="height: 500px; width=100%; margin:0 auto;"></div>
             </div>
-
         </div>
         `)
 
