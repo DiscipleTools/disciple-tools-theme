@@ -186,6 +186,25 @@ class Disciple_Tools_Contact_Post_Type
             'section'     => 'status',
         ];
 
+        $fields["reason_assigned_to"] = [
+            'name' => __( 'Reason Assigned To', 'disciple_tools' ),
+            'type'        => 'key_select',
+            'default' => [
+                'follow-up' => [
+                    'label' => __( "Follow-Up", 'disciple_tools' ),
+                    'roles' => [ "multiplier" ]
+                ],
+                'digital-response' => [
+                    'label' => __( "Digital Response", 'disciple_tools' ),
+                    'roles' => [ "marketer" ]
+                ],
+                'dispatch' => [
+                    'label' => __( "Dispatch", 'disciple_tools' ),
+                    'roles' => [ "dispatcher" ]
+                ],
+            ]
+        ];
+
         // Status Section
         $fields['overall_status'] = [
             'name'        => __( 'Contact Status', 'disciple_tools' ),
