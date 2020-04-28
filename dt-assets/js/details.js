@@ -51,7 +51,8 @@ jQuery(document).ready(function($) {
    */
 
   $('.dt_date_picker').each(function( index ) {
-    if (this.value) {
+    if (this.value && moment.unix(this.value).isValid()
+    ) {
       if (document.querySelector('#group-details-edit-modal') && document.querySelector('#group-details-edit-modal').contains( this)) {
       } else {
         this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
