@@ -115,7 +115,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
         return $chart;
     }
 
-    public function chart_group_health( ) {
+    public function chart_group_health() {
 
         // Make key list
         $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
@@ -334,7 +334,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
                 AND a.post_type = 'groups')
             as `teams`
         ",
-            ARRAY_A );
+        ARRAY_A );
 
         if ( empty( $results ) ) {
             return new WP_Error( __METHOD__, 'No results from the personal count query' );

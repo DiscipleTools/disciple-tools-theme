@@ -259,7 +259,7 @@ class DT_Metrics_Contacts_Overview extends DT_Metrics_Chart_Base
                 AND a.post_type = 'groups')
             as `teams`
         ",
-            ARRAY_A );
+        ARRAY_A );
 
         if ( empty( $results ) ) {
             return new WP_Error( __METHOD__, 'No results from the personal count query' );
