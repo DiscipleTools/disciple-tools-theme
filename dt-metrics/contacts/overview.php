@@ -8,9 +8,9 @@ class DT_Metrics_Contacts_Overview extends DT_Metrics_Chart_Base
 {
     //slug and title of the top menu folder
     public $base_slug = 'contacts'; // lowercase
+    public $slug = 'overview'; // lowercase
     public $base_title;
     public $title;
-    public $slug = 'overview'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/contacts/overview.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];

@@ -10,7 +10,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
     public $base_slug = 'groups'; // lowercase
     public $slug = 'overview'; // lowercase
     public $title;
-    public $base_title = 'Groups';
+    public $base_title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/groups/overview.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
@@ -33,6 +33,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
         wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
+
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
             'jquery',
             'jquery-ui-core',

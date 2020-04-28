@@ -9,7 +9,7 @@ class DT_Metrics_Mapbox_Cluster_Map extends DT_Metrics_Chart_Base
 
     //slug and title of the top menu folder
     public $base_slug = 'contacts'; // lowercase
-    public $base_title = "Contacts";
+    public $base_title;
 
     public $title;
     public $slug = 'mapbox_cluster_map'; // lowercase
@@ -23,6 +23,7 @@ class DT_Metrics_Mapbox_Cluster_Map extends DT_Metrics_Chart_Base
             return;
         }
         $this->title = __( 'Cluster Map', 'disciple_tools' );
+        $this->base_title = __( 'Contacts', 'disciple_tools' );
         $url_path = dt_get_url_path();
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );

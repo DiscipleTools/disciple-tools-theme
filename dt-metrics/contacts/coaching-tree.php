@@ -8,10 +8,9 @@ class DT_Metrics_Coaching_Tree extends DT_Metrics_Chart_Base
 {
     //slug and title of the top menu folder
     public $base_slug = 'contacts'; // lowercase
-    public $base_title = 'Contacts';
-
-    public $title;
     public $slug = 'coaching-tree'; // lowercase
+    public $base_title;
+    public $title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/contacts/coaching-tree.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
@@ -23,11 +22,13 @@ class DT_Metrics_Coaching_Tree extends DT_Metrics_Chart_Base
             return;
         }
         $this->title = __( 'Coaching GenTree', 'disciple_tools' );
+        $this->base_title = __( 'Contacts', 'disciple_tools' );
+
         $url_path = dt_get_url_path();
-        // only load scripts if exact url
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
+
         $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }

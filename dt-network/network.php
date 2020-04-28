@@ -781,6 +781,7 @@ class Disciple_Tools_Snapshot_Report {
         }
 
         require_once( get_template_directory() . '/dt-metrics/metrics.php' );
+
         $results = Disciple_Tools_Metrics_Hooks_Base::query_project_contacts_progress();
         if ( empty( $results ) || is_wp_error( $results ) ) {
             $results = [];

@@ -9,7 +9,7 @@ class DT_Metrics_Mapbox_Groups_Points_Map extends DT_Metrics_Chart_Base
 
     //slug and title of the top menu folder
     public $base_slug = 'groups'; // lowercase
-    public $base_title = "Groups";
+    public $base_title;
     public $title;
     public $slug = 'mapbox_points_map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
@@ -23,6 +23,8 @@ class DT_Metrics_Mapbox_Groups_Points_Map extends DT_Metrics_Chart_Base
             return;
         }
         $this->title = __( 'Points Map', 'disciple_tools' );
+        $this->base_title = __( 'Groups', 'disciple_tools' );
+
         $url_path = dt_get_url_path();
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );

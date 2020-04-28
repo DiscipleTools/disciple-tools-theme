@@ -8,12 +8,11 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
 {
     //slug and title of the top menu folder
     public $base_slug = 'groups'; // lowercase
-    public $base_title = 'Groups';
-
-    public $title = 'GenTree';
     public $slug = 'tree'; // lowercase
+    public $base_title;
+    public $title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $js_file_name = 'tree.js'; // should be full file name plus extension
+    public $js_file_name = '/dt-metrics/groups/tree.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
     public $namespace = null;
 
@@ -22,16 +21,20 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
+        $this->base_title = __( 'Groups', 'disciple_tools' );
+        $this->title = __( 'GenTree', 'disciple_tools' );
+
         $url_path = dt_get_url_path();
-        // only load scripts if exact url
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
+
+        $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
     public function add_api_routes() {
+
         $version = '1';
         $namespace = 'dt/v' . $version;
         register_rest_route(
@@ -53,9 +56,9 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
     }
 
     public function scripts() {
-        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . '/dt-metrics/groups/tree.js', [
+        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
             'jquery',
-        ], filemtime( get_theme_file_path() . '/dt-metrics/groups/tree.js' ), true );
+        ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [

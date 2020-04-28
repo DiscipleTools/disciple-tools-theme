@@ -9,23 +9,22 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
 
     //slug and title of the top menu folder
     public $base_slug = 'contacts'; // lowercase
-    public $base_title = "Contacts";
-
+    public $base_title;
     public $title;
     public $slug = 'sources'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/contacts/sources.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
-//    public $namespace = "dt-metrics/$this->base_slug/$this->slug";
 
     public function __construct() {
         parent::__construct();
         if ( !$this->has_permission() ){
             return;
         }
-        $url_path = dt_get_url_path();
         $this->title = __( 'Sources Chart', 'disciple_tools' );
-        // only load scripts if exact url
+        $this->base_title = __( 'Contacts', 'disciple_tools' );
+
+        $url_path = dt_get_url_path();
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
 
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );

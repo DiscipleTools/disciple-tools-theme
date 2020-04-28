@@ -40,11 +40,9 @@ class Disciple_Tools_Metrics
             // load basic charts
             require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
 
-            require_once( get_template_directory() . '/dt-metrics/metrics-critical-path.php' );
+//            require_once( get_template_directory() . '/dt-metrics/metrics-critical-path.php' );
+            require_once( get_template_directory() . '/dt-metrics/project/critical-path.php' );
 
-//            require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
-
-//            require_once( get_template_directory() . '/dt-metrics/metrics-prayer.php' );
 
             /* Contacts */
             require_once( get_template_directory() . '/dt-metrics/contacts/baptism-tree.php' );
