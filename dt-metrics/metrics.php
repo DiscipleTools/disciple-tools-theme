@@ -51,9 +51,9 @@ class Disciple_Tools_Metrics
             require_once( get_template_directory() . '/dt-metrics/contacts/milestones.php' );
             require_once( get_template_directory() . '/dt-metrics/contacts/milestones-map.php' );
             if ( DT_Mapbox_API::get_key() ) {
-                require_once(get_template_directory() . '/dt-metrics/contacts/mapbox-cluster-map.php');
-                require_once(get_template_directory() . '/dt-metrics/contacts/mapbox-point-map.php');
-                require_once(get_template_directory() . '/dt-metrics/contacts/mapbox-area-map.php');
+                require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-cluster-map.php' );
+                require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-point-map.php' );
+                require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-area-map.php' );
             }
             // @todo move baptism tree
             // @todo move coaching tree
