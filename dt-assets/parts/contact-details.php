@@ -204,29 +204,30 @@
                 <ul class="social"></ul>
             </div>
 
-            <!-- Source -->
-            <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                <div class="section-subheader">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
-                    <?php echo esc_html( $contact_fields["sources"]["name"] )?>
-                </div>
-                <ul class="sources-list <?php echo esc_html( user_can( get_current_user_id(), 'view_any_contacts' ) ? 'details-list' : '' ) ?>">
-                    <?php
-                    foreach ($contact['sources'] ?? [] as $value){
-                        ?>
-                        <li class="<?php echo esc_html( $value )?>">
-                            <?php echo esc_html( $contact_fields['sources']['default'][$value]["label"] ?? $value ) ?>
-                        </li>
-                    <?php }
-                    if ( !isset( $contact['sources'] ) || sizeof( $contact['sources'] ) === 0){
-                        ?> <li id="no-source"><?php esc_html_e( "No source set", 'disciple_tools' ) ?></li><?php
-                    }
-                    ?>
-                </ul>
-            </div>
 
             <!-- Mapbox enabled locations -->
             <?php if ( DT_Mapbox_API::get_key() ) : ?>
+
+                <!-- Source -->
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
+                        <?php echo esc_html( $contact_fields["sources"]["name"] )?>
+                    </div>
+                    <ul class="sources-list <?php echo esc_html( user_can( get_current_user_id(), 'view_any_contacts' ) ? 'details-list' : '' ) ?>">
+                        <?php
+                        foreach ($contact['sources'] ?? [] as $value){
+                            ?>
+                            <li class="<?php echo esc_html( $value )?>">
+                                <?php echo esc_html( $contact_fields['sources']['default'][$value]["label"] ?? $value ) ?>
+                            </li>
+                        <?php }
+                        if ( !isset( $contact['sources'] ) || sizeof( $contact['sources'] ) === 0){
+                            ?> <li id="no-source"><?php esc_html_e( "No source set", 'disciple_tools' ) ?></li><?php
+                        }
+                        ?>
+                    </ul>
+                </div>
 
                 <div class="xlarge-8 large-6 medium-6 small-12 cell">
                     <div class="section-subheader">
@@ -240,15 +241,6 @@
 
             <?php else : ?>
 
-                <!-- Location Grid -->
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>" alt="location">
-                        <?php echo esc_html( $contact_fields["location_grid"]["name"] )?>
-                    </div>
-                    <ul class="location_grid-list"></ul>
-                </div>
-
                 <!-- Address -->
                 <div class="xlarge-4 large-6 medium-6 small-12 cell">
                     <div class="section-subheader">
@@ -258,7 +250,39 @@
                     <ul class="address"></ul>
                 </div>
 
+                <!-- Location Grid -->
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>" alt="location">
+                        <?php echo esc_html( $contact_fields["location_grid"]["name"] )?>
+                    </div>
+                    <ul class="location_grid-list"></ul>
+                </div>
+
+                <!-- Source -->
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
+                        <?php echo esc_html( $contact_fields["sources"]["name"] )?>
+                    </div>
+                    <ul class="sources-list <?php echo esc_html( user_can( get_current_user_id(), 'view_any_contacts' ) ? 'details-list' : '' ) ?>">
+                        <?php
+                        foreach ($contact['sources'] ?? [] as $value){
+                            ?>
+                            <li class="<?php echo esc_html( $value )?>">
+                                <?php echo esc_html( $contact_fields['sources']['default'][$value]["label"] ?? $value ) ?>
+                            </li>
+                        <?php }
+                        if ( !isset( $contact['sources'] ) || sizeof( $contact['sources'] ) === 0){
+                            ?> <li id="no-source"><?php esc_html_e( "No source set", 'disciple_tools' ) ?></li><?php
+                        }
+                        ?>
+                    </ul>
+                </div>
+
             <?php endif; ?>
+
+
 
             <!-- Age -->
             <div class="xlarge-4 large-6 medium-6 small-12 cell">

@@ -383,7 +383,7 @@ class Disciple_Tools_Users
                 }
             }
 
-            if ( empty( $corresponds_to_contact ) ) {
+            if ( empty( $corresponds_to_contact ) || get_post( $corresponds_to_contact ) === null ) {
                 $new_id = Disciple_Tools_Contacts::create_contact( [
                     "title"               => $user->display_name,
                     "assigned_to"         => "user-" . $user_id,

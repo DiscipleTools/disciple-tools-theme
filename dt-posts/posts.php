@@ -1725,7 +1725,7 @@ class Disciple_Tools_Posts
                     $fields[$key] = maybe_unserialize( $value[0] );
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'date' ) {
                     $fields[$key] = [
-                        "timestamp" => $value[0],
+                        "timestamp" => is_numeric( $value[0] ) ? $value[0] : dt_format_date( $value[0], "U" ),
                         "formatted" => dt_format_date( $value[0] ),
                     ];
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'location' ) {
