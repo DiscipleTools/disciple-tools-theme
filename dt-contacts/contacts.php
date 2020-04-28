@@ -1653,7 +1653,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
 
     public static function get_user_posts(){
-        $user_posts = get_transient( "contact_ids_for_useors" );
+        $user_posts = get_transient( "contact_ids_for_users" );
         if ( $user_posts ){
             return dt_array_to_sql( array_map( function ( $g ) {
                 return $g["post_id"];

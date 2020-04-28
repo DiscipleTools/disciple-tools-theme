@@ -27,7 +27,7 @@
     "gulp-plumber": "^1.2.1",
     "gulp-postcss": "^8.0.0",
     "gulp-sass": "^4.0.0",
-    "gulp-sourcemaps": "^1.12.1",
+    "gulp-sourcemaps": "^2.6.5",
     "gulp-touch-cmd": "0.0.1",
     "gulp-uglify": "^3.0.2",
     "gulp-wp-pot": "^2.4.2",
