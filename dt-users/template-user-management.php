@@ -46,7 +46,11 @@ $user_management_options = DT_User_Management::user_management_options();
                     <div id="chart">
 
                     <?php if ( strpos( $dt_url_path, 'user-management/users' ) !== false ) :
-                        $users = DT_User_Management::get_users(); ?>
+                        $refresh = true; // @todo refresh enabled all the time. evaluate if caching needed on the user list
+                        if ( isset( $_GET['refresh'] ) ) {
+                            $refresh = true;
+                        }
+                        $users = DT_User_Management::get_users( $refresh ); ?>
                     <div id="user-chart" class="user-list-wrapper">
 
                         <!-- Title Section-->
@@ -117,6 +121,7 @@ $user_management_options = DT_User_Management::user_management_options();
                             </tbody>
                         </table>
                     </div>
+                    <div class="center" style="margin-top:1em;"><a href="?refresh=true">refresh list data</a></div>
                     <?php endif; ?>
                     </div><!-- Container for charts -->
                 </div>
