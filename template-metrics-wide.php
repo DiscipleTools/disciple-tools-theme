@@ -21,7 +21,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
                 <div class="bordered-box">
 
-                    <div id="chart"></div><!-- Target container -->
+                    <div id="chart"><span class="loading-spinner active"></span></div><!-- Target container -->
 
                 </div>
 

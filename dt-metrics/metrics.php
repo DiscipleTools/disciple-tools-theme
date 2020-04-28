@@ -47,6 +47,8 @@ class Disciple_Tools_Metrics
 //            require_once( get_template_directory() . '/dt-metrics/metrics-prayer.php' );
 
             /* Contacts */
+            require_once( get_template_directory() . '/dt-metrics/contacts/baptism-tree.php' );
+            require_once( get_template_directory() . '/dt-metrics/contacts/coaching-tree.php' );
             require_once( get_template_directory() . '/dt-metrics/contacts/sources.php' );
             require_once( get_template_directory() . '/dt-metrics/contacts/milestones.php' );
             require_once( get_template_directory() . '/dt-metrics/contacts/milestones-map.php' );
@@ -55,16 +57,15 @@ class Disciple_Tools_Metrics
                 require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-point-map.php' );
                 require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-area-map.php' );
             }
-            // @todo move baptism tree
-            // @todo move coaching tree
+            require_once( get_template_directory() . '/dt-metrics/contacts/overview.php' );
 
             /* Groups */
+            require_once( get_template_directory() . '/dt-metrics/groups/tree.php' );
             if ( DT_Mapbox_API::get_key() ) {
                 require_once( get_template_directory() . '/dt-metrics/groups/mapbox-cluster-map.php' );
                 require_once( get_template_directory() . '/dt-metrics/groups/mapbox-point-map.php' );
                 require_once( get_template_directory() . '/dt-metrics/groups/mapbox-area-map.php' );
             }
-            require_once( get_template_directory() . '/dt-metrics/groups/tree.php' );
             // @todo move group tree
 
             /* Generations */
@@ -315,7 +316,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
     public static function chart_group_generations( $type = 'personal' ) {
 
-        $groups_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+//        $groups_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
 
         switch ( $type ) {
             case 'personal':
@@ -329,16 +330,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 $generation_tree = [ "Generations", "Pre-Group", "Group", "Church", [ "role" => "Annotation" ] ];
                 break;
         }
-//        $first_row = [ "Generations" ];
-//        foreach ( $generation_tree[0] as $key => $label ){
-//            if ( $key != "generation" && $key != "total" ){
-//                if ( isset( $groups_fields["group_type"]["default"][$key]["label"] ) ){
-//                    $first_row[] = $groups_fields["group_type"]["default"][$key]["label"];
-//                } else {
-//                    $first_row[] = $key;
-//                }
-//            }
-//        }
         return $generation_tree;
     }
 

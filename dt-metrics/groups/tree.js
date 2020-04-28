@@ -11,18 +11,10 @@ jQuery(document).ready(function() {
     chart.empty().html(spinner)
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#groups-menu'));
 
-    let sourceData = dtMetricsProject.data
     let translations = dtMetricsProject.data.translations
-
-    console.log(dtMetricsProject)
-
-      let height = $(window).height()
-      let chartHeight = height - (height * .15)
 
     chart.empty().html(`
           <span class="section-header">${_.escape(translations.title_group_tree)}</span><hr>
-
-          <br clear="all">
            <div class="grid-x grid-padding-x">
            <div class="cell">
                <span>
@@ -37,9 +29,10 @@ jQuery(document).ready(function() {
               </div>
           </div>
            <div id="modal" class="reveal" data-reveal></div>
+           <br><br>
        `)
 
-    makeRequest('POST', 'metrics/project/tree', {"type": "groups"} )
+    makeRequest('POST', 'metrics/group/tree' )
       .then(response => {
         // console.log(response)
         jQuery('#generation_map').empty().html(response)
@@ -52,7 +45,6 @@ jQuery(document).ready(function() {
 function open_modal_details( id ) {
   let modal = jQuery('#modal')
   let spinner = ' <span class="loading-spinner active"></span> '
-
 
   modal.empty().html(spinner).foundation('open')
 

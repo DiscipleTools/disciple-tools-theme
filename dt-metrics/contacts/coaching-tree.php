@@ -4,16 +4,16 @@ if ( !defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly.
 
 
-class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
+class DT_Metrics_Coaching_Tree extends DT_Metrics_Chart_Base
 {
     //slug and title of the top menu folder
-    public $base_slug = 'groups'; // lowercase
-    public $base_title = 'Groups';
+    public $base_slug = 'contacts'; // lowercase
+    public $base_title = 'Contacts';
 
-    public $title = 'GenTree';
-    public $slug = 'tree'; // lowercase
+    public $title = 'Coaching GenTree';
+    public $slug = 'coaching-tree'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $js_file_name = 'tree.js'; // should be full file name plus extension
+    public $js_file_name = '/dt-metrics/contacts/coaching-tree.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
     public $namespace = null;
 
@@ -35,7 +35,7 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
         $version = '1';
         $namespace = 'dt/v' . $version;
         register_rest_route(
-            $namespace, '/metrics/group/tree', [
+            $namespace, '/metrics/contacts/coaching_tree', [
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'tree' ],
@@ -49,13 +49,13 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
         }
-        return $this->get_group_generations_tree();
+        return $this->get_baptism_generations_tree();
     }
 
     public function scripts() {
-        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . '/dt-metrics/groups/tree.js', [
+        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
             'jquery',
-        ], filemtime( get_theme_file_path() . '/dt-metrics/groups/tree.js' ), true );
+        ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
@@ -64,7 +64,6 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
-                'map_key' => empty( DT_Mapbox_API::get_key() ) ? '' : DT_Mapbox_API::get_key(),
                 'data' => $this->data(),
             ]
         );
@@ -73,19 +72,51 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
     public function data() {
         return [
             'translations' => [
-                'title_group_tree' => __( 'Group Generation Tree', 'disciple_tools' ),
+                'title_coaching_tree' => __( 'Coaching Generation Tree', 'disciple_tools' ),
             ],
-            'group_generation_tree' => $this->get_group_generations_tree(),
         ];
     }
 
-    public function get_group_generations_tree(){
-        $query = dt_queries()->tree( 'multiplying_groups_only' );
+    public function get_baptism_generations_tree(){
+        $query = dt_queries()->tree( 'multiplying_coaching_only' );
         if ( empty( $query ) ) {
             return $this->_no_results();
         }
         $menu_data = $this->prepare_menu_array( $query );
-        return $this->build_group_tree( 0, $menu_data, 0 );
+        return $this->build_menu( 0, $menu_data, -1 );
+    }
+
+    public function build_menu( $parent_id, $menu_data, $gen, $unique_check = []) {
+        $html = '';
+
+        if (isset( $menu_data['parents'][$parent_id] ))
+        {
+            $gen++;
+
+            $first_section = '';
+            if ( $gen === 0 ) {
+                $first_section = 'first-section';
+            }
+
+            $html = '<ul class="ul-gen-'.$gen.'">';
+            foreach ($menu_data['parents'][$parent_id] as $item_id)
+            {
+                $html .= '<li class="gen-node li-gen-' . $gen . ' ' . $first_section . '">';
+                $html .= '(' . $gen . ') ';
+                $html .= '<strong><a href="' . site_url( "/groups/" ) . esc_html( $item_id ) . '">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></strong><br>';
+
+                // find child items recursively
+                if ( !in_array( $item_id, $unique_check ) ){
+                    $unique_check[] = $item_id;
+                    $html .= $this->build_menu( $item_id, $menu_data, $gen, $unique_check );
+                }
+
+                $html .= '</li>';
+            }
+            $html .= '</ul>';
+
+        }
+        return $html;
     }
 
     public function prepare_menu_array( $query) {
@@ -103,39 +134,9 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
         return $menu_data;
     }
 
-    public function build_group_tree( $parent_id, $menu_data, $gen) {
-        $html = '';
-
-        if (isset( $menu_data['parents'][$parent_id] ))
-        {
-            $first_section = '';
-            if ( $gen === 0 ) {
-                $first_section = 'first-section';
-            }
-
-            $html = '<ul class="ul-gen-'.$gen.'">';
-            $gen++;
-            foreach ($menu_data['parents'][$parent_id] as $item_id)
-            {
-                $html .= '<li class="gen-node li-gen-' . $gen . ' ' . $first_section . '">';
-                $html .= '<span class="' . esc_html( $menu_data['items'][ $item_id ]['group_status'] ) . ' ' . esc_html( $menu_data['items'][ $item_id ]['group_type'] ) . '">(' . $gen . ') ';
-                $html .= '<a onclick="open_modal_details(' . esc_html( $item_id ) . ');">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></span>';
-
-                $html .= $this->build_group_tree( $item_id, $menu_data, $gen );
-
-                $html .= '</li>';
-            }
-            $html .= '</ul>';
-
-        }
-        return $html;
-    }
-
     public function _no_results() {
         return '<p>'. esc_attr( 'No Results', 'disciple_tools' ) .'</p>';
     }
 
 }
-new DT_Metrics_Groups_Tree();
-
-
+new DT_Metrics_Coaching_Tree();

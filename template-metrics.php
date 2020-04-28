@@ -43,7 +43,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
                     <div class="bordered-box">
 
-                        <div id="chart"></div><!-- Container for charts -->
+                        <div id="chart"><span class="loading-spinner active"></span></div><!-- Container for charts -->
 
                     </div>
 
