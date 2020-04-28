@@ -161,9 +161,9 @@ class DT_Metrics_Mapping_Map_Chart {
         DT_Mapping_Module::instance()->drilldown_script();
 
         // Datatable
-        wp_register_style( 'datatable-css', '//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css' );
+        wp_register_style( 'datatable-css', '//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css', [], '1.10.19' );
         wp_enqueue_style( 'datatable-css' );
-        wp_register_script( 'datatable', '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', false, '1.10.19' );
+        wp_register_script( 'datatable', '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', [], '1.10.19' );
 
         // Map starter Script
         wp_enqueue_script( 'dt_'.$this->slug.'_script',
