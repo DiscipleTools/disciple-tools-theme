@@ -783,7 +783,7 @@ function dt_multisite_retrieve_password_message( $message, $key, $user_login, $u
     $message .= '<' . site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'https' ) . ">\r\n";
     return $message;
 }
-add_filter("retrieve_password_message", 'dt_multisite_retrieve_password_message', 10, 4);
+add_filter("retrieve_password_message", 'dt_multisite_retrieve_password_message', 99, 4);
 
 // fixes email title
 add_filter("retrieve_password_title", function($title) {
