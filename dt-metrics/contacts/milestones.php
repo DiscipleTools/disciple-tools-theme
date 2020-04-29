@@ -13,7 +13,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
     public $title;
     public $slug = 'milestones'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $js_file_name = 'milestones.js'; // should be full file name plus extension
+    public $js_file_name = '/dt-metrics/contacts/milestones.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
 
     public function __construct() {
@@ -35,9 +35,14 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
      * Load scripts for the plugin
      */
     public function scripts() {
+        wp_register_script( 'datepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', false );
+        wp_enqueue_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css', array() );
+
+        wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
+        wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
 
         wp_enqueue_script( 'dt_' . $this->slug . '_script',
-            get_template_directory_uri() . '/dt-metrics/contacts/' . $this->js_file_name,
+            get_template_directory_uri() . $this->js_file_name,
             [
                 'moment',
                 'jquery',
@@ -46,7 +51,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
                 'amcharts-core',
                 'amcharts-charts',
             ],
-            filemtime( get_theme_file_path() . '/dt-metrics/contacts/' . $this->js_file_name )
+            filemtime( get_theme_file_path() . $this->js_file_name )
         );
 
         // Localize script with array data

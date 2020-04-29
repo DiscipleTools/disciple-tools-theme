@@ -141,7 +141,7 @@ class DT_Metrics_Critical_Path_Chart
                 $start = DateTime::createFromFormat( "Y-m-d", $year . '-01-01' )->getTimestamp();
                 $end   = DateTime::createFromFormat( "Y-m-d", ( $year + 1 ) . '-01-01' )->getTimestamp();
             }
-            $result = Disciple_Tools_Metrics_Hooks_Base::chart_critical_path( $start, $end );
+            $result = $this->chart_critical_path( $start, $end );
             if ( is_wp_error( $result ) ) {
                 return $result;
             } else {
@@ -150,6 +150,17 @@ class DT_Metrics_Critical_Path_Chart
         } else {
             return new WP_Error( "critical_path_by_year", "Missing a valid contact id", [ 'status' => 400 ] );
         }
+    }
+
+    public function chart_critical_path( $start = null, $end = null ) {
+        $chart = Disciple_Tools_Counter::critical_path( 'all', $start, $end );
+
+        /**
+         * Filter chart array before sending to enqueue.
+         */
+        $chart = apply_filters( 'dt_chart_critical_path', $chart, $start, $end );
+
+        return $chart;
     }
 
     public function _no_results() {

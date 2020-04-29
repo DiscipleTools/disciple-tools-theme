@@ -237,15 +237,15 @@ class DT_User_Management
             $this_year = strtotime( "first day of january this year" );
             //number of assigned contacts
             $assigned_counts = $wpdb->get_results($wpdb->prepare("
-                SELECT 
+                SELECT
                 COUNT( CASE WHEN date_assigned.hist_time >= %d THEN 1 END ) as this_month,
                 COUNT( CASE WHEN date_assigned.hist_time >= %d AND date_assigned.hist_time < %d THEN 1 END ) as last_month,
                 COUNT( CASE WHEN date_assigned.hist_time >= %d THEN 1 END ) as this_year,
                 COUNT( date_assigned.histid ) as all_time
                 FROM $wpdb->dt_activity_log as date_assigned
                 INNER JOIN $wpdb->postmeta as type ON ( date_assigned.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
-                WHERE date_assigned.meta_key = 'assigned_to' 
-                    AND date_assigned.object_type = 'contacts' 
+                WHERE date_assigned.meta_key = 'assigned_to'
+                    AND date_assigned.object_type = 'contacts'
                     AND date_assigned.meta_value = %s
             ", $month_start, $last_month_start, $month_start, $this_year, 'user-' . $user->ID), ARRAY_A);
 
@@ -342,7 +342,7 @@ class DT_User_Management
 
         if ( $section === 'activity' || $section === null ) {
             $user_activity = $wpdb->get_results($wpdb->prepare("
-                SELECT hist_time, action, object_name, meta_key, object_type, object_note  
+                SELECT hist_time, action, object_name, meta_key, object_type, object_note
                 FROM $wpdb->dt_activity_log
                 WHERE user_id = %s
                 AND action IN ( 'comment', 'field_update', 'connected_to', 'logged_in', 'created', 'disconnected_from', 'decline', 'assignment_decline' )
@@ -408,9 +408,9 @@ class DT_User_Management
             $days_active_results = $wpdb->get_results($wpdb->prepare("
                 SELECT FROM_UNIXTIME(`hist_time`, '%%Y-%%m-%%d') as day,
                 count(histid) as activity_count
-                FROM $wpdb->dt_activity_log 
-                WHERE user_id = %s 
-                group by day 
+                FROM $wpdb->dt_activity_log
+                WHERE user_id = %s
+                group by day
                 ORDER BY `day` ASC",
                 $user->ID
             ), ARRAY_A);
@@ -530,8 +530,8 @@ class DT_User_Management
                 }
             }
             $user_locations_grid_meta = $wpdb->get_results( "
-                SELECT post_id as contact_id, meta_value as user_id 
-                FROM $wpdb->postmeta 
+                SELECT post_id as contact_id, meta_value as user_id
+                FROM $wpdb->postmeta
                 WHERE meta_key = 'corresponds_to_user'
                 AND post_id IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'location_grid_meta'  )
             ", ARRAY_A );
@@ -541,8 +541,8 @@ class DT_User_Management
                 }
             }
             $user_locations_grid = $wpdb->get_results( "
-                SELECT post_id as contact_id, meta_value as user_id 
-                FROM $wpdb->postmeta 
+                SELECT post_id as contact_id, meta_value as user_id
+                FROM $wpdb->postmeta
                 WHERE meta_key = 'corresponds_to_user'
                 AND post_id IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'location_grid'  )
             ", ARRAY_A);
@@ -721,25 +721,25 @@ class DT_User_Management
 
         return $wpdb->get_results( $wpdb->prepare( "
             SELECT contacts.ID,
-                MAX(date_assigned.hist_time) as date_assigned, 
-                MIN(date_attempted.hist_time) as date_attempted, 
+                MAX(date_assigned.hist_time) as date_assigned,
+                MIN(date_attempted.hist_time) as date_attempted,
                 MIN(date_attempted.hist_time) - MAX(date_assigned.hist_time) as time,
                 contacts.post_title as name
             from $wpdb->posts as contacts
             INNER JOIN $wpdb->postmeta as pm on ( contacts.ID = pm.post_id AND pm.meta_key = 'assigned_to' )
             INNER JOIN $wpdb->dt_activity_log as date_attempted on ( date_attempted.meta_key = 'seeker_path' and date_attempted.object_type = 'contacts' AND date_attempted.object_id = contacts.ID AND date_attempted.meta_value ='attempted' )
-            INNER JOIN $wpdb->dt_activity_log as date_assigned on ( 
-                date_assigned.meta_key = 'assigned_to' 
-                AND date_assigned.object_type = 'contacts' 
+            INNER JOIN $wpdb->dt_activity_log as date_assigned on (
+                date_assigned.meta_key = 'assigned_to'
+                AND date_assigned.object_type = 'contacts'
                 AND date_assigned.object_id = contacts.ID
                 AND date_assigned.meta_value = %s )
             WHERE date_attempted.hist_time > date_assigned.hist_time
             AND pm.meta_value = %s
-            AND date_assigned.hist_time = ( 
+            AND date_assigned.hist_time = (
                 SELECT MAX(hist_time) FROM $wpdb->dt_activity_log a WHERE
-                a.meta_key = 'assigned_to' 
-                AND a.object_type = 'contacts' 
-                AND a.object_id = contacts.ID )  
+                a.meta_key = 'assigned_to'
+                AND a.object_type = 'contacts'
+                AND a.object_id = contacts.ID )
             AND contacts.ID NOT IN (
                 SELECT post_id FROM $wpdb->postmeta
                 WHERE meta_key = 'type' AND meta_value = 'user'
@@ -756,16 +756,16 @@ class DT_User_Management
 
         return $wpdb->get_results( $wpdb->prepare( "
             SELECT contacts.ID,
-                MAX(date_assigned.hist_time) as date_assigned, 
+                MAX(date_assigned.hist_time) as date_assigned,
                 %d - MAX(date_assigned.hist_time) as time,
                 contacts.post_title as name
             from $wpdb->posts as contacts
             INNER JOIN $wpdb->postmeta as pm on ( contacts.ID = pm.post_id AND pm.meta_key = 'assigned_to' )
             INNER JOIN $wpdb->postmeta as pm1 on ( contacts.ID = pm1.post_id AND pm1.meta_key = 'seeker_path' and pm1.meta_value = 'none' )
             INNER JOIN $wpdb->postmeta as pm2 on ( contacts.ID = pm2.post_id AND pm2.meta_key = 'overall_status' and pm2.meta_value = 'active' )
-            INNER JOIN $wpdb->dt_activity_log as date_assigned on ( 
-                date_assigned.meta_key = 'assigned_to' 
-                AND date_assigned.object_type = 'contacts' 
+            INNER JOIN $wpdb->dt_activity_log as date_assigned on (
+                date_assigned.meta_key = 'assigned_to'
+                AND date_assigned.object_type = 'contacts'
                 AND date_assigned.object_id = contacts.ID
                 AND date_assigned.meta_value = %s )
             WHERE pm.meta_value = %s
@@ -785,29 +785,29 @@ class DT_User_Management
 
         return $wpdb->get_results( $wpdb->prepare( "
             SELECT contacts.ID,
-                MAX(date_assigned.hist_time) as date_assigned, 
-                MIN(date_accepted.hist_time) as date_accepted, 
+                MAX(date_assigned.hist_time) as date_assigned,
+                MIN(date_accepted.hist_time) as date_accepted,
                 MIN(date_accepted.hist_time) - MAX(date_assigned.hist_time) as time,
                 contacts.post_title as name
             from $wpdb->posts as contacts
             INNER JOIN $wpdb->postmeta as pm on ( contacts.ID = pm.post_id AND pm.meta_key = 'assigned_to' )
-            INNER JOIN $wpdb->dt_activity_log as date_accepted on ( 
-                date_accepted.meta_key = 'overall_status' 
-                AND date_accepted.object_type = 'contacts' 
-                AND date_accepted.object_id = contacts.ID 
+            INNER JOIN $wpdb->dt_activity_log as date_accepted on (
+                date_accepted.meta_key = 'overall_status'
+                AND date_accepted.object_type = 'contacts'
+                AND date_accepted.object_id = contacts.ID
                 AND date_accepted.meta_value = 'active' )
-            INNER JOIN $wpdb->dt_activity_log as date_assigned on ( 
-                date_assigned.meta_key = 'assigned_to' 
-                AND date_assigned.object_type = 'contacts' 
+            INNER JOIN $wpdb->dt_activity_log as date_assigned on (
+                date_assigned.meta_key = 'assigned_to'
+                AND date_assigned.object_type = 'contacts'
                 AND date_assigned.object_id = contacts.ID
                 AND date_assigned.user_id != %d
                 AND date_assigned.meta_value = %s )
             WHERE date_accepted.hist_time > date_assigned.hist_time
             AND pm.meta_value = %s
-            AND date_assigned.hist_time = ( 
+            AND date_assigned.hist_time = (
                 SELECT MAX(hist_time) FROM $wpdb->dt_activity_log a WHERE
-                a.meta_key = 'assigned_to' 
-                AND a.object_type = 'contacts' 
+                a.meta_key = 'assigned_to'
+                AND a.object_type = 'contacts'
                 AND a.object_id = contacts.ID )
             AND contacts.ID NOT IN (
                 SELECT post_id FROM $wpdb->postmeta
@@ -825,15 +825,15 @@ class DT_User_Management
 
         return $wpdb->get_results( $wpdb->prepare( "
             SELECT contacts.ID,
-                MAX(date_assigned.hist_time) as date_assigned, 
+                MAX(date_assigned.hist_time) as date_assigned,
                 %d - MAX(date_assigned.hist_time) as time,
                 contacts.post_title as name
             from $wpdb->posts as contacts
             INNER JOIN $wpdb->postmeta as pm on ( contacts.ID = pm.post_id AND pm.meta_key = 'assigned_to' )
             INNER JOIN $wpdb->postmeta as pm1 on ( contacts.ID = pm1.post_id AND pm1.meta_key = 'overall_status' and pm1.meta_value = 'assigned' )
-            INNER JOIN $wpdb->dt_activity_log as date_assigned on ( 
-                date_assigned.meta_key = 'assigned_to' 
-                AND date_assigned.object_type = 'contacts' 
+            INNER JOIN $wpdb->dt_activity_log as date_assigned on (
+                date_assigned.meta_key = 'assigned_to'
+                AND date_assigned.object_type = 'contacts'
                 AND date_assigned.object_id = contacts.ID
                 AND date_assigned.meta_value = %s )
             WHERE pm.meta_value = %s
@@ -871,8 +871,8 @@ class DT_User_Management
 
         global $wpdb;
         $results = $wpdb->get_results("
-            SELECT DISTINCT lgm.grid_id as grid_id, lgm.grid_meta_id, lgm.post_id as contact_id, pm.meta_value as user_id, po.post_title as name 
-            FROM $wpdb->dt_location_grid_meta as lgm 
+            SELECT DISTINCT lgm.grid_id as grid_id, lgm.grid_meta_id, lgm.post_id as contact_id, pm.meta_value as user_id, po.post_title as name
+            FROM $wpdb->dt_location_grid_meta as lgm
             LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id
             JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'corresponds_to_user' AND pm.meta_value != ''
             WHERE lgm.post_type = 'contacts' AND lgm.grid_id IS NOT NULL ORDER BY po.post_title", ARRAY_A );
@@ -889,3 +889,4 @@ class DT_User_Management
     }
 
 }
+new DT_User_Management();

@@ -1,14 +1,16 @@
 jQuery(document).ready(function() {
-    if( ! window.location.hash || '#my_stats' === window.location.hash  ) {
-        my_stats()
-    }
-})
+  if ('/metrics' === window.location.pathname || '/metrics/' === window.location.pathname || '/metrics/personal/overview' === window.location.pathname || '/metrics/personal/overview/' === window.location.pathname) {
+    my_stats()
 
-function my_stats() {
+  }
+
+  function my_stats() {
     "use strict";
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsPersonal.data
     let translations = dtMetricsPersonal.data.translations
+
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#personal-menu'));
 
     chartDiv.empty().html(`
         <div class="cell center">
@@ -43,16 +45,16 @@ function my_stats() {
                         <div class="medium-4 cell center left-border-grey">
                             <h5>${ translations.title_teams }<br><span id="teams">0</span></h5>
                         </div>
-                   </div> 
+                   </div>
                 </div>
             </div>
-            
+
             <div class="cell"  id="my_groups_health_container">
                 <div id="my_groups_health" style="height: 500px;"></div>
                 <hr>
             </div>
             <div class="cell">
-            
+
                 <div class="grid-x">
                     <div class="cell medium-6 center">
                         <div id="group_types" style="height: 400px;"></div>
@@ -62,7 +64,7 @@ function my_stats() {
                     </div>
                 </div>
             </div>
-            
+
         </div>
         `)
 
@@ -226,12 +228,13 @@ function my_stats() {
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
 
-}
+  }
+})
 
 function numberWithCommas(x) {
-    x = x.toString();
-    let pattern = /(-?\d+)(\d{3})/;
-    while (pattern.test(x))
-        x = x.replace(pattern, "$1,$2");
-    return x;
+  x = (x || 0).toString();
+  let pattern = /(-?\d+)(\d{3})/;
+  while (pattern.test(x))
+    x = x.replace(pattern, "$1,$2");
+  return x;
 }
