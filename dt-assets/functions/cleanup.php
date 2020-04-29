@@ -222,82 +222,36 @@ function dt_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
  * Force password reset to remain on current site for multi-site installations.
  */
 if ( is_multisite() ) {
-    /**
-     * Password reset on sub site (1 of 4)
-     * Replace login page "Lost Password?" urls.
-     *
-     * @param string $lostpassword_url The URL for retrieving a lost password.
-     * @param string $redirect The path to redirect to.
-     *
-     * @return string
-     *
-     * @since 1.0.0
-     */
-    function custom_lostpassword_url( $lostpassword_url, $redirect ) {
-        $use_url = false;
-        $args    = array( 'action' => 'lostpassword' );
+    add_filter("lostpassword_url", function ($url, $redirect) {
 
-        if ( ! empty( $redirect ) ) {
+        $args = array( 'action' => 'lostpassword' );
+
+        if ( !empty($redirect) )
             $args['redirect_to'] = $redirect;
-        }
 
-        if ( $use_url ) {
-            return esc_url( add_query_arg( $args, $lostpassword_url ) );
-        }
+        return add_query_arg( $args, site_url('wp-login.php') );
+    }, 10, 2);
 
-        return esc_url( add_query_arg( $args, site_url( 'wp-login.php' ) ) );
-    }
-    add_filter( 'lostpassword_url', 'custom_lostpassword_url', 10, 2 );
+    // fixes other password reset related urls
+    add_filter( 'network_site_url', function($url, $path, $scheme) {
 
-    /**
-     * Password reset on sub site (2 of 4)
-     * Replace other "unknown" password reset urls.
-     *
-     * @param string $url The complete network site URL including scheme and path.
-     *
-     * @return string
-     *
-     * @since 1.0.0
-     */
-    function replace_lostpassword_urls( $url ) {
-        if ( stripos( $url, 'action=lostpassword' ) !== false ) {
-            return site_url( 'wp-login.php?action=lostpassword' );
-        }
+        if (stripos($url, "action=lostpassword") !== false)
+            return site_url('wp-login.php?action=lostpassword', $scheme);
 
-        if ( stripos( $url, 'action=resetpass' ) !== false ) {
-            return site_url( 'wp-login.php?action=resetpass' );
-        }
+        if (stripos($url, "action=resetpass") !== false)
+            return site_url('wp-login.php?action=resetpass', $scheme);
 
         return $url;
-    }
-    add_filter( 'network_site_url', 'replace_lostpassword_urls', 10, 3 );
+    }, 10, 3 );
 
-    /**
-     * Password reset on sub site (3 of 4)
-     * Fixes the URLs in emails that are sent.
-     *
-     * @param string $message Default mail message.
-     *
-     * @return string
-     *
-     * @since 1.0.0
-     */
-    function retrieve_password_message_urls( $message ) {
-        return str_replace( get_site_url( 1 ), get_site_url(), $message );
-    }
-    add_filter( 'retrieve_password_message', 'retrieve_password_message_urls' );
+    // fixes URLs in email that goes out.
+    add_filter("retrieve_password_message", function ($message, $key) {
+        return str_replace(get_site_url(1), get_site_url(), $message);
+    }, 10, 2);
 
-    /**
-     * Password reset on sub site (4 of 4)
-     * Fixes the title in emails that are sent.
-     *
-     * @return string
-     *
-     * @since 1.0.0
-     */
-    function custom_retrieve_password_title() {
-        return sprintf( __( '[%s] Password Reset' ), wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) );
-    }
-    add_filter( 'retrieve_password_title', 'custom_retrieve_password_title' );
+    // fixes email title
+    add_filter("retrieve_password_title", function($title) {
+        return "[" . wp_specialchars_decode(get_option('blogname'), ENT_QUOTES) . "] Password Reset";
+    });
+
 }
-
