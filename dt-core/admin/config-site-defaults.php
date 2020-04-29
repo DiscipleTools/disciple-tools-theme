@@ -749,47 +749,44 @@ function dt_redirect_logged_in() {
 /**
  * Force password reset to remain on current site for multi-site installations.
  */
-if ( is_multisite() ) {
-    add_filter("lostpassword_url", function ($url, $redirect) {
+add_filter("lostpassword_url", function ($url, $redirect) {
 
-        $args = array( 'action' => 'lostpassword' );
+    $args = array( 'action' => 'lostpassword' );
 
-        if ( !empty($redirect) )
-            $args['redirect_to'] = $redirect;
+    if ( !empty($redirect) )
+        $args['redirect_to'] = $redirect;
 
-        return add_query_arg( $args, site_url('wp-login.php') );
-    }, 10, 2);
+    return add_query_arg( $args, site_url('wp-login.php') );
+}, 10, 2);
 
-    // fixes other password reset related urls
-    add_filter( 'network_site_url', function($url, $path, $scheme) {
+// fixes other password reset related urls
+add_filter( 'network_site_url', function($url, $path, $scheme) {
 
-        if (stripos($url, "action=lostpassword") !== false)
-            return site_url('wp-login.php?action=lostpassword', $scheme);
+    if (stripos($url, "action=lostpassword") !== false)
+        return site_url('wp-login.php?action=lostpassword', $scheme);
 
-        if (stripos($url, "action=resetpass") !== false)
-            return site_url('wp-login.php?action=resetpass', $scheme);
+    if (stripos($url, "action=resetpass") !== false)
+        return site_url('wp-login.php?action=resetpass', $scheme);
 
-        return $url;
-    }, 10, 3 );
+    return $url;
+}, 10, 3 );
 
-    // fixes URLs in email that goes out.
-    function dt_multisite_retrieve_password_message( $message, $key, $user_login, $user_data) {
-        $message = __( 'Someone has requested a password reset for the following account:' ) . "\r\n\r\n";
-        /* translators: %s: Site name. */
-        $message .= sprintf( __( 'DT Site Name: %s' ), wp_specialchars_decode(get_option('blogname'), ENT_QUOTES) ) . "\r\n\r\n";
-        /* translators: %s: User login. */
-        $message .= sprintf( __( 'Username: %s' ), $user_login ) . "\r\n\r\n";
-        $message .= __( 'If this was a mistake, just ignore this email and nothing will happen.' ) . "\r\n\r\n";
-        $message .= __( 'To reset your password, visit the following address:' ) . "\r\n\r\n";
-        $message .= '<' . site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'https' ) . ">\r\n";
-        return $message;
-    }
-    add_filter("retrieve_password_message", 'dt_multisite_retrieve_password_message', 10, 4);
-
-    // fixes email title
-    add_filter("retrieve_password_title", function($title) {
-        return "[" . wp_specialchars_decode(get_option('blogname'), ENT_QUOTES) . "] Password Reset";
-    });
-
+// fixes URLs in email that goes out.
+function dt_multisite_retrieve_password_message( $message, $key, $user_login, $user_data) {
+    $message = __( 'Someone has requested a password reset for the following account:' ) . "\r\n\r\n";
+    /* translators: %s: Site name. */
+    $message .= sprintf( __( 'DT Site Name: %s' ), wp_specialchars_decode( get_option('blogname'), ENT_QUOTES) ) . "\r\n\r\n";
+    /* translators: %s: User login. */
+    $message .= sprintf( __( 'Username: %s' ), $user_login ) . "\r\n\r\n";
+    $message .= __( 'If this was a mistake, just ignore this email and nothing will happen.' ) . "\r\n\r\n";
+    $message .= __( 'To reset your password, visit the following address:' ) . "\r\n\r\n";
+    $message .= '<' . site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'https' ) . ">\r\n";
+    return $message;
 }
+add_filter("retrieve_password_message", 'dt_multisite_retrieve_password_message', 10, 4);
+
+// fixes email title
+add_filter("retrieve_password_title", function($title) {
+    return "[" . wp_specialchars_decode(get_option('blogname'), ENT_QUOTES) . "] Password Reset";
+});
 
