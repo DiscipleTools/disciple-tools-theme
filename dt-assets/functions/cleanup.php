@@ -245,9 +245,18 @@ if ( is_multisite() ) {
     }, 10, 3 );
 
     // fixes URLs in email that goes out.
-    add_filter("retrieve_password_message", function ($message, $key) {
-        return str_replace(network_site_url(), get_site_url(), $message);
-    }, 10, 2);
+    function dt_multisite_retrieve_password_message( $message, $key, $user_login, $user_data) {
+        $message = __( 'Someone has requested a password reset for the following account:' ) . "\r\n\r\n";
+        /* translators: %s: Site name. */
+        $message .= sprintf( __( 'DT Site Name: %s' ), wp_specialchars_decode(get_option('blogname'), ENT_QUOTES) ) . "\r\n\r\n";
+        /* translators: %s: User login. */
+        $message .= sprintf( __( 'Username: %s' ), $user_login ) . "\r\n\r\n";
+        $message .= __( 'If this was a mistake, just ignore this email and nothing will happen.' ) . "\r\n\r\n";
+        $message .= __( 'To reset your password, visit the following address:' ) . "\r\n\r\n";
+        $message .= '<' . site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'https' ) . ">\r\n";
+        return $message;
+    }
+    add_filter("retrieve_password_message", 'dt_multisite_retrieve_password_message', 10, 4);
 
     // fixes email title
     add_filter("retrieve_password_title", function($title) {
