@@ -338,11 +338,12 @@ class Disciple_Tools_Users
      * Create a Contact for each user that registers
      *
      * @param $user_id
+     * @return bool|int|WP_Error
      */
     public static function create_contact_for_user( $user_id ) {
         $user = get_user_by( 'id', $user_id );
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
-        if ( $user ) {
+        if ( $user && $user->has_cap( 'access_contacts' ) ) {
             if ( empty( $corresponds_to_contact )){
                 $args = [
                     'post_type'  => 'contacts',
