@@ -23,7 +23,6 @@ add_filter( 'comment_flood_filter', '__return_false' );
 add_filter( 'pre_comment_approved', 'dt_filter_handler', '99', 2 );
 add_filter( 'comment_notification_recipients', 'dt_override_comment_notice_recipients', 10, 2 );
 add_filter( 'language_attributes', 'dt_custom_dir_attr' );
-add_filter( 'retrieve_password_message', 'dt_custom_password_reset', 99, 4 );
 add_filter( 'wpmu_signup_blog_notification_email', 'dt_wpmu_signup_blog_notification_email', 10, 8 );
 add_filter( 'login_errors', 'login_error_messages' );
 remove_action( 'plugins_loaded', 'wp_maybe_load_widgets', 0 );  //don't load widgets as we don't use them
@@ -647,35 +646,6 @@ function dt_custom_dir_attr( $lang ){
     return 'lang="' . $user_language .'" ' .$dir_attr;
 }
 
-
-/**
- * @param $message
- * @param $key
- * @param $user_login
- * @param $user_data
- *
- * @return string
- */
-function dt_custom_password_reset( $message, $key, $user_login, $user_data ){
-
-    if ( is_multisite() ) {
-        $site_name = get_network()->site_name;
-    } else {
-        $site_name = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
-    }
-
-    $message = __( 'Someone has requested a password reset for the following account:' ) . "\r\n\r\n";
-    /* translators: %s: site name */
-    $message .= sprintf( __( 'Site Name: %s' ), $site_name ) . "\r\n\r\n";
-    /* translators: %s: user login */
-    $message .= sprintf( __( 'Username: %s' ), $user_login ) . "\r\n\r\n";
-    $message .= __( 'If this was a mistake, just ignore this email and nothing will happen.' ) . "\r\n\r\n";
-    $message .= __( 'To reset your password, visit the following address:' ) . "\r\n\r\n";
-    $message .= network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'login' ) . "\r\n";
-
-    return $message;
-
-}
 
 function dt_wpmu_signup_blog_notification_email( $message, $domain, $path, $title, $user, $user_email, $key, $meta ){
     return str_replace( "blog", "site", $message );
