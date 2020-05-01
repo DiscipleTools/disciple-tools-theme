@@ -705,7 +705,10 @@ class Disciple_Tools_Contact_Post_Type
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
 
         $langs = dt_get_available_languages();
-
+        array_push( $langs, array(
+            'language' => 'en_US',
+            'native_name' => 'English'
+        ) );
         foreach ( $fields as $field_key => $field ){
             if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
                 foreach ( $field["default"] as $option_key => $option_value ){
@@ -767,7 +770,6 @@ class Disciple_Tools_Contact_Post_Type
             }
         }
         $fields = apply_filters( 'dt_custom_fields_settings_after_combine', $fields, "contacts" );
-
         wp_cache_set( "contact_field_settings" . $cache_with_deleted, $fields );
         return $fields;
     } // End get_custom_fields_settings()
@@ -777,7 +779,6 @@ class Disciple_Tools_Contact_Post_Type
             return $fields;
         } else {
             $user_locale = get_user_locale();
-
             foreach ( $fields as $field => $value ) {
                 if ( $value["type"] == "key_select" || $value["type"] == "multi_select" ) {
                     foreach ( $value["default"] as $option_key => $option_value ) {
