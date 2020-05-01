@@ -238,6 +238,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Hide", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
+                <td></td></td>
             </tr>
             </thead>
             <tbody>
@@ -247,7 +248,6 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <input name="tile_label" type="text" value="<?php echo esc_html( $tile["label"] ?? $tile_key ) ?>"/>
-                        <button type="submit" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
                     </td>
                     <td>
                         <?php if ( isset( $tile["hidden"] ) && $tile["hidden"] === true ): ?>
@@ -276,6 +276,9 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                             <?php endforeach; ?>
                         </table>
                         </div>
+                    </td>
+                    <td>
+                    <button type="submit" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
                     </td>
                 </tr>
             </tbody>
