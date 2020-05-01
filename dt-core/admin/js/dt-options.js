@@ -8,6 +8,9 @@ jQuery(document).ready(function ($) {
     if (buttonText === '+') {
       $(this).text('-')
     }
+    if (buttonText === '-') {
+      $(this).text('+')
+    }
 
   })
 })
