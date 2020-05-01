@@ -159,13 +159,13 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             // Amcharts
             wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, 4, true );
             wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, 4, true );
-            wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', 4, false, true );
+            wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [], 4, true );
             wp_register_script( 'amcharts-maps', 'https://www.amcharts.com/lib/4/maps.js', false, 4, true );
 
             $this->drilldown_script();
 
             // mapping css
-            wp_register_style( 'mapping-css', $dt_mapping["mapping_css_url"] );
+            wp_register_style( 'mapping-css', $dt_mapping["mapping_css_url"], [], $dt_mapping["mapping_css_version"] );
             wp_enqueue_style( 'mapping-css' );
 
             // Mapping Script

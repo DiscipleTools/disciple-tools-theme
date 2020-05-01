@@ -14,11 +14,11 @@ class DT_User_Management
 
     public function __construct() {
         if ( $this->has_permission() ){
-            add_action( "template_redirect", [ $this, 'my_theme_redirect' ] );
             $url_path = dt_get_url_path();
             if ( strpos( $url_path, 'user-management' ) !== false ) {
                 add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 20 );
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+                add_filter( 'dt_templates_for_urls', [ $this, 'dt_templates_for_urls' ] );
             }
              add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
         }
@@ -80,14 +80,11 @@ class DT_User_Management
 
     }
 
-    public function my_theme_redirect() {
-        $url = dt_get_url_path();
-        $plugin_dir = dirname( __FILE__ );
-        if ( strpos( $url, "user-management" ) !== false ){
-            $path = $plugin_dir . '/template-user-management.php';
-            include( $path );
-            die();
-        }
+    public function dt_templates_for_urls( $template_for_url ) {
+        $template_for_url['user-management/users'] = './dt-users/template-user-management.php';
+        $template_for_url['user-management/map'] = './dt-users/template-user-management.php';
+        $template_for_url['user-management/add-user'] = './dt-users/template-user-management.php';
+        return $template_for_url;
     }
 
     public function add_nav_bar_link(){

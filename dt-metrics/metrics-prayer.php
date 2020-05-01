@@ -1,5 +1,5 @@
 <?php
-//
+
 //Disciple_Tools_Metrics_Prayer::instance();
 //class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
 //{

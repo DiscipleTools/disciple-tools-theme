@@ -101,9 +101,6 @@ class Disciple_Tools_Contact_Post_Type
      */
     public function __construct( $post_type = 'contacts', $singular = '', $plural = '', $args = [], $taxonomies = [] ) {
         $this->post_type = 'contacts';
-        $this->singular = _x( 'Contact', 'singular of contact', 'disciple_tools' );
-        $this->plural = _x( 'Contacts', 'plural of contact', 'disciple_tools' );
-        $this->search_items = sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural );
         $this->args = [ 'menu_icon' => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNOSwxMmMyLjc1NywwLDUtMi4yNDMsNS01VjVjMC0yLjc1Ny0yLjI0My01LTUtNVM0LDIuMjQzLDQsNXYyQzQsOS43NTcsNi4yNDMsMTIsOSwxMnoiPjwvcGF0aD4gPHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTE1LjQyMywxNS4xNDVDMTQuMDQyLDE0LjYyMiwxMS44MDYsMTQsOSwxNHMtNS4wNDIsMC42MjItNi40MjQsMS4xNDZDMS4wMzUsMTUuNzI5LDAsMTcuMjMzLDAsMTguODg2VjI0IGgxOHYtNS4xMTRDMTgsMTcuMjMzLDE2Ljk2NSwxNS43MjksMTUuNDIzLDE1LjE0NXoiPjwvcGF0aD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTYiIHk9IjMiIGZpbGw9IiNmZmZmZmYiIHdpZHRoPSI4IiBoZWlnaHQ9IjIiPjwvcmVjdD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTYiIHk9IjgiIGZpbGw9IiNmZmZmZmYiIHdpZHRoPSI4IiBoZWlnaHQ9IjIiPjwvcmVjdD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTkiIHk9IjEzIiBmaWxsPSIjZmZmZmZmIiB3aWR0aD0iNSIgaGVpZ2h0PSIyIj48L3JlY3Q+PC9nPjwvc3ZnPg==' ];
         $this->taxonomies = $taxonomies = [];
 
@@ -115,6 +112,13 @@ class Disciple_Tools_Contact_Post_Type
 
     } // End __construct()
 
+    public static function get_type_name_plural(){
+        return __( 'Contacts', 'disciple_tools' );
+    }
+    public static function get_type_name_singular(){
+        return __( 'Contacts', 'disciple_tools' );
+    }
+
     /**
      * Register the post type.
      *
@@ -122,6 +126,10 @@ class Disciple_Tools_Contact_Post_Type
      * @return void
      */
     public function register_post_type() {
+        $this->singular = _x( 'Contact', 'singular of contact', 'disciple_tools' );
+        $this->plural = _x( 'Contacts', 'plural of contact', 'disciple_tools' );
+        $this->search_items = sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural );
+
         $labels = [
             'name'                  => $this->plural,
             'singular_name'         => $this->singular,
