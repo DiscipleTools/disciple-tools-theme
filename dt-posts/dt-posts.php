@@ -114,6 +114,12 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( $field_type === 'date' && !is_numeric( $field_value )){
                 $fields[$field_value] = strtotime( $field_value );
             }
+            if ( $field_type === 'key_select' && !is_string( $field_value ) ){
+                return new WP_Error( __FUNCTION__, "key_select value must in string format: $field_key, received $field_value", [ 'status' => 400 ] );
+            }
+            if ( $field_type === 'user_select' && ( !is_string( $field_value ) || strpos( $field_value, 'user-' ) !== 0 ) ) {
+                return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
+            }
         }
         /**
          * Create the post
@@ -291,6 +297,12 @@ class DT_Posts extends Disciple_Tools_Posts {
                     }
                     $field_value = strtotime( $field_value );
                 }
+                if ( $field_type === 'key_select' && !is_string( $field_value ) ){
+                    return new WP_Error( __FUNCTION__, "key_select value must in string format: $field_key, received $field_value", [ 'status' => 400 ] );
+                }
+                if ( $field_type === 'user_select' && ( !is_string( $field_value ) || strpos( $field_value, 'user-' ) !== 0 ) ) {
+                    return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
+                }
                 $already_handled = [ "multi_select", "post_user_meta", "location", "location_meta" ];
                 if ( $field_type && !in_array( $field_type, $already_handled ) ) {
                     update_post_meta( $post_id, $field_key, $field_value );
@@ -394,7 +406,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
         $records = $data["posts"];
         foreach ( $post_settings["connection_types"] as $connection_type ){
-            if ( empty( $fields_to_return ) || in_array( $connection_type, $fields_to_return ) ){
+            if ( empty( $fields_to_return ) || in_array( $connection_type, $fields_to_return ) && !empty( $records ) ){
                 $p2p_type = $post_settings["fields"][$connection_type]["p2p_key"];
                 $p2p_direction = $post_settings["fields"][$connection_type]["p2p_direction"];
                 $q = p2p_type( $p2p_type )->set_direction( $p2p_direction )->get_connected( $records, [ "nopaging" => true ], 'abstract' );

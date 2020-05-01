@@ -1556,7 +1556,7 @@ class Disciple_Tools_Posts
                             }
                         }
                     } else {
-                        return new WP_Error( __FUNCTION__, "Cannot determine target on connection: " . $connection_type, [ 'status' => 500 ] );
+                        return new WP_Error( __FUNCTION__, "Cannot determine target on connection: " . $connection_type . ", with value: " . $connection_value["value"] ?? "", [ 'status' => 500 ] );
                     }
                 }
                 //check for deleted connections

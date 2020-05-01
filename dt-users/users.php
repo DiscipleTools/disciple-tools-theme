@@ -338,11 +338,12 @@ class Disciple_Tools_Users
      * Create a Contact for each user that registers
      *
      * @param $user_id
+     * @return bool|int|WP_Error
      */
     public static function create_contact_for_user( $user_id ) {
         $user = get_user_by( 'id', $user_id );
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
-        if ( $user ) {
+        if ( $user && $user->has_cap( 'access_contacts' ) && is_user_member_of_blog( $user_id ) ) {
             if ( empty( $corresponds_to_contact )){
                 $args = [
                     'post_type'  => 'contacts',
@@ -383,7 +384,7 @@ class Disciple_Tools_Users
                 }
             }
 
-            if ( empty( $corresponds_to_contact ) ) {
+            if ( empty( $corresponds_to_contact ) || get_post( $corresponds_to_contact ) === null ) {
                 $new_id = Disciple_Tools_Contacts::create_contact( [
                     "title"               => $user->display_name,
                     "assigned_to"         => "user-" . $user_id,
@@ -475,7 +476,7 @@ class Disciple_Tools_Users
      */
     public static function user_login_hook( $user_name, $user ){
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user->ID );
-        if ( empty( $corresponds_to_contact ) ){
+        if ( empty( $corresponds_to_contact ) && is_user_member_of_blog( $user->ID ) ){
             self::create_contact_for_user( $user->ID );
         }
     }
