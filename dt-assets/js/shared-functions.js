@@ -33,7 +33,7 @@ jQuery(document).ready(function($) {
       if ( id && id.includes('-tile') && collapsed_tiles.includes(id) ){
         $(item).addClass('collapsed')
       } else {
-         $(item).removeClass('collapsed')
+        $(item).removeClass('collapsed')
       }
     })
 
@@ -60,7 +60,7 @@ function makeRequest (type, url, data, base = 'dt/v1/') {
     }
 
     if (data) {
-        options.data = JSON.stringify(data)
+        options.data = type === "GET" ? data : JSON.stringify(data)
     }
 
     return jQuery.ajax(options)

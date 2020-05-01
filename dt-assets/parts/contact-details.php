@@ -126,7 +126,7 @@
                 <div class="assigned_to details">
                     <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
                     <div id="assigned_to_t" name="form-assigned_to">
-                        <div class="typeahead__container">
+                        <div class="typeahead__container" style="margin-bottom: 0">
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-assigned_to input-height" dir="auto"
@@ -142,6 +142,13 @@
                         </div>
                     </div>
                 </div>
+                <p>
+                    <span id="reason_assigned_to">
+                        <?php if ( isset( $contact["reason_assigned_to"]["label"] ) ) : ?>
+                            (<?php echo esc_html( $contact["reason_assigned_to"]["label"] ); ?>)
+                        <?php endif; ?>
+                    </span>
+                </p>
             </div>
 
         <!-- SUBASSIGNED -->
