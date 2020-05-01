@@ -1,5 +1,4 @@
 jQuery(document).ready(function(){
-  console.log(dtMapbox)
 
   // load widget
   if ( dtMapbox.post.length !== 0 ) {
