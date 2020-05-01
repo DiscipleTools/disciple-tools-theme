@@ -275,6 +275,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <button class="button small expand_translations">+</button>
                         <div class="translation_container hide">
                         <table>
+                                    <tr>
+                                    <td><label for="field_key_<?php echo esc_html( $field_key )?>_translation-en_US">English</label></td>
+                                    <td><input name="field_key_<?php echo esc_html( $field_key )?>_translation-_translation-en_US" type="text" value="<?php echo esc_html( $field["en_US"] ?? "" );?>"/></td>
+                                    </tr>
                         <?php foreach ( $langs as $lang => $val ) : ?>
                                     <tr>
                                     <td><label for="field_key_<?php echo esc_html( $field_key )?>_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
@@ -357,6 +361,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                     <button class="button small expand_translations">+</button>
                                     <div class="translation_container hide">
                                     <table>
+                                        <tr>
+                                            <td><label for="field_option_<?php echo esc_html( $field_key )?>_translation-en_US">English</label></td>
+                                            <td><input name="field_option_<?php echo esc_html( $field_key )?>_translation-_translation-en_US" type="text" value="<?php echo esc_html( $field["en_US"] ?? "" );?>"/></td>
+                                        </tr>
                                     <?php
                                     foreach ( $langs as $lang => $val ) : ?>
                                             <tr>
