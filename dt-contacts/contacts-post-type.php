@@ -773,21 +773,25 @@ class Disciple_Tools_Contact_Post_Type
     } // End get_custom_fields_settings()
 
     public function dt_get_custom_fields_translation( $fields, $post_type ) {
-        $user_locale = get_user_locale();
+        if (is_admin()) {
+            return $fields;
+        } else {
+            $user_locale = get_user_locale();
 
-        foreach ( $fields as $field => $value ) {
-            if ( $value["type"] == "key_select" || $value["type"] == "multi_select" ) {
-                foreach ( $value["default"] as $option_key => $option_value ) {
-                    if ( !empty( $option_value[$user_locale] ) ) {
-                        $fields[$field]["default"][$option_key]["label"] = $option_value[$user_locale];
+            foreach ( $fields as $field => $value ) {
+                if ( $value["type"] == "key_select" || $value["type"] == "multi_select" ) {
+                    foreach ( $value["default"] as $option_key => $option_value ) {
+                        if ( !empty( $option_value[$user_locale] ) ) {
+                            $fields[$field]["default"][$option_key]["label"] = $option_value[$user_locale];
+                        }
                     }
                 }
+                if ( !empty( $value[$user_locale] ) ) {
+                    $fields[$field]["name"] = $value[$user_locale];
+                }
             }
-            if ( !empty( $value[$user_locale] ) ) {
-                $fields[$field]["name"] = $value[$user_locale];
-            }
+            return $fields;
         }
-        return $fields;
     }
 
     public function get_post_type_settings_hook( $settings, $post_type ){
