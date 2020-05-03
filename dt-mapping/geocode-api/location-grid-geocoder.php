@@ -584,7 +584,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 $query = $wpdb->get_results( "
                 SELECT g.country_code, g.admin0_code, MAX(g.level) as level
                 FROM $wpdb->dt_location_grid as g
-                WHERE g.level < 10 
+                WHERE g.level < 10
                 GROUP BY g.admin0_code, g.country_code;
             ", ARRAY_A );
                 if ( empty( $query ) ) {
@@ -626,7 +626,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             LEFT JOIN $wpdb->dt_location_grid as a3 ON g.admin3_grid_id=a3.grid_id
             LEFT JOIN $wpdb->dt_location_grid as a4 ON g.admin4_grid_id=a4.grid_id
             LEFT JOIN $wpdb->dt_location_grid as a5 ON g.admin5_grid_id=a5.grid_id
-            WHERE 
+            WHERE
             g.north_latitude >= %f AND
             g.south_latitude <= %f AND
             g.west_longitude >= %f AND
@@ -723,22 +723,22 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 $query = $wpdb->get_col( $wpdb->prepare( "
                 SELECT grid_id
                 FROM $wpdb->dt_location_grid as g
-                WHERE 
+                WHERE
                 g.latitude <= %f AND
                 g.latitude >= %f AND
                 g.longitude >= %f AND
-                g.longitude <= %f AND 
+                g.longitude <= %f AND
                 g.level = %d
         ", $north_latitude, $south_latitude, $west_longitude, $east_longitude, $level ) );
             } else {
                 $query = $wpdb->get_col( $wpdb->prepare( "
                 SELECT grid_id
                 FROM $wpdb->dt_location_grid as g
-                WHERE 
+                WHERE
                 g.latitude <= %f AND
                 g.latitude >= %f AND
                 g.longitude >= %f AND
-                g.longitude <= %f 
+                g.longitude <= %f
         ", $north_latitude, $south_latitude, $west_longitude, $east_longitude ) );
             }
 
@@ -770,7 +770,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 g.north_latitude >= %f AND
                 g.south_latitude <= %f AND
                 g.west_longitude >= %f AND
-                g.east_longitude <= %f AND 
+                g.east_longitude <= %f AND
                 g.country_code = %s
                 ORDER BY g.level DESC
                 LIMIT 15;
@@ -1035,43 +1035,6 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $grid_meta_id ), ARRAY_A );
         }
 
-        public function delete_location_grid_meta( int $post_id, $type, int $value, array $existing_post = null ) {
-            global $wpdb;
-
-            $status = false;
-
-            if ( 'all' === $type ) {
-                $wpdb->delete( $wpdb->dt_location_grid_meta, [ "post_id" => $post_id ] );
-                $status = true;
-            }
-
-            if ( $value ) {
-
-                switch ( $type ) {
-                    case 'grid_meta_id':
-                        $postmeta_id_location_grid = $wpdb->get_var( $wpdb->prepare( "SELECT postmeta_id_location_grid FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $value ) );
-
-                        delete_metadata_by_mid( 'post', $postmeta_id_location_grid );
-                        $wpdb->delete( $wpdb->dt_location_grid_meta, [
-                            "post_id" => $post_id,
-                            "grid_meta_id" => $value
-                        ] );
-                        $wpdb->delete( $wpdb->postmeta, [
-                            "post_id" => $post_id,
-                            "meta_key" => "location_grid_meta",
-                            "meta_value" => $value
-                        ] );
-                        $status = true;
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-
-            return $status;
-        }
-
         public function add_location_grid_meta( $post_id, array $location_grid_meta, $postmeta_id_location_grid = null ) {
             global $wpdb;
 
@@ -1136,6 +1099,43 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
 
             return $wpdb->insert_id;
 
+        }
+
+        public function delete_location_grid_meta( int $post_id, $type, int $value, array $existing_post = null ) {
+            global $wpdb;
+
+            $status = false;
+
+            if ( 'all' === $type ) {
+                $wpdb->delete( $wpdb->dt_location_grid_meta, [ "post_id" => $post_id ] );
+                $status = true;
+            }
+
+            if ( $value ) {
+
+                switch ( $type ) {
+                    case 'grid_meta_id':
+                        $postmeta_id_location_grid = $wpdb->get_var( $wpdb->prepare( "SELECT postmeta_id_location_grid FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $value ) );
+
+                        delete_metadata_by_mid( 'post', $postmeta_id_location_grid );
+                        $wpdb->delete( $wpdb->dt_location_grid_meta, [
+                            "post_id" => $post_id,
+                            "grid_meta_id" => $value
+                        ] );
+                        $wpdb->delete( $wpdb->postmeta, [
+                            "post_id" => $post_id,
+                            "meta_key" => "location_grid_meta",
+                            "meta_value" => $value
+                        ] );
+                        $status = true;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            return $status;
         }
 
     }

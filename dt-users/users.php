@@ -81,8 +81,8 @@ class Disciple_Tools_Users
             ), ARRAY_N );
 
             $dispatchers = $wpdb->get_results("
-                SELECT user_id FROM $wpdb->usermeta 
-                WHERE meta_key = '{$wpdb->prefix}capabilities' 
+                SELECT user_id FROM $wpdb->usermeta
+                WHERE meta_key = '{$wpdb->prefix}capabilities'
                 AND meta_value LIKE '%dispatcher%'
             ");
 
@@ -898,18 +898,11 @@ Please click the following link to confirm the invite:
         }
         return $val;
     }
-
-
     public function user_deleted( $user_id, $blog_id = null ){
         $corresponds_to_contact = self::get_contact_for_user( $user_id );
         if ( $corresponds_to_contact ){
             delete_post_meta( $corresponds_to_contact, "corresponds_to_user" );
         }
-    }
-
-    public function add_current_locations_list( $custom_data ) {
-        $custom_data['current_locations'] = DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( get_current_user_id() ) );
-        return $custom_data;
     }
     public function add_date_availability( $custom_data ) {
         $dates_unavailable = get_user_option( "user_dates_unavailable", get_current_user_id() );
@@ -924,17 +917,23 @@ Please click the following link to confirm the invite:
         return $custom_data;
     }
 
+
+
+    public function add_current_locations_list( $custom_data ) {
+        $custom_data['current_locations'] = DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( get_current_user_id() ) );
+        return $custom_data;
+    }
+
     public static function add_user_location( $grid_id, $user_id = null ) {
         if ( empty( $user_id ) ) {
             $user_id = get_current_user_id();
         }
-        $corresponds_to_contact = self::get_contact_for_user( $user_id );
-        if ( $corresponds_to_contact ){
-            $other_values = get_post_meta( $corresponds_to_contact, 'location_grid' );
-            if ( array_search( $grid_id, $other_values ) === false ) {
-                add_post_meta( $corresponds_to_contact, 'location_grid', $grid_id, false );
-                return true;
-            }
+
+        global $wpdb;
+        $umeta_id = add_user_meta( $user_id, $wpdb->prefix . 'location_grid', $grid_id );
+
+        if ( $umeta_id ) {
+            return true;
         }
         return false;
     }
@@ -943,11 +942,55 @@ Please click the following link to confirm the invite:
         if ( empty( $user_id ) ) {
             $user_id = get_current_user_id();
         }
-        $corresponds_to_contact = self::get_contact_for_user( $user_id );
-        if ( $corresponds_to_contact ){
-            delete_post_meta( $corresponds_to_contact, 'location_grid', $grid_id );
+
+        global $wpdb;
+        $umeta_id = delete_user_meta( $user_id, $wpdb->prefix . 'location_grid', $grid_id );
+        if ( $umeta_id ) {
             return true;
         }
         return false;
     }
+
+    public static function get_user_location( $user_id = null ) {
+        if ( empty( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+        $grid = [];
+
+        global $wpdb;
+        if ( DT_Mapbox_API::get_key() ) {
+            $location_grid = get_user_meta( $user_id, $wpdb->prefix . 'location_grid_meta' );
+            $grid['location_grid_meta'] = [];
+            foreach ( $location_grid as $meta ) {
+                $location_grid_meta = Location_Grid_Geocoder::get_location_grid_meta_by_id( $meta );
+                if ( $location_grid_meta ) {
+                    $grid['location_grid_meta'][] = $location_grid_meta;
+                }
+            }
+            $grid['location_grid'] = [];
+            foreach ( $grid['location_grid_meta'] as $meta ) {
+                $grid['location_grid'][] = [
+                    'id' => (int) $meta['grid_id'],
+                    'label' => $meta['label']
+                ];
+            }
+
+        } else {
+            $location_grid = get_user_meta( $user_id, $wpdb->prefix . 'location_grid' );
+            if ( ! empty( $location_grid ) ) {
+                $names = Disciple_Tools_Mapping_Queries::get_names_from_ids( $location_grid );
+                $grid['location_grid'] = [];
+                foreach ( $names as $id => $name ) {
+                    $grid['location_grid'][] = [
+                        "id" => $id,
+                        "label" => $name
+                    ];
+                }
+            }
+        }
+
+        return $grid;
+    }
+
+
 }

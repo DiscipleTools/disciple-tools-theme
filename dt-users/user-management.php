@@ -170,7 +170,7 @@ class DT_User_Management
 
         if ( DT_Mapbox_API::get_key() ) {
             DT_Mapbox_API::load_mapbox_header_scripts();
-            DT_Mapbox_API::load_mapbox_search_widget();
+            DT_Mapbox_API::load_mapbox_search_widget_users();
         }
     }
 
@@ -187,6 +187,7 @@ class DT_User_Management
 
         $user_response = [
             "display_name" => $user->display_name,
+            "user_id" => $user->ID,
             "contact_id" => 0,
             "contact" => [],
             "user_status" => '',
@@ -315,24 +316,12 @@ class DT_User_Management
 
         /* Locations section */
         if ( $section === 'locations' || $section === null ) {
-
-            $contact_id = Disciple_Tools_Users::get_contact_for_user( $user->ID );
-            if ( empty( $contact_id ) ) {
-                $contact_id = Disciple_Tools_Users::create_contact_for_user( $user->ID );
+            $location_grid = Disciple_Tools_Users::get_user_location( $user->ID );
+            if ( isset( $location_grid['location_grid'] ) && ! empty( $location_grid['location_grid'] ) ) {
+                $user_response['location_grid'] = $location_grid['location_grid'];
             }
-            $user_response['contact_id'] = $contact_id;
-
-            $contact = DT_Posts::get_post( 'contacts', $contact_id, false, false );
-            if ( ! is_wp_error( $contact ) ) {
-                $user_response['contact'] = $contact;
-            }
-
-            if ( ! is_wp_error( $contact ) && isset( $contact['location_grid'] ) && ! empty( $user_response['contact']['location_grid'] ) ) {
-                $user_response['location_grid'] = $contact['location_grid'];
-            }
-
-            if ( DT_Mapbox_API::get_key() && isset( $contact['location_grid_meta'] ) ) {
-                $user_response['locations_grid_meta'] = $contact['location_grid_meta'];
+            if ( isset( $location_grid['location_grid_meta'] ) && ! empty( $location_grid['location_grid_meta'] ) ) {
+                $user_response['location_grid_meta'] = $location_grid['location_grid_meta'];
             }
         }
 
@@ -526,23 +515,21 @@ class DT_User_Management
                     $users[$meta_row["user_id"]]["workload_status"] = $meta_row["meta_value"];
                 }
             }
-            $user_locations_grid_meta = $wpdb->get_results( "
-                SELECT post_id as contact_id, meta_value as user_id
-                FROM $wpdb->postmeta
-                WHERE meta_key = 'corresponds_to_user'
-                AND post_id IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'location_grid_meta'  )
-            ", ARRAY_A );
+            $user_locations_grid_meta = $wpdb->get_results( $wpdb->prepare( "
+                SELECT user_id, meta_value as grid_id
+                FROM $wpdb->usermeta
+                WHERE meta_key = %s
+            ", $wpdb->prefix . 'location_grid_meta'), ARRAY_A);
             foreach ( $user_locations_grid_meta as $user_with_location ){
                 if ( isset( $users[ $user_with_location['user_id'] ] ) ) {
                     $users[$user_with_location['user_id']]["location_grid_meta"] = true;
                 }
             }
-            $user_locations_grid = $wpdb->get_results( "
-                SELECT post_id as contact_id, meta_value as user_id
-                FROM $wpdb->postmeta
-                WHERE meta_key = 'corresponds_to_user'
-                AND post_id IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'location_grid'  )
-            ", ARRAY_A);
+            $user_locations_grid = $wpdb->get_results( $wpdb->prepare( "
+                SELECT user_id, meta_value as grid_id
+                FROM $wpdb->usermeta
+                WHERE meta_key = %s
+            ", $wpdb->prefix . 'location_grid'), ARRAY_A);
             foreach ( $user_locations_grid as $user_with_location ){
                 if ( isset( $users[ $user_with_location['user_id'] ] ) ) {
                     $users[$user_with_location['user_id']]["location_grid"] = true;
