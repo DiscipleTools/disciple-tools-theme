@@ -752,7 +752,6 @@ function dt_redirect_logged_in() {
 }
 
 function dt_get_custom_tile_translations( $custom_tiles ) {
-    dt_write_log( 'dt_get_custom_tile_translations' );
     if ( is_admin() ) {
         return $custom_tiles;
     } else {

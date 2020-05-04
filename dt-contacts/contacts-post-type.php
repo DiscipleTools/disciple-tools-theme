@@ -109,7 +109,7 @@ class Disciple_Tools_Contact_Post_Type
         add_filter( 'post_type_link', [ $this, 'contacts_permalink' ], 1, 3 );
         add_filter( 'dt_get_post_type_settings', [ $this, 'get_post_type_settings_hook' ], 10, 2 );
         add_filter( 'dt_custom_fields_settings_after_combine', [ $this, 'dt_get_custom_fields_translation' ], 10, 2 );
-
+        add_filter( 'dt_custom_channels', [ $this, 'dt_get_custom_channels_translation' ] );
     } // End __construct()
 
     public static function get_type_name_plural(){
@@ -956,7 +956,18 @@ class Disciple_Tools_Contact_Post_Type
         return apply_filters( 'dt_custom_channels', $channel_list );
     }
 
-
+    public function dt_get_custom_channels_translation( $channel_list ) {
+        if (is_admin()) {
+            return $channel_list;
+        }
+        $user_locale = get_user_locale();
+        foreach ( $channel_list as $channel_key => $channel_value ) {
+            if ( !empty( $channel_value[$user_locale] ) ) {
+                $channel_list[$channel_key]["label"] = $channel_value[$user_locale];
+            }
+        }
+        return $channel_list;
+    }
 
     /**
      * Run on activation.
