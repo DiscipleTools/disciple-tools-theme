@@ -416,7 +416,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                             Mapbox API Token: <input type="text" class="regular-text" name="mapbox_key" value="<?php echo ( $key ) ? esc_attr( $hidden_key ) : ''; ?>" />
                             <?php if ( self::get_key() ) : ?>
                                 <button type="submit" name="action" value="delete" class="button">Delete</button>
-                            <?php else: ?>
+                            <?php else : ?>
                                 <button type="submit" name="action" value="add" class="button">Add</button>
                             <?php endif; ?>
                         </td>

@@ -23,7 +23,7 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
         $this->base_title = __( 'Personal', 'disciple_tools' );
 
         $url_path = dt_get_url_path();
-        if ( "metrics/$this->base_slug/$this->slug" === $url_path ||  "metrics" === $url_path ) {
+        if ( "metrics/$this->base_slug/$this->slug" === $url_path || "metrics" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 10 );
         }
     }
@@ -359,7 +359,7 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
             GROUP BY type
             ORDER BY type DESC
         ",
-            'user-' . $user_id ), ARRAY_A );
+        'user-' . $user_id ), ARRAY_A );
 
         return $results;
     }
@@ -509,7 +509,7 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
                 )
              GROUP BY b.meta_value
         ",
-            'user-'. $user_id ), ARRAY_A );
+        'user-'. $user_id ), ARRAY_A );
 
         $query_results = [];
 

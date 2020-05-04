@@ -974,7 +974,6 @@ Please click the following link to confirm the invite:
                     'label' => $meta['label']
                 ];
             }
-
         } else {
             $location_grid = get_user_meta( $user_id, $wpdb->prefix . 'location_grid' );
             if ( ! empty( $location_grid ) ) {

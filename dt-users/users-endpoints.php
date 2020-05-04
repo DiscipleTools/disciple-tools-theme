@@ -242,7 +242,7 @@ class Disciple_Tools_Users_Endpoints
         if ( isset( $params["grid_id"] ) ){
             return Disciple_Tools_Users::delete_user_location( $params["grid_id"] );
         }
-        else if ( isset( $params['location_grid_meta' ] ) ) {
+        else if ( isset( $params['location_grid_meta'] ) ) {
             return Disciple_Tools_Users::delete_user_location( $params );
         }
         else {

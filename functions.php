@@ -376,7 +376,7 @@ else {
             require_once( get_template_directory() . '/dt-network/network.php' );
             require_once( get_template_directory() . '/dt-network/network-queries.php' );
 
-            require_once( get_template_directory() . '/dt-core/admin/gdpr.php' );
+
             require_once( get_template_directory() . '/dt-core/multisite.php' );
 
             /**
@@ -420,8 +420,7 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-utilities-overview.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-fields.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-contact-import.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr-erase.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr-export.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr.php' );
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-metrics.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-metrics-reports.php' );
