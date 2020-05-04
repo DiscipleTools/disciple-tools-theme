@@ -364,7 +364,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                     <table>
                                                                         <tr>
                                     <td><label for="field_option_<?php echo esc_html( $key )?>_translation-en_US">English</label></td>
-                                    <td><input name="field_option_<?php echo esc_html( $key )?>_translation-_translation-en_US" type="text" value="<?php echo esc_html( $key["en_US"] ?? "" );?>"/></td>
+                                    <td><input name="field_option_<?php echo esc_html( $key )?>_translation-_translation-en_US" type="text" value="<?php echo esc_html( $custom_fields[$post_type][$field_key]["default"][$key]["en_US"] ?? "" );?>"/></td>
                                     </tr>
 
                                     <?php
