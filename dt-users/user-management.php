@@ -2,7 +2,7 @@
 
 class DT_User_Management
 {
-    public $permissions = [ 'list_users', 'manage_dt', 'update_any_contacts' ];
+    public $permissions = [ 'list_users', 'manage_dt' ];
 
     private static $_instance = null;
     public static function instance() {
@@ -296,7 +296,7 @@ class DT_User_Management
             $update_needed = Disciple_Tools_Contacts::search_viewable_contacts([
                 'requires_update' => [ "true" ],
                 'assigned_to' => [ $user->ID ],
-                'overall_status' => [ '-closed' ],
+                'overall_status' => [ '-closed', '-paused' ],
                 'sort' => 'last_modified'
             ]);
             if (sizeof( $update_needed["contacts"] ) > 5) {
@@ -475,7 +475,9 @@ class DT_User_Management
 
     public static function get_users( $refresh = false ) {
         $users = [];
-
+        if ( !$refresh && get_transient( 'dispatcher_user_data' ) ) {
+            $users = maybe_unserialize( get_transient( 'dispatcher_user_data' ) );
+        }
         if ( empty( $users ) ) {
             global $wpdb;
             $user_data = $wpdb->get_results( $wpdb->prepare( "
@@ -858,12 +860,7 @@ class DT_User_Management
 
         $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals( $status );
 
-        $list = [];
-        foreach ( $results as $result ) {
-            $list[$result['grid_id']] = $result;
-        }
-
-        return $list;
+        return $results;
 
     }
 

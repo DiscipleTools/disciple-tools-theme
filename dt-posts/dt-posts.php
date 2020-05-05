@@ -285,6 +285,10 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !self::is_post_key_contact_method_or_connection( $post_settings, $field_key ) ) {
                 $field_type = $post_settings["fields"][ $field_key ]["type"] ?? '';
                 if ( $field_type === 'date' && !is_numeric( $field_value ) ) {
+                    if ( empty( $field_value ) ) { // remove date
+                        delete_post_meta( $post_id, $field_key );
+                        continue;
+                    }
                     $field_value = strtotime( $field_value );
                 }
                 $already_handled = [ "multi_select", "post_user_meta", "location", "location_meta" ];
@@ -423,7 +427,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 WHERE pm.post_id IN ( $ids_sql )
                 AND pm.meta_key IN ( $field_keys_sql )
             UNION SELECT *
-                FROM $wpdb->postmeta pm 
+                FROM $wpdb->postmeta pm
                 WHERE pm.post_id IN ( $ids_sql )
                 AND pm.meta_key LIKE 'contact_%'
         ", ARRAY_A);
@@ -518,7 +522,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     SELECT log.object_id
                     FROM $wpdb->dt_activity_log log
                     WHERE log.histid IN (
-                        SELECT max(l.histid) FROM $wpdb->dt_activity_log l 
+                        SELECT max(l.histid) FROM $wpdb->dt_activity_log l
                         WHERE l.user_id = %s  AND l.object_type = %s
                         GROUP BY l.object_id
                     )
@@ -541,7 +545,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $query_args['meta_key'] = 'assigned_to';
                 $query_args['meta_value'] = "user-" . $current_user->ID;
                 $posts = $wpdb->get_results( $wpdb->prepare( "
-                    SELECT *, statusReport.meta_value as overall_status, pm.meta_value as corresponds_to_user 
+                    SELECT *, statusReport.meta_value as overall_status, pm.meta_value as corresponds_to_user
                     FROM $wpdb->posts
                     INNER JOIN $wpdb->postmeta as assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id AND assigned_to.meta_key = 'assigned_to')
                     LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = $wpdb->posts.ID AND statusReport.meta_key = 'overall_status')
@@ -676,7 +680,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $created_comment_id;
     }
 
-    public static function update_post_comment( int $comment_id, string $comment_content, bool $check_permissions = true ){
+    public static function update_post_comment( int $comment_id, string $comment_content, bool $check_permissions = true, string $comment_type = "comment" ){
         $comment = get_comment( $comment_id );
         if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || !self::can_update( get_post_type( $comment->comment_post_ID ), $comment->comment_post_ID ?? 0 ) ) ) {
             return new WP_Error( __FUNCTION__, "You don't have permission to edit this comment", [ 'status' => 403 ] );
@@ -687,6 +691,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $comment = [
             "comment_content" => $comment_content,
             "comment_ID" => $comment_id,
+            "comment_type" => $comment_type
         ];
         return wp_update_comment( $comment );
     }

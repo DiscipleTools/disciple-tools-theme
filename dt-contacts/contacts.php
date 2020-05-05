@@ -27,6 +27,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
         add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
+        add_filter( "dt_comments_additional_sections", [ $this, "add_comm_channel_comment_section" ], 10, 2 );
 
         parent::__construct();
     }
@@ -1652,7 +1653,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
 
     public static function get_user_posts(){
-        $user_posts = get_transient( "contact_ids_for_useors" );
+        $user_posts = get_transient( "contact_ids_for_users" );
         if ( $user_posts ){
             return dt_array_to_sql( array_map( function ( $g ) {
                 return $g["post_id"];
@@ -2001,5 +2002,24 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
         }
         return $filters;
+    }
+
+    public function add_comm_channel_comment_section( $sections, $post_type ){
+        $channels = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
+        if ( $post_type === "contacts" ){
+            foreach ( $channels as $channel_key => $channel_option ) {
+                $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
+                $hide_domain = isset( $channel_option['hide_domain'] ) && $channel_option['hide_domain'] == true;
+                if ( $channel_key == 'phone' || $channel_key == 'email' || $channel_key == 'address' ){
+                    continue;
+                }
+
+                $sections[] = [
+                    "key" => $channel_key,
+                    "label" => esc_html( $channel_option["label"] ?? $channel_key )
+                ];
+            }
+        }
+        return $sections;
     }
 }

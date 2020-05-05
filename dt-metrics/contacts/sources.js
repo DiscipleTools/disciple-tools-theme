@@ -48,7 +48,7 @@ jQuery(document).ready(function() {
 
       chartsDiv.append($("<div>").html(`
 
-        <h1>${_.escape(window.wp_js_object.translations.sources_all_contacts_by_source_and_status)}</h1>
+        <h3>${_.escape(window.wp_js_object.translations.sources_all_contacts_by_source_and_status)}</h3>
   
         <p>${filteringOutText} ${_.escape(window.wp_js_object.translations.sources_contacts_warning)}</p>
   
@@ -56,7 +56,7 @@ jQuery(document).ready(function() {
   
         <hr>
   
-        <h1>${_.escape(window.wp_js_object.translations.sources_active_by_seeker_path)}</h1>
+        <h3>${_.escape(window.wp_js_object.translations.sources_active_by_seeker_path)}</h3>
   
         <p>${_.escape(window.wp_js_object.translations.sources_only_active)} 
         ${filteringOutText} 
@@ -67,7 +67,7 @@ jQuery(document).ready(function() {
   
         <hr>
   
-        <h1>${_.escape(window.wp_js_object.translations.sources_active_milestone)}</h1>
+        <h3>${_.escape(window.wp_js_object.translations.sources_active_milestone)}</h3>
   
         <p>${_.escape(window.wp_js_object.translations.sources_active_status_warning)}
         ${filteringOutText} 

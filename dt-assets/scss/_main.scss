@@ -11,6 +11,18 @@ GENERAL STYLES
     font-weight: 400;
 }
 
+.txt-gray-light {
+color:$light-gray;
+}
+
+.txt-gray-mid {
+    color: $medium-gray;
+}
+
+.txt-gray-dark {
+    color: $dark-gray;
+}
+
 .primary-color {
     color: $primary-color;
 }
@@ -143,6 +155,8 @@ NAVIGATION STYLES
     vertical-align: top;
     position: relative;
     top: -5px;
+}
+.menu .notification-count {
     left: -15px;
 }
 .add-new-items-dropdown {
@@ -636,7 +650,7 @@ html[dir='rtl'] {
     .float-left {
         float: right !important;
     }
-    .notification-count {
+    .menu .notification-count {
         right: -15px;
         left: 0;
     }

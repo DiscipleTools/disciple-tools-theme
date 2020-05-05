@@ -142,7 +142,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '0.28.0';
+            $this->version = '0.29.0';
             $this->migration_number = 29;
 
 
@@ -488,6 +488,8 @@ else {
         $wpdb->dt_share = $wpdb->prefix . 'dt_share';
         $wpdb->dt_notifications = $wpdb->prefix . 'dt_notifications';
         $wpdb->dt_post_user_meta = $wpdb->prefix . 'dt_post_user_meta';
+        $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
+        $wpdb->dt_location_grid_meta = $wpdb->prefix . 'dt_location_grid_meta';
 
         $more_tables = apply_filters( 'dt_custom_tables', [] );
         foreach ( $more_tables as $table ){

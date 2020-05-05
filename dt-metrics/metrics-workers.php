@@ -1,9 +1,9 @@
 <?php
 
-Disciple_Tools_Metrics_Users::instance();
+
 class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 {
-    public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
+    public $permissions = [ 'list_users', 'manage_dt' ];
 
     private static $_instance = null;
     public static function instance() {
@@ -585,3 +585,4 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         return $return;
     }
 }
+Disciple_Tools_Metrics_Users::instance();

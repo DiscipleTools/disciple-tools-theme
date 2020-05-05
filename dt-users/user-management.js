@@ -103,20 +103,20 @@ jQuery(document).ready(function($) {
           if ( window.current_user_lookup === user_id ) {
             $("#user_name").html(_.escape(details.display_name))
 
-            $('#status-select').val(details.user_status)
+            $('#status-select').val(_.escape(details.user_status))
             if ( details.user_status !== "0" ){
             }
-            $('#workload-select').val(details.workload_status)
+            $('#workload-select').val(_.escape(details.workload_status))
 
             //stats
-            $('#update_needed_count').html(details.update_needed["total"])
-            $('#needs_accepted_count').html(details.needs_accepted["total"])
-            $('#active_contacts').html(details.active_contacts)
-            $('#unread_notifications').html(details.unread_notifications)
-            $('#assigned_this_month').text(details.assigned_counts.this_month)
-            $('#assigned_last_month').text(details.assigned_counts.last_month)
-            $('#assigned_this_year').text(details.assigned_counts.this_year)
-            $('#assigned_all_time').text(details.assigned_counts.all_time)
+            $('#update_needed_count').html(_.escape(details.update_needed["total"]))
+            $('#needs_accepted_count').html(_.escape(details.needs_accepted["total"]))
+            $('#active_contacts').html(_.escape(details.active_contacts))
+            $('#unread_notifications').html(_.escape(details.unread_notifications))
+            $('#assigned_this_month').text(_.escape(details.assigned_counts.this_month))
+            $('#assigned_last_month').text(_.escape(details.assigned_counts.last_month))
+            $('#assigned_this_year').text(_.escape(details.assigned_counts.this_year))
+            $('#assigned_all_time').text(_.escape(details.assigned_counts.all_time))
 
             status_pie_chart( details.contact_statuses )
             setup_user_roles( details );
@@ -136,13 +136,10 @@ jQuery(document).ready(function($) {
             })
             $('#update_needed_list').html(update_needed_list_html)
 
-            // console.log('details')
-            // console.log(details)
           }
         }).catch((e)=>{
           console.log( 'error in details')
           console.log( e)
-          // $('#user_modal').foundation('close');
         })
 
       /* locations */
@@ -165,22 +162,19 @@ jQuery(document).ready(function($) {
               //locations
               let typeahead = Typeahead['.js-typeahead-location_grid']
               if (typeahead) {
-                for (let i = 0; i < typeahead.items.length; i) {
-                  typeahead.cancelMultiselectItem(0)
-                }
+                typeahead.items = [];
+                typeahead.comparedItems =[];
+                typeahead.label.container.empty();
+                typeahead.adjustInputSize()
               }
               locations.location_grid.forEach(location => {
                 typeahead.addMultiselectItemLayout({ID: location.id.toString(), name: location.label})
               })
             }
-
-            // console.log('locations')
-            // console.log(locations)
           }
         }).catch((e)=>{
         console.log( 'error in locations')
         console.log( e)
-        // $('#user_modal').foundation('close');
       })
 
       /* activity */
@@ -193,19 +187,15 @@ jQuery(document).ready(function($) {
               if ( a.object_note !== '' ) {
                 activity_html += `<div>
                   <strong>${moment.unix(a.hist_time).format('YYYY-MM-DD')}</strong>
-                  ${a.object_note}
+                  ${_.escape(a.object_note)}
                 </div>`
               }
             })
             activity_div.html(activity_html)
-
-            // console.log('activity')
-            // console.log(activity)
           }
         }).catch((e)=>{
         console.log( 'error in activity')
         console.log( e)
-        // $('#user_modal').foundation('close');
       })
 
       /* days active */
@@ -213,14 +203,10 @@ jQuery(document).ready(function($) {
         .done(days=>{
           if ( window.current_user_lookup === user_id ) {
             day_activity_chart(days.days_active)
-
-            // console.log('days_active')
-            // console.log(days)
           }
         }).catch((e)=>{
         console.log( 'error in days active')
         console.log( e)
-        // $('#user_modal').foundation('close');
       })
 
       /* unaccepted_contacts */
@@ -246,14 +232,11 @@ jQuery(document).ready(function($) {
         }).catch((e)=>{
         console.log( 'error in unaccepted_contacts')
         console.log( e)
-        // $('#user_modal').foundation('close');
       })
 
       /* contact_accepts */
       makeRequest( "get", `user?user=${user_id}&section=contact_accepts`, null , 'user-management/v1/')
         .done(response=>{
-          // console.log('contact_accepts')
-          // console.log(response)
 
           if ( window.current_user_lookup === user_id && response.contact_accepts.length > 0 ) {
             // assigned to contact accept
@@ -281,22 +264,19 @@ jQuery(document).ready(function($) {
         }).catch((e)=>{
         console.log( 'error in contact_accepts')
         console.log( e)
-        // $('#user_modal').foundation('close');
       })
 
       /* unattempted_contacts */
       makeRequest( "get", `user?user=${user_id}&section=unattempted_contacts`, null , 'user-management/v1/')
         .done(response=>{
-          // console.log('unattempted_contacts')
-          // console.log(response)
 
           if ( window.current_user_lookup === user_id && response.unattempted_contacts.length > 0 ) {
             //contacts assigned with no contact attempt
             let unattemped_contacts_html = ``
             response.unattempted_contacts.forEach(contact => {
               let days = contact.time / 60 / 60 / 24;
-              let line = dt_user_management_localized.translations.no_contact_attempt_time
-                .replace('%1$s', contact.name)
+              let line = _.escape(dt_user_management_localized.translations.no_contact_attempt_time)
+                .replace('%1$s', _.escape(contact.name))
                 .replace('%2$s', days.toFixed(1))
               unattemped_contacts_html += `<li>
             <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target="_blank">
@@ -311,14 +291,11 @@ jQuery(document).ready(function($) {
         }).catch((e)=>{
         console.log( 'error in unattempted_contacts')
         console.log( e)
-        // $('#user_modal').foundation('close');
       })
 
       /* contact_attempts */
       makeRequest( "get", `user?user=${user_id}&section=contact_attempts`, null , 'user-management/v1/')
         .done(response=>{
-          // console.log('contact_attempts')
-          // console.log(response)
 
           if ( window.current_user_lookup === user_id && response.contact_attempts.length > 0 ) {
             //contact assigned to contact attempt
@@ -327,8 +304,8 @@ jQuery(document).ready(function($) {
             response.contact_attempts.forEach(contact => {
               let days = contact.time / 60 / 60 / 24;
               avg_contact_attempt += days
-              let line = dt_user_management_localized.translations.contact_attempt_time
-                .replace('%1$s', contact.name)
+              let line = _.escape(dt_user_management_localized.translations.contact_attempt_time)
+                .replace('%1$s', _.escape(contact.name))
                 .replace('%2$s', moment.unix(contact.date_attempted).format("MMM Do"))
                 .replace('%3$s', days.toFixed(1))
               attempted_contacts_html += `<li>
@@ -346,10 +323,7 @@ jQuery(document).ready(function($) {
         }).catch((e)=>{
         console.log( 'error in contact_attempts')
         console.log( e)
-        // $('#user_modal').foundation('close');
       })
-
-
     }
 
 
@@ -370,20 +344,20 @@ jQuery(document).ready(function($) {
     $('#user_name').on( "click", function(e) {
       window.user_name = $(this).text()
       $(this).parent().prepend(`
-              <div class="input-group" id="user-name-input-wrapper">
-                  <input type="text" class="input-group-field" style="max-width: 50%;" id="user-name-input" value="${window.user_name}" />
-                  <div class="input-group-button">
-                      <input type="button" class="button hollow" id="reset-user-name" value="Reset">
-                      <input type="button" class="button" id="update-user-name" value="Save">
-                  </div>
-              </div>`)
+          <div class="input-group" id="user-name-input-wrapper">
+              <input type="text" class="input-group-field" style="max-width: 50%;" id="user-name-input" value="${_.escape(window.user_name)}" />
+              <div class="input-group-button">
+                  <input type="button" class="button hollow" id="reset-user-name" value="Reset">
+                  <input type="button" class="button" id="update-user-name" value="Save">
+              </div>
+          </div>`)
       $(this).hide()
       $('#reset-user-name').on("click", function(){
         $('#user_name').show()
         $('#user-name-input-wrapper').hide()
       })
       $('#update-user-name').on('click', function(){
-        let new_name = $('#user-name-input').val()
+        let new_name = _.escape($('#user-name-input').val())
         if ( window.user_name !== new_name ) {
           update_user(user_id, 'update_nickname', new_name )
             .done(function(data) {
@@ -419,7 +393,6 @@ jQuery(document).ready(function($) {
         [key]: value
       }
       return makeRequest( "POST", `user?user=${user_id}`, data , 'user-management/v1/' )
-
     }
 
 
@@ -428,11 +401,11 @@ jQuery(document).ready(function($) {
      */
     $('#status-select').on('change', function () {
       let value = $(this).val()
-      update_user( user_id, 'user_status', value)
+      update_user( window.current_user_lookup, 'user_status', value)
     })
     $('#workload-select').on('change', function () {
       let value = $(this).val()
-      update_user( user_id, 'workload_status', value)
+      update_user( window.current_user_lookup, 'workload_status', value)
     })
 
     /**
@@ -456,7 +429,7 @@ jQuery(document).ready(function($) {
       let start_date = picker.startDate.format('YYYY/MM/DD')
       let end_date = picker.endDate.format('YYYY/MM/DD')
       $('#add_unavailable_dates_spinner').addClass('active')
-      update_user( user_id, 'add_unavailability', {start_date, end_date}).then((resp)=>{
+      update_user( window.current_user_lookup, 'add_unavailability', {start_date, end_date}).then((resp)=>{
         $('#add_unavailable_dates_spinner').removeClass('active')
         unavailable_dates_picker.val('');
         display_dates_unavailable(resp.dates_unavailable)
@@ -464,6 +437,7 @@ jQuery(document).ready(function($) {
     })
 
     function setup_user_roles(user_data){
+      $('#user_roles_list input').prop('checked', false);
       if ( user_data.roles ){
         _.forOwn( user_data.roles, role=>{
           $(`#user_roles_list [value="${role}"]`).prop('checked', true)
@@ -476,7 +450,7 @@ jQuery(document).ready(function($) {
       $('#user_roles_list input:checked').each(function () {
         roles.push($(this).val())
       })
-      update_user( user_id, 'save_roles', roles).then(()=>{
+      update_user( window.current_user_lookup, 'save_roles', roles).then(()=>{
         $(this).toggleClass('loading', false)
       }).catch(()=>{
         $(this).toggleClass('loading', false)
@@ -499,7 +473,7 @@ jQuery(document).ready(function($) {
     }
     $( document).on( 'click', '.remove_dates_unavailable', function () {
       let id = $(this).data('id');
-      update_user( user_id, 'remove_unavailability', id).then((resp)=>{
+      update_user( window.current_user_lookup, 'remove_unavailability', id).then((resp)=>{
         display_dates_unavailable(resp)
       })
     })
@@ -557,13 +531,13 @@ jQuery(document).ready(function($) {
               return [];
             }, callback: {
               onCancel: function (node, item) {
-                update_user( user_id, 'remove_location', item.ID)
+                update_user( window.current_user_lookup, 'remove_location', item.ID)
               }
             }
           },
           callback: {
             onClick: function(node, a, item, event){
-              update_user( user_id, 'add_location', item.ID)
+              update_user( window.current_user_lookup, 'add_location', item.ID)
             },
             onReady(){
               this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
@@ -757,8 +731,6 @@ jQuery(document).ready(function($) {
     makeRequest( "GET", `get_user_list`, null , 'user-management/v1/')
       .done(response=>{
         window.user_list = response
-        // console.log('USER LIST')
-        // console.log(response)
       }).catch((e)=>{
       console.log( 'error in activity')
       console.log( e)
@@ -766,8 +738,6 @@ jQuery(document).ready(function($) {
 
     makeRequest( "POST", `grid_totals`, { status: null }, 'user-management/v1/')
       .done(grid_data=>{
-        // console.log('GRID TOTALS')
-        // console.log(grid_data)
         window.grid_data = grid_data
 
         chart.empty().html(`
@@ -798,7 +768,7 @@ jQuery(document).ready(function($) {
                     <div id='legend' class='legend'>
                         <div class="grid-x grid-margin-x grid-padding-x">
                             <div class="cell small-2 center info-bar-font">
-                                Responsibility 
+                                Responsibility
                             </div>
                             <div class="cell small-2 center border-left">
                                 <select id="level" class="small" style="width:170px;">
@@ -811,7 +781,7 @@ jQuery(document).ready(function($) {
                                     <option value="admin0">Country</option>
                                     <option value="admin1">State</option>
                                     <option value="none" disabled></option>
-                                </select> 
+                                </select>
                             </div>
                             <div class="cell small-2 center border-left">
                                 <select id="status" class="small" style="width:170px;">
@@ -825,12 +795,12 @@ jQuery(document).ready(function($) {
                                     <option value="inconsistent">Inconsistent</option>
                                     <option value="inactive">Inactive</option>
                                     <option value="none" disabled></option>
-                                </select> 
+                                </select>
                             </div>
                             <div class="cell small-5 center border-left info-bar-font">
-                                
+
                             </div>
-                            
+
                             <div class="cell small-1 center border-left">
                                 <div class="grid-y">
                                     <div class="cell center" id="admin">World</div>
@@ -1141,84 +1111,84 @@ jQuery(document).ready(function($) {
               let list = jQuery('#hierarchy-list')
               if ( details.admin0_grid_id ) {
                 list.append( `
-                              <li id="admin0_wrapper" class="accordion-item" data-accordion-item>
-                               <a href="#" class="accordion-title">${details.admin0_name} :  <span id="admin0_count">0</span></a>
-                                <div class="accordion-content grid-x" data-tab-content><div id="admin0_list" class="grid-x"></div></div>
-                              </li>
-                            `)
+                  <li id="admin0_wrapper" class="accordion-item" data-accordion-item>
+                   <a href="#" class="accordion-title">${_.escape(details.admin0_name)} :  <span id="admin0_count">0</span></a>
+                    <div class="accordion-content grid-x" data-tab-content><div id="admin0_list" class="grid-x"></div></div>
+                  </li>
+                `)
                 let level_list = jQuery('#admin0_list')
                 if ( details.admin0_grid_id in window.user_list ) {
                   jQuery('#admin0_count').html(window.user_list[details.admin0_grid_id].length)
                   jQuery.each(window.user_list[details.admin0_grid_id], function(i,v) {
                     level_list.append(`
-                              <div class="cell small-10 align-self-middle" data-id="${v.grid_meta_id}">
-                                <a href="/user-management/users/?user_id=${v.user_id}">
-                                  ${v.name}
-                                </a>
-                              </div>
-                              <div class="cell small-2" data-id="${v.grid_meta_id}">
-                                <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${v.contact_id}" data-id="${v.grid_meta_id}">
-                                  <img src="${obj.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
-                                </a>
-                              </div>`)
+                      <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
+                        <a href="/user-management/users/?user_id=${_.escape(v.user_id)}">
+                          ${_.escape(v.name)}
+                        </a>
+                      </div>
+                      <div class="cell small-2" data-id="${_.escape(v.grid_meta_id)}">
+                        <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.contact_id)}" data-id="${_.escape(v.grid_meta_id)}">
+                          <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
+                        </a>
+                      </div>`)
                   })
                 }
-                level_list.append(`<div class="cell add-user-button"><button class="add-user small expanded button hollow" data-level="admin0" data-location="${details.admin0_grid_id}">add user to ${details.admin0_name}</button></div>`)
+                level_list.append(`<div class="cell add-user-button"><button class="add-user small expanded button hollow" data-level="admin0" data-location="${_.escape(details.admin0_grid_id)}">add user to ${_.escape(details.admin0_name)}</button></div>`)
 
               }
               if ( details.admin1_grid_id ) {
                 list.append( `
-                              <li id="admin1_wrapper" class="accordion-item" data-accordion-item >
-                                <a href="#" class="accordion-title">${details.admin1_name} : <span id="admin1_count">0</span></a>
-                                <div class="accordion-content" data-tab-content><div id="admin1_list" class="grid-x"></div></div>
-                              </li>
-                            `)
+                  <li id="admin1_wrapper" class="accordion-item" data-accordion-item >
+                    <a href="#" class="accordion-title">${_.escape(details.admin1_name)} : <span id="admin1_count">0</span></a>
+                    <div class="accordion-content" data-tab-content><div id="admin1_list" class="grid-x"></div></div>
+                  </li>
+                `)
 
                   let level_list = jQuery('#admin1_list')
                   if ( details.admin1_grid_id in window.user_list ) {
                     jQuery('#admin1_count').html(window.user_list[details.admin1_grid_id].length)
                     jQuery.each(window.user_list[details.admin1_grid_id], function(i,v) {
                       level_list.append(`
-                              <div class="cell small-10 align-self-middle" data-id="${v.grid_meta_id}">
-                                <a href="/user-management/users/?user_id=${v.user_id}">
-                                  ${v.name}
-                                </a>
-                              </div>
-                              <div class="cell small-2" data-id="${v.grid_meta_id}">
-                                <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${v.contact_id}" data-id="${v.grid_meta_id}">
-                                  <img src="${obj.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
-                                </a>
-                              </div>`)
+                        <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
+                          <a href="/user-management/users/?user_id=${_.escape(v.user_id)}">
+                            ${_.escape(v.name)}
+                          </a>
+                        </div>
+                        <div class="cell small-2" data-id="${_.escape(v.grid_meta_id)}">
+                          <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.contact_id)}" data-id="${_.escape(v.grid_meta_id)}">
+                            <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
+                          </a>
+                        </div>`)
                     })
                   }
-                level_list.append(`<div class="cell add-user-button"><button class="add-user small expanded button hollow" data-level="admin1" data-location="${details.admin1_grid_id}">add user to ${details.admin1_name}</button></div>`)
+                level_list.append(`<div class="cell add-user-button"><button class="add-user small expanded button hollow" data-level="admin1" data-location="${_.escape(details.admin1_grid_id)}">add user to ${_.escape(details.admin1_name)}</button></div>`)
               }
               if ( details.admin2_grid_id ) {
                 list.append( `
-                              <li id="admin2_wrapper" class="accordion-item" data-accordion-item>
-                                <a href="#" class="accordion-title">${details.admin2_name} : <span id="admin2_count">0</span></a>
-                                <div class="accordion-content" data-tab-content><div id="admin2_list"  class="grid-x"></div></div>
-                              </li>
-                            `)
+                  <li id="admin2_wrapper" class="accordion-item" data-accordion-item>
+                    <a href="#" class="accordion-title">${_.escape(details.admin2_name)} : <span id="admin2_count">0</span></a>
+                    <div class="accordion-content" data-tab-content><div id="admin2_list"  class="grid-x"></div></div>
+                  </li>
+                `)
 
                   let level_list = jQuery('#admin2_list')
                   if ( details.admin2_grid_id in window.user_list ) {
                     jQuery('#admin2_count').html(window.user_list[details.admin2_grid_id].length)
                     jQuery.each(window.user_list[details.admin2_grid_id], function(i,v) {
                       level_list.append(`
-                              <div class="cell small-10 align-self-middle" data-id="${v.grid_meta_id}">
-                                <a href="/user-management/users/?user_id=${v.user_id}">
-                                  ${v.name}
-                                </a>
-                              </div>
-                              <div class="cell small-2" data-id="${v.grid_meta_id}">
-                                <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${v.contact_id}" data-id="${v.grid_meta_id}">
-                                  <img src="${obj.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
-                                </a>
-                              </div>`)
+                        <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
+                          <a href="/user-management/users/?user_id=${_.escape(v.user_id)}">
+                            ${_.escape(v.name)}
+                          </a>
+                        </div>
+                        <div class="cell small-2" data-id="${_.escape(v.grid_meta_id)}">
+                          <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.contact_id)}" data-id="${_.escape(v.grid_meta_id)}">
+                            <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
+                          </a>
+                        </div>`)
                     })
                   }
-                level_list.append(`<div class="cell add-user-button"><button class="add-user expanded small button hollow" data-level="admin2" data-location="${details.admin2_grid_id}">add user to ${details.admin2_name}</button></div>`)
+                level_list.append(`<div class="cell add-user-button"><button class="add-user expanded small button hollow" data-level="admin2" data-location="${_.escape(details.admin2_grid_id)}">add user to ${_.escape(details.admin2_name)}</button></div>`)
               }
 
               jQuery('.accordion-item').last().addClass('is-active')
@@ -1244,7 +1214,7 @@ jQuery(document).ready(function($) {
                                 </span>
                                 <span class="typeahead__button">
                                     <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
-                                        <img src="${obj.theme_uri}/dt-assets/images/chevron_down.svg" alt="chevron"/>
+                                        <img src="${_.escape(obj.theme_uri)}/dt-assets/images/chevron_down.svg" alt="chevron"/>
                                     </button>
                                 </span>
                             </div>
@@ -1261,16 +1231,16 @@ jQuery(document).ready(function($) {
                   templateValue: "{{name}}",
                   template: function (query, item) {
                     return `<div class="assigned-to-row" dir="auto">
-                              <span>
-                                  <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-                                  ${_.escape( item.name )}
-                              </span>
-                              ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
-                              ${ item.update_needed ? `<span>
-                                <img style="height: 12px;" src="${_.escape( obj.theme_uri )}/dt-assets/images/broken.svg"/>
-                                <span style="font-size: 14px">${_.escape(item.update_needed)}</span>
-                              </span>` : '' }
-                            </div>`
+                      <span>
+                          <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
+                          ${_.escape( item.name )}
+                      </span>
+                      ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
+                      ${ item.update_needed ? `<span>
+                        <img style="height: 12px;" src="${_.escape( obj.theme_uri )}/dt-assets/images/broken.svg"/>
+                        <span style="font-size: 14px">${_.escape(item.update_needed)}</span>
+                      </span>` : '' }
+                    </div>`
                   },
                   dynamic: true,
                   hint: true,
@@ -1325,16 +1295,16 @@ jQuery(document).ready(function($) {
                              }
                           })
                           jQuery('#'+list_level+'_list').prepend(`
-                              <div class="cell small-10 align-self-middle" data-id="${grid_meta}">
-                                <a  href="/user-management/users/?user_id=${response.corresponds_to_user}">
-                                  ${response.title}
-                                </a>
-                              </div>
-                              <div class="cell small-2" data-id="${grid_meta}">
-                                <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${response.ID}" data-id="${grid_meta}">
-                                  <img src="${obj.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
-                                </a>
-                              </div>`)
+                            <div class="cell small-10 align-self-middle" data-id="${_.escape(grid_meta)}">
+                              <a  href="/user-management/users/?user_id=${_.escape(response.corresponds_to_user)}">
+                                ${_.escape(response.title)}
+                              </a>
+                            </div>
+                            <div class="cell small-2" data-id="${_.escape(grid_meta)}">
+                              <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(response.ID)}" data-id="${_.escape(grid_meta)}">
+                                <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
+                              </a>
+                            </div>`)
 
                       }).catch(err => { console.error(err) })
                     },
@@ -1449,7 +1419,7 @@ jQuery(document).ready(function($) {
     let spinner = ' <span class="loading-spinner users-spinner active"></span> '
 
     chart.empty().html(`
-    
+
       <div class="grid-x">
         <div id="page-title" class="cell"><h3>Add New User</h3></div>
         <div class="cell medium-6">
@@ -1457,7 +1427,7 @@ jQuery(document).ready(function($) {
             <div data-abide-error class="alert callout" style="display: none;">
               <p><i class="fi-alert"></i> There are some errors in your form.</p>
             </div>
-            
+
             <dl>
               <dt>Contact to make a user (optional)</dt>
               <dd>
@@ -1478,25 +1448,25 @@ jQuery(document).ready(function($) {
               </dd>
             </dl>
             <div id="contact-result"></div>
-          
-            <dl>  
+
+            <dl>
               <dt>Nickname</dt>
               <dd><input type="text" class="input" id="name" placeholder="nick name" required /> </dd>
               <dt>Email</dt>
               <dd><input type="email" class="input" id="email" placeholder="email address" required /> </dd>
-              
+
             </dl>
-            
+
             <button type="submit" class="submit button" id="create-user">Create User</button> <span class="spinner"></span>
-            
+
           </form>
-          
+
         </div>
         <div class="cell medium-6"></div>
         <div class="cell" id="result-link"></div>
         <div class="cell" style="height:20rem;"></div>
       </div>
-    
+
     `)
 
     let result_div = jQuery('#result-link')
@@ -1565,13 +1535,13 @@ jQuery(document).ready(function($) {
             makeRequest('GET', 'contacts/'+item.ID, null, 'dt-posts/v2/' )
               .done(function(response){
                 if ( item.user ) {
-                  jQuery('#contact-result').html(`This contact is already a user. <a href="/user-management/users/?user_id=${response.corresponds_to_user}">View User</a>`)
+                  jQuery('#contact-result').html(`This contact is already a user. <a href="/user-management/users/?user_id=${_.escape(response.corresponds_to_user)}">View User</a>`)
                 } else {
                   window.contact_record = response
                   submit_button.prop('disabled', false)
-                  jQuery('#name').val( response.title)
+                  jQuery('#name').val( _.escape(response.title) )
                   if ( response.contact_email[0] !== 'undefined' ) {
-                    jQuery('#email').val( response.contact_email[0].value )
+                    jQuery('#email').val( _.escape(response.contact_email[0].value) )
                   }
 
                 }
