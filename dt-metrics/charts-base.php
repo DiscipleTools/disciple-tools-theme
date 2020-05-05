@@ -24,7 +24,7 @@ abstract class DT_Metrics_Chart_Base
             if ( !$this->has_permission() ){
                 return;
             }
-            add_filter( 'dt_metrics_menu', [ $this, 'base_menu' ], 99 ); //load menu links
+            add_filter( 'dt_metrics_menu', [ $this, 'base_menu' ], 20 ); //load menu links
 
             if ( strpos( $url_path, "metrics/$this->base_slug/$this->slug" ) === 0 ) {
                 add_filter( 'dt_templates_for_urls', [ $this, 'base_add_url' ] ); // add custom URLs

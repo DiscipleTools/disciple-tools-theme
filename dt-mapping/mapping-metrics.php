@@ -45,7 +45,7 @@ class DT_Metrics_Mapping_Map_Chart {
         }
         if ( strpos( $url_path, 'metrics' ) === 0 ) {
             add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
-            add_filter( 'dt_metrics_menu', [ $this, 'menu' ], 99 );
+            add_filter( 'dt_metrics_menu', [ $this, 'menu' ], 110 );
         }
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
@@ -56,14 +56,26 @@ class DT_Metrics_Mapping_Map_Chart {
         return $template_for_url;
     }
     public function menu( $content ) {
-        $content .= '
-        <li><a href="">' . esc_html__( 'Mapping', 'disciple_tools' ) . '</a>
-            <ul class="menu vertical nested" id="mapping-menu" aria-expanded="true">
-                <li><a href="'. esc_url( site_url( '/metrics/mapping/' ) ) .'map">' .  esc_html__( 'Map', 'disciple_tools' ) . '</a></li>
-                <li><a href="'. esc_url( site_url( '/metrics/mapping/' ) ) .'list">' .  esc_html__( 'List', 'disciple_tools' ) . '</a></li>
-            </ul>
-        </li>
-        ';
+        if (true ) {
+            $content .= '
+            <li><a href="">' . esc_html__( 'Locations', 'disciple_tools' ) . '</a>
+                <ul class="menu vertical nested" id="mapping-menu" aria-expanded="true">
+                    <li><a href="'. esc_url( site_url( '/metrics/mapping/' ) ) .'map">' .  esc_html__( 'Hover Map', 'disciple_tools' ) . '</a></li>
+                    <li><a href="'. esc_url( site_url( '/metrics/mapping/' ) ) .'list">' .  esc_html__( 'Location List', 'disciple_tools' ) . '</a></li>
+                </ul>
+            </li>
+            ';
+        } else {
+            $content .= '
+            <li><a href="">' . esc_html__( 'Mapping', 'disciple_tools' ) . '</a>
+                <ul class="menu vertical nested" id="mapping-menu" aria-expanded="true">
+                    <li><a href="'. esc_url( site_url( '/metrics/mapping/' ) ) .'map">' .  esc_html__( 'Map', 'disciple_tools' ) . '</a></li>
+                    <li><a href="'. esc_url( site_url( '/metrics/mapping/' ) ) .'list">' .  esc_html__( 'List', 'disciple_tools' ) . '</a></li>
+                </ul>
+            </li>
+            ';
+        }
+
         return $content;
     }
 

@@ -4,11 +4,11 @@ if ( !defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly.
 
 
-class DT_Metrics_Mapbox_Cluster_Map extends DT_Metrics_Chart_Base
+class DT_Metrics_Mapbox_Personal_Cluster_Map extends DT_Metrics_Chart_Base
 {
 
     //slug and title of the top menu folder
-    public $base_slug = 'contacts'; // lowercase
+    public $base_slug = 'personal'; // lowercase
     public $base_title;
 
     public $title;
@@ -18,12 +18,16 @@ class DT_Metrics_Mapbox_Cluster_Map extends DT_Metrics_Chart_Base
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
 
     public function __construct() {
+        if ( ! DT_Mapbox_API::get_key() ) {
+            return;
+        }
         parent::__construct();
         if ( !$this->has_permission() ){
             return;
         }
+
         $this->title = __( 'Cluster Map', 'disciple_tools' );
-        $this->base_title = __( 'Contacts', 'disciple_tools' );
+        $this->base_title = __( 'Personal', 'disciple_tools' );
         $url_path = dt_get_url_path();
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
@@ -68,4 +72,4 @@ class DT_Metrics_Mapbox_Cluster_Map extends DT_Metrics_Chart_Base
     }
 
 }
-new DT_Metrics_Mapbox_Cluster_Map();
+new DT_Metrics_Mapbox_Personal_Cluster_Map();

@@ -4,7 +4,7 @@ if ( !defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly.
 
 
-class DT_Metrics_Mapbox_Cluster_Map extends DT_Metrics_Chart_Base
+class DT_Metrics_Mapbox_Contacts_Cluster_Map extends DT_Metrics_Chart_Base
 {
 
     //slug and title of the top menu folder
@@ -18,6 +18,9 @@ class DT_Metrics_Mapbox_Cluster_Map extends DT_Metrics_Chart_Base
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
 
     public function __construct() {
+        if ( ! DT_Mapbox_API::get_key() ) {
+            return;
+        }
         parent::__construct();
         if ( !$this->has_permission() ){
             return;
@@ -68,4 +71,4 @@ class DT_Metrics_Mapbox_Cluster_Map extends DT_Metrics_Chart_Base
     }
 
 }
-new DT_Metrics_Mapbox_Cluster_Map();
+new DT_Metrics_Mapbox_Contacts_Cluster_Map();

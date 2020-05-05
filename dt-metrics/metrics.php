@@ -35,12 +35,17 @@ class Disciple_Tools_Metrics
             // load base chart setup
             require_once( get_template_directory() . '/dt-metrics/charts-base.php' );
 
-            // load basic charts
-            require_once( get_template_directory() . '/dt-metrics/personal/mapbox-area-map.php' );
-            require_once( get_template_directory() . '/dt-metrics/personal/overview.php' );
-
             // Critical Path
             require_once( get_template_directory() . '/dt-metrics/project/critical-path.php' );
+
+            // Personal
+            require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
+            require_once( get_template_directory() . '/dt-metrics/personal/baptism-tree.php' );
+            require_once( get_template_directory() . '/dt-metrics/personal/group-tree.php' );
+            require_once( get_template_directory() . '/dt-metrics/personal/mapbox-point-map.php' );
+            require_once( get_template_directory() . '/dt-metrics/personal/mapbox-cluster-map.php' );
+            require_once( get_template_directory() . '/dt-metrics/personal/mapbox-area-map.php' );
+            require_once( get_template_directory() . '/dt-metrics/personal/overview.php' );
 
             /* Contacts */
             require_once( get_template_directory() . '/dt-metrics/contacts/baptism-tree.php' );
@@ -48,20 +53,16 @@ class Disciple_Tools_Metrics
             require_once( get_template_directory() . '/dt-metrics/contacts/sources.php' );
             require_once( get_template_directory() . '/dt-metrics/contacts/milestones.php' );
             require_once( get_template_directory() . '/dt-metrics/contacts/milestones-map.php' );
-            if ( DT_Mapbox_API::get_key() ) {
-                require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-cluster-map.php' );
-                require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-point-map.php' );
-                require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-area-map.php' );
-            }
+            require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-cluster-map.php' );
+            require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-point-map.php' );
+            require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-area-map.php' );
             require_once( get_template_directory() . '/dt-metrics/contacts/overview.php' );
 
             /* Groups */
             require_once( get_template_directory() . '/dt-metrics/groups/tree.php' );
-            if ( DT_Mapbox_API::get_key() ) {
-                require_once( get_template_directory() . '/dt-metrics/groups/mapbox-cluster-map.php' );
-                require_once( get_template_directory() . '/dt-metrics/groups/mapbox-point-map.php' );
-                require_once( get_template_directory() . '/dt-metrics/groups/mapbox-area-map.php' );
-            }
+            require_once( get_template_directory() . '/dt-metrics/groups/mapbox-cluster-map.php' );
+            require_once( get_template_directory() . '/dt-metrics/groups/mapbox-point-map.php' );
+            require_once( get_template_directory() . '/dt-metrics/groups/mapbox-area-map.php' );
             require_once( get_template_directory() . '/dt-metrics/groups/overview.php' );
         }
     }

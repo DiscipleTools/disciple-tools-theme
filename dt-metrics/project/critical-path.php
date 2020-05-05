@@ -23,7 +23,7 @@ class DT_Metrics_Critical_Path_Chart
         if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
 
             add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
-            add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 50 );
+            add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 10 );
 
             if ( 'metrics/critical-path' === $url_path ) {
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );

@@ -18,10 +18,14 @@ class DT_Metrics_Mapbox_Personal_Area_Map extends DT_Metrics_Chart_Base
     public $permissions = [ 'access_contacts' ];
 
     public function __construct() {
+        if ( ! DT_Mapbox_API::get_key() ) {
+            return;
+        }
         parent::__construct();
         if ( !$this->has_permission() ){
             return;
         }
+
         $this->title = __( 'Area Map', 'disciple_tools' );
         $this->base_title = __( 'Personal', 'disciple_tools' );
 

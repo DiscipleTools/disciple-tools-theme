@@ -19,6 +19,9 @@ class DT_Metrics_Mapbox_Contacts_Points_Map extends DT_Metrics_Chart_Base
     public $namespace = null;
 
     public function __construct() {
+        if ( ! DT_Mapbox_API::get_key() ) {
+            return;
+        }
         parent::__construct();
         if ( !$this->has_permission() ){
             return;

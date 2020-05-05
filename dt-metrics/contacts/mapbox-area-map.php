@@ -18,6 +18,9 @@ class DT_Metrics_Mapbox_Contact_Area_Map extends DT_Metrics_Chart_Base
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
 
     public function __construct() {
+        if ( ! DT_Mapbox_API::get_key() ) {
+            return;
+        }
         parent::__construct();
         if ( !$this->has_permission() ){
             return;

@@ -1,15 +1,15 @@
 jQuery(document).ready(function() {
-  if ('/metrics/groups/tree' === window.location.pathname || '/metrics/groups/tree/' === window.location.pathname  ) {
-    project_group_tree()
+  if ('/metrics/personal/group-tree' === window.location.pathname || '/metrics/personal/group-tree/' === window.location.pathname  ) {
+    group_tree()
   }
 
-  function project_group_tree() {
+  function group_tree() {
     "use strict";
     let chart = jQuery('#chart')
     let spinner = ' <span class="loading-spinner active"></span> '
 
     chart.empty().html(spinner)
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#groups-menu'));
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#personal-menu'));
 
     let translations = dtMetricsProject.data.translations
 
@@ -32,7 +32,7 @@ jQuery(document).ready(function() {
            <br><br>
        `)
 
-    makeRequest('POST', 'metrics/group/tree' )
+    makeRequest('POST', 'metrics/my/group_tree' )
       .then(response => {
         // console.log(response)
         jQuery('#generation_map').empty().html(response)

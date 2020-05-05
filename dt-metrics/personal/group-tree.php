@@ -4,25 +4,26 @@ if ( !defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly.
 
 
-class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
+class DT_Metrics_Personal_Groups_Tree extends DT_Metrics_Chart_Base
 {
     //slug and title of the top menu folder
-    public $base_slug = 'groups'; // lowercase
-    public $slug = 'tree'; // lowercase
+    public $base_slug = 'personal'; // lowercase
+    public $slug = 'group-tree'; // lowercase
     public $base_title;
     public $title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $js_file_name = '/dt-metrics/groups/tree.js'; // should be full file name plus extension
-    public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
+    public $js_file_name = '/dt-metrics/personal/group-tree.js'; // should be full file name plus extension
+    public $permissions = [ 'access_contacts' ];
     public $namespace = null;
+    public $my_list = [];
 
     public function __construct() {
         parent::__construct();
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Groups', 'disciple_tools' );
-        $this->title = __( 'GenTree', 'disciple_tools' );
+        $this->base_title = __( 'Personal', 'disciple_tools' );
+        $this->title = __( 'Group GenTree', 'disciple_tools' );
 
         $url_path = dt_get_url_path();
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
@@ -38,7 +39,7 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
         $version = '1';
         $namespace = 'dt/v' . $version;
         register_rest_route(
-            $namespace, '/metrics/group/tree', [
+            $namespace, '/metrics/my/group_tree', [
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'tree' ],
@@ -78,16 +79,36 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
             'translations' => [
                 'title_group_tree' => __( 'Group Generation Tree', 'disciple_tools' ),
             ],
-            'group_generation_tree' => $this->get_group_generations_tree(),
         ];
     }
 
     public function get_group_generations_tree(){
+        $list = Disciple_Tools_Posts::search_viewable_post( 'groups', [ "assigned_to" => [ "shared", "me" ] ] );
+
+        if ( is_wp_error( $list ) ) {
+            return [];
+        }
+
+        foreach( $list['posts'] as $post ) {
+            $this->my_list[$post->ID] = $post->ID;
+        }
+
         $query = dt_queries()->tree( 'multiplying_groups_only' );
         if ( empty( $query ) ) {
             return $this->_no_results();
         }
         $menu_data = $this->prepare_menu_array( $query );
+
+        foreach( $menu_data['parents'] as $parent_id => $parent ) {
+            if ( ! isset( $this->my_list[$parent_id] ) && 0 !== $parent_id ) {
+                unset( $menu_data['parents'][$parent_id] );
+                unset( $menu_data['parents'][0][array_search($parent_id, $menu_data['parents'][0] )] );
+            }
+        }
+        if ( count( $menu_data['parents'] ) <= 1 ) {
+            return $this->_no_results();
+        }
+
         return $this->build_group_tree( 0, $menu_data, 0 );
     }
 
@@ -122,7 +143,11 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
             {
                 $html .= '<li class="gen-node li-gen-' . $gen . ' ' . $first_section . '">';
                 $html .= '<span class="' . esc_html( $menu_data['items'][ $item_id ]['group_status'] ) . ' ' . esc_html( $menu_data['items'][ $item_id ]['group_type'] ) . '">(' . $gen . ') ';
-                $html .= '<a onclick="open_modal_details(' . esc_html( $item_id ) . ');">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></span>';
+                if ( in_array( $item_id, $this->my_list ) ) {
+                    $html .= '<a onclick="open_modal_details(' . esc_html( $item_id ) . ');">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></span>';
+                } else {
+                    $html .= __( 'group', 'disciple_tools' ) . '</span>';
+                }
 
                 $html .= $this->build_group_tree( $item_id, $menu_data, $gen );
 
@@ -139,6 +164,6 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
     }
 
 }
-new DT_Metrics_Groups_Tree();
+new DT_Metrics_Personal_Groups_Tree();
 
 
