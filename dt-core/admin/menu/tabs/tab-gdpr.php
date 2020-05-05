@@ -54,7 +54,7 @@ class Disciple_Tools_GDPR_Tab extends Disciple_Tools_Abstract_Menu_Base
             self::box( 'top', $title = 'Show Personal Data', $args = [] );
             ?>
             <form method="POST">
-                <?php wp_nonce_field( 'export' . get_current_user_id(), '_wpnonce', true, true  ) ?>
+                <?php wp_nonce_field( 'export' . get_current_user_id(), '_wpnonce', true, true ) ?>
                 <input type="text" name="contact_id" class="regular-text" placeholder="Contact ID" /><button class="button" type="submit">Export</button>
             </form>
             <?php
