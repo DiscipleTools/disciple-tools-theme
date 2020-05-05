@@ -37,6 +37,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
      * Load scripts for the plugin
      */
     public function scripts() {
+        $this->title = __( 'Milestones', 'disciple_tools' );
 
         wp_enqueue_script( 'dt_' . $this->slug . '_script',
             get_template_directory_uri() . '/dt-metrics/contacts/' . $this->js_file_name,

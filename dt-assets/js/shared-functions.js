@@ -268,14 +268,14 @@ window.TYPEAHEADS = {
     },
     typeaheadHelpText : function (resultCount, query, result){
       let text = "";
-      if (result.length > 0 && result.length < resultCount) {
-        text = `Showing <strong>${_.escape( result.length )}</strong> of <strong>${_.escape( resultCount )}</strong>(${_.escape( query ? 'elements matching ' + query : '' )})`
-      } else if (result.length > 0 && query) {
-        text = `Showing <strong>${_.escape( result.length )}</strong> items matching ${_.escape( query )}`;
+      if (result.length > 0 && query) {
+        text = wpApiShare.translations.showing_x_items_matching
+          .replace('%1$s', `<strong>${_.escape( result.length )}</strong>`)
+          .replace('%2$s', `<strong>${_.escape( query )}</strong>`)
       } else if (result.length > 0) {
-        text = `Showing <strong>${_.escape( result.length )}</strong> items`;
+        text = wpApiShare.translations.showing_x_items.replace('%s', `<strong>${_.escape( result.length )}</strong>`);
       } else {
-        text = `No results matching ${_.escape( query )}`
+        text = wpApiShare.translations.no_records_found.replace('"{{query}}"', `<strong>${_.escape( query )}</strong>`);
       }
       return text
     },

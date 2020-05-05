@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Disciple Tools\n"
-"POT-Creation-Date: 2020-05-05 11:01+0100\n"
+"POT-Creation-Date: 2020-05-05 14:53+0100\n"
 "PO-Revision-Date: 2018-01-09 14:10-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -95,7 +95,7 @@ msgid "Filter Name"
 msgstr ""
 
 #: archive-contacts.php:135 archive-groups.php:130 archive-template.php:177
-#: dt-assets/functions/enqueue-scripts.php:345
+#: dt-assets/functions/enqueue-scripts.php:347
 msgid "Creation Date"
 msgstr ""
 
@@ -153,8 +153,8 @@ msgid "Cancel"
 msgstr ""
 
 #: archive-contacts.php:247 archive-groups.php:237 archive-template.php:281
-#: dt-assets/functions/enqueue-scripts.php:331
-#: dt-assets/functions/enqueue-scripts.php:340
+#: dt-assets/functions/enqueue-scripts.php:333
+#: dt-assets/functions/enqueue-scripts.php:342
 #: dt-assets/parts/contact-details.php:545
 #: dt-assets/parts/group-details.php:344 template-merge-details.php:45
 #: template-merge-details.php:65 template-merge-details.php:75
@@ -430,20 +430,32 @@ msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:152
+#: dt-assets/functions/enqueue-scripts.php:139
+#, php-format
+msgctxt "Showing 30 items"
+msgid "Showing %s items"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:140
+#, php-format
+msgctxt "Showing 30 items matching bob"
+msgid "Showing %1$s items matching %2$s"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:154
 msgid "You don't have any unread notifications"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:153
+#: dt-assets/functions/enqueue-scripts.php:155
 msgid "You don't have any notifications"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:188
+#: dt-assets/functions/enqueue-scripts.php:190
 msgid "Created record on {}"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:192
-#: dt-assets/functions/enqueue-scripts.php:341
+#: dt-assets/functions/enqueue-scripts.php:194
+#: dt-assets/functions/enqueue-scripts.php:343
 #: dt-assets/parts/contact-details.php:60 dt-assets/parts/group-details.php:31
 #: template-merge-details.php:45 template-merge-details.php:64
 #: template-merge-details.php:75 template-merge-details.php:111
@@ -451,150 +463,150 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:193
-#: dt-assets/functions/enqueue-scripts.php:216
-#: dt-assets/functions/enqueue-scripts.php:342
+#: dt-assets/functions/enqueue-scripts.php:195
+#: dt-assets/functions/enqueue-scripts.php:218
+#: dt-assets/functions/enqueue-scripts.php:344
 #: dt-assets/parts/loop-activity-comment.php:172
 msgid "Delete"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:194
+#: dt-assets/functions/enqueue-scripts.php:196
 msgid "Translate with Google Translate"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:195
+#: dt-assets/functions/enqueue-scripts.php:197
 msgid "Hide Translation"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:217
+#: dt-assets/functions/enqueue-scripts.php:219
 msgid "Mark as complete"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:218
+#: dt-assets/functions/enqueue-scripts.php:220
 msgid "No task created"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:219
+#: dt-assets/functions/enqueue-scripts.php:221
 #: dt-assets/parts/modals/modal-tasks.php:17
 msgid "Reminder"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:220
+#: dt-assets/functions/enqueue-scripts.php:222
 msgid "No note set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:227
+#: dt-assets/functions/enqueue-scripts.php:229
 #: dt-assets/parts/contact-details.php:233
 #: dt-assets/parts/contact-details.php:284
 msgid "No source set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:228
+#: dt-assets/functions/enqueue-scripts.php:230
 msgid "No location set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:229
+#: dt-assets/functions/enqueue-scripts.php:231
 msgid "No leaders set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:230
+#: dt-assets/functions/enqueue-scripts.php:232
 msgid "No people group set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:231
+#: dt-assets/functions/enqueue-scripts.php:233
 msgid "No email set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:232
+#: dt-assets/functions/enqueue-scripts.php:234
 msgid "No phone set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:233
+#: dt-assets/functions/enqueue-scripts.php:235
 msgid "No address set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:234
+#: dt-assets/functions/enqueue-scripts.php:236
 msgid "None set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:235
+#: dt-assets/functions/enqueue-scripts.php:237
 msgid "No sub-assigned set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:236
+#: dt-assets/functions/enqueue-scripts.php:238
 #: dt-assets/parts/contact-details.php:306
 msgid "No age set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:237
+#: dt-assets/functions/enqueue-scripts.php:239
 #: dt-assets/parts/contact-details.php:325
 msgid "No gender set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:238
+#: dt-assets/functions/enqueue-scripts.php:240
 msgid "No start date"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:239
+#: dt-assets/functions/enqueue-scripts.php:241
 #: dt-assets/parts/group-details.php:196
 msgid "No end date"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:240
+#: dt-assets/functions/enqueue-scripts.php:242
 #: dt-assets/parts/group-details.php:181
 msgid "No church start date"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:242
+#: dt-assets/functions/enqueue-scripts.php:244
 msgid "Valid"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:243
+#: dt-assets/functions/enqueue-scripts.php:245
 msgid "Invalid"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:244
+#: dt-assets/functions/enqueue-scripts.php:246
 msgid "Unconfirmed"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:245
+#: dt-assets/functions/enqueue-scripts.php:247
 msgid "Transfer failed. Check site-to-site configuration."
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:328
+#: dt-assets/functions/enqueue-scripts.php:330
 msgid "delete"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:329
+#: dt-assets/functions/enqueue-scripts.php:331
 msgid "Locations you are responsible for"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:330
+#: dt-assets/functions/enqueue-scripts.php:332
 msgid "Add"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:343
+#: dt-assets/functions/enqueue-scripts.php:345
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:344
+#: dt-assets/functions/enqueue-scripts.php:346
 msgid "Sorting By"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:346
+#: dt-assets/functions/enqueue-scripts.php:348
 msgid "Date Modified"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:347
+#: dt-assets/functions/enqueue-scripts.php:349
 msgid "No filters, create one below"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:348
+#: dt-assets/functions/enqueue-scripts.php:350
 msgid "No records found matching your filter."
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:354 dt-contacts/contacts.php:1853
+#: dt-assets/functions/enqueue-scripts.php:356 dt-contacts/contacts.php:1853
 #, php-format
 msgctxt "All records"
 msgid "All %s"
@@ -603,6 +615,7 @@ msgstr ""
 #: dt-assets/functions/menu.php:18 dt-assets/functions/menu.php:62
 #: dt-contacts/contacts-post-type.php:115
 #: dt-contacts/contacts-post-type.php:118
+#: dt-contacts/contacts-post-type.php:129
 #: dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/contacts/mapbox-area-map.php:61
 #: dt-metrics/contacts/mapbox-cluster-map.php:61
@@ -615,7 +628,7 @@ msgid "Contacts"
 msgstr ""
 
 #: dt-assets/functions/menu.php:22 dt-assets/functions/menu.php:66
-#: dt-contacts/contacts-post-type.php:645
+#: dt-contacts/contacts-post-type.php:645 dt-groups/groups-post-type.php:117
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/contacts/mapbox-area-map.php:66
 #: dt-metrics/contacts/mapbox-cluster-map.php:66
@@ -1470,13 +1483,7 @@ msgid "Help"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:128
-msgctxt "disciple_tools"
 msgid "Contact"
-msgstr ""
-
-#: dt-contacts/contacts-post-type.php:129
-msgctxt "disciple_tools"
-msgid "Contacts"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:190 dt-groups/groups-post-type.php:223
@@ -2392,14 +2399,9 @@ msgstr ""
 msgid "(no title)"
 msgstr ""
 
-#: dt-groups/groups-post-type.php:116
-msgctxt "disciple_tools"
+#: dt-groups/groups-post-type.php:116 dt-groups/groups-post-type.php:206
+#: dt-metrics/metrics-personal.php:80 dt-metrics/metrics-project.php:106
 msgid "Group"
-msgstr ""
-
-#: dt-groups/groups-post-type.php:117
-msgctxt "disciple_tools"
-msgid "Groups"
 msgstr ""
 
 #: dt-groups/groups-post-type.php:179
@@ -2437,11 +2439,6 @@ msgstr ""
 #: dt-groups/groups-post-type.php:203
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
-msgstr ""
-
-#: dt-groups/groups-post-type.php:206 dt-metrics/metrics-personal.php:80
-#: dt-metrics/metrics-project.php:106
-msgid "Group"
 msgstr ""
 
 #: dt-groups/groups-post-type.php:207
@@ -2790,22 +2787,26 @@ msgstr ""
 msgid "World"
 msgstr ""
 
-#: dt-metrics/contacts/milestones.php:62
+#: dt-metrics/contacts/milestones-map.php:40
+msgid "Milestones Map"
+msgstr ""
+
+#: dt-metrics/contacts/milestones.php:26 dt-metrics/contacts/milestones.php:63
 msgid "Milestones"
 msgstr ""
 
-#: dt-metrics/contacts/milestones.php:63 dt-metrics/contacts/seeker-path.php:63
+#: dt-metrics/contacts/milestones.php:64 dt-metrics/contacts/seeker-path.php:63
 #: dt-metrics/contacts/sources.php:80
 msgid "Filter contacts to date range:"
 msgstr ""
 
-#: dt-metrics/contacts/milestones.php:64 dt-metrics/contacts/seeker-path.php:64
+#: dt-metrics/contacts/milestones.php:65 dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:81 dt-metrics/metrics-workers.php:184
 #: dt-users/template-user-management.php:205
 msgid "All Time"
 msgstr ""
 
-#: dt-metrics/contacts/milestones.php:65 dt-metrics/contacts/seeker-path.php:65
+#: dt-metrics/contacts/milestones.php:66 dt-metrics/contacts/seeker-path.php:65
 #: dt-metrics/contacts/sources.php:82
 msgid "Filter to date range"
 msgstr ""
@@ -3076,6 +3077,10 @@ msgstr ""
 
 #: dt-metrics/metrics-project.php:102
 msgid "generations"
+msgstr ""
+
+#: dt-metrics/metrics-project.php:108
+msgid "Number of Contacts"
 msgstr ""
 
 #: dt-metrics/metrics-workers.php:124
@@ -3838,7 +3843,6 @@ msgid "Contact with %1$s was attempted on %2$s after %3$s days"
 msgstr ""
 
 #: dt-users/user-management.php:166
-msgctxt "disciple_tools"
 msgid "Unable to update"
 msgstr ""
 

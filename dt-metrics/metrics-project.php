@@ -105,6 +105,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'label_pre_group' => __( 'Pre-Group', 'disciple_tools' ),
                 'label_group' => __( 'Group', 'disciple_tools' ),
                 'label_church' => __( 'Church', 'disciple_tools' ),
+                'label_number_of_contacts' => __( 'Number of Contacts', 'disciple_tools' )
             ],
             'preferences' => $this->preferences(),
             'hero_stats' => self::chart_project_hero_stats(),

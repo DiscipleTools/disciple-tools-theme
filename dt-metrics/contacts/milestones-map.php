@@ -37,6 +37,7 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
 
 
     public function scripts() {
+        $this->title = __( 'Milestones Map', 'disciple_tools' );
         DT_Mapping_Module::instance()->scripts();
         global $dt_mapping;
 
