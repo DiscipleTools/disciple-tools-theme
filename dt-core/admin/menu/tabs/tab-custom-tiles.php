@@ -260,12 +260,6 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                         <button class="button small expand_translations">+</button>
                         <div class="translation_container hide">
                         <table>
-                        <?php dt_write_log( $tile ); ?>
-                                <tr>
-                                <td><label for="tile_label_translation-en_US">English</label></td>
-                                <td><input name="tile_label_translation-en_US" type="text" value="<?php echo esc_html( $tile["en_US"] ?? "" );?>"/></td>
-                                </tr>
-
                         <?php $langs = dt_get_available_languages();
 
                         foreach ( $langs as $lang => $val ) : ?>
@@ -364,11 +358,6 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         }
         if ( isset( $post_submission["restore_tile"] ) ){
             $custom_tile["hidden"] = false;
-        }
-
-        //update English translation
-        if ( isset( $post_submission["tile_label_translation-en_US"] ) ){
-            $custom_tile["en_US"] = $post_submission["tile_label_translation-en_US"];
         }
         //update other Translations
         $langs = dt_get_available_languages();

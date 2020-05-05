@@ -705,10 +705,7 @@ class Disciple_Tools_Contact_Post_Type
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
 
         $langs = dt_get_available_languages();
-        array_push( $langs, array(
-            'language' => 'en_US',
-            'native_name' => 'English'
-        ) );
+
         foreach ( $fields as $field_key => $field ){
             if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
                 foreach ( $field["default"] as $option_key => $option_value ){
