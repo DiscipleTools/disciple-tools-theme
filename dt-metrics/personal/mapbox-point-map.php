@@ -63,7 +63,7 @@ class DT_Metrics_Mapbox_Personal_Points_Map extends DT_Metrics_Chart_Base
                     'population' => __( "Population", "disciple_tools" ),
                     'name' => __( "Name", "disciple_tools" ),
                 ],
-                'contact_settings' => [
+                'personal_settings' => [
                     'post_type' => 'contacts',
                     'title' => __( 'Contacts', "disciple_tools" ),
                     'status_list' => $contact_fields['overall_status']['default'] ?? []

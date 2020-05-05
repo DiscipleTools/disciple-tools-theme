@@ -29,18 +29,17 @@ class DT_Metrics_Mapbox_Groups_Points_Map extends DT_Metrics_Chart_Base
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
-
     }
 
     public function scripts() {
         DT_Mapbox_API::load_mapbox_header_scripts();
         // Map starter Script
         wp_enqueue_script( 'dt_mapbox_script',
-            get_template_directory_uri() . '/dt-metrics/common/' . $this->js_file_name,
+            get_template_directory_uri() . $this->js_file_name,
             [
                 'jquery'
             ],
-            filemtime( get_theme_file_path() . '/dt-metrics/common/' . $this->js_file_name ),
+            filemtime( get_theme_file_path() . $this->js_file_name ),
             true
         );
         $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_group_field_defaults();
