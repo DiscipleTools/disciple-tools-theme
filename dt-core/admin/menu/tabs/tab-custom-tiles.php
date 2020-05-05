@@ -265,7 +265,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                         foreach ( $langs as $lang => $val ) : ?>
                                     <tr>
                                     <td><label for="tile_label_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
-                                    <td><input name="tile_label_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $tile[$val['language']] ?? "" );?>"/></td>
+                                    <td><input name="tile_label_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $tile["translations"][$val['language']] ?? "" );?>"/></td>
                                     </tr>
                             <?php endforeach; ?>
                         </table>
@@ -366,7 +366,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             $langcode = $val['language'];
             $translation_key = "tile_label_translation-" . $langcode;
             if ( isset( $post_submission[$translation_key] ) ) {
-                $custom_tile[$langcode] = $post_submission[$translation_key];
+                $custom_tile["translations"][$langcode] = $post_submission[$translation_key];
             }
         }
 

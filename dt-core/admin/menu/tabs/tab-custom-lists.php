@@ -269,7 +269,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         foreach ( $langs as $lang => $val ) : ?>
                                     <tr>
                                     <td><label for="channel_label[<?php echo esc_html( $channel_key ) ?>][<?php echo esc_html( $val['language'] )?>]"><?php echo esc_html( $val['native_name'] )?></label></td>
-                                    <td><input name="channel_label[<?php echo esc_html( $channel_key ) ?>][<?php echo esc_html( $val['language'] )?>]" type="text" value="<?php echo esc_html( $channel_option[$val['language']] ?? "" );?>"/></td>
+                                    <td><input name="channel_label[<?php echo esc_html( $channel_key ) ?>][<?php echo esc_html( $val['language'] )?>]" type="text" value="<?php echo esc_html( $channel_option["translations"][$val['language']] ?? "" );?>"/></td>
                                     </tr>
                             <?php endforeach; ?>
                         </table>
@@ -319,7 +319,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
                     if ( isset( $_POST["channel_label"][$channel_key][$langcode] ) ) {
                         $translated_label = sanitize_text_field( wp_unslash( $_POST["channel_label"][$channel_key][$langcode] ) );
-                        $custom_channels[$channel_key][$langcode] = $translated_label;
+                        $custom_channels[$channel_key]["translations"][$langcode] = $translated_label;
                     }
                 }
                 if ( isset( $_POST["channel_icon"][$channel_key] ) ){

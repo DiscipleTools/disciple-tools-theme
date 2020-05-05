@@ -779,13 +779,13 @@ class Disciple_Tools_Contact_Post_Type
             foreach ( $fields as $field => $value ) {
                 if ( $value["type"] == "key_select" || $value["type"] == "multi_select" ) {
                     foreach ( $value["default"] as $option_key => $option_value ) {
-                        if ( !empty( $option_value[$user_locale] ) ) {
-                            $fields[$field]["default"][$option_key]["label"] = $option_value[$user_locale];
+                        if ( !empty( $option_value["translations"][$user_locale] ) ) {
+                            $fields[$field]["default"][$option_key]["label"] = $option_value["translations"][$user_locale];
                         }
                     }
                 }
-                if ( !empty( $value[$user_locale] ) ) {
-                    $fields[$field]["name"] = $value[$user_locale];
+                if ( !empty( $value["translations"][$user_locale] ) ) {
+                    $fields[$field]["name"] = $value["translations"][$user_locale];
                 }
             }
             return $fields;
@@ -959,8 +959,8 @@ class Disciple_Tools_Contact_Post_Type
         }
         $user_locale = get_user_locale();
         foreach ( $channel_list as $channel_key => $channel_value ) {
-            if ( !empty( $channel_value[$user_locale] ) ) {
-                $channel_list[$channel_key]["label"] = $channel_value[$user_locale];
+            if ( !empty( $channel_value["translations"][$user_locale] ) ) {
+                $channel_list[$channel_key]["label"] = $channel_value["translations"][$user_locale];
             }
         }
         return $channel_list;
