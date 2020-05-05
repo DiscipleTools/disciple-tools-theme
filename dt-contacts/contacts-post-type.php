@@ -125,8 +125,8 @@ class Disciple_Tools_Contact_Post_Type
      * @return void
      */
     public function register_post_type() {
-        $this->singular = _x( 'Contact', 'disciple_tools' );
-        $this->plural = _x( 'Contacts', 'disciple_tools' );
+        $this->singular = __( 'Contact', 'disciple_tools' );
+        $this->plural = __( 'Contacts', 'disciple_tools' );
         $this->search_items = sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural );
 
         $labels = [

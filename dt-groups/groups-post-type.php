@@ -113,8 +113,8 @@ class Disciple_Tools_Groups_Post_Type
      * @return void
      */
     public function register_post_type() {
-        $this->singular = _x( 'Group', 'disciple_tools' );
-        $this->plural = _x( 'Groups', 'disciple_tools' );
+        $this->singular = __( 'Group', 'disciple_tools' );
+        $this->plural = __( 'Groups', 'disciple_tools' );
         $this->search_items = sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural );
 
         $labels = [
