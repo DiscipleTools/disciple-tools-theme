@@ -15,7 +15,7 @@ class DT_Metrics_Mapbox_Personal_Cluster_Map extends DT_Metrics_Chart_Base
     public $slug = 'mapbox_cluster_map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/common/cluster-map.js'; // should be full file name plus extension
-    public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
+    public $permissions = [ 'access_contacts' ];
 
     public function __construct() {
         if ( ! DT_Mapbox_API::get_key() ) {

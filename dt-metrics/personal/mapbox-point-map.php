@@ -14,8 +14,8 @@ class DT_Metrics_Mapbox_Personal_Points_Map extends DT_Metrics_Chart_Base
     public $title;
     public $slug = 'mapbox_points_map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $js_file_name = 'points-map.js'; // should be full file name plus extension
-    public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
+    public $js_file_name = '/dt-metrics/common/points-map.js'; // should be full file name plus extension
+    public $permissions = [ 'access_contacts' ];
     public $namespace = null;
 
     public function __construct() {
@@ -39,11 +39,11 @@ class DT_Metrics_Mapbox_Personal_Points_Map extends DT_Metrics_Chart_Base
         DT_Mapbox_API::load_mapbox_header_scripts();
         // Map starter Script
         wp_enqueue_script( 'dt_mapbox_script',
-            get_template_directory_uri() . '/dt-metrics/common/' . $this->js_file_name,
+            get_template_directory_uri() .  $this->js_file_name,
             [
                 'jquery'
             ],
-            filemtime( get_theme_file_path() . '/dt-metrics/common/' . $this->js_file_name ),
+            filemtime( get_theme_file_path() . $this->js_file_name ),
             true
         );
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_contact_field_defaults();
