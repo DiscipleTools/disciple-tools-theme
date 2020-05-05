@@ -656,7 +656,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             <label for="title">
                 <?php esc_html_e( "Tag", "disciple_tools" ); ?>
             </label>
-            <input name="title" id="new-tag" type="text" placeholder="<?php echo esc_html_x( "tag", 'input field placeholder', 'disciple_tools' ); ?>" required aria-describedby="name-help-text">
+            <input name="title" id="new-tag" type="text" placeholder="<?php esc_html_e( "Tag", 'disciple_tools' ); ?>" required aria-describedby="name-help-text">
             <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
         </form>
 
@@ -734,7 +734,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                 <?php esc_html_e( "Display Name", "disciple_tools" ); ?>
                 <input name="user-display" id="user-display" type="text"
                        value="<?php the_title_attribute(); ?>"
-                       placeholder="<?php echo esc_html_x( "Display Name", 'disciple_tools' ) ?>">
+                       placeholder="<?php esc_html_e( "Display Name", 'disciple_tools' ) ?>">
             </label>
 
             <div class="grid-x">

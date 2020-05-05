@@ -125,8 +125,8 @@ class Disciple_Tools_Contact_Post_Type
      * @return void
      */
     public function register_post_type() {
-        $this->singular = _x( 'Contact', 'singular of contact', 'disciple_tools' );
-        $this->plural = _x( 'Contacts', 'plural of contact', 'disciple_tools' );
+        $this->singular = _x( 'Contact', 'disciple_tools' );
+        $this->plural = _x( 'Contacts', 'disciple_tools' );
         $this->search_items = sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural );
 
         $labels = [
@@ -197,7 +197,7 @@ class Disciple_Tools_Contact_Post_Type
         // Status Section
         $fields['overall_status'] = [
             'name'        => __( 'Contact Status', 'disciple_tools' ),
-            'description' => _x( 'The Contact Status describes our progress in communicating with the contact', "Contact Status field description", 'disciple_tools' ),
+            'description' => _x( 'The Contact Status describes the progress in communicating with the contact.', "Contact Status field description", 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'new'   => [
@@ -542,7 +542,7 @@ class Disciple_Tools_Contact_Post_Type
             'section' => 'misc'
         ];
         $fields["type"] = [
-            'name'        => __( 'Contact type', 'disciple_tools' ),
+            'name'        => __( 'Contact Type', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'media'    => [ "label" => __( 'Media', 'disciple_tools' ) ],
@@ -553,7 +553,7 @@ class Disciple_Tools_Contact_Post_Type
             'hidden'      => true
         ];
         $fields["last_modified"] =[
-            'name' => __( 'Last modified', 'disciple_tools' ),
+            'name' => __( 'Last Modified', 'disciple_tools' ),
             'type' => 'number',
             'default' => 0,
             'section' => 'admin'

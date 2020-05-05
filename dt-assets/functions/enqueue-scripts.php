@@ -110,13 +110,13 @@ function dt_site_scripts() {
             'template_dir' => get_template_directory_uri(),
             'translations' => [
                 'days_of_the_week' => [
-                    _x( "Su", 'Dates', 'disciple_tools' ),
-                    _x( "Mo", 'Dates', 'disciple_tools' ),
-                    _x( "Tu", 'Dates', 'disciple_tools' ),
-                    _x( "We", 'Dates', 'disciple_tools' ),
-                    _x( "Th", 'Dates', 'disciple_tools' ),
-                    _x( "Fr", 'Dates', 'disciple_tools' ),
-                    _x( "Sa", 'Dates', 'disciple_tools' )
+                    _x( "Su", 'Abbreviation of Sunday', 'disciple_tools' ),
+                    _x( "Mo", 'Abbreviation of Monday', 'disciple_tools' ),
+                    _x( "Tu", 'Abbreviation of Tuesday', 'disciple_tools' ),
+                    _x( "We", 'Abbreviation of Wednesday', 'disciple_tools' ),
+                    _x( "Th", 'Abbreviation of Thursday', 'disciple_tools' ),
+                    _x( "Fr", 'Abbreviation of Friday', 'disciple_tools' ),
+                    _x( "Sa", 'Abbreviation of Saturday', 'disciple_tools' )
                 ],
                 'month_labels' => [
                     _x( "January", 'Dates', 'disciple_tools' ),
@@ -189,8 +189,8 @@ function dt_site_scripts() {
                     'template_dir' => get_template_directory_uri(),
                     'contact_author_name' => isset( $post->post_author ) && (int) $post->post_author > 0 ? get_user_by( 'id', intval( $post->post_author ) )->display_name : "",
                     'translations' => [
-                        "edit" => __( "edit", "disciple_tools" ),
-                        "delete" => __( "delete", "disciple_tools" ),
+                        "edit" => strtolower( __( "Edit", "disciple_tools" ) ),
+                        "delete" => strtolower( __( "Delete", "disciple_tools" ) ),
                         "translate" => __( "Translate with Google Translate", "disciple_tools" ),
                         "hide_translation" => __( "Hide Translation", "disciple_tools" )
                     ],
@@ -213,8 +213,8 @@ function dt_site_scripts() {
                 'current_user_id' => get_current_user_id(),
                 'post_fields' => $post,
                 'translations' => [
-                    'remove' => __( 'remove', 'disciple_tools' ),
-                    'complete' => __( 'mark as complete', 'disciple_tools' ),
+                    'remove' => __( 'Delete', 'disciple_tools' ),
+                    'complete' => __( 'Mark as complete', 'disciple_tools' ),
                     'no_tasks' => __( 'No task created', 'disciple_tools' ),
                     'reminder' => __( 'Reminder', 'disciple_tools' ),
                     'no_note' => __( 'No note set', 'disciple_tools' ),

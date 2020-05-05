@@ -81,8 +81,8 @@ class Disciple_Tools_Users
             ), ARRAY_N );
 
             $dispatchers = $wpdb->get_results("
-                SELECT user_id FROM $wpdb->usermeta 
-                WHERE meta_key = '{$wpdb->prefix}capabilities' 
+                SELECT user_id FROM $wpdb->usermeta
+                WHERE meta_key = '{$wpdb->prefix}capabilities'
                 AND meta_value LIKE '%dispatcher%'
             ");
 
@@ -695,7 +695,7 @@ class Disciple_Tools_Users
                         <input type="text" class="regular-text corresponds_to_contact" name="corresponds_to_contact" value="<?php echo esc_html( $contact_title )?>" /><br />
                         <input type="hidden" class="regular-text corresponds_to_contact_id" name="corresponds_to_contact_id" value="<?php echo esc_html( $contact_id )?>" />
                         <?php if ( $contact_id ) : ?>
-                            <span class="description"><a href="<?php echo esc_html( get_site_url() . '/contacts/' . $contact_id )?>" target="_blank"><?php esc_html_e( "View contact", 'disciple_tools' ) ?></a></span>
+                            <span class="description"><a href="<?php echo esc_html( get_site_url() . '/contacts/' . $contact_id )?>" target="_blank"><?php esc_html_e( "View Contact", 'disciple_tools' ) ?></a></span>
                         <?php else :?>
                             <span class="description"><?php esc_html_e( "Add the name of the contact record this user corresponds to.", 'disciple_tools' ) ?>
                                 <a target="_blank" href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/users.html#inviting-users"><?php esc_html_e( "Learn more.", "disciple_tools" ) ?></a>

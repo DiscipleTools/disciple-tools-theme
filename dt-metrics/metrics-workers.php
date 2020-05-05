@@ -171,7 +171,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 'title_activity' => __( 'Workers Activity', 'disciple_tools' ),
                 'title_recent_activity' => __( 'Worker System Engagement for the Last 30 Days', 'disciple_tools' ),
                 'title_response' => __( 'Follow-up Pace', 'disciple_tools' ),
-                'title_assigned_to' => __( 'Contacts assigned to multipliers', 'disciple_tools' ),
+                'title_assigned_to' => __( 'Contacts assigned to Multipliers', 'disciple_tools' ),
                 'label_total_workers' => __( 'Total Workers', 'disciple_tools' ),
                 'label_total_multipliers' => __( 'Multipliers', 'disciple_tools' ),
                 'label_total_dispatchers' => __( 'Dispatchers', 'disciple_tools' ),
@@ -180,7 +180,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 'label_contacts_per_user' => __( 'Contact Progress per Worker', 'disciple_tools' ),
                 'label_least_active' => __( 'Least Active', 'disciple_tools' ),
                 'label_most_active' => __( 'Most Active', 'disciple_tools' ),
-                'label_select_year' => __( 'Select All time or a specific year to display', 'disciple_tools' ),
+                'label_select_year' => __( 'Select All Time or a specific year to display', 'disciple_tools' ),
                 'label_all_time' => __( 'All Time', 'disciple_tools' ),
                 'label_this_year' => __( 'This Year', 'disciple_tools' ),
                 'label_last_year' => __( 'Last Year', 'disciple_tools' ),
@@ -586,4 +586,3 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     }
 }
 Disciple_Tools_Metrics_Users::instance();
-

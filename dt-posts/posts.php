@@ -286,11 +286,11 @@ class Disciple_Tools_Posts
             }
         } else if ( $p2p_type === "contacts_to_peoplegroups" || $p2p_type === "groups_to_peoplegroups"){
             if ($action == "connected to"){
-                $object_note_to = sprintf( esc_html_x( '%1$s added as people group on %2$s', 'Deaf added as people group on contact1', 'disciple_tools' ), $to_title, $from_title );
-                $object_note_from = sprintf( esc_html_x( '%s added to people groups', 'Deaf added to people groups', 'disciple_tools' ), $to_title );
+                $object_note_to = sprintf( esc_html_x( '%1$s added as people group on %2$s', 'Shaikh added as people group on contact1', 'disciple_tools' ), $to_title, $from_title );
+                $object_note_from = sprintf( esc_html_x( '%s added to people groups', 'Shaikh added to people groups', 'disciple_tools' ), $to_title );
             } else {
-                $object_note_to = sprintf( esc_html_x( '%1$s removed from people groups on %2$s', 'Deaf removed from people groups on contact1', 'disciple_tools' ), $to_title, $from_title );
-                $object_note_from = sprintf( esc_html_x( '%s removed from people groups', 'Deaf removed from people groups', 'disciple_tools' ), $to_title );
+                $object_note_to = sprintf( esc_html_x( '%1$s removed from people groups on %2$s', 'Shaikh removed from people groups on contact1', 'disciple_tools' ), $to_title, $from_title );
+                $object_note_from = sprintf( esc_html_x( '%s removed from people groups', 'Shaikh removed from people groups', 'disciple_tools' ), $to_title );
             }
         } else if ( $p2p_type === "groups_to_leaders"){
             if ($action == "connected to"){
@@ -319,10 +319,10 @@ class Disciple_Tools_Posts
         }
         else if ( $p2p_type === "groups_to_peers"){
             if ($action == "connected to"){
-                $object_note_to = sprintf( esc_html_x( '%s added to peer groups', 'group2 added to peer groups', 'disciple_tools' ), $from_title );
+                $object_note_to = sprintf( esc_html_x( '%s added to peer groups', 'group1 added to peer groups', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( '%s added to peer groups', 'group1 added to peer groups', 'disciple_tools' ), $to_title );
             } else {
-                $object_note_to = sprintf( esc_html_x( '%s removed from peer groups', 'group2 removed from peer groups', 'disciple_tools' ), $from_title );
+                $object_note_to = sprintf( esc_html_x( '%s removed from peer groups', 'group1 removed from peer groups', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( '%s removed from peer groups', 'group1 removed from peer groups', 'disciple_tools' ), $to_title );
             }
         } else if ( $p2p_type === "contacts_to_relation"){

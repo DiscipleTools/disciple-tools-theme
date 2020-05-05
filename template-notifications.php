@@ -42,7 +42,7 @@ get_header(); ?>
                                 <div class="expanded small button-group">
                                     <button id="all" type="button"
                                             onclick="toggle_buttons('all'); get_notifications( all = true, true, );"
-                                            class="button hollow"><?php echo esc_html_x( 'All', 'As in all things', 'disciple_tools' ) ?>
+                                            class="button hollow"><?php echo esc_html_x( 'All', 'List Filters', 'disciple_tools' ) ?>
                                     </button>
                                     <button id="new" type="button"
                                             onclick="toggle_buttons('new'); get_notifications( all = false, true );"
@@ -52,7 +52,7 @@ get_header(); ?>
                             </div>
                             <div class="small-4 medium-5 cell" style="text-align:right;">
                                 <span class="hide-for-small-only">
-                                    <a onclick="mark_all_viewed()"><?php esc_html_e( 'Mark All as Read', 'disciple_tools' ) ?></a>  -
+                                    <a onclick="mark_all_viewed()"><?php esc_html_e( 'Mark all as read', 'disciple_tools' ) ?></a>  -
                                     <a href="<?php echo esc_url( home_url( '/' ) ); ?>settings/#notifications">
                                         <?php esc_html_e( 'Settings', 'disciple_tools' )?>
                                     </a>
@@ -73,10 +73,10 @@ get_header(); ?>
                         <div class="grid-x grid-margin-x grid-margin-y">
                             <div class="small-12 medium-6 medium-offset-3 cell center">
                                 <a id="next-all" onclick="get_notifications( true, false )" style="display:none;">
-                                    <?php esc_html_e( 'load more notifications', 'disciple_tools' )?>
+                                    <?php esc_html_e( 'Load more notifications', 'disciple_tools' )?>
                                 </a>
                                 <a id="next-new" onclick="get_notifications( false, false )">
-                                    <?php esc_html_e( 'load more notifications', 'disciple_tools' ) ?>
+                                    <?php esc_html_e( 'Load more notifications', 'disciple_tools' ) ?>
                                 </a>
                             </div>
                         </div>

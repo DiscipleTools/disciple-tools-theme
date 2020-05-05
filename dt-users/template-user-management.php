@@ -375,4 +375,3 @@ $user_management_options = DT_User_Management::user_management_options();
 </div> <!-- end #content -->
 
 <?php get_footer(); ?>
-

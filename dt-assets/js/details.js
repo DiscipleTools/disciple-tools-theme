@@ -358,8 +358,8 @@ jQuery(document).ready(function($) {
       html += `<li>
         <span style="${task_done ? 'text-decoration:line-through' : ''}">
         ${task_row}
-        ${ show_complete_button ? `<button type="button" data-id="${_.escape(task.id)}" class="existing-task-action complete-task">${_.escape(detailsSettings.translations.complete)}</button>` : '' }
-        <button type="button" data-id="${_.escape(task.id)}" class="existing-task-action remove-task" style="color: red;">${_.escape(detailsSettings.translations.remove)}</button>
+        ${ show_complete_button ? `<button type="button" data-id="${_.escape(task.id)}" class="existing-task-action complete-task">${_.escape(detailsSettings.translations.complete).toLowerCase()}</button>` : '' }
+        <button type="button" data-id="${_.escape(task.id)}" class="existing-task-action remove-task" style="color: red;">${_.escape(detailsSettings.translations.remove).toLowerCase()}</button>
       </li>`
     })
     if (!html ){

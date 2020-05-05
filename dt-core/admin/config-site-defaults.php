@@ -300,7 +300,7 @@ function dt_get_site_options_defaults() {
                 'email' => true
             ],
             'comments' => [
-                'label' => __( 'New comments', 'disciple_tools' ),
+                'label' => __( 'New Comments', 'disciple_tools' ),
                 'web'   => false,
                 'email' => false
             ],
