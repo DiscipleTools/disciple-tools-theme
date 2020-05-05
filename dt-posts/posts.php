@@ -310,7 +310,7 @@ class Disciple_Tools_Posts
             }
         } else if ( $p2p_type === "groups_to_groups"){
             if ($action == "connected to"){
-                $object_note_to = sprintf( esc_html_x( '%s added to child groups', 'group1 added to child groups', 'disciple_tools' ), $from_title );
+                $object_note_to = sprintf( esc_html_x( '%s added to child groups', 'group2 added to child groups', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( '%s added to parent groups', 'group1 added to parent groups', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( '%s removed from child groups', 'group2 removed from child groups', 'disciple_tools' ), $from_title );

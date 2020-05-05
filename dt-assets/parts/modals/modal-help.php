@@ -118,7 +118,7 @@
 
         <!--  Connections tile -->
         <div class="help-section" id="connections-help-text" style="display: none">
-            <h4><?php esc_html_e( "Contact Connections", 'disciple_tools' ) ?></h4>
+            <h4><?php echo esc_html_x( "Contact Connections", 'Optional Documentation', 'disciple_tools' ) ?></h4>
             <p><?php echo esc_html_x( "Connections this contact has with other contacts (and groups) in this system.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <ul>
                 <li><strong><?php echo esc_html( $contact_fields["groups"]["name"] ) ?></strong> - <?php echo esc_html( $contact_fields["groups"]["description"] ?? "" ) ?></li>
@@ -235,7 +235,7 @@
 
         <!--  Groups Tile  -->
         <div class="help-section" id="group-connections-help-text" style="display: none">
-            <h3><?php esc_html_e( "Group Connections", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_x( "Group Connections", 'Optional Documentation', 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "Here you can select what type of group this is and how it is related to other groups in the system.", 'Optional Documentation', 'disciple_tools' ) ?></p>
 
             <h4><?php echo esc_html( $group_fields["group_type"]["name"] ) ?></h4>
@@ -246,7 +246,7 @@
                 <?php endforeach; ?>
             </ul>
 
-            <h4><?php esc_html_e( "Group Connections", 'disciple_tools' ) ?></h4>
+            <h4><?php echo esc_html_x( "Group Connections", 'Optional Documentation', 'disciple_tools' ) ?></h4>
             <p><?php echo esc_html_x( "Connections this group has with other groups in this system.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <ul>
                 <li><strong><?php echo esc_html( $group_fields["parent_groups"]["name"] ) ?></strong> - <?php echo esc_html( $group_fields["parent_groups"]["description"] ?? "" ) ?></li>
@@ -394,7 +394,7 @@
     if ( 'settings' === $url_path ) : ?>
         <!--  Your Profile -->
         <div class="help-section" id="profile-help-text" style="display: none">
-            <h3><?php esc_html_e( "Your Profile", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_x( "Your Profile", 'Optional Documentation', 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "In this area you can see your user profile.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <p><?php echo esc_html_x( "You are not required to fill out any of these profile fields. They are optional to meet your team’s needs.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <p><?php echo esc_html_x( "By clicking 'Edit', you will be able adjust things like the language that this system operates in.", 'Optional Documentation', 'disciple_tools' ) ?></p>
@@ -408,7 +408,7 @@
 
         <!--  Your notifications -->
         <div class="help-section" id="notifications-help-text" style="display: none">
-            <h3><?php esc_html_e( "Your Notifications", 'disciple_tools' ) ?></h3>
+            <h3><?php echo esc_html_x( "Your Notifications", 'Optional Documentation', 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <ul>
                 <li><?php echo esc_html_x( "Notifications Turned On: The toggle will appear blue.", 'Optional Documentation', 'disciple_tools' ) ?></li>
@@ -428,20 +428,20 @@
 
     <!--   Notifications page -->
     <div class="help-section" id="notifications-template-help-text" style="display: none">
-        <h3><?php esc_html_e( "Notifications Page", 'disciple_tools' ) ?></h3>
+        <h3><?php echo esc_html_x( "Notifications Page", 'Optional Documentation', 'disciple_tools' ) ?></h3>
         <p><?php echo esc_html_x( "This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records.", 'Optional Documentation', 'disciple_tools' ) ?></p>
-        <h4><?php esc_html_e( "All / Unread", 'disciple_tools' ) ?></h4>
+        <h4><?php echo esc_html_x( "All / Unread", 'Optional Documentation', 'disciple_tools' ) ?></h4>
         <p><?php echo esc_html_x( "Click the 'All' button to show the full list of all of your notifications.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         <p><?php echo esc_html_x( "Click the 'Unread' button to show the list of all of your unread notifications.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         <h4><?php esc_html_e( "Mark all as read", 'disciple_tools' ) ?></h4>
-        <p><?php echo esc_html_x( "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark all as read' link at the top to quickly adjust all the messages that they have all been read.", 'Optional Documentation', 'disciple_tools' ) ?></p>
+        <p><?php echo esc_html_x( "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read.", 'Optional Documentation', 'disciple_tools' ) ?></p>
         <h4><?php esc_html_e( "Settings", 'disciple_tools' ) ?></h4>
         <p><?php echo esc_html_x( "Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system.", 'Optional Documentation', 'disciple_tools' ) ?></p>
     </div>
 
     <!--   Duplicates view page -->
     <div class="help-section" id="duplicates-template-help-text" style="display: none">
-        <h3><?php esc_html_e( "Duplicate Contact page", 'disciple_tools' ) ?></h3>
+        <h3><?php echo esc_html_x( "Duplicate Contact page", 'Optional Documentation', 'disciple_tools' ) ?></h3>
         <p><?php echo esc_html_x( "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact.", 'Optional Documentation', 'disciple_tools' ) ?></p>
     </div>
 
@@ -456,8 +456,8 @@
         <div class="cell small-8">
             <!-- documentation link -->
             <div class="help-more">
-                <h5><?php esc_html_e( "Need more help?", 'disciple_tools' ) ?></h5>
-                <a class="button small" id="docslink" href="https://disciple-tools.readthedocs.io/en/latest/index.html"><?php esc_html_e( 'Read the documentation', 'disciple_tools' )?></a>
+                <h5><?php echo esc_html_x( "Need more help?", 'Optional Documentation', 'disciple_tools' ) ?></h5>
+                <a class="button small" id="docslink" href="https://disciple-tools.readthedocs.io/en/latest/index.html"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
             </div>
         </div>
         <button class="close-button" data-close aria-label="Close modal" type="button">

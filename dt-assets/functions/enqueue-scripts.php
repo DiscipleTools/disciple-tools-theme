@@ -189,8 +189,8 @@ function dt_site_scripts() {
                     'template_dir' => get_template_directory_uri(),
                     'contact_author_name' => isset( $post->post_author ) && (int) $post->post_author > 0 ? get_user_by( 'id', intval( $post->post_author ) )->display_name : "",
                     'translations' => [
-                        "edit" => __( "Edit", "disciple_tools" ),
-                        "delete" => __( "Delete", "disciple_tools" ),
+                        "edit" => strtolower( __( "Edit", "disciple_tools" ) ),
+                        "delete" => strtolower( __( "Delete", "disciple_tools" ) ),
                         "translate" => __( "Translate with Google Translate", "disciple_tools" ),
                         "hide_translation" => __( "Hide Translation", "disciple_tools" )
                     ],
