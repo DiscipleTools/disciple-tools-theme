@@ -172,6 +172,9 @@ class Disciple_Tools_Post_Type_Template {
 //        $fields = $this->get_contact_field_defaults( $post_id, $include_current_post );
         $fields = [];
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, $this->post_type );
+
+        $langs = dt_get_available_languages();
+
         foreach ( $fields as $field_key => $field ){
             if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
                 foreach ( $field["default"] as $option_key => $option_value ){
@@ -198,6 +201,11 @@ class Disciple_Tools_Post_Type_Template {
                         if ( $field_type === "key_select" || $field_type === "multi_select" ) {
                             if ( isset( $field["default"] ) ) {
                                 $fields[ $key ]["default"] = array_replace_recursive( $fields[ $key ]["default"], $field["default"] );
+                            }
+                        }
+                        foreach ( $langs as $lang => $val ) {
+                            if ( !empty( $field[$val['language']] ) ) {
+                                $fields[ $key ][$val['language']] = $field[$val['language']];
                             }
                         }
                     }
