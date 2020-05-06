@@ -733,8 +733,8 @@ class Disciple_Tools_Contact_Post_Type
                             }
                         }
                         foreach ( $langs as $lang => $val ) {
-                            if ( !empty( $field[$val['language']] ) ) {
-                                $fields[ $key ][$val['language']] = $field[$val['language']];
+                            if ( !empty( $field["translations"][$val['language']] ) ) {
+                                $fields[ $key ]["translations"][$val['language']] = $field["translations"][$val['language']];
                             }
                         }
                     }

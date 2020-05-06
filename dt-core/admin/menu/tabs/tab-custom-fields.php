@@ -279,7 +279,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <?php foreach ( $langs as $lang => $val ) : ?>
                                     <tr>
                                     <td><label for="field_key_<?php echo esc_html( $field_key )?>_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
-                                    <td><input name="field_key_<?php echo esc_html( $field_key )?>_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $field[$val['language']] ?? "" );?>"/></td>
+                                    <td><input name="field_key_<?php echo esc_html( $field_key )?>_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $field["translations"][$val['language']] ?? "" );?>"/></td>
                                     </tr>
                             <?php endforeach; ?>
                         </table>
@@ -439,7 +439,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         $langcode = $val['language'];
                         $translation_key = "field_key_" . $field_key . "_translation-" . $langcode;
                         if ( isset( $post_submission[$translation_key] ) ) {
-                            $custom_field[$langcode] = $post_submission[$translation_key];
+                            $custom_field["translations"][$langcode] = $post_submission[$translation_key];
                         }
                     }
                 }
