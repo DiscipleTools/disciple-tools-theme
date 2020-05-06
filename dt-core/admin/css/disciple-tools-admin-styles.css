@@ -88,3 +88,7 @@ button.button-like-link {
     vertical-align: middle;
     box-sizing: border-box;
 }
+
+.hide {
+    display: none;
+}

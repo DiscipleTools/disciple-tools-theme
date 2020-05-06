@@ -108,7 +108,6 @@ class Disciple_Tools_Contact_Post_Type
         add_action( 'init', [ $this, 'contacts_rewrites_init' ] );
         add_filter( 'post_type_link', [ $this, 'contacts_permalink' ], 1, 3 );
         add_filter( 'dt_get_post_type_settings', [ $this, 'get_post_type_settings_hook' ], 10, 2 );
-
     } // End __construct()
 
     public static function get_type_name_plural(){
@@ -702,6 +701,9 @@ class Disciple_Tools_Contact_Post_Type
         }
         $fields = $this->get_contact_field_defaults( $post_id, $include_current_post );
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
+
+        $langs = dt_get_available_languages();
+
         foreach ( $fields as $field_key => $field ){
             if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
                 foreach ( $field["default"] as $option_key => $option_value ){
@@ -728,6 +730,11 @@ class Disciple_Tools_Contact_Post_Type
                         if ( $field_type === "key_select" || $field_type === "multi_select" ) {
                             if ( isset( $field["default"] ) ) {
                                 $fields[ $key ]["default"] = array_replace_recursive( $fields[ $key ]["default"], $field["default"] );
+                            }
+                        }
+                        foreach ( $langs as $lang => $val ) {
+                            if ( !empty( $field["translations"][$val['language']] ) ) {
+                                $fields[ $key ]["translations"][$val['language']] = $field["translations"][$val['language']];
                             }
                         }
                     }
@@ -757,12 +764,31 @@ class Disciple_Tools_Contact_Post_Type
                 }
             }
         }
-
         $fields = apply_filters( 'dt_custom_fields_settings_after_combine', $fields, "contacts" );
-
         wp_cache_set( "contact_field_settings" . $cache_with_deleted, $fields );
         return $fields;
     } // End get_custom_fields_settings()
+
+    public function dt_get_custom_fields_translation( $fields, $post_type ) {
+        if (is_admin()) {
+            return $fields;
+        } else {
+            $user_locale = get_user_locale();
+            foreach ( $fields as $field => $value ) {
+                if ( $value["type"] == "key_select" || $value["type"] == "multi_select" ) {
+                    foreach ( $value["default"] as $option_key => $option_value ) {
+                        if ( !empty( $option_value["translations"][$user_locale] ) ) {
+                            $fields[$field]["default"][$option_key]["label"] = $option_value["translations"][$user_locale];
+                        }
+                    }
+                }
+                if ( !empty( $value["translations"][$user_locale] ) ) {
+                    $fields[$field]["name"] = $value["translations"][$user_locale];
+                }
+            }
+            return $fields;
+        }
+    }
 
     public function get_post_type_settings_hook( $settings, $post_type ){
         if ( $post_type === "contacts" ){
@@ -925,7 +951,18 @@ class Disciple_Tools_Contact_Post_Type
         return apply_filters( 'dt_custom_channels', $channel_list );
     }
 
-
+    public function dt_get_custom_channels_translation( $channel_list ) {
+        if (is_admin()) {
+            return $channel_list;
+        }
+        $user_locale = get_user_locale();
+        foreach ( $channel_list as $channel_key => $channel_value ) {
+            if ( !empty( $channel_value["translations"][$user_locale] ) ) {
+                $channel_list[$channel_key]["label"] = $channel_value["translations"][$user_locale];
+            }
+        }
+        return $channel_list;
+    }
 
     /**
      * Run on activation.
