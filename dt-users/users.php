@@ -707,8 +707,8 @@ class Disciple_Tools_Users
         </table>
         <?php if ( isset( $user->ID ) && user_can( $user->ID, 'access_specific_sources' ) ) :
             $selected_sources = get_user_option( 'allowed_sources', $user->ID );
-            $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-            $sources = $site_custom_lists['sources'] ?? [];
+            $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
+            $sources = isset( $post_settings["fields"]["sources"]["default"] ) ? $post_settings["fields"]["sources"]["default"] : [];
             ?>
             <h3>Digital Responder Access</h3>
             <table class="form-table">
