@@ -119,9 +119,9 @@ get_header();
                         $sources = $contacts_settings["fields"]["sources"]["default"];
                         foreach ( $sources as $source_key => $source ): ?>
                             <?php if ( !isset( $source["deleted"] ) || $source["delete"] !== true ) : ?>
-                                <option value="<?php echo esc_attr( $source_key, 'disciple_tools' ); ?>">
-                                    <?php echo esc_html( $source['label'] )?>
-                                </option>
+                            <option value="<?php echo esc_attr( $source_key, 'disciple_tools' ); ?>">
+                                <?php echo esc_html( $source['label'] )?>
+                            </option>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </select>

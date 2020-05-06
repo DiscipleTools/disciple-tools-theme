@@ -117,6 +117,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     return;
                 }
                 $post_submission = [];
+
                 foreach ( $_POST as $key => $value ){
                     $post_submission[sanitize_text_field( wp_unslash( $key ) )] = sanitize_text_field( wp_unslash( $value ) );
                 }
@@ -216,6 +217,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         }
 
         $field_options = $field["default"];
+
         $first = true;
         $tile_options = dt_get_option( "dt_custom_tiles" );
         $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type );
@@ -225,6 +227,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         foreach ( $sections as $section_id ){
             $tile_options[$post_type][$section_id] = [];
         }
+
+        $langs = dt_get_available_languages();
         ?>
         <form method="post" name="field_edit_form">
         <input type="hidden" name="field_key" value="<?php echo esc_html( $field_key )?>">
@@ -240,6 +244,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Tile", 'disciple_tools' ) ?></td>
+                <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
                 <td></td>
                 <td></td>
             </tr>
@@ -265,6 +270,20 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 <?php endforeach; ?>
                             </select>
                         <?php endif; ?>
+                    </td>
+                    <td>
+                        <button class="button small expand_translations">+</button>
+                        <div class="translation_container hide">
+                        <table>
+
+                        <?php foreach ( $langs as $lang => $val ) : ?>
+                                    <tr>
+                                    <td><label for="field_key_<?php echo esc_html( $field_key )?>_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
+                                    <td><input name="field_key_<?php echo esc_html( $field_key )?>_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $field["translations"][$val['language']] ?? "" );?>"/></td>
+                                    </tr>
+                            <?php endforeach; ?>
+                        </table>
+                        </div>
                     </td>
                     <td>
                         <button type="submit" name="save" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
@@ -306,10 +325,12 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Move", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Hide/Archive", 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
                     </tr>
                     </thead>
                     <tbody>
                     <?php foreach ( $field_options as $key => $option ) :
+
                         if ( !( isset( $option["deleted"] ) && $option["deleted"] == true ) ):
                             $label = $option["label"] ?? "";
                             $in_defaults = isset( $defaults[$field_key]["default"][$key] );
@@ -332,6 +353,20 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                         || !isset( $field["default"][$key] ) ) : ?>
                                     <button type="submit" name="delete_option" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "Hide", 'disciple_tools' ) ?></button>
                                     <?php endif; ?>
+                                </td>
+                                <td>
+                                    <button class="button small expand_translations">+</button>
+                                    <div class="translation_container hide">
+                                    <table>
+                                    <?php
+                                    foreach ( $langs as $lang => $val ) : ?>
+                                            <tr>
+                                            <td><label for="field_option_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
+                                            <td><input name="field_option_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $custom_fields[$post_type][$field_key]["default"][$key]["translations"][$val['language']] ?? "" );?>"/></td>
+                                            </tr>
+                                    <?php endforeach; ?>
+                                    </table>
+                                    </div>
                                 </td>
                             </tr>
                             <?php $first = false;
@@ -376,9 +411,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         //save values
         $post_type = $post_submission["post_type"];
         $post_fields = $this->get_post_fields( $post_type );
-
         $field_customizations = dt_get_option( "dt_field_customizations" );
         $field_key = $post_submission["field_key"];
+        $langs = dt_get_available_languages();
         if ( isset( $post_submission["delete"] ) ){
             if ( isset( $field_customizations[$post_type][$field_key] ) ){
                 unset( $field_customizations[$post_type][$field_key] );
@@ -400,6 +435,13 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 //update name
                 if ( isset( $post_submission["field_key_" . $field_key] ) ){
                     $custom_field["name"] = $post_submission["field_key_" . $field_key];
+                    foreach ( $langs as $lang => $val ){
+                        $langcode = $val['language'];
+                        $translation_key = "field_key_" . $field_key . "_translation-" . $langcode;
+                        if ( isset( $post_submission[$translation_key] ) ) {
+                            $custom_field["translations"][$langcode] = $post_submission[$translation_key];
+                        }
+                    }
                 }
                 if ( isset( $post_submission["tile_select"] ) ){
                     $custom_field["tile"] = $post_submission["tile_select"];
@@ -407,13 +449,22 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             }
             if ( $field["type"] === 'multi_select' || $field["type"] === "key_select" ){
                 foreach ( $post_submission as $key => $val ){
-                    if ( strpos( $key, "field_option_" ) === 0 ){
-                        $option_key = substr( $key, 13 );
-                        if ( isset( $field_options[$option_key]["label"] ) ){
-                            if ( $field_options[$option_key]["label"] != $val ){
-                                $custom_field["default"][$option_key]["label"] = $val;
+                    if ( strpos( $key, "field_option_" ) === 0) {
+                        if ( strpos( $key, 'translation' ) !== false ) {
+                            $option_key = substr( $key, 13, strpos( $key, 'translation' ) - 14 );
+                            $translation_langcode = substr( $key, -5 );
+                            if ( strpos( $translation_langcode, '-' ) !== false ) {
+                                $translation_langcode = substr( $translation_langcode, 3 );
                             }
-                            $field_options[$option_key]["label"] = $val;
+                            $custom_field["default"][$option_key]["translations"][$translation_langcode] = $val;
+                        } else {
+                            $option_key = substr( $key, 13 );
+                            if ( isset( $field_options[$option_key]["label"] ) ){
+                                if ( $field_options[$option_key]["label"] != $val ){
+                                    $custom_field[$option_key]["label"] = $val;
+                                }
+                                $field_options[$option_key]["label"] = $val;
+                            }
                         }
                     }
                 }

@@ -489,6 +489,9 @@ class Disciple_Tools_Groups_Post_Type
 
         $fields = $this->get_group_field_defaults( $post_id, $include_current_post );
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, "groups" );
+
+        $langs = dt_get_available_languages();
+
         foreach ( $fields as $field_key => $field ){
             if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
                 foreach ( $field["default"] as $option_key => $option_value ){
@@ -515,6 +518,11 @@ class Disciple_Tools_Groups_Post_Type
                         if ( $field_type === "key_select" || $field_type === "multi_select" ){
                             if ( isset( $field["default"] )){
                                 $fields[$key]["default"] = array_replace_recursive( $fields[$key]["default"], $field["default"] );
+                            }
+                        }
+                        foreach ( $langs as $lang => $val ) {
+                            if ( !empty( $field["translations"][$val['language']] ) ) {
+                                $fields[ $key ]["translations"][$val['language']] = $field["translations"][$val['language']];
                             }
                         }
                     }
@@ -544,6 +552,7 @@ class Disciple_Tools_Groups_Post_Type
                 }
             }
         }
+        $fields = apply_filters( 'dt_custom_fields_settings_after_combine', $fields, "groups" );
         wp_cache_set( "group_fields_settings", $fields );
         return $fields;
     } // End get_custom_fields_settings()

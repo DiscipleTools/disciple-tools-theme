@@ -264,7 +264,9 @@ else {
             require_once( get_template_directory() . '/dt-posts/custom-post-type.php' );
             require_once( get_template_directory() . '/dt-posts/dt-posts.php' );
             require_once( get_template_directory() . '/dt-posts/dt-posts-endpoints.php' );
+            require_once( get_template_directory() . '/dt-posts/dt-posts-hooks.php' );
             Disciple_Tools_Posts_Endpoints::instance();
+            new DT_Posts_Hooks();
 
             /**
              * dt-contacts
