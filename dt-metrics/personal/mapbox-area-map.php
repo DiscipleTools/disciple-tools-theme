@@ -65,6 +65,8 @@ class DT_Metrics_Mapbox_Personal_Area_Map extends DT_Metrics_Chart_Base
                     'totals_rest_base_url' => $this->namespace,
                     'list_rest_url' => 'get_grid_list',
                     'list_rest_base_url' => $this->namespace,
+                    'list_by_grid_rest_url' => 'list_by_grid_id',
+                    'list_by_grid_rest_base_url' => $this->namespace,
                     'geocoder_url' => trailingslashit( get_stylesheet_directory_uri() ),
                     'geocoder_nonce' => wp_create_nonce( 'wp_rest' ),
                     'menu_slug' => $this->base_slug,
@@ -90,6 +92,14 @@ class DT_Metrics_Mapbox_Personal_Area_Map extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'get_grid_list' ],
+                ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, 'list_by_grid_id', [
+                [
+                    'methods'  => WP_REST_Server::CREATABLE,
+                    'callback' => [ $this, 'list_by_grid_id' ],
                 ],
             ]
         );
@@ -187,7 +197,27 @@ class DT_Metrics_Mapbox_Personal_Area_Map extends DT_Metrics_Chart_Base
         return $list;
     }
 
+    public function list_by_grid_id( WP_REST_Request $request ) {
+        if ( !$this->has_permission() ){
+            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+        }
+        $params = $request->get_json_params() ?? $request->get_body_params();
+        if ( ! isset( $params['grid_id'] ) || empty( $params['grid_id'] ) ) {
+            return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
+        }
+        $grid_id = sanitize_text_field( wp_unslash( $params['grid_id'] ) );
 
+        $status = null;
+        if ( isset( $params['status'] ) && $params['status'] !== 'all' ) {
+            $status = sanitize_text_field( wp_unslash( $params['status'] ) );
+        }
+
+        $my_list = $this->my_list();
+
+        $list = Disciple_Tools_Mapping_Queries::query_my_contacts_under_grid_id( $grid_id, $my_list, $status );
+
+        return $list;
+    }
 
 }
 new DT_Metrics_Mapbox_Personal_Area_Map();

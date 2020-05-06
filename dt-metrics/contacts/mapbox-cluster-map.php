@@ -67,5 +67,6 @@ class DT_Metrics_Mapbox_Contacts_Cluster_Map extends DT_Metrics_Chart_Base
         );
     }
 
+
 }
 new DT_Metrics_Mapbox_Contacts_Cluster_Map();

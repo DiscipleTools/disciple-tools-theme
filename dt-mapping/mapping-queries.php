@@ -1725,4 +1725,288 @@ class Disciple_Tools_Mapping_Queries {
 
         return $list;
     }
+
+    public static function query_contacts_under_grid_id( $grid_id, $status = null ) {
+        global $wpdb;
+
+        if ( $status ) {
+            $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT DISTINCT t0.post_title, t0.post_id FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'overall_status' AND pm2.meta_value = %s )
+            ) as t0
+            WHERE t0.admin0_grid_id = %d
+            UNION
+            SELECT DISTINCT t1.post_title, t1.post_id FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'overall_status' AND pm2.meta_value = %s )
+            ) as t1
+            WHERE t1.admin1_grid_id = %d
+            UNION
+            SELECT DISTINCT t2.post_title, t2.post_id  FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'overall_status' AND pm2.meta_value = %s )
+            ) as t2
+            WHERE t2.admin2_grid_id = %d
+            UNION
+            SELECT DISTINCT t3.post_title, t3.post_id  FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'overall_status' AND pm2.meta_value = %s )
+            ) as t3
+            WHERE t3.admin3_grid_id = %d
+            UNION
+            SELECT DISTINCT t4.post_title, t4.post_id  FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'overall_status' AND pm2.meta_value = %s )
+            ) as t4
+            WHERE t4.admin4_grid_id = %d
+            UNION
+            SELECT DISTINCT t5.post_title, t5.post_id  FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'overall_status' AND pm2.meta_value = %s )
+            ) as t5
+            WHERE t5.admin5_grid_id = %d;
+            ", $status,$grid_id,$status,$grid_id,$status,$grid_id,$status,$grid_id,$status,$grid_id,$status,$grid_id ), ARRAY_A );
+        } else {
+            $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT DISTINCT t0.post_title, t0.post_id FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+            ) as t0
+            WHERE t0.admin0_grid_id = %d
+            UNION
+            SELECT DISTINCT t1.post_title, t1.post_id FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+            ) as t1
+            WHERE t1.admin1_grid_id = %d
+            UNION
+            SELECT DISTINCT t2.post_title, t2.post_id  FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+            ) as t2
+            WHERE t2.admin2_grid_id = %d
+            UNION
+            SELECT DISTINCT t3.post_title, t3.post_id  FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+            ) as t3
+            WHERE t3.admin3_grid_id = %d
+            UNION
+            SELECT DISTINCT t4.post_title, t4.post_id  FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+            ) as t4
+            WHERE t4.admin4_grid_id = %d
+            UNION
+            SELECT DISTINCT t5.post_title, t5.post_id  FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+            ) as t5
+            WHERE t5.admin5_grid_id = %d;
+            ", $grid_id,$grid_id,$grid_id,$grid_id,$grid_id,$grid_id ), ARRAY_A );
+        }
+
+        return $results;
+    }
+
+    public static function query_my_contacts_under_grid_id( $grid_id, $user_post_ids, $status = null ) {
+        global $wpdb;
+
+        $prepared_ids = dt_array_to_sql( $user_post_ids );
+
+        if ( $status ) {
+            $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT DISTINCT t0.post_title, t0.post_id FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id IN ($prepared_ids)
+                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'overall_status' AND pm2.meta_value = %s )
+            ) as t0
+            WHERE t0.admin0_grid_id = %d
+            UNION
+            SELECT DISTINCT t1.post_title, t1.post_id FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id IN ($prepared_ids)
+                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'overall_status' AND pm2.meta_value = %s )
+            ) as t1
+            WHERE t1.admin1_grid_id = %d
+            UNION
+            SELECT DISTINCT t2.post_title, t2.post_id  FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id IN ($prepared_ids)
+                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'overall_status' AND pm2.meta_value = %s )
+            ) as t2
+            WHERE t2.admin2_grid_id = %d
+            UNION
+            SELECT DISTINCT t3.post_title, t3.post_id  FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id IN ($prepared_ids)
+                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'overall_status' AND pm2.meta_value = %s )
+            ) as t3
+            WHERE t3.admin3_grid_id = %d
+            UNION
+            SELECT DISTINCT t4.post_title, t4.post_id  FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id IN ($prepared_ids)
+                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'overall_status' AND pm2.meta_value = %s )
+            ) as t4
+            WHERE t4.admin4_grid_id = %d
+            UNION
+            SELECT DISTINCT t5.post_title, t5.post_id  FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id IN ($prepared_ids)
+                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'overall_status' AND pm2.meta_value = %s )
+            ) as t5
+            WHERE t5.admin5_grid_id = %d;
+            ", $status,$grid_id,$status,$grid_id,$status,$grid_id,$status,$grid_id,$status,$grid_id,$status,$grid_id ), ARRAY_A );
+        } else {
+            $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT DISTINCT t0.post_title, t0.post_id FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id IN ($prepared_ids)
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+            ) as t0
+            WHERE t0.admin0_grid_id = %d
+            UNION
+            SELECT DISTINCT t1.post_title, t1.post_id FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id IN ($prepared_ids)
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+            ) as t1
+            WHERE t1.admin1_grid_id = %d
+            UNION
+            SELECT DISTINCT t2.post_title, t2.post_id  FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id IN ($prepared_ids)
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+            ) as t2
+            WHERE t2.admin2_grid_id = %d
+            UNION
+            SELECT DISTINCT t3.post_title, t3.post_id  FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id IN ($prepared_ids)
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+            ) as t3
+            WHERE t3.admin3_grid_id = %d
+            UNION
+            SELECT DISTINCT t4.post_title, t4.post_id  FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id IN ($prepared_ids)
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+            ) as t4
+            WHERE t4.admin4_grid_id = %d
+            UNION
+            SELECT DISTINCT t5.post_title, t5.post_id  FROM (
+                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
+                WHERE pm.meta_key = 'location_grid'
+                AND pm.post_id IN ($prepared_ids)
+                AND pm.post_id NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'corresponds_to_user')
+            ) as t5
+            WHERE t5.admin5_grid_id = %d;
+            ", $grid_id,$grid_id,$grid_id,$grid_id,$grid_id,$grid_id ), ARRAY_A );
+        }
+
+        return $results;
+    }
 }

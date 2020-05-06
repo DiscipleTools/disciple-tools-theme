@@ -163,6 +163,10 @@ jQuery(document).ready(function($) {
               status = details.overall_status.label
             } else if ( window.post_type === 'groups' ) {
               status = details.group_status.label
+            } else if ( typeof details.status.label !== "undefined") {
+              status = details.status.label
+            } else {
+              status = ''
             }
 
             window.list[i].append(`

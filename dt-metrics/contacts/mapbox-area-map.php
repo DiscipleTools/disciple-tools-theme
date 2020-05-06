@@ -16,6 +16,7 @@ class DT_Metrics_Mapbox_Contact_Area_Map extends DT_Metrics_Chart_Base
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/common/area-map.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
+    public $namespace = 'dt-metrics/contacts/';
 
     public function __construct() {
         if ( ! DT_Mapbox_API::get_key() ) {
@@ -32,6 +33,8 @@ class DT_Metrics_Mapbox_Contact_Area_Map extends DT_Metrics_Chart_Base
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
+
+        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
     public function scripts() {
@@ -61,6 +64,8 @@ class DT_Metrics_Mapbox_Contact_Area_Map extends DT_Metrics_Chart_Base
                     'totals_rest_base_url' => 'dt-metrics/mapbox/',
                     'list_rest_url' => 'get_grid_list',
                     'list_rest_base_url' => 'dt-metrics/mapbox/',
+                    'list_by_grid_rest_url' => 'list_by_grid_id',
+                    'list_by_grid_rest_base_url' => $this->namespace,
                     'geocoder_url' => trailingslashit( get_stylesheet_directory_uri() ),
                     'geocoder_nonce' => wp_create_nonce( 'wp_rest' ),
                     'menu_slug' => $this->base_slug,
@@ -70,6 +75,35 @@ class DT_Metrics_Mapbox_Contact_Area_Map extends DT_Metrics_Chart_Base
                 ],
             ]
         );
+    }
+
+    public function add_api_routes() {
+        register_rest_route(
+            $this->namespace, 'list_by_grid_id', [
+                [
+                    'methods'  => WP_REST_Server::CREATABLE,
+                    'callback' => [ $this, 'list_by_grid_id' ],
+                ],
+            ]
+        );
+    }
+
+    public function list_by_grid_id( WP_REST_Request $request ) {
+        if ( !$this->has_permission() ){
+            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+        }
+        $params = $request->get_json_params() ?? $request->get_body_params();
+        if ( ! isset( $params['grid_id'] ) || empty( $params['grid_id'] ) ) {
+            return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
+        }
+        $grid_id = sanitize_text_field( wp_unslash( $params['grid_id'] ) );
+
+        $status = null;
+        if ( isset( $params['status'] ) && $params['status'] !== 'all' ) {
+            $status = sanitize_text_field( wp_unslash( $params['status'] ) );
+        }
+
+        return Disciple_Tools_Mapping_Queries::query_contacts_under_grid_id( $grid_id, $status );
     }
 
 }
