@@ -95,4 +95,16 @@ abstract class DT_Metrics_Chart_Base
         }
         return $pass;
     }
+
+    public function my_list() {
+        $list = Disciple_Tools_Posts::search_viewable_post( 'contacts', [ "assigned_to" => [ "shared", "me" ] ] );
+        if ( is_wp_error( $list ) ) {
+            return [];
+        }
+        $my_list = [];
+        foreach( $list['posts'] as $post ) {
+            $my_list[] = $post->ID;
+        }
+        return $my_list;
+    }
 }

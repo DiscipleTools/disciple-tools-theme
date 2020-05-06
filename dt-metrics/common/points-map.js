@@ -99,65 +99,90 @@ jQuery(document).ready(function($) {
 
       makeRequest('POST', obj.settings.points_rest_url, { post_type: window.post_type, status: null }, obj.settings.points_rest_base_url )
         .then(points => {
-          map.addSource('points', {
-            'type': 'geojson',
-            'data': points
-          });
+          load_layer( points )
+        })
+    })
 
-          map.addLayer({
-            id: 'points',
-            type: 'circle',
-            source: 'points',
-            paint: {
-              'circle-color': '#11b4da',
-              'circle-radius': 12,
-              'circle-stroke-width': 1,
-              'circle-stroke-color': '#fff'
+    function load_layer( points ) {
+
+      var mapLayer = map.getLayer('pointsLayer');
+      if(typeof mapLayer !== 'undefined') {
+        map.off('click', 'pointsLayer', on_click );
+        map.removeLayer( 'pointsLayer' )
+      }
+      var mapSource= map.getSource('pointsSource');
+      if(typeof mapSource !== 'undefined') {
+        map.removeSource( 'pointsSource' )
+      }
+
+      map.addSource('pointsSource', {
+        'type': 'geojson',
+        'data': points
+      });
+      map.addLayer({
+        id: 'pointsLayer',
+        type: 'circle',
+        source: 'pointsSource',
+        paint: {
+          'circle-color': '#11b4da',
+          'circle-radius': 12,
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#fff'
+        }
+
+      });
+
+      map.on('click', 'pointsLayer', on_click );
+
+      map.on('mouseenter', 'pointsLayer', function () {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+      map.on('mouseleave', 'pointsLayer', function () {
+        map.getCanvas().style.cursor = '';
+      });
+
+      let spinner = jQuery('#spinner')
+      spinner.hide()
+    }
+    function on_click(e) {
+      window.list = []
+      jQuery('#geocode-details').show()
+
+      let content = jQuery('#geocode-details-content')
+      content.empty().html( window.spinner )
+      console.log(e.features)
+
+      jQuery.each(e.features, function(i,v) {
+        content.append(`<div class="grid-x" id="list-${i}"></div>`)
+        makeRequest('GET', window.post_type +'/'+e.features[i].properties.pid+'/', null, 'dt-posts/v2/' )
+          .done(details=>{
+            window.list[i] = jQuery('#list-'+i)
+
+            let status = ''
+            if ( window.post_type === 'contacts') {
+              status = details.overall_status.label
+            } else if ( window.post_type === 'groups' ) {
+              status = details.group_status.label
             }
 
-          });
-          map.on('click', 'points', function (e) {
-            window.list = []
-            jQuery('#geocode-details').show()
-
-            let content = jQuery('#geocode-details-content')
-            content.empty().html( window.spinner )
-
-            jQuery.each(e.features, function(i,v) {
-              content.append(`<div class="grid-x" id="list-${i}"></div>`)
-              makeRequest('GET', window.post_type +'/'+e.features[i].properties.pid+'/', null, 'dt-posts/v2/' )
-                .done(details=>{
-                    window.list[i] = jQuery('#list-'+i)
-
-                    let status = ''
-                    if ( window.post_type === 'contacts') {
-                      status = details.overall_status.label
-                    } else if ( window.post_type === 'groups' ) {
-                      status = details.group_status.label
-                    }
-
-                    window.list[i].append(`
+            window.list[i].append(`
                       <div class="cell"><h4>${details.title}</h4></div>
                       <div class="cell">Status: ${status}</div>
                       <div class="cell">Assigned To: ${details.assigned_to.display}</div>
-                      <div class="cell"><hr></div>
                       <div class="cell"><a href="/${window.post_type}/${details.ID}">View Record</a></div>
+                      <div class="cell"><hr></div>
                   `)
 
-                  jQuery('.loading-spinner').hide()
-                })
-            })
-          });
-          map.on('mouseenter', 'points', function () {
-            map.getCanvas().style.cursor = 'pointer';
-          });
-          map.on('mouseleave', 'points', function () {
-            map.getCanvas().style.cursor = '';
-          });
-
-          spinner.hide()
-        })
-    })
+            jQuery('.loading-spinner').hide()
+          })
+      })
+      jQuery('.close-details').on('click', function() {
+        close_details()
+      })
+    }
+    function close_details() {
+      jQuery('#geocode-details').hide()
+    }
 
     // cross-hair
     map.on('zoomstart', function() {
@@ -172,6 +197,19 @@ jQuery(document).ready(function($) {
     map.on('dragend', function() {
       jQuery('#cross-hair').hide()
     })
+
+    /* status change */
+    jQuery('#status').on('change', function() {
+      let spinner = jQuery('#spinner')
+      spinner.show()
+      close_details()
+      window.current_status = jQuery('#status').val()
+      makeRequest('POST', obj.settings.points_rest_url, { post_type: window.post_type, status: window.current_status }, obj.settings.points_rest_base_url )
+        .then(points => {
+          load_layer( points )
+        })
+    })
+
   }
   if ( typeof dt_mapbox_metrics.settings !== undefined ) {
     write_all_points()

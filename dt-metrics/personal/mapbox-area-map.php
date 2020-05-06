@@ -95,18 +95,6 @@ class DT_Metrics_Mapbox_Personal_Area_Map extends DT_Metrics_Chart_Base
         );
     }
 
-    public function my_list() {
-        $list = Disciple_Tools_Posts::search_viewable_post( 'contacts', [ "assigned_to" => [ "shared", "me" ] ] );
-        if ( is_wp_error( $list ) ) {
-            return [];
-        }
-        $my_list = [];
-        foreach( $list['posts'] as $post ) {
-            $my_list[] = $post->ID;
-        }
-        return $my_list;
-    }
-
     public function get_grid_totals( WP_REST_Request $request ) {
         if ( !$this->has_permission() ){
             return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
@@ -168,7 +156,7 @@ class DT_Metrics_Mapbox_Personal_Area_Map extends DT_Metrics_Chart_Base
             SELECT DISTINCT lgm.grid_id as grid_id, lgm.grid_meta_id, lgm.post_id, po.post_title as name
             FROM $wpdb->dt_location_grid_meta as lgm
             LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id
-            JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND meta_key = 'overall_status' AND meta_value = 'active'
+            JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND meta_key = 'overall_status' AND meta_value = %s
             WHERE lgm.post_type ='contacts'
                 AND lgm.post_id IN ($prepared_ids)
                 AND po.ID NOT IN (SELECT DISTINCT(u.post_id) FROM $wpdb->postmeta as u WHERE u.meta_key = 'corresponds_to_user' AND u.meta_value != '')

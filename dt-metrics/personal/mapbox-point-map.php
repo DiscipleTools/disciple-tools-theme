@@ -16,7 +16,7 @@ class DT_Metrics_Mapbox_Personal_Points_Map extends DT_Metrics_Chart_Base
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/common/points-map.js'; // should be full file name plus extension
     public $permissions = [ 'access_contacts' ];
-    public $namespace = null;
+    public $namespace = 'dt-metrics/personal/';
 
     public function __construct() {
         if ( ! DT_Mapbox_API::get_key() ) {
@@ -33,6 +33,7 @@ class DT_Metrics_Mapbox_Personal_Points_Map extends DT_Metrics_Chart_Base
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
+        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
     public function scripts() {
@@ -59,7 +60,7 @@ class DT_Metrics_Mapbox_Personal_Points_Map extends DT_Metrics_Chart_Base
                     'map_key' => DT_Mapbox_API::get_key(),
                     'map_mirror' => dt_get_location_grid_mirror( true ),
                     'points_rest_url' => 'points_geojson',
-                    'points_rest_base_url' => 'dt-metrics/mapbox/',
+                    'points_rest_base_url' => $this->namespace,
                     'menu_slug' => $this->base_slug,
                     'post_type' => 'contacts',
                     'title' => $this->title,
@@ -67,6 +68,107 @@ class DT_Metrics_Mapbox_Personal_Points_Map extends DT_Metrics_Chart_Base
                 ]
             ]
         );
+    }
+
+    public function add_api_routes() {
+        register_rest_route(
+            $this->namespace, 'points_geojson', [
+                [
+                    'methods'  => WP_REST_Server::CREATABLE,
+                    'callback' => [ $this, 'points_geojson' ],
+                ],
+            ]
+        );
+    }
+
+    public function points_geojson( WP_REST_Request $request ) {
+        if ( ! $this->has_permission() ){
+            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+        }
+
+        $params = $request->get_json_params() ?? $request->get_body_params();
+        if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
+            return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
+        }
+
+        $status = null;
+        if ( isset( $params['status'] ) && $params['status'] !== 'all' ) {
+            $status = sanitize_text_field( wp_unslash( $params['status'] ) );
+        }
+
+        $my_list = $this->my_list();
+
+        return $this->get_contacts_points_geojson( $my_list, $status );
+    }
+
+    public function _empty_geojson() {
+        return array(
+            'type' => 'FeatureCollection',
+            'features' => []
+        );
+    }
+
+    public function get_contacts_points_geojson( array $user_post_ids, $status = null ) {
+        if ( !$this->has_permission() ){
+            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+        }
+        global $wpdb;
+
+        $prepared_ids = dt_array_to_sql( $user_post_ids );
+
+        /* pulling 40k from location_grid_meta table */
+        if ( $status ) {
+            $results = $wpdb->get_results($wpdb->prepare( "
+                SELECT lgm.label as l, p.post_title as n, lgm.post_id as pid, lgm.lng, lgm.lat, lg.admin0_grid_id as a0, lg.admin1_grid_id as a1
+                FROM $wpdb->dt_location_grid_meta as lgm
+                     LEFT JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+                     LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                    JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND meta_key = 'overall_status' AND meta_value = %s
+                WHERE lgm.post_type = 'contacts'
+                AND lgm.post_id IN ($prepared_ids)
+                LIMIT 40000;
+                ", $status), ARRAY_A );
+        } else {
+            $results = $wpdb->get_results("
+                SELECT lgm.label as l, p.post_title as n, lgm.post_id as pid, lgm.lng, lgm.lat, lg.admin0_grid_id as a0, lg.admin1_grid_id as a1
+                FROM $wpdb->dt_location_grid_meta as lgm
+                     LEFT JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+                     LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                WHERE lgm.post_type = 'contacts'
+                AND lgm.post_id IN ($prepared_ids)
+                LIMIT 40000;
+                ", ARRAY_A );
+        }
+
+
+        $features = [];
+        foreach ( $results as $result ) {
+            $features[] = array(
+                'type' => 'Feature',
+                'properties' => array(
+                    "l" => $result['l'],
+                    "pid" => $result['pid'],
+                    "n" => $result['n'],
+                    "a0" => $result['a0'],
+                    "a1" => $result['a1']
+                ),
+                'geometry' => array(
+                    'type' => 'Point',
+                    'coordinates' => array(
+                        $result['lng'],
+                        $result['lat'],
+                        1
+                    ),
+                ),
+            );
+        }
+
+        $new_data = array(
+            'type' => 'FeatureCollection',
+            'features' => $features,
+        );
+
+        return $new_data;
     }
 
 }
