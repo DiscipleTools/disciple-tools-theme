@@ -387,7 +387,7 @@ jQuery(document).ready(function() {
           }
 
           let content = jQuery('#geocode-details-content')
-          content.empty().html(`<img src="${obj.theme_uri}spinner.svg" class="spinner-image" alt="spinner"/>`)
+          content.empty().html( spinner )
 
           jQuery('#geocode-details').show()
 
