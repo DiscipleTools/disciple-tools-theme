@@ -113,12 +113,6 @@ jQuery(document).ready(function($) {
         if (a.comment){ %>
             <div dir="auto" class="comment-bubble <%- a.comment_ID %>">
               <div class="comment-text" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
-            <% if ( commentsSettings.google_translate_key !== "" ) { %>
-                <div class="translation-bubble" dir=auto></div>
-                <a class="translate-button showTranslation">${_.escape(commentsSettings.translations.translate)}</a>
-                <a class="translate-button hideTranslation hide">${_.escape(commentsSettings.translations.hide_translation)}</a>
-                </div>
-              <% } %>
             </div>
             <p class="comment-controls">
                <% if ( a.comment_ID ) { %>
@@ -136,12 +130,20 @@ jQuery(document).ready(function($) {
             <p class="activity-bubble">  <%- a.text %> <% print(a.action) %> </p>
         <%  }
     }); %>
+    <% if ( commentsSettings.google_translate_key !== "" ) { %>
+      <div class="translation-bubble" dir=auto></div>
+      <a class="translate-button showTranslation">${_.escape(commentsSettings.translations.translate)}</a>
+      <a class="translate-button hideTranslation hide">${_.escape(commentsSettings.translations.hide_translation)}</a>
+      </div>
+    <% } %>
     </div>
   </div>`
   )
 
   $(document).on("click", '.translate-button.showTranslation', function() {
-    let sourceText = $(this).siblings('.comment-text').text();
+    let sourceText = $(this).siblings('.comment-bubble').text();
+    let combinedText = sourceText.replace(/\s+/g, ' ').trim();
+    console.log(combinedText);
     let translation_bubble = $(this).siblings('.translation-bubble');
     let translation_hide = $(this).siblings('.translate-button.hideTranslation');
 
@@ -155,7 +157,7 @@ jQuery(document).ready(function($) {
     }
 
     let postData = {
-      "q": [sourceText],
+      "q": [combinedText],
       "target": targetLang
     }
 
