@@ -19,6 +19,9 @@ class DT_Metrics_Mapbox_Groups_Cluster_Map extends DT_Metrics_Chart_Base
     public $namespace = null;
 
     public function __construct() {
+        if ( ! DT_Mapbox_API::get_key() ) {
+            return;
+        }
         parent::__construct();
         if ( !$this->has_permission() ){
             return;
@@ -46,23 +49,19 @@ class DT_Metrics_Mapbox_Groups_Cluster_Map extends DT_Metrics_Chart_Base
         $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_group_field_defaults();
         wp_localize_script(
             'dt_mapbox_script', 'dt_mapbox_metrics', [
-                'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/",
-                'base_slug' => $this->base_slug,
-                'root' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'current_user_id' => get_current_user_id(),
                 'map_key' => DT_Mapbox_API::get_key(),
-                "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
-                "theme_uri" => trailingslashit( get_stylesheet_directory_uri() ),
                 'translations' => [
                     'title' => __( "Mapping", "disciple_tools" ),
                     'refresh_data' => __( "Refresh Cached Data", "disciple_tools" ),
                     'population' => __( "Population", "disciple_tools" ),
                     'name' => __( "Name", "disciple_tools" ),
                 ],
-                'group_settings' => [
+                'settings' => [
+                    'rest_url' => 'cluster_geojson',
+                    'rest_base_url' => 'dt-metrics/mapbox/',
+                    'menu_slug' => $this->base_slug,
                     'post_type' => 'groups',
-                    'title' => __( 'Groups', "disciple_tools" ),
+                    'title' => $this->title,
                     'status_list' => $group_fields['group_status']['default'] ?? []
                 ]
             ]

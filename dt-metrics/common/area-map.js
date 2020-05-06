@@ -2,21 +2,14 @@ jQuery(document).ready(function() {
 
   console.log(dt_mapbox_metrics)
 
-  if('/metrics/contacts/mapbox_area_map' === window.location.pathname) {
-    write_area('contact_settings' )
-  }
-  if('/metrics/groups/mapbox_area_map' === window.location.pathname) {
-    write_area('group_settings' )
-  }
-
-  function write_area( settings ) {
+  function write_area() {
     let obj = dt_mapbox_metrics
 
-    let post_type = obj[settings].post_type
-    let title = obj[settings].title
-    let status = obj[settings].status_list
+    let post_type = obj.settings.post_type
+    let title = obj.settings.title
+    let status = obj.settings.status_list
 
-    jQuery('#metrics-sidemenu').foundation('down', jQuery(`#${post_type}-menu`));
+    jQuery('#metrics-sidemenu').foundation('down', jQuery(`#${obj.settings.menu_slug}-menu`));
 
     let chart = jQuery('#chart')
     let spinner = ' <span class="loading-spinner users-spinner active"></span> '
@@ -35,7 +28,7 @@ jQuery(document).ready(function() {
     })
     status_list += `<option value="none"></option>`
 
-    makeRequest( "POST", `get_grid_list`, { post_type: post_type, status: null} , 'dt-metrics/mapbox/' )
+    makeRequest( "POST", obj.settings.list_rest_url, { post_type: post_type, status: null} , obj.settings.list_rest_base_url )
       .done(response=>{
         window.user_list = response
         // console.log('LIST')
@@ -45,7 +38,7 @@ jQuery(document).ready(function() {
       console.log( e)
     })
 
-    makeRequest( "POST", `grid_totals`, { post_type: post_type, status: null} , 'dt-metrics/mapbox/' )
+    makeRequest( "POST", obj.settings.totals_rest_url, { post_type: post_type, status: null} , obj.settings.totals_rest_base_url )
       .done(grid_data=>{
         window.grid_data = grid_data
         // console.log('GRID TOTALS')
@@ -125,7 +118,7 @@ jQuery(document).ready(function() {
         set_info_boxes()
 
         // init map
-        mapboxgl.accessToken = obj.map_key;
+        mapboxgl.accessToken = obj.settings.map_key;
         var map = new mapboxgl.Map({
           container: 'map',
           style: 'mapbox://styles/mapbox/light-v10',
@@ -249,8 +242,7 @@ jQuery(document).ready(function() {
         jQuery('#status').on('change', function() {
           window.current_status = jQuery('#status').val()
 
-          // makeRequest( "POST", `grid_totals`, { status: window.current_status }, 'user-management/v1/')
-          makeRequest( "POST", `grid_totals`, { post_type: post_type, status: window.current_status} , 'dt-metrics/mapbox/' )
+          makeRequest( "POST", obj.settings.totals_rest_url, { post_type: post_type, status: window.current_status} , obj.settings.totals_rest_base_url )
             .done(grid_data=>{
               window.previous_grid_id = 0
               clear_layers()
@@ -290,16 +282,8 @@ jQuery(document).ready(function() {
           }
 
           // geocode
-          jQuery.get(obj.theme_uri + 'dt-mapping/location-grid-list-api.php',
-            {
-              type: 'geocode',
-              longitude: lng,
-              latitude: lat,
-              level: level,
-              country_code: null,
-              nonce: obj.nonce
-            }, null, 'json')
-            .done(function (data) {
+          makeRequest('GET', obj.settings.geocoder_url + 'dt-mapping/location-grid-list-api.php?type=geocode&longitude='+lng+'&latitude='+lat+'&level='+level+'&nonce='+obj.settings.geocoder_nonce )
+            .done(data=>{
 
               // default layer to world
               if ( data.grid_id === undefined || level === 'world' ) {
@@ -314,11 +298,12 @@ jQuery(document).ready(function() {
                 if(typeof mapLayer === 'undefined') {
 
                   // get geojson collection
+
                   jQuery.ajax({
                     type: 'GET',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    url: 'https://storage.googleapis.com/location-grid-mirror/collection/' + data.grid_id + '.geojson',
+                    url: obj.settings.map_mirror + 'collection/' + data.grid_id + '.geojson',
                     statusCode: {
                       404: function() {
                         console.log('404. Do nothing.')
@@ -407,7 +392,7 @@ jQuery(document).ready(function() {
           jQuery('#geocode-details').show()
 
           // geocode
-          makeRequest('GET', obj.theme_uri + 'dt-mapping/location-grid-list-api.php?type=geocode&longitude='+lng+'&latitude='+lat+'&level='+level+'&nonce='+obj.nonce )
+          makeRequest('GET', obj.settings.geocoder_url + 'dt-mapping/location-grid-list-api.php?type=geocode&longitude='+lng+'&latitude='+lat+'&level='+level+'&nonce='+obj.settings.geocoder_nonce )
             .done(details=>{
               /* hierarchy list*/
               content.empty().append(`<ul id="hierarchy-list" class="accordion" data-accordion></ul>`)
@@ -569,6 +554,9 @@ jQuery(document).ready(function() {
       console.log(err)
     })
 
+  }
+  if ( typeof dt_mapbox_metrics.settings !== undefined ) {
+    write_area()
   }
 
 })

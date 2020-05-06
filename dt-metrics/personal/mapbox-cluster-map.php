@@ -28,6 +28,7 @@ class DT_Metrics_Mapbox_Personal_Cluster_Map extends DT_Metrics_Chart_Base
 
         $this->title = __( 'Cluster Map', 'disciple_tools' );
         $this->base_title = __( 'Personal', 'disciple_tools' );
+
         $url_path = dt_get_url_path();
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
@@ -48,23 +49,19 @@ class DT_Metrics_Mapbox_Personal_Cluster_Map extends DT_Metrics_Chart_Base
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_contact_field_defaults();
         wp_localize_script(
             'dt_mapbox_script', 'dt_mapbox_metrics', [
-                'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/",
-                'base_slug' => $this->base_slug,
-                'root' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'current_user_id' => get_current_user_id(),
                 'map_key' => DT_Mapbox_API::get_key(),
-                "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
-                "theme_uri" => trailingslashit( get_stylesheet_directory_uri() ),
                 'translations' => [
                     'title' => __( "Mapping", "disciple_tools" ),
                     'refresh_data' => __( "Refresh Cached Data", "disciple_tools" ),
                     'population' => __( "Population", "disciple_tools" ),
                     'name' => __( "Name", "disciple_tools" ),
                 ],
-                'contact_settings' => [
+                'settings' => [
+                    'rest_url' => 'cluster_geojson',
+                    'rest_base_url' => 'dt-metrics/mapbox/',
+                    'menu_slug' => $this->base_slug,
                     'post_type' => 'contacts',
-                    'title' => __( 'Contacts', "disciple_tools" ),
+                    'title' => $this->title,
                     'status_list' => $contact_fields['overall_status']['default'] ?? []
                 ],
             ]

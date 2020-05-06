@@ -42,8 +42,8 @@ class Disciple_Tools_Metrics
             require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
             require_once( get_template_directory() . '/dt-metrics/personal/baptism-tree.php' );
             require_once( get_template_directory() . '/dt-metrics/personal/group-tree.php' );
-            require_once( get_template_directory() . '/dt-metrics/personal/mapbox-point-map.php' );
             require_once( get_template_directory() . '/dt-metrics/personal/mapbox-cluster-map.php' );
+            require_once( get_template_directory() . '/dt-metrics/personal/mapbox-point-map.php' );
             require_once( get_template_directory() . '/dt-metrics/personal/mapbox-area-map.php' );
             require_once( get_template_directory() . '/dt-metrics/personal/overview.php' );
 

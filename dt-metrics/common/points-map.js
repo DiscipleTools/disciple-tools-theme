@@ -1,24 +1,14 @@
 jQuery(document).ready(function($) {
   console.log(dt_mapbox_metrics)
 
-  if('/metrics/contacts/mapbox_points_map' === window.location.pathname || '/metrics/contacts/mapbox_points_map/' === window.location.pathname) {
-    write_all_points('contact_settings' )
-  }
-  if('/metrics/groups/mapbox_points_map' === window.location.pathname || '/metrics/groups/mapbox_points_map/' === window.location.pathname ) {
-    write_all_points('group_settings' )
-  }
-  if('/metrics/personal/mapbox_points_map' === window.location.pathname || '/metrics/personal/mapbox_points_map/' === window.location.pathname ) {
-    write_all_points('personal_settings' )
-  }
-
-  function write_all_points( settings ) {
+  function write_all_points( ) {
     let obj = dt_mapbox_metrics
 
-    window.post_type = obj[settings].post_type
-    let title = obj[settings].title
-    let status = obj[settings].status_list
+    window.post_type = obj.settings.post_type
+    let title = obj.settings.title
+    let status = obj.settings.status_list
 
-    jQuery('#metrics-sidemenu').foundation('down', jQuery(`#${obj.base_slug}-menu`));
+    jQuery('#metrics-sidemenu').foundation('down', jQuery(`#${obj.settings.menu_slug}-menu`));
 
     let chart = jQuery('#chart')
     window.spinner = ' <span class="loading-spinner active"></span> '
@@ -34,8 +24,6 @@ jQuery(document).ready(function($) {
       status_list += `<option value="${i}">${v.label}</option>`
     })
     status_list += `<option value="none"></option>`
-
-    chart.empty().html(window.spinner)
 
     chart.empty().html(`
                 <style>
@@ -89,7 +77,7 @@ jQuery(document).ready(function($) {
              `)
 
 
-    mapboxgl.accessToken = obj.map_key;
+    mapboxgl.accessToken = obj.settings.map_key;
     var map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/light-v10',
@@ -109,7 +97,7 @@ jQuery(document).ready(function($) {
       let spinner = jQuery('#spinner')
       spinner.show()
 
-      makeRequest('POST', 'points_geojson', { post_type: window.post_type, status: null }, 'dt-metrics/mapbox/' )
+      makeRequest('POST', obj.settings.points_rest_url, { post_type: window.post_type, status: null }, obj.settings.points_rest_base_url )
         .then(points => {
           map.addSource('points', {
             'type': 'geojson',
@@ -184,7 +172,8 @@ jQuery(document).ready(function($) {
     map.on('dragend', function() {
       jQuery('#cross-hair').hide()
     })
-
   }
-
+  if ( typeof dt_mapbox_metrics.settings !== undefined ) {
+    write_all_points()
+  }
 })

@@ -1,22 +1,14 @@
 jQuery(document).ready(function($) {
-
-  console.log(dt_mapbox_metrics)
-
-  if('/metrics/contacts/mapbox_cluster_map' === window.location.pathname || '/metrics/contacts/mapbox_cluster_map/' === window.location.pathname) {
-    write_cluster('contact_settings' )
-  }
-  if('/metrics/groups/mapbox_cluster_map' === window.location.pathname || '/metrics/groups/mapbox_cluster_map/' === window.location.pathname ) {
-    write_cluster('group_settings' )
-  }
+  // console.log(dt_mapbox_metrics)
 
   function write_cluster( settings ) {
     let obj = dt_mapbox_metrics
 
-    let post_type = obj[settings].post_type
-    let title = obj[settings].title
-    let status = obj[settings].status_list
+    let post_type = obj.settings.post_type
+    let title = obj.settings.title
+    let status = obj.settings.status_list
 
-    jQuery('#metrics-sidemenu').foundation('down', jQuery(`#${post_type}-menu`));
+    jQuery('#metrics-sidemenu').foundation('down', jQuery(`#${obj.settings.menu_slug}-menu`));
 
     let chart = jQuery('#chart')
     let spinner = ' <span class="loading-spinner users-spinner active"></span> '
@@ -35,10 +27,9 @@ jQuery(document).ready(function($) {
     })
     status_list += `<option value="none"></option>`
 
-
-    makeRequest( "POST", `cluster_geojson`, { post_type: post_type, status: null} , 'dt-metrics/mapbox/' )
+    makeRequest( "POST", obj.settings.rest_url, { post_type: post_type, status: null} , obj.settings.rest_base_url )
       .then(data=>{
-        console.log(data)
+        // console.log(data)
 
         chart.empty().html(`
             <style>
@@ -133,7 +124,7 @@ jQuery(document).ready(function($) {
                 <div id='map'></div>
                 <div id='legend' class='legend'>
                     <div class="grid-x grid-margin-x grid-padding-x">
-                        <div class="cell small-1 center info-bar-font">
+                        <div class="cell small-2 center info-bar-font">
                             ${title}
                         </div>
                         <div class="cell small-2 center border-left">
@@ -177,7 +168,7 @@ jQuery(document).ready(function($) {
 
         jQuery('#status').on('change', function() {
           window.current_status = jQuery('#status').val()
-          makeRequest( "POST", `cluster_geojson`, { post_type: post_type, status: window.current_status} , 'dt-metrics/mapbox/' )
+          makeRequest( "POST", obj.settings.rest_url, { post_type: post_type, status: window.current_status} , obj.settings.rest_base_url )
             .then(data=> {
               clear_layer()
               load_layer( data )
@@ -298,5 +289,8 @@ jQuery(document).ready(function($) {
       console.log("error")
       console.log(err)
     })
+  }
+  if ( typeof dt_mapbox_metrics.settings !== undefined ) {
+    write_cluster()
   }
 })

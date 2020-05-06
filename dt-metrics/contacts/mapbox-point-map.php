@@ -14,7 +14,7 @@ class DT_Metrics_Mapbox_Contacts_Points_Map extends DT_Metrics_Chart_Base
     public $title;
     public $slug = 'mapbox_points_map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $js_file_name = 'points-map.js'; // should be full file name plus extension
+    public $js_file_name = '/dt-metrics/common/points-map.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
     public $namespace = null;
 
@@ -38,33 +38,30 @@ class DT_Metrics_Mapbox_Contacts_Points_Map extends DT_Metrics_Chart_Base
         DT_Mapbox_API::load_mapbox_header_scripts();
         // Map starter Script
         wp_enqueue_script( 'dt_mapbox_script',
-            get_template_directory_uri() . '/dt-metrics/common/' . $this->js_file_name,
+            get_template_directory_uri() . $this->js_file_name,
             [
                 'jquery'
             ],
-            filemtime( get_theme_file_path() . '/dt-metrics/common/' . $this->js_file_name ),
+            filemtime( get_theme_file_path() . $this->js_file_name ),
             true
         );
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_contact_field_defaults();
         wp_localize_script(
             'dt_mapbox_script', 'dt_mapbox_metrics', [
-                'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/",
-                'base_slug' => $this->base_slug,
-                'root' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'current_user_id' => get_current_user_id(),
-                'map_key' => DT_Mapbox_API::get_key(),
-                "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
-                "theme_uri" => trailingslashit( get_stylesheet_directory_uri() ),
                 'translations' => [
                     'title' => __( "Mapping", "disciple_tools" ),
                     'refresh_data' => __( "Refresh Cached Data", "disciple_tools" ),
                     'population' => __( "Population", "disciple_tools" ),
                     'name' => __( "Name", "disciple_tools" ),
                 ],
-                'contact_settings' => [
+                'settings' => [
+                    'map_key' => DT_Mapbox_API::get_key(),
+                    'map_mirror' => dt_get_location_grid_mirror( true ),
+                    'points_rest_url' => 'points_geojson',
+                    'points_rest_base_url' => 'dt-metrics/mapbox/',
+                    'menu_slug' => $this->base_slug,
                     'post_type' => 'contacts',
-                    'title' => __( 'Contacts', "disciple_tools" ),
+                    'title' => $this->title,
                     'status_list' => $contact_fields['overall_status']['default'] ?? []
                 ]
             ]

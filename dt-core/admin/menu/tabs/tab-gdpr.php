@@ -174,9 +174,6 @@ foreach ( $contact_references as $key => $record ) {
 
 
     public function erase_data( $contact_id, $requester_email ) {
-        dt_write_log( 'erase data' );
-        dt_write_log( $contact_id );
-
         global $wpdb;
 
         // build log
@@ -241,6 +238,16 @@ foreach ( $contact_references as $key => $record ) {
                 'post_id' => $id,
                 'meta_key' => 'reason_closed',
                 'meta_value' => 'gdpr'
+            ] );
+            $wpdb->insert( $wpdb->postmeta, [
+                'post_id' => $id,
+                'meta_key' => 'requires_update',
+                'meta_value' => ''
+            ] );
+            $wpdb->insert( $wpdb->postmeta, [
+                'post_id' => $id,
+                'meta_key' => 'last_modified',
+                'meta_value' => time()
             ] );
 
         }

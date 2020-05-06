@@ -104,12 +104,9 @@ class DT_Metrics_Mapping_Map_Chart {
         );
     }
 
-
-
     public function mapping_scripts() {
         DT_Mapping_Module::instance()->scripts();
     }
-
 
     public function data( $force_refresh = false ) {
         //get initial data
