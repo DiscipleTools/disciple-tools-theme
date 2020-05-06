@@ -130,7 +130,7 @@ jQuery(document).ready(function($) {
             <p class="activity-bubble">  <%- a.text %> <% print(a.action) %> </p>
         <%  }
     }); %>
-    <% if ( commentsSettings.google_translate_key !== "" ) { %>
+    <% if ( commentsSettings.google_translate_key !== "" && activity[0].comment_ID === false ) { %>
       <div class="translation-bubble" dir=auto></div>
       <a class="translate-button showTranslation">${_.escape(commentsSettings.translations.translate)}</a>
       <a class="translate-button hideTranslation hide">${_.escape(commentsSettings.translations.hide_translation)}</a>
@@ -143,7 +143,6 @@ jQuery(document).ready(function($) {
   $(document).on("click", '.translate-button.showTranslation', function() {
     let sourceText = $(this).siblings('.comment-bubble').text();
     let combinedText = sourceText.replace(/\s+/g, ' ').trim();
-    console.log(combinedText);
     let translation_bubble = $(this).siblings('.translation-bubble');
     let translation_hide = $(this).siblings('.translate-button.hideTranslation');
 
