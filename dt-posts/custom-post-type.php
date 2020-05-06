@@ -228,6 +228,7 @@ class Disciple_Tools_Post_Type_Template {
             }
         }
 
+        $fields = apply_filters( 'dt_custom_fields_settings_after_combine', $fields, $this->post_type );
         wp_cache_set( $this->post_type . "_field_settings", $fields );
         return $fields;
     } // End get_custom_fields_settings()

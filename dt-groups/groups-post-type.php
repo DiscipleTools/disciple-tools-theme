@@ -544,6 +544,7 @@ class Disciple_Tools_Groups_Post_Type
                 }
             }
         }
+        $fields = apply_filters( 'dt_custom_fields_settings_after_combine', $fields, "groups" );
         wp_cache_set( "group_fields_settings", $fields );
         return $fields;
     } // End get_custom_fields_settings()

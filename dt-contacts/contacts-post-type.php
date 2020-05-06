@@ -108,8 +108,6 @@ class Disciple_Tools_Contact_Post_Type
         add_action( 'init', [ $this, 'contacts_rewrites_init' ] );
         add_filter( 'post_type_link', [ $this, 'contacts_permalink' ], 1, 3 );
         add_filter( 'dt_get_post_type_settings', [ $this, 'get_post_type_settings_hook' ], 10, 2 );
-        add_filter( 'dt_custom_fields_settings_after_combine', [ $this, 'dt_get_custom_fields_translation' ], 10, 2 );
-        add_filter( 'dt_custom_channels', [ $this, 'dt_get_custom_channels_translation' ] );
     } // End __construct()
 
     public static function get_type_name_plural(){
