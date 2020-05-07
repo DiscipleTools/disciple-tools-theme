@@ -109,13 +109,16 @@ jQuery(document).ready(function($) {
         <span class="comment-date"> <%- date %> </span>
       </div>
     <div class="activity-text">
+    <% var is_Comment; var has_Comment_ID; %>
     <% _.forEach(activity, function(a){
         if (a.comment){ %>
+          <% is_Comment = true; %>
             <div dir="auto" class="comment-bubble <%- a.comment_ID %>">
               <div class="comment-text" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
             </div>
             <p class="comment-controls">
                <% if ( a.comment_ID ) { %>
+                <% has_Comment_ID = true %>
                   <a class="open-edit-comment" data-id="<%- a.comment_ID %>" data-type="<%- a.comment_type %>" style="margin-right:5px">
                       <img src="${commentsSettings.template_dir}/dt-assets/images/edit-blue.svg">
                       ${_.escape(commentsSettings.translations.edit)}
@@ -130,11 +133,12 @@ jQuery(document).ready(function($) {
             <p class="activity-bubble">  <%- a.text %> <% print(a.action) %> </p>
         <%  }
     }); %>
-    <% if ( commentsSettings.google_translate_key !== "" && activity[0].comment && activity[0].comment_ID === false ) { %>
-      <div class="translation-bubble" dir=auto></div>
-      <a class="translate-button showTranslation">${_.escape(commentsSettings.translations.translate)}</a>
-      <a class="translate-button hideTranslation hide">${_.escape(commentsSettings.translations.hide_translation)}</a>
-      </div>
+    <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate'
+    ) { %>
+        <div class="translation-bubble" dir=auto></div>
+        <a class="translate-button showTranslation">${_.escape(commentsSettings.translations.translate)}</a>
+        <a class="translate-button hideTranslation hide">${_.escape(commentsSettings.translations.hide_translation)}</a>
+        </div>
     <% } %>
     </div>
   </div>`
