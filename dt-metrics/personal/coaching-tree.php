@@ -22,7 +22,7 @@ class DT_Metrics_Personal_Coaching_Tree extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->title = __( 'Coaching GenTree', 'disciple_tools' );
+        $this->title = __( 'My Coaching GenTree', 'disciple_tools' );
         $this->base_title = __( 'Personal', 'disciple_tools' );
 
         $url_path = dt_get_url_path();

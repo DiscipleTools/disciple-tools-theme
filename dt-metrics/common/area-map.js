@@ -28,16 +28,6 @@ jQuery(document).ready(function() {
     })
     status_list += `<option value="none"></option>`
 
-    makeRequest( "POST", obj.settings.list_rest_url, { post_type: window.post_type, status: null} , obj.settings.list_rest_base_url )
-      .done(response=>{
-        window.totals_list = response
-        console.log('LIST')
-        console.log(response)
-      }).catch((e)=>{
-      console.log( 'error in activity')
-      console.log( e)
-    })
-
     makeRequest( "POST", obj.settings.totals_rest_url, { post_type: window.post_type, status: null} , obj.settings.totals_rest_base_url )
       .done(grid_data=>{
         window.grid_data = grid_data
@@ -468,6 +458,8 @@ jQuery(document).ready(function() {
               }
 
               function write_list( level, list_by_grid ) {
+                console.log('Details Panel')
+                console.log(list_by_grid)
                 let level_list = jQuery('#'+level)
                 level_list.empty()
                 jQuery.each(list_by_grid, function(i,v) {

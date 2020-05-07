@@ -409,17 +409,27 @@ class DT_Mapbox_Metrics {
     public function get_groups_points_geojson( $status = null ) {
         global $wpdb;
 
-        // @todo add status
+        if ( $status ) {
+            $results = $wpdb->get_results($wpdb->prepare( "
+                SELECT lgm.label as l, p.post_title as n, lgm.post_id as pid, lgm.lng, lgm.lat, lg.admin0_grid_id as a0, lg.admin1_grid_id as a1
+                FROM $wpdb->dt_location_grid_meta as lgm
+                     LEFT JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+                     LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                    JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND meta_key = 'group_status' AND meta_value = %s
+                WHERE lgm.post_type = 'groups'
+                LIMIT 40000;
+                ", $status), ARRAY_A );
+        } else {
+            $results = $wpdb->get_results("
+                SELECT lgm.label as l, p.post_title as n, lgm.post_id as pid, lgm.lng, lgm.lat, lg.admin0_grid_id as a0, lg.admin1_grid_id as a1
+                FROM $wpdb->dt_location_grid_meta as lgm
+                     LEFT JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+                     LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                WHERE lgm.post_type = 'groups'
+                LIMIT 40000;
+                ", ARRAY_A );
+        }
 
-        /* pulling 40k from location_grid_meta table */
-        $results = $wpdb->get_results("
-            SELECT lgm.label as l, p.post_title as n, lgm.post_id as pid, lgm.lng, lgm.lat, lg.admin0_grid_id as a0, lg.admin1_grid_id as a1
-            FROM $wpdb->dt_location_grid_meta as lgm
-                 LEFT JOIN $wpdb->posts as p ON p.ID=lgm.post_id
-                 LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
-            WHERE lgm.post_type = 'groups'
-            LIMIT 40000;
-            ", ARRAY_A );
         $features = [];
         foreach ( $results as $result ) {
             $features[] = array(
