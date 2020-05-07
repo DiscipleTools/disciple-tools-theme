@@ -257,13 +257,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $existing_contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
                 if ( !isset( $existing_contact["assigned_to"] ) || $fields["assigned_to"] !== $existing_contact["assigned_to"]["assigned-to"] ){
                     $user_id = explode( '-', $fields["assigned_to"] )[1];
-                    if ( $user_id != get_current_user_id() ){
-                        if ( current_user_can( "assign_any_contacts" ) ) {
-                            $fields["overall_status"] = 'assigned';
+                    if ( !isset( $fields["overall_status"] ) ){
+                        if ( $user_id != get_current_user_id() ){
+                            if ( current_user_can( "assign_any_contacts" ) ) {
+                                $fields["overall_status"] = 'assigned';
+                            }
+                            $fields['accepted'] = false;
+                        } elseif ( isset( $existing_contact["overall_status"]["key"] ) && $existing_contact["overall_status"]["key"] === "assigned" ) {
+                            $fields["overall_status"] = 'active';
                         }
-                        $fields['accepted'] = false;
-                    } elseif ( isset( $existing_contact["overall_status"]["key"] ) && $existing_contact["overall_status"]["key"] === "assigned" ) {
-                        $fields["overall_status"] = 'active';
                     }
                     if ( $user_id ){
                         DT_Posts::add_shared( "contacts", $post_id, $user_id, null, false, true, false );
