@@ -130,7 +130,7 @@ jQuery(document).ready(function($) {
             <p class="activity-bubble">  <%- a.text %> <% print(a.action) %> </p>
         <%  }
     }); %>
-    <% if ( commentsSettings.google_translate_key !== "" && activity[0].comment_ID === false ) { %>
+    <% if ( commentsSettings.google_translate_key !== "" && activity[0].comment && activity[0].comment_ID === false ) { %>
       <div class="translation-bubble" dir=auto></div>
       <a class="translate-button showTranslation">${_.escape(commentsSettings.translations.translate)}</a>
       <a class="translate-button hideTranslation hide">${_.escape(commentsSettings.translations.hide_translation)}</a>
