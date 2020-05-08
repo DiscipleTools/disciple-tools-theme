@@ -58,11 +58,9 @@ class DT_Metrics_Mapbox_Groups_Area_Map extends DT_Metrics_Chart_Base
                 'settings' => [
                     'map_key' => DT_Mapbox_API::get_key(),
                     'map_mirror' => dt_get_location_grid_mirror( true ),
-                    'totals_rest_url' => 'grid_totals',
-                    'totals_rest_base_url' => 'dt-metrics/mapbox/',
-                    'list_rest_url' => 'get_grid_list',
-                    'list_rest_base_url' => 'dt-metrics/mapbox/',
-                    'list_by_grid_rest_url' => 'list_by_grid_id',
+                    'totals_rest_url' => 'get_grid_totals',
+                    'totals_rest_base_url' => $this->namespace,
+                    'list_by_grid_rest_url' => 'get_list_by_grid_id',
                     'list_by_grid_rest_base_url' => $this->namespace,
                     'geocoder_url' => trailingslashit( get_stylesheet_directory_uri() ),
                     'geocoder_nonce' => wp_create_nonce( 'wp_rest' ),
@@ -77,19 +75,50 @@ class DT_Metrics_Mapbox_Groups_Area_Map extends DT_Metrics_Chart_Base
 
     public function add_api_routes() {
         register_rest_route(
-            $this->namespace, 'list_by_grid_id', [
+            $this->namespace, 'get_grid_totals', [
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'list_by_grid_id' ],
+                    'callback' => [ $this, 'get_grid_totals' ],
+                ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, 'get_list_by_grid_id', [
+                [
+                    'methods'  => WP_REST_Server::CREATABLE,
+                    'callback' => [ $this, 'get_list_by_grid_id' ],
                 ],
             ]
         );
     }
 
-    public function list_by_grid_id( WP_REST_Request $request ) {
+    public function get_grid_totals( WP_REST_Request $request ) {
         if ( !$this->has_permission() ){
             return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
         }
+        $params = $request->get_json_params() ?? $request->get_body_params();
+        if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
+            return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
+        }
+        $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
+
+        $status = null;
+        if ( isset( $params['status'] ) && $params['status'] !== 'all' ) {
+            $status = sanitize_text_field( wp_unslash( $params['status'] ) );
+        }
+
+        $results = self::query_groups_grid_totals( $status );
+
+        $list = [];
+        foreach ( $results as $result ) {
+            $list[$result['grid_id']] = $result;
+        }
+
+        return $list;
+
+    }
+
+    public function get_list_by_grid_id( WP_REST_Request $request ) {
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( ! isset( $params['grid_id'] ) || empty( $params['grid_id'] ) ) {
             return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
@@ -101,10 +130,117 @@ class DT_Metrics_Mapbox_Groups_Area_Map extends DT_Metrics_Chart_Base
             $status = sanitize_text_field( wp_unslash( $params['status'] ) );
         }
 
-        return $this->query_groups_under_grid_id( $grid_id, $status );
+        return self::query_groups_under_grid_id( $grid_id, $status );
     }
 
-    public function query_groups_under_grid_id( $grid_id, $status ) {
+    public static function query_groups_grid_totals( $status = null ) {
+
+        global $wpdb;
+
+        if ( $status ) {
+            $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT t0.admin0_grid_id as grid_id, count(t0.admin0_grid_id) as count
+            FROM (
+             SELECT lg.admin0_grid_id FROM $wpdb->dt_location_grid_meta as lgm LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+             JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND meta_key = 'group_status' AND meta_value = %s
+             WHERE lgm.post_type = 'groups'
+            ) as t0
+            GROUP BY t0.admin0_grid_id
+            UNION
+            SELECT t1.admin1_grid_id as grid_id, count(t1.admin1_grid_id) as count
+            FROM (
+             SELECT lg.admin1_grid_id FROM $wpdb->dt_location_grid_meta as lgm LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+             JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND meta_key = 'group_status' AND meta_value = %s
+             WHERE lgm.post_type = 'groups'
+            ) as t1
+            GROUP BY t1.admin1_grid_id
+            UNION
+            SELECT t2.admin2_grid_id as grid_id, count(t2.admin2_grid_id) as count
+            FROM (
+             SELECT lg.admin2_grid_id FROM $wpdb->dt_location_grid_meta as lgm LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+             JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND meta_key = 'group_status' AND meta_value = %s
+             WHERE lgm.post_type = 'groups'
+            ) as t2
+            GROUP BY t2.admin2_grid_id
+            UNION
+            SELECT t3.admin3_grid_id as grid_id, count(t3.admin3_grid_id) as count
+            FROM (
+             SELECT lg.admin3_grid_id FROM $wpdb->dt_location_grid_meta as lgm LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+             JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND meta_key = 'group_status' AND meta_value = %s
+             WHERE lgm.post_type = 'groups'
+            ) as t3
+            GROUP BY t3.admin3_grid_id
+            UNION
+            SELECT t4.admin4_grid_id as grid_id, count(t4.admin4_grid_id) as count
+            FROM (
+             SELECT lg.admin4_grid_id FROM $wpdb->dt_location_grid_meta as lgm LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+             JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND meta_key = 'group_status' AND meta_value = %s
+             WHERE lgm.post_type = 'groups'
+            ) as t4
+            GROUP BY t4.admin4_grid_id
+            UNION
+            SELECT t5.admin5_grid_id as grid_id, count(t5.admin5_grid_id) as count
+            FROM (
+             SELECT lg.admin5_grid_id FROM $wpdb->dt_location_grid_meta as lgm LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+             JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND meta_key = 'group_status' AND meta_value = %s
+             WHERE lgm.post_type = 'groups'
+            ) as t5
+            GROUP BY t5.admin5_grid_id;
+            ", $status, $status, $status, $status, $status, $status
+            ), ARRAY_A );
+
+        } else {
+
+            $results = $wpdb->get_results( "
+            SELECT t0.admin0_grid_id as grid_id, count(t0.admin0_grid_id) as count
+            FROM (
+             SELECT lg.admin0_grid_id FROM $wpdb->dt_location_grid_meta as lgm LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'groups'
+            ) as t0
+            GROUP BY t0.admin0_grid_id
+            UNION
+            SELECT t1.admin1_grid_id as grid_id, count(t1.admin1_grid_id) as count
+            FROM (
+             SELECT lg.admin1_grid_id FROM $wpdb->dt_location_grid_meta as lgm LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'groups'
+            ) as t1
+            GROUP BY t1.admin1_grid_id
+            UNION
+            SELECT t2.admin2_grid_id as grid_id, count(t2.admin2_grid_id) as count
+            FROM (
+             SELECT lg.admin2_grid_id FROM $wpdb->dt_location_grid_meta as lgm LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'groups'
+            ) as t2
+            GROUP BY t2.admin2_grid_id
+            UNION
+            SELECT t3.admin3_grid_id as grid_id, count(t3.admin3_grid_id) as count
+            FROM (
+             SELECT lg.admin3_grid_id FROM $wpdb->dt_location_grid_meta as lgm LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'groups'
+            ) as t3
+            GROUP BY t3.admin3_grid_id
+            UNION
+            SELECT t4.admin4_grid_id as grid_id, count(t4.admin4_grid_id) as count
+            FROM (
+             SELECT lg.admin4_grid_id FROM $wpdb->dt_location_grid_meta as lgm LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'groups'
+            ) as t4
+            GROUP BY t4.admin4_grid_id
+            UNION
+            SELECT t5.admin5_grid_id as grid_id, count(t5.admin5_grid_id) as count
+            FROM (
+             SELECT lg.admin5_grid_id FROM $wpdb->dt_location_grid_meta as lgm LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id WHERE lgm.post_type = 'groups'
+            ) as t5
+            GROUP BY t5.admin5_grid_id;
+            ", ARRAY_A );
+        }
+
+        $list = [];
+        if ( is_array( $results ) ) {
+            foreach ( $results as $result ) {
+                $list[$result['grid_id']] = $result;
+            }
+        }
+
+        return $list;
+    }
+
+    public static function query_groups_under_grid_id( $grid_id, $status ) {
         global $wpdb;
 
         if ( $status ) {

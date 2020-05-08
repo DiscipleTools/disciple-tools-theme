@@ -51,7 +51,6 @@ class DT_Metrics_Personal_Contacts_Cluster_Map extends DT_Metrics_Chart_Base
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_contact_field_defaults();
         wp_localize_script(
             'dt_mapbox_script', 'dt_mapbox_metrics', [
-                'map_key' => DT_Mapbox_API::get_key(),
                 'translations' => [
                     'title' => __( "Mapping", "disciple_tools" ),
                     'refresh_data' => __( "Refresh Cached Data", "disciple_tools" ),
@@ -59,6 +58,8 @@ class DT_Metrics_Personal_Contacts_Cluster_Map extends DT_Metrics_Chart_Base
                     'name' => __( "Name", "disciple_tools" ),
                 ],
                 'settings' => [
+                    'map_key' => DT_Mapbox_API::get_key(),
+                    'map_mirror' => dt_get_location_grid_mirror( true ),
                     'rest_url' => 'cluster_geojson',
                     'rest_base_url' => $this->namespace,
                     'menu_slug' => $this->base_slug,

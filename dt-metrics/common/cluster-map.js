@@ -153,7 +153,7 @@ jQuery(document).ready(function($) {
           });
         }
 
-        mapboxgl.accessToken = obj.map_key;
+        mapboxgl.accessToken = obj.settings.map_key;
         var map = new mapboxgl.Map({
           container: 'map',
           style: 'mapbox://styles/mapbox/light-v10',

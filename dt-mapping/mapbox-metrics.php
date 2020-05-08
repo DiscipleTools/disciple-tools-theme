@@ -352,8 +352,6 @@ class DT_Mapbox_Metrics {
     public function get_contacts_points_geojson( $status = null ) {
         global $wpdb;
 
-        // @todo add status
-
         /* pulling 40k from location_grid_meta table */
         if ( $status ) {
             $results = $wpdb->get_results($wpdb->prepare( "

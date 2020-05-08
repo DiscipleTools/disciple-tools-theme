@@ -119,4 +119,11 @@ abstract class DT_Metrics_Chart_Base
         }
         return $my_list;
     }
+
+    public function _empty_geojson() {
+        return array(
+            'type' => 'FeatureCollection',
+            'features' => []
+        );
+    }
 }
