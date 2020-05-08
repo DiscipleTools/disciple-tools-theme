@@ -3,32 +3,44 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
-class DT_Metrics_Critical_Path_Chart
+class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
 {
 
     //slug and title of the top menu folder
-    public $base_slug = 'project'; // lowercase
+    public $base_slug = 'combined'; // lowercase
     public $base_title;
     public $title;
     public $slug = 'critical_path'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $js_file_name = '/dt-metrics/project/critical-path.js'; // should be full file name plus extension
+    public $js_file_name = '/dt-metrics/combined/critical-path.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
 
     public function __construct() {
+        parent::__construct();
         if ( !$this->has_permission() ){
             return;
         }
+
+        $this->title = __( 'Critical Path', 'disciple_tools' );
+        $this->base_title = __( 'Combined', 'disciple_tools' );
+
         $url_path = dt_get_url_path();
-        if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
+        if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
 
-            add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
-            add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 10 );
+            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
-            if ( 'metrics/critical-path' === $url_path ) {
-                add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
-            }
         }
+
+//        $url_path = dt_get_url_path();
+//        if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
+//
+//            add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
+//            add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 10 );
+//
+//            if ( 'metrics/critical-path' === $url_path ) {
+//                add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+//            }
+//        }
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 

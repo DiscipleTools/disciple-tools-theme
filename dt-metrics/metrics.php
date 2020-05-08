@@ -35,9 +35,6 @@ class Disciple_Tools_Metrics
             // load base chart setup
             require_once( get_template_directory() . '/dt-metrics/charts-base.php' );
 
-            // Critical Path
-            require_once( get_template_directory() . '/dt-metrics/project/critical-path.php' );
-
             // Personal
             require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
             require_once( get_template_directory() . '/dt-metrics/personal/baptism-tree.php' );
@@ -67,6 +64,11 @@ class Disciple_Tools_Metrics
             require_once( get_template_directory() . '/dt-metrics/groups/mapbox-point-map.php' );
             require_once( get_template_directory() . '/dt-metrics/groups/mapbox-area-map.php' );
             require_once( get_template_directory() . '/dt-metrics/groups/overview.php' );
+
+            // Combined
+            require_once( get_template_directory() . '/dt-metrics/combined/locations-list.php' );
+            require_once( get_template_directory() . '/dt-metrics/combined/hover-map.php' );
+            require_once( get_template_directory() . '/dt-metrics/combined/critical-path.php' );
         }
     }
 
