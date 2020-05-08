@@ -666,7 +666,7 @@ class Disciple_Tools_Mapping_Queries {
 
 
     /**
-     * Count post types, churchs and groups in each used location and across admin levels
+     * Count post types, churches and groups in each used location and across admin levels
      */
     public static function get_location_grid_totals() : array {
 

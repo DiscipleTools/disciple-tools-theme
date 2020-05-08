@@ -126,10 +126,10 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
                 $column_data[$key][$next_column_number] = 0;
             }
         }
-        $results = Disciple_Tools_Mapping_Queries::get_location_grid_totals();
+        $results = Disciple_Tools_Mapping_Queries::get_church_grid_totals();
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
-                if ( $result['type'] === 'churches' && $result['count'] > 0 ) { // filter for only contact and positive counts
+                if (  $result['count'] > 0 ) { // filter for only contact and positive counts
                     $grid_id = $result['grid_id'];
 
                     // test if grid_id exists, else prepare it with 0 values
@@ -171,10 +171,10 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
                 $column_data[$key][$next_column_number] = 0;
             }
         }
-        $results = Disciple_Tools_Mapping_Queries::get_location_grid_totals();
+        $results = Disciple_Tools_Mapping_Queries::get_contacts_grid_totals();
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
-                if ( $result['type'] === 'contacts' && $result['count'] > 0 ) { // filter for only contact and positive counts
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
                     $grid_id = $result['grid_id'];
 
                     // test if grid_id exists, else prepare it with 0 values
@@ -216,10 +216,10 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
                 $column_data[$key][$next_column_number] = 0;
             }
         }
-        $results = Disciple_Tools_Mapping_Queries::get_location_grid_totals();
+        $results = Disciple_Tools_Mapping_Queries::get_groups_grid_totals();
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
-                if ( $result['type'] === 'groups' && $result['count'] > 0 ) { // filter for only contact and positive counts
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
                     $grid_id = $result['grid_id'];
 
                     // test if grid_id exists, else prepare it with 0 values
@@ -255,8 +255,8 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
         }
 
         $column_labels[ $next_column_number ] = [
-            'key'   => 'workers',
-            'label' => __( 'Workers', 'disciple_tools' )
+            'key'   => 'users',
+            'label' => __( 'Users', 'disciple_tools' )
         ];
 
         if ( ! empty( $column_data ) ) {
@@ -265,11 +265,11 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
             }
         }
 
-        $results = Disciple_Tools_Mapping_Queries::get_location_grid_totals();
+        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals();
 
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
-                if ( $result['type'] === 'users' && $result['count'] > 0 ) { // filter for only contact and positive counts
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
                     $grid_id = $result['grid_id'];
 
                     // test if grid_id exists, else prepare it with 0 values

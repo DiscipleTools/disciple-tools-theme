@@ -104,51 +104,6 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
         return $this->data( isset( $params["refresh"] ) && $params["refresh"] === "true" );
     }
 
-    public function add_churches_column( $data ) {
-        $column_labels = $data['custom_column_labels'] ?? [];
-        $column_data   = $data['custom_column_data'] ?? [];
-        if ( empty( $column_labels ) ) {
-            $next_column_number = 0;
-        } else if ( count( $column_labels ) === 1 ) {
-            $next_column_number = 1;
-        } else {
-            $next_column_number = count( $column_labels );
-        }
-        $column_labels[ $next_column_number ] = [
-            'key'   => 'churches',
-            'label' => __( 'Churches', 'disciple_tools' )
-        ];
-        if ( ! empty( $column_data ) ) {
-            foreach ( $column_data as $key => $value ) {
-                $column_data[$key][$next_column_number] = 0;
-            }
-        }
-        $results = Disciple_Tools_Mapping_Queries::get_location_grid_totals();
-        if ( ! empty( $results ) ) {
-            foreach ( $results as $result ) {
-                if ( $result['type'] === 'churches' && $result['count'] > 0 ) { // filter for only contact and positive counts
-                    $grid_id = $result['grid_id'];
-
-                    // test if grid_id exists, else prepare it with 0 values
-                    if ( ! isset( $column_data[ $grid_id ] ) ) {
-                        $column_data[$grid_id] = [];
-                        $i                         = 0;
-                        while ( $i <= $next_column_number ) {
-                            $column_data[$grid_id][$i] = 0;
-                            $i ++;
-                        }
-                    }
-
-                    // add new record to column
-                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
-                }
-            }
-        }
-        $data['custom_column_labels'] = $column_labels;
-        $data['custom_column_data']   = $column_data;
-        return $data;
-    }
-
     public function add_contacts_column( $data ) {
         $column_labels = $data['custom_column_labels'] ?? [];
         $column_data   = $data['custom_column_data'] ?? [];
@@ -168,10 +123,10 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                 $column_data[$key][$next_column_number] = 0;
             }
         }
-        $results = Disciple_Tools_Mapping_Queries::get_location_grid_totals();
+        $results = Disciple_Tools_Mapping_Queries::get_contacts_grid_totals();
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
-                if ( $result['type'] === 'contacts' && $result['count'] > 0 ) { // filter for only contact and positive counts
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
                     $grid_id = $result['grid_id'];
 
                     // test if grid_id exists, else prepare it with 0 values
@@ -213,10 +168,55 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                 $column_data[$key][$next_column_number] = 0;
             }
         }
-        $results = Disciple_Tools_Mapping_Queries::get_location_grid_totals();
+        $results = Disciple_Tools_Mapping_Queries::get_groups_grid_totals();
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
-                if ( $result['type'] === 'groups' && $result['count'] > 0 ) { // filter for only contact and positive counts
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
+                    $grid_id = $result['grid_id'];
+
+                    // test if grid_id exists, else prepare it with 0 values
+                    if ( ! isset( $column_data[ $grid_id ] ) ) {
+                        $column_data[$grid_id] = [];
+                        $i                         = 0;
+                        while ( $i <= $next_column_number ) {
+                            $column_data[$grid_id][$i] = 0;
+                            $i ++;
+                        }
+                    }
+
+                    // add new record to column
+                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
+                }
+            }
+        }
+        $data['custom_column_labels'] = $column_labels;
+        $data['custom_column_data']   = $column_data;
+        return $data;
+    }
+
+    public function add_churches_column( $data ) {
+        $column_labels = $data['custom_column_labels'] ?? [];
+        $column_data   = $data['custom_column_data'] ?? [];
+        if ( empty( $column_labels ) ) {
+            $next_column_number = 0;
+        } else if ( count( $column_labels ) === 1 ) {
+            $next_column_number = 1;
+        } else {
+            $next_column_number = count( $column_labels );
+        }
+        $column_labels[ $next_column_number ] = [
+            'key'   => 'churches',
+            'label' => __( 'Churches', 'disciple_tools' )
+        ];
+        if ( ! empty( $column_data ) ) {
+            foreach ( $column_data as $key => $value ) {
+                $column_data[$key][$next_column_number] = 0;
+            }
+        }
+        $results = Disciple_Tools_Mapping_Queries::get_church_grid_totals();
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ) {
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
                     $grid_id = $result['grid_id'];
 
                     // test if grid_id exists, else prepare it with 0 values
@@ -252,8 +252,8 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
         }
 
         $column_labels[ $next_column_number ] = [
-            'key'   => 'workers',
-            'label' => __( 'Workers', 'disciple_tools' )
+            'key'   => 'users',
+            'label' => __( 'Users', 'disciple_tools' )
         ];
 
         if ( ! empty( $column_data ) ) {
@@ -262,11 +262,11 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
             }
         }
 
-        $results = Disciple_Tools_Mapping_Queries::get_location_grid_totals();
+        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals();
 
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
-                if ( $result['type'] === 'users' && $result['count'] > 0 ) { // filter for only contact and positive counts
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
                     $grid_id = $result['grid_id'];
 
                     // test if grid_id exists, else prepare it with 0 values
@@ -289,7 +289,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
         $data['custom_column_data']   = $column_data;
         return $data;
     }
-    
+
 }
 new DT_Metrics_Locations_List();
 
