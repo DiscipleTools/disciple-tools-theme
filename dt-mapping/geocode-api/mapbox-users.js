@@ -1,3 +1,4 @@
+/** Mapbox search box widget for users */
 jQuery(document).ready(function(){
   console.log('mapbox-users')
   console.log(dtMapbox)

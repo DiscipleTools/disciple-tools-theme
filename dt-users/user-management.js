@@ -811,7 +811,7 @@ jQuery(document).ready(function($) {
                     <div id="spinner">${spinner}</div>
                     <div id="cross-hair">&#8982</div>
                     <div id="geocode-details" class="geocode-details">
-                        Leadership<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
+                        Response Coverage<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
                         <hr style="margin:10px 5px;">
                         <div id="geocode-details-content"></div>
                     </div>
