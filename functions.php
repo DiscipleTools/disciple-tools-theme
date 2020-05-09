@@ -257,6 +257,7 @@ else {
             require_once( get_template_directory() . '/dt-core/admin/site-link-post-type.php' );
             Site_Link_System::instance( 100, 'dashicons-admin-links' );
 
+
             /**
              * dt-posts
              */
@@ -314,6 +315,7 @@ else {
              * dt-metrics
              */
             require_once( get_template_directory() . '/dt-metrics/counter.php' );
+            require_once( get_template_directory() . '/dt-metrics/charts-base.php' );
             if ( strpos( $url_path, 'metrics' ) !== false ) {
                 require_once( get_template_directory() . '/dt-metrics/metrics.php' );
             }
@@ -330,6 +332,8 @@ else {
                 require_once( get_template_directory() . '/dt-users/users-product-tour.php' );
             }
             require_once( get_template_directory() . '/dt-users/user-management.php' );
+            require_once( get_template_directory() . '/dt-users/hover-coverage-map.php' );
+            require_once( get_template_directory() . '/dt-users/mapbox-coverage-map.php' );
 
 
             /**

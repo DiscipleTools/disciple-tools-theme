@@ -3,17 +3,17 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
-
-class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
+require_once( get_template_directory() . '/dt-metrics/charts-base.php');
+class DT_Users_Mapbox_Map extends DT_Metrics_Chart_Base
 {
 
     //slug and titile of the top menu folder
     public $base_slug = 'user-management'; // lowercase
     public $base_title;
     public $title;
-    public $slug = 'hover_map'; // lowercase
+    public $slug = 'mapbox-map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $js_file_name = '/dt-users/hover-map.js'; // should be full file name plus extension
+    public $js_file_name = '/dt-users/hover-coverage-map.js'; // should be full file name plus extension
     public $permissions = [ 'list_users', 'manage_dt' ];
     public $namespace = null;
 
@@ -22,21 +22,37 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->title = __( 'Hover Map', 'disciple_tools' );
-        $this->base_title = __( 'Combined', 'disciple_tools' );
+//        $this->title = __( 'Responsibility Map', 'disciple_tools' );
+//        $this->base_title = __( 'Combined', 'disciple_tools' );
 
-        $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
+        $this->namespace = "$this->base_slug/$this->slug";
 
         $url_path = dt_get_url_path();
-        if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
+        if ( "$this->base_slug/$this->slug" === $url_path ) {
 
             add_action( 'wp_enqueue_scripts', [ $this, 'mapping_scripts' ], 89 );
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
-
+            add_filter( 'dt_metrics_menu', [ $this, 'base_menu' ], 20 ); //load menu links
+            add_action( 'wp_enqueue_scripts', [ $this, 'base_scripts' ], 99 );
         }
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
+    public function base_menu( $content ) {
+        return $content;
+    }
+
+
+    /**
+     *  This hook add a page for the metric charts
+     *
+     * @param $template_for_url
+     *
+     * @return mixed
+     */
+    public function base_add_url( $template_for_url ) {
+        return $template_for_url;
+    }
 
     public function scripts() {
         DT_Mapping_Module::instance()->scripts();
@@ -54,7 +70,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
         );
         wp_localize_script(
             'dt_'.$this->slug.'_script', $this->js_object_name, [
-                'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/$this->slug",
+                'rest_endpoints_base' => esc_url_raw( rest_url() ) . "$this->base_slug/$this->slug",
                 'base_slug' => $this->base_slug,
                 'root' => esc_url_raw( rest_url() ),
                 'uri' => $dt_mapping['url'],
@@ -74,10 +90,9 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
         //get initial data
         $data = DT_Mapping_Module::instance()->data();
 
-        $data = $this->add_contacts_column( $data );
-        $data = $this->add_groups_column( $data );
-        $data = $this->add_churches_column( $data );
-        $data = $this->add_users_column( $data );
+        $data = $this->add_all_column( $data );
+        $data = $this->add_active_column( $data );
+        $data = $this->add_inactive_column( $data );
 
         return $data;
     }
@@ -107,142 +122,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
         return $this->data( isset( $params["refresh"] ) && $params["refresh"] === "true" );
     }
 
-    public function add_churches_column( $data ) {
-        $column_labels = $data['custom_column_labels'] ?? [];
-        $column_data   = $data['custom_column_data'] ?? [];
-        if ( empty( $column_labels ) ) {
-            $next_column_number = 0;
-        } else if ( count( $column_labels ) === 1 ) {
-            $next_column_number = 1;
-        } else {
-            $next_column_number = count( $column_labels );
-        }
-        $column_labels[ $next_column_number ] = [
-            'key'   => 'churches',
-            'label' => __( 'Churches', 'disciple_tools' )
-        ];
-        if ( ! empty( $column_data ) ) {
-            foreach ( $column_data as $key => $value ) {
-                $column_data[$key][$next_column_number] = 0;
-            }
-        }
-        $results = Disciple_Tools_Mapping_Queries::get_church_grid_totals();
-        if ( ! empty( $results ) ) {
-            foreach ( $results as $result ) {
-                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
-                    $grid_id = $result['grid_id'];
-
-                    // test if grid_id exists, else prepare it with 0 values
-                    if ( ! isset( $column_data[ $grid_id ] ) ) {
-                        $column_data[$grid_id] = [];
-                        $i                         = 0;
-                        while ( $i <= $next_column_number ) {
-                            $column_data[$grid_id][$i] = 0;
-                            $i ++;
-                        }
-                    }
-
-                    // add new record to column
-                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
-                }
-            }
-        }
-        $data['custom_column_labels'] = $column_labels;
-        $data['custom_column_data']   = $column_data;
-        return $data;
-    }
-
-    public function add_contacts_column( $data ) {
-        $column_labels = $data['custom_column_labels'] ?? [];
-        $column_data   = $data['custom_column_data'] ?? [];
-        if ( empty( $column_labels ) ) {
-            $next_column_number = 0;
-        } else if ( count( $column_labels ) === 1 ) {
-            $next_column_number = 1;
-        } else {
-            $next_column_number = count( $column_labels );
-        }
-        $column_labels[ $next_column_number ] = [
-            'key'   => 'contacts',
-            'label' => __( 'Contacts', 'disciple_tools' )
-        ];
-        if ( ! empty( $column_data ) ) {
-            foreach ( $column_data as $key => $value ) {
-                $column_data[$key][$next_column_number] = 0;
-            }
-        }
-        $results = Disciple_Tools_Mapping_Queries::get_contacts_grid_totals();
-        if ( ! empty( $results ) ) {
-            foreach ( $results as $result ) {
-                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
-                    $grid_id = $result['grid_id'];
-
-                    // test if grid_id exists, else prepare it with 0 values
-                    if ( ! isset( $column_data[ $grid_id ] ) ) {
-                        $column_data[ $grid_id ] = [];
-                        $i                         = 0;
-                        while ( $i <= $next_column_number ) {
-                            $column_data[$grid_id][$i] = 0;
-                            $i ++;
-                        }
-                    }
-
-                    // add new record to column
-                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
-                }
-            }
-        }
-        $data['custom_column_labels'] = $column_labels;
-        $data['custom_column_data']   = $column_data;
-        return $data;
-    }
-
-    public function add_groups_column( $data ) {
-        $column_labels = $data['custom_column_labels'] ?? [];
-        $column_data   = $data['custom_column_data'] ?? [];
-        if ( empty( $column_labels ) ) {
-            $next_column_number = 0;
-        } else if ( count( $column_labels ) === 1 ) {
-            $next_column_number = 1;
-        } else {
-            $next_column_number = count( $column_labels );
-        }
-        $column_labels[ $next_column_number ] = [
-            'key'   => 'groups',
-            'label' => __( 'Groups', 'disciple_tools' )
-        ];
-        if ( ! empty( $column_data ) ) {
-            foreach ( $column_data as $key => $value ) {
-                $column_data[$key][$next_column_number] = 0;
-            }
-        }
-        $results = Disciple_Tools_Mapping_Queries::get_groups_grid_totals();
-        if ( ! empty( $results ) ) {
-            foreach ( $results as $result ) {
-                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
-                    $grid_id = $result['grid_id'];
-
-                    // test if grid_id exists, else prepare it with 0 values
-                    if ( ! isset( $column_data[ $grid_id ] ) ) {
-                        $column_data[$grid_id] = [];
-                        $i                         = 0;
-                        while ( $i <= $next_column_number ) {
-                            $column_data[$grid_id][$i] = 0;
-                            $i ++;
-                        }
-                    }
-
-                    // add new record to column
-                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
-                }
-            }
-        }
-        $data['custom_column_labels'] = $column_labels;
-        $data['custom_column_data']   = $column_data;
-        return $data;
-    }
-
-    public function add_users_column( $data ) {
+    public function add_all_column( $data ) {
         $column_labels = $data['custom_column_labels'] ?? [];
         $column_data   = $data['custom_column_data'] ?? [];
 
@@ -255,8 +135,8 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
         }
 
         $column_labels[ $next_column_number ] = [
-            'key'   => 'users',
-            'label' => __( 'Users', 'disciple_tools' )
+            'key'   => 'all',
+            'label' => __( 'All', 'disciple_tools' )
         ];
 
         if ( ! empty( $column_data ) ) {
@@ -265,7 +145,109 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
             }
         }
 
-        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals();
+        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals( );
+
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ) {
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
+                    $grid_id = $result['grid_id'];
+
+                    // test if grid_id exists, else prepare it with 0 values
+                    if ( ! isset( $column_data[$grid_id] ) ) {
+                        $column_data[$grid_id] = [];
+                        $i                         = 0;
+                        while ( $i <= $next_column_number ) {
+                            $column_data[$grid_id][$i] = 0;
+                            $i ++;
+                        }
+                    }
+
+                    // add new record to column
+                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
+                }
+            }
+        }
+
+        $data['custom_column_labels'] = $column_labels;
+        $data['custom_column_data']   = $column_data;
+        return $data;
+    }
+
+    public function add_active_column( $data ) {
+        $column_labels = $data['custom_column_labels'] ?? [];
+        $column_data   = $data['custom_column_data'] ?? [];
+
+        if ( empty( $column_labels ) ) {
+            $next_column_number = 0;
+        } else if ( count( $column_labels ) === 1 ) {
+            $next_column_number = 1;
+        } else {
+            $next_column_number = count( $column_labels );
+        }
+
+        $column_labels[ $next_column_number ] = [
+            'key'   => 'active',
+            'label' => __( 'Active', 'disciple_tools' )
+        ];
+
+        if ( ! empty( $column_data ) ) {
+            foreach ( $column_data as $key => $value ) {
+                $column_data[ $key ][ $next_column_number ] = 0;
+            }
+        }
+
+        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals( 'active');
+
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ) {
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
+                    $grid_id = $result['grid_id'];
+
+                    // test if grid_id exists, else prepare it with 0 values
+                    if ( ! isset( $column_data[$grid_id] ) ) {
+                        $column_data[$grid_id] = [];
+                        $i                         = 0;
+                        while ( $i <= $next_column_number ) {
+                            $column_data[$grid_id][$i] = 0;
+                            $i ++;
+                        }
+                    }
+
+                    // add new record to column
+                    $column_data[$grid_id][$next_column_number] = (int) $result['count'] ?? 0; // must be string
+                }
+            }
+        }
+
+        $data['custom_column_labels'] = $column_labels;
+        $data['custom_column_data']   = $column_data;
+        return $data;
+    }
+
+    public function add_inactive_column( $data ) {
+        $column_labels = $data['custom_column_labels'] ?? [];
+        $column_data   = $data['custom_column_data'] ?? [];
+
+        if ( empty( $column_labels ) ) {
+            $next_column_number = 0;
+        } else if ( count( $column_labels ) === 1 ) {
+            $next_column_number = 1;
+        } else {
+            $next_column_number = count( $column_labels );
+        }
+
+        $column_labels[ $next_column_number ] = [
+            'key'   => 'inactive',
+            'label' => __( 'Inactive', 'disciple_tools' )
+        ];
+
+        if ( ! empty( $column_data ) ) {
+            foreach ( $column_data as $key => $value ) {
+                $column_data[ $key ][ $next_column_number ] = 0;
+            }
+        }
+
+        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals( 'inactive');
 
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
@@ -294,6 +276,4 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
     }
 
 }
-new DT_Metrics_Hover_Map();
-
-
+new DT_Users_Mapbox_Map();

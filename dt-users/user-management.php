@@ -82,7 +82,8 @@ class DT_User_Management
 
     public function dt_templates_for_urls( $template_for_url ) {
         $template_for_url['user-management/users'] = './dt-users/template-user-management.php';
-        $template_for_url['user-management/map'] = './dt-users/template-user-management.php';
+        $template_for_url['user-management/mapbox-map'] = './dt-users/template-user-management.php';
+        $template_for_url['user-management/hover-map'] = './dt-users/template-user-management.php';
         $template_for_url['user-management/add-user'] = './dt-users/template-user-management.php';
         return $template_for_url;
     }
@@ -100,8 +101,11 @@ class DT_User_Management
         $content .= '<li><a href="'. site_url( '/user-management/users/' ) .'" >' .  esc_html__( 'Users', 'disciple_tools' ) . '</a></li>';
 
         if ( DT_Mapbox_API::get_key() ) {
-            $content .= '<li><a href="'. site_url( '/user-management/map/' ) .'" >' .  esc_html__( 'Map', 'disciple_tools' ) . '</a></li>';
+            $content .= '<li><a href="'. site_url( '/user-management/mapbox-map/' ) .'" >' .  esc_html__( 'Map', 'disciple_tools' ) . '</a></li>';
+        } else {
+            $content .= '<li><a href="'. site_url( '/user-management/hover-map/' ) .'" >' .  esc_html__( 'Map', 'disciple_tools' ) . '</a></li>';
         }
+
 
         $content .= '<li><a href="'. site_url( '/user-management/add-user/' ) .'" >' .  esc_html__( 'Add User', 'disciple_tools' ) . '</a></li>';
 

@@ -32,9 +32,6 @@ class Disciple_Tools_Metrics
         $url_path = dt_get_url_path();
         if ( strpos( $url_path, "metrics" ) !== false ) {
 
-            // load base chart setup
-            require_once( get_template_directory() . '/dt-metrics/charts-base.php' );
-
             // Personal
             require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
             require_once( get_template_directory() . '/dt-metrics/personal/baptism-tree.php' );
