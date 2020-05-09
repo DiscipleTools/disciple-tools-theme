@@ -80,13 +80,13 @@ class DT_Metrics_Personal_Coaching_Tree extends DT_Metrics_Chart_Base
     }
 
     public function get_baptism_generations_tree(){
-        $list = Disciple_Tools_Contacts::get_viewable_contacts_compact('');
+        $list = Disciple_Tools_Contacts::get_viewable_contacts_compact( '' );
 
         if ( is_wp_error( $list ) ) {
             return [];
         }
 
-        foreach( $list['posts'] as $post ) {
+        foreach ( $list['posts'] as $post ) {
             $this->my_list[$post['ID']] = $post['ID'];
         }
 
@@ -96,10 +96,10 @@ class DT_Metrics_Personal_Coaching_Tree extends DT_Metrics_Chart_Base
         }
         $menu_data = $this->prepare_menu_array( $query );
 
-        foreach( $menu_data['parents'] as $parent_id => $parent ) {
+        foreach ( $menu_data['parents'] as $parent_id => $parent ) {
             if ( ! isset( $this->my_list[$parent_id] ) && 0 !== $parent_id ) {
                 unset( $menu_data['parents'][$parent_id] );
-                unset( $menu_data['parents'][0][array_search($parent_id, $menu_data['parents'][0] )] );
+                unset( $menu_data['parents'][0][array_search( $parent_id, $menu_data['parents'][0] )] );
             }
         }
         if ( count( $menu_data['parents'] ) <= 1 ) {

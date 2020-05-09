@@ -129,7 +129,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
         $results = Disciple_Tools_Mapping_Queries::get_church_grid_totals();
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
-                if (  $result['count'] > 0 ) { // filter for only contact and positive counts
+                if ( $result['count'] > 0 ) { // filter for only contact and positive counts
                     $grid_id = $result['grid_id'];
 
                     // test if grid_id exists, else prepare it with 0 values

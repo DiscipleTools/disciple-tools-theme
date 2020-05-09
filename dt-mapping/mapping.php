@@ -1239,8 +1239,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 require_once( 'geocode-api/location-grid-geocoder.php' );
             }
-            $geocoder = new Location_Grid_Geocoder();
-            $geocoder->delete_location_grid_meta( $post_id, 'all', 0 );
+            Location_Grid_Meta::add_location_grid_meta( $post_id, 'all', 0 );
         }
     }
     DT_Mapping_Module::instance(); // end DT_Mapping_Module class

@@ -387,7 +387,6 @@ jQuery(document).ready(function($) {
     }
 
 
-
     let update_user = ( user_id, key, value )=>{
       let data =  {
         [key]: value

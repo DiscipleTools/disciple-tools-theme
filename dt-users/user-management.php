@@ -184,7 +184,7 @@ class DT_User_Management
         if ( ! $user ) {
             return new WP_Error( __METHOD__, "No User", [ 'status' => 400 ] );
         }
-
+        Disciple_Tools_Users::copy_locations_from_contact_to_user( 4725, 2 );
         $user_response = [
             "display_name" => $user->display_name,
             "user_id" => $user->ID,
@@ -571,7 +571,7 @@ class DT_User_Management
 
     public function update_settings_on_user( WP_REST_Request $request ){
         if ( !$this->has_permission() ){
-            return new WP_Error( "update user", "Missing Permissions", [ 'status' => 401 ] );
+            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 401 ] );
         }
 
         $get_params = $request->get_params();

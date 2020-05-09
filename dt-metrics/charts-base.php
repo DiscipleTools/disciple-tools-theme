@@ -102,7 +102,7 @@ abstract class DT_Metrics_Chart_Base
             return [];
         }
         $my_list = [];
-        foreach( $list['posts'] as $post ) {
+        foreach ( $list['posts'] as $post ) {
             $my_list[] = $post->ID;
         }
         return $my_list;
@@ -114,7 +114,7 @@ abstract class DT_Metrics_Chart_Base
             return [];
         }
         $my_list = [];
-        foreach( $list['posts'] as $post ) {
+        foreach ( $list['posts'] as $post ) {
             $my_list[] = $post->ID;
         }
         return $my_list;

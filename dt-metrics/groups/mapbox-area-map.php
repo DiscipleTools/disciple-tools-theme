@@ -304,7 +304,7 @@ class DT_Metrics_Mapbox_Groups_Area_Map extends DT_Metrics_Chart_Base
                 AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'group_status' AND pm2.meta_value = %s )
             ) as t5
             WHERE t5.admin5_grid_id = %d;
-            ", $status,$grid_id,$status,$grid_id,$status,$grid_id,$status,$grid_id,$status,$grid_id,$status,$grid_id ), ARRAY_A );
+            ", $status, $grid_id, $status, $grid_id, $status, $grid_id, $status, $grid_id, $status, $grid_id, $status, $grid_id ), ARRAY_A );
         } else {
             $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT DISTINCT t0.post_title, t0.post_id FROM (
@@ -360,7 +360,7 @@ class DT_Metrics_Mapbox_Groups_Area_Map extends DT_Metrics_Chart_Base
                 WHERE pm.meta_key = 'location_grid'
             ) as t5
             WHERE t5.admin5_grid_id = %d;
-            ", $grid_id,$grid_id,$grid_id,$grid_id,$grid_id,$grid_id ), ARRAY_A );
+            ", $grid_id, $grid_id, $grid_id, $grid_id, $grid_id, $grid_id ), ARRAY_A );
         }
 
         return $results;

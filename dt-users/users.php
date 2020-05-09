@@ -917,8 +917,6 @@ Please click the following link to confirm the invite:
         return $custom_data;
     }
 
-
-
     public function add_current_locations_list( $custom_data ) {
         $custom_data['current_locations'] = DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( get_current_user_id() ) );
         return $custom_data;
@@ -962,7 +960,7 @@ Please click the following link to confirm the invite:
             $location_grid = get_user_meta( $user_id, $wpdb->prefix . 'location_grid_meta' );
             $grid['location_grid_meta'] = [];
             foreach ( $location_grid as $meta ) {
-                $location_grid_meta = Location_Grid_Geocoder::get_location_grid_meta_by_id( $meta );
+                $location_grid_meta = Location_Grid_Meta::get_location_grid_meta_by_id( $meta );
                 if ( $location_grid_meta ) {
                     $grid['location_grid_meta'][] = $location_grid_meta;
                 }
@@ -989,6 +987,18 @@ Please click the following link to confirm the invite:
         }
 
         return $grid;
+    }
+
+    public static function copy_locations_from_contact_to_user( $contact_id, $user_id ) {
+
+
+
+        $contact_meta = get_post_meta( $contact_id, 'location_grid' );
+        if ( ! empty( $contact_meta ) ) {
+            foreach( $contact_meta as $item ) {
+                dt_write_log($item);
+            }
+        }
     }
 
 
