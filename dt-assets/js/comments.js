@@ -116,6 +116,9 @@ jQuery(document).ready(function($) {
             <div dir="auto" class="comment-bubble <%- a.comment_ID %>">
               <div class="comment-text" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
             </div>
+            <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate' ) { %>
+              <div class="translation-bubble" dir=auto></div>
+            <% } %>
             <p class="comment-controls">
                <% if ( a.comment_ID ) { %>
                 <% has_Comment_ID = true %>
@@ -135,7 +138,6 @@ jQuery(document).ready(function($) {
     }); %>
     <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate'
     ) { %>
-        <div class="translation-bubble" dir=auto></div>
         <a class="translate-button showTranslation">${_.escape(commentsSettings.translations.translate)}</a>
         <a class="translate-button hideTranslation hide">${_.escape(commentsSettings.translations.hide_translation)}</a>
         </div>
@@ -145,8 +147,13 @@ jQuery(document).ready(function($) {
   )
 
   $(document).on("click", '.translate-button.showTranslation', function() {
-    let sourceText = $(this).siblings('.comment-bubble').text();
-    let combinedText = sourceText.replace(/\s+/g, ' ').trim();
+    let combinedArray = [];
+    jQuery(this).siblings('.comment-bubble').each(function(index, comment) {
+      let sourceText = $(comment).text();
+      sourceText = sourceText.replace(/\s+/g, ' ').trim();
+      combinedArray[index] = sourceText;
+    })
+
     let translation_bubble = $(this).siblings('.translation-bubble');
     let translation_hide = $(this).siblings('.translate-button.hideTranslation');
 
@@ -159,22 +166,41 @@ jQuery(document).ready(function($) {
       targetLang = langcode;
     }
 
-    let postData = {
-      "q": [combinedText],
-      "target": targetLang
+    function google_translate_fetch(postData, translate_button, arrayStartPos) {
+      fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(postData),
+        })
+        .then(response => response.json())
+        .then((result) => {
+
+          $.each(result.data.translations, function( index, translation ) {
+            $(translation_bubble[index + arrayStartPos]).append(translation.translatedText);
+          });
+          translation_hide.removeClass('hide');
+          $(translate_button).addClass('hide');
+        })
     }
 
-    fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(postData),
-    })
-    .then(response => response.json())
-    .then((result) => {
-      translation_bubble.append(result.data.translations[0].translatedText);
-      translation_hide.removeClass('hide');
-      $(this).addClass('hide');
+    if( combinedArray.length <= 128) {
+      let postData = {
+        "q": combinedArray,
+        "target": targetLang
+      }
+      google_translate_fetch(postData, this);
+    } else {
+      var i,j,temparray,chunk = 128;
+      for (i=0,j=combinedArray.length; i<j; i+=chunk) {
+          temparray = combinedArray.slice(i,i+chunk);
 
-    })
+          let postData = {
+            "q": temparray,
+            "target": targetLang
+          }
+          google_translate_fetch(postData, this, i);
+      }
+    }
+
   })
 
   $(document).on("click", '.translate-button.hideTranslation', function() {
