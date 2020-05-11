@@ -102,7 +102,7 @@ function render_field_for_display( $field_key, $fields, $post ){
         <?php elseif ( $field_type === "date" ) :?>
             <div class="<?php echo esc_html( $field_key ) ?> input-group">
                 <input id="<?php echo esc_html( $field_key ) ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off"
-                        value="<?php echo esc_html(  $post[$field_key]["timestamp"] ?? '' ) ?>" >
+                        value="<?php echo esc_html( $post[$field_key]["timestamp"] ?? '' ) ?>" >
                 <div class="input-group-button">
                     <button id="<?php echo esc_html( $field_key ) ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $field_key ) ?>" title="Delete Date">x</button>
                 </div>
