@@ -2,11 +2,9 @@
 _ = _ || window.lodash
 
 jQuery(document).ready(function() {
-  jQuery('#metrics-sidemenu').foundation('down', jQuery(`#${window.wp_js_object.base_slug}-menu`));
-
   let chartDiv = jQuery('#chart')
   chartDiv.empty().html(`
-    <span class="section-header" title="Showing all contacts from all time with any status">Responsibility Map</span>
+    <span class="section-header" title="Cummulative simple map of user coverage">${wp_js_object.translations.title}</span>
     <div id="mapping_chart"></div>
   `)
 

@@ -3,11 +3,10 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
-require_once( get_template_directory() . '/dt-metrics/charts-base.php');
 class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
 {
 
-    //slug and titile of the top menu folder
+    //slug and title of the top menu folder
     public $base_slug = 'user-management'; // lowercase
     public $base_title;
     public $title;
@@ -18,38 +17,45 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
     public $namespace = null;
 
     public function __construct() {
+//        if ( DT_Mapbox_API::get_key() ) { // only load if mapbox key is not present.
+//            return;
+//        }
         parent::__construct();
         if ( !$this->has_permission() ){
             return;
         }
-//        $this->title = __( 'Responsibility Map', 'disciple_tools' );
-//        $this->base_title = __( 'Combined', 'disciple_tools' );
 
         $this->namespace = "$this->base_slug/$this->slug";
 
         $url_path = dt_get_url_path();
+        if ( strpos( $url_path, 'user-management' ) !== false ) {
+            add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 20 );
+        }
         if ( "$this->base_slug/$this->slug" === $url_path ) {
 
-            add_action( 'wp_enqueue_scripts', [ $this, 'mapping_scripts' ], 89 );
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             add_filter( 'dt_metrics_menu', [ $this, 'base_menu' ], 20 ); //load menu links
             add_action( 'wp_enqueue_scripts', [ $this, 'base_scripts' ], 99 );
+            add_action( 'wp_enqueue_scripts', [ $this, 'mapping_scripts' ], 89 );
+            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 100 );
+            add_filter( 'dt_templates_for_urls', [ $this, 'dt_templates_for_urls' ] );
         }
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+    }
+
+    public function dt_templates_for_urls( $template_for_url ) {
+        $template_for_url['user-management/hover-map'] = 'template-metrics.php';
+        return $template_for_url;
     }
 
     public function base_menu( $content ) {
         return $content;
     }
 
+    public function add_menu( $content ) {
+        $content .= '<li><a href="'. esc_url( site_url( '/user-management/hover-map/' ) ) .'" >' .  esc_html__( 'Hover Map', 'disciple_tools' ) . '</a></li>';
+        return $content;
+    }
 
-    /**
-     *  This hook add a page for the metric charts
-     *
-     * @param $template_for_url
-     *
-     * @return mixed
-     */
     public function base_add_url( $template_for_url ) {
         return $template_for_url;
     }
@@ -77,6 +83,9 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
+                'translations' => [
+                    'title' => __( 'Coverage Map', 'disciple_tools')
+                ]
             ]
         );
     }
@@ -84,7 +93,6 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
     public function mapping_scripts() {
         DT_Mapping_Module::instance()->scripts();
     }
-
 
     public function data( $force_refresh = false ) {
         //get initial data
@@ -95,11 +103,6 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
         $data = $this->add_inactive_column( $data );
 
         return $data;
-    }
-
-    public function translations() {
-        $translations = [];
-        return $translations;
     }
 
     public function add_api_routes() {

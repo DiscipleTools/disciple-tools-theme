@@ -15,12 +15,27 @@ class DT_User_Management
     public function __construct() {
         if ( $this->has_permission() ){
             $url_path = dt_get_url_path();
-            if ( strpos( $url_path, 'user-management' ) !== false ) {
+            if ( strpos( $url_path, 'user-management/user' ) !== false || strpos( $url_path, 'user-management/add-user' ) !== false ) {
                 add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 20 );
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
                 add_filter( 'dt_templates_for_urls', [ $this, 'dt_templates_for_urls' ] );
+
+
+                add_action( 'init',  function() {
+                    add_rewrite_rule( 'user-management/user/([a-z0-9-]+)[/]?$', 'index.php?dt_user_id=$matches[1]', 'top' );
+                } );
+                add_filter( 'query_vars', function( $query_vars ) {
+                    $query_vars[] = 'dt_user_id';
+                    return $query_vars;
+                } );
+                add_action( 'template_include', function( $template ) {
+                    if ( get_query_var( 'dt_user_id' ) === false || get_query_var( 'dt_user_id' ) === '' ) {
+                        return $template;
+                    }
+                    return get_template_directory() . '/dt-users/template-user-management.php';
+                } );
             }
-             add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+            add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
         }
     }
 
@@ -61,57 +76,19 @@ class DT_User_Management
                 ],
             ]
         );
-        register_rest_route(
-            $namespace, '/grid_totals', [
-                [
-                    'methods'  => "POST",
-                    'callback' => [ $this, 'grid_totals' ],
-                ],
-            ]
-        );
-        register_rest_route(
-            $namespace, '/get_user_list', [
-                [
-                    'methods'  => "GET",
-                    'callback' => [ $this, 'get_user_list' ],
-                ],
-            ]
-        );
-
     }
 
     public function dt_templates_for_urls( $template_for_url ) {
         $template_for_url['user-management/users'] = './dt-users/template-user-management.php';
-        $template_for_url['user-management/mapbox-map'] = './dt-users/template-user-management.php';
-        $template_for_url['user-management/hover-map'] = './dt-users/template-user-management.php';
-        $template_for_url['user-management/add-user'] = './dt-users/template-user-management.php';
+        $template_for_url['user-management/add-user'] = 'template-metrics.php';
         return $template_for_url;
     }
 
-    public function add_nav_bar_link(){
-        if ( $this->has_permission() ) : ?>
-            <li>
-                <a href="<?php echo esc_url( site_url( '/user-management/users/' ) ); ?>"><?php echo esc_html__( "Users", 'disciple_tools' ); ?></a>
-            </li>
-        <?php endif;
-    }
-
     public function add_menu( $content ) {
-
         $content .= '<li><a href="'. site_url( '/user-management/users/' ) .'" >' .  esc_html__( 'Users', 'disciple_tools' ) . '</a></li>';
-
-        if ( DT_Mapbox_API::get_key() ) {
-            $content .= '<li><a href="'. site_url( '/user-management/mapbox-map/' ) .'" >' .  esc_html__( 'Map', 'disciple_tools' ) . '</a></li>';
-        } else {
-            $content .= '<li><a href="'. site_url( '/user-management/hover-map/' ) .'" >' .  esc_html__( 'Map', 'disciple_tools' ) . '</a></li>';
-        }
-
-
-        $content .= '<li><a href="'. site_url( '/user-management/add-user/' ) .'" >' .  esc_html__( 'Add User', 'disciple_tools' ) . '</a></li>';
-
+        $content .= '<li><a href="'. esc_url( site_url( '/user-management/add-user/' ) ) .'" >' .  esc_html__( 'Add User', 'disciple_tools' ) . '</a></li>';
         return $content;
     }
-
 
     public static function user_management_options(){
         return [
@@ -125,14 +102,14 @@ class DT_User_Management
     }
 
     public function scripts() {
-
-        $dependencies = [
-            'jquery',
-            'moment'
-        ];
-
         $url_path = dt_get_url_path();
-        if ( strpos( $url_path, 'user-management/users' ) !== false ) {
+        if ( strpos( $url_path, 'user-management/user' ) !== false || strpos( $url_path, 'user-management/add-user' ) !== false ) {
+
+            $dependencies = [
+                'jquery',
+                'moment'
+            ];
+
             array_push( $dependencies,
                 'datatable',
                 'datatable-responsive',
@@ -150,31 +127,31 @@ class DT_User_Management
             wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
             wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
             wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
-        }
 
-        wp_enqueue_script( 'dt_dispatcher_tools', get_template_directory_uri() . '/dt-users/user-management.js', $dependencies, filemtime( plugin_dir_path( __FILE__ ) . '/user-management.js' ), true );
-        wp_localize_script(
-            'dt_dispatcher_tools', 'dt_user_management_localized', [
-                'root'               => esc_url_raw( rest_url() ),
-                'theme_uri'          => trailingslashit( get_stylesheet_directory_uri() ),
-                'nonce'              => wp_create_nonce( 'wp_rest' ),
-                'current_user_login' => wp_get_current_user()->user_login,
-                'current_user_id'    => get_current_user_id(),
-                'map_key'            => DT_Mapbox_API::get_key(),
-                'options'            => self::user_management_options(),
-                'url_path'           => dt_get_url_path(),
-                'translations'       => [
-                    'accept_time' => _x( '%1$s was accepted on %2$s after %3$s days', 'Bob was accepted on Jul 8 after 10 days', 'disciple_tools' ),
-                    'no_contact_attempt_time' => _x( '%1$s waiting for Contact Attempt for %2$s days', 'Bob waiting for contact for 10 days', 'disciple_tools' ),
-                    'contact_attempt_time' => _x( 'Contact with %1$s was attempted on %2$s after %3$s days', 'Contact with Bob was attempted on Jul 8 after 10 days', 'disciple_tools' ),
-                    'unable_to_update' => _x( 'Unable to update', 'disciple_tools' ),
+            wp_enqueue_script( 'dt_dispatcher_tools', get_template_directory_uri() . '/dt-users/user-management.js', $dependencies, filemtime( plugin_dir_path( __FILE__ ) . '/user-management.js' ), true );
+            wp_localize_script(
+                'dt_dispatcher_tools', 'dt_user_management_localized', [
+                    'root'               => esc_url_raw( rest_url() ),
+                    'theme_uri'          => trailingslashit( get_stylesheet_directory_uri() ),
+                    'nonce'              => wp_create_nonce( 'wp_rest' ),
+                    'current_user_login' => wp_get_current_user()->user_login,
+                    'current_user_id'    => get_current_user_id(),
+                    'map_key'            => DT_Mapbox_API::get_key(),
+                    'options'            => self::user_management_options(),
+                    'url_path'           => dt_get_url_path(),
+                    'translations'       => [
+                        'accept_time' => _x( '%1$s was accepted on %2$s after %3$s days', 'Bob was accepted on Jul 8 after 10 days', 'disciple_tools' ),
+                        'no_contact_attempt_time' => _x( '%1$s waiting for Contact Attempt for %2$s days', 'Bob waiting for contact for 10 days', 'disciple_tools' ),
+                        'contact_attempt_time' => _x( 'Contact with %1$s was attempted on %2$s after %3$s days', 'Contact with Bob was attempted on Jul 8 after 10 days', 'disciple_tools' ),
+                        'unable_to_update' => _x( 'Unable to update', 'disciple_tools' ),
+                    ]
                 ]
-            ]
-        );
+            );
 
-        if ( DT_Mapbox_API::get_key() ) {
-            DT_Mapbox_API::load_mapbox_header_scripts();
-            DT_Mapbox_API::load_mapbox_search_widget_users();
+            if ( DT_Mapbox_API::get_key() ) {
+                DT_Mapbox_API::load_mapbox_header_scripts();
+                DT_Mapbox_API::load_mapbox_search_widget_users();
+            }
         }
     }
 
@@ -188,7 +165,7 @@ class DT_User_Management
         if ( ! $user ) {
             return new WP_Error( __METHOD__, "No User", [ 'status' => 400 ] );
         }
-        Disciple_Tools_Users::copy_locations_from_contact_to_user( 4725, 2 );
+
         $user_response = [
             "display_name" => $user->display_name,
             "user_id" => $user->ID,
@@ -834,46 +811,6 @@ class DT_User_Management
             LIMIT 10
         ", time(), $user_assigned_to, $user_assigned_to ), ARRAY_A);
 
-    }
-
-    public function grid_totals( WP_REST_Request $request ) {
-        if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
-        }
-        $params = $request->get_json_params() ?? $request->get_body_params();
-        $status = null;
-        if ( isset( $params['status'] ) && $params['status'] !== 'all' ) {
-            $status = sanitize_text_field( wp_unslash( $params['status'] ) );
-        }
-
-        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals( $status );
-
-        return $results;
-
-    }
-
-    public function get_user_list( WP_REST_Request $request ){
-        if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
-        }
-
-        global $wpdb;
-        $results = $wpdb->get_results("
-            SELECT DISTINCT lgm.grid_id as grid_id, lgm.grid_meta_id, lgm.post_id as contact_id, pm.meta_value as user_id, po.post_title as name
-            FROM $wpdb->dt_location_grid_meta as lgm
-            LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id
-            JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'corresponds_to_user' AND pm.meta_value != ''
-            WHERE lgm.post_type = 'contacts' AND lgm.grid_id IS NOT NULL ORDER BY po.post_title", ARRAY_A );
-
-        $list = [];
-        foreach ( $results as $result ) {
-            if ( ! isset( $list[$result['grid_id']] ) ) {
-                $list[$result['grid_id']] = [];
-            }
-            $list[$result['grid_id']][] = $result;
-        }
-
-        return $list;
     }
 
 }

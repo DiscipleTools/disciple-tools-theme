@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) {
 class DT_Metrics_Seeker_Path_Chart extends DT_Metrics_Chart_Base
 {
 
-    //slug and titile of the top menu folder
+    //slug and title of the top menu folder
     public $base_slug = 'contacts'; // lowercase
     public $base_title;
     public $title;
