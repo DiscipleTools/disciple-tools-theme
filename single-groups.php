@@ -336,10 +336,13 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                                        class="text-input"
                                                        value="<?php echo esc_html( $group[$field_key] ?? "" ) ?>"/>
                                             <?php elseif ( $field["type"] === "date" ) :?>
-                                                <input type="text" class="date-picker dt_date_picker"
-                                                       id="<?php echo esc_html( $field_key ) ?>"
-                                                       value="<?php echo esc_html( $group[$field_key]["timestamp"] ?? '' ) ?>"
-                                                       autocomplete="off">
+                                                <div class="<?php echo esc_html( $field_key ) ?> input-group">
+                                                    <input id="<?php echo esc_html( $field_key ) ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off"
+                                                            value="<?php echo esc_html( $group[$field_key]["timestamp"] ?? '' ) ?>" >
+                                                    <div class="input-group-button">
+                                                        <button id="<?php echo esc_html( $field_key ) ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $field_key ) ?>" title="Delete Date">x</button>
+                                                    </div>
+                                                </div>
                                             <?php endif;
                                         }
                                     }
