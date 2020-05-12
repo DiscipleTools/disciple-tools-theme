@@ -166,7 +166,7 @@ jQuery(document).ready(function($) {
       targetLang = langcode;
     }
 
-    function google_translate_fetch(postData, translate_button, arrayStartPos) {
+    function google_translate_fetch(postData, translate_button, arrayStartPos = 0) {
       fetch(url, {
             method: 'POST',
             body: JSON.stringify(postData),
