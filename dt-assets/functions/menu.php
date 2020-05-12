@@ -11,7 +11,7 @@
 function disciple_tools_top_nav_desktop() {
 
     $tabs = [];
-    if ( user_can( get_current_user_id(), 'access_contacts' ) ){
+    if ( current_user_can( 'access_contacts' ) ){
         $tabs = [
             [
                 "link" => site_url( '/contacts/' ),
@@ -21,10 +21,12 @@ function disciple_tools_top_nav_desktop() {
                 "link" => site_url( '/groups/' ),
                 "label" => __( "Groups", 'disciple_tools' )
             ],
-            [
-                "link" => site_url( '/metrics/' ),
-                "label" => __( "Metrics", 'disciple_tools' )
-            ],
+        ];
+    }
+    if ( current_user_can( "view_project_metrics" ) || current_user_can( "access_contacts" ) ){
+        $tabs[] = [
+            "link" => site_url( '/metrics/' ),
+            "label" => __( "Metrics", 'disciple_tools' )
         ];
     }
     $tabs = apply_filters( "desktop_navbar_menu_options", $tabs );
