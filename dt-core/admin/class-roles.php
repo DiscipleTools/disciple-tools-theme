@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 16;
+    private static $target_roles_version_number = 17;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -105,7 +105,7 @@ class Disciple_Tools_Roles
                 'read'                      => true, //access to admin
 
                 /* Manage DT Options */
-                'manage_dt'                 => true, // key capability for wp-admin dt administration
+                'manage_dt'                 => false, // key capability for wp-admin dt administration
 
                 'view_project_metrics' => true,
 
