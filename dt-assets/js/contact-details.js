@@ -459,6 +459,7 @@ jQuery(document).ready(function($) {
   $.typeahead({
     input: '.js-typeahead-assigned_to',
     minLength: 0,
+    maxItem: 0,
     accent: true,
     searchOnFocus: true,
     source: TYPEAHEADS.typeaheadUserSource(),
@@ -470,7 +471,7 @@ jQuery(document).ready(function($) {
             ${_.escape( item.name )}
         </span>
         ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
-        ${ item.update_needed ? `<span>
+        ${ item.update_needed && item.update_needed > 0 ? `<span>
           <img style="height: 12px;" src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/broken.svg"/>
           <span style="font-size: 14px">${_.escape(item.update_needed)}</span>
         </span>` : '' }

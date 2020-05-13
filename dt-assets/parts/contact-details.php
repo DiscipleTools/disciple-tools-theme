@@ -125,7 +125,7 @@
 
                 <div class="assigned_to details">
                     <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
-                    <div id="assigned_to_t" name="form-assigned_to">
+                    <div id="assigned_to_t" name="form-assigned_to" class="scrollable-typeahead">
                         <div class="typeahead__container" style="margin-bottom: 0">
                             <div class="typeahead__field">
                                 <span class="typeahead__query">

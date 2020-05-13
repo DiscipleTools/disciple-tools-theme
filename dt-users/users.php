@@ -102,7 +102,7 @@ class Disciple_Tools_Users
                 }
             }
         } else {
-
+            $correct_roles = dt_multi_role_get_cap_roles( "access_contacts" );
             $search_string = esc_attr( $search_string );
             $user_query = new WP_User_Query( [
                 'search'         => '*' . $search_string . '*',
@@ -110,10 +110,10 @@ class Disciple_Tools_Users
                     'user_login',
                     'user_nicename',
                     'user_email',
-                    'user_url',
                     'display_name'
                 ],
-                'number' => $get_all ? 1000 : 10
+                'role__in' => $correct_roles,
+                'number' => $get_all ? 1000 : 50
             ] );
 
             $users = $user_query->get_results();
