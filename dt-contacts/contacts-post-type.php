@@ -498,7 +498,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
-            'icon'        => "no-answer.svg",
+            'icon'        => get_template_directory_uri() . "/dt-assets/images/no-answer.svg",
         ];
         $fields['quick_button_contact_established'] = [
             'name'        => __( 'Contact Established', 'disciple_tools' ),
@@ -506,7 +506,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
-            'icon'        => "successful-conversation.svg",
+            'icon'        => get_template_directory_uri() . "/dt-assets/images/successful-conversation.svg",
         ];
         $fields['quick_button_meeting_scheduled'] = [
             'name'        => __( 'Meeting Scheduled', 'disciple_tools' ),
@@ -514,7 +514,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
-            'icon'        => "meeting-scheduled.svg",
+            'icon'        => get_template_directory_uri() . "/dt-assets/images/meeting-scheduled.svg",
         ];
         $fields['quick_button_meeting_complete'] = [
             'name'        => __( 'Meeting Complete', 'disciple_tools' ),
@@ -522,7 +522,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
-            'icon'        => "meeting-complete.svg",
+            'icon'        => get_template_directory_uri() . "/dt-assets/images/meeting-complete.svg",
         ];
         $fields['quick_button_no_show'] = [
             'name'        => __( 'Meeting No-show', 'disciple_tools' ),
@@ -530,7 +530,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
-            'icon'        => "no-show.svg",
+            'icon'        => get_template_directory_uri() . "/dt-assets/images/no-show.svg",
         ];
 
         $fields['corresponds_to_user'] = [

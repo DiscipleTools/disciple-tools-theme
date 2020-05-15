@@ -80,6 +80,10 @@ html[dir='rtl'] {
     justify-content: center;
     width: 100%;
     flex-wrap:wrap;
+    img {
+        width: 20px;
+        height: 20px;
+    }
 }
 .contact-quick-button {
     width: min-content;
@@ -94,6 +98,10 @@ html[dir='rtl'] {
 }
 .quick-action-menu a {
     vertical-align: middle;
+    img {
+        width: 20px;
+        height: 20px;
+    }
 }
 
 

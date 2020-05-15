@@ -73,7 +73,7 @@
                                         } ?>
                                         <li class="quick-action-menu" data-id="<?php echo esc_attr( $field ) ?>">
                                             <a>
-                                                <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/" . $val['icon'] ); ?>">
+                                                <img src="<?php echo esc_url( $val['icon'] ); ?>">
                                                 <?php echo esc_html( $val["name"] ); ?>
                                                 (<span class="<?php echo esc_attr( $field ) ?>"><?php echo esc_html( $current_value ); ?></span>)
                                             </a>

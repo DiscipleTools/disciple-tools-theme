@@ -217,7 +217,10 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         <span id="post-type" style="display: none">contact</span>
 
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
-            <section class="hide-for-large small-12 cell">
+
+            <?php do_action( 'dt_record_top_full_with', 'contacts', $contact ) ?>
+
+            <section id="mobile-quick-actions" class="hide-for-large small-12 cell">
                 <div class="bordered-box">
                     <h3 class="section-header"><?php esc_html_e( 'Quick Actions', 'disciple_tools' ) ?>
                         <button class="help-button float-right" data-section="quick-action-help-text">
