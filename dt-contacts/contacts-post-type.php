@@ -488,7 +488,8 @@ class Disciple_Tools_Contact_Post_Type
             "name" => __( "Source Details", 'disciple_tools' ),
             'type' => 'text',
             'default' => '',
-            'section'     => 'misc',
+            'section' => 'misc',
+            'hidden' => true
         ];
 
         // contact buttons
@@ -538,7 +539,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => _x( 'The id of the user this contact corresponds to', 'Optional Documentation', 'disciple_tools' ),
             'type' => 'number',
             'default' => 0,
-            'section' => 'misc'
+            'section' => 'misc',
+            'customizable' => false
         ];
         $fields["type"] = [
             'name'        => __( 'Contact Type', 'disciple_tools' ),
@@ -555,7 +557,8 @@ class Disciple_Tools_Contact_Post_Type
             'name' => __( 'Last Modified', 'disciple_tools' ),
             'type' => 'number',
             'default' => 0,
-            'section' => 'admin'
+            'section' => 'admin',
+            'customizable' => false
         ];
         $fields["duplicate_data"] = [
             "name" => 'Duplicates', //system string does not need translation

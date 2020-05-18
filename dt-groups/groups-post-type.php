@@ -447,7 +447,8 @@ class Disciple_Tools_Groups_Post_Type
             'name' => __( 'Last modified', 'disciple_tools' ),
             'type' => 'number',
             'default' => 0,
-            'section' => 'admin'
+            'section' => 'admin',
+            'customizable' => false
         ];
 
 

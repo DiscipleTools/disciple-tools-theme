@@ -155,8 +155,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $fields = $this->get_post_fields( $post_type );
             if ( $fields ){
                 foreach ( $fields as $field_key => $field_value ){
-                    if ( isset( $field_value["customizable"] ) ){
-                        $select_options[ $post_type ][ $field_key ] = $field_value["name"] ?? $field_key;
+                    if ( ( isset( $field_value["customizable"] ) && $field_value["customizable"] !== false ) || ( !isset( $field_value["customizable"] ) && empty( $field_value["hidden"] ) ) ){
+                        $select_options[ $post_type ][ $field_key ] = $field_value;
                     }
                 }
             }
@@ -175,10 +175,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <option></option>
                             <?php foreach ( $post_types as $post_type ) : ?>
                                 <option disabled>---<?php echo esc_html( $wp_post_types[$post_type]->label ); ?> Fields---</option>
-                                <?php foreach ( $select_options[$post_type] as $option_key => $option_name ) : ?>
+                                <?php foreach ( $select_options[$post_type] as $option_key => $option_value ) : ?>
 
                                 <option value="<?php echo esc_html( $post_type . '_' . $option_key ) ?>">
-                                    <?php echo esc_html( $option_name ) ?>
+                                    <?php echo esc_html( $option_value["name"] ?? $option_key ) ?>
+                                    <span> - (<?php echo esc_html( $option_key ) ?>)</span>
                                 </option>
                                 <?php endforeach; ?>
                             <?php endforeach; ?>
@@ -208,6 +209,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             wp_die( 'Failed to get dt_site_custom_lists() from options table. Or field is missing the "default" field key' );
         }
         $field = $post_fields[$field_key];
+
+        if ( isset( $field["customizable"] ) && $field["customizable"] === false ){
+            ?>
+            <p>
+                <strong>This field is not customizable</strong>
+            </p>
+            <?php
+            return;
+        }
 
         $defaults = [];
         if ( $post_type === "contacts" ){
