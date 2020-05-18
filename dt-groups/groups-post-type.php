@@ -97,9 +97,6 @@ class Disciple_Tools_Groups_Post_Type
      */
     public function __construct( $post_type = 'groups', $singular = '', $plural = '', $args = [], $taxonomies = [ 'Cities' ] ) {
         $this->post_type = 'groups';
-        $this->singular = _x( 'Group', 'singular of group', 'disciple_tools' );
-        $this->plural = _x( 'Groups', 'plural of groups', 'disciple_tools' );
-        $this->search_items = sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural );
         $this->args = [ 'menu_icon' => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMTIsNkwxMiw2Yy0xLjY1NywwLTMtMS4zNDMtMy0zdjBjMC0xLjY1NywxLjM0My0zLDMtM2gwYzEuNjU3LDAsMywxLjM0MywzLDN2MEMxNSw0LjY1NywxMy42NTcsNiwxMiw2eiI+PC9wYXRoPiA8cGF0aCBkYXRhLWNvbG9yPSJjb2xvci0yIiBmaWxsPSIjZmZmZmZmIiBkPSJNNCwxOXYtOGMwLTEuMTMsMC4zOTEtMi4xNjIsMS4wMjYtM0gyYy0xLjEwNSwwLTIsMC44OTUtMiwydjZoMnY1YzAsMC41NTIsMC40NDgsMSwxLDFoMiBjMC41NTIsMCwxLTAuNDQ4LDEtMXYtMkg0eiI+PC9wYXRoPiA8cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMTQsMjRoLTRjLTAuNTUyLDAtMS0wLjQ0OC0xLTF2LTZINnYtNmMwLTEuNjU3LDEuMzQzLTMsMy0zaDZjMS42NTcsMCwzLDEuMzQzLDMsM3Y2aC0zdjYgQzE1LDIzLjU1MiwxNC41NTIsMjQsMTQsMjR6Ij48L3BhdGg+IDxwYXRoIGRhdGEtY29sb3I9ImNvbG9yLTIiIGZpbGw9IiNmZmZmZmYiIGQ9Ik00LDdMNCw3QzIuODk1LDcsMiw2LjEwNSwyLDV2MGMwLTEuMTA1LDAuODk1LTIsMi0yaDBjMS4xMDUsMCwyLDAuODk1LDIsMnYwIEM2LDYuMTA1LDUuMTA1LDcsNCw3eiI+PC9wYXRoPiA8cGF0aCBkYXRhLWNvbG9yPSJjb2xvci0yIiBmaWxsPSIjZmZmZmZmIiBkPSJNMjAsMTl2LThjMC0xLjEzLTAuMzkxLTIuMTYyLTEuMDI2LTNIMjJjMS4xMDUsMCwyLDAuODk1LDIsMnY2aC0ydjVjMCwwLjU1Mi0wLjQ0OCwxLTEsMWgtMiBjLTAuNTUyLDAtMS0wLjQ0OC0xLTF2LTJIMjB6Ij48L3BhdGg+IDxwYXRoIGRhdGEtY29sb3I9ImNvbG9yLTIiIGZpbGw9IiNmZmZmZmYiIGQ9Ik0yMCw3TDIwLDdjMS4xMDUsMCwyLTAuODk1LDItMnYwYzAtMS4xMDUtMC44OTUtMi0yLTJoMGMtMS4xMDUsMC0yLDAuODk1LTIsMnYwIEMxOCw2LjEwNSwxOC44OTUsNywyMCw3eiI+PC9wYXRoPjwvZz48L3N2Zz4=' ];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
@@ -116,6 +113,10 @@ class Disciple_Tools_Groups_Post_Type
      * @return void
      */
     public function register_post_type() {
+        $this->singular = __( 'Group', 'disciple_tools' );
+        $this->plural = __( 'Groups', 'disciple_tools' );
+        $this->search_items = sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural );
+
         $labels = [
             'name'                  => $this->plural,
             'singular_name'         => $this->singular,
@@ -268,17 +269,17 @@ class Disciple_Tools_Groups_Post_Type
                 ],
                 "church_sharing" => [
                     "label" => __( "Sharing the Gospel", 'disciple_tools' ),
-                    "description" => _x( "The group is sharing the gospel.", 'field description', 'disciple_tools' ),
+                    "description" => _x( "The group is sharing the gospel.", 'Optional Documentation', 'disciple_tools' ),
                     "image" => get_template_directory_uri() . '/dt-assets/images/groups/evangelism.svg'
                 ],
                 "church_leaders" => [
                     "label" => __( "Leaders", 'disciple_tools' ),
-                    "description" => _x( "The group has leaders.", 'field description', 'disciple_tools' ),
+                    "description" => _x( "The group has leaders.", 'Optional Documentation', 'disciple_tools' ),
                     "image" => get_template_directory_uri() . '/dt-assets/images/groups/leadership.svg'
                 ],
                 "church_commitment" => [
                     "label" => __( "Church Commitment", 'disciple_tools' ),
-                    "description" => _x( "The group has committed to be church.", 'field description', 'disciple_tools' ),
+                    "description" => _x( "The group has committed to be church.", 'Optional Documentation', 'disciple_tools' ),
                     "image" => get_template_directory_uri() . '/dt-assets/images/groups/covenant.svg'
                 ],
             ],
@@ -288,19 +289,19 @@ class Disciple_Tools_Groups_Post_Type
         /* 4 fields */
         $fields["four_fields_unbelievers"] = [
             'name' => __( 'Unbelievers', 'disciple_tools' ),
-            'description' => _x( 'Number of unbelievers in this group.', 'field description', 'disciple_tools' ),
+            'description' => _x( 'Number of unbelievers in this group.', 'Optional Documentation', 'disciple_tools' ),
             'type' => 'text',
             'default' => ''
         ];
         $fields["four_fields_believers"] = [
             'name' => __( 'Believers', 'disciple_tools' ),
-            'description' => _x( 'Number of believers in this group.', 'field description', 'disciple_tools' ),
+            'description' => _x( 'Number of believers in this group.', 'Optional Documentation', 'disciple_tools' ),
             'type' => 'text',
             'default' => ''
         ];
         $fields["four_fields_accountable"] = [
             'name' => __( 'Accountable', 'disciple_tools' ),
-            'description' => _x( 'Number of people in accountability group.', 'field description', 'disciple_tools' ),
+            'description' => _x( 'Number of people in accountability group.', 'Optional Documentation', 'disciple_tools' ),
             'type' => 'text',
             'default' => ''
         ];
@@ -432,8 +433,8 @@ class Disciple_Tools_Groups_Post_Type
             'default'     => [],
         ];
         $fields['location_grid_meta'] = [
-            'name'        => _x( 'Location Grid Meta', 'field name', 'disciple_tools' ),
-            'type'        => 'location',
+            'name'        => 'Location Grid Meta', //system string does not need translation
+            'type'        => 'location_meta',
             'default'     => [],
             'hidden' => true
         ];
@@ -441,6 +442,13 @@ class Disciple_Tools_Groups_Post_Type
             'name' => __( 'Tasks', 'disciple_tools' ),
             'description' => __( 'Tasks related to this group.', 'disciple_tools' ),
             'type' => 'post_user_meta',
+        ];
+        $fields["last_modified"] =[
+            'name' => __( 'Last modified', 'disciple_tools' ),
+            'type' => 'number',
+            'default' => 0,
+            'section' => 'admin',
+            'customizable' => false
         ];
 
 
@@ -482,6 +490,9 @@ class Disciple_Tools_Groups_Post_Type
 
         $fields = $this->get_group_field_defaults( $post_id, $include_current_post );
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, "groups" );
+
+        $langs = dt_get_available_languages();
+
         foreach ( $fields as $field_key => $field ){
             if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
                 foreach ( $field["default"] as $option_key => $option_value ){
@@ -508,6 +519,11 @@ class Disciple_Tools_Groups_Post_Type
                         if ( $field_type === "key_select" || $field_type === "multi_select" ){
                             if ( isset( $field["default"] )){
                                 $fields[$key]["default"] = array_replace_recursive( $fields[$key]["default"], $field["default"] );
+                            }
+                        }
+                        foreach ( $langs as $lang => $val ) {
+                            if ( !empty( $field["translations"][$val['language']] ) ) {
+                                $fields[ $key ]["translations"][$val['language']] = $field["translations"][$val['language']];
                             }
                         }
                     }
@@ -537,6 +553,7 @@ class Disciple_Tools_Groups_Post_Type
                 }
             }
         }
+        $fields = apply_filters( 'dt_custom_fields_settings_after_combine', $fields, "groups" );
         wp_cache_set( "group_fields_settings", $fields );
         return $fields;
     } // End get_custom_fields_settings()

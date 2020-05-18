@@ -73,17 +73,6 @@ abstract class DT_Metrics_Chart_Base
     }
 
     public function base_scripts() {
-//        wp_enqueue_script( 'dt_'.$this->base_slug.'_script', trailingslashit( plugin_dir_url( __FILE__ ) ) . 'charts-base.js', [
-//            'jquery',
-//            'jquery-ui-core',
-//            'moment',
-//            'amcharts-core',
-//            'amcharts-charts',
-//            'datepicker',
-//        ], filemtime( plugin_dir_path( __FILE__ ) .'charts-base.js' ), true );
-
-        // Localize script with array data
-//        @todo remove
         wp_localize_script(
             'dt_'.$this->base_slug.'_script', 'wpMetricsBase', [
                 'slug' => $this->base_slug,

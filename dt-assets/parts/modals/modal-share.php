@@ -2,7 +2,7 @@
 global $post;
 ?>
 
-<div class="reveal" id="share-contact-modal" data-reveal style="min-height:500px">
+<div class="reveal" id="share-contact-modal" data-reveal style="min-height:550px">
 
     <h3><?php esc_html_e( 'Share settings', 'disciple_tools' )?></h3>
     
@@ -18,7 +18,7 @@ global $post;
 
     <div class="share details">
         <var id="share-result-container" class="result-container share-result-container"></var>
-        <div id="share_t" name="form-share">
+        <div id="share_t" name="form-share" class="scrollable-typeahead">
             <div class="typeahead__container">
                 <div class="typeahead__field">
                     <span class="typeahead__query">

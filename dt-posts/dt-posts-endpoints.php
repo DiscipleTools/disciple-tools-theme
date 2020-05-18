@@ -198,6 +198,7 @@ class Disciple_Tools_Posts_Endpoints {
                         "post_type" => $arg_schemas["post_type"],
                         "id" => $arg_schemas["id"],
                         "comment_id" => $arg_schemas["comment_id"],
+                        'comment_type' => $arg_schemas["comment_type"]
                     ]
                 ]
             ]
@@ -388,7 +389,7 @@ class Disciple_Tools_Posts_Endpoints {
     }
 
     public function create_post( WP_REST_Request $request ){
-        $fields = $request->get_json_params() ?? $request->get_params();
+        $fields = $request->get_json_params() ?? $request->get_body_params();
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
         $silent = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
@@ -402,7 +403,7 @@ class Disciple_Tools_Posts_Endpoints {
     }
 
     public function update_post( WP_REST_Request $request ){
-        $fields = $request->get_json_params() ?? $request->get_params();
+        $fields = $request->get_json_params() ?? $request->get_body_params();
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
         $silent = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
@@ -441,13 +442,13 @@ class Disciple_Tools_Posts_Endpoints {
 
     public function add_share( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
-        $body = $request->get_json_params() ?? $request->get_params();
+        $body = $request->get_json_params() ?? $request->get_body_params();
         return DT_Posts::add_shared( $url_params["post_type"], $url_params["id"], $body['user_id'] );
     }
 
     public function remove_share( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
-        $body = $request->get_json_params() ?? $request->get_params();
+        $body = $request->get_json_params() ?? $request->get_body_params();
         return DT_Posts::remove_shared( $url_params["post_type"], $url_params["id"], $body['user_id'] );
     }
 
@@ -463,7 +464,7 @@ class Disciple_Tools_Posts_Endpoints {
     public function add_comment( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
-        $body = $request->get_json_params() ?? $request->get_params();
+        $body = $request->get_json_params() ?? $request->get_body_params();
         $silent = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
         $args = [];
         if ( isset( $body["date"] ) ){
@@ -484,8 +485,12 @@ class Disciple_Tools_Posts_Endpoints {
 
     public function update_comment( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
-        $body = $request->get_json_params() ?? $request->get_params();
-        $result = DT_Posts::update_post_comment( $url_params["comment_id"], $body["comment"] );
+        $body = $request->get_json_params() ?? $request->get_body_params();
+        $type = 'comment';
+        if ( isset( $body["comment_type"] ) ){
+            $type = $body["comment_type"];
+        }
+        $result = DT_Posts::update_post_comment( $url_params["comment_id"], $body["comment"], true, $type );
         if ( is_wp_error( $result ) ) {
             return $result;
         } else {

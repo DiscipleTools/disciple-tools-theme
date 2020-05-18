@@ -1,9 +1,9 @@
 <?php
 
-Disciple_Tools_Metrics_Users::instance();
+
 class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 {
-    public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
+    public $permissions = [ 'list_users', 'manage_dt' ];
 
     private static $_instance = null;
     public static function instance() {
@@ -31,6 +31,8 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             }
         }
+
+        parent::__construct();
     }
 
     public function add_url( $template_for_url ) {
@@ -145,6 +147,19 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 'data' => $this->workers(),
             ]
         );
+
+        if ( ! empty( DT_Mapbox_API::get_key() ) ) {
+
+            if ( class_exists( 'DT_Mapbox_API' ) ) {
+                DT_Mapbox_API::load_mapbox_header_scripts();
+            }
+            else if ( ! class_exists( 'DT_Mapbox_API' ) && file_exists( get_stylesheet_directory() . 'dt-mapping/geocode-api/mapbox-api.php' ) ) {
+                require_once( get_stylesheet_directory() . 'dt-mapping/geocode-api/mapbox-api.php' );
+
+                DT_Mapbox_API::load_mapbox_header_scripts();
+
+            }
+        }
     }
 
     public function workers() {
@@ -156,7 +171,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 'title_activity' => __( 'Workers Activity', 'disciple_tools' ),
                 'title_recent_activity' => __( 'Worker System Engagement for the Last 30 Days', 'disciple_tools' ),
                 'title_response' => __( 'Follow-up Pace', 'disciple_tools' ),
-                'title_assigned_to' => __( 'Contacts assigned to multipliers', 'disciple_tools' ),
+                'title_assigned_to' => __( 'Contacts assigned to Multipliers', 'disciple_tools' ),
                 'label_total_workers' => __( 'Total Workers', 'disciple_tools' ),
                 'label_total_multipliers' => __( 'Multipliers', 'disciple_tools' ),
                 'label_total_dispatchers' => __( 'Dispatchers', 'disciple_tools' ),
@@ -165,7 +180,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 'label_contacts_per_user' => __( 'Contact Progress per Worker', 'disciple_tools' ),
                 'label_least_active' => __( 'Least Active', 'disciple_tools' ),
                 'label_most_active' => __( 'Most Active', 'disciple_tools' ),
-                'label_select_year' => __( 'Select All time or a specific year to display', 'disciple_tools' ),
+                'label_select_year' => __( 'Select All Time or a specific year to display', 'disciple_tools' ),
                 'label_all_time' => __( 'All Time', 'disciple_tools' ),
                 'label_this_year' => __( 'This Year', 'disciple_tools' ),
                 'label_last_year' => __( 'Last Year', 'disciple_tools' ),
@@ -237,7 +252,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         $last_year = strtotime( "first day of january last year" );
         //number of assigned contacts
         $assigned_counts = $wpdb->get_results( $wpdb->prepare( "
-            SELECT 
+            SELECT
             COUNT( CASE WHEN date_assigned.hist_time >= %d THEN 1 END ) as this_month,
             COUNT( CASE WHEN date_assigned.hist_time >= %d AND date_assigned.hist_time < %d THEN 1 END ) as last_month,
             COUNT( CASE WHEN date_assigned.hist_time >= %d THEN 1 END ) as this_year,
@@ -246,11 +261,11 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             FROM $wpdb->dt_activity_log as date_assigned
             INNER JOIN $wpdb->postmeta as type ON ( date_assigned.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
             WHERE date_assigned.meta_key = 'assigned_to'
-                AND date_assigned.object_type = 'contacts' 
+                AND date_assigned.object_type = 'contacts'
                 AND date_assigned.old_value <> ''
-                AND date_assigned.meta_value NOT IN ( 
-                    SELECT CONCAT( 'user-', u.user_id ) 
-                    FROM wp_usermeta u 
+                AND date_assigned.meta_value NOT IN (
+                    SELECT CONCAT( 'user-', u.user_id )
+                    FROM wp_usermeta u
                     WHERE u.meta_key = %s
                     AND u.meta_value LIKE %s
                     AND u.meta_value NOT LIKE %s
@@ -500,15 +515,15 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         ARRAY_A);
 
         $baptized = $wpdb->get_results( "
-            SELECT users.ID, 
-                users.display_name, 
+            SELECT users.ID,
+                users.display_name,
                 count(b.p2p_id) as number_baptized
             from $wpdb->users as users
             LEFT JOIN $wpdb->p2p as b on (b.p2p_type = 'baptizer_to_baptized' AND b.p2p_to = (
-                SELECT user_pm.post_id 
-                FROM $wpdb->postmeta as user_pm 
-                WHERE user_pm.meta_key = 'corresponds_to_user' 
-                AND user_pm.meta_value = users.ID 
+                SELECT user_pm.post_id
+                FROM $wpdb->postmeta as user_pm
+                WHERE user_pm.meta_key = 'corresponds_to_user'
+                AND user_pm.meta_value = users.ID
                 LIMIT 1
             ))
             GROUP by users.ID",
@@ -517,11 +532,11 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         $times = $wpdb->get_results( "
             SELECT AVG(time) as average_time_to_attempt, users.ID
             from (
-                SELECT contacts.ID, 
-                    MIN(date_assigned.hist_time) as date_assigned, 
-                    MIN(date_attempted.hist_time) as date_attempted, 
+                SELECT contacts.ID,
+                    MIN(date_assigned.hist_time) as date_assigned,
+                    MIN(date_attempted.hist_time) as date_attempted,
                     MIN(date_attempted.hist_time) - MIN(date_assigned.hist_time) as time,
-                    pm.meta_value as user 
+                    pm.meta_value as user
                 from $wpdb->posts as contacts
                 INNER JOIN $wpdb->postmeta as pm on ( contacts.ID = pm.post_id AND pm.meta_key = 'assigned_to' )
                 INNER JOIN $wpdb->dt_activity_log as date_attempted on ( date_attempted.meta_key = 'seeker_path' and date_attempted.object_type = 'contacts' AND date_attempted.object_id = contacts.ID AND date_attempted.meta_value != 'none' )
@@ -529,7 +544,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 WHERE date_attempted.hist_time > date_assigned.hist_time
                 GROUP by contacts.ID
             ) as times
-            LEFT JOIN $wpdb->users as users on ( times.user = CONCAT( 'user-', users.ID ) ) 
+            LEFT JOIN $wpdb->users as users on ( times.user = CONCAT( 'user-', users.ID ) )
             GROUP by users.ID
             ",
         ARRAY_A);
@@ -570,5 +585,4 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         return $return;
     }
 }
-
-
+Disciple_Tools_Metrics_Users::instance();

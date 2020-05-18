@@ -207,8 +207,8 @@ class Disciple_Tools_Users_Endpoints
     public function create_user( WP_REST_Request $request ){
         $params = $request->get_params();
 
-        if ( isset( $params["user-email"], $params["user-display"], $params["corresponds_to_contact"] ) ){
-            return Disciple_Tools_Users::create_user( $params["user-email"], $params["user-email"], $params["user-display"], $params["corresponds_to_contact"] );
+        if ( isset( $params["user-email"], $params["user-display"] ) ){
+            return Disciple_Tools_Users::create_user( $params["user-email"], $params["user-email"], $params["user-display"], $params["corresponds_to_contact"] ?? null );
         } else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
         }
@@ -247,7 +247,7 @@ class Disciple_Tools_Users_Endpoints
 
     public function update_user( WP_REST_Request $request ){
         $get_params = $request->get_params();
-        $body = $request->get_json_params() ?? $request->get_params();
+        $body = $request->get_json_params() ?? $request->get_body_params();
         $user = wp_get_current_user();
         if ( !$user ) {
             return new WP_Error( "update_user", "Something went wrong. Are you a user?", [ 'status' => 400 ] );
@@ -306,7 +306,7 @@ class Disciple_Tools_Users_Endpoints
                 "ID" => $user->ID,
                 "user_email" => $user->user_email,
                 "display_name" => $user->display_name,
-                "locale" => get_locale()
+                "locale" => get_user_locale( $user->ID )
             ];
         } else {
             return new WP_Error( "get_my_info", "Something went wrong. Are you a user?", [ 'status' => 400 ] );

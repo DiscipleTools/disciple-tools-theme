@@ -104,9 +104,6 @@ class Disciple_Tools_Roles
             [
                 'read'                      => true, //access to admin
 
-                /* Manage DT Options */
-                'manage_dt'                 => true, // key capability for wp-admin dt administration
-
                 'view_project_metrics' => true,
 
                 /* Add custom caps for contacts */

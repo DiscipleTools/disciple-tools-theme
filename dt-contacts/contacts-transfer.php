@@ -100,7 +100,7 @@ class Disciple_Tools_Contacts_Transfer
                 <?php endif; ?>
 
                 <div class="cell" id="transfer-form" <?php if ( $foreign_key_exists ) { echo 'style="display:none;"'; }?>>
-                    <h6><a href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/admin.html?highlight=transfer#site-links" target="_blank"> <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/></a> <?php esc_html_e( 'Transfer this contact to:', 'disciple_tools' ) ?></h6>
+                    <h6><a href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/admin.html#site-links" target="_blank"> <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/></a> <?php esc_html_e( 'Transfer this contact to:', 'disciple_tools' ) ?></h6>
                     <select name="transfer_contact" id="transfer_contact" onchange="jQuery('#transfer_button_div').show();">
                         <option value=""></option>
                         <?php

@@ -26,7 +26,7 @@ function dt_print_details_bar(
 
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
         <nav role="navigation"
-             data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
+             data-sticky data-options="marginTop:0;" style="width:100%" data-sticky-on="medium"
              class="second-bar">
             <div class="container-width">
 
@@ -135,7 +135,7 @@ function dt_print_details_bar(
             <?php if ( $task ) : ?>
                 <div class="cell shrink center-items">
                     <button class="button open-set-task">
-                        <?php echo esc_html_x( 'Tasks', 'disciple_tools' ); ?>
+                        <?php esc_html_e( 'Tasks', 'disciple_tools' ); ?>
                         <i class="fi-clock"></i>
                     </button>
                 </div>
@@ -144,4 +144,3 @@ function dt_print_details_bar(
     </nav>
     <?php endif;
 }
-

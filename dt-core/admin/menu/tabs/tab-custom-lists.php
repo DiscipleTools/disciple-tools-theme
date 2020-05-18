@@ -231,10 +231,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         <td><?php esc_html_e( "Enabled", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Hide domain if a url", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Icon link (must be https)", 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ( $channels as $channel_key => $channel_option ) :
+
                         $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
                         $hide_domain = isset( $channel_option['hide_domain'] ) && $channel_option['hide_domain'] == true;
                         if ( $channel_key == 'phone' || $channel_key == 'email' || $channel_key == 'address' ){
@@ -242,7 +244,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         } ?>
 
                     <tr>
-                        <td><input type="text" name="channel_label[<?php echo esc_html( $channel_key ) ?>]" value="<?php echo esc_html( $channel_option["label"] ?? $channel_key ) ?>"></td>
+                        <td><input type="text" name="channel_label[<?php echo esc_html( $channel_key ) ?>][default]" value="<?php echo esc_html( $channel_option["label"] ?? $channel_key ) ?>"></td>
                         <td><?php echo esc_html( $channel_key ) ?></td>
                         <td>
                             <input name="channel_enabled[<?php echo esc_html( $channel_key ) ?>]"
@@ -258,6 +260,21 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                             <button type="submit" class="button" name="channel_reset_icon[<?php echo esc_html( $channel_key ) ?>]"><?php esc_html_e( "Reset link", 'disciple_tools' ) ?></button>
                             <?php endif; ?>
                         </td>
+                        <td>
+                        <button class="button small expand_translations">+</button>
+                        <div class="translation_container hide">
+                        <table>
+                        <?php $langs = dt_get_available_languages();
+
+                        foreach ( $langs as $lang => $val ) : ?>
+                                    <tr>
+                                    <td><label for="channel_label[<?php echo esc_html( $channel_key ) ?>][<?php echo esc_html( $val['language'] )?>]"><?php echo esc_html( $val['native_name'] )?></label></td>
+                                    <td><input name="channel_label[<?php echo esc_html( $channel_key ) ?>][<?php echo esc_html( $val['language'] )?>]" type="text" value="<?php echo esc_html( $channel_option["translations"][$val['language']] ?? "" );?>"/></td>
+                                    </tr>
+                            <?php endforeach; ?>
+                        </table>
+                        </div>
+                    </td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -277,7 +294,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function process_channels_box(){
-
         if ( isset( $_POST["channels_box_nonce"] ) ){
             $channels = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
             $custom_channels = dt_get_option( "dt_custom_channels" );
@@ -286,15 +302,24 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 return;
             }
 
+            $langs = dt_get_available_languages();
 
             foreach ( $channels as $channel_key => $channel_options ){
                 if ( !isset( $custom_channels[$channel_key] ) ){
                     $custom_channels[$channel_key] = [];
                 }
-                if ( isset( $_POST["channel_label"][$channel_key] ) ){
-                    $label = sanitize_text_field( wp_unslash( $_POST["channel_label"][$channel_key] ) );
+                if ( isset( $_POST["channel_label"][$channel_key]["default"] ) ){
+                    $label = sanitize_text_field( wp_unslash( $_POST["channel_label"][$channel_key]["default"] ) );
                     if ( $channel_options["label"] != $label ){
                         $custom_channels[$channel_key]["label"] = $label;
+                    }
+                }
+                foreach ( $langs as $lang => $val ){
+                    $langcode = $val['language'];
+
+                    if ( isset( $_POST["channel_label"][$channel_key][$langcode] ) ) {
+                        $translated_label = sanitize_text_field( wp_unslash( $_POST["channel_label"][$channel_key][$langcode] ) );
+                        $custom_channels[$channel_key]["translations"][$langcode] = $translated_label;
                     }
                 }
                 if ( isset( $_POST["channel_icon"][$channel_key] ) ){
@@ -332,7 +357,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 }
             }
 
-
+//  dt_write_log( $custom_channels );
             update_option( "dt_custom_channels", $custom_channels );
         }
     }

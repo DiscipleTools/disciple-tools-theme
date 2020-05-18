@@ -49,6 +49,40 @@ function contactUpdated(updateNeeded) {
   $('#update-needed').prop("checked", updateNeeded)
 }
 
+function setStatus(contact, openModal) {
+  let statusSelect = $('#overall_status')
+  let status = _.get(contact, "overall_status.key")
+  let reasonLabel = _.get(contact, `reason_${status}.label`)
+  let statusColor = _.get(contactsDetailsWpApiSettings,
+    `contacts_custom_fields_settings.overall_status.default.${status}.color`
+  )
+  statusSelect.val(status)
+
+  if (openModal){
+    if (status === "paused"){
+      $('#paused-contact-modal').foundation('open');
+    } else if (status === "closed"){
+      $('#closed-contact-modal').foundation('open');
+    } else if (status === 'unassignable'){
+      $('#unassignable-contact-modal').foundation('open');
+    }
+  }
+
+  if (statusColor){
+    statusSelect.css("background-color", statusColor)
+  } else {
+    statusSelect.css("background-color", "#366184")
+  }
+
+  if (["paused", "closed", "unassignable"].includes(status)){
+    $('#reason').text(`(${reasonLabel})`)
+    $(`#edit-reason`).show()
+  } else {
+    $('#reason').text(``)
+    $(`#edit-reason`).hide()
+  }
+}
+
 
 /* The `contact` variable can be accessed outside this script, but not through
  * `window.` because `let` was used */
@@ -95,6 +129,8 @@ jQuery(document).ready(function($) {
       }
     }
   }).ajaxError(handleAjaxError)
+
+
 
   /**
    * Groups
@@ -276,7 +312,7 @@ jQuery(document).ready(function($) {
   /**
    * Locations
    */
-  let loadGeonameTypeahead = ()=>{
+  let loadLocationGridTypeahead = ()=>{
     if (!window.Typeahead['.js-typeahead-location_grid']){
       $.typeahead({
         input: '.js-typeahead-location_grid',
@@ -365,7 +401,6 @@ jQuery(document).ready(function($) {
   }
 
 
-
   /**
    * People groups
    */
@@ -424,6 +459,7 @@ jQuery(document).ready(function($) {
   $.typeahead({
     input: '.js-typeahead-assigned_to',
     minLength: 0,
+    maxItem: 0,
     accent: true,
     searchOnFocus: true,
     source: TYPEAHEADS.typeaheadUserSource(),
@@ -435,7 +471,7 @@ jQuery(document).ready(function($) {
             ${_.escape( item.name )}
         </span>
         ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
-        ${ item.update_needed ? `<span>
+        ${ item.update_needed && item.update_needed > 0 ? `<span>
           <img style="height: 12px;" src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/broken.svg"/>
           <span style="font-size: 14px">${_.escape(item.update_needed)}</span>
         </span>` : '' }
@@ -643,7 +679,7 @@ jQuery(document).ready(function($) {
   $( document ).on( 'text-input-updated', function (e, newContact){})
 
   $( document ).on( 'dt_date_picker-updated', function (e, newContact, id, date){
-    if ( id === 'baptism_date' ){
+    if (id === 'baptism_date' && newContact.baptism_date && newContact.baptism_date.timestamp) {
       openBaptismModal(newContact)
     }
   })
@@ -673,7 +709,7 @@ jQuery(document).ready(function($) {
     let channelOptions = ``
     _.forOwn( contactsDetailsWpApiSettings.channels, (val, key)=>{
       if ( ![ "phone", "email", "address"].includes( key ) ){
-        channelOptions += `<option value="${_.escape(key)}">${escape(val.label)}</option>`
+        channelOptions += `<option value="${_.escape(key)}">${_.escape(val.label)}</option>`
       }
     })
     idOfNextNewField++
@@ -740,39 +776,7 @@ jQuery(document).ready(function($) {
     }).catch(err => { console.error(err) })
   })
 
-  function setStatus(contact, openModal) {
-    let statusSelect = $('#overall_status')
-    let status = _.get(contact, "overall_status.key")
-    let reasonLabel = _.get(contact, `reason_${status}.label`)
-    let statusColor = _.get(contactsDetailsWpApiSettings,
-      `contacts_custom_fields_settings.overall_status.default.${status}.color`
-    )
-    statusSelect.val(status)
 
-    if (openModal){
-      if (status === "paused"){
-        $('#paused-contact-modal').foundation('open');
-      } else if (status === "closed"){
-        $('#closed-contact-modal').foundation('open');
-      } else if (status === 'unassignable'){
-        $('#unassignable-contact-modal').foundation('open');
-      }
-    }
-
-    if (statusColor){
-      statusSelect.css("background-color", statusColor)
-    } else {
-      statusSelect.css("background-color", "#366184")
-    }
-
-    if (["paused", "closed", "unassignable"].includes(status)){
-      $('#reason').text(`(${reasonLabel})`)
-      $(`#edit-reason`).show()
-    } else {
-      $('#reason').text(``)
-      $(`#edit-reason`).hide()
-    }
-  }
 
   //confirm setting a reason for a status.
   let confirmButton = $(".confirm-reason-button")
@@ -819,16 +823,6 @@ jQuery(document).ready(function($) {
       </li>`
     })
     $("#edit-contact_email").html(emailHTML)
-    let addressHTML = "";
-    (contact.contact_address|| []).forEach(field=>{
-      addressHTML += `<li style="display: flex">
-        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${_.escape(field.value)}</textarea>
-        <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
-            <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
-        </button>
-      </li>`
-    })
-    $("#edit-contact_address").html(addressHTML)
 
     let html = ""
     _.forOwn( contact, (fieldVal, field)=>{
@@ -853,10 +847,27 @@ jQuery(document).ready(function($) {
     })
     $('#edit-social').html(html)
 
+    let addressHTML = "";
+    (contact.contact_address|| []).forEach(field=>{
+      addressHTML += `<li style="display: flex">
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${_.escape(field.value)}</textarea>
+        <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
+            <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
+        </button>
+      </li>`
+    })
+    $("#edit-contact_address").html(addressHTML)
+
     $('#contact-details-edit-modal').foundation('open');
-    loadGeonameTypeahead()
+
     loadPeopleGroupTypeahead()
     leadSourcesTypeahead().catch(err => { console.log(err) })
+
+    /* locations */
+    if ( typeof dtMapbox === 'undefined' ) {
+      loadLocationGridTypeahead()
+    }
+
   })
 
 
@@ -922,12 +933,13 @@ jQuery(document).ready(function($) {
     // loadLocationTypeahead()
     loadPeopleGroupTypeahead()
     leadSourcesTypeahead()
-    loadGeonameTypeahead()
+    loadLocationGridTypeahead()
   })
 
   $('.select-input').on("change", function () {
     let key = $(this).attr('id')
     editFieldsUpdate[key] = $(this).val()
+
   })
 
   $('#contact-details-edit-modal').on('change', '.contact-input', function() {
@@ -990,6 +1002,9 @@ jQuery(document).ready(function($) {
         editFieldsUpdate[`contact_${channelType}`].values.push({value:val})
       }
     })
+    if ( editFieldsUpdate[undefined] !== 'undefined' ) {
+      delete editFieldsUpdate[undefined]
+    }
     API.update_post('contacts', contactId, editFieldsUpdate).then((updatedContact)=>{
       contact = updatedContact
       $(this).toggleClass("loading")
@@ -1290,11 +1305,15 @@ jQuery(document).ready(function($) {
   });
 
   // Baptism date
-  let modalBaptismDatePicker = $('input#modal-baptism-date-picker')
+  let modalBaptismDatePicker = $('input#modal-baptism-date-picker');
   modalBaptismDatePicker.datepicker({
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
-      API.update_post('contacts', contactId, { baptism_date: date }).catch(handleAjaxError)
+      API.update_post('contacts', contactId, { baptism_date: date }).then((resp)=>{
+        if (this.value) {
+          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
+        }
+      }).catch(handleAjaxError)
     },
     changeMonth: true,
     changeYear: true
@@ -1353,7 +1372,8 @@ jQuery(document).ready(function($) {
         });
       }
       if ( _.get(newContact, "baptism_date.timestamp", 0) > 0){
-        modalBaptismDatePicker.datepicker('setDate', moment.unix(newContact['baptism_date']["timestamp"]).format("YYYY-MM-DD"))
+        modalBaptismDatePicker.datepicker('setDate', moment.unix(newContact['baptism_date']["timestamp"]).format("YYYY-MM-DD"));
+        modalBaptismDatePicker.val(window.SHAREDFUNCTIONS.formatDate(newContact['baptism_date']["timestamp"]) )
       }
       modalBaptismGeneration.val(newContact["baptism_generation"] || 0)
     }

@@ -27,6 +27,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
         add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
+        add_filter( "dt_comments_additional_sections", [ $this, "add_comm_channel_comment_section" ], 10, 2 );
 
         parent::__construct();
     }
@@ -256,13 +257,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $existing_contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
                 if ( !isset( $existing_contact["assigned_to"] ) || $fields["assigned_to"] !== $existing_contact["assigned_to"]["assigned-to"] ){
                     $user_id = explode( '-', $fields["assigned_to"] )[1];
-                    if ( $user_id != get_current_user_id() ){
-                        if ( current_user_can( "assign_any_contacts" ) ) {
-                            $fields["overall_status"] = 'assigned';
+                    if ( !isset( $fields["overall_status"] ) ){
+                        if ( $user_id != get_current_user_id() ){
+                            if ( current_user_can( "assign_any_contacts" ) ) {
+                                $fields["overall_status"] = 'assigned';
+                            }
+                            $fields['accepted'] = false;
+                        } elseif ( isset( $existing_contact["overall_status"]["key"] ) && $existing_contact["overall_status"]["key"] === "assigned" ) {
+                            $fields["overall_status"] = 'active';
                         }
-                        $fields['accepted'] = false;
-                    } elseif ( isset( $existing_contact["overall_status"]["key"] ) && $existing_contact["overall_status"]["key"] === "assigned" ) {
-                        $fields["overall_status"] = 'active';
                     }
                     if ( $user_id ){
                         DT_Posts::add_shared( "contacts", $post_id, $user_id, null, false, true, false );
@@ -1363,17 +1366,17 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 AND assigned_to.meta_value = CONCAT( 'user-', " . $user_id . " )";
 
         //contacts subassigned to me
-        $subassigned_access = "INNER JOIN $wpdb->p2p as from_p2p 
-            ON ( from_p2p.p2p_to = a.ID 
-                AND from_p2p.p2p_type = 'contacts_to_subassigned' 
+        $subassigned_access = "INNER JOIN $wpdb->p2p as from_p2p
+            ON ( from_p2p.p2p_to = a.ID
+                AND from_p2p.p2p_type = 'contacts_to_subassigned'
                 AND from_p2p.p2p_from = " . $user_post. ")";
         //contacts shared with me
         $shared_access = "
-            INNER JOIN $wpdb->dt_share AS shares 
-            ON ( shares.post_id = a.ID  
+            INNER JOIN $wpdb->dt_share AS shares
+            ON ( shares.post_id = a.ID
                 AND shares.user_id = " . $user_id . "
                 AND a.ID NOT IN (
-                    SELECT assigned_to.post_id 
+                    SELECT assigned_to.post_id
                     FROM $wpdb->postmeta as assigned_to
                     WHERE a.ID = assigned_to.post_id
                       AND assigned_to.meta_key = 'assigned_to'
@@ -1384,13 +1387,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $closed = "";
         if ( !$show_closed ){
             $closed = " INNER JOIN $wpdb->postmeta as status
-              ON ( a.ID=status.post_id 
+              ON ( a.ID=status.post_id
               AND status.meta_key = 'overall_status'
               AND status.meta_value != 'closed' )";
         }
         //contacts shared with me.
         if ( !self::can_view_all( "contacts" ) ){
-            $all_access = "INNER JOIN $wpdb->dt_share AS shares 
+            $all_access = "INNER JOIN $wpdb->dt_share AS shares
             ON ( shares.post_id = a.ID
                  AND shares.user_id = " . $user_id . " ) ";
             if ( current_user_can( "access_specific_sources" ) && $tab === "all" ){
@@ -1652,7 +1655,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
 
     public static function get_user_posts(){
-        $user_posts = get_transient( "contact_ids_for_useors" );
+        $user_posts = get_transient( "contact_ids_for_users" );
         if ( $user_posts ){
             return dt_array_to_sql( array_map( function ( $g ) {
                 return $g["post_id"];
@@ -1684,7 +1687,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             LEFT JOIN $wpdb->postmeta type ON ( type.post_id = pm.post_id AND type.meta_key = 'type' )
             WHERE pm.meta_key = 'seeker_path'
             AND (
-                pm.post_id IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'assigned_to' AND meta_value = CONCAT( 'user-', %s ) ) 
+                pm.post_id IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'assigned_to' AND meta_value = CONCAT( 'user-', %s ) )
                 OR pm.post_id IN ( SELECT p2p_to from $wpdb->p2p WHERE p2p_from = %s AND p2p_type = 'contacts_to_subassigned' )
             )
             GROUP BY type.meta_value, status.meta_value, pm.meta_value
@@ -2001,5 +2004,24 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
         }
         return $filters;
+    }
+
+    public function add_comm_channel_comment_section( $sections, $post_type ){
+        $channels = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
+        if ( $post_type === "contacts" ){
+            foreach ( $channels as $channel_key => $channel_option ) {
+                $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
+                $hide_domain = isset( $channel_option['hide_domain'] ) && $channel_option['hide_domain'] == true;
+                if ( $channel_key == 'phone' || $channel_key == 'email' || $channel_key == 'address' ){
+                    continue;
+                }
+
+                $sections[] = [
+                    "key" => $channel_key,
+                    "label" => esc_html( $channel_option["label"] ?? $channel_key )
+                ];
+            }
+        }
+        return $sections;
     }
 }

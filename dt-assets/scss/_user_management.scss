@@ -1,0 +1,38 @@
+/* template-user-management.php */
+#user-management-tools {
+    padding: 15px;
+
+    #user-chart {
+        padding-left:15px;
+        padding-right:15px;
+        position: relative;
+
+        #page-title {
+            position: absolute;
+        }
+
+        #multipliers_table {
+            width: 100%;
+            .user_row {
+                cursor: pointer;
+            }
+            select {
+                margin-bottom: 0;
+            }
+         }
+        #multipliers_table_filter input {
+            margin-bottom: 0;
+        }
+    }
+}
+
+#user_modal {
+    background-color: #e2e2e2;
+    max-width: 100%;
+}
+
+#hero_status {
+    p {
+        font-size: 2rem;
+    }
+}

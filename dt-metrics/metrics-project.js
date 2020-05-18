@@ -15,6 +15,7 @@ jQuery(document).ready(function() {
       jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
       project_coaching_tree()
     }
+
 })
 
 function project_overview() {
@@ -125,7 +126,7 @@ function project_overview() {
       categoryAxis.renderer.minGridDistance = 30;
 
       let valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
-      valueAxis.title.text = "Number of contacts"
+      valueAxis.title.text = dtMetricsProject.data.translations.label_number_of_contacts
 
       let series = chart.series.push(new am4charts.ColumnSeries());
       series.dataFields.valueX = "value";

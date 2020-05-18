@@ -11,6 +11,18 @@ GENERAL STYLES
     font-weight: 400;
 }
 
+.txt-gray-light {
+color:$light-gray;
+}
+
+.txt-gray-mid {
+    color: $medium-gray;
+}
+
+.txt-gray-dark {
+    color: $dark-gray;
+}
+
 .primary-color {
     color: $primary-color;
 }
@@ -25,6 +37,10 @@ GENERAL STYLES
 
 .float-right {
     float: right;
+}
+
+.full-width {
+    width: 100%;
 }
 
 body {
@@ -102,6 +118,9 @@ NAVIGATION STYLES
         li {
             margin: 0 10px;
         }
+        a {
+          background-color: $primary-color;
+        }
     }
 
     a {
@@ -132,14 +151,16 @@ NAVIGATION STYLES
     .submenu.menu.vertical.is-dropdown-submenu.js-dropdown-active {
         display: block;
     }
+}
 
-    .notification-count {
-        display: none;
-        vertical-align: top;
-        position: relative;
-        top: -5px;
-        left: -15px;
-    }
+.notification-count {
+    display: none;
+    vertical-align: top;
+    position: relative;
+    top: -5px;
+}
+.menu .notification-count {
+    left: -15px;
 }
 .add-new-items-dropdown {
     background-color: #3f729b;
@@ -158,6 +179,7 @@ nav.second-bar {
     padding: 0.5em;
     background-color: white;
     width: 100%;
+    top: auto !important;
 
     .breadcrumbs {
         margin-bottom: 0;
@@ -170,6 +192,10 @@ nav.second-bar {
             padding-right: 5px;
         }
         padding: 0.4em 0.75em;
+    }
+    .dropdown.menu>li>a {
+        padding-top: 0.4em;
+        padding-bottom: 0.4em;
     }
 
     input {
@@ -353,6 +379,8 @@ Title for boxed section
 .section-subheader {
     font-weight: 700;
     font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
 }
 /*********************
 JQUERY OVERRIDES
@@ -628,6 +656,10 @@ html[dir='rtl'] {
 
     .float-left {
         float: right !important;
+    }
+    .menu .notification-count {
+        right: -15px;
+        left: 0;
     }
 }
 

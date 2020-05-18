@@ -1,0 +1,4200 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Disciple.Tools\n"
+"Language: zh-Hans\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: 403.php:9
+msgid "Permission denied"
+msgstr "没有权限"
+
+#: 403.php:23
+msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
+msgstr "抱歉，您无权查看ID为％2 $ s的％1 $ s。"
+
+#: 403.php:24
+msgid "Request permission from your administrator."
+msgstr "向管理员请求权限。"
+
+#: 403.php:26
+msgid "Back"
+msgstr "背部"
+
+#: 404.php:12
+msgid "Epic 404 - Not Found"
+msgstr "史诗404-找不到"
+
+#: 404.php:16
+msgid "The page you were looking for was not found or was deleted"
+msgstr "找不到或删除了您要查找的页面"
+
+#: dt-contacts/contacts-post-type.php:216 dt-groups/groups-post-type.php:188
+#: dt-users/template-user-management.php:71 dt-users/user-management.php:118
+msgid "Active"
+msgstr "活性"
+
+#: template-notifications.php:40
+msgid "New"
+msgstr "新"
+
+#: dt-contacts/contacts-post-type.php:211
+msgid "Waiting to be accepted"
+msgstr "等待被接受"
+
+#: archive-contacts.php:23
+msgid "Create new contact"
+msgstr "建立新联络人"
+
+#: archive-contacts.php:31
+msgid "View Duplicates"
+msgstr "查看重复项"
+
+#: archive-contacts.php:37 archive-contacts.php:56 archive-groups.php:32
+#: archive-groups.php:50 archive-template.php:34 archive-template.php:53
+msgid "Search"
+msgstr "搜索"
+
+#: dt-contacts/contacts.php:1996 dt-contacts/contacts.php:1997
+msgid "Shared with me"
+msgstr "与我分享"
+
+#: archive-contacts.php:81 archive-groups.php:78 archive-template.php:71
+msgid "Add new filter"
+msgstr "新增过滤器"
+
+#: dt-contacts/contacts-post-type.php:182 dt-groups/groups-post-type.php:222
+msgid "Assigned To"
+msgstr "分配给"
+
+#: archive-contacts.php:135 archive-groups.php:130 archive-template.php:177
+#: dt-assets/functions/enqueue-scripts.php:345
+msgid "Creation Date"
+msgstr "创立日期"
+
+#: archive-contacts.php:171
+msgid "Filter for subassigned OR Assigned To"
+msgstr "筛选子分配或分配给"
+
+#: archive-contacts.php:194 archive-contacts.php:195 archive-groups.php:182
+#: archive-groups.php:183 archive-template.php:227 archive-template.php:228
+#: template-settings.php:256
+msgid "No"
+msgstr "没有"
+
+#: archive-contacts.php:200 archive-contacts.php:201 archive-groups.php:188
+#: archive-groups.php:189 archive-template.php:234 archive-template.php:235
+#: template-settings.php:255
+msgid "Yes"
+msgstr "是"
+
+#: archive-groups.php:193
+msgid "Range Start"
+msgstr "范围开始"
+
+#: archive-contacts.php:208 archive-contacts.php:219 archive-groups.php:196
+#: archive-groups.php:207 archive-template.php:242 archive-template.php:253
+msgctxt "Clear/empty input"
+msgid "Clear"
+msgstr "明确"
+
+#: archive-groups.php:203
+msgid "Range end"
+msgstr "范围结束"
+
+#: archive-contacts.php:247 archive-groups.php:237 archive-template.php:281
+#: dt-assets/functions/enqueue-scripts.php:331
+#: dt-assets/functions/enqueue-scripts.php:340
+#: dt-assets/parts/contact-details.php:538
+#: dt-assets/parts/group-details.php:344 template-settings.php:435
+msgid "Save"
+msgstr "保存"
+
+#: archive-groups.php:26 archive-groups.php:233
+msgid "Filter Groups"
+msgstr "筛选器组"
+
+#: dt-assets/functions/details-bar.php:37
+#: dt-core/admin/config-site-defaults.php:308
+#: dt-users/template-user-management.php:70
+msgid "Update Needed"
+msgstr "需要更新"
+
+#: dt-assets/functions/details-bar.php:48
+msgid "Dispatcher actions"
+msgstr "调度员动作"
+
+#: dt-assets/functions/details-bar.php:52
+msgid "Make a user from this contact"
+msgstr "通过此联系人建立用户"
+
+#: dt-assets/functions/details-bar.php:54
+msgid "Link to an existing user"
+msgstr "链接到现有用户"
+
+#: dt-assets/functions/details-bar.php:56
+msgid "Merge with another contact"
+msgstr "与其他联系人合并"
+
+#: dt-assets/functions/details-bar.php:79
+#: dt-assets/functions/details-bar.php:82
+#: dt-assets/functions/details-bar.php:126
+#: dt-assets/functions/details-bar.php:129
+msgid "Following"
+msgstr "以下"
+
+#: dt-assets/functions/details-bar.php:84
+#: dt-assets/functions/details-bar.php:131
+#: dt-contacts/contacts-post-type.php:569 dt-groups/groups-post-type.php:347
+msgid "Follow"
+msgstr "跟随"
+
+#: dt-assets/functions/details-bar.php:92
+#: dt-assets/functions/details-bar.php:120
+msgid "Share"
+msgstr "分享"
+
+#: dt-assets/functions/details-bar.php:111
+#: dt-assets/parts/loop-activity-comment.php:115
+#: dt-assets/parts/loop-activity-comment.php:193
+msgid "Comments"
+msgstr "注释"
+
+#: dt-assets/functions/enqueue-scripts.php:152
+msgid "You don't have any unread notifications"
+msgstr "您没有任何未读的通知"
+
+#: dt-assets/functions/enqueue-scripts.php:153
+msgid "You don't have any notifications"
+msgstr "您没有任何通知"
+
+#: dt-assets/functions/enqueue-scripts.php:192
+msgid "edit"
+msgstr "编辑"
+
+#: dt-assets/functions/enqueue-scripts.php:193
+#: dt-assets/functions/enqueue-scripts.php:328
+msgid "delete"
+msgstr "删除"
+
+#: dt-assets/functions/enqueue-scripts.php:227
+#: dt-assets/parts/contact-details.php:226
+#: dt-assets/parts/contact-details.php:277
+msgid "No source set"
+msgstr "未设定来源"
+
+#: dt-assets/functions/enqueue-scripts.php:228
+msgid "No location set"
+msgstr "未设置位置"
+
+#: dt-assets/functions/enqueue-scripts.php:229
+msgid "No leaders set"
+msgstr "没有领导者"
+
+#: dt-assets/functions/enqueue-scripts.php:230
+msgid "No people group set"
+msgstr "没有人组"
+
+#: dt-assets/functions/enqueue-scripts.php:231
+msgid "No email set"
+msgstr "未设置电子邮件"
+
+#: dt-assets/functions/enqueue-scripts.php:232
+msgid "No phone set"
+msgstr "没有电话"
+
+#: dt-assets/functions/enqueue-scripts.php:233
+msgid "No address set"
+msgstr "未设置地址"
+
+#: dt-assets/functions/enqueue-scripts.php:234
+msgid "None set"
+msgstr "没有设置"
+
+#: dt-assets/functions/enqueue-scripts.php:235
+msgid "No sub-assigned set"
+msgstr "没有子分配集"
+
+#: dt-assets/functions/enqueue-scripts.php:236
+#: dt-assets/parts/contact-details.php:299
+msgid "No age set"
+msgstr "没有年龄设定"
+
+#: dt-assets/functions/enqueue-scripts.php:237
+#: dt-assets/parts/contact-details.php:318
+msgid "No gender set"
+msgstr "没有性别"
+
+#: dt-assets/functions/enqueue-scripts.php:242
+msgid "Valid"
+msgstr "有效"
+
+#: dt-assets/functions/enqueue-scripts.php:243
+msgid "Invalid"
+msgstr "无效"
+
+#: dt-assets/functions/enqueue-scripts.php:244
+msgid "Unconfirmed"
+msgstr "未确认"
+
+#: dt-assets/functions/enqueue-scripts.php:245
+msgid "Transfer failed. Check site-to-site configuration."
+msgstr "转移失败。检查站点到站点的配置。"
+
+#: dt-assets/functions/enqueue-scripts.php:341
+#: dt-assets/parts/contact-details.php:60 dt-assets/parts/group-details.php:31
+#: template-settings.php:68 template-settings.php:326
+msgid "Edit"
+msgstr "编辑"
+
+#: dt-assets/functions/enqueue-scripts.php:342
+#: dt-assets/parts/loop-activity-comment.php:172
+msgid "Delete"
+msgstr "删除"
+
+#: dt-assets/functions/enqueue-scripts.php:343
+msgctxt "just copy as they are: _START_ and _TOTAL_"
+msgid "Showing _START_ of _TOTAL_"
+msgstr "显示_START_ __TOTAL_"
+
+#: dt-assets/functions/enqueue-scripts.php:344
+msgid "Sorting By"
+msgstr "排序依据"
+
+#: dt-assets/functions/enqueue-scripts.php:346
+msgid "Date Modified"
+msgstr "修改日期"
+
+#: dt-assets/functions/menu.php:18 dt-assets/functions/menu.php:62
+#: dt-mapping/columns/add-contacts-column.php:59
+#: dt-mapping/mapbox-metrics.php:97 dt-metrics/metrics-personal.php:68
+#: dt-metrics/metrics-project.php:86 dt-users/template-user-management.php:225
+msgid "Contacts"
+msgstr "联络人"
+
+#: dt-assets/functions/menu.php:22 dt-assets/functions/menu.php:66
+#: dt-contacts/contacts-post-type.php:637
+#: dt-mapping/columns/add-groups-column.php:57
+#: dt-mapping/mapbox-metrics.php:102 dt-metrics/metrics-personal.php:69
+#: dt-metrics/metrics-project.php:87 single-groups.php:110
+msgid "Groups"
+msgstr "团体"
+
+#. Template Name of the plugin/theme
+#: dt-assets/functions/menu.php:26 dt-assets/functions/menu.php:70
+msgid "Metrics"
+msgstr "指标"
+
+#. Template Name of the plugin/theme
+#: dt-assets/functions/menu.php:87 dt-assets/parts/nav-offcanvas-topbar.php:57
+#: dt-assets/parts/nav-offcanvas-topbar.php:132 template-notifications.php:31
+#: template-settings.php:42 template-settings.php:205
+msgid "Notifications"
+msgstr "通知事项"
+
+#. Template Name of the plugin/theme
+#: dt-assets/functions/menu.php:90 dt-assets/parts/nav-offcanvas-topbar.php:62
+#: dt-assets/parts/nav-offcanvas-topbar.php:145 template-notifications.php:57
+msgid "Settings"
+msgstr "设定值"
+
+#: dt-assets/functions/menu.php:96 dt-assets/parts/nav-offcanvas-topbar.php:148
+msgid "Admin"
+msgstr "管理员"
+
+#: dt-assets/functions/menu.php:99 dt-assets/parts/nav-offcanvas-topbar.php:158
+msgid "Log Off"
+msgstr "注销"
+
+#: dt-assets/parts/contact-details.php:20
+msgid "This contact needs an update"
+msgstr "此联系人需要更新"
+
+#: dt-assets/parts/contact-details.php:21 single-groups.php:51
+msgid "Please provide an update by posting a comment."
+msgstr "请通过发表评论来提供更新。"
+
+#: dt-assets/parts/contact-details.php:31
+msgid "This contact has been assigned to you."
+msgstr "此联系人已分配给您。"
+
+#: dt-assets/parts/contact-details.php:32
+msgid "Accept"
+msgstr "接受"
+
+#: dt-assets/parts/contact-details.php:33
+msgid "Decline"
+msgstr "下降"
+
+#: dt-assets/parts/contact-details.php:41
+msgid "This contact represents a user."
+msgstr "该联系人代表用户。"
+
+#: dt-assets/parts/contact-details.php:69
+#: dt-users/template-user-management.php:67
+#: dt-users/template-user-management.php:152
+msgid "Status"
+msgstr "状态"
+
+#: dt-contacts/contacts-post-type.php:645
+msgid "Sub-assigned to"
+msgstr "子分配给"
+
+#: dt-assets/parts/contact-details.php:202
+#: dt-assets/parts/contact-details.php:379
+#: dt-core/admin/config-site-defaults.php:489
+msgid "Social Media"
+msgstr "社交媒体"
+
+#: dt-contacts/contacts-post-type.php:872
+#: dt-core/admin/config-site-defaults.php:493
+#: dt-groups/groups-post-type.php:593 template-settings.php:129
+msgid "Address"
+msgstr "地址"
+
+#: dt-contacts/contacts-post-type.php:653 dt-groups/groups-post-type.php:429
+#: template-settings.php:41 template-settings.php:189
+msgid "Locations"
+msgstr "地点"
+
+#: dt-contacts/contacts-post-type.php:629 dt-groups/groups-post-type.php:399
+#: dt-people-groups/people-groups-post-type.php:97
+msgid "People Groups"
+msgstr "人民团体"
+
+#: dt-contacts/contacts-post-type.php:370
+msgid "Age"
+msgstr "年龄"
+
+#: dt-contacts/contacts-post-type.php:360
+msgid "Gender"
+msgstr "性别"
+
+#: dt-assets/parts/contact-details.php:282
+msgid "Source"
+msgstr "资源"
+
+#: dt-assets/parts/contact-details.php:337
+msgid "Edit Contact"
+msgstr "更改联系资料"
+
+#: archive-template.php:119 dt-assets/parts/contact-details.php:342
+#: dt-assets/parts/content-contacts.php:52
+#: dt-assets/parts/content-groups.php:52 dt-assets/parts/group-details.php:212
+#: dt-assets/parts/modals/modal-new-contact.php:7
+#: dt-assets/parts/modals/modal-new-contact.php:9
+#: dt-assets/parts/modals/modal-new-group.php:7 dt-contacts/contacts.php:107
+#: dt-mapping/mapbox-metrics.php:115 dt-mapping/mapping-metrics.php:120
+#: dt-mapping/mapping.php:305 template-new-post.php:22 template-settings.php:86
+msgid "Name"
+msgstr "名称"
+
+#: archive-template.php:91 dt-assets/parts/content-contacts.php:21
+#: dt-assets/parts/content-groups.php:21
+msgid "Sort"
+msgstr "分类"
+
+#: archive-template.php:95 dt-assets/parts/content-contacts.php:24
+#: dt-assets/parts/content-groups.php:24
+msgid "Newest"
+msgstr "最新"
+
+#: archive-template.php:99 dt-assets/parts/content-contacts.php:27
+#: dt-assets/parts/content-groups.php:27
+msgid "Oldest"
+msgstr "最老的"
+
+#: archive-template.php:103 dt-assets/parts/content-contacts.php:30
+#: dt-assets/parts/content-groups.php:30
+msgid "Most recently modified"
+msgstr "最近修改"
+
+#: archive-template.php:107 dt-assets/parts/content-contacts.php:33
+#: dt-assets/parts/content-groups.php:33
+msgid "Least recently modified"
+msgstr "最近最少修改"
+
+#: dt-assets/parts/content-contacts.php:40
+msgid "Closed Contacts"
+msgstr "封闭的联系人"
+
+#: dt-contacts/contacts-post-type.php:237
+#: dt-metrics/contacts/seeker-path.php:62
+msgid "Seeker Path"
+msgstr "搜寻路径"
+
+#. Could be either Hitos or Pilares
+#: dt-contacts/contacts-post-type.php:298
+msgid "Faith Milestones"
+msgstr "信仰里程碑"
+
+#: dt-groups/groups-post-type.php:205 dt-metrics/metrics-personal.php:80
+#: dt-metrics/metrics-project.php:107
+msgid "Group"
+msgstr "组"
+
+#: archive-template.php:131 dt-assets/parts/content-contacts.php:63
+#: dt-assets/parts/content-groups.php:61
+msgid "Loading..."
+msgstr "载入中..."
+
+#: dt-assets/parts/content-contacts.php:67
+msgid "Load more contacts"
+msgstr "加载更多联系人"
+
+#: dt-assets/parts/content-groups.php:40
+msgid "Inactive Groups"
+msgstr "非活动组"
+
+#: dt-assets/parts/content-groups.php:65
+msgid "Load more groups"
+msgstr "载入更多群组"
+
+#: dt-groups/groups-post-type.php:415
+msgid "Group Coach / Church Planter"
+msgstr "小组教练/教会主持人"
+
+#: dt-groups/groups-post-type.php:321 dt-users/template-user-management.php:302
+#: template-settings.php:288 template-settings.php:307
+msgid "Start Date"
+msgstr "开始日期"
+
+#: dt-assets/functions/enqueue-scripts.php:238
+msgid "No start date"
+msgstr "没有开始日期"
+
+#: dt-groups/groups-post-type.php:328
+msgid "Church Start Date"
+msgstr "教会开始日期"
+
+#: dt-assets/functions/enqueue-scripts.php:240
+#: dt-assets/parts/group-details.php:181
+msgid "No church start date"
+msgstr "没有教堂开始日期"
+
+#: dt-groups/groups-post-type.php:334 dt-users/template-user-management.php:303
+#: template-settings.php:294 template-settings.php:308
+msgid "End Date"
+msgstr "结束日期"
+
+#: dt-assets/functions/enqueue-scripts.php:239
+#: dt-assets/parts/group-details.php:196
+msgid "No end date"
+msgstr "没有结束日期"
+
+#: dt-assets/parts/group-details.php:207
+msgid "Edit Group"
+msgstr "编辑组"
+
+#: dt-assets/parts/loop-activity-comment.php:65
+msgid "Quick actions"
+msgstr "快速行动"
+
+#: dt-assets/parts/loop-activity-comment.php:100
+msgid "Submit comment"
+msgstr "提交评论"
+
+#: dt-assets/parts/loop-activity-comment.php:8
+msgid "Comments and Activity"
+msgstr "评论和活动"
+
+#: dt-assets/parts/loop-activity-comment.php:108
+msgid "Showing:"
+msgstr "显示："
+
+#: dt-assets/parts/loop-activity-comment.php:120
+#: dt-metrics/metrics-workers.php:123 dt-users/template-user-management.php:356
+msgid "Activity"
+msgstr "活动"
+
+#: dt-assets/parts/loop-activity-comment.php:149
+msgid "show all"
+msgstr "显示所有"
+
+#: dt-assets/parts/loop-activity-comment.php:153
+msgid "hide all"
+msgstr "全部藏起来"
+
+#: dt-assets/parts/loop-activity-comment.php:165
+msgid "Delete Comment:"
+msgstr "删除评论："
+
+#: dt-assets/parts/loop-activity-comment.php:169
+#: dt-assets/parts/loop-activity-comment.php:214
+#: dt-assets/parts/modals/modal-help.php:453
+#: dt-assets/parts/modals/modal-revert.php:15
+#: dt-assets/parts/modals/modal-share.php:50
+#: dt-assets/parts/modals/modal-tasks.php:46 single-contacts.php:709
+#: single-groups.php:399
+msgid "Close"
+msgstr "关"
+
+#: dt-assets/parts/loop-activity-comment.php:179
+#: dt-assets/parts/loop-activity-comment.php:224
+msgid "Sorry, something went wrong"
+msgstr "抱歉，出了一些问题"
+
+#: dt-assets/parts/loop-activity-comment.php:180
+msgid "The comment could not be deleted."
+msgstr "无法删除评论。"
+
+#: dt-assets/parts/loop-activity-comment.php:185
+msgid "Edit Comment:"
+msgstr "编辑评论："
+
+#: dt-assets/parts/loop-activity-comment.php:217
+msgid "Update"
+msgstr "更新资料"
+
+#: dt-assets/parts/loop-activity-comment.php:225
+msgid "The comment could not be updated."
+msgstr "该评论无法更新。"
+
+#: dt-assets/parts/merge-details.php:23 template-view-duplicates.php:22
+msgid "Duplicate Contacts"
+msgstr "联系人重复"
+
+#: dt-assets/parts/merge-details.php:54
+msgid "Original Contact"
+msgstr "原始联系人"
+
+#: dt-assets/parts/merge-details.php:117
+msgid "Possible Duplicates"
+msgstr "可能重复"
+
+#: dt-assets/parts/merge-details.php:124
+msgid "Dismiss All"
+msgstr "关闭所有"
+
+#: dt-assets/parts/merge-details.php:125
+msgid "Unsure All"
+msgstr "不确定全部"
+
+#: dt-assets/parts/merge-details.php:174 dt-assets/parts/merge-details.php:245
+msgid "Dismiss"
+msgstr "解雇"
+
+#: dt-assets/parts/merge-details.php:198
+msgid "Unsure Duplicates"
+msgstr "不确定重复"
+
+#: dt-assets/parts/modals/modal-filters.php:3
+#: dt-assets/parts/modals/modal-filters.php:12
+msgid "Save Filter"
+msgstr "保存过滤器"
+
+#: dt-assets/parts/modals/modal-filters.php:4
+msgid "What do you want to call this filter?"
+msgstr "您要如何称呼此过滤器？"
+
+#: dt-assets/parts/modals/modal-filters.php:22
+#: dt-assets/parts/modals/modal-filters.php:31
+msgid "Delete Filter"
+msgstr "删除过滤器"
+
+#: dt-groups/groups-post-type.php:178
+msgid "Group Status"
+msgstr "组状态"
+
+#: dt-assets/parts/modals/modal-new-contact.php:3
+#: dt-assets/parts/modals/modal-new-contact.php:12
+msgid "Create Contact"
+msgstr "建立联络人"
+
+#: template-contacts-new.php:25
+msgid "Name of Contact"
+msgstr "联系人姓名"
+
+#: single-contacts.php:660 single-contacts.php:732 template-contacts-new.php:31
+#: template-groups-new.php:30 template-new-post.php:25
+msgid "This is required"
+msgstr "这是必需的"
+
+#: dt-assets/parts/modals/modal-new-contact.php:20
+msgid "Contact Created"
+msgstr "已建立联络人"
+
+#: dt-assets/parts/modals/modal-new-contact.php:26
+msgid "Edit New Contact"
+msgstr "编辑新联系人"
+
+#: dt-assets/parts/modals/modal-new-group.php:3
+#: dt-assets/parts/modals/modal-new-group.php:12
+msgid "Create Group"
+msgstr "创建组"
+
+#: dt-assets/parts/modals/modal-new-group.php:19
+msgid "Group Created"
+msgstr "群组已建立"
+
+#: dt-assets/parts/modals/modal-new-group.php:25
+msgid "Edit new Group"
+msgstr "编辑新组"
+
+#: dt-assets/parts/modals/modal-revert.php:4
+msgid "Revert Activity"
+msgstr "还原活动"
+
+#: dt-assets/parts/modals/modal-revert.php:5
+msgid "Field"
+msgstr "领域"
+
+#: dt-assets/parts/modals/modal-revert.php:8
+msgid "Current Value"
+msgstr "当前值"
+
+#: dt-assets/parts/modals/modal-revert.php:10
+msgid "Old Value"
+msgstr "旧值"
+
+#: dt-assets/parts/modals/modal-revert.php:18
+msgid "Revert to old value?"
+msgstr "恢复为旧值？"
+
+#: dt-assets/parts/modals/modal-share.php:7
+msgid "Share settings"
+msgstr "共享设置"
+
+#: dt-assets/parts/modals/modal-share.php:12
+msgid "This group is shared with:"
+msgstr "该组与以下人员共享："
+
+#: dt-assets/parts/modals/modal-share.php:14
+msgid "This contact is shared with:"
+msgstr "此联系人共享给："
+
+#: dt-assets/parts/nav-offcanvas-topbar.php:36
+#: dt-assets/parts/nav-offcanvas-topbar.php:110
+#: dt-posts/custom-post-type.php:151
+msgid "Add New"
+msgstr "添新"
+
+#: dt-assets/parts/nav-offcanvas-topbar.php:42
+#: dt-assets/parts/nav-offcanvas-topbar.php:117
+#: dt-contacts/contacts-post-type.php:196
+msgid "New Contact"
+msgstr "新联系人"
+
+#: dt-assets/parts/nav-offcanvas-topbar.php:48
+#: dt-assets/parts/nav-offcanvas-topbar.php:123
+msgid "New Group"
+msgstr "新组"
+
+#: dt-assets/parts/nav-offcanvas-topbar.php:103 template-settings.php:40
+msgid "Profile"
+msgstr "轮廓"
+
+#: dt-assets/parts/nav-offcanvas-topbar.php:154
+msgid "Help"
+msgstr "救命"
+
+#: dt-contacts/contacts-post-type.php:104
+msgctxt "singular of contact"
+msgid "Contact"
+msgstr "联系"
+
+#: dt-contacts/contacts-post-type.php:105
+msgctxt "plural of contact"
+msgid "Contacts"
+msgstr "联络人"
+
+#: dt-contacts/contacts-post-type.php:262 dt-metrics/counter.php:139
+msgid "Ongoing Meetings"
+msgstr "正在进行的会议"
+
+#: dt-contacts/contacts-post-type.php:275 dt-groups/groups-post-type.php:423
+msgid "Requires Update"
+msgstr "需要更新"
+
+#: dt-contacts/contacts-post-type.php:323
+#: dt-contacts/contacts-post-type.php:621
+msgid "Baptized"
+msgstr "受洗"
+
+#: dt-contacts/contacts-post-type.php:343
+msgid "Baptism Date"
+msgstr "洗礼日期"
+
+#: dt-contacts/contacts-post-type.php:351 dt-metrics/counter.php:156
+msgid "Baptism Generation"
+msgstr "洗礼代"
+
+#: dt-contacts/contacts-post-type.php:472 dt-metrics/contacts/sources.php:83
+#: dt-users/users.php:715
+msgid "Sources"
+msgstr "资料来源"
+
+#: dt-contacts/contacts-post-type.php:576 dt-groups/groups-post-type.php:354
+msgid "Un-Follow"
+msgstr "取消关注"
+
+#: dt-contacts/contacts-post-type.php:862
+#: dt-core/admin/config-site-defaults.php:481 template-settings.php:118
+msgid "Phone"
+msgstr "电话"
+
+#: dt-core/admin/config-site-defaults.php:533
+msgid "Work"
+msgstr "工作"
+
+#: dt-core/admin/config-site-defaults.php:532
+msgid "Home"
+msgstr "家"
+
+#: dt-contacts/contacts-post-type.php:908
+#: dt-core/admin/config-site-defaults.php:497
+#: dt-core/admin/config-site-defaults.php:534 single-contacts.php:497
+#: template-settings.php:151
+msgid "Other"
+msgstr "其他"
+
+#: dt-contacts/contacts-post-type.php:867
+#: dt-core/admin/config-site-defaults.php:285
+#: dt-core/admin/config-site-defaults.php:485 single-contacts.php:729
+#: template-contacts-new.php:44 template-settings.php:106
+msgid "Email"
+msgstr "电子邮件"
+
+#: dt-contacts/contacts-post-type.php:877
+#: dt-contacts/contacts-post-type.php:880
+#: dt-core/admin/config-site-defaults.php:514
+msgid "Facebook"
+msgstr "脸书"
+
+#: dt-contacts/contacts-post-type.php:887
+#: dt-core/admin/config-site-defaults.php:519
+msgid "Twitter"
+msgstr "推特"
+
+#: dt-contacts/contacts-post-type.php:893
+#: dt-contacts/contacts-post-type.php:895
+msgid "Instagram"
+msgstr "Instagram的"
+
+#: dt-contacts/contacts-post-type.php:901
+#: dt-contacts/contacts-post-type.php:903
+msgid "Skype"
+msgstr "Skype的"
+
+#: dt-contacts/contacts-transfer.php:29
+msgid "Contact Transfer Both Ways"
+msgstr "双向联系人转移"
+
+#: dt-contacts/contacts-transfer.php:30
+msgid "Contact Transfer Sending Only"
+msgstr "联系人转移仅发送"
+
+#: dt-contacts/contacts-transfer.php:31
+msgid "Contact Transfer Receiving Only"
+msgstr "联系人转移仅接收"
+
+#: dt-contacts/contacts-transfer.php:52
+msgid "This contact has been transferred"
+msgstr "此联系人已转移"
+
+#: dt-contacts/contacts-transfer.php:53
+msgid "This contact has been transferred to"
+msgstr "此联系人已转移到"
+
+#: dt-contacts/contacts-transfer.php:86
+msgid "another site"
+msgstr "另一个网站"
+
+#: dt-contacts/contacts-transfer.php:96
+msgid "Already transfered to %s"
+msgstr "已经转移到％s"
+
+#: dt-contacts/contacts-transfer.php:97
+msgid "NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
+msgstr "注意：您已经转移了此联系人。再次传输可能会创建重复项。您是否仍要覆盖此警告并继续进行传输？"
+
+#: dt-contacts/contacts-transfer.php:98
+msgid "Override and Continue"
+msgstr "覆盖并继续"
+
+#: dt-contacts/contacts-transfer.php:103
+msgid "Transfer this contact to:"
+msgstr "将此联系人转移到："
+
+#: dt-contacts/contacts-transfer.php:115
+msgid "Confirm Transfer"
+msgstr "确认转账"
+
+#: dt-contacts/contacts-transfer.php:180
+msgid "Unknown error."
+msgstr "未知错误。"
+
+#: dt-contacts/contacts-transfer.php:189
+msgid "Minor transfer error."
+msgstr "较小的传输错误。"
+
+#: dt-contacts/contacts-transfer.php:326 dt-contacts/contacts-transfer.php:344
+#: dt-contacts/contacts-transfer.php:361
+msgid "Transfer Bot"
+msgstr "转移机器人"
+
+#: dt-contacts/contacts-transfer.php:346
+msgid "Contact transferred from site"
+msgstr "联系人已从网站转移"
+
+#: dt-contacts/contacts-transfer.php:353
+msgid "ALERT: Possible duplicate contact from a previous transfer."
+msgstr "警报：上一次传输可能重复的联系人。"
+
+#: dt-contacts/contacts.php:1311
+msgctxt "Contact1 is a duplicated and was merged into Contact2"
+msgid "%1$s is a duplicate and was merged into %2$s"
+msgstr "％1 $ s是重复项，已合并到％2 $ s"
+
+#: dt-contacts/contacts.php:1318
+msgctxt "Contact1 was merged into Contact2"
+msgid "%1$s was merged into %2$s"
+msgstr "％1 $ s已合并到％2 $ s"
+
+#: dt-contacts/contacts.php:517
+msgctxt "duplicate comment"
+msgid "(From Duplicate): %s"
+msgstr "（来自重复项）：％s"
+
+#: dt-contacts/contacts.php:1096
+msgid "Possible duplicates on"
+msgstr "可能重复"
+
+#: dt-contacts/contacts.php:1099
+msgid "more duplicates not shown"
+msgstr "没有显示更多重复"
+
+#: dt-core/admin/admin-theme-design.php:44
+msgid "Welcome, %1$s"
+msgstr "欢迎，％1 $ s"
+
+#: dt-core/admin/class-roles.php:93
+msgid "Strategist"
+msgstr "战略家"
+
+#: dt-core/admin/class-roles.php:103
+msgid "Dispatcher"
+msgstr "调度员"
+
+#: dt-core/admin/class-roles.php:181
+msgid "Digital Responder"
+msgstr "数字响应器"
+
+#: dt-core/admin/class-roles.php:203
+msgid "Disciple.Tools Admin"
+msgstr "门徒工具管理员"
+
+#: dt-core/admin/class-roles.php:294
+msgid "Multiplier"
+msgstr "乘数"
+
+#: dt-core/admin/class-roles.php:311
+msgid "Registered"
+msgstr "注册"
+
+#: dt-core/admin/class-roles.php:431
+msgid "Subscriber"
+msgstr "订户"
+
+#: dt-core/admin/config-site-defaults.php:293
+msgid "Newly Assigned Contact"
+msgstr "新分配的联系人"
+
+#: dt-core/admin/config-site-defaults.php:298
+msgid "@Mentions"
+msgstr "@提及"
+
+#: dt-core/admin/config-site-defaults.php:303
+msgid "New comments"
+msgstr "新评论"
+
+#: dt-core/admin/config-site-defaults.php:313
+msgid "Contact Info Changed"
+msgstr "联系信息已更改"
+
+#: dt-core/admin/config-site-defaults.php:318
+#: dt-core/migrations/0012-typo-rename.php:7
+msgid "Contact Milestones and Group Health metrics"
+msgstr "联系人里程碑和组健康指标"
+
+#: dt-core/admin/config-site-defaults.php:352
+msgid "This contact is active but there is no record of anybody contacting them. Please do contact them."
+msgstr "该联系人处于活动状态，但是没有任何人与他们联系的记录。请与他们联系。"
+
+#: dt-core/admin/config-site-defaults.php:358
+msgid "Please try connecting with this contact again."
+msgstr "请尝试再次与此联系人联系。"
+
+#: dt-core/admin/config-site-defaults.php:364
+#: dt-core/admin/config-site-defaults.php:370
+#: dt-core/admin/config-site-defaults.php:376
+#: dt-core/admin/config-site-defaults.php:382
+#: dt-core/admin/config-site-defaults.php:388
+msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
+msgstr "我们已经有一段时间没有听说这个人了。您有此联系人的最新消息吗？"
+
+#: dt-core/admin/config-site-defaults.php:398
+msgid "We haven't heard about this group in a while. Do you have an update?"
+msgstr "我们已经有一段时间没有听说过这个小组了。你有更新吗？"
+
+#: dt-core/admin/config-site-defaults.php:638
+msgctxt "either rtl or ltr"
+msgid "ltr"
+msgstr "ltr"
+
+#: dt-core/admin/config-site-defaults.php:667
+msgid "Someone has requested a password reset for the following account:"
+msgstr "有人要求重置以下帐户的密码："
+
+#. translators: %s: site name
+#: dt-core/admin/config-site-defaults.php:669
+msgid "Site Name: %s"
+msgstr "网站名称：％s"
+
+#. translators: %s: user login
+#: dt-core/admin/config-site-defaults.php:671
+msgid "Username: %s"
+msgstr "用户名：％s"
+
+#: dt-core/admin/config-site-defaults.php:672
+msgid "If this was a mistake, just ignore this email and nothing will happen."
+msgstr "如果这是一个错误，请忽略此电子邮件，将不会发生任何事情。"
+
+#: dt-core/admin/config-site-defaults.php:673
+msgid "To reset your password, visit the following address:"
+msgstr "要重置密码，请访问以下地址："
+
+#: dt-users/template-user-management.php:315 template-settings.php:99
+msgid "Roles"
+msgstr "的角色"
+
+#: dt-core/logging/hooks/class-hook-posts.php:28
+msgid "(no title)"
+msgstr "（无题）"
+
+#: dt-groups/groups-post-type.php:275 dt-groups/groups-post-type.php:407
+msgid "Leaders"
+msgstr "领导者"
+
+#: dt-posts/posts.php:248
+msgctxt "Baptized contact1"
+msgid "Baptized %s"
+msgstr "受洗的％s"
+
+#: dt-posts/posts.php:249
+msgctxt "Baptized by contact1"
+msgid "Baptized by %s"
+msgstr "受洗的％s"
+
+#: dt-posts/posts.php:251
+msgctxt "Did not baptize contact1"
+msgid "Did not baptize %s"
+msgstr "没有为％s施洗"
+
+#: dt-posts/posts.php:252
+msgctxt "Not baptized by contact1"
+msgid "Not baptized by %s"
+msgstr "未受％s的洗礼"
+
+#: dt-posts/posts.php:256
+msgctxt "contact1 added to members"
+msgid "%s added to members"
+msgstr "％s已添加到成员"
+
+#: dt-posts/posts.php:257
+msgctxt "Added to group group1"
+msgid "Added to group %s"
+msgstr "已添加到组％s"
+
+#: dt-posts/posts.php:259
+msgctxt "Removed contact1 from group"
+msgid "Removed %s from group"
+msgstr "从群组中删除了％s"
+
+#: dt-posts/posts.php:260
+msgctxt "Removed from group group1"
+msgid "Removed from group %s"
+msgstr "已从％s组中删除"
+
+#: dt-posts/posts.php:265
+msgctxt "Coaching contact1"
+msgid "Coaching %s"
+msgstr "教练％s"
+
+#: dt-posts/posts.php:266
+msgctxt "Coached by contact1"
+msgid "Coached by %s"
+msgstr "由％s指导"
+
+#: dt-posts/posts.php:268
+msgctxt "No longer coaching contact1"
+msgid "No longer coaching %s"
+msgstr "不再指导％s"
+
+#: dt-posts/posts.php:273
+msgctxt "Sub-assigned contact1"
+msgid "Sub-assigned %s"
+msgstr "转让给％s"
+
+#: dt-posts/posts.php:274
+msgctxt "Sub-assigned on contact1"
+msgid "Sub-assigned on %s"
+msgstr "已在％s上分配"
+
+#: dt-posts/posts.php:276
+msgctxt "Removed sub-assigned contact1"
+msgid "Removed sub-assigned %s"
+msgstr "删除了已分配的％s"
+
+#: dt-posts/posts.php:281
+msgctxt "Paris added as location on contact1"
+msgid "%1$s added as location on %2$s"
+msgstr "已将％1 $ s作为位置添加到％2 $ s"
+
+#: dt-posts/posts.php:282
+msgctxt "Paris added to locations"
+msgid "%s added to locations"
+msgstr "％s已添加到位置"
+
+#: dt-posts/posts.php:284
+msgctxt "Paris removed from locations on contact1"
+msgid "%1$s removed from locations on %2$s"
+msgstr "从％2 $ s的位置中删除了％1 $ s"
+
+#: dt-posts/posts.php:285
+msgctxt "Paris removed from locations"
+msgid "%s removed from locations"
+msgstr "已从位置删除％s"
+
+#: dt-posts/posts.php:289
+msgctxt "Deaf added as people group on contact1"
+msgid "%1$s added as people group on %2$s"
+msgstr "已将％1 $ s添加为“％2 $ s”上的人物组"
+
+#: dt-posts/posts.php:290
+msgctxt "Deaf added to people groups"
+msgid "%s added to people groups"
+msgstr "％s已添加到人员组"
+
+#: dt-posts/posts.php:292
+msgctxt "Deaf removed from people groups on contact1"
+msgid "%1$s removed from people groups on %2$s"
+msgstr "已将％1 $ s从“％2 $ s”的人组中删除"
+
+#: dt-posts/posts.php:293
+msgctxt "Deaf removed from people groups"
+msgid "%s removed from people groups"
+msgstr "已将％s人群中删除"
+
+#: dt-posts/posts.php:297
+msgctxt "contact1 added as leader on group1"
+msgid "%1$s added as leader on %2$s"
+msgstr "已将％1 $ s作为领导者添加到％2 $ s"
+
+#: dt-posts/posts.php:298
+msgctxt "contact1 added to leaders"
+msgid "%s added to leaders"
+msgstr "％s已添加到领导者"
+
+#: dt-posts/posts.php:300
+msgctxt "contact1 removed from leaders on group1"
+msgid "%1$s removed from leaders on %2$s"
+msgstr "已从％2 $ s的领导者中删除了％1 $ s"
+
+#: dt-posts/posts.php:301
+msgctxt "contact1 removed from leaders"
+msgid "%s removed from leaders"
+msgstr "已将％s从领导者中移除"
+
+#: dt-posts/posts.php:305
+msgctxt "contact1 added as coach on group1"
+msgid "%1$s added as coach on %2$s"
+msgstr "已将％1 $ s作为教练添加到％2 $ s"
+
+#: dt-posts/posts.php:306
+msgctxt "contact1 added to coaches"
+msgid "%s added to coaches"
+msgstr "％s已加入教练"
+
+#: dt-posts/posts.php:308
+msgctxt "contact1 removed from coaches on group2"
+msgid "%1$s removed from coaches on %2$s"
+msgstr "已从％2 $ s的教练中删除％1 $ s"
+
+#: dt-posts/posts.php:309
+msgctxt "contact1 removed from coaches"
+msgid "%s removed from coaches"
+msgstr "已将％s从教练中移除"
+
+#: dt-posts/posts.php:313
+msgctxt "group2 added to child groups"
+msgid "%s added to child groups"
+msgstr "％s已添加到子组"
+
+#: dt-posts/posts.php:314
+msgctxt "group1 added to parent groups"
+msgid "%s added to parent groups"
+msgstr "％s已添加到父组"
+
+#: dt-posts/posts.php:316
+msgctxt "group2 removed from child groups"
+msgid "%s removed from child groups"
+msgstr "从子组中删除了％s"
+
+#: dt-posts/posts.php:317
+msgctxt "group1 removed from parent groups"
+msgid "%s removed from parent groups"
+msgstr "从父组中删除了％s"
+
+#: dt-posts/posts.php:322
+msgctxt "group2 added to peer groups"
+msgid "%s added to peer groups"
+msgstr "％s已添加到对等组"
+
+#: dt-posts/posts.php:323
+msgctxt "group1 added to peer groups"
+msgid "%s added to peer groups"
+msgstr "％s已添加到对等组"
+
+#: dt-posts/posts.php:325
+msgctxt "group2 removed from peer groups"
+msgid "%s removed from peer groups"
+msgstr "已从同级组中删除％s"
+
+#: dt-posts/posts.php:326
+msgctxt "group1 removed from peer groups"
+msgid "%s removed from peer groups"
+msgstr "已从同级组中删除％s"
+
+#: dt-posts/posts.php:330 dt-posts/posts.php:331 dt-posts/posts.php:338
+#: dt-posts/posts.php:339
+msgctxt "Connected to contact1"
+msgid "Connected to %s"
+msgstr "已连接到％s"
+
+#: dt-posts/posts.php:333 dt-posts/posts.php:334 dt-posts/posts.php:341
+#: dt-posts/posts.php:342
+msgctxt "Removed connection to contact1"
+msgid "Removed connection to %s"
+msgstr "删除了与％s的连接"
+
+#: dt-posts/posts.php:362
+msgctxt "Assigned to: User1"
+msgid "Assigned to: %s"
+msgstr "分配给：％s"
+
+#: dt-posts/posts.php:362
+msgid "Nobody"
+msgstr "没有人"
+
+#: dt-posts/posts.php:375
+msgctxt "Milestone1 removed from Milestones"
+msgid "%1$s removed from %2$s"
+msgstr "已从％2 $ s中删除％1 $ s"
+
+#: dt-posts/posts.php:378
+msgctxt "Milestone1 added to Milestones"
+msgid "%1$s added to %2$s"
+msgstr "已将％1 $ s添加到％2 $ s"
+
+#: dt-posts/posts.php:390
+msgid "yes"
+msgstr "是"
+
+#: dt-posts/posts.php:392
+msgid "no"
+msgstr "没有"
+
+#: dt-posts/posts.php:459
+msgctxt "Added Facebook: facebook.com/123"
+msgid "Added %1$s: %2$s"
+msgstr "添加了％1 $ s：％2 $ s"
+
+#: dt-posts/posts.php:461
+msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
+msgid "Updated %1$s from %2$s to %3$s"
+msgstr "已将％1 $ s从％2 $ s更新为％3 $ s"
+
+#: dt-posts/posts.php:463
+msgctxt "Deleted Facebook: facebook.com/123"
+msgid "Deleted %1$s: %2$s"
+msgstr "删除的％1 $ s：％2 $ s"
+
+#: dt-posts/dt-posts.php:953
+msgid "Record not deleted."
+msgstr "记录未删除。"
+
+#: dt-posts/dt-posts.php:1050
+msgid "Post already shared with user."
+msgstr "帖子已与用户共享。"
+
+#: dt-groups/groups-post-type.php:196
+msgid "Group Type"
+msgstr "团体类型"
+
+#: dt-groups/groups-post-type.php:201 dt-metrics/metrics-personal.php:79
+#: dt-metrics/metrics-project.php:106
+msgid "Pre-Group"
+msgstr "小组前"
+
+#: dt-groups/groups-post-type.php:209 dt-metrics/metrics-personal.php:81
+#: dt-metrics/metrics-project.php:108
+msgid "Church"
+msgstr "教会"
+
+#: dt-groups/groups-post-type.php:385
+msgid "Member Count"
+msgstr "会员人数"
+
+#: dt-mapping/mapping-metrics.php:62 dt-mapping/mapping.php:149
+#: dt-users/user-management.php:106
+msgid "Map"
+msgstr "地图"
+
+#: dt-metrics/counter.php:129 dt-metrics/metrics-critical-path.php:193
+msgid "New Contacts"
+msgstr "新联络人"
+
+#: dt-metrics/counter.php:134
+msgid "First Meetings"
+msgstr "第一次会议"
+
+#: dt-metrics/counter.php:144
+msgid "Total Baptisms"
+msgstr "总洗礼"
+
+#: dt-metrics/counter.php:149
+msgid "Total Baptizers"
+msgstr "浸胶总数"
+
+#: dt-metrics/counter.php:162
+msgid "Total Churches and Groups"
+msgstr "教会和团体总数"
+
+#: dt-metrics/counter.php:167 dt-metrics/metrics-critical-path.php:280
+msgid "Active Groups"
+msgstr "活跃团体"
+
+#: dt-metrics/counter.php:172 dt-metrics/metrics-critical-path.php:290
+msgid "Active Churches"
+msgstr "活跃的教会"
+
+#: dt-metrics/counter.php:179
+msgid "Church Generation"
+msgstr "教会世代"
+
+#: dt-metrics/counter.php:185 dt-metrics/metrics-critical-path.php:314
+msgid "Church Planters"
+msgstr "教堂种植园主"
+
+#. This could be either Hitos or Pilares depending on the context.
+#: dt-metrics/contacts/milestones.php:62
+msgid "Milestones"
+msgstr "大事记"
+
+#: dt-metrics/metrics-critical-path.php:44
+#: dt-metrics/metrics-critical-path.php:71
+msgid "Critical Path"
+msgstr "关键路径"
+
+#: dt-metrics/metrics-workers.php:183
+msgid "Select All time or a specific year to display"
+msgstr "选择显示所有时间或特定年份"
+
+#: dt-metrics/contacts/milestones.php:64 dt-metrics/contacts/seeker-path.php:64
+#: dt-metrics/contacts/sources.php:81
+msgid "All time"
+msgstr "整天"
+
+#: dt-metrics/metrics-critical-path.php:203
+msgid "Assigned Contacts"
+msgstr "分配的联系人"
+
+#: dt-metrics/metrics-critical-path.php:212 dt-metrics/metrics-personal.php:74
+#: dt-metrics/metrics-project.php:89 dt-users/template-user-management.php:156
+msgid "Active Contacts"
+msgstr "活动联系人"
+
+#: dt-metrics/metrics-critical-path.php:241
+msgid "Baptisms"
+msgstr "洗礼"
+
+#: dt-metrics/metrics-critical-path.php:270
+msgid "Baptizers"
+msgstr "浸礼"
+
+#: dt-core/admin/config-site-defaults.php:504
+#: dt-metrics/metrics-personal.php:36
+msgid "Personal"
+msgstr "个人"
+
+#: dt-metrics/metrics-personal.php:65
+msgid "My Overview"
+msgstr "我的概述"
+
+#: dt-metrics/metrics-personal.php:66 dt-metrics/metrics-project.php:90
+msgid "Waiting on Accept"
+msgstr "等待接受"
+
+#: dt-metrics/metrics-personal.php:67 dt-metrics/metrics-project.php:91
+msgid "Waiting on Update"
+msgstr "等待更新"
+
+#: dt-metrics/metrics-personal.php:70 dt-metrics/metrics-personal.php:75
+#: dt-metrics/metrics-project.php:92
+msgid "Total Groups"
+msgstr "总人数"
+
+#: dt-metrics/metrics-personal.php:71 dt-metrics/metrics-project.php:94
+#: dt-metrics/metrics-project.php:105
+msgid "Group Types"
+msgstr "组类型"
+
+#: dt-metrics/metrics-personal.php:72 dt-metrics/metrics-project.php:93
+msgid "Group and Church Generations"
+msgstr "团体和教会世代"
+
+#: dt-metrics/metrics-personal.php:73
+msgid "Lead Teams"
+msgstr "领导团队"
+
+#: dt-metrics/metrics-personal.php:76
+msgid "Follow-up of my active contacts"
+msgstr "跟进我的活跃联系人"
+
+#: dt-metrics/metrics-personal.php:77 dt-metrics/metrics-project.php:101
+msgid "Active Group Health Metrics"
+msgstr "活动组健康指标"
+
+#: dt-metrics/metrics-personal.php:78
+msgid "stats as of"
+msgstr "截至统计"
+
+#: dt-metrics/metrics-project.php:42
+msgid "Project"
+msgstr "项目"
+
+#: dt-metrics/metrics-project.php:44
+msgid "Overview"
+msgstr "总览"
+
+#: dt-metrics/metrics-project.php:45
+msgid "Group Tree"
+msgstr "组树"
+
+#: dt-metrics/metrics-project.php:46
+msgid "Baptism Tree"
+msgstr "洗礼树"
+
+#: dt-metrics/metrics-project.php:47
+msgid "Coaching Tree"
+msgstr "教练树"
+
+#: dt-metrics/metrics-project.php:85
+msgid "Project Overview"
+msgstr "项目概况"
+
+#: dt-metrics/metrics-critical-path.php:70
+msgid "Outreach"
+msgstr "外展"
+
+#: dt-metrics/metrics-critical-path.php:69
+msgid "Follow Up"
+msgstr "跟进"
+
+#: dt-metrics/metrics-project.php:88
+msgid "All Contacts"
+msgstr "所有联系人"
+
+#: dt-metrics/metrics-project.php:95
+msgid "Group Generation Tree"
+msgstr "组生成树"
+
+#: dt-metrics/metrics-project.php:96
+msgid "Baptism Generation Tree"
+msgstr "洗礼世代树"
+
+#: dt-metrics/metrics-project.php:97
+msgid "Coaching Generation Tree"
+msgstr "教练代树"
+
+#: dt-metrics/metrics-project.php:98
+msgid "Teams"
+msgstr "队伍"
+
+#: dt-metrics/metrics-project.php:102
+msgid "groups"
+msgstr "团体"
+
+#: dt-metrics/metrics-project.php:103
+msgid "generations"
+msgstr "世代"
+
+#. Template Name of the plugin/theme
+#: dt-mapping/columns/add-users-column.php:56
+#: dt-metrics/metrics-workers.php:121
+msgid "Workers"
+msgstr "工人"
+
+#: dt-metrics/metrics-workers.php:124
+msgid "Overall Pace"
+msgstr "整体步伐"
+
+#: dt-metrics/metrics-workers.php:125 dt-metrics/metrics-workers.php:173
+msgid "Follow-up Pace"
+msgstr "后续步伐"
+
+#: dt-metrics/metrics-workers.php:171
+msgid "Workers Activity"
+msgstr "工人活动"
+
+#: dt-metrics/metrics-workers.php:172
+msgid "Worker System Engagement for the Last 30 Days"
+msgstr "最近30天的员工系统参与度"
+
+#: dt-metrics/metrics-workers.php:175
+msgid "Total Workers"
+msgstr "工人总数"
+
+#: dt-metrics/metrics-workers.php:176 dt-users/template-user-management.php:57
+msgid "Multipliers"
+msgstr "乘数"
+
+#: dt-metrics/metrics-workers.php:177
+msgid "Dispatchers"
+msgstr "调度员"
+
+#: dt-metrics/metrics-workers.php:178
+msgid "Admins"
+msgstr "管理员"
+
+#: dt-metrics/metrics-workers.php:179
+msgid "Strategists"
+msgstr "战略家"
+
+#: dt-metrics/metrics-workers.php:180
+msgid "Contact Progress per Worker"
+msgstr "每个工人的联系进度"
+
+#: dt-metrics/metrics-workers.php:181
+msgid "Least Active"
+msgstr "最不活跃"
+
+#: dt-metrics/metrics-workers.php:182
+msgid "Most Active"
+msgstr "最活跃"
+
+#: dt-notifications/notifications-email.php:117
+msgid "Click here to view or reply"
+msgstr "点击这里查看或回复"
+
+#: dt-notifications/notifications-email.php:123
+msgctxt "ex: Update on Contact #323"
+msgid "Update on %1$s #%2$s"
+msgstr "更新％1 $ s＃％2 $ s"
+
+#: dt-notifications/notifications.php:751
+msgctxt "%s was created and assigned to you."
+msgid "%s was created and assigned to you."
+msgstr "％s已创建并分配给您。"
+
+#: dt-notifications/notifications.php:759
+msgctxt "user1 assigned contact1 to user2."
+msgid "%1$s assigned %2$s to %3$s."
+msgstr "％1 $ s已将％2 $ s分配给％3 $ s。"
+
+#: dt-notifications/notifications.php:762
+#: dt-notifications/notifications.php:769
+#: dt-notifications/notifications.php:776
+#: dt-notifications/notifications.php:780
+#: dt-notifications/notifications.php:790
+#: dt-notifications/notifications.php:797
+msgid "System"
+msgstr "系统"
+
+#: dt-notifications/notifications.php:763
+msgctxt "User1 shared contact1 with you."
+msgid "%1$s shared %2$s with you."
+msgstr "％1 $ s与您分享了％2 $ s。"
+
+#: dt-notifications/notifications.php:770
+msgctxt "User1 mentioned you on contact1 saying: test"
+msgid "%1$s mentioned you on %2$s saying: %3$s"
+msgstr "％1 $ s在％2 $ s上说了您：％3 $ s"
+
+#: dt-notifications/notifications.php:777
+msgctxt "User1 commented on contact1 saying: test"
+msgid "%1$s commented on %2$s saying: %3$s"
+msgstr "％1 $ s对％2 $ s说：％3 $ s"
+
+#: dt-notifications/notifications.php:781
+msgctxt "User1 subassigned contact1 to you."
+msgid "%1$s subassigned %2$s to you."
+msgstr "％1 $ s已将％2 $ s分配给您。"
+
+#: dt-notifications/notifications.php:791
+msgctxt "User1 added milestone Baptizing on contact1."
+msgid "%1$s added milestone %2$s on %3$s."
+msgstr "％1 $ s在％3 $ s上添加了里程碑％2 $ s。"
+
+#: dt-notifications/notifications.php:798
+msgctxt "User1 modified contact details on contact1."
+msgid "%1$s modified contact details on %2$s."
+msgstr "％1 $ s已修改％2 $ s上的联系方式。"
+
+#: dt-notifications/notifications.php:801
+msgctxt "User1 declined assignment on: contact1"
+msgid "%1$s declined assignment on: %2$s."
+msgstr "％1 $ s拒绝分配：％2 $ s。"
+
+#: dt-people-groups/people-groups-post-type.php:96
+msgid "People Group"
+msgstr "人民团体"
+
+#: dt-people-groups/people-groups-post-type.php:278
+msgid "Add/Update People Group"
+msgstr "添加/更新人员组"
+
+#: dt-people-groups/people-groups-post-type.php:279
+msgid "People Group Details"
+msgstr "人群组详细信息"
+
+#: dt-people-groups/people-groups-post-type.php:586
+msgid "Enter the People Group title here"
+msgstr "在此处输入人员组标题"
+
+#: dt-users/users.php:61
+msgid "No permissions to assign"
+msgstr "没有分配权限"
+
+#: dt-users/users.php:308
+msgid "Insufficient permissions"
+msgstr "权限不足"
+
+#: dt-users/users.php:686
+msgid "Extra Disciple.Tools Information"
+msgstr "额外的门徒工具信息"
+
+#: dt-users/users.php:689
+msgid "Corresponds to Contact"
+msgstr "对应联系人"
+
+#: dt-users/users.php:697
+msgid "View contact"
+msgstr "查看联络人"
+
+#: dt-users/users.php:824
+msgid "Username already exists"
+msgstr "此用户名已存在"
+
+#: dt-users/users.php:819
+msgid "Email already exists"
+msgstr "电子邮件已经存在"
+
+#: dt-users/users.php:872
+msgid "View contact record"
+msgstr "查看联系记录"
+
+#: dt-workflows/update-required.php:74 dt-workflows/update-required.php:112
+msgid "Updated Needed"
+msgstr "需要更新"
+
+#: functions.php:507
+msgid "Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:"
+msgstr "门徒工具主题需要PHP 7.0或更高版本。您当前的版本是："
+
+#: functions.php:509
+msgid "Please upgrade PHP or uninstall this theme"
+msgstr "请升级PHP或卸载此主题"
+
+#: header.php:65
+msgid "Javascript must be enabled for this site to function correctly."
+msgstr "必须启用Javascript，此网站才能正常运行。"
+
+#: header.php:71
+msgid "You seem to be using an out-of-date web browser. Without the most up-to-date version of your browser, this may site may not function correctly. Please note that Internet Explorer is not supported."
+msgstr "您似乎正在使用过时的Web浏览器。如果没有最新版本的浏览器，则该网站可能无法正常运行。请注意，不支持Internet Explorer。"
+
+#: header.php:73
+msgid "See what browser you are using."
+msgstr "查看您使用的浏览器。"
+
+#: single-contacts.php:237
+msgid "View Comments"
+msgstr "查看评论"
+
+#: single-contacts.php:262
+msgid "This contact has possible duplicates."
+msgstr "此联系人可能重复。"
+
+#: single-contacts.php:265
+msgid "Go to duplicates"
+msgstr "去重复"
+
+#: single-contacts.php:283
+msgid "Connections"
+msgstr "连接数"
+
+#: single-contacts.php:355
+msgid "Progress"
+msgstr "进展"
+
+#: single-contacts.php:652
+msgid "Create Tag"
+msgstr "创建标签"
+
+#: single-contacts.php:657
+msgid "Tag"
+msgstr "标签"
+
+#: single-contacts.php:668
+msgid "Create and apply tag"
+msgstr "创建并应用标签"
+
+#: dt-users/template-user-management.php:66 single-contacts.php:734
+msgid "Display Name"
+msgstr "显示名称"
+
+#: single-contacts.php:748
+msgid "Create user"
+msgstr "创建用户"
+
+#: single-contacts.php:761
+msgid "Link this contact to an existing user"
+msgstr "将此联系人链接到现有用户"
+
+#: single-contacts.php:842
+msgid "Click merge to continue."
+msgstr "单击合并以继续。"
+
+#: single-groups.php:50
+msgid "This group needs an update"
+msgstr "该组需要更新"
+
+#: dt-groups/groups-post-type.php:391 single-groups.php:86
+#: single-groups.php:378
+msgid "Member List"
+msgstr "会员名单"
+
+#: dt-groups/groups-post-type.php:361
+msgid "Parent Group"
+msgstr "家长小组"
+
+#: dt-groups/groups-post-type.php:369
+msgid "Peer Group"
+msgstr "同行组"
+
+#: template-contacts-new.php:35
+msgid "Phone number"
+msgstr "电话号码"
+
+#: template-contacts-new.php:141 template-groups-new.php:47
+#: template-new-post.php:28
+msgid "Save and continue editing"
+msgstr "保存并继续编辑"
+
+#: template-merge-details.php:54
+msgid "Merge Duplicate Contacts"
+msgstr "合并重复的联系人"
+
+#: template-merge-details.php:55
+msgid "When you merge, the master record is updated with the values you choose, and relationships to other items are shifted to the master record"
+msgstr "合并时，将使用您选择的值更新主记录，并将与其他项目的关系转移到主记录"
+
+#: template-merge-details.php:69 template-merge-details.php:78
+msgid "Status:"
+msgstr "状态："
+
+#: template-merge-details.php:70 template-merge-details.php:79
+msgid "Created:"
+msgstr "创建时间："
+
+#: template-merge-details.php:71 template-merge-details.php:80
+msgid "Select All"
+msgstr "全选"
+
+#: template-merge-details.php:89
+msgid "Master Record"
+msgstr "主记录"
+
+#: template-merge-details.php:93 template-merge-details.php:96
+msgid "Use as master"
+msgstr "用作主人"
+
+#: template-notifications.php:49
+msgid "Unread"
+msgstr "未读"
+
+#: template-notifications.php:55
+msgid "Mark All as Read"
+msgstr "标记为已读"
+
+#: template-notifications.php:61
+msgid "Mark All"
+msgstr "全部标记"
+
+#: template-notifications.php:76 template-notifications.php:79
+msgid "load more notifications"
+msgstr "加载更多通知"
+
+#: dt-users/template-user-management.php:285 template-settings.php:43
+#: template-settings.php:275
+msgid "Availability"
+msgstr "可用性"
+
+#: template-settings.php:66
+msgid "Your Profile"
+msgstr "你的个人资料"
+
+#: template-settings.php:80
+msgid "Username"
+msgstr "用户名"
+
+#: template-settings.php:93 template-settings.php:381
+msgid "Nickname (Display Name)"
+msgstr "昵称（显示名称）"
+
+#: template-settings.php:140
+msgid "Social"
+msgstr "社会的"
+
+#: template-settings.php:165 template-settings.php:412
+msgid "Language"
+msgstr "语言"
+
+#: template-settings.php:171
+msgid "English"
+msgstr "英语"
+
+#: template-settings.php:175
+msgid "Biography"
+msgstr "传"
+
+#: template-settings.php:211
+msgid "Type of Notification"
+msgstr "通知类型"
+
+#: dt-core/admin/config-site-defaults.php:288
+#: dt-core/admin/config-site-defaults.php:509
+msgid "Web"
+msgstr "网页"
+
+#: template-settings.php:224
+msgid "required"
+msgstr "需要"
+
+#: template-settings.php:247
+msgid "Follow all contacts"
+msgstr "关注所有联系人"
+
+#: template-settings.php:254
+msgid "Enable"
+msgstr "启用"
+
+#: template-settings.php:340
+msgid "Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+msgstr "门徒工具系统不存储图像。对于个人资料图片，我们使用Gravatar（全球公认的头像）。如果您出于安全考虑，建议您不要使用个人照片，而应选择卡通，抽象或别名照片来代表您。"
+
+#: template-settings.php:341
+msgid "edit image on gravatar.com"
+msgstr "在gravatar.com上编辑图像"
+
+#: template-settings.php:346
+msgid "User Name"
+msgstr "用户名"
+
+#: template-settings.php:347 template-settings.php:348
+msgid "Username cannot be changed"
+msgstr "用户名无法更改"
+
+#: template-settings.php:352
+msgid "System Email"
+msgstr "系统电子邮件"
+
+#: template-settings.php:353
+msgid "User email can be changed by site administrator."
+msgstr "用户电子邮件可以由站点管理员更改。"
+
+#: template-settings.php:360
+msgid "Password"
+msgstr "密码"
+
+#: template-settings.php:361
+msgid "Use this email reset form to create a new password."
+msgstr "使用此电子邮件重设表格创建新密码。"
+
+#: template-settings.php:363
+msgid "go to password change form"
+msgstr "进入密码变更表"
+
+#: template-settings.php:370
+msgid "First Name"
+msgstr "名字"
+
+#: template-settings.php:376
+msgid "Last Name"
+msgstr "姓"
+
+#: template-settings.php:405
+msgid "Description"
+msgstr "描述"
+
+#: dt-notifications/notifications-email.php:118
+msgid "Do not reply directly to this email."
+msgstr "不要直接回复此电子邮件。"
+
+#: dt-core/admin/config-site-defaults.php:697
+msgid "Reset password"
+msgstr "重设密码"
+
+#: dt-metrics/contacts/sources.php:84
+msgid "Showing contacts created during"
+msgstr "显示在期间创建的联系人"
+
+#: dt-metrics/contacts/sources.php:85
+msgid "All contacts, by source and status"
+msgstr "所有联系人，按来源和状态"
+
+#: dt-metrics/contacts/sources.php:86
+msgid "A contact can come from more than one source."
+msgstr "联系人可以来自多个来源。"
+
+#: dt-metrics/contacts/sources.php:89
+msgid "Active contacts, by source and faith milestone"
+msgstr "主动联系，按来源和信念里程碑"
+
+#: dt-metrics/metrics-critical-path.php:72
+msgid "Filter Critical Path fields"
+msgstr "筛选关键路径字段"
+
+#: dt-metrics/metrics-critical-path.php:73
+msgid "Movement Tracking"
+msgstr "运动追踪"
+
+#: dt-metrics/contacts/milestones.php:63 dt-metrics/contacts/seeker-path.php:63
+#: dt-metrics/contacts/sources.php:80
+msgid "Filter contacts to date range:"
+msgstr "将联系人过滤到日期范围："
+
+#: dt-metrics/contacts/milestones.php:65 dt-metrics/contacts/seeker-path.php:65
+#: dt-metrics/contacts/sources.php:82
+msgid "Filter to date range"
+msgstr "筛选日期范围"
+
+#: dt-metrics/contacts/sources.php:87
+msgid "Active contacts, by source and seeker path"
+msgstr "活动联系人，按来源和搜索者路径"
+
+#: dt-metrics/contacts/sources.php:91
+msgid "A contact can come from more than one source, and it can have more than one faith milestone at the same time."
+msgstr "一个联系人可以来自多个来源，并且可以同时具有多个信仰里程碑。"
+
+#: dt-metrics/metrics-personal.php:82 dt-metrics/metrics-project.php:104
+msgid "Generation"
+msgstr "代"
+
+#: dt-users/users.php:699
+msgid "Add the name of the contact record this user corresponds to."
+msgstr "添加该用户对应的联系人记录的名称。"
+
+#: dt-users/users.php:700
+msgid "Learn more."
+msgstr "学到更多。"
+
+#: dt-users/users.php:790
+msgid "Hi,\n"
+"\n"
+"You've been invited to join '%1$s' at\n"
+"%2$s with the role of %3$s.\n"
+"\n"
+"Please click the following link to confirm the invite:\n"
+"%4$s"
+msgstr "你好\n"
+"\n"
+"您受邀加入“％1 $ s”\n"
+"具有％3 $ s角色的％2 $ s。\n"
+"\n"
+"请点击以下链接确认邀请：\n"
+"％4 $ s"
+
+#. translators: Joining confirmation notification email subject. %s: Site title
+#: dt-users/users.php:800
+msgid "[%s] Joining Confirmation"
+msgstr "[％s]加入确认"
+
+#: dt-core/admin/config-site-defaults.php:698
+msgid "Lost your password"
+msgstr "忘记密码"
+
+#: dt-mapping/columns/add-churches-column.php:57
+msgid "Churches"
+msgstr "教堂"
+
+#: dt-mapping/mapbox-metrics.php:58 dt-mapping/mapbox-metrics.php:112
+#: dt-mapping/mapping-metrics.php:60 dt-mapping/mapping-metrics.php:117
+#: dt-mapping/mapping-module-config.php:76 dt-mapping/mapping.php:147
+#: dt-mapping/mapping.php:302
+msgid "Mapping"
+msgstr "制图"
+
+#: dt-mapping/mapbox-metrics.php:114 dt-mapping/mapping-metrics.php:119
+#: dt-mapping/mapping.php:304
+msgid "Population"
+msgstr "人口"
+
+#: dt-mapping/mapping-metrics.php:63 dt-mapping/mapping.php:150
+msgid "List"
+msgstr "清单"
+
+#: dt-mapping/mapping.php:606 dt-mapping/mapping.php:687
+msgid "World"
+msgstr "世界"
+
+#: dt-posts/custom-post-type.php:152
+msgid "New %s"
+msgstr "新％s"
+
+#: dt-posts/posts.php:411 dt-posts/posts.php:420
+msgctxt "Location1 added to locations"
+msgid "%1$s added to locations"
+msgstr "已将％1 $ s添加到位置"
+
+#: single-groups.php:240
+msgid "Four Fields"
+msgstr "四个领域"
+
+#: dt-core/admin/config-site-defaults.php:733
+msgid "Weekly"
+msgstr "每周"
+
+#: dt-mapping/mapbox-metrics.php:113 dt-mapping/mapping-metrics.php:118
+#: dt-mapping/mapping.php:303
+msgid "Refresh Cached Data"
+msgstr "刷新缓存的数据"
+
+#: dt-metrics/metrics-project.php:100
+msgid "Follow-up of all active contacts"
+msgstr "所有活动联系人的跟进"
+
+#: dt-notifications/notifications.php:794
+msgctxt "@Multiplier1, an update is requested on contact1."
+msgid "@%1$s, an update is requested on %2$s."
+msgstr "@％1 $ s，请求对％2 $ s进行更新。"
+
+#: dt-core/admin/config-site-defaults.php:543
+msgid "Accepting new contacts"
+msgstr "接受新联系人"
+
+#: dt-core/admin/config-site-defaults.php:547
+msgid "I'm only investing in existing contacts"
+msgstr "我只投资现有的联系人"
+
+#: dt-core/admin/config-site-defaults.php:551
+msgid "I have too many contacts"
+msgstr "我的联络人太多"
+
+#: template-settings.php:278
+msgid "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
+msgstr "设置您要旅行或不可用的日期，以便调度员知道您是否有空接收新的联系人"
+
+#: template-settings.php:282
+msgid "Schedule Travel or Dates Unavailable"
+msgstr "安排旅行或日期不可用"
+
+#: template-settings.php:299
+msgid "Add Unavailable dates"
+msgstr "添加不可用的日期"
+
+#: template-settings.php:313
+msgid "No Travel Scheduled"
+msgstr "没有预定行程"
+
+#: template-settings.php:249
+msgid "You will receive a notification for any update that happens in the system."
+msgstr "您将收到系统中发生的任何更新的通知。"
+
+#: template-contacts-new.php:132
+msgid "Initial Comment"
+msgstr "初步评论"
+
+#: dt-metrics/metrics-critical-path.php:194
+msgid "Any new created contact"
+msgstr "任何新创建的联系人"
+
+#: dt-metrics/metrics-critical-path.php:204
+msgid "Number of contacts assigned for a face-to-face visit"
+msgstr "指定进行面对面访问的联系人数量"
+
+#: dt-metrics/metrics-critical-path.php:213
+msgid "Number of contacts that had the active status"
+msgstr "处于活动状态的联系人数量"
+
+#: dt-metrics/metrics-critical-path.php:223
+msgid "Number of contacts on %s at the end of the time range"
+msgstr "时间范围末尾％s上的联系数"
+
+#: dt-metrics/metrics-critical-path.php:225
+msgid "Number of contacts where %s was set on the seeker path"
+msgstr "在搜寻者路径上设置了％s的联系人数"
+
+#: dt-metrics/metrics-critical-path.php:242
+msgid "Number of baptized contact with a baptism date in date range and baptized by connection"
+msgstr "受洗日期在日期范围内并通过连接受洗的受洗联系人的数量"
+
+#: dt-metrics/metrics-critical-path.php:259
+msgid "Generation %s Baptisms"
+msgstr "世代％s的洗礼"
+
+#: dt-metrics/metrics-critical-path.php:260
+msgid "Number of generation %s baptisms"
+msgstr "％s受洗的世代数"
+
+#: dt-metrics/metrics-critical-path.php:271
+msgid "Number of contacts or users who have baptized a contact"
+msgstr "受洗的联系人或用户数"
+
+#: dt-metrics/metrics-critical-path.php:303
+msgid "Generation %s Churches"
+msgstr "％s代教会"
+
+#: dt-metrics/metrics-critical-path.php:304
+msgid "Number of generation %s churches at the end of the time range"
+msgstr "时间范围末尾的世代％s教堂数量"
+
+#: dt-metrics/metrics-critical-path.php:315
+msgid "Number of contacts or users who have started a church and are marked as the church coach"
+msgstr "已开始教会并被标记为教会教练的联系人或用户数量"
+
+#: dt-notifications/notifications.php:753
+msgctxt "You have been assigned: contact1."
+msgid "You have been assigned: %1$s."
+msgstr "您已分配：％1 $ s。"
+
+#: dt-groups/groups-post-type.php:377
+msgid "Child Group"
+msgstr "儿童组"
+
+#: archive-contacts.php:65
+msgid "Contacts Filters"
+msgstr "联系人过滤器"
+
+#: archive-groups.php:61
+msgid "Groups Filters"
+msgstr "组过滤器"
+
+#: dt-assets/parts/contact-details.php:50
+msgid "Contact Details"
+msgstr "联系方式"
+
+#: dt-assets/parts/content-contacts.php:9
+msgid "Contacts List"
+msgstr "通讯录"
+
+#: dt-assets/parts/content-groups.php:9
+msgid "Groups List"
+msgstr "团体名单"
+
+#: dt-assets/parts/group-details.php:20
+msgid "Group Details"
+msgstr "组详细信息"
+
+#: dt-groups/groups-post-type.php:594
+msgid "The address where this group meets. (e.g., 124 Market St or “Jon’s Famous Coffee Shop)."
+msgstr "该小组见面的地址。 （例如，市场街124号或“乔恩的著名咖啡店”）。"
+
+#: dt-contacts/contacts-post-type.php:201
+msgid "Not Ready"
+msgstr "没有准备好"
+
+#: template-groups-new.php:24
+msgid "Name of Group"
+msgstr "组名"
+
+#: archive-contacts.php:27 archive-contacts.php:244
+msgid "Filter Contacts"
+msgstr "筛选联络人"
+
+#: archive-contacts.php:205 archive-template.php:239
+msgctxt "The start date of a date range"
+msgid "Range Start"
+msgstr "范围开始"
+
+#: archive-contacts.php:215 archive-template.php:249
+msgctxt "The end date of a date range"
+msgid "Range End"
+msgstr "范围结束"
+
+#: dt-assets/functions/enqueue-scripts.php:329
+msgid "Locations you are responsible for"
+msgstr "您负责的位置"
+
+#: archive-groups.php:22 template-groups-new.php:19
+msgid "Create New Group"
+msgstr "建立新群组"
+
+#: dt-contacts/contacts-post-type.php:197
+msgctxt "Contact Status field description"
+msgid "The contact is new in the system."
+msgstr "该联系人是系统中的新联系人。"
+
+#: dt-contacts/contacts-post-type.php:202
+msgctxt "Contact Status field description"
+msgid "There is not enough information to move forward with the contact at this time."
+msgstr "目前没有足够的信息与联系人继续前进。"
+
+#: dt-contacts/contacts-post-type.php:207
+msgctxt "Contact Status field description"
+msgid "This contact needs to be assigned to a multiplier."
+msgstr "该联系人需要分配给一个乘数。"
+
+#: dt-contacts/contacts-post-type.php:212
+msgctxt "Contact Status field description"
+msgid "The contact has been assigned to someone, but has not yet been accepted by that person."
+msgstr "该联系人已分配给某人，但尚未被该人接受。"
+
+#: dt-contacts/contacts-post-type.php:217
+msgctxt "Contact Status field description"
+msgid "The contact is progressing and/or continually being updated."
+msgstr "联系人正在进行和/或不断更新。"
+
+#: dt-contacts/contacts-post-type.php:222
+msgctxt "Contact Status field description"
+msgid "This contact is currently on hold (i.e. on vacation or not responding)."
+msgstr "此联系人当前处于保留状态（即正在休假或未回复）。"
+
+#: dt-contacts/contacts-post-type.php:227
+msgctxt "Contact Status field description"
+msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
+msgstr "此联系表明他们不再想要继续，或者您已决定不再与他/她继续。"
+
+#: dt-contacts/contacts-post-type.php:238
+msgctxt "Seeker Path field description"
+msgid "Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
+msgstr "设置联系人的进度状态。这些是按特定顺序执行的步骤，可帮助联系人继续前进。"
+
+#: dt-contacts/contacts-post-type.php:419
+msgctxt "Reason Paused label"
+msgid "Contact on vacation"
+msgstr "假期联系"
+
+#: dt-contacts/contacts-post-type.php:420
+msgctxt "Reason Paused label"
+msgid "Contact not responding"
+msgstr "联系人无响应"
+
+#: dt-contacts/contacts-post-type.php:421
+msgctxt "Reason Paused label"
+msgid "Contact not available"
+msgstr "联系人不可用"
+
+#: dt-contacts/contacts-post-type.php:422
+msgctxt "Reason Paused label"
+msgid "Contact has little interest/hunger"
+msgstr "联系人没有兴趣/渴望"
+
+#: dt-contacts/contacts-post-type.php:423
+msgctxt "Reason Paused label"
+msgid "Contact shows no initiative"
+msgstr "联系人没有主动权"
+
+#: dt-contacts/contacts-post-type.php:424
+msgctxt "Reason Paused label"
+msgid "Contact has questionable motives"
+msgstr "接触有可疑的动机"
+
+#: dt-contacts/contacts-post-type.php:425
+msgctxt "Reason Paused label"
+msgid "Ball is in the contact's court"
+msgstr "球在联络人的法庭上"
+
+#: dt-contacts/contacts-post-type.php:426
+msgctxt "Reason Paused label"
+msgid "We want to see if/how the contact responds to automated text messages"
+msgstr "我们想看看联系人是否/如何响应自动短信"
+
+#: dt-contacts/contacts-post-type.php:438
+msgctxt "Reason Closed label"
+msgid "Duplicate"
+msgstr "重复"
+
+#: dt-contacts/contacts-post-type.php:439
+msgctxt "Reason Closed label"
+msgid "Insufficient contact info"
+msgstr "联系信息不足"
+
+#: dt-contacts/contacts-post-type.php:440
+msgctxt "Reason Closed label"
+msgid "Denies submitting contact request"
+msgstr "拒绝提交联系请求"
+
+#: dt-contacts/contacts-post-type.php:442
+msgctxt "Reason Closed label"
+msgid "Only wants to argue or debate"
+msgstr "只想争论或辩论"
+
+#: dt-contacts/contacts-post-type.php:443
+msgctxt "Reason Closed label"
+msgid "Just wanted media or book"
+msgstr "想要媒体或书籍"
+
+#: dt-contacts/contacts-post-type.php:444
+msgctxt "Reason Closed label"
+msgid "No longer interested"
+msgstr "不再感兴趣"
+
+#: dt-contacts/contacts-post-type.php:445
+msgctxt "Reason Closed label"
+msgid "No longer responding"
+msgstr "不再回应"
+
+#: dt-contacts/contacts-post-type.php:446
+msgctxt "Reason Closed label"
+msgid "Already in church or connected with others"
+msgstr "已经在教堂或与他人有联系"
+
+#: dt-contacts/contacts-post-type.php:447
+msgctxt "Reason Closed label"
+msgid "Transferred contact to partner"
+msgstr "将联系人转移到合作伙伴"
+
+#: dt-contacts/contacts-post-type.php:448
+msgctxt "Reason Closed label"
+msgid "Martyred"
+msgstr "烈士"
+
+#: dt-contacts/contacts-post-type.php:449
+msgctxt "Reason Closed label"
+msgid "Moved or relocated"
+msgstr "搬家或搬迁"
+
+#: dt-contacts/contacts-post-type.php:450
+msgctxt "Reason Closed label"
+msgid "Unknown"
+msgstr "未知"
+
+#: dt-core/admin/config-site-defaults.php:429
+msgid "Personal Phone"
+msgstr "个人电话"
+
+#: dt-core/admin/config-site-defaults.php:432
+msgid "Personal phone is private to the team, not for distribution."
+msgstr "个人电话是团队专用的，不用于分发。"
+
+#: dt-core/admin/config-site-defaults.php:436
+msgid "Personal Email"
+msgstr "私人邮箱"
+
+#: dt-core/admin/config-site-defaults.php:439
+msgid "Personal email is private to the team, not for distribution."
+msgstr "个人电子邮件是团队专用的，不能分发。"
+
+#: dt-core/admin/config-site-defaults.php:443
+msgid "Personal Address"
+msgstr "个人地址"
+
+#: dt-core/admin/config-site-defaults.php:446
+msgid "Personal address is private to the team, not for distribution."
+msgstr "个人地址仅供团队使用，不能用于分发。"
+
+#: dt-core/admin/config-site-defaults.php:450
+msgid "Work Phone"
+msgstr "工作电话"
+
+#: dt-core/admin/config-site-defaults.php:453
+msgid "Work phone is for distribution to contacts and seekers."
+msgstr "工作电话用于分发给联系人和寻求者。"
+
+#: dt-core/admin/config-site-defaults.php:457
+msgid "Work Email"
+msgstr "工作电邮"
+
+#: dt-core/admin/config-site-defaults.php:460
+msgid "Work email is for distribution to contacts and seekers."
+msgstr "工作电子邮件用于分发给联系人和求职者。"
+
+#: dt-core/admin/config-site-defaults.php:464
+msgid "Work Facebook"
+msgstr "工作Facebook"
+
+#: dt-core/admin/config-site-defaults.php:467
+msgid "Work Facebook is for distribution to contacts and seekers."
+msgstr "Facebook工作用于向联系人和求职者分发。"
+
+#: dt-core/admin/config-site-defaults.php:471
+msgid "Work WhatsApp"
+msgstr "工作WhatsApp"
+
+#: dt-core/admin/config-site-defaults.php:474
+msgid "Work WhatsApp is for distribution to contacts and seekers."
+msgstr "工作WhatsApp用于分发给联系人和寻求者。"
+
+#: dt-core/admin/config-site-defaults.php:524
+msgid "Transfer"
+msgstr "传递"
+
+#: dt-groups/groups-post-type.php:100
+msgctxt "singular of group"
+msgid "Group"
+msgstr "组"
+
+#: dt-groups/groups-post-type.php:101
+msgctxt "plural of groups"
+msgid "Groups"
+msgstr "团体"
+
+#: dt-groups/groups-post-type.php:179
+msgctxt "field description"
+msgid "Set the current status of the group."
+msgstr "设置组的当前状态。"
+
+#: dt-groups/groups-post-type.php:184
+msgctxt "field description"
+msgid "The group is no longer meeting."
+msgstr "该小组不再开会。"
+
+#: dt-groups/groups-post-type.php:189
+msgctxt "field description"
+msgid "The group is actively meeting."
+msgstr "该小组正在积极开会。"
+
+#: dt-groups/groups-post-type.php:271
+msgctxt "field description"
+msgid "The group is sharing the gospel."
+msgstr "该团体正在分享福音。"
+
+#: dt-groups/groups-post-type.php:276
+msgctxt "field description"
+msgid "The group has leaders."
+msgstr "该小组有领导人。"
+
+#: dt-groups/groups-post-type.php:281
+msgctxt "field description"
+msgid "The group has committed to be church."
+msgstr "该团体致力于成为教会。"
+
+#: dt-groups/groups-post-type.php:291
+msgctxt "field description"
+msgid "Number of unbelievers in this group."
+msgstr "该组中不信者的数量。"
+
+#: dt-groups/groups-post-type.php:297
+msgctxt "field description"
+msgid "Number of believers in this group."
+msgstr "该组中的信徒人数。"
+
+#: dt-groups/groups-post-type.php:303
+msgctxt "field description"
+msgid "Number of people in accountability group."
+msgstr "问责制组中的人数。"
+
+#: dt-posts/posts.php:408 dt-posts/posts.php:417
+msgctxt "Location1 removed from locations"
+msgid "%1$s removed from locations"
+msgstr "从位置删除了％1 $ s"
+
+#: dt-posts/posts.php:441
+msgctxt "message"
+msgid "verified"
+msgstr "已验证"
+
+#: dt-posts/posts.php:441
+msgctxt "message"
+msgid "not verified"
+msgstr "未经审核的"
+
+#: dt-posts/posts.php:444
+msgctxt "message"
+msgid "invalidated"
+msgstr "无效"
+
+#: dt-posts/posts.php:444
+msgctxt "message"
+msgid "not invalidated"
+msgstr "没有失效"
+
+#: dt-posts/posts.php:467
+msgctxt "message"
+msgid "Name changed to: %s"
+msgstr "名称更改为：％s"
+
+#: dt-posts/posts.php:469
+msgctxt "message"
+msgid "Created from Demo Plugin"
+msgstr "从演示插件创建"
+
+#: dt-posts/posts.php:476
+msgctxt "message"
+msgid "%s declined assignment"
+msgstr "％s拒绝分配"
+
+#: dt-posts/posts.php:476 dt-posts/posts.php:479
+msgctxt "message"
+msgid "A user"
+msgstr "一个用户"
+
+#: dt-posts/posts.php:479
+msgctxt "message"
+msgid "%s accepted assignment"
+msgstr "％s接受了分配"
+
+#: dt-posts/posts.php:484
+msgctxt "message"
+msgid "Shared with %s"
+msgstr "与％s共享"
+
+#: dt-posts/posts.php:486
+msgctxt "message"
+msgid "Unshared with %s"
+msgstr "未与％s共享"
+
+#: dt-posts/posts.php:505
+msgctxt "message"
+msgid "You do not have access to these %s"
+msgstr "您无权访问这些％s"
+
+#: single-contacts.php:222
+msgid "Quick Actions"
+msgstr "快速行动"
+
+#: template-notifications.php:45
+msgctxt "As in all things"
+msgid "All"
+msgstr "所有"
+
+#: archive-contacts.php:34 archive-contacts.php:55
+msgctxt "input field placeholder"
+msgid "Search Contacts"
+msgstr "搜索联系人"
+
+#: archive-contacts.php:161 archive-groups.php:49 archive-groups.php:156
+msgctxt "input field placeholder"
+msgid "Type to search"
+msgstr "输入搜索"
+
+#: archive-groups.php:29
+msgctxt "input field placeholder"
+msgid "Search Groups"
+msgstr "搜索组"
+
+#: archive-contacts.php:105 archive-groups.php:101
+msgctxt "input field placeholder"
+msgid "Filter Name"
+msgstr "筛选器名称"
+
+#: dt-assets/parts/contact-details.php:133 dt-assets/parts/group-details.php:78
+#: dt-assets/parts/modals/modal-share.php:27 single-contacts.php:777
+msgctxt "input field placeholder"
+msgid "Search Users"
+msgstr "搜索用户"
+
+#: dt-assets/parts/contact-details.php:163
+#: dt-assets/parts/group-details.php:106 single-contacts.php:334
+#: single-contacts.php:693 single-contacts.php:826
+msgctxt "input field placeholder"
+msgid "Search multipliers and contacts"
+msgstr "搜索乘数和联系方式"
+
+#: dt-assets/parts/group-details.php:244
+msgctxt "input field placeholder"
+msgid "Search Locations"
+msgstr "搜索地点"
+
+#: dt-assets/parts/loop-activity-comment.php:25
+msgctxt "input field placeholder"
+msgid "Write your comment or note here"
+msgstr "在这里写下您的评论或注释"
+
+#: dt-assets/parts/modals/modal-new-group.php:9 template-contacts-new.php:29
+#: template-groups-new.php:29 template-new-post.php:24
+msgctxt "input field placeholder"
+msgid "Name"
+msgstr "名称"
+
+#: archive-template.php:31 archive-template.php:52
+#: dt-assets/parts/contact-details.php:417
+#: dt-assets/parts/contact-details.php:455
+#: dt-assets/parts/contact-details.php:477
+#: dt-assets/parts/group-details.php:282 dt-contacts/contacts-post-type.php:106
+#: dt-contacts/contacts-template.php:116 dt-contacts/contacts-template.php:132
+#: dt-groups/groups-post-type.php:102
+#: dt-people-groups/people-groups-post-type.php:98
+#: dt-posts/custom-post-type.php:18 single-contacts.php:304
+#: single-contacts.php:520 single-groups.php:149 single-groups.php:165
+#: single-groups.php:181 single-groups.php:387 template-contacts-new.php:99
+msgctxt "Search 'something'"
+msgid "Search %s"
+msgstr "搜索％s"
+
+#: dt-metrics/contacts/sources.php:88 dt-metrics/contacts/sources.php:90
+msgid "This is displaying only the contacts with an 'active' status right now."
+msgstr "现在仅显示状态为“活动”的联系人。"
+
+#: dt-posts/posts.php:367
+msgctxt "field1 changed to 'text'"
+msgid "%1$s changed to %2$s"
+msgstr "％1 $ s更改为％2 $ s"
+
+#: single-contacts.php:653
+msgid "Create a tag and apply it to this contact."
+msgstr "创建标签并将其应用于此联系人。"
+
+#: single-contacts.php:659
+msgctxt "input field placeholder"
+msgid "tag"
+msgstr "标签"
+
+#: single-contacts.php:679
+msgid "Who was this contact baptized by and when?"
+msgstr "该联系人是谁以及何时受洗的？"
+
+#: single-contacts.php:718
+msgctxt "Make user modal"
+msgid "Make User From Contact"
+msgstr "使用户成为联系人"
+
+#: single-contacts.php:721
+msgctxt "Make user modal"
+msgid "This contact is already connected to a user."
+msgstr "此联系人已连接到用户。"
+
+#: single-contacts.php:724
+msgctxt "Make user modal"
+msgid "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'."
+msgstr "这将邀请此联系人成为该系统的用户。默认情况下，它们将被赋予“乘数”的作用。"
+
+#: single-contacts.php:725
+msgctxt "Make user modal"
+msgid "In the fields below, enter their email address and a 'Display Name' which they can change later."
+msgstr "在下面的字段中，输入他们的电子邮件地址和一个“显示名称”，以后可以更改。"
+
+#: single-contacts.php:764
+msgid "This contact already represents a user."
+msgstr "此联系人已经代表一个用户。"
+
+#: single-contacts.php:768
+msgctxt "Step 1 of link user"
+msgid "To link to an existing user, first, find the user using the field below."
+msgstr "要链接到现有用户，请首先使用以下字段查找该用户。"
+
+#: single-contacts.php:792
+msgctxt "Step 2 of link user"
+msgid "To finish the linking, merge this contact with the existing user details."
+msgstr "要完成链接，请将此联系人与现有用户详细信息合并。"
+
+#: single-contacts.php:816
+msgid "Merge Contact"
+msgstr "合并联络人"
+
+#: single-contacts.php:817
+msgid "Merge this contact with another contact."
+msgstr "将此联系人与另一个联系人合并。"
+
+#: single-contacts.php:841
+msgctxt "added to the end of a sentence"
+msgid "selected."
+msgstr "已选择。"
+
+#: single-groups.php:376
+msgctxt "Add members modal"
+msgid "Add members from existing contacts"
+msgstr "从现有联系人添加成员"
+
+#: template-contacts-new.php:39
+msgctxt "input field placeholder"
+msgid "Phone number"
+msgstr "电话号码"
+
+#: template-contacts-new.php:48
+msgctxt "input field placeholder"
+msgid "Email"
+msgstr "电子邮件"
+
+#: dt-people-groups/people-groups-post-type.php:280
+msgid "Translations"
+msgstr "翻译"
+
+#: dt-posts/posts.php:269
+msgctxt "No longer coached by contact1"
+msgid "No longer coached by %s"
+msgstr "不再由％s指导"
+
+#: dt-posts/posts.php:277
+msgctxt "No longer sub-assigned on contact1"
+msgid "No longer sub-assigned on %s"
+msgstr "不再在％s上分配"
+
+#: single-groups.php:99
+msgid "To add new members, click on 'Create' or 'Select'."
+msgstr "要添加新成员，请单击“创建”或“选择”。"
+
+#: archive-template.php:27 archive-template.php:60
+msgid "Filters"
+msgstr "筛选器"
+
+#: archive-template.php:82
+msgid "Records List"
+msgstr "记录清单"
+
+#: archive-template.php:136
+msgid "Load More"
+msgstr "装载更多"
+
+#: archive-template.php:148
+msgid "Filter Name"
+msgstr "筛选器名称"
+
+#: archive-template.php:201
+msgid "Type to Search"
+msgstr "输入搜索"
+
+#: archive-contacts.php:239 archive-groups.php:227 archive-template.php:273
+#: dt-assets/parts/contact-details.php:535
+#: dt-assets/parts/group-details.php:341
+#: dt-assets/parts/modals/modal-filters.php:9
+#: dt-assets/parts/modals/modal-filters.php:28
+#: dt-assets/parts/modals/modal-new-contact.php:14
+#: dt-assets/parts/modals/modal-new-group.php:14 single-contacts.php:578
+#: single-contacts.php:610 single-contacts.php:641 single-contacts.php:665
+#: single-contacts.php:745 single-contacts.php:799 single-contacts.php:847
+#: template-contacts-new.php:140 template-groups-new.php:46
+msgid "Cancel"
+msgstr "取消"
+
+#: archive-template.php:278
+msgid "Filter Records"
+msgstr "筛选记录"
+
+#: dt-assets/functions/details-bar.php:72
+#: dt-assets/parts/modals/modal-tasks.php:7
+#: dt-contacts/contacts-post-type.php:671 dt-groups/groups-post-type.php:441
+msgid "Tasks"
+msgstr "任务"
+
+#: dt-assets/functions/enqueue-scripts.php:113
+msgctxt "Dates"
+msgid "Su"
+msgstr "苏"
+
+#: dt-assets/functions/enqueue-scripts.php:114
+msgctxt "Dates"
+msgid "Mo"
+msgstr "莫"
+
+#: dt-assets/functions/enqueue-scripts.php:115
+msgctxt "Dates"
+msgid "Tu"
+msgstr "涂"
+
+#: dt-assets/functions/enqueue-scripts.php:116
+msgctxt "Dates"
+msgid "We"
+msgstr "我们"
+
+#: dt-assets/functions/enqueue-scripts.php:117
+msgctxt "Dates"
+msgid "Th"
+msgstr "钍"
+
+#: dt-assets/functions/enqueue-scripts.php:118
+msgctxt "Dates"
+msgid "Fr"
+msgstr "r"
+
+#: dt-assets/functions/enqueue-scripts.php:119
+msgctxt "Dates"
+msgid "Sa"
+msgstr "萨"
+
+#: dt-assets/functions/enqueue-scripts.php:122
+msgctxt "Dates"
+msgid "January"
+msgstr "一月"
+
+#: dt-assets/functions/enqueue-scripts.php:123
+msgctxt "Dates"
+msgid "February"
+msgstr "二月"
+
+#: dt-assets/functions/enqueue-scripts.php:124
+msgctxt "Dates"
+msgid "March"
+msgstr "游行"
+
+#: dt-assets/functions/enqueue-scripts.php:125
+msgctxt "Dates"
+msgid "April"
+msgstr "四月"
+
+#: dt-assets/functions/enqueue-scripts.php:126
+msgctxt "Dates"
+msgid "May"
+msgstr "可以"
+
+#: dt-assets/functions/enqueue-scripts.php:127
+msgctxt "Dates"
+msgid "June"
+msgstr "六月"
+
+#: dt-assets/functions/enqueue-scripts.php:128
+msgctxt "Dates"
+msgid "July"
+msgstr "七月"
+
+#: dt-assets/functions/enqueue-scripts.php:129
+msgctxt "Dates"
+msgid "August"
+msgstr "八月"
+
+#: dt-assets/functions/enqueue-scripts.php:130
+msgctxt "Dates"
+msgid "September"
+msgstr "九月"
+
+#: dt-assets/functions/enqueue-scripts.php:131
+msgctxt "Dates"
+msgid "October"
+msgstr "十月"
+
+#: dt-assets/functions/enqueue-scripts.php:132
+msgctxt "Dates"
+msgid "November"
+msgstr "十一月"
+
+#: dt-assets/functions/enqueue-scripts.php:133
+msgctxt "Dates"
+msgid "December"
+msgstr "十二月"
+
+#: dt-assets/functions/enqueue-scripts.php:135
+msgid "Regions of Focus"
+msgstr "重点领域"
+
+#: dt-assets/functions/enqueue-scripts.php:136
+msgid "All Locations"
+msgstr "所有地点"
+
+#: dt-assets/functions/enqueue-scripts.php:137
+msgid "Used Locations"
+msgstr "使用地点"
+
+#: dt-assets/functions/enqueue-scripts.php:138
+msgctxt "Empty list results. Keep {{query}} as is in english"
+msgid "No results found matching \"{{query}}\""
+msgstr "找不到与“ {{query}}”匹配的结果"
+
+#: dt-assets/functions/enqueue-scripts.php:347
+msgid "No filters, create one below"
+msgstr "没有过滤条件，请在下面创建一个"
+
+#: dt-assets/functions/enqueue-scripts.php:348
+msgid "No records found matching your filter."
+msgstr "找不到与您的过滤器匹配的记录。"
+
+#: dt-contacts/contacts.php:1761 dt-contacts/contacts.php:1861
+#: dt-groups/groups.php:565 dt-groups/groups.php:638 dt-groups/groups.php:646
+msgctxt "List Filters"
+msgid "All"
+msgstr "所有"
+
+#: dt-contacts/contacts.php:1992 dt-contacts/contacts.php:1993
+msgid "Subassigned only"
+msgstr "仅子分配"
+
+#: dt-contacts/contacts.php:2000 dt-contacts/contacts.php:2001
+msgid "Coached by me"
+msgstr "由我指导"
+
+#: dt-groups/groups-post-type.php:442
+msgid "Tasks related to this group."
+msgstr "与该小组有关的任务。"
+
+#: dt-groups/groups.php:557
+msgctxt "List Filters"
+msgid "Assigned to me"
+msgstr "分配给我"
+
+#: dt-metrics/metrics-critical-path.php:281
+msgid "Groups active at the end of the time range"
+msgstr "时间范围结束时处于活动状态的组"
+
+#: dt-metrics/metrics-critical-path.php:291
+msgid "Churches active at the end of the time range"
+msgstr "在时间范围结束时活跃的教堂"
+
+#: dt-users/users.php:563
+msgctxt "List Filters"
+msgid "Custom Filters"
+msgstr "自定义过滤器"
+
+#: archive-template.php:23
+msgctxt "Create New record"
+msgid "Create New %s"
+msgstr "建立新的％s"
+
+#: dt-assets/functions/details-bar.php:138
+msgctxt "disciple_tools"
+msgid "Tasks"
+msgstr "任务"
+
+#: dt-assets/functions/enqueue-scripts.php:216
+msgid "remove"
+msgstr "去掉"
+
+#: dt-assets/functions/enqueue-scripts.php:217
+msgid "mark as complete"
+msgstr "标记为完成"
+
+#: dt-assets/functions/enqueue-scripts.php:218
+msgid "No task created"
+msgstr "未创建任务"
+
+#: dt-assets/functions/enqueue-scripts.php:219
+#: dt-assets/parts/modals/modal-tasks.php:17
+msgid "Reminder"
+msgstr "提醒"
+
+#: dt-assets/functions/enqueue-scripts.php:220
+msgid "No note set"
+msgstr "没有音符集"
+
+#: dt-assets/functions/enqueue-scripts.php:354 dt-contacts/contacts.php:1853
+msgctxt "All records"
+msgid "All %s"
+msgstr "所有％s"
+
+#: dt-assets/functions/menu.php:51
+msgid "Disciple.Tools"
+msgstr "门徒工具"
+
+#: dt-assets/parts/merge-details.php:177
+msgid "Unsure"
+msgstr "不确定"
+
+#: dt-assets/parts/merge-details.php:184 single-contacts.php:806
+#: single-contacts.php:854
+msgid "Merge"
+msgstr "合并"
+
+#: dt-assets/parts/modals/modal-help.php:15
+msgctxt "disciple_tools"
+msgid "Contact Details"
+msgstr "联系方式"
+
+#: dt-assets/parts/modals/modal-help.php:16
+msgctxt "Optional Documentation"
+msgid "This is the area where you can view and edit the contact details for this contact."
+msgstr "您可以在这里查看和编辑此联系人的详细联系信息。"
+
+#: dt-assets/parts/modals/modal-help.php:18
+msgctxt "disciple_tools"
+msgid "Contact Name"
+msgstr "联系人姓名"
+
+#: dt-assets/parts/modals/modal-help.php:25
+msgctxt "disciple_tools"
+msgid "Social Media"
+msgstr "社交媒体"
+
+#: dt-assets/parts/modals/modal-help.php:25
+msgctxt "Optional Documentation"
+msgid "Social media accounts for this contact."
+msgstr "社交媒体负责此联系人。"
+
+#: dt-assets/parts/modals/modal-help.php:52
+msgctxt "Optional Documentation"
+msgid "User workload status icons legend:"
+msgstr "用户工作负载状态图标图例："
+
+#: dt-assets/parts/modals/modal-help.php:58
+msgctxt "disciple_tools"
+msgid "2 contacts need an update"
+msgstr "2位联络人需要更新"
+
+#: dt-assets/parts/modals/modal-help.php:71
+msgctxt "Optional Documentation"
+msgid "Quick action buttons"
+msgstr "快速动作按钮"
+
+#: dt-assets/parts/modals/modal-help.php:72
+msgctxt "Optional Documentation"
+msgid "These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done."
+msgstr "这些快速操作按钮可以帮助您更快地更新联系人记录，并记录每个操作已执行了多少次。"
+
+#: dt-assets/parts/modals/modal-help.php:73
+msgctxt "Optional Documentation"
+msgid "For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer.\n"
+"                This action will also change the 'Seeker Path' to 'Contact Attempted'."
+msgstr "例如，如果您单击“无人接听”按钮4次，我们将记录您尝试联系该联系人4次，但他们没有接听。\n"
+"                此操作还将“搜索者路径”更改为“尝试联系”。"
+
+#: dt-assets/parts/modals/modal-help.php:80
+msgctxt "disciple_tools"
+msgid "Progress"
+msgstr "进展"
+
+#: dt-assets/parts/modals/modal-help.php:81
+msgctxt "Optional Documentation"
+msgid "Here you can track the progress of the contact's faith journey."
+msgstr "在这里，您可以跟踪联系人的信任旅程的进度。"
+
+#: dt-assets/parts/modals/modal-help.php:121
+msgctxt "Optional Documentation"
+msgid "Contact Connections"
+msgstr "接触连接"
+
+#: dt-assets/parts/modals/modal-help.php:122
+msgctxt "Optional Documentation"
+msgid "Connections this contact has with other contacts (and groups) in this system."
+msgstr "该联系人与该系统中其他联系人（和组）的连接。"
+
+#: dt-assets/parts/modals/modal-help.php:135
+msgctxt "disciple_tools"
+msgid "Other"
+msgstr "其他"
+
+#: dt-assets/parts/modals/modal-help.php:150
+msgctxt "disciple_tools"
+msgid "Group Details"
+msgstr "组详细信息"
+
+#: dt-assets/parts/modals/modal-help.php:151
+msgctxt "Optional Documentation"
+msgid "This is the area where you can view and edit the contact details for this group."
+msgstr "您可以在这里查看和编辑该组的联系方式。"
+
+#: dt-assets/parts/modals/modal-help.php:154
+msgctxt "disciple_tools"
+msgid "Group Name"
+msgstr "组的名字"
+
+#: dt-assets/parts/modals/modal-help.php:154
+#: dt-assets/parts/modals/modal-help.php:384
+msgctxt "Optional Documentation"
+msgid "The name of the group is searchable and can be used to help you filter your contacts in the Groups List page."
+msgstr "该组的名称是可搜索的，可用于帮助您在“组列表”页面中过滤联系人。"
+
+#: dt-assets/parts/modals/modal-help.php:195
+msgctxt "Optional Documentation"
+msgid "If the group/church regularly practices any of the elements listed, then click each element to add them inside the circle."
+msgstr "如果小组/教堂定期练习列出的任何元素，请单击每个元素以将其添加到圈子中。"
+
+#: dt-assets/parts/modals/modal-help.php:196
+msgctxt "Optional Documentation"
+msgid "If the group has committed to be a church, indicate this by clicking the \"Church Commitment\" button to make the dotted line circle solid."
+msgstr "如果该团体已承诺成为教堂，请单击“教堂承诺”按钮以使虚线圆圈变实，以表明这一点。"
+
+#: dt-assets/parts/modals/modal-help.php:201
+msgctxt "disciple_tools"
+msgid "Members"
+msgstr "会员"
+
+#: dt-assets/parts/modals/modal-help.php:202
+msgctxt "Optional Documentation"
+msgid "This is the area where you manage the contacts that are a part of the group."
+msgstr "这是您管理组中联系人的区域。"
+
+#: dt-assets/parts/modals/modal-help.php:207
+msgctxt "Optional Documentation"
+msgid "To remove a member, click the X icon to the right side of the member name. Click the footprint icon next to the members name to signify that this person is a leader of this group. (Multiple leaders can be assigned to a group)."
+msgstr "要删除成员，请单击成员名称右侧的X图标。单击成员名称旁边的足迹图标，以表明此人是该组的负责人。 （可以将多个领导者分配给一个组）。"
+
+#: dt-assets/parts/modals/modal-help.php:208
+msgctxt "Optional Documentation"
+msgid "To add new members, click on the 'Create' or 'Select' and click on the name or search for them."
+msgstr "要添加新成员，请单击“创建”或“选择”，然后单击名称或进行搜索。"
+
+#: dt-assets/parts/modals/modal-help.php:238
+#: dt-assets/parts/modals/modal-help.php:249
+msgctxt "Optional Documentation"
+msgid "Group Connections"
+msgstr "组连接"
+
+#: dt-assets/parts/modals/modal-help.php:239
+msgctxt "Optional Documentation"
+msgid "Here you can select what type of group this is and how it is related to other groups in the system."
+msgstr "在这里，您可以选择这是什么类型的组，以及它与系统中其他组的关系。"
+
+#: dt-assets/parts/modals/modal-help.php:250
+msgctxt "Optional Documentation"
+msgid "Connections this group has with other groups in this system."
+msgstr "该组与该系统中其他组的连接。"
+
+#: dt-assets/parts/modals/modal-help.php:261
+msgctxt "Optional Documentation"
+msgid "Four Fields"
+msgstr "四个领域"
+
+#: dt-assets/parts/modals/modal-help.php:262
+msgctxt "Optional Documentation"
+msgid "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
+msgstr "四场图中有5个正方形。从左上象限开始，顺时针旋转，第五个在中间，它们代表："
+
+#: dt-assets/parts/modals/modal-help.php:278
+msgctxt "Optional Documentation"
+msgid "Comments and Activity"
+msgstr "评论和活动"
+
+#: dt-assets/parts/modals/modal-help.php:279
+msgctxt "Optional Documentation"
+msgid "This is where you can record notes from meetings and conversations."
+msgstr "您可以在此处记录会议和对话的笔记。"
+
+#: dt-assets/parts/modals/modal-help.php:280
+msgctxt "Optional Documentation"
+msgid "Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
+msgstr "键入@以及要在评论中提及他们的用户名。然后，该用户将收到通知。"
+
+#: dt-assets/parts/modals/modal-help.php:281
+msgctxt "Optional Documentation"
+msgid "This section also includes the history of activity, such as when the contact or group status became active etc."
+msgstr "此部分还包括活动的历史记录，例如联系人或组的状态何时变为活动状态等。"
+
+#: dt-assets/parts/modals/modal-help.php:282
+msgctxt "Optional Documentation"
+msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
+msgstr "您可以按“全部”，“评论”或“活动”过滤此部分。"
+
+#: dt-assets/parts/modals/modal-help.php:292
+msgctxt "Optional Documentation"
+msgid "Default and Custom Filters"
+msgstr "默认和自定义过滤器"
+
+#: dt-assets/parts/modals/modal-help.php:293
+msgctxt "Optional Documentation"
+msgid "Use these filters to focus in on the contacts or groups you are responsible for. If the default filters do not fit your needs you can create your own custom filter."
+msgstr "使用这些过滤器可以将重点放在您负责的联系人或组上。如果默认过滤器无法满足您的需求，则可以创建自己的自定义过滤器。"
+
+#: dt-assets/parts/modals/modal-help.php:298
+msgctxt "Optional Documentation"
+msgid "Contacts List Tile"
+msgstr "联系人列表图块"
+
+#: dt-assets/parts/modals/modal-help.php:299
+msgctxt "Optional Documentation"
+msgid "Your list of contacts will show up here. Whenever you filter contacts, the list will also be changed in this section too. You can sort your contacts by newest, oldest, most recently modified, and least recently modified. If you have a long list of contacts they will not all load at once, so clicking the 'Load more contacts' button at the bottom of the list will allow you to load more."
+msgstr "您的联系人列表将显示在此处。每当您过滤联系人时，该列表也会在此部分中更改。您可以按最新，最旧，最近修改和最近修改的顺序对联系人进行排序。如果您的联系人列表很长，则不会一次全部加载它们，因此，单击列表底部的“加载更多联系人”按钮将允许您加载更多。"
+
+#: dt-assets/parts/modals/modal-help.php:304
+msgctxt "Optional Documentation"
+msgid "Groups List Tile"
+msgstr "组列表图块"
+
+#: dt-assets/parts/modals/modal-help.php:305
+msgctxt "Optional Documentation"
+msgid "Your list of groups will show up here. Whenever you filter groups, the list will also be changed in this section too. You can sort your groups by newest, oldest, most recently modified, and least recently modified. If you have a long list of groups they will not all load at once, so clicking the 'Load more groups' button at the bottom of the list will allow you to load more."
+msgstr "您的群组列表将显示在此处。每当您过滤组时，列表也会在此部分中更改。您可以按最新，最旧，最近修改和最近修改的顺序对组进行排序。如果组列表较长，它们将不会一次全部加载，因此，单击列表底部的“加载更多组”按钮将允许您加载更多。"
+
+#: dt-assets/parts/modals/modal-help.php:310
+msgctxt "Optional Documentation"
+msgid "Closed contacts switch"
+msgstr "闭合触点开关"
+
+#: dt-assets/parts/modals/modal-help.php:311
+msgctxt "Optional Documentation"
+msgid "Use this toggle switch to either show or not show closed contacts in the list."
+msgstr "使用此拨动开关可以显示或不显示列表中的已关闭联系人。"
+
+#: dt-assets/parts/modals/modal-help.php:316
+msgctxt "Optional Documentation"
+msgid "Inactive Groups switch"
+msgstr "非活动组切换"
+
+#: dt-assets/parts/modals/modal-help.php:317
+msgctxt "Optional Documentation"
+msgid "Use this toggle switch to either show or not show inactive groups in the list."
+msgstr "使用此切换开关可以显示或不显示列表中的非活动组。"
+
+#: dt-assets/parts/modals/modal-help.php:347
+msgctxt "Optional Documentation"
+msgid "Initial Comment"
+msgstr "初步评论"
+
+#: dt-assets/parts/modals/modal-help.php:348
+msgctxt "Optional Documentation"
+msgid "The Initial Comment field is for any extra information. It will be saved as the first comment under the Activity and Comments Tile."
+msgstr "“初始注释”字段用于任何其他信息。它将被保存为“活动和评论”磁贴下的第一个评论。"
+
+#: dt-assets/parts/modals/modal-help.php:353
+msgctxt "Optional Documentation"
+msgid "Create new contact"
+msgstr "建立新联络人"
+
+#: dt-assets/parts/modals/modal-help.php:354
+msgctxt "Optional Documentation"
+msgid "After writing the name of the contact, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new contact has just been just created."
+msgstr "输入联系人的姓名后，请在单击“保存并继续编辑”之前，尽可能多地填写其他字段。在下一个屏幕上，您可以编辑和添加有关刚刚创建的新联系人的更多信息。"
+
+#: dt-assets/parts/modals/modal-help.php:359
+msgctxt "Optional Documentation"
+msgid "Name of Contact"
+msgstr "联系人姓名"
+
+#: dt-assets/parts/modals/modal-help.php:360
+msgctxt "Optional Documentation"
+msgid "The name of the contact is searchable and can be used to help you filter your contacts in the Contacts List page."
+msgstr "联系人名称是可搜索的，可用于帮助您在“联系人列表”页面中过滤联系人。"
+
+#: dt-assets/parts/modals/modal-help.php:377
+msgctxt "Optional Documentation"
+msgid "Create New Group"
+msgstr "建立新群组"
+
+#: dt-assets/parts/modals/modal-help.php:378
+msgctxt "Optional Documentation"
+msgid "After writing the name of the group, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new group has just been created."
+msgstr "输入组的名称后，请在单击“保存并继续编辑”之前，尽可能多地填写其他字段。在下一个屏幕上，您可以编辑和添加有关刚刚创建的新组的更多信息。"
+
+#: dt-assets/parts/modals/modal-help.php:383
+msgctxt "Optional Documentation"
+msgid "Name of Group"
+msgstr "组名"
+
+#: dt-assets/parts/modals/modal-help.php:397
+msgctxt "Optional Documentation"
+msgid "Your Profile"
+msgstr "你的个人资料"
+
+#: dt-assets/parts/modals/modal-help.php:398
+msgctxt "Optional Documentation"
+msgid "In this area you can see your user profile."
+msgstr "在此区域中，您可以看到您的用户个人资料。"
+
+#: dt-assets/parts/modals/modal-help.php:399
+msgctxt "Optional Documentation"
+msgid "You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
+msgstr "您无需填写任何这些配置文件字段。它们是可选的，可以满足您团队的需求。"
+
+#: dt-assets/parts/modals/modal-help.php:400
+msgctxt "Optional Documentation"
+msgid "By clicking 'Edit', you will be able adjust things like the language that this system operates in."
+msgstr "通过单击“编辑”，您将能够调整诸如该系统使用的语言之类的内容。"
+
+#: dt-assets/parts/modals/modal-help.php:405
+msgctxt "Optional Documentation"
+msgid "Locations"
+msgstr "地点"
+
+#: dt-assets/parts/modals/modal-help.php:406
+msgctxt "Optional Documentation"
+msgid "These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
+msgstr "这些是您负责的领域。点击“添加”按钮将弹出一个位置列表供您选择。"
+
+#: dt-assets/parts/modals/modal-help.php:411
+msgctxt "Optional Documentation"
+msgid "Your Notifications"
+msgstr "您的通知"
+
+#: dt-assets/parts/modals/modal-help.php:412
+msgctxt "Optional Documentation"
+msgid "You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
+msgstr "您将根据您的通知首选项接收网络通知和电子邮件通知。要更改您的首选项，请单击切换按钮。"
+
+#: dt-assets/parts/modals/modal-help.php:414
+msgctxt "Optional Documentation"
+msgid "Notifications Turned On: The toggle will appear blue."
+msgstr "通知已打开：切换将显示为蓝色。"
+
+#: dt-assets/parts/modals/modal-help.php:415
+msgctxt "Optional Documentation"
+msgid "Notifications Turned Off: The toggle will appear grey."
+msgstr "通知已关闭：此切换将显示为灰色。"
+
+#: dt-assets/parts/modals/modal-help.php:417
+msgctxt "Optional Documentation"
+msgid "Some of the types of notifications cannot be adjusted because they are required by the system."
+msgstr "某些通知类型无法调整，因为系统需要它们。"
+
+#: dt-assets/parts/modals/modal-help.php:418
+msgctxt "Optional Documentation"
+msgid "Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+msgstr "调整是否要查看有关新评论，联系人信息更改，联系人里程碑和组运行状况指标的通知，以及是否向您发送系统中发生的任何更新的通知。"
+
+#: dt-assets/parts/modals/modal-help.php:431
+msgctxt "Optional Documentation"
+msgid "Notifications Page"
+msgstr "通知页面"
+
+#: dt-assets/parts/modals/modal-help.php:432
+msgctxt "Optional Documentation"
+msgid "This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
+msgstr "在此通知页面上，您可以阅读用户和组的更新。它会在您的记录中显示有关活动的通知。"
+
+#: dt-assets/parts/modals/modal-help.php:433
+msgctxt "Optional Documentation"
+msgid "All / Unread"
+msgstr "全部/未读"
+
+#: dt-assets/parts/modals/modal-help.php:434
+msgctxt "Optional Documentation"
+msgid "Click the 'All' button to show the full list of all of your notifications."
+msgstr "点击“全部”按钮以显示所有通知的完整列表。"
+
+#: dt-assets/parts/modals/modal-help.php:435
+msgctxt "Optional Documentation"
+msgid "Click the 'Unread' button to show the list of all of your unread notifications."
+msgstr "点击“未读”按钮以显示所有未读通知的列表。"
+
+#: dt-assets/parts/modals/modal-help.php:436
+msgctxt "Optional Documentation"
+msgid "Mark All as Read"
+msgstr "标记为已读"
+
+#: dt-assets/parts/modals/modal-help.php:437
+msgctxt "Optional Documentation"
+msgid "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+msgstr "如果您不想单击每行右侧的每个实心圆圈来表示已阅读通知，请单击顶部的“将所有内容标记为已读”链接以快速调整所有已包含的消息被阅读。"
+
+#: dt-assets/parts/modals/modal-help.php:438
+msgctxt "Optional Documentation"
+msgid "Settings"
+msgstr "设定值"
+
+#: dt-assets/parts/modals/modal-help.php:439
+msgctxt "Optional Documentation"
+msgid "Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+msgstr "单击“设置”链接转到通知设置区域，以调整是否要查看有关新评论，联系人信息更改，联系人里程碑和组运行状况指标的通知，以及是否收到有关以下内容的任何更新的通知：系统。"
+
+#: dt-assets/parts/modals/modal-help.php:444
+msgctxt "Optional Documentation"
+msgid "Duplicate Contact page"
+msgstr "联系人页面重复"
+
+#: dt-assets/parts/modals/modal-help.php:445
+msgctxt "Optional Documentation"
+msgid "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
+msgstr "在此重复联系人页面中，您可以查看，拒绝或合并系统已挑选的联系人（检查其姓名，电子邮件和电话），以作为与另一个现有联系人的重复。"
+
+#: dt-assets/parts/modals/modal-help.php:459
+msgctxt "Optional Documentation"
+msgid "Need more help?"
+msgstr "需要更多帮助吗？"
+
+#: dt-assets/parts/modals/modal-help.php:460
+msgctxt "Optional Documentation"
+msgid "Read the documentation"
+msgstr "阅读文档"
+
+#: dt-assets/parts/modals/modal-new-contact.php:30
+#: dt-assets/parts/modals/modal-new-group.php:29
+msgctxt "back to record"
+msgid "Back to %s"
+msgstr "返回％s"
+
+#: dt-assets/parts/modals/modal-tasks.php:12
+msgid "Set a reminder or a task with a note and receive a notification on the due date."
+msgstr "设置带有注释的提醒或任务，并在到期日收到通知。"
+
+#: dt-assets/parts/modals/modal-tasks.php:13
+msgid "Task type"
+msgstr "任务类型"
+
+#: dt-assets/parts/modals/modal-tasks.php:22
+msgid "Custom"
+msgstr "自订"
+
+#: dt-assets/parts/modals/modal-tasks.php:28
+msgid "Due Date"
+msgstr "截止日期"
+
+#: dt-assets/parts/modals/modal-tasks.php:32
+msgid "Create Task"
+msgstr "创建任务"
+
+#: dt-assets/parts/modals/modal-tasks.php:38
+msgid "Existing tasks for this record:"
+msgstr "该记录的现有任务："
+
+#: dt-assets/parts/nav-offcanvas-topbar.php:95
+msgid "Theme Update Available!"
+msgstr "主题更新可用！"
+
+#: dt-assets/functions/menu.php:93 dt-assets/parts/nav-offcanvas-topbar.php:152
+#: dt-users/template-user-management.php:55 dt-users/user-management.php:96
+#: dt-users/user-management.php:103
+msgid "Users"
+msgstr "用户数"
+
+#: dt-contacts/contacts-post-type.php:183
+msgid "Select the main person who is responsible for reporting on this contact."
+msgstr "选择负责报告此联系人的主要人员。"
+
+#: dt-contacts/contacts-post-type.php:191
+msgid "Contact Status"
+msgstr "联络状态"
+
+#: dt-contacts/contacts-post-type.php:192
+msgctxt "Contact Status field description"
+msgid "The Contact Status describes our progress in communicating with the contact"
+msgstr "联系人状态描述了我们与联系人交流的进展"
+
+#: dt-contacts/contacts-post-type.php:206
+msgid "Dispatch Needed"
+msgstr "需要派遣"
+
+#: dt-contacts/contacts-post-type.php:221
+msgid "Paused"
+msgstr "已暂停"
+
+#: dt-contacts/contacts-post-type.php:226
+msgid "Closed"
+msgstr "关闭"
+
+#: dt-contacts/contacts-post-type.php:242
+msgid "Contact Attempt Needed"
+msgstr "需要联系尝试"
+
+#: dt-contacts/contacts-post-type.php:246
+msgid "Contact Attempted"
+msgstr "尝试联系"
+
+#: dt-contacts/contacts-post-type.php:250
+#: dt-contacts/contacts-post-type.php:497
+msgid "Contact Established"
+msgstr "已建立联系"
+
+#: dt-contacts/contacts-post-type.php:254
+msgid "First Meeting Scheduled"
+msgstr "安排第一次会议"
+
+#: dt-contacts/contacts-post-type.php:258
+msgid "First Meeting Complete"
+msgstr "第一次会议完成"
+
+#: dt-contacts/contacts-post-type.php:266
+msgid "Being Coached"
+msgstr "被教练"
+
+#: dt-contacts/contacts-post-type.php:299
+msgctxt "Optional Documentation"
+msgid "Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
+msgstr "分配联系人在其信仰旅程中达到的里程碑。这些是联系人的精神之旅中值得庆祝的要点，但可以以任何顺序发生。"
+
+#: dt-contacts/contacts-post-type.php:303
+msgid "Has Bible"
+msgstr "有圣经"
+
+#: dt-contacts/contacts-post-type.php:307
+msgid "Reading Bible"
+msgstr "阅读圣经"
+
+#: dt-contacts/contacts-post-type.php:311
+msgid "States Belief"
+msgstr "国家信仰"
+
+#: dt-contacts/contacts-post-type.php:315
+msgid "Can Share Gospel/Testimony"
+msgstr "可以分享福音/见证"
+
+#: dt-contacts/contacts-post-type.php:319
+msgid "Sharing Gospel/Testimony"
+msgstr "分享福音/见证"
+
+#: dt-contacts/contacts-post-type.php:327
+msgid "Baptizing"
+msgstr "洗礼"
+
+#: dt-contacts/contacts-post-type.php:331
+msgid "In Church/Group"
+msgstr "在教会/团体中"
+
+#: dt-contacts/contacts-post-type.php:335
+msgid "Starting Churches"
+msgstr "开始教会"
+
+#: dt-contacts/contacts-post-type.php:364
+msgid "Male"
+msgstr "男"
+
+#: dt-contacts/contacts-post-type.php:365
+msgid "Female"
+msgstr "女"
+
+#: dt-contacts/contacts-post-type.php:374
+msgid "Under 18 years old"
+msgstr "18岁以下"
+
+#: dt-contacts/contacts-post-type.php:375
+msgid "18-25 years old"
+msgstr "18-25岁"
+
+#: dt-contacts/contacts-post-type.php:376
+msgid "26-40 years old"
+msgstr "26-40岁"
+
+#: dt-contacts/contacts-post-type.php:377
+msgid "Over 40 years old"
+msgstr "超过40岁"
+
+#: dt-contacts/contacts-post-type.php:383
+msgid "Reason Not Ready"
+msgstr "原因尚未就绪"
+
+#: dt-contacts/contacts-post-type.php:384
+msgctxt "Optional Documentation"
+msgid "The main reason the contact is not ready to be assigned to a user."
+msgstr "联系人尚未准备好分配给用户的主要原因。"
+
+#: dt-contacts/contacts-post-type.php:391
+msgid "Insufficient Contact Information"
+msgstr "联系信息不足"
+
+#: dt-contacts/contacts-post-type.php:394
+msgid "Unknown Location"
+msgstr "位置不明"
+
+#: dt-contacts/contacts-post-type.php:397
+msgid "Only wants media"
+msgstr "只想要媒体"
+
+#: dt-contacts/contacts-post-type.php:400
+msgid "Outside Area"
+msgstr "外区"
+
+#: dt-contacts/contacts-post-type.php:403
+msgid "Needs Review"
+msgstr "需要审查"
+
+#: dt-contacts/contacts-post-type.php:406
+msgid "Waiting for Confirmation"
+msgstr "等待确认中"
+
+#: dt-contacts/contacts-post-type.php:414
+msgid "Reason Paused"
+msgstr "原因已暂停"
+
+#: dt-contacts/contacts-post-type.php:415
+msgctxt "Optional Documentation"
+msgid "A paused contact is one you are not currently interacting with but expect to in the future."
+msgstr "暂停的联系人是您当前未与之交互但希望在将来与之交互的联系人。"
+
+#: dt-contacts/contacts-post-type.php:433
+msgid "Reason Closed"
+msgstr "原因关闭"
+
+#: dt-contacts/contacts-post-type.php:434
+msgctxt "Optional Documentation"
+msgid "A closed contact is one you can't or don't wish to interact with."
+msgstr "封闭联系人是您不愿或不希望与之互动的人。"
+
+#: dt-contacts/contacts-post-type.php:441
+msgctxt "Reason Closed label"
+msgid "Hostile, playing games or self gain"
+msgstr "敌对，玩游戏或自我增益"
+
+#: dt-contacts/contacts-post-type.php:456
+msgid "Accepted"
+msgstr "公认"
+
+#: dt-contacts/contacts-post-type.php:473
+msgctxt "Optional Documentation"
+msgid "The website, event or location this contact came from."
+msgstr "此联系人来自的网站，事件或位置。"
+
+#: dt-contacts/contacts-post-type.php:481
+msgid "Source Details"
+msgstr "资料来源"
+
+#: dt-contacts/contacts-post-type.php:489
+msgid "No Answer"
+msgstr "没有答案"
+
+#: dt-contacts/contacts-post-type.php:505
+msgid "Meeting Scheduled"
+msgstr "会议预定"
+
+#: dt-contacts/contacts-post-type.php:513
+msgid "Meeting Complete"
+msgstr "会议完成"
+
+#: dt-contacts/contacts-post-type.php:521
+msgid "Meeting No-show"
+msgstr "会议未出现"
+
+#: dt-contacts/contacts-post-type.php:530
+msgid "Corresponds to user"
+msgstr "对应用户"
+
+#: dt-contacts/contacts-post-type.php:531
+msgctxt "Optional Documentation"
+msgid "The id of the user this contact corresponds to"
+msgstr "此联系人对应的用户的ID"
+
+#: dt-contacts/contacts-post-type.php:537
+msgid "Contact type"
+msgstr "接触类型"
+
+#: dt-contacts/contacts-post-type.php:540
+msgid "Media"
+msgstr "媒体"
+
+#: dt-contacts/contacts-post-type.php:541
+msgid "Next Generation"
+msgstr "下一代"
+
+#: dt-contacts/contacts-post-type.php:542
+msgid "User"
+msgstr "用户"
+
+#: dt-contacts/contacts-post-type.php:548 dt-groups/groups-post-type.php:446
+msgid "Last modified"
+msgstr "上一次更改"
+
+#: dt-contacts/contacts-post-type.php:561
+msgid "Tags"
+msgstr "标签"
+
+#: dt-contacts/contacts-post-type.php:562
+msgctxt "Optional Documentation"
+msgid "A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags."
+msgstr "对相关项目进行分组的一种有用方法，可以帮助对与值得注意的特征相关联的联系人进行分组。例如企业主，体育爱好者。也可以使用这些标签过滤联系人。"
+
+#: dt-contacts/contacts-post-type.php:589
+msgid "Relation"
+msgstr "关系"
+
+#: dt-contacts/contacts-post-type.php:590
+msgctxt "Optional Documentation"
+msgid "Relationship this contact has with another contact in the system."
+msgstr "该联系人与系统中另一个联系人的关系。"
+
+#: dt-contacts/contacts-post-type.php:597
+msgid "Coached by"
+msgstr "指导人"
+
+#: dt-contacts/contacts-post-type.php:598
+msgctxt "Optional Documentation"
+msgid "Who is coaching this contact"
+msgstr "谁在指导此联系人"
+
+#: dt-contacts/contacts-post-type.php:605
+msgid "Coached"
+msgstr "辅导"
+
+#: dt-contacts/contacts-post-type.php:606
+msgctxt "Optional Documentation"
+msgid "Who is this contact coaching"
+msgstr "这是谁的联系教练"
+
+#: dt-contacts/contacts-post-type.php:613
+msgid "Baptized by"
+msgstr "受洗"
+
+#: dt-contacts/contacts-post-type.php:614
+msgctxt "Optional Documentation"
+msgid "Who baptized this contact"
+msgstr "谁为这个联系人洗礼"
+
+#: dt-contacts/contacts-post-type.php:622
+msgctxt "Optional Documentation"
+msgid "Who this contact has baptized"
+msgstr "此联系人受洗的对象"
+
+#: dt-contacts/contacts-post-type.php:630 dt-groups/groups-post-type.php:400
+msgctxt "Optional Documentation"
+msgid "The people groups represented by this group."
+msgstr "该团体代表的人民团体。"
+
+#: dt-contacts/contacts-post-type.php:638
+msgctxt "Optional Documentation"
+msgid "Groups this contact is a member of."
+msgstr "该联系人所属的群组。"
+
+#: dt-contacts/contacts-post-type.php:646
+msgid "Contact or User assisting the Assigned To user to follow up with the contact."
+msgstr "联系人或协助“分配给”用户的用户跟进该联系人。"
+
+#: dt-contacts/contacts-post-type.php:654
+msgctxt "Optional Documentation"
+msgid "The general location where this contact is located."
+msgstr "此联系人所在的常规位置。"
+
+#: dt-contacts/contacts-post-type.php:659
+msgid "Location Grid Meta"
+msgstr "位置网格元"
+
+#: dt-contacts/contacts-post-type.php:665
+msgid "Coordinates"
+msgstr "座标"
+
+#: dt-contacts/contacts.php:1753
+msgctxt "My records"
+msgid "My %s"
+msgstr "我的％s"
+
+#: dt-core/admin/config-site-defaults.php:693
+msgid "ERROR: Invalid username/password combination."
+msgstr "错误：无效的用户名/密码组合。"
+
+#: dt-groups/groups-post-type.php:183 dt-users/user-management.php:121
+msgid "Inactive"
+msgstr "不活跃"
+
+#: dt-groups/groups-post-type.php:202
+msgctxt "Optional Documentation"
+msgid "A group predominantly of non-believers."
+msgstr "一群主要是非信徒的人。"
+
+#: dt-groups/groups-post-type.php:206
+msgctxt "Optional Documentation"
+msgid "A group having 3 or more believers but not identifying as church."
+msgstr "具有三个或三个以上信徒但未标识为教会的团体。"
+
+#: dt-groups/groups-post-type.php:210
+msgctxt "Optional Documentation"
+msgid "A group having 3 or more believers and identifying as church."
+msgstr "具有三个或更多信徒并标识为教会的团体。"
+
+#: dt-groups/groups-post-type.php:213
+msgid "Team"
+msgstr "球队"
+
+#: dt-groups/groups-post-type.php:214
+msgctxt "Optional Documentation"
+msgid "A special group that is not meeting as a church (or trying to become church)."
+msgstr "一个不作为教会聚会（或试图成为教会）的特殊团体。"
+
+#: dt-groups/groups-post-type.php:223
+msgid "Select the main person who is responsible for reporting on this group."
+msgstr "选择负责报告此组的主要人员。"
+
+#: dt-groups/groups-post-type.php:230
+msgid "Church Health"
+msgstr "教会健康"
+
+#: dt-groups/groups-post-type.php:231
+msgctxt "Optional Documentation"
+msgid "Track the progress and health of a group/church."
+msgstr "跟踪小组/教堂的进度和健康状况。"
+
+#: dt-groups/groups-post-type.php:235
+msgid "Baptism"
+msgstr "洗礼"
+
+#: dt-groups/groups-post-type.php:236
+msgctxt "Optional Documentation"
+msgid "The group is baptising."
+msgstr "这个团体正在受洗。"
+
+#: dt-groups/groups-post-type.php:240
+msgid "Bible Study"
+msgstr "圣经学习;圣经讨论"
+
+#: dt-groups/groups-post-type.php:241
+msgctxt "Optional Documentation"
+msgid "The group is studying the bible."
+msgstr "该小组正在研究圣经。"
+
+#: dt-groups/groups-post-type.php:245
+msgid "Communion"
+msgstr "圣餐"
+
+#: dt-groups/groups-post-type.php:246
+msgctxt "Optional Documentation"
+msgid "The group is practicing communion."
+msgstr "该团体正在练习圣餐。"
+
+#: dt-groups/groups-post-type.php:250
+msgid "Fellowship"
+msgstr "奖学金"
+
+#: dt-groups/groups-post-type.php:251
+msgctxt "Optional Documentation"
+msgid "The group is fellowshiping."
+msgstr "该小组是团契。"
+
+#: dt-groups/groups-post-type.php:255
+msgid "Giving"
+msgstr "给予"
+
+#: dt-groups/groups-post-type.php:256
+msgctxt "Optional Documentation"
+msgid "The group is giving."
+msgstr "小组正在给予。"
+
+#: dt-groups/groups-post-type.php:260
+msgid "Prayer"
+msgstr "祷告"
+
+#: dt-groups/groups-post-type.php:261
+msgctxt "Optional Documentation"
+msgid "The group is praying."
+msgstr "该小组正在祈祷。"
+
+#: dt-groups/groups-post-type.php:265
+msgid "Praise"
+msgstr "赞美"
+
+#: dt-groups/groups-post-type.php:266
+msgctxt "Optional Documentation"
+msgid "The group is praising."
+msgstr "该小组称赞。"
+
+#: dt-groups/groups-post-type.php:270
+msgid "Sharing the Gospel"
+msgstr "分享福音"
+
+#: dt-groups/groups-post-type.php:280 dt-groups/groups-post-type.php:308
+msgid "Church Commitment"
+msgstr "教会的承诺"
+
+#: dt-groups/groups-post-type.php:290
+msgid "Unbelievers"
+msgstr "不信者"
+
+#: dt-groups/groups-post-type.php:296
+msgid "Believers"
+msgstr "信徒"
+
+#: dt-groups/groups-post-type.php:302
+msgid "Accountable"
+msgstr "问责"
+
+#: dt-groups/groups-post-type.php:309
+msgctxt "Optional Documentation"
+msgid "Is this a church - yes or no?"
+msgstr "这是教堂-是或否？"
+
+#: dt-groups/groups-post-type.php:314
+msgid "Multiplying"
+msgstr "相乘"
+
+#: dt-groups/groups-post-type.php:315
+msgctxt "Optional Documentation"
+msgid "Number of people helping start other groups. How many members are multiplying?"
+msgstr "帮助启动其他小组的人数。有几名成员在成倍增加？"
+
+#: dt-groups/groups-post-type.php:322
+msgctxt "Optional Documentation"
+msgid "The date this group began meeting."
+msgstr "该小组开始开会的日期。"
+
+#: dt-groups/groups-post-type.php:329
+msgctxt "Optional Documentation"
+msgid "The date this group first identified as being a church."
+msgstr "该团体首次确定为教堂的日期。"
+
+#: dt-groups/groups-post-type.php:335
+msgctxt "Optional Documentation"
+msgid "The date this group stopped meeting (if applicable)."
+msgstr "该小组停止开会的日期（如果适用）。"
+
+#: dt-groups/groups-post-type.php:362
+msgctxt "Optional Documentation"
+msgid "A group that founded this group."
+msgstr "建立该小组的小组。"
+
+#: dt-groups/groups-post-type.php:370
+msgctxt "Optional Documentation"
+msgid "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+msgstr "不是亲子关系的相关组。它可能表明正在协作，即将合并，最近分裂等的组。"
+
+#: dt-groups/groups-post-type.php:378
+msgctxt "Optional Documentation"
+msgid "A group that has been birthed out of this group."
+msgstr "从这个组中诞生的一个组。"
+
+#: dt-groups/groups-post-type.php:386
+msgctxt "Optional Documentation"
+msgid "The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the group."
+msgstr "该组中的成员数。在成员列表中添加或删除新成员时，它将自动更新。手动更改此数字，以包括可能不在系统中但也是该组成员的人员。"
+
+#: dt-groups/groups-post-type.php:392
+msgctxt "Optional Documentation"
+msgid "The contacts who are members of this group."
+msgstr "该组的联系人。"
+
+#: dt-groups/groups-post-type.php:416
+msgctxt "Optional Documentation"
+msgid "The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
+msgstr "种植和/或指导该小组的人。只能将一个人分配到一个组中，而可以将多个人作为该组的教练/教堂主。"
+
+#: dt-groups/groups-post-type.php:430
+msgctxt "Optional Documentation"
+msgid "The general location where this group meets."
+msgstr "该小组见面的一般地点。"
+
+#: dt-groups/groups-post-type.php:435
+msgctxt "field name"
+msgid "Location Grid Meta"
+msgstr "位置网格元"
+
+#: dt-metrics/metrics-workers.php:174
+msgid "Contacts assigned to multipliers"
+msgstr "分配给乘数的联系人"
+
+#: dt-metrics/metrics-workers.php:184 dt-users/template-user-management.php:200
+msgid "All Time"
+msgstr "整天"
+
+#: dt-metrics/metrics-workers.php:185 dt-users/template-user-management.php:196
+msgid "This Year"
+msgstr "今年"
+
+#: dt-metrics/metrics-workers.php:186
+msgid "Last Year"
+msgstr "去年"
+
+#: dt-metrics/metrics-workers.php:187 dt-users/template-user-management.php:190
+msgid "Last Month"
+msgstr "上个月"
+
+#: dt-metrics/metrics-workers.php:188 dt-users/template-user-management.php:186
+msgid "This Month"
+msgstr "这个月"
+
+#: dt-users/template-user-management.php:68
+#: dt-users/template-user-management.php:248
+msgid "Workload Status"
+msgstr "工作量状态"
+
+#: dt-users/template-user-management.php:69
+msgid "Accept Needed"
+msgstr "接受需要"
+
+#: dt-users/template-user-management.php:73
+msgid "Last Activity"
+msgstr "最后活动"
+
+#: dt-users/template-user-management.php:109
+msgid "No activity"
+msgstr "没有活动"
+
+#: dt-users/template-user-management.php:132
+msgid "Multiplier Name"
+msgstr "乘数名称"
+
+#: dt-users/template-user-management.php:121
+msgid "Return to Users"
+msgstr "返回用户"
+
+#: dt-users/template-user-management.php:168
+msgid "Pending"
+msgstr "待定"
+
+#: dt-users/template-user-management.php:175
+msgid "Unread Notifications"
+msgstr "未读通知"
+
+#: dt-users/template-user-management.php:158
+msgid "Contacts Assigned"
+msgstr "联系人分配"
+
+#: dt-users/template-user-management.php:237
+msgid "User Status"
+msgstr "用户状态"
+
+#: dt-users/template-user-management.php:322
+msgid "Click here to see roles documentation"
+msgstr "单击此处查看角色文档"
+
+#: dt-users/template-user-management.php:337
+msgid "Save Roles"
+msgstr "保存角色"
+
+#: dt-users/template-user-management.php:273
+msgid "Search Locations"
+msgstr "搜索地点"
+
+#: dt-users/template-user-management.php:286
+msgid "Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts"
+msgstr "设置您不可用的日期，以便调度员知道您有空接收新联系人"
+
+#: dt-users/template-user-management.php:297
+msgid "Travel or Away Dates"
+msgstr "出行日期"
+
+#: dt-users/template-user-management.php:275
+msgid "Stats"
+msgstr "统计资料"
+
+#: dt-users/template-user-management.php:350
+msgid "Daily Activity"
+msgstr "日常活动"
+
+#: dt-users/template-user-management.php:279
+msgid "Assigned and not Accepted"
+msgstr "已分配但未接受"
+
+#: dt-users/template-user-management.php:281
+msgid "Time from Assigned to Contact Accepted for the last 10 contacts"
+msgstr "最近10个联系人从分配到接受联系人的时间"
+
+#: dt-users/template-user-management.php:283
+msgid "Accepted with no Contact Attempt"
+msgstr "接受但没有联系尝试"
+
+#: dt-users/template-user-management.php:285
+msgid "Time from Assigned to Contact Attempt for the last 10 contacts"
+msgstr "最近10个联系人从分配到联系尝试的时间"
+
+#: dt-users/template-user-management.php:287
+msgid "Oldest 10 Update Needed"
+msgstr "需要最旧的10更新"
+
+#: dt-users/user-management.php:119
+msgid "Away"
+msgstr "远"
+
+#: dt-users/user-management.php:120
+msgid "Inconsistent"
+msgstr "前后不一致"
+
+#: dt-users/user-management.php:166
+msgctxt "Bob was accepted on Jul 8 after 10 days"
+msgid "%1$s was accepted on %2$s after %3$s days"
+msgstr "％3 $ s天后，％2 $ s接受了％1 $ s"
+
+#: dt-users/user-management.php:167
+msgctxt "Bob waiting for contact for 10 days"
+msgid "%1$s waiting for Contact Attempt for %2$s days"
+msgstr "％1 $ s等待％2 $ s天的联系尝试"
+
+#: dt-users/user-management.php:168
+msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
+msgid "Contact with %1$s was attempted on %2$s after %3$s days"
+msgstr "％3 $ s天后尝试在％2 $ s与％1 $ s联系"
+
+#: dt-users/user-management.php:356
+msgctxt "Updated record Bob"
+msgid "Updated contact %s"
+msgstr "更新了联系人％s"
+
+#: dt-users/user-management.php:359
+msgctxt "Updated record Bob"
+msgid "Updated group %s"
+msgstr "更新了群组％s"
+
+#: dt-users/user-management.php:364
+msgctxt "Commented on record Bob"
+msgid "Commented on contact %s"
+msgstr "对联系人％s进行了评论"
+
+#: dt-users/user-management.php:367
+msgctxt "Commented on record Bob"
+msgid "Commented on group %s"
+msgstr "对群组％s发表了评论"
+
+#: dt-users/user-management.php:372
+msgctxt "Created record Bob"
+msgid "Created contact %s"
+msgstr "已建立联络人％s"
+
+#: dt-users/user-management.php:375
+msgctxt "Created record Bob"
+msgid "Created group %s"
+msgstr "建立的群组％s"
+
+#: dt-users/user-management.php:379
+msgid "Logged In"
+msgstr "登录"
+
+#: dt-users/user-management.php:382
+msgctxt "Declined assignment on Bob"
+msgid "Declined assignment on %s"
+msgstr "％s上的分配被拒绝"
+
+#: dt-users/user-management.php:312
+msgid "%s days since last update"
+msgstr "自上次更新以来的％s天"
+
+#: dt-workflows/tasks.php:82
+msgctxt "You set a reminder for today on contact1"
+msgid "You set a reminder for today on %1$s"
+msgstr "您在％1 $ s设置了今天的提醒"
+
+#: dt-workflows/tasks.php:86
+msgctxt "You set this task on contact1: task note"
+msgid "You set this task on %1$s: %2$s"
+msgstr "您在％1 $ s上设置了此任务：％2 $ s"
+
+#: single-contacts.php:562 single-contacts.php:591 single-contacts.php:622
+msgid "Choose an option:"
+msgstr "选择一个选项："
+
+#: single-contacts.php:581 single-contacts.php:613 single-contacts.php:644
+msgid "Confirm"
+msgstr "确认"
+
+#: single-contacts.php:737
+msgctxt "disciple_tools"
+msgid "Display Name"
+msgstr "显示名称"
+
+#: single-groups.php:89
+msgid "Create"
+msgstr "创建"
+
+#: single-groups.php:94
+msgid "Select"
+msgstr "选择"
+
+#: single-groups.php:377
+msgctxt "Add members modal"
+msgid "In the 'Member List' field, type the name of an existing contact to add them to this group."
+msgstr "在“成员列表”字段中，键入现有联系人的姓名，以将其添加到该组中。"
+
+#: template-contacts-new.php:20
+msgid "Create New Contact"
+msgstr "建立新联络人"
+
+#: template-contacts-new.php:136
+msgctxt "disciple_tools"
+msgid "Initial Comment"
+msgstr "初步评论"
+
+#: template-view-duplicates.php:35
+msgid "duplicates"
+msgstr "重复项"
+
+#: dt-notifications/notifications.php:371
+msgid "%s minute ago"
+msgid_plural "%s minutes ago"
+msgstr[0] "％s分钟前"
+
+#: dt-notifications/notifications.php:374
+msgid "%s hour ago"
+msgid_plural "%s hours ago"
+msgstr[0] "％s小时前"
+
+#: dt-notifications/notifications.php:377
+msgid "%s day ago"
+msgid_plural "%s days ago"
+msgstr[0] "％s天前"
+
+#: dt-notifications/notifications.php:380
+msgid "%s week ago"
+msgid_plural "%s weeks ago"
+msgstr[0] "％s周前"
+
+#: dt-notifications/notifications.php:383
+msgid "%s month ago"
+msgid_plural "%s months ago"
+msgstr[0] "％s一个月前"
+
+#: dt-notifications/notifications.php:386
+msgid "%s year ago"
+msgid_plural "%s years ago"
+msgstr[0] "％s年前"
+
+#: dt-assets/functions/enqueue-scripts.php:188
+msgid "Created record on {}"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:194
+msgid "Translate with Google Translate"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:195
+msgid "Hide Translation"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:330
+msgid "Add"
+msgstr ""
+
+#: dt-assets/parts/loop-activity-comment.php:32
+msgid "Comment"
+msgstr ""
+
+#: dt-assets/parts/loop-activity-comment.php:41
+msgid "Type:"
+msgstr ""
+
+#: dt-assets/parts/loop-activity-comment.php:202
+msgid "Type of Comment"
+msgstr ""
+
+#: dt-core/admin/config-site-defaults.php:526
+msgid "Contacts transferred from a partnership with another Disciple.Tools site."
+msgstr ""
+
+#: dt-mapping/geocode-api/mapbox-api.php:279
+#: dt-users/template-user-management.php:261
+msgid "add"
+msgstr ""
+
+#: dt-mapping/mapbox-metrics.php:60
+msgid "Cluster Contacts"
+msgstr ""
+
+#: dt-mapping/mapbox-metrics.php:61
+msgid "Cluster Groups"
+msgstr ""
+
+#: dt-mapping/mapbox-metrics.php:62
+msgid "Area Contacts"
+msgstr ""
+
+#: dt-mapping/mapbox-metrics.php:63
+msgid "Area Groups"
+msgstr ""
+
+#: dt-posts/posts.php:400
+msgid "%s removed"
+msgstr ""
+
+#: dt-users/template-user-management.php:72
+msgid "Location"
+msgstr ""
+
+#: dt-users/template-user-management.php:162
+msgid "Updates Needed"
+msgstr ""
+
+#: dt-users/template-user-management.php:182
+msgid "Assignments"
+msgstr ""
+
+#: dt-users/template-user-management.php:210
+msgid "Pace"
+msgstr ""
+
+#: dt-users/template-user-management.php:211
+msgid "Assigned and not accepted"
+msgstr ""
+
+#: dt-users/template-user-management.php:213
+msgid "Time from assigned to contact accepted for the last 10 contacts"
+msgstr ""
+
+#: dt-users/template-user-management.php:215
+msgid "Accepted with no contact attempt"
+msgstr ""
+
+#: dt-users/template-user-management.php:217
+msgid "Oldest 10 update needed"
+msgstr ""
+
+#: dt-users/template-user-management.php:219
+msgid "Time from assigned to contact attempt for the last 10 contacts"
+msgstr ""
+
+#: dt-users/template-user-management.php:261
+#: dt-users/template-user-management.php:264
+msgid "Location Responsibility"
+msgstr ""
+
+#: dt-users/template-user-management.php:288
+msgid "Schedule Unavailability"
+msgstr ""
+
+#: dt-users/user-management.php:109
+msgid "Add User"
+msgstr ""
+
+#: dt-users/user-management.php:169
+msgctxt "disciple_tools"
+msgid "Unable to update"
+msgstr ""
+
+#: dt-users/users.php:826
+msgid "Email already exists and is a user on this site"
+msgstr ""
+
+#: dt-users/users.php:832
+msgid "Failed to add user to site."
+msgstr ""
+

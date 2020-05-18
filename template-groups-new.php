@@ -55,6 +55,7 @@ $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_s
 </div>
 
 <script>jQuery(function($) {
+    $('input:enabled:visible:first').focus();
     $(".js-create-group-button").removeAttr("disabled");
     $(".js-create-group").on("submit", function() {
         $(".js-create-group-button")
