@@ -245,7 +245,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             </section>
             <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell" role="main" style="padding:0">
 
-                <div class="cell grid-y grid-margin-y" style="display: block">
+                <div class="cell grid-y grid-margin-y">
                 <?php
                 if ( current_user_can( "view_any_contacts" ) ){
                     $duplicate_post_meta = get_post_meta( get_the_Id(), 'duplicate_data' );
@@ -272,9 +272,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                     <?php }
                 }
                 ?>
-                    <div id="contact-details" class="small-12 cell" style="display: inline-block">
-                        <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
-                    </div>
+
+                <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
 
                 <!-- CONNECTIONS TILE -->
                     <div class="cell small-12">

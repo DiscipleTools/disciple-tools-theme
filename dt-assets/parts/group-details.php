@@ -15,7 +15,7 @@
     }
     ?>
 
-    <section class="bordered-box">
+    <section id="group-details" class="cell small-12 bordered-box">
     <div style="display: flex;">
         <div class="item-details-header" style="flex-grow:1">
             <i class="fi-torsos-all large" style="padding-bottom: 1.2rem"></i>

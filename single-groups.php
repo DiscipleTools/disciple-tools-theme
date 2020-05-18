@@ -41,7 +41,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
     <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
         <main id="main" class="large-7 medium-12 small-12 cell" role="main" style="padding:0">
-            <div class="cell grid-y grid-margin-y" style="display: block">
+            <div class="cell grid-y grid-margin-y">
 
                 <!-- Requires update block -->
                 <section class="cell small-12 update-needed-notification"
@@ -51,11 +51,9 @@ if ( ! current_user_can( 'access_groups' ) ) {
                         <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?></p>
                     </div>
                 </section>
-                <section id="group-details" class="cell small-12" style="display: inline-block">
-                    <div class="cell">
-                        <?php get_template_part( 'dt-assets/parts/group', 'details' ); ?>
-                    </div>
-                </section>
+
+                <?php get_template_part( 'dt-assets/parts/group', 'details' ); ?>
+
                 <div class="cell small-12">
                     <div class="grid-x grid-margin-x grid-margin-y grid">
 
