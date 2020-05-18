@@ -51,7 +51,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                         <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?></p>
                     </div>
                 </section>
-                <section id="contact-details" class="cell small-12 grid-margin-y">
+                <section id="group-details" class="cell small-12" style="display: inline-block">
                     <div class="cell">
                         <?php get_template_part( 'dt-assets/parts/group', 'details' ); ?>
                     </div>

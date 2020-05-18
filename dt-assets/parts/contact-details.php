@@ -45,7 +45,7 @@
 
     <?php do_action( 'dt_contact_detail_notification', $contact ); ?>
 
-    <section class="cell bordered-box" style="display: inline-block">
+    <section class="cell bordered-box">
         <div style="display: flex;">
             <div class="item-details-header" style="flex-grow:1">
                 <i class="fi-torso large" style="padding-bottom: 1.2rem"></i>

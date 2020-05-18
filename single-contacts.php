@@ -272,7 +272,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                     <?php }
                 }
                 ?>
-                    <div id="contact-details" class="small-12 cell grid-margin-y">
+                    <div id="contact-details" class="small-12 cell" style="display: inline-block">
                         <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
                     </div>
 
