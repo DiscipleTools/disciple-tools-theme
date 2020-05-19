@@ -21,7 +21,7 @@ class Disciple_Tools_Posts
      */
     public function __construct() {
         add_filter( "dt_can_view_permission", [ $this, 'can_view_permission_filter' ], 10, 2 );
-        add_filter( "dt_can_update_permission", [ $this, 'can_view_permission_filter' ], 10, 2 );
+        add_filter( "dt_can_update_permission", [ $this, 'can_update_permission_filter' ], 10, 2 );
     }
 
     /**
@@ -659,12 +659,16 @@ class Disciple_Tools_Posts
         if ( !isset( $query["assigned_to"] ) || in_array( "all", $query["assigned_to"] ) ){
             $query["assigned_to"] = [ "all" ];
             if ( !self::can_view_all( $post_type ) && $check_permissions ){
-                $query["assigned_to"] = [ "me" ];
-                if ( !in_array( "shared", $include )){
-                    $include[] = "shared";
-                }
-                if ( current_user_can( 'access_specific_sources' ) ){
-                    $include[] = "allowed_sources";
+                if ( current_user_can( 'access_specific_sources' ) && in_array( 'all', get_user_option( 'allowed_sources' ) ?? [] ) ){
+                    $query["assigned_to"] = [ "all" ];
+                } else {
+                    $query["assigned_to"] = [ "me" ];
+                    if ( !in_array( "shared", $include )){
+                        $include[] = "shared";
+                    }
+                    if ( current_user_can( 'access_specific_sources' ) ){
+                        $include[] = "allowed_sources";
+                    }
                 }
             };
         }
@@ -675,7 +679,7 @@ class Disciple_Tools_Posts
             }
             if ( $i === "allowed_sources" ){
                 $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
-                if ( !empty( $allowed_sources ) ){
+                if ( !empty( $allowed_sources ) && !in_array( "restrict_all_sources", $allowed_sources ) ){
                     $sources_sql = dt_array_to_sql( $allowed_sources );
                     $access_joins .= "LEFT JOIN $wpdb->postmeta AS source_access ON ( $wpdb->posts.ID = source_access.post_id AND source_access.meta_key = 'sources' ) ";
                     $access_query .= ( !empty( $access_query ) ? "OR" : "" ) ." ( source_access.meta_key = 'sources' AND source_access.meta_value IN ( $sources_sql ) )";

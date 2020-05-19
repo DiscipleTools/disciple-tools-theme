@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 17;
+    private static $target_roles_version_number = 19;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -83,8 +83,6 @@ class Disciple_Tools_Roles
          * If you modify the roles here, make sure to increment
          * $target_roles_version_number by one, set above.
          */
-
-        /* TODO: Different capabilities are commented out below in the different roles as we configure usage in development, but should be removed for distribution. */
 
         if ( get_role( 'strategist' ) ) {
             remove_role( 'strategist' );
@@ -189,7 +187,7 @@ class Disciple_Tools_Roles
                 'access_specific_sources'   => true,
                 //'view_any_contacts'         => true,  //view any contacts
                 'assign_any_contacts'       => true,  //assign contacts to others
-                'update_any_contacts'       => true,  //update any contacts
+                //'update_any_contacts'       => true,  //update any contacts
             ]
         );
 

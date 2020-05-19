@@ -497,6 +497,9 @@ class Disciple_Tools_Users
             foreach ( $_POST["allowed_sources"] as $s ) {  // @codingStandardsIgnoreLine
                 $allowed_sources[] = sanitize_key( wp_unslash( $s ) );
             }
+            if ( in_array( "restrict_all_sources", $allowed_sources ) ){
+                $allowed_sources = [ "restrict_all_sources" ];
+            }
             update_user_option( $user_id, "allowed_sources", $allowed_sources );
         }
     }
@@ -719,18 +722,28 @@ class Disciple_Tools_Users
                         <ul>
                             <li>
                                 <?php $checked = in_array( 'all', $selected_sources === false ? [ 'all' ] : $selected_sources ) ? "checked" : ''; ?>
-                                <input type="checkbox" name="allowed_sources[]" value="all" <?php echo esc_html( $checked ) ?>/>
+                                <input type="radio" name="allowed_sources[]" value="all" <?php echo esc_html( $checked ) ?>/>
                                 All Sources
+                            </li>
+                            <li>
+                                <?php $checked = in_array( 'restrict_all_sources', $selected_sources === false ? [] : $selected_sources ) ? "checked" : ''; ?>
+                                <input type="radio" name="allowed_sources[]" value="restrict_all_sources" <?php echo esc_html( $checked ) ?>/>
+                                No Source
+                            </li>
+                            <li>
+                                <?php $checked = in_array( 'custom_source_restrict', $selected_sources === false ? [] : $selected_sources ) ? "checked" : ''; ?>
+                                <input type="radio" name="allowed_sources[]" value="custom_source_restrict" <?php echo esc_html( $checked ) ?>/>
+                                Custom: select below
                             </li>
                             <li>
                                 &nbsp;
                             </li>
-                        <?php foreach ( $sources as $source ) :
-                            $checked = in_array( $source["key"], $selected_sources === false ? [] : $selected_sources ) ? "checked" : '';
+                        <?php foreach ( $sources as $source_key => $source_value ) :
+                            $checked = in_array( $source_key, $selected_sources === false ? [] : $selected_sources ) ? "checked" : '';
                             ?>
                             <li>
-                                <input type="checkbox" name="allowed_sources[]" value="<?php echo esc_html( $source["key"] ) ?>" <?php echo esc_html( $checked ) ?>/>
-                                <?php echo esc_html( $source["label"] ) ?>
+                                <input type="checkbox" name="allowed_sources[]" value="<?php echo esc_html( $source_key ) ?>" <?php echo esc_html( $checked ) ?>/>
+                                <?php echo esc_html( $source_value["label"] ) ?>
                             </li>
                         <?php endforeach; ?>
                         </ul>

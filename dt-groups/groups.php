@@ -477,7 +477,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         global $wpdb;
 
         $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT status.meta_value as group_status, pm.meta_value as group_type, count(pm.meta_value) as count, count(un.post_id) as update_needed
+            SELECT status.meta_value as group_status, pm.meta_value as group_type, count(distinct(pm.post_id)) as count, count(distinct(un.post_id)) as update_needed
             FROM $wpdb->postmeta pm
             INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'group_status' )
             INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'groups' and a.post_status = 'publish' )
@@ -496,7 +496,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         global $wpdb;
         if ( current_user_can( 'view_any_groups' ) ){
             $results = $wpdb->get_results("
-                SELECT status.meta_value as group_status, pm.meta_value as group_type, count(pm.meta_value) as count, count(un.post_id) as update_needed
+                SELECT status.meta_value as group_status, pm.meta_value as group_type, count(distinct(pm.post_id)) as count, count(distinct(un.post_id)) as update_needed
                 FROM $wpdb->postmeta pm
                 INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'group_status' )
                 INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'groups' and a.post_status = 'publish' )
@@ -506,7 +506,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             ", ARRAY_A);
         } else {
             $results = $wpdb->get_results($wpdb->prepare("
-                SELECT status.meta_value as group_status, pm.meta_value as group_type, count(pm.meta_value) as count, count(un.post_id) as update_needed
+                SELECT status.meta_value as group_status, pm.meta_value as group_type, count(distinct(pm.post_id)) as count, count(distinct(un.post_id)) as update_needed
                 FROM $wpdb->postmeta pm
                 INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'group_status' )
                 INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'groups' and a.post_status = 'publish' )
