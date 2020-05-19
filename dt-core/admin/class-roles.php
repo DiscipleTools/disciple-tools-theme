@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 19;
+    private static $target_roles_version_number = 20;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -188,6 +188,24 @@ class Disciple_Tools_Roles
                 //'view_any_contacts'         => true,  //view any contacts
                 'assign_any_contacts'       => true,  //assign contacts to others
                 //'update_any_contacts'       => true,  //update any contacts
+            ]
+        );
+
+        if ( get_role( 'partner' ) ) {
+            remove_role( 'partner' );
+        }
+        add_role(
+            'partner', __( 'Partner', 'disciple_tools' ),
+            [
+                'access_groups' => true,
+                'create_groups' => true,
+
+                 /* Add custom caps for contacts */
+                'access_contacts'           => true,
+                'create_contacts'           => true,
+                'access_specific_sources'   => true,
+
+                'read_location' => true,
             ]
         );
 
@@ -417,6 +435,7 @@ class Disciple_Tools_Roles
         remove_role( 'strategist' );
         remove_role( 'multiplier' );
         remove_role( 'marketer' );
+        remove_role( 'partner' );
         remove_role( 'multiplier_leader' );
         remove_role( 'marketer_leader' );
         remove_role( 'prayer_supporter' );
