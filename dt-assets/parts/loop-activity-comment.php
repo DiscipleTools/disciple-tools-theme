@@ -42,10 +42,14 @@
                             </div>
                             <select id="comment_type_selector" class="cell auto">
                                 <?php
-                                foreach ( $sections as $section ) {?>
-                                    <option value="<?php echo esc_html( $section["key"] ); ?>">
-                                    <?php echo esc_html( $section["label"] ); ?>
-                                <?php } ?>
+                                $section_keys = [];
+                                foreach ( $sections as $section ) {
+                                    if ( !in_array( $section["key"], $section_keys ) ) {
+                                        $section_keys[] = $section["key"] ?>
+                                        <option value="<?php echo esc_html( $section["key"] ); ?>">
+                                        <?php echo esc_html( $section["label"] );
+                                    }
+                                } ?>
                             </select>
                         </div>
                 <?php endif; ?>
@@ -185,7 +189,7 @@
         <p class="lead"><?php esc_html_e( 'Edit Comment:', 'disciple_tools' ) ?></p>
         <textarea id="comment-to-edit" rows="10" dir="auto"></textarea>
         <div class="grid-x">
-        <div class="cell small-12" id="edit_typeOfComment">
+            <div class="cell small-12" id="edit_typeOfComment">
                 <?php if ( is_singular( "contacts" ) ) :
                      $sections = [
                          [
@@ -196,18 +200,20 @@
                      ];
                      $post_type = get_post_type();
                      $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
-
-
-                            <div class="section-subheader">
-                                <?php esc_html_e( "Type of Comment", 'disciple_tools' ) ?>
-                            </div>
-                            <select id="edit_comment_type_selector" class="">
-                                <?php
-                                foreach ( $sections as $section ) {?>
+                        <div class="section-subheader">
+                            <?php esc_html_e( "Type of Comment", 'disciple_tools' ) ?>
+                        </div>
+                        <select id="edit_comment_type_selector" class="">
+                            <?php
+                            $section_keys = [];
+                            foreach ( $sections as $section ) {
+                                if ( !in_array( $section["key"], $section_keys ) ) {
+                                    $section_keys[] = $section["key"] ?>
                                     <option value="<?php echo esc_html( $section["key"] ); ?>">
-                                    <?php echo esc_html( $section["label"] ); ?>
-                                <?php } ?>
-                            </select>
+                                    <?php echo esc_html( $section["label"] );
+                                }
+                            } ?>
+                        </select>
                 <?php endif; ?>
             </div>
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
