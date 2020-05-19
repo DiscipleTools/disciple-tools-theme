@@ -153,6 +153,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         foreach ( $post_types as $post_type ){
             $select_options[$post_type] = [];
             $fields = $this->get_post_fields( $post_type );
+            uasort($fields, function( $a, $b) {
+                return $a['name'] <=> $b['name'];
+            });
             if ( $fields ){
                 foreach ( $fields as $field_key => $field_value ){
                     if ( ( isset( $field_value["customizable"] ) && $field_value["customizable"] !== false ) || ( !isset( $field_value["customizable"] ) && empty( $field_value["hidden"] ) ) ){
