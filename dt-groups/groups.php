@@ -165,7 +165,6 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 $user_id = get_post_meta( $value, "corresponds_to_user", true );
                 if ( $user_id ){
                     DT_Posts::add_shared( "groups", $post_id, $user_id, null, false, false, false );
-                    Disciple_Tools_Notifications::insert_notification_for_subassigned( $user_id, $post_id );
                 }
             }
         }
