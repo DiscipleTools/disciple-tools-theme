@@ -142,7 +142,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '0.29.0';
+            $this->version = '0.30.0';
             $this->migration_number = 29;
 
 
@@ -265,7 +265,9 @@ else {
             require_once( get_template_directory() . '/dt-posts/custom-post-type.php' );
             require_once( get_template_directory() . '/dt-posts/dt-posts.php' );
             require_once( get_template_directory() . '/dt-posts/dt-posts-endpoints.php' );
+            require_once( get_template_directory() . '/dt-posts/dt-posts-hooks.php' );
             Disciple_Tools_Posts_Endpoints::instance();
+            new DT_Posts_Hooks();
 
             /**
              * dt-contacts
@@ -423,7 +425,7 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-people-groups.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-utilities-overview.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-fields.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-contact-import.php' );
+
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr.php' );
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-metrics.php' );

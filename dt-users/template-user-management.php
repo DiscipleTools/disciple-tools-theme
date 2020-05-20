@@ -265,10 +265,10 @@ $user_management_options = DT_User_Management::user_management_options();
                             <!-- Locations -->
                             <div class="bordered-box">
                                 <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
-                                    <h4><?php esc_html_e( "Location Responsibility", 'zume' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( "add", 'zume' ) ?></a></h4>
+                                    <h4><?php esc_html_e( "Location Responsibility", 'disciple_tools' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( "add", 'disciple_tools' ) ?></a></h4>
                                     <div id="mapbox-wrapper"></div>
                                 <?php else : ?>
-                                    <h4><?php esc_html_e( "Location Responsibility", 'zume' ) ?></h4>
+                                    <h4><?php esc_html_e( "Location Responsibility", 'disciple_tools' ) ?></h4>
                                     <div class="location_grid">
                                         <var id="location_grid-result-container" class="result-container"></var>
                                         <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
@@ -377,4 +377,3 @@ $user_management_options = DT_User_Management::user_management_options();
 </div> <!-- end #content -->
 
 <?php get_footer(); ?>
-

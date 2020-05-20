@@ -15,6 +15,7 @@ jQuery(document).ready(function($) {
   $.typeahead({
     input: '.js-typeahead-assigned_to',
     minLength: 0,
+    maxItem: 0,
     accent: true,
     searchOnFocus: true,
     source: TYPEAHEADS.typeaheadUserSource(),

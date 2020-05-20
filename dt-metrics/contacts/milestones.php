@@ -35,11 +35,13 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
      * Load scripts for the plugin
      */
     public function scripts() {
+
         wp_register_script( 'datepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', false );
         wp_enqueue_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css', array() );
 
         wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
+
 
         wp_enqueue_script( 'dt_' . $this->slug . '_script',
             get_template_directory_uri() . $this->js_file_name,
@@ -64,7 +66,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
                 'translations' => [
                     'milestones' => __( "Milestones", 'disciple_tools' ),
                     'filter_contacts_to_date_range' => __( "Filter contacts to date range:", 'disciple_tools' ),
-                    'all_time' => __( "All time", 'disciple_tools' ),
+                    'all_time' => __( "All Time", 'disciple_tools' ),
                     'filter_to_date_range' => __( "Filter to date range", 'disciple_tools' ),
                 ]
             ]

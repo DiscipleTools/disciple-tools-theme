@@ -49,6 +49,40 @@ function contactUpdated(updateNeeded) {
   $('#update-needed').prop("checked", updateNeeded)
 }
 
+function setStatus(contact, openModal) {
+  let statusSelect = $('#overall_status')
+  let status = _.get(contact, "overall_status.key")
+  let reasonLabel = _.get(contact, `reason_${status}.label`)
+  let statusColor = _.get(contactsDetailsWpApiSettings,
+    `contacts_custom_fields_settings.overall_status.default.${status}.color`
+  )
+  statusSelect.val(status)
+
+  if (openModal){
+    if (status === "paused"){
+      $('#paused-contact-modal').foundation('open');
+    } else if (status === "closed"){
+      $('#closed-contact-modal').foundation('open');
+    } else if (status === 'unassignable'){
+      $('#unassignable-contact-modal').foundation('open');
+    }
+  }
+
+  if (statusColor){
+    statusSelect.css("background-color", statusColor)
+  } else {
+    statusSelect.css("background-color", "#366184")
+  }
+
+  if (["paused", "closed", "unassignable"].includes(status)){
+    $('#reason').text(`(${reasonLabel})`)
+    $(`#edit-reason`).show()
+  } else {
+    $('#reason').text(``)
+    $(`#edit-reason`).hide()
+  }
+}
+
 
 /* The `contact` variable can be accessed outside this script, but not through
  * `window.` because `let` was used */
@@ -425,6 +459,7 @@ jQuery(document).ready(function($) {
   $.typeahead({
     input: '.js-typeahead-assigned_to',
     minLength: 0,
+    maxItem: 0,
     accent: true,
     searchOnFocus: true,
     source: TYPEAHEADS.typeaheadUserSource(),
@@ -436,7 +471,7 @@ jQuery(document).ready(function($) {
             ${_.escape( item.name )}
         </span>
         ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
-        ${ item.update_needed ? `<span>
+        ${ item.update_needed && item.update_needed > 0 ? `<span>
           <img style="height: 12px;" src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/broken.svg"/>
           <span style="font-size: 14px">${_.escape(item.update_needed)}</span>
         </span>` : '' }
@@ -741,39 +776,7 @@ jQuery(document).ready(function($) {
     }).catch(err => { console.error(err) })
   })
 
-  function setStatus(contact, openModal) {
-    let statusSelect = $('#overall_status')
-    let status = _.get(contact, "overall_status.key")
-    let reasonLabel = _.get(contact, `reason_${status}.label`)
-    let statusColor = _.get(contactsDetailsWpApiSettings,
-      `contacts_custom_fields_settings.overall_status.default.${status}.color`
-    )
-    statusSelect.val(status)
 
-    if (openModal){
-      if (status === "paused"){
-        $('#paused-contact-modal').foundation('open');
-      } else if (status === "closed"){
-        $('#closed-contact-modal').foundation('open');
-      } else if (status === 'unassignable'){
-        $('#unassignable-contact-modal').foundation('open');
-      }
-    }
-
-    if (statusColor){
-      statusSelect.css("background-color", statusColor)
-    } else {
-      statusSelect.css("background-color", "#366184")
-    }
-
-    if (["paused", "closed", "unassignable"].includes(status)){
-      $('#reason').text(`(${reasonLabel})`)
-      $(`#edit-reason`).show()
-    } else {
-      $('#reason').text(``)
-      $(`#edit-reason`).hide()
-    }
-  }
 
   //confirm setting a reason for a status.
   let confirmButton = $(".confirm-reason-button")

@@ -217,7 +217,10 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         <span id="post-type" style="display: none">contact</span>
 
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
-            <section class="hide-for-large small-12 cell">
+
+            <?php do_action( 'dt_record_top_full_with', 'contacts', $contact ) ?>
+
+            <section id="mobile-quick-actions" class="hide-for-large small-12 cell">
                 <div class="bordered-box">
                     <h3 class="section-header"><?php esc_html_e( 'Quick Actions', 'disciple_tools' ) ?>
                         <button class="help-button float-right" data-section="quick-action-help-text">
@@ -242,7 +245,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             </section>
             <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell" role="main" style="padding:0">
 
-                <div class="cell grid-y grid-margin-y" style="display: block">
+                <div class="cell grid-y grid-margin-y">
                 <?php
                 if ( current_user_can( "view_any_contacts" ) ){
                     $duplicate_post_meta = get_post_meta( get_the_Id(), 'duplicate_data' );
@@ -269,9 +272,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                     <?php }
                 }
                 ?>
-                    <div id="contact-details" class="small-12 cell grid-margin-y">
-                        <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
-                    </div>
+
+                <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
 
                 <!-- CONNECTIONS TILE -->
                     <div class="cell small-12">
@@ -402,7 +404,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                     </div>
 
                                     <div class="section-subheader">
-                                        <?php echo esc_html( $contact_fields["milestones"]["name"] )?>
+                                        <?php
+                                        echo esc_html( $contact_fields["milestones"]["name"] )?>
                                         <button class="help-button" data-section="faith-milestones-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
@@ -676,7 +679,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             <label for="title">
                 <?php esc_html_e( "Tag", "disciple_tools" ); ?>
             </label>
-            <input name="title" id="new-tag" type="text" placeholder="<?php echo esc_html_x( "tag", 'input field placeholder', 'disciple_tools' ); ?>" required aria-describedby="name-help-text">
+            <input name="title" id="new-tag" type="text" placeholder="<?php esc_html_e( "Tag", 'disciple_tools' ); ?>" required aria-describedby="name-help-text">
             <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
         </form>
 
@@ -754,7 +757,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                 <?php esc_html_e( "Display Name", "disciple_tools" ); ?>
                 <input name="user-display" id="user-display" type="text"
                        value="<?php the_title_attribute(); ?>"
-                       placeholder="<?php echo esc_html_x( "Display Name", 'disciple_tools' ) ?>">
+                       placeholder="<?php esc_html_e( "Display Name", 'disciple_tools' ) ?>">
             </label>
 
             <div class="grid-x">

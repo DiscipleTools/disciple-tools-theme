@@ -102,7 +102,7 @@ class Disciple_Tools_Users
                 }
             }
         } else {
-
+            $correct_roles = dt_multi_role_get_cap_roles( "access_contacts" );
             $search_string = esc_attr( $search_string );
             $user_query = new WP_User_Query( [
                 'search'         => '*' . $search_string . '*',
@@ -110,10 +110,10 @@ class Disciple_Tools_Users
                     'user_login',
                     'user_nicename',
                     'user_email',
-                    'user_url',
                     'display_name'
                 ],
-                'number' => $get_all ? 1000 : 10
+                'role__in' => $correct_roles,
+                'number' => $get_all ? 1000 : 50
             ] );
 
             $users = $user_query->get_results();
@@ -695,7 +695,7 @@ class Disciple_Tools_Users
                         <input type="text" class="regular-text corresponds_to_contact" name="corresponds_to_contact" value="<?php echo esc_html( $contact_title )?>" /><br />
                         <input type="hidden" class="regular-text corresponds_to_contact_id" name="corresponds_to_contact_id" value="<?php echo esc_html( $contact_id )?>" />
                         <?php if ( $contact_id ) : ?>
-                            <span class="description"><a href="<?php echo esc_html( get_site_url() . '/contacts/' . $contact_id )?>" target="_blank"><?php esc_html_e( "View contact", 'disciple_tools' ) ?></a></span>
+                            <span class="description"><a href="<?php echo esc_html( get_site_url() . '/contacts/' . $contact_id )?>" target="_blank"><?php esc_html_e( "View Contact", 'disciple_tools' ) ?></a></span>
                         <?php else :?>
                             <span class="description"><?php esc_html_e( "Add the name of the contact record this user corresponds to.", 'disciple_tools' ) ?>
                                 <a target="_blank" href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/users.html#inviting-users"><?php esc_html_e( "Learn more.", "disciple_tools" ) ?></a>
@@ -707,8 +707,8 @@ class Disciple_Tools_Users
         </table>
         <?php if ( isset( $user->ID ) && user_can( $user->ID, 'access_specific_sources' ) ) :
             $selected_sources = get_user_option( 'allowed_sources', $user->ID );
-            $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-            $sources = $site_custom_lists['sources'] ?? [];
+            $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
+            $sources = isset( $post_settings["fields"]["sources"]["default"] ) ? $post_settings["fields"]["sources"]["default"] : [];
             ?>
             <h3>Digital Responder Access</h3>
             <table class="form-table">

@@ -36,7 +36,7 @@ add_action( 'login_init', 'dt_security_headers_insert' );
 //add_filter( 'wp_handle_upload_prefilter', 'dt_disable_file_upload' ); //this breaks uploading plugins and themes
 add_filter( 'cron_schedules', 'dt_cron_schedules' );
 add_action( 'login_init', 'dt_redirect_logged_in' );
-
+add_filter( 'options_dt_custom_tiles', 'dt_get_custom_tile_translations' );
 /*********************************************************************************************
  * Functions
  */
@@ -142,10 +142,16 @@ function dt_get_option( string $name ) {
                 "groups" => []
             ]);
         case 'dt_custom_tiles':
-            return get_option( 'dt_custom_tiles', [
+
+            $custom_tiles = get_option( 'dt_custom_tiles', [
                 "contacts" => [],
                 "groups" => []
             ]);
+
+             $custom_tiles_with_translations = apply_filters( 'options_dt_custom_tiles', $custom_tiles );
+
+             return $custom_tiles_with_translations;
+
         case 'dt_custom_channels':
             return get_option( 'dt_custom_channels', [] );
 
@@ -299,7 +305,7 @@ function dt_get_site_options_defaults() {
                 'email' => true
             ],
             'comments' => [
-                'label' => __( 'New comments', 'disciple_tools' ),
+                'label' => __( 'New Comments', 'disciple_tools' ),
                 'web'   => false,
                 'email' => false
             ],
@@ -659,7 +665,7 @@ function dt_wpmu_signup_blog_notification_email( $message, $domain, $path, $titl
 */
 function login_error_messages( $message ){
     global $errors;
-    if ( isset( $errors->errors['invalid_username'] ) || isset( $errors->errors['incorrect_password'] ) ) {
+    if ( isset( $errors->errors['invalid_username'] ) || isset( $errors->errors['incorrect_password'] ) || isset( $errors->errors['invalid_email'] ) ) {
         $message = __( 'ERROR: Invalid username/password combination.', 'disciple_tools' ) . ' ' .
         sprintf(
             ( '<a href="%1$s" title="%2$s">%3$s</a>?' ),
@@ -716,6 +722,7 @@ function dt_redirect_logged_in() {
 }
 
 
+
 /**
  * Force password reset to remain on current site for multi-site installations.
  */
@@ -762,4 +769,21 @@ add_filter( "retrieve_password_message", 'dt_multisite_retrieve_password_message
 add_filter("retrieve_password_title", function( $title) {
     return "[" . wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) . "] Password Reset";
 });
+
+
+function dt_get_custom_tile_translations( $custom_tiles ) {
+    if ( is_admin() ) {
+        return $custom_tiles;
+    } else {
+        $user_locale = get_user_locale();
+        foreach ( $custom_tiles as $post_type => $tile_keys ) {
+            foreach ( $tile_keys as $key => $value) {
+                if ( !empty( $custom_tiles[$post_type][$key][$user_locale] ) ) {
+                    $custom_tiles[$post_type][$key]['label'] = $custom_tiles[$post_type][$key][$user_locale];
+                }
+            }
+        }
+        return $custom_tiles;
+    }
+}
 

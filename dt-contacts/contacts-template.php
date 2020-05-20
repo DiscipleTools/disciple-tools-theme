@@ -104,10 +104,13 @@ function render_field_for_display( $field_key, $fields, $post ){
                    class="text-input"
                    value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>"/>
         <?php elseif ( $field_type === "date" ) :?>
-            <input type="text" class="date-picker dt_date_picker"
-                   id="<?php echo esc_html( $field_key ) ?>"
-                   autocomplete="off"
-                   value="<?php echo esc_html( $post[$field_key]["timestamp"] ?? '' )?>">
+            <div class="<?php echo esc_html( $field_key ) ?> input-group">
+                <input id="<?php echo esc_html( $field_key ) ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off"
+                        value="<?php echo esc_html( $post[$field_key]["timestamp"] ?? '' ) ?>" >
+                <div class="input-group-button">
+                    <button id="<?php echo esc_html( $field_key ) ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $field_key ) ?>" title="Delete Date">x</button>
+                </div>
+            </div>
         <?php elseif ( $field_type === "connection" ) :?>
             <div id="<?php echo esc_attr( $field_key . '_connection' ) ?>" class="dt_typeahead">
                 <var id="<?php echo esc_html( $field_key ) ?>-result-container" class="result-container"></var>

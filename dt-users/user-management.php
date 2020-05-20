@@ -128,6 +128,7 @@ class DT_User_Management
             wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
             wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
+
             wp_enqueue_script( 'dt_dispatcher_tools', get_template_directory_uri() . '/dt-users/user-management.js', $dependencies, filemtime( plugin_dir_path( __FILE__ ) . '/user-management.js' ), true );
             wp_localize_script(
                 'dt_dispatcher_tools', 'dt_user_management_localized', [
@@ -145,6 +146,7 @@ class DT_User_Management
                         'contact_attempt_time' => _x( 'Contact with %1$s was attempted on %2$s after %3$s days', 'Contact with Bob was attempted on Jul 8 after 10 days', 'disciple_tools' ),
                         'unable_to_update' => _x( 'Unable to update', 'disciple_tools' ),
                     ]
+
                 ]
             );
 
@@ -447,37 +449,57 @@ class DT_User_Management
         }
         if ( empty( $users ) ) {
             global $wpdb;
-            $user_data = $wpdb->get_results( $wpdb->prepare( "
+            $users_query = $wpdb->get_results( $wpdb->prepare( "
                 SELECT users.ID,
                     users.display_name,
-                    count(pm.post_id) as number_assigned_to,
-                    count(active.post_id) as number_active,
-                    count(new_assigned.post_id) as number_new_assigned,
-                    count(update_needed.post_id) as number_update,
                     um.meta_value as roles
                 FROM $wpdb->users as users
                 INNER JOIN $wpdb->usermeta as um on ( um.user_id = users.ID AND um.meta_key = %s )
-                LEFT JOIN $wpdb->postmeta as pm on ( pm.meta_key = 'assigned_to' and pm.meta_value = CONCAT( 'user-', users.ID ) AND pm.post_id NOT IN (
-                    SELECT post_id
-                    FROM $wpdb->postmeta
-                    WHERE meta_key = 'type' AND meta_value = 'user'
-                    GROUP BY post_id
-                ))
-                LEFT JOIN $wpdb->posts as p on ( p.ID = pm.post_id and p.post_type = 'contacts' )
-                LEFT JOIN $wpdb->postmeta as active on (active.post_id = p.ID and active.meta_key = 'overall_status' and active.meta_value = 'active' )
-                LEFT JOIN $wpdb->postmeta as new_assigned on (new_assigned.post_id = p.ID and new_assigned.meta_key = 'overall_status' and new_assigned.meta_value = 'assigned' )
-                LEFT JOIN $wpdb->postmeta as update_needed on (update_needed.post_id = p.ID and update_needed.meta_key = 'requires_update' and update_needed.meta_value = '1' )
                 GROUP by users.ID, um.meta_value
             ", $wpdb->prefix . 'capabilities' ),
             ARRAY_A );
 
-
-            $users = [];
-            foreach ( $user_data as $user ) {
+            foreach ( $users_query as $user ){
                 $users[ $user["ID"] ] = $user;
                 $users[ $user["ID"] ]['location_grid'] = false;
                 $users[ $user["ID"] ]['location_grid_meta'] = false;
+                $users[ $user["ID"] ]['number_update'] = 0;
+                $users[ $user["ID"] ]['number_assigned_to'] = 0;
+                $users[ $user["ID"] ]['number_new_assigned'] = 0;
+                $users[ $user["ID"] ]['number_active'] = 0;
             }
+            $user_data = $wpdb->get_results("
+                SELECT
+                    assigned_to.meta_value as assigned_to,
+                    count( un.meta_value ) as number_update,
+                    count(assigned_to.meta_value) as number_assigned_to,
+                    count(new_assigned.post_id) as number_new_assigned,
+                    count(active.post_id) as number_active
+                FROM $wpdb->postmeta as assigned_to
+                INNER JOIN $wpdb->posts as p on ( p.ID = assigned_to.post_id and p.post_type = 'contacts' )
+                LEFT JOIN $wpdb->postmeta un on ( un.post_id = assigned_to.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1')
+                LEFT JOIN $wpdb->postmeta as active on (active.post_id = p.ID and active.meta_key = 'overall_status' and active.meta_value = 'active' )
+                LEFT JOIN $wpdb->postmeta as new_assigned on (new_assigned.post_id = p.ID and new_assigned.meta_key = 'overall_status' and new_assigned.meta_value = 'assigned' )
+                WHERE assigned_to.meta_key = 'assigned_to'
+                AND assigned_to.post_id NOT IN (
+                    SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND meta_value = 'user'
+                    GROUP BY post_id
+                )
+                GROUP BY assigned_to.meta_value
+            ", ARRAY_A );
+
+            foreach ( $user_data as $user ){
+                $user_id = str_replace( "user-", '', $user["assigned_to"] );
+                if ( isset( $users[$user_id] ) ) {
+                    $users[$user_id]["number_assigned_to"] = $user["number_assigned_to"];
+                    $users[$user_id]["number_active"] = $user["number_active"];
+                    $users[$user_id]["number_new_assigned"] = $user["number_new_assigned"];
+                    $users[$user_id]["number_update"] = $user["number_update"];
+                }
+            }
+
             $user_statuses = $wpdb->get_results( $wpdb->prepare( "
                 SELECT * FROM $wpdb->usermeta
                 WHERE meta_key = %s
@@ -520,9 +542,15 @@ class DT_User_Management
 
             $last_activity = $wpdb->get_results( "
                 SELECT user_id,
-                    MAX(hist_time) as last_activity
+                log.hist_time as last_activity
                 from $wpdb->dt_activity_log as log
-                GROUP by user_id",
+                where histid IN (
+                    SELECT MAX( histid )
+                    FROM $wpdb->dt_activity_log
+                    GROUP BY user_id
+                )
+                GROUP BY user_id,  last_activity
+                ORDER by user_id",
             ARRAY_A);
             foreach ( $last_activity as $a ){
                 if ( isset( $users[ $a["user_id"] ] ) ) {

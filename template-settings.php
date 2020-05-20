@@ -355,7 +355,7 @@ $translations = dt_get_translations();
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><?php esc_html_e( 'User Name', 'disciple_tools' )?> </td>
+                                    <td><?php esc_html_e( 'Username', 'disciple_tools' )?> </td>
                                     <td><span data-tooltip data-click-open="true" class="top" tabindex="2" title="<?php esc_html_e( 'Username cannot be changed' ) ?>"><?php echo esc_html( $dt_user->user_login ); ?> <i class="fi-info primary-color" onclick="jQuery('#username-message').toggle()"></i></span>
                                         <span id="username-message" style="display: none; font-size: .7em;"><br><?php esc_html_e( 'Username cannot be changed' ) ?></span>
                                     </td>

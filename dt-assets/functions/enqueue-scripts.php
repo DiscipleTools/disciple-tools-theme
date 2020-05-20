@@ -73,7 +73,7 @@ function dt_site_scripts() {
     // phpcs:ignore WordPress.WP.EnqueuedResourceParameters
     wp_enqueue_style( 'jquery-ui-site-css', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css', array(), '', 'all' );
     wp_deregister_script( 'jquery' );
-    wp_register_script( 'jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js', false, '3.2.1' );
+    wp_register_script( 'jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js', false, '3.5.0' );
     wp_enqueue_script( 'jquery' );
     wp_register_script( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', false, '1.12.1' );
     wp_enqueue_script( 'jquery-ui' );
@@ -110,13 +110,13 @@ function dt_site_scripts() {
             'template_dir' => get_template_directory_uri(),
             'translations' => [
                 'days_of_the_week' => [
-                    _x( "Su", 'Dates', 'disciple_tools' ),
-                    _x( "Mo", 'Dates', 'disciple_tools' ),
-                    _x( "Tu", 'Dates', 'disciple_tools' ),
-                    _x( "We", 'Dates', 'disciple_tools' ),
-                    _x( "Th", 'Dates', 'disciple_tools' ),
-                    _x( "Fr", 'Dates', 'disciple_tools' ),
-                    _x( "Sa", 'Dates', 'disciple_tools' )
+                    _x( "Su", 'Abbreviation of Sunday', 'disciple_tools' ),
+                    _x( "Mo", 'Abbreviation of Monday', 'disciple_tools' ),
+                    _x( "Tu", 'Abbreviation of Tuesday', 'disciple_tools' ),
+                    _x( "We", 'Abbreviation of Wednesday', 'disciple_tools' ),
+                    _x( "Th", 'Abbreviation of Thursday', 'disciple_tools' ),
+                    _x( "Fr", 'Abbreviation of Friday', 'disciple_tools' ),
+                    _x( "Sa", 'Abbreviation of Saturday', 'disciple_tools' )
                 ],
                 'month_labels' => [
                     _x( "January", 'Dates', 'disciple_tools' ),
@@ -135,7 +135,9 @@ function dt_site_scripts() {
                 'regions_of_focus' => __( 'Regions of Focus', 'disciple_tools' ),
                 'all_locations' => __( 'All Locations', 'disciple_tools' ),
                 'used_locations' => __( 'Used Locations', 'disciple_tools' ),
-                'no_records_found' => _x( 'No results found matching "{{query}}"', "Empty list results. Keep {{query}} as is in english", 'disciple_tools' )
+                'no_records_found' => _x( 'No results found matching "{{query}}"', "Empty list results. Keep {{query}} as is in english", 'disciple_tools' ),
+                'showing_x_items' => _x( 'Showing %s items', 'Showing 30 items', 'disciple_tools' ),
+                'showing_x_items_matching' => _x( 'Showing %1$s items matching %2$s', 'Showing 30 items matching bob', 'disciple_tools' ),
             ],
             'post_type' => $post_type ? $post_type : $url_path
         )
@@ -189,8 +191,8 @@ function dt_site_scripts() {
                     'template_dir' => get_template_directory_uri(),
                     'contact_author_name' => isset( $post->post_author ) && (int) $post->post_author > 0 ? get_user_by( 'id', intval( $post->post_author ) )->display_name : "",
                     'translations' => [
-                        "edit" => __( "edit", "disciple_tools" ),
-                        "delete" => __( "delete", "disciple_tools" ),
+                        "edit" => strtolower( __( "Edit", "disciple_tools" ) ),
+                        "delete" => strtolower( __( "Delete", "disciple_tools" ) ),
                         "translate" => __( "Translate with Google Translate", "disciple_tools" ),
                         "hide_translation" => __( "Hide Translation", "disciple_tools" )
                     ],
@@ -213,8 +215,8 @@ function dt_site_scripts() {
                 'current_user_id' => get_current_user_id(),
                 'post_fields' => $post,
                 'translations' => [
-                    'remove' => __( 'remove', 'disciple_tools' ),
-                    'complete' => __( 'mark as complete', 'disciple_tools' ),
+                    'remove' => __( 'Delete', 'disciple_tools' ),
+                    'complete' => __( 'Mark as complete', 'disciple_tools' ),
                     'no_tasks' => __( 'No task created', 'disciple_tools' ),
                     'reminder' => __( 'Reminder', 'disciple_tools' ),
                     'no_note' => __( 'No note set', 'disciple_tools' ),

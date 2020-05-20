@@ -10,7 +10,7 @@ global $post;
     <form class="js-add-task-form">
         <p style="color: red" class="error-text"></p>
         <p><?php echo esc_html__( 'Set a reminder or a task with a note and receive a notification on the due date.', 'disciple_tools' ); ?></p>
-        <strong><?php echo esc_html__( "Task type", "disciple_tools" ); ?></strong>
+        <strong><?php echo esc_html__( "Task Type", "disciple_tools" ); ?></strong>
         <ul class="ul-no-bullets">
             <li>
                 <label>

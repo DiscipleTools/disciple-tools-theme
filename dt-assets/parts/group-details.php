@@ -15,7 +15,7 @@
     }
     ?>
 
-    <section class="bordered-box">
+    <section id="group-details" class="cell small-12 bordered-box">
     <div style="display: flex;">
         <div class="item-details-header" style="flex-grow:1">
             <i class="fi-torsos-all large" style="padding-bottom: 1.2rem"></i>
@@ -70,7 +70,7 @@
 
             <div class="assigned_to details">
                 <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
-                <div id="assigned_to_t" name="form-assigned_to">
+                <div id="assigned_to_t" name="form-assigned_to" class="scrollable-typeahead">
                     <div class="typeahead__container">
                         <div class="typeahead__field">
                             <span class="typeahead__query">
@@ -241,7 +241,7 @@
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-location_grid input-height"
-                                           name="location_grid[query]" placeholder="<?php echo esc_html_x( "Search Locations", 'input field placeholder', 'disciple_tools' ) ?>"
+                                           name="location_grid[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
                                            autocomplete="off">
                                 </span>
                             </div>
