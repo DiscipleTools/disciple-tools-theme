@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 17;
+    private static $target_roles_version_number = 18;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -104,7 +104,9 @@ class Disciple_Tools_Roles
             [
                 'read'                      => true, //access to admin
 
-                'view_project_metrics' => true,
+                'list_users'                => true,
+
+                'view_project_metrics'      => true,
 
                 /* Add custom caps for contacts */
                 'access_contacts'           => true,
