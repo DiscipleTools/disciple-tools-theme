@@ -695,7 +695,7 @@ function dt_wpmu_signup_blog_notification_email( $message, $domain, $path, $titl
 */
 function login_error_messages( $message ){
     global $errors;
-    if ( isset( $errors->errors['invalid_username'] ) || isset( $errors->errors['incorrect_password'] ) ) {
+    if ( isset( $errors->errors['invalid_username'] ) || isset( $errors->errors['incorrect_password'] ) || isset( $errors->errors['invalid_email'] ) ) {
         $message = __( 'ERROR: Invalid username/password combination.', 'disciple_tools' ) . ' ' .
         sprintf(
             ( '<a href="%1$s" title="%2$s">%3$s</a>?' ),

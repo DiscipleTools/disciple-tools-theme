@@ -27,7 +27,7 @@
         </a>
         <button class="button reveal-after-contact-create button-cancel clear" data-close type="button" id="create-contact-return" style="display: none">
             <?php
-                echo esc_html( sprintf( _x( "Back to %s", "back to record", 'disciple_tools' ), DT_Posts::get_label_for_post_type( "contacts", false ) ) );
+                echo esc_html( sprintf( _x( "Back to %s", "back to record", 'disciple_tools' ), DT_Posts::get_label_for_post_type( "contacts", true ) ) );
             ?>
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">
