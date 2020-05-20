@@ -107,6 +107,9 @@ class DT_Metrics_Personal_Contacts_Cluster_Map extends DT_Metrics_Chart_Base
 
         $prepared_ids = dt_array_to_sql( $user_post_ids );
 
+        // phpcs can't validate that the $prepared_ids variable is actually escaped. False positive.
+        // @link https://github.com/WordPress/WordPress-Coding-Standards/issues/508
+        // phpcs:disable
         if ( $status ) {
             $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT lgm.label as address, p.post_title as name, lgm.post_id, lgm.lng, lgm.lat
@@ -127,6 +130,7 @@ class DT_Metrics_Personal_Contacts_Cluster_Map extends DT_Metrics_Chart_Base
               AND lgm.post_id IN ($prepared_ids)
             AND pm.post_id NOT IN (SELECT u.post_id FROM $wpdb->postmeta as u WHERE ( u.meta_key = 'corresponds_to_user' AND u.meta_value != '') OR ( u.meta_key = 'overall_status' AND u.meta_value = 'closed') )", ARRAY_A);
         }
+        // phpcs:enable
 
         $features = [];
         foreach ( $results as $result ) {

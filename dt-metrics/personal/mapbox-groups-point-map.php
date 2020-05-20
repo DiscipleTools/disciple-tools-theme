@@ -113,6 +113,9 @@ class DT_Metrics_Personal_Groups_Points_Map extends DT_Metrics_Chart_Base
 
         $prepared_ids = dt_array_to_sql( $my_list );
 
+        // phpcs can't validate that the $prepared_ids variable is actually escaped. False positive.
+        // @link https://github.com/WordPress/WordPress-Coding-Standards/issues/508
+        // phpcs:disable
         if ( $status ) {
             $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT lgm.label as l, p.post_title as n, lgm.post_id as pid, lgm.lng, lgm.lat, lg.admin0_grid_id as a0, lg.admin1_grid_id as a1
@@ -135,6 +138,7 @@ class DT_Metrics_Personal_Groups_Points_Map extends DT_Metrics_Chart_Base
               AND lgm.post_id IN ($prepared_ids)
               ", ARRAY_A);
         }
+        // phpcs:enable
 
         $features = [];
         foreach ( $results as $result ) {

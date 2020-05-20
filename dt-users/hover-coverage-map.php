@@ -84,7 +84,7 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
                 'translations' => [
-                    'title' => __( 'Coverage Map', 'disciple_tools')
+                    'title' => __( 'Coverage Map', 'disciple_tools' )
                 ]
             ]
         );
@@ -148,7 +148,7 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
             }
         }
 
-        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals( );
+        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals();
 
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
@@ -199,7 +199,7 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
             }
         }
 
-        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals( 'active');
+        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals( 'active' );
 
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
@@ -250,7 +250,7 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
             }
         }
 
-        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals( 'inactive');
+        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals( 'inactive' );
 
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {

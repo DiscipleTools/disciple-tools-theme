@@ -21,6 +21,8 @@ function project_critical_path() {
   let chartDiv = jQuery('#chart')
   let translations = dtMetricsProject.translations
 
+  jQuery('#metrics-sidemenu').foundation('down', jQuery('#combined-menu'));
+
   chartDiv.empty().html(`
     <div class="section-header">${ translations.title_critical_path }</div>
     <div class="date_range_picker">

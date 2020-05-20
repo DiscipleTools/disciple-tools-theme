@@ -995,8 +995,8 @@ Please click the following link to confirm the invite:
 
         $contact_meta = get_post_meta( $contact_id, 'location_grid' );
         if ( ! empty( $contact_meta ) ) {
-            foreach( $contact_meta as $item ) {
-                dt_write_log($item);
+            foreach ( $contact_meta as $item ) {
+                dt_write_log( $item );
             }
         }
     }

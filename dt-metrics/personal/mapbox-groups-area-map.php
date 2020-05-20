@@ -156,6 +156,9 @@ class DT_Metrics_Personal_Groups_Area_Map extends DT_Metrics_Chart_Base
 
         $prepared_ids = dt_array_to_sql( $my_list );
 
+        // phpcs can't validate that the $prepared_ids variable is actually escaped. False positive.
+        // @link https://github.com/WordPress/WordPress-Coding-Standards/issues/508
+        // phpcs:disable
         if ( $status ) {
             $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT t0.admin0_grid_id as grid_id, count(t0.admin0_grid_id) as count
@@ -302,6 +305,7 @@ class DT_Metrics_Personal_Groups_Area_Map extends DT_Metrics_Chart_Base
             GROUP BY t5.admin5_grid_id;
             ", ARRAY_A );
         }
+        // phpcs:enable
 
         $list = [];
         if ( is_array( $results ) ) {
@@ -318,6 +322,9 @@ class DT_Metrics_Personal_Groups_Area_Map extends DT_Metrics_Chart_Base
 
         $prepared_ids = dt_array_to_sql( $user_post_ids );
 
+        // phpcs can't validate that the $prepared_ids variable is actually escaped. False positive.
+        // @link https://github.com/WordPress/WordPress-Coding-Standards/issues/508
+        // phpcs:disable
         if ( $status ) {
             $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT DISTINCT t0.post_title, t0.post_id FROM (
@@ -449,6 +456,7 @@ class DT_Metrics_Personal_Groups_Area_Map extends DT_Metrics_Chart_Base
             WHERE t5.admin5_grid_id = %d;
             ", $grid_id, $grid_id, $grid_id, $grid_id, $grid_id, $grid_id ), ARRAY_A );
         }
+        // phpcs:enable
 
         return $results;
     }

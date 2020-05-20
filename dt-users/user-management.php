@@ -21,7 +21,7 @@ class DT_User_Management
                 add_filter( 'dt_templates_for_urls', [ $this, 'dt_templates_for_urls' ] );
 
 
-                add_action( 'init',  function() {
+                add_action( 'init', function() {
                     add_rewrite_rule( 'user-management/user/([a-z0-9-]+)[/]?$', 'index.php?dt_user_id=$matches[1]', 'top' );
                 } );
                 add_filter( 'query_vars', function( $query_vars ) {
