@@ -93,7 +93,7 @@
             <!-- <?php echo esc_html( $contact_fields["seeker_path"]["name"] ) ?> list -->
             <ul>
                 <?php foreach ( $contact_fields["seeker_path"]["default"] as $option ): ?>
-                    <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ) ?? "" ?></li>
+                    <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ?? "" ) ?></li>
                 <?php endforeach; ?>
             </ul>
         </div>
