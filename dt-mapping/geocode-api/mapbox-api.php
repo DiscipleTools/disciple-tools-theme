@@ -457,6 +457,10 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     </tbody>
                 </table>
             </form>
+            <style>
+                .connected{ padding: 10px; background-color: lightgreen;}
+                .not-connected { padding: 10px; background-color: lightcoral; }
+            </style>
             <br>
 
             <?php

@@ -547,9 +547,9 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'key_select',
             'default'     => [
                 'media'    => [ "label" => __( 'Media', 'disciple_tools' ) ],
-                'seeker' => [ "seeker" => __( 'Seeker', 'disciple_tools' ) ],
-                'believer' => [ "believer" => __( 'Believer', 'disciple_tools' ) ],
-                'leader' => [ "leader" => __( 'Leader', 'disciple_tools' ) ],
+                'seeker' => [ "label" => __( 'Seeker', 'disciple_tools' ) ],
+                'believer' => [ "label" => __( 'Believer', 'disciple_tools' ) ],
+                'leader' => [ "label" => __( 'Leader', 'disciple_tools' ) ],
 //                'next_gen' => [ "label" => __( 'Next Generation', 'disciple_tools' ) ], // @todo unused?
 //                'user'     => [ "label" => __( 'User', 'disciple_tools' ) ] // @todo unused?
             ],

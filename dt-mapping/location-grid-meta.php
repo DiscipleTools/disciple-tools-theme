@@ -52,6 +52,12 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
             return $location_grid_meta;
         }
 
+        /**
+         * This filter validates the format of the location grid meta.
+         *
+         * @param null $location_grid_meta Can be called null and will return array.
+         * @return array Returns a structured array in the location grid meta structure.
+         */
         public static function validate_location_grid_meta(&$location_grid_meta = null): array
         {
 
