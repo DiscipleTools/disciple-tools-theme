@@ -1,53 +1,80 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly.
 
-Disciple_Tools_Metrics_Critical_Path::instance();
-class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_Base {
-    public $permissions = [ 'access_contacts' ];
-    private static $_instance = null;
+class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
+{
 
-    public static function instance() {
-        if ( is_null( self::$_instance ) ) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
-    } // End instance()
+    //slug and title of the top menu folder
+    public $base_slug = 'combined'; // lowercase
+    public $base_title;
+    public $title;
+    public $slug = 'critical_path'; // lowercase
+    public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
+    public $js_file_name = '/dt-metrics/combined/critical-path.js'; // should be full file name plus extension
+    public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
 
     public function __construct() {
-        if ( !$this->has_permission() ) {
+        parent::__construct();
+        if ( !$this->has_permission() ){
             return;
         }
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
 
+        $this->title = __( 'Critical Path', 'disciple_tools' );
+        $this->base_title = __( 'Combined', 'disciple_tools' );
 
         $url_path = dt_get_url_path();
-        if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
+        if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
 
-            add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
-            add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 50 );
+            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
-            if ( 'metrics/critical-path' === $url_path ) {
-                add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+        }
+
+//        $url_path = dt_get_url_path();
+//        if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
+//
+//            add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
+//            add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 10 );
+//
+//            if ( 'metrics/critical-path' === $url_path ) {
+//                add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+//            }
+//        }
+        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+    }
+
+    public function has_permission(){
+        $permissions = $this->permissions;
+        $pass = count( $permissions ) === 0;
+        foreach ( $this->permissions as $permission ){
+            if ( current_user_can( $permission ) ){
+                $pass = true;
             }
         }
-        parent::__construct();
+        return $pass;
     }
 
     public function add_url( $template_for_url ) {
         $template_for_url['metrics/critical-path'] = 'template-metrics.php';
-
         return $template_for_url;
     }
 
     public function add_menu( $content ) {
         $content .= '
-            <li><a href="' . site_url( '/metrics/critical-path/' ) . '#project_critical_path" onclick="project_critical_path()">' . esc_html__( 'Critical Path', 'disciple_tools' ) . '</a></li>
+            <li><a href="' . site_url( '/metrics/critical-path/' ) . '">' . esc_html__( 'Critical Path', 'disciple_tools' ) . '</a></li>
             ';
         return $content;
     }
 
     public function scripts() {
-        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . '/dt-metrics/metrics-critical-path.js', [
+        wp_register_script( 'datepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', false );
+        wp_enqueue_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css', array() );
+
+        wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, false, true );
+        wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, false, true );
+
+        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
             'moment',
             'jquery',
             'jquery-ui-core',
@@ -55,7 +82,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
             'amcharts-charts',
             'datepicker',
             'wp-i18n'
-        ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-critical-path.js' ) );
+        ], filemtime( get_theme_file_path() . $this->js_file_name ) );
 
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
@@ -126,7 +153,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
                 $start = DateTime::createFromFormat( "Y-m-d", $year . '-01-01' )->getTimestamp();
                 $end   = DateTime::createFromFormat( "Y-m-d", ( $year + 1 ) . '-01-01' )->getTimestamp();
             }
-            $result = Disciple_Tools_Metrics_Hooks_Base::chart_critical_path( $start, $end );
+            $result = $this->chart_critical_path( $start, $end );
             if ( is_wp_error( $result ) ) {
                 return $result;
             } else {
@@ -135,6 +162,17 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         } else {
             return new WP_Error( "critical_path_by_year", "Missing a valid contact id", [ 'status' => 400 ] );
         }
+    }
+
+    public function chart_critical_path( $start = null, $end = null ) {
+        $chart = Disciple_Tools_Counter::critical_path( 'all', $start, $end );
+
+        /**
+         * Filter chart array before sending to enqueue.
+         */
+        $chart = apply_filters( 'dt_chart_critical_path', $chart, $start, $end );
+
+        return $chart;
     }
 
     public function _no_results() {
@@ -332,4 +370,6 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         return $data;
     }
 
+
 }
+new DT_Metrics_Critical_Path_Chart();

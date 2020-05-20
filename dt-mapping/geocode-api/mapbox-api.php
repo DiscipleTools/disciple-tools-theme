@@ -284,6 +284,27 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             }
         }
 
+        public static function load_mapbox_search_widget_users() {
+            if ( file_exists( get_template_directory() . '/dt-mapping/geocode-api/mapbox.js' ) ) {
+
+                wp_enqueue_script( 'mapbox-search-widget', trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/geocode-api/mapbox-users.js', [ 'jquery', 'mapbox-gl', 'shared-functions' ], filemtime( get_template_directory() . '/dt-mapping/geocode-api/mapbox-users.js' ), true );
+                wp_localize_script(
+                    "mapbox-search-widget", "dtMapbox", array(
+                        'post_type' => 'user',
+                        "post_id" => '',
+                        "post" => '',
+                        "map_key" => self::get_key(),
+                        "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
+                        "theme_uri" => get_stylesheet_directory_uri(),
+                        "translations" => array(
+                            'add' => __( 'add', 'disciple-tools' )
+                        )
+                    )
+                );
+                add_action( 'wp_head', [ 'DT_Mapbox_API', 'mapbox_search_widget_css' ] );
+            }
+        }
+
         public static function mapbox_search_widget_css() {
             /* Added these few style classes inline vers css file. */
             ?>
@@ -361,14 +382,14 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
         public static function metabox_for_admin() {
             global $dt_mapping;
 
-            if ( isset( $_POST['mapbox_key'] )
-                 && ( isset( $_POST['geocoding_key_nonce'] )
+            if ( isset( $_POST['mapbox_key'] ) && isset( $_POST['action'] ) && ( isset( $_POST['geocoding_key_nonce'] )
                       && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['geocoding_key_nonce'] ) ), 'geocoding_key' . get_current_user_id() ) ) ) {
 
                 $key = sanitize_text_field( wp_unslash( $_POST['mapbox_key'] ) );
-                if ( empty( $key ) ) {
+                $action = sanitize_text_field( wp_unslash( $_POST['action'] ) );
+                if ( empty( $key ) || $action === 'delete' ) {
                     self::delete_key();
-                } else {
+                } else if ( $action === 'add' ) {
                     self::update_key( $key );
                 }
             }
@@ -392,7 +413,12 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     <tr>
                         <td>
                             <?php wp_nonce_field( 'geocoding_key' . get_current_user_id(), 'geocoding_key_nonce' ); ?>
-                            Mapbox API Token: <input type="text" class="regular-text" name="mapbox_key" value="<?php echo ( $key ) ? esc_attr( $hidden_key ) : ''; ?>" /> <button type="submit" class="button">Update</button>
+                            Mapbox API Token: <input type="text" class="regular-text" name="mapbox_key" value="<?php echo ( $key ) ? esc_attr( $hidden_key ) : ''; ?>" />
+                            <?php if ( self::get_key() ) : ?>
+                                <button type="submit" name="action" value="delete" class="button">Delete</button>
+                            <?php else : ?>
+                                <button type="submit" name="action" value="add" class="button">Add</button>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <tr>
@@ -431,6 +457,10 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     </tbody>
                 </table>
             </form>
+            <style>
+                .connected{ padding: 10px; background-color: lightgreen;}
+                .not-connected { padding: 10px; background-color: lightcoral; }
+            </style>
             <br>
 
             <?php

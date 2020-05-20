@@ -24,7 +24,7 @@ abstract class DT_Metrics_Chart_Base
             if ( !$this->has_permission() ){
                 return;
             }
-            add_filter( 'dt_metrics_menu', [ $this, 'base_menu' ], 99 ); //load menu links
+            add_filter( 'dt_metrics_menu', [ $this, 'base_menu' ], 20 ); //load menu links
 
             if ( strpos( $url_path, "metrics/$this->base_slug/$this->slug" ) === 0 ) {
                 add_filter( 'dt_templates_for_urls', [ $this, 'base_add_url' ] ); // add custom URLs
@@ -94,5 +94,36 @@ abstract class DT_Metrics_Chart_Base
             }
         }
         return $pass;
+    }
+
+    public function my_list() {
+        $list = Disciple_Tools_Posts::search_viewable_post( 'contacts', [ "assigned_to" => [ "shared", "me" ] ] );
+        if ( is_wp_error( $list ) ) {
+            return [];
+        }
+        $my_list = [];
+        foreach ( $list['posts'] as $post ) {
+            $my_list[] = $post->ID;
+        }
+        return $my_list;
+    }
+
+    public function my_groups_list() {
+        $list = Disciple_Tools_Posts::search_viewable_post( 'groups', [ "assigned_to" => [ "shared", "me" ] ] );
+        if ( is_wp_error( $list ) ) {
+            return [];
+        }
+        $my_list = [];
+        foreach ( $list['posts'] as $post ) {
+            $my_list[] = $post->ID;
+        }
+        return $my_list;
+    }
+
+    public function _empty_geojson() {
+        return array(
+            'type' => 'FeatureCollection',
+            'features' => []
+        );
     }
 }

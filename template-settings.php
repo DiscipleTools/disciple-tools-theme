@@ -182,16 +182,28 @@ $translations = dt_get_translations();
                 </div>
 
                 <div class="small-12 cell">
-                    <div class="bordered-box cell" id="locations" data-magellan-target="locations">
-                        <button class="help-button float-right" data-section="locations-help-text">
-                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                        </button>
-                        <span class="section-header"><?php esc_html_e( 'Locations', 'disciple_tools' )?></span>
-                        <hr size="1" style="max-width:100%"/>
-                        <!-- Geocoding -->
-
-                        <div id="manage_locations_section"></div>
-
+                    <div class="bordered-box">
+                        <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
+                            <h4><?php esc_html_e( "Location Responsibility", 'zume' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( "add", 'zume' ) ?></a></h4>
+                            <div id="mapbox-wrapper"></div>
+                        <?php else : ?>
+                            <h4><?php esc_html_e( "Location Responsibility", 'zume' ) ?></h4>
+                            <div class="location_grid">
+                                <var id="location_grid-result-container" class="result-container"></var>
+                                <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
+                                    <div class="typeahead__container">
+                                        <div class="typeahead__field">
+                                                <span class="typeahead__query">
+                                                    <input class="js-typeahead-location_grid input-height"
+                                                           name="location_grid[query]"
+                                                           placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                                           autocomplete="off">
+                                                </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
 

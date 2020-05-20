@@ -1,22 +1,14 @@
 jQuery(document).ready(function($) {
-
-  console.log(dt_mapbox_metrics)
-
-  if('/metrics/contacts/mapbox_cluster_map' === window.location.pathname || '/metrics/contacts/mapbox_cluster_map/' === window.location.pathname) {
-    write_cluster('contact_settings' )
-  }
-  if('/metrics/groups/mapbox_cluster_map' === window.location.pathname || '/metrics/groups/mapbox_cluster_map/' === window.location.pathname ) {
-    write_cluster('group_settings' )
-  }
+  // console.log(dt_mapbox_metrics)
 
   function write_cluster( settings ) {
     let obj = dt_mapbox_metrics
 
-    let post_type = obj[settings].post_type
-    let title = obj[settings].title
-    let status = obj[settings].status_list
+    window.post_type = obj.settings.post_type
+    let title = obj.settings.title
+    let status = obj.settings.status_list
 
-    jQuery('#metrics-sidemenu').foundation('down', jQuery(`#${post_type}-menu`));
+    jQuery('#metrics-sidemenu').foundation('down', jQuery(`#${obj.settings.menu_slug}-menu`));
 
     let chart = jQuery('#chart')
     let spinner = ' <span class="loading-spinner users-spinner active"></span> '
@@ -35,10 +27,9 @@ jQuery(document).ready(function($) {
     })
     status_list += `<option value="none"></option>`
 
-
-    makeRequest( "POST", `cluster_geojson`, { post_type: post_type, status: null} , 'dt-metrics/mapbox/' )
+    makeRequest( "POST", obj.settings.rest_url, { post_type: window.post_type, status: null} , obj.settings.rest_base_url )
       .then(data=>{
-        console.log(data)
+        // console.log(data)
 
         chart.empty().html(`
             <style>
@@ -133,7 +124,7 @@ jQuery(document).ready(function($) {
                 <div id='map'></div>
                 <div id='legend' class='legend'>
                     <div class="grid-x grid-margin-x grid-padding-x">
-                        <div class="cell small-1 center info-bar-font">
+                        <div class="cell small-2 center info-bar-font">
                             ${title}
                         </div>
                         <div class="cell small-2 center border-left">
@@ -162,7 +153,7 @@ jQuery(document).ready(function($) {
           });
         }
 
-        mapboxgl.accessToken = obj.map_key;
+        mapboxgl.accessToken = obj.settings.map_key;
         var map = new mapboxgl.Map({
           container: 'map',
           style: 'mapbox://styles/mapbox/light-v10',
@@ -177,22 +168,25 @@ jQuery(document).ready(function($) {
 
         jQuery('#status').on('change', function() {
           window.current_status = jQuery('#status').val()
-          makeRequest( "POST", `cluster_geojson`, { post_type: post_type, status: window.current_status} , 'dt-metrics/mapbox/' )
+          close_details()
+          makeRequest( "POST", obj.settings.rest_url, { post_type: window.post_type, status: window.current_status} , obj.settings.rest_base_url )
             .then(data=> {
               clear_layer()
               load_layer( data )
             })
         })
-
+        function close_details() {
+          jQuery('#geocode-details').hide()
+        }
         function clear_layer() {
           map.removeLayer( 'clusters' )
           map.removeLayer( 'cluster-count' )
           map.removeLayer( 'unclustered-point' )
-          map.removeSource( 'trainings' )
+          map.removeSource( 'clusterSource' )
         }
 
         function load_layer( geojson ) {
-          map.addSource('trainings', {
+          map.addSource('clusterSource', {
             type: 'geojson',
             data: geojson,
             cluster: true,
@@ -202,7 +196,7 @@ jQuery(document).ready(function($) {
           map.addLayer({
             id: 'clusters',
             type: 'circle',
-            source: 'trainings',
+            source: 'clusterSource',
             filter: ['has', 'point_count'],
             paint: {
               'circle-color': [
@@ -228,7 +222,7 @@ jQuery(document).ready(function($) {
           map.addLayer({
             id: 'cluster-count',
             type: 'symbol',
-            source: 'trainings',
+            source: 'clusterSource',
             filter: ['has', 'point_count'],
             layout: {
               'text-field': '{point_count_abbreviated}',
@@ -239,7 +233,7 @@ jQuery(document).ready(function($) {
           map.addLayer({
             id: 'unclustered-point',
             type: 'circle',
-            source: 'trainings',
+            source: 'clusterSource',
             filter: ['!', ['has', 'point_count']],
             paint: {
               'circle-color': '#11b4da',
@@ -254,7 +248,7 @@ jQuery(document).ready(function($) {
             });
 
             var clusterId = features[0].properties.cluster_id;
-            map.getSource('trainings').getClusterExpansionZoom(
+            map.getSource('clusterSource').getClusterExpansionZoom(
               clusterId,
               function(err, zoom) {
                 if (err) return;
@@ -266,22 +260,7 @@ jQuery(document).ready(function($) {
               }
             );
           })
-          map.on('click', 'unclustered-point', function(e) {
-
-            let content = jQuery('#geocode-details-content')
-            content.empty()
-
-            jQuery('#geocode-details').show()
-
-            jQuery.each( e.features, function(i,v) {
-              var address = v.properties.address;
-              var post_id = v.properties.post_id;
-              var name = v.properties.name
-
-              content.append(`<p><a href="/trainings/${post_id}">${name}</a><br>${address}</p>`)
-            })
-
-          });
+          map.on('click', 'unclustered-point', on_click );
           map.on('mouseenter', 'clusters', function() {
             map.getCanvas().style.cursor = 'pointer';
           });
@@ -289,14 +268,50 @@ jQuery(document).ready(function($) {
             map.getCanvas().style.cursor = '';
           });
         }
+        function on_click(e) {
+          window.list = []
+          jQuery('#geocode-details').show()
+
+          let content = jQuery('#geocode-details-content')
+          content.empty().html(spinner)
+          console.log(e.features)
+
+          jQuery.each(e.features, function (i, v) {
+            content.append(`<div class="grid-x" id="list-${i}"></div>`)
+            makeRequest('GET', window.post_type + '/' + e.features[i].properties.post_id + '/', null, 'dt-posts/v2/')
+              .done(details => {
+                window.list[i] = jQuery('#list-' + i)
+
+                let status = ''
+                if (window.post_type === 'contacts') {
+                  status = details.overall_status.label
+                } else if (window.post_type === 'groups') {
+                  status = details.group_status.label
+                }
+
+                window.list[i].append(`
+                      <div class="cell"><h4>${details.title}</h4></div>
+                      <div class="cell">Status: ${status}</div>
+                      <div class="cell">Assigned To: ${details.assigned_to.display}</div>
+                      <div class="cell"><a href="/${window.post_type}/${details.ID}">View Record</a></div>
+                      <div class="cell"><hr></div>
+                  `)
+
+                jQuery('.loading-spinner').hide()
+              })
+          })
+        }
 
         jQuery('.close-details').on('click', function() {
-          jQuery('#geocode-details').hide()
+          close_details()
         })
 
       }).catch(err=>{
       console.log("error")
       console.log(err)
     })
+  }
+  if ( typeof dt_mapbox_metrics.settings !== undefined ) {
+    write_cluster()
   }
 })

@@ -10,10 +10,8 @@ jQuery(document).ready(function() {
     <div id="mapping_chart"></div>
   `)
 
-  if('/metrics/mapping/map' === window.location.pathname) {
-    page_mapping_view(window.wp_js_object.rest_endpoints_base)
-  }
-  if('/metrics/mapping/list' === window.location.pathname) {
+
+  if('/metrics/combined/locations_list' === window.location.pathname) {
     LISTDATA = window.wp_js_object.mapping_module
     page_mapping_list()
   }
@@ -27,8 +25,6 @@ jQuery(document).ready(function() {
  * This page allows for drill-down into the locations and related reports.
  *
  **********************************************************************************************************************/
-
-
 
 function page_mapping_list() {
   "use strict";
@@ -68,12 +64,12 @@ function page_mapping_list() {
         <div id="location_list_drilldown" class="cell auto location_list_drilldown"></div>
       </div>
       <hr id="map_hr_1" class="map_hr">
-      
+
       <div id="map_header_wrapper" class="map_header_wrapper">
         <strong id="section_title" class="section_title" ></strong><br>
         <span id="current_level" class="current_level"></span>
       </div>
-      
+
       <div id="location_list" class="location_list"></div>
       <hr id="map_hr_2" class="map_hr">
     </div> <!-- end widget -->
@@ -121,59 +117,59 @@ function location_grid_list( div, grid_id ) {
 
   // Find data source before build
   if ( grid_id === 'top_map_level' ) {
-      let map_data = null
-      let default_map_settings = LISTDATA.settings.default_map_settings
+    let map_data = null
+    let default_map_settings = LISTDATA.settings.default_map_settings
 
-      if ( DRILLDOWN.isEmpty( default_map_settings.children ) ) {
-          map_data = LISTDATA.data[default_map_settings.parent]
+    if ( DRILLDOWN.isEmpty( default_map_settings.children ) ) {
+      map_data = LISTDATA.data[default_map_settings.parent]
+    }
+    else {
+      if ( default_map_settings.children.length < 2 ) {
+        // single child
+        map_data = LISTDATA.data[default_map_settings.children[0]]
+      } else {
+        // multiple child
+        jQuery('#section_title').empty()
+        jQuery('#current_level').empty()
+        jQuery('#location_list').empty().append('Select Location')
+        DRILLDOWN.hide_spinner()
+        return;
       }
-      else {
-          if ( default_map_settings.children.length < 2 ) {
-              // single child
-              map_data = LISTDATA.data[default_map_settings.children[0]]
-          } else {
-              // multiple child
-              jQuery('#section_title').empty()
-              jQuery('#current_level').empty()
-              jQuery('#location_list').empty().append('Select Location')
-              DRILLDOWN.hide_spinner()
-              return;
-          }
-      }
+    }
 
-      // Initialize Location Data
-      if ( map_data === undefined ) {
-          console.log('error getting map_data')
-          return;
-      }
+    // Initialize Location Data
+    if ( map_data === undefined ) {
+      console.log('error getting map_data')
+      return;
+    }
 
-      build_location_grid_list( div, map_data )
+    build_location_grid_list( div, map_data )
   }
   else if ( LISTDATA.data[grid_id] === undefined ) {
-      let rest = LISTDATA.settings.endpoints.get_map_by_grid_id_endpoint
+    let rest = LISTDATA.settings.endpoints.get_map_by_grid_id_endpoint
 
-      jQuery.ajax({
-          type: rest.method,
-          contentType: "application/json; charset=utf-8",
-          data: JSON.stringify( { 'grid_id': grid_id, 'cached': LISTDATA.settings.cached, 'cached_length': LISTDATA.settings.cached_length } ),
-          dataType: "json",
-          url: LISTDATA.settings.root + rest.namespace + rest.route,
-          beforeSend: function(xhr) {
-              xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
-          },
+    jQuery.ajax({
+      type: rest.method,
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify( { 'grid_id': grid_id, 'cached': LISTDATA.settings.cached, 'cached_length': LISTDATA.settings.cached_length } ),
+      dataType: "json",
+      url: LISTDATA.settings.root + rest.namespace + rest.route,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
+      },
+    })
+      .done( function( response ) {
+        LISTDATA.data[grid_id] = response
+        build_location_grid_list( div, LISTDATA.data[grid_id] )
       })
-          .done( function( response ) {
-              LISTDATA.data[grid_id] = response
-              build_location_grid_list( div, LISTDATA.data[grid_id] )
-          })
-          .fail(function (err) {
-              console.log("error")
-              console.log(err)
-              DRILLDOWN.hide_spinner()
-          })
+      .fail(function (err) {
+        console.log("error")
+        console.log(err)
+        DRILLDOWN.hide_spinner()
+      })
 
   } else {
-      build_location_grid_list( div, LISTDATA.data[grid_id] )
+    build_location_grid_list( div, LISTDATA.data[grid_id] )
   }
 
   // build list
@@ -188,11 +184,11 @@ function location_grid_list( div, grid_id ) {
     let pd_settings = LISTDATA.settings.population_division
     let population_division = pd_settings.base
     if ( ! DRILLDOWN.isEmpty( pd_settings.custom ) ) {
-        jQuery.each( pd_settings.custom, function(i,v) {
-            if ( map_data.self.grid_id === i ) {
-                population_division = v
-            }
-        })
+      jQuery.each( pd_settings.custom, function(i,v) {
+        if ( map_data.self.grid_id === i ) {
+          population_division = v
+        }
+      })
     }
 
     // Self Data
@@ -210,9 +206,9 @@ function location_grid_list( div, grid_id ) {
 
     /* Additional Columns */
     if ( LISTDATA.data.custom_column_labels ) {
-        jQuery.each( LISTDATA.data.custom_column_labels, function(i,v) {
-            html += `<th>${_.escape( v.label )}</th>`
-        })
+      jQuery.each( LISTDATA.data.custom_column_labels, function(i,v) {
+        html += `<th>${_.escape( v.label )}</th>`
+      })
     }
     /* End Additional Columns */
 
@@ -225,25 +221,25 @@ function location_grid_list( div, grid_id ) {
     html += `<tbody>`
 
     jQuery.each( sorted_children, function(i, v) {
-        let population = v.population_formatted
+      let population = v.population_formatted
 
-        html += `<tr>
+      html += `<tr>
                     <td><strong><a onclick="DRILLDOWN.get_drill_down('location_list_drilldown', ${_.escape( v.grid_id )} )">${_.escape( v.name )}</a></strong></td>
                     <td>${_.escape( population )}</td>`
 
-        /* Additional Columns */
-        if ( LISTDATA.data.custom_column_data[v.grid_id] ) {
-            jQuery.each( LISTDATA.data.custom_column_data[v.grid_id], function(ii,vv) {
-                html += `<td><strong>${_.escape( vv )}</strong></td>`
-            })
-        } else {
-            jQuery.each( LISTDATA.data.custom_column_labels, function(ii,vv) {
-                html += `<td class="grey">0</td>`
-            })
-        }
-        /* End Additional Columns */
+      /* Additional Columns */
+      if ( LISTDATA.data.custom_column_data[v.grid_id] ) {
+        jQuery.each( LISTDATA.data.custom_column_data[v.grid_id], function(ii,vv) {
+          html += `<td><strong>${_.escape( vv )}</strong></td>`
+        })
+      } else {
+        jQuery.each( LISTDATA.data.custom_column_labels, function(ii,vv) {
+          html += `<td class="grey">0</td>`
+        })
+      }
+      /* End Additional Columns */
 
-        html += `</tr>`
+      html += `</tr>`
 
     })
     html += `</tbody>`
@@ -264,8 +260,6 @@ function location_grid_list( div, grid_id ) {
         "paging":   false
       });
     }
-
-
 
     DRILLDOWN.hide_spinner()
   }

@@ -224,7 +224,7 @@ class Disciple_Tools_Users_Endpoints
     }
 
     public function get_current_locations(){
-        return DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( get_current_user_id(), 'user' ) );
+        return Disciple_Tools_Users::get_user_location( get_current_user_id() );
     }
 
     public function add_user_location( WP_REST_Request $request ) {
@@ -238,9 +238,14 @@ class Disciple_Tools_Users_Endpoints
 
     public function delete_user_location( WP_REST_Request $request ) {
         $params = $request->get_params();
+
         if ( isset( $params["grid_id"] ) ){
             return Disciple_Tools_Users::delete_user_location( $params["grid_id"] );
-        } else {
+        }
+        else if ( isset( $params['location_grid_meta'] ) ) {
+            return Disciple_Tools_Users::delete_user_location( $params );
+        }
+        else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
         }
     }
@@ -306,7 +311,8 @@ class Disciple_Tools_Users_Endpoints
                 "ID" => $user->ID,
                 "user_email" => $user->user_email,
                 "display_name" => $user->display_name,
-                "locale" => get_user_locale( $user->ID )
+                "locale" => get_user_locale( $user->ID ),
+                "locations" => self::get_current_locations(),
             ];
         } else {
             return new WP_Error( "get_my_info", "Something went wrong. Are you a user?", [ 'status' => 400 ] );

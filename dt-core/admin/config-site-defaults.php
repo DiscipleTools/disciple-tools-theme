@@ -23,7 +23,6 @@ add_filter( 'comment_flood_filter', '__return_false' );
 add_filter( 'pre_comment_approved', 'dt_filter_handler', '99', 2 );
 add_filter( 'comment_notification_recipients', 'dt_override_comment_notice_recipients', 10, 2 );
 add_filter( 'language_attributes', 'dt_custom_dir_attr' );
-add_filter( 'retrieve_password_message', 'dt_custom_password_reset', 99, 4 );
 add_filter( 'wpmu_signup_blog_notification_email', 'dt_wpmu_signup_blog_notification_email', 10, 8 );
 add_filter( 'login_errors', 'login_error_messages' );
 remove_action( 'plugins_loaded', 'wp_maybe_load_widgets', 0 );  //don't load widgets as we don't use them
@@ -654,35 +653,6 @@ function dt_custom_dir_attr( $lang ){
 }
 
 
-/**
- * @param $message
- * @param $key
- * @param $user_login
- * @param $user_data
- *
- * @return string
- */
-function dt_custom_password_reset( $message, $key, $user_login, $user_data ){
-
-    if ( is_multisite() ) {
-        $site_name = get_network()->site_name;
-    } else {
-        $site_name = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
-    }
-
-    $message = __( 'Someone has requested a password reset for the following account:' ) . "\r\n\r\n";
-    /* translators: %s: site name */
-    $message .= sprintf( __( 'Site Name: %s' ), $site_name ) . "\r\n\r\n";
-    /* translators: %s: user login */
-    $message .= sprintf( __( 'Username: %s' ), $user_login ) . "\r\n\r\n";
-    $message .= __( 'If this was a mistake, just ignore this email and nothing will happen.' ) . "\r\n\r\n";
-    $message .= __( 'To reset your password, visit the following address:' ) . "\r\n\r\n";
-    $message .= network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'login' ) . "\r\n";
-
-    return $message;
-
-}
-
 function dt_wpmu_signup_blog_notification_email( $message, $domain, $path, $title, $user, $user_email, $key, $meta ){
     return str_replace( "blog", "site", $message );
 }
@@ -751,6 +721,56 @@ function dt_redirect_logged_in() {
     exit;
 }
 
+
+
+/**
+ * Force password reset to remain on current site for multi-site installations.
+ */
+add_filter("lostpassword_url", function ( $url, $redirect) {
+
+    $args = array( 'action' => 'lostpassword' );
+
+    if ( !empty( $redirect ) ) {
+        $args['redirect_to'] = $redirect;
+    }
+
+    return add_query_arg( $args, site_url( 'wp-login.php' ) );
+}, 10, 2);
+
+// fixes other password reset related urls
+add_filter( 'network_site_url', function( $url, $path, $scheme) {
+
+    if (stripos( $url, "action=lostpassword" ) !== false) {
+        return site_url( 'wp-login.php?action=lostpassword', $scheme );
+    }
+
+    if (stripos( $url, "action=resetpass" ) !== false) {
+        return site_url( 'wp-login.php?action=resetpass', $scheme );
+    }
+
+    return $url;
+}, 10, 3 );
+
+// fixes URLs in email that goes out.
+function dt_multisite_retrieve_password_message( $message, $key, $user_login, $user_data) {
+    $message = __( 'Someone has requested a password reset for the following account:' ) . "\r\n\r\n";
+    /* translators: %s: Site name. */
+    $message .= sprintf( __( 'DT Site Name: %s' ), wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) ) . "\r\n\r\n";
+    /* translators: %s: User login. */
+    $message .= sprintf( __( 'Username: %s' ), $user_login ) . "\r\n\r\n";
+    $message .= __( 'If this was a mistake, just ignore this email and nothing will happen.' ) . "\r\n\r\n";
+    $message .= __( 'To reset your password, visit the following address:' ) . "\r\n\r\n";
+    $message .= '<' . site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'https' ) . ">\r\n";
+    return $message;
+}
+add_filter( "retrieve_password_message", 'dt_multisite_retrieve_password_message', 99, 4 );
+
+// fixes email title
+add_filter("retrieve_password_title", function( $title) {
+    return "[" . wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) . "] Password Reset";
+});
+
+
 function dt_get_custom_tile_translations( $custom_tiles ) {
     if ( is_admin() ) {
         return $custom_tiles;
@@ -766,3 +786,4 @@ function dt_get_custom_tile_translations( $custom_tiles ) {
         return $custom_tiles;
     }
 }
+

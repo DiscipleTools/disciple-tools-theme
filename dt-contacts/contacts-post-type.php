@@ -454,6 +454,7 @@ class Disciple_Tools_Contact_Post_Type
                 'transfer'             => [ "label" => _x( 'Transferred contact to partner', 'Reason Closed label', 'disciple_tools' ) ],
                 'martyred'             => [ "label" => _x( 'Martyred', 'Reason Closed label', 'disciple_tools' ) ],
                 'moved'                => [ "label" => _x( 'Moved or relocated', 'Reason Closed label', 'disciple_tools' ) ],
+                'gdpr'                 => [ "label" => _x( 'GDPR request', 'Reason Closed label', 'disciple_tools' ) ],
                 'unknown'              => [ "label" => _x( 'Unknown', 'Reason Closed label', 'disciple_tools' ) ]
             ],
             'section'     => 'misc',
@@ -547,8 +548,11 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'key_select',
             'default'     => [
                 'media'    => [ "label" => __( 'Media', 'disciple_tools' ) ],
-                'next_gen' => [ "label" => __( 'Next Generation', 'disciple_tools' ) ],
-                'user'     => [ "label" => __( 'User', 'disciple_tools' ) ]
+                'seeker' => [ "label" => __( 'Seeker', 'disciple_tools' ) ],
+                'believer' => [ "label" => __( 'Believer', 'disciple_tools' ) ],
+                'leader' => [ "label" => __( 'Leader', 'disciple_tools' ) ],
+//                'next_gen' => [ "label" => __( 'Next Generation', 'disciple_tools' ) ], // @todo unused?
+//                'user'     => [ "label" => __( 'User', 'disciple_tools' ) ] // @todo unused?
             ],
             'section'     => 'misc',
             'hidden'      => true

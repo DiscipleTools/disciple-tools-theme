@@ -445,6 +445,13 @@
         <p><?php echo esc_html_x( "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact.", 'Optional Documentation', 'disciple_tools' ) ?></p>
     </div>
 
+    <?php
+    /**
+     * Add additional modal help text
+     */
+    do_action( 'dt_modal_help_text' )
+    ?>
+
     <!-- close -->
     <div class="grid-x grid-padding-x">
         <div class="cell small-4">

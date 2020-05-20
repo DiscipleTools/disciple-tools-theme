@@ -257,6 +257,7 @@ else {
             require_once( get_template_directory() . '/dt-core/admin/site-link-post-type.php' );
             Site_Link_System::instance( 100, 'dashicons-admin-links' );
 
+
             /**
              * dt-posts
              */
@@ -316,6 +317,7 @@ else {
              * dt-metrics
              */
             require_once( get_template_directory() . '/dt-metrics/counter.php' );
+            require_once( get_template_directory() . '/dt-metrics/charts-base.php' );
             if ( strpos( $url_path, 'metrics' ) !== false ) {
                 require_once( get_template_directory() . '/dt-metrics/metrics.php' );
             }
@@ -332,7 +334,9 @@ else {
                 require_once( get_template_directory() . '/dt-users/users-product-tour.php' );
             }
             require_once( get_template_directory() . '/dt-users/user-management.php' );
-            new DT_User_Management();
+            require_once( get_template_directory() . '/dt-users/hover-coverage-map.php' );
+            require_once( get_template_directory() . '/dt-users/mapbox-coverage-map.php' );
+
 
             /**
              * dt-notifications
@@ -378,7 +382,7 @@ else {
             require_once( get_template_directory() . '/dt-network/network.php' );
             require_once( get_template_directory() . '/dt-network/network-queries.php' );
 
-            require_once( get_template_directory() . '/dt-core/admin/gdpr.php' );
+
             require_once( get_template_directory() . '/dt-core/multisite.php' );
 
             /**
@@ -421,8 +425,8 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-people-groups.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-utilities-overview.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-fields.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr-erase.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr-export.php' );
+
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr.php' );
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-metrics.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-metrics-reports.php' );

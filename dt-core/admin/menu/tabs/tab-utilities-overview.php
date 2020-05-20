@@ -59,13 +59,10 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
     }
 
     public function box_message() {
-        $this->box( 'top', '' );
+        $this->box( 'top', 'System Details' );
 
         echo esc_html( sprintf( __( 'WordPress version: %1$ss | PHP version: %2$s' ), get_bloginfo( 'version' ), phpversion() ) );
-        ?>
 
-
-        <?php
         $this->box( 'bottom' );
     }
 }

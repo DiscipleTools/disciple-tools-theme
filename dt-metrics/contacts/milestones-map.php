@@ -7,11 +7,10 @@ if ( !defined( 'ABSPATH' ) ) {
 class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
 {
 
-    //slug and titile of the top menu folder
+    //slug and title of the top menu folder
     public $base_slug = 'contacts'; // lowercase
-    public $base_title = "Contacts";
-
-    public $title = 'Milestones Map';
+    public $base_title;
+    public $title;
     public $slug = 'milestones_map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = 'milestones_map.js'; // should be full file name plus extension
@@ -23,9 +22,11 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
+        $this->title = __( 'Milestones Map', 'disciple_tools' );
+        $this->base_title = __( 'Contacts', 'disciple_tools' );
+
         $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
         $url_path = dt_get_url_path();
-        // only load scripts if exact url
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
 
             add_action( 'wp_enqueue_scripts', [ $this, 'mapping_scripts' ], 89 );
@@ -40,7 +41,6 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
         $this->title = __( 'Milestones Map', 'disciple_tools' );
         DT_Mapping_Module::instance()->scripts();
         global $dt_mapping;
-
 
         // Milestones Script
         wp_enqueue_script( 'dt_'.$this->slug.'_script',

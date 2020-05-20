@@ -1,3 +1,4 @@
+/** Mapbox search box widget */
 jQuery(document).ready(function(){
 
   // load widget

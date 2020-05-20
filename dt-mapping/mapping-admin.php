@@ -1211,10 +1211,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             // get installed levels
             global $wpdb;
             $installed_levels = $wpdb->get_results("
-                SELECT l.admin0_code, 
+                SELECT l.admin0_code,
                 (SELECT lg.name FROM $wpdb->dt_location_grid as lg WHERE lg.admin0_code = l.admin0_code AND lg.level = 0 LIMIT 1) as name,
-                l.level, 
-                count(l.level) as records 
+                l.level,
+                count(l.level) as records
                 FROM $wpdb->dt_location_grid as l
                 WHERE l.level > 2 AND l.level < 10 GROUP BY l.admin0_code, l.level;", ARRAY_A );
 
@@ -1593,13 +1593,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 global $wpdb;
                 $geocoder = new Location_Grid_Geocoder();
                 $query = $wpdb->get_results( $wpdb->prepare( "
-                            SELECT * 
-                            FROM $wpdb->postmeta 
-                            WHERE meta_key = 'location_grid' 
+                            SELECT *
+                            FROM $wpdb->postmeta
+                            WHERE meta_key = 'location_grid'
                               AND meta_id NOT IN (
-                                  SELECT DISTINCT( postmeta_id_location_grid ) 
-                                  FROM $wpdb->dt_location_grid_meta) 
-                            LIMIT %d 
+                                  SELECT DISTINCT( postmeta_id_location_grid )
+                                  FROM $wpdb->dt_location_grid_meta)
+                            LIMIT %d
                                 OFFSET %d",
                     $limit,
                     $offset
@@ -1610,7 +1610,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         if ( $grid ) {
                             $location_meta_grid = [];
 
-                            $geocoder->validate_location_grid_meta( $location_meta_grid );
+                            Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
                             $location_meta_grid['post_id'] = $row['post_id'];
                             $location_meta_grid['post_type'] = get_post_type( $row['post_id'] );
                             $location_meta_grid['grid_id'] = $row['meta_value'];
@@ -1619,7 +1619,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             $location_meta_grid['level'] = $grid["level_name"];
                             $location_meta_grid['label'] = $geocoder->_format_full_name( $grid );
 
-                            $potential_error = $geocoder->add_location_grid_meta( $row['post_id'], $location_meta_grid, $row['meta_id'] );
+                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $row['post_id'], $location_meta_grid, $row['meta_id'] );
                             dt_write_log( $potential_error );
                             echo esc_html( $location_meta_grid['label'] ) . '<br>';
                         }
@@ -1729,14 +1729,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         $wpdb->query( $wpdb->prepare( "
                             UPDATE $wpdb->postmeta
                             SET meta_key = 'location_grid',
-                                meta_value = %s 
+                                meta_value = %s
                             WHERE meta_key = 'geonames' and meta_value = %s
                             ", $location_grid_id, $selected_geoname
                         ) );
                         $wpdb->query( $wpdb->prepare( "
                             UPDATE $wpdb->dt_activity_log
                             SET meta_key = 'location_grid',
-                                meta_value = %s 
+                                meta_value = %s
                             WHERE meta_key = 'geonames' and meta_value = %s
                             ", $location_grid_id, $selected_geoname
                         ) );
@@ -1757,7 +1757,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 SELECT DISTINCT( posts.ID ), post_title, post_parent, COUNT( p2p.p2p_from ) as count
                 FROM $wpdb->posts as posts
                 LEFT JOIN $wpdb->p2p as p2p on (p2p.p2p_to = posts.ID)
-                WHERE posts.post_type = 'locations' 
+                WHERE posts.post_type = 'locations'
                 AND posts.post_status != 'trash'
                 GROUP BY posts.ID
             ", ARRAY_A );
@@ -1882,7 +1882,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $remaining_geonames = $wpdb->get_results( "
                 SELECT DISTINCT( pm.meta_value ), COUNT( pm.meta_value ) as count
                 FROM $wpdb->postmeta as pm
-                WHERE pm.meta_key = 'geonames' 
+                WHERE pm.meta_key = 'geonames'
                 GROUP BY pm.meta_value
             ", ARRAY_A );
             $test = "";
@@ -2525,10 +2525,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             wp_trash_post( $location_id );
 
 
-            $wpdb->query(  $wpdb->prepare(" 
+            $wpdb->query(  $wpdb->prepare("
                 UPDATE $wpdb->dt_activity_log
-                SET 
-                    action = 'field_update', 
+                SET
+                    action = 'field_update',
                     object_subtype = 'location_grid',
                     meta_key = 'location_grid',
                     meta_value = %s,
