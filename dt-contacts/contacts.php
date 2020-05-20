@@ -1679,7 +1679,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         global $wpdb;
         $user_post = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() ) ?? 0;
         $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT type.meta_value as type, status.meta_value as overall_status, pm.meta_value as seeker_path, count(distinct(pm.post_id)) as count, count(distinct(un.post_id)) as update_needed
+            SELECT type.meta_value as type, status.meta_value as overall_status, pm.meta_value as seeker_path, count(pm.post_id) as count, count(un.post_id) as update_needed
             FROM $wpdb->postmeta pm
             INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' AND status.meta_value != 'closed')
             INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'contacts' and a.post_status = 'publish' )
@@ -1710,7 +1710,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         if ( current_user_can( "view_any_contacts" ) || $can_view_all ) {
             $results = $wpdb->get_results("
-                SELECT type.meta_value as type, status.meta_value as overall_status, pm.meta_value as seeker_path, count(distinct(pm.post_id)) as count, count(distinct(un.post_id)) as update_needed
+                SELECT type.meta_value as type, status.meta_value as overall_status, pm.meta_value as seeker_path, count(pm.post_id) as count, count(un.post_id) as update_needed
                 FROM $wpdb->postmeta pm
                 INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' AND status.meta_value != 'closed' )
                 INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'contacts' and a.post_status = 'publish' )
@@ -1724,16 +1724,17 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $sources_sql = dt_array_to_sql( $sources );
             // phpcs:disable
             $results = $wpdb->get_results( $wpdb->prepare( "
-                SELECT type.meta_value as type, status.meta_value as overall_status, pm.meta_value as seeker_path, count(distinct(pm.post_id)) as count, count(distinct(un.post_id)) as update_needed
+                SELECT type.meta_value as type, status.meta_value as overall_status, pm.meta_value as seeker_path, count(pm.post_id) as count, count(un.post_id) as update_needed
                 FROM $wpdb->postmeta pm
                 INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' AND status.meta_value != 'closed' )
-                LEFT JOIN $wpdb->postmeta source ON( source.post_id = pm.post_id AND source.meta_key = 'sources' )
                 INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'contacts' and a.post_status = 'publish' )
                 LEFT JOIN $wpdb->postmeta type ON ( type.post_id = pm.post_id AND type.meta_key = 'type' )
                 LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
-                LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = pm.post_id  )
                 WHERE pm.meta_key = 'seeker_path'
-                AND ( source.meta_value IN ( $sources_sql ) OR shares.user_id = %s )
+                AND ( 
+                    pm.post_id IN ( SELECT post_id from $wpdb->postmeta as source where source.meta_value IN ( $sources_sql ) ) 
+                    OR pm.post_id IN ( SELECT post_id FROM $wpdb->dt_share AS shares where shares.user_id = %s ) 
+                )
                 GROUP BY type.meta_value, status.meta_value, pm.meta_value
             ", esc_sql( get_current_user_id() ) ) , ARRAY_A );
             // phpcs:enable
