@@ -551,8 +551,7 @@ class Disciple_Tools_Contact_Post_Type
                 'seeker' => [ "label" => __( 'Seeker', 'disciple_tools' ) ],
                 'believer' => [ "label" => __( 'Believer', 'disciple_tools' ) ],
                 'leader' => [ "label" => __( 'Leader', 'disciple_tools' ) ],
-//                'next_gen' => [ "label" => __( 'Next Generation', 'disciple_tools' ) ], // @todo unused?
-//                'user'     => [ "label" => __( 'User', 'disciple_tools' ) ] // @todo unused?
+                'user'     => [ "label" => __( 'User', 'disciple_tools' ) ]
             ],
             'section'     => 'misc',
             'hidden'      => true

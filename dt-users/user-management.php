@@ -374,14 +374,17 @@ class DT_User_Management
 
         if ( $section === 'days_active' || $section === null ) {
 
+            $one_year = time() - 3600 * 24 * 365;
             $days_active_results = $wpdb->get_results($wpdb->prepare("
                 SELECT FROM_UNIXTIME(`hist_time`, '%%Y-%%m-%%d') as day,
                 count(histid) as activity_count
                 FROM $wpdb->dt_activity_log
                 WHERE user_id = %s
+                AND hist_time > %s
                 group by day
                 ORDER BY `day` ASC",
-                $user->ID
+                $user->ID,
+                $one_year
             ), ARRAY_A);
             $days_active = [];
             foreach ($days_active_results as $a) {
