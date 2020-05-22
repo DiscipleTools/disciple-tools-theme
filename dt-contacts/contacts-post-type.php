@@ -468,12 +468,36 @@ class Disciple_Tools_Contact_Post_Type
             'hidden'      => true
         ];
 
-        $sources_default = [];
+        $sources_default = [
+            'personal'           => [
+                'label'       => __( 'Personal', 'disciple_tools' ),
+                'key'         => 'personal',
+            ],
+            'web'           => [
+                'label'       => __( 'Web', 'disciple_tools' ),
+                'key'         => 'web',
+            ],
+            'facebook'      => [
+                'label'       => __( 'Facebook', 'disciple_tools' ),
+                'key'         => 'facebook',
+            ],
+            'twitter'       => [
+                'label'       => __( 'Twitter', 'disciple_tools' ),
+                'key'         => 'twitter',
+            ],
+            'transfer' => [
+                'label'       => __( 'Transfer', 'disciple_tools' ),
+                'key'         => 'transfer',
+                'description' => __( 'Contacts transferred from a partnership with another Disciple.Tools site.', 'disciple_tools' ),
+            ]
+        ];
         foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $key => $value ) {
-            if ( isset( $value['enabled'] ) && $value["enabled"] === false ) {
-                $value["deleted"] = true;
+            if ( !isset( $sources_default[$key] ) ) {
+                if ( isset( $value['enabled'] ) && $value["enabled"] === false ) {
+                    $value["deleted"] = true;
+                }
+                $sources_default[ $key ] = $value;
             }
-            $sources_default[ $key ] = $value;
         }
 
         $fields['sources'] = [

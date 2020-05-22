@@ -504,35 +504,8 @@ function dt_get_site_custom_lists( string $list_title = null ) {
         ],
     ];
 
-    $fields['sources'] = [
-        'personal'           => [
-            'label'       => __( 'Personal', 'disciple_tools' ),
-            'key'         => 'personal',
-            'enabled'     => true,
-        ],
-        'web'           => [
-            'label'       => __( 'Web', 'disciple_tools' ),
-            'key'         => 'web',
-            'enabled'     => true,
-        ],
-        'facebook'      => [
-            'label'       => __( 'Facebook', 'disciple_tools' ),
-            'key'         => 'facebook',
-            'enabled'     => true,
-        ],
-        'twitter'       => [
-            'label'       => __( 'Twitter', 'disciple_tools' ),
-            'key'         => 'twitter',
-            'enabled'     => true,
-        ],
-        'transfer' => [
-            'label'       => __( 'Transfer', 'disciple_tools' ),
-            'key'         => 'transfer',
-            'description' => __( 'Contacts transferred from a partnership with another Disciple.Tools site.', 'disciple_tools' ),
-            'enabled'     => true,
-        ],
+    $fields['sources'] = [];
 
-    ];
     $fields["contact_address_types"] = [
         "home"  => [ "label" => __( 'Home', 'disciple_tools' ) ],
         "work"  => [ "label" => __( 'Work', 'disciple_tools' ) ],
