@@ -97,7 +97,7 @@ $translations = dt_get_translations();
 
                                 <p>
                                     <strong><?php esc_html_e( 'Roles', 'disciple_tools' ); ?></strong><br>
-                                    <?php echo esc_html( implode( ", ", wp_get_current_user()->roles ) ); ?>
+                                    <?php echo esc_html( implode( ", ", dt_get_user_role_names( get_current_user_id() ) ) ); ?>
                                 </p>
 
                             </div>
@@ -105,9 +105,10 @@ $translations = dt_get_translations();
 
                                 <p><strong><?php esc_html_e( 'Email', 'disciple_tools' )?></strong></p>
                                 <ul>
-                                    <?php
-                                    echo '<li><a href="mailto:' . esc_attr( $dt_user->user_email ) . '">' . esc_html( $dt_user->user_email ) . '</a><br><span class="text-small"> (System Email)</span></li>';
-                                    foreach ( $dt_user_fields as $dt_field ) {
+                                    <li>
+                                        <a href="mailto:'<?php echo esc_html( $dt_user->user_email ); ?>'"><?php echo esc_html( $dt_user->user_email ); ?></a><br><span class="text-small">(<?php esc_html_e( 'System Email', 'disciple_tools' ); ?>)</span>
+                                    </li>
+                                    <?php foreach ( $dt_user_fields as $dt_field ) {
                                         if ( $dt_field['type'] == 'email' && !empty( $dt_field['value'] ) ) {
                                             echo '<li><a href="mailto:' . esc_html( $dt_field['value'] ) . '" target="_blank">' . esc_html( $dt_field['value'] ) . '</a> <br><span class="text-small">(' . esc_html( $dt_field['label'] ) . ')</span></li>';
                                         }
@@ -184,10 +185,10 @@ $translations = dt_get_translations();
                 <div class="small-12 cell">
                     <div class="bordered-box">
                         <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
-                            <h4><?php esc_html_e( "Location Responsibility", 'zume' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( "add", 'zume' ) ?></a></h4>
+                            <h4><?php esc_html_e( "Location Responsibility", 'disciple_tools' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( "add", 'disciple_tools' ) ?></a></h4>
                             <div id="mapbox-wrapper"></div>
                         <?php else : ?>
-                            <h4><?php esc_html_e( "Location Responsibility", 'zume' ) ?></h4>
+                            <h4><?php esc_html_e( "Location Responsibility", 'disciple_tools' ) ?></h4>
                             <div class="location_grid">
                                 <var id="location_grid-result-container" class="result-container"></var>
                                 <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
