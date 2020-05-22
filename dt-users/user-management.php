@@ -15,8 +15,10 @@ class DT_User_Management
     public function __construct() {
         if ( $this->has_permission() ){
             $url_path = dt_get_url_path();
-            if ( strpos( $url_path, 'user-management/user' ) !== false || strpos( $url_path, 'user-management/add-user' ) !== false ) {
+            if ( strpos( $url_path, 'user-management' ) !== false || strpos( $url_path, 'user-management' ) !== false ) {
                 add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 20 );
+            }
+            if ( strpos( $url_path, 'user-management/user' ) !== false || strpos( $url_path, 'user-management/add-user' ) !== false ) {
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
                 add_filter( 'dt_templates_for_urls', [ $this, 'dt_templates_for_urls' ] );
 
