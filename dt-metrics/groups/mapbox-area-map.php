@@ -107,7 +107,7 @@ class DT_Metrics_Mapbox_Groups_Area_Map extends DT_Metrics_Chart_Base
             $status = sanitize_text_field( wp_unslash( $params['status'] ) );
         }
 
-        $results = self::query_groups_grid_totals( $status );
+        $results = self::query_groups_location_grid_meta_totals( $status );
 
         $list = [];
         foreach ( $results as $result ) {
@@ -130,10 +130,10 @@ class DT_Metrics_Mapbox_Groups_Area_Map extends DT_Metrics_Chart_Base
             $status = sanitize_text_field( wp_unslash( $params['status'] ) );
         }
 
-        return self::query_groups_under_grid_id( $grid_id, $status );
+        return self::query_groups_under_location_grid_meta_id( $grid_id, $status );
     }
 
-    public static function query_groups_grid_totals( $status = null ) {
+    public static function query_groups_location_grid_meta_totals( $status = null ) {
 
         global $wpdb;
 
@@ -240,124 +240,126 @@ class DT_Metrics_Mapbox_Groups_Area_Map extends DT_Metrics_Chart_Base
         return $list;
     }
 
-    public static function query_groups_under_grid_id( $grid_id, $status ) {
+    public static function query_groups_under_location_grid_meta_id( $grid_id, $status ) {
         global $wpdb;
 
         if ( $status ) {
             $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT DISTINCT t0.post_title, t0.post_id FROM (
-                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
-                FROM $wpdb->postmeta as pm
-                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
-                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
-                WHERE pm.meta_key = 'location_grid'
-                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'group_status' AND pm2.meta_value = %s )
+                SELECT p.post_title, lgm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                    FROM $wpdb->dt_location_grid_meta as lgm
+                    LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                    JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+                    JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'group_status' AND pm.meta_value = %s
+                 WHERE lgm.post_type = 'groups'
             ) as t0
             WHERE t0.admin0_grid_id = %d
             UNION
             SELECT DISTINCT t1.post_title, t1.post_id FROM (
-                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
-                FROM $wpdb->postmeta as pm
-                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
-                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
-                WHERE pm.meta_key = 'location_grid'
-                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'group_status' AND pm2.meta_value = %s )
+                SELECT p.post_title, lgm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                    FROM $wpdb->dt_location_grid_meta as lgm
+                    LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                    JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+                    JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'group_status' AND pm.meta_value = %s
+                 WHERE lgm.post_type = 'groups'
             ) as t1
             WHERE t1.admin1_grid_id = %d
             UNION
             SELECT DISTINCT t2.post_title, t2.post_id  FROM (
-                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
-                FROM $wpdb->postmeta as pm
-                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
-                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
-                WHERE pm.meta_key = 'location_grid'
-                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'group_status' AND pm2.meta_value = %s )
+                SELECT p.post_title, lgm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                    FROM $wpdb->dt_location_grid_meta as lgm
+                    LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                    JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+                    JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'group_status' AND pm.meta_value = %s
+                 WHERE lgm.post_type = 'groups'
             ) as t2
             WHERE t2.admin2_grid_id = %d
             UNION
             SELECT DISTINCT t3.post_title, t3.post_id  FROM (
-                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
-                FROM $wpdb->postmeta as pm
-                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
-                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
-                WHERE pm.meta_key = 'location_grid'
-                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'group_status' AND pm2.meta_value = %s )
+                SELECT p.post_title, lgm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                    FROM $wpdb->dt_location_grid_meta as lgm
+                    LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                    JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+                    JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'group_status' AND pm.meta_value = %s
+                 WHERE lgm.post_type = 'groups'
             ) as t3
             WHERE t3.admin3_grid_id = %d
             UNION
             SELECT DISTINCT t4.post_title, t4.post_id  FROM (
-                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
-                FROM $wpdb->postmeta as pm
-                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
-                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
-                WHERE pm.meta_key = 'location_grid'
-                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'group_status' AND pm2.meta_value = %s )
+                SELECT p.post_title, lgm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                    FROM $wpdb->dt_location_grid_meta as lgm
+                    LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                    JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+                    JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'group_status' AND pm.meta_value = %s
+                 WHERE lgm.post_type = 'groups'
             ) as t4
             WHERE t4.admin4_grid_id = %d
             UNION
             SELECT DISTINCT t5.post_title, t5.post_id  FROM (
-                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
-                FROM $wpdb->postmeta as pm
-                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
-                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
-                WHERE pm.meta_key = 'location_grid'
-                AND pm.post_id IN ( SELECT pm2.post_id FROM $wpdb->postmeta as pm2 WHERE pm2.meta_key = 'group_status' AND pm2.meta_value = %s )
+                SELECT p.post_title, lgm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                    FROM $wpdb->dt_location_grid_meta as lgm
+                    LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                    JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+                    JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'group_status' AND pm.meta_value = %s
+                 WHERE lgm.post_type = 'groups'
             ) as t5
             WHERE t5.admin5_grid_id = %d;
             ", $status, $grid_id, $status, $grid_id, $status, $grid_id, $status, $grid_id, $status, $grid_id, $status, $grid_id ), ARRAY_A );
+
         } else {
+
             $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT DISTINCT t0.post_title, t0.post_id FROM (
-                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
-                FROM $wpdb->postmeta as pm
-                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
-                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
-                WHERE pm.meta_key = 'location_grid'
+                SELECT p.post_title, lgm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                    FROM $wpdb->dt_location_grid_meta as lgm
+                    LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                    JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+                 WHERE lgm.post_type = 'groups'
             ) as t0
             WHERE t0.admin0_grid_id = %d
             UNION
             SELECT DISTINCT t1.post_title, t1.post_id FROM (
-                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
-                FROM $wpdb->postmeta as pm
-                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
-                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
-                WHERE pm.meta_key = 'location_grid'
+                SELECT p.post_title, lgm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                    FROM $wpdb->dt_location_grid_meta as lgm
+                    LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                    JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+                 WHERE lgm.post_type = 'groups'
             ) as t1
             WHERE t1.admin1_grid_id = %d
             UNION
             SELECT DISTINCT t2.post_title, t2.post_id  FROM (
-                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
-                FROM $wpdb->postmeta as pm
-                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
-                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
-                WHERE pm.meta_key = 'location_grid'
+                SELECT p.post_title, lgm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                    FROM $wpdb->dt_location_grid_meta as lgm
+                    LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                    JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+                 WHERE lgm.post_type = 'groups'
             ) as t2
             WHERE t2.admin2_grid_id = %d
             UNION
             SELECT DISTINCT t3.post_title, t3.post_id  FROM (
-                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
-                FROM $wpdb->postmeta as pm
-                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
-                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
-                WHERE pm.meta_key = 'location_grid'
+                SELECT p.post_title, lgm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                    FROM $wpdb->dt_location_grid_meta as lgm
+                    LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                    JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+                 WHERE lgm.post_type = 'groups'
             ) as t3
             WHERE t3.admin3_grid_id = %d
             UNION
             SELECT DISTINCT t4.post_title, t4.post_id  FROM (
-                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
-                FROM $wpdb->postmeta as pm
-                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
-                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
-                WHERE pm.meta_key = 'location_grid'
+                SELECT p.post_title, lgm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                    FROM $wpdb->dt_location_grid_meta as lgm
+                    LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                    JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+                 WHERE lgm.post_type = 'groups'
             ) as t4
             WHERE t4.admin4_grid_id = %d
             UNION
             SELECT DISTINCT t5.post_title, t5.post_id  FROM (
-                SELECT p.post_title, pm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
-                FROM $wpdb->postmeta as pm
-                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
-                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
-                WHERE pm.meta_key = 'location_grid'
+                SELECT p.post_title, lgm.post_id, lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                    FROM $wpdb->dt_location_grid_meta as lgm
+                    LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
+                    JOIN $wpdb->posts as p ON p.ID=lgm.post_id
+                 WHERE lgm.post_type = 'groups'
             ) as t5
             WHERE t5.admin5_grid_id = %d;
             ", $grid_id, $grid_id, $grid_id, $grid_id, $grid_id, $grid_id ), ARRAY_A );

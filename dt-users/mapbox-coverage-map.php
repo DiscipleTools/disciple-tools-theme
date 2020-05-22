@@ -111,7 +111,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
             $status = sanitize_text_field( wp_unslash( $params['status'] ) );
         }
 
-        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals( $status );
+        $results = Disciple_Tools_Mapping_Queries::query_user_location_grid_totals( $status );
 
         return $results;
 
