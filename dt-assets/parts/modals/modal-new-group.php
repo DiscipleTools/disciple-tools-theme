@@ -26,7 +26,7 @@
         </a>
         <button class="button reveal-after-group-create button-cancel clear" data-close type="button" id="create-group-return" style="display: none">
             <?php
-            echo esc_html( sprintf( _x( "Back to %s", "back to record", 'disciple_tools' ), DT_Posts::get_label_for_post_type( "groups", true ) ) );
+            echo esc_html( sprintf( _x( "Back to %s", "back to record", 'disciple_tools' ), DT_Posts::get_label_for_post_type( get_post_type( get_the_ID() ), true ) ) );
             ?>
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">
