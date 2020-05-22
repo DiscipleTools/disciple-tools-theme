@@ -212,6 +212,7 @@ function close_all_lists(selection_id) {
   let spinner = jQuery('#mapbox-spinner-button').show()
 
   let data = {
+    user_id: 2,
     location_grid_meta: {
       values: [
         {
@@ -226,15 +227,7 @@ function close_all_lists(selection_id) {
   }
 
   if ( jQuery('#mapbox-autocomplete').data('autosubmit') ) {
-    /* if post_type = user, else all other post types */
-    API.update_post( dtMapbox.post_type, dtMapbox.post_id, data ).then(function (response) {
-      console.log( response )
-
-      dtMapbox.post = response
-      jQuery('#mapbox-wrapper').empty()
-      write_results_box()
-
-    }).catch(err => { console.error(err) })
+    makeRequest( "POST", `user_location`, data, 'user-management/v1/' ).catch(err => { console.error(err) })
 
   } else {
     window.selected_location_grid_meta = data

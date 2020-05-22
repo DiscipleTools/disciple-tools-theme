@@ -229,7 +229,11 @@ class Disciple_Tools_Users_Endpoints
 
     public function add_user_location( WP_REST_Request $request ) {
         $params = $request->get_params();
-        if ( isset( $params["grid_id"] ) ){
+
+        if ( isset( $params['location_grid_meta'] ) ) {
+            return Disciple_Tools_Users::add_user_location_meta( $params );
+        }
+        else if ( isset( $params["grid_id"] ) ){
             return Disciple_Tools_Users::add_user_location( $params["grid_id"] );
         } else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
@@ -241,9 +245,6 @@ class Disciple_Tools_Users_Endpoints
 
         if ( isset( $params["grid_id"] ) ){
             return Disciple_Tools_Users::delete_user_location( $params["grid_id"] );
-        }
-        else if ( isset( $params['location_grid_meta'] ) ) {
-            return Disciple_Tools_Users::delete_user_location( $params );
         }
         else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );

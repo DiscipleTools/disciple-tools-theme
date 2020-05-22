@@ -123,12 +123,11 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
         }
 
         global $wpdb;
-        $results = $wpdb->get_results("
-            SELECT DISTINCT lgm.grid_id as grid_id, lgm.grid_meta_id, lgm.post_id as contact_id, pm.meta_value as user_id, po.post_title as name
-            FROM $wpdb->dt_location_grid_meta as lgm
-            LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id
-            JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'corresponds_to_user' AND pm.meta_value != ''
-            WHERE lgm.post_type = 'contacts' AND lgm.grid_id IS NOT NULL ORDER BY po.post_title", ARRAY_A );
+        $results = $wpdb->get_results( $wpdb->prepare( "
+                SELECT um.meta_value as grid_id, um.user_id, u.display_name as name FROM wp_usermeta as um
+            	LEFT JOIN $wpdb->users as u ON u.ID=um.user_id
+            	LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=um.meta_value
+                WHERE um.meta_key = %s", $wpdb->prefix .'location_grid'), ARRAY_A );
 
         $list = [];
         foreach ( $results as $result ) {

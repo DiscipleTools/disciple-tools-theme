@@ -949,6 +949,27 @@ Please click the following link to confirm the invite:
         return false;
     }
 
+    public static function add_user_location_meta( $location_grid_meta, $user_id = null ) {
+        if ( empty( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+
+        $umeta_id = Location_Grid_Meta::add_user_location_grid_meta( $user_id, $location_grid_meta );
+
+        if ( $umeta_id ) {
+            return true;
+        }
+        return false;
+    }
+
+    public static function delete_user_location_meta( $grid_meta_id, $user_id = null ) {
+        if ( empty( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+
+        return Location_Grid_Meta::delete_user_location_grid_meta( $user_id, 'grid_meta_id', $grid_meta_id );
+    }
+
     public static function get_user_location( $user_id = null ) {
         if ( empty( $user_id ) ) {
             $user_id = get_current_user_id();

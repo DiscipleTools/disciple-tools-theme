@@ -403,12 +403,12 @@ jQuery(document).ready(function() {
                   jQuery.each(window.user_list[details.admin0_grid_id], function(i,v) {
                     level_list.append(`
                       <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
-                        <a href="/user-management/users/?user_id=${_.escape(v.user_id)}">
+                        <a href="/user-management/users/${_.escape(v.user_id)}">
                           ${_.escape(v.name)}
                         </a>
                       </div>
                       <div class="cell small-2" data-id="${_.escape(v.grid_meta_id)}">
-                        <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.contact_id)}" data-id="${_.escape(v.grid_meta_id)}">
+                        <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.user_id)}" data-id="${_.escape(v.grid_meta_id)}">
                           <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
                         </a>
                       </div>`)
@@ -431,12 +431,12 @@ jQuery(document).ready(function() {
                   jQuery.each(window.user_list[details.admin1_grid_id], function(i,v) {
                     level_list.append(`
                         <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
-                          <a href="/user-management/users/?user_id=${_.escape(v.user_id)}">
+                          <a href="/user-management/users/${_.escape(v.user_id)}">
                             ${_.escape(v.name)}
                           </a>
                         </div>
                         <div class="cell small-2" data-id="${_.escape(v.grid_meta_id)}">
-                          <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.contact_id)}" data-id="${_.escape(v.grid_meta_id)}">
+                          <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.user_id)}" data-id="${_.escape(v.grid_meta_id)}">
                             <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
                           </a>
                         </div>`)
@@ -458,12 +458,12 @@ jQuery(document).ready(function() {
                   jQuery.each(window.user_list[details.admin2_grid_id], function(i,v) {
                     level_list.append(`
                         <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
-                          <a href="/user-management/users/?user_id=${_.escape(v.user_id)}">
+                          <a href="/user-management/users/${_.escape(v.user_id)}">
                             ${_.escape(v.name)}
                           </a>
                         </div>
                         <div class="cell small-2" data-id="${_.escape(v.grid_meta_id)}">
-                          <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.contact_id)}" data-id="${_.escape(v.grid_meta_id)}">
+                          <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.user_id)}" data-id="${_.escape(v.grid_meta_id)}">
                             <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
                           </a>
                         </div>`)
@@ -528,6 +528,11 @@ jQuery(document).ready(function() {
                   emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
                   callback: {
                     onClick: function(node, a, item){
+                      let data =  {
+                        user_id: item.user_id,
+                        grid_id: value
+                      }
+                      makeRequest( "POST", `users/user_location`, data )
                       API.update_post('contacts', item.contact_id, {
                         location_grid_meta: {
                           values: [
@@ -577,7 +582,7 @@ jQuery(document).ready(function() {
                         })
                         jQuery('#'+list_level+'_list').prepend(`
                             <div class="cell small-10 align-self-middle" data-id="${_.escape(grid_meta)}">
-                              <a  href="/user-management/users/?user_id=${_.escape(response.corresponds_to_user)}">
+                              <a  href="/user-management/users/${_.escape(response.corresponds_to_user)}">
                                 ${_.escape(response.title)}
                               </a>
                             </div>
