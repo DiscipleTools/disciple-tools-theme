@@ -182,7 +182,7 @@ $translations = dt_get_translations();
                     </div> <!-- End Profile -->
                 </div>
 
-                <div class="small-12 cell">
+                <div class="small-12 cell" id="locations">
                     <div class="bordered-box">
                         <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
                             <h4><?php esc_html_e( "Location Responsibility", 'disciple_tools' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( "add", 'disciple_tools' ) ?></a></h4>
@@ -350,15 +350,15 @@ $translations = dt_get_translations();
                                     <td><?php echo get_avatar( $dt_user->ID, '32' ); ?></td>
                                     <td>
                                         <span data-tooltip data-click-open="true" class="top" tabindex="1"
-                                              title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.' ) ?>">
+                                              title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.', 'disciple_tools' ) ?>">
                                             <a href="http://gravatar.com" class="small"><?php esc_html_e( 'edit image on gravatar.com', 'disciple_tools' ) ?> <i class="fi-link"></i></a>
                                         </span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><?php esc_html_e( 'Username', 'disciple_tools' )?> </td>
-                                    <td><span data-tooltip data-click-open="true" class="top" tabindex="2" title="<?php esc_html_e( 'Username cannot be changed' ) ?>"><?php echo esc_html( $dt_user->user_login ); ?> <i class="fi-info primary-color" onclick="jQuery('#username-message').toggle()"></i></span>
-                                        <span id="username-message" style="display: none; font-size: .7em;"><br><?php esc_html_e( 'Username cannot be changed' ) ?></span>
+                                    <td><span data-tooltip data-click-open="true" class="top" tabindex="2" title="<?php esc_html_e( 'Username cannot be changed', 'disciple_tools' ) ?>"><?php echo esc_html( $dt_user->user_login ); ?> <i class="fi-info primary-color" onclick="jQuery('#username-message').toggle()"></i></span>
+                                        <span id="username-message" style="display: none; font-size: .7em;"><br><?php esc_html_e( 'Username cannot be changed', 'disciple_tools' ) ?></span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -366,7 +366,7 @@ $translations = dt_get_translations();
                                     <td><span data-tooltip data-click-open="true" class="top" tabindex="3" title="<?php esc_html_e( 'User email can be changed by site administrator.' ) ?>">
                                         <input type="text" class="profile-input" id="user_email"
                                             name="user_email"
-                                            value="<?php echo esc_html( $dt_user->user_email ); ?>"/></td>
+                                            value="<?php echo esc_html( $dt_user->user_email ); ?>"/>
                                     </td>
                                 </tr>
                                 <tr>
