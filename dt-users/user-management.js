@@ -71,9 +71,13 @@ jQuery(document).ready(function($) {
     let open_multiplier_modal = (user_id)=>{
 
       window.current_user_lookup = user_id
+
+      $('#user-id-reveal').html(user_id)
+
       $('#user_modal').foundation('open');
 
       $('.users-spinner').addClass("active")
+
 
       // load spinners
       let spinner = ' <span class="loading-spinner users-spinner active"></span> '

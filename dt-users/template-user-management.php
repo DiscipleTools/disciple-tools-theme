@@ -139,7 +139,6 @@ $user_management_options = DT_User_Management::user_management_options();
                         <h3 id="user_name"><?php esc_html_e( "Multiplier Name", 'disciple_tools' ) ?></h3>
                     </div>
 
-
                     <button class="close-button" data-close aria-label="Close reveal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -232,6 +231,8 @@ $user_management_options = DT_User_Management::user_management_options();
                                 <h4><?php esc_html_e( 'Contacts', 'disciple_tools' ); ?></h4>
                                 <div id="status_chart_div"></div>
                             </div>
+
+                            <div id="user-id-reveal" style="color:darkgrey;margin:0 auto;text-align:center;"></div>
 
                         </div><!-- end left -->
 
