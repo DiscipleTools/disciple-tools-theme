@@ -371,9 +371,9 @@ $translations = dt_get_translations();
                                 </tr>
                                 <tr>
                                     <td><?php esc_html_e( 'Password', 'disciple_tools' )?></td>
-                                    <td><span data-tooltip data-click-open="true" class="top" tabindex="1" title="<?php esc_html_e( 'Use this email reset form to create a new password.' ) ?>">
+                                    <td><span data-tooltip data-click-open="true" class="top" tabindex="1" title="<?php esc_html_e( 'Use this email reset form to create a new password.', 'disciple_tools' ) ?>">
                                             <a href="<?php echo esc_url( wp_logout_url( '/wp-login.php?action=lostpassword' ) ); ?>" target="_blank" rel="nofollow noopener">
-                                                <?php esc_html_e( 'go to password change form' ) ?> <i class="fi-link"></i>
+                                                <?php esc_html_e( 'go to password change form', 'disciple_tools' ) ?> <i class="fi-link"></i>
                                             </a>
                                         </span>
                                     </td>
