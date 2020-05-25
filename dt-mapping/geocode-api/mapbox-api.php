@@ -285,14 +285,17 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
         }
 
         public static function load_mapbox_search_widget_users() {
-            if ( file_exists( get_template_directory() . '/dt-mapping/geocode-api/mapbox.js' ) ) {
+            if ( ! class_exists( 'Disciple_Tools_Users' ) ) {
+                return;
+            }
+            if ( file_exists( get_template_directory() . '/dt-mapping/geocode-api/mapbox-users.js' ) ) {
 
                 wp_enqueue_script( 'mapbox-search-widget', trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/geocode-api/mapbox-users.js', [ 'jquery', 'mapbox-gl', 'shared-functions' ], filemtime( get_template_directory() . '/dt-mapping/geocode-api/mapbox-users.js' ), true );
                 wp_localize_script(
                     "mapbox-search-widget", "dtMapbox", array(
                         'post_type' => 'user',
-                        "post_id" => '',
-                        "post" => '',
+                        "user_id" => get_current_user_id(),
+                        "user_location" => Disciple_Tools_Users::get_user_location( get_current_user_id() ),
                         "map_key" => self::get_key(),
                         "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
                         "theme_uri" => get_stylesheet_directory_uri(),

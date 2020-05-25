@@ -954,10 +954,40 @@ Please click the following link to confirm the invite:
             $user_id = get_current_user_id();
         }
 
-        $umeta_id = Location_Grid_Meta::add_user_location_grid_meta( $user_id, $location_grid_meta );
+        // use grid_id as primary value
+        if ( isset( $location_grid_meta["grid_id"] ) && ! empty( $location_grid_meta["grid_id"] ) ) {
+            $geocoder = new Location_Grid_Geocoder();
+
+            $grid = $geocoder->query_by_grid_id( $location_grid_meta["grid_id"] );
+            if ($grid) {
+                $location_meta_grid = [];
+
+                Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
+                $location_meta_grid['post_id'] = $user_id;
+                $location_meta_grid['post_type'] = 'users';
+                $location_meta_grid['grid_id'] = $grid["grid_id"];
+                $location_meta_grid['lng'] = $grid["longitude"];
+                $location_meta_grid['lat'] = $grid["latitude"];
+                $location_meta_grid['level'] = $grid["level_name"];
+                $location_meta_grid['label'] = $grid["name"];
+
+                $umeta_id = Location_Grid_Meta::add_location_grid_meta( $user_id, $location_meta_grid );
+                if (is_wp_error( $umeta_id )) {
+                    return $umeta_id;
+                }
+            }
+        // use lng lat as base value
+        } else {
+
+            if (empty( $location_grid_meta['lng'] ) || empty( $location_grid_meta['lat'] )) {
+                return new WP_Error( __METHOD__, 'Missing required lng or lat' );
+            }
+
+            $umeta_id = Location_Grid_Meta::add_user_location_grid_meta( $user_id, $location_grid_meta );
+        }
 
         if ( $umeta_id ) {
-            return true;
+            return self::get_user_location( $user_id );
         }
         return false;
     }

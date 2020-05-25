@@ -230,12 +230,39 @@ class Disciple_Tools_Users_Endpoints
     public function add_user_location( WP_REST_Request $request ) {
         $params = $request->get_params();
 
-        if ( isset( $params['location_grid_meta'] ) ) {
-            return Disciple_Tools_Users::add_user_location_meta( $params );
+        // mapbox add
+        if ( isset( $params['user_location']['location_grid_meta'] ) ) {
+
+            // only dt admin caps can add locations for other users
+            $user_id = get_current_user_id();
+            if ( isset( $params['user_id'] ) && ! empty( $params['user_id'] ) && $params['user_id'] !== $user_id ) {
+                // if user_id param is set, you must be able to edit users.
+                if ( user_can( $user_id, 'manage_dt' ) ) {
+                    $user_id = sanitize_text_field( wp_unslash( $params['user_id'] ) );
+                } else {
+                    return new WP_Error( __METHOD__, "No permission to edit this user", [ 'status' => 400 ] );
+                }
+            }
+
+            $new_location_grid_meta = [];
+            foreach ( $params['user_location']['location_grid_meta'] as $grid_meta ) {
+                $new_location_grid_meta[] = Disciple_Tools_Users::add_user_location_meta( $grid_meta, $user_id );
+            }
+
+            if ( ! empty( $new_location_grid_meta ) ) {
+                return [
+                    'user_id' => $user_id,
+                    'user_location' => Disciple_Tools_Users::get_user_location( $user_id )
+                ];
+            }
+            return new WP_Error( __METHOD__, 'Failed to create user location' );
         }
+        // typeahead add
         else if ( isset( $params["grid_id"] ) ){
             return Disciple_Tools_Users::add_user_location( $params["grid_id"] );
-        } else {
+        }
+        // parameter fail
+        else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
         }
     }
@@ -243,7 +270,37 @@ class Disciple_Tools_Users_Endpoints
     public function delete_user_location( WP_REST_Request $request ) {
         $params = $request->get_params();
 
-        if ( isset( $params["grid_id"] ) ){
+        // mapbox add
+        if ( isset( $params['user_location']['location_grid_meta'] ) ) {
+
+            // only dt admin caps can add locations for other users
+            $user_id = get_current_user_id();
+            if ( isset( $params['user_id'] ) && ! empty( $params['user_id'] ) && $params['user_id'] !== $user_id ) {
+                // if user_id param is set, you must be able to edit users.
+                if ( user_can( $user_id, 'manage_dt' ) ) {
+                    $user_id = sanitize_text_field( wp_unslash( $params['user_id'] ) );
+                } else {
+                    return new WP_Error( __METHOD__, "No permission to edit this user", [ 'status' => 400 ] );
+                }
+            }
+
+            $new_location_grid_meta = [];
+            foreach ( $params['user_location']['location_grid_meta'] as $grid_meta ) {
+                if ( isset( $grid_meta['grid_meta_id'] ) ) {
+                    $new_location_grid_meta[] = Disciple_Tools_Users::delete_user_location_meta( $params['user_location']['location_grid_meta'][0]['grid_meta_id'], $user_id );
+                }
+            }
+
+            if ( ! empty( $new_location_grid_meta ) ) {
+                return [
+                    'user_id' => $user_id,
+                    'user_location' => Disciple_Tools_Users::get_user_location( $user_id )
+                ];
+            }
+            return new WP_Error( __METHOD__, 'Failed to delete user location' );
+        }
+        // typeahead add
+        else if ( isset( $params["grid_id"] ) ){
             return Disciple_Tools_Users::delete_user_location( $params["grid_id"] );
         }
         else {

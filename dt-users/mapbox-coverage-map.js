@@ -11,6 +11,8 @@ jQuery(document).ready(function() {
 
     makeRequest( "GET", `get_user_list`, null , 'user-management/v1/')
       .done(response=>{
+        console.log('user_list')
+        console.log(response)
         window.user_list = response
       }).catch((e)=>{
       console.log( 'error in activity')
@@ -390,6 +392,7 @@ jQuery(document).ready(function() {
               /* hierarchy list*/
               content.empty().append(`<ul id="hierarchy-list" class="accordion" data-accordion></ul>`)
               let list = jQuery('#hierarchy-list')
+
               if ( details.admin0_grid_id ) {
                 list.append( `
                   <li id="admin0_wrapper" class="accordion-item" data-accordion-item>
@@ -408,7 +411,7 @@ jQuery(document).ready(function() {
                         </a>
                       </div>
                       <div class="cell small-2" data-id="${_.escape(v.grid_meta_id)}">
-                        <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.user_id)}" data-id="${_.escape(v.grid_meta_id)}">
+                        <a class="button clear delete-button mapbox-delete-button small float-right" data-user_id="${_.escape(v.user_id)}" data-id="${_.escape(v.grid_meta_id)}">
                           <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
                         </a>
                       </div>`)
@@ -436,7 +439,7 @@ jQuery(document).ready(function() {
                           </a>
                         </div>
                         <div class="cell small-2" data-id="${_.escape(v.grid_meta_id)}">
-                          <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.user_id)}" data-id="${_.escape(v.grid_meta_id)}">
+                          <a class="button clear delete-button mapbox-delete-button small float-right" data-user_id="${_.escape(v.user_id)}" data-id="${_.escape(v.grid_meta_id)}">
                             <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
                           </a>
                         </div>`)
@@ -463,7 +466,7 @@ jQuery(document).ready(function() {
                           </a>
                         </div>
                         <div class="cell small-2" data-id="${_.escape(v.grid_meta_id)}">
-                          <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.user_id)}" data-id="${_.escape(v.grid_meta_id)}">
+                          <a class="button clear delete-button mapbox-delete-button small float-right" data-user_id="${_.escape(v.user_id)}" data-id="${_.escape(v.grid_meta_id)}">
                             <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
                           </a>
                         </div>`)
@@ -528,19 +531,26 @@ jQuery(document).ready(function() {
                   emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
                   callback: {
                     onClick: function(node, a, item){
-                      let data =  {
+                      let data = {
                         user_id: item.user_id,
-                        grid_id: value
-                      }
-                      makeRequest( "POST", `users/user_location`, data )
-                      API.update_post('contacts', item.contact_id, {
-                        location_grid_meta: {
-                          values: [
+                        user_location: {
+                          location_grid_meta: [
                             {
                               grid_id: selected_location
                             }
                           ]
-                        }}).then(function (response) {
+                        }
+                      }
+                      makeRequest( "POST", `users/user_location`, data )
+                      // API.update_post('contacts', item.contact_id, {
+                      //   location_grid_meta: {
+                      //     values: [
+                      //       {
+                      //         grid_id: selected_location
+                      //       }
+                      //     ]
+                      //   }})
+                        .then(function (response) {
                         console.log(response)
 
                         // update user list
@@ -575,7 +585,7 @@ jQuery(document).ready(function() {
 
                         // add new user to list
                         let grid_meta = ''
-                        jQuery.each(response.location_grid_meta, function(i,v) {
+                        jQuery.each(response.user_location.location_grid_meta, function(i,v) {
                           if ( v.grid_id === selected_location ) {
                             grid_meta = v.grid_meta_id
                           }
@@ -587,7 +597,7 @@ jQuery(document).ready(function() {
                               </a>
                             </div>
                             <div class="cell small-2" data-id="${_.escape(grid_meta)}">
-                              <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(response.ID)}" data-id="${_.escape(grid_meta)}">
+                              <a class="button clear delete-button mapbox-delete-button small float-right" data-user_id="${_.escape(response.ID)}" data-id="${_.escape(grid_meta)}">
                                 <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
                               </a>
                             </div>`)
@@ -612,22 +622,37 @@ jQuery(document).ready(function() {
 
               jQuery( '.mapbox-delete-button' ).on( "click", function(e) {
 
+                // let data = {
+                //   location_grid_meta: {
+                //     values: [
+                //       {
+                //         grid_meta_id: e.currentTarget.dataset.id,
+                //         delete: true,
+                //       }
+                //     ]
+                //   }
+                // }
                 let data = {
-                  location_grid_meta: {
-                    values: [
+                  user_id: e.currentTarget.dataset.user_id,
+                  user_location: {
+                    location_grid_meta: [
                       {
                         grid_meta_id: e.currentTarget.dataset.id,
-                        delete: true,
                       }
                     ]
                   }
                 }
 
-                let post_id = e.currentTarget.dataset.postid
+                // let post_id = e.currentTarget.dataset.user_id
+                makeRequest( "DELETE", `users/user_location`, data )
+                  .then(function (response) {
+                    // console.log( response )
+                    jQuery('div[data-id='+e.currentTarget.dataset.id+']').remove()
+                  }).catch(err => { console.error(err) })
 
-                API.update_post( 'contacts', post_id, data ).then(function (response) {
-                  jQuery('div[data-id='+e.currentTarget.dataset.id+']').remove()
-                }).catch(err => { console.error(err) })
+                // API.update_post( 'contacts', post_id, data ).then(function (response) {
+                //   jQuery('div[data-id='+e.currentTarget.dataset.id+']').remove()
+                // }).catch(err => { console.error(err) })
 
               });
 

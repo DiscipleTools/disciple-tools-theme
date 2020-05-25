@@ -251,8 +251,6 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                 '%s'
             ];
 
-            return $data;
-
             $wpdb->insert( $wpdb->dt_location_grid_meta, $data, $format );
             if ( !$wpdb->insert_id) {
                 delete_user_meta( $user_id, $wpdb->prefix . 'location_grid', $location_grid_meta['grid_id'] );
@@ -270,13 +268,16 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
 
         }
 
-        public static function delete_user_location_grid_meta( int $user_id, $type, int $grid_meta_id, array $existing_post = null ) {
+        public static function delete_user_location_grid_meta( int $user_id, $type, $grid_meta_id, array $existing_post = null ) {
             global $wpdb;
 
             $status = false;
 
             if ('all' === $type) {
-                $wpdb->delete( $wpdb->dt_location_grid_meta, [ "post_id" => $user_id, "post_type" => "users" ] );
+                $wpdb->delete( $wpdb->dt_location_grid_meta, [
+                    "post_id" => $user_id,
+                    "post_type" => "users"
+                ] );
                 $status = true;
             }
 

@@ -78,22 +78,6 @@ class DT_User_Management
                 ],
             ]
         );
-        register_rest_route(
-            $namespace, '/user_location', [
-                [
-                    'methods'  => "POST",
-                    'callback' => [ $this, 'add_user_location' ],
-                ],
-            ]
-        );
-        register_rest_route(
-            $namespace, '/user_location', [
-                [
-                    'methods'  => "DELETE",
-                    'callback' => [ $this, 'delete_user_location' ],
-                ],
-            ]
-        );
     }
 
     public function dt_templates_for_urls( $template_for_url ) {
@@ -597,113 +581,6 @@ class DT_User_Management
             return $multipliers;
         }
 
-    }
-
-    public function add_user_location( WP_REST_Request $request ) { // @todo
-        if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 401 ] );
-        }
-
-        $params = $request->get_params();
-
-        // @todo Everything Below to process a location_grid_meta
-
-        if ( isset( $params['location_grid_meta'] ) && isset( $params['user_id'] ) ) {
-//            if ( !isset( $field["values"] ) ) {
-//                return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key, [ 'status' => 400 ] );
-//            }
-//
-//            $geocoder = new Location_Grid_Geocoder();
-//
-//            // delete everything
-//            if ( isset( $field["force_values"] ) && $field["force_values"] == true ){
-//                delete_post_meta( $post_id, 'location_grid' );
-//                delete_post_meta( $post_id, 'location_grid_meta' );
-//                Location_Grid_Meta::add_location_grid_meta( $post_id, 'all', null );
-//                $existing_post[ $field_key ] = [];
-//            }
-//
-//            // process crud
-//            foreach ( $field["values"] as $value ){
-//
-//                // delete
-//                if ( isset( $value["delete"] ) && $value["delete"] == true ) {
-//                    Location_Grid_Meta::add_location_grid_meta( $post_id, $value["grid_meta_id"], $existing_post );
-//                }
-//
-//                // is new but has provided grid_id
-//                else if ( isset( $value["grid_id"] ) && ! empty( $value["grid_id"] ) ) {
-//                    $grid = $geocoder->query_by_grid_id( $value["grid_id"] );
-//                    if ( $grid ) {
-//                        $location_meta_grid = [];
-//
-//                        Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
-//                        $location_meta_grid['post_id'] = $post_id;
-//                        $location_meta_grid['post_type'] = $post_type;
-//                        $location_meta_grid['grid_id'] = $grid["grid_id"];
-//                        $location_meta_grid['lng'] = $grid["longitude"];
-//                        $location_meta_grid['lat'] = $grid["latitude"];
-//                        $location_meta_grid['level'] = $grid["level_name"];
-//                        $location_meta_grid['label'] = $grid["name"];
-//
-//                        $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
-//                        if ( is_wp_error( $potential_error ) ){
-//                            return $potential_error;
-//                        }
-//                    }
-//                }
-//                // new
-//                else {
-//
-//                    Location_Grid_Meta::validate_location_grid_meta( $value );
-//
-//                    if ( $value['level'] === 'country' ) {
-//                        $value['level'] = 'admin0';
-//                    } else if ( $value['level'] === 'region' ) {
-//                        $value['level'] = 'admin1';
-//                    }
-//
-//
-//                    $grid = $geocoder->get_grid_id_by_lnglat( $value['lng'], $value['lat'], null, $value['level'] );
-//                    if ( $grid ) {
-//                        $value['grid_id'] = $grid['grid_id'];
-//                        $value['post_type'] = $post_type;
-//
-//                        $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $value );
-//                        if ( is_wp_error( $potential_error ) ){
-//                            return $potential_error;
-//                        }
-//                    }
-//                }
-//            }
-//        } // end location_grid processing
-//
-//
-//            return $umeta_id = Location_Grid_Meta::add_user_location_grid_meta(  $params['user_id'],  $params['location_grid_meta'] );
-        }
-        else if ( isset( $params["grid_id"] ) && isset( $params['user_id'] ) ){
-            return Disciple_Tools_Users::add_user_location( $params["grid_id"], $params['user_id'] );
-        } else {
-            return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
-        }
-
-    }
-
-    public function delete_user_location( WP_REST_Request $request ) { // @todo
-        if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 401 ] );
-        }
-
-        $params = $request->get_params();
-
-        if ( isset( $params['location_grid_meta'] ) && isset( $params['user_id'] ) ) {
-            return $umeta_id = Location_Grid_Meta::delete_user_location_grid_meta(  $params['user_id'],  $params['location_grid_meta'] );
-        }
-        else if ( isset( $params["grid_id"] ) && isset( $params['user_id'] ) ){
-            return Disciple_Tools_Users::delete_user_location( $params["grid_id"], $params['user_id'] );
-        } else {
-            return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
-        }
     }
 
     public function update_settings_on_user( WP_REST_Request $request ){
