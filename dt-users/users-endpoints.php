@@ -286,6 +286,7 @@ class Disciple_Tools_Users_Endpoints
             if ( ! empty( $new_location_grid_meta ) ) {
                 return [
                     'user_id' => $user_id,
+                    'user_title' => dt_get_user_display_name( $user_id ),
                     'user_location' => Disciple_Tools_Users::get_user_location( $user_id )
                 ];
             }
