@@ -31,16 +31,6 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
 
         }
 
-//        $url_path = dt_get_url_path();
-//        if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
-//
-//            add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
-//            add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 10 );
-//
-//            if ( 'metrics/critical-path' === $url_path ) {
-//                add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
-//            }
-//        }
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
@@ -176,7 +166,7 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
     }
 
     public function _no_results() {
-        return '<p>' . esc_attr( 'No Results', 'disciple_tools' ) . '</p>';
+        return '<p>' . esc_html__( 'No Results', 'disciple_tools' ) . '</p>';
     }
 
     public function critical_path_activity_callback( WP_REST_Request $request ){
@@ -369,7 +359,5 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
 
         return $data;
     }
-
-
 }
 new DT_Metrics_Critical_Path_Chart();

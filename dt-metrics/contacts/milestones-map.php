@@ -47,7 +47,8 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
             get_template_directory_uri() . '/dt-metrics/contacts/' . $this->js_file_name,
             [
                 'jquery',
-                'dt_mapping_js'
+                'dt_mapping_js',
+                'lodash'
             ],
             filemtime( get_theme_file_path() . '/dt-metrics/contacts/' . $this->js_file_name ),
             true

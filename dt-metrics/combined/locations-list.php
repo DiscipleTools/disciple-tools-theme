@@ -48,7 +48,8 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
             get_template_directory_uri() . $this->js_file_name,
             [
                 'jquery',
-                'datatable'
+                'datatable',
+                'lodash'
             ],
             filemtime( get_theme_file_path() .  $this->js_file_name ),
             true

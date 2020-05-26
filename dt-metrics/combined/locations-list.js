@@ -193,7 +193,7 @@ function location_grid_list( div, grid_id ) {
 
     // Self Data
     let self_population = map_data.self.population_formatted
-    jQuery('#current_level').empty().html(`${_.escape(translations.population)}: ${_.escape( self_population )}`)
+    jQuery('#current_level').empty().html(`${_.escape(translations.population)} ${_.escape( self_population )}`)
 
     // Build List
     let locations = jQuery('#location_list')

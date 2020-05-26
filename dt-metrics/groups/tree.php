@@ -58,6 +58,7 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
     public function scripts() {
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
             'jquery',
+            'lodash'
         ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
         wp_localize_script(
@@ -77,6 +78,15 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
         return [
             'translations' => [
                 'title_group_tree' => __( 'Group Generation Tree', 'disciple_tools' ),
+                'highlight_active' => __( 'Highlight Active', 'disciple_tools' ),
+                'highlight_churches' => __( 'Highlight Churches', 'disciple_tools' ),
+                'members' => __( 'Members', 'disciple_tools' ),
+                'view_record' => __( "View Record", "disciple_tools" ),
+                'assigned_to' => __( "Assigned To", "disciple_tools" ),
+                'status' => __( "Status", "disciple_tools" ),
+                'total_members' => __( "Total Members", "disciple_tools" ),
+                'view_group' => __( "View Group", "disciple_tools" ),
+
             ],
             'group_generation_tree' => $this->get_group_generations_tree(),
         ];
@@ -116,12 +126,12 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
                 $first_section = 'first-section';
             }
 
-            $html = '<ul class="ul-gen-'.$gen.'">';
+            $html = '<ul class="ul-gen-'.esc_html( $gen ).'">';
             $gen++;
             foreach ($menu_data['parents'][$parent_id] as $item_id)
             {
-                $html .= '<li class="gen-node li-gen-' . $gen . ' ' . $first_section . '">';
-                $html .= '<span class="' . esc_html( $menu_data['items'][ $item_id ]['group_status'] ) . ' ' . esc_html( $menu_data['items'][ $item_id ]['group_type'] ) . '">(' . $gen . ') ';
+                $html .= '<li class="gen-node li-gen-' . esc_html( $gen ) . ' ' . esc_html( $first_section ) . '">';
+                $html .= '<span class="' . esc_html( $menu_data['items'][ $item_id ]['group_status'] ) . ' ' . esc_html( $menu_data['items'][ $item_id ]['group_type'] ) . '">(' . esc_html( $gen ) . ') ';
                 $html .= '<a onclick="open_modal_details(' . esc_html( $item_id ) . ');">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></span>';
 
                 $html .= $this->build_group_tree( $item_id, $menu_data, $gen );

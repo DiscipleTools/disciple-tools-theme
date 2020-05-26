@@ -1,7 +1,9 @@
 jQuery(document).ready(function($) {
   // console.log(dt_mapbox_metrics)
-
-  function write_cluster( settings ) {
+  if ( typeof dt_mapbox_metrics.settings !== undefined ) {
+    write_cluster()
+  }
+  function write_cluster( ) {
     let obj = dt_mapbox_metrics
 
     window.post_type = obj.settings.post_type
@@ -17,13 +19,13 @@ jQuery(document).ready(function($) {
 
     /* build status list */
     let status_list = `<option value="none" disabled></option>
-                      <option value="none" disabled>Status</option>
+                      <option value="none" disabled>${_.escape( obj.translations.status ) /*Status*/}</option>
                       <option value="none"></option>
-                      <option value="all" selected>Status - All</option>
+                      <option value="all" selected>${_.escape( obj.translations.status_all  )/*Status - All*/}</option>
                       <option value="none" disabled>-----</option>
                       `
     jQuery.each(status, function(i,v){
-      status_list += `<option value="${i}">${v.label}</option>`
+      status_list += `<option value="${_.escape( i )}">${_.escape( v.label )}</option>`
     })
     status_list += `<option value="none"></option>`
 
@@ -125,7 +127,7 @@ jQuery(document).ready(function($) {
                 <div id='legend' class='legend'>
                     <div class="grid-x grid-margin-x grid-padding-x">
                         <div class="cell small-2 center info-bar-font">
-                            ${title}
+                            ${_.escape( title )}
                         </div>
                         <div class="cell small-2 center border-left">
                             <select id="status" class="small" style="width:170px;">
@@ -134,10 +136,10 @@ jQuery(document).ready(function($) {
                         </div>
                     </div>
                 </div>
-                <div id="spinner"><img src="${obj.spinner_url}" class="spinner-image" alt="spinner"/></div>
+                <div id="spinner">${spinner}</div>
                 <div id="cross-hair">&#8982</div>
                 <div id="geocode-details" class="geocode-details">
-                    ${title}<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
+                    ${_.escape( title )}<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
                     <hr style="margin:10px 5px;">
                     <div id="geocode-details-content"></div>
                 </div>
@@ -161,6 +163,20 @@ jQuery(document).ready(function($) {
           minZoom: 0,
           zoom: 0
         });
+
+        // SET BOUNDS
+        window.map_bounds_token = 'user_coverage_map'
+        window.map_start = get_map_start( window.map_bounds_token )
+        if ( window.map_start ) {
+          map.fitBounds( window.map_start, {duration: 0});
+        }
+        map.on('zoomend', function() {
+          set_map_start( window.map_bounds_token, map.getBounds() )
+        })
+        map.on('dragend', function() {
+          set_map_start( window.map_bounds_token, map.getBounds() )
+        })
+        // end set bounds
 
         map.on('load', function() {
           load_layer( data )
@@ -274,26 +290,28 @@ jQuery(document).ready(function($) {
 
           let content = jQuery('#geocode-details-content')
           content.empty().html(spinner)
-          console.log(e.features)
+          // console.log(e.features)
 
           jQuery.each(e.features, function (i, v) {
-            content.append(`<div class="grid-x" id="list-${i}"></div>`)
-            makeRequest('GET', window.post_type + '/' + e.features[i].properties.post_id + '/', null, 'dt-posts/v2/')
+            content.append(`<div class="grid-x" id="list-${_.escape( i )}"></div>`)
+            makeRequest('GET', _.escape( window.post_type ) + '/' + _.escape( e.features[i].properties.post_id ) + '/', null, 'dt-posts/v2/')
               .done(details => {
-                window.list[i] = jQuery('#list-' + i)
+                window.list[i] = jQuery('#list-' + _.escape( i ))
 
                 let status = ''
                 if (window.post_type === 'contacts') {
                   status = details.overall_status.label
                 } else if (window.post_type === 'groups') {
                   status = details.group_status.label
+                } else if ( typeof details.status.label !== "undefined") {
+                  status = details.status.label
                 }
 
                 window.list[i].append(`
-                      <div class="cell"><h4>${details.title}</h4></div>
-                      <div class="cell">Status: ${status}</div>
-                      <div class="cell">Assigned To: ${details.assigned_to.display}</div>
-                      <div class="cell"><a href="/${window.post_type}/${details.ID}">View Record</a></div>
+                      <div class="cell"><h4>${_.escape( details.title )}</h4></div>
+                      <div class="cell">${_.escape( obj.translations.status)/*Status*/}: ${_.escape( status )}</div>
+                      <div class="cell">${ _.escape( obj.translations.assigned_to  )/*Assigned To*/}: ${_.escape( details.assigned_to.display )}</div>
+                      <div class="cell"><a href="/${_.escape( window.post_type )}/${_.escape( details.ID )}">${_.escape( obj.translations.view_record  )/*View Record*/}</a></div>
                       <div class="cell"><hr></div>
                   `)
 
@@ -310,8 +328,5 @@ jQuery(document).ready(function($) {
       console.log("error")
       console.log(err)
     })
-  }
-  if ( typeof dt_mapbox_metrics.settings !== undefined ) {
-    write_cluster()
   }
 })

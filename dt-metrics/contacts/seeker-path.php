@@ -47,6 +47,7 @@ class DT_Metrics_Seeker_Path_Chart extends DT_Metrics_Chart_Base
                 'datepicker',
                 'amcharts-core',
                 'amcharts-charts',
+                'lodash'
             ],
             filemtime( get_theme_file_path() .  $this->js_file_name )
         );

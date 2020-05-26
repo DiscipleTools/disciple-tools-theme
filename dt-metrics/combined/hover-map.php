@@ -61,6 +61,9 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
+                'translations' => [
+                    'title' => __( 'Hover Map', 'disciple_tools' )
+                ]
             ]
         );
     }

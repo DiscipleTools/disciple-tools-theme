@@ -44,7 +44,8 @@ class DT_Metrics_Personal_Groups_Area_Map extends DT_Metrics_Chart_Base
         wp_enqueue_script( 'dt_mapbox_script',
             get_template_directory_uri() . $this->js_file_name,
             [
-                'jquery'
+                'jquery',
+                'lodash'
             ],
             filemtime( get_theme_file_path() .  $this->js_file_name ),
             true
@@ -57,6 +58,13 @@ class DT_Metrics_Personal_Groups_Area_Map extends DT_Metrics_Chart_Base
                     'refresh_data' => __( "Refresh Cached Data", "disciple_tools" ),
                     'population' => __( "Population", "disciple_tools" ),
                     'name' => __( "Name", "disciple_tools" ),
+                    'status' => __( "Status", "disciple_tools" ),
+                    'status_all' => __( "Status - All", "disciple_tools" ),
+                    'zoom_level' => __( "Zoom Level", "disciple_tools" ),
+                    'auto_zoom' => __( "Auto Zoom", "disciple_tools" ),
+                    'world' => __( "World", "disciple_tools" ),
+                    'country' => __( "Country", "disciple_tools" ),
+                    'state' => __( "State", "disciple_tools" ),
                 ],
                 'settings' => [
                     'map_key' => DT_Mapbox_API::get_key(),
@@ -68,7 +76,7 @@ class DT_Metrics_Personal_Groups_Area_Map extends DT_Metrics_Chart_Base
                     'geocoder_url' => trailingslashit( get_stylesheet_directory_uri() ),
                     'geocoder_nonce' => wp_create_nonce( 'wp_rest' ),
                     'menu_slug' => $this->base_slug,
-                    'post_type' => 'contacts',
+                    'post_type' => 'groups',
                     'title' => $this->title,
                     'status_list' => $contact_fields['overall_status']['default'] ?? []
                 ],

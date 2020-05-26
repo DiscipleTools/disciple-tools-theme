@@ -37,6 +37,7 @@ class DT_Metrics_Personal_Coaching_Tree extends DT_Metrics_Chart_Base
     public function scripts() {
         wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
             'jquery',
+            'lodash'
         ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
         wp_localize_script(
@@ -121,13 +122,13 @@ class DT_Metrics_Personal_Coaching_Tree extends DT_Metrics_Chart_Base
                 $first_section = 'first-section';
             }
 
-            $html = '<ul class="ul-gen-'.$gen.'">';
+            $html = '<ul class="ul-gen-'.esc_html( $gen ).'">';
             foreach ($menu_data['parents'][$parent_id] as $item_id)
             {
-                $html .= '<li class="gen-node li-gen-' . $gen . ' ' . $first_section . '">';
-                $html .= '(' . $gen . ') ';
+                $html .= '<li class="gen-node li-gen-' . esc_html( $gen ) . ' ' . esc_html( $first_section ) . '">';
+                $html .= '(' . esc_html( $gen ) . ') ';
                 if ( in_array( $item_id, $this->my_list ) ) {
-                    $html .= '<strong><a href="' . site_url( "/contacts/" ) . esc_html( $item_id ) . '">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></strong><br>';
+                    $html .= '<strong><a href="' . esc_url( site_url( "/contacts/" ) ) . esc_html( $item_id ) . '">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></strong><br>';
                 } else {
                     $html .= __( 'disciple', 'disciple_tools' ) . '<br>';
                 }

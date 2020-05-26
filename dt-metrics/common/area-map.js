@@ -1,7 +1,8 @@
 jQuery(document).ready(function() {
 
-  console.log(dt_mapbox_metrics)
-
+  if ( typeof dt_mapbox_metrics.settings !== undefined ) {
+    write_area()
+  }
   function write_area() {
     let obj = dt_mapbox_metrics
 
@@ -18,21 +19,21 @@ jQuery(document).ready(function() {
 
     /* build status list */
     let status_list = `<option value="none" disabled></option>
-                      <option value="none" disabled>Status</option>
+                      <option value="none" disabled>${_.escape( obj.translations.status ) /*Status*/}</option>
                       <option value="none"></option>
-                      <option value="all" selected>Status - All</option>
+                      <option value="all" selected>${_.escape( obj.translations.status_all  )/*Status - All*/}</option>
                       <option value="none" disabled>-----</option>
                       `
     jQuery.each(status, function(i,v){
-      status_list += `<option value="${i}">${v.label}</option>`
+      status_list += `<option value="${_.escape( i )}">${_.escape( v.label )}</option>`
     })
     status_list += `<option value="none"></option>`
 
     makeRequest( "POST", obj.settings.totals_rest_url, { post_type: window.post_type, status: null} , obj.settings.totals_rest_base_url )
       .done(grid_data=>{
         window.grid_data = grid_data
-        console.log('GRID TOTALS')
-        console.log(grid_data)
+        // console.log('GRID TOTALS')
+        // console.log(grid_data)
 
         chart.empty().html(`
                 <style>
@@ -62,18 +63,18 @@ jQuery(document).ready(function() {
                     <div id='legend' class='legend'>
                         <div class="grid-x grid-margin-x grid-padding-x">
                             <div class="cell small-2 center info-bar-font">
-                                ${title}
+                                ${_.escape( title )}
                             </div>
                             <div class="cell small-2 center border-left">
                                 <select id="level" class="small" style="width:170px;">
                                     <option value="none" disabled></option>
-                                    <option value="none" disabled>Zoom Level</option>
+                                    <option value="none" disabled>${_.escape( obj.translations.zoom_level ) /*Zoom Level*/}</option>
                                     <option value="none"></option>
-                                    <option value="auto" selected>Auto Zoom</option>
+                                    <option value="auto" selected>${_.escape( obj.translations.auto_zoom ) /*Auto Zoom*/}</option>
                                     <option value="none" disabled>-----</option>
-                                    <option value="world">World</option>
-                                    <option value="admin0">Country</option>
-                                    <option value="admin1">State</option>
+                                    <option value="world">${_.escape( obj.translations.world )/*World*/}</option>
+                                    <option value="admin0">${_.escape( obj.translations.country )/*Country*/}</option>
+                                    <option value="admin1">${_.escape( obj.translations.state )/*State*/}</option>
                                     <option value="none" disabled></option>
                                 </select>
                             </div>
@@ -88,7 +89,7 @@ jQuery(document).ready(function() {
 
                             <div class="cell small-1 center border-left">
                                 <div class="grid-y">
-                                    <div class="cell center" id="admin">World</div>
+                                    <div class="cell center" id="admin">${_.escape( obj.translations.world )/*World*/}</div>
                                     <div class="cell center" id="zoom" >0</div>
                                 </div>
                             </div>
@@ -97,7 +98,7 @@ jQuery(document).ready(function() {
                     <div id="spinner">${spinner}</div>
                     <div id="cross-hair">&#8982</div>
                     <div id="geocode-details" class="geocode-details">
-                        ${title}<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
+                        ${_.escape( title )}<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
                         <hr style="margin:10px 5px;">
                         <div id="geocode-details-content"></div>
                     </div>
@@ -116,6 +117,20 @@ jQuery(document).ready(function() {
           minZoom: 1,
           zoom: 1.8
         });
+
+        // SET BOUNDS
+        window.map_bounds_token = obj.settings.post_type + obj.settings.menu_slug
+        window.map_start = get_map_start( window.map_bounds_token )
+        if ( window.map_start ) {
+          map.fitBounds( window.map_start, {duration: 0});
+        }
+        map.on('zoomend', function() {
+          set_map_start( window.map_bounds_token, map.getBounds() )
+        })
+        map.on('dragend', function() {
+          set_map_start( window.map_bounds_token, map.getBounds() )
+        })
+        // end set bounds
 
         // disable map rotation using right click + drag
         map.dragRotate.disable();
@@ -144,53 +159,61 @@ jQuery(document).ready(function() {
         // default load state
         map.on('load', function() {
 
-          window.previous_grid_id = '1'
-          window.previous_grid_list.push('1')
-          jQuery.get( obj.settings.map_mirror + 'collection/1.geojson', null, null, 'json')
-            .done(function (geojson) {
+          if ( window.map_start ) { // if bounds defined
+            let lnglat = map.getCenter()
+            load_layer( lnglat.lng, lnglat.lat, 'zoom' )
 
-              jQuery.each(geojson.features, function (i, v) {
-                if (window.grid_data[geojson.features[i].properties.id]) {
-                  geojson.features[i].properties.value = parseInt(window.grid_data[geojson.features[i].properties.id].count)
-                } else {
-                  geojson.features[i].properties.value = 0
-                }
+          } else { // if no bounds defined
+
+            window.previous_grid_id = '1'
+            window.previous_grid_list.push('1')
+            jQuery.get(obj.settings.map_mirror + 'collection/1.geojson', null, null, 'json')
+              .done(function (geojson) {
+
+                jQuery.each(geojson.features, function (i, v) {
+                  if (window.grid_data[geojson.features[i].properties.id]) {
+                    geojson.features[i].properties.value = parseInt(window.grid_data[geojson.features[i].properties.id].count)
+                  } else {
+                    geojson.features[i].properties.value = 0
+                  }
+                })
+                map.addSource('1', {
+                  'type': 'geojson',
+                  'data': geojson
+                });
+                map.addLayer({
+                  'id': '1',
+                  'type': 'fill',
+                  'source': '1',
+                  'paint': {
+                    'fill-color': [
+                      'interpolate',
+                      ['linear'],
+                      ['get', 'value'],
+                      0,
+                      'rgba(0, 0, 0, 0)',
+                      1,
+                      '#547df8',
+                      50,
+                      '#3754ab',
+                      100,
+                      '#22346a'
+                    ],
+                    'fill-opacity': 0.75
+                  }
+                });
+                map.addLayer({
+                  'id': '1line',
+                  'type': 'line',
+                  'source': '1',
+                  'paint': {
+                    'line-color': 'black',
+                    'line-width': 1
+                  }
+                });
               })
-              map.addSource('1', {
-                'type': 'geojson',
-                'data': geojson
-              });
-              map.addLayer({
-                'id': '1',
-                'type': 'fill',
-                'source': '1',
-                'paint': {
-                  'fill-color': [
-                    'interpolate',
-                    ['linear'],
-                    ['get', 'value'],
-                    0,
-                    'rgba(0, 0, 0, 0)',
-                    1,
-                    '#547df8',
-                    50,
-                    '#3754ab',
-                    100,
-                    '#22346a'
-                  ],
-                  'fill-opacity': 0.75
-                }
-              });
-              map.addLayer({
-                'id': '1line',
-                'type': 'line',
-                'source': '1',
-                'paint': {
-                  'line-color': 'black',
-                  'line-width': 1
-                }
-              });
-            })
+
+          }
         })
 
         // update info box on zoom
@@ -275,8 +298,6 @@ jQuery(document).ready(function() {
           // geocode
           makeRequest('GET', obj.settings.geocoder_url + 'dt-mapping/location-grid-list-api.php?type=geocode&longitude='+lng+'&latitude='+lat+'&level='+level+'&nonce='+obj.settings.geocoder_nonce )
             .done(data=>{
-
-
               // default layer to world
               if ( data.grid_id === undefined || level === 'world' ) {
                 data.grid_id = '1'
@@ -341,16 +362,12 @@ jQuery(document).ready(function() {
                           'line-width': 1
                         }
                       });
-
                       remove_layer( data.grid_id, event_type )
-
                     }) // end get geojson collection
-
                 }
               } // end load new layer
               spinner.hide()
             }); // end geocode
-
         } // end load section function
 
         function load_detail_panel( lng, lat, level ) {
@@ -376,8 +393,8 @@ jQuery(document).ready(function() {
           // geocode
           makeRequest('GET', obj.settings.geocoder_url + 'dt-mapping/location-grid-list-api.php?type=geocode&longitude='+lng+'&latitude='+lat+'&level='+level+'&nonce='+obj.settings.geocoder_nonce )
             .done(details=>{
-              console.log('Details')
-              console.log(details)
+              // console.log('Details')
+              // console.log(details)
 
               /* hierarchy list*/
               content.empty().append(`<ul id="hierarchy-list" class="accordion" data-accordion></ul>`)
@@ -385,7 +402,7 @@ jQuery(document).ready(function() {
               if ( details.admin0_grid_id ) {
                 list.append( `
                               <li id="admin0_wrapper" class="accordion-item" data-accordion-item>
-                               <a href="#" class="accordion-title">${details.admin0_name} :  <span id="admin0_count">0</span></a>
+                               <a href="#" class="accordion-title">${_.escape( details.admin0_name )} :  <span id="admin0_count">0</span></a>
                                 <div class="accordion-content grid-x" data-tab-content><div id="admin0_list" class="grid-x"></div></div>
                               </li>
                             `)
@@ -397,7 +414,7 @@ jQuery(document).ready(function() {
               if ( details.admin1_grid_id ) {
                 list.append( `
                               <li id="admin1_wrapper" class="accordion-item" data-accordion-item >
-                                <a href="#" class="accordion-title">${details.admin1_name} : <span id="admin1_count">0</span></a>
+                                <a href="#" class="accordion-title">${_.escape( details.admin1_name )} : <span id="admin1_count">0</span></a>
                                 <div class="accordion-content" data-tab-content><div id="admin1_list" class="grid-x"></div></div>
                               </li>
                             `)
@@ -410,7 +427,7 @@ jQuery(document).ready(function() {
               if ( details.admin2_grid_id ) {
                 list.append( `
                               <li id="admin2_wrapper" class="accordion-item" data-accordion-item>
-                                <a href="#" class="accordion-title">${details.admin2_name} : <span id="admin2_count">0</span></a>
+                                <a href="#" class="accordion-title">${_.escape( details.admin2_name )} : <span id="admin2_count">0</span></a>
                                 <div class="accordion-content" data-tab-content><div id="admin2_list" class="grid-x"></div></div>
                               </li>
                             `)
@@ -423,7 +440,6 @@ jQuery(document).ready(function() {
               jQuery('.accordion-item').last().addClass('is-active')
               list.foundation()
               /* end hierarchy list */
-
 
               if ( details.admin2_grid_id !== null ) {
                 jQuery('#admin2_list').html( spinner )
@@ -458,12 +474,12 @@ jQuery(document).ready(function() {
               }
 
               function write_list( level, list_by_grid ) {
-                console.log('Details Panel')
-                console.log(list_by_grid)
+                // console.log('Details Panel')
+                // console.log(list_by_grid)
                 let level_list = jQuery('#'+level)
                 level_list.empty()
                 jQuery.each(list_by_grid, function(i,v) {
-                  level_list.append(`<div class="cell"><a href="/${window.post_type}/${v.post_id}">${v.post_title }</a></div>`)
+                  level_list.append(`<div class="cell"><a href="/${_.escape( window.post_type )}/${_.escape( v.post_id )}">${_.escape( v.post_title ) }</a></div>`)
                 })
               }
 
@@ -519,7 +535,6 @@ jQuery(document).ready(function() {
           jQuery( window ).resize(function() {
             jQuery('.legend').css( 'width', map_wrapper.innerWidth() - 20 )
           });
-          // jQuery('#geocode-details').css('height', map_wrapper.innerHeight() - 125 )
         }
         function close_geocode_details() {
           jQuery('#geocode-details').hide()
@@ -533,10 +548,5 @@ jQuery(document).ready(function() {
       console.log("error")
       console.log(err)
     })
-
   }
-  if ( typeof dt_mapbox_metrics.settings !== undefined ) {
-    write_area()
-  }
-
 })
