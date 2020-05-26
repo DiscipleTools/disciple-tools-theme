@@ -258,7 +258,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
         }
 
         public static function load_mapbox_search_widget() {
-            if ( file_exists( get_template_directory() . '/dt-mapping/geocode-api/mapbox.js' ) ) {
+            if ( file_exists( get_template_directory() . '/dt-mapping/geocode-api/mapbox-search-widget.js' ) ) {
                 global $post;
                 if ( is_single() ) {
                     $post_record = DT_Posts::get_post( get_post_type(), $post->ID );
@@ -267,7 +267,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 }
 
 
-                wp_enqueue_script( 'mapbox-search-widget', trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/geocode-api/mapbox.js', [ 'jquery', 'mapbox-gl', 'shared-functions' ], filemtime( get_template_directory() . '/dt-mapping/geocode-api/mapbox.js' ), true );
+                wp_enqueue_script( 'mapbox-search-widget', trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/geocode-api/mapbox-search-widget.js', [ 'jquery', 'mapbox-gl', 'shared-functions' ], filemtime( get_template_directory() . '/dt-mapping/geocode-api/mapbox-search-widget.js' ), true );
                 wp_localize_script(
                     "mapbox-search-widget", "dtMapbox", array(
                         'post_type' => get_post_type(),
@@ -289,9 +289,9 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             if ( ! class_exists( 'Disciple_Tools_Users' ) ) {
                 return;
             }
-            if ( file_exists( get_template_directory() . '/dt-mapping/geocode-api/mapbox-users.js' ) ) {
+            if ( file_exists( get_template_directory() . '/dt-mapping/geocode-api/mapbox-users-search-widget.js' ) ) {
 
-                wp_enqueue_script( 'mapbox-search-widget', trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/geocode-api/mapbox-users.js', [ 'jquery', 'mapbox-gl', 'shared-functions' ], filemtime( get_template_directory() . '/dt-mapping/geocode-api/mapbox-users.js' ), true );
+                wp_enqueue_script( 'mapbox-search-widget', trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/geocode-api/mapbox-users-search-widget.js', [ 'jquery', 'mapbox-gl', 'shared-functions' ], filemtime( get_template_directory() . '/dt-mapping/geocode-api/mapbox-users-search-widget.js' ), true );
                 wp_localize_script(
                     "mapbox-search-widget", "dtMapbox", array(
                         'post_type' => 'user',
