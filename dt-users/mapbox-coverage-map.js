@@ -43,7 +43,7 @@ jQuery(document).ready(function() {
 
     chart.empty().html(spinner)
 
-    makeRequest( "GET", `get_user_list`, null , 'user-management/v1/')
+    makeRequest( "POST", `get_user_list`, null , 'user-management/v1/')
       .done(response=>{
         console.log('user_list')
         console.log(response)
@@ -598,6 +598,7 @@ jQuery(document).ready(function() {
                           ]
                         }
                       }
+
                       makeRequest( "POST", `users/user_location`, data )
                       // API.update_post('contacts', item.contact_id, {
                       //   location_grid_meta: {
@@ -611,7 +612,7 @@ jQuery(document).ready(function() {
                         console.log(response)
 
                         // update user list
-                        makeRequest( "GET", `get_user_list`, null , 'user-management/v1/')
+                        makeRequest( "POST", `get_user_list`, null , 'user-management/v1/')
                           .done(response=>{
                             window.user_list = response
                             if ( selected_location in window.user_list ) {

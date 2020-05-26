@@ -94,7 +94,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
         register_rest_route(
             $this->namespace, '/get_user_list', [
                 [
-                    'methods'  => "GET",
+                    'methods'  => "POST",
                     'callback' => [ $this, 'get_user_list' ],
                 ],
             ]

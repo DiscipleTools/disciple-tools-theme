@@ -966,18 +966,18 @@ Please click the following link to confirm the invite:
 
             $grid = $geocoder->query_by_grid_id( $location_grid_meta["grid_id"] );
             if ($grid) {
-                $location_meta_grid = [];
+                $lgm = [];
 
-                Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
-                $location_meta_grid['post_id'] = $user_id;
-                $location_meta_grid['post_type'] = 'users';
-                $location_meta_grid['grid_id'] = $grid["grid_id"];
-                $location_meta_grid['lng'] = $grid["longitude"];
-                $location_meta_grid['lat'] = $grid["latitude"];
-                $location_meta_grid['level'] = $grid["level_name"];
-                $location_meta_grid['label'] = $grid["name"];
+                Location_Grid_Meta::validate_location_grid_meta( $lgm );
+                $lgm['post_id'] = $user_id;
+                $lgm['post_type'] = 'users';
+                $lgm['grid_id'] = $grid["grid_id"];
+                $lgm['lng'] = $grid["longitude"];
+                $lgm['lat'] = $grid["latitude"];
+                $lgm['level'] = $grid["level_name"];
+                $lgm['label'] = $grid["name"];
 
-                $umeta_id = Location_Grid_Meta::add_location_grid_meta( $user_id, $location_meta_grid );
+                $umeta_id = Location_Grid_Meta::add_user_location_grid_meta( $user_id, $lgm );
                 if (is_wp_error( $umeta_id )) {
                     return $umeta_id;
                 }
