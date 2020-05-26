@@ -1,7 +1,41 @@
 jQuery(document).ready(function() {
 
-  write_users_map()
 
+
+  function get_map_start( token ) {
+    let c = Cookies.get(token)
+    if ( c === undefined ) {
+      return false;
+    }
+    return JSON.parse(c)
+  }
+
+  function set_map_start( token, bounds ) {
+    let b = [
+      [
+        standardize_coordinates( bounds._ne.lng ),
+        standardize_coordinates( bounds._ne.lat ),
+      ],
+      [
+        standardize_coordinates( bounds._sw.lng ),
+        standardize_coordinates( bounds._sw.lat ),
+      ]
+    ]
+    Cookies.set( token, JSON.stringify(b) )
+  }
+
+  function standardize_coordinates( coord ) {
+    if (coord > 180) {
+      coord = coord - 180
+      coord = -Math.abs(coord)
+    } else if (coord < -180) {
+      coord = coord + 180
+      coord = Math.abs(coord)
+    }
+    return coord
+  }
+
+  write_users_map()
   function write_users_map() {
     let obj = dt_user_management_localized
     let chart = jQuery('#chart')
@@ -115,13 +149,28 @@ jQuery(document).ready(function() {
           zoom: 1.8
         });
 
+        // SET BOUNDS
+        window.map_bounds_token = 'user_coverage_map'
+        window.map_start = get_map_start( window.map_bounds_token )
+        if ( window.map_start ) {
+          map.fitBounds( window.map_start, {duration: 0});
+
+        }
+        map.on('zoomend', function() {
+          set_map_start( window.map_bounds_token, map.getBounds() )
+        })
+        map.on('dragend', function() {
+          set_map_start( window.map_bounds_token, map.getBounds() )
+        })
+        // end set bounds
+
         // disable map rotation using right click + drag
         map.dragRotate.disable();
 
         // disable map rotation using touch rotation gesture
         map.touchZoomRotate.disableRotation();
 
-        // cross-hair
+        // CROSS HAIR
         map.on('zoomstart', function() {
           jQuery('#cross-hair').show()
         })
@@ -134,61 +183,69 @@ jQuery(document).ready(function() {
         map.on('dragend', function() {
           jQuery('#cross-hair').hide()
         })
+        // end cross-hair
 
         // grid memory vars
         window.previous_grid_id = 0
         window.previous_grid_list = []
 
-        // default load state
+        // LOAD
         map.on('load', function() {
 
-          window.previous_grid_id = '1'
-          window.previous_grid_list.push('1')
-          jQuery.get('https://storage.googleapis.com/location-grid-mirror/collection/1.geojson', null, null, 'json')
-            .done(function (geojson) {
+          if ( window.map_start ) { // if bounds defined
+            let lnglat = map.getCenter()
+            load_layer( lnglat.lng, lnglat.lat, 'zoom' )
 
-              jQuery.each(geojson.features, function (i, v) {
-                if (window.grid_data[geojson.features[i].properties.id]) {
-                  geojson.features[i].properties.value = parseInt(window.grid_data[geojson.features[i].properties.id].count)
-                } else {
-                  geojson.features[i].properties.value = 0
-                }
+          } else { // if no bounds defined
+
+            window.previous_grid_id = '1'
+            window.previous_grid_list.push('1')
+            jQuery.get('https://storage.googleapis.com/location-grid-mirror/collection/1.geojson', null, null, 'json')
+              .done(function (geojson) {
+
+                jQuery.each(geojson.features, function (i, v) {
+                  if (window.grid_data[geojson.features[i].properties.id]) {
+                    geojson.features[i].properties.value = parseInt(window.grid_data[geojson.features[i].properties.id].count)
+                  } else {
+                    geojson.features[i].properties.value = 0
+                  }
+                })
+                map.addSource('1', {
+                  'type': 'geojson',
+                  'data': geojson
+                });
+                map.addLayer({
+                  'id': '1',
+                  'type': 'fill',
+                  'source': '1',
+                  'paint': {
+                    'fill-color': [
+                      'interpolate',
+                      ['linear'],
+                      ['get', 'value'],
+                      0,
+                      'rgba(0, 0, 0, 0)',
+                      1,
+                      '#547df8',
+                      50,
+                      '#3754ab',
+                      100,
+                      '#22346a'
+                    ],
+                    'fill-opacity': 0.75
+                  }
+                });
+                map.addLayer({
+                  'id': '1line',
+                  'type': 'line',
+                  'source': '1',
+                  'paint': {
+                    'line-color': 'black',
+                    'line-width': 1
+                  }
+                });
               })
-              map.addSource('1', {
-                'type': 'geojson',
-                'data': geojson
-              });
-              map.addLayer({
-                'id': '1',
-                'type': 'fill',
-                'source': '1',
-                'paint': {
-                  'fill-color': [
-                    'interpolate',
-                    ['linear'],
-                    ['get', 'value'],
-                    0,
-                    'rgba(0, 0, 0, 0)',
-                    1,
-                    '#547df8',
-                    50,
-                    '#3754ab',
-                    100,
-                    '#22346a'
-                  ],
-                  'fill-opacity': 0.75
-                }
-              });
-              map.addLayer({
-                'id': '1line',
-                'type': 'line',
-                'source': '1',
-                'paint': {
-                  'line-color': 'black',
-                  'line-width': 1
-                }
-              });
-            })
+          }
         })
 
         // update info box on zoom

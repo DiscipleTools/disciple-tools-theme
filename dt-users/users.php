@@ -949,6 +949,12 @@ Please click the following link to confirm the invite:
         return false;
     }
 
+    /**
+     *
+     * @param $location_grid_meta
+     * @param null $user_id
+     * @return array|bool|int|WP_Error
+     */
     public static function add_user_location_meta( $location_grid_meta, $user_id = null ) {
         if ( empty( $user_id ) ) {
             $user_id = get_current_user_id();

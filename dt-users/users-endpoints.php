@@ -227,6 +227,41 @@ class Disciple_Tools_Users_Endpoints
         return Disciple_Tools_Users::get_user_location( get_current_user_id() );
     }
 
+    /**
+     * POST user_location endpoint
+     *
+     * If no user_id is supplied, then the add request applies to logged in user. If request is made for non-logged in
+     * user, then the current user must have be a disciple tools admin.
+     *
+     * {
+            user_id: {user_id},
+            user_location: {
+                location_grid_meta: [
+                {
+                    grid_meta_id: {grid_meta_id},
+                }
+            ]
+            }
+        }
+     *
+     * {
+        user_id: {user_id},
+        user_location: {
+            location_grid_meta: [
+                {
+                    lng: {lng},
+                    lat: {lat},
+                    level: {level},
+                    label: {label},
+                    source: 'user'
+                }
+            ]}
+        }
+     *
+     *
+     * @param WP_REST_Request $request
+     * @return array|bool|WP_Error
+     */
     public function add_user_location( WP_REST_Request $request ) {
         $params = $request->get_params();
 
@@ -236,8 +271,7 @@ class Disciple_Tools_Users_Endpoints
             // only dt admin caps can add locations for other users
             $user_id = get_current_user_id();
             if ( isset( $params['user_id'] ) && ! empty( $params['user_id'] ) && $params['user_id'] !== $user_id ) {
-                // if user_id param is set, you must be able to edit users.
-                if ( user_can( $user_id, 'manage_dt' ) ) {
+                if ( user_can( $user_id, 'manage_dt' ) ) { // if user_id param is set, you must be able to edit users.
                     $user_id = sanitize_text_field( wp_unslash( $params['user_id'] ) );
                 } else {
                     return new WP_Error( __METHOD__, "No permission to edit this user", [ 'status' => 400 ] );
@@ -257,10 +291,12 @@ class Disciple_Tools_Users_Endpoints
             }
             return new WP_Error( __METHOD__, 'Failed to create user location' );
         }
+
         // typeahead add
         else if ( isset( $params["grid_id"] ) ){
             return Disciple_Tools_Users::add_user_location( $params["grid_id"] );
         }
+
         // parameter fail
         else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status' => 400 ] );
