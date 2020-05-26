@@ -153,15 +153,15 @@ jQuery(document).ready(function($) {
         .done(locations=>{
           if ( window.current_user_lookup === user_id ) {
             if ( typeof dtMapbox !== "undefined" ) {
-              dtMapbox.post_type = 'contacts'
-              dtMapbox.post_id = locations.contact_id
-              dtMapbox.post = locations.contact
+              dtMapbox.post_type = 'users'
+              dtMapbox.user_id = user_id
+              dtMapbox.user_location = locations.user_location
               write_results_box()
 
               jQuery( '#new-mapbox-search' ).on( "click", function() {
-                dtMapbox.post_type = 'contacts'
-                dtMapbox.post_id = locations.contact_id
-                dtMapbox.post = locations.contact
+                dtMapbox.post_type = 'users'
+                dtMapbox.user_id = user_id
+                dtMapbox.user_location = locations.user_location
                 write_input_widget()
               });
             } else {
@@ -173,7 +173,7 @@ jQuery(document).ready(function($) {
                 typeahead.label.container.empty();
                 typeahead.adjustInputSize()
               }
-              locations.location_grid.forEach(location => {
+              locations.user_location.location_grid.forEach(location => {
                 typeahead.addMultiselectItemLayout({ID: location.id.toString(), name: location.label})
               })
             }

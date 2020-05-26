@@ -975,7 +975,7 @@ Please click the following link to confirm the invite:
                 $lgm['lng'] = $grid["longitude"];
                 $lgm['lat'] = $grid["latitude"];
                 $lgm['level'] = $grid["level_name"];
-                $lgm['label'] = $grid["name"];
+                $lgm['label'] = $geocoder->_format_full_name( $grid );
 
                 $umeta_id = Location_Grid_Meta::add_user_location_grid_meta( $user_id, $lgm );
                 if (is_wp_error( $umeta_id )) {
@@ -1047,9 +1047,7 @@ Please click the following link to confirm the invite:
     }
 
     public static function copy_locations_from_contact_to_user( $contact_id, $user_id ) {
-
-
-
+        // @todo finish writing transfer
         $contact_meta = get_post_meta( $contact_id, 'location_grid' );
         if ( ! empty( $contact_meta ) ) {
             foreach ( $contact_meta as $item ) {
