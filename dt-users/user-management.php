@@ -301,13 +301,15 @@ class DT_User_Management
 
         /* Locations section */
         if ( $section === 'locations' || $section === null ) {
-            $location_grid = Disciple_Tools_Users::get_user_location( $user->ID );
-            if ( isset( $location_grid['location_grid'] ) && ! empty( $location_grid['location_grid'] ) ) {
-                $user_response['location_grid'] = $location_grid['location_grid'];
-            }
-            if ( isset( $location_grid['location_grid_meta'] ) && ! empty( $location_grid['location_grid_meta'] ) ) {
-                $user_response['location_grid_meta'] = $location_grid['location_grid_meta'];
-            }
+            $user_response['user_location'] = Disciple_Tools_Users::get_user_location( $user->ID );
+
+//            $location_grid = Disciple_Tools_Users::get_user_location( $user->ID );
+//            if ( isset( $location_grid['location_grid'] ) && ! empty( $location_grid['location_grid'] ) ) {
+//                $user_response['location_grid'] = $location_grid['location_grid'];
+//            }
+//            if ( isset( $location_grid['location_grid_meta'] ) && ! empty( $location_grid['location_grid_meta'] ) ) {
+//                $user_response['location_grid_meta'] = $location_grid['location_grid_meta'];
+//            }
         }
 
 

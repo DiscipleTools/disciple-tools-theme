@@ -38,7 +38,8 @@ function change_password() {
 function load_locations() {
   makeRequest( "GET", `user/my` )
     .done(data=>{
-console.log(data)
+
+
       if ( typeof dtMapbox !== "undefined" ) {
         dtMapbox.post_type = 'user'
         write_results_box()

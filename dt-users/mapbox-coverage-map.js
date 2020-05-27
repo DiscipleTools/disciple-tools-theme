@@ -1,7 +1,6 @@
 jQuery(document).ready(function() {
 
   write_users_map()
-
   function write_users_map() {
     let obj = dt_user_management_localized
     let chart = jQuery('#chart')
@@ -9,8 +8,10 @@ jQuery(document).ready(function() {
 
     chart.empty().html(spinner)
 
-    makeRequest( "GET", `get_user_list`, null , 'user-management/v1/')
+    makeRequest( "POST", `get_user_list`, null , 'user-management/v1/')
       .done(response=>{
+        // console.log('user_list')
+        // console.log(response)
         window.user_list = response
       }).catch((e)=>{
       console.log( 'error in activity')
@@ -113,13 +114,27 @@ jQuery(document).ready(function() {
           zoom: 1.8
         });
 
+        // SET BOUNDS
+        window.map_bounds_token = 'user_coverage_map'
+        window.map_start = get_map_start( window.map_bounds_token )
+        if ( window.map_start ) {
+          map.fitBounds( window.map_start, {duration: 0});
+        }
+        map.on('zoomend', function() {
+          set_map_start( window.map_bounds_token, map.getBounds() )
+        })
+        map.on('dragend', function() {
+          set_map_start( window.map_bounds_token, map.getBounds() )
+        })
+        // end set bounds
+
         // disable map rotation using right click + drag
         map.dragRotate.disable();
 
         // disable map rotation using touch rotation gesture
         map.touchZoomRotate.disableRotation();
 
-        // cross-hair
+        // CROSS HAIR
         map.on('zoomstart', function() {
           jQuery('#cross-hair').show()
         })
@@ -132,61 +147,69 @@ jQuery(document).ready(function() {
         map.on('dragend', function() {
           jQuery('#cross-hair').hide()
         })
+        // end cross-hair
 
         // grid memory vars
         window.previous_grid_id = 0
         window.previous_grid_list = []
 
-        // default load state
+        // LOAD
         map.on('load', function() {
 
-          window.previous_grid_id = '1'
-          window.previous_grid_list.push('1')
-          jQuery.get('https://storage.googleapis.com/location-grid-mirror/collection/1.geojson', null, null, 'json')
-            .done(function (geojson) {
+          if ( window.map_start ) { // if bounds defined
+            let lnglat = map.getCenter()
+            load_layer( lnglat.lng, lnglat.lat, 'zoom' )
 
-              jQuery.each(geojson.features, function (i, v) {
-                if (window.grid_data[geojson.features[i].properties.id]) {
-                  geojson.features[i].properties.value = parseInt(window.grid_data[geojson.features[i].properties.id].count)
-                } else {
-                  geojson.features[i].properties.value = 0
-                }
+          } else { // if no bounds defined
+
+            window.previous_grid_id = '1'
+            window.previous_grid_list.push('1')
+            jQuery.get('https://storage.googleapis.com/location-grid-mirror/collection/1.geojson', null, null, 'json')
+              .done(function (geojson) {
+
+                jQuery.each(geojson.features, function (i, v) {
+                  if (window.grid_data[geojson.features[i].properties.id]) {
+                    geojson.features[i].properties.value = parseInt(window.grid_data[geojson.features[i].properties.id].count)
+                  } else {
+                    geojson.features[i].properties.value = 0
+                  }
+                })
+                map.addSource('1', {
+                  'type': 'geojson',
+                  'data': geojson
+                });
+                map.addLayer({
+                  'id': '1',
+                  'type': 'fill',
+                  'source': '1',
+                  'paint': {
+                    'fill-color': [
+                      'interpolate',
+                      ['linear'],
+                      ['get', 'value'],
+                      0,
+                      'rgba(0, 0, 0, 0)',
+                      1,
+                      '#547df8',
+                      50,
+                      '#3754ab',
+                      100,
+                      '#22346a'
+                    ],
+                    'fill-opacity': 0.75
+                  }
+                });
+                map.addLayer({
+                  'id': '1line',
+                  'type': 'line',
+                  'source': '1',
+                  'paint': {
+                    'line-color': 'black',
+                    'line-width': 1
+                  }
+                });
               })
-              map.addSource('1', {
-                'type': 'geojson',
-                'data': geojson
-              });
-              map.addLayer({
-                'id': '1',
-                'type': 'fill',
-                'source': '1',
-                'paint': {
-                  'fill-color': [
-                    'interpolate',
-                    ['linear'],
-                    ['get', 'value'],
-                    0,
-                    'rgba(0, 0, 0, 0)',
-                    1,
-                    '#547df8',
-                    50,
-                    '#3754ab',
-                    100,
-                    '#22346a'
-                  ],
-                  'fill-opacity': 0.75
-                }
-              });
-              map.addLayer({
-                'id': '1line',
-                'type': 'line',
-                'source': '1',
-                'paint': {
-                  'line-color': 'black',
-                  'line-width': 1
-                }
-              });
-            })
+          }
         })
 
         // update info box on zoom
@@ -390,6 +413,7 @@ jQuery(document).ready(function() {
               /* hierarchy list*/
               content.empty().append(`<ul id="hierarchy-list" class="accordion" data-accordion></ul>`)
               let list = jQuery('#hierarchy-list')
+
               if ( details.admin0_grid_id ) {
                 list.append( `
                   <li id="admin0_wrapper" class="accordion-item" data-accordion-item>
@@ -403,12 +427,12 @@ jQuery(document).ready(function() {
                   jQuery.each(window.user_list[details.admin0_grid_id], function(i,v) {
                     level_list.append(`
                       <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
-                        <a href="/user-management/users/?user_id=${_.escape(v.user_id)}">
+                        <a href="/user-management/users/${_.escape(v.user_id)}">
                           ${_.escape(v.name)}
                         </a>
                       </div>
                       <div class="cell small-2" data-id="${_.escape(v.grid_meta_id)}">
-                        <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.contact_id)}" data-id="${_.escape(v.grid_meta_id)}">
+                        <a class="button clear delete-button mapbox-delete-button small float-right" data-user_id="${_.escape(v.user_id)}" data-id="${_.escape(v.grid_meta_id)}" data-level="admin0" data-location="${_.escape(details.admin0_grid_id)}">
                           <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
                         </a>
                       </div>`)
@@ -431,12 +455,12 @@ jQuery(document).ready(function() {
                   jQuery.each(window.user_list[details.admin1_grid_id], function(i,v) {
                     level_list.append(`
                         <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
-                          <a href="/user-management/users/?user_id=${_.escape(v.user_id)}">
+                          <a href="/user-management/users/${_.escape(v.user_id)}">
                             ${_.escape(v.name)}
                           </a>
                         </div>
                         <div class="cell small-2" data-id="${_.escape(v.grid_meta_id)}">
-                          <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.contact_id)}" data-id="${_.escape(v.grid_meta_id)}">
+                          <a class="button clear delete-button mapbox-delete-button small float-right" data-user_id="${_.escape(v.user_id)}" data-id="${_.escape(v.grid_meta_id)}" data-level="admin1" data-location="${_.escape(details.admin1_grid_id)}">
                             <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
                           </a>
                         </div>`)
@@ -458,12 +482,12 @@ jQuery(document).ready(function() {
                   jQuery.each(window.user_list[details.admin2_grid_id], function(i,v) {
                     level_list.append(`
                         <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
-                          <a href="/user-management/users/?user_id=${_.escape(v.user_id)}">
+                          <a href="/user-management/users/${_.escape(v.user_id)}">
                             ${_.escape(v.name)}
                           </a>
                         </div>
                         <div class="cell small-2" data-id="${_.escape(v.grid_meta_id)}">
-                          <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.contact_id)}" data-id="${_.escape(v.grid_meta_id)}">
+                          <a class="button clear delete-button mapbox-delete-button small float-right" data-user_id="${_.escape(v.user_id)}" data-id="${_.escape(v.grid_meta_id)}" data-level="admin2"  data-location="${_.escape(details.admin2_grid_id)}">
                             <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
                           </a>
                         </div>`)
@@ -528,66 +552,74 @@ jQuery(document).ready(function() {
                   emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
                   callback: {
                     onClick: function(node, a, item){
-                      API.update_post('contacts', item.contact_id, {
-                        location_grid_meta: {
-                          values: [
+
+                      let data = {
+                        user_id: item.user_id,
+                        user_location: {
+                          location_grid_meta: [
                             {
                               grid_id: selected_location
                             }
                           ]
-                        }}).then(function (response) {
-                        console.log(response)
+                        }
+                      }
+                      makeRequest( "POST", `users/user_location`, data )
+                        .then(function (response) {
+                          // console.log(response)
 
-                        // update user list
-                        makeRequest( "GET", `get_user_list`, null , 'user-management/v1/')
-                          .done(response=>{
-                            window.user_list = response
-                            if ( selected_location in window.user_list ) {
-                              jQuery('#'+list_level+'_count').html(response[selected_location].length)
+                          makeRequest( "POST", `get_user_list`, null , 'user-management/v1/')
+                            .done(user_list=>{
+                              window.user_list = user_list
+
+                              if ( selected_location in window.user_list ) {
+                                jQuery('#'+list_level+'_count').html(user_list[selected_location].length)
+                              }
+                            }).catch((e)=>{
+                            console.log( 'error in get_user_list')
+                            console.log( e)
+                          })
+
+                          makeRequest( "POST", `grid_totals`, { status: window.current_status }, 'user-management/v1/')
+                            .done(grid_data=>{
+                              window.previous_grid_id = 0
+                              clear_layers()
+                              window.grid_data = grid_data
+
+                              let lnglat = map.getCenter()
+                              load_layer( lnglat.lng, lnglat.lat )
+
+                            }).catch((e)=>{
+                            console.log('error getting grid_totals')
+                            console.log(e)
+                          })
+
+                          // remove user add input
+                          jQuery('#add-user-wrapper').remove()
+
+                          // add new user to list
+                          let grid_meta = ''
+                          console.log(response.user_location.location_grid_meta)
+                          jQuery.each(response.user_location.location_grid_meta, function(i,v) {
+                            if ( v.grid_id.toString() === selected_location.toString() ) {
+
+                              jQuery('#'+list_level+'_list').prepend(`
+                              <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
+                                <a  href="/user-management/users/${_.escape(response.user_id)}">
+                                  ${_.escape(response.user_title)}
+                                </a>
+                              </div>
+                              <div class="cell small-2" data-id="${_.escape(grid_meta)}">
+                                <a class="button clear delete-button mapbox-delete-button small float-right" data-user_id="${_.escape(response.user_id)}" data-id="${_.escape(v.grid_meta_id)}">
+                                  <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
+                                </a>
+                              </div>`)
                             }
+                          })
 
-                          }).catch((e)=>{
-                          console.log( 'error in activity')
-                          console.log( e)
-                        })
+                          delete_user_action()
 
-                        // update grid totals
-                        makeRequest( "POST", `grid_totals`, { status: window.current_status }, 'user-management/v1/')
-                          .done(grid_data=>{
-                            window.previous_grid_id = 0
-                            clear_layers()
-                            window.grid_data = grid_data
 
-                            let lnglat = map.getCenter()
-                            load_layer( lnglat.lng, lnglat.lat )
-                          }).catch((e)=>{
-                          console.log('error getting grid_totals')
-                          console.log(e)
-                        })
-
-                        // remove user add input
-                        jQuery('#add-user-wrapper').remove()
-
-                        // add new user to list
-                        let grid_meta = ''
-                        jQuery.each(response.location_grid_meta, function(i,v) {
-                          if ( v.grid_id === selected_location ) {
-                            grid_meta = v.grid_meta_id
-                          }
-                        })
-                        jQuery('#'+list_level+'_list').prepend(`
-                            <div class="cell small-10 align-self-middle" data-id="${_.escape(grid_meta)}">
-                              <a  href="/user-management/users/?user_id=${_.escape(response.corresponds_to_user)}">
-                                ${_.escape(response.title)}
-                              </a>
-                            </div>
-                            <div class="cell small-2" data-id="${_.escape(grid_meta)}">
-                              <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(response.ID)}" data-id="${_.escape(grid_meta)}">
-                                <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
-                              </a>
-                            </div>`)
-
-                      }).catch(err => { console.error(err) })
+                        }).catch(err => { console.error(err) })
                     },
                     onResult: function (node, query, result, resultCount) {
                       let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
@@ -605,29 +637,71 @@ jQuery(document).ready(function() {
               })
               /* end click add function */
 
-              jQuery( '.mapbox-delete-button' ).on( "click", function(e) {
-
-                let data = {
-                  location_grid_meta: {
-                    values: [
-                      {
-                        grid_meta_id: e.currentTarget.dataset.id,
-                        delete: true,
-                      }
-                    ]
-                  }
-                }
-
-                let post_id = e.currentTarget.dataset.postid
-
-                API.update_post( 'contacts', post_id, data ).then(function (response) {
-                  jQuery('div[data-id='+e.currentTarget.dataset.id+']').remove()
-                }).catch(err => { console.error(err) })
-
-              });
+              delete_user_action()
 
             }); // end geocode
         }
+
+       function delete_user_action() {
+         jQuery( '.mapbox-delete-button' ).on( "click", function(e) {
+
+           let selected_location = jQuery(this).data('location')
+           let list_level = jQuery(this).data('level')
+
+           let level_count = jQuery('#'+list_level+'_count')
+           level_count.html( (parseInt( level_count.html()) ) - 1)
+
+
+           let data = {
+             user_id: e.currentTarget.dataset.user_id,
+             user_location: {
+               location_grid_meta: [
+                 {
+                   grid_meta_id: e.currentTarget.dataset.id,
+                 }
+               ]
+             }
+           }
+
+           // let post_id = e.currentTarget.dataset.user_id
+           makeRequest( "DELETE", `users/user_location`, data )
+             .then(function (response) {
+               // console.log( response )
+
+               jQuery('div[data-id=' + e.currentTarget.dataset.id + ']').remove()
+
+               makeRequest( "POST", `get_user_list`, null , 'user-management/v1/')
+                 .done(user_list=>{
+                   window.user_list = user_list
+
+                   if ( selected_location in window.user_list ) {
+                     console.log('here')
+                     jQuery('#'+list_level+'_count').html(user_list[selected_location].length)
+                   }
+                 }).catch((e)=>{
+                 console.log( 'error in get_user_list')
+                 console.log( e)
+               })
+
+               makeRequest( "POST", `grid_totals`, { status: window.current_status }, 'user-management/v1/')
+                 .done(grid_data=>{
+                   window.previous_grid_id = 0
+                   clear_layers()
+                   window.grid_data = grid_data
+
+                   let lnglat = map.getCenter()
+                   load_layer( lnglat.lng, lnglat.lat )
+
+                 }).catch((e)=>{
+                 console.log('error getting grid_totals')
+                 console.log(e)
+               })
+
+
+             }).catch(err => { console.error(err) })
+
+         });
+       }
         function get_level( ) {
           let level = jQuery('#level').val()
           if ( level === 'auto' || level === 'none' ) { // if none, then auto set

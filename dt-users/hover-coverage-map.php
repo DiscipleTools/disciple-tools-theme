@@ -17,9 +17,6 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
     public $namespace = null;
 
     public function __construct() {
-//        if ( DT_Mapbox_API::get_key() ) { // only load if mapbox key is not present.
-//            return;
-//        }
         parent::__construct();
         if ( !$this->has_permission() ){
             return;
@@ -139,7 +136,7 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
 
         $column_labels[ $next_column_number ] = [
             'key'   => 'all',
-            'label' => __( 'All', 'disciple_tools' )
+            'label' => __( 'All Locations Assigned', 'disciple_tools' )
         ];
 
         if ( ! empty( $column_data ) ) {
@@ -148,7 +145,7 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
             }
         }
 
-        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals();
+        $results = Disciple_Tools_Mapping_Queries::query_user_location_grid_totals();
 
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
@@ -190,7 +187,7 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
 
         $column_labels[ $next_column_number ] = [
             'key'   => 'active',
-            'label' => __( 'Active', 'disciple_tools' )
+            'label' => __( 'Locations with Active Assigned', 'disciple_tools' )
         ];
 
         if ( ! empty( $column_data ) ) {
@@ -199,7 +196,7 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
             }
         }
 
-        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals( 'active' );
+        $results = Disciple_Tools_Mapping_Queries::query_user_location_grid_totals( 'active' );
 
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
@@ -241,7 +238,7 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
 
         $column_labels[ $next_column_number ] = [
             'key'   => 'inactive',
-            'label' => __( 'Inactive', 'disciple_tools' )
+            'label' => __( 'Locations with Inactive Assigned', 'disciple_tools' )
         ];
 
         if ( ! empty( $column_data ) ) {
@@ -250,7 +247,7 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
             }
         }
 
-        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals( 'inactive' );
+        $results = Disciple_Tools_Mapping_Queries::query_user_location_grid_totals( 'inactive' );
 
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {

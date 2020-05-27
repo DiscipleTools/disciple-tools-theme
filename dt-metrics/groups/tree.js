@@ -18,10 +18,10 @@ jQuery(document).ready(function() {
            <div class="grid-x grid-padding-x">
            <div class="cell">
                <span>
-                  <button class="button hollow toggle-singles" id="highlight-active" onclick="highlight_active();">Highlight Active</button>
+                  <button class="button hollow toggle-singles" id="highlight-active" onclick="highlight_active();">${_.escape(translations.highlight_active)/*Highlight Active*/}</button>
                </span>
               <span>
-                  <button class="button hollow toggle-singles" id="highlight-churches" onclick="highlight_churches();">Highlight Churches</button>
+                  <button class="button hollow toggle-singles" id="highlight-churches" onclick="highlight_churches();">${_.escape(translations.highlight_churches)/*Highlight Churches*/}</button>
               </span>
           </div>
               <div class="cell">
@@ -45,34 +45,34 @@ jQuery(document).ready(function() {
 function open_modal_details( id ) {
   let modal = jQuery('#modal')
   let spinner = ' <span class="loading-spinner active"></span> '
+  let translations = dtMetricsProject.data.translations
 
   modal.empty().html(spinner).foundation('open')
 
-  makeRequest('GET', 'groups/'+id, null, 'dt-posts/v2/' )
+  makeRequest('GET', 'groups/'+_.escape( id ), null, 'dt-posts/v2/' )
     .then(data => {
-      console.log(data)
+      // console.log(data)
       if( data ) {
-        let list = '<dt>Members</dt><ul>'
+        let list = '<dt>'+_.escape( translations.members )+'</dt><ul>'
         jQuery.each(data.members, function(i, v)  { list += `<li><a href="/contacts/${_.escape( data.members[i].ID )}">${_.escape( data.members[i].post_title )}</a></li>` } )
         list += '</ul>'
-        let content = `
-                <div class="grid-x">
-                    <div class="cell"><span class="section-header">${_.escape( data.title )}</span><hr style="max-width:100%;"></div>
-                    <div class="cell">
-                        <dl>
-                            <dd><strong>Status: </strong>${_.escape( data.group_status.label )}</dd>
-                            <dd><strong>Assigned to: </strong>${_.escape( data.assigned_to['display'] )}</dd>
-                            <dd><strong>Total Members: </strong>${_.escape( data.member_count )}</dd>
-                            ${list}
-                        </dl>
-                    </div>
-                    <div class="cell center"><hr><a href="/groups/${_.escape( id )}">View Group</a></div>
-                </div>
-                <button class="close-button" data-close aria-label="Close modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                `
-        modal.empty().html(content)
+        modal.empty().append(`
+          <div class="grid-x">
+              <div class="cell"><span class="section-header">${_.escape( data.title )}</span><hr style="max-width:100%;"></div>
+              <div class="cell">
+                  <dl>
+                      <dd><strong>${_.escape( translations.status ) /*Status*/}: </strong>${_.escape( data.group_status.label )}</dd>
+                      <dd><strong>${_.escape( translations.assigned_to )/*Assigned to*/}: </strong>${_.escape( data.assigned_to['display'] )}</dd>
+                      <dd><strong>${_.escape( translations.total_members ) /*Total Members*/}: </strong>${_.escape( data.member_count )}</dd>
+                      ${list}
+                  </dl>
+              </div>
+              <div class="cell center"><hr><a href="/groups/${_.escape( id )}">${translations.view_group /*View Group*/}</a></div>
+          </div>
+          <button class="close-button" data-close aria-label="Close modal" type="button">
+              <span aria-hidden="true">&times;</span>
+          </button>
+        `)
       }
     })
 }

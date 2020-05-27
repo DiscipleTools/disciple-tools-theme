@@ -48,7 +48,8 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
             get_template_directory_uri() . $this->js_file_name,
             [
                 'jquery',
-                'datatable'
+                'datatable',
+                'lodash'
             ],
             filemtime( get_theme_file_path() .  $this->js_file_name ),
             true
@@ -123,7 +124,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                 $column_data[$key][$next_column_number] = 0;
             }
         }
-        $results = Disciple_Tools_Mapping_Queries::get_contacts_grid_totals();
+        $results = Disciple_Tools_Mapping_Queries::query_contacts_location_grid_totals();
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
                 if ( $result['count'] > 0 ) { // filter for only contact and positive counts
@@ -168,7 +169,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                 $column_data[$key][$next_column_number] = 0;
             }
         }
-        $results = Disciple_Tools_Mapping_Queries::get_groups_grid_totals();
+        $results = Disciple_Tools_Mapping_Queries::query_groups_location_grid_totals();
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
                 if ( $result['count'] > 0 ) { // filter for only contact and positive counts
@@ -213,7 +214,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                 $column_data[$key][$next_column_number] = 0;
             }
         }
-        $results = Disciple_Tools_Mapping_Queries::get_church_grid_totals();
+        $results = Disciple_Tools_Mapping_Queries::query_church_location_grid_totals();
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
                 if ( $result['count'] > 0 ) { // filter for only contact and positive counts
@@ -262,7 +263,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
             }
         }
 
-        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals();
+        $results = Disciple_Tools_Mapping_Queries::query_user_location_grid_totals();
 
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {

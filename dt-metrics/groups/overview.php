@@ -40,6 +40,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
             'amcharts-core',
             'amcharts-charts',
             'amcharts-animated',
+            'lodash'
         ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
         wp_localize_script(

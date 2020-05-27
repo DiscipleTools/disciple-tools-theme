@@ -94,7 +94,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
         register_rest_route(
             $this->namespace, '/get_user_list', [
                 [
-                    'methods'  => "GET",
+                    'methods'  => "POST",
                     'callback' => [ $this, 'get_user_list' ],
                 ],
             ]
@@ -111,7 +111,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
             $status = sanitize_text_field( wp_unslash( $params['status'] ) );
         }
 
-        $results = Disciple_Tools_Mapping_Queries::get_user_grid_totals( $status );
+        $results = Disciple_Tools_Mapping_Queries::query_user_location_grid_totals( $status );
 
         return $results;
 
@@ -123,12 +123,12 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
         }
 
         global $wpdb;
-        $results = $wpdb->get_results("
-            SELECT DISTINCT lgm.grid_id as grid_id, lgm.grid_meta_id, lgm.post_id as contact_id, pm.meta_value as user_id, po.post_title as name
-            FROM $wpdb->dt_location_grid_meta as lgm
-            LEFT JOIN $wpdb->posts as po ON po.ID=lgm.post_id
-            JOIN $wpdb->postmeta as pm ON pm.post_id=lgm.post_id AND pm.meta_key = 'corresponds_to_user' AND pm.meta_value != ''
-            WHERE lgm.post_type = 'contacts' AND lgm.grid_id IS NOT NULL ORDER BY po.post_title", ARRAY_A );
+        $results = $wpdb->get_results( "
+                SELECT u.display_name as name, lgm.grid_meta_id, lgm.grid_id, lgm.post_id as user_id
+                FROM $wpdb->dt_location_grid_meta as lgm
+                LEFT JOIN $wpdb->users as u ON u.ID=lgm.post_id
+                WHERE lgm.post_type = 'users'
+                ", ARRAY_A );
 
         $list = [];
         foreach ( $results as $result ) {

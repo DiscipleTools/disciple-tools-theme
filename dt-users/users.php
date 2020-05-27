@@ -949,6 +949,63 @@ Please click the following link to confirm the invite:
         return false;
     }
 
+    /**
+     *
+     * @param $location_grid_meta
+     * @param null $user_id
+     * @return array|bool|int|WP_Error
+     */
+    public static function add_user_location_meta( $location_grid_meta, $user_id = null ) {
+        if ( empty( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+
+        // use grid_id as primary value
+        if ( isset( $location_grid_meta["grid_id"] ) && ! empty( $location_grid_meta["grid_id"] ) ) {
+            $geocoder = new Location_Grid_Geocoder();
+
+            $grid = $geocoder->query_by_grid_id( $location_grid_meta["grid_id"] );
+            if ($grid) {
+                $lgm = [];
+
+                Location_Grid_Meta::validate_location_grid_meta( $lgm );
+                $lgm['post_id'] = $user_id;
+                $lgm['post_type'] = 'users';
+                $lgm['grid_id'] = $grid["grid_id"];
+                $lgm['lng'] = $grid["longitude"];
+                $lgm['lat'] = $grid["latitude"];
+                $lgm['level'] = $grid["level_name"];
+                $lgm['label'] = $geocoder->_format_full_name( $grid );
+
+                $umeta_id = Location_Grid_Meta::add_user_location_grid_meta( $user_id, $lgm );
+                if (is_wp_error( $umeta_id )) {
+                    return $umeta_id;
+                }
+            }
+        // use lng lat as base value
+        } else {
+
+            if (empty( $location_grid_meta['lng'] ) || empty( $location_grid_meta['lat'] )) {
+                return new WP_Error( __METHOD__, 'Missing required lng or lat' );
+            }
+
+            $umeta_id = Location_Grid_Meta::add_user_location_grid_meta( $user_id, $location_grid_meta );
+        }
+
+        if ( $umeta_id ) {
+            return self::get_user_location( $user_id );
+        }
+        return false;
+    }
+
+    public static function delete_user_location_meta( $grid_meta_id, $user_id = null ) {
+        if ( empty( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+
+        return Location_Grid_Meta::delete_user_location_grid_meta( $user_id, 'grid_meta_id', $grid_meta_id );
+    }
+
     public static function get_user_location( $user_id = null ) {
         if ( empty( $user_id ) ) {
             $user_id = get_current_user_id();
@@ -990,9 +1047,7 @@ Please click the following link to confirm the invite:
     }
 
     public static function copy_locations_from_contact_to_user( $contact_id, $user_id ) {
-
-
-
+        // @todo finish writing transfer
         $contact_meta = get_post_meta( $contact_id, 'location_grid' );
         if ( ! empty( $contact_meta ) ) {
             foreach ( $contact_meta as $item ) {

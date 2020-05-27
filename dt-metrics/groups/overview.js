@@ -15,7 +15,7 @@ jQuery(document).ready(function() {
 
     chart.empty().html(`
         <div class="cell center">
-            <h3>${ translations.title_groups_overview }</h3>
+            <h3>${ _.escape( translations.title_groups_overview ) }</h3>
         </div>
         <br>
         <div class="grid-x grid-padding-x grid-padding-y">
@@ -23,10 +23,10 @@ jQuery(document).ready(function() {
                 <div class="cell center callout">
                     <div class="grid-x">
                         <div class="medium-4 cell center">
-                            <h5>${ translations.title_total_groups }<br><span id="total_groups">0</span></h5>
+                            <h5>${ _.escape( translations.title_total_groups ) }<br><span id="total_groups">0</span></h5>
                         </div>
                         <div class="medium-4 cell center left-border-grey">
-                            <h5>${ translations.title_teams }<br><span id="teams">0</span></h5>
+                            <h5>${ _.escape( translations.title_teams ) }<br><span id="teams">0</span></h5>
                         </div>
                    </div>
                 </div>
