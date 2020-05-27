@@ -42,7 +42,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         add_action( "dt_post_created", [ $this, "post_created_hook" ], 10, 3 );
         add_action( 'group_member_count', [ $this, 'update_group_member_count' ], 10, 2 );
         add_filter( "dt_post_update_fields", [ $this, "update_post_field_hook" ], 10, 3 );
-        add_filter( "dt_post_updated", [ $this, "post_updated_hook" ], 10, 3 );
+        add_action( "dt_post_updated", [ $this, "post_updated_hook" ], 10, 5 );
         add_filter( "dt_get_post_fields_filter", [ $this, "dt_get_post_fields_filter" ], 10, 2 );
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
@@ -140,10 +140,9 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         return $fields;
     }
 
-    public function post_updated_hook( $post_type, $post_id, $initial_fields ){
+    public function post_updated_hook( $post_type, $post_id, $initial_fields, $previous_values, $new_values ){
         if ( $post_type === 'groups' ){
-            $group = DT_Posts::get_post( 'groups', $post_id, true, false );
-            do_action( "dt_group_updated", array_keys( $initial_fields ), $group );
+            do_action( "dt_group_updated", array_keys( $initial_fields ), $new_values );
         }
     }
 

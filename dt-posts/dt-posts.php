@@ -310,8 +310,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        do_action( "dt_post_updated", $post_type, $post_id, $initial_fields, $existing_post );
-        $post = self::get_post( $post_type, $post_id, false, false );
+        $post = self::get_post( $post_type, $post_id, false, false ); // get post to add to action hook
+        do_action( "dt_post_updated", $post_type, $post_id, $initial_fields, $existing_post, $post );
+        $post = self::get_post( $post_type, $post_id, false, false ); // get post with fields updated by action hook
         if ( !$silent ){
             Disciple_Tools_Notifications::insert_notification_for_post_update( $post_type, $post, $existing_post, array_keys( $initial_fields ) );
         }
