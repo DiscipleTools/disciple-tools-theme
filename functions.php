@@ -143,7 +143,7 @@ else {
              */
             $this->token = 'disciple_tools';
             $this->version = '0.30.0';
-            $this->migration_number = 29;
+            $this->migration_number = 30;
 
 
 

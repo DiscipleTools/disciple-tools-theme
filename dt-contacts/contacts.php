@@ -21,7 +21,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         add_filter( "dt_post_create_fields", [ $this, "create_post_field_hook" ], 10, 2 );
         add_action( "dt_post_created", [ $this, "post_created_hook" ], 10, 3 );
         add_filter( "dt_post_update_fields", [ $this, "update_post_field_hook" ], 10, 3 );
-        add_filter( "dt_post_updated", [ $this, "post_updated_hook" ], 10, 4 );
+        add_action( "dt_post_updated", [ $this, "post_updated_hook" ], 10, 5 );
         add_filter( "dt_get_post_fields_filter", [ $this, "dt_get_post_fields_filter" ], 10, 2 );
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
@@ -290,10 +290,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return $fields;
     }
 
-    public function post_updated_hook( $post_type, $post_id, $updated_fields, $previous_values ){
+    public function post_updated_hook( $post_type, $post_id, $update_query, $previous_values, $new_values ){
         if ( $post_type === 'contacts' ){
-            $contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
-            do_action( "dt_contact_updated", $post_id, $updated_fields, $contact, $previous_values );
+            do_action( "dt_contact_updated", $post_id, $update_query, $new_values, $previous_values );
         }
     }
 
