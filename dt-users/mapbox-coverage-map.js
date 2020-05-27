@@ -552,9 +552,9 @@ jQuery(document).ready(function() {
                   emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
                   callback: {
                     onClick: function(node, a, item){
-
+                      console.log(item)
                       let data = {
-                        user_id: item.user_id,
+                        user_id: item.ID,
                         user_location: {
                           location_grid_meta: [
                             {
@@ -565,7 +565,7 @@ jQuery(document).ready(function() {
                       }
                       makeRequest( "POST", `users/user_location`, data )
                         .then(function (response) {
-                          // console.log(response)
+                          console.log(response)
 
                           makeRequest( "POST", `get_user_list`, null , 'user-management/v1/')
                             .done(user_list=>{
