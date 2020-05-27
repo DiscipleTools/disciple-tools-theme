@@ -44,17 +44,17 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             }
 
             // get results
-            if ( $level === 'admin5' ) { // get admin2 only
+            if ( $level === 'admin5' || $level === 5 ) { // get admin2 only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 5 );
-            } else if ( $level === 'admin4' ) { // get admin2 only
+            } else if ( $level === 'admin4' || $level === 4 ) { // get admin2 only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 4 );
-            } else if ( $level === 'admin3' ) { // get admin2 only
+            } else if ( $level === 'admin3' || $level === 3 ) { // get admin2 only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 3 );
-            } else if ( $level === 'admin2' ) { // get admin2 only
+            } else if ( $level === 'admin2' || $level === 2 ) { // get admin2 only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 2 );
-            } else if ( $level === 'admin1' ) { // get admin1 only
+            } else if ( $level === 'admin1' || $level === 1 ) { // get admin1 only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 1 );
-            } else if ( $level === 'admin0' ) { // get country only
+            } else if ( $level === 'admin0' || $level === 0 ) { // get country only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 0 );
             } else { // get lowest match
                 $results = $this->query_lowest_level_by_lnglat( $longitude, $latitude, $country_code );
@@ -946,6 +946,62 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             }
 
             return $label;
+        }
+
+        public static function filter_level( string $code, $number = false ) {
+            /**
+            @link https://docs.mapbox.com/api/search/#data-types
+            The data types available in the geocoder, listed from the largest to the most granular, are:
+
+            country         - Generally recognized countries or, in some cases like Hong Kong, an area of quasi-national administrative status that has been given a designated country code under ISO 3166-1.
+            region          - Top-level sub-national administrative features, such as states in the United States or provinces in Canada or China.
+            postcode        - Postal codes used in country-specific national addressing systems.
+            district        - Features that are smaller than top-level administrative features but typically larger than cities, in countries that use such an additional layer in postal addressing (for example, prefectures in China).
+            place           - Typically these are cities, villages, municipalities, etc. They’re usually features used in postal addressing, and are suitable for display in ambient end-user applications where current-location context is needed (for example, in weather displays).
+            locality        - Official sub-city features present in countries where such an additional administrative layer is used in postal addressing, or where such features are commonly referred to in local parlance. Examples include city districts in Brazil and Chile and arrondissements in France.
+            neighborhood    - Colloquial sub-city features often referred to in local parlance. Unlike locality features, these typically lack official status and may lack universally agreed-upon boundaries.
+            address         - Individual residential or business addresses.
+            poi             - Points of interest. These include restaurants, stores, concert venues, parks, museums, etc.
+            admin0-admin5   - Used by Location Grid for administrative levels
+             */
+
+            switch ( $code ) {
+                case 'world':
+                case 'continent':
+                    $level = ( $number ) ? -3 : 'world';
+                    break;
+                case 'admin0':
+                case 'country':
+                    $level = ( $number ) ? 0 : 'admin0';
+                    break;
+                case 'admin1':
+                case 'region':
+                    $level = ( $number ) ? 1 : 'admin1';
+                    break;
+                case 'postcode':
+                case 'admin2':
+                case 'district':
+                    $level = ( $number ) ? 2 : 'admin2';
+                    break;
+                case 'admin3':
+                    $level = ( $number ) ? 3 : 'admin3';
+                    break;
+                case 'admin4':
+                    $level = ( $number ) ? 4 : 'admin4';
+                    break;
+                case 'place':
+                case 'poi':
+                case 'address':
+                case 'lnglat':
+                case 'admin5':
+                case 'neighborhood':
+                    $level = ( $number ) ? 5 : 'admin5';
+                    break;
+                default:
+                    $level = '';
+                    break;
+            }
+            return $level;
         }
 
     }
