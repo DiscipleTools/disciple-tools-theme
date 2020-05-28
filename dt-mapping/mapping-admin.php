@@ -568,8 +568,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <!-- Main Column -->
 
                             <?php $this->box_mapbox(); ?>
-                            <?php $this->box_mapbox_post_upgrade(); ?><br>
-                            <?php $this->box_mapbox_user_upgrade(); ?><br>
+                            <?php if ( DT_Mapbox_API::get_key() ) : ?>
+
+                                <?php $this->box_mapbox_post_upgrade(); ?><br>
+                                <?php $this->box_mapbox_user_upgrade(); ?><br>
+
+                            <?php endif; ?>
 <!--                            --><?php //$this->box_mapbox_address_upgrade(); ?>
 
                             <!-- End Main Column -->
