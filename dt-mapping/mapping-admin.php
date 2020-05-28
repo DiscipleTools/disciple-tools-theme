@@ -1642,7 +1642,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
         public function box_mapbox_user_upgrade() {
             global $wpdb;
-            $location_wo_meta = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->usermeta WHERE meta_key = %s AND umeta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta )", $wpdb->prefix . 'location_grid') );
+            $location_wo_meta = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->usermeta WHERE meta_key = %s AND umeta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta )", $wpdb->prefix . 'location_grid' ) );
             ?>
             <table class="widefat striped">
                 <thead>
