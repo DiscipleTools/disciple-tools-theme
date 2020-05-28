@@ -568,7 +568,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <!-- Main Column -->
 
                             <?php $this->box_mapbox(); ?>
-                            <?php $this->box_mapbox_upgrade(); ?><br>
+                            <?php $this->box_mapbox_post_upgrade(); ?><br>
+                            <?php $this->box_mapbox_user_upgrade(); ?><br>
 <!--                            --><?php //$this->box_mapbox_address_upgrade(); ?>
 
                             <!-- End Main Column -->
@@ -1546,46 +1547,43 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             DT_Mapbox_API::metabox_for_admin();
         }
 
-        public function box_mapbox_upgrade() {
+        public function box_mapbox_post_upgrade() {
             global $wpdb;
             $location_wo_meta = $wpdb->get_var( "SELECT count(*) FROM $wpdb->postmeta WHERE meta_key = 'location_grid' AND meta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta)" );
             ?>
             <table class="widefat striped">
             <thead>
-            <tr><th>Upgrade Location Grid (<?php echo esc_attr( $location_wo_meta ) ?>)</th></tr>
+            <tr><th>Upgrade Contacts and Groups and Other Types (<?php echo esc_attr( $location_wo_meta ) ?>)</th></tr>
             </thead>
             <tbody>
             <tr>
                 <td>
                     <form method="GET" action="">
                         <input type="hidden" name="page" value="<?php echo esc_attr( $this->token )  ?>" />
-                        <input type="hidden" name="offset" value="0" />
+                        <input type="hidden" name="loop" value="true" />
                         <input type="hidden" name="tab" value="geocoding" />
                         <?php wp_nonce_field( 'upgrade_database'.get_current_user_id(), 'upgrade_database', false ) ?>
-                        <button class="button" type="submit" >Upgrade Location Grids</button>
+                        <button class="button" type="submit" >Upgrade Non-Mapbox Locations</button>
                     </form>
                 </td>
             </tr>
 
             <?php
-            $limit = 10;
-            $offset = false;
+            $limit = 100;
+            $loop_again = false;
             $count = -1;
             if ( isset( $_GET['upgrade_database'] )
                 && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['upgrade_database'] ) ), 'upgrade_database' . get_current_user_id() )
-                && isset( $_GET['offset'] ) ) {
+                && isset( $_GET['loop'] ) ) {
 
-                $offset = (int) sanitize_text_field( wp_unslash( $_GET['offset'] ) );
+                $loop_again = sanitize_text_field( wp_unslash( $_GET['loop'] ) );
                 $count = $location_wo_meta;
             }
             ?>
 
-            <?php
-            if ( false !== $offset && $offset <= $count + $limit ) :
-                $next_offset = $offset + $limit;
-                ?>
+            <?php if ( $loop_again === 'true' ) : ?>
                 <tr><td>
-                <strong>Processing <?php echo esc_attr( $offset ) ?> to <?php echo esc_attr( $next_offset ) ?> out of <?php echo esc_attr( $count ) ?> </strong><br>
+                <strong>Processing ( <?php echo esc_attr( $count ) ?> ) </strong><br>
                         <span><img src="<?php echo esc_url( trailingslashit( get_stylesheet_directory_uri() ) ) ?>spinner.svg" width="22px" alt="spinner "/></span><br>
                 <?php
 
@@ -1599,10 +1597,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                               AND meta_id NOT IN (
                                   SELECT DISTINCT( postmeta_id_location_grid )
                                   FROM $wpdb->dt_location_grid_meta)
-                            LIMIT %d
-                                OFFSET %d",
-                    $limit,
-                    $offset
+                            LIMIT %d",
+                    $limit
                 ), ARRAY_A);
                 if ( ! empty( $query ) ) {
                     foreach ( $query as $row ) {
@@ -1620,23 +1616,120 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             $location_meta_grid['label'] = $geocoder->_format_full_name( $grid );
 
                             $potential_error = Location_Grid_Meta::add_location_grid_meta( $row['post_id'], $location_meta_grid, $row['meta_id'] );
-                            dt_write_log( $potential_error );
+
                             echo esc_html( $location_meta_grid['label'] ) . '<br>';
                         }
                     }
                 }
+
+                $loop_again = ( $count >= 100 );
                 ?>
                 <script type="text/javascript">
                     <!--
                     function nextpage() {
-                        location.href = "<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_mapping_module&tab=geocoding&upgrade_database=<?php echo esc_attr( wp_create_nonce( 'upgrade_database'. get_current_user_id() ) ) ?>&offset=<?php echo esc_html( ( $offset + $limit ) ) ?>";
+                        location.href = "<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_mapping_module&tab=geocoding&upgrade_database=<?php echo esc_attr( wp_create_nonce( 'upgrade_database'. get_current_user_id() ) ) ?>&loop=<?php echo esc_html( ( $loop_again ) ) ?>";
                     }
                     setTimeout( "nextpage()", 1500 );
                     //-->
                 </script>
             <tr><td>
-            <?php endif; // offset ?>
+            <?php endif; // loop_again ?>
+
             </tbody>
+            </table>
+            <?php
+        }
+
+        public function box_mapbox_user_upgrade() {
+            global $wpdb;
+            $location_wo_meta = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->usermeta WHERE meta_key = %s AND umeta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta )", $wpdb->prefix . 'location_grid') );
+            ?>
+            <table class="widefat striped">
+                <thead>
+                <tr><th>Upgrade Users (<?php echo esc_attr( $location_wo_meta ) ?>)</th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <form method="GET" action="">
+                            <input type="hidden" name="page" value="<?php echo esc_attr( $this->token )  ?>" />
+                            <input type="hidden" name="user-loop" value="true" />
+                            <input type="hidden" name="tab" value="geocoding" />
+                            <?php wp_nonce_field( 'upgrade_database'.get_current_user_id(), 'upgrade_user_database', false ) ?>
+                            <button class="button" type="submit" >Upgrade Non-Mapbox User Locations</button>
+                        </form>
+                    </td>
+                </tr>
+
+                <?php
+                $limit = 100;
+                $loop_again = false;
+                $count = -1;
+                if ( isset( $_GET['upgrade_user_database'] )
+                    && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['upgrade_user_database'] ) ), 'upgrade_database' . get_current_user_id() )
+                    && isset( $_GET['user-loop'] ) ) {
+
+                    $loop_again = sanitize_text_field( wp_unslash( $_GET['user-loop'] ) );
+                    $count = $location_wo_meta;
+                }
+                ?>
+
+                <?php if ( $loop_again === 'true' ) : ?>
+                <tr><td>
+                        <strong>Processing ( <?php echo esc_attr( $count ) ?> ) </strong><br>
+                        <span><img src="<?php echo esc_url( trailingslashit( get_stylesheet_directory_uri() ) ) ?>spinner.svg" width="22px" alt="spinner "/></span><br>
+                        <?php
+
+                        // Insert processing with offset
+                        global $wpdb;
+                        $geocoder = new Location_Grid_Geocoder();
+                        $query = $wpdb->get_results( $wpdb->prepare( "
+                            SELECT *
+                            FROM $wpdb->usermeta
+                            WHERE meta_key = %s
+                              AND meta_id NOT IN (
+                                  SELECT DISTINCT( postmeta_id_location_grid )
+                                  FROM $wpdb->dt_location_grid_meta)
+                            LIMIT %d",
+                            $wpdb->prefix . 'location_grid',
+                            $limit
+                        ), ARRAY_A);
+                        if ( ! empty( $query ) ) {
+                            foreach ( $query as $row ) {
+                                $grid = $geocoder->query_by_grid_id( $row["meta_value"] );
+                                if ( $grid ) {
+                                    $location_meta_grid = [];
+
+                                    Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
+                                    $location_meta_grid['post_id'] = $row['user_id'];
+                                    $location_meta_grid['post_type'] = 'users';
+                                    $location_meta_grid['grid_id'] = $row['meta_value'];
+                                    $location_meta_grid['lng'] = $grid["longitude"];
+                                    $location_meta_grid['lat'] = $grid["latitude"];
+                                    $location_meta_grid['level'] = $grid["level_name"];
+                                    $location_meta_grid['label'] = $geocoder->_format_full_name( $grid );
+
+                                    $potential_error = Location_Grid_Meta::add_user_location_grid_meta( $row['user_id'], $location_meta_grid, $row['umeta_id'] );
+
+                                    echo esc_html( $location_meta_grid['label'] ) . '<br>';
+                                }
+                            }
+                        }
+
+                        $loop_again = ( $count >= 100 );
+                        ?>
+                        <script type="text/javascript">
+                            <!--
+                            function nextpage() {
+                                location.href = "<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_mapping_module&tab=geocoding&upgrade_database=<?php echo esc_attr( wp_create_nonce( 'upgrade_database'. get_current_user_id() ) ) ?>&user-loop=<?php echo esc_html( ( $loop_again ) ) ?>";
+                            }
+                            setTimeout( "nextpage()", 1500 );
+                            //-->
+                        </script>
+                <tr><td>
+                        <?php endif; // loop_again ?>
+
+                </tbody>
             </table>
             <?php
         }

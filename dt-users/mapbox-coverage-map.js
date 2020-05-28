@@ -50,42 +50,39 @@ jQuery(document).ready(function() {
                     <div id='legend' class='legend'>
                         <div class="grid-x grid-margin-x grid-padding-x">
                             <div class="cell small-2 center info-bar-font">
-                                Responsibility
+                                ${_.escape( dt_user_management_localized.translations.responsibility )}
                             </div>
                             <div class="cell small-2 center border-left">
                                 <select id="level" class="small" style="width:170px;">
                                     <option value="none" disabled></option>
-                                    <option value="none" disabled>Zoom Level</option>
+                                    <option value="none" disabled>${ _.escape( dt_user_management_localized.translations.zoom_level ) }</option>
                                     <option value="none"></option>
-                                    <option value="auto" selected>Auto Zoom</option>
+                                    <option value="auto" selected>${ _.escape( dt_user_management_localized.translations.auto_zoom ) }</option>
                                     <option value="none" disabled>-----</option>
-                                    <option value="world">World</option>
-                                    <option value="admin0">Country</option>
-                                    <option value="admin1">State</option>
+                                    <option value="world">${ _.escape( dt_user_management_localized.translations.world ) }</option>
+                                    <option value="admin0">${ _.escape( dt_user_management_localized.translations.country ) }</option>
+                                    <option value="admin1">${ _.escape( dt_user_management_localized.translations.state ) }</option>
                                     <option value="none" disabled></option>
                                 </select>
                             </div>
                             <div class="cell small-2 center border-left">
                                 <select id="status" class="small" style="width:170px;">
                                     <option value="none" disabled></option>
-                                    <option value="none" disabled>Status</option>
+                                    <option value="none" disabled>${ _.escape( dt_user_management_localized.translations.status ) }</option>
                                     <option value="none"></option>
-                                    <option value="all" selected>Status - All</option>
+                                    <option value="all" selected>${ _.escape( dt_user_management_localized.translations.status_all ) }</option>
                                     <option value="none" disabled>-----</option>
-                                    <option value="active">Active</option>
-                                    <option value="away">Away</option>
-                                    <option value="inconsistent">Inconsistent</option>
-                                    <option value="inactive">Inactive</option>
+                                    <option value="active">${ _.escape( dt_user_management_localized.translations.active ) }</option>
+                                    <option value="away">${ _.escape( dt_user_management_localized.translations.away ) }</option>
+                                    <option value="inconsistent">${ _.escape( dt_user_management_localized.translations.inconsistent ) }</option>
+                                    <option value="inactive">${ _.escape( dt_user_management_localized.translations.inactive ) }</option>
                                     <option value="none" disabled></option>
                                 </select>
                             </div>
-                            <div class="cell small-5 center border-left info-bar-font">
-
-                            </div>
-
+                            <div class="cell small-5 center border-left info-bar-font"></div>
                             <div class="cell small-1 center border-left">
                                 <div class="grid-y">
-                                    <div class="cell center" id="admin">World</div>
+                                    <div class="cell center" id="admin">${ _.escape( dt_user_management_localized.translations.world ) }</div>
                                     <div class="cell center" id="zoom" >0</div>
                                 </div>
                             </div>
@@ -94,7 +91,7 @@ jQuery(document).ready(function() {
                     <div id="spinner">${spinner}</div>
                     <div id="cross-hair">&#8982</div>
                     <div id="geocode-details" class="geocode-details">
-                        Response Coverage<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
+                        ${ _.escape( dt_user_management_localized.translations.response_coverage ) }<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
                         <hr style="margin:10px 5px;">
                         <div id="geocode-details-content"></div>
                     </div>
@@ -164,7 +161,7 @@ jQuery(document).ready(function() {
 
             window.previous_grid_id = '1'
             window.previous_grid_list.push('1')
-            jQuery.get('https://storage.googleapis.com/location-grid-mirror/collection/1.geojson', null, null, 'json')
+            jQuery.get( dt_user_management_localized.map_mirror + 'collection/1.geojson', null, null, 'json')
               .done(function (geojson) {
 
                 jQuery.each(geojson.features, function (i, v) {
@@ -319,7 +316,7 @@ jQuery(document).ready(function() {
                     type: 'GET',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    url: 'https://storage.googleapis.com/location-grid-mirror/collection/' + data.grid_id + '.geojson',
+                    url: dt_user_management_localized.map_mirror + 'collection/' + data.grid_id + '.geojson',
                     statusCode: {
                       404: function() {
                         console.log('404. Do nothing.')

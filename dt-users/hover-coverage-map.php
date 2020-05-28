@@ -66,7 +66,8 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
             get_template_directory_uri() . $this->js_file_name,
             [
                 'jquery',
-                'dt_mapping_js'
+                'dt_mapping_js',
+                'lodash'
             ],
             filemtime( get_theme_file_path() . $this->js_file_name ),
             true

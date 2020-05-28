@@ -201,7 +201,7 @@ jQuery(document).ready(function($) {
         rows += `<tr>
         <td>${_.escape(range.start_date)}</td>
         <td>${_.escape(range.end_date)}</td>
-        <td><button class="button remove_dates_unavailable" data-id="${_.escape(range.id)}">Remove</button></td>
+        <td><button class="button remove_dates_unavailable" data-id="${_.escape(range.id)}">${ _.escape( dt_user_management_localized.translations.remove ) }</button></td>
       </tr>`
       })
       date_unavailable_table.html(rows)
@@ -212,7 +212,6 @@ jQuery(document).ready(function($) {
         display_dates_unavailable(resp)
       })
     })
-
 
     /**
      * Locations
@@ -305,7 +304,6 @@ jQuery(document).ready(function($) {
       $('#user_modal').foundation('open');
 
       $('.users-spinner').addClass("active")
-
 
       // load spinners
       let spinner = ' <span class="loading-spinner users-spinner active"></span> '
@@ -697,9 +695,7 @@ jQuery(document).ready(function($) {
       animation.events.on("animationprogress", updateLines);
 
       selectedSlice.events.on("transformed", updateLines);
-
     }
-
 
     function updateLines() {
       if (selectedSlice) {
@@ -737,15 +733,15 @@ jQuery(document).ready(function($) {
     chart.empty().html(`
 
       <div class="grid-x">
-        <div id="page-title" class="cell"><h3>Add New User</h3></div>
+        <div id="page-title" class="cell"><h3>${ _.escape( dt_user_management_localized.translations.add_new_user ) }</h3></div>
         <div class="cell medium-6">
           <form data-abide id="new-user-form">
             <div data-abide-error class="alert callout" style="display: none;">
-              <p><i class="fi-alert"></i> There are some errors in your form.</p>
+              <p><i class="fi-alert"></i> ${ _.escape( dt_user_management_localized.translations.there_are_some_errors ) }</p>
             </div>
 
             <dl>
-              <dt>Contact to make a user (optional)</dt>
+              <dt>${ _.escape( dt_user_management_localized.translations.contact_to_user ) }</dt>
               <dd>
                 <div class="subassigned details">
                     <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
@@ -754,7 +750,7 @@ jQuery(document).ready(function($) {
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-subassigned input-height"
-                                           name="subassigned[query]" placeholder="Search multipliers and contacts"
+                                           name="subassigned[query]" placeholder="${ _.escape( dt_user_management_localized.translations.search ) }"
                                            autocomplete="off">
                                 </span>
                             </div>
@@ -766,15 +762,13 @@ jQuery(document).ready(function($) {
             <div id="contact-result"></div>
 
             <dl>
-              <dt>Nickname</dt>
-              <dd><input type="text" class="input" id="name" placeholder="nick name" required /> </dd>
-              <dt>Email</dt>
-              <dd><input type="email" class="input" id="email" placeholder="email address" required /> </dd>
-
+              <dt>${ _.escape( dt_user_management_localized.translations.nickname ) }</dt>
+              <dd><input type="text" class="input" id="name" placeholder="${ _.escape( dt_user_management_localized.translations.nickname ) }" required /> </dd>
+              <dt>${ _.escape( dt_user_management_localized.translations.email ) }</dt>
+              <dd><input type="email" class="input" id="email" placeholder="${ _.escape( dt_user_management_localized.translations.email ) }" required /> </dd>
             </dl>
 
-            <button type="submit" class="submit button" id="create-user">Create User</button> <span class="spinner"></span>
-
+            <button type="submit" class="submit button" id="create-user">${ _.escape( dt_user_management_localized.translations.create_user ) }</button> <span class="spinner"></span>
           </form>
 
         </div>
@@ -815,10 +809,10 @@ jQuery(document).ready(function($) {
               submit_button.prop('disabled', false)
 
               if ( err.responseJSON.code === 'email_exists' ) {
-                result_div.html(`Email address is already in the system as a user!`)
+                result_div.html(`${ _.escape( dt_user_management_localized.translations.email_already_in_system ) }`)
               }
               else if ( err.responseJSON.code === 'username_exists' ) {
-                result_div.html(`Username is already in the system as a user!`)
+                result_div.html(`${ _.escape( dt_user_management_localized.translations.username_in_system ) }`)
               }
 
             } else {
