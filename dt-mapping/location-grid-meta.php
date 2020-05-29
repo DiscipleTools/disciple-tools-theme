@@ -211,10 +211,16 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                 return new WP_Error( __METHOD__, 'Missing required lng or lat' );
             }
 
-            if (empty( $location_grid_meta['grid_id'] )) {
-                $grid = $geocoder->get_grid_id_by_lnglat( $location_grid_meta['lng'], $location_grid_meta['lat'] );
+            if ( empty( $location_grid_meta['grid_id'] )) {
+                if ( $location_grid_meta['level'] === 'country' ) {
+                    $location_grid_meta['level'] = 'admin0';
+                } else if ( $location_grid_meta['level'] === 'region' ) {
+                    $location_grid_meta['level'] = 'admin1';
+                }
+                $grid = $geocoder->get_grid_id_by_lnglat( $location_grid_meta['lng'], $location_grid_meta['lat'], null, $location_grid_meta['level'] );
                 if ($grid) {
                     $location_grid_meta['grid_id'] = $grid['grid_id'];
+                    $location_grid_meta['post_type'] = 'users';
                 } else {
                     return new WP_Error( __METHOD__, 'Invalid lng or lat. Unable to retrieve grid_id' );
                 }

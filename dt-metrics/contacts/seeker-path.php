@@ -15,7 +15,6 @@ class DT_Metrics_Seeker_Path_Chart extends DT_Metrics_Chart_Base
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/contacts/seeker-path.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
-//    public $namespace = "dt-metrics/$this->base_slug/$this->slug";
 
     public function __construct() {
         parent::__construct();
@@ -121,9 +120,5 @@ class DT_Metrics_Seeker_Path_Chart extends DT_Metrics_Chart_Base
 
         return $return;
     }
-
-
-
-
 }
 new DT_Metrics_Seeker_Path_Chart();

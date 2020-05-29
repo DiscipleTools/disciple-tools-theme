@@ -59,7 +59,8 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
     public function scripts() {
         $dependencies = [
             'jquery',
-            'moment'
+            'moment',
+            'lodash'
         ];
 
         wp_enqueue_script( 'dt_user_map', get_template_directory_uri() . $this->js_file_name, $dependencies, filemtime( get_theme_file_path() . $this->js_file_name ), true );
@@ -71,9 +72,23 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id'    => get_current_user_id(),
                 'map_key'            => DT_Mapbox_API::get_key(),
+                'map_mirror'         => trailingslashit( dt_get_location_grid_mirror( true ) ),
                 'url_path'           => dt_get_url_path(),
                 'translations'       => [
                     'title' => _x( 'Coverage Map', 'disciple_tools' ),
+                    'responsibility' => __( 'Responsibility', 'disciple_tools' ),
+                    'zoom_level' => __( 'Zoom Level', 'disciple_tools' ),
+                    'auto_zoom' => __( 'Auto Zoom', 'disciple_tools' ),
+                    'world' => __( 'World', 'disciple_tools' ),
+                    'country' => __( 'Country', 'disciple_tools' ),
+                    'state' => __( 'State', 'disciple_tools' ),
+                    'status' => __( 'Status', 'disciple_tools' ),
+                    'status_all' => __( 'Status - All', 'disciple_tools' ),
+                    'active' => __( 'Active', 'disciple_tools' ),
+                    'away' => __( 'Away', 'disciple_tools' ),
+                    'inconsistent' => __( 'Inconsistent', 'disciple_tools' ),
+                    'inactive' => __( 'Inactive', 'disciple_tools' ),
+                    'response_coverage' => __( 'Response Coverage', 'disciple_tools' ),
                 ]
             ]
         );

@@ -3,7 +3,6 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
-
 class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
 {
 
