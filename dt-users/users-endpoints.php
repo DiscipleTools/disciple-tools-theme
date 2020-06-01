@@ -402,9 +402,9 @@ class Disciple_Tools_Users_Endpoints
             return $languages;
         }
         if ( !empty( $body["remove_languages"] ) ){
-            $languages = get_user_option( "languages", $user->ID );
-            if ( !in_array( $body["add_language"], $languages )){
-                $languages[] = $body["add_language"];
+            $languages = get_user_option( "user_languages", $user->ID );
+            if ( in_array( $body["remove_language"], $languages )){
+                unset( $languages[array_search( $body["remove_languages"], $languages )] );
             }
             update_user_option( $user->ID, "user_languages", $languages );
             return $languages;
