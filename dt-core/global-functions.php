@@ -241,6 +241,19 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    if ( ! function_exists( 'dt_has_permissions' ) ) {
+        function dt_has_permissions( array $permissions ) : bool {
+            if ( count( $permissions ) > 0 ) {
+                foreach ( $permissions as $permission ){
+                    if ( current_user_can( $permission ) ){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
+
     /**
      * All code above here.
      */

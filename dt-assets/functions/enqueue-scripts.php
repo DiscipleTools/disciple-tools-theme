@@ -335,7 +335,8 @@ function dt_site_scripts() {
                 'google_translate_api_key' => get_option( 'dt_googletranslate_api_key' ),
                 'custom_data'           => apply_filters( 'dt_settings_js_data', [] ), // nest associated array
                 'workload_status'       => get_user_option( 'workload_status', get_current_user_id() ),
-                'workload_status_options' => dt_get_site_custom_lists()["user_workload_status"] ?? []
+                'workload_status_options' => dt_get_site_custom_lists()["user_workload_status"] ?? [],
+                'user_people_groups' => DT_Posts::get_post_names_from_ids( get_user_option( 'user_people_groups', get_current_user_id() ) ?: [] ),
             )
         );
     }

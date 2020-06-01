@@ -1108,6 +1108,24 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         return array_unique( $users );
     }
+
+
+    public static function get_post_names_from_ids( array $post_ids ){
+        if ( empty( $post_ids ) ){
+            return [];
+        }
+        global $wpdb;
+        $ids_sql = dt_array_to_sql( $post_ids );
+
+        //phpcs:disable
+        return $wpdb->get_results( "
+            SELECT ID, post_title
+            FROM $wpdb->posts
+            WHERE ID IN ( $ids_sql )
+        ", ARRAY_A );
+        //phpcs:enable
+
+    }
 }
 
 

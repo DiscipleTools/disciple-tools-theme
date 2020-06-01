@@ -256,6 +256,7 @@ status_buttons.on( 'click', function () {
 $('button.dt_multi_select').on('click',function () {
   let fieldKey = $(this).data("field-key")
   let optionKey = $(this).attr('id')
+  $(`#${fieldKey}-spinner`).addClass("active")
   let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`)
   field.addClass("submitting-select-button")
   let action = "add"
@@ -272,9 +273,62 @@ $('button.dt_multi_select').on('click',function () {
     field.removeClass("submitting-select-button selected-select-button")
     field.blur();
     field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
+    $(`#${fieldKey}-spinner`).removeClass("active")
   }).catch(err=>{
     field.removeClass("submitting-select-button selected-select-button")
     field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
     handleAjaxError(err)
   })
+})
+$('select.select-field').change(e => {
+  const id = $(e.currentTarget).attr('id')
+  const val = $(e.currentTarget).val()
+  $(`#${id}-spinner`).addClass("active")
+  update_user(id, val).then(()=>{
+    $(`#${id}-spinner`).removeClass("active")
+  }).catch(handleAjaxError)
+})
+
+/**
+ * People groups
+ */
+$.typeahead({
+  input: '.js-typeahead-people_groups',
+  minLength: 0,
+  accent: true,
+  searchOnFocus: true,
+  maxItem: 20,
+  source: TYPEAHEADS.typeaheadPeopleGroupSource('people_groups', 'dt/v1/people-groups/compact/'),
+  display: ["name", "label"],
+  templateValue: "{{name}}",
+  dynamic: true,
+  multiselect: {
+    matchOn: ["ID"],
+    data: function () {
+      return wpApiSettingsPage.user_people_groups.map(g=>{
+        return { ID: g.ID, name:g.post_title };
+      })
+    },
+    callback: {
+      onCancel: function (node, item) {
+       update_user( 'remove_people_groups', item.ID )
+      }
+    },
+  },
+  callback: {
+    onClick: function(node, a, item, event){
+      update_user( 'add_people_groups', item.ID )
+      this.addMultiselectItemLayout(item)
+      event.preventDefault()
+      this.hideLayout();
+      this.resetInput();
+    },
+    onResult: function (node, query, result, resultCount) {
+      let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+      $('#people_groups-result-container').html(text);
+    },
+    onHideLayout: function () {
+      $('#people_groups-result-container').html("");
+    }
+  }
 })

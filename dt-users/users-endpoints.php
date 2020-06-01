@@ -403,11 +403,30 @@ class Disciple_Tools_Users_Endpoints
         }
         if ( !empty( $body["remove_languages"] ) ){
             $languages = get_user_option( "user_languages", $user->ID );
-            if ( in_array( $body["remove_language"], $languages )){
+            if ( in_array( $body["remove_languages"], $languages )){
                 unset( $languages[array_search( $body["remove_languages"], $languages )] );
             }
             update_user_option( $user->ID, "user_languages", $languages );
             return $languages;
+        }
+        if ( !empty( $body["add_people_groups"] ) ){
+            $people_groups = get_user_option( "user_people_groups", $user->ID ) ?: [];
+            if ( !in_array( $body["add_people_groups"], $people_groups )){
+                $people_groups[] = $body["add_people_groups"];
+            }
+            update_user_option( $user->ID, "user_people_groups", $people_groups );
+            return $people_groups;
+        }
+        if ( !empty( $body["remove_people_groups"] ) ){
+            $people_groups = get_user_option( "user_people_groups", $user->ID );
+            if ( in_array( $body["remove_people_groups"], $people_groups )){
+                unset( $people_groups[array_search( $body["remove_people_groups"], $people_groups )] );
+            }
+            update_user_option( $user->ID, "user_people_groups", $people_groups );
+            return $people_groups;
+        }
+        if ( !empty( $body["gender"] ) ) {
+            update_user_option( $user->ID, 'user_gender', $body["gender"] );
         }
         try {
             do_action( 'dt_update_user', $user, $body );

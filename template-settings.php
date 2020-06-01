@@ -40,10 +40,9 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
 
                     <ul class="menu vertical expanded" data-smooth-scroll data-offset="100">
                         <li><a href="#profile"><?php esc_html_e( 'Profile', 'disciple_tools' )?></a></li>
-                        <li><a href="#locations"><?php esc_html_e( 'Locations', 'disciple_tools' )?></a></li>
-                        <li><a href="#notifications"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></a></li>
+                        <li><a href="#multiplier"><?php esc_html_e( 'Multiplier Preferences', 'disciple_tools' )?></a></li>
                         <li><a href="#availability"><?php esc_html_e( 'Availability', 'disciple_tools' )?></a></li>
-                        <li><a href="#workload"><?php esc_html_e( 'Workload', 'disciple_tools' )?></a></li>
+                        <li><a href="#notifications"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></a></li>
                     </ul>
 
                 </div>
@@ -70,8 +69,7 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
 
                         <button class="float-right" data-open="edit-profile-modal"><i class="fi-pencil"></i> <?php esc_html_e( 'Edit', 'disciple_tools' )?></button>
 
-                        <hr size="1" style="max-width:100%"/>
-
+                        <hr/>
 
                         <div class="grid-x grid-margin-x grid-padding-x grid-padding-y ">
 
@@ -179,117 +177,136 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
                                 <strong><?php esc_html_e( 'Biography', 'disciple_tools' )?></strong>
                                 <p><?php echo esc_html( $dt_user->user_description ); ?></p>
 
+                                <?php $field_key = 'gender';
+                                $user_field = get_user_option( 'user_gender', get_current_user_id() );
+                                ?>
+
+                                <!-- gender -->
+                                <strong style="display: inline-block"><?php echo esc_html( $contact_fields[$field_key]["name"] ) ?></strong>
+                                <span id="gender-spinner" style="display: inline-block" class="loading-spinner"></span>
+
+                                <select class="select-field" id="<?php echo esc_html( $field_key ); ?>" style="width:auto; display: block">
+                                    <?php foreach ($contact_fields[$field_key]["default"] as $option_key => $option_value):
+                                        $selected = $user_field === $option_key; ?>
+                                        <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
+                                            <?php echo esc_html( $option_value["label"] ) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+
                             </div>
                         </div>
 
                     </div> <!-- End Profile -->
                 </div>
 
-                <div class="small-12 cell" id="locations">
-                    <div class="bordered-box">
-                        <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
-                            <h4><?php esc_html_e( "Location Responsibility", 'disciple_tools' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( "add", 'disciple_tools' ) ?></a></h4>
-                            <div id="mapbox-wrapper"></div>
-                        <?php else : ?>
-                            <h4><?php esc_html_e( "Location Responsibility", 'disciple_tools' ) ?></h4>
-                            <div class="location_grid">
-                                <var id="location_grid-result-container" class="result-container"></var>
-                                <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
-                                    <div class="typeahead__container">
-                                        <div class="typeahead__field">
+
+                <!-- Multiplier Interests -->
+                <div class="small-12 cell bordered-box " id="multiplier" data-magellan-target="multiplier">
+                    <span class="section-header" style="display: inline-block"><?php esc_html_e( 'Multiplier Preferences', 'disciple_tools' )?></span>
+                    <hr>
+                    <div class="grid-x grid-margin-x grid-padding-x grid-padding-y ">
+
+                        <div class="small-12 medium-6 cell">
+
+                            <!-- Locations -->
+                            <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
+                                <strong><?php esc_html_e( "Locations you are willing to be responsible for", 'disciple_tools' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( "add", 'disciple_tools' ) ?></a></strong>
+                                <div id="mapbox-wrapper"></div>
+                            <?php else : ?>
+                                <div class="section-subheader cell">
+                                    <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/location.svg" ?>">
+                                    <?php esc_html_e( "Locations you are willing to be responsible for", 'disciple_tools' ) ?>
+                                </div>
+                                <div class="location_grid">
+                                    <var id="location_grid-result-container" class="result-container"></var>
+                                    <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
+                                        <div class="typeahead__container">
+                                            <div class="typeahead__field">
                                                 <span class="typeahead__query">
                                                     <input class="js-typeahead-location_grid input-height"
                                                            name="location_grid[query]"
                                                            placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
                                                            autocomplete="off">
                                                 </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+
+
+                            <!-- Languages -->
+                            <div class="section-subheader cell" style="margin-top:30px">
+                                <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/languages.svg" ?>">
+                                <strong style="display: inline-block;"><?php esc_html_e( 'Languages you are comfortable speaking', 'disciple_tools' )?></strong>
+                                <span id="languages-spinner" style="display: inline-block" class="loading-spinner"></span>
+                            </div>
+                            <div class="small button-group" style="display: inline-block">
+                                <?php foreach ( $contact_fields["languages"]["default"] as $option_key => $option_value ): ?>
+                                    <?php
+                                    $user_languages = get_user_option( 'user_languages', get_current_user_id() );
+                                    $class = ( in_array( $option_key, $user_languages ?: [] ) ) ?
+                                        "selected-select-button" : "empty-select-button"; ?>
+                                    <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( "languages" ) ?>"
+                                            class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
+                                        <?php echo esc_html( $contact_fields["languages"]["default"][$option_key]["label"] ) ?>
+                                    </button>
+                                <?php endforeach; ?>
+                            </div>
+
+
+                            <!-- People Groups -->
+                            <div class="section-subheader cell" style="margin-top:20px">
+                                <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
+                                <?php esc_html_e( 'People Groups you wish to reach', 'disciple_tools' ); ?>
+                            </div>
+                            <div class="people_groups full-width">
+                                <var id="people_groups-result-container" class="result-container"></var>
+                                <div id="people_groups_t" name="form-people_groups" class="scrollable-typeahead">
+                                    <div class="typeahead__container">
+                                        <div class="typeahead__field">
+                                            <span class="typeahead__query">
+                                                <input class="js-typeahead-people_groups"
+                                                       name="people_groups[query]"
+                                                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["people_groups"]["name"] ) )?>"
+                                                       autocomplete="off">
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-
-                <!-- Begin Notification-->
-                <div class="small-12 cell">
-
-                    <div class="bordered-box cell" id="notifications" data-magellan-target="notifications">
-                        <button class="help-button float-right" data-section="notifications-help-text">
-                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                        </button>
-                        <span class="section-header"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></span>
-                        <hr size="1" style="max-width:100%"/>
-
-                        <table class="form-table">
-                            <thead>
-                            <tr>
-                                <td><?php esc_html_e( 'Type of Notification', 'disciple_tools' )?></td>
-                                <?php foreach ( $dt_site_notification_defaults["channels"] as $channel_key => $channel_value ) : ?>
-                                    <td><?php echo esc_html( $channel_value["label"] )?></td>
-                                <?php endforeach; ?>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ( $dt_site_notification_defaults["types"] as $dt_notification_key => $dt_notification_default ) : ?>
-                                <tr>
-                                    <td class="tall-4"><?php echo esc_html( $dt_notification_default["label"] )?></td>
-                                    <?php foreach ( $dt_site_notification_defaults["channels"] as $channel_key => $channel_value ) : ?>
-                                    <td>
-                                        <?php if ( $dt_notification_default[$channel_key] ) : ?>
-                                            <div style="height:2em;"><?php esc_html_e( "required", 'disciple_tools' ) ?></div>
-                                        <?php else :
-                                            $channel_notification_key = $dt_notification_key . '_' . $channel_key;
-                                            ?>
-                                            <div class="switch">
-                                                <input class="switch-input" id="<?php echo esc_html( $channel_notification_key ) ?>" type="checkbox"
-                                                       name="<?php echo esc_html( $channel_notification_key ) ?>"
-                                                       onclick="switch_preference( '<?php echo esc_html( $channel_notification_key ) ?>', 'notifications' );"
-                                                    <?php print esc_attr( ( isset( $dt_user_meta[$channel_notification_key ] ) && $dt_user_meta[$channel_notification_key ][0] == false ) ? '' : 'checked' ); ?>>
-                                                <label class="switch-paddle inactive" for="<?php echo esc_html( $channel_notification_key ) ?>">
-                                                    <span class="show-for-sr"><?php echo esc_html( $dt_notification_default['label'] ) ?></span>
-                                                </label>
-                                            </div>
-                                        <?php endif; ?>
-                                    </td>
-                                    <?php endforeach; ?>
-                                </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-
-                        <?php if ( current_user_can( "view_any_contacts" ) ): ?>
-                        <p>
-                            <strong><?php esc_html_e( 'Follow all contacts', 'disciple_tools' )?></strong>
-                        </p>
-                        <p><?php esc_html_e( "You will receive a notification for any update that happens in the system.", 'disciple_tools' ) ?></p>
-                        <div class="switch large">
-                            <input class="switch-input" id="follow_all" type="checkbox" name="follow_all"
-                                   onclick="switch_preference('dt_follow_all');" <?php ( isset( $dt_user_meta['dt_follow_all'] ) && $dt_user_meta['dt_follow_all'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
-                            <label class="switch-paddle" for="follow_all">
-                                <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
-                                <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
-                                <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
-                            </label>
                         </div>
-                        <?php endif; ?>
 
+                        <div class="small-12 medium-6 cell" style="border-left: 1px solid lightgrey; padding-left: 1em;">
+                            <!-- Workload -->
+                            <div class="section-subheader cell">
+                                <?php esc_html_e( "Availability to receive contacts from the Dispatcher", 'disciple_tools' ) ?>
+                                <span id="workload-spinner" style="display: inline-block" class="loading-spinner"></span>
+                            </div>
 
-                    </div> <!-- End Notifications -->
-
+                            <?php $options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
+                            foreach ( $options as $option_key => $option_val ) :
+                                $icon = $option_key === "active" ? "play" : ( $option_key === "existing" ? "pause" : "stop" ); ?>
+                                <button style="display: block" class="button hollow status-button" name="<?php echo esc_html( $option_key ) ?>">
+                                    <i class="fi-<?php echo esc_html( $icon ) ?>"></i> <?php echo esc_html( $option_val["label"] )?>
+                                </button>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Begin Availability-->
                 <div class="small-12 cell">
 
                     <div class="bordered-box cell" id="availability" data-magellan-target="availability">
-<!--                      <button class="help-button float-right" data-section="availability-help-text">-->
-<!--                          <img class="help-icon" src="--><?php //echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?><!--"/>-->
-<!--                      </button>-->
+                        <!--                      <button class="help-button float-right" data-section="availability-help-text">-->
+                        <!--                          <img class="help-icon" src="--><?php //echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?><!--"/>-->
+                        <!--                      </button>-->
 
                         <!-- section header-->
                         <span class="section-header"><?php esc_html_e( 'Availability', 'disciple_tools' )?></span>
-                        <hr size="1" style="max-width:100%"/>
+                        <hr/>
 
                         <p><?php esc_html_e( "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts", 'disciple_tools' ) ?></p>
 
@@ -326,7 +343,7 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
                                 </tr>
                                 </thead>
                                 <tbody id="unavailable-list">
-                                    <tr><td><?php esc_html_e( "No Travel Scheduled", 'disciple_tools' ) ?></td></tr>
+                                <tr><td><?php esc_html_e( "No Travel Scheduled", 'disciple_tools' ) ?></td></tr>
                                 </tbody>
 
                             </table>
@@ -335,51 +352,74 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
                 </div>
                 <!-- End Availability -->
 
-                <!-- Begin workload-->
-                <div class="small-12 cell" id="workload" data-magellan-target="workload">
-                    <div class="bordered-box cell" >
-                        <span class="section-header" style="display: inline-block"><?php esc_html_e( 'Contact Workload', 'disciple_tools' )?></span>
-                        <span id="workload-spinner" style="display: inline-block" class="loading-spinner"></span>
-                        <hr size="1" style="max-width:100%"/>
 
-                        <p><?php esc_html_e( "Choose an option to let the dispatcher(s) know if you are ready for new contacts", 'disciple_tools' ) ?></p>
-                        <?php $options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
-                        foreach ( $options as $option_key => $option_val ) :
-                            $icon = $option_key === "active" ? "play" : ( $option_key === "existing" ? "pause" : "stop" ); ?>
-                            <button class="button hollow status-button" name="<?php echo esc_html( $option_key ) ?>">
-                                <i class="fi-<?php echo esc_html( $icon ) ?>"></i> <?php echo esc_html( $option_val["label"] )?>
-                            </button>
-                        <?php endforeach; ?>
+                <!-- Begin Notification-->
+                <div class="small-12 cell">
 
-                    </div>
-                </div><!-- End workload -->
-
-                <!-- Begin languages-->
-                <div class="small-12 cell" id="language" data-magellan-target="language">
-                    <div class="bordered-box cell" >
-                        <span class="section-header" style="display: inline-block"><?php esc_html_e( 'Languages', 'disciple_tools' )?></span>
-                        <span id="languages-spinner" style="display: inline-block" class="loading-spinner"></span>
+                    <div class="bordered-box cell" id="notifications" data-magellan-target="notifications">
+                        <button class="help-button float-right" data-section="notifications-help-text">
+                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                        </button>
+                        <span class="section-header"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></span>
                         <hr/>
 
-                        <p><?php esc_html_e( "Language you are comfortable talking in", 'disciple_tools' ) ?></p>
-
-                        <div class="small button-group" style="display: inline-block">
-                            <?php foreach ( $contact_fields["languages"]["default"] as $option_key => $option_value ): ?>
-                                <?php
-                                $user_languages = get_user_option( 'user_languages', get_current_user_id() );
-                                $class = ( in_array( $option_key, $user_languages ?: [] ) ) ?
-                                    "selected-select-button" : "empty-select-button"; ?>
-                                <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( "languages" ) ?>"
-                                        class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
-                                    <?php echo esc_html( $contact_fields["languages"]["default"][$option_key]["label"] ) ?>
-                                </button>
+                        <table class="form-table">
+                            <thead>
+                            <tr>
+                                <td><?php esc_html_e( 'Type of Notification', 'disciple_tools' )?></td>
+                                <?php foreach ( $dt_site_notification_defaults["channels"] as $channel_key => $channel_value ) : ?>
+                                    <td><?php echo esc_html( $channel_value["label"] )?></td>
+                                <?php endforeach; ?>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ( $dt_site_notification_defaults["types"] as $dt_notification_key => $dt_notification_default ) : ?>
+                                <tr>
+                                    <td class="tall-4"><?php echo esc_html( $dt_notification_default["label"] )?></td>
+                                    <?php foreach ( $dt_site_notification_defaults["channels"] as $channel_key => $channel_value ) : ?>
+                                        <td>
+                                            <?php if ( $dt_notification_default[$channel_key] ) : ?>
+                                                <div style="height:2em;"><?php esc_html_e( "required", 'disciple_tools' ) ?></div>
+                                            <?php else :
+                                                $channel_notification_key = $dt_notification_key . '_' . $channel_key;
+                                                ?>
+                                                <div class="switch">
+                                                    <input class="switch-input" id="<?php echo esc_html( $channel_notification_key ) ?>" type="checkbox"
+                                                           name="<?php echo esc_html( $channel_notification_key ) ?>"
+                                                           onclick="switch_preference( '<?php echo esc_html( $channel_notification_key ) ?>', 'notifications' );"
+                                                        <?php print esc_attr( ( isset( $dt_user_meta[$channel_notification_key ] ) && $dt_user_meta[$channel_notification_key ][0] == false ) ? '' : 'checked' ); ?>>
+                                                    <label class="switch-paddle inactive" for="<?php echo esc_html( $channel_notification_key ) ?>">
+                                                        <span class="show-for-sr"><?php echo esc_html( $dt_notification_default['label'] ) ?></span>
+                                                    </label>
+                                                </div>
+                                            <?php endif; ?>
+                                        </td>
+                                    <?php endforeach; ?>
+                                </tr>
                             <?php endforeach; ?>
-                        </div>
-                    </div>
+                            </tbody>
+                        </table>
+
+                        <?php if ( current_user_can( "view_any_contacts" ) ): ?>
+                            <p>
+                                <strong><?php esc_html_e( 'Follow all contacts', 'disciple_tools' )?></strong>
+                            </p>
+                            <p><?php esc_html_e( "You will receive a notification for any update that happens in the system.", 'disciple_tools' ) ?></p>
+                            <div class="switch large">
+                                <input class="switch-input" id="follow_all" type="checkbox" name="follow_all"
+                                       onclick="switch_preference('dt_follow_all');" <?php ( isset( $dt_user_meta['dt_follow_all'] ) && $dt_user_meta['dt_follow_all'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
+                                <label class="switch-paddle" for="follow_all">
+                                    <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
+                                    <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
+                                    <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
+                                </label>
+                            </div>
+                        <?php endif; ?>
+
+
+                    </div> <!-- End Notifications -->
+
                 </div>
-                <!-- End languages -->
-
-
 
                 <div class="reveal" id="edit-profile-modal" data-reveal>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
