@@ -242,13 +242,39 @@ status_buttons.on( 'click', function () {
   $("#workload-spinner").addClass("active")
   let name = $(this).attr('name')
   color_workload_buttons(name)
-  let data = { 'workload_status': name };
-  makeRequest( "post", `user`, data , 'dt-dashboard/v1/')
+  update_user( 'workload_status', name )
   .then(()=>{
     $("#workload-spinner").removeClass("active")
   }).fail(()=>{
     status_buttons.css('background-color', "")
     $("#workload-spinner").removeClass("active")
     status_buttons.addClass("hollow")
+  })
+})
+
+
+$('button.dt_multi_select').on('click',function () {
+  let fieldKey = $(this).data("field-key")
+  let optionKey = $(this).attr('id')
+  let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`)
+  field.addClass("submitting-select-button")
+  let action = "add"
+  let update_request = null
+  if (field.hasClass("selected-select-button")){
+    action = "delete"
+    update_request = update_user( 'remove_' + fieldKey, optionKey )
+  } else {
+    field.removeClass("empty-select-button")
+    field.addClass("selected-select-button")
+    update_request = update_user( 'add_' + fieldKey, optionKey )
+  }
+  update_request.then(()=>{
+    field.removeClass("submitting-select-button selected-select-button")
+    field.blur();
+    field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
+  }).catch(err=>{
+    field.removeClass("submitting-select-button selected-select-button")
+    field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
+    handleAjaxError(err)
   })
 })

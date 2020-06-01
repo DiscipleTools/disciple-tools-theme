@@ -390,6 +390,25 @@ class Disciple_Tools_Users_Endpoints
             ] );
             return is_wp_error( $e ) ? $e : true;
         }
+        if ( !empty( $body["workload_status"] ) ) {
+            update_user_option( $user->ID, 'workload_status', $body["workload_status"] );
+        }
+        if ( !empty( $body["add_languages"] ) ){
+            $languages = get_user_option( "user_languages", $user->ID ) ?: [];
+            if ( !in_array( $body["add_languages"], $languages )){
+                $languages[] = $body["add_languages"];
+            }
+            update_user_option( $user->ID, "user_languages", $languages );
+            return $languages;
+        }
+        if ( !empty( $body["remove_languages"] ) ){
+            $languages = get_user_option( "languages", $user->ID );
+            if ( !in_array( $body["add_language"], $languages )){
+                $languages[] = $body["add_language"];
+            }
+            update_user_option( $user->ID, "user_languages", $languages );
+            return $languages;
+        }
         try {
             do_action( 'dt_update_user', $user, $body );
         } catch (Exception $e) {

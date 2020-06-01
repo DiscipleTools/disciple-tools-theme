@@ -22,6 +22,8 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 $dt_user_locale = get_user_locale( $dt_user->ID );
 $translations = dt_get_translations();
 
+$contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" )["fields"];
+
 ?>
 
 <?php get_header(); ?>
@@ -351,6 +353,31 @@ $translations = dt_get_translations();
 
                     </div>
                 </div><!-- End workload -->
+
+                <!-- Begin languages-->
+                <div class="small-12 cell" id="language" data-magellan-target="language">
+                    <div class="bordered-box cell" >
+                        <span class="section-header" style="display: inline-block"><?php esc_html_e( 'Languages', 'disciple_tools' )?></span>
+                        <span id="languages-spinner" style="display: inline-block" class="loading-spinner"></span>
+                        <hr/>
+
+                        <p><?php esc_html_e( "Language you are comfortable talking in", 'disciple_tools' ) ?></p>
+
+                        <div class="small button-group" style="display: inline-block">
+                            <?php foreach ( $contact_fields["languages"]["default"] as $option_key => $option_value ): ?>
+                                <?php
+                                $user_languages = get_user_option( 'user_languages', get_current_user_id() );
+                                $class = ( in_array( $option_key, $user_languages ?: [] ) ) ?
+                                    "selected-select-button" : "empty-select-button"; ?>
+                                <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( "languages" ) ?>"
+                                        class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
+                                    <?php echo esc_html( $contact_fields["languages"]["default"][$option_key]["label"] ) ?>
+                                </button>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+                <!-- End languages -->
 
 
 

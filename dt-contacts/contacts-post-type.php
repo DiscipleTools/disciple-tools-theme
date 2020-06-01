@@ -708,6 +708,15 @@ class Disciple_Tools_Contact_Post_Type
             'name' => __( 'Tasks', 'disciple_tools' ),
             'type' => 'post_user_meta',
         ];
+        $fields["languages"] = [
+            'name' => __( 'Languages', 'disciple_tools' ),
+            'type' => 'multi_select',
+            'default' => [
+                'en_US' => [ 'label' => "English", ],
+                'fr_FR' => [ 'label' => "French", ],
+                'es_ES' => [ 'label' => "Spanish", ],
+            ]
+        ];
 
         return $fields;
     }
