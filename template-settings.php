@@ -41,6 +41,7 @@ $translations = dt_get_translations();
                         <li><a href="#locations"><?php esc_html_e( 'Locations', 'disciple_tools' )?></a></li>
                         <li><a href="#notifications"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></a></li>
                         <li><a href="#availability"><?php esc_html_e( 'Availability', 'disciple_tools' )?></a></li>
+                        <li><a href="#workload"><?php esc_html_e( 'Workload', 'disciple_tools' )?></a></li>
                     </ul>
 
                 </div>
@@ -328,8 +329,29 @@ $translations = dt_get_translations();
 
                             </table>
                         </div>
-                    </div> <!-- End Availability -->
+                    </div>
                 </div>
+                <!-- End Availability -->
+
+                <!-- Begin workload-->
+                <div class="small-12 cell" id="workload" data-magellan-target="workload">
+                    <div class="bordered-box cell" >
+                        <span class="section-header" style="display: inline-block"><?php esc_html_e( 'Contact Workload', 'disciple_tools' )?></span>
+                        <span id="workload-spinner" style="display: inline-block" class="loading-spinner"></span>
+                        <hr size="1" style="max-width:100%"/>
+
+                        <p><?php esc_html_e( "Choose an option to let the dispatcher(s) know if you are ready for new contacts", 'disciple_tools' ) ?></p>
+                        <?php $options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
+                        foreach ( $options as $option_key => $option_val ) :
+                            $icon = $option_key === "active" ? "play" : ( $option_key === "existing" ? "pause" : "stop" ); ?>
+                            <button class="button hollow status-button" name="<?php echo esc_html( $option_key ) ?>">
+                                <i class="fi-<?php echo esc_html( $icon ) ?>"></i> <?php echo esc_html( $option_val["label"] )?>
+                            </button>
+                        <?php endforeach; ?>
+
+                    </div>
+                </div><!-- End workload -->
+
 
 
                 <div class="reveal" id="edit-profile-modal" data-reveal>

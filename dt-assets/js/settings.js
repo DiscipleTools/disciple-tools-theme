@@ -218,3 +218,30 @@ $( document).on( 'click', '.remove_dates_unavailable', function () {
     display_dates_unavailable(resp)
   })
 })
+
+let status_buttons = $('.status-button')
+let color_workload_buttons = (name) =>{
+  status_buttons.css('background-color', "")
+  status_buttons.addClass("hollow")
+  if ( name ){
+    let selected = $(`.status-button[name=${name}]`)
+    selected.removeClass("hollow")
+    selected.css('background-color', _.get(wpApiSettingsPage, `workload_status_options.${name}.color`))
+    selected.blur()
+  }
+}
+color_workload_buttons(wpApiSettingsPage.workload_status )
+status_buttons.on( 'click', function () {
+  $("#workload-spinner").addClass("active")
+  let name = $(this).attr('name')
+  color_workload_buttons(name)
+  let data = { 'workload_status': name };
+  makeRequest( "post", `user`, data , 'dt-dashboard/v1/')
+  .then(()=>{
+    $("#workload-spinner").removeClass("active")
+  }).fail(()=>{
+    status_buttons.css('background-color', "")
+    $("#workload-spinner").removeClass("active")
+    status_buttons.addClass("hollow")
+  })
+})
