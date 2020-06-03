@@ -51,7 +51,6 @@ else {
         }
 
 
-
         /**
          * Load Language Files
          */
@@ -143,10 +142,7 @@ else {
              */
             $this->token = 'disciple_tools';
             $this->version = '0.30.0';
-            $this->migration_number = 30;
-
-
-
+            $this->migration_number = 31;
 
             $this->theme_url = get_template_directory_uri() . '/';
             $this->theme_path = get_template_directory() . '/';
@@ -245,10 +241,6 @@ else {
              *
              * @posttype   Contacts       Post type for contact storage
              * @posttype   Groups         Post type for groups storage
-             * @posttype   Locations      Post type for location information.
-             * @posttype   People Groups  (optional) Post type for people groups
-             * @posttype   Prayer         Post type for prayer movement updates.
-             * @posttype   Project        Post type for movement project updates. (These updates are intended to be for extended owners of the movement project, and different than the prayer guide published in the prayer post type.)
              * @taxonomies
              * @service    Post to Post connections
              * @service    User groups via taxonomies
