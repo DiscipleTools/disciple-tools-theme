@@ -299,7 +299,7 @@ jQuery(document).ready(function($) {
 
       window.current_user_lookup = user_id
 
-      $('#user-id-reveal').html(user_id)
+      $('#user-id-reveal').html(window.current_user_lookup)
 
       $('#user_modal').foundation('open');
 

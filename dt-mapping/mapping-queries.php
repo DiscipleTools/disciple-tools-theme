@@ -132,15 +132,8 @@ class Disciple_Tools_Mapping_Queries {
             return [];
         }
 
-        $prepared_list = '';
-        $i = 0;
-        foreach ( $list as $item ) {
-            if ( $i !== 0 ) {
-                $prepared_list .= ',';
-            }
-            $prepared_list .= (int) $item;
-            $i++;
-        }
+        $prepared_list = dt_array_to_sql( $list );
+
         // Note: $wpdb->prepare does not have a way to add a string without surrounding it with ''
         // and this query requires a list of numbers separated by commas but without surrounding ''
         // Any better ideas on how to still use ->prepare and not break the sql, welcome. :)

@@ -1631,7 +1631,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <script type="text/javascript">
                     <!--
                     function nextpage() {
-                        location.href = "<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_mapping_module&tab=geocoding&upgrade_database=<?php echo esc_attr( wp_create_nonce( 'upgrade_database'. get_current_user_id() ) ) ?>&loop=<?php echo esc_html( ( $loop_again ) ) ?>";
+                        location.href = "<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_mapping_module&tab=geocoding&upgrade_database=<?php echo esc_attr( wp_create_nonce( 'upgrade_database'. get_current_user_id() ) ) ?>&loop=true";
                     }
                     setTimeout( "nextpage()", 1500 );
                     //-->
