@@ -23,7 +23,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
             return;
         }
         $this->title = __( 'Hover Map', 'disciple_tools' );
-        $this->base_title = __( 'Combined', 'disciple_tools' );
+        $this->base_title = __( 'Project', 'disciple_tools' );
 
         $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
 

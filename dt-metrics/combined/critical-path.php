@@ -13,7 +13,7 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
     public $slug = 'critical_path'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/combined/critical-path.js'; // should be full file name plus extension
-    public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
+    public $permissions = [ 'access_contacts' ];
 
     public function __construct() {
         parent::__construct();
@@ -22,7 +22,7 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
         }
 
         $this->title = __( 'Critical Path', 'disciple_tools' );
-        $this->base_title = __( 'Combined', 'disciple_tools' );
+        $this->base_title = __( 'Project', 'disciple_tools' );
 
         $url_path = dt_get_url_path();
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {

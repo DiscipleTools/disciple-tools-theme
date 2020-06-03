@@ -479,7 +479,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     foreach ( $langs as $lang => $val ){
                         $langcode = $val['language'];
                         $translation_key = "field_key_" . $field_key . "_translation-" . $langcode;
-                        if ( !isset( $post_submission[$translation_key] ) ) {
+                        if ( isset( $post_submission[$translation_key] ) ) {
                             if ( empty( $post_submission[$translation_key] ) && isset( $custom_field["translations"][$langcode] ) ){
                                 unset( $post_submission[$translation_key] );
                             } elseif ( !empty( $post_submission[$translation_key] ) ) {
@@ -565,9 +565,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     }
                 }
             }
-            if ( !empty( $custom_field )){
-                $field_customizations[$post_type][$field_key] = $custom_field;
-            }
+            $field_customizations[$post_type][$field_key] = $custom_field;
             update_option( "dt_field_customizations", $field_customizations );
             wp_cache_delete( $post_type . "_field_settings" );
         }

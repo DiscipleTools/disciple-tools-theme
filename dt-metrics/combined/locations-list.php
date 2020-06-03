@@ -23,7 +23,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
             return;
         }
         $this->title = __( 'Locations List', 'disciple_tools' );
-        $this->base_title = __( 'Combined', 'disciple_tools' );
+        $this->base_title = __( 'Project', 'disciple_tools' );
 
         $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
 

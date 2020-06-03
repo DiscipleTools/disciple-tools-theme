@@ -192,7 +192,7 @@ class Disciple_Tools_Post_Type_Template {
                     if ( !isset( $fields[ $key ] ) ) {
                         $fields[ $key ] = $field;
                     } else {
-                        if ( isset( $field["name"] ) ) {
+                        if ( !empty( $field["name"] ) ) {
                             $fields[ $key ]["name"] = $field["name"];
                         }
                         if ( isset( $field["tile"] ) ) {

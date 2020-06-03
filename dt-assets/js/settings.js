@@ -160,6 +160,13 @@ let delete_location_grid = ( value )=>{
 }
 
 
+let update_user = ( key, value )=>{
+  let data =  {
+    [key]: value
+  }
+  return makeRequest( "POST", `user/update`, data , 'dt/v1/' )
+}
+
 /**
  * Set availability dates
  */
