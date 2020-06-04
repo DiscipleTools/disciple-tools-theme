@@ -1082,58 +1082,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return $return;
     }
 
-    private function get_duplicate_data( $contact_id, $field ){
-        $duplicate_data = get_post_meta( $contact_id, "duplicate_data", true );
-        if ( empty( $duplicate_data )){
-            $duplicate_data = [];
-        }
-        if ( !isset( $duplicate_data[$field] ) ){
-            $duplicate_data[$field] = [];
-        }
-        return $duplicate_data;
-    }
-
-    private function save_duplicate_finding( $field, $dups, $contact_id ){
-        if ( sizeof( $dups ) > 0 ){
-            $duplicate_data = $this->get_duplicate_data( $contact_id, $field );
-            $has_unconfirmed_duplicates = 0;
-            $message = "";
-            foreach ( $dups as $row ){
-                $id_of_duplicate = (int) $row[0];
-                if ( $id_of_duplicate != (int) $contact_id ){
-                    if ( !in_array( $id_of_duplicate, $duplicate_data[$field] ) ) {
-                        $duplicate_data[$field][] = $id_of_duplicate;
-                        $post = get_post( $id_of_duplicate );
-                        $has_unconfirmed_duplicates++;
-                        if ( $has_unconfirmed_duplicates <= 5 ){
-                            $message .= "- [" . $post->post_title .  "](".  get_permalink( $id_of_duplicate ) . ")\n";
-                        }
-                        //uncomment to enable tracking both ways.
-//                        $other_contact_duplicate_data = $this->get_duplicate_data( $id_of_duplicate, $field );
-//                        if ( !in_array( $contact_id, $other_contact_duplicate_data[$field] )){
-//                            self::add_comment( $id_of_duplicate, "Same phone as " . get_permalink( $contact_id ), false );
-//                            $other_contact_duplicate_data[$field][] = $contact_id;
-//                            update_post_meta( $id_of_duplicate, "duplicate_data", $other_contact_duplicate_data );
-//                        }
-                    }
-                }
-            }
-            if ( $has_unconfirmed_duplicates ){
-                $field_details = $this->get_field_details( $field, $contact_id );
-                $message = __( "Possible duplicates on", "disciple_tools" ) . " " . $field_details["name"] . ":
-                " . $message;
-                if ( $has_unconfirmed_duplicates > 5 ){
-                    $message .= "- " . $has_unconfirmed_duplicates . " " . __( "more duplicates not shown", "disciple_tools" );
-                }
-                self::add_comment( $contact_id, $message, "duplicate", [
-                    "user_id" => 0,
-                    "comment_author" => "Duplicate Checker"
-                ], false );
-                update_post_meta( $contact_id, "duplicate_data", $duplicate_data );
-            }
-        }
-    }
-
     public function check_for_duplicates( $contact_id, $fields ){
         $contact = DT_Posts::get_post( "contacts", $contact_id );
         $possible_duplicates = self::get_possible_duplicates( $contact_id, $contact, true, $fields );
