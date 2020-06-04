@@ -430,7 +430,7 @@ function unescapeHtml(safe) {
         if (text.includes("http") && !url.includes("http")){
           [url, text] = [text, url]
         }
-        return `<a href="${url}">${text}</a>`
+        return `<a href="${window.wpApiShare.site_url}/${window.wpApiShare.post_type}/${_.escape(url)}">${text}</a>`
       })
 
     }
