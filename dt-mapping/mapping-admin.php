@@ -1564,7 +1564,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <td>
                     <form method="GET" action="">
                         <input type="hidden" name="page" value="<?php echo esc_attr( $this->token )  ?>" />
-                        <input type="hidden" name="loop" value="true" />
+                        <input type="hidden" name="loop" value="1" />
                         <input type="hidden" name="tab" value="geocoding" />
                         <?php wp_nonce_field( 'upgrade_database'.get_current_user_id(), 'upgrade_database', false ) ?>
                         <button class="button" type="submit" >Upgrade Non-Mapbox Locations</button>
@@ -1574,7 +1574,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             <?php
             $limit = 100;
-            $loop_again = false;
+            $loop_again = '0';
             $count = -1;
             if ( isset( $_GET['upgrade_database'] )
                 && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['upgrade_database'] ) ), 'upgrade_database' . get_current_user_id() )
@@ -1582,10 +1582,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                 $loop_again = sanitize_text_field( wp_unslash( $_GET['loop'] ) );
                 $count = $location_wo_meta;
+
             }
+            $greater_than_limit = ( $count >= 100 );
+
             ?>
 
-            <?php if ( $loop_again === 'true' ) : ?>
+            <?php if ( $loop_again === '1' ) : ?>
                 <tr><td>
                 <strong>Processing ( <?php echo esc_attr( $count ) ?> ) </strong><br>
                         <span><img src="<?php echo esc_url( trailingslashit( get_stylesheet_directory_uri() ) ) ?>spinner.svg" width="22px" alt="spinner "/></span><br>
@@ -1626,12 +1629,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     }
                 }
 
-                $loop_again = ( $count >= 100 );
+
                 ?>
                 <script type="text/javascript">
                     <!--
                     function nextpage() {
-                        location.href = "<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_mapping_module&tab=geocoding&upgrade_database=<?php echo esc_attr( wp_create_nonce( 'upgrade_database'. get_current_user_id() ) ) ?>&loop=true";
+                        location.href = "<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_mapping_module&tab=geocoding&upgrade_database=<?php echo esc_attr( wp_create_nonce( 'upgrade_database'. get_current_user_id() ) ) ?>&loop=<?php echo $greater_than_limit ?>";
                     }
                     setTimeout( "nextpage()", 1500 );
                     //-->
