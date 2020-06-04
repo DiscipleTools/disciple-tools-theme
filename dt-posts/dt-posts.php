@@ -355,22 +355,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         /**
          * add connections
          */
-        foreach ( $post_settings["connection_types"] as $connection_type ){
-            $field = $post_settings["fields"][$connection_type];
-            $args = [
-                'connected_type'   => $field["p2p_key"],
-                'connected_direction' => $field["p2p_direction"],
-                'connected_items'  => $wp_post,
-                'nopaging'         => true,
-                'suppress_filters' => false,
-            ];
-            $connections = get_posts( $args );
-            $fields[$connection_type] = [];
-            foreach ( $connections as $c ){
-                $fields[$connection_type][] = self::filter_wp_post_object_fields( $c );
-            }
-        }
-
+        self::get_all_connection_fields( $post_settings, $post_id, $fields );
         $fields["ID"] = $post_id;
         $fields["created_date"] = $wp_post->post_date;
         $fields["permalink"] = get_permalink( $post_id );

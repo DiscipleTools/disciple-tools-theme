@@ -1790,6 +1790,42 @@ class Disciple_Tools_Posts
         $fields = apply_filters( "dt_adjust_post_custom_fields", $fields, $post_settings["post_type"] );
     }
 
+
+    /**
+     * Find and format all p2p connection fields for a record
+     *
+     * @param $post_settings
+     * @param $post_id
+     * @param array $fields
+     * @return array
+     */
+    public static function get_all_connection_fields( $post_settings, $post_id, array &$fields ){
+        global $wpdb;
+        $posts = $wpdb->get_results( $wpdb->prepare( "
+            SELECT *
+            FROM $wpdb->p2p
+            WHERE p2p_to = %s
+            OR p2p_from = %s
+        ", esc_sql( $post_id ), esc_sql( $post_id ) ), ARRAY_A );
+        foreach ( $post_settings["fields"] as $field_key => $field_value ){
+            if ( $field_value["type"] === "connection" && isset( $field_value["p2p_key"] ) ) {
+                foreach ( $posts as $post ){
+                    if ( $post["p2p_type"] === $field_value["p2p_key"] ){
+                        if ( !isset( $fields[$field_key] ) ) {
+                            $fields[$field_key] = [];
+                        }
+                        if ( ( $field_value["p2p_direction"] === "from" || $field_value["p2p_direction"] === "any" ) && $post["p2p_to"] != $post_id ) {
+                            $fields[$field_key][] = self::filter_wp_post_object_fields( get_post( $post["p2p_to"] ) );
+                        } else if ( ( $field_value["p2p_direction"] === "to" || $field_value["p2p_direction"] === "any" ) && $post["p2p_from"] != $post_id ) {
+                            $fields[$field_key][] = self::filter_wp_post_object_fields( get_post( $post["p2p_from"] ) );
+                        }
+                    }
+                }
+            }
+        }
+        return $fields;
+    }
+
     /**
      * Reduced the number of fields on a post to what is useful in D.T
      *
