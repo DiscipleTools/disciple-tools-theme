@@ -123,7 +123,7 @@ window.API = {
 
     delete_filter: ( post_type, id ) => makeRequest('DELETE', 'users/save_filters', { id, post_type }),
 
-    get_duplicates_on_post: (post_type, postId) => makeRequestOnPosts('GET', `${post_type}/${postId}/duplicates`),
+    get_duplicates_on_post: (post_type, postId, args) => makeRequestOnPosts('GET', `${post_type}/${postId}/duplicates`, args),
 
     create_user: user => makeRequest('POST', 'users/create', user),
 
@@ -245,15 +245,13 @@ window.TYPEAHEADS = {
             }
         }
   },
-    typeaheadPostsSource : function (post_type){
+    typeaheadPostsSource : function (post_type, args = {}){
       return {
         contacts: {
           display: [ "name", "ID" ],
           ajax: {
             url: wpApiShare.root + `dt-posts/v2/${post_type}/compact`,
-            data: {
-              s: "{{query}}"
-            },
+            data: Object.assign({ s: "{{query}}" }, args ),
             beforeSend: function (xhr) {
               xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
             },

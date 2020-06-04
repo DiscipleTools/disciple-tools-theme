@@ -54,6 +54,8 @@ function dt_print_details_bar(
                                                 <li><a data-open="link-to-user-modal"><?php esc_html_e( "Link to an existing user", 'disciple_tools' ) ?></a></li>
                                             <?php elseif ( $action == "merge_with_contact") : ?>
                                                 <li><a id="open_merge_with_contact"><?php esc_html_e( "Merge with another contact", 'disciple_tools' ) ?></a></li>
+                                            <?php elseif ( $action == "duplicates-modal") : ?>
+                                                <li><a data-open="merge-dupe-edit-modal"><?php esc_html_e( "See duplicates", 'disciple_tools' ) ?></a></li>
                                             <?php endif; ?>
                                         <?php endforeach; ?>
                                     </ul>

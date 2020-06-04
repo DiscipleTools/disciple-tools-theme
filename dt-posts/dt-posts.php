@@ -483,10 +483,11 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @param string $post_type
      * @param string $search_string
+     * @param array $args
      *
      * @return array|WP_Error|WP_Query
      */
-    public static function get_viewable_compact( string $post_type, string $search_string ) {
+    public static function get_viewable_compact( string $post_type, string $search_string, array $args = [] ) {
         if ( !self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, sprintf( "You do not have access to these %s", $post_type ), [ 'status' => 403 ] );
         }
@@ -586,7 +587,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             },
             $posts
         );
-        if ( $post_type === 'contacts' && !self::can_view_all( $post_type ) && sizeof( $posts ) < 30 ) {
+        if ( $post_type === 'contacts' && !self::can_view_all( $post_type ) && sizeof( $posts ) < 30
+            && !( isset( $args["include-users"] ) && $args["include-users"] === "false" )
+        ) {
             $users_interacted_with = Disciple_Tools_Users::get_assignable_users_compact( $search_string );
             foreach ( $users_interacted_with as $user ) {
                 $post_id = Disciple_Tools_Users::get_contact_for_user( $user["ID"] );
@@ -610,6 +613,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
         foreach ( $posts as $post ) {
+            if ( isset( $args["include-users"] ) && $args["include-users"] === "false" && $post->corresponds_to_user >= 1 ){
+                continue;
+            }
             $compact[] = [
                 "ID" => $post->ID,
                 "name" => $post->post_title,

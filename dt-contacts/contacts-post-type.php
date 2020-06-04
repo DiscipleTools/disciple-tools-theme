@@ -930,17 +930,20 @@ class Disciple_Tools_Contact_Post_Type
             "phone"     => [
                 "label" => __( 'Phone', 'disciple_tools' ),
                 "types" => [],
-                "description" => ''
+                "description" => '',
+                "icon" => get_template_directory_uri() . "/dt-assets/images/phone.svg",
             ],
             "email"     => [
                 "label" => __( 'Email', 'disciple_tools' ),
                 "types" => [],
-                "description" => ''
+                "description" => '',
+                "icon" => get_template_directory_uri() . "/dt-assets/images/email.svg",
             ],
             "address" => [
                 "label" => __( "Address", 'disciple_tools' ),
                 "types" => dt_get_option( "dt_site_custom_lists" )["contact_address_types"],
-                "description" => ''
+                "description" => '',
+                "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg",
             ],
             "facebook"  => [
                 "label" => __( 'Facebook', 'disciple_tools' ),

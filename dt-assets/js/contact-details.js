@@ -154,7 +154,7 @@ jQuery(document).ready(function($) {
     multiselect: {
       matchOn: ["ID"],
       data: function () {
-        return contact.groups.map(g=>{
+        return (contact.groups||[]).map(g=>{
           return {ID:g.ID, name:g.post_title}
         })
       }, callback: {
@@ -420,7 +420,7 @@ jQuery(document).ready(function($) {
         multiselect: {
           matchOn: ["ID"],
           data: function () {
-            return contact.people_groups.map(g=>{
+            return (contact.people_groups||[]).map(g=>{
               return { ID: g.ID, name: g.post_title, label: g.label };
             })
           },
@@ -871,71 +871,6 @@ jQuery(document).ready(function($) {
   })
 
 
-  $("#merge-dupe-modal").on("click", function() {
-
-    editFieldsUpdate = {
-      people_groups: {
-        values: []
-      },
-      sources: {
-        values: []
-      },
-      location_grid: { values: [] }
-    }
-    let phoneHTML = "";
-    (contact.contact_phone || []).forEach(field => {
-      phoneHTML += `<li style="display: flex">
-          <input type="tel" id="${_.escape(field.key)}" value="${_.escape(field.value)}" data-type="contact_phone" class="contact-input"/>
-          <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_phone" style="color: red">
-            <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
-          </button>
-      </li>`
-    })
-    $("#edit-contact_phone").html(phoneHTML)
-    let emailHTML = "";
-    (contact.contact_email || []).forEach(field => {
-      emailHTML += `<li style="display: flex">
-        <input class="contact-input" type="email" id="${_.escape(field.key)}" value="${_.escape(field.value)}" data-type="contact_email"/>
-        <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_email">
-            <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
-        </button>
-      </li>`
-    })
-    $("#edit-contact_email").html(emailHTML)
-    let addressHTML = "";
-    (contact.contact_address || []).forEach(field => {
-      addressHTML += `<li style="display: flex">
-        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${_.escape(field.value)}</textarea>
-        <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
-            <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
-        </button>
-      </li>`
-    })
-    $("#edit-contact_address").html(addressHTML)
-
-    let html = ""
-    _.forOwn( contact, (fieldVal ,field) =>{
-      if (field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field)) {
-        contact[field].forEach(socialField => {
-          html += `<li style="display: flex">
-            <input class="contact-input" type="text" id="${_.escape(socialField.key)}" value="${_.escape(socialField.value)}" data-type="${_.escape( field )}"/>
-            <button class="button clear delete-button" data-id="${_.escape(socialField.key)}" data-type="${_.escape( field )}">
-                <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
-            </button>
-          </li>`
-        })
-
-      }
-    })
-    $('#edit-social').html(html)
-
-    $('#merge-dupe-edit-modal').foundation('open');
-    // loadLocationTypeahead()
-    loadPeopleGroupTypeahead()
-    leadSourcesTypeahead()
-    loadLocationGridTypeahead()
-  })
-
   $('.select-input').on("change", function () {
     let key = $(this).attr('id')
     editFieldsUpdate[key] = $(this).val()
@@ -1253,7 +1188,7 @@ jQuery(document).ready(function($) {
         minLength: 0,
         accent: true,
         searchOnFocus: true,
-        source: TYPEAHEADS.typeaheadContactsSource(),
+        source: TYPEAHEADS.typeaheadPostsSource( "contacts", { 'include-users': false }),
         templateValue: "{{name}}",
         template: window.TYPEAHEADS.contactListRowTemplate,
         dynamic: true,

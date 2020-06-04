@@ -2,302 +2,165 @@
 
 ( function () {
 
-    function dt_array_contains( array $array, string $string ) {
-        foreach ( $array as $item ) {
-            if ( is_array( $item ) ) {
-                if ( dt_array_contains( $item, $string ) ) {
-                    return true;
-                }
-            } elseif ( !is_object( $item ) ) {
-                if ( strpos( $item, $string ) !== false ) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     ?>
     <div class="reveal" id="merge-dupe-edit-modal" style="border-radius:10px; padding:0px; padding-bottom:20px; border: 1px solid #3f729b;;" data-reveal>
-      <div class="merge-modal-header" style="background-color:#3f729b; color:white; text-align:center;">
-        <h1 style="font-size:1.5rem; padding:10px 0px;"><?php esc_html_e( "Duplicate Contacts", 'disciple_tools' ) ?></h1>
-      </div>
-        <div class="display-fields" style="padding:10px;">
-          </div>
-
-
-
-        <form action="<?php echo esc_url( site_url( '/contacts/' . get_the_ID() ) ); ?>" id='form-dismiss' method="POST">
-            <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr( wp_create_nonce() ); ?>">
-            <input type='hidden' name='dismiss' value='1'/>
-            <input type='hidden' id="dismiss-id" name='id' value=''/>
-            <input type='hidden' name='currentId' value='<?php echo get_the_ID(); ?>'/>
-            <input type='submit' style='display: none' value='Dismiss'/>
-        </form>
-        <form action="<?php echo esc_url( site_url( '/contacts/' . get_the_ID() ) ); ?>" id='form-unsure' method="POST">
-            <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr( wp_create_nonce() ); ?>">
-            <input type='hidden' name='unsure' value='1'/>
-            <input type='hidden' id="unsure-id" name='id' value=''/>
-            <input type='hidden' name='currentId' value='<?php echo get_the_ID(); ?>'/>
-            <input type='submit' style='display: none' value='Unsure'/>
-        </form>
+        <div class="merge-modal-header" style="background-color:#3f729b; color:white; text-align:center;">
+            <h1 style="font-size:1.5rem; padding:10px 0px;"><?php esc_html_e( "Duplicate Contacts", 'disciple_tools' ) ?></h1>
         </div>
-    <!-- </div> -->
+        <div class="display-fields" style="padding:10px;">
+        </div>
+    </div>
 
     <script type='text/javascript'>
-        function loadDuplicates() {
-            var template_dir = "<?php echo esc_url( get_template_directory_uri() ); ?>";
-            var site_url = "<?php echo esc_url( site_url() );?>";
-            var contact_id = "<?php echo get_the_ID(); ?>";
+        let possible_duplicates = [];
+        let site_url = "<?php echo esc_url( site_url() );?>";
+        let contact_id = "<?php echo get_the_ID(); ?>";
 
-            let $display_fields = $("#merge-dupe-edit-modal .display-fields");
-            $display_fields.append("<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:10px 0px 0px; margin-bottom: 0px;'><?php esc_html_e( "Original Contact", 'disciple_tools' ) ?></h4>");
-
-            var duplicates = contact.duplicate_data;
-            var dupes = [];
-            var fields = {};
-            var original_contact_html = "<div style='background-color: #e1f5fe; padding:2%'><h5 style='font-weight: bold; color: #3f729b;'>" + contact.title + "</h5>";
-            $.each(contact, function(key, vals) {
-                if(!key.match(/^contact_/)) { return true; }
-                if(!fields[key]) {
-                    fields[key] = [];
-                }
-                $.each(vals, function(k, val) {
-                    fields[key].push(val.value);
-                    switch(key) {
-                        case 'contact_phone':
-                            var svg = 'phone.svg';
-                            break;
-                        case 'contact_address':
-                            var svg = 'house.svg';
-                            break;
-                        case 'contact_email':
-                            var svg = 'email.svg';
-                            break;
-                        case 'contact_facebook':
-                            var svg = 'facebook.svg';
-                            break;
-                        case 'contact_twitter':
-                            var svg = 'twitter.svg';
-                            break;
-                        case 'contact_instagram':
-                            var svg = 'instagram.svg';
-                            break;
-                        case 'contact_skype':
-                            var svg = 'skype.svg';
-                            break;
-                        default:
-                            return true; //skip
-                    }
-                    original_contact_html += "<img src='" + template_dir + "/dt-assets/images/" + svg + "'>&nbsp;" + val.value + "<br>";
-                });
-            });
-            original_contact_html += "</div>";
-
-            $display_fields.append(original_contact_html);
-            $display_fields.append(`<div style="display: inline-block" id="duplicates-spinner" class="loading-spinner active"></div>`)
-
-            $display_fields.append("<div id='duplicates_list'></div><div id='unsure_list'></div>");
-
-            $.each(duplicates, function(key, vals) {
-                if(key !== 'override' && key !== 'unsure') {
-                    $.each(vals, function(k, val) {
-                        if(!dupes.includes(val)) {
-                            dupes.push(val);
-                        }
-                    });
-                }
-            });
-
-            window.API.get_duplicates_on_post("contacts", contact.ID).done(dups_with_data=> {
-                $("#duplicates-spinner").removeClass("active")
-                if (dupes.length) {
-                    $duplicates = $display_fields.find('#duplicates_list');
-                    $duplicates.append(
-                        "<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:20px 0px 0px; margin-bottom: 0px;'><?php esc_html_e( "Possible Duplicates", 'disciple_tools' ) ?></h4>");
-
-
-                    var unsure_dismiss_html = `<div style='display:inline-block; width: 100%;'>
-                    <form method='POST' id='form-unsure-dismiss' action='${site_url}/contacts/${contact_id}'>
-                    <input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr( wp_create_nonce() );?>'/>
-                    <input type='hidden' name='id' value='<?php echo get_the_ID(); ?>'/>
-                    <a style='float: right; margin-left: 10%;' onclick='dismiss_all();'><?php esc_html_e( "Dismiss All", 'disciple_tools' ) ?></a>
-                    <a style='float: right;' onclick='unsure_all();'><?php esc_html_e( "Unsure All", 'disciple_tools' ) ?></a>
-                    <input type='submit' id='unsure-dismiss-submit' style='display: none;' value='submit'/></form></div>`;
-
-                    $duplicates.append(unsure_dismiss_html);
-                    $.each(dupes, function (key, id) {
-                        let dupe = _.find(dups_with_data, {"ID": parseInt( id )})
-                        if (dupe) {
-                            var duplicate_contact_html = $(`
-                                <div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
-                                    <h5 style='font-weight: bold; color: #3f729b;'>
-                                        <a href="${window.wpApiShare.site_url}/contacts/${dupe.ID}" target=_blank>
-                                            ${ _.escape(dupe.title) }
-                                            <span style="font-weight: normal; font-size:16px"> #${dupe.ID} (${_.get(dupe, "overall_status.label") ||""}) </span>
-                                        </a>
-                                    </h5>`
-                            );
-                            $.each(dupe, function (key, vals) {
-                                if (!key.match(/^contact_/)) {
-                                    return true;
-                                }
-                                $.each(vals, function (k, val) {
-                                    if (in_array(fields[key], val.value) && val.value) {
-
-                                        switch (key) {
-                                            case 'contact_phone':
-                                                var svg = 'phone.svg';
-                                                break;
-                                            case 'contact_address':
-                                                var svg = 'house.svg';
-                                                break;
-                                            case 'contact_email':
-                                                var svg = 'email.svg';
-                                                break;
-                                            case 'contact_facebook':
-                                                var svg = 'facebook.svg';
-                                                break;
-                                            case 'contact_twitter':
-                                                var svg = 'twitter.svg';
-                                                break;
-                                            default:
-                                                return true; //skip
-                                        }
-                                        duplicate_contact_html.append(
-                                            "<img src='" + template_dir + "/dt-assets/images/" + svg + "'>&nbsp;" +
-                                            val.value + "<br>");
-                                    }
-                                });
-                            });
-                            duplicate_contact_html.append(
-                                `<button class='mergelinks' onclick='$("#dismiss-id").val(${id}); $("#form-dismiss input[type=submit]").click();' style='float: right; padding-left: 10%;'><a><?php echo esc_html__( "Dismiss", 'disciple_tools' ) ?></a></button>`);
-
-                            duplicate_contact_html.append(
-                                `<button class='mergelinks' onclick='$("#unsure-id").val(${id}); $("#form-unsure input[type=submit]").click();' style='float: right; padding-left: 10%;'><a><?php echo esc_html__( "Unsure", 'disciple_tools' ) ?></a></button>`);
-
-                            duplicate_contact_html.append(`<form action='${site_url}/contacts/mergedetails' method='post'>
-                                <input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr( wp_create_nonce() ); ?>'/>
-                                <input type='hidden' name='currentid' value='${contact_id}'/>
-                                <input type='hidden' name='dupeid' value='${id}'/>
-                                <button type='submit' style='float:right; padding-left: 10%;'>
-                                    <a><?php echo esc_html__( 'Merge', 'disciple_tools' ) ?></a>
-                                </button>
-                                </form>`
-                            );
-
-                            $duplicates.append(duplicate_contact_html);
-                        }
-                    });
-                }
-
-                if (duplicates.unsure) {
-                    let $unsure = $display_fields.find('#unsure_list');
-                    $unsure.append(
-                        `<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding: 20px 0px 0px; margin-bottom: 0px;'>
-                        <?php esc_html_e( "Unsure Duplicates", 'disciple_tools' ) ?>
-                        </h4>`
-                    );
-
-                    $.each(duplicates.unsure, function (key, id) {
-                        let dupe = _.find(dups_with_data, {"ID": parseInt( id )})
-
-                        if (dupe) {
-                            var unsure_duplicate_html = $(`
-                                <div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
-                                <h5 style='font-weight: bold; color: #3f729b;'></h5>`
-                            );
-                            unsure_duplicate_html.find('h5').html(`
-                                <a href="${window.wpApiShare.site_url}/contacts/${dupe.ID}" target=_blank>${_.escape(dupe.title)}</a>`
-                            );
-                            $.each(dupe, function (key, vals) {
-                                if (!key.match(/^contact_/)) {
-                                    return true;
-                                }
-                                $.each(vals, function (k, val) {
-                                    if (in_array(fields[key], val.value) && val.value) {
-                                        switch (key) {
-                                            case 'contact_phone':
-                                                var svg = 'phone.svg';
-                                                break;
-                                            case 'contact_address':
-                                                var svg = 'house.svg';
-                                                break;
-                                            case 'contact_email':
-                                                var svg = 'email.svg';
-                                                break;
-                                            case 'contact_facebook':
-                                                var svg = 'facebook.svg';
-                                                break;
-                                            case 'contact_twitter':
-                                                var svg = 'twitter.svg';
-                                                break;
-                                            default:
-                                                return true; //skip
-                                        }
-                                        unsure_duplicate_html.append(
-                                            "<img src='" + template_dir + "/dt-assets/images/" + svg + "'>&nbsp;" +
-                                            val.value + "<br>");
-                                    }
-                                });
-                            });
-                            unsure_duplicate_html.append(
-                                `<button class='mergelinks' onclick='$("#dismiss-id").val(${id}); $("#form-dismiss input[type=submit]").click();' style='float: right; padding-left: 10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>`);
-
-                            $unsure.append(unsure_duplicate_html);
-                        }
-                    });
-                }
+        let dup_row = (dupe, dismissed_row = false)=>{
+            let html = ``;
+            let dups_on_fields = dupe.fields.map(field=>{
+              return ( field.field === 'title' ? "Name" : null ) || _.get(window.contactsDetailsWpApiSettings, `contacts_custom_fields_settings[${field.field}].name`) ||
+                _.get(window.contactsDetailsWpApiSettings, `channels[${field.field.replace('contact_', '')}].label`)
             })
-        }
+            let matched_values = dupe.fields.map(f=>f.meta_value)
+            html += `<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
+                <h5 style='font-weight: bold; color: #3f729b;'>
+                <a href="${window.wpApiShare.site_url}/contacts/${_.escape(dupe.ID)}" target=_blank>
+                ${ _.escape(dupe.contact.title) }
+                <span style="font-weight: normal; font-size:16px"> #${dupe.ID} (${_.get(dupe.contact, "overall_status.label") ||""}) </span>
+                </a>
+            </h5>`
+            html += `<strong><?php esc_html_e( 'Duplicates on', 'disciple_tools' ); ?>: ${dups_on_fields.join( ', ')}</strong><br />`
 
-        function in_array(array, string) {
-            if(!$.isArray(array)) {
-                return false;
+            _.forOwn(window.contactsDetailsWpApiSettings.channels, (channel, key)=>{
+              if ( dupe.contact['contact_' + key] ){
+                dupe.contact['contact_' + key].forEach( contact_info=>{
+                  html +=`<img src='${_.escape(channel.icon)}'><span ${matched_values.includes(contact_info.value) ? 'style="font-weight:bold;"' : ''}>&nbsp;${_.escape(contact_info.value)}</span>&nbsp;`
+                })
+              }
+            })
+            html += `<br>`
+            if ( !dismissed_row ){
+                html += `<button class='mergelinks' onclick='dismiss(${_.escape(dupe.ID)})' style='float: right; padding-left: 10%;'><a><?php echo esc_html__( "Dismiss", 'disciple_tools' ) ?></a></button>`
             }
+            html += `<form action='${site_url}/contacts/mergedetails' method='post'>
+                <input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr( wp_create_nonce() ); ?>'/>
+                <input type='hidden' name='currentid' value='${_.escape(contact_id)}'/>
+                <input type='hidden' name='dupeid' value='${_.escape(dupe.ID)}'/>
+                <button type='submit' style='float:right; padding-left: 10%;'>
+                    <a><?php echo esc_html__( 'Merge', 'disciple_tools' ) ?></a>
+                </button>
+            </form>`
 
-            var ret = false;
-            $.each(array, function(k, val) {
-                if($.isArray(val)) {
-                    if(in_array(val, string)) {
-                        ret = true;
-                        return false; //break loop
-                    }
-                } else if(typeof val !== 'object' && val != null) {
-                    if(val.indexOf(string) !== -1) {
-                        ret = true;
-                        return false; //break loop
-                    }
+            html += `</div>`
+            return html;
+        }
+        function loadDuplicates() {
+            let dups_with_data = possible_duplicates
+            if (dups_with_data) {
+              let $duplicates = $('#duplicates_list');
+              $duplicates.html(
+                "<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:20px 0px 0px; margin-bottom: 0px;'><?php esc_html_e( "Possible Duplicates", 'disciple_tools' ) ?></h4>");
+
+              var unsure_dismiss_html = `<div style='display:inline-block; width: 100%;'>
+                <form method='POST' id='form-unsure-dismiss' action='${site_url}/contacts/${contact_id}'>
+                <input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr( wp_create_nonce() );?>'/>
+                <input type='hidden' name='id' value='<?php echo get_the_ID(); ?>'/>
+                <a style='float: right; margin-left: 10%;' onclick='dismiss_all();'><?php esc_html_e( "Dismiss All", 'disciple_tools' ) ?></a>
+                <input type='submit' id='unsure-dismiss-submit' style='display: none;' value='submit'/></form></div>`;
+
+              $duplicates.append(unsure_dismiss_html);
+
+              let already_dismissed = _.get(contact, 'duplicate_data.override', []).map(id=>parseInt(id))
+
+              let html = ``
+              dups_with_data.sort((a, b) => a.points > b.points ? -1:1).forEach((dupe) => {
+                if (!already_dismissed.includes(parseInt(dupe.ID))) {
+                  html += dup_row(dupe)
                 }
-            });
-
-            return ret;
+              })
+              $duplicates.append(html);
+              let dismissed_html = ``;
+              dups_with_data.sort((a, b) => a.points > b.points ? -1:1).forEach((dupe) => {
+                if (already_dismissed.includes(parseInt(dupe.ID))) {
+                  dismissed_html += dup_row(dupe, true)
+                }
+              })
+              if (dismissed_html) {
+                dismissed_html = `<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:20px 0px 0px; margin-bottom: 0px;'><?php esc_html_e( "Dismissed Duplicates", 'disciple_tools' ) ?></h4>`
+                  + dismissed_html
+                $duplicates.append(dismissed_html);
+              }
+            }
         }
 
         let openedOnce = false
         jQuery(document).ready(function($) {
             $('#merge-dupe-edit-modal').on("open.zf.reveal", function () {
                 if ( !openedOnce ){
-                loadDuplicates();
-                openedOnce = true;
+
+
+                  let $display_fields = $("#merge-dupe-edit-modal .display-fields");
+                  $display_fields.append("<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:10px 0px 0px; margin-bottom: 0px;'><?php esc_html_e( "Original Contact", 'disciple_tools' ) ?></h4>");
+
+
+                  let original_contact_html = `<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
+                    <h5 style='font-weight: bold; color: #3f729b;'>
+                    <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact_id)}" target=_blank>
+                    ${ _.escape(contact.title) }
+                    <span style="font-weight: normal; font-size:16px"> #${contact_id} (${_.get(contact, "overall_status.label") ||""}) </span>
+                    </a>
+                    </h5>`
+                  _.forOwn(window.contactsDetailsWpApiSettings.channels, (channel, key)=>{
+                    if ( contact['contact_' + key] ){
+                      contact['contact_' + key].forEach( contact_info=>{
+                        original_contact_html +=`<img src='${_.escape(channel.icon)}'><span>&nbsp;${_.escape(contact_info.value)}</span>&nbsp;`
+                      })
+                    }
+                  })
+                  original_contact_html += `</div>`
+                  $display_fields.append(original_contact_html);
+                  $display_fields.append(`<div style="display: inline-block" id="duplicates-spinner" class="loading-spinner active"></div>`)
+
+                  $display_fields.append("<div id='duplicates_list'></div>");
+                  window.API.get_duplicates_on_post("contacts", contact.ID).done(dups_with_data=> {
+                    possible_duplicates = dups_with_data
+                    $("#duplicates-spinner").removeClass("active")
+                    loadDuplicates();
+                  })
+
+                  openedOnce = true;
                 }
+            })
+
+
+            let check_dups = (duplicate_data)=>{
+                if ( _.get(duplicate_data, "check_dups") === true ){
+                  window.API.get_duplicates_on_post("contacts", contact.ID, {include_contacts:false, exact_match:true}).done(dups_with_data=> {
+                    if ( dups_with_data.filter(a=>!duplicate_data.override.includes[a.ID])){
+                        $('#duplicates').show()
+                    }
+                  })
+                }
+            }
+            check_dups(contact.duplicate_data)
+            window.contactDetailsEvents.subscribe('resetDetails', function(info) {
+                check_dups( info.newContactDetails.duplicate_data )
             })
         })
 
 
-
-        function unsure_all() {
-            var form = $("#form-unsure-dismiss");
-            var submit = form.find('input[type=submit]');
-            submit.attr('name', 'unsure_all');
-            submit.click();
+        function dismiss(id) {
+          makeRequestOnPosts('GET', `contacts/${window.contactsDetailsWpApiSettings.contact.ID}/dismiss-duplicates`, {'id':id}).then(resp=>{
+            window.contactsDetailsWpApiSettings.contact.duplicate_data = resp;
+            loadDuplicates()
+          })
         }
-
         function dismiss_all() {
-            var form = $("#form-unsure-dismiss");
-            var submit = form.find('input[type=submit]');
-            submit.attr('name', 'dismiss_all');
-            submit.click();
+            makeRequestOnPosts('GET', `contacts/${window.contactsDetailsWpApiSettings.contact.ID}/dismiss-duplicates`, {'id':'all'}).then(resp=>{
+                window.contactsDetailsWpApiSettings.contact.duplicate_data = resp;
+                loadDuplicates()
+            })
         }
     </script>
 <?php } )(); ?>
