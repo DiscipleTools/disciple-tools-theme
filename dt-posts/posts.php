@@ -1809,11 +1809,11 @@ class Disciple_Tools_Posts
         ", esc_sql( $post_id ), esc_sql( $post_id ) ), ARRAY_A );
         foreach ( $post_settings["fields"] as $field_key => $field_value ){
             if ( $field_value["type"] === "connection" && isset( $field_value["p2p_key"] ) ) {
+                if ( !isset( $fields[$field_key] ) ) {
+                    $fields[$field_key] = [];
+                }
                 foreach ( $posts as $post ){
                     if ( $post["p2p_type"] === $field_value["p2p_key"] ){
-                        if ( !isset( $fields[$field_key] ) ) {
-                            $fields[$field_key] = [];
-                        }
                         if ( ( $field_value["p2p_direction"] === "from" || $field_value["p2p_direction"] === "any" ) && $post["p2p_to"] != $post_id ) {
                             $fields[$field_key][] = self::filter_wp_post_object_fields( get_post( $post["p2p_to"] ) );
                         } else if ( ( $field_value["p2p_direction"] === "to" || $field_value["p2p_direction"] === "any" ) && $post["p2p_from"] != $post_id ) {
