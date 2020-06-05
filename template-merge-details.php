@@ -13,12 +13,65 @@ if ( !isset( $_POST['dt_contact_nonce'] ) || !wp_verify_nonce( sanitize_key( $_P
 }
 $dt_current_id = sanitize_text_field( wp_unslash( $_POST['currentid'] ) );
 $dt_dupe_id = sanitize_text_field( wp_unslash( $_POST['dupeid'] ) );
-list($dt_current, $dt_duplicate, $dt_data, $dt_fields) = Disciple_Tools_Contacts::get_merge_data( $dt_current_id, $dt_dupe_id );
+
 $dt_contact = Disciple_Tools_Contacts::get_contact( $dt_current_id, true );
 $dt_channel_list = Disciple_Tools_Contacts::get_channel_list();
 $dt_current_user = wp_get_current_user();
 $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 
+$dt_duplicate_contact = Disciple_Tools_Contacts::get_contact( $dt_dupe_id, true );
+
+$dt_fields = array(
+    'contact_phone' => 'Phone',
+    'contact_email' => 'Email',
+    'contact_address' => 'Address',
+    'contact_facebook' => 'Facebook'
+);
+
+$c_fields = array();
+$d_fields = array();
+
+$dt_data = array(
+    'contact_phone' => array(),
+    'contact_email' => array(),
+    'contact_address' => array(),
+    'contact_facebook' => array()
+);
+
+foreach (array_keys( $dt_fields ) as $key) {
+    foreach ($dt_contact[$key] ?? [] as $vals) {
+        if ( !isset( $c_fields[$key] )) {
+            $c_fields[$key] = array();
+        }
+        array_push( $c_fields[$key], $vals['value'] );
+    }
+    foreach ($dt_duplicate_contact[$key] ?? [] as $vals) {
+        if ( !isset( $d_fields[$key] )) {
+            $d_fields[$key] = array();
+        }
+        array_push( $d_fields[$key], $vals['value'] );
+    }
+}
+
+foreach (array_keys( $dt_fields ) as $field) {
+    $max = max( array( count( $c_fields[$field] ?? [] ), count( $d_fields[$field] ?? [] ) ) );
+    for ($i = 0; $i < $max; $i++) {
+        $hide = false;
+        $o_value = $c_fields[$field][$i] ?? null;
+        $d_value = $d_fields[$field][$i] ?? null;
+        if (in_array( $o_value, $d_fields[$field] ?? [] )) { $hide = true; }
+        array_push($dt_data[$field], array(
+            'original' => array(
+                'hide' => $hide,
+                'value' => $o_value
+            ),
+            'duplicate' => array(
+                'hide' => $hide,
+                'value' => $d_value
+            )
+        ));
+    }
+}
 
 
 $dt_contact_name =$dt_contact['title'] ?? null;
@@ -26,9 +79,6 @@ $dt_contact_address =$dt_contact['contact_address'][0]['value'] ?? null;
 $dt_contact_phone =$dt_contact['contact_phone'][0]['value'] ?? null;
 $dt_contact_email =$dt_contact['contact_email'][0]['value'] ?? null;
 $dt_contact_facebook =$dt_contact['contact_facebook'][0]['value'] ?? null;
-
-
-$dt_duplicate_contact = Disciple_Tools_Contacts::get_contact( $dt_dupe_id, true );
 
 $dt_duplicate_contact_name =$dt_duplicate_contact['title'] ?? null;
 $dt_duplicate_contact_address =$dt_duplicate_contact['contact_address'][0]['value'] ?? null;
@@ -122,7 +172,8 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
                     <?php endforeach;
                 } ?>
 
-                <button class='button' name='merge-submit' type='button' onclick='merge()' value='Merge'><?php esc_html_e( 'Merge', 'disciple_tools' ); ?></button>
+                <span id="merge_errors" style="margin-top: 30px; color: red; text-align: right;"></span>
+                <button class='button loader' id="submit-merge" name='merge-submit' type='button' onclick='merge()' value='Merge'><?php esc_html_e( 'Merge', 'disciple_tools' ); ?></button>
                 </form>
             </div>
           </div>
@@ -311,6 +362,8 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
         }
 
         function merge() {
+            $('#submit-merge').toggleClass('loading').attr("disabled", true)
+
             let form = $("#merge-form");
             let master = form.find('input[name=master-record]:checked').val();
 
@@ -331,6 +384,8 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
                 window.location = master
             }).catch(err=>{
                 console.error(err);
+                $('#submit-merge').toggleClass('loading').attr("disabled", false)
+                $('#merge_errors').html( '<?php esc_html_e( "Sorry, something went wrong", 'disciple_tools' ) ?>: ' + _.escape(_.get(err, 'responseJSON.message', err) ))
             })
         }
         </script>

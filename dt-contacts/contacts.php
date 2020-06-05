@@ -98,47 +98,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
 
-
-    public function get_field_details( $field, $contact_id ){
-        $contact_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
-        if ( $field === "title" ){
-            return [
-                "type" => "text",
-                "name" => __( "Name", 'disciple_tools' ),
-            ];
-        }
-        if ( strpos( $field, "contact_" ) === 0 ){
-            $channel = explode( '_', $field );
-            if ( isset( $channel[1] ) && $contact_settings["channels"][ $channel[1] ] ){
-                return [
-                    "type" => "contact_method",
-                    "name" => $contact_settings["channels"][ $channel[1] ]["label"],
-                    "channel" => $channel[1]
-                ];
-            }
-        }
-        if ( in_array( $field, $contact_settings["connection_types"] ) ){
-            return [
-                "type" => "connection",
-                "name" => $field
-            ];
-        }
-
-        if ( $contact_id ){
-            $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( isset( $contact_id ), $contact_id );
-        } else {
-            $contact_fields = $contact_settings["fields"];
-        }
-        if ( isset( $contact_fields[$field] ) ){
-            return $contact_fields[ $field ];
-        }
-
-        return [
-            "type" => "unknown",
-            "name" => "unknown"
-        ];
-    }
-
     /**
      * Create a new Contact
      *
@@ -410,118 +369,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return $fields;
     }
 
-
-    public static function get_merge_data( int $contact_id, int $duplicate_id) {
-        if ( !$contact_id && !$duplicate_id) { return; }
-
-        $contact = self::get_contact( $contact_id );
-        $duplicate = self::get_contact( $duplicate_id );
-
-        $fields = array(
-            'contact_phone' => 'Phone',
-            'contact_email' => 'Email',
-            'contact_address' => 'Address',
-            'contact_facebook' => 'Facebook'
-        );
-
-        $c_fields = array();
-        $d_fields = array();
-
-        $data = array(
-            'contact_phone' => array(),
-            'contact_email' => array(),
-            'contact_address' => array(),
-            'contact_facebook' => array()
-        );
-
-        foreach (array_keys( $fields ) as $key) {
-            foreach ($contact[$key] ?? [] as $vals) {
-                if ( !isset( $c_fields[$key] )) {
-                    $c_fields[$key] = array();
-                }
-                array_push( $c_fields[$key], $vals['value'] );
-            }
-            foreach ($duplicate[$key] ?? [] as $vals) {
-                if ( !isset( $d_fields[$key] )) {
-                    $d_fields[$key] = array();
-                }
-                array_push( $d_fields[$key], $vals['value'] );
-            }
-        }
-
-        foreach (array_keys( $fields ) as $field) {
-            $max = max( array( count( $c_fields[$field] ?? [] ), count( $d_fields[$field] ?? [] ) ) );
-            for ($i = 0; $i < $max; $i++) {
-                $hide = false;
-                $o_value = $c_fields[$field][$i] ?? null;
-                $d_value = $d_fields[$field][$i] ?? null;
-                if (in_array( $o_value, $d_fields[$field] ?? [] )) { $hide = true; }
-                array_push($data[$field], array(
-                    'original' => array(
-                        'hide' => $hide,
-                        'value' => $o_value
-                    ),
-                    'duplicate' => array(
-                        'hide' => $hide,
-                        'value' => $d_value
-                    )
-                ));
-            }
-        }
-
-        return array( $contact, $duplicate, $data, $fields );
-    }
-
-    public static function merge_p2p( int $master_id, int $non_master_id) {
-        if ( !$master_id || !$non_master_id) { return; }
-        $master = self::get_contact( $master_id );
-        $non_master = self::get_contact( $non_master_id );
-
-        $post_settings = DT_Posts::get_post_settings( 'contacts' );
-        $keys = $post_settings["connection_types"];
-        $update = [];
-        $to_remove = [];
-
-        foreach ($keys as $key) {
-            $results = $non_master[$key] ?? array();
-            foreach ($results as $result) {
-                if ( !isset( $update[$key] )) {
-                    $update[$key] = array();
-                    $update[$key]['values'] = array();
-                }
-                if ( !isset( $to_remove[$key] )) {
-                    $to_remove[$key] = array();
-                    $to_remove[$key]['values'] = array();
-                }
-                array_push($update[$key]['values'], array(
-                    'value' => $result["ID"]
-                ));
-                array_push($to_remove[$key]['values'], array(
-                    'value' => $result["ID"],
-                    'delete' => true
-                ));
-            }
-        }
-
-        self::update_contact( $master_id, $update );
-        self::update_contact( $non_master_id, $to_remove );
-    }
-
-    public static function copy_comments( int $master_id, int $non_master_id, $check_permissions = true ){
-        if ( $check_permissions && ( !self::can_update( 'contacts', $master_id ) || !self::can_update( 'contacts', $non_master_id ) )) {
-            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
-        }
-        $comments = self::get_comments( $non_master_id );
-        foreach ( $comments as $comment ){
-            $comment["comment_post_ID"] = $master_id;
-            if ( $comment["comment_type"] === "comment" ){
-                $comment["comment_content"] = sprintf( esc_html_x( '(From Duplicate): %s', 'duplicate comment', 'disciple_tools' ), $comment["comment_content"] );
-            }
-            if ( $comment["comment_type"] !== "duplicate" ){
-                wp_insert_comment( (array) $comment );
-            }
-        }
-    }
 
     /**
      * @param $contact_id
@@ -1163,11 +1010,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         return $duplicates;
     }
-
-    public static function escape_regex_mysql( string $regex ) {
-        return preg_replace( '/&/', '\\&', preg_quote( $regex ) );
-    }
-
 
     public static function save_duplicate_data( int $contact_id, array $duplicates) {
         if (empty( $duplicates )) { return; }
