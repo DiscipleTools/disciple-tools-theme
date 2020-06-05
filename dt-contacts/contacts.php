@@ -1084,15 +1084,20 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     public function check_for_duplicates( $contact_id, $fields ){
         $contact = DT_Posts::get_post( "contacts", $contact_id );
+        if ( is_wp_error( $contact ) ){
+            return $contact;
+        }
         $possible_duplicates = self::get_possible_duplicates( $contact_id, $contact, true, $fields );
         $duplicate_data = $contact["duplicate_data"] ?? [];
         if ( !isset( $duplicate_data["override"] )){
             $duplicate_data["override"] = [];
         }
         $dup_ids = [];
-        foreach ( $possible_duplicates as $field_key => $dup ){
-            if ( !in_array( $dup["ID"], $dup_ids ) ) {
-                $dup_ids[] = $dup["ID"];
+        foreach ( $possible_duplicates as $field_key => $dups ){
+            foreach ( $dups as $dup ){
+                if ( !in_array( $dup["ID"], $dup_ids ) ) {
+                    $dup_ids[] = $dup["ID"];
+                }
             }
         }
 
