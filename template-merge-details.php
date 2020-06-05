@@ -22,10 +22,10 @@ $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 $dt_duplicate_contact = Disciple_Tools_Contacts::get_contact( $dt_dupe_id, true );
 
 $dt_fields = array(
-    'contact_phone' => 'Phone',
-    'contact_email' => 'Email',
-    'contact_address' => 'Address',
-    'contact_facebook' => 'Facebook'
+    'contact_phone' => isset( $dt_channel_list['phone']["label"] ) ? $dt_channel_list['phone']["label"] : "Phone",
+    'contact_email' => isset( $dt_channel_list['email']["label"] ) ? $dt_channel_list['email']["label"] : "Email",
+    'contact_address' => isset( $dt_channel_list['address']["label"] ) ? $dt_channel_list['address']["label"] : "Address",
+    'contact_facebook' => isset( $dt_channel_list['facebook']["label"] ) ? $dt_channel_list['facebook']["label"] : "Facebook",
 );
 
 $c_fields = array();
@@ -186,6 +186,7 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
         .merge-column{
           width:33%;
           float:left;
+          min-height: 45px;
         }
         .bold{
           font-weight:bold;
