@@ -26,40 +26,44 @@ $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
                         </button>
                     </h3>
 
-                    <table id='table-duplicates'>
-                        <?php
-                        foreach ( $dt_duplicates as $channel_key => $channel_values ) {
-                            if ( empty( $channel_values["dups"] ) ) {
-                                continue;
-                            }
-                            ?>
-                            <tr><td><strong><?php echo esc_html( $channel_values["name"] ); ?></strong></td></tr>
-                            <?php foreach ( $channel_values["dups"] as $dt_dup_val => $dt_duplicate_values ) {
-                                $row = $channel_key . '-' . array_key_first( $dt_duplicate_values["posts"] );
-                                ?>
-                                <tr id='<?php echo esc_attr( $row ) ?>'>
-                                    <td>
-                                        <a class="dismiss_all" data-row="<?php echo esc_html( $row ); ?>" data-id="<?php echo esc_html( array_key_first( $dt_duplicate_values["posts"] ) ); ?>">
-                                            <?php esc_html_e( 'Dismiss Row', 'disciple_tools' ); ?>
-                                        </a>
-                                    </td>
-                                    <td><?php echo esc_html( $dt_dup_val )?></td>
-                                    <td><?php foreach ( $dt_duplicate_values["posts"] as $dup_post_id => $post_values ):
-                                        $status_option = isset( $post_settings["fields"]["overall_status"]["default"][$post_values["status"]] ) ? $post_settings["fields"]["overall_status"]["default"][$post_values["status"]] : [];
-                                        $reason_closed = isset( $post_settings["fields"]["reason_closed"]["default"][$post_values["reason_closed"]] ) ? $post_settings["fields"]["reason_closed"]["default"][$post_values["reason_closed"]]["label"] : "";
-                                        ?>
-                                        <a target="_blank" href="<?php echo esc_html( site_url() )."/contacts/".esc_html( $dup_post_id ) ?>?open-duplicates=1"><?php echo esc_html( $post_values["name"] ); ?></a>
-                                        <span class="dt-status-square" title="<?php echo esc_html( $status_option["label"] . ( $reason_closed ? ' - ' . $reason_closed : '' ) ); ?>"
-                                              style="background-color: <?php echo esc_html( $status_option["color"] ) ?>; vertical-align: sub">&nbsp;
-                                        </span>
-                                        <span style="margin-right: 5px; margin-left: 5px">|</span>
-                                    <?php endforeach; ?>
-                                    </td>
-                                </tr>
-                            <?php }
+                    <?php
+                    foreach ( $dt_duplicates as $channel_key => $channel_values ) {
+                        if ( empty( $channel_values["dups"] ) ) {
+                            continue;
                         }
                         ?>
-                    </table>
+                        <h4><?php echo esc_html( sprintf( __( "Exact matches on: %s", 'disciple_tools' ), $channel_values["name"] ) ); ?></h4>
+                        <table style="margin-bottom:100px">
+                            <tr>
+                                <th style="text-align: start"><?php esc_html_e( 'Dismiss', 'disciple_tools' ); ?></th>
+                                <th style="text-align: start"><?php echo esc_html( $channel_values["name"] ); ?></th>
+                                <th style="text-align: start"><?php esc_html_e( 'Contacts', 'disciple_tools' ); ?></th>
+                            </tr>
+                        <?php foreach ( $channel_values["dups"] as $dt_dup_val => $dt_duplicate_values ) {
+                            $row = $channel_key . '-' . array_key_first( $dt_duplicate_values["posts"] );
+                            ?>
+                            <tr id='<?php echo esc_attr( $row ) ?>'>
+                                <td>
+                                    <a class="dismiss_all" data-row="<?php echo esc_html( $row ); ?>" data-id="<?php echo esc_html( array_key_first( $dt_duplicate_values["posts"] ) ); ?>">
+                                        <?php esc_html_e( 'Dismiss Row', 'disciple_tools' ); ?>
+                                    </a>
+                                </td>
+                                <td><?php echo esc_html( $dt_dup_val )?></td>
+                                <td><?php foreach ( $dt_duplicate_values["posts"] as $dup_post_id => $post_values ):
+                                    $status_option = isset( $post_settings["fields"]["overall_status"]["default"][$post_values["status"]] ) ? $post_settings["fields"]["overall_status"]["default"][$post_values["status"]] : [];
+                                    $reason_closed = isset( $post_settings["fields"]["reason_closed"]["default"][$post_values["reason_closed"]] ) ? $post_settings["fields"]["reason_closed"]["default"][$post_values["reason_closed"]]["label"] : "";
+                                    ?>
+                                    <a target="_blank" href="<?php echo esc_html( site_url() )."/contacts/".esc_html( $dup_post_id ) ?>?open-duplicates=1"><?php echo esc_html( $post_values["name"] ); ?></a>
+                                    <span class="dt-status-square" title="<?php echo esc_html( $status_option["label"] . ( $reason_closed ? ' - ' . $reason_closed : '' ) ); ?>"
+                                          style="background-color: <?php echo esc_html( $status_option["color"] ) ?>; vertical-align: sub">&nbsp;
+                                    </span>
+                                    <span style="margin-right: 5px; margin-left: 5px">|</span>
+                                <?php endforeach; ?>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                        </table>
+                    <?php } ?>
                 </div>
             </main> <!-- end #main -->
         </div> <!-- end #inner-content -->
@@ -70,7 +74,6 @@ $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
             let id = $(this).data('id')
             let row = $(this).data('row')
             makeRequestOnPosts('GET', `contacts/${id}/dismiss-duplicates`, {'id':'all'}).then(()=> {
-              console.log(row);
               $(`#${row}`).remove()
               $('#duplicates-spinner').removeClass('active')
             })
