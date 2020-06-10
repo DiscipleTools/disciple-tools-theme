@@ -1381,6 +1381,151 @@ jQuery(document).ready(function($) {
   })
 
 
+  /**
+   * Duplicates
+   *
+   */
+  let possible_duplicates = [];
+  let dup_row = (dupe, dismissed_row = false)=>{
+    let html = ``;
+    let dups_on_fields = dupe.fields.map(field=>{
+      return ( field.field === 'title' ? "Name" : null ) || _.get(window.contactsDetailsWpApiSettings, `contacts_custom_fields_settings[${field.field}].name`) ||
+        _.get(window.contactsDetailsWpApiSettings, `channels[${field.field.replace('contact_', '')}].label`)
+    })
+    let matched_values = dupe.fields.map(f=>f.meta_value)
+    html += `<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
+      <h5 style='font-weight: bold; color: #3f729b;'>
+      <a href="${window.wpApiShare.site_url}/contacts/${_.escape(dupe.ID)}" target=_blank>
+      ${ _.escape(dupe.contact.title) }
+      <span style="font-weight: normal; font-size:16px"> #${dupe.ID} (${_.get(dupe.contact, "overall_status.label") ||""}) </span>
+      </a>
+    </h5>`
+    html += `<strong>${_.escape(window.contactsDetailsWpApiSettings.translations.duplicates_on).replace('%s', dups_on_fields.join( ', '))}</strong><br />`
+
+    _.forOwn(window.contactsDetailsWpApiSettings.channels, (channel, key)=>{
+      if ( dupe.contact['contact_' + key] ){
+        dupe.contact['contact_' + key].forEach( contact_info=>{
+          html +=`<img src='${_.escape(channel.icon)}'><span ${matched_values.includes(contact_info.value) ? 'style="font-weight:bold;"' : ''}>&nbsp;${_.escape(contact_info.value)}</span>&nbsp;`
+        })
+      }
+    })
+    html += `<br>`
+    if ( !dismissed_row ){
+      html += `<button class='mergelinks dismiss-duplicate' data-id='${_.escape(dupe.ID)}' style='float: right; padding-left: 10%;'><a>${_.escape(window.contactsDetailsWpApiSettings.translations.dismiss)}</a></button>`
+    }
+    html += `
+       <button type='submit' class="merge-contact" data-dup-id="${_.escape(dupe.ID)}" style='float:right; padding-left: 10%;'>
+          <a>${_.escape(window.contactsDetailsWpApiSettings.translations.merge)}</a> 
+      </button>
+    `
+
+    html += `</div>`
+    return html;
+  }
+  function loadDuplicates() {
+    let dups_with_data = possible_duplicates
+    if (dups_with_data) {
+      let $duplicates = $('#duplicates_list');
+      $duplicates.html("");
+
+      let already_dismissed = _.get(contact, 'duplicate_data.override', []).map(id=>parseInt(id))
+
+      let html = ``
+      dups_with_data.sort((a, b) => a.points > b.points ? -1:1).forEach((dupe) => {
+        if (!already_dismissed.includes(parseInt(dupe.ID))) {
+          html += dup_row(dupe)
+        }
+      })
+      $duplicates.append(html);
+      let dismissed_html = ``;
+      dups_with_data.sort((a, b) => a.points > b.points ? -1:1).forEach((dupe) => {
+        if (already_dismissed.includes(parseInt(dupe.ID))) {
+          dismissed_html += dup_row(dupe, true)
+        }
+      })
+      if (dismissed_html) {
+        dismissed_html = `<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:20px 0 0; margin-bottom: 0;'>${_.escape(window.contactsDetailsWpApiSettings.translations.dismissed_duplicates)}</h4>`
+          + dismissed_html
+        $duplicates.append(dismissed_html);
+      }
+    }
+  }
+
+
+  let openedOnce = false
+  $('#merge-dupe-edit-modal').on("open.zf.reveal", function () {
+    if ( !openedOnce ){
+
+      let original_contact_html = `<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
+        <h5 style='font-weight: bold; color: #3f729b;'>
+        <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target=_blank>
+        ${ _.escape(contact.title) }
+        <span style="font-weight: normal; font-size:16px"> #${contact.ID} (${_.get(contact, "overall_status.label") ||""}) </span>
+        </a>
+        </h5>`
+      _.forOwn(window.contactsDetailsWpApiSettings.channels, (channel, key)=>{
+        if ( contact['contact_' + key] ){
+          contact['contact_' + key].forEach( contact_info=>{
+            original_contact_html +=`<img src='${_.escape(channel.icon)}'><span>&nbsp;${_.escape(contact_info.value)}</span>&nbsp;`
+          })
+        }
+      })
+      original_contact_html += `</div>`
+      $('#original-contact').append(original_contact_html);
+
+      let $display_fields = $("#merge-dupe-edit-modal .display-fields");
+
+      $display_fields.append("<div id='duplicates_list'></div>");
+      window.API.get_duplicates_on_post("contacts", contact.ID).done(dups_with_data=> {
+        possible_duplicates = dups_with_data
+        $("#duplicates-spinner").removeClass("active")
+        loadDuplicates();
+      })
+
+      openedOnce = true;
+    }
+  })
+
+
+  let check_dups = (duplicate_data)=>{
+    if ( _.get(duplicate_data, "check_dups") === true ){
+      window.API.get_duplicates_on_post("contacts", contact.ID, {include_contacts:false, exact_match:true}).done(dups_with_data=> {
+        if ( dups_with_data.filter(a=>!duplicate_data.override.includes[a.ID])){
+          $('#duplicates').show()
+        }
+      })
+    }
+  }
+  check_dups(contact.duplicate_data)
+  window.contactDetailsEvents.subscribe('resetDetails', function(info) {
+    check_dups( info.newContactDetails.duplicate_data )
+  })
+
+
+  $(document).on( "click", ".merge-contact", function () {
+    let dup_id = $(this).data('dup-id')
+    window.location = `${window.wpApiShare.site_url}/contacts/mergedetails?dupeid=${dup_id}&currentid=${contact.ID}`
+  })
+
+  $(document).on( "click", ".dismiss-duplicate", function () {
+    let id = $(this).data('id');
+    makeRequestOnPosts('GET', `contacts/${contact.ID}/dismiss-duplicates`, {'id':id}).then(resp=>{
+      contact.duplicate_data = resp;
+      loadDuplicates()
+    })
+  })
+  $('#dismiss_all_duplicates').on( 'click', function () {
+    makeRequestOnPosts('GET', `contacts/${contact.ID}/dismiss-duplicates`, {'id':'all'}).then(resp=> {
+      contact.duplicate_data = resp;
+      loadDuplicates()
+    })
+  })
+  let open_duplicates = window.SHAREDFUNCTIONS.get_url_param("open-duplicates")
+  if ( open_duplicates === '1' ){
+    $('#merge-dupe-edit-modal').foundation('open');
+  }
+
+
 
   //leave at the end of this file
   masonGrid.masonry({

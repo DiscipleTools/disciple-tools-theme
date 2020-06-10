@@ -753,7 +753,7 @@ class Disciple_Tools_Contacts_Endpoints
         $params = $request->get_params();
         $contact_id = $params["id"] ?? null;
         if ( $contact_id ){
-            return Disciple_Tools_Contacts::get_duplicates_on_contact( $contact_id, $params["include_contacts"] !== "false", $params["exact_match"] === "true" );
+            return Disciple_Tools_Contacts::get_duplicates_on_contact( $contact_id, $params["include_contacts"] ?? "" !== "false", $params["exact_match"] ?? "" === "true" );
         } else {
             return new WP_Error( 'get_duplicates_on_contact', "Missing field for request", [ 'status' => 400 ] );
         }

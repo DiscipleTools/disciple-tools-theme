@@ -809,27 +809,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return DT_Posts::add_shared( 'contacts', $post_id, $user_id, $meta, $send_notifications, $check_permissions, $insert_activity );
     }
 
-    public static function find_contacts_with( $field, $value, $exclude_id = "", $exact_match = false ){
-        global $wpdb;
-        $matches = $wpdb->get_results( $wpdb->prepare("
-            SELECT post_id as ID, meta_key, meta_value
-            FROM $wpdb->postmeta
-            INNER JOIN $wpdb->posts posts ON ( posts.ID = post_id AND posts.post_type = 'contacts' AND posts.post_status = 'publish' )
-            WHERE meta_key LIKE %s
-            AND meta_value LIKE %s
-            AND post_id != %s
-            ",
-            [
-                esc_sql( $field ) .'%',
-                $exact_match ? esc_sql( $value ) : ( '%' . trim( esc_sql( $value ) ) . '%' ),
-                esc_sql( $exclude_id )
-            ]
-        ), ARRAY_A );
-//        @todo return just an array
-        // if there are more than 50, it is most likely not a duplicate
-        return sizeof( $matches ) > 50 ? [] : $matches;
-    }
-
     public static function find_contacts_by_title( $title, $exclude_id, $exact_match = false ){
         global $wpdb;
         $dups = $wpdb->get_results(
@@ -850,33 +829,73 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return sizeof( $dups ) > 25 ? [] : $dups;
     }
 
-    public function get_all_duplicates() {
-        global $wpdb;
-        $records = $wpdb->get_results(
-            $wpdb->prepare("
-                select
-                    *
-                from
-                    $wpdb->posts p join $wpdb->postmeta m on p.ID = m.post_id
-                where
-                    p.post_type = %s and
-                    m.meta_key = %s
-            ", [ 'contacts', 'duplicate_data' ]), ARRAY_A
-        );
-
-        $duplicates = array();
-        foreach ($records as $record) {
-            $dupes = unserialize( $record['meta_value'] );
-            $count = 0;
-            foreach ($dupes as $key => $dupe) {
-                if ($key === 'override') { continue; }
-                $count += count( $dupe );
-            }
-            $duplicates[$record['ID']]['count'] = $count;
-            $duplicates[$record['ID']]['name'] = $record['post_title'];
+    public static function get_all_duplicates() {
+        if ( !self::can_view_all( "contacts" ) ) {
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
 
-        return $duplicates;
+        global $wpdb;
+        $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
+        $records = $wpdb->get_results( "
+            SELECT pm.meta_value, pm.meta_key, pm.post_id, dd.meta_value as duplicate_data, rc.meta_value as reason_closed, p.post_title, status.meta_value as status
+            FROM $wpdb->postmeta pm
+            INNER JOIN (
+                SELECT meta_value
+                FROM $wpdb->postmeta
+                WHERE meta_key LIKE 'contact_%' AND meta_key NOT LIKE '%details'
+                GROUP BY meta_value
+                HAVING count(meta_id) > 1 AND count(meta_id) < 10
+            ) dup ON dup.meta_value = pm.meta_value
+            LEFT JOIN $wpdb->posts as p ON ( p.ID = pm.post_id AND p.post_type = 'contacts' )
+            LEFT JOIN $wpdb->postmeta as dd ON ( dd.post_id = pm.post_id AND dd.meta_key = 'duplicate_data' )
+            LEFT JOIN $wpdb->postmeta as rc ON ( rc.post_id = pm.post_id AND rc.meta_key = 'reason_closed' )
+            LEFT JOIN $wpdb->postmeta as status ON ( status.post_id = pm.post_id AND status.meta_key = 'overall_status' )
+            WHERE pm.meta_key LIKE 'contact_%' AND pm.meta_key NOT LIKE '%details' AND pm.meta_value NOT LIKE ''
+            AND rc.meta_value != 'duplicate'
+        ", ARRAY_A );
+
+        $dups = [];
+        foreach ( $records as $duplicate ){
+            $key = explode( '_', $duplicate["meta_key"] )[0] . '_' . explode( '_', $duplicate["meta_key"] )[1];
+            $duplicate_data = maybe_unserialize( $duplicate["duplicate_data"] );
+            if ( !isset( $dups[$key][$duplicate["meta_value"]] ) ) {
+                $dups[$key][$duplicate["meta_value"]] = [
+                    "overrides" => [],
+                    "posts" => []
+                ];
+            }
+            $dups[$key][$duplicate["meta_value"]]["overrides"] = array_merge( $dups[$key][$duplicate["meta_value"]]["overrides"], $duplicate_data["override"] ?? [] );
+            if ( $duplicate["reason_closed"] !== "duplicate" ){
+                $dups[$key][$duplicate["meta_value"]]["posts"][$duplicate["post_id"]] = [
+                    "name" => $duplicate['post_title'],
+                    "status" => $duplicate['status'],
+                    "reason_closed" => $duplicate["reason_closed"] ?? null,
+                ];
+            }
+            foreach ( $dups[$key][$duplicate["meta_value"]]["overrides"] as $id ){
+                if ( isset( $dups[$key][$duplicate["meta_value"]]["posts"][$id] ) ){
+                    unset( $dups[$key][$duplicate["meta_value"]]["posts"][$id] );
+                }
+            }
+        }
+        $return = [];
+        foreach ( $dups as $channel => $channel_values ) {
+            foreach ( $channel_values as $index => $duplicate ){
+                if ( sizeof( $duplicate["posts"] ) < 2 ){
+                    unset( $dups[$channel][$index] );
+                }
+            }
+
+            $channel_key = explode( '_', $channel )[1];
+            $return[$channel] = [
+                "name" => isset( $post_settings["channels"][$channel_key]['label'] ) ? $post_settings["channels"][$channel_key]['label'] : $channel,
+                "dups" => $dups[$channel]
+            ];
+        }
+
+
+        return $return;
+
     }
 
     public static function get_duplicates_on_contact( $contact_id, $include_contacts = true, $exact_match = false ){
@@ -905,6 +924,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         foreach ( $possible_duplicates as $field_key => $dups ){
             foreach ( $dups as $dup ){
                 if ( current_user_can( "view_any_contacts" ) || in_array( $dup["ID"], $shared_with_ids ) ){
+                    if ( empty( $dup["ID"] ) ) {
+                        continue;
+                    }
                     if ( !isset( $ordered[$dup["ID"]] ) ) {
                         $ordered[$dup["ID"]] = [
                             "ID" => $dup["ID"],
@@ -996,14 +1018,19 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 AND post_id != %s
             ", esc_sql( $contact_id ) ), ARRAY_A );
             //phpcs:enable
+            $by_value = [];
             foreach ( $matches as $match ){
                 $key = explode( '_', $match["meta_key"] )[0] . '_' . explode( '_', $match["meta_key"] )[1];
-                $duplicates[$key][] = $match;
+                $by_value[$key][$match["meta_value"]][] = $match;
             }
-            foreach ( $duplicates as $field_key => $dups ){
-                // if there are more than 20, it is most likely not a duplicate
-                if ( sizeof( $dups ) > 20 ){
-                    $duplicates[$field_key] = [];
+            foreach ( $by_value as $key => $values ){
+                foreach ( $values as $meta_value => $matched ) {
+                    // if there are more than 20, it is most likely not a duplicate
+                    if ( sizeof( $matched ) < 20 ){
+                        foreach ( $matched as $match ){
+                            $duplicates[$key][] = $match;
+                        }
+                    }
                 }
             }
         }

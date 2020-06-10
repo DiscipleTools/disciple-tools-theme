@@ -386,6 +386,11 @@ window.SHAREDFUNCTIONS = {
       const formattedDate = new Intl.DateTimeFormat(langcode, options).format(date * 1000);
 
       return formattedDate;
+    },
+    get_url_param(name) {
+      let results = new RegExp('[\?&]' + name + '=([^&#]*)')
+      .exec(window.location.search);
+      return (results !== null) ? results[1] || 0 : false;
     }
 }
 

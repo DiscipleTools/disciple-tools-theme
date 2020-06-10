@@ -7,12 +7,16 @@ if ( ! current_user_can( 'access_contacts' ) ) {
     wp_die( esc_html( "You do not have permission to access contacts" ), "Permission denied", 403 );
 }
 
-if ( !isset( $_POST['dt_contact_nonce'] ) || !wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) || !isset( $_POST['currentid'], $_POST['dupeid'] )) {
+if ( !isset( $_GET['currentid'], $_GET['dupeid'] ) ) {
+    header( "Location: /contacts" );
+}
+$dt_current_id = sanitize_text_field( wp_unslash( $_GET['currentid'] ) );
+$dt_dupe_id = sanitize_text_field( wp_unslash( $_GET['dupeid'] ) );
+
+if ( is_wp_error( $dt_current_id ) || is_wp_error( $dt_dupe_id ) ) {
     header( "Location: /contacts" );
 }
 get_header();
-$dt_current_id = sanitize_text_field( wp_unslash( $_POST['currentid'] ) );
-$dt_dupe_id = sanitize_text_field( wp_unslash( $_POST['dupeid'] ) );
 
 $dt_contact = Disciple_Tools_Contacts::get_contact( $dt_current_id, true );
 $dt_channel_list = Disciple_Tools_Contacts::get_channel_list();

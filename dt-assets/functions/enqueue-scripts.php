@@ -194,7 +194,7 @@ function dt_site_scripts() {
                         "edit" => strtolower( __( "Edit", "disciple_tools" ) ),
                         "delete" => strtolower( __( "Delete", "disciple_tools" ) ),
                         "translate" => __( "Translate with Google Translate", "disciple_tools" ),
-                        "hide_translation" => __( "Hide Translation", "disciple_tools" )
+                        "hide_translation" => __( "Hide Translation", "disciple_tools" ),
                     ],
                     'current_user_id' => get_current_user_id(),
                     'additional_sections' => apply_filters( 'dt_comments_additional_sections', [], $post_type ),
@@ -244,7 +244,11 @@ function dt_site_scripts() {
                 "valid"       => __( 'Valid', 'disciple_tools' ),
                 "invalid"     => __( 'Invalid', 'disciple_tools' ),
                 "unconfirmed" => __( 'Unconfirmed', 'disciple_tools' ),
-                'transfer_error' => __( 'Transfer failed. Check site-to-site configuration.', 'disciple_tools' )
+                'transfer_error' => __( 'Transfer failed. Check site-to-site configuration.', 'disciple_tools' ),
+                'merge' => __( "Merge", 'disciple_tools' ),
+                'dismiss' => __( "Dismiss", 'disciple_tools' ),
+                'dismissed_duplicates' => __( "Dismissed Duplicates", 'disciple_tools' ),
+                'duplicates_on' => __( "Duplicates on: %s", 'disciple_tools' ),
             ];
             if ( is_singular( "contacts" ) ) {
                 dt_theme_enqueue_script( 'contact-details', 'dt-assets/js/contact-details.js', array(
