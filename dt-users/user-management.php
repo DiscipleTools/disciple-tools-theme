@@ -705,6 +705,10 @@ class DT_User_Management
                 return $this->get_dt_user( $user->ID );
             }
             if ( isset( $body["allowed_sources"] ) ){
+                // If the current user can't promote users or edit this particular user, bail.
+                if ( !current_user_can( 'promote_users' ) ) {
+                    return false;
+                }
                 $allowed_sources = [];
                 foreach ( $body["allowed_sources"] as $s ){
                     $allowed_sources[] = sanitize_key( wp_unslash( $s ) );
