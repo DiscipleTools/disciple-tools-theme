@@ -1,21 +1,6 @@
 jQuery(document).ready(function() {
-  if ( typeof dtMapbox !== 'undefined' ) {
-
-    dtMapbox.post_type = 'contacts'
-    dtMapbox.post_id = wpApiSettingsPage.associated_contact_id
-    dtMapbox.post = wpApiSettingsPage.associated_contact
-    load_mapbox_location()
-    write_results_box()
-    jQuery( '#new-mapbox-search' ).on( "click", function() {
-      write_input_widget()
-    });
-
-  } else {
-    window.DRILLDOWN.add_user_location = function( grid_id ) {
-      jQuery('#add_location_location_grid_value').val(grid_id)
-    }
-    load_settings_locations()
-  }
+  window.current_user_lookup = wpApiSettingsPage.current_user_id
+  load_locations()
 
 })
 
@@ -50,78 +35,138 @@ function change_password() {
     }).fail(handleAjaxError)
 }
 
-/* Locations with or without mapbox */
-function load_mapbox_location() {
-    jQuery('#manage_locations_section' ).empty().html(`<div id="mapbox-wrapper"></div><button id="new-mapbox-search" class="button">${_.escape( wpApiSettingsPage.translations.add ) /* Add */}</button>`)
+function load_locations() {
+  makeRequest( "GET", `user/my` )
+    .done(data=>{
+
+
+      if ( typeof dtMapbox !== "undefined" ) {
+        dtMapbox.post_type = 'user'
+        write_results_box()
+
+        jQuery( '#new-mapbox-search' ).on( "click", function() {
+          dtMapbox.post_type = 'user'
+          write_input_widget()
+        });
+      } else {
+        //locations
+        let typeahead = Typeahead['.js-typeahead-location_grid']
+        if (typeahead) {
+          typeahead.items = [];
+          typeahead.comparedItems =[];
+          typeahead.label.container.empty();
+          typeahead.adjustInputSize()
+        }
+        if ( typeof data.locations.location_grid !== "undefined" ) {
+          data.locations.location_grid.forEach(location => {
+            typeahead.addMultiselectItemLayout({ID: location.id.toString(), name: location.label})
+          })
+        }
+
+      }
+    }).catch((e)=>{
+    console.log( 'error in locations')
+    console.log( e)
+  })
 }
 
-
-function load_settings_locations( reload = false ) {
-    let section = jQuery('#manage_locations_section')
-
-    section.empty().append(
-        `<div id="current_locations"></div>
-        <div id="new_locations"></div>
-        <div id="locations_add_button">
-            <p><button type="button" onclick="add_drill_down_selector()" class="button">Add</button></p>
-        </div>`
-    )
-
-    let cl = jQuery('#current_locations')
-
-      if ( wpApiSettingsPage.custom_data.current_locations !== undefined && ! reload ) {
-        cl.append(`<strong>${_.escape(wpApiSettingsPage.translations.responsible_for_locations)}:</strong><br>`)
-        jQuery.each( wpApiSettingsPage.custom_data.current_locations, function(i,v) {
-            cl.append(`${_.escape(v.name)}, ${_.escape(v.country_code)} <a style="padding:0 10px;" onclick="delete_location(${_.escape(v.grid_id)})"><img src="${_.escape(wpApiSettingsPage.template_dir)}/dt-assets/images/invalid.svg"></a><br>`)
-        })
-        cl.append(`<br>`)
-    } else {
-
-        makeRequest('get', 'users/current_locations', { "contact_id": wpApiSettingsPage.associated_contact_id } ).done(data => {
-            if (data ) {
-                cl.append(`<strong>${_.escape(wpApiSettingsPage.translations.responsible_for_locations)}:</strong><br>`)
-                jQuery.each( data, function(i,v) {
-                    cl.append(`${_.escape(v.name)}, ${_.escape(v.country_code)} <a style="padding:0 10px;" onclick="delete_location(${_.escape(v.grid_id)})"><img src="${_.escape(wpApiSettingsPage.template_dir)}/dt-assets/images/invalid.svg"></a><br>`)
-                })
-                cl.append(`<br>`)
+if ( typeof dtMapbox === "undefined" ) {
+  let typeaheadTotals = {}
+  if (!window.Typeahead['.js-typeahead-location_grid'] ){
+    $.typeahead({
+      input: '.js-typeahead-location_grid',
+      minLength: 0,
+      accent: true,
+      searchOnFocus: true,
+      maxItem: 20,
+      dropdownFilter: [{
+        key: 'group',
+        value: 'focus',
+        template: _.escape(window.wpApiShare.translations.regions_of_focus),
+        all: _.escape(window.wpApiShare.translations.all_locations),
+      }],
+      source: {
+        focus: {
+          display: "name",
+          ajax: {
+            url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+            data: {
+              s: "{{query}}",
+              filter: function () {
+                return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+              }
+            },
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+            },
+            callback: {
+              done: function (data) {
+                if (typeof typeaheadTotals !== "undefined") {
+                  typeaheadTotals.field = data.total
+                }
+                return data.location_grid
+              }
             }
-        }).fail(handleAjaxError)
-    }
+          }
+        }
+      },
+      display: "name",
+      templateValue: "{{name}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["ID"],
+        data: function () {
+          return [];
+        }, callback: {
+          onCancel: function (node, item) {
+            delete_location_grid( item.ID)
+          }
+        }
+      },
+      callback: {
+        onClick: function(node, a, item, event){
+          add_location_grid( item.ID)
+        },
+        onReady(){
+          this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
+          this.container
+            .removeClass("filter")
+            .find("." + this.options.selector.filterButton)
+            .html(_.escape(window.wpApiShare.translations.regions_of_focus));
+        },
+        onResult: function (node, query, result, resultCount) {
+          resultCount = typeaheadTotals.location_grid
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $('#location_grid-result-container').html(text);
+        },
+        onHideLayout: function () {
+          $('#location_grid-result-container').html("");
+        }
+      }
+    });
+  }
 }
-function add_drill_down_selector() {
-    jQuery('#new_locations').empty().append(
-            `<div id="add_user_location"><ul class="drill_down"></ul></div>
-            <input type="hidden" id="add_location_location_grid_value" />
-            <button type="button" class="button" onclick="save_new_location()">${_.escape( wpApiSettingsPage.translations.save ) /* Save */}</button>`
-    )
-    window.DRILLDOWN.get_drill_down( 'add_user_location' )
-    jQuery('#locations_add_button').hide()
+let add_location_grid = ( value )=>{
+  let data =  {
+    grid_id: value
+  }
+  return makeRequest( "POST", `users/user_location`, data )
 }
-function save_new_location() {
-    let grid_id = jQuery('#add_location_location_grid_value').val()
-
-    makeRequest('post', 'users/user_location', { grid_id: grid_id } ).done(data => {
-        console.log( data )
-        load_settings_locations( true )
-    }).fail(handleAjaxError)
+let delete_location_grid = ( value )=>{
+  let data =  {
+    grid_id: value
+  }
+  return makeRequest( "DELETE", `users/user_location`, data )
 }
-function delete_location( grid_id ) {
-    makeRequest('delete', 'users/user_location', { grid_id: grid_id } ).done(data => {
-        console.log( data )
-        load_settings_locations( true )
-    }).fail(handleAjaxError)
-}
-
-
-
 
 
 let update_user = ( key, value )=>{
-    let data =  {
-      [key]: value
-    }
-    return makeRequest( "POST", `user/update`, data , 'dt/v1/' )
+  let data =  {
+    [key]: value
   }
+  return makeRequest( "POST", `user/update`, data , 'dt/v1/' )
+}
+
 /**
  * Set availability dates
  */

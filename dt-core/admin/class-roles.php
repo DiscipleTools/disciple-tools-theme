@@ -349,6 +349,7 @@ class Disciple_Tools_Roles
 
             /* Manage DT configuration */
             $role->add_cap( 'manage_dt' ); // gives access to dt plugin options
+
             /* Add contacts permissions */
             $role->add_cap( 'access_contacts' );
             $role->add_cap( 'create_contacts' );

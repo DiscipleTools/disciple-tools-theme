@@ -278,6 +278,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                 <!-- CONNECTIONS TILE -->
                     <div class="cell small-12">
                         <div class="grid-x grid-margin-x grid-margin-y grid">
+
+                            <!-- CONNECTIONS -->
                             <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item">
             <!--                    <div class="bordered-box last-typeahead-in-section">-->
 
@@ -296,76 +298,84 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                     <div class="section-body"><!-- start collapse -->
                                     <div class="section-subheader"><?php echo esc_html( $contact_fields["groups"]['name'] ) ?></div>
 
-                                  <var id="groups-result-container" class="result-container"></var>
-                                    <div id="groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
-                                        <div class="typeahead__container">
-                                            <div class="typeahead__field">
-                                                <span class="typeahead__query">
-                                                    <input class="js-typeahead-groups input-height"
-                                                           name="groups[query]"
-                                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["groups"]['name'] ) )?>"
-                                                           autocomplete="off">
-                                                </span>
-                                                <span class="typeahead__button">
-                                                    <button type="button" data-open="create-group-modal" class="create-new-group typeahead__image_button input-height">
-                                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group.svg' ) ?>"/>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        <?php do_action( 'dt_pre_contacts_connections_section', $contact_fields, $contact ) ?>
 
-                                    <?php
-                                    $connections = [
-                                        "relation" => $contact_fields['relation']["name"],
-                                        "baptized_by" => $contact_fields['baptized_by']["name"],
-                                        "baptized" => $contact_fields['baptized']["name"],
-                                        "coached_by" => $contact_fields['coached_by']["name"],
-                                        "coaching" => $contact_fields['coaching']["name"]
-                                    ];
-                                    foreach ( $connections as $connection => $connection_label ) {
-                                        ?>
-                                        <div id="<?php echo esc_attr( $connection . '_connection' ) ?>">
-                                            <div class="section-subheader"><?php echo esc_html( $connection_label ) ?></div>
-                                            <var id="<?php echo esc_html( $connection ) ?>-result-container" class="result-container"></var>
-                                            <div id="<?php echo esc_html( $connection ) ?>_t" name="form-<?php echo esc_html( $connection ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
-                                                <div class="typeahead__container">
-                                                    <div class="typeahead__field">
-                                                        <span class="typeahead__query">
-                                                            <input class="js-typeahead-<?php echo esc_html( $connection ) ?> input-height"
-                                                                   name="<?php echo esc_html( $connection ) ?>[query]" placeholder="<?php echo esc_html_x( "Search multipliers and contacts", 'input field placeholder', 'disciple_tools' ) ?>"
-                                                                   autocomplete="off">
-                                                        </span>
-                                                        <span class="typeahead__button">
-                                                            <button type="button" data-connection-key="<?php echo esc_html( $connection ) ?>" class="create-new-contact typeahead__image_button input-height">
-                                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-contact.svg' ) ?>"/>
-                                                            </button>
-                                                        </span>
-                                                    </div>
+                                        <!-- groups -->
+                                        <var id="groups-result-container" class="result-container"></var>
+                                        <div id="groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
+                                            <div class="typeahead__container">
+                                                <div class="typeahead__field">
+                                                    <span class="typeahead__query">
+                                                        <input class="js-typeahead-groups input-height"
+                                                               name="groups[query]"
+                                                               placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["groups"]['name'] ) )?>"
+                                                               autocomplete="off">
+                                                    </span>
+                                                    <span class="typeahead__button">
+                                                        <button type="button" data-open="create-group-modal" class="create-new-group typeahead__image_button input-height">
+                                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group.svg' ) ?>"/>
+                                                        </button>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
+
                                         <?php
-                                    }
-                                    ?>
+                                        $connections = [
+                                            "relation" => $contact_fields['relation']["name"],
+                                            "baptized_by" => $contact_fields['baptized_by']["name"],
+                                            "baptized" => $contact_fields['baptized']["name"],
+                                            "coached_by" => $contact_fields['coached_by']["name"],
+                                            "coaching" => $contact_fields['coaching']["name"]
+                                        ];
+                                        foreach ( $connections as $connection => $connection_label ) {
+                                            ?>
+                                            <div id="<?php echo esc_attr( $connection . '_connection' ) ?>">
+                                                <div class="section-subheader"><?php echo esc_html( $connection_label ) ?></div>
+                                                <var id="<?php echo esc_html( $connection ) ?>-result-container" class="result-container"></var>
+                                                <div id="<?php echo esc_html( $connection ) ?>_t" name="form-<?php echo esc_html( $connection ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
+                                                    <div class="typeahead__container">
+                                                        <div class="typeahead__field">
+                                                            <span class="typeahead__query">
+                                                                <input class="js-typeahead-<?php echo esc_html( $connection ) ?> input-height"
+                                                                       name="<?php echo esc_html( $connection ) ?>[query]" placeholder="<?php echo esc_html_x( "Search multipliers and contacts", 'input field placeholder', 'disciple_tools' ) ?>"
+                                                                       autocomplete="off">
+                                                            </span>
+                                                            <span class="typeahead__button">
+                                                                <button type="button" data-connection-key="<?php echo esc_html( $connection ) ?>" class="create-new-contact typeahead__image_button input-height">
+                                                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-contact.svg' ) ?>"/>
+                                                                </button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <?php
+                                        }
+                                        ?>
+
+                                        <?php do_action( 'dt_post_contacts_progress_section', $contact_fields, $contact ) ?>
                                 </div><!-- end collapse --></div>
                             </section>
 
                         <!-- PROGRESS TILE -->
-                            <section id="faith" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                <div class="bordered-box" id="progress-tile">
-                                    <h3 class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?>
-                                        <button class="help-button float-right" data-section="contact-progress-help-text">
-                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                        </button>
-                                        <button class="section-chevron chevron_down">
-                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                                        </button>
-                                        <button class="section-chevron chevron_up">
-                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
-                                        </button>
-                                    </h3>
-                                    <div class="section-body"><!-- start collapse -->
+                        <section id="faith" class="xlarge-6 large-12 medium-6 cell grid-item">
+                            <div class="bordered-box" id="progress-tile">
+                                <h3 class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?>
+                                    <button class="help-button float-right" data-section="contact-progress-help-text">
+                                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                    </button>
+                                    <button class="section-chevron chevron_down">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                    </button>
+                                    <button class="section-chevron chevron_up">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                    </button>
+                                </h3>
+                                <div class="section-body"><!-- start collapse -->
+
+                                    <?php do_action( 'dt_pre_contacts_progress_section', $contact_fields, $contact ) ?>
+
                                     <div class="section-subheader">
                                         <?php echo esc_html( $contact_fields["seeker_path"]["name"] )?>
                                         <button class="help-button" data-section="seeker-path-help-text">
@@ -374,21 +384,20 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                     </div>
 
                                     <select class="select-field" id="seeker_path" style="margin-bottom: 0">
-                                    <?php
-
-                                    foreach ($contact_fields["seeker_path"]["default"] as $key => $option){
-                                        $value = $option["label"] ?? "";
-                                        if ( $contact["seeker_path"]["key"] === $key ) :
-                                            ?>
-                                            <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
-                                        <?php else : ?>
-                                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
-                                        <?php endif;
-                                    }
-                                    $keys = array_keys( $contact_fields["seeker_path"]["default"] );
-                                    $path_index = array_search( $contact["seeker_path"]["key"], $keys ) ?? 0;
-                                    $percentage = $path_index / ( sizeof( $keys ) -1 ) *100
-                                    ?>
+                                        <?php
+                                        foreach ($contact_fields["seeker_path"]["default"] as $key => $option){
+                                            $value = $option["label"] ?? "";
+                                            if ( $contact["seeker_path"]["key"] === $key ) :
+                                                ?>
+                                                <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
+                                            <?php else : ?>
+                                                <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
+                                            <?php endif;
+                                        }
+                                        $keys = array_keys( $contact_fields["seeker_path"]["default"] );
+                                        $path_index = array_search( $contact["seeker_path"]["key"], $keys ) ?? 0;
+                                        $percentage = $path_index / ( sizeof( $keys ) -1 ) *100
+                                        ?>
                                     </select>
                                     <div class="progress" role="progressbar" tabindex="0" aria-valuenow="<?php echo 4 ?>" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
                                         <div id="seeker-progress" class="progress-meter" style="width: <?php echo esc_html( $percentage ) ?>%"></div>
@@ -404,15 +413,16 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                     <div class="small button-group" style="display: inline-block">
                                         <?php foreach ( $contact_fields["milestones"]["default"] as $option_key => $option_value ): ?>
                                             <?php
-                                                $class = ( in_array( $option_key, $contact["milestones"] ?? [] ) ) ?
-                                                    "selected-select-button" : "empty-select-button"; ?>
-                                                <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="milestones"
-                                                        class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
-                                                    <?php echo esc_html( $contact_fields["milestones"]["default"][$option_key]["label"] ) ?>
-                                                </button>
+                                            $class = ( in_array( $option_key, $contact["milestones"] ?? [] ) ) ?
+                                                "selected-select-button" : "empty-select-button"; ?>
+                                            <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="milestones"
+                                                    class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
+                                                <?php echo esc_html( $contact_fields["milestones"]["default"][$option_key]["label"] ) ?>
+                                            </button>
                                         <?php endforeach; ?>
                                     </div>
 
+                                    <!-- Baptism Date-->
                                     <div class="section-subheader"><?php echo esc_html( $contact_fields["baptism_date"]["name"] )?></div>
                                     <div class="baptism_date">
                                         <div class="baptism_date input-group">
@@ -424,8 +434,13 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         </div>
                                     </div>
 
+                                    <!-- post action -->
+                                    <?php do_action( 'dt_post_contacts_progress_section', $contact_fields, $contact ) ?>
+
                                 </div><!-- end collapse --></div>
-                            </section>
+                        </section>
+
+
 
                             <?php
                             //get sections added by plugins
@@ -509,6 +524,9 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         </button>
                                     </h3>
                                     <div class="section-body"><!-- start collapse -->
+
+                                        <?php do_action( 'dt_pre_contacts_other_section', $contact_fields, $contact ) ?>
+
                                     <div class="section-subheader">
                                         <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
                                     </div>
@@ -533,6 +551,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                         </div>
                                     </div>
                                 </div>
+
+                                    <?php do_action( 'dt_post_contacts_other_section', $contact_fields, $contact ) ?>
                                 <!-- end collapse --></div>
                             </section>
                         </div>

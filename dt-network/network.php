@@ -336,25 +336,25 @@ class Disciple_Tools_Snapshot_Report {
                 'current_state' => self::get_locations_current_state(),
                 'list'          => self::get_locations_list(),
                 'contacts'      => [
-                    'all'       => Disciple_Tools_Mapping_Queries::get_contacts_grid_totals(),
-                    'active'    => Disciple_Tools_Mapping_Queries::get_contacts_grid_totals( 'active' ),
-                    'paused'    => Disciple_Tools_Mapping_Queries::get_contacts_grid_totals( 'paused' ),
-                    'closed'    => Disciple_Tools_Mapping_Queries::get_contacts_grid_totals( 'closed' ),
+                    'all'       => Disciple_Tools_Mapping_Queries::query_contacts_location_grid_totals(),
+                    'active'    => Disciple_Tools_Mapping_Queries::query_contacts_location_grid_totals( 'active' ),
+                    'paused'    => Disciple_Tools_Mapping_Queries::query_contacts_location_grid_totals( 'paused' ),
+                    'closed'    => Disciple_Tools_Mapping_Queries::query_contacts_location_grid_totals( 'closed' ),
                 ],
                 'groups'        => [
-                    'all'       => Disciple_Tools_Mapping_Queries::get_groups_grid_totals(),
-                    'active'    => Disciple_Tools_Mapping_Queries::get_groups_grid_totals( 'active' ),
-                    'inactive'  => Disciple_Tools_Mapping_Queries::get_groups_grid_totals( 'inactive' ),
+                    'all'       => Disciple_Tools_Mapping_Queries::query_groups_location_grid_totals(),
+                    'active'    => Disciple_Tools_Mapping_Queries::query_groups_location_grid_totals( 'active' ),
+                    'inactive'  => Disciple_Tools_Mapping_Queries::query_groups_location_grid_totals( 'inactive' ),
                 ],
                 'churches'      => [
-                    'all'       => Disciple_Tools_Mapping_Queries::get_church_grid_totals(),
-                    'active'    => Disciple_Tools_Mapping_Queries::get_church_grid_totals( 'active' ),
-                    'inactive'  => Disciple_Tools_Mapping_Queries::get_church_grid_totals( 'inactive' ),
+                    'all'       => Disciple_Tools_Mapping_Queries::query_church_location_grid_totals(),
+                    'active'    => Disciple_Tools_Mapping_Queries::query_church_location_grid_totals( 'active' ),
+                    'inactive'  => Disciple_Tools_Mapping_Queries::query_church_location_grid_totals( 'inactive' ),
                 ],
                 'users'         => [
-                    'all'       => Disciple_Tools_Mapping_Queries::get_user_grid_totals(),
-                    'active'    => Disciple_Tools_Mapping_Queries::get_user_grid_totals( 'active' ),
-                    'inactive'  => Disciple_Tools_Mapping_Queries::get_user_grid_totals( 'inactive' ),
+                    'all'       => Disciple_Tools_Mapping_Queries::query_user_location_grid_totals(),
+                    'active'    => Disciple_Tools_Mapping_Queries::query_user_location_grid_totals( 'active' ),
+                    'inactive'  => Disciple_Tools_Mapping_Queries::query_user_location_grid_totals( 'inactive' ),
                 ]
             ],
             'date'       => current_time( 'timestamp' ),
@@ -379,11 +379,12 @@ class Disciple_Tools_Snapshot_Report {
 
         // Add critical path
 
-        if ( ! class_exists( 'Disciple_Tools_Metrics_Hooks_Base' ) ) {
-            require_once( get_template_directory() . '/dt-metrics/metrics.php' );
+        if ( ! class_exists( 'DT_Metrics_Contacts_Overview' ) ) {
+            require_once( get_template_directory() . '/dt-metrics/contacts/overview.php' );
         }
+        $contacts = new DT_Metrics_Contacts_Overview();
 
-        $critical_path = Disciple_Tools_Metrics_Hooks_Base::query_project_contacts_progress();
+        $critical_path = $contacts->query_project_contacts_progress();
         foreach ( $critical_path as $path ) {
             $data['critical_path'][ $path['key'] ] = $path;
         }
@@ -780,8 +781,11 @@ class Disciple_Tools_Snapshot_Report {
             $labels[ $key ] = $value['label'];
         }
 
-        require_once( get_template_directory() . '/dt-metrics/metrics.php' );
-        $results = Disciple_Tools_Metrics_Hooks_Base::query_project_contacts_progress();
+        require_once( get_template_directory() . '/dt-metrics/contacts/overview.php' );
+
+        $contacts = new DT_Metrics_Contacts_Overview();
+
+        $results = $contacts->query_project_contacts_progress();
         if ( empty( $results ) || is_wp_error( $results ) ) {
             $results = [];
         }

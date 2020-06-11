@@ -51,7 +51,6 @@ else {
         }
 
 
-
         /**
          * Load Language Files
          */
@@ -143,10 +142,7 @@ else {
              */
             $this->token = 'disciple_tools';
             $this->version = '0.30.0';
-            $this->migration_number = 30;
-
-
-
+            $this->migration_number = 31;
 
             $this->theme_url = get_template_directory_uri() . '/';
             $this->theme_path = get_template_directory() . '/';
@@ -245,10 +241,6 @@ else {
              *
              * @posttype   Contacts       Post type for contact storage
              * @posttype   Groups         Post type for groups storage
-             * @posttype   Locations      Post type for location information.
-             * @posttype   People Groups  (optional) Post type for people groups
-             * @posttype   Prayer         Post type for prayer movement updates.
-             * @posttype   Project        Post type for movement project updates. (These updates are intended to be for extended owners of the movement project, and different than the prayer guide published in the prayer post type.)
              * @taxonomies
              * @service    Post to Post connections
              * @service    User groups via taxonomies
@@ -256,6 +248,7 @@ else {
 
             require_once( get_template_directory() . '/dt-core/admin/site-link-post-type.php' );
             Site_Link_System::instance( 100, 'dashicons-admin-links' );
+
 
             /**
              * dt-posts
@@ -316,6 +309,7 @@ else {
              * dt-metrics
              */
             require_once( get_template_directory() . '/dt-metrics/counter.php' );
+            require_once( get_template_directory() . '/dt-metrics/charts-base.php' );
             if ( strpos( $url_path, 'metrics' ) !== false ) {
                 require_once( get_template_directory() . '/dt-metrics/metrics.php' );
             }
@@ -332,7 +326,9 @@ else {
                 require_once( get_template_directory() . '/dt-users/users-product-tour.php' );
             }
             require_once( get_template_directory() . '/dt-users/user-management.php' );
-            new DT_User_Management();
+            require_once( get_template_directory() . '/dt-users/hover-coverage-map.php' );
+            require_once( get_template_directory() . '/dt-users/mapbox-coverage-map.php' );
+
 
             /**
              * dt-notifications
@@ -378,7 +374,7 @@ else {
             require_once( get_template_directory() . '/dt-network/network.php' );
             require_once( get_template_directory() . '/dt-network/network-queries.php' );
 
-            require_once( get_template_directory() . '/dt-core/admin/gdpr.php' );
+
             require_once( get_template_directory() . '/dt-core/multisite.php' );
 
             /**
@@ -421,8 +417,8 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-people-groups.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-utilities-overview.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-fields.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr-erase.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr-export.php' );
+
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr.php' );
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-metrics.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-metrics-reports.php' );

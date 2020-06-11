@@ -307,7 +307,7 @@ function dt_site_scripts() {
         $contact = [];
         if ( DT_Mapbox_API::get_key() ) {
             DT_Mapbox_API::load_mapbox_header_scripts();
-            DT_Mapbox_API::load_mapbox_search_widget();
+            DT_Mapbox_API::load_mapbox_search_widget_users();
             $dependencies[] = 'mapbox-search-widget';
             $dependencies[] = 'mapbox-gl';
             $contact = DT_Posts::get_post( 'contacts', intval( $contact_id ), false, false );

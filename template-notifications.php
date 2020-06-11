@@ -65,8 +65,7 @@ get_header(); ?>
                     </div>
                 </div>
 
-                <div id="notification-list" class="grid-x">
-                </div>
+                <div id="notification-list" class="grid-x"><span class="loading-spinner active" style="margin:1em;"></span></div>
 
                 <div class="grid-x">
                     <div class="cell">

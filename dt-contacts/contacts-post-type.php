@@ -454,6 +454,7 @@ class Disciple_Tools_Contact_Post_Type
                 'transfer'             => [ "label" => _x( 'Transferred contact to partner', 'Reason Closed label', 'disciple_tools' ) ],
                 'martyred'             => [ "label" => _x( 'Martyred', 'Reason Closed label', 'disciple_tools' ) ],
                 'moved'                => [ "label" => _x( 'Moved or relocated', 'Reason Closed label', 'disciple_tools' ) ],
+                'gdpr'                 => [ "label" => _x( 'GDPR request', 'Reason Closed label', 'disciple_tools' ) ],
                 'unknown'              => [ "label" => _x( 'Unknown', 'Reason Closed label', 'disciple_tools' ) ]
             ],
             'section'     => 'misc',
@@ -467,12 +468,36 @@ class Disciple_Tools_Contact_Post_Type
             'hidden'      => true
         ];
 
-        $sources_default = [];
+        $sources_default = [
+            'personal'           => [
+                'label'       => __( 'Personal', 'disciple_tools' ),
+                'key'         => 'personal',
+            ],
+            'web'           => [
+                'label'       => __( 'Web', 'disciple_tools' ),
+                'key'         => 'web',
+            ],
+            'facebook'      => [
+                'label'       => __( 'Facebook', 'disciple_tools' ),
+                'key'         => 'facebook',
+            ],
+            'twitter'       => [
+                'label'       => __( 'Twitter', 'disciple_tools' ),
+                'key'         => 'twitter',
+            ],
+            'transfer' => [
+                'label'       => __( 'Transfer', 'disciple_tools' ),
+                'key'         => 'transfer',
+                'description' => __( 'Contacts transferred from a partnership with another Disciple.Tools site.', 'disciple_tools' ),
+            ]
+        ];
         foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $key => $value ) {
-            if ( isset( $value['enabled'] ) && $value["enabled"] === false ) {
-                $value["deleted"] = true;
+            if ( !isset( $sources_default[$key] ) ) {
+                if ( isset( $value['enabled'] ) && $value["enabled"] === false ) {
+                    $value["deleted"] = true;
+                }
+                $sources_default[ $key ] = $value;
             }
-            $sources_default[ $key ] = $value;
         }
 
         $fields['sources'] = [
@@ -547,7 +572,9 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'key_select',
             'default'     => [
                 'media'    => [ "label" => __( 'Media', 'disciple_tools' ) ],
-                'next_gen' => [ "label" => __( 'Next Generation', 'disciple_tools' ) ],
+                'seeker' => [ "label" => __( 'Seeker', 'disciple_tools' ) ],
+                'believer' => [ "label" => __( 'Believer', 'disciple_tools' ) ],
+                'leader' => [ "label" => __( 'Leader', 'disciple_tools' ) ],
                 'user'     => [ "label" => __( 'User', 'disciple_tools' ) ]
             ],
             'section'     => 'misc',
@@ -724,7 +751,7 @@ class Disciple_Tools_Contact_Post_Type
                     if ( !isset( $fields[ $key ] ) ) {
                         $fields[ $key ] = $field;
                     } else {
-                        if ( isset( $field["name"] ) ) {
+                        if ( !empty( $field["name"] ) ) {
                             $fields[ $key ]["name"] = $field["name"];
                         }
                         if ( isset( $field["tile"] ) ) {
@@ -732,6 +759,11 @@ class Disciple_Tools_Contact_Post_Type
                         }
                         if ( $field_type === "key_select" || $field_type === "multi_select" ) {
                             if ( isset( $field["default"] ) ) {
+                                foreach ( $field["default"] as $custom_key => &$custom_value ) {
+                                    if ( isset( $custom_value["label"] ) && empty( $custom_value["label"] ) ) {
+                                        unset( $custom_value["label"] );
+                                    }
+                                }
                                 $fields[ $key ]["default"] = array_replace_recursive( $fields[ $key ]["default"], $field["default"] );
                             }
                         }

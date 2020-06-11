@@ -1,7 +1,10 @@
+/** Mapbox search box widget for users */
 jQuery(document).ready(function(){
+  console.log('mapbox-users')
+  console.log(dtMapbox)
 
   // load widget
-  if ( dtMapbox.post.length !== 0 ) {
+  if ( dtMapbox.user_location.length !== 0 ) {
     write_results_box()
   }
   jQuery( '#new-mapbox-search' ).on( "click", function() {
@@ -13,9 +16,9 @@ jQuery(document).ready(function(){
 function write_results_box() {
   jQuery('#mapbox-wrapper').empty().append(`<div class="grid-x" style="width:100%;" id="location-grid-meta-results"></div>`)
 
-  if ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) {
+  if ( dtMapbox.user_location.location_grid_meta !== undefined && dtMapbox.user_location.location_grid_meta.length !== 0 ) {
     let lgm_results = jQuery('#location-grid-meta-results')
-    jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
+    jQuery.each( dtMapbox.user_location.location_grid_meta, function(i,v) {
       lgm_results.append(`<div class="cell small-10">${v.label}</div>
                           <div class="cell small-2">
                               <a class="button clear delete-button mapbox-delete-button small float-right" data-id="${v.grid_meta_id}">
@@ -31,9 +34,9 @@ function write_results_box() {
 function write_result_list() {
   jQuery('#mapbox-list').empty()
 
-  if ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) {
+  if ( dtMapbox.user_location.location_grid_meta !== undefined && dtMapbox.user_location.location_grid_meta.length !== 0 ) {
     let lgm_results = jQuery('#location-grid-meta-results')
-    jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
+    jQuery.each( dtMapbox.user_location.location_grid_meta, function(i,v) {
       lgm_results.append(`<li>${v.label}</li>`)
     })
 
@@ -45,19 +48,21 @@ function delete_location_listener() {
   jQuery( '.mapbox-delete-button' ).on( "click", function(e) {
 
     let data = {
-      location_grid_meta: {
-        values: [
+      user_id: dtMapbox.user_id,
+      user_location: {
+        location_grid_meta: [
           {
             grid_meta_id: jQuery(this).data("id"),
-            delete: true,
           }
         ]
       }
     }
 
-    API.update_post( dtMapbox.post_type, dtMapbox.post_id, data ).then(function (response) {
+    makeRequest( "DELETE", `users/user_location`, data )
+    .then(function (response) {
       console.log( response )
-      dtMapbox.post = response
+      dtMapbox.user_location = response.user_location
+      dtMapbox.user_id = response.user_id
       write_results_box()
     }).catch(err => { console.error(err) })
 
@@ -208,8 +213,9 @@ function close_all_lists(selection_id) {
   let spinner = jQuery('#mapbox-spinner-button').show()
 
   let data = {
-    location_grid_meta: {
-      values: [
+    user_id: dtMapbox.user_id,
+    user_location: {
+      location_grid_meta: [
         {
           lng: window.mapbox_result_features[selection_id].center[0],
           lat: window.mapbox_result_features[selection_id].center[1],
@@ -222,21 +228,18 @@ function close_all_lists(selection_id) {
   }
 
   if ( jQuery('#mapbox-autocomplete').data('autosubmit') ) {
-    /* if post_type = user, else all other post types */
-    API.update_post( dtMapbox.post_type, dtMapbox.post_id, data ).then(function (response) {
-      console.log( response )
-
-      dtMapbox.post = response
-      jQuery('#mapbox-wrapper').empty()
-      write_results_box()
-
-    }).catch(err => { console.error(err) })
-
+    makeRequest( "POST", `users/user_location`, data )
+      .done(response => {
+        console.log(response)
+        dtMapbox.user_location = response.user_location
+        dtMapbox.user_id = response.user_id
+        write_results_box()
+      })
+      .catch(err => { console.error(err) })
   } else {
     window.selected_location_grid_meta = data
     spinner.hide()
   }
-
 }
 
 function get_label_without_country( label, feature ) {

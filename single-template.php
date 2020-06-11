@@ -49,8 +49,6 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                 <?php do_action( 'dt_post_status_bar' ); ?>
                             </div>
 
-<!--                            <hr />-->
-
                             <!--
                                 Details section
                             -->

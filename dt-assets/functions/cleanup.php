@@ -217,4 +217,3 @@ function dt_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
 
     return $urls;
 }
-

@@ -920,18 +920,11 @@ Please click the following link to confirm the invite:
         }
         return $val;
     }
-
-
     public function user_deleted( $user_id, $blog_id = null ){
         $corresponds_to_contact = self::get_contact_for_user( $user_id );
         if ( $corresponds_to_contact ){
             delete_post_meta( $corresponds_to_contact, "corresponds_to_user" );
         }
-    }
-
-    public function add_current_locations_list( $custom_data ) {
-        $custom_data['current_locations'] = DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( get_current_user_id() ) );
-        return $custom_data;
     }
     public function add_date_availability( $custom_data ) {
         $dates_unavailable = get_user_option( "user_dates_unavailable", get_current_user_id() );
@@ -946,17 +939,21 @@ Please click the following link to confirm the invite:
         return $custom_data;
     }
 
+    public function add_current_locations_list( $custom_data ) {
+        $custom_data['current_locations'] = DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( get_current_user_id() ) );
+        return $custom_data;
+    }
+
     public static function add_user_location( $grid_id, $user_id = null ) {
         if ( empty( $user_id ) ) {
             $user_id = get_current_user_id();
         }
-        $corresponds_to_contact = self::get_contact_for_user( $user_id );
-        if ( $corresponds_to_contact ){
-            $other_values = get_post_meta( $corresponds_to_contact, 'location_grid' );
-            if ( array_search( $grid_id, $other_values ) === false ) {
-                add_post_meta( $corresponds_to_contact, 'location_grid', $grid_id, false );
-                return true;
-            }
+
+        global $wpdb;
+        $umeta_id = add_user_meta( $user_id, $wpdb->prefix . 'location_grid', $grid_id );
+
+        if ( $umeta_id ) {
+            return true;
         }
         return false;
     }
@@ -965,11 +962,121 @@ Please click the following link to confirm the invite:
         if ( empty( $user_id ) ) {
             $user_id = get_current_user_id();
         }
-        $corresponds_to_contact = self::get_contact_for_user( $user_id );
-        if ( $corresponds_to_contact ){
-            delete_post_meta( $corresponds_to_contact, 'location_grid', $grid_id );
+
+        global $wpdb;
+        $umeta_id = delete_user_meta( $user_id, $wpdb->prefix . 'location_grid', $grid_id );
+        if ( $umeta_id ) {
             return true;
         }
         return false;
     }
+
+    /**
+     *
+     * @param $location_grid_meta
+     * @param null $user_id
+     * @return array|bool|int|WP_Error
+     */
+    public static function add_user_location_meta( $location_grid_meta, $user_id = null ) {
+        if ( empty( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+
+        // use grid_id as primary value
+        if ( isset( $location_grid_meta["grid_id"] ) && ! empty( $location_grid_meta["grid_id"] ) ) {
+            $geocoder = new Location_Grid_Geocoder();
+
+            $grid = $geocoder->query_by_grid_id( $location_grid_meta["grid_id"] );
+            if ($grid) {
+                $lgm = [];
+
+                Location_Grid_Meta::validate_location_grid_meta( $lgm );
+                $lgm['post_id'] = $user_id;
+                $lgm['post_type'] = 'users';
+                $lgm['grid_id'] = $grid["grid_id"];
+                $lgm['lng'] = $grid["longitude"];
+                $lgm['lat'] = $grid["latitude"];
+                $lgm['level'] = $grid["level_name"];
+                $lgm['label'] = $geocoder->_format_full_name( $grid );
+
+                $umeta_id = Location_Grid_Meta::add_user_location_grid_meta( $user_id, $lgm );
+                if (is_wp_error( $umeta_id )) {
+                    return $umeta_id;
+                }
+            }
+        // use lng lat as base value
+        } else {
+
+            if (empty( $location_grid_meta['lng'] ) || empty( $location_grid_meta['lat'] )) {
+                return new WP_Error( __METHOD__, 'Missing required lng or lat' );
+            }
+
+            $umeta_id = Location_Grid_Meta::add_user_location_grid_meta( $user_id, $location_grid_meta );
+        }
+
+        if ( $umeta_id ) {
+            return self::get_user_location( $user_id );
+        }
+        return false;
+    }
+
+    public static function delete_user_location_meta( $grid_meta_id, $user_id = null ) {
+        if ( empty( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+
+        return Location_Grid_Meta::delete_user_location_grid_meta( $user_id, 'grid_meta_id', $grid_meta_id );
+    }
+
+    public static function get_user_location( $user_id = null ) {
+        if ( empty( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+        $grid = [];
+
+        global $wpdb;
+        if ( DT_Mapbox_API::get_key() ) {
+            $location_grid = get_user_meta( $user_id, $wpdb->prefix . 'location_grid_meta' );
+            $grid['location_grid_meta'] = [];
+            foreach ( $location_grid as $meta ) {
+                $location_grid_meta = Location_Grid_Meta::get_location_grid_meta_by_id( $meta );
+                if ( $location_grid_meta ) {
+                    $grid['location_grid_meta'][] = $location_grid_meta;
+                }
+            }
+            $grid['location_grid'] = [];
+            foreach ( $grid['location_grid_meta'] as $meta ) {
+                $grid['location_grid'][] = [
+                    'id' => (int) $meta['grid_id'],
+                    'label' => $meta['label']
+                ];
+            }
+        } else {
+            $location_grid = get_user_meta( $user_id, $wpdb->prefix . 'location_grid' );
+            if ( ! empty( $location_grid ) ) {
+                $names = Disciple_Tools_Mapping_Queries::get_names_from_ids( $location_grid );
+                $grid['location_grid'] = [];
+                foreach ( $names as $id => $name ) {
+                    $grid['location_grid'][] = [
+                        "id" => $id,
+                        "label" => $name
+                    ];
+                }
+            }
+        }
+
+        return $grid;
+    }
+
+    public static function copy_locations_from_contact_to_user( $contact_id, $user_id ) {
+        // @todo finish writing transfer
+        $contact_meta = get_post_meta( $contact_id, 'location_grid' );
+        if ( ! empty( $contact_meta ) ) {
+            foreach ( $contact_meta as $item ) {
+                dt_write_log( $item );
+            }
+        }
+    }
+
+
 }

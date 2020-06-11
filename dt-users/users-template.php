@@ -289,6 +289,7 @@ function dt_build_user_fields_display( array $usermeta ): array
 {
     $fields = [];
 
+    $default_user_fields = dt_get_site_custom_lists()["user_fields"];
     $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
     if ( ! $site_custom_lists ) {
         return [];
@@ -298,6 +299,9 @@ function dt_build_user_fields_display( array $usermeta ): array
     foreach ( $site_user_fields as $key => $value ) {
         if ( $value['enabled'] ) { // if the site field is enabled
             $i = 0;
+            if ( isset( $default_user_fields[$key]["label"] ) ){
+                $value["label"] = $default_user_fields[$key]["label"];
+            }
 
             foreach ( $usermeta as $k => $v ) {
                 if ( $key == $k ) {

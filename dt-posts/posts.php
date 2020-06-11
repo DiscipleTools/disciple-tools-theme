@@ -1229,7 +1229,7 @@ class Disciple_Tools_Posts
                 if ( isset( $field["force_values"] ) && $field["force_values"] == true ){
                     delete_post_meta( $post_id, 'location_grid' );
                     delete_post_meta( $post_id, 'location_grid_meta' );
-                    $geocoder->delete_location_grid_meta( $post_id, 'all', null );
+                    Location_Grid_Meta::add_location_grid_meta( $post_id, 'all', null );
                     $existing_post[ $field_key ] = [];
                 }
 
@@ -1238,7 +1238,7 @@ class Disciple_Tools_Posts
 
                     // delete
                     if ( isset( $value["delete"] ) && $value["delete"] == true ) {
-                        $geocoder->delete_location_grid_meta( $post_id, 'grid_meta_id', $value["grid_meta_id"], $existing_post );
+                        Location_Grid_Meta::add_location_grid_meta( $post_id, $value["grid_meta_id"], $existing_post );
                     }
 
                     // is new but has provided grid_id
@@ -1247,7 +1247,7 @@ class Disciple_Tools_Posts
                         if ( $grid ) {
                             $location_meta_grid = [];
 
-                            $geocoder->validate_location_grid_meta( $location_meta_grid );
+                            Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
                             $location_meta_grid['post_id'] = $post_id;
                             $location_meta_grid['post_type'] = $post_type;
                             $location_meta_grid['grid_id'] = $grid["grid_id"];
@@ -1256,7 +1256,7 @@ class Disciple_Tools_Posts
                             $location_meta_grid['level'] = $grid["level_name"];
                             $location_meta_grid['label'] = $grid["name"];
 
-                            $potential_error = $geocoder->add_location_grid_meta( $post_id, $location_meta_grid );
+                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
                             if ( is_wp_error( $potential_error ) ){
                                 return $potential_error;
                             }
@@ -1265,7 +1265,7 @@ class Disciple_Tools_Posts
                     // new
                     else {
 
-                        $geocoder->validate_location_grid_meta( $value );
+                        Location_Grid_Meta::validate_location_grid_meta( $value );
 
                         if ( $value['level'] === 'country' ) {
                             $value['level'] = 'admin0';
@@ -1279,7 +1279,7 @@ class Disciple_Tools_Posts
                             $value['grid_id'] = $grid['grid_id'];
                             $value['post_type'] = $post_type;
 
-                            $potential_error = $geocoder->add_location_grid_meta( $post_id, $value );
+                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $value );
                             if ( is_wp_error( $potential_error ) ){
                                 return $potential_error;
                             }
@@ -1766,7 +1766,7 @@ class Disciple_Tools_Posts
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'location_meta' ) {
                     $fields[$key] = [];
                     foreach ( $value as $meta ) {
-                        $location_grid_meta = Location_Grid_Geocoder::get_location_grid_meta_by_id( $meta );
+                        $location_grid_meta = Location_Grid_Meta::get_location_grid_meta_by_id( $meta );
                         if ( $location_grid_meta ) {
                             $fields[$key][] = $location_grid_meta;
                         }

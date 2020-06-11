@@ -78,14 +78,19 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $post_type = null;
             $this->template( 'begin' );
 
-            if ( isset( $_POST['field_select_nonce'] ) ){
-                if ( !wp_verify_nonce( sanitize_key( $_POST['field_select_nonce'] ), 'field_select' ) ) {
+            if ( !empty( $_GET["field-select"] ) ){
+                $field = explode( "_", sanitize_text_field( wp_unslash( $_GET["field-select"] ) ), 2 );
+                $field_key = $field[1];
+                $post_type = $field[0];
+            }
+            if ( isset( $_GET['field_select_nonce'] ) ){
+                if ( !wp_verify_nonce( sanitize_key( $_GET['field_select_nonce'] ), 'field_select' ) ) {
                     return;
                 }
-                if ( isset( $_POST["show_add_new_field"] ) ){
+                if ( isset( $_GET["show_add_new_field"] ) ){
                     $show_add_field = true;
-                } else if ( !empty( $_POST["field-select"] ) ){
-                    $field = explode( "_", sanitize_text_field( wp_unslash( $_POST["field-select"] ) ), 2 );
+                } else if ( !empty( $_GET["field-select"] ) ){
+                    $field = explode( "_", sanitize_text_field( wp_unslash( $_GET["field-select"] ) ), 2 );
                     $field_key = $field[1];
                     $post_type = $field[0];
                 }
@@ -166,8 +171,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         }
 
         ?>
-        <form method="post">
+        <form method="get">
             <input type="hidden" name="field_select_nonce" id="field_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_select' ) ) ?>" />
+            <input type="hidden" name="page" value="dt_options" />
+            <input type="hidden" name="tab" value="custom-fields" />
             <table>
                 <tr>
                     <td style="vertical-align: middle">
@@ -208,8 +215,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     private function edit_field( $field_key, $post_type ){
 
         $post_fields = $this->get_post_fields( $post_type );
-        if ( !isset( $post_fields[$field_key]["default"] ) ) {
-            wp_die( 'Failed to get dt_site_custom_lists() from options table. Or field is missing the "default" field key' );
+        if ( !isset( $post_fields[$field_key] ) ) {
+            wp_die( 'Failed to get find field' );
         }
         $field = $post_fields[$field_key];
 
@@ -229,7 +236,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $defaults = Disciple_Tools_Groups_Post_Type::instance()->get_group_field_defaults();
         }
 
-        $field_options = $field["default"];
+        $field_options = $field["default"] ?? [];
 
         $first = true;
         $tile_options = dt_get_option( "dt_custom_tiles" );
@@ -255,7 +262,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <thead>
             <tr>
                 <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
-                <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
+                <td><?php esc_html_e( "Default Name", 'disciple_tools' ) ?></td>
+                <td><?php esc_html_e( "Custom Name", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Tile", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
                 <td></td>
@@ -268,7 +276,16 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <?php echo esc_html( $field_key ) ?>
                     </td>
                     <td>
-                        <input name="field_key_<?php echo esc_html( $field_key )?>" type="text" value="<?php echo esc_html( $field["name"] ) ?>"/>
+                        <?php if ( !empty( $defaults[$field_key]["name"] ) ) : ?>
+                            <?php echo esc_html( $defaults[$field_key]["name"] ); ?> <br>
+                        <?php endif; ?>
+                    </td>
+                    <td>
+                        <?php $name = ( isset( $defaults[$field_key]["name"] ) && $field["name"] !== $defaults[$field_key]["name"] ) ? $field["name"] : ''; ?>
+                        <input name="field_key_<?php echo esc_html( $field_key )?>" type="text" value="<?php echo esc_html( $name ) ?>"/>
+                        <?php if ( !empty( $name ) ) : ?>
+                        <button title="submit" class="button" name="delete_custom_label">Delete</button>
+                        <?php endif; ?>
                     </td>
                     <td>
                         <?php if ( !isset( $defaults[$field_key] ) ) : ?>
@@ -335,7 +352,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <thead>
                     <tr>
                         <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( "Default Label", 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( "Custom Label", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Move", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Hide/Archive", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
@@ -353,7 +371,17 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                     <?php echo esc_html( $key ) ?>
                                 </td>
                                 <td>
-                                    <input name="field_option_<?php echo esc_html( $key )?>" type="text" value="<?php echo esc_html( $label ) ?>"/>
+                                    <?php if ( !empty( $defaults[$field_key]["default"][$key]["label"] ) ) : ?>
+                                        <?php echo esc_html( $defaults[$field_key]["default"][$key]["label"] ); ?> <br>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+
+                                    <?php $name = ( isset( $defaults[$field_key]["default"][$key]["label"] ) && $label === $defaults[$field_key]["default"][$key]["label"] ) ? '' : $label ?>
+                                    <input name="field_option_<?php echo esc_html( $key )?>" type="text" value="<?php echo esc_html( $name ) ?>"/>
+                                    <?php if ( isset( $defaults[$field_key]["default"][$key]["label"] ) && !empty( $name ) ) : ?>
+                                    <button title="submit" class="button" name="delete_option_label" value="<?php echo esc_html( $key ) ?>">Delete</button>
+                                    <?php endif; ?>
                                 </td>
                                 <td>
                                     <?php if ( !$first ) : ?>
@@ -452,9 +480,16 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         $langcode = $val['language'];
                         $translation_key = "field_key_" . $field_key . "_translation-" . $langcode;
                         if ( isset( $post_submission[$translation_key] ) ) {
-                            $custom_field["translations"][$langcode] = $post_submission[$translation_key];
+                            if ( empty( $post_submission[$translation_key] ) && isset( $custom_field["translations"][$langcode] ) ){
+                                unset( $post_submission[$translation_key] );
+                            } elseif ( !empty( $post_submission[$translation_key] ) ) {
+                                $custom_field["translations"][$langcode] = $post_submission[$translation_key];
+                            }
                         }
                     }
+                }
+                if ( isset( $post_submission["delete_custom_label"], $custom_field["name"] ) ){
+                    unset( $custom_field["name"] );
                 }
                 if ( isset( $post_submission["tile_select"] ) ){
                     $custom_field["tile"] = $post_submission["tile_select"];
@@ -469,12 +504,16 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             if ( strpos( $translation_langcode, '-' ) !== false ) {
                                 $translation_langcode = substr( $translation_langcode, 3 );
                             }
-                            $custom_field["default"][$option_key]["translations"][$translation_langcode] = $val;
+                            if ( empty( $val ) && isset( $custom_field["default"][$option_key]["translations"][$translation_langcode] ) ){
+                                unset( $custom_field["default"][$option_key]["translations"][$translation_langcode] );
+                            } elseif ( !empty( $val ) ) {
+                                $custom_field["default"][$option_key]["translations"][$translation_langcode] = $val;
+                            }
                         } else {
                             $option_key = substr( $key, 13 );
-                            if ( isset( $field_options[$option_key]["label"] ) ){
-                                if ( $field_options[$option_key]["label"] != $val ){
-                                    $custom_field[$option_key]["label"] = $val;
+                            if ( !empty( $val ) ){
+                                if ( !isset( $field_options[$option_key]["label"] ) || $field_options[$option_key]["label"] != $val ){
+                                    $custom_field["default"][$option_key]["label"] = $val;
                                 }
                                 $field_options[$option_key]["label"] = $val;
                             }
@@ -485,6 +524,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 if ( isset( $post_submission["delete_option"] ) ){
                     $custom_field["default"][$post_submission["delete_option"]]["deleted"] = true;
                     $field_options[ $post_submission["delete_option"] ]["deleted"] = true;
+                }
+                //delete custom label
+                if ( isset( $post_submission["delete_option_label"] ) ){
+                    unset( $custom_field["default"][$post_submission["delete_option_label"]]["label"] );
+                    unset( $field_options["default"][$post_submission["delete_option_label"]]["label"] );
                 }
                 //delete option
                 if ( isset( $post_submission["restore_option"] ) ){
@@ -521,9 +565,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     }
                 }
             }
-            if ( !empty( $custom_field )){
-                $field_customizations[$post_type][$field_key] = $custom_field;
-            }
+            $field_customizations[$post_type][$field_key] = $custom_field;
             update_option( "dt_field_customizations", $field_customizations );
             wp_cache_delete( $post_type . "_field_settings" );
         }

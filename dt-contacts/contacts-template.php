@@ -99,6 +99,10 @@ function render_field_for_display( $field_key, $fields, $post ){
             <input id="<?php echo esc_html( $field_key ) ?>" type="text"
                    class="text-input"
                    value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>"/>
+        <?php elseif ( $field_type === "number" ) :?>
+            <input id="<?php echo esc_html( $field_key ) ?>" type="number"
+                   class="text-input"
+                   value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>"/>
         <?php elseif ( $field_type === "date" ) :?>
             <div class="<?php echo esc_html( $field_key ) ?> input-group">
                 <input id="<?php echo esc_html( $field_key ) ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off"

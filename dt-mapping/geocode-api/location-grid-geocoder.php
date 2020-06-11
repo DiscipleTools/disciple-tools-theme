@@ -44,17 +44,17 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             }
 
             // get results
-            if ( $level === 'admin5' ) { // get admin2 only
+            if ( $level === 'admin5' || $level === 5 ) { // get admin2 only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 5 );
-            } else if ( $level === 'admin4' ) { // get admin2 only
+            } else if ( $level === 'admin4' || $level === 4 ) { // get admin2 only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 4 );
-            } else if ( $level === 'admin3' ) { // get admin2 only
+            } else if ( $level === 'admin3' || $level === 3 ) { // get admin2 only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 3 );
-            } else if ( $level === 'admin2' ) { // get admin2 only
+            } else if ( $level === 'admin2' || $level === 2 ) { // get admin2 only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 2 );
-            } else if ( $level === 'admin1' ) { // get admin1 only
+            } else if ( $level === 'admin1' || $level === 1 ) { // get admin1 only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 1 );
-            } else if ( $level === 'admin0' ) { // get country only
+            } else if ( $level === 'admin0' || $level === 0 ) { // get country only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 0 );
             } else { // get lowest match
                 $results = $this->query_lowest_level_by_lnglat( $longitude, $latitude, $country_code );
@@ -584,7 +584,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 $query = $wpdb->get_results( "
                 SELECT g.country_code, g.admin0_code, MAX(g.level) as level
                 FROM $wpdb->dt_location_grid as g
-                WHERE g.level < 10 
+                WHERE g.level < 10
                 GROUP BY g.admin0_code, g.country_code;
             ", ARRAY_A );
                 if ( empty( $query ) ) {
@@ -626,7 +626,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             LEFT JOIN $wpdb->dt_location_grid as a3 ON g.admin3_grid_id=a3.grid_id
             LEFT JOIN $wpdb->dt_location_grid as a4 ON g.admin4_grid_id=a4.grid_id
             LEFT JOIN $wpdb->dt_location_grid as a5 ON g.admin5_grid_id=a5.grid_id
-            WHERE 
+            WHERE
             g.north_latitude >= %f AND
             g.south_latitude <= %f AND
             g.west_longitude >= %f AND
@@ -723,22 +723,22 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 $query = $wpdb->get_col( $wpdb->prepare( "
                 SELECT grid_id
                 FROM $wpdb->dt_location_grid as g
-                WHERE 
+                WHERE
                 g.latitude <= %f AND
                 g.latitude >= %f AND
                 g.longitude >= %f AND
-                g.longitude <= %f AND 
+                g.longitude <= %f AND
                 g.level = %d
         ", $north_latitude, $south_latitude, $west_longitude, $east_longitude, $level ) );
             } else {
                 $query = $wpdb->get_col( $wpdb->prepare( "
                 SELECT grid_id
                 FROM $wpdb->dt_location_grid as g
-                WHERE 
+                WHERE
                 g.latitude <= %f AND
                 g.latitude >= %f AND
                 g.longitude >= %f AND
-                g.longitude <= %f 
+                g.longitude <= %f
         ", $north_latitude, $south_latitude, $west_longitude, $east_longitude ) );
             }
 
@@ -770,7 +770,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 g.north_latitude >= %f AND
                 g.south_latitude <= %f AND
                 g.west_longitude >= %f AND
-                g.east_longitude <= %f AND 
+                g.east_longitude <= %f AND
                 g.country_code = %s
                 ORDER BY g.level DESC
                 LIMIT 15;
@@ -948,194 +948,60 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             return $label;
         }
 
-        public function convert_ip_result_to_location_grid_meta( $ip_result ) {
-            if ( empty( $ip_result['longitude'] ) ) {
-                return false;
+        public static function filter_level( string $code, $number = false ) {
+            /**
+            @link https://docs.mapbox.com/api/search/#data-types
+            The data types available in the geocoder, listed from the largest to the most granular, are:
+
+            country         - Generally recognized countries or, in some cases like Hong Kong, an area of quasi-national administrative status that has been given a designated country code under ISO 3166-1.
+            region          - Top-level sub-national administrative features, such as states in the United States or provinces in Canada or China.
+            postcode        - Postal codes used in country-specific national addressing systems.
+            district        - Features that are smaller than top-level administrative features but typically larger than cities, in countries that use such an additional layer in postal addressing (for example, prefectures in China).
+            place           - Typically these are cities, villages, municipalities, etc. They’re usually features used in postal addressing, and are suitable for display in ambient end-user applications where current-location context is needed (for example, in weather displays).
+            locality        - Official sub-city features present in countries where such an additional administrative layer is used in postal addressing, or where such features are commonly referred to in local parlance. Examples include city districts in Brazil and Chile and arrondissements in France.
+            neighborhood    - Colloquial sub-city features often referred to in local parlance. Unlike locality features, these typically lack official status and may lack universally agreed-upon boundaries.
+            address         - Individual residential or business addresses.
+            poi             - Points of interest. These include restaurants, stores, concert venues, parks, museums, etc.
+            admin0-admin5   - Used by Location Grid for administrative levels
+             */
+
+            switch ( $code ) {
+                case 'world':
+                case 'continent':
+                    $level = ( $number ) ? -3 : 'world';
+                    break;
+                case 'admin0':
+                case 'country':
+                    $level = ( $number ) ? 0 : 'admin0';
+                    break;
+                case 'admin1':
+                case 'region':
+                    $level = ( $number ) ? 1 : 'admin1';
+                    break;
+                case 'postcode':
+                case 'admin2':
+                case 'district':
+                    $level = ( $number ) ? 2 : 'admin2';
+                    break;
+                case 'admin3':
+                    $level = ( $number ) ? 3 : 'admin3';
+                    break;
+                case 'admin4':
+                    $level = ( $number ) ? 4 : 'admin4';
+                    break;
+                case 'place':
+                case 'poi':
+                case 'address':
+                case 'lnglat':
+                case 'admin5':
+                case 'neighborhood':
+                    $level = ( $number ) ? 5 : 'admin5';
+                    break;
+                default:
+                    $level = '';
+                    break;
             }
-
-            // prioritize the smallest unit
-            if ( ! empty( $ip_result['city'] ) ) {
-                $label = $ip_result['city'] . ', ' . $ip_result['region_name'] . ', ' . $ip_result['country_name'];
-                $level = "district";
-            }
-            elseif ( ! empty( $ip_result['region_name'] ) ) {
-                $label = $ip_result['region_name'] . ', ' . $ip_result['country_name'];
-                $level = "region";
-            }
-            elseif ( ! empty( $ip_result['country_name'] ) ) {
-                $label = $ip_result['country_name'];
-                $level = "country";
-            }
-            elseif ( ! empty( $ip_result['continent_name'] ) ) {
-                $label = $ip_result['continent_name'];
-                $level = 'world';
-            }
-            else {
-                $label = '';
-                $level = '';
-            }
-
-            $grid_id = $this->get_grid_id_by_lnglat( $ip_result['longitude'], $ip_result['latitude'], $ip_result['country_code'] );
-
-            if ( empty( $label ) ) {
-                $admin0_grid_id = Disciple_Tools_Mapping_Queries::get_by_grid_id( $grid_id['admin0_grid_id'] );
-                $label = $grid_id['name'] . ', ' . $admin0_grid_id['name'];
-            }
-
-            $location_grid_meta = [
-                'lng' => $ip_result['longitude'] ?? '',
-                'lat' => $ip_result['latitude'] ?? '',
-                'level' => $level,
-                'label' => $label,
-                'source' => 'ip',
-                'grid_id' => $grid_id['grid_id'] ?? '',
-            ];
-
-            $this->validate_location_grid_meta( $location_grid_meta );
-
-            return $location_grid_meta;
-        }
-
-        public function validate_location_grid_meta( &$location_grid_meta = null ) : array {
-
-            if ( empty( $location_grid_meta ) ) {
-                $location_grid_meta = [
-                    'grid_meta_id' => '',
-                    'post_id' => '',
-                    'post_type' => '',
-                    'grid_id' => '',
-                    'lng' => '',
-                    'lat' => '',
-                    'level' => '',
-                    'source' => '',
-                    'label' => '',
-                ];
-            }
-            else if ( is_serialized( $location_grid_meta ) ) {
-                $location_grid_meta = maybe_unserialize( $location_grid_meta );
-            }
-
-            $filtered_array = [];
-
-            $filtered_array['grid_meta_id'] = isset( $location_grid_meta['grid_meta_id'] ) ? sanitize_text_field( wp_unslash( $location_grid_meta['grid_meta_id'] ) ) : '';
-            $filtered_array['post_id'] = isset( $location_grid_meta['post_id'] ) ? sanitize_text_field( wp_unslash( $location_grid_meta['post_id'] ) ) : '';
-            $filtered_array['post_type'] = isset( $location_grid_meta['post_type'] ) ? sanitize_text_field( wp_unslash( $location_grid_meta['post_type'] ) ) : '';
-            $filtered_array['grid_id'] = isset( $location_grid_meta['grid_id'] ) ? sanitize_text_field( wp_unslash( $location_grid_meta['grid_id'] ) ) : '';
-            $filtered_array['lng'] = isset( $location_grid_meta['lng'] ) ? sanitize_text_field( wp_unslash( $location_grid_meta['lng'] ) ) : '';
-            $filtered_array['lat'] = isset( $location_grid_meta['lat'] ) ? sanitize_text_field( wp_unslash( $location_grid_meta['lat'] ) ) : '';
-            $filtered_array['level'] = ( isset( $location_grid_meta['level'] ) && ! empty( $location_grid_meta['level'] ) ) ? sanitize_text_field( wp_unslash( $location_grid_meta['level'] ) ) : 'place';
-            $filtered_array['source'] = ( isset( $location_grid_meta['source'] ) && ! empty( $location_grid_meta['source'] ) ) ? sanitize_text_field( wp_unslash( $location_grid_meta['source'] ) ) : 'user';
-            $filtered_array['label'] = isset( $location_grid_meta['label'] ) ? sanitize_text_field( wp_unslash( $location_grid_meta['label'] ) ) : '';
-
-            return $filtered_array;
-        }
-
-        public static function get_location_grid_meta_by_id( $grid_meta_id ) {
-            global $wpdb;
-            return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $grid_meta_id ), ARRAY_A );
-        }
-
-        public function delete_location_grid_meta( int $post_id, $type, int $value, array $existing_post = null ) {
-            global $wpdb;
-
-            $status = false;
-
-            if ( 'all' === $type ) {
-                $wpdb->delete( $wpdb->dt_location_grid_meta, [ "post_id" => $post_id ] );
-                $status = true;
-            }
-
-            if ( $value ) {
-
-                switch ( $type ) {
-                    case 'grid_meta_id':
-                        $postmeta_id_location_grid = $wpdb->get_var( $wpdb->prepare( "SELECT postmeta_id_location_grid FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $value ) );
-
-                        delete_metadata_by_mid( 'post', $postmeta_id_location_grid );
-                        $wpdb->delete( $wpdb->dt_location_grid_meta, [
-                            "post_id" => $post_id,
-                            "grid_meta_id" => $value
-                        ] );
-                        $wpdb->delete( $wpdb->postmeta, [
-                            "post_id" => $post_id,
-                            "meta_key" => "location_grid_meta",
-                            "meta_value" => $value
-                        ] );
-                        $status = true;
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-
-            return $status;
-        }
-
-        public function add_location_grid_meta( $post_id, array $location_grid_meta, $postmeta_id_location_grid = null ) {
-            global $wpdb;
-
-            $this->validate_location_grid_meta( $location_grid_meta );
-
-            if ( empty( $location_grid_meta['lng'] ) || empty( $location_grid_meta['lat'] ) ) {
-                return new WP_Error( __METHOD__, 'Missing required lng or lat' );
-            }
-
-            if ( empty( $location_grid_meta['grid_id'] ) ) {
-                $grid = $this->get_grid_id_by_lnglat( $location_grid_meta['lng'], $location_grid_meta['lat'] );
-                if ( $grid ) {
-                    $location_grid_meta['grid_id'] = $grid['grid_id'];
-                } else {
-                    return new WP_Error( __METHOD__, 'Invalid lng or lat. Unable to retrieve grid_id' );
-                }
-            }
-
-            if ( ! $postmeta_id_location_grid ) {
-                $postmeta_id_location_grid = add_post_meta( $post_id, 'location_grid', $location_grid_meta['grid_id'] );
-            }
-            if ( ! $postmeta_id_location_grid ) {
-                return new WP_Error( __METHOD__, 'Unable to create location_grid post meta and retrieve a key.' );
-            }
-
-            $data = [
-                'post_id' => $post_id,
-                'post_type' => empty( $location_grid_meta['post_type'] ) ? get_post_type( $post_id ) : $location_grid_meta['post_type'],
-                'postmeta_id_location_grid' => $postmeta_id_location_grid,
-                'grid_id' => $location_grid_meta['grid_id'],
-                'lng' => $location_grid_meta['lng'],
-                'lat' => $location_grid_meta['lat'],
-                'level' => empty( $location_grid_meta['level'] ) ? 'place' : $location_grid_meta['level'],
-                'source' => empty( $location_grid_meta['source'] ) ? 'user' : $location_grid_meta['source'],
-                'label' => $location_grid_meta['label'],
-            ];
-
-            $format = [
-                '%d',
-                '%s',
-                '%d',
-                '%d',
-                '%s',
-                '%s',
-                '%s',
-                '%s',
-                '%s'
-            ];
-
-            $wpdb->insert( $wpdb->dt_location_grid_meta, $data, $format );
-            if ( ! $wpdb->insert_id ) {
-                delete_meta( $postmeta_id_location_grid );
-                return new WP_Error( __METHOD__, 'Failed to insert location_grid_meta record.' );
-            }
-
-            $location_grid_meta_mid = add_post_meta( $post_id, 'location_grid_meta', $wpdb->insert_id );
-            if ( ! $location_grid_meta_mid ) {
-                delete_meta( $postmeta_id_location_grid );
-                $this->delete_location_grid_meta( $post_id, 'grid_meta_id', $wpdb->insert_id );
-                return new WP_Error( __METHOD__, 'Failed to add location_grid_meta' );
-            }
-
-            return $wpdb->insert_id;
-
+            return $level;
         }
 
     }

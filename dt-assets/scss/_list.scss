@@ -103,6 +103,11 @@
 table.table-remove-top-border thead {
     border-top: 0;
 }
+table.js-list{
+    table-layout: fixed;
+    word-wrap: break-word;
+    width: 100%
+}
 
 
 .current-filter {

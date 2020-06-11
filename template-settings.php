@@ -97,7 +97,7 @@ $translations = dt_get_translations();
 
                                 <p>
                                     <strong><?php esc_html_e( 'Roles', 'disciple_tools' ); ?></strong><br>
-                                    <?php echo esc_html( implode( ", ", wp_get_current_user()->roles ) ); ?>
+                                    <?php echo esc_html( implode( ", ", dt_get_user_role_names( get_current_user_id() ) ) ); ?>
                                 </p>
 
                             </div>
@@ -105,9 +105,10 @@ $translations = dt_get_translations();
 
                                 <p><strong><?php esc_html_e( 'Email', 'disciple_tools' )?></strong></p>
                                 <ul>
-                                    <?php
-                                    echo '<li><a href="mailto:' . esc_attr( $dt_user->user_email ) . '">' . esc_html( $dt_user->user_email ) . '</a><br><span class="text-small"> (System Email)</span></li>';
-                                    foreach ( $dt_user_fields as $dt_field ) {
+                                    <li>
+                                        <a href="mailto:'<?php echo esc_html( $dt_user->user_email ); ?>'"><?php echo esc_html( $dt_user->user_email ); ?></a><br><span class="text-small">(<?php esc_html_e( 'System Email', 'disciple_tools' ); ?>)</span>
+                                    </li>
+                                    <?php foreach ( $dt_user_fields as $dt_field ) {
                                         if ( $dt_field['type'] == 'email' && !empty( $dt_field['value'] ) ) {
                                             echo '<li><a href="mailto:' . esc_html( $dt_field['value'] ) . '" target="_blank">' . esc_html( $dt_field['value'] ) . '</a> <br><span class="text-small">(' . esc_html( $dt_field['label'] ) . ')</span></li>';
                                         }
@@ -181,17 +182,29 @@ $translations = dt_get_translations();
                     </div> <!-- End Profile -->
                 </div>
 
-                <div class="small-12 cell">
-                    <div class="bordered-box cell" id="locations" data-magellan-target="locations">
-                        <button class="help-button float-right" data-section="locations-help-text">
-                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                        </button>
-                        <span class="section-header"><?php esc_html_e( 'Locations', 'disciple_tools' )?></span>
-                        <hr size="1" style="max-width:100%"/>
-                        <!-- Geocoding -->
-
-                        <div id="manage_locations_section"></div>
-
+                <div class="small-12 cell" id="locations">
+                    <div class="bordered-box">
+                        <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
+                            <h4><?php esc_html_e( "Location Responsibility", 'disciple_tools' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( "add", 'disciple_tools' ) ?></a></h4>
+                            <div id="mapbox-wrapper"></div>
+                        <?php else : ?>
+                            <h4><?php esc_html_e( "Location Responsibility", 'disciple_tools' ) ?></h4>
+                            <div class="location_grid">
+                                <var id="location_grid-result-container" class="result-container"></var>
+                                <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
+                                    <div class="typeahead__container">
+                                        <div class="typeahead__field">
+                                                <span class="typeahead__query">
+                                                    <input class="js-typeahead-location_grid input-height"
+                                                           name="location_grid[query]"
+                                                           placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                                           autocomplete="off">
+                                                </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
 
@@ -337,15 +350,15 @@ $translations = dt_get_translations();
                                     <td><?php echo get_avatar( $dt_user->ID, '32' ); ?></td>
                                     <td>
                                         <span data-tooltip data-click-open="true" class="top" tabindex="1"
-                                              title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.' ) ?>">
+                                              title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.', 'disciple_tools' ) ?>">
                                             <a href="http://gravatar.com" class="small"><?php esc_html_e( 'edit image on gravatar.com', 'disciple_tools' ) ?> <i class="fi-link"></i></a>
                                         </span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><?php esc_html_e( 'Username', 'disciple_tools' )?> </td>
-                                    <td><span data-tooltip data-click-open="true" class="top" tabindex="2" title="<?php esc_html_e( 'Username cannot be changed' ) ?>"><?php echo esc_html( $dt_user->user_login ); ?> <i class="fi-info primary-color" onclick="jQuery('#username-message').toggle()"></i></span>
-                                        <span id="username-message" style="display: none; font-size: .7em;"><br><?php esc_html_e( 'Username cannot be changed' ) ?></span>
+                                    <td><span data-tooltip data-click-open="true" class="top" tabindex="2" title="<?php esc_html_e( 'Username cannot be changed', 'disciple_tools' ) ?>"><?php echo esc_html( $dt_user->user_login ); ?> <i class="fi-info primary-color" onclick="jQuery('#username-message').toggle()"></i></span>
+                                        <span id="username-message" style="display: none; font-size: .7em;"><br><?php esc_html_e( 'Username cannot be changed', 'disciple_tools' ) ?></span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -353,14 +366,14 @@ $translations = dt_get_translations();
                                     <td><span data-tooltip data-click-open="true" class="top" tabindex="3" title="<?php esc_html_e( 'User email can be changed by site administrator.' ) ?>">
                                         <input type="text" class="profile-input" id="user_email"
                                             name="user_email"
-                                            value="<?php echo esc_html( $dt_user->user_email ); ?>"/></td>
+                                            value="<?php echo esc_html( $dt_user->user_email ); ?>"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><?php esc_html_e( 'Password', 'disciple_tools' )?></td>
-                                    <td><span data-tooltip data-click-open="true" class="top" tabindex="1" title="<?php esc_html_e( 'Use this email reset form to create a new password.' ) ?>">
+                                    <td><span data-tooltip data-click-open="true" class="top" tabindex="1" title="<?php esc_html_e( 'Use this email reset form to create a new password.', 'disciple_tools' ) ?>">
                                             <a href="<?php echo esc_url( wp_logout_url( '/wp-login.php?action=lostpassword' ) ); ?>" target="_blank" rel="nofollow noopener">
-                                                <?php esc_html_e( 'go to password change form' ) ?> <i class="fi-link"></i>
+                                                <?php esc_html_e( 'go to password change form', 'disciple_tools' ) ?> <i class="fi-link"></i>
                                             </a>
                                         </span>
                                     </td>

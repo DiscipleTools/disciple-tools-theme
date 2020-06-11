@@ -1232,15 +1232,15 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
 
             // Skip for menu items.
-            if ( 'nav_menu_item' === get_post_type( $post->ID ) ) {
+            $post_type = get_post_type( $post->ID );
+            if ( ! in_array( $post_type, [ 'contacts', 'groups', 'trainings' ] ) ) {
                 return;
             }
 
             if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 require_once( 'geocode-api/location-grid-geocoder.php' );
             }
-            $geocoder = new Location_Grid_Geocoder();
-            $geocoder->delete_location_grid_meta( $post_id, 'all', 0 );
+            Location_Grid_Meta::delete_location_grid_meta( $post_id, 'all', 0 );
         }
     }
     DT_Mapping_Module::instance(); // end DT_Mapping_Module class

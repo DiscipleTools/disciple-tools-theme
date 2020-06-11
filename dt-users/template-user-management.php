@@ -7,6 +7,7 @@ if ( !current_user_can( 'list_users' ) && !current_user_can( 'manage_dt' ) ) {
 }
 $dt_url_path = dt_get_url_path();
 $user_management_options = DT_User_Management::user_management_options();
+
 ?>
 
 <?php get_header(); ?>
@@ -45,11 +46,12 @@ $user_management_options = DT_User_Management::user_management_options();
                 <div class="bordered-box">
                     <div id="chart">
 
-                    <?php if ( strpos( $dt_url_path, 'user-management/users' ) !== false ) :
+                    <?php if ( strpos( $dt_url_path, 'user-management/user' ) !== false ) :
                         $refresh = true; // @todo refresh enabled all the time. evaluate if caching needed on the user list
                         if ( isset( $_GET['refresh'] ) ) {
                             $refresh = true;
                         }
+
                         $users = DT_User_Management::get_users( $refresh ); ?>
                     <div id="user-chart" class="user-list-wrapper">
 
@@ -136,7 +138,6 @@ $user_management_options = DT_User_Management::user_management_options();
                     <div id="user-name-wrapper">
                         <h3 id="user_name"><?php esc_html_e( "Multiplier Name", 'disciple_tools' ) ?></h3>
                     </div>
-
 
                     <button class="close-button" data-close aria-label="Close reveal" type="button">
                         <span aria-hidden="true">&times;</span>
@@ -230,6 +231,8 @@ $user_management_options = DT_User_Management::user_management_options();
                                 <h4><?php esc_html_e( 'Contacts', 'disciple_tools' ); ?></h4>
                                 <div id="status_chart_div"></div>
                             </div>
+
+                            <div id="user-id-reveal" style="color:darkgrey;margin:0 auto;text-align:center;"></div>
 
                         </div><!-- end left -->
 

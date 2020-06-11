@@ -3,7 +3,7 @@ const chart_row_height = 25
 const chart_min_height = 84
 
 jQuery(document).ready(function() {
-  if( '#project_critical_path' === window.location.hash  ) {
+  if ('/metrics/combined/critical_path' === window.location.pathname || '/metrics/combined/critical_path/' === window.location.pathname) {
     project_critical_path()
   }
 })
@@ -21,11 +21,13 @@ function project_critical_path() {
   let chartDiv = jQuery('#chart')
   let translations = dtMetricsProject.translations
 
+  jQuery('#metrics-sidemenu').foundation('down', jQuery('#combined-menu'));
+
   chartDiv.empty().html(`
     <div class="section-header">${ translations.title_critical_path }</div>
     <div class="date_range_picker">
         <i class="fi-calendar"></i>&nbsp;
-        <span>${moment().format("YYYY")}</span> 
+        <span>${moment().format("YYYY")}</span>
         <i class="dt_caret down"></i>
     </div>
     <div style="display: inline-block" class="loading-spinner"></div>
@@ -106,12 +108,12 @@ let main_chart = function(data){
   series.clustered = false;
   series.tooltipText = "Total: [bold]{valueX}[/]";
 
-    // var valueLabel = series.bullets.push(new am4charts.LabelBullet());
-    // valueLabel.label.text = "{valueX}";
-    // valueLabel.label.horizontalCenter = "left";
-    // valueLabel.label.dx = 10;
-    // valueLabel.label.hideOversized = false;
-    // valueLabel.label.truncate = false;
+  // var valueLabel = series.bullets.push(new am4charts.LabelBullet());
+  // valueLabel.label.text = "{valueX}";
+  // valueLabel.label.horizontalCenter = "left";
+  // valueLabel.label.dx = 10;
+  // valueLabel.label.hideOversized = false;
+  // valueLabel.label.truncate = false;
 
   let series2 = chart.series.push(new am4charts.ColumnSeries());
   series2.name = "Activity"

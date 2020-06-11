@@ -1,10 +1,13 @@
 jQuery(document).ready(function($) {
 
-  if( '/user-management/users/' === window.location.pathname ) {
+  if( '/user-management/users/' === window.location.pathname.substring(0,"/user-management/users/".length) ) {
     write_users_list()
   }
-  if( '/user-management/map/' === window.location.pathname ) {
-    write_users_map()
+  if( '/user-management/user/' === window.location.pathname.substring(0,"/user-management/user/".length) ) {
+    console.log( window.location.pathname.replace( '/user-management/user/','').replace('/','') )
+    write_users_list()
+    open_user_mobile( window.location.pathname.replace( '/user-management/user/','').replace('/','') )
+
   }
   if( '/user-management/add-user/' === window.location.pathname ) {
     write_add_user()
@@ -64,11 +67,240 @@ jQuery(document).ready(function($) {
 
     $('#page-title').show()
 
-    /* Load Modal */
-    let user_id = 0;
-    let open_multiplier_modal = (user_id)=>{
+    $('#refresh_cached_data').on('click', function () {
+      $('#loading-page').addClass('active')
+      makeRequest( "get", `get_users?refresh=1`, null , 'user-management/v1/').then(()=>{
+        location.reload()
+      })
+    })
+
+    $('.user_row').on("click", function (a) {
+      if ( a.target._DT_CellIndex.column !== 0 ){
+        user_id = $(this).data("user")
+        open_user_mobile( user_id )
+      }
+    })
+
+    $('#user_name').on( "click", function(e) {
+      window.user_name = $(this).text()
+      $(this).parent().prepend(`
+          <div class="input-group" id="user-name-input-wrapper">
+              <input type="text" class="input-group-field" style="max-width: 50%;" id="user-name-input" value="${_.escape(window.user_name)}" />
+              <div class="input-group-button">
+                  <input type="button" class="button hollow" id="reset-user-name" value="Reset">
+                  <input type="button" class="button" id="update-user-name" value="Save">
+              </div>
+          </div>`)
+      $(this).hide()
+      $('#reset-user-name').on("click", function(){
+        $('#user_name').show()
+        $('#user-name-input-wrapper').hide()
+      })
+      $('#update-user-name').on('click', function(){
+        let new_name = _.escape($('#user-name-input').val())
+        if ( window.user_name !== new_name ) {
+          update_user(user_id, 'update_nickname', new_name )
+            .done(function(data) {
+              if ( data ) {
+                window.user_name = new_name
+                $('#user_name').html(new_name).show()
+                $('#user-name-input-wrapper').hide()
+              } else {
+                $('#user_name').show().append(' <span class="error"><i class="fi-alert"></i></span>')
+                $('#user-name-input-wrapper').hide()
+              }
+            })
+        }
+      })
+    })
+
+
+    $.urlParam = function(name){
+      var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+      if ( results == null ) {
+        return 0;
+      }
+      return results[1] || 0;
+    }
+    if ( $.urlParam('dt_user_id') ) {
+      open_user_modal(decodeURIComponent($.urlParam('user_id') ) )
+    }
+    if ( window.selected_user_id ) {
+      open_user_modal(window.selected_user_id )
+    }
+
+
+    let update_user = ( user_id, key, value )=>{
+      let data =  {
+        [key]: value
+      }
+      return makeRequest( "POST", `user?user=${user_id}`, data , 'user-management/v1/' )
+    }
+
+
+    /**
+     * Status
+     */
+    $('#status-select').on('change', function () {
+      let value = $(this).val()
+      update_user( window.current_user_lookup, 'user_status', value)
+    })
+    $('#workload-select').on('change', function () {
+      let value = $(this).val()
+      update_user( window.current_user_lookup, 'workload_status', value)
+    })
+
+    /**
+     * Set availability dates
+     */
+    let unavailable_dates_picker = $('#date_range')
+    unavailable_dates_picker.daterangepicker({
+      "singleDatePicker": false,
+      autoUpdateInput: false,
+      "locale": {
+        "format": "YYYY/MM/DD",
+        "separator": " - ",
+        "daysOfWeek": window.wpApiShare.translations.days_of_the_week,
+        "monthNames": window.wpApiShare.translations.month_labels,
+      },
+      "firstDay": 1,
+      "opens": "center",
+      "drops": "down"
+    }).on('apply.daterangepicker', function (ev, picker) {
+      $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
+      let start_date = picker.startDate.format('YYYY/MM/DD')
+      let end_date = picker.endDate.format('YYYY/MM/DD')
+      $('#add_unavailable_dates_spinner').addClass('active')
+      update_user( window.current_user_lookup, 'add_unavailability', {start_date, end_date}).then((resp)=>{
+        $('#add_unavailable_dates_spinner').removeClass('active')
+        unavailable_dates_picker.val('');
+        display_dates_unavailable(resp.dates_unavailable)
+      })
+    })
+
+
+    $('#save_roles').on("click", function () {
+      $(this).toggleClass('loading', true)
+      let roles = [];
+      $('#user_roles_list input:checked').each(function () {
+        roles.push($(this).val())
+      })
+      update_user( window.current_user_lookup, 'save_roles', roles).then(()=>{
+        $(this).toggleClass('loading', false)
+      }).catch(()=>{
+        $(this).toggleClass('loading', false)
+      })
+
+    })
+
+    let display_dates_unavailable = (list = [] )=>{
+      let date_unavailable_table = $('#unavailable-list')
+      date_unavailable_table.empty()
+      let rows = ``
+      list.forEach(range=>{
+        rows += `<tr>
+        <td>${_.escape(range.start_date)}</td>
+        <td>${_.escape(range.end_date)}</td>
+        <td><button class="button remove_dates_unavailable" data-id="${_.escape(range.id)}">${ _.escape( dt_user_management_localized.translations.remove ) }</button></td>
+      </tr>`
+      })
+      date_unavailable_table.html(rows)
+    }
+    $( document).on( 'click', '.remove_dates_unavailable', function () {
+      let id = $(this).data('id');
+      update_user( window.current_user_lookup, 'remove_unavailability', id).then((resp)=>{
+        display_dates_unavailable(resp)
+      })
+    })
+
+    /**
+     * Locations
+     */
+    if ( typeof dtMapbox === "undefined" ) {
+      let typeaheadTotals = {}
+      if (!window.Typeahead['.js-typeahead-location_grid'] ){
+        $.typeahead({
+          input: '.js-typeahead-location_grid',
+          minLength: 0,
+          accent: true,
+          searchOnFocus: true,
+          maxItem: 20,
+          dropdownFilter: [{
+            key: 'group',
+            value: 'focus',
+            template: _.escape(window.wpApiShare.translations.regions_of_focus),
+            all: _.escape(window.wpApiShare.translations.all_locations),
+          }],
+          source: {
+            focus: {
+              display: "name",
+              ajax: {
+                url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+                data: {
+                  s: "{{query}}",
+                  filter: function () {
+                    return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                  }
+                },
+                beforeSend: function (xhr) {
+                  xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+                },
+                callback: {
+                  done: function (data) {
+                    if (typeof typeaheadTotals !== "undefined") {
+                      typeaheadTotals.field = data.total
+                    }
+                    return data.location_grid
+                  }
+                }
+              }
+            }
+          },
+          display: "name",
+          templateValue: "{{name}}",
+          dynamic: true,
+          multiselect: {
+            matchOn: ["ID"],
+            data: function () {
+              return [];
+            }, callback: {
+              onCancel: function (node, item) {
+                update_user( window.current_user_lookup, 'remove_location', item.ID)
+              }
+            }
+          },
+          callback: {
+            onClick: function(node, a, item, event){
+              update_user( window.current_user_lookup, 'add_location', item.ID)
+            },
+            onReady(){
+              this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
+              this.container
+                .removeClass("filter")
+                .find("." + this.options.selector.filterButton)
+                .html(_.escape(window.wpApiShare.translations.regions_of_focus));
+            },
+            onResult: function (node, query, result, resultCount) {
+              resultCount = typeaheadTotals.location_grid
+              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              $('#location_grid-result-container').html(text);
+            },
+            onHideLayout: function () {
+              $('#location_grid-result-container').html("");
+            }
+          }
+        });
+      }
+    }
+
+  }
+
+  function open_user_mobile( user_id ) {
 
       window.current_user_lookup = user_id
+
+      $('#user-id-reveal').html(window.current_user_lookup)
+
       $('#user_modal').foundation('open');
 
       $('.users-spinner').addClass("active")
@@ -138,24 +370,24 @@ jQuery(document).ready(function($) {
 
           }
         }).catch((e)=>{
-          console.log( 'error in details')
-          console.log( e)
-        })
+        console.log( 'error in details')
+        console.log( e)
+      })
 
       /* locations */
       makeRequest( "get", `user?user=${user_id}&section=locations`, null , 'user-management/v1/')
         .done(locations=>{
           if ( window.current_user_lookup === user_id ) {
             if ( typeof dtMapbox !== "undefined" ) {
-              dtMapbox.post_type = 'contacts'
-              dtMapbox.post_id = locations.contact_id
-              dtMapbox.post = locations.contact
+              dtMapbox.post_type = 'users'
+              dtMapbox.user_id = user_id
+              dtMapbox.user_location = locations.user_location
               write_results_box()
 
               jQuery( '#new-mapbox-search' ).on( "click", function() {
-                dtMapbox.post_type = 'contacts'
-                dtMapbox.post_id = locations.contact_id
-                dtMapbox.post = locations.contact
+                dtMapbox.post_type = 'users'
+                dtMapbox.user_id = user_id
+                dtMapbox.user_location = locations.user_location
                 write_input_widget()
               });
             } else {
@@ -167,7 +399,7 @@ jQuery(document).ready(function($) {
                 typeahead.label.container.empty();
                 typeahead.adjustInputSize()
               }
-              locations.location_grid.forEach(location => {
+              locations.user_location.location_grid.forEach(location => {
                 typeahead.addMultiselectItemLayout({ID: location.id.toString(), name: location.label})
               })
             }
@@ -216,15 +448,15 @@ jQuery(document).ready(function($) {
           // console.log(response)
 
           if ( window.current_user_lookup === user_id && response.unaccepted_contacts.length > 0 ) {
-              let unaccepted_contacts_html = ``
+            let unaccepted_contacts_html = ``
             response.unaccepted_contacts.forEach(contact => {
-                let days = contact.time / 60 / 60 / 24;
-                unaccepted_contacts_html += `<li>
+              let days = contact.time / 60 / 60 / 24;
+              unaccepted_contacts_html += `<li>
             <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target="_blank">
                 ${_.escape(contact.name)} has be waiting to be accepted for ${days.toFixed(1)} days
                 </a> </li>`
-              })
-              $('#unaccepted_contacts').html(unaccepted_contacts_html)
+            })
+            $('#unaccepted_contacts').html(unaccepted_contacts_html)
           } else {
             $('#unaccepted_contacts').html('')
           }
@@ -324,118 +556,6 @@ jQuery(document).ready(function($) {
         console.log( 'error in contact_attempts')
         console.log( e)
       })
-    }
-
-
-    $('#refresh_cached_data').on('click', function () {
-      $('#loading-page').addClass('active')
-      makeRequest( "get", `get_users?refresh=1`, null , 'user-management/v1/').then(()=>{
-        location.reload()
-      })
-    })
-
-    $('.user_row').on("click", function (a) {
-      if ( a.target._DT_CellIndex.column !== 0 ){
-        user_id = $(this).data("user")
-        open_multiplier_modal(user_id)
-      }
-    })
-
-    $('#user_name').on( "click", function(e) {
-      window.user_name = $(this).text()
-      $(this).parent().prepend(`
-          <div class="input-group" id="user-name-input-wrapper">
-              <input type="text" class="input-group-field" style="max-width: 50%;" id="user-name-input" value="${_.escape(window.user_name)}" />
-              <div class="input-group-button">
-                  <input type="button" class="button hollow" id="reset-user-name" value="Reset">
-                  <input type="button" class="button" id="update-user-name" value="Save">
-              </div>
-          </div>`)
-      $(this).hide()
-      $('#reset-user-name').on("click", function(){
-        $('#user_name').show()
-        $('#user-name-input-wrapper').hide()
-      })
-      $('#update-user-name').on('click', function(){
-        let new_name = _.escape($('#user-name-input').val())
-        if ( window.user_name !== new_name ) {
-          update_user(user_id, 'update_nickname', new_name )
-            .done(function(data) {
-              if ( data ) {
-                window.user_name = new_name
-                $('#user_name').html(new_name).show()
-                $('#user-name-input-wrapper').hide()
-              } else {
-                $('#user_name').show().append(' <span class="error"><i class="fi-alert"></i></span>')
-                $('#user-name-input-wrapper').hide()
-              }
-            })
-        }
-      })
-    })
-
-
-    $.urlParam = function(name){
-      var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-      if ( results == null ) {
-        return 0;
-      }
-      return results[1] || 0;
-    }
-    if ( $.urlParam('user_id') ) {
-      open_multiplier_modal(decodeURIComponent($.urlParam('user_id') ) )
-    }
-
-
-
-    let update_user = ( user_id, key, value )=>{
-      let data =  {
-        [key]: value
-      }
-      return makeRequest( "POST", `user?user=${user_id}`, data , 'user-management/v1/' )
-    }
-
-
-    /**
-     * Status
-     */
-    $('#status-select').on('change', function () {
-      let value = $(this).val()
-      update_user( window.current_user_lookup, 'user_status', value)
-    })
-    $('#workload-select').on('change', function () {
-      let value = $(this).val()
-      update_user( window.current_user_lookup, 'workload_status', value)
-    })
-
-    /**
-     * Set availability dates
-     */
-    let unavailable_dates_picker = $('#date_range')
-    unavailable_dates_picker.daterangepicker({
-      "singleDatePicker": false,
-      autoUpdateInput: false,
-      "locale": {
-        "format": "YYYY/MM/DD",
-        "separator": " - ",
-        "daysOfWeek": window.wpApiShare.translations.days_of_the_week,
-        "monthNames": window.wpApiShare.translations.month_labels,
-      },
-      "firstDay": 1,
-      "opens": "center",
-      "drops": "down"
-    }).on('apply.daterangepicker', function (ev, picker) {
-      $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
-      let start_date = picker.startDate.format('YYYY/MM/DD')
-      let end_date = picker.endDate.format('YYYY/MM/DD')
-      $('#add_unavailable_dates_spinner').addClass('active')
-      update_user( window.current_user_lookup, 'add_unavailability', {start_date, end_date}).then((resp)=>{
-        $('#add_unavailable_dates_spinner').removeClass('active')
-        unavailable_dates_picker.val('');
-        display_dates_unavailable(resp.dates_unavailable)
-      })
-    })
-
     function setup_user_roles(user_data){
       $('#user_roles_list input').prop('checked', false);
       if ( user_data.roles ){
@@ -444,121 +564,7 @@ jQuery(document).ready(function($) {
         } )
       }
     }
-    $('#save_roles').on("click", function () {
-      $(this).toggleClass('loading', true)
-      let roles = [];
-      $('#user_roles_list input:checked').each(function () {
-        roles.push($(this).val())
-      })
-      update_user( window.current_user_lookup, 'save_roles', roles).then(()=>{
-        $(this).toggleClass('loading', false)
-      }).catch(()=>{
-        $(this).toggleClass('loading', false)
-      })
-
-    })
-
-    let display_dates_unavailable = (list = [] )=>{
-      let date_unavailable_table = $('#unavailable-list')
-      date_unavailable_table.empty()
-      let rows = ``
-      list.forEach(range=>{
-        rows += `<tr>
-        <td>${_.escape(range.start_date)}</td>
-        <td>${_.escape(range.end_date)}</td>
-        <td><button class="button remove_dates_unavailable" data-id="${_.escape(range.id)}">Remove</button></td>
-      </tr>`
-      })
-      date_unavailable_table.html(rows)
-    }
-    $( document).on( 'click', '.remove_dates_unavailable', function () {
-      let id = $(this).data('id');
-      update_user( window.current_user_lookup, 'remove_unavailability', id).then((resp)=>{
-        display_dates_unavailable(resp)
-      })
-    })
-
-
-    /**
-     * Locations
-     */
-    if ( typeof dtMapbox === "undefined" ) {
-      let typeaheadTotals = {}
-      if (!window.Typeahead['.js-typeahead-location_grid'] ){
-        $.typeahead({
-          input: '.js-typeahead-location_grid',
-          minLength: 0,
-          accent: true,
-          searchOnFocus: true,
-          maxItem: 20,
-          dropdownFilter: [{
-            key: 'group',
-            value: 'focus',
-            template: _.escape(window.wpApiShare.translations.regions_of_focus),
-            all: _.escape(window.wpApiShare.translations.all_locations),
-          }],
-          source: {
-            focus: {
-              display: "name",
-              ajax: {
-                url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
-                data: {
-                  s: "{{query}}",
-                  filter: function () {
-                    return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
-                  }
-                },
-                beforeSend: function (xhr) {
-                  xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-                },
-                callback: {
-                  done: function (data) {
-                    if (typeof typeaheadTotals !== "undefined") {
-                      typeaheadTotals.field = data.total
-                    }
-                    return data.location_grid
-                  }
-                }
-              }
-            }
-          },
-          display: "name",
-          templateValue: "{{name}}",
-          dynamic: true,
-          multiselect: {
-            matchOn: ["ID"],
-            data: function () {
-              return [];
-            }, callback: {
-              onCancel: function (node, item) {
-                update_user( window.current_user_lookup, 'remove_location', item.ID)
-              }
-            }
-          },
-          callback: {
-            onClick: function(node, a, item, event){
-              update_user( window.current_user_lookup, 'add_location', item.ID)
-            },
-            onReady(){
-              this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
-              this.container
-                .removeClass("filter")
-                .find("." + this.options.selector.filterButton)
-                .html(_.escape(window.wpApiShare.translations.regions_of_focus));
-            },
-            onResult: function (node, query, result, resultCount) {
-              resultCount = typeaheadTotals.location_grid
-              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-              $('#location_grid-result-container').html(text);
-            },
-            onHideLayout: function () {
-              $('#location_grid-result-container').html("");
-            }
-          }
-        });
-      }
-    }
-
+    // }
   }
 
   function day_activity_chart( days_active ) {
@@ -689,9 +695,7 @@ jQuery(document).ready(function($) {
       animation.events.on("animationprogress", updateLines);
 
       selectedSlice.events.on("transformed", updateLines);
-
     }
-
 
     function updateLines() {
       if (selectedSlice) {
@@ -721,698 +725,6 @@ jQuery(document).ready(function($) {
 
   }
 
-  function write_users_map() {
-    let obj = dt_user_management_localized
-    let chart = jQuery('#chart')
-    let spinner = ' <span class="loading-spinner users-spinner active"></span> '
-
-    chart.empty().html(spinner)
-
-    makeRequest( "GET", `get_user_list`, null , 'user-management/v1/')
-      .done(response=>{
-        window.user_list = response
-      }).catch((e)=>{
-      console.log( 'error in activity')
-      console.log( e)
-    })
-
-    makeRequest( "POST", `grid_totals`, { status: null }, 'user-management/v1/')
-      .done(grid_data=>{
-        window.grid_data = grid_data
-
-        chart.empty().html(`
-                <style>
-                    #map-wrapper {
-                        height: ${window.innerHeight - 100}px !important;
-                    }
-                    #map {
-                        height: ${window.innerHeight - 100}px !important;
-                    }
-                    #geocode-details {
-                        height: ${window.innerHeight - 250}px !important;
-                        overflow: scroll;
-                        opacity: 100%;
-                    }
-                    .accordion {
-                        list-style-type:none;
-                    }
-                    .delete-button {
-                        margin-bottom: 0 !important;
-                    }
-                    .add-user-button {
-                        padding-top: 10px;
-                    }
-                </style>
-                <div id="map-wrapper">
-                    <div id='map'></div>
-                    <div id='legend' class='legend'>
-                        <div class="grid-x grid-margin-x grid-padding-x">
-                            <div class="cell small-2 center info-bar-font">
-                                Responsibility
-                            </div>
-                            <div class="cell small-2 center border-left">
-                                <select id="level" class="small" style="width:170px;">
-                                    <option value="none" disabled></option>
-                                    <option value="none" disabled>Zoom Level</option>
-                                    <option value="none"></option>
-                                    <option value="auto" selected>Auto Zoom</option>
-                                    <option value="none" disabled>-----</option>
-                                    <option value="world">World</option>
-                                    <option value="admin0">Country</option>
-                                    <option value="admin1">State</option>
-                                    <option value="none" disabled></option>
-                                </select>
-                            </div>
-                            <div class="cell small-2 center border-left">
-                                <select id="status" class="small" style="width:170px;">
-                                    <option value="none" disabled></option>
-                                    <option value="none" disabled>Status</option>
-                                    <option value="none"></option>
-                                    <option value="all" selected>Status - All</option>
-                                    <option value="none" disabled>-----</option>
-                                    <option value="active">Active</option>
-                                    <option value="away">Away</option>
-                                    <option value="inconsistent">Inconsistent</option>
-                                    <option value="inactive">Inactive</option>
-                                    <option value="none" disabled></option>
-                                </select>
-                            </div>
-                            <div class="cell small-5 center border-left info-bar-font">
-
-                            </div>
-
-                            <div class="cell small-1 center border-left">
-                                <div class="grid-y">
-                                    <div class="cell center" id="admin">World</div>
-                                    <div class="cell center" id="zoom" >0</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="spinner">${spinner}</div>
-                    <div id="cross-hair">&#8982</div>
-                    <div id="geocode-details" class="geocode-details">
-                        Leadership<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
-                        <hr style="margin:10px 5px;">
-                        <div id="geocode-details-content"></div>
-                    </div>
-                </div>
-             `)
-
-        // set info box
-        set_info_boxes()
-
-        // init map
-        mapboxgl.accessToken = obj.map_key;
-        var map = new mapboxgl.Map({
-          container: 'map',
-          style: 'mapbox://styles/mapbox/light-v10',
-          center: [-98, 38.88],
-          minZoom: 1,
-          zoom: 1.8
-        });
-
-        // disable map rotation using right click + drag
-        map.dragRotate.disable();
-
-        // disable map rotation using touch rotation gesture
-        map.touchZoomRotate.disableRotation();
-
-        // cross-hair
-        map.on('zoomstart', function() {
-          jQuery('#cross-hair').show()
-        })
-        map.on('zoomend', function() {
-          jQuery('#cross-hair').hide()
-        })
-        map.on('dragstart', function() {
-          jQuery('#cross-hair').show()
-        })
-        map.on('dragend', function() {
-          jQuery('#cross-hair').hide()
-        })
-
-        // grid memory vars
-        window.previous_grid_id = 0
-        window.previous_grid_list = []
-
-        // default load state
-        map.on('load', function() {
-
-          window.previous_grid_id = '1'
-          window.previous_grid_list.push('1')
-          jQuery.get('https://storage.googleapis.com/location-grid-mirror/collection/1.geojson', null, null, 'json')
-            .done(function (geojson) {
-
-              jQuery.each(geojson.features, function (i, v) {
-                if (window.grid_data[geojson.features[i].properties.id]) {
-                  geojson.features[i].properties.value = parseInt(window.grid_data[geojson.features[i].properties.id].count)
-                } else {
-                  geojson.features[i].properties.value = 0
-                }
-              })
-              map.addSource('1', {
-                'type': 'geojson',
-                'data': geojson
-              });
-              map.addLayer({
-                'id': '1',
-                'type': 'fill',
-                'source': '1',
-                'paint': {
-                  'fill-color': [
-                    'interpolate',
-                    ['linear'],
-                    ['get', 'value'],
-                    0,
-                    'rgba(0, 0, 0, 0)',
-                    1,
-                    '#547df8',
-                    50,
-                    '#3754ab',
-                    100,
-                    '#22346a'
-                  ],
-                  'fill-opacity': 0.75
-                }
-              });
-              map.addLayer({
-                'id': '1line',
-                'type': 'line',
-                'source': '1',
-                'paint': {
-                  'line-color': 'black',
-                  'line-width': 1
-                }
-              });
-            })
-        })
-
-        // update info box on zoom
-        map.on('zoom', function() {
-          document.getElementById('zoom').innerHTML = Math.floor(map.getZoom())
-
-          let level = get_level()
-          let name = ''
-          if ( level === 'world') {
-            name = 'World'
-          } else if ( level === 'admin0') {
-            name = 'Country'
-          } else if ( level === 'admin1' ) {
-            name = 'State'
-          }
-          document.getElementById('admin').innerHTML = name
-        })
-
-        // click controls
-        window.click_behavior = 'layer'
-
-        map.on('click', function( e ) {
-          // this section increments up the result on level because
-          // it corresponds better to the viewable user intent for details
-          let level = get_level()
-          if ( level === 'world' ) {
-            level = 'admin0'
-          }
-          else if ( level === 'admin0' ) {
-            level = 'admin1'
-          }
-          else if ( level === 'admin1' ) {
-            level = 'admin2'
-          }
-          load_detail_panel( e.lngLat.lng, e.lngLat.lat, level )
-        })
-
-        // Status
-        jQuery('#status').on('change', function() {
-          window.current_status = jQuery('#status').val()
-
-          makeRequest( "POST", `grid_totals`, { status: window.current_status }, 'user-management/v1/')
-            .done(grid_data=>{
-              window.previous_grid_id = 0
-              clear_layers()
-              window.grid_data = grid_data
-
-              let lnglat = map.getCenter()
-              load_layer( lnglat.lng, lnglat.lat )
-            }).catch((e)=>{
-            console.log('error getting grid_totals')
-            console.log(e)
-          })
-
-        })
-        // load new layer on event
-        map.on('zoomend', function() {
-          let lnglat = map.getCenter()
-          load_layer( lnglat.lng, lnglat.lat, 'zoom' )
-        } )
-        map.on('dragend', function() {
-          let lnglat = map.getCenter()
-          load_layer( lnglat.lng, lnglat.lat, 'drag' )
-        } )
-        function load_layer( lng, lat, event_type ) {
-          let spinner = jQuery('#spinner')
-          spinner.show()
-
-          // set geocode level, default to auto
-          let level = get_level()
-
-          // standardize longitude
-          if (lng > 180) {
-            lng = lng - 180
-            lng = -Math.abs(lng)
-          } else if (lng < -180) {
-            lng = lng + 180
-            lng = Math.abs(lng)
-          }
-
-          // geocode
-          jQuery.get(obj.theme_uri + 'dt-mapping/location-grid-list-api.php',
-            {
-              type: 'geocode',
-              longitude: lng,
-              latitude: lat,
-              level: level,
-              country_code: null,
-              nonce: obj.nonce
-            }, null, 'json')
-            .done(function (data) {
-
-              // default layer to world
-              if ( data.grid_id === undefined || level === 'world' ) {
-                data.grid_id = '1'
-              }
-
-              // is new test
-              if ( window.previous_grid_id !== data.grid_id ) {
-
-                // is defined test
-                var mapLayer = map.getLayer(data.grid_id);
-                if(typeof mapLayer === 'undefined') {
-
-                  // get geojson collection
-                  jQuery.ajax({
-                    type: 'GET',
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    url: 'https://storage.googleapis.com/location-grid-mirror/collection/' + data.grid_id + '.geojson',
-                    statusCode: {
-                      404: function() {
-                        console.log('404. Do nothing.')
-                      }
-                    }
-                  })
-                    .done(function (geojson) {
-
-                      // add data to geojson properties
-                      jQuery.each(geojson.features, function (i, v) {
-                        if (window.grid_data[geojson.features[i].properties.id]) {
-                          geojson.features[i].properties.value = parseInt(window.grid_data[geojson.features[i].properties.id].count)
-                        } else {
-                          geojson.features[i].properties.value = 0
-                        }
-                      })
-
-                      // add source
-                      map.addSource(data.grid_id.toString(), {
-                        'type': 'geojson',
-                        'data': geojson
-                      });
-
-                      // add fill layer
-                      map.addLayer({
-                        'id': data.grid_id.toString(),
-                        'type': 'fill',
-                        'source': data.grid_id.toString(),
-                        'paint': {
-                          'fill-color': [
-                            'interpolate',
-                            ['linear'],
-                            ['get', 'value'],
-                            0,
-                            'rgba(0, 0, 0, 0)',
-                            1,
-                            '#547df8',
-                            50,
-                            '#3754ab',
-                            100,
-                            '#22346a'
-                          ],
-                          'fill-opacity': 0.75
-                        }
-                      });
-
-                      // add border lines
-                      map.addLayer({
-                        'id': data.grid_id.toString() + 'line',
-                        'type': 'line',
-                        'source': data.grid_id.toString(),
-                        'paint': {
-                          'line-color': 'black',
-                          'line-width': 1
-                        }
-                      });
-
-                      remove_layer( data.grid_id, event_type )
-
-                    }) // end get geojson collection
-
-                }
-              } // end load new layer
-              spinner.hide()
-            }); // end geocode
-
-        } // end load section function
-        function load_detail_panel( lng, lat, level ) {
-
-          // standardize longitude
-          if (lng > 180) {
-            lng = lng - 180
-            lng = -Math.abs(lng)
-          } else if (lng < -180) {
-            lng = lng + 180
-            lng = Math.abs(lng)
-          }
-
-          if ( level === 'world' ) {
-            level = 'admin0'
-          }
-
-          let content = jQuery('#geocode-details-content')
-          content.empty().html(`<img src="${obj.theme_uri}spinner.svg" class="spinner-image" alt="spinner"/>`)
-
-          jQuery('#geocode-details').show()
-
-          // geocode
-          makeRequest('GET', obj.theme_uri + 'dt-mapping/location-grid-list-api.php?type=geocode&longitude='+lng+'&latitude='+lat+'&level='+level+'&nonce='+obj.nonce )
-            .done(details=>{
-              /* hierarchy list*/
-              content.empty().append(`<ul id="hierarchy-list" class="accordion" data-accordion></ul>`)
-              let list = jQuery('#hierarchy-list')
-              if ( details.admin0_grid_id ) {
-                list.append( `
-                  <li id="admin0_wrapper" class="accordion-item" data-accordion-item>
-                   <a href="#" class="accordion-title">${_.escape(details.admin0_name)} :  <span id="admin0_count">0</span></a>
-                    <div class="accordion-content grid-x" data-tab-content><div id="admin0_list" class="grid-x"></div></div>
-                  </li>
-                `)
-                let level_list = jQuery('#admin0_list')
-                if ( details.admin0_grid_id in window.user_list ) {
-                  jQuery('#admin0_count').html(window.user_list[details.admin0_grid_id].length)
-                  jQuery.each(window.user_list[details.admin0_grid_id], function(i,v) {
-                    level_list.append(`
-                      <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
-                        <a href="/user-management/users/?user_id=${_.escape(v.user_id)}">
-                          ${_.escape(v.name)}
-                        </a>
-                      </div>
-                      <div class="cell small-2" data-id="${_.escape(v.grid_meta_id)}">
-                        <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.contact_id)}" data-id="${_.escape(v.grid_meta_id)}">
-                          <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
-                        </a>
-                      </div>`)
-                  })
-                }
-                level_list.append(`<div class="cell add-user-button"><button class="add-user small expanded button hollow" data-level="admin0" data-location="${_.escape(details.admin0_grid_id)}">add user to ${_.escape(details.admin0_name)}</button></div>`)
-
-              }
-              if ( details.admin1_grid_id ) {
-                list.append( `
-                  <li id="admin1_wrapper" class="accordion-item" data-accordion-item >
-                    <a href="#" class="accordion-title">${_.escape(details.admin1_name)} : <span id="admin1_count">0</span></a>
-                    <div class="accordion-content" data-tab-content><div id="admin1_list" class="grid-x"></div></div>
-                  </li>
-                `)
-
-                  let level_list = jQuery('#admin1_list')
-                  if ( details.admin1_grid_id in window.user_list ) {
-                    jQuery('#admin1_count').html(window.user_list[details.admin1_grid_id].length)
-                    jQuery.each(window.user_list[details.admin1_grid_id], function(i,v) {
-                      level_list.append(`
-                        <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
-                          <a href="/user-management/users/?user_id=${_.escape(v.user_id)}">
-                            ${_.escape(v.name)}
-                          </a>
-                        </div>
-                        <div class="cell small-2" data-id="${_.escape(v.grid_meta_id)}">
-                          <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.contact_id)}" data-id="${_.escape(v.grid_meta_id)}">
-                            <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
-                          </a>
-                        </div>`)
-                    })
-                  }
-                level_list.append(`<div class="cell add-user-button"><button class="add-user small expanded button hollow" data-level="admin1" data-location="${_.escape(details.admin1_grid_id)}">add user to ${_.escape(details.admin1_name)}</button></div>`)
-              }
-              if ( details.admin2_grid_id ) {
-                list.append( `
-                  <li id="admin2_wrapper" class="accordion-item" data-accordion-item>
-                    <a href="#" class="accordion-title">${_.escape(details.admin2_name)} : <span id="admin2_count">0</span></a>
-                    <div class="accordion-content" data-tab-content><div id="admin2_list"  class="grid-x"></div></div>
-                  </li>
-                `)
-
-                  let level_list = jQuery('#admin2_list')
-                  if ( details.admin2_grid_id in window.user_list ) {
-                    jQuery('#admin2_count').html(window.user_list[details.admin2_grid_id].length)
-                    jQuery.each(window.user_list[details.admin2_grid_id], function(i,v) {
-                      level_list.append(`
-                        <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
-                          <a href="/user-management/users/?user_id=${_.escape(v.user_id)}">
-                            ${_.escape(v.name)}
-                          </a>
-                        </div>
-                        <div class="cell small-2" data-id="${_.escape(v.grid_meta_id)}">
-                          <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(v.contact_id)}" data-id="${_.escape(v.grid_meta_id)}">
-                            <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
-                          </a>
-                        </div>`)
-                    })
-                  }
-                level_list.append(`<div class="cell add-user-button"><button class="add-user expanded small button hollow" data-level="admin2" data-location="${_.escape(details.admin2_grid_id)}">add user to ${_.escape(details.admin2_name)}</button></div>`)
-              }
-
-              jQuery('.accordion-item').last().addClass('is-active')
-              list.foundation()
-              /* end hierarchy list */
-
-              /* build click function to add user to location */
-              jQuery('.add-user').on('click', function() {
-                jQuery('#add-user-wrapper').remove()
-                let selected_location = jQuery(this).data('location')
-                let list_level = jQuery(this).data('level')
-
-                jQuery(this).parent().append(`
-                <div id="add-user-wrapper">
-                    <var id="add-user-location-result-container" class="result-container add-user-location-result-container"></var>
-                    <div id="assigned_to_t" name="form-assigned_to">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-add-user input-height" dir="auto"
-                                           name="assigned_to[query]" placeholder="Search Users"
-                                           autocomplete="off">
-                                </span>
-                                <span class="typeahead__button">
-                                    <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
-                                        <img src="${_.escape(obj.theme_uri)}/dt-assets/images/chevron_down.svg" alt="chevron"/>
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                `)
-                jQuery.typeahead({
-                  input: '.js-typeahead-add-user',
-                  minLength: 0,
-                  accent: true,
-                  searchOnFocus: true,
-                  source: TYPEAHEADS.typeaheadUserSource(),
-                  templateValue: "{{name}}",
-                  template: function (query, item) {
-                    return `<div class="assigned-to-row" dir="auto">
-                      <span>
-                          <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-                          ${_.escape( item.name )}
-                      </span>
-                      ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
-                      ${ item.update_needed ? `<span>
-                        <img style="height: 12px;" src="${_.escape( obj.theme_uri )}/dt-assets/images/broken.svg"/>
-                        <span style="font-size: 14px">${_.escape(item.update_needed)}</span>
-                      </span>` : '' }
-                    </div>`
-                  },
-                  dynamic: true,
-                  hint: true,
-                  emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
-                  callback: {
-                    onClick: function(node, a, item){
-                      API.update_post('contacts', item.contact_id, {
-                        location_grid_meta: {
-                          values: [
-                            {
-                              grid_id: selected_location
-                            }
-                          ]
-                        }}).then(function (response) {
-                          console.log(response)
-
-                          // update user list
-                          makeRequest( "GET", `get_user_list`, null , 'user-management/v1/')
-                            .done(response=>{
-                              window.user_list = response
-                              if ( selected_location in window.user_list ) {
-                                jQuery('#'+list_level+'_count').html(response[selected_location].length)
-                              }
-
-                            }).catch((e)=>{
-                            console.log( 'error in activity')
-                            console.log( e)
-                          })
-
-                          // update grid totals
-                          makeRequest( "POST", `grid_totals`, { status: window.current_status }, 'user-management/v1/')
-                            .done(grid_data=>{
-                              window.previous_grid_id = 0
-                              clear_layers()
-                              window.grid_data = grid_data
-
-                              let lnglat = map.getCenter()
-                              load_layer( lnglat.lng, lnglat.lat )
-                            }).catch((e)=>{
-                            console.log('error getting grid_totals')
-                            console.log(e)
-                          })
-
-                          // remove user add input
-                          jQuery('#add-user-wrapper').remove()
-
-                          // add new user to list
-                        let grid_meta = ''
-                          jQuery.each(response.location_grid_meta, function(i,v) {
-                             if ( v.grid_id === selected_location ) {
-                               grid_meta = v.grid_meta_id
-                             }
-                          })
-                          jQuery('#'+list_level+'_list').prepend(`
-                            <div class="cell small-10 align-self-middle" data-id="${_.escape(grid_meta)}">
-                              <a  href="/user-management/users/?user_id=${_.escape(response.corresponds_to_user)}">
-                                ${_.escape(response.title)}
-                              </a>
-                            </div>
-                            <div class="cell small-2" data-id="${_.escape(grid_meta)}">
-                              <a class="button clear delete-button mapbox-delete-button small float-right" data-postid="${_.escape(response.ID)}" data-id="${_.escape(grid_meta)}">
-                                <img src="${_.escape(obj.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
-                              </a>
-                            </div>`)
-
-                      }).catch(err => { console.error(err) })
-                    },
-                    onResult: function (node, query, result, resultCount) {
-                      let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-                      $('#add-user-location-result-container').html(text);
-                    },
-                    onHideLayout: function () {
-                      $('.add-user-location-result-container').html("");
-                    },
-                    onReady: function () {
-
-                    }
-                  },
-                });
-
-              })
-              /* end click add function */
-
-              jQuery( '.mapbox-delete-button' ).on( "click", function(e) {
-
-                let data = {
-                  location_grid_meta: {
-                    values: [
-                      {
-                        grid_meta_id: e.currentTarget.dataset.id,
-                        delete: true,
-                      }
-                    ]
-                  }
-                }
-
-                let post_id = e.currentTarget.dataset.postid
-
-                API.update_post( 'contacts', post_id, data ).then(function (response) {
-                  jQuery('div[data-id='+e.currentTarget.dataset.id+']').remove()
-                }).catch(err => { console.error(err) })
-
-              });
-
-            }); // end geocode
-        }
-        function get_level( ) {
-          let level = jQuery('#level').val()
-          if ( level === 'auto' || level === 'none' ) { // if none, then auto set
-            level = 'admin0'
-            if ( map.getZoom() <= 3 ) {
-              level = 'world'
-            }
-            else if ( map.getZoom() >= 5 ) {
-              level = 'admin1'
-            }
-          }
-          return level;
-        }
-        function set_level( auto = false) {
-          if ( auto ) {
-            jQuery('#level :selected').attr('selected', false)
-            jQuery('#level').val('auto')
-          } else {
-            jQuery('#level :selected').attr('selected', false)
-            jQuery('#level').val(get_level())
-          }
-        }
-        function remove_layer( grid_id, event_type ) {
-          window.previous_grid_list.push( grid_id )
-          window.previous_grid_id = grid_id
-
-          if ( event_type === 'click' && window.click_behavior === 'add' ) {
-            window.click_add_list.push( grid_id )
-          }
-          else {
-            clear_layers ( grid_id )
-          }
-        }
-        function clear_layers ( grid_id = null ) {
-          jQuery.each(window.previous_grid_list, function(i,v) {
-            let mapLayer = map.getLayer(v.toString());
-            if(typeof mapLayer !== 'undefined' && v !== grid_id) {
-              map.removeLayer( v.toString() )
-              map.removeLayer( v.toString() + 'line' )
-              map.removeSource( v.toString() )
-            }
-          })
-        }
-        function set_info_boxes() {
-          let map_wrapper = jQuery('#map-wrapper')
-          jQuery('.legend').css( 'width', map_wrapper.innerWidth() - 20 )
-          jQuery( window ).resize(function() {
-            jQuery('.legend').css( 'width', map_wrapper.innerWidth() - 20 )
-          });
-          // jQuery('#geocode-details').css('height', map_wrapper.innerHeight() - 125 )
-        }
-        function close_geocode_details() {
-          jQuery('#geocode-details').hide()
-        }
-
-        jQuery('.close-details').on('click', function() {
-          jQuery('#geocode-details').hide()
-        })
-
-      }).catch(err=>{
-      console.log("error")
-      console.log(err)
-    })
-
-  }
-
   function write_add_user() {
     let obj = dt_user_management_localized
     let chart = jQuery('#chart')
@@ -1421,15 +733,15 @@ jQuery(document).ready(function($) {
     chart.empty().html(`
 
       <div class="grid-x">
-        <div id="page-title" class="cell"><h3>Add New User</h3></div>
+        <div id="page-title" class="cell"><h3>${ _.escape( dt_user_management_localized.translations.add_new_user ) }</h3></div>
         <div class="cell medium-6">
           <form data-abide id="new-user-form">
             <div data-abide-error class="alert callout" style="display: none;">
-              <p><i class="fi-alert"></i> There are some errors in your form.</p>
+              <p><i class="fi-alert"></i> ${ _.escape( dt_user_management_localized.translations.there_are_some_errors ) }</p>
             </div>
 
             <dl>
-              <dt>Contact to make a user (optional)</dt>
+              <dt>${ _.escape( dt_user_management_localized.translations.contact_to_user ) }</dt>
               <dd>
                 <div class="subassigned details">
                     <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
@@ -1438,7 +750,7 @@ jQuery(document).ready(function($) {
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-subassigned input-height"
-                                           name="subassigned[query]" placeholder="Search multipliers and contacts"
+                                           name="subassigned[query]" placeholder="${ _.escape( dt_user_management_localized.translations.search ) }"
                                            autocomplete="off">
                                 </span>
                             </div>
@@ -1450,15 +762,13 @@ jQuery(document).ready(function($) {
             <div id="contact-result"></div>
 
             <dl>
-              <dt>Nickname</dt>
-              <dd><input type="text" class="input" id="name" placeholder="nick name" required /> </dd>
-              <dt>Email</dt>
-              <dd><input type="email" class="input" id="email" placeholder="email address" required /> </dd>
-
+              <dt>${ _.escape( dt_user_management_localized.translations.nickname ) }</dt>
+              <dd><input type="text" class="input" id="name" placeholder="${ _.escape( dt_user_management_localized.translations.nickname ) }" required /> </dd>
+              <dt>${ _.escape( dt_user_management_localized.translations.email ) }</dt>
+              <dd><input type="email" class="input" id="email" placeholder="${ _.escape( dt_user_management_localized.translations.email ) }" required /> </dd>
             </dl>
 
-            <button type="submit" class="submit button" id="create-user">Create User</button> <span class="spinner"></span>
-
+            <button type="submit" class="submit button" id="create-user">${ _.escape( dt_user_management_localized.translations.create_user ) }</button> <span class="spinner"></span>
           </form>
 
         </div>
@@ -1474,45 +784,45 @@ jQuery(document).ready(function($) {
     let spinner_span = jQuery('.spinner')
 
     jQuery(document).on("submit", function(ev) {
-        ev.preventDefault();
-        let name = jQuery('#name').val()
-        let email = jQuery('#email').val()
+      ev.preventDefault();
+      let name = jQuery('#name').val()
+      let email = jQuery('#email').val()
 
-        let corresponds_to_contact = null
-        if ( typeof window.contact_record !== 'undefined' ) {
-          corresponds_to_contact = window.contact_record.ID
-        }
+      let corresponds_to_contact = null
+      if ( typeof window.contact_record !== 'undefined' ) {
+        corresponds_to_contact = window.contact_record.ID
+      }
 
-        if ( name !== '' && email !== '' )  {
-          spinner_span.html(spinner)
-          submit_button.prop('disabled', true)
+      if ( name !== '' && email !== '' )  {
+        spinner_span.html(spinner)
+        submit_button.prop('disabled', true)
 
-          makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "corresponds_to_contact": corresponds_to_contact })
-            .done(response=>{
-              console.log(response)
-              result_div.html(`<a href="/user-management/users/?user_id=${response}">View New User</a>`)
-              jQuery('#new-user-form').empty()
-            })
-            .catch(err=>{
-              if ( err.status === 409) {
-                spinner_span.html(``)
-                submit_button.prop('disabled', false)
+        makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "corresponds_to_contact": corresponds_to_contact })
+          .done(response=>{
+            console.log(response)
+            result_div.html(`<a href="/user-management/user/${response}">View New User</a>`)
+            jQuery('#new-user-form').empty()
+          })
+          .catch(err=>{
+            if ( err.status === 409) {
+              spinner_span.html(``)
+              submit_button.prop('disabled', false)
 
-                if ( err.responseJSON.code === 'email_exists' ) {
-                  result_div.html(`Email address is already in the system as a user!`)
-                }
-                else if ( err.responseJSON.code === 'username_exists' ) {
-                  result_div.html(`Username is already in the system as a user!`)
-                }
-
-              } else {
-                spinner_span.html(``)
-                submit_button.prop('disabled', false)
-                result_div.html(`Oops. Something went wrong.`)
+              if ( err.responseJSON.code === 'email_exists' ) {
+                result_div.html(`${ _.escape( dt_user_management_localized.translations.email_already_in_system ) }`)
               }
-            })
-        }
-      });
+              else if ( err.responseJSON.code === 'username_exists' ) {
+                result_div.html(`${ _.escape( dt_user_management_localized.translations.username_in_system ) }`)
+              }
+
+            } else {
+              spinner_span.html(``)
+              submit_button.prop('disabled', false)
+              result_div.html(`Oops. Something went wrong.`)
+            }
+          })
+      }
+    });
 
     ["subassigned"].forEach(field_id=>{
       $.typeahead({
