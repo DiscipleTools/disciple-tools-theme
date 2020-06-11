@@ -37,6 +37,7 @@ class Disciple_Tools_Users
         add_action( "user_new_form", [ &$this, "custom_user_profile_fields" ] );
         add_action( "show_user_profile", [ &$this, "custom_user_profile_fields" ] );
         add_action( "edit_user_profile", [ &$this, "custom_user_profile_fields" ] );
+        add_action( "add_user_role", [ $this, "add_user_role" ], 10, 2 );
 
 
         //wp admin user list customization
@@ -504,6 +505,16 @@ class Disciple_Tools_Users
         }
     }
 
+    public static function add_user_role( $user_id, $role ){
+        if ( user_can( $user_id, "access_specific_sources" ) ){
+            $allowed_sources = get_user_option( "allowed_sources", $user_id ) ?: [];
+            if ( in_array( "restrict_all_sources", $allowed_sources ) || empty( $allowed_sources ) ){
+                $allowed_sources = [ "restrict_all_sources" ];
+                update_user_option( $user_id, "allowed_sources", $allowed_sources );
+            }
+        }
+    }
+
     public static function create_contacts_for_existing_users(){
         if ( is_user_logged_in() ){
             $users = get_users();
@@ -713,8 +724,7 @@ class Disciple_Tools_Users
             $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
             $sources = isset( $post_settings["fields"]["sources"]["default"] ) ? $post_settings["fields"]["sources"]["default"] : [];
             ?>
-            <h3>Digital Responder Access</h3>
-            <p>Restrict the user to only access the selected sources</p>
+            <h3>Access by Source</h3>
             <table class="form-table">
                 <tr>
                     <th><?php esc_html_e( "Sources", 'disciple_tools' ) ?></th>
@@ -722,18 +732,24 @@ class Disciple_Tools_Users
                         <ul>
                             <li>
                                 <?php $checked = in_array( 'all', $selected_sources === false ? [ 'all' ] : $selected_sources ) ? "checked" : ''; ?>
-                                <input type="radio" name="allowed_sources[]" value="all" <?php echo esc_html( $checked ) ?>/>
-                                All Sources
-                            </li>
-                            <li>
-                                <?php $checked = in_array( 'restrict_all_sources', $selected_sources === false ? [] : $selected_sources ) ? "checked" : ''; ?>
-                                <input type="radio" name="allowed_sources[]" value="restrict_all_sources" <?php echo esc_html( $checked ) ?>/>
-                                No Source
+                                <label>
+                                    <input type="radio" name="allowed_sources[]" value="all" <?php echo esc_html( $checked ) ?>/>
+                                    <?php esc_html_e( 'All Sources - gives access to all contacts', 'disciple_tools' ); ?>
+                                </label>
                             </li>
                             <li>
                                 <?php $checked = in_array( 'custom_source_restrict', $selected_sources === false ? [] : $selected_sources ) ? "checked" : ''; ?>
-                                <input type="radio" name="allowed_sources[]" value="custom_source_restrict" <?php echo esc_html( $checked ) ?>/>
-                                Custom: select below
+                                <label>
+                                    <input type="radio" name="allowed_sources[]" value="custom_source_restrict" <?php echo esc_html( $checked ) ?>/>
+                                    <?php esc_html_e( 'Custom - Access own contacts and all the contacts of the selected sources below', 'disciple_tools' ); ?>
+                                </label>
+                            </li>
+                            <li>
+                                <?php $checked = in_array( 'restrict_all_sources', $selected_sources === false ? [] : $selected_sources ) ? "checked" : ''; ?>
+                                <label>
+                                    <input type="radio" name="allowed_sources[]" value="restrict_all_sources" <?php echo esc_html( $checked ) ?>/>
+                                    <?php esc_html_e( 'No Sources - only own contacts', 'disciple_tools' ); ?>
+                                </label>
                             </li>
                             <li>
                                 &nbsp;
@@ -742,8 +758,10 @@ class Disciple_Tools_Users
                             $checked = in_array( $source_key, $selected_sources === false ? [] : $selected_sources ) ? "checked" : '';
                             ?>
                             <li>
-                                <input type="checkbox" name="allowed_sources[]" value="<?php echo esc_html( $source_key ) ?>" <?php echo esc_html( $checked ) ?>/>
-                                <?php echo esc_html( $source_value["label"] ) ?>
+                                <label>
+                                    <input type="checkbox" name="allowed_sources[]" value="<?php echo esc_html( $source_key ) ?>" <?php echo esc_html( $checked ) ?>/>
+                                    <?php echo esc_html( $source_value["label"] ) ?>
+                                </label>
                             </li>
                         <?php endforeach; ?>
                         </ul>

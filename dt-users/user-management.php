@@ -203,6 +203,7 @@ class DT_User_Management
             "contact_accepts" => [],
             "unaccepted_contacts" => [],
             "unattempted_contacts" => [],
+            "allowed_sources" => [],
         ];
 
         /* details section */
@@ -422,6 +423,7 @@ class DT_User_Management
 
         if ( current_user_can( "promote_users" ) ){
             $user_response["roles"] = $user->roles;
+            $user_response["allowed_sources"] = get_user_option( 'allowed_sources', $user->ID ) ?: [];
         }
 
         return $user_response;
@@ -700,6 +702,17 @@ class DT_User_Management
                         }
                     }
                 }
+                return $this->get_dt_user( $user->ID );
+            }
+            if ( isset( $body["allowed_sources"] ) ){
+                $allowed_sources = [];
+                foreach ( $body["allowed_sources"] as $s ){
+                    $allowed_sources[] = sanitize_key( wp_unslash( $s ) );
+                }
+                if ( in_array( "restrict_all_sources", $allowed_sources ) ){
+                    $allowed_sources = [ "restrict_all_sources" ];
+                }
+                update_user_option( $user->ID, "allowed_sources", $allowed_sources );
                 return $this->get_dt_user( $user->ID );
             }
             if ( isset( $body['update_nickname'] ) ) {
