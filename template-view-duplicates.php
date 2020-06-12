@@ -40,11 +40,12 @@ $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
                                 <th style="text-align: start"><?php esc_html_e( 'Contacts', 'disciple_tools' ); ?></th>
                             </tr>
                         <?php foreach ( $channel_values["dups"] as $dt_dup_val => $dt_duplicate_values ) {
-                            $row = $channel_key . '-' . array_key_first( $dt_duplicate_values["posts"] );
+                            $first_id = array_keys( $dt_duplicate_values )[0];
+                            $row = $channel_key . '-' . $first_id
                             ?>
                             <tr id='<?php echo esc_attr( $row ) ?>'>
                                 <td>
-                                    <a class="dismiss_all" data-row="<?php echo esc_html( $row ); ?>" data-id="<?php echo esc_html( array_key_first( $dt_duplicate_values["posts"] ) ); ?>">
+                                    <a class="dismiss_all" data-row="<?php echo esc_html( $row ); ?>" data-id="<?php echo esc_html( $first_id ); ?>">
                                         <?php esc_html_e( 'Dismiss Row', 'disciple_tools' ); ?>
                                     </a>
                                 </td>
