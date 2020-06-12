@@ -851,7 +851,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             LEFT JOIN $wpdb->postmeta as rc ON ( rc.post_id = pm.post_id AND rc.meta_key = 'reason_closed' )
             LEFT JOIN $wpdb->postmeta as status ON ( status.post_id = pm.post_id AND status.meta_key = 'overall_status' )
             WHERE pm.meta_key LIKE 'contact_%' AND pm.meta_key NOT LIKE '%details' AND pm.meta_value NOT LIKE ''
-            AND rc.meta_value != 'duplicate'
+            AND ( rc.meta_value != 'duplicate' OR rc.meta_value IS NULL )
         ", ARRAY_A );
 
         $dups = [];

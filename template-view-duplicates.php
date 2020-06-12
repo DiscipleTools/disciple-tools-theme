@@ -55,7 +55,7 @@ $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
                                     ?>
                                     <a target="_blank" href="<?php echo esc_html( site_url() )."/contacts/".esc_html( $dup_post_id ) ?>?open-duplicates=1"><?php echo esc_html( $post_values["name"] ); ?></a>
                                     <span class="dt-status-square" title="<?php echo esc_html( $status_option["label"] . ( $reason_closed ? ' - ' . $reason_closed : '' ) ); ?>"
-                                          style="background-color: <?php echo esc_html( $status_option["color"] ) ?>; vertical-align: sub">&nbsp;
+                                          style="background-color: <?php echo esc_html( $status_option["color"] ?? '' ) ?>; vertical-align: sub">&nbsp;
                                     </span>
                                     <span style="margin-right: 5px; margin-left: 5px">|</span>
                                 <?php endforeach; ?>
