@@ -205,7 +205,7 @@ else {
 
                 $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
 
-                $url_path = dt_get_url_path();
+                $url_path = strtok( dt_get_url_path(), '?' );
 
                 if ( isset( $template_for_url[ $url_path ] ) ) {
                     $template_filename = locate_template( $template_for_url[ $url_path ], true );

@@ -343,6 +343,50 @@ $user_management_options = DT_User_Management::user_management_options();
                                         <?php endforeach; ?>
                                     </ul>
                                     <button class="button loader" id="save_roles"><?php esc_html_e( 'Save Roles', 'disciple_tools' ); ?></button>
+
+<!--                                    <div style="display: none">-->
+                                    <div id="allowed_sources_options" style="display: none">
+                                        <?php
+                                        $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
+                                        $sources = isset( $post_settings["fields"]["sources"]["default"] ) ? $post_settings["fields"]["sources"]["default"] : [];
+                                        ?>
+                                        <h3><?php esc_html_e( 'Access by Source', 'disciple_tools' ); ?></h3>
+
+                                        <ul id="source_access_type" class="no-bullet">
+                                            <li>
+                                                <label>
+                                                    <input type="radio" name="allowed_sources[]" value="all"/>
+                                                    <?php esc_html_e( 'All Sources - gives access to all contacts', 'disciple_tools' ); ?>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label>
+                                                    <input type="radio" name="allowed_sources[]" value="custom_source_restrict"/>
+                                                    <?php esc_html_e( 'Custom - Access own contacts and all the contacts of the selected sources below', 'disciple_tools' ); ?>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label>
+                                                    <input type="radio" name="allowed_sources[]" value="restrict_all_sources"/>
+                                                    <?php esc_html_e( 'No Sources - only own contacts', 'disciple_tools' ); ?>
+                                                </label>
+                                            </li>
+                                        </ul>
+
+                                        <strong style="margin-top:30px">
+                                            <?php esc_html_e( "Sources List", 'disciple_tools' ) ?>
+                                        </strong>
+                                        <ul id="allowed_sources" class="ul-no-bullets">
+                                            <?php foreach ( $sources as $source_key => $source_value ) : ?>
+                                                <li>
+                                                    <input type="checkbox" name="allowed_sources[]" value="<?php echo esc_html( $source_key ) ?>"/>
+                                                    <?php echo esc_html( $source_value["label"] ) ?>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                        <button class="button loader" id="save_allowed_sources"><?php esc_html_e( 'Save Allowed Sources', 'disciple_tools' ); ?></button>
+
+                                    </div>
                                 </div>
                             <?php endif; ?>
 
