@@ -1203,7 +1203,7 @@ class Disciple_Tools_Posts
                 if ( isset( $field["force_values"] ) && $field["force_values"] == true ){
                     delete_post_meta( $post_id, 'location_grid' );
                     delete_post_meta( $post_id, 'location_grid_meta' );
-                    Location_Grid_Meta::add_location_grid_meta( $post_id, 'all', null );
+                    Location_Grid_Meta::delete_location_grid_meta( $post_id, 'all', null );
                     $existing_post[ $field_key ] = [];
                 }
 
@@ -1212,7 +1212,7 @@ class Disciple_Tools_Posts
 
                     // delete
                     if ( isset( $value["delete"] ) && $value["delete"] == true ) {
-                        Location_Grid_Meta::add_location_grid_meta( $post_id, $value["grid_meta_id"], $existing_post );
+                        Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value["grid_meta_id"], $existing_post );
                     }
 
                     // is new but has provided grid_id
