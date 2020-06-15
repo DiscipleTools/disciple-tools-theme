@@ -1388,10 +1388,10 @@ jQuery(document).ready(function($) {
   let possible_duplicates = [];
   let dup_row = (dupe, dismissed_row = false)=>{
     let html = ``;
-    let dups_on_fields = dupe.fields.map(field=>{
+    let dups_on_fields = _.uniq(dupe.fields.map(field=>{
       return ( field.field === 'title' ? "Name" : null ) || _.get(window.contactsDetailsWpApiSettings, `contacts_custom_fields_settings[${field.field}].name`) ||
         _.get(window.contactsDetailsWpApiSettings, `channels[${field.field.replace('contact_', '')}].label`)
-    })
+    }))
     let matched_values = dupe.fields.map(f=>f.meta_value)
     html += `<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
       <h5 style='font-weight: bold; color: #3f729b;'>
@@ -1400,12 +1400,14 @@ jQuery(document).ready(function($) {
       <span style="font-weight: normal; font-size:16px"> #${dupe.ID} (${_.get(dupe.contact, "overall_status.label") ||""}) </span>
       </a>
     </h5>`
-    html += `<strong>${_.escape(window.contactsDetailsWpApiSettings.translations.duplicates_on).replace('%s', dups_on_fields.join( ', '))}</strong><br />`
+    html += `${_.escape(window.contactsDetailsWpApiSettings.translations.duplicates_on).replace('%s', '<strong>' + _.escape(dups_on_fields.join( ', ')) + '</strong>' )}<br />`
 
     _.forOwn(window.contactsDetailsWpApiSettings.channels, (channel, key)=>{
       if ( dupe.contact['contact_' + key] ){
         dupe.contact['contact_' + key].forEach( contact_info=>{
-          html +=`<img src='${_.escape(channel.icon)}'><span ${matched_values.includes(contact_info.value) ? 'style="font-weight:bold;"' : ''}>&nbsp;${_.escape(contact_info.value)}</span>&nbsp;`
+          if ( contact_info !== '' ){
+            html +=`<img src='${_.escape(channel.icon)}'><span style="margin-right: 15px; ${matched_values.includes(contact_info.value) ? 'font-weight:bold;' : ''}">&nbsp;${_.escape(contact_info.value)}</span>`
+          }
         })
       }
     })
@@ -1466,7 +1468,9 @@ jQuery(document).ready(function($) {
       _.forOwn(window.contactsDetailsWpApiSettings.channels, (channel, key)=>{
         if ( contact['contact_' + key] ){
           contact['contact_' + key].forEach( contact_info=>{
-            original_contact_html +=`<img src='${_.escape(channel.icon)}'><span>&nbsp;${_.escape(contact_info.value)}</span>&nbsp;`
+            if ( contact_info !== '' ){
+              original_contact_html +=`<img src='${_.escape(channel.icon)}'><span style="margin-right: 15px">&nbsp;${_.escape(contact_info.value)}</span>`
+            }
           })
         }
       })
@@ -1492,6 +1496,8 @@ jQuery(document).ready(function($) {
       window.API.get_duplicates_on_post("contacts", contact.ID, {include_contacts:false, exact_match:true}).done(dups_with_data=> {
         if ( dups_with_data.filter(a=>!duplicate_data.override.includes[a.ID])){
           $('#duplicates').show()
+        } else {
+          $('#duplicates').hide()
         }
       })
     }

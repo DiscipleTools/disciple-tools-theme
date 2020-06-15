@@ -956,8 +956,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( is_wp_error( $contact ) ){
             return $contact;
         }
-        $possible_duplicates = self::get_possible_duplicates( $contact_id, $contact, true, $fields );
         $duplicate_data = $contact["duplicate_data"] ?? [];
+        $possible_duplicates = self::get_possible_duplicates( $contact_id, $contact, true, empty( $duplicate_data["check_dups"] ) ? $fields : [] );
         if ( !isset( $duplicate_data["override"] )){
             $duplicate_data["override"] = [];
         }
@@ -1086,15 +1086,21 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         ] );
 
         $link = "[" . $contact['title'] .  "](" .  $contact_id . ")";
-        $comment = sprintf( esc_html_x( '%1$s is a duplicate and was merged into %2$s', 'Contact1 is a duplicated and was merged into Contact2', 'disciple_tools' ), $duplicate['title'], $link );
+        $comment = sprintf( esc_html_x( 'This record is a duplicate and was merged into %2$s', 'This record duplicated and was merged into Contact2', 'disciple_tools' ), $duplicate['title'], $link );
 
-        self::add_comment( $duplicate_id, $comment, "duplicate", [], true, true );
+        $args = [
+            "user_id" => 0,
+            "comment_author" => __( "Duplicate Checker", 'disciple_tools' )
+        ];
+
+        self::add_comment( $duplicate_id, $comment, "duplicate", $args, true, true );
         self::dismiss_all( $duplicate_id );
 
+        $user = wp_get_current_user();
         //comment on master
         $link = "[" . $duplicate['title'] .  "](" .  $duplicate_id . ")";
-        $comment = sprintf( esc_html_x( '%1$s was merged into %2$s', 'Contact1 was merged into Contact2', 'disciple_tools' ), $link, $contact['title'] );
-        self::add_comment( $contact_id, $comment, "duplicate", [], true, true );
+        $comment = sprintf( esc_html_x( '%1$s merged %2$s into this record', 'User1 merged Contact1 into this record', 'disciple_tools' ), $user->display_name, $link );
+        self::add_comment( $contact_id, $comment, "duplicate", $args, true, true );
     }
 
 
@@ -1239,13 +1245,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         //copy over comments
         $comments = DT_Posts::get_post_comments( "contacts", $non_master_id );
-        foreach ( $comments as $comment ){
+        foreach ( $comments["comments"] as $comment ){
             $comment["comment_post_ID"] = $master_id;
             if ( $comment["comment_type"] === "comment" ){
                 $comment["comment_content"] = sprintf( esc_html_x( '(From Duplicate): %s', 'duplicate comment', 'disciple_tools' ), $comment["comment_content"] );
             }
-            if ( $comment["comment_type"] !== "duplicate" ){
-                wp_insert_comment( (array) $comment );
+            if ( $comment["comment_type"] !== "duplicate" && !empty( $comment["comment_content"] ) ) {
+                wp_insert_comment( $comment );
             }
         }
 
@@ -1264,11 +1270,16 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $contact["duplicate_data"]["override"] = array_merge( $contact["duplicate_data"]["override"] ?? [], $non_master["duplicate_data"]["override"] ?? [] );
         $update["duplicate_data"] = $contact["duplicate_data"];
 
-        $update_return = DT_Posts::update_post( "contacts", $master_id, $update, true );
+        $current_user_id = get_current_user_id();
+        wp_set_current_user( 0 ); // to keep the merge activity from a specific user.
+        $current_user = wp_get_current_user();
+        $current_user->display_name = __( "Duplicate Checker", 'disciple_tools' );
+        $update_return = DT_Posts::update_post( "contacts", $master_id, $update, true, false );
         if ( is_wp_error( $update_return ) ) { return $update_return; }
-
-        $non_master_update_return = DT_Posts::update_post( "contacts", $non_master_id, $update_for_duplicate, true );
+        $non_master_update_return = DT_Posts::update_post( "contacts", $non_master_id, $update_for_duplicate, true, false );
         if ( is_wp_error( $non_master_update_return ) ) { return $non_master_update_return; }
+        wp_set_current_user( $current_user_id );
+
         self::dismiss_duplicate( $master_id, $non_master_id );
         self::dismiss_duplicate( $non_master_id, $master_id );
         self::close_duplicate_contact( $non_master_id, $master_id );

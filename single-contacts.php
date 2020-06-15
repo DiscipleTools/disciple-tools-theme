@@ -636,8 +636,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
                 <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
             </button>
-            <form action='<?php echo esc_url( site_url() );?>/contacts/mergedetails' method='post'>
-                <input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr( wp_create_nonce() ); ?>'/>
+            <form action='<?php echo esc_url( site_url() );?>/contacts/mergedetails' method='get'>
                 <input type='hidden' name='currentid' value='<?php echo esc_html( $contact["ID"] );?>'/>
                 <input id="confirm-merge-with-user-dupe-id" type='hidden' name='dupeid' value=''/>
                 <button type='submit' class="button confirm-merge-with-user" style="display: none">
@@ -684,8 +683,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                 <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
                     <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
                 </button>
-                <form action='<?php echo esc_url( site_url() );?>/contacts/mergedetails' method='post'>
-                    <input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr( wp_create_nonce() ); ?>'/>
+                <form action='<?php echo esc_url( site_url() );?>/contacts/mergedetails' method='get'>
                     <input type='hidden' name='currentid' value='<?php echo esc_html( $contact["ID"] );?>'/>
                     <input id="confirm-merge-with-contact-id" type='hidden' name='dupeid' value=''/>
                     <button type='submit' class="button confirm-merge-with-contact" style="display: none">

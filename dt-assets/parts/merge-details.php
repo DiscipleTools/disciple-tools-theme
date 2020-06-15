@@ -13,7 +13,7 @@
         <div style="text-align: center">
             <h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:20px 0 0; margin-bottom: 0; display: inline-block'><?php esc_html_e( "Possible Duplicates", 'disciple_tools' ) ?></h4>
             <div style="display: inline-block; " id="duplicates-spinner" class="loading-spinner active"></div>
-            <a id='dismiss_all_duplicates'><?php esc_html_e( 'Dismiss All', 'disciple_tools' ); ?></a>
+            <a id='dismiss_all_duplicates' style="position: absolute; padding-top:23px"><?php esc_html_e( 'Dismiss All', 'disciple_tools' ); ?></a>
         </div>
         <div class="display-fields" style="padding:10px;">
         </div>

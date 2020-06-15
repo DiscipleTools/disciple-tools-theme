@@ -1575,10 +1575,7 @@ class Disciple_Tools_Posts
         return $fields;
     }
 
-    public static function add_connection_to_post( string $post_type, int $post_id, string $field_key, int $value ){
-        if ( !self::can_update( $post_type, $post_id ) ) {
-            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
-        }
+    private static function add_connection_to_post( string $post_type, int $post_id, string $field_key, int $value ){
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
         $connect = null;
         $field_setting = $post_settings["fields"][$field_key] ?? [];
@@ -1609,10 +1606,7 @@ class Disciple_Tools_Posts
         }
     }
 
-    public static function remove_connection_from_post( string $post_type, int $post_id, string $field_key, int $value ){
-        if ( !self::can_update( $post_type, $post_id ) ) {
-            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
-        }
+    private static function remove_connection_from_post( string $post_type, int $post_id, string $field_key, int $value ){
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
         $field_setting = $post_settings["fields"][$field_key] ?? [];
         if ( !isset( $field_setting["p2p_key"], $field_setting["p2p_direction"] ) ) {
