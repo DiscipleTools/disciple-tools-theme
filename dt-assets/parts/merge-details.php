@@ -16,7 +16,23 @@
             <a id='dismiss_all_duplicates' style="position: absolute; padding-top:23px"><?php esc_html_e( 'Dismiss All', 'disciple_tools' ); ?></a>
         </div>
         <div class="display-fields" style="padding:10px;">
+            <p id="no_dups_message" style="display: none; text-align: center; margin-top: 20px"><?php esc_html_e( 'No duplicates found.', 'disciple_tools' ); ?></p>
+            <div id='duplicates_list'></div>
         </div>
+
+
+        <div class="grid-x grid-padding-x">
+            <div class="cell">
+                <span style="float:right; bottom: 0;">
+                    <button class="button" data-close aria-label="Close reveal" type="button">
+                        <?php echo esc_html__( 'Close', 'disciple_tools' )?>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 
 <?php } )(); ?>

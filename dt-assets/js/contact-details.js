@@ -1405,7 +1405,7 @@ jQuery(document).ready(function($) {
     _.forOwn(window.contactsDetailsWpApiSettings.channels, (channel, key)=>{
       if ( dupe.contact['contact_' + key] ){
         dupe.contact['contact_' + key].forEach( contact_info=>{
-          if ( contact_info !== '' ){
+          if ( contact_info.value !== '' ){
             html +=`<img src='${_.escape(channel.icon)}'><span style="margin-right: 15px; ${matched_values.includes(contact_info.value) ? 'font-weight:bold;' : ''}">&nbsp;${_.escape(contact_info.value)}</span>`
           }
         })
@@ -1438,7 +1438,11 @@ jQuery(document).ready(function($) {
           html += dup_row(dupe)
         }
       })
-      $duplicates.append(html);
+      if ( html ){
+        $duplicates.append(html);
+      } else {
+        $('#no_dups_message').show()
+      }
       let dismissed_html = ``;
       dups_with_data.sort((a, b) => a.points > b.points ? -1:1).forEach((dupe) => {
         if (already_dismissed.includes(parseInt(dupe.ID))) {
@@ -1468,7 +1472,7 @@ jQuery(document).ready(function($) {
       _.forOwn(window.contactsDetailsWpApiSettings.channels, (channel, key)=>{
         if ( contact['contact_' + key] ){
           contact['contact_' + key].forEach( contact_info=>{
-            if ( contact_info !== '' ){
+            if ( contact_info.value !== '' ){
               original_contact_html +=`<img src='${_.escape(channel.icon)}'><span style="margin-right: 15px">&nbsp;${_.escape(contact_info.value)}</span>`
             }
           })
@@ -1477,9 +1481,6 @@ jQuery(document).ready(function($) {
       original_contact_html += `</div>`
       $('#original-contact').append(original_contact_html);
 
-      let $display_fields = $("#merge-dupe-edit-modal .display-fields");
-
-      $display_fields.append("<div id='duplicates_list'></div>");
       window.API.get_duplicates_on_post("contacts", contact.ID).done(dups_with_data=> {
         possible_duplicates = dups_with_data
         $("#duplicates-spinner").removeClass("active")
