@@ -261,18 +261,29 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                             <?php endif; ?>
                         </td>
                         <td>
-                        <button class="button small expand_translations">+</button>
+                        <?php $langs = dt_get_available_languages(); ?>
+                        <button class="button small expand_translations">
+                            <?php
+                            $number_of_translations = 0;
+                            foreach ( $langs as $lang => $val ){
+                                if ( !empty( $channel_option["translations"][$val['language']] ) ){
+                                    $number_of_translations++;
+                                }
+                            }
+                            ?>
+                            <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
+                            (<?php echo esc_html( $number_of_translations ); ?>)
+                        </button>
                         <div class="translation_container hide">
-                        <table>
-                        <?php $langs = dt_get_available_languages();
+                            <table>
 
-                        foreach ( $langs as $lang => $val ) : ?>
-                                    <tr>
+                            <?php foreach ( $langs as $lang => $val ) : ?>
+                                <tr>
                                     <td><label for="channel_label[<?php echo esc_html( $channel_key ) ?>][<?php echo esc_html( $val['language'] )?>]"><?php echo esc_html( $val['native_name'] )?></label></td>
                                     <td><input name="channel_label[<?php echo esc_html( $channel_key ) ?>][<?php echo esc_html( $val['language'] )?>]" type="text" value="<?php echo esc_html( $channel_option["translations"][$val['language']] ?? "" );?>"/></td>
-                                    </tr>
+                                </tr>
                             <?php endforeach; ?>
-                        </table>
+                            </table>
                         </div>
                     </td>
                     </tr>

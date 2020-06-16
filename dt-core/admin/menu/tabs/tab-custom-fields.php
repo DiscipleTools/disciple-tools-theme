@@ -302,15 +302,26 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <?php endif; ?>
                     </td>
                     <td>
-                        <button class="button small expand_translations">+</button>
+                        <button class="button small expand_translations">
+                            <?php
+                            $number_of_translations = 0;
+                            foreach ( $langs as $lang => $val ){
+                                if ( !empty( $field["translations"][$val['language']] ) ){
+                                    $number_of_translations++;
+                                }
+                            }
+                            ?>
+                            <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
+                            (<?php echo esc_html( $number_of_translations ); ?>)
+                        </button>
                         <div class="translation_container hide">
                         <table>
 
-                        <?php foreach ( $langs as $lang => $val ) : ?>
-                                    <tr>
+                            <?php foreach ( $langs as $lang => $val ) : ?>
+                                <tr>
                                     <td><label for="field_key_<?php echo esc_html( $field_key )?>_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
                                     <td><input name="field_key_<?php echo esc_html( $field_key )?>_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $field["translations"][$val['language']] ?? "" );?>"/></td>
-                                    </tr>
+                                </tr>
                             <?php endforeach; ?>
                         </table>
                         </div>
@@ -396,17 +407,27 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <button class="button small expand_translations">+</button>
+                                    <button class="button small expand_translations">
+                                        <?php
+                                        $number_of_translations = 0;
+                                        foreach ( $langs as $lang => $val ){
+                                            if ( !empty( $custom_fields[$post_type][$field_key]["default"][$key]["translations"][$val['language']] ) ){
+                                                $number_of_translations++;
+                                            }
+                                        }
+                                        ?>
+                                        <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
+                                        (<?php echo esc_html( $number_of_translations ); ?>)
+                                    </button>
                                     <div class="translation_container hide">
-                                    <table>
-                                    <?php
-                                    foreach ( $langs as $lang => $val ) : ?>
-                                            <tr>
-                                            <td><label for="field_option_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
-                                            <td><input name="field_option_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $custom_fields[$post_type][$field_key]["default"][$key]["translations"][$val['language']] ?? "" );?>"/></td>
-                                            </tr>
-                                    <?php endforeach; ?>
-                                    </table>
+                                        <table>
+                                            <?php foreach ( $langs as $lang => $val ) : ?>
+                                                <tr>
+                                                    <td><label for="field_option_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
+                                                    <td><input name="field_option_<?php echo esc_html( $key )?>_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $custom_fields[$post_type][$field_key]["default"][$key]["translations"][$val['language']] ?? "" );?>"/></td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </table>
                                     </div>
                                 </td>
                             </tr>
