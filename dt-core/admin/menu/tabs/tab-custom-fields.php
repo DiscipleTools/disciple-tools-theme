@@ -281,7 +281,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <?php endif; ?>
                     </td>
                     <td>
-                        <?php $name = ( isset( $defaults[$field_key]["name"] ) && $field["name"] !== $defaults[$field_key]["name"] ) ? $field["name"] : ''; ?>
+                        <?php $name = ( !isset( $defaults[$field_key] ) || ( isset( $defaults[$field_key]["name"] ) && $field["name"] !== $defaults[$field_key]["name"] ) ) ? $field["name"] : ''; ?>
                         <input name="field_key_<?php echo esc_html( $field_key )?>" type="text" value="<?php echo esc_html( $name ) ?>"/>
                         <?php if ( !empty( $name ) ) : ?>
                         <button title="submit" class="button" name="delete_custom_label">Delete</button>
