@@ -283,8 +283,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <td>
                         <?php $name = ( !isset( $defaults[$field_key] ) || ( isset( $defaults[$field_key]["name"] ) && $field["name"] !== $defaults[$field_key]["name"] ) ) ? $field["name"] : ''; ?>
                         <input name="field_key_<?php echo esc_html( $field_key )?>" type="text" value="<?php echo esc_html( $name ) ?>"/>
-                        <?php if ( !empty( $name ) ) : ?>
-                        <button title="submit" class="button" name="delete_custom_label">Delete</button>
+                        <?php if ( isset( $defaults[$field_key] ) && !empty( $name ) ) : ?>
+                        <button title="submit" class="button" name="delete_custom_label">Remove Label</button>
                         <?php endif; ?>
                     </td>
                     <td>
@@ -391,7 +391,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                     <?php $name = ( isset( $defaults[$field_key]["default"][$key]["label"] ) && $label === $defaults[$field_key]["default"][$key]["label"] ) ? '' : $label ?>
                                     <input name="field_option_<?php echo esc_html( $key )?>" type="text" value="<?php echo esc_html( $name ) ?>"/>
                                     <?php if ( isset( $defaults[$field_key]["default"][$key]["label"] ) && !empty( $name ) ) : ?>
-                                    <button title="submit" class="button" name="delete_option_label" value="<?php echo esc_html( $key ) ?>">Delete</button>
+                                    <button title="submit" class="button" name="delete_option_label" value="<?php echo esc_html( $key ) ?>">Remove Label</button>
                                     <?php endif; ?>
                                 </td>
                                 <td>
