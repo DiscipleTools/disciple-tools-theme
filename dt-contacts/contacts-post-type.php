@@ -711,11 +711,7 @@ class Disciple_Tools_Contact_Post_Type
         $fields["languages"] = [
             'name' => __( 'Languages', 'disciple_tools' ),
             'type' => 'multi_select',
-            'default' => [
-                'en_US' => [ 'label' => "English", ],
-                'fr_FR' => [ 'label' => "French", ],
-                'es_ES' => [ 'label' => "Spanish", ],
-            ]
+            'default' => dt_get_option( "dt_working_languages" ) ?: [],
         ];
 
         return $fields;
