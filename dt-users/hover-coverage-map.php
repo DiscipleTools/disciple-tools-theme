@@ -188,7 +188,7 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
 
         $column_labels[ $next_column_number ] = [
             'key'   => 'active',
-            'label' => __( 'Locations with Active Workers', 'disciple_tools' )
+            'label' => __( 'Locations with Active Users', 'disciple_tools' )
         ];
 
         if ( ! empty( $column_data ) ) {
