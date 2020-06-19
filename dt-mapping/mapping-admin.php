@@ -1694,9 +1694,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             SELECT *
                             FROM $wpdb->usermeta
                             WHERE meta_key = %s
-                              AND meta_id NOT IN (
-                                  SELECT DISTINCT( postmeta_id_location_grid )
-                                  FROM $wpdb->dt_location_grid_meta)
+                            AND umeta_id NOT IN (
+                                SELECT DISTINCT( postmeta_id_location_grid )
+                                FROM $wpdb->dt_location_grid_meta)
                             LIMIT %d",
                             $wpdb->prefix . 'location_grid',
                             $limit

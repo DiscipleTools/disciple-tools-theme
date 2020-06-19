@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Disciple Tools\n"
-"POT-Creation-Date: 2020-06-19 18:54+0100\n"
+"POT-Creation-Date: 2020-06-19 20:16+0100\n"
 "PO-Revision-Date: 2018-01-09 14:10-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -632,7 +632,8 @@ msgstr ""
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:63 dt-metrics/personal/overview.php:62
+#: dt-metrics/groups/overview.php:63 dt-metrics/metrics.php:81
+#: dt-metrics/personal/overview.php:62
 #: dt-users/template-user-management.php:231
 msgid "Contacts"
 msgstr ""
@@ -646,7 +647,8 @@ msgstr ""
 #: dt-metrics/groups/mapbox-cluster-map.php:30
 #: dt-metrics/groups/mapbox-point-map.php:29 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:64 dt-metrics/groups/tree.php:24
-#: dt-metrics/personal/overview.php:63 single-groups.php:108
+#: dt-metrics/metrics.php:84 dt-metrics/personal/overview.php:63
+#: single-groups.php:108
 msgid "Groups"
 msgstr ""
 
@@ -1910,7 +1912,7 @@ msgstr ""
 msgid "Accepted"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:473
+#: dt-contacts/contacts-post-type.php:473 dt-metrics/metrics.php:75
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
 #: dt-metrics/personal/group-tree.php:25
@@ -2898,7 +2900,7 @@ msgstr ""
 
 #: dt-metrics/combined/critical-path.php:25
 #: dt-metrics/combined/hover-map.php:26
-#: dt-metrics/combined/locations-list.php:26
+#: dt-metrics/combined/locations-list.php:26 dt-metrics/metrics.php:78
 msgid "Project"
 msgstr ""
 
@@ -3033,7 +3035,7 @@ msgid "Locations List"
 msgstr ""
 
 #: dt-metrics/contacts/baptism-tree.php:24
-msgid "Baptism GenTree"
+msgid "Baptism Tree"
 msgstr ""
 
 #: dt-metrics/contacts/baptism-tree.php:56
@@ -3041,7 +3043,7 @@ msgid "Baptism Generation Tree"
 msgstr ""
 
 #: dt-metrics/contacts/coaching-tree.php:24
-msgid "Coaching GenTree"
+msgid "Coaching Tree"
 msgstr ""
 
 #: dt-metrics/contacts/coaching-tree.php:57
@@ -3309,7 +3311,7 @@ msgid "Generation"
 msgstr ""
 
 #: dt-metrics/groups/tree.php:25
-msgid "GenTree"
+msgid "Groups Tree"
 msgstr ""
 
 #: dt-metrics/groups/tree.php:80 dt-metrics/personal/group-tree.php:81
@@ -3333,7 +3335,7 @@ msgid "View Group"
 msgstr ""
 
 #: dt-metrics/personal/baptism-tree.php:25
-msgid "My Baptism GenTree"
+msgid "My Baptism Tree"
 msgstr ""
 
 #: dt-metrics/personal/baptism-tree.php:57
@@ -3341,7 +3343,7 @@ msgid "My Baptism Generation Tree"
 msgstr ""
 
 #: dt-metrics/personal/coaching-tree.php:25
-msgid "My Coaching GenTree"
+msgid "My Coaching Tree"
 msgstr ""
 
 #: dt-metrics/personal/coaching-tree.php:133
@@ -3349,7 +3351,7 @@ msgid "Disciple"
 msgstr ""
 
 #: dt-metrics/personal/group-tree.php:26
-msgid "My Groups GenTree"
+msgid "My Groups Tree"
 msgstr ""
 
 #: dt-metrics/personal/mapbox-contacts-area-map.php:30

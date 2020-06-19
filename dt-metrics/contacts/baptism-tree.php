@@ -21,7 +21,7 @@ class DT_Metrics_Contacts_Baptism_Tree extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->title = __( 'Baptism GenTree', 'disciple_tools' );
+        $this->title = __( 'Baptism Tree', 'disciple_tools' );
         $this->base_title = __( 'Contacts', 'disciple_tools' );
 
         $url_path = dt_get_url_path();

@@ -22,7 +22,7 @@ class DT_Metrics_Personal_Baptism_Tree extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->title = __( 'My Baptism GenTree', 'disciple_tools' );
+        $this->title = __( 'My Baptism Tree', 'disciple_tools' );
         $this->base_title = __( 'Personal', 'disciple_tools' );
 
         $url_path = dt_get_url_path();
