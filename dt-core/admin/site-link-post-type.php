@@ -930,17 +930,18 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                 function check_link_status( transfer_token, url, id ) {
 
-                let linked = '" . esc_attr__( 'Linked' ) . "';
-                let not_linked = '" . esc_attr__( 'Not Linked' ) . "';
-                let not_found = '" . esc_attr__( 'Failed to connect with the URL provided.' ) . "';
-
-                return jQuery.ajax({
-                    type: 'POST',
-                    data: JSON.stringify({ \"transfer_token\": transfer_token } ),
-                    contentType: 'application/json; charset=utf-8',
-                    dataType: 'json',
-                    url: 'https://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
-                })
+                    let linked = '" . esc_attr__( 'Linked' ) . "';
+                    let not_linked = '" . esc_attr__( 'Connected with remote, but token verification failed' ) . "';
+                    let not_found = '" . esc_attr__( 'Failed to connect with the URL provided.' ) . "';
+                    let no_ssl = '" . esc_attr__( 'Remote is not secured with SSL.' ) . "';
+    
+                    return jQuery.ajax({
+                        type: 'POST',
+                        data: JSON.stringify({ \"transfer_token\": transfer_token } ),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        url: 'https://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
+                    })
                     .done(function (data) {
                         if( data ) {
                             jQuery('#' + id + '-status').html( linked ).attr('class', 'success-green')
@@ -949,14 +950,32 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                             jQuery('#' + id + '-message').show();
                         }
                     })
-                    .fail(function (err) {
-                        jQuery( document ).ajaxError(function( event, request, settings ) {
-                             if( request.status === 0 ) {
-                                jQuery('#' + id + '-status').html( not_found ).attr('class', 'fail-red')
-                             } else {
-                                jQuery('#' + id + '-status').html( JSON.stringify( request.statusText ) ).attr('class', 'fail-red')
-                             }
-                        });
+                    .fail(function (request) {
+                        jQuery.ajax({
+                            type: 'POST',
+                            data: JSON.stringify({ \"transfer_token\": transfer_token } ),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            url: 'http://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
+                        }).done(data=>{
+                            jQuery('#' + id + '-message').show();
+                            if( data ) {
+                                jQuery('#' + id + '-status').html( linked ).attr('class', 'success-green')
+                            } else if (request.status === 0) {
+                                jQuery('#' + id + '-status').html( no_ssl ).attr('class', 'fail-red')
+                            } else {
+                                jQuery('#' + id + '-status').html( not_linked ).attr('class', 'fail-red');
+                            }
+                        }).fail(function(err) {
+                            jQuery( document ).ajaxError(function( event, request, settings ) {
+                                jQuery('#' + id + '-message').show();
+                                if( request.status === 0 ) {
+                                    jQuery('#' + id + '-status').html( not_found ).attr('class', 'fail-red')
+                                } else {
+                                    jQuery('#' + id + '-status').html( JSON.stringify( request.statusText ) ).attr('class', 'fail-red')
+                                }
+                            });
+                        })
                     });
                 }
                 </script>";
