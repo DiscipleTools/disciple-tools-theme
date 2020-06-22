@@ -404,6 +404,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Default Label", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Custom Label", 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( "ISO 639-3 code", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Enabled", 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
                 </tr>
@@ -416,7 +417,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <tr>
                         <td><?php echo esc_html( $language_key ) ?></td>
                         <td><?php echo esc_html( isset( $dt_global_languages_list[$language_key] ) ? $dt_global_languages_list[$language_key]["label"] : "" ) ?></td>
-                        <td><input type="text" name="language_label[<?php echo esc_html( $language_key ) ?>][default]" value="<?php echo esc_html( ( !isset( $dt_global_languages_list[$language_key] ) || ( isset( $dt_global_languages_list[$language_key] ) && $dt_global_languages_list[$language_key]["label"] != $language_option["label"] ) ) ? $language_option["label"] : "" ) ?>"></td>
+                        <td><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_key ) ?>][default]" value="<?php echo esc_html( ( !isset( $dt_global_languages_list[$language_key] ) || ( isset( $dt_global_languages_list[$language_key] ) && $dt_global_languages_list[$language_key]["label"] != $language_option["label"] ) ) ? $language_option["label"] : "" ) ?>"></td>
+                        <td><input type="text" placeholder="ISO 639-3 code" maxlength="3" name="language_code[<?php echo esc_html( $language_key ) ?>]" value="<?php echo esc_html( $language_option["iso_639-3"] ?? "" ) ?>"></td>
                         <td>
                             <input name="language_enabled[<?php echo esc_html( $language_key ) ?>]"
                                    type="checkbox" <?php echo esc_html( $enabled ? "checked" : "" ) ?> />
@@ -470,6 +472,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <br>
                 <p><?php esc_html_e( 'If your language is not in the list, you can create it manually', 'disciple_tools' ); ?></p>
                 <input name="create_custom_language" placeholder="Custom Language" type="text">
+                <input name="create_custom_language_code" placeholder="ISO 639-3 code (optional)" maxlength="3" type="text">
                 <button type="submit" class="button"><?php esc_html_e( "Create", 'disciple_tools' ) ?></button>
             </div>
         </form>
@@ -500,6 +503,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     $languages[$language_key]["label"] = $dt_global_languages_list[$language_key]["label"];
                 }
             }
+            if ( isset( $_POST["language_code"][$language_key] ) ){
+                $code = sanitize_text_field( wp_unslash( $_POST["language_code"][$language_key] ) );
+                if ( ( $language_options["iso_639-3"] ?? "" ) != $code ) {
+                    $languages[$language_key]["iso_639-3"] = $code;
+                }
+            }
             foreach ( $langs as $lang => $val ){
                 $langcode = $val['language'];
                 if ( isset( $_POST["language_label"][$language_key][$langcode] ) ) {
@@ -523,6 +532,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         }
         if ( !empty( $_POST["create_custom_language"] ) ) {
             $language = sanitize_text_field( wp_unslash( $_POST["create_custom_language"] ) );
+            $code = isset( $_POST["create_custom_language_code"] ) ?sanitize_text_field( wp_unslash( $_POST["create_custom_language_code"] ) ) : null;
             $lang_key = dt_create_field_key( $language );
             if ( isset( $dt_global_languages_list[$lang_key] ) || isset( $languages[$lang_key] ) ) {
                 $lang_key = dt_create_field_key( $language, true );
@@ -531,6 +541,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 "label" => $language,
                 "enabled" => true
             ];
+            if ( !empty( $code ) ){
+                $languages[$lang_key]["iso_639-3"] = $code;
+            }
         }
 
         update_option( "dt_working_languages", $languages, false );

@@ -259,7 +259,7 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
                             <!-- People Groups -->
                             <div class="section-subheader cell" style="margin-top:20px">
                                 <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
-                                <?php esc_html_e( 'People Groups you wish to reach', 'disciple_tools' ); ?>
+                                <?php esc_html_e( 'People Groups you wish to serve', 'disciple_tools' ); ?>
                             </div>
                             <div class="people_groups full-width">
                                 <var id="people_groups-result-container" class="result-container"></var>

@@ -231,6 +231,13 @@ function dt_get_option( string $name ) {
 
         case 'dt_working_languages':
             $languages = get_option( 'dt_working_languages', [] );
+            if ( empty( $languages )){
+                $languages = [
+                    "en" => [ "label" => "English" ],
+                    "fr" => [ "label" => "French" ],
+                    "es" => [ "label" => "Spanish" ]
+                ];
+            }
             $languages = DT_Posts_Hooks::dt_get_custom_channels_translation( $languages );
             return apply_filters( 'dt_working_languages', $languages );
 
