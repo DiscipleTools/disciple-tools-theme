@@ -22,7 +22,7 @@ class DT_Metrics_Personal_Baptism_Tree extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->title = __( 'My Baptism GenTree', 'disciple_tools' );
+        $this->title = __( 'My Baptism Tree', 'disciple_tools' );
         $this->base_title = __( 'Personal', 'disciple_tools' );
 
         $url_path = dt_get_url_path();
@@ -129,7 +129,7 @@ class DT_Metrics_Personal_Baptism_Tree extends DT_Metrics_Chart_Base
                 if ( in_array( $item_id, $this->my_list ) ) {
                     $html .= '<strong><a href="' . esc_url( site_url( "/contacts/" ) ) . esc_html( $item_id ) . '">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></strong><br>';
                 } else {
-                    $html .= __( 'baptism', 'disciple_tools' ) . '<br>';
+                    $html .= __( 'Baptism', 'disciple_tools' ) . '<br>';
                 }
 
                 // find child items recursively

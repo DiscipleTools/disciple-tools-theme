@@ -93,7 +93,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         echo '<form method="post" name="user_fields_form">';
         echo '<button type="submit" class="button-like-link" name="enter_bug_fix" value="&nasb"></button>';
         echo '<button type="submit" class="button-like-link" name="user_fields_reset" value="1">' . esc_html( __( "reset", 'disciple_tools' ) ) . '</button>';
-        echo '<p>' . esc_html( __( "You can add or remove types of contact fields for worker profiles.", 'disciple_tools' ) ) . '</p>';
+        echo '<p>' . esc_html( __( "You can add or remove types of contact fields for user profiles.", 'disciple_tools' ) ) . '</p>';
         echo '<input type="hidden" name="user_fields_nonce" id="user_fields_nonce" value="' . esc_attr( wp_create_nonce( 'user_fields' ) ) . '" />';
         echo '<table class="widefat">';
         echo '<thead><tr><td>Label</td><td>Type</td><td>Description</td><td>Enabled</td><td>' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</td></tr></thead><tbody>';
