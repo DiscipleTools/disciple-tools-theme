@@ -225,3 +225,110 @@ $( document).on( 'click', '.remove_dates_unavailable', function () {
     display_dates_unavailable(resp)
   })
 })
+
+let status_buttons = $('.status-button')
+let color_workload_buttons = (name) =>{
+  status_buttons.css('background-color', "")
+  status_buttons.addClass("hollow")
+  if ( name ){
+    let selected = $(`.status-button[name=${name}]`)
+    selected.removeClass("hollow")
+    selected.css('background-color', _.get(wpApiSettingsPage, `workload_status_options.${name}.color`))
+    selected.blur()
+  }
+}
+color_workload_buttons(wpApiSettingsPage.workload_status )
+status_buttons.on( 'click', function () {
+  $("#workload-spinner").addClass("active")
+  let name = $(this).attr('name')
+  color_workload_buttons(name)
+  update_user( 'workload_status', name )
+  .then(()=>{
+    $("#workload-spinner").removeClass("active")
+  }).fail(()=>{
+    status_buttons.css('background-color', "")
+    $("#workload-spinner").removeClass("active")
+    status_buttons.addClass("hollow")
+  })
+})
+
+
+$('button.dt_multi_select').on('click',function () {
+  let fieldKey = $(this).data("field-key")
+  let optionKey = $(this).attr('id')
+  $(`#${fieldKey}-spinner`).addClass("active")
+  let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`)
+  field.addClass("submitting-select-button")
+  let action = "add"
+  let update_request = null
+  if (field.hasClass("selected-select-button")){
+    action = "delete"
+    update_request = update_user( 'remove_' + fieldKey, optionKey )
+  } else {
+    field.removeClass("empty-select-button")
+    field.addClass("selected-select-button")
+    update_request = update_user( 'add_' + fieldKey, optionKey )
+  }
+  update_request.then(()=>{
+    field.removeClass("submitting-select-button selected-select-button")
+    field.blur();
+    field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
+    $(`#${fieldKey}-spinner`).removeClass("active")
+  }).catch(err=>{
+    field.removeClass("submitting-select-button selected-select-button")
+    field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
+    handleAjaxError(err)
+  })
+})
+$('select.select-field').change(e => {
+  const id = $(e.currentTarget).attr('id')
+  const val = $(e.currentTarget).val()
+  $(`#${id}-spinner`).addClass("active")
+  update_user(id, val).then(()=>{
+    $(`#${id}-spinner`).removeClass("active")
+  }).catch(handleAjaxError)
+})
+
+/**
+ * People groups
+ */
+$.typeahead({
+  input: '.js-typeahead-people_groups',
+  minLength: 0,
+  accent: true,
+  searchOnFocus: true,
+  maxItem: 20,
+  source: TYPEAHEADS.typeaheadPeopleGroupSource('people_groups', 'dt/v1/people-groups/compact/'),
+  display: ["name", "label"],
+  templateValue: "{{name}}",
+  dynamic: true,
+  multiselect: {
+    matchOn: ["ID"],
+    data: function () {
+      return wpApiSettingsPage.user_people_groups.map(g=>{
+        return { ID: g.ID, name:g.post_title };
+      })
+    },
+    callback: {
+      onCancel: function (node, item) {
+       update_user( 'remove_people_groups', item.ID )
+      }
+    },
+  },
+  callback: {
+    onClick: function(node, a, item, event){
+      update_user( 'add_people_groups', item.ID )
+      this.addMultiselectItemLayout(item)
+      event.preventDefault()
+      this.hideLayout();
+      this.resetInput();
+    },
+    onResult: function (node, query, result, resultCount) {
+      let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+      $('#people_groups-result-container').html(text);
+    },
+    onHideLayout: function () {
+      $('#people_groups-result-container').html("");
+    }
+  }
+})

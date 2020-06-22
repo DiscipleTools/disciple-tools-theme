@@ -41,7 +41,7 @@ class DT_Posts_Hooks {
      * @param $channel_list
      * @return mixed
      */
-    public function dt_get_custom_channels_translation( $channel_list ) {
+    public static function dt_get_custom_channels_translation( $channel_list ) {
         if (is_admin()) {
             return $channel_list;
         }
