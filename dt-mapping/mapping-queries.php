@@ -563,6 +563,7 @@ class Disciple_Tools_Mapping_Queries {
 
     /**
      * Count post types, churchs and groups in each used location and accross admin levels
+     * @todo rewrite. user is no longer found here and these are listing milstones
      */
     public static function get_location_grid_totals_on_field( $post_type, $field, $force_refresh = false ) : array {
 
