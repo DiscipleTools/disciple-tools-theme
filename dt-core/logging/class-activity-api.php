@@ -7,7 +7,22 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  * @see Disciple_Tools_Activity_Log_API::insert
  *
  * @since 0.1.0
- * @param array $args
+ * @param array $args [
+ * action: the action performed
+ * object_type: post_type, user, tec
+ * object_subtype: field, further designation
+ * object_name: optional
+ * object_id: the post, user or comment ID
+ * hist_ip: unused
+ * hist_time: unix epoch time stamp
+ * object_note: the activity message. Optional. It is better to generated the message on read
+ * meta_id: the id of the postmeta row if applicable
+ * meta_key: the meta_key of the postmeta row, the
+ * meta_value: the new value
+ * meta_parent: unused
+ * old_value: the previous value of the field, if applicable
+ * field_type: the type of the postmeta field. Optional
+ * ]
  * @return void
  */
 function dt_activity_insert( $args = [] ) {

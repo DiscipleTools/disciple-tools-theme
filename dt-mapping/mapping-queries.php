@@ -1100,14 +1100,19 @@ class Disciple_Tools_Mapping_Queries {
 
         if ( $status ) {
             $results = $wpdb->get_results( $wpdb->prepare( "
-             SELECT t0.admin0_grid_id as grid_id, count(t0.admin0_grid_id) as count
+            SELECT t0.admin0_grid_id as grid_id, count(t0.admin0_grid_id) as count
             FROM (
-             SELECT lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
-                FROM wp_3_postmeta as pm
-                JOIN wp_3_posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
-                LEFT JOIN wp_3_dt_location_grid as lg ON pm.meta_value=lg.grid_id
+              SELECT lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
                 WHERE pm.meta_key = 'location_grid'
-                AND pm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE ( p.meta_key = 'corresponds_to_user' AND p.meta_value != '') OR ( p.meta_key = 'overall_status' AND p.meta_value = 'closed'))
+                AND pm.post_id NOT IN (
+                  SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p 
+                  WHERE ( p.meta_key = 'corresponds_to_user' AND p.meta_value != '') 
+                  OR ( p.meta_key = 'overall_status' AND p.meta_value = 'closed')
+                )
+            )
             WHERE lgm.post_type = 'contacts'
                 AND lgm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE ( p.meta_key = 'corresponds_to_user' AND p.meta_value != '') )
             ) as t0
@@ -1157,7 +1162,7 @@ class Disciple_Tools_Mapping_Queries {
              AND lgm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE ( p.meta_key = 'corresponds_to_user' AND p.meta_value != '') )
             ) as t5
             GROUP BY t5.admin5_grid_id;
-            ", $status, $status, $status, $status, $status, $status ), ARRAY_A );
+            ", $status, $status, $status, $status, $status ), ARRAY_A );
 
         } else {
 

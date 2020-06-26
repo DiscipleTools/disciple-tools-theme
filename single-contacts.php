@@ -587,7 +587,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         <select id="reason-closed-options">
             <?php
             foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $option ) {
-                if ( $option["label"] ) {
+                if ( isset( $option["label"] ) ) {
                     $selected = ( $reason_key === ( $contact["reason_closed"]["key"] ?? "" ) ) ? "selected" : "";
                     ?>
                     <option
@@ -647,7 +647,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         <select id="reason-unassignable-options">
             <?php
             foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $option ) {
-                if ( $option["label"] ) {
+                if ( isset( $option["label"] ) ) {
                     ?>
                     <option value="<?php echo esc_attr( $reason_key ) ?>"
                         <?php if ( ( $contact["unassignable_paused"]["key"] ?? "" ) === $reason_key ) {
