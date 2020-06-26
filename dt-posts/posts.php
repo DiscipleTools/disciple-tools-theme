@@ -508,7 +508,7 @@ class Disciple_Tools_Posts
             $message = $activity->object_note;
         }
 
-        return $message;
+        return apply_filters( "dt_format_activity_message", $message, $activity );
     }
 
 
