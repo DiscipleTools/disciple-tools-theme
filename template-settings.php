@@ -511,7 +511,7 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><label for="description"><?php esc_html_e( 'Language', 'disciple_tools' )?></label></td>
+                                    <td><label for="description"><?php esc_html_e( 'System Language', 'disciple_tools' )?></label></td>
                                     <td dir="auto">
                                         <?php
                                         wp_dropdown_languages( array(
