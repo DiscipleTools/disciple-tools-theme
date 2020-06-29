@@ -56,7 +56,7 @@ else {
          */
         load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
     }
-    add_action( 'after_setup_theme', 'dt_theme_loaded' );
+    add_action( 'after_setup_theme', 'dt_theme_loaded', 5 );
 
     /**
      * Returns the main instance of Disciple_Tools to prevent the need to use globals.
