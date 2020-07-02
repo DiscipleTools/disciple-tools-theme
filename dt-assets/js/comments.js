@@ -21,7 +21,7 @@ jQuery(document).ready(function($) {
         commentButton.toggleClass('loading')
         commentInput.attr("disabled", true)
         commentButton.attr("disabled", true)
-        rest_api.post_comment(postType, postId, _.escape(comment_plain_text), commentType ).then(data => {
+        rest_api.post_comment(postType, postId, comment_plain_text, commentType ).then(data => {
           let updated_comment = data.comment || data
           commentInput.val("").trigger( "change" )
           commentButton.toggleClass('loading')

@@ -667,7 +667,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         foreach ( $comments as $comment ){
             $comment_data = [
                 'comment_post_ID'      => $post_id,
-                'comment_content'      => $comment,
+                'comment_content'      => wp_kses_post($comment),
                 'user_id'              => $user_id,
                 'comment_author'       => $args["comment_author"] ?? $user->display_name,
                 'comment_author_url'   => $args["comment_author_url"] ?? "",
