@@ -757,7 +757,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 "comment_date" => $comment->comment_date,
                 "comment_date_gmt" => $comment->comment_date_gmt,
                 "gravatar" => preg_replace( "/^http:/i", "https:", $url ),
-                "comment_content" => wp_kses_post( $comment->comment_content ),
+                "comment_content" => wp_kses_post(html_entity_decode($comment->comment_content)),
                 "user_id" => $comment->user_id,
                 "comment_type" => $comment->comment_type,
                 "comment_post_ID" => $comment->comment_post_ID
