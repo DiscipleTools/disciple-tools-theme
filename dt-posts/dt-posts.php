@@ -8,10 +8,10 @@ class DT_Posts extends Disciple_Tools_Posts {
         parent::__construct();
     }
 
-    /** 
-     * Specifies which HTML tags are permissible in comments.  
+    /**
+     * Specifies which HTML tags are permissible in comments.
      */
-    private static $allowableCommentTags = array(
+    private static $allowable_comment_tags = array(
         'a' => array(
           'href' => array(),
           'title' => array()
@@ -19,7 +19,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         'br' => array(),
         'em' => array(),
         'strong' => array(),
-    );    
+    );
 
     /**
      * Get settings on the post type
@@ -680,7 +680,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         foreach ( $comments as $comment ){
             $comment_data = [
                 'comment_post_ID'      => $post_id,
-                'comment_content'      => wp_kses($comment, self::$allowableCommentTags),
+                'comment_content'      => wp_kses($comment, self::$allowable_comment_tags),
                 'user_id'              => $user_id,
                 'comment_author'       => $args["comment_author"] ?? $user->display_name,
                 'comment_author_url'   => $args["comment_author_url"] ?? "",
@@ -770,7 +770,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 "comment_date" => $comment->comment_date,
                 "comment_date_gmt" => $comment->comment_date_gmt,
                 "gravatar" => preg_replace( "/^http:/i", "https:", $url ),
-                "comment_content" => wp_kses( $comment->comment_content, self::$allowableCommentTags),
+                "comment_content" => wp_kses( $comment->comment_content, self::$allowable_comment_tags),
                 "user_id" => $comment->user_id,
                 "comment_type" => $comment->comment_type,
                 "comment_post_ID" => $comment->comment_post_ID
