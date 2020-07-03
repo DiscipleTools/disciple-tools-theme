@@ -13,7 +13,7 @@ msgid "Permission denied"
 msgstr "İzin reddedildi"
 
 #: 403.php:23
-msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
+msgid "Sorry, you don’t have permission to view the %1$s with id %2$s."
 msgstr "Üzgünüm, %2$s kimliğiyle %1$s görüntüleme iznin yok."
 
 #: 403.php:24
@@ -158,11 +158,11 @@ msgid "Comments"
 msgstr "Yorumlar"
 
 #: dt-assets/functions/enqueue-scripts.php:154
-msgid "You don't have any unread notifications"
+msgid "You don’t have any unread notifications"
 msgstr "Okunmamış bildirimin yok"
 
 #: dt-assets/functions/enqueue-scripts.php:155
-msgid "You don't have any notifications"
+msgid "You don’t have any notifications"
 msgstr "Bildirimin yok"
 
 #: dt-assets/functions/enqueue-scripts.php:330
@@ -928,11 +928,11 @@ msgstr "Lütfen bu kişiyle tekrar iletişime geçmeyi dene."
 #: dt-core/admin/config-site-defaults.php:382
 #: dt-core/admin/config-site-defaults.php:388
 #: dt-core/admin/config-site-defaults.php:394
-msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
+msgid "We haven’t heard about this person in a while. Do you have an update for this contact?"
 msgstr "Bu kişiden bir süredir haber almadık. Bu kişi için bir güncelleme var mı?"
 
 #: dt-core/admin/config-site-defaults.php:404
-msgid "We haven't heard about this group in a while. Do you have an update?"
+msgid "We haven’t heard about this group in a while. Do you have an update?"
 msgstr "Bu gruptan bir süredir haber almadık. Bu grup için bir güncelleme var mı?"
 
 #: dt-core/admin/config-site-defaults.php:644
@@ -1729,7 +1729,7 @@ msgstr "Disciple Tools Sistemi resimleri hafızasında tutmaz. Profil resimleri 
 
 #: template-settings.php:341
 msgid "edit image on gravatar.com"
-msgstr "gravatar.com'da resmi düzenle"
+msgstr "gravatar.com’da resmi düzenle"
 
 #: template-settings.php:347 template-settings.php:348
 msgid "Username cannot be changed"
@@ -1832,7 +1832,7 @@ msgstr "Daha öğren."
 #: dt-users/users.php:791
 msgid "Hi,\n"
 "\n"
-"You've been invited to join '%1$s' at\n"
+"You’ve been invited to join '%1$s' at\n"
 "%2$s with the role of %3$s.\n"
 "\n"
 "Please click the following link to confirm the invite:\n"
@@ -1928,7 +1928,7 @@ msgid "Accepting new contacts"
 msgstr "Yeni kişileri kabul ediyor"
 
 #: dt-core/admin/config-site-defaults.php:553
-msgid "I'm only investing in existing contacts"
+msgid "I’m only investing in existing contacts"
 msgstr "Sadece var olan kişilerle ilgileniyorum"
 
 #: dt-core/admin/config-site-defaults.php:557
@@ -2148,7 +2148,7 @@ msgstr "Bu kişi kötü niyetli olabilir"
 
 #: dt-contacts/contacts-post-type.php:432
 msgctxt "Reason Paused label"
-msgid "Ball is in the contact's court"
+msgid "Ball is in the contact’s court"
 msgstr "İletişim kurmaya sira onlarda"
 
 #: dt-contacts/contacts-post-type.php:433
@@ -2732,7 +2732,7 @@ msgstr "Örneğin, 'Cevap Yok' butona 4 sefer tıklarsanız bu kişiyle 4 sefer 
 
 #: dt-assets/parts/modals/modal-help.php:81
 msgctxt "Optional Documentation"
-msgid "Here you can track the progress of the contact's faith journey."
+msgid "Here you can track the progress of the contact’s faith journey."
 msgstr "Burada bu kişinin iman yolculuğuna takip edebilirsin."
 
 #: dt-assets/parts/modals/modal-help.php:121
@@ -2964,7 +2964,7 @@ msgstr ""
 
 #: dt-assets/parts/modals/modal-help.php:437
 msgctxt "Optional Documentation"
-msgid "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+msgid "If you don’t want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
 msgstr ""
 
 #: dt-assets/parts/modals/modal-help.php:439
@@ -3080,7 +3080,7 @@ msgstr ""
 
 #: dt-contacts/contacts-post-type.php:310
 msgid "Has Bible"
-msgstr "İncil'i Var"
+msgstr "İncil’i Var"
 
 #: dt-contacts/contacts-post-type.php:314
 msgid "Reading Bible"
@@ -3182,7 +3182,7 @@ msgstr "Kapanma Sebebi"
 
 #: dt-contacts/contacts-post-type.php:441
 msgctxt "Optional Documentation"
-msgid "A closed contact is one you can't or don't wish to interact with."
+msgid "A closed contact is one you can’t or don’t wish to interact with."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:448
@@ -3392,7 +3392,7 @@ msgstr "Rabbin Sofrası"
 #: dt-groups/groups-post-type.php:247
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
-msgstr "Grup Rab'bin Sofrası yapıyor."
+msgstr "Grup Rab’bin Sofrası yapıyor."
 
 #: dt-groups/groups-post-type.php:251
 msgid "Fellowship"
@@ -3486,7 +3486,7 @@ msgstr "Bu grubun başlatan/kuran grubu"
 
 #: dt-groups/groups-post-type.php:371
 msgctxt "Optional Documentation"
-msgid "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+msgid "A related group that isn’t a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
 msgstr ""
 
 #: dt-groups/groups-post-type.php:379

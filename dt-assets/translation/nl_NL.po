@@ -13,7 +13,7 @@ msgid "Permission denied"
 msgstr "toestemming geweigerd"
 
 #: 403.php:23
-msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
+msgid "Sorry, you don’t have permission to view the %1$s with id %2$s."
 msgstr "Sorry, je hebt niet de toestemming om de %1$s met ID nummer %2$s te zien."
 
 #: 403.php:24
@@ -158,11 +158,11 @@ msgid "Comments"
 msgstr "opmerkingen"
 
 #: dt-assets/functions/enqueue-scripts.php:154
-msgid "You don't have any unread notifications"
+msgid "You don’t have any unread notifications"
 msgstr "je hebt geen ongelezen berichten"
 
 #: dt-assets/functions/enqueue-scripts.php:155
-msgid "You don't have any notifications"
+msgid "You don’t have any notifications"
 msgstr "je hebt geen berichten"
 
 #: dt-assets/functions/enqueue-scripts.php:330
@@ -934,11 +934,11 @@ msgstr "Probeer alsjeblieft weer contact te krijgen met deze persoon"
 #: dt-core/admin/config-site-defaults.php:382
 #: dt-core/admin/config-site-defaults.php:388
 #: dt-core/admin/config-site-defaults.php:394
-msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
+msgid "We haven’t heard about this person in a while. Do you have an update for this contact?"
 msgstr "We hebben een tijd niet over deze persoon gehoord. Kun je een update geven voor dit contact?"
 
 #: dt-core/admin/config-site-defaults.php:404
-msgid "We haven't heard about this group in a while. Do you have an update?"
+msgid "We haven’t heard about this group in a while. Do you have an update?"
 msgstr "We hebben een tijd niet over deze groep gehoord. Heb je een update?"
 
 #: dt-core/admin/config-site-defaults.php:644
@@ -1737,7 +1737,7 @@ msgstr "inschakelen"
 
 #: template-settings.php:340
 msgid "Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
-msgstr "Disciple Tools Systeem slaat geen afbeeldingen op. Voor profielfoto's gebruiken we Gravatar (Wereldwijd Erkende Avatar). Als je veiligheids risico's ziet, raden we aan om geen persoonlijke foto te gebuiken, maar een Cartoon, iets abstracts of Alias foto als profiel afbeelding van jou."
+msgstr "Disciple Tools Systeem slaat geen afbeeldingen op. Voor profielfoto’s gebruiken we Gravatar (Wereldwijd Erkende Avatar). Als je veiligheids risico’s ziet, raden we aan om geen persoonlijke foto te gebuiken, maar een Cartoon, iets abstracts of Alias foto als profiel afbeelding van jou."
 
 #: template-settings.php:341
 msgid "edit image on gravatar.com"
@@ -1848,7 +1848,7 @@ msgstr "Leer meer"
 #: dt-users/users.php:791
 msgid "Hi,\n"
 "\n"
-"You've been invited to join '%1$s' at\n"
+"You’ve been invited to join '%1$s' at\n"
 "%2$s with the role of %3$s.\n"
 "\n"
 "Please click the following link to confirm the invite:\n"
@@ -1943,7 +1943,7 @@ msgid "Accepting new contacts"
 msgstr "Accepteert  nieuwe contacten"
 
 #: dt-core/admin/config-site-defaults.php:553
-msgid "I'm only investing in existing contacts"
+msgid "I’m only investing in existing contacts"
 msgstr "Ik investeer alleen in bestaande contacten"
 
 #: dt-core/admin/config-site-defaults.php:557
@@ -2166,7 +2166,7 @@ msgstr "Contact heeft dubieuse motieven"
 
 #: dt-contacts/contacts-post-type.php:432
 msgctxt "Reason Paused label"
-msgid "Ball is in the contact's court"
+msgid "Ball is in the contact’s court"
 msgstr "Het initiatief ligt bij het contact"
 
 #: dt-contacts/contacts-post-type.php:433
@@ -2749,7 +2749,7 @@ msgstr "Bijvoorbeeld, als je de \"geen antwoord\" knop 4 keer klikt, registreren
 
 #: dt-assets/parts/modals/modal-help.php:81
 msgctxt "Optional Documentation"
-msgid "Here you can track the progress of the contact's faith journey."
+msgid "Here you can track the progress of the contact’s faith journey."
 msgstr "Hier kan je de voortgang traceren van de contacts geloofs traject"
 
 #: dt-assets/parts/modals/modal-help.php:121
@@ -2981,7 +2981,7 @@ msgstr "Klik op de \"ongelezen\" knop om de lijst te tonen van al je ongelezen n
 
 #: dt-assets/parts/modals/modal-help.php:437
 msgctxt "Optional Documentation"
-msgid "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+msgid "If you don’t want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
 msgstr "Als je niet elk gevulde cirkeltje aan de rechter kant van elke rij wilt aanklikken om aan te geven dat de notificatie gelezen is, klik dan op \"Markeer alles als Gelezen\" link bovenaan om snel aan te geven dat alle berichten gelezen zijn."
 
 #: dt-assets/parts/modals/modal-help.php:439
@@ -3199,7 +3199,7 @@ msgstr "Reden Afgesloten"
 
 #: dt-contacts/contacts-post-type.php:441
 msgctxt "Optional Documentation"
-msgid "A closed contact is one you can't or don't wish to interact with."
+msgid "A closed contact is one you can’t or don’t wish to interact with."
 msgstr "Een afgesloten contact is er een waar je niet mee kunt  of wilt in interactie zijn."
 
 #: dt-contacts/contacts-post-type.php:448
@@ -3503,7 +3503,7 @@ msgstr "Een groep die deze groep heeft opgericht"
 
 #: dt-groups/groups-post-type.php:371
 msgctxt "Optional Documentation"
-msgid "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+msgid "A related group that isn’t a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
 msgstr "Een gerelateerde groep die geen ouder/kind relatie is. Het kan aanduiden dat groepen samenwerken, gaan samenvoegen, recentelijk uitelkaar gegaan zijn, enz."
 
 #: dt-groups/groups-post-type.php:379

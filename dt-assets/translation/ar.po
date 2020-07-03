@@ -13,7 +13,7 @@ msgid "Permission denied"
 msgstr "الطلب مرفوض"
 
 #: 403.php:23
-msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
+msgid "Sorry, you don’t have permission to view the %1$s with id %2$s."
 msgstr "اسف، ليس لديك إذن لعرض %1$s بهوية %2$s."
 
 #: 403.php:24
@@ -158,11 +158,11 @@ msgid "Comments"
 msgstr "تعليقات"
 
 #: dt-assets/functions/enqueue-scripts.php:154
-msgid "You don't have any unread notifications"
+msgid "You don’t have any unread notifications"
 msgstr "ليس لديك أيّ إشعارات غير مقروؤة"
 
 #: dt-assets/functions/enqueue-scripts.php:155
-msgid "You don't have any notifications"
+msgid "You don’t have any notifications"
 msgstr "ليس لديك أيّ إشعارات"
 
 #: dt-assets/functions/enqueue-scripts.php:330
@@ -928,11 +928,11 @@ msgstr "من فضلك محاولة الاتصال مرة اخرى"
 #: dt-core/admin/config-site-defaults.php:382
 #: dt-core/admin/config-site-defaults.php:388
 #: dt-core/admin/config-site-defaults.php:394
-msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
+msgid "We haven’t heard about this person in a while. Do you have an update for this contact?"
 msgstr "لم نتلق أي تحديث عن هذا الشخص من فترة. هل يوجد أي تحديث يخص جهة الاتصال هذه؟"
 
 #: dt-core/admin/config-site-defaults.php:404
-msgid "We haven't heard about this group in a while. Do you have an update?"
+msgid "We haven’t heard about this group in a while. Do you have an update?"
 msgstr "لم نتلق أي تحديث عن هذه المجموعة من فترة. هل يوجد أي تحديث يخص جهة الاتصال هذه؟"
 
 #: dt-core/admin/config-site-defaults.php:644
@@ -1832,7 +1832,7 @@ msgstr "اعرف المزيد."
 #: dt-users/users.php:791
 msgid "Hi,\n"
 "\n"
-"You've been invited to join '%1$s' at\n"
+"You’ve been invited to join '%1$s' at\n"
 "%2$s with the role of %3$s.\n"
 "\n"
 "Please click the following link to confirm the invite:\n"
@@ -1928,7 +1928,7 @@ msgid "Accepting new contacts"
 msgstr "قبول جهات اتصال جديدة"
 
 #: dt-core/admin/config-site-defaults.php:553
-msgid "I'm only investing in existing contacts"
+msgid "I’m only investing in existing contacts"
 msgstr "أنا أستثمر فقط في جهات الاتصال الموجودة"
 
 #: dt-core/admin/config-site-defaults.php:557
@@ -2148,7 +2148,7 @@ msgstr "جهة الاتصال لديه دوافع مشكوك فيها"
 
 #: dt-contacts/contacts-post-type.php:432
 msgctxt "Reason Paused label"
-msgid "Ball is in the contact's court"
+msgid "Ball is in the contact’s court"
 msgstr "الكرة في ملعب جهة الاتصال"
 
 #: dt-contacts/contacts-post-type.php:433
@@ -2731,7 +2731,7 @@ msgstr "على سبيل المثال ، إذا قمت بالنقر فوق الز
 
 #: dt-assets/parts/modals/modal-help.php:81
 msgctxt "Optional Documentation"
-msgid "Here you can track the progress of the contact's faith journey."
+msgid "Here you can track the progress of the contact’s faith journey."
 msgstr "هنا يمكنك تتبع تقدم رحلة الإيمان لجهة الاتصال."
 
 #: dt-assets/parts/modals/modal-help.php:121
@@ -2963,7 +2963,7 @@ msgstr "انقر فوق الزر \"غير مقروء\" لإظهار قائمة �
 
 #: dt-assets/parts/modals/modal-help.php:437
 msgctxt "Optional Documentation"
-msgid "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+msgid "If you don’t want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
 msgstr "إذا كنت لا تريد النقر فوق كل دائرة مملوءة في الجانب الأيمن من كل صف للإشارة إلى قراءة الإشعار ، فانقر فوق الرابط \"وضع علامة على اجعل الكل مقروء\" في الأعلى لضبط جميع الرسائل التي تحتوي عليها جميعًا بسرعة تمت قراءتها."
 
 #: dt-assets/parts/modals/modal-help.php:439
@@ -3181,7 +3181,7 @@ msgstr "سبب الغلق"
 
 #: dt-contacts/contacts-post-type.php:441
 msgctxt "Optional Documentation"
-msgid "A closed contact is one you can't or don't wish to interact with."
+msgid "A closed contact is one you can’t or don’t wish to interact with."
 msgstr "جهة الاتصال المغلقة هي جهة لا يمكنك أو لا ترغب في التفاعل معها."
 
 #: dt-contacts/contacts-post-type.php:448
@@ -3486,7 +3486,7 @@ msgstr "مجموعة أسست هذه المجموعة."
 #: dt-groups/groups-post-type.php:371
 #, fuzzy
 msgctxt "Optional Documentation"
-msgid "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+msgid "A related group that isn’t a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
 msgstr "مجموعة ذات صلة ليست من علاقة اصلية / فرعية. قد يشير إلى المجموعات التي تتعاون ، على وشك الاندماج ، والانقسام مؤخرًا ، وما إلى ذلك."
 
 #: dt-groups/groups-post-type.php:379

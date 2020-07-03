@@ -13,7 +13,7 @@ msgid "Permission denied"
 msgstr "没有权限"
 
 #: 403.php:23
-msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
+msgid "Sorry, you don’t have permission to view the %1$s with id %2$s."
 msgstr "抱歉，您无权查看ID为％2 $ s的％1 $ s。"
 
 #: 403.php:24
@@ -158,11 +158,11 @@ msgid "Comments"
 msgstr "注释"
 
 #: dt-assets/functions/enqueue-scripts.php:154
-msgid "You don't have any unread notifications"
+msgid "You don’t have any unread notifications"
 msgstr "您没有任何未读的通知"
 
 #: dt-assets/functions/enqueue-scripts.php:155
-msgid "You don't have any notifications"
+msgid "You don’t have any notifications"
 msgstr "您没有任何通知"
 
 #: dt-assets/functions/enqueue-scripts.php:330
@@ -927,11 +927,11 @@ msgstr "请尝试再次与此联系人联系。"
 #: dt-core/admin/config-site-defaults.php:382
 #: dt-core/admin/config-site-defaults.php:388
 #: dt-core/admin/config-site-defaults.php:394
-msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
+msgid "We haven’t heard about this person in a while. Do you have an update for this contact?"
 msgstr "我们已经有一段时间没有听说这个人了。您有此联系人的最新消息吗？"
 
 #: dt-core/admin/config-site-defaults.php:404
-msgid "We haven't heard about this group in a while. Do you have an update?"
+msgid "We haven’t heard about this group in a while. Do you have an update?"
 msgstr "我们已经有一段时间没有听说过这个小组了。你有更新吗？"
 
 #: dt-core/admin/config-site-defaults.php:644
@@ -1831,7 +1831,7 @@ msgstr "学到更多。"
 #: dt-users/users.php:791
 msgid "Hi,\n"
 "\n"
-"You've been invited to join '%1$s' at\n"
+"You’ve been invited to join '%1$s' at\n"
 "%2$s with the role of %3$s.\n"
 "\n"
 "Please click the following link to confirm the invite:\n"
@@ -1927,7 +1927,7 @@ msgid "Accepting new contacts"
 msgstr "接受新联系人"
 
 #: dt-core/admin/config-site-defaults.php:553
-msgid "I'm only investing in existing contacts"
+msgid "I’m only investing in existing contacts"
 msgstr "我只投资现有的联系人"
 
 #: dt-core/admin/config-site-defaults.php:557
@@ -2147,7 +2147,7 @@ msgstr "接触有可疑的动机"
 
 #: dt-contacts/contacts-post-type.php:432
 msgctxt "Reason Paused label"
-msgid "Ball is in the contact's court"
+msgid "Ball is in the contact’s court"
 msgstr "球在联络人的法庭上"
 
 #: dt-contacts/contacts-post-type.php:433
@@ -2730,7 +2730,7 @@ msgstr "例如，如果您单击“无人接听”按钮4次，我们将记录�
 
 #: dt-assets/parts/modals/modal-help.php:81
 msgctxt "Optional Documentation"
-msgid "Here you can track the progress of the contact's faith journey."
+msgid "Here you can track the progress of the contact’s faith journey."
 msgstr "在这里，您可以跟踪联系人的信任旅程的进度。"
 
 #: dt-assets/parts/modals/modal-help.php:121
@@ -2962,7 +2962,7 @@ msgstr "点击“未读”按钮以显示所有未读通知的列表。"
 
 #: dt-assets/parts/modals/modal-help.php:437
 msgctxt "Optional Documentation"
-msgid "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+msgid "If you don’t want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
 msgstr "如果您不想单击每行右侧的每个实心圆圈来表示已阅读通知，请单击顶部的“将所有内容标记为已读”链接以快速调整所有已包含的消息被阅读。"
 
 #: dt-assets/parts/modals/modal-help.php:439
@@ -3180,7 +3180,7 @@ msgstr "原因关闭"
 
 #: dt-contacts/contacts-post-type.php:441
 msgctxt "Optional Documentation"
-msgid "A closed contact is one you can't or don't wish to interact with."
+msgid "A closed contact is one you can’t or don’t wish to interact with."
 msgstr "封闭联系人是您不愿或不希望与之互动的人。"
 
 #: dt-contacts/contacts-post-type.php:448
@@ -3484,7 +3484,7 @@ msgstr "建立该小组的小组。"
 
 #: dt-groups/groups-post-type.php:371
 msgctxt "Optional Documentation"
-msgid "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+msgid "A related group that isn’t a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
 msgstr "不是亲子关系的相关组。它可能表明正在协作，即将合并，最近分裂等的组。"
 
 #: dt-groups/groups-post-type.php:379

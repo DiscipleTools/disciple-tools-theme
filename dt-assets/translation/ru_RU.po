@@ -13,7 +13,7 @@ msgid "Permission denied"
 msgstr "Доступ запрещен"
 
 #: 403.php:23
-msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
+msgid "Sorry, you don’t have permission to view the %1$s with id %2$s."
 msgstr "К сожалению, у вас нет разрешения на просмотр %1$s с идентификатором %2$s."
 
 #: 403.php:24
@@ -32,7 +32,7 @@ msgstr "Ошибка 404 - ресурс не найден"
 msgid "The page you were looking for was not found or was deleted"
 msgstr "Страница не найдена или удалена"
 
-#. Depends on the context. Masculine/Feminine/Neutral gender nouns will change adjective's suffix. I.e. active contact (masculine) - Активный, active page (feminine) - Активная.
+#. Depends on the context. Masculine/Feminine/Neutral gender nouns will change adjective’s suffix. I.e. active contact (masculine) - Активный, active page (feminine) - Активная.
 #: dt-contacts/contacts-post-type.php:223 dt-groups/groups-post-type.php:189
 #: dt-users/template-user-management.php:75 dt-users/user-management.php:115
 msgid "Active"
@@ -165,11 +165,11 @@ msgid "Comments"
 msgstr "Комментарий"
 
 #: dt-assets/functions/enqueue-scripts.php:154
-msgid "You don't have any unread notifications"
+msgid "You don’t have any unread notifications"
 msgstr "У вас нет непрочитанных уведомлений"
 
 #: dt-assets/functions/enqueue-scripts.php:155
-msgid "You don't have any notifications"
+msgid "You don’t have any notifications"
 msgstr "У вас нет никаких уведомлений"
 
 #: dt-assets/functions/enqueue-scripts.php:330
@@ -755,7 +755,7 @@ msgstr "Телефон"
 msgid "Work"
 msgstr "Рабочий"
 
-#. Depends on the context. Masculine/Feminine/Neutral gender nouns will change adjective's suffix. I.e. Home address (masculine) - Домашний, Home page (feminine) - Домашняя.
+#. Depends on the context. Masculine/Feminine/Neutral gender nouns will change adjective’s suffix. I.e. Home address (masculine) - Домашний, Home page (feminine) - Домашняя.
 #: dt-core/admin/config-site-defaults.php:538
 msgid "Home"
 msgstr "Домашний"
@@ -834,7 +834,7 @@ msgstr "ПРИМЕЧАНИЕ. Вы уже перенесли этот конта
 msgid "Override and Continue"
 msgstr "Отменить и продолжить"
 
-#. This depends on what's coming after "to:". If it's an organisation, then the automatic translation is correct. If it's a person, then there is no need in the last "B".
+#. This depends on what’s coming after "to:". If it’s an organisation, then the automatic translation is correct. If it’s a person, then there is no need in the last "B".
 #: dt-contacts/contacts-transfer.php:103
 msgid "Transfer this contact to:"
 msgstr "Передать этот контакт в: "
@@ -950,11 +950,11 @@ msgstr "Пожалуйста, попробуйте снова связаться
 #: dt-core/admin/config-site-defaults.php:382
 #: dt-core/admin/config-site-defaults.php:388
 #: dt-core/admin/config-site-defaults.php:394
-msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
+msgid "We haven’t heard about this person in a while. Do you have an update for this contact?"
 msgstr "Мы давно не слышали об этом человеке. У вас есть обновление для этого контакта?"
 
 #: dt-core/admin/config-site-defaults.php:404
-msgid "We haven't heard about this group in a while. Do you have an update?"
+msgid "We haven’t heard about this group in a while. Do you have an update?"
 msgstr "Мы давно не слышали об этой группе. У вас есть обновление?"
 
 #: dt-core/admin/config-site-defaults.php:644
@@ -1868,7 +1868,7 @@ msgstr "Узнать больше."
 #: dt-users/users.php:791
 msgid "Hi,\n"
 "\n"
-"You've been invited to join '%1$s' at\n"
+"You’ve been invited to join '%1$s' at\n"
 "%2$s with the role of %3$s.\n"
 "\n"
 "Please click the following link to confirm the invite:\n"
@@ -1963,7 +1963,7 @@ msgstr "Открыт к принятию новых контактов"
 
 #: dt-core/admin/config-site-defaults.php:553
 #, fuzzy
-msgid "I'm only investing in existing contacts"
+msgid "I’m only investing in existing contacts"
 msgstr "Я вкладываю только в существующие контакты"
 
 #: dt-core/admin/config-site-defaults.php:557
@@ -2198,7 +2198,7 @@ msgstr "У контакта сомнительные мотивы"
 
 #: dt-contacts/contacts-post-type.php:432
 msgctxt "Reason Paused label"
-msgid "Ball is in the contact's court"
+msgid "Ball is in the contact’s court"
 msgstr "Ожидается ответ от контакта"
 
 #: dt-contacts/contacts-post-type.php:433
@@ -2795,7 +2795,7 @@ msgstr "Например, если вы нажмете кнопку «Нет о�
 
 #: dt-assets/parts/modals/modal-help.php:81
 msgctxt "Optional Documentation"
-msgid "Here you can track the progress of the contact's faith journey."
+msgid "Here you can track the progress of the contact’s faith journey."
 msgstr "Здесь вы можете следить за прогрессом веры контакта."
 
 #: dt-assets/parts/modals/modal-help.php:121
@@ -3027,7 +3027,7 @@ msgstr "Нажмите кнопку «Непрочитанные», чтобы �
 
 #: dt-assets/parts/modals/modal-help.php:437
 msgctxt "Optional Documentation"
-msgid "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+msgid "If you don’t want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
 msgstr "Если вы не хотите нажимать каждый заполненный кружок в правой части каждой строки, чтобы указать, что уведомление было прочитано, нажмите ссылку «Пометить все как прочитанное» вверху, чтобы быстро настроить все сообщения, которые у них есть. был прочитан"
 
 #: dt-assets/parts/modals/modal-help.php:439
@@ -3245,7 +3245,7 @@ msgstr "Причина закрытия"
 
 #: dt-contacts/contacts-post-type.php:441
 msgctxt "Optional Documentation"
-msgid "A closed contact is one you can't or don't wish to interact with."
+msgid "A closed contact is one you can’t or don’t wish to interact with."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:448
@@ -3549,7 +3549,7 @@ msgstr "Группа, основавшая данную группу"
 
 #: dt-groups/groups-post-type.php:371
 msgctxt "Optional Documentation"
-msgid "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+msgid "A related group that isn’t a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
 msgstr "Связанная группа, которая не является родителем / ребенком в отношениях. Это может указывать на группы, которые сотрудничают, собираются объединиться, недавно разделены и т.д."
 
 #: dt-groups/groups-post-type.php:379
