@@ -246,18 +246,18 @@ jQuery(document).ready(function($) {
     let comment_html = comment.comment_content // eg: "Tom &amp; Jerry"
 
 
-/**
- * .DT - while previewing submitted comments, enhance the presentation of special characters with a helper function below
- */
+    /**
+     * .DT - while previewing submitted comments, enhance the presentation of special characters with a helper function below
+     */
 
-function unescapeHtml(safe) {
-  return safe.replace(/&amp;/g, '&')
-      //.replace(/&lt;/g, '<')
-      //.replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'")
-      .replace(/&#039;/g, "'");
-}
+    function unescapeHtml(safe) {
+      return safe.replace(/&amp;/g, '&')
+          //.replace(/&lt;/g, '<')
+          //.replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"')
+          .replace(/&#39;/g, "'")
+          .replace(/&#039;/g, "'");
+    }
 
     // textarea deos not render HTML, so using _.unescape is safe. Note that
     // _.unescape will silently ignore invalid HTML, for instance,
@@ -471,9 +471,6 @@ function unescapeHtml(safe) {
     commentData.forEach(comment => {
       comment.date = moment(comment.comment_date_gmt + "Z")
 
-      if(comment.comment_content.match(/function|script/)) {
-        comment.comment_content = _.escape(comment.comment_content)
-      }
       /* comment_content should be HTML. However, we want to make sure that
        * HTML like "<div>Hello" gets transformed to "<div>Hello</div>", that
        * is, that all tags are closed, so that the comment_content can be
@@ -483,7 +480,7 @@ function unescapeHtml(safe) {
        * thanks to wp_new_comment . */
 
         // .DT lets strip out the tags provided from the submited comment and treat it as pure text.
-       comment.comment_content = $("<div>").html(comment.comment_content).text()
+       comment.comment_content = $("<div>").text(comment.comment_content).text()
 
       if (!typesCount[comment.comment_type]){
         typesCount[comment.comment_type] = 0;
