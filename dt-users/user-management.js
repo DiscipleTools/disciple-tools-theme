@@ -81,6 +81,35 @@ jQuery(document).ready(function($) {
       }
     })
 
+
+
+
+    $.urlParam = function(name){
+      var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+      if ( results == null ) {
+        return 0;
+      }
+      return results[1] || 0;
+    }
+    if ( $.urlParam('dt_user_id') ) {
+      open_user_modal(decodeURIComponent($.urlParam('user_id') ) )
+    }
+    if ( window.selected_user_id ) {
+      open_user_modal(window.selected_user_id )
+    }
+
+  }
+
+
+  function open_user_modal( user_id ) {
+
+    let update_user = ( user_id, key, value )=>{
+      let data =  {
+        [key]: value
+      }
+      return makeRequest( "POST", `user?user=${user_id}`, data , 'user-management/v1/' )
+    }
+
     $('#user_name').on( "click", function(e) {
       window.user_name = $(this).text()
       $(this).parent().prepend(`
@@ -113,33 +142,6 @@ jQuery(document).ready(function($) {
         }
       })
     })
-
-
-    $.urlParam = function(name){
-      var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-      if ( results == null ) {
-        return 0;
-      }
-      return results[1] || 0;
-    }
-    if ( $.urlParam('dt_user_id') ) {
-      open_user_modal(decodeURIComponent($.urlParam('user_id') ) )
-    }
-    if ( window.selected_user_id ) {
-      open_user_modal(window.selected_user_id )
-    }
-
-  }
-
-
-  function open_user_modal( user_id ) {
-
-    let update_user = ( user_id, key, value )=>{
-      let data =  {
-        [key]: value
-      }
-      return makeRequest( "POST", `user?user=${user_id}`, data , 'user-management/v1/' )
-    }
 
 
     /**

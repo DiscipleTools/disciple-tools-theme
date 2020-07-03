@@ -79,8 +79,6 @@ class Disciple_Tools_Tab_Custom_Translations extends Disciple_Tools_Abstract_Men
             $post_type = null;
             $this->template( 'begin' );
 
-
-
             $this->box( 'top', __( 'Google Translate API Key', 'disciple_tools' ) );
 
             $this->googleTranslateAPIkey();
@@ -106,54 +104,51 @@ class Disciple_Tools_Tab_Custom_Translations extends Disciple_Tools_Abstract_Men
             }
         }
         $key = self::get_key();
-        ?> <form method="post">
+        ?>
+        <form method="post">
+            <?php wp_nonce_field( 'googletranslate_key_nonce' . get_current_user_id(), 'googletranslate_key_nonce' ); ?>
+             Google Translate API Key: <input type="text" class="regular-text" name="googleTranslate_key" value="<?php echo ( $key ) ? esc_attr( $key ) : ''; ?>" /> <button type="submit" class="button">Update</button>
+        </form>
+
+        <?php if ( empty( self::get_key() ) ) : ?>
+
+            <h2>Setting up API keys for Google Translate</h2>
+
+            <p>In order to create a Google Translate API Key you need a paid account. Through their terms and services, Google doesn’t allow for non-paid usage of their Translation API.</p>
+            <p>More information is available at: <a href="https://cloud.google.com/translate/" target="blank" rel="noopener noreferrer">https://cloud.google.com/translate/</a></p>
+            <p>To create your application’s API key simply follow the steps below:</p>
+            <p>Go to the <a class="more-link" href="https://console.cloud.google.com" target="_blank" rel="noopener noreferrer">Cloud Platform Console.</a></p>
+
+            <p>The first thing you need is an account in Google Cloud Console and a payment method in it. To do this, follow these steps:</p>
+
+            <ol>
+                <li>Access the <a rel="noreferrer noopener" aria-label="Google Cloud Console (opens in a new tab)" href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a> and log in or, if you do not have an account yet, sign up.</li>
+                <li>Open the left side menu of the console and select <em>Billing</em>.</li>
+                <li>Click on the button <em>New billing account</em>. Keep in mind that if this is not your first billing account, you must first open the list of billing accounts. To do this, click on the name of your existing billing account near the top of the page and then click on <em>Manage billing accounts</em>.</li>
+                <li>Enter the name of the billing account and your billing information. The options you’ll see depend on the country of your billing address.</li>
+                <li>Click <em>Submit and enable billing</em>.</li></ol>
+            </ol>
+
+            <p>By default, the person creating the billing account is a billing administrator for the account. Once you have the account created and the billing information ready, you can continue with the following steps to obtain the API Key.</p>
+
+            <h2>How to Create a New Project in Google Cloud</h2>
+            <ol>
+            <li>Go to the bar in the top of the Google Cloud Console and in the drop-down you can see your created projects as well as the option to create a new one by clicking on the <em>New Project</em> button:</li>
+            <li>Now give the new project a name and create it by clicking on the corresponding button, as you can see in the following screenshot:</li>
+            <li>Before you can use a Google API in your project, you have to activate it. Go to the side menu and select the <em>APIs &amp; Services</em> option:</li>
+            <li>Click on the upper button <em>Enable APIs and services</em> to continue with the activation process of the API. This takes us to a search box where we have to look for the API we’re interested in. In this case, we want to use the Google Translate API. Type <em>translate</em> in the search box and click on the result <em>Cloud Translate API</em>:</li>
+            <li>Click on the Enable button to activate the API in our project</li>
+            <li>go to the side menu again and select the Credentials option: On this screen we see a button with a drop-down and the text Create credentials. Don’t click on the button! Instead, open the drop-down by clicking on the arrow to the right of the button and select the API Key option.</li>
+            <li>This creates the new Key API. Copy the API key</li>
+            <li>Click "Restrict Key"</li>
+            <li>There you can select to restrict the API Key by HTTP referrers, which means that you can only make calls to the Google Cloud Translate API using the API Key from certain domain names.</li>
+            <li>You must add the valid domain names in the text box that appears when selecting the HTTP referrers option. i.e. https://test.com/.</li>
+
+            <li>Copy the API key from the Google Cloud Console, into the "Google Translation API Key:" box above and click update</li>
+            </ol>
 
 
-
-                            <?php wp_nonce_field( 'googletranslate_key_nonce' . get_current_user_id(), 'googletranslate_key_nonce' ); ?>
-                            Google Translate API Key: <input type="text" class="regular-text" name="googleTranslate_key" value="<?php echo ( $key ) ? esc_attr( $key ) : ''; ?>" /> <button type="submit" class="button">Update</button>
-
-
-
-
-                            <?php if ( empty( self::get_key() ) ) : ?>
-
-                                <h2>Setting up API keys for Google Translate</h2>
-
-                                <p>In order to create a Google Translate API Key you need a paid account. Through their terms and services, Google doesn’t allow for non-paid usage of their Translation API.</p>
-                                <p>More information is available at: <a href="https://cloud.google.com/translate/" target="blank" rel="noopener noreferrer">https://cloud.google.com/translate/</a></p>
-                                <p>To create your application’s API key simply follow the steps below:</p>
-                                <p>Go to the <a class="more-link" href="https://console.cloud.google.com" target="_blank" rel="noopener noreferrer">Cloud Platform Console.</a></p>
-
-                                <p>The first thing you need is an account in Google Cloud Console and a payment method in it. To do this, follow these steps:</p>
-
-                                <ol>
-                                    <li>Access the <a rel="noreferrer noopener" aria-label="Google Cloud Console (opens in a new tab)" href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a> and log in or, if you do not have an account yet, sign up.</li>
-                                    <li>Open the left side menu of the console and select <em>Billing</em>.</li>
-                                    <li>Click on the button <em>New billing account</em>. Keep in mind that if this is not your first billing account, you must first open the list of billing accounts. To do this, click on the name of your existing billing account near the top of the page and then click on <em>Manage billing accounts</em>.</li>
-                                    <li>Enter the name of the billing account and your billing information. The options you’ll see depend on the country of your billing address.</li>
-                                    <li>Click <em>Submit and enable billing</em>.</li></ol>
-                                </ol>
-
-                                <p>By default, the person creating the billing account is a billing administrator for the account. Once you have the account created and the billing information ready, you can continue with the following steps to obtain the API Key.</p>
-
-                                <h2>How to Create a New Project in Google Cloud</h2>
-                                <ol>
-                                <li>Go to the bar in the top of the Google Cloud Console and in the drop-down you can see your created projects as well as the option to create a new one by clicking on the <em>New Project</em> button:</li>
-                                <li>Now give the new project a name and create it by clicking on the corresponding button, as you can see in the following screenshot:</li>
-                                <li>Before you can use a Google API in your project, you have to activate it. Go to the side menu and select the <em>APIs &amp; Services</em> option:</li>
-                                <li>Click on the upper button <em>Enable APIs and services</em> to continue with the activation process of the API. This takes us to a search box where we have to look for the API we’re interested in. In this case, we want to use the Google Translate API. Type <em>translate</em> in the search box and click on the result <em>Cloud Translate API</em>:</li>
-                                <li>Click on the Enable button to activate the API in our project</li>
-                                <li>go to the side menu again and select the Credentials option: On this screen we see a button with a drop-down and the text Create credentials. Don’t click on the button! Instead, open the drop-down by clicking on the arrow to the right of the button and select the API Key option.</li>
-                                <li>This creates the new Key API. Copy the API key</li>
-                                <li>Click "Restrict Key"</li>
-                                <li>There you can select to restrict the API Key by HTTP referrers, which means that you can only make calls to the Google Cloud Translate API using the API Key from certain domain names.</li>
-                                <li>You must add the valid domain names in the text box that appears when selecting the HTTP referrers option. i.e. https://test.com/.</li>
-
-                                <li>Copy the API key from the Google Cloud Console, into the "Google Translation API Key:" box above and click update</li>
-                                </ol>
-
-                            <?php endif;
+        <?php endif;
     }
 
     /**

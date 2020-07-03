@@ -934,7 +934,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     let not_linked = '" . esc_attr__( 'Connected with remote, but token verification failed' ) . "';
                     let not_found = '" . esc_attr__( 'Failed to connect with the URL provided.' ) . "';
                     let no_ssl = '" . esc_attr__( 'Remote is not secured with SSL.' ) . "';
-    
+
                     return jQuery.ajax({
                         type: 'POST',
                         data: JSON.stringify({ \"transfer_token\": transfer_token } ),
@@ -1371,7 +1371,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          * @param int    $menu_position
          * @param string $dashicon
          */
-        public function __construct( $menu_position = 100, $dashicon = 'dashicons-admin-links' ) {
+        public function __construct( $menu_position = 50, $dashicon = 'dashicons-admin-links' ) {
             $this->post_type = self::$token;
             $this->singular = 'Site Link';
             $this->plural = 'Site Links';
