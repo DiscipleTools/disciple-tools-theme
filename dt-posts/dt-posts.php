@@ -765,6 +765,8 @@ class DT_Posts extends Disciple_Tools_Posts {
             $response_body[] =$c;
         }
 
+        $response_body = apply_filters( "dt_filter_post_comments", $response_body );
+
         return [
             "comments" => $response_body,
             "total" => wp_count_comments( $post_id )->total_comments
