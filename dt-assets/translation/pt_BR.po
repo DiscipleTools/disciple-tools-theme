@@ -14,7 +14,7 @@ msgstr "Permissão negada"
 
 #: 403.php:23
 #, fuzzy
-msgid "Sorry, you don’t have permission to view the %1$s with id %2$s."
+msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
 msgstr "Desculpe, você não tem permissão para visualizar o %1$s com o ID %2$s."
 
 #: 403.php:24
@@ -165,11 +165,11 @@ msgid "Comments"
 msgstr "Comentários"
 
 #: dt-assets/functions/enqueue-scripts.php:154
-msgid "You don’t have any unread notifications"
+msgid "You don't have any unread notifications"
 msgstr "Você não tem notificações não lidas"
 
 #: dt-assets/functions/enqueue-scripts.php:155
-msgid "You don’t have any notifications"
+msgid "You don't have any notifications"
 msgstr "Você não tem nenhuma notificação"
 
 #: dt-assets/functions/enqueue-scripts.php:330
@@ -937,11 +937,11 @@ msgstr "Tente conectar-se a esse contato novamente."
 #: dt-core/admin/config-site-defaults.php:382
 #: dt-core/admin/config-site-defaults.php:388
 #: dt-core/admin/config-site-defaults.php:394
-msgid "We haven’t heard about this person in a while. Do you have an update for this contact?"
+msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
 msgstr "Não ouvimos falar dessa pessoa há algum tempo. Você tem uma atualização para este contato?"
 
 #: dt-core/admin/config-site-defaults.php:404
-msgid "We haven’t heard about this group in a while. Do you have an update?"
+msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr "Não ouvimos falar desse grupo há algum tempo. Você tem uma atualização?"
 
 #: dt-core/admin/config-site-defaults.php:644
@@ -1845,7 +1845,7 @@ msgstr "Saber mais."
 #: dt-users/users.php:791
 msgid "Hi,\n"
 "\n"
-"You’ve been invited to join '%1$s' at\n"
+"You've been invited to join '%1$s' at\n"
 "%2$s with the role of %3$s.\n"
 "\n"
 "Please click the following link to confirm the invite:\n"
@@ -1941,7 +1941,7 @@ msgid "Accepting new contacts"
 msgstr "Aceitando novos contatos"
 
 #: dt-core/admin/config-site-defaults.php:553
-msgid "I’m only investing in existing contacts"
+msgid "I'm only investing in existing contacts"
 msgstr "Só estou investindo em contatos existentes"
 
 #: dt-core/admin/config-site-defaults.php:557
@@ -2060,7 +2060,7 @@ msgstr "Detalhes do Grupo"
 #: dt-groups/groups-post-type.php:605
 #, fuzzy
 msgid "The address where this group meets. (e.g., 124 Market St or “Jon’s Famous Coffee Shop)."
-msgstr "O endereço onde este grupo se reúne. (por exemplo, 124 Market St ou 'Jon’s Famous Coffee Shop)."
+msgstr "O endereço onde este grupo se reúne. (por exemplo, 124 Market St ou 'Jon's Famous Coffee Shop)."
 
 #: dt-contacts/contacts-post-type.php:208
 msgid "Not Ready"
@@ -2167,7 +2167,7 @@ msgstr "O contato tem motivos questionáveis"
 
 #: dt-contacts/contacts-post-type.php:432
 msgctxt "Reason Paused label"
-msgid "Ball is in the contact’s court"
+msgid "Ball is in the contact's court"
 msgstr "O contato precisa tomar o próximo passo"
 
 #: dt-contacts/contacts-post-type.php:433
@@ -2761,7 +2761,7 @@ msgstr ""
 
 #: dt-assets/parts/modals/modal-help.php:81
 msgctxt "Optional Documentation"
-msgid "Here you can track the progress of the contact’s faith journey."
+msgid "Here you can track the progress of the contact's faith journey."
 msgstr "Aqui você pode acompanhar o progresso da jornada de fé do contato."
 
 #: dt-assets/parts/modals/modal-help.php:121
@@ -2993,7 +2993,7 @@ msgstr "Clique no botão 'Não lido' para mostrar a lista de todas as suas notif
 
 #: dt-assets/parts/modals/modal-help.php:437
 msgctxt "Optional Documentation"
-msgid "If you don’t want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+msgid "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
 msgstr "Se você não quiser clicar em cada círculo preenchido no lado direito de cada linha para indicar que a notificação foi lida, clique no link 'Mark All as Read' na parte superior para ajustar rapidamente todas as mensagens que todos foram lidos."
 
 #: dt-assets/parts/modals/modal-help.php:439
@@ -3216,7 +3216,7 @@ msgstr ""
 
 #: dt-contacts/contacts-post-type.php:441
 msgctxt "Optional Documentation"
-msgid "A closed contact is one you can’t or don’t wish to interact with."
+msgid "A closed contact is one you can't or don't wish to interact with."
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:448
@@ -3521,7 +3521,7 @@ msgstr ""
 
 #: dt-groups/groups-post-type.php:371
 msgctxt "Optional Documentation"
-msgid "A related group that isn’t a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+msgid "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
 msgstr ""
 
 #: dt-groups/groups-post-type.php:379

@@ -13,7 +13,7 @@ msgid "Permission denied"
 msgstr "Permission refusée"
 
 #: 403.php:23
-msgid "Sorry, you don’t have permission to view the %1$s with id %2$s."
+msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
 msgstr "Désolé, vous n’avez pas l’autorisation d’afficher le %1$s avec l’ID %2$s."
 
 #: 403.php:24
@@ -168,11 +168,11 @@ msgid "Comments"
 msgstr "Commentaires"
 
 #: dt-assets/functions/enqueue-scripts.php:154
-msgid "You don’t have any unread notifications"
+msgid "You don't have any unread notifications"
 msgstr "Vous n’avez pas des notifications non lues"
 
 #: dt-assets/functions/enqueue-scripts.php:155
-msgid "You don’t have any notifications"
+msgid "You don't have any notifications"
 msgstr "Vous n’avez aucune notification"
 
 #: dt-assets/functions/enqueue-scripts.php:330
@@ -505,7 +505,7 @@ msgstr "Charger plus de groupes"
 
 #: dt-groups/groups-post-type.php:416
 msgid "Group Coach / Church Planter"
-msgstr "Entraîneur de groupe / planteur $1’$2glise"
+msgstr "Entraîneur de groupe / planteur d'église"
 
 #: dt-groups/groups-post-type.php:322 dt-users/template-user-management.php:310
 #: template-settings.php:301 template-settings.php:320
@@ -518,12 +518,12 @@ msgstr "Pas de date de début"
 
 #: dt-groups/groups-post-type.php:329
 msgid "Church Start Date"
-msgstr "Date de début de $1’$2glise"
+msgstr "Date de début de l'église"
 
 #: dt-assets/functions/enqueue-scripts.php:242
 #: dt-assets/parts/group-details.php:181
 msgid "No church start date"
-msgstr "Pas de date de début $1’$2glise"
+msgstr "Pas de date de début d'église"
 
 #: dt-groups/groups-post-type.php:335 dt-users/template-user-management.php:311
 #: template-settings.php:307 template-settings.php:321
@@ -1272,7 +1272,7 @@ msgstr "Baptiseurs total"
 
 #: dt-metrics/counter.php:162
 msgid "Total Churches and Groups"
-msgstr "Nombre total $1’$2glises et de groupes"
+msgstr "Nombre total d'églises et de groupes"
 
 #: dt-metrics/combined/critical-path.php:308 dt-metrics/counter.php:167
 msgid "Active Groups"
@@ -1284,11 +1284,11 @@ msgstr "Eglises actives"
 
 #: dt-metrics/counter.php:179
 msgid "Church Generation"
-msgstr "Génération de $1’$2glise"
+msgstr "Génération de l'église"
 
 #: dt-metrics/combined/critical-path.php:342 dt-metrics/counter.php:185
 msgid "Church Planters"
-msgstr "Planteurs $1’$2glise"
+msgstr "Planteurs d'église"
 
 #. This could be either Hitos or Pilares depending on the context.
 #: dt-metrics/contacts/milestones-map.php:65
@@ -1361,7 +1361,7 @@ msgstr "Types de groupe"
 
 #: dt-metrics/groups/overview.php:70 dt-metrics/personal/overview.php:66
 msgid "Group and Church Generations"
-msgstr "Générations de groupes et $1’$2glises"
+msgstr "Générations de groupes et d'églises"
 
 #: dt-metrics/personal/overview.php:67
 msgid "Lead Teams"
@@ -1500,7 +1500,7 @@ msgstr "%1$s vous à sous-assigné %2$s."
 #: dt-notifications/notifications.php:791
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
-msgstr "%1$s à ajouté $1’$2tape %2$s sur %3$s."
+msgstr "%1$s à ajouté l'étape %2$s sur %3$s."
 
 #: dt-notifications/notifications.php:798
 msgctxt "User1 modified contact details on contact1."
@@ -1847,7 +1847,7 @@ msgstr "Apprendre plus."
 #: dt-users/users.php:831
 msgid "Hi,\n"
 "\n"
-"You’ve been invited to join '%1$s' at\n"
+"You've been invited to join '%1$s' at\n"
 "%2$s with the role of %3$s.\n"
 "\n"
 "Please click the following link to confirm the invite:\n"
@@ -1973,7 +1973,7 @@ msgid "Accepting new contacts"
 msgstr "J’accepte des nouveaux contacts"
 
 #: dt-core/admin/config-site-defaults.php:525
-msgid "I’m only investing in existing contacts"
+msgid "I'm only investing in existing contacts"
 msgstr "J’investis qu’avec mes contacts existants"
 
 #: dt-core/admin/config-site-defaults.php:529
@@ -2047,11 +2047,11 @@ msgstr "Églises de génération %s"
 
 #: dt-metrics/combined/critical-path.php:332
 msgid "Number of generation %s churches at the end of the time range"
-msgstr "Nombre l’iglises de génération %s à la fin de l’intervalle"
+msgstr "Nombre d'églises de génération %s à la fin de l’intervalle"
 
 #: dt-metrics/combined/critical-path.php:343
 msgid "Number of contacts or users who have started a church and are marked as the church coach"
-msgstr "Nombre de contacts ou d’utilisateurs qui ont commencé une église et sont marqués comme coach de d’uglise"
+msgstr "Nombre de contacts ou d’utilisateurs qui ont commencé une église et sont marqués comme coach de l'église"
 
 #: dt-notifications/notifications.php:753
 msgctxt "You have been assigned: contact1."
@@ -2159,7 +2159,7 @@ msgstr "Ce contact a fait savoir qu’ils ne veut plus continuer ou vous avez d�
 #: dt-contacts/contacts-post-type.php:245
 msgctxt "Seeker Path field description"
 msgid "Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
-msgstr "Définissez $1’$2tat de votre progression avec le contact. Ce sont les étapes qui se produisent dans un ordre spécifique pour aider un contact à avancer."
+msgstr "Définissez l'état de votre progression avec le contact. Ce sont les étapes qui se produisent dans un ordre spécifique pour aider un contact à avancer."
 
 #: dt-contacts/contacts-post-type.php:426
 msgctxt "Reason Paused label"
@@ -2193,7 +2193,7 @@ msgstr "Contact a des motifs discutables"
 
 #: dt-contacts/contacts-post-type.php:432
 msgctxt "Reason Paused label"
-msgid "Ball is in the contact’s court"
+msgid "Ball is in the contact's court"
 msgstr "La balle est dans le camp de contact"
 
 #: dt-contacts/contacts-post-type.php:433
@@ -2267,7 +2267,7 @@ msgstr "Téléphone Personnel"
 
 #: dt-core/admin/config-site-defaults.php:437
 msgid "Personal phone is private to the team, not for distribution."
-msgstr "Le téléphone personnel est privé à $1’$2quipe, pas pour la distribution."
+msgstr "Le téléphone personnel est privé à l'équipe, pas pour la distribution."
 
 #: dt-core/admin/config-site-defaults.php:441
 msgid "Personal Email"
@@ -2275,7 +2275,7 @@ msgstr "Email personnel"
 
 #: dt-core/admin/config-site-defaults.php:444
 msgid "Personal email is private to the team, not for distribution."
-msgstr "L’e-mails personnel est privé pour L’equipe, pas pour la distribution."
+msgstr "L’e-mails personnel est privé pour l'équipe, pas pour la distribution."
 
 #: dt-core/admin/config-site-defaults.php:448
 msgid "Personal Address"
@@ -2283,7 +2283,7 @@ msgstr "Adresse personnelle"
 
 #: dt-core/admin/config-site-defaults.php:451
 msgid "Personal address is private to the team, not for distribution."
-msgstr "L’adresse personnelle est privée pour L’aquipe, pas pour la distribution."
+msgstr "L’adresse personnelle est privée pour l'équipe, pas pour la distribution."
 
 #: dt-core/admin/config-site-defaults.php:455
 msgid "Work Phone"
@@ -2760,7 +2760,7 @@ msgstr "Les médias sociaux pour ce contact."
 #: dt-assets/parts/modals/modal-help.php:52
 msgctxt "Optional Documentation"
 msgid "User workload status icons legend:"
-msgstr "Légende des icônes $1’$2tat de la charge de travail des utilisateurs:"
+msgstr "Légende des icônes d'état de la charge de travail des utilisateurs:"
 
 #: dt-assets/parts/modals/modal-help.php:72
 msgctxt "Optional Documentation"
@@ -2803,12 +2803,12 @@ msgstr "Le nom du groupe est rercherchable et peut être utilisé pour vous aide
 #: dt-assets/parts/modals/modal-help.php:195
 msgctxt "Optional Documentation"
 msgid "If the group/church regularly practices any of the elements listed, then click each element to add them inside the circle."
-msgstr "Si le groupe / l’uglise pratique régulièrement l’un des éléments énumérés, cliquez sur chaque élément pour les ajouter à l’intérieur du cercle."
+msgstr "Si le groupe / l'église pratique régulièrement l’un des éléments énumérés, cliquez sur chaque élément pour les ajouter à l’intérieur du cercle."
 
 #: dt-assets/parts/modals/modal-help.php:196
 msgctxt "Optional Documentation"
 msgid "If the group has committed to be a church, indicate this by clicking the \"Church Commitment\" button to make the dotted line circle solid."
-msgstr "Si le groupe s’est engagé à être une église, indiquez-le en cliquant sur le bouton \"Engagement de s’eglise\" pour rendre le cercle en pointillés solide."
+msgstr "Si le groupe s’est engagé à être une église, indiquez-le en cliquant sur le bouton \"Engagement de l'Église\" pour rendre le cercle en pointillés solide."
 
 #: dt-assets/parts/modals/modal-help.php:202
 msgctxt "Optional Documentation"
@@ -2914,7 +2914,7 @@ msgstr "Le champ Commentaire initial est pour toute information supplémentaire.
 #: dt-assets/parts/modals/modal-help.php:354
 msgctxt "Optional Documentation"
 msgid "After writing the name of the contact, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new contact has just been just created."
-msgstr "Après avoir écrit le nom du contact, remplissez autant de champs que possible, avant de cliquer sur «Enregistrer et continuer la modification». Sur d’icran suivant, vous pouvez modifier et ajouter plus d’informations sur ce nouveau contact qui vient d’itre créé."
+msgstr "Après avoir écrit le nom du contact, remplissez autant de champs que possible, avant de cliquer sur «Enregistrer et continuer la modification». Sur l'écran suivant, vous pouvez modifier et ajouter plus d’informations sur ce nouveau contact qui vient d'être créé."
 
 #: dt-assets/parts/modals/modal-help.php:360
 msgctxt "Optional Documentation"
@@ -2924,7 +2924,7 @@ msgstr "Le nom du contact est recherchable et peut être utilisé pour vous aide
 #: dt-assets/parts/modals/modal-help.php:378
 msgctxt "Optional Documentation"
 msgid "After writing the name of the group, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new group has just been created."
-msgstr "Après avoir écrit le nom du groupe, remplissez autant de champs que possible, avant de cliquer sur «Enregistrer et continuer la modification». Sur d’icran suivant, vous pouvez modifier et ajouter plus d’informations sur ce nouveau groupe qui vient d’itre créé."
+msgstr "Après avoir écrit le nom du groupe, remplissez autant de champs que possible, avant de cliquer sur «Enregistrer et continuer la modification». Sur l'écran suivant, vous pouvez modifier et ajouter plus d’informations sur ce nouveau groupe qui vient d'être créé."
 
 #: dt-assets/parts/modals/modal-help.php:397
 msgctxt "Optional Documentation"
@@ -2939,7 +2939,7 @@ msgstr "Dans cette zone, vous pouvez voir votre profil utilisateur."
 #: dt-assets/parts/modals/modal-help.php:399
 msgctxt "Optional Documentation"
 msgid "You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
-msgstr "Vous $1’$2tes pas obligé de remplir ces champs de profil. Ils sont facultatifs pour répondre aux besoins de votre équipe."
+msgstr "Vous n'êtes pas obligé de remplir ces champs de profil. Ils sont facultatifs pour répondre aux besoins de votre équipe."
 
 #: dt-assets/parts/modals/modal-help.php:400
 msgctxt "Optional Documentation"
@@ -3044,7 +3044,7 @@ msgstr "Retour au %s"
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid "Set a reminder or a task with a note and receive a notification on the due date."
-msgstr "Définissez un rappel ou une tâche avec une note et recevez une notification à la date $1’$2chéance."
+msgstr "Définissez un rappel ou une tâche avec une note et recevez une notification à la date d'échéance."
 
 #: dt-assets/parts/modals/modal-tasks.php:22
 msgid "Custom"
@@ -3122,7 +3122,7 @@ msgstr "En entraînement"
 #: dt-contacts/contacts-post-type.php:306
 msgctxt "Optional Documentation"
 msgid "Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
-msgstr "Attribuez les jalons que le contact a atteints dans son cheminement de foi. Ce sont des points du voyage spirituel d’un contact qui méritent d’utre célébrés, mais qui peuvent se produire dans n’importe quel ordre."
+msgstr "Attribuez les jalons que le contact a atteints dans son cheminement de foi. Ce sont des points du voyage spirituel d’un contact qui méritent d'être célébrés, mais qui peuvent se produire dans n’importe quel ordre."
 
 #: dt-contacts/contacts-post-type.php:310
 msgid "Has Bible"
@@ -3138,7 +3138,7 @@ msgstr "Déclare croyance"
 
 #: dt-contacts/contacts-post-type.php:322
 msgid "Can Share Gospel/Testimony"
-msgstr "Peut partager $1’$2vangile/témoignage"
+msgstr "Peut partager l'Évangile/témoignage"
 
 #: dt-contacts/contacts-post-type.php:326
 msgid "Sharing Gospel/Testimony"
@@ -3243,7 +3243,7 @@ msgstr "Accepté"
 #: dt-contacts/contacts-post-type.php:505
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
-msgstr "Le site Web, d’ovénement ou le lieu d’origine de ce contact."
+msgstr "Le site Web, l'événement ou le lieu d’origine de ce contact."
 
 #: dt-contacts/contacts-post-type.php:513
 msgid "Source Details"
@@ -3395,7 +3395,7 @@ msgstr "Équipe"
 #: dt-groups/groups-post-type.php:215
 msgctxt "Optional Documentation"
 msgid "A special group that is not meeting as a church (or trying to become church)."
-msgstr "Un groupe spécial qui ne se réunit pas en tant qn’eglise (ou n’essaie pas de devenir église)."
+msgstr "Un groupe spécial qui ne se réunit pas en tant qu'église (ou n’essaie pas de devenir église)."
 
 #: dt-groups/groups-post-type.php:224
 msgid "Select the main person who is responsible for reporting on this group."
@@ -3403,7 +3403,7 @@ msgstr "Sélectionnez la personne principale chargée de faire rapport sur ce gr
 
 #: dt-groups/groups-post-type.php:231
 msgid "Church Health"
-msgstr "Santé de $1’$2glise"
+msgstr "Santé de l'église"
 
 #: dt-groups/groups-post-type.php:232
 msgctxt "Optional Documentation"
@@ -3551,7 +3551,7 @@ msgstr "Les contacts qui sont membres de ce groupe."
 #: dt-groups/groups-post-type.php:417
 msgctxt "Optional Documentation"
 msgid "The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
-msgstr "La personne qui a planté et / ou coache ce groupe. Une seule personne peut être affectée à un groupe tandis que plusieurs personnes peuvent être entraîneurs / planteurs $1’$2glises de ce groupe."
+msgstr "La personne qui a planté et / ou coache ce groupe. Une seule personne peut être affectée à un groupe tandis que plusieurs personnes peuvent être entraîneurs / planteurs d'églises de ce groupe."
 
 #: dt-groups/groups-post-type.php:431
 msgctxt "Optional Documentation"
@@ -3969,7 +3969,7 @@ msgstr "Type de tâche"
 #: dt-contacts/contacts-post-type.php:199
 msgctxt "Contact Status field description"
 msgid "The Contact Status describes the progress in communicating with the contact."
-msgstr "$1’$2tat du contact décrit la progression de la communication avec le contact."
+msgstr "L'état du contact décrit la progression de la communication avec le contact."
 
 #: dt-contacts/contacts-post-type.php:571
 msgid "Contact Type"
@@ -3986,7 +3986,7 @@ msgstr "Nouveaux commentaires"
 #: dt-groups/groups-post-type.php:272
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
-msgstr "Le groupe partage $1’$2vangile."
+msgstr "Le groupe partage l'évangile."
 
 #: dt-groups/groups-post-type.php:277
 msgctxt "Optional Documentation"

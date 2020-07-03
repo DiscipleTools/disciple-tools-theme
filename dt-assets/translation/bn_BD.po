@@ -13,7 +13,7 @@ msgid "Permission denied"
 msgstr "আনুমতি বাতিল"
 
 #: 403.php:23
-msgid "Sorry, you don’t have permission to view the %1$s with id %2$s."
+msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
 msgstr "দুঃখিত, আপনার দেখার অনুমতি নেই %1$s আইডি দ্বারা %2$s."
 
 #: 403.php:24
@@ -158,11 +158,11 @@ msgid "Comments"
 msgstr "মন্তব্য সমূহ"
 
 #: dt-assets/functions/enqueue-scripts.php:154
-msgid "You don’t have any unread notifications"
+msgid "You don't have any unread notifications"
 msgstr "আপনার কাছে কোনো অপঠিত প্রজ্ঞাপন নেই"
 
 #: dt-assets/functions/enqueue-scripts.php:155
-msgid "You don’t have any notifications"
+msgid "You don't have any notifications"
 msgstr "আপনার কোনও প্রজ্ঞাপন নেই"
 
 #: dt-assets/functions/enqueue-scripts.php:330
@@ -927,11 +927,11 @@ msgstr "অনুগ্রহ করে এই পরিচিতির সা�
 #: dt-core/admin/config-site-defaults.php:382
 #: dt-core/admin/config-site-defaults.php:388
 #: dt-core/admin/config-site-defaults.php:394
-msgid "We haven’t heard about this person in a while. Do you have an update for this contact?"
+msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
 msgstr "আমরা এই ব্যক্তির সম্পর্কে কিছুক্ষণ শুনিনি। এই পরিচিতির জন্য আপনার কোনও আপডেট আছে?"
 
 #: dt-core/admin/config-site-defaults.php:404
-msgid "We haven’t heard about this group in a while. Do you have an update?"
+msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr "আমরা এই দল সম্পর্কে কিছুক্ষণ শুনিনি। এই দলের জন্য আপনার কোনও আপডেট আছে?"
 
 #: dt-core/admin/config-site-defaults.php:644
@@ -1831,7 +1831,7 @@ msgstr "আরও শিখুন।"
 #: dt-users/users.php:791
 msgid "Hi,\n"
 "\n"
-"You’ve been invited to join '%1$s' at\n"
+"You've been invited to join '%1$s' at\n"
 "%2$s with the role of %3$s.\n"
 "\n"
 "Please click the following link to confirm the invite:\n"
@@ -1924,7 +1924,7 @@ msgid "Accepting new contacts"
 msgstr "নতুন পরিচিতিদের গ্রহন করা হচ্ছে"
 
 #: dt-core/admin/config-site-defaults.php:553
-msgid "I’m only investing in existing contacts"
+msgid "I'm only investing in existing contacts"
 msgstr "আমি কেবল বিদ্যমান পরিচিতিতে বিনিয়োগ করছি"
 
 #: dt-core/admin/config-site-defaults.php:557
@@ -2145,7 +2145,7 @@ msgstr "পরিচিতির উদ্দেশ্য প্রশ্নব�
 
 #: dt-contacts/contacts-post-type.php:432
 msgctxt "Reason Paused label"
-msgid "Ball is in the contact’s court"
+msgid "Ball is in the contact's court"
 msgstr "এটা তার দায়িত্ব"
 
 #: dt-contacts/contacts-post-type.php:433
@@ -2728,7 +2728,7 @@ msgstr "উদাহরণস্বরূপ, আপনি যদি 4 বার
 
 #: dt-assets/parts/modals/modal-help.php:81
 msgctxt "Optional Documentation"
-msgid "Here you can track the progress of the contact’s faith journey."
+msgid "Here you can track the progress of the contact's faith journey."
 msgstr "এখানে আপনি পরিচিতির বিশ্বাস-যাত্রার অগ্রগতি অনুস্মরণ করতে পারেন।"
 
 #: dt-assets/parts/modals/modal-help.php:121
@@ -2960,7 +2960,7 @@ msgstr "আপনার অপঠিত নোটিফিকেশানগু�
 
 #: dt-assets/parts/modals/modal-help.php:437
 msgctxt "Optional Documentation"
-msgid "If you don’t want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+msgid "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
 msgstr "আপনি যদি ডানদিকে প্রতিটি সারির নির্দেশিত নোটিফিকেশানটি যা পড়া হয়েছে এমন প্রতিটি ভরাট বৃত্তে ক্লিক করতে না চান, তাহলে যে সমস্ত বার্তাগুলি পড়া হয়েছে সেগুলি দ্রুত সমন্বয় করতে উপরের দিকের 'সবগুলো পঠিত হিসেবে চিহ্নিত করুন' লিঙ্কটিতে ক্লিক করুন।"
 
 #: dt-assets/parts/modals/modal-help.php:439
@@ -3482,7 +3482,7 @@ msgstr "এই দলটির প্রতিষ্ঠা কারী দল"
 
 #: dt-groups/groups-post-type.php:371
 msgctxt "Optional Documentation"
-msgid "A related group that isn’t a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+msgid "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
 msgstr "সম্পর্কিত একটি দল যা সম্পর্কের দিক থেকে কোনও অবিভাবক / নবীন দল নয়। এটি এমন দলগুলোর ইঙ্গিত করতে পারে যা সহযোগিতা করে, সংহত করতে এবং সম্প্রতি বিভক্ত হওয়া ইত্যাদি।"
 
 #: dt-groups/groups-post-type.php:379
