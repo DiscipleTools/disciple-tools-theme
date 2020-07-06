@@ -368,22 +368,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         /**
          * add connections
          */
-        foreach ( $post_settings["connection_types"] as $connection_type ){
-            $field = $post_settings["fields"][$connection_type];
-            $args = [
-                'connected_type'   => $field["p2p_key"],
-                'connected_direction' => $field["p2p_direction"],
-                'connected_items'  => $wp_post,
-                'nopaging'         => true,
-                'suppress_filters' => false,
-            ];
-            $connections = get_posts( $args );
-            $fields[$connection_type] = [];
-            foreach ( $connections as $c ){
-                $fields[$connection_type][] = self::filter_wp_post_object_fields( $c );
-            }
-        }
-
+        self::get_all_connection_fields( $post_settings, $post_id, $fields );
         $fields["ID"] = $post_id;
         $fields["created_date"] = $wp_post->post_date;
         $fields["permalink"] = get_permalink( $post_id );
@@ -511,10 +496,11 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @param string $post_type
      * @param string $search_string
+     * @param array $args
      *
      * @return array|WP_Error|WP_Query
      */
-    public static function get_viewable_compact( string $post_type, string $search_string ) {
+    public static function get_viewable_compact( string $post_type, string $search_string, array $args = [] ) {
         if ( !self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, sprintf( "You do not have access to these %s", $post_type ), [ 'status' => 403 ] );
         }
@@ -614,7 +600,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             },
             $posts
         );
-        if ( $post_type === 'contacts' && !self::can_view_all( $post_type ) && sizeof( $posts ) < 30 ) {
+        if ( $post_type === 'contacts' && !self::can_view_all( $post_type ) && sizeof( $posts ) < 30
+            && !( isset( $args["include-users"] ) && $args["include-users"] === "false" )
+        ) {
             $users_interacted_with = Disciple_Tools_Users::get_assignable_users_compact( $search_string );
             foreach ( $users_interacted_with as $user ) {
                 $post_id = Disciple_Tools_Users::get_contact_for_user( $user["ID"] );
@@ -638,6 +626,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
         foreach ( $posts as $post ) {
+            if ( isset( $args["include-users"] ) && $args["include-users"] === "false" && $post->corresponds_to_user >= 1 ){
+                continue;
+            }
             $compact[] = [
                 "ID" => $post->ID,
                 "name" => $post->post_title,
@@ -849,7 +840,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $activity_simple[] = [
                     "meta_key" => $a->meta_key,
                     "gravatar" => isset( $a->gravatar ) ? $a->gravatar : "",
-                    "name" => isset( $a->name ) ? $a->name : "",
+                    "name" => isset( $a->name ) ? $a->name : __( "D.T System", 'disciple_tools' ),
                     "object_note" => $a->object_note,
                     "hist_time" => $a->hist_time,
                     "meta_id" => $a->meta_id,

@@ -420,7 +420,7 @@ class Disciple_Tools_Posts_Endpoints {
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
         $search = isset( $get_params['s'] ) ? $get_params['s'] : '';
-        return DT_Posts::get_viewable_compact( $url_params["post_type"], $search );
+        return DT_Posts::get_viewable_compact( $url_params["post_type"], $search, $get_params );
     }
 
 

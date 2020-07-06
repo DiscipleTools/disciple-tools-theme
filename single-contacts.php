@@ -6,183 +6,13 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 }
 
 ( function () {
-    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true, true );
-    $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
-
-    if (isset( $_POST['unsure_all'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
-        if (isset( $_POST['id'] ) ) {
-            $id = (int) $_POST['id'];
-            Disciple_Tools_Contacts::unsure_all( $id );
-        }
-        header( "location: " . site_url( '/contacts/' . get_the_ID() ) );
-    }
-    if (isset( $_POST['dismiss_all'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
-        if (isset( $_POST['id'] ) ) {
-            $id = (int) $_POST['id'];
-            Disciple_Tools_Contacts::dismiss_all( $id );
-        }
-        header( "location: " . site_url( '/contacts/' . get_the_ID() ) );
-    }
-    if (isset( $_POST['dismiss'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
-        if (isset( $_POST['currentId'], $_POST['id'] ) ) {
-            $current_id = (int) $_POST['currentId'];
-            $id = (int) $_POST['id'];
-            ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $current_id, $id );
-            header( "location: " . site_url( '/contacts/' . $current_id ) );
-        }
-    }
-    if (isset( $_POST['unsure'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
-        if (isset( $_POST['currentId'], $_POST['id'] ) ) {
-            $current_id = (int) $_POST['currentId'];
-            $id = (int) $_POST['id'];
-            ( new Disciple_Tools_Contacts() )->unsure_duplicate( $current_id, $id );
-            header( "location: " . site_url( '/contacts/' . $current_id ) );
-        }
-    }
-
-    if (isset( $_POST['merge-submit'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) )){
-        if (isset( $_POST['currentid'], $_POST['duplicateId'] ) ) {
-            $contact_id = (int) sanitize_text_field( wp_unslash( $_POST['currentid'] ) );
-            $dupe_id = (int) $_POST['duplicateId'];
-            $phones = isset( $_POST['phone'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['phone'] ) ) : array();
-            $emails = isset( $_POST['email'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['email'] ) ) : array();
-            $addresses = isset( $_POST['address'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['address'] ) ) : array();
-            $master = isset( $_POST['master-record'] ) ? sanitize_text_field( wp_unslash( $_POST['master-record'] ) ) : null;
-
-            $master_id = ( $master === 'contact1' ) ? $contact_id : $dupe_id;
-            $non_master_id = ( $master_id === $contact_id ) ? $dupe_id : $contact_id;
-            $contact = Disciple_Tools_Contacts::get_contact( $master_id, true );
-            $non_master = Disciple_Tools_Contacts::get_contact( $non_master_id, true );
-
-            $current = array(
-                'contact_phone' => array(),
-                'contact_email' => array(),
-                'contact_address' => array(),
-                // 'contact_facebook' => array()
-            );
-
-            foreach ( $contact as $key => $fields ) {
-                if ( strpos( $key, "contact_" ) === 0 ) {
-                    $split = explode( "_", $key );
-                    if ( !isset( $split[1] ) ) {
-                        continue;
-                    }
-                    $new_key = $split[0] . "_" . $split[1];
-                    foreach ( $contact[ $new_key ] ?? array() as $values ) {
-                        $current[ $new_key ][ $values['key'] ] = $values['value'];
-                    }
-                }
-            }
-
-            $update = array(
-                'contact_phone' => array( 'values' => array() ),
-                'contact_email' => array( 'values' => array() ),
-                'contact_address' => array( 'values' => array() ),
-                // 'contact_facebook' => array( 'values' => array() )
-            );
-
-            $ignore_keys = array();
-
-            foreach ($phones as $phone) {
-                $index = array_search( $phone, $current['contact_phone'] );
-                if ($index !== false) { $ignore_keys[] = $index;
-                    continue; }
-                array_push( $update['contact_phone']['values'], [ 'value' => $phone ] );
-            }
-            foreach ($emails as $email) {
-                $index = array_search( $email, $current['contact_email'] );
-                if ($index !== false) { $ignore_keys[] = $index;
-                    continue; }
-                array_push( $update['contact_email']['values'], [ 'value' => $email ] );
-            }
-            foreach ($addresses as $address) {
-                $index = array_search( $address, $current['contact_address'] );
-                if ($index !== false) { $ignore_keys[] = $index;
-                    continue; }
-                array_push( $update['contact_address']['values'], [ 'value' => $address ] );
-            }
-
-            /*
-                Merge social media + other contact data
-            */
-            foreach ( $non_master as $key => $fields ) {
-                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "multi_select" ){
-                    $update[$key]["values"] = [];
-                    foreach ( $fields as $field_value ){
-                        $update[$key]["values"][] = [ "value" => $field_value ];
-                    }
-                }
-                if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]["type"] === "key_select" && ( !isset( $contact[ $key ] ) || $key === "none" || $key === "" ) ) {
-                    $update[$key] = $fields["key"];
-                }
-                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "text" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
-                    $update[$key] = $fields;
-                }
-                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "number" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
-                    $update[$key] = $fields;
-                }
-                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "date" && ( !isset( $contact[$key] ) || empty( $contact[$key]["timestamp"] ) )){
-                    $update[$key] = $fields["timestamp"] ?? "";
-                }
-                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "array" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
-                    if ( $key != "duplicate_data" ){
-                        $update[$key] = $fields;
-                    }
-                }
-
-                if ( strpos( $key, "contact_" ) === 0 ) {
-                    $split = explode( "_", $key );
-                    if ( !isset( $split[1] ) ) {
-                        continue;
-                    }
-                    $new_key = $split[0] . "_" . $split[1];
-                    if ( in_array( $new_key, array_keys( $update ) ) ) {
-                        continue;
-                    }
-                    $update[ $new_key ] = array(
-                        'values' => array()
-                    );
-                    foreach ( $non_master[ $new_key ] ?? array() as $values ) {
-                        $index = array_search( $values['value'], $current[ $new_key ] ?? array() );
-                        if ( $index !== false ) {
-                            $ignore_keys[] = $index;
-                            continue;
-                        }
-                        array_push( $update[ $new_key ]['values'], array(
-                            'value' => $values['value']
-                        ) );
-                    }
-                }
-            }
-
-            $delete_fields = array();
-            if ($update['contact_phone']['values']) { $delete_fields[] = 'contact_phone'; }
-            if ($update['contact_email']['values']) { $delete_fields[] = 'contact_email'; }
-            if ($update['contact_address']['values']) { $delete_fields[] = 'contact_address'; }
-
-            if ( !empty( $delete_fields )) {
-                Disciple_Tools_Contacts::remove_fields( $master_id, $delete_fields, $ignore_keys );
-            }
-
-//            @todo return error if update fails
-            Disciple_Tools_Contacts::update_contact( $master_id, $update, true );
-            Disciple_Tools_Contacts::merge_p2p( $master_id, $non_master_id );
-            Disciple_Tools_Contacts::copy_comments( $master_id, $non_master_id );
-            ( new Disciple_Tools_Contacts() )->recheck_duplicates( $master_id );
-            ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $master_id, $non_master_id );
-            ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $non_master_id, $master_id );
-            Disciple_Tools_Contacts::close_duplicate_contact( $non_master_id, $master_id );
-
-            do_action( "dt_contact_merged", $master_id, $non_master_id );
-        }
-        header( "location: " . site_url( '/contacts/' .get_the_ID() ) );
-        exit;
-    }
-
     if ( !Disciple_Tools_Contacts::can_view( 'contacts', get_the_ID() )) {
         get_template_part( "403" );
         die();
     }
+    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true, true );
+    $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
+
     Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
 
 
@@ -196,8 +26,9 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         $dispatcher_actions[] = "make-user-from-contact-modal";
         $dispatcher_actions[] = "link-to-user-modal";
     }
-    if ( current_user_can( "view_any_contacts" )){
+    if ( current_user_can( "access_contacts" )){
         $dispatcher_actions[] = "merge_with_contact";
+        $dispatcher_actions[] = "duplicates-modal";
     }
     dt_print_details_bar(
         true,
@@ -246,34 +77,18 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell" role="main" style="padding:0">
 
                 <div class="cell grid-y grid-margin-y">
-                <?php
-                if ( current_user_can( "view_any_contacts" ) ){
-                    $duplicate_post_meta = get_post_meta( get_the_Id(), 'duplicate_data' );
-                    $duplicates = false;
-                    foreach ( $duplicate_post_meta[0] ?? [] as $key => $array ) {
-                        if ($key === 'override') {
-                            continue;
-                        }
-                        if ( !empty( $array )) {
-                            $duplicates = true;
-                        }
-                    }
-                    if ($duplicates){
-                        ?>
-                    <section id="duplicates" class="small-12 grid-y grid-margin-y cell">
+                    <section id="duplicates" class="small-12 grid-y grid-margin-y cell" style="display: none">
                         <div class="bordered-box detail-notification-box" style="background-color:#ff9800">
-                            <h4 class="section-header" style="color:white;"><?php esc_html_e( "This contact has possible duplicates.", 'disciple_tools' ) ?></h4>
-                           <?php get_template_part( 'dt-assets/parts/merge', 'details' ); ?>
-                            <button type="button" id="merge-dupe-modal" data-open="merge-dupe-modal" class="button">
+                            <h4><?php esc_html_e( "This contact has possible duplicates.", 'disciple_tools' ) ?></h4>
+                            <button type="button" id="merge-dupe-modal" data-open="merge-dupe-edit-modal" class="button">
                               <?php esc_html_e( "Go to duplicates", 'disciple_tools' ) ?>
                             </button>
                         </div>
                     </section>
-                    <?php }
-                }
-                ?>
 
-                <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
+
+                <?php get_template_part( 'dt-assets/parts/merge', 'details' );
+                get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
 
                 <!-- CONNECTIONS TILE -->
                     <div class="cell small-12">
@@ -587,7 +402,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         <select id="reason-closed-options">
             <?php
             foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $option ) {
-                if ( isset( $option["label"] ) ) {
+                if ( !empty( $option["label"] ) ) {
                     $selected = ( $reason_key === ( $contact["reason_closed"]["key"] ?? "" ) ) ? "selected" : "";
                     ?>
                     <option
@@ -821,8 +636,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
                 <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
             </button>
-            <form action='<?php echo esc_url( site_url() );?>/contacts/mergedetails' method='post'>
-                <input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr( wp_create_nonce() ); ?>'/>
+            <form action='<?php echo esc_url( site_url() );?>/contacts/mergedetails' method='get'>
                 <input type='hidden' name='currentid' value='<?php echo esc_html( $contact["ID"] );?>'/>
                 <input id="confirm-merge-with-user-dupe-id" type='hidden' name='dupeid' value=''/>
                 <button type='submit' class="button confirm-merge-with-user" style="display: none">
@@ -869,8 +683,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                 <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
                     <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
                 </button>
-                <form action='<?php echo esc_url( site_url() );?>/contacts/mergedetails' method='post'>
-                    <input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr( wp_create_nonce() ); ?>'/>
+                <form action='<?php echo esc_url( site_url() );?>/contacts/mergedetails' method='get'>
                     <input type='hidden' name='currentid' value='<?php echo esc_html( $contact["ID"] );?>'/>
                     <input id="confirm-merge-with-contact-id" type='hidden' name='dupeid' value=''/>
                     <button type='submit' class="button confirm-merge-with-contact" style="display: none">

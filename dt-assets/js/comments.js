@@ -430,6 +430,7 @@ jQuery(document).ready(function($) {
         if (text.includes("http") && !url.includes("http")){
           [url, text] = [text, url]
         }
+        url = url.includes('http') ? url : `${window.wpApiShare.site_url}/${window.wpApiShare.post_type}/${url}`
         return `<a href="${url}">${text}</a>`
       })
 
