@@ -343,7 +343,7 @@
     contact.phone_numbers = (contact.contact_phone || []).map(a=>a.value)
     contact.locations = (contact.location_grid || []).map(a=>a.label)
     const group_links = _.map(contact.groups, function(group) {
-      return '<a href="' + _.escape(group.permalink) + '">' + group.post_title + "</a>";
+      return '<a href="' + _.escape(group.permalink) + '">' + _.escape(group.post_title) + "</a>";
     }).join(", ");
 
     const langcode = document.querySelector('html').getAttribute('lang').replace('_', '-');
