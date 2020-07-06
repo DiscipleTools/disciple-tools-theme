@@ -952,7 +952,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     public function check_for_duplicates( $contact_id, $fields ){
-        $contact = DT_Posts::get_post( "contacts", $contact_id );
+        $contact = DT_Posts::get_post( "contacts", $contact_id, true, false );
         if ( is_wp_error( $contact ) ){
             return $contact;
         }
