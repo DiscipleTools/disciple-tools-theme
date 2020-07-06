@@ -23,7 +23,7 @@ class DT_Metrics_Personal_Groups_Tree extends DT_Metrics_Chart_Base
             return;
         }
         $this->base_title = __( 'Personal', 'disciple_tools' );
-        $this->title = __( 'My Groups GenTree', 'disciple_tools' );
+        $this->title = __( 'My Groups Tree', 'disciple_tools' );
 
         $url_path = dt_get_url_path();
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
@@ -155,7 +155,7 @@ class DT_Metrics_Personal_Groups_Tree extends DT_Metrics_Chart_Base
                 if ( in_array( $item_id, $this->my_list ) ) {
                     $html .= '<a onclick="open_modal_details(' . esc_html( $item_id ) . ');">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></span>';
                 } else {
-                    $html .= __( 'group', 'disciple_tools' ) . '</span>';
+                    $html .= __( 'Group', 'disciple_tools' ) . '</span>';
                 }
 
                 $html .= $this->build_group_tree( $item_id, $menu_data, $gen );

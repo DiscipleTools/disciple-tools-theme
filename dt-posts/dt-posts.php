@@ -9,6 +9,19 @@ class DT_Posts extends Disciple_Tools_Posts {
     }
 
     /**
+     * Specifies which HTML tags are permissible in comments.
+     */
+    private static $allowable_comment_tags = array(
+        'a' => array(
+          'href' => array(),
+          'title' => array()
+        ),
+        'br' => array(),
+        'em' => array(),
+        'strong' => array(),
+    );
+
+    /**
      * Get settings on the post type
      *
      * @param string $post_type
@@ -658,7 +671,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         foreach ( $comments as $comment ){
             $comment_data = [
                 'comment_post_ID'      => $post_id,
-                'comment_content'      => $comment,
+                'comment_content'      => wp_kses($comment, self::$allowable_comment_tags),
                 'user_id'              => $user_id,
                 'comment_author'       => $args["comment_author"] ?? $user->display_name,
                 'comment_author_url'   => $args["comment_author_url"] ?? "",
@@ -748,13 +761,15 @@ class DT_Posts extends Disciple_Tools_Posts {
                 "comment_date" => $comment->comment_date,
                 "comment_date_gmt" => $comment->comment_date_gmt,
                 "gravatar" => preg_replace( "/^http:/i", "https:", $url ),
-                "comment_content" => wp_kses_post( $comment->comment_content ),
+                "comment_content" => wp_kses( $comment->comment_content, self::$allowable_comment_tags),
                 "user_id" => $comment->user_id,
                 "comment_type" => $comment->comment_type,
                 "comment_post_ID" => $comment->comment_post_ID
             ];
             $response_body[] =$c;
         }
+
+        $response_body = apply_filters( "dt_filter_post_comments", $response_body );
 
         return [
             "comments" => $response_body,
@@ -1098,6 +1113,24 @@ class DT_Posts extends Disciple_Tools_Posts {
             $users[] = $assigned_to;
         }
         return array_unique( $users );
+    }
+
+
+    public static function get_post_names_from_ids( array $post_ids ){
+        if ( empty( $post_ids ) ){
+            return [];
+        }
+        global $wpdb;
+        $ids_sql = dt_array_to_sql( $post_ids );
+
+        //phpcs:disable
+        return $wpdb->get_results( "
+            SELECT ID, post_title
+            FROM $wpdb->posts
+            WHERE ID IN ( $ids_sql )
+        ", ARRAY_A );
+        //phpcs:enable
+
     }
 }
 

@@ -33,9 +33,10 @@ class Disciple_Tools_Metrics
         if ( strpos( $url_path, "metrics" ) !== false ) {
 
             // Personal
-            require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
-            require_once( get_template_directory() . '/dt-metrics/personal/baptism-tree.php' );
-            require_once( get_template_directory() . '/dt-metrics/personal/group-tree.php' );
+            //@todo fix query and re-enable
+            //require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
+            //require_once( get_template_directory() . '/dt-metrics/personal/baptism-tree.php' );
+            //require_once( get_template_directory() . '/dt-metrics/personal/group-tree.php' );
             require_once( get_template_directory() . '/dt-metrics/personal/mapbox-groups-cluster-map.php' );
             require_once( get_template_directory() . '/dt-metrics/personal/mapbox-groups-point-map.php' );
             require_once( get_template_directory() . '/dt-metrics/personal/mapbox-groups-area-map.php' );
@@ -66,6 +67,27 @@ class Disciple_Tools_Metrics
             require_once( get_template_directory() . '/dt-metrics/combined/locations-list.php' );
             require_once( get_template_directory() . '/dt-metrics/combined/hover-map.php' );
             require_once( get_template_directory() . '/dt-metrics/combined/critical-path.php' );
+
+            // default menu order
+            add_filter( 'dt_metrics_menu', function ( $content ){
+                if ( $content === "" ){
+                    $content .= '
+                        <li><a>' . __( "Personal", "disciple_tools" ) . '</a>
+                            <ul class="menu vertical nested" id="personal-menu"></ul>
+                        </li>
+                        <li><a>' . __( "Project", "disciple_tools" ) . '</a>
+                            <ul class="menu vertical nested" id="combined-menu"></ul>
+                        </li>
+                        <li><a>' . __( "Contacts", "disciple_tools" ) . '</a>
+                            <ul class="menu vertical nested" id="contacts-menu"></ul>
+                        </li>
+                        <li><a>' . __( "Groups", "disciple_tools" ) . '</a>
+                            <ul class="menu vertical nested" id="groups-menu"></ul>
+                        </li>
+                    ';
+                }
+                return $content;
+            }, 10 ); //load menu links
         }
     }
 

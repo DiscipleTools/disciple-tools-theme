@@ -22,7 +22,7 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
             return;
         }
         $this->base_title = __( 'Groups', 'disciple_tools' );
-        $this->title = __( 'GenTree', 'disciple_tools' );
+        $this->title = __( 'Groups Tree', 'disciple_tools' );
 
         $url_path = dt_get_url_path();
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {

@@ -6,7 +6,7 @@ jQuery(document).ready(function($) {
   if( '/user-management/user/' === window.location.pathname.substring(0,"/user-management/user/".length) ) {
     console.log( window.location.pathname.replace( '/user-management/user/','').replace('/','') )
     write_users_list()
-    open_user_mobile( window.location.pathname.replace( '/user-management/user/','').replace('/','') )
+    open_user_modal( window.location.pathname.replace( '/user-management/user/','').replace('/','') )
 
   }
   if( '/user-management/add-user/' === window.location.pathname ) {
@@ -77,9 +77,38 @@ jQuery(document).ready(function($) {
     $('.user_row').on("click", function (a) {
       if ( a.target._DT_CellIndex.column !== 0 ){
         user_id = $(this).data("user")
-        open_user_mobile( user_id )
+        open_user_modal( user_id )
       }
     })
+
+
+
+
+    $.urlParam = function(name){
+      var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+      if ( results == null ) {
+        return 0;
+      }
+      return results[1] || 0;
+    }
+    if ( $.urlParam('dt_user_id') ) {
+      open_user_modal(decodeURIComponent($.urlParam('user_id') ) )
+    }
+    if ( window.selected_user_id ) {
+      open_user_modal(window.selected_user_id )
+    }
+
+  }
+
+
+  function open_user_modal( user_id ) {
+
+    let update_user = ( user_id, key, value )=>{
+      let data =  {
+        [key]: value
+      }
+      return makeRequest( "POST", `user?user=${user_id}`, data , 'user-management/v1/' )
+    }
 
     $('#user_name').on( "click", function(e) {
       window.user_name = $(this).text()
@@ -113,29 +142,6 @@ jQuery(document).ready(function($) {
         }
       })
     })
-
-
-    $.urlParam = function(name){
-      var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-      if ( results == null ) {
-        return 0;
-      }
-      return results[1] || 0;
-    }
-    if ( $.urlParam('dt_user_id') ) {
-      open_user_modal(decodeURIComponent($.urlParam('user_id') ) )
-    }
-    if ( window.selected_user_id ) {
-      open_user_modal(window.selected_user_id )
-    }
-
-
-    let update_user = ( user_id, key, value )=>{
-      let data =  {
-        [key]: value
-      }
-      return makeRequest( "POST", `user?user=${user_id}`, data , 'user-management/v1/' )
-    }
 
 
     /**
@@ -185,16 +191,31 @@ jQuery(document).ready(function($) {
       $('#user_roles_list input:checked').each(function () {
         roles.push($(this).val())
       })
-      update_user( window.current_user_lookup, 'save_roles', roles).then(()=>{
+      update_user( window.current_user_lookup, 'save_roles', roles).then((user_data)=>{
+        setup_user_roles( user_data )
         $(this).toggleClass('loading', false)
       }).catch(()=>{
         $(this).toggleClass('loading', false)
       })
 
     })
+    $('#save_allowed_sources').on("click", function () {
+      $(this).toggleClass('loading', true)
+      let sources = [];
+      $('#allowed_sources_options input:checked').each(function () {
+        sources.push($(this).val())
+      })
+      update_user( window.current_user_lookup, 'allowed_sources', sources).then((user_data)=>{
+        setup_user_roles( user_data )
+        $(this).toggleClass('loading', false)
+      }).catch(()=>{
+        $(this).toggleClass('loading', false)
+      })
+    })
 
+    let date_unavailable_table = $('#unavailable-list')
+    date_unavailable_table.empty()
     let display_dates_unavailable = (list = [] )=>{
-      let date_unavailable_table = $('#unavailable-list')
       date_unavailable_table.empty()
       let rows = ``
       list.forEach(range=>{
@@ -293,13 +314,12 @@ jQuery(document).ready(function($) {
       }
     }
 
-  }
 
-  function open_user_mobile( user_id ) {
+
 
       window.current_user_lookup = user_id
 
-      $('#user-id-reveal').html(user_id)
+      $('#user-id-reveal').html(window.current_user_lookup)
 
       $('#user_modal').foundation('open');
 
@@ -328,6 +348,9 @@ jQuery(document).ready(function($) {
       $('#day_activity_chart').html(spinner)
       $('#mapbox-wrapper').html(spinner)
       $('#location-grid-meta-results').html(spinner)
+
+      $('#status-select').val('')
+      $('#workload-select').val('')
 
       /* details */
       makeRequest( "get", `user?user=${user_id}&section=details`, null , 'user-management/v1/')
@@ -374,6 +397,15 @@ jQuery(document).ready(function($) {
         console.log( e)
       })
 
+      //clear the locations typeahead of previous values when the modal is opened
+      let typeahead = Typeahead['.js-typeahead-location_grid']
+      if (typeahead) {
+        typeahead.items = [];
+        typeahead.comparedItems =[];
+        typeahead.label.container.empty();
+        typeahead.adjustInputSize()
+      }
+
       /* locations */
       makeRequest( "get", `user?user=${user_id}&section=locations`, null , 'user-management/v1/')
         .done(locations=>{
@@ -392,14 +424,13 @@ jQuery(document).ready(function($) {
               });
             } else {
               //locations
-              let typeahead = Typeahead['.js-typeahead-location_grid']
               if (typeahead) {
                 typeahead.items = [];
                 typeahead.comparedItems =[];
                 typeahead.label.container.empty();
                 typeahead.adjustInputSize()
               }
-              locations.user_location.location_grid.forEach(location => {
+              (locations.user_location.location_grid || []).forEach(location => {
                 typeahead.addMultiselectItemLayout({ID: location.id.toString(), name: location.label})
               })
             }
@@ -556,15 +587,28 @@ jQuery(document).ready(function($) {
         console.log( 'error in contact_attempts')
         console.log( e)
       })
-    function setup_user_roles(user_data){
-      $('#user_roles_list input').prop('checked', false);
-      if ( user_data.roles ){
-        _.forOwn( user_data.roles, role=>{
-          $(`#user_roles_list [value="${role}"]`).prop('checked', true)
-        } )
+      function setup_user_roles(user_data){
+        $('#user_roles_list input').prop('checked', false);
+        if ( user_data.roles ){
+          _.forOwn( user_data.roles, role=>{
+            $(`#user_roles_list [value="${role}"]`).prop('checked', true)
+            if ( role === "partner" || role === "marketer" ){
+              $(`#allowed_sources_options`).show()
+              $('#allowed_sources_options input').prop('checked', false);
+              user_data.allowed_sources.forEach(source=>{
+                $(`#allowed_sources_options [value="${source}"]`).prop('checked', true)
+              })
+              if ( user_data.length === 0 ){
+                $(`#allowed_sources_options [value="all"]`).prop('checked', true)
+              }
+            } else {
+              $(`#allowed_sources_options`).hide()
+            }
+          })
+        }
+
+
       }
-    }
-    // }
   }
 
   function day_activity_chart( days_active ) {

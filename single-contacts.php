@@ -462,7 +462,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         <select id="reason-unassignable-options">
             <?php
             foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $option ) {
-                if ( $option["label"] ) {
+                if ( isset( $option["label"] ) ) {
                     ?>
                     <option value="<?php echo esc_attr( $reason_key ) ?>"
                         <?php if ( ( $contact["unassignable_paused"]["key"] ?? "" ) === $reason_key ) {

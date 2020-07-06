@@ -147,17 +147,17 @@ class DT_User_Management
                         'accept_time' => _x( '%1$s was accepted on %2$s after %3$s days', 'Bob was accepted on Jul 8 after 10 days', 'disciple_tools' ),
                         'no_contact_attempt_time' => _x( '%1$s waiting for Contact Attempt for %2$s days', 'Bob waiting for contact for 10 days', 'disciple_tools' ),
                         'contact_attempt_time' => _x( 'Contact with %1$s was attempted on %2$s after %3$s days', 'Contact with Bob was attempted on Jul 8 after 10 days', 'disciple_tools' ),
-                        'unable_to_update' => _x( 'Unable to update', 'disciple_tools' ),
-                        'add_new_user' => _x( 'Add New User', 'disciple_tools' ),
-                        'there_are_some_errors' => _x( 'There are some errors in your form.', 'disciple_tools' ),
-                        'contact_to_user' => _x( 'Contact to make a user (optional)', 'disciple_tools' ),
-                        'nickname' => _x( 'Nickname', 'disciple_tools' ),
-                        'email' => _x( 'Email', 'disciple_tools' ),
-                        'create_user' => _x( 'Create User', 'disciple_tools' ),
-                        'email_already_in_system' => _x( 'Email address is already in the system as a user!', 'disciple_tools' ),
-                        'username_in_system' => _x( 'Username is already in the system as a user!', 'disciple_tools' ),
-                        'search' => _x( 'Search multipliers and contacts', 'disciple_tools' ),
-                        'remove' => _x( 'Remove', 'disciple_tools' ),
+                        'unable_to_update' => __( 'Unable to update', 'disciple_tools' ),
+                        'add_new_user' => __( 'Add New User', 'disciple_tools' ),
+                        'there_are_some_errors' => __( 'There are some errors in your form.', 'disciple_tools' ),
+                        'contact_to_user' => __( 'Contact to make a user (optional)', 'disciple_tools' ),
+                        'nickname' => __( 'Nickname (Display Name)', 'disciple_tools' ),
+                        'email' => __( 'Email', 'disciple_tools' ),
+                        'create_user' => __( 'Create User', 'disciple_tools' ),
+                        'email_already_in_system' => __( 'Email address is already in the system as a user!', 'disciple_tools' ),
+                        'username_in_system' => __( 'Username is already in the system as a user!', 'disciple_tools' ),
+                        'search' => __( 'Search multipliers and contacts', 'disciple_tools' ),
+                        'remove' => __( 'Remove', 'disciple_tools' ),
                     ]
 
                 ]
@@ -203,6 +203,7 @@ class DT_User_Management
             "contact_accepts" => [],
             "unaccepted_contacts" => [],
             "unattempted_contacts" => [],
+            "allowed_sources" => [],
         ];
 
         /* details section */
@@ -422,6 +423,7 @@ class DT_User_Management
 
         if ( current_user_can( "promote_users" ) ){
             $user_response["roles"] = $user->roles;
+            $user_response["allowed_sources"] = get_user_option( 'allowed_sources', $user->ID ) ?: [];
         }
 
         return $user_response;
@@ -700,6 +702,21 @@ class DT_User_Management
                         }
                     }
                 }
+                return $this->get_dt_user( $user->ID );
+            }
+            if ( isset( $body["allowed_sources"] ) ){
+                // If the current user can't promote users or edit this particular user, bail.
+                if ( !current_user_can( 'promote_users' ) ) {
+                    return false;
+                }
+                $allowed_sources = [];
+                foreach ( $body["allowed_sources"] as $s ){
+                    $allowed_sources[] = sanitize_key( wp_unslash( $s ) );
+                }
+                if ( in_array( "restrict_all_sources", $allowed_sources ) ){
+                    $allowed_sources = [ "restrict_all_sources" ];
+                }
+                update_user_option( $user->ID, "allowed_sources", $allowed_sources );
                 return $this->get_dt_user( $user->ID );
             }
             if ( isset( $body['update_nickname'] ) ) {

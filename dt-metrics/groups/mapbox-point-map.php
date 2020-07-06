@@ -18,6 +18,9 @@ class DT_Metrics_Mapbox_Groups_Points_Map extends DT_Metrics_Chart_Base
     public $namespace = 'dt-metrics/groups/';
 
     public function __construct() {
+        if ( ! DT_Mapbox_API::get_key() ) {
+            return;
+        }
         parent::__construct();
         if ( !$this->has_permission() ){
             return;

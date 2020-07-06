@@ -132,15 +132,8 @@ class Disciple_Tools_Mapping_Queries {
             return [];
         }
 
-        $prepared_list = '';
-        $i = 0;
-        foreach ( $list as $item ) {
-            if ( $i !== 0 ) {
-                $prepared_list .= ',';
-            }
-            $prepared_list .= (int) $item;
-            $i++;
-        }
+        $prepared_list = dt_array_to_sql( $list );
+
         // Note: $wpdb->prepare does not have a way to add a string without surrounding it with ''
         // and this query requires a list of numbers separated by commas but without surrounding ''
         // Any better ideas on how to still use ->prepare and not break the sql, welcome. :)
@@ -570,6 +563,7 @@ class Disciple_Tools_Mapping_Queries {
 
     /**
      * Count post types, churchs and groups in each used location and accross admin levels
+     * @todo rewrite. user is no longer found here and these are listing milstones
      */
     public static function get_location_grid_totals_on_field( $post_type, $field, $force_refresh = false ) : array {
 
@@ -1106,14 +1100,19 @@ class Disciple_Tools_Mapping_Queries {
 
         if ( $status ) {
             $results = $wpdb->get_results( $wpdb->prepare( "
-             SELECT t0.admin0_grid_id as grid_id, count(t0.admin0_grid_id) as count
+            SELECT t0.admin0_grid_id as grid_id, count(t0.admin0_grid_id) as count
             FROM (
-             SELECT lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
-                FROM wp_3_postmeta as pm
-                JOIN wp_3_posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
-                LEFT JOIN wp_3_dt_location_grid as lg ON pm.meta_value=lg.grid_id
+              SELECT lg.admin0_grid_id, lg.admin1_grid_id, lg.admin2_grid_id, lg.admin3_grid_id, lg.admin4_grid_id, lg.admin5_grid_id
+                FROM $wpdb->postmeta as pm
+                JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'contacts'
+                LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
                 WHERE pm.meta_key = 'location_grid'
-                AND pm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE ( p.meta_key = 'corresponds_to_user' AND p.meta_value != '') OR ( p.meta_key = 'overall_status' AND p.meta_value = 'closed'))
+                AND pm.post_id NOT IN (
+                  SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p 
+                  WHERE ( p.meta_key = 'corresponds_to_user' AND p.meta_value != '') 
+                  OR ( p.meta_key = 'overall_status' AND p.meta_value = 'closed')
+                )
+            )
             WHERE lgm.post_type = 'contacts'
                 AND lgm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE ( p.meta_key = 'corresponds_to_user' AND p.meta_value != '') )
             ) as t0
@@ -1163,7 +1162,7 @@ class Disciple_Tools_Mapping_Queries {
              AND lgm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE ( p.meta_key = 'corresponds_to_user' AND p.meta_value != '') )
             ) as t5
             GROUP BY t5.admin5_grid_id;
-            ", $status, $status, $status, $status, $status, $status ), ARRAY_A );
+            ", $status, $status, $status, $status, $status ), ARRAY_A );
 
         } else {
 

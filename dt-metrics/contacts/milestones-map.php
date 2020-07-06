@@ -62,7 +62,7 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
                 'translations' => [
-                    'title' => __( 'Contact Milestones', 'disciple_tools' )
+                    'title' => __( 'Milestones', 'disciple_tools' )
                 ]
             ]
         );

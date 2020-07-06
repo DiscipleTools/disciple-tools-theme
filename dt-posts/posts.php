@@ -19,7 +19,10 @@ class Disciple_Tools_Posts
     /**
      * Disciple_Tools_Posts constructor.
      */
-    public function __construct() {}
+    public function __construct() {
+        add_filter( "dt_can_view_permission", [ $this, 'can_view_permission_filter' ], 10, 2 );
+        add_filter( "dt_can_update_permission", [ $this, 'can_update_permission_filter' ], 10, 2 );
+    }
 
     /**
      * Permissions for interaction with contacts Custom Post Types
@@ -86,16 +89,7 @@ class Disciple_Tools_Posts
         if ( current_user_can( 'view_any_' . $post_type ) ) {
             return true;
         }
-        //check if the user has access to all posts of a specific source
-        if ( current_user_can( 'access_specific_sources' ) ){
-            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
-            $post_sources = get_post_meta( $post_id, 'sources' );
-            foreach ( $post_sources as $s ){
-                if ( in_array( $s, $sources ) ){
-                    return true;
-                }
-            }
-        }
+
         //check if a user is assigned to the post or if the post is shared with the user
         $user = wp_get_current_user();
         $assigned_to = get_post_meta( $post_id, "assigned_to", true );
@@ -118,7 +112,25 @@ class Disciple_Tools_Posts
             }
         }
         //return false if the user does not have access to the post
-        return false;
+        return apply_filters( 'dt_can_view_permission', false, $post_id );
+    }
+
+
+    public function can_view_permission_filter( $has_permission, $post_id ){
+        //check if the user has access to all posts of a specific source
+        if ( current_user_can( 'access_specific_sources' ) ){
+            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+            if ( empty( $sources ) || in_array( 'all', $sources ) ) {
+                return true;
+            }
+            $post_sources = get_post_meta( $post_id, 'sources' );
+            foreach ( $post_sources as $s ){
+                if ( in_array( $s, $sources ) ){
+                    return true;
+                }
+            }
+        }
+        return $has_permission;
     }
 
     /**
@@ -137,15 +149,6 @@ class Disciple_Tools_Posts
         global $wpdb;
         if ( current_user_can( 'update_any_' . $post_type ) ) {
             return true;
-        }
-        if ( current_user_can( 'access_specific_sources' ) ){
-            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
-            $post_sources = get_post_meta( $post_id, 'sources' );
-            foreach ( $post_sources as $s ){
-                if ( in_array( $s, $sources ) ){
-                    return true;
-                }
-            }
         }
         $user = wp_get_current_user();
         $assigned_to = get_post_meta( $post_id, "assigned_to", true );
@@ -168,7 +171,23 @@ class Disciple_Tools_Posts
             }
         }
 
-        return false;
+        return apply_filters( 'dt_can_update_permission', false, $post_id );
+    }
+    public function can_update_permission_filter( $has_permission, $post_id ){
+        //check if the user has access to all posts of a specific source
+        if ( current_user_can( 'access_specific_sources' ) ){
+            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+            if ( empty( $sources ) || in_array( 'all', $sources ) ) {
+                return true;
+            }
+            $post_sources = get_post_meta( $post_id, 'sources' );
+            foreach ( $post_sources as $s ){
+                if ( in_array( $s, $sources ) ){
+                    return true;
+                }
+            }
+        }
+        return $has_permission;
     }
 
     public static function get_label_for_post_type( $post_type, $singular = false ){
@@ -489,7 +508,7 @@ class Disciple_Tools_Posts
             $message = $activity->object_note;
         }
 
-        return $message;
+        return apply_filters( "dt_format_activity_message", $message, $activity );
     }
 
 
@@ -577,6 +596,9 @@ class Disciple_Tools_Posts
         if ( $check_permissions && !self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, "You do not have access to these", [ 'status' => 403 ] );
         }
+        //filter in to add or remove query parameters.
+        $query = apply_filters( 'dt_search_viewable_posts_query', $query );
+
         global $wpdb;
         $current_user = wp_get_current_user();
 
@@ -637,12 +659,16 @@ class Disciple_Tools_Posts
         if ( !isset( $query["assigned_to"] ) || in_array( "all", $query["assigned_to"] ) ){
             $query["assigned_to"] = [ "all" ];
             if ( !self::can_view_all( $post_type ) && $check_permissions ){
-                $query["assigned_to"] = [ "me" ];
-                if ( !in_array( "shared", $include )){
-                    $include[] = "shared";
-                }
-                if ( current_user_can( 'access_specific_sources' ) ){
-                    $include[] = "allowed_sources";
+                if ( current_user_can( 'access_specific_sources' ) && in_array( 'all', get_user_option( 'allowed_sources' ) ?? [] ) ){
+                    $query["assigned_to"] = [ "all" ];
+                } else {
+                    $query["assigned_to"] = [ "me" ];
+                    if ( !in_array( "shared", $include )){
+                        $include[] = "shared";
+                    }
+                    if ( current_user_can( 'access_specific_sources' ) ){
+                        $include[] = "allowed_sources";
+                    }
                 }
             };
         }
@@ -653,7 +679,7 @@ class Disciple_Tools_Posts
             }
             if ( $i === "allowed_sources" ){
                 $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
-                if ( !empty( $allowed_sources ) ){
+                if ( !empty( $allowed_sources ) && !in_array( "restrict_all_sources", $allowed_sources ) ){
                     $sources_sql = dt_array_to_sql( $allowed_sources );
                     $access_joins .= "LEFT JOIN $wpdb->postmeta AS source_access ON ( $wpdb->posts.ID = source_access.post_id AND source_access.meta_key = 'sources' ) ";
                     $access_query .= ( !empty( $access_query ) ? "OR" : "" ) ." ( source_access.meta_key = 'sources' AND source_access.meta_value IN ( $sources_sql ) )";
@@ -1203,7 +1229,7 @@ class Disciple_Tools_Posts
                 if ( isset( $field["force_values"] ) && $field["force_values"] == true ){
                     delete_post_meta( $post_id, 'location_grid' );
                     delete_post_meta( $post_id, 'location_grid_meta' );
-                    Location_Grid_Meta::add_location_grid_meta( $post_id, 'all', null );
+                    Location_Grid_Meta::delete_location_grid_meta( $post_id, 'all', null );
                     $existing_post[ $field_key ] = [];
                 }
 
@@ -1212,7 +1238,7 @@ class Disciple_Tools_Posts
 
                     // delete
                     if ( isset( $value["delete"] ) && $value["delete"] == true ) {
-                        Location_Grid_Meta::add_location_grid_meta( $post_id, $value["grid_meta_id"], $existing_post );
+                        Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value["grid_meta_id"], $existing_post );
                     }
 
                     // is new but has provided grid_id

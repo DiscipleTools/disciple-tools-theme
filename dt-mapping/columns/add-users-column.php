@@ -53,7 +53,7 @@ function dt_mm_add_workers_column( $data ) {
          */
         $column_labels[ $next_column_number ] = [
             'key'   => 'workers',
-            'label' => __( 'Workers', 'disciple_tools' )
+            'label' => __( 'Users', 'disciple_tools' )
         ];
 
         /**

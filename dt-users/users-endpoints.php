@@ -390,6 +390,44 @@ class Disciple_Tools_Users_Endpoints
             ] );
             return is_wp_error( $e ) ? $e : true;
         }
+        if ( !empty( $body["workload_status"] ) ) {
+            update_user_option( $user->ID, 'workload_status', $body["workload_status"] );
+        }
+        if ( !empty( $body["add_languages"] ) ){
+            $languages = get_user_option( "user_languages", $user->ID ) ?: [];
+            if ( !in_array( $body["add_languages"], $languages )){
+                $languages[] = $body["add_languages"];
+            }
+            update_user_option( $user->ID, "user_languages", $languages );
+            return $languages;
+        }
+        if ( !empty( $body["remove_languages"] ) ){
+            $languages = get_user_option( "user_languages", $user->ID );
+            if ( in_array( $body["remove_languages"], $languages )){
+                unset( $languages[array_search( $body["remove_languages"], $languages )] );
+            }
+            update_user_option( $user->ID, "user_languages", $languages );
+            return $languages;
+        }
+        if ( !empty( $body["add_people_groups"] ) ){
+            $people_groups = get_user_option( "user_people_groups", $user->ID ) ?: [];
+            if ( !in_array( $body["add_people_groups"], $people_groups )){
+                $people_groups[] = $body["add_people_groups"];
+            }
+            update_user_option( $user->ID, "user_people_groups", $people_groups );
+            return $people_groups;
+        }
+        if ( !empty( $body["remove_people_groups"] ) ){
+            $people_groups = get_user_option( "user_people_groups", $user->ID );
+            if ( in_array( $body["remove_people_groups"], $people_groups )){
+                unset( $people_groups[array_search( $body["remove_people_groups"], $people_groups )] );
+            }
+            update_user_option( $user->ID, "user_people_groups", $people_groups );
+            return $people_groups;
+        }
+        if ( !empty( $body["gender"] ) ) {
+            update_user_option( $user->ID, 'user_gender', $body["gender"] );
+        }
         try {
             do_action( 'dt_update_user', $user, $body );
         } catch (Exception $e) {

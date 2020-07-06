@@ -981,6 +981,18 @@ label.dt-switch:active:after {
 
 }
 
+
+.template-settings {
+    #multiplier {
+        .section-subheader {
+            img {
+                height: 15px;
+            }
+            margin-bottom: 4px;
+        }
+    }
+}
+
 .dt-status-square {
     height: 13px;
     width: 13px;

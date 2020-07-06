@@ -75,7 +75,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
                 'map_mirror'         => trailingslashit( dt_get_location_grid_mirror( true ) ),
                 'url_path'           => dt_get_url_path(),
                 'translations'       => [
-                    'title' => _x( 'Coverage Map', 'disciple_tools' ),
+                    'title' => __( 'Coverage Map', 'disciple_tools' ),
                     'responsibility' => __( 'Responsibility', 'disciple_tools' ),
                     'zoom_level' => __( 'Zoom Level', 'disciple_tools' ),
                     'auto_zoom' => __( 'Auto Zoom', 'disciple_tools' ),
