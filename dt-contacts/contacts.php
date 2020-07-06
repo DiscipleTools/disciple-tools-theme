@@ -1065,10 +1065,16 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( !in_array( $dismiss_id, $duplicate_data["override"] ) ) {
             $duplicate_data["override"][] = $dismiss_id;
         }
-        if ( $duplicate_data["chek_dups"] === true ){
+        if ( !empty( $duplicate_data["check_dups"] ) ){
             $possible_dups = self::get_possible_duplicates( $contact_id, $contact, true );
-            if ( sizeof( $possible_dups ) <= sizeof( $duplicate_data["override"] ) ){
-                $data["check_dups"] = false;
+            $ids = [];
+            foreach( $possible_dups as $field_key => $vals ){
+                foreach( $vals as $val ){
+                    $ids[] = $val["ID"];
+                }
+            }
+            if ( sizeof( array_unique( $ids ) ) <= sizeof( $duplicate_data["override"] ) ){
+                $duplicate_data["check_dups"] = false;
             }
         }
         self::save_duplicate_data( $contact_id, $duplicate_data );
