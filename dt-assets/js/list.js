@@ -253,7 +253,7 @@
             <span class="milestone milestone--<%- belief_milestone_key %>"><%- belief_milestone %></span>
             <%- status %>
             <!--<%- assigned_to ? assigned_to.name : "" %>-->
-            <%= locations.join(", ") %>
+            <%- locations.join(", ") %>
             <%= group_links %>
           </span>
       </td>
@@ -277,7 +277,7 @@
         <span class="milestone milestone--<%- belief_milestone_key %>"><%- belief_milestone %></span>
       </td>
       <td class="hide-for-small-only"><%- assigned_to ? assigned_to.display : "" %></td>
-      <td class="hide-for-small-only"><%= locations.join(", ") %></td>
+      <td class="hide-for-small-only"><%- locations.join(", ") %></td>
       <td class="hide-for-small-only"><%= group_links %></td>
       <td class="hide-for-small-only"><%- last_modified %></td>
     </tr>`),
@@ -339,8 +339,8 @@
       ['planting', 'in_group', 'sharing', 'can_share'],
       function(key) { return (contact["milestones"] || []).includes(`milestone_${_.escape( key )}`); }
     );
-    let status = _.escape( _.get(contact.overall_status, 'label') )
-    let seeker_path = _.escape( _.get(contact.seeker_path, 'label') )
+    let status = _.get(contact.overall_status, 'label')
+    let seeker_path = _.get(contact.seeker_path, 'label')
     contact.phone_numbers = (contact.contact_phone || []).map(a=>a.value)
     contact.locations = (contact.location_grid || []).map(a=>a.label)
     const group_links = _.map(contact.groups, function(group) {
@@ -374,8 +374,8 @@
       return '<a href="' + _.escape(leader.permalink) + '">' + _.escape(leader.post_title) + "</a>";
     }).join(", ");
     const gcfs = wpApiListSettings.custom_fields_settings;
-    let status = _.escape( _.get(group.group_status, 'label') )
-    const type = _.escape( _.get(group.group_type, 'label') )
+    let status = _.get(group.group_status, 'label')
+    const type = _.get(group.group_type, 'label')
     let locations = (group.location_grid || []).map(a=>a.label)
     let member_count = group.member_count || 0
     const context = _.assign({}, group, wpApiListSettings, {
