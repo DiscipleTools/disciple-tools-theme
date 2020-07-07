@@ -211,7 +211,7 @@ declare(strict_types=1);
 
                         <?php else : ?>
                             <div class="tabs-panel" id="<?php echo esc_html( $field ) ?>">
-                                <div class="section-header"><?php echo esc_html( $field === "created_on" ? __("Creation Date", "disciple_tools") : $field_options[$field]["name"] ?? $field ) ?></div>
+                                <div class="section-header"><?php echo esc_html( $field === "created_on" ? __( "Creation Date", "disciple_tools" ) : $field_options[$field]["name"] ?? $field ) ?></div>
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "key_select" ) :
                                         foreach ( $field_options[$field]["default"] as $option_key => $option_value ) :

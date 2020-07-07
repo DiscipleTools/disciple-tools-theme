@@ -1068,8 +1068,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( !empty( $duplicate_data["check_dups"] ) ){
             $possible_dups = self::get_possible_duplicates( $contact_id, $contact, true );
             $ids = [];
-            foreach( $possible_dups as $field_key => $vals ){
-                foreach( $vals as $val ){
+            foreach ( $possible_dups as $field_key => $vals ){
+                foreach ( $vals as $val ){
                     $ids[] = $val["ID"];
                 }
             }
