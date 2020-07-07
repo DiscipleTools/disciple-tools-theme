@@ -144,6 +144,7 @@ declare(strict_types=1);
                                 $is_multi_select
                             ) ): ?>
                             <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>" id="<?php echo esc_html( $field ) ?>">
+                                <div class="section-header"><?php echo esc_html( $dt_group_field_options[$field]["name"] ) ?></div>
                                 <div class="<?php echo esc_html( $field );?>  <?php echo esc_html( $is_multi_select ? "multi_select" : "" ) ?> details" >
                                     <var id="<?php echo esc_html( $field ) ?>-result-container" class="result-container <?php echo esc_html( $field ) ?>-result-container"></var>
                                     <div id="<?php echo esc_html( $field ) ?>_t" name="form-<?php echo esc_html( $field ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
@@ -165,6 +166,7 @@ declare(strict_types=1);
 
                         <?php else : ?>
                             <div class="tabs-panel" id="<?php echo esc_html( $field ) ?>">
+                                <div class="section-header"><?php echo esc_html( $field === "created_on" ? __("Creation Date", "disciple_tools") : $dt_group_field_options[$field]["name"] ?? $field ) ?></div>
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "key_select" ) :
                                         foreach ( $dt_group_field_options[$field]["default"] as $option_key => $option_value ) :

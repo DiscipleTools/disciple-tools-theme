@@ -177,14 +177,15 @@
       savedFiltersList.append(
         $("<div>").append(
           $("<label>")
-            .css("cursor", "pointer")
+            .css("display", "inline-block")
             .addClass("js-filter-checkbox-label")
             .data("filter-value", status)
             .append(radio)
             .append(filterName)
-            .append(deleteFilter)
-            .append(editFilter)
         )
+        .css("cursor", "pointer")
+        .append(deleteFilter)
+        .append(editFilter)
       )
     })
     new Foundation.Accordion(filter_accordions, {
@@ -484,11 +485,6 @@
   if (!getContactsPromise){
     getContactForCurrentView()
   }
-
-  $('#filter-modal .tabs-title a').on("click", function () {
-    let id = $(this).attr('href').replace('#', '')
-    $(`.js-typeahead-${id}`).trigger('input')
-  })
 
   //create new custom filter from modal
   let selectedFilters = $("#selected-filters")
@@ -983,7 +979,7 @@
     $('#filter-modal').foundation('open');
     typeaheadsLoaded.then(()=>{
       newFilterLabels = filter.labels
-      let connectionTypeKeys = Object.keys(wpApiListSettings.connection_types)
+      let connectionTypeKeys = wpApiListSettings.connection_types
       connectionTypeKeys.push("assigned_to")
       connectionTypeKeys.push("location_grid")
       newFilterLabels.forEach(label=>{
@@ -991,7 +987,7 @@
         let type = _.get(wpApiListSettings, `custom_fields_settings.${label.field}.type`)
         if ( type === "key_select" || type === "boolean" ){
           $(`#filter-modal #${label.field}-options input[value="${label.id}"]`).prop('checked', true)
-        } else if ( type === "date" ){
+        } else if ( type === "date" || label.field === "created_on" ){
           $(`#filter-modal #${label.field}-options #${label.id}`).datepicker('setDate', label.date)
         } else if ( connectionTypeKeys.includes( label.field ) ){
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})

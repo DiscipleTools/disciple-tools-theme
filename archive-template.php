@@ -162,6 +162,7 @@ declare(strict_types=1);
                             $fields[] = $field_key;
                         }
                     }
+                    $fields[] = "created_on";
                     $fields = apply_filters( 'dt_filters_additional_fields', $fields, $post_type ) ?? [];
                     ?>
                     <ul class="vertical tabs" data-tabs id="filter-tabs">
@@ -186,8 +187,9 @@ declare(strict_types=1);
                 <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="filter-tabs">
                     <?php foreach ( $fields as $index => $field ) :
                         $is_multi_select = isset( $field_options[$field] ) && $field_options[$field]["type"] == "multi_select";
-                        if ( $field_options[$field]["type"] === "connection" || $field_options[$field]["type"] === "location" || $is_multi_select ) : ?>
+                        if ( isset( $field_options[$field] ) && ( $field_options[$field]["type"] === "connection" || $field_options[$field]["type"] === "location" || $is_multi_select ) ) : ?>
                             <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>" id="<?php echo esc_html( $field ) ?>">
+                                <div class="section-header"><?php echo esc_html( $field_options[$field]["name"] ) ?></div>
                                 <div class="<?php echo esc_html( $field );?>  <?php echo esc_html( $is_multi_select ? "multi_select" : "" ) ?> details" >
                                     <var id="<?php echo esc_html( $field ) ?>-result-container" class="result-container <?php echo esc_html( $field ) ?>-result-container"></var>
                                     <div id="<?php echo esc_html( $field ) ?>_t" name="form-<?php echo esc_html( $field ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
@@ -209,6 +211,7 @@ declare(strict_types=1);
 
                         <?php else : ?>
                             <div class="tabs-panel" id="<?php echo esc_html( $field ) ?>">
+                                <div class="section-header"><?php echo esc_html( $field === "created_on" ? __("Creation Date", "disciple_tools") : $field_options[$field]["name"] ?? $field ) ?></div>
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "key_select" ) :
                                         foreach ( $field_options[$field]["default"] as $option_key => $option_value ) :
