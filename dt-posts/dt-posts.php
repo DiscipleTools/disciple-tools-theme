@@ -552,7 +552,29 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         if ( !$send_quick_results ){
             if ( !self::can_view_all( $post_type ) ) {
-                //@todo better way to get the contact records for users my contacts are shared with
+                if ( self::can_view_users() ) {
+                    $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID, $search_string );
+                    $query_args['meta_key'] = 'assigned_to';
+                    $query_args['meta_value'] = "user-" . $current_user->ID;
+                    $posts = $wpdb->get_results( $wpdb->prepare( "
+                        SELECT *, statusReport.meta_value as overall_status, pm.meta_value as corresponds_to_user
+                        FROM $wpdb->posts
+                        INNER JOIN $wpdb->postmeta as assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id AND assigned_to.meta_key = 'assigned_to')
+                        LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = $wpdb->posts.ID AND statusReport.meta_key = 'overall_status')
+                        LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = $wpdb->posts.ID AND pm.meta_key = 'corresponds_to_user' )
+                        WHERE assigned_to.meta_value = %s
+                        AND $wpdb->posts.post_title LIKE %s
+                        AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
+                        OR ( pm.meta_key = 'corresponds_to_user' AND pm.meta_value IS NOT NULL )
+                        ORDER BY CASE
+                            WHEN $wpdb->posts.post_title LIKE %s then 1
+                            ELSE 2
+                        END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
+                        LIMIT 0, 30
+                    ", "user-". $current_user->ID, '%' . $search_string . '%', $post_type, '%' . $search_string . '%'
+                    ), OBJECT );
+                } else {
+                    //@todo better way to get the contact records for users my contacts are shared with
                 $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID, $search_string );
                 $query_args['meta_key'] = 'assigned_to';
                 $query_args['meta_value'] = "user-" . $current_user->ID;
@@ -572,6 +594,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     LIMIT 0, 30
                 ", "user-". $current_user->ID, '%' . $search_string . '%', $post_type, '%' . $search_string . '%'
                 ), OBJECT );
+            }
             } else {
                 $posts = $wpdb->get_results( $wpdb->prepare( "
                     SELECT ID, post_title, pm.meta_value as corresponds_to_user, statusReport.meta_value as overall_status
