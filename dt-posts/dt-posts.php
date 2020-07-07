@@ -205,6 +205,10 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
+        // share the record with the user that created it.
+        if ( !empty( get_current_user_id() ) ){
+            self::add_shared( $post_type, $post_id, get_current_user_id(), null, false, false, false );
+        }
 
         if ( !self::can_view( $post_type, $post_id ) ){
             return [ "ID" => $post_id ];
