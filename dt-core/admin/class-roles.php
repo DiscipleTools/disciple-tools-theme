@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 23;
+    private static $target_roles_version_number = 24;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -157,6 +157,8 @@ class Disciple_Tools_Roles
                 'publish_locations'         => true,
                 'read_private_locations'    => true,
 
+                'list_peoplegroups'        => true,
+
                 /* Add custom caps for people groups */
                 'read_peoplegroup'          => true,
                 'edit_peoplegroup'          => true,
@@ -190,6 +192,8 @@ class Disciple_Tools_Roles
                 //'view_any_contacts'         => true,  //view any contacts
                 'assign_any_contacts'       => true,  //assign contacts to others
                 //'update_any_contacts'       => true,  //update any contacts
+                'access_peoplegroups'      => true,
+                'list_peoplegroups'        => true,
             ]
         );
 
@@ -208,6 +212,8 @@ class Disciple_Tools_Roles
                 'access_specific_sources'   => true,
 
                 'read_location' => true,
+                'access_peoplegroups'      => true,
+                'list_peoplegroups'        => true,
             ]
         );
 
@@ -298,6 +304,8 @@ class Disciple_Tools_Roles
 
                 /* Add custom caps for people groups */
                 'delete_any_peoplegroup'     => true,
+                'access_peoplegroups'      => true,
+                'list_peoplegroups'        => true,
 
             ]
         );
@@ -315,7 +323,9 @@ class Disciple_Tools_Roles
                 'access_groups' => true,
                 'create_groups' => true,
 
-                'read_location' => true
+                'read_location' => true,
+                'access_peoplegroups' => true,
+                'list_peoplegroups' => true,
             ]
         );
 
@@ -421,6 +431,8 @@ class Disciple_Tools_Roles
 
             /* Add custom caps for people groups */
             $role->add_cap( 'delete_any_peoplegroups' );
+            $role->add_cap( 'access_peoplegroups' );
+            $role->add_cap( 'list_peoplegroups' );
         }
 
         update_option( 'dt_roles_number', self::$target_roles_version_number );

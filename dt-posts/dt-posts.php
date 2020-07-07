@@ -555,7 +555,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
         if ( !$send_quick_results ){
-            if ( !self::can_view_all( $post_type ) ) {
+            if ( !self::can_view_all( $post_type ) && !self::can_list_all( $post_type )) {
                 //@todo better way to get the contact records for users my contacts are shared with
                 $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID, $search_string );
                 $query_args['meta_key'] = 'assigned_to';
