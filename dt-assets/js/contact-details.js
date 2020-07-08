@@ -1242,6 +1242,7 @@ jQuery(document).ready(function($) {
   // Baptism date
   let modalBaptismDatePicker = $('input#modal-baptism-date-picker');
   modalBaptismDatePicker.datepicker({
+    constrainInput: false,
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
       API.update_post('contacts', contactId, { baptism_date: date }).then((resp)=>{

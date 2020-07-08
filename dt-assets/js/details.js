@@ -61,16 +61,20 @@ jQuery(document).ready(function($) {
   });
 
   $('.dt_date_picker').datepicker({
+    constrainInput: false,
     dateFormat: 'yy-mm-dd',
     onClose: function (date) {
       if (document.querySelector('#group-details-edit-modal') && document.querySelector('#group-details-edit-modal').contains( this)) {
         // do nothing
       } else {
+        date = window.SHAREDFUNCTIONS.convertArabicToEnglishNumbers(date);
+
         if (!$(this).val()) {
           date = " ";//null;
         }
         let id = $(this).attr('id')
         rest_api.update_post( post_type, post_id, { [id]: moment(date).unix() }).then((resp)=>{
+          console.log(resp);
           if (this.value) {
             this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
           }
@@ -82,6 +86,8 @@ jQuery(document).ready(function($) {
     changeYear: true,
     yearRange: "1900:2050",
   })
+
+
 
   function initActions(inputid) {
     $(`#${inputid}`).val("");
