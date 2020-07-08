@@ -14,7 +14,7 @@ $fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settin
         </button>
     </div>
     <span style="display: inline-block" class="filter-result-text"></span>
-    <div style="display: inline-block" id="current-filters"></div>
+    <div style="display: flex; flex-wrap:wrap;" id="current-filters"></div>
     <div class="js-sort-dropdown" style="display: inline-block">
         <ul class="dropdown menu" data-dropdown-menu>
             <li>

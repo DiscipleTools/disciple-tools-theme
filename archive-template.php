@@ -84,7 +84,7 @@ declare(strict_types=1);
                         </span>
                     </div>
                     <p style="display: inline-block" class="filter-result-text"></p>
-                    <div style="display: inline-block" id="current-filters"></div>
+                    <div style="display: flex; flex-wrap:wrap;" id="current-filters"></div>
                     <div class="js-sort-dropdown" style="display: inline-block">
                         <ul class="dropdown menu" data-dropdown-menu>
                             <li>
