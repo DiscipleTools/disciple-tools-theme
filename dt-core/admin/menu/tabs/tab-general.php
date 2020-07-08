@@ -88,7 +88,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             /* Site Notifications */
 
             /* User Visability */
-            $this->box( 'top', 'Group Tile Preferences' );
+            $this->box( 'top', 'User Visibility Preferences' );
             $this->process_user_visibility();
             $this->update_user_visibility();
             $this->box( 'bottom' );
@@ -175,7 +175,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         if ( isset( $roles['administrator'] ) ) {
             unset( $roles['administrator'] );
         }
-//        dt_write_log( $roles );
 
         if ( isset( $_POST['metrics_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['metrics_nonce'] ) ), 'metrics' . get_current_user_id() ) ) {
 
@@ -481,10 +480,8 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             foreach ( $dt_roles as $role_key => $name ) :
                 $role_object = get_role( $role_key );
                 if ( isset( $_POST[$role_key] ) && !array_key_exists( 'list_users', $role_object->capabilities ) ) {
-                    dt_write_log( 'add capability' );
                     $role_object->add_cap( 'list_users' );
                 } else if ( !isset( $_POST[$role_key] ) && array_key_exists( 'list_users', $role_object->capabilities ) ) {
-                    dt_write_log( 'delete capability' );
                     $role_object->remove_cap( 'list_users' );
                 }
             endforeach;
@@ -496,7 +493,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         $group_preferences = dt_get_option( 'group_preferences' );
         $dt_roles = dt_multi_role_get_editable_role_names();
         ?>
-        <p><?php esc_html_e( "What User Roles can view other users names" ) ?></p>
+        <p><?php esc_html_e( "User Roles that can view all other Disciple Tools users names" ) ?></p>
         <form method="post" >
             <table class="widefat">
             <?php foreach ( $dt_roles as $role_key => $name ) : ?>
