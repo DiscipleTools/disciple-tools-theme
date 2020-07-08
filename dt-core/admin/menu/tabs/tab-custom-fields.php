@@ -486,37 +486,36 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         }
 
 
-        if ( isset( $post_fields[$post_submission["field_key"]]["default"] )){
+        if ( isset( $post_fields[$post_submission["field_key"]] )){
             if ( !isset( $field_customizations[$post_type][$field_key] ) ){
                 $field_customizations[$post_type][$field_key] = [];
             }
             $custom_field = $field_customizations[$post_type][$field_key];
             $field = $post_fields[$field_key];
-            $field_options = $field["default"];
-            if ( isset( $post_fields[$field_key] ) ){
-                //update name
-                if ( isset( $post_submission["field_key_" . $field_key] ) ){
-                    $custom_field["name"] = $post_submission["field_key_" . $field_key];
-                    foreach ( $langs as $lang => $val ){
-                        $langcode = $val['language'];
-                        $translation_key = "field_key_" . $field_key . "_translation-" . $langcode;
-                        if ( isset( $post_submission[$translation_key] ) ) {
-                            if ( empty( $post_submission[$translation_key] ) && isset( $custom_field["translations"][$langcode] ) ){
-                                unset( $post_submission[$translation_key] );
-                            } elseif ( !empty( $post_submission[$translation_key] ) ) {
-                                $custom_field["translations"][$langcode] = $post_submission[$translation_key];
-                            }
+
+            //update name
+            if ( isset( $post_submission["field_key_" . $field_key] ) ){
+                $custom_field["name"] = $post_submission["field_key_" . $field_key];
+                foreach ( $langs as $lang => $val ){
+                    $langcode = $val['language'];
+                    $translation_key = "field_key_" . $field_key . "_translation-" . $langcode;
+                    if ( isset( $post_submission[$translation_key] ) ) {
+                        if ( empty( $post_submission[$translation_key] ) && isset( $custom_field["translations"][$langcode] ) ){
+                            unset( $post_submission[$translation_key] );
+                        } elseif ( !empty( $post_submission[$translation_key] ) ) {
+                            $custom_field["translations"][$langcode] = $post_submission[$translation_key];
                         }
                     }
                 }
-                if ( isset( $post_submission["delete_custom_label"], $custom_field["name"] ) ){
-                    unset( $custom_field["name"] );
-                }
-                if ( isset( $post_submission["tile_select"] ) ){
-                    $custom_field["tile"] = $post_submission["tile_select"];
-                }
             }
-            if ( $field["type"] === 'multi_select' || $field["type"] === "key_select" ){
+            if ( isset( $post_submission["delete_custom_label"], $custom_field["name"] ) ){
+                unset( $custom_field["name"] );
+            }
+            if ( isset( $post_submission["tile_select"] ) ){
+                $custom_field["tile"] = $post_submission["tile_select"];
+            }
+            if ( isset( $post_fields[$field_key]["default"] ) && ( $field["type"] === 'multi_select' || $field["type"] === "key_select" )){
+                $field_options = $field["default"];
                 foreach ( $post_submission as $key => $val ){
                     if ( strpos( $key, "field_option_" ) === 0) {
                         if ( strpos( $key, 'translation' ) !== false ) {

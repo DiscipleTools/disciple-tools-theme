@@ -7,6 +7,12 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
 }
 
 ( function () {
+    $post_type = get_post_type();
+    $post_id = get_the_ID();
+    if ( !DT_Posts::can_view( $post_type, $post_id )){
+        get_template_part( "403" );
+        die();
+    }
     get_header();
     dt_print_details_bar(
         true,
@@ -18,9 +24,8 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
         []
     );
 
-    $post_type = get_post_type();
     $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
-    $dt_post = DT_Posts::get_post( $post_type, get_the_ID() );
+    $dt_post = DT_Posts::get_post( $post_type, $post_id );
     ?>
     <div id="content" class="single-template">
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">

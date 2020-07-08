@@ -205,6 +205,10 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
+        // share the record with the user that created it.
+        if ( !empty( get_current_user_id() ) ){
+            self::add_shared( $post_type, $post_id, get_current_user_id(), null, false, false, false );
+        }
 
         if ( !self::can_view( $post_type, $post_id ) ){
             return [ "ID" => $post_id ];
@@ -551,7 +555,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
         if ( !$send_quick_results ){
-            if ( !self::can_view_all( $post_type ) ) {
+            if ( !self::can_view_all( $post_type ) && !self::can_list_all( $post_type )) {
                 if ( self::can_view_users() ) {
                     $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID, $search_string );
                     $query_args['meta_key'] = 'assigned_to';
@@ -574,7 +578,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     ", "user-". $current_user->ID, '%' . $search_string . '%', $post_type, '%' . $search_string . '%'
                     ), OBJECT );
                 } else {
-                    //@todo better way to get the contact records for users my contacts are shared with
+                //@todo better way to get the contact records for users my contacts are shared with
                 $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID, $search_string );
                 $query_args['meta_key'] = 'assigned_to';
                 $query_args['meta_value'] = "user-" . $current_user->ID;

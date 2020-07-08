@@ -177,14 +177,15 @@
       savedFiltersList.append(
         $("<div>").append(
           $("<label>")
-            .css("cursor", "pointer")
+            .css("display", "inline-block")
             .addClass("js-filter-checkbox-label")
             .data("filter-value", status)
             .append(radio)
             .append(filterName)
-            .append(deleteFilter)
-            .append(editFilter)
         )
+        .css("cursor", "pointer")
+        .append(deleteFilter)
+        .append(editFilter)
       )
     })
     new Foundation.Accordion(filter_accordions, {
@@ -252,7 +253,7 @@
             <span class="milestone milestone--<%- belief_milestone_key %>"><%- belief_milestone %></span>
             <%- status %>
             <!--<%- assigned_to ? assigned_to.name : "" %>-->
-            <%= locations.join(", ") %>
+            <%- locations.join(", ") %>
             <%= group_links %>
           </span>
       </td>
@@ -276,7 +277,7 @@
         <span class="milestone milestone--<%- belief_milestone_key %>"><%- belief_milestone %></span>
       </td>
       <td class="hide-for-small-only"><%- assigned_to ? assigned_to.display : "" %></td>
-      <td class="hide-for-small-only"><%= locations.join(", ") %></td>
+      <td class="hide-for-small-only"><%- locations.join(", ") %></td>
       <td class="hide-for-small-only"><%= group_links %></td>
       <td class="hide-for-small-only"><%- last_modified %></td>
     </tr>`),
@@ -338,8 +339,8 @@
       ['planting', 'in_group', 'sharing', 'can_share'],
       function(key) { return (contact["milestones"] || []).includes(`milestone_${_.escape( key )}`); }
     );
-    let status = _.escape( _.get(contact.overall_status, 'label') )
-    let seeker_path = _.escape( _.get(contact.seeker_path, 'label') )
+    let status = _.get(contact.overall_status, 'label')
+    let seeker_path = _.get(contact.seeker_path, 'label')
     contact.phone_numbers = (contact.contact_phone || []).map(a=>a.value)
     contact.locations = (contact.location_grid || []).map(a=>a.label)
     const group_links = _.map(contact.groups, function(group) {
@@ -373,8 +374,8 @@
       return '<a href="' + _.escape(leader.permalink) + '">' + _.escape(leader.post_title) + "</a>";
     }).join(", ");
     const gcfs = wpApiListSettings.custom_fields_settings;
-    let status = _.escape( _.get(group.group_status, 'label') )
-    const type = _.escape( _.get(group.group_type, 'label') )
+    let status = _.get(group.group_status, 'label')
+    const type = _.get(group.group_type, 'label')
     let locations = (group.location_grid || []).map(a=>a.label)
     let member_count = group.member_count || 0
     const context = _.assign({}, group, wpApiListSettings, {
@@ -484,11 +485,6 @@
   if (!getContactsPromise){
     getContactForCurrentView()
   }
-
-  $('#filter-modal .tabs-title a').on("click", function () {
-    let id = $(this).attr('href').replace('#', '')
-    $(`.js-typeahead-${id}`).trigger('input')
-  })
 
   //create new custom filter from modal
   let selectedFilters = $("#selected-filters")
@@ -983,7 +979,7 @@
     $('#filter-modal').foundation('open');
     typeaheadsLoaded.then(()=>{
       newFilterLabels = filter.labels
-      let connectionTypeKeys = Object.keys(wpApiListSettings.connection_types)
+      let connectionTypeKeys = wpApiListSettings.connection_types
       connectionTypeKeys.push("assigned_to")
       connectionTypeKeys.push("location_grid")
       newFilterLabels.forEach(label=>{
@@ -991,7 +987,7 @@
         let type = _.get(wpApiListSettings, `custom_fields_settings.${label.field}.type`)
         if ( type === "key_select" || type === "boolean" ){
           $(`#filter-modal #${label.field}-options input[value="${label.id}"]`).prop('checked', true)
-        } else if ( type === "date" ){
+        } else if ( type === "date" || label.field === "created_on" ){
           $(`#filter-modal #${label.field}-options #${label.id}`).datepicker('setDate', label.date)
         } else if ( connectionTypeKeys.includes( label.field ) ){
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
