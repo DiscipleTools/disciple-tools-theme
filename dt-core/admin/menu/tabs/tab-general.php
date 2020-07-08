@@ -472,25 +472,22 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         <?php
     }
 
-    /** Group Preferences */
+    /** User Visibility Preferences */
     public function process_user_visibility(){
-
         if ( isset( $_POST['user_visibility_nonce'] ) &&
              wp_verify_nonce( sanitize_key( wp_unslash( $_POST['user_visibility_nonce'] ) ), 'user_visibility' . get_current_user_id() ) ) {
 
-            // $site_options = dt_get_option( "dt_site_options" );
-            // if ( isset( $_POST['church_metrics'] ) && ! empty( $_POST['church_metrics'] ) ) {
-            //     $site_options["group_preferences"]["church_metrics"] = true;
-            // } else {
-            //     $site_options["group_preferences"]["church_metrics"] = false;
-            // }
-            // if ( isset( $_POST['four_fields'] ) && ! empty( $_POST['four_fields'] ) ) {
-            //     $site_options["group_preferences"]["four_fields"] = true;
-            // } else {
-            //     $site_options["group_preferences"]["four_fields"] = false;
-            // }
-
-            // update_option( 'dt_site_options', $site_options, true );
+            $dt_roles = dt_multi_role_get_editable_role_names();
+            foreach ( $dt_roles as $role_key => $name ) :
+                $role_object = get_role( $role_key );
+                if ( isset( $_POST[$role_key] ) && !array_key_exists( 'list_users', $role_object->capabilities ) ) {
+                    dt_write_log( 'add capability' );
+                    $role_object->add_cap( 'list_users' );
+                } else if ( !isset( $_POST[$role_key] ) && array_key_exists( 'list_users', $role_object->capabilities ) ) {
+                    dt_write_log( 'delete capability' );
+                    $role_object->remove_cap( 'list_users' );
+                }
+            endforeach;
         }
 
     }
@@ -505,11 +502,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             <?php foreach ( $dt_roles as $role_key => $name ) : ?>
                 <?php
                 $role_object = get_role( $role_key );
-                if ( !array_key_exists( 'list_users', $role_object->capabilities ) ) {
-                        dt_write_log( "no" );
-                } else {
-                    dt_write_log( "yes" );
-                }
                 ?>
                 <tr>
                     <td>
@@ -518,7 +510,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 </tr>
             <?php endforeach; ?>
 
-                <?php wp_nonce_field( 'group_preferences' . get_current_user_id(), 'group_preferences_nonce' )?>
+                <?php wp_nonce_field( 'user_visibility' . get_current_user_id(), 'user_visibility_nonce' )?>
             </table>
             <br>
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
