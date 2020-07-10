@@ -172,6 +172,9 @@ class Disciple_Tools_Post_Type_Template {
 //        $fields = $this->get_contact_field_defaults( $post_id, $include_current_post );
         $fields = [];
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, $this->post_type );
+
+        $langs = dt_get_available_languages();
+
         foreach ( $fields as $field_key => $field ){
             if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
                 foreach ( $field["default"] as $option_key => $option_value ){
@@ -189,7 +192,7 @@ class Disciple_Tools_Post_Type_Template {
                     if ( !isset( $fields[ $key ] ) ) {
                         $fields[ $key ] = $field;
                     } else {
-                        if ( isset( $field["name"] ) ) {
+                        if ( !empty( $field["name"] ) ) {
                             $fields[ $key ]["name"] = $field["name"];
                         }
                         if ( isset( $field["tile"] ) ) {
@@ -197,7 +200,17 @@ class Disciple_Tools_Post_Type_Template {
                         }
                         if ( $field_type === "key_select" || $field_type === "multi_select" ) {
                             if ( isset( $field["default"] ) ) {
+                                foreach ( $field["default"] as $custom_key => &$custom_value ) {
+                                    if ( isset( $custom_value["label"] ) && empty( $custom_value["label"] ) ) {
+                                        unset( $custom_value["label"] );
+                                    }
+                                }
                                 $fields[ $key ]["default"] = array_replace_recursive( $fields[ $key ]["default"], $field["default"] );
+                            }
+                        }
+                        foreach ( $langs as $lang => $val ) {
+                            if ( !empty( $field["translations"][$val['language']] ) ) {
+                                $fields[ $key ]["translations"][$val['language']] = $field["translations"][$val['language']];
                             }
                         }
                     }
@@ -228,6 +241,7 @@ class Disciple_Tools_Post_Type_Template {
             }
         }
 
+        $fields = apply_filters( 'dt_custom_fields_settings_after_combine', $fields, $this->post_type );
         wp_cache_set( $this->post_type . "_field_settings", $fields );
         return $fields;
     } // End get_custom_fields_settings()

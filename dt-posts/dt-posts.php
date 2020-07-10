@@ -9,6 +9,19 @@ class DT_Posts extends Disciple_Tools_Posts {
     }
 
     /**
+     * Specifies which HTML tags are permissible in comments.
+     */
+    private static $allowable_comment_tags = array(
+        'a' => array(
+          'href' => array(),
+          'title' => array()
+        ),
+        'br' => array(),
+        'em' => array(),
+        'strong' => array(),
+    );
+
+    /**
      * Get settings on the post type
      *
      * @param string $post_type
@@ -16,7 +29,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|WP_Error
      */
     public static function get_post_settings( string $post_type ){
-        if ( !self::can_access( $post_type ) ){
+        if ( ! ( self::can_access( $post_type ) || self::can_create( $post_type ) ) ){
             return new WP_Error( __FUNCTION__, "No permissions to read " . $post_type, [ 'status' => 403 ] );
         }
         return apply_filters( "dt_get_post_type_settings", [], $post_type );
@@ -91,6 +104,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $contact_methods_and_connections = [];
         $multi_select_fields = [];
+        $location_meta = [];
         $post_user_meta = [];
         foreach ( $fields as $field_key => $field_value ){
             if ( self::is_post_key_contact_method_or_connection( $post_settings, $field_key ) ) {
@@ -98,8 +112,12 @@ class DT_Posts extends Disciple_Tools_Posts {
                 unset( $fields[$field_key] );
             }
             $field_type = $post_settings["fields"][$field_key]["type"] ?? '';
-            if ( $field_type === "multi_select" || $field_type === "location" ){
+            if ( $field_type === "multi_select" ){
                 $multi_select_fields[$field_key] = $field_value;
+                unset( $fields[$field_key] );
+            }
+            if ( $field_type === "location_meta" || $field_type === "location" ){
+                $location_meta[$field_key] = $field_value;
                 unset( $fields[$field_key] );
             }
             if ( $field_type === "post_user_meta" ){
@@ -108,6 +126,12 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
             if ( $field_type === 'date' && !is_numeric( $field_value )){
                 $fields[$field_value] = strtotime( $field_value );
+            }
+            if ( $field_type === 'key_select' && !is_string( $field_value ) ){
+                return new WP_Error( __FUNCTION__, "key_select value must in string format: $field_key, received $field_value", [ 'status' => 400 ] );
+            }
+            if ( $field_type === 'user_select' && ( !is_string( $field_value ) || strpos( $field_value, 'user-' ) !== 0 ) ) {
+                return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
             }
         }
         /**
@@ -136,6 +160,11 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $potential_error = self::update_multi_select_fields( $post_settings["fields"], $post_id, $multi_select_fields, null );
         if ( is_wp_error( $potential_error )){
+            return $potential_error;
+        }
+
+        $potential_error = self::update_location_grid_fields( $post_settings["fields"], $post_id, $location_meta, $post_type, null );
+        if (is_wp_error( $potential_error )) {
             return $potential_error;
         }
 
@@ -176,6 +205,10 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
+        // share the record with the user that created it.
+        if ( !empty( get_current_user_id() ) ){
+            self::add_shared( $post_type, $post_id, get_current_user_id(), null, false, false, false );
+        }
 
         if ( !self::can_view( $post_type, $post_id ) ){
             return [ "ID" => $post_id ];
@@ -260,6 +293,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $potential_error;
         }
 
+        $potential_error = self::update_location_grid_fields( $post_settings["fields"], $post_id, $fields, $post_type, $existing_post );
+        if (is_wp_error( $potential_error )) {
+            return $potential_error;
+        }
+
         $potential_error = self::update_post_user_meta_fields( $post_settings["fields"], $post_id, $fields, $existing_post );
         if ( is_wp_error( $potential_error )){
             return $potential_error;
@@ -270,17 +308,28 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !self::is_post_key_contact_method_or_connection( $post_settings, $field_key ) ) {
                 $field_type = $post_settings["fields"][ $field_key ]["type"] ?? '';
                 if ( $field_type === 'date' && !is_numeric( $field_value ) ) {
+                    if ( empty( $field_value ) ) { // remove date
+                        delete_post_meta( $post_id, $field_key );
+                        continue;
+                    }
                     $field_value = strtotime( $field_value );
                 }
-                $already_handled = [ "multi_select", "post_user_meta", "location" ];
+                if ( $field_type === 'key_select' && !is_string( $field_value ) ){
+                    return new WP_Error( __FUNCTION__, "key_select value must in string format: $field_key, received $field_value", [ 'status' => 400 ] );
+                }
+                if ( $field_type === 'user_select' && ( !is_string( $field_value ) || strpos( $field_value, 'user-' ) !== 0 ) ) {
+                    return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
+                }
+                $already_handled = [ "multi_select", "post_user_meta", "location", "location_meta" ];
                 if ( $field_type && !in_array( $field_type, $already_handled ) ) {
                     update_post_meta( $post_id, $field_key, $field_value );
                 }
             }
         }
 
-        do_action( "dt_post_updated", $post_type, $post_id, $initial_fields, $existing_post );
-        $post = self::get_post( $post_type, $post_id, false, false );
+        $post = self::get_post( $post_type, $post_id, false, false ); // get post to add to action hook
+        do_action( "dt_post_updated", $post_type, $post_id, $initial_fields, $existing_post, $post );
+        $post = self::get_post( $post_type, $post_id, false, false ); // get post with fields updated by action hook
         if ( !$silent ){
             Disciple_Tools_Notifications::insert_notification_for_post_update( $post_type, $post, $existing_post, array_keys( $initial_fields ) );
         }
@@ -323,22 +372,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         /**
          * add connections
          */
-        foreach ( $post_settings["connection_types"] as $connection_type ){
-            $field = $post_settings["fields"][$connection_type];
-            $args = [
-                'connected_type'   => $field["p2p_key"],
-                'connected_direction' => $field["p2p_direction"],
-                'connected_items'  => $wp_post,
-                'nopaging'         => true,
-                'suppress_filters' => false,
-            ];
-            $connections = get_posts( $args );
-            $fields[$connection_type] = [];
-            foreach ( $connections as $c ){
-                $fields[$connection_type][] = self::filter_wp_post_object_fields( $c );
-            }
-        }
-
+        self::get_all_connection_fields( $post_settings, $post_id, $fields );
         $fields["ID"] = $post_id;
         $fields["created_date"] = $wp_post->post_date;
         $fields["permalink"] = get_permalink( $post_id );
@@ -363,6 +397,11 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|WP_Error
      */
     public static function list_posts( $post_type, $search_and_filter_query ){
+        $fields_to_return = [];
+        if ( isset( $search_and_filter_query["fields_to_return"] ) ){
+            $fields_to_return = $search_and_filter_query["fields_to_return"];
+            unset( $search_and_filter_query["fields_to_return"] );
+        }
         $data = self::search_viewable_post( $post_type, $search_and_filter_query );
         if ( is_wp_error( $data ) ) {
             return $data;
@@ -370,25 +409,83 @@ class DT_Posts extends Disciple_Tools_Posts {
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
         $records = $data["posts"];
         foreach ( $post_settings["connection_types"] as $connection_type ){
-            $p2p_type = $post_settings["fields"][$connection_type]["p2p_key"];
-            $p2p_direction = $post_settings["fields"][$connection_type]["p2p_direction"];
-            $q = p2p_type( $p2p_type )->set_direction( $p2p_direction )->get_connected( $records, [ "nopaging" => true ], 'abstract' );
-            $raw_connected = array();
-            foreach ( $q->items as $item ){
-                $raw_connected[] = $item->get_object();
+            if ( empty( $fields_to_return ) || in_array( $connection_type, $fields_to_return ) && !empty( $records ) ){
+                $p2p_type = $post_settings["fields"][$connection_type]["p2p_key"];
+                $p2p_direction = $post_settings["fields"][$connection_type]["p2p_direction"];
+                $q = p2p_type( $p2p_type )->set_direction( $p2p_direction )->get_connected( $records, [ "nopaging" => true ], 'abstract' );
+                $raw_connected = array();
+                foreach ( $q->items as $item ){
+                    $raw_connected[] = $item->get_object();
+                }
+                p2p_distribute_connected( $records, $raw_connected, $connection_type );
             }
-            p2p_distribute_connected( $records, $raw_connected, $connection_type );
         }
 
+        $ids = [];
+        foreach ( $records as $record ) {
+            $ids[] = $record->ID;
+        }
+        $ids_sql = dt_array_to_sql( $ids );
+        $field_keys = [];
+        if ( !in_array( 'all_fields', $fields_to_return ) ){
+            $field_keys = empty( $fields_to_return ) ? array_keys( $post_settings["fields"] ) : $fields_to_return;
+        }
+        $field_keys_sql = dt_array_to_sql( $field_keys );
+
+        global $wpdb;
+        $all_posts = [];
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
+        $all_post_meta = $wpdb->get_results( "
+            SELECT *
+                FROM $wpdb->postmeta pm
+                WHERE pm.post_id IN ( $ids_sql )
+                AND pm.meta_key IN ( $field_keys_sql )
+            UNION SELECT *
+                FROM $wpdb->postmeta pm
+                WHERE pm.post_id IN ( $ids_sql )
+                AND pm.meta_key LIKE 'contact_%'
+        ", ARRAY_A);
+        $user_id = get_current_user_id();
+        $all_user_meta = $wpdb->get_results( $wpdb->prepare( "
+            SELECT *
+            FROM $wpdb->dt_post_user_meta um
+            WHERE um.post_id IN ( $ids_sql )
+            AND user_id = %s
+            AND um.meta_key IN ( $field_keys_sql )
+        ", $user_id ), ARRAY_A);
+        // phpcs:disable
+
+        foreach ( $all_post_meta as $index => $meta_row ) {
+            if ( !isset( $all_posts[$meta_row["post_id"]] ) ) {
+                $all_posts[$meta_row["post_id"]] = [];
+            }
+            if ( !isset( $all_posts[$meta_row["post_id"]][$meta_row["meta_key"]] ) ) {
+                $all_posts[$meta_row["post_id"]][$meta_row["meta_key"]] = [];
+            }
+            $all_posts[$meta_row["post_id"]][$meta_row["meta_key"]][] = $meta_row["meta_value"];
+        }
+        $all_post_user_meta =[];
+        foreach ( $all_user_meta as $index => $meta_row ){
+            if ( !isset( $all_post_user_meta[$meta_row["post_id"]] ) ) {
+                $all_post_user_meta[$meta_row["post_id"]] = [];
+            }
+            $all_post_user_meta[$meta_row["post_id"]][] = $meta_row;
+        }
+
+        $site_url = site_url();
         foreach ( $records as  &$record ){
             foreach ( $post_settings["connection_types"] as $connection_type ){
-                foreach ( $record->$connection_type as &$post ) {
-                    $post = self::filter_wp_post_object_fields( $post );
+                if ( empty( $fields_to_return ) || in_array( $connection_type, $fields_to_return ) ) {
+                    foreach ( $record->$connection_type as &$post ) {
+                        $post = self::filter_wp_post_object_fields( $post );
+                    }
                 }
             }
             $record = (array) $record;
-            self::adjust_post_custom_fields( $post_settings, $record["ID"], $record );
-            $record["permalink"] = get_permalink( $record["ID"] );
+
+            self::adjust_post_custom_fields( $post_settings, $record["ID"], $record, $fields_to_return, $all_posts[$record["ID"]] ?? [], $all_post_user_meta[$record["ID"]] ?? [] );
+            $record["permalink"] = $site_url . '/' . $post_type .'/' . $record["ID"];
         }
         $data["posts"] = $records;
 
@@ -403,10 +500,11 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @param string $post_type
      * @param string $search_string
+     * @param array $args
      *
      * @return array|WP_Error|WP_Query
      */
-    public static function get_viewable_compact( string $post_type, string $search_string ) {
+    public static function get_viewable_compact( string $post_type, string $search_string, array $args = [] ) {
         if ( !self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, sprintf( "You do not have access to these %s", $post_type ), [ 'status' => 403 ] );
         }
@@ -440,7 +538,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     SELECT log.object_id
                     FROM $wpdb->dt_activity_log log
                     WHERE log.histid IN (
-                        SELECT max(l.histid) FROM $wpdb->dt_activity_log l 
+                        SELECT max(l.histid) FROM $wpdb->dt_activity_log l
                         WHERE l.user_id = %s  AND l.object_type = %s
                         GROUP BY l.object_id
                     )
@@ -457,13 +555,13 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
         if ( !$send_quick_results ){
-            if ( !self::can_view_all( $post_type ) ) {
+            if ( !self::can_view_all( $post_type ) && !self::can_list_all( $post_type )) {
                 //@todo better way to get the contact records for users my contacts are shared with
                 $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID, $search_string );
                 $query_args['meta_key'] = 'assigned_to';
                 $query_args['meta_value'] = "user-" . $current_user->ID;
                 $posts = $wpdb->get_results( $wpdb->prepare( "
-                    SELECT *, statusReport.meta_value as overall_status, pm.meta_value as corresponds_to_user 
+                    SELECT *, statusReport.meta_value as overall_status, pm.meta_value as corresponds_to_user
                     FROM $wpdb->posts
                     INNER JOIN $wpdb->postmeta as assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id AND assigned_to.meta_key = 'assigned_to')
                     LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = $wpdb->posts.ID AND statusReport.meta_key = 'overall_status')
@@ -506,7 +604,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             },
             $posts
         );
-        if ( $post_type === 'contacts' && !self::can_view_all( $post_type ) && sizeof( $posts ) < 30 ) {
+        if ( $post_type === 'contacts' && !self::can_view_all( $post_type ) && sizeof( $posts ) < 30
+            && !( isset( $args["include-users"] ) && $args["include-users"] === "false" )
+        ) {
             $users_interacted_with = Disciple_Tools_Users::get_assignable_users_compact( $search_string );
             foreach ( $users_interacted_with as $user ) {
                 $post_id = Disciple_Tools_Users::get_contact_for_user( $user["ID"] );
@@ -530,6 +630,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
         foreach ( $posts as $post ) {
+            if ( isset( $args["include-users"] ) && $args["include-users"] === "false" && $post->corresponds_to_user >= 1 ){
+                continue;
+            }
             $compact[] = [
                 "ID" => $post->ID,
                 "name" => $post->post_title,
@@ -572,7 +675,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         foreach ( $comments as $comment ){
             $comment_data = [
                 'comment_post_ID'      => $post_id,
-                'comment_content'      => $comment,
+                'comment_content'      => wp_kses($comment, self::$allowable_comment_tags),
                 'user_id'              => $user_id,
                 'comment_author'       => $args["comment_author"] ?? $user->display_name,
                 'comment_author_url'   => $args["comment_author_url"] ?? "",
@@ -598,7 +701,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $created_comment_id;
     }
 
-    public static function update_post_comment( int $comment_id, string $comment_content, bool $check_permissions = true ){
+    public static function update_post_comment( int $comment_id, string $comment_content, bool $check_permissions = true, string $comment_type = "comment" ){
         $comment = get_comment( $comment_id );
         if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || !self::can_update( get_post_type( $comment->comment_post_ID ), $comment->comment_post_ID ?? 0 ) ) ) {
             return new WP_Error( __FUNCTION__, "You don't have permission to edit this comment", [ 'status' => 403 ] );
@@ -609,6 +712,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $comment = [
             "comment_content" => $comment_content,
             "comment_ID" => $comment_id,
+            "comment_type" => $comment_type
         ];
         return wp_update_comment( $comment );
     }
@@ -661,13 +765,15 @@ class DT_Posts extends Disciple_Tools_Posts {
                 "comment_date" => $comment->comment_date,
                 "comment_date_gmt" => $comment->comment_date_gmt,
                 "gravatar" => preg_replace( "/^http:/i", "https:", $url ),
-                "comment_content" => wp_kses_post( $comment->comment_content ),
+                "comment_content" => wp_kses( $comment->comment_content, self::$allowable_comment_tags),
                 "user_id" => $comment->user_id,
                 "comment_type" => $comment->comment_type,
                 "comment_post_ID" => $comment->comment_post_ID
             ];
             $response_body[] =$c;
         }
+
+        $response_body = apply_filters( "dt_filter_post_comments", $response_body );
 
         return [
             "comments" => $response_body,
@@ -738,7 +844,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $activity_simple[] = [
                     "meta_key" => $a->meta_key,
                     "gravatar" => isset( $a->gravatar ) ? $a->gravatar : "",
-                    "name" => isset( $a->name ) ? $a->name : "",
+                    "name" => isset( $a->name ) ? $a->name : __( "D.T System", 'disciple_tools' ),
                     "object_note" => $a->object_note,
                     "hist_time" => $a->hist_time,
                     "meta_id" => $a->meta_id,
@@ -1011,6 +1117,24 @@ class DT_Posts extends Disciple_Tools_Posts {
             $users[] = $assigned_to;
         }
         return array_unique( $users );
+    }
+
+
+    public static function get_post_names_from_ids( array $post_ids ){
+        if ( empty( $post_ids ) ){
+            return [];
+        }
+        global $wpdb;
+        $ids_sql = dt_array_to_sql( $post_ids );
+
+        //phpcs:disable
+        return $wpdb->get_results( "
+            SELECT ID, post_title
+            FROM $wpdb->posts
+            WHERE ID IN ( $ids_sql )
+        ", ARRAY_A );
+        //phpcs:enable
+
     }
 }
 

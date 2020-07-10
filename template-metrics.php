@@ -2,7 +2,7 @@
 /*
 Template Name: Metrics
 */
-if ( ! current_user_can( 'access_contacts' ) ) {
+if ( !current_user_can( 'access_contacts' ) && !current_user_can( "view_project_metrics" ) ) {
     wp_safe_redirect( '/settings' );
 }
 ?>
@@ -43,7 +43,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
                     <div class="bordered-box">
 
-                        <div id="chart"></div><!-- Container for charts -->
+                        <div id="chart"><span class="loading-spinner active"></span></div><!-- Container for charts -->
 
                     </div>
 

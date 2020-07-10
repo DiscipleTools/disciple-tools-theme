@@ -42,7 +42,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         add_action( "dt_post_created", [ $this, "post_created_hook" ], 10, 3 );
         add_action( 'group_member_count', [ $this, 'update_group_member_count' ], 10, 2 );
         add_filter( "dt_post_update_fields", [ $this, "update_post_field_hook" ], 10, 3 );
-        add_filter( "dt_post_updated", [ $this, "post_updated_hook" ], 10, 3 );
+        add_action( "dt_post_updated", [ $this, "post_updated_hook" ], 10, 5 );
         add_filter( "dt_get_post_fields_filter", [ $this, "dt_get_post_fields_filter" ], 10, 2 );
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
@@ -140,10 +140,9 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         return $fields;
     }
 
-    public function post_updated_hook( $post_type, $post_id, $initial_fields ){
+    public function post_updated_hook( $post_type, $post_id, $initial_fields, $previous_values, $new_values ){
         if ( $post_type === 'groups' ){
-            $group = DT_Posts::get_post( 'groups', $post_id, true, false );
-            do_action( "dt_group_updated", array_keys( $initial_fields ), $group );
+            do_action( "dt_group_updated", array_keys( $initial_fields ), $new_values );
         }
     }
 
@@ -160,6 +159,12 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     }
                 }
                 do_action( 'group_member_count', $post_id, "added" );
+            }
+            if ( $field_key === "coaches" ){
+                $user_id = get_post_meta( $value, "corresponds_to_user", true );
+                if ( $user_id ){
+                    DT_Posts::add_shared( "groups", $post_id, $user_id, null, false, false, false );
+                }
             }
         }
     }
@@ -477,7 +482,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         global $wpdb;
 
         $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT status.meta_value as group_status, pm.meta_value as group_type, count(pm.meta_value) as count, count(un.post_id) as update_needed
+            SELECT status.meta_value as group_status, pm.meta_value as group_type, count(pm.post_id) as count, count(un.post_id) as update_needed
             FROM $wpdb->postmeta pm
             INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'group_status' )
             INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'groups' and a.post_status = 'publish' )
@@ -496,7 +501,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         global $wpdb;
         if ( current_user_can( 'view_any_groups' ) ){
             $results = $wpdb->get_results("
-                SELECT status.meta_value as group_status, pm.meta_value as group_type, count(pm.meta_value) as count, count(un.post_id) as update_needed
+                SELECT status.meta_value as group_status, pm.meta_value as group_type, count(pm.post_id) as count, count(un.post_id) as update_needed
                 FROM $wpdb->postmeta pm
                 INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'group_status' )
                 INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'groups' and a.post_status = 'publish' )
@@ -506,7 +511,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             ", ARRAY_A);
         } else {
             $results = $wpdb->get_results($wpdb->prepare("
-                SELECT status.meta_value as group_status, pm.meta_value as group_type, count(pm.meta_value) as count, count(un.post_id) as update_needed
+                SELECT status.meta_value as group_status, pm.meta_value as group_type, count(pm.post_id) as count, count(un.post_id) as update_needed
                 FROM $wpdb->postmeta pm
                 INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'group_status' )
                 INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'groups' and a.post_status = 'publish' )

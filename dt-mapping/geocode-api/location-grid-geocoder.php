@@ -18,11 +18,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
         public function __construct() {
             $this->geojson         = [];
             $this->geometry_folder = $this->_geometry_folder();
-            if ( function_exists( 'dt_get_location_grid_mirror' ) ) {
-                $this->mirror_source = dt_get_location_grid_mirror();
-            } else {
-                $this->mirror_source = get_option( 'dt_location_grid_mirror' );
-            }
+            $this->mirror_source = get_option( 'dt_location_grid_mirror' );
         }
 
         /**
@@ -38,18 +34,27 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             $longitude = (float) $longitude;
             $latitude  = (float) $latitude;
 
+            if ( $longitude > 180 ) {
+                $longitude = $longitude - 180;
+                $longitude = -1 * abs( $longitude );
+            }
+            else if ( $longitude < -180 ) {
+                $longitude = $longitude + 180;
+                $longitude = abs( $longitude );
+            }
+
             // get results
-            if ( $level === 'admin5' ) { // get admin2 only
+            if ( $level === 'admin5' || $level === 5 ) { // get admin2 only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 5 );
-            } else if ( $level === 'admin4' ) { // get admin2 only
+            } else if ( $level === 'admin4' || $level === 4 ) { // get admin2 only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 4 );
-            } else if ( $level === 'admin3' ) { // get admin2 only
+            } else if ( $level === 'admin3' || $level === 3 ) { // get admin2 only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 3 );
-            } else if ( $level === 'admin2' ) { // get admin2 only
+            } else if ( $level === 'admin2' || $level === 2 ) { // get admin2 only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 2 );
-            } else if ( $level === 'admin1' ) { // get admin1 only
+            } else if ( $level === 'admin1' || $level === 1 ) { // get admin1 only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 1 );
-            } else if ( $level === 'admin0' ) { // get country only
+            } else if ( $level === 'admin0' || $level === 0 ) { // get country only
                 $results = $this->query_level_by_lnglat( $longitude, $latitude, 0 );
             } else { // get lowest match
                 $results = $this->query_lowest_level_by_lnglat( $longitude, $latitude, $country_code );
@@ -196,7 +201,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
          */
         public function lnglat_test1( $results ) {
             if ( count( $results ) === 1 && ! empty( $results ) ) {
-                error_log( '1' );
+//                error_log( '1' );
                 // return test 1 results
                 foreach ( $results as $result ) {
                     if ( ! isset( $result['grid_id'] ) ) {
@@ -221,10 +226,10 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
          */
         public function lnglat_test2( $results, $longitude, $latitude ) {
             if ( count( $results ) > 1 && ! empty( $results ) ) {
-                error_log( '2' );
+//                error_log( '2' );
 
                 foreach ( $results as $result ) {
-                    if ( $this->_this_grid_id( (int) $result['grid_id'], $longitude, $latitude ) ) {
+                    if ( $this->_this_grid_id( $result['grid_id'], $longitude, $latitude ) ) {
                         // return test 2 results
                         if ( ! isset( $result['grid_id'] ) ) {
                             $result = $result[0];
@@ -251,7 +256,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
          */
         public function lnglat_test3( $results, $longitude, $latitude ) {
             if ( ! empty( $this->geojson ) && ! empty( $results ) ) {
-                error_log( '3' );
+//                error_log( '3' );
 
                 $grid_id = $this->_grid_id_from_nearest_polygon_line( $results, $longitude, $latitude );
 
@@ -283,7 +288,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
         public function lnglat_test4( $longitude, $latitude ) {
             global $wpdb;
 
-            error_log( '4' );
+//            error_log( '4' );
 
             /**
              * No bounding set results,
@@ -335,7 +340,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             // build flat associative array of all coordinates
             foreach ( $results as $result ) {
                 $grid_id  = $result['grid_id'];
-                $features = $geojson[ $grid_id ]['features'];
+                $features = $geojson[ $grid_id ]['features'] ?? [];
 
                 // handle Polygon and MultiPolygon geometries
                 foreach ( $features as $feature ) {
@@ -428,7 +433,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             // get location_grid geojson
             $raw_geojson = @file_get_contents( $this->geometry_folder . $grid_id . '.geojson' );
             if ( $raw_geojson === false ) {
-                $raw_geojson = @file_get_contents( $this->mirror_source . 'low/' . $grid_id . '.geojson' );
+                $raw_geojson = @file_get_contents( $this->mirror_source['url'] . 'low/' . $grid_id . '.geojson' );
                 if ( $raw_geojson === false ) {
                     return false;
                 }
@@ -579,7 +584,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 $query = $wpdb->get_results( "
                 SELECT g.country_code, g.admin0_code, MAX(g.level) as level
                 FROM $wpdb->dt_location_grid as g
-                WHERE g.level < 10 
+                WHERE g.level < 10
                 GROUP BY g.admin0_code, g.country_code;
             ", ARRAY_A );
                 if ( empty( $query ) ) {
@@ -621,7 +626,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             LEFT JOIN $wpdb->dt_location_grid as a3 ON g.admin3_grid_id=a3.grid_id
             LEFT JOIN $wpdb->dt_location_grid as a4 ON g.admin4_grid_id=a4.grid_id
             LEFT JOIN $wpdb->dt_location_grid as a5 ON g.admin5_grid_id=a5.grid_id
-            WHERE 
+            WHERE
             g.north_latitude >= %f AND
             g.south_latitude <= %f AND
             g.west_longitude >= %f AND
@@ -641,7 +646,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             global $wpdb;
 
             if ( is_null( $country_code ) ) {
-                dt_write_log( 'no country code' );
+//                error_log( 'no country code' );
                 $query = $wpdb->get_results( $wpdb->prepare( "
                 SELECT g.*, a0.name as admin0_name, a1.name as admin1_name, a2.name as admin2_name, a3.name as admin3_name, a4.name as admin4_name, a5.name as admin5_name
                 FROM $wpdb->dt_location_grid as g
@@ -718,22 +723,22 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 $query = $wpdb->get_col( $wpdb->prepare( "
                 SELECT grid_id
                 FROM $wpdb->dt_location_grid as g
-                WHERE 
+                WHERE
                 g.latitude <= %f AND
                 g.latitude >= %f AND
                 g.longitude >= %f AND
-                g.longitude <= %f AND 
+                g.longitude <= %f AND
                 g.level = %d
         ", $north_latitude, $south_latitude, $west_longitude, $east_longitude, $level ) );
             } else {
                 $query = $wpdb->get_col( $wpdb->prepare( "
                 SELECT grid_id
                 FROM $wpdb->dt_location_grid as g
-                WHERE 
+                WHERE
                 g.latitude <= %f AND
                 g.latitude >= %f AND
                 g.longitude >= %f AND
-                g.longitude <= %f 
+                g.longitude <= %f
         ", $north_latitude, $south_latitude, $west_longitude, $east_longitude ) );
             }
 
@@ -765,7 +770,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 g.north_latitude >= %f AND
                 g.south_latitude <= %f AND
                 g.west_longitude >= %f AND
-                g.east_longitude <= %f AND 
+                g.east_longitude <= %f AND
                 g.country_code = %s
                 ORDER BY g.level DESC
                 LIMIT 15;
@@ -897,65 +902,106 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             return $query;
         }
 
-        public function convert_ip_result_to_location_grid_meta( $ip_result ) {
-            if ( empty( $ip_result['longitude'] ) ) {
-                return false;
+        /**
+         * Use a full result row to get a fully formatted location string
+         * @param array $row
+         * @return mixed|string
+         */
+        public function _format_full_name( array $row ) {
+
+            $label = '';
+
+            /* lookup and then use name fields */
+            if ( ! isset( $row['admin0_name'] ) && isset( $row['grid_id'] ) && ! empty( $row['grid_id'] ) ) {
+                $row = Disciple_Tools_Mapping_Queries::get_drilldown_by_grid_id( $row['grid_id'] );
             }
 
-            // prioritize the smallest unit
-            if ( ! empty( $ip_result['city'] ) ) {
-                $label = $ip_result['city'] . ', ' . $ip_result['region_name'] . ', ' . $ip_result['country_name'];
-                $level = "district";
-            }
-            elseif ( ! empty( $ip_result['region_name'] ) ) {
-                $label = $ip_result['region_name'] . ', ' . $ip_result['country_name'];
-                $level = "region";
-            }
-            elseif ( ! empty( $ip_result['country_name'] ) ) {
-                $label = $ip_result['country_name'];
-                $level = "country";
-            }
-            elseif ( ! empty( $ip_result['continent_name'] ) ) {
-                $label = $ip_result['continent_name'];
-                $level = 'world';
-            }
-            else {
-                $label = '';
-                $level = '';
+            /* use the names fields if they are set */
+            if ( isset( $row['admin0_name'] ) ) {
+                $admin0_name = $row['admin0_name'] ?? '';
+                $admin1_name = $row['admin1_name'] ?? '';
+                $admin2_name = $row['admin2_name'] ?? '';
+                $admin3_name = $row['admin3_name'] ?? '';
+                $admin4_name = $row['admin4_name'] ?? '';
+                $admin5_name = $row['admin5_name'] ?? '';
+
+                if ( $admin0_name ) {
+                    $label = $admin0_name;
+                }
+                if ( $admin1_name ) {
+                    $label = $admin1_name . ', ' . $admin0_name;
+                }
+                if ( $admin2_name ) {
+                    $label = $admin2_name . ', ' . $admin1_name . ', ' . $admin0_name;
+                }
+                if ( $admin3_name ) {
+                    $label = $admin3_name . ', ' . $admin1_name . ', ' . $admin0_name;
+                }
+                if ( $admin4_name ) {
+                    $label = $admin4_name . ', ' . $admin1_name . ', ' . $admin0_name;
+                }
+                if ( $admin5_name ) {
+                    $label = $admin5_name . ', ' . $admin1_name . ', ' . $admin0_name;
+                }
             }
 
-            $grid_id = $this->get_grid_id_by_lnglat( $ip_result['longitude'], $ip_result['latitude'], $ip_result['country_code'] );
-
-            if ( empty( $label ) ) {
-                $admin0_grid_id = Disciple_Tools_Mapping_Queries::get_by_grid_id( $grid_id['admin0_grid_id'] );
-                $label = $grid_id['name'] . ', ' . $admin0_grid_id['name'];
-            }
-
-            $location_grid_meta = [
-                'lng' => $ip_result['longitude'] ?? '',
-                'lat' => $ip_result['latitude'] ?? '',
-                'level' => $level,
-                'label' => $label,
-                'source' => 'ip',
-                'grid_id' => $grid_id['grid_id'] ?? '',
-            ];
-
-            self::verify_location_grid_meta_filter( $location_grid_meta );
-
-            return $location_grid_meta;
+            return $label;
         }
 
-        public static function verify_location_grid_meta_filter( array &$location_grid_meta ) : array {
-            $filtered_array = [];
+        public static function filter_level( string $code, $number = false ) {
+            /**
+            @link https://docs.mapbox.com/api/search/#data-types
+            The data types available in the geocoder, listed from the largest to the most granular, are:
 
-            $filtered_array['lng'] = sanitize_text_field( wp_unslash( $location_grid_meta['lng'] ) ) ?? '';
-            $filtered_array['lat'] = sanitize_text_field( wp_unslash( $location_grid_meta['lat'] ) ) ?? '';
-            $filtered_array['level'] = sanitize_text_field( wp_unslash( $location_grid_meta['level'] ) ) ?? '';
-            $filtered_array['label'] = sanitize_text_field( wp_unslash( $location_grid_meta['label'] ) ) ?? '';
-            $filtered_array['source'] = sanitize_text_field( wp_unslash( $location_grid_meta['source'] ) ) ?? '';
-            $filtered_array['grid_id'] = sanitize_text_field( wp_unslash( $location_grid_meta['grid_id'] ) ) ?? '';
+            country         - Generally recognized countries or, in some cases like Hong Kong, an area of quasi-national administrative status that has been given a designated country code under ISO 3166-1.
+            region          - Top-level sub-national administrative features, such as states in the United States or provinces in Canada or China.
+            postcode        - Postal codes used in country-specific national addressing systems.
+            district        - Features that are smaller than top-level administrative features but typically larger than cities, in countries that use such an additional layer in postal addressing (for example, prefectures in China).
+            place           - Typically these are cities, villages, municipalities, etc. They’re usually features used in postal addressing, and are suitable for display in ambient end-user applications where current-location context is needed (for example, in weather displays).
+            locality        - Official sub-city features present in countries where such an additional administrative layer is used in postal addressing, or where such features are commonly referred to in local parlance. Examples include city districts in Brazil and Chile and arrondissements in France.
+            neighborhood    - Colloquial sub-city features often referred to in local parlance. Unlike locality features, these typically lack official status and may lack universally agreed-upon boundaries.
+            address         - Individual residential or business addresses.
+            poi             - Points of interest. These include restaurants, stores, concert venues, parks, museums, etc.
+            admin0-admin5   - Used by Location Grid for administrative levels
+             */
 
-            return $filtered_array;
+            switch ( $code ) {
+                case 'world':
+                case 'continent':
+                    $level = ( $number ) ? -3 : 'world';
+                    break;
+                case 'admin0':
+                case 'country':
+                    $level = ( $number ) ? 0 : 'admin0';
+                    break;
+                case 'admin1':
+                case 'region':
+                    $level = ( $number ) ? 1 : 'admin1';
+                    break;
+                case 'postcode':
+                case 'admin2':
+                case 'district':
+                    $level = ( $number ) ? 2 : 'admin2';
+                    break;
+                case 'admin3':
+                    $level = ( $number ) ? 3 : 'admin3';
+                    break;
+                case 'admin4':
+                    $level = ( $number ) ? 4 : 'admin4';
+                    break;
+                case 'place':
+                case 'poi':
+                case 'address':
+                case 'lnglat':
+                case 'admin5':
+                case 'neighborhood':
+                    $level = ( $number ) ? 5 : 'admin5';
+                    break;
+                default:
+                    $level = '';
+                    break;
+            }
+            return $level;
         }
 
     }

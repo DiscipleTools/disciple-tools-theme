@@ -2,7 +2,6 @@ jQuery(document).ready(function() {
 
   jQuery('#metrics-sidemenu').foundation('down', jQuery('#contacts-menu'));
 
-
   function show_sources_overview() {
 
     let chartDiv = jQuery('#chart')
@@ -12,7 +11,7 @@ jQuery(document).ready(function() {
       <div class="section-subheader">${_.escape(window.wp_js_object.translations.filter_contacts_to_date_range)}</div>
       <div class="date_range_picker">
           <i class="fi-calendar"></i>&nbsp;
-          <span>${_.escape(window.wp_js_object.translations.all_time)}</span> 
+          <span>${_.escape(window.wp_js_object.translations.all_time)}</span>
           <i class="dt_caret down"></i>
       </div>
       <div style="display: inline-block" class="loading-spinner"></div>
@@ -48,33 +47,33 @@ jQuery(document).ready(function() {
 
       chartsDiv.append($("<div>").html(`
 
-        <h1>${_.escape(window.wp_js_object.translations.sources_all_contacts_by_source_and_status)}</h1>
-  
+        <h3>${_.escape(window.wp_js_object.translations.sources_all_contacts_by_source_and_status)}</h3>
+
         <p>${filteringOutText} ${_.escape(window.wp_js_object.translations.sources_contacts_warning)}</p>
-  
+
         <div id="chartdiv1" style="min-height: ${height}"></div>
-  
+
         <hr>
-  
-        <h1>${_.escape(window.wp_js_object.translations.sources_active_by_seeker_path)}</h1>
-  
-        <p>${_.escape(window.wp_js_object.translations.sources_only_active)} 
-        ${filteringOutText} 
+
+        <h3>${_.escape(window.wp_js_object.translations.sources_active_by_seeker_path)}</h3>
+
+        <p>${_.escape(window.wp_js_object.translations.sources_only_active)}
+        ${filteringOutText}
         ${_.escape(window.wp_js_object.translations.sources_contacts_warning)}
         </p>
-  
+
         <div id="chartdiv2" style="min-height: ${height}"></div>
-  
+
         <hr>
-  
-        <h1>${_.escape(window.wp_js_object.translations.sources_active_milestone)}</h1>
-  
+
+        <h3>${_.escape(window.wp_js_object.translations.sources_active_milestone)}</h3>
+
         <p>${_.escape(window.wp_js_object.translations.sources_active_status_warning)}
-        ${filteringOutText} 
+        ${filteringOutText}
         ${_.escape(window.wp_js_object.translations.sources_contacts_warning_milestones)}</p>
-         
+
         <p><b>${_.escape(window.wp_js_object.translations.faith_milestone)}:</b> <select class="js-milestone"></select></p>
-  
+
         <div id="chartdiv3" style="min-height: ${height}"></div>
       `))
 

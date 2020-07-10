@@ -47,6 +47,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Loader' ) ) {
             /** Configurations */
             require_once( 'mapping-module-config.php' );
 
+
             /** Additional columns */
             if ( ! $custom_columns ) {
                 require_once( 'columns/add-contacts-column.php' );
@@ -69,7 +70,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Loader' ) ) {
 
             /** Core */
             require_once( 'mapping.php' );
-            require_once( 'mapping-metrics.php' );
+            require_once( 'location-grid-meta.php' );
+//            if ( DT_Mapbox_API::get_key() ) { // @todo remove after dependencies are confirmed.
+//                require_once( 'mapbox-metrics.php' );
+//            } else {
+//                require_once( 'mapping-metrics.php' );
+//            }
         }
     }
 }

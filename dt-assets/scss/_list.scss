@@ -103,6 +103,11 @@
 table.table-remove-top-border thead {
     border-top: 0;
 }
+table.js-list{
+    table-layout: fixed;
+    word-wrap: break-word;
+    width: 100%
+}
 
 
 .current-filter {
@@ -181,6 +186,11 @@ table.table-remove-top-border thead {
     }
 }
 
+.list-name-link {
+    display: inline-block;
+    min-height: 1.5em;
+    width: 100%;
+}
 
 // list colors
 .status--unassigned   { color: #999999; }

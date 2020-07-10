@@ -903,7 +903,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             ?>
             <p id="description">
                 The site link system is built to easily connect Disciple Tools systems together, but can be extended to provide token validation
-                for other system integrations. Please refer to our developer wiki for more information.
+                for other system integrations. Please refer to our <a href="https://github.com/DiscipleTools/disciple-tools-theme/wiki">developer wiki</a> for more information.
             </p>
             <?php
         }
@@ -930,17 +930,18 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                 function check_link_status( transfer_token, url, id ) {
 
-                let linked = '" . esc_attr__( 'Linked' ) . "';
-                let not_linked = '" . esc_attr__( 'Not Linked' ) . "';
-                let not_found = '" . esc_attr__( 'Failed to connect with the URL provided.' ) . "';
+                    let linked = '" . esc_attr__( 'Linked' ) . "';
+                    let not_linked = '" . esc_attr__( 'Connected with remote, but token verification failed' ) . "';
+                    let not_found = '" . esc_attr__( 'Failed to connect with the URL provided.' ) . "';
+                    let no_ssl = '" . esc_attr__( 'Remote is not secured with SSL.' ) . "';
 
-                return jQuery.ajax({
-                    type: 'POST',
-                    data: JSON.stringify({ \"transfer_token\": transfer_token } ),
-                    contentType: 'application/json; charset=utf-8',
-                    dataType: 'json',
-                    url: 'https://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
-                })
+                    return jQuery.ajax({
+                        type: 'POST',
+                        data: JSON.stringify({ \"transfer_token\": transfer_token } ),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        url: 'https://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
+                    })
                     .done(function (data) {
                         if( data ) {
                             jQuery('#' + id + '-status').html( linked ).attr('class', 'success-green')
@@ -949,14 +950,32 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                             jQuery('#' + id + '-message').show();
                         }
                     })
-                    .fail(function (err) {
-                        jQuery( document ).ajaxError(function( event, request, settings ) {
-                             if( request.status === 0 ) {
-                                jQuery('#' + id + '-status').html( not_found ).attr('class', 'fail-red')
-                             } else {
-                                jQuery('#' + id + '-status').html( JSON.stringify( request.statusText ) ).attr('class', 'fail-red')
-                             }
-                        });
+                    .fail(function (request) {
+                        jQuery.ajax({
+                            type: 'POST',
+                            data: JSON.stringify({ \"transfer_token\": transfer_token } ),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            url: 'http://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
+                        }).done(data=>{
+                            jQuery('#' + id + '-message').show();
+                            if( data ) {
+                                jQuery('#' + id + '-status').html( linked ).attr('class', 'success-green')
+                            } else if (request.status === 0) {
+                                jQuery('#' + id + '-status').html( no_ssl ).attr('class', 'fail-red')
+                            } else {
+                                jQuery('#' + id + '-status').html( not_linked ).attr('class', 'fail-red');
+                            }
+                        }).fail(function(err) {
+                            jQuery( document ).ajaxError(function( event, request, settings ) {
+                                jQuery('#' + id + '-message').show();
+                                if( request.status === 0 ) {
+                                    jQuery('#' + id + '-status').html( not_found ).attr('class', 'fail-red')
+                                } else {
+                                    jQuery('#' + id + '-status').html( JSON.stringify( request.statusText ) ).attr('class', 'fail-red')
+                                }
+                            });
+                        })
                     });
                 }
                 </script>";
@@ -983,7 +1002,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             if ( $uri && ( strpos( $uri, 'edit.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) || ( strpos( $uri, 'post-new.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) ) : ?>
                 <script>
                   jQuery(function($) {
-                    $(`<div><a href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/admin.html?highlight=transfer#site-links" style="margin-bottom:15px;" target="_blank">
+                    $(`<div><a href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/admin.html#site-links" style="margin-bottom:15px;" target="_blank">
                         <img style="height:15px" class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                         Site link documentation</a></div>`).insertAfter(
                         '#wpbody-content .wrap .wp-header-end:eq(0)')
@@ -1352,7 +1371,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          * @param int    $menu_position
          * @param string $dashicon
          */
-        public function __construct( $menu_position = 100, $dashicon = 'dashicons-admin-links' ) {
+        public function __construct( $menu_position = 50, $dashicon = 'dashicons-admin-links' ) {
             $this->post_type = self::$token;
             $this->singular = 'Site Link';
             $this->plural = 'Site Links';

@@ -37,12 +37,13 @@ const SOURCE = {
     FOUNDATION + '/dist/js/plugins/foundation.util.mediaQuery.js',
     FOUNDATION + '/dist/js/plugins/foundation.util.triggers.js',
     FOUNDATION + '/dist/js/plugins/foundation.util.box.js',
+    FOUNDATION + '/dist/js/plugins/foundation.util.touch.js',
 
     // Pick the components you need in your project
     // FOUNDATION + '/dist/js/plugins/foundation.abide.js',
     FOUNDATION + '/dist/js/plugins/foundation.accordion.js',
     FOUNDATION + '/dist/js/plugins/foundation.accordionMenu.js',
-    // FOUNDATION + '/dist/js/plugins/foundation.drilldown.js',
+    FOUNDATION + '/dist/js/plugins/foundation.drilldown.js',
     FOUNDATION + '/dist/js/plugins/foundation.dropdown.js',
     FOUNDATION + '/dist/js/plugins/foundation.dropdownMenu.js',
     FOUNDATION + '/dist/js/plugins/foundation.equalizer.js',
@@ -50,6 +51,7 @@ const SOURCE = {
     FOUNDATION + '/dist/js/plugins/foundation.magellan.js',
     FOUNDATION + '/dist/js/plugins/foundation.offcanvas.js',
     // FOUNDATION + '/dist/js/plugins/foundation.orbit.js',
+    FOUNDATION + '/dist/js/plugins/foundation.tabs.js',
     FOUNDATION + '/dist/js/plugins/foundation.responsiveAccordionTabs.js',
     FOUNDATION + '/dist/js/plugins/foundation.responsiveMenu.js',
     // FOUNDATION + '/dist/js/plugins/foundation.responsiveToggle.js',
@@ -57,7 +59,6 @@ const SOURCE = {
     // FOUNDATION + '/dist/js/plugins/foundation.slider.js',
     FOUNDATION + '/dist/js/plugins/foundation.smoothScroll.js',
     FOUNDATION + '/dist/js/plugins/foundation.sticky.js',
-    FOUNDATION + '/dist/js/plugins/foundation.tabs.js',
     FOUNDATION + '/dist/js/plugins/foundation.toggler.js',
     // FOUNDATION + '/dist/js/plugins/foundation.tooltip.js',
 

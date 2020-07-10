@@ -237,6 +237,8 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Hide", 'disciple_tools' ) ?></td>
+                <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
+                <td></td></td>
             </tr>
             </thead>
             <tbody>
@@ -246,7 +248,6 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <input name="tile_label" type="text" value="<?php echo esc_html( $tile["label"] ?? $tile_key ) ?>"/>
-                        <button type="submit" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
                     </td>
                     <td>
                         <?php if ( isset( $tile["hidden"] ) && $tile["hidden"] === true ): ?>
@@ -254,6 +255,34 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                         <?php else : ?>
                             <button type="submit" name="hide_tile" class="button"><?php esc_html_e( "Hide tile on page", 'disciple_tools' ) ?></button>
                         <?php endif; ?>
+                    </td>
+                    <td>
+                        <?php $langs = dt_get_available_languages(); ?>
+                        <button class="button small expand_translations">
+                            <?php
+                            $number_of_translations = 0;
+                            foreach ( $langs as $lang => $val ){
+                                if ( !empty( $tile["translations"][$val['language']] ) ){
+                                    $number_of_translations++;
+                                }
+                            }
+                            ?>
+                            <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
+                            (<?php echo esc_html( $number_of_translations ); ?>)
+                        </button>
+                        <div class="translation_container hide">
+                            <table>
+                                <?php foreach ( $langs as $lang => $val ) : ?>
+                                    <tr>
+                                        <td><label for="tile_label_translation-<?php echo esc_html( $val['language'] )?>"><?php echo esc_html( $val['native_name'] )?></label></td>
+                                        <td><input name="tile_label_translation-<?php echo esc_html( $val['language'] )?>" type="text" value="<?php echo esc_html( $tile["translations"][$val['language']] ?? "" );?>"/></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                    </td>
+                    <td>
+                    <button type="submit" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
                     </td>
                 </tr>
             </tbody>
@@ -340,6 +369,17 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         if ( isset( $post_submission["restore_tile"] ) ){
             $custom_tile["hidden"] = false;
         }
+        //update other Translations
+        $langs = dt_get_available_languages();
+
+        foreach ( $langs as $lang => $val ){
+            $langcode = $val['language'];
+            $translation_key = "tile_label_translation-" . $langcode;
+            if ( isset( $post_submission[$translation_key] ) ) {
+                $custom_tile["translations"][$langcode] = $post_submission[$translation_key];
+            }
+        }
+
 
         //move option  up or down
         if ( isset( $post_submission["move_up"] ) || isset( $post_submission["move_down"] )){
@@ -368,6 +408,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         if ( !empty( $custom_tile )){
             $tile_options[$post_type][$tile_key] = $custom_tile;
         }
+
         update_option( "dt_custom_tiles", $tile_options );
     }
 

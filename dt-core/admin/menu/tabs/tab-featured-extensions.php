@@ -128,11 +128,13 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                             <?php
                             $result_name = $this->partial_array_search( $all_plugins, $p->folder_name );
                             if ( $result_name == -1 ) {
-                                ?>
+                                if ( current_user_can( "install_plugins" ) ) : ?>
                                 <button class="button"
                                         onclick="install('<?php echo esc_html( $p->url ); ?>')"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></button>
+                                <?php else : ?>
+                                    <span>To install this plugin ask your network administrator</span>
+                                <?php endif;
 
-                                <?php
                             } elseif ( $this->partial_array_search( $active_plugins, $p->folder_name ) == -1 && isset( $_POST["activate"] ) == false ) {
                                 ?>
                                 <button class="button"
@@ -181,25 +183,21 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     <?php
                     $result_name = $this->partial_array_search( $all_plugins, "updraftplus" );
                     if ( $result_name == -1 ) {
-                        ?>
-                        <a class="button"
-                           href="./plugin-install.php?tab=plugin-information&plugin=updraftplus"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
-                        <?php
+                        if ( current_user_can( "install_plugins" ) ) : ?>
+                            <a class="button"
+                               href="./plugin-install.php?tab=plugin-information&plugin=updraftplus"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
+                        <?php else : ?>
+                            <span>To install this plugin ask your network administrator</span>
+                        <?php endif;
                     } else if ( $this->partial_array_search( $active_plugins, "updraftplus" ) == -1 && isset( $_POST["activate"] ) == false ) {
                         ?>
-                    <button class="button"
-                            onclick="activate('<?php echo esc_html( "updraftplus/updraftplus.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
+                        <button class="button"
+                                onclick="activate('<?php echo esc_html( "updraftplus/updraftplus.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
+                        <?php
+                    } else { ?>
+                        <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
+                    <?php } ?>
                 </td>
-            </tr>
-                        <?php
-                    }
-                    else {
-                        ?>
-                <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
-                        <?php
-                    }
-                    ?>
-            </td>
             </tr>
             <!--Two Factor Authentication-->
             <tr>
@@ -213,25 +211,25 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     <?php
                     $result_name = $this->partial_array_search( $all_plugins, "two-factor-authentication" );
                     if ( $result_name == -1 ) {
-                        ?>
-                        <a class="button"
-                           href="./plugin-install.php?tab=plugin-information&plugin=two-factor-authentication"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
-                        <?php
+                        if ( current_user_can( "install_plugins" ) ) : ?>
+                            <a class="button"
+                               href="./plugin-install.php?tab=plugin-information&plugin=two-factor-authentication"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
+                        <?php else : ?>
+                            <span>To install this plugin ask your network administrator</span>
+                        <?php endif;
                     } else if ( $this->partial_array_search( $active_plugins, "two-factor-authentication" ) == -1 && isset( $_POST["activate"] ) == false ) {
                         ?>
-                    <button class="button"
-                            onclick="activate('<?php echo esc_html( "two-factor-authentication/two-factor-login.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
-                </td>
-            </tr>
+                        <button class="button"
+                                onclick="activate('<?php echo esc_html( "two-factor-authentication/two-factor-login.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
                         <?php
                     }
                     else {
                         ?>
-                <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
+                            <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
                         <?php
                     }
                     ?>
-            </td>
+                </td>
             </tr>
             <!--Inactive Logout-->
             <tr>
@@ -245,25 +243,25 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     <?php
                     $result_name = $this->partial_array_search( $all_plugins, " inactive-logout" );
                     if ( $result_name == -1 ) {
-                        ?>
-                        <a class="button"
-                           href="./plugin-install.php?tab=plugin-information&plugin= inactive-logout"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
-                        <?php
+                        if ( current_user_can( "install_plugins" ) ) : ?>
+                            <a class="button"
+                               href="./plugin-install.php?tab=plugin-information&plugin= inactive-logout"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
+                        <?php else : ?>
+                            <span>To install this plugin ask your network administrator</span>
+                        <?php endif;
                     } else if ( $this->partial_array_search( $active_plugins, " inactive-logout" ) == -1 && isset( $_POST["activate"] ) == false ) {
                         ?>
-                    <button class="button"
-                            onclick="activate('<?php echo esc_html( " inactive-logout/inactive-logout.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
-                </td>
-            </tr>
+                        <button class="button"
+                                onclick="activate('<?php echo esc_html( " inactive-logout/inactive-logout.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
                         <?php
                     }
                     else {
                         ?>
-                <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
+                        <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
                         <?php
                     }
                     ?>
-            </td>
+                </td>
             </tr>
             </tbody>
         </table>

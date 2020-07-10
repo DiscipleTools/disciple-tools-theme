@@ -45,7 +45,7 @@ function dt_print_details_bar(
                                 <li style="border-radius: 5px">
                                     <a class="button menu-white-dropdown-arrow"
                                        style="background-color: #00897B; color: white;">
-                                        <?php esc_html_e( "Dispatcher actions", 'disciple_tools' ) ?></a>
+                                        <?php esc_html_e( "Admin actions", 'disciple_tools' ) ?></a>
                                     <ul class="menu">
                                         <?php foreach ( $dispatcher_actions as $action ) :
                                             if ( $action == "make-user-from-contact-modal" ) : ?>
@@ -54,6 +54,8 @@ function dt_print_details_bar(
                                                 <li><a data-open="link-to-user-modal"><?php esc_html_e( "Link to an existing user", 'disciple_tools' ) ?></a></li>
                                             <?php elseif ( $action == "merge_with_contact") : ?>
                                                 <li><a id="open_merge_with_contact"><?php esc_html_e( "Merge with another contact", 'disciple_tools' ) ?></a></li>
+                                            <?php elseif ( $action == "duplicates-modal") : ?>
+                                                <li><a data-open="merge-dupe-edit-modal"><?php esc_html_e( "See duplicates", 'disciple_tools' ) ?></a></li>
                                             <?php endif; ?>
                                         <?php endforeach; ?>
                                     </ul>
@@ -135,7 +137,7 @@ function dt_print_details_bar(
             <?php if ( $task ) : ?>
                 <div class="cell shrink center-items">
                     <button class="button open-set-task">
-                        <?php echo esc_html_x( 'Tasks', 'disciple_tools' ); ?>
+                        <?php esc_html_e( 'Tasks', 'disciple_tools' ); ?>
                         <i class="fi-clock"></i>
                     </button>
                 </div>
@@ -144,4 +146,3 @@ function dt_print_details_bar(
     </nav>
     <?php endif;
 }
-

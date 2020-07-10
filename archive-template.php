@@ -84,8 +84,54 @@ declare(strict_types=1);
                         </span>
                     </div>
                     <p style="display: inline-block" class="filter-result-text"></p>
-                    <div style="display: inline-block" id="current-filters"></div>
-                    <div id="table-content"></div>
+                    <div style="display: flex; flex-wrap:wrap;" id="current-filters"></div>
+                    <div class="js-sort-dropdown" style="display: inline-block">
+                        <ul class="dropdown menu" data-dropdown-menu>
+                            <li>
+                                <a href="#"><?php esc_html_e( "Sort", "disciple_tools" ); ?></a>
+                                <ul class="menu">
+                                    <li>
+                                        <a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="post_date">
+                                            <?php esc_html_e( "Newest", "disciple_tools" ); ?></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="js-sort-by" data-column-index="6" data-order="asc" data-field="post_date">
+                                            <?php esc_html_e( "Oldest", "disciple_tools" ); ?></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="last_modified">
+                                            <?php esc_html_e( "Most recently modified", "disciple_tools" ); ?></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="js-sort-by" data-column-index="6" data-order="asc" data-field="last_modified">
+                                            <?php esc_html_e( "Least recently modified", "disciple_tools" ); ?></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <table class="table-remove-top-border js-list stack striped" id="records-table">
+                            <thead>
+                                <tr class="sortable">
+                                    <th></th>
+                                    <th class="all" data-id="name"><?php esc_html_e( "Name", "disciple_tools" ); ?></th>
+                                    <?php foreach ( $field_options as $field_key => $field_value ){
+                                        if ( isset( $field_value["show_in_table"] ) && $field_value["show_in_table"] ) : ?>
+                                            <th class="all" data-id="<?php echo esc_html( $field_key ) ?>">
+                                                <?php echo esc_html( $field_value["name"] ) ?>
+                                            </th>
+                                        <?php endif;
+                                    }
+                                    ?>
+                                </tr>
+                            </thead>
+                            <tbody id="table-content">
+                                <tr class="js-list-loading"><td colspan=7><?php esc_html_e( "Loading...", "disciple_tools" ); ?></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="center">
                         <button id="load-more" class="button" style="display: none"><?php esc_html_e( "Load More", 'disciple_tools' ) ?></button>
                     </div>
@@ -116,6 +162,7 @@ declare(strict_types=1);
                             $fields[] = $field_key;
                         }
                     }
+                    $fields[] = "created_on";
                     $fields = apply_filters( 'dt_filters_additional_fields', $fields, $post_type ) ?? [];
                     ?>
                     <ul class="vertical tabs" data-tabs id="filter-tabs">
@@ -140,8 +187,9 @@ declare(strict_types=1);
                 <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="filter-tabs">
                     <?php foreach ( $fields as $index => $field ) :
                         $is_multi_select = isset( $field_options[$field] ) && $field_options[$field]["type"] == "multi_select";
-                        if ( $field_options[$field]["type"] === "connection" || $field_options[$field]["type"] === "location" || $is_multi_select ) : ?>
+                        if ( isset( $field_options[$field] ) && ( $field_options[$field]["type"] === "connection" || $field_options[$field]["type"] === "location" || $is_multi_select ) ) : ?>
                             <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>" id="<?php echo esc_html( $field ) ?>">
+                                <div class="section-header"><?php echo esc_html( $field_options[$field]["name"] ) ?></div>
                                 <div class="<?php echo esc_html( $field );?>  <?php echo esc_html( $is_multi_select ? "multi_select" : "" ) ?> details" >
                                     <var id="<?php echo esc_html( $field ) ?>-result-container" class="result-container <?php echo esc_html( $field ) ?>-result-container"></var>
                                     <div id="<?php echo esc_html( $field ) ?>_t" name="form-<?php echo esc_html( $field ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
@@ -152,7 +200,7 @@ declare(strict_types=1);
                                                            data-field="<?php echo esc_html( $field )?>"
                                                            data-type="<?php echo esc_html( $field_options[$field]["type"] ) ?>"
                                                            name="<?php echo esc_html( $field ) ?>[query]"
-                                                           placeholder="<?php esc_html_e( "Type to Search", 'disciple_tools' ) ?>"
+                                                           placeholder="<?php echo esc_html_x( 'Type to search', 'input field placeholder', 'disciple_tools' ) ?>"
                                                            autocomplete="off">
                                                 </span>
                                             </div>
@@ -163,6 +211,7 @@ declare(strict_types=1);
 
                         <?php else : ?>
                             <div class="tabs-panel" id="<?php echo esc_html( $field ) ?>">
+                                <div class="section-header"><?php echo esc_html( $field === "created_on" ? __( "Creation Date", "disciple_tools" ) : $field_options[$field]["name"] ?? $field ) ?></div>
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "key_select" ) :
                                         foreach ( $field_options[$field]["default"] as $option_key => $option_value ) :

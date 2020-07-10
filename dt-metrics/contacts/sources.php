@@ -9,24 +9,24 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
 
     //slug and title of the top menu folder
     public $base_slug = 'contacts'; // lowercase
-    public $base_title = "Contacts";
-
-    public $title = 'Sources';
+    public $base_title;
+    public $title;
     public $slug = 'sources'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $js_file_name = 'sources.js'; // should be full file name plus extension
+    public $js_file_name = '/dt-metrics/contacts/sources.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
-//    public $namespace = "dt-metrics/$this->base_slug/$this->slug";
 
     public function __construct() {
         parent::__construct();
         if ( !$this->has_permission() ){
             return;
         }
-        $url_path = dt_get_url_path();
+        $this->title = __( 'Sources Chart', 'disciple_tools' );
+        $this->base_title = __( 'Contacts', 'disciple_tools' );
 
-        // only load scripts if exact url
+        $url_path = dt_get_url_path();
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
+
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
@@ -37,9 +37,15 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
      * Load scripts for the plugin
      */
     public function scripts() {
+        wp_register_script( 'datepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', false );
+        wp_enqueue_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css', array() );
+
+        wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
+        wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
+        wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
 
         wp_enqueue_script( 'dt_' . $this->slug . '_script',
-            get_template_directory_uri() . '/dt-metrics/contacts/' . $this->js_file_name,
+            get_template_directory_uri() . $this->js_file_name,
             [
                 'moment',
                 'jquery',
@@ -47,8 +53,9 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
                 'datepicker',
                 'amcharts-core',
                 'amcharts-charts',
+                'lodash'
             ],
-            filemtime( get_theme_file_path() . '/dt-metrics/contacts/' . $this->js_file_name )
+            filemtime( get_theme_file_path() . $this->js_file_name )
         );
 
         $contacts_custom_field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false );
@@ -78,7 +85,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
                 'milestone_settings' => $milestone_settings,
                 'translations' => [
                     'filter_contacts_to_date_range' => __( "Filter contacts to date range:", 'disciple_tools' ),
-                    'all_time' => __( "All time", 'disciple_tools' ),
+                    'all_time' => __( "All Time", 'disciple_tools' ),
                     'filter_to_date_range' => __( "Filter to date range", 'disciple_tools' ),
                     'sources' => __( "Sources", 'disciple_tools' ),
                     'sources_filter_out_text' => __( "Showing contacts created during", 'disciple_tools' ),

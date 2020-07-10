@@ -198,6 +198,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             $translations = dt_get_translations();
             $available_language_codes = get_available_languages( get_template_directory() .'/dt-assets/translation' );
             $available_translations = [];
+
+            array_push( $available_translations, array(
+                'language' => 'en_US',
+                'native_name' => 'English'
+            ) );
+
             foreach ( $available_language_codes as $code ){
                 if ( isset( $translations[$code] )){
                     $available_translations[] = $translations[$code];
@@ -219,6 +225,32 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 $s .= 'key_' . substr( md5( rand( 10000, 100000 ) ), 0, 3 );
             }
             return $s;
+        }
+    }
+
+    if ( ! function_exists( 'dt_has_permissions' ) ) {
+        function dt_has_permissions( array $permissions ) : bool {
+            if ( count( $permissions ) > 0 ) {
+                foreach ( $permissions as $permission ){
+                    if ( current_user_can( $permission ) ){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
+
+    if ( ! function_exists( 'dt_has_permissions' ) ) {
+        function dt_has_permissions( array $permissions ) : bool {
+            if ( count( $permissions ) > 0 ) {
+                foreach ( $permissions as $permission ){
+                    if ( current_user_can( $permission ) ){
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 

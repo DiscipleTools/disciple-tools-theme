@@ -98,7 +98,7 @@ declare(strict_types=1);
             <div class="grid-x">
                 <div class="cell small-4" style="padding: 0 5px 5px 5px">
                     <input type="text" id="new-filter-name"
-                           placeholder="<?php echo esc_html_x( 'Filter Name', 'input field placeholder', 'disciple_tools' )?>"
+                           placeholder="<?php esc_html_e( 'Filter Name', 'disciple_tools' )?>"
                            style="margin-bottom: 0"/>
                 </div>
                 <div class="cell small-8">
@@ -144,6 +144,7 @@ declare(strict_types=1);
                                 $is_multi_select
                             ) ): ?>
                             <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>" id="<?php echo esc_html( $field ) ?>">
+                                <div class="section-header"><?php echo esc_html( $dt_group_field_options[$field]["name"] ) ?></div>
                                 <div class="<?php echo esc_html( $field );?>  <?php echo esc_html( $is_multi_select ? "multi_select" : "" ) ?> details" >
                                     <var id="<?php echo esc_html( $field ) ?>-result-container" class="result-container <?php echo esc_html( $field ) ?>-result-container"></var>
                                     <div id="<?php echo esc_html( $field ) ?>_t" name="form-<?php echo esc_html( $field ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
@@ -165,6 +166,7 @@ declare(strict_types=1);
 
                         <?php else : ?>
                             <div class="tabs-panel" id="<?php echo esc_html( $field ) ?>">
+                                <div class="section-header"><?php echo esc_html( $field === "created_on" ? __( "Creation Date", "disciple_tools" ) : $dt_group_field_options[$field]["name"] ?? $field ) ?></div>
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "key_select" ) :
                                         foreach ( $dt_group_field_options[$field]["default"] as $option_key => $option_value ) :
@@ -190,7 +192,7 @@ declare(strict_types=1);
                                             </label>
                                         </div>
                                     <?php elseif ( $field === "created_on" || isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "date" ) : ?>
-                                        <strong><?php esc_html_e( "Range Start", 'disciple_tools' ) ?></strong>
+                                        <strong><?php echo esc_html_x( "Range Start", 'The start date of a date range', 'disciple_tools' ) ?></strong>
                                         <button class="clear-date-picker" style="color:firebrick"
                                                 data-for="<?php echo esc_html( $field ) ?>_start">
                                             <?php echo esc_html_x( "Clear", 'Clear/empty input', 'disciple_tools' ) ?></button>
@@ -200,7 +202,7 @@ declare(strict_types=1);
                                                class="dt_date_picker" data-delimit="start"
                                                data-field="<?php echo esc_html( $field ) ?>">
                                         <br>
-                                        <strong><?php esc_html_e( "Range end", 'disciple_tools' ) ?></strong>
+                                        <strong><?php echo esc_html_x( "Range End", 'The end date of a date range', 'disciple_tools' ) ?></strong>
                                         <button class="clear-date-picker"
                                                 style="color:firebrick"
                                                 data-for="<?php echo esc_html( $field ) ?>_end">

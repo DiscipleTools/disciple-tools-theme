@@ -14,7 +14,7 @@ $fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_setting
         </button>
     </div>
     <span style="display: inline-block" class="filter-result-text"></span>
-    <div style="display: inline-block" id="current-filters"></div>
+    <div style="display: flex; flex-wrap:wrap;" id="current-filters"></div>
     <div class="js-sort-dropdown" style="display: inline-block">
         <ul class="dropdown menu" data-dropdown-menu>
             <li>
@@ -52,7 +52,7 @@ $fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_setting
                 <th data-id="name" data-priority="2"><?php esc_html_e( "Name", "disciple_tools" ); ?></th>
                 <th data-id="group_status" data-sort="asc"><?php echo esc_html( $fields["group_status"]["name"] ) ?></th>
                 <th data-id="group_type"><?php echo esc_html( $fields["group_type"]["name"] ) ?></th>
-                <th data-id="members"><?php echo esc_html( $fields["member_count"]["name"] ) ?></th>
+                <th data-id="member_count"><?php echo esc_html( $fields["member_count"]["name"] ) ?></th>
                 <th data-id="leaders"><?php echo esc_html( $fields["leaders"]["name"] ) ?></th>
                 <th data-id="location_grid"><?php echo esc_html( $fields["location_grid"]["name"] ) ?></th>
             </tr>

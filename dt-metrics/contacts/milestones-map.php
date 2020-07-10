@@ -3,15 +3,13 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
-
 class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
 {
 
-    //slug and titile of the top menu folder
+    //slug and title of the top menu folder
     public $base_slug = 'contacts'; // lowercase
-    public $base_title = "Contacts";
-
-    public $title = 'Milestones Map';
+    public $base_title;
+    public $title;
     public $slug = 'milestones_map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = 'milestones_map.js'; // should be full file name plus extension
@@ -23,10 +21,13 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
+        $this->title = __( 'Milestones Map', 'disciple_tools' );
+        $this->base_title = __( 'Contacts', 'disciple_tools' );
+
         $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
         $url_path = dt_get_url_path();
-        // only load scripts if exact url
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
+
             add_action( 'wp_enqueue_scripts', [ $this, 'mapping_scripts' ], 89 );
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
@@ -36,6 +37,8 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
 
 
     public function scripts() {
+        $this->title = __( 'Milestones Map', 'disciple_tools' );
+        DT_Mapping_Module::instance()->scripts();
         global $dt_mapping;
 
         // Milestones Script
@@ -43,7 +46,8 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
             get_template_directory_uri() . '/dt-metrics/contacts/' . $this->js_file_name,
             [
                 'jquery',
-                'dt_mapping_js'
+                'dt_mapping_js',
+                'lodash'
             ],
             filemtime( get_theme_file_path() . '/dt-metrics/contacts/' . $this->js_file_name ),
             true
@@ -57,6 +61,9 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
+                'translations' => [
+                    'title' => __( 'Milestones', 'disciple_tools' )
+                ]
             ]
         );
     }

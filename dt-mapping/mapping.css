@@ -6,7 +6,6 @@
 .current_level {}
 .map_chart {
     width: 100%;
-    max-height: 500px;
     height: 100vh;
     vertical-align: text-top;
 }
@@ -18,8 +17,8 @@
     text-align:right;
 }
 .child_list_container {
-    overflow-y: scroll; 
-    height:500px; 
+    overflow-y: scroll;
+    height:500px;
     padding:0 .4em;
 }
 .minimap {
@@ -27,12 +26,15 @@
     margin-bottom: 20px;
 }
 .refresh_data {
-    font-size:.8em; 
+    font-size:.8em;
     margin-left:20px;
 }
 #data_type_list {
 flex-wrap: wrap;
 margin-bottom: 20px;
+}
+#self_info {
+    font-size: .8em;
 }
 @media screen and (max-width : 640px){
     .map_title_wrapper {
@@ -53,6 +55,9 @@ margin-bottom: 20px;
     .child_list_container {
         max-height: 300px;
         height: 100vh;
+    }
+    #self_info {
+        font-size: .6em;
     }
 }
 
@@ -76,3 +81,4 @@ margin-bottom: 20px;
     vertical-align: middle;
     box-sizing: border-box;
 }
+

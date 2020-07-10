@@ -101,9 +101,6 @@ class Disciple_Tools_Contact_Post_Type
      */
     public function __construct( $post_type = 'contacts', $singular = '', $plural = '', $args = [], $taxonomies = [] ) {
         $this->post_type = 'contacts';
-        $this->singular = _x( 'Contact', 'singular of contact', 'disciple_tools' );
-        $this->plural = _x( 'Contacts', 'plural of contact', 'disciple_tools' );
-        $this->search_items = sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural );
         $this->args = [ 'menu_icon' => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNOSwxMmMyLjc1NywwLDUtMi4yNDMsNS01VjVjMC0yLjc1Ny0yLjI0My01LTUtNVM0LDIuMjQzLDQsNXYyQzQsOS43NTcsNi4yNDMsMTIsOSwxMnoiPjwvcGF0aD4gPHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTE1LjQyMywxNS4xNDVDMTQuMDQyLDE0LjYyMiwxMS44MDYsMTQsOSwxNHMtNS4wNDIsMC42MjItNi40MjQsMS4xNDZDMS4wMzUsMTUuNzI5LDAsMTcuMjMzLDAsMTguODg2VjI0IGgxOHYtNS4xMTRDMTgsMTcuMjMzLDE2Ljk2NSwxNS43MjksMTUuNDIzLDE1LjE0NXoiPjwvcGF0aD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTYiIHk9IjMiIGZpbGw9IiNmZmZmZmYiIHdpZHRoPSI4IiBoZWlnaHQ9IjIiPjwvcmVjdD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTYiIHk9IjgiIGZpbGw9IiNmZmZmZmYiIHdpZHRoPSI4IiBoZWlnaHQ9IjIiPjwvcmVjdD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTkiIHk9IjEzIiBmaWxsPSIjZmZmZmZmIiB3aWR0aD0iNSIgaGVpZ2h0PSIyIj48L3JlY3Q+PC9nPjwvc3ZnPg==' ];
         $this->taxonomies = $taxonomies = [];
 
@@ -111,8 +108,14 @@ class Disciple_Tools_Contact_Post_Type
         add_action( 'init', [ $this, 'contacts_rewrites_init' ] );
         add_filter( 'post_type_link', [ $this, 'contacts_permalink' ], 1, 3 );
         add_filter( 'dt_get_post_type_settings', [ $this, 'get_post_type_settings_hook' ], 10, 2 );
-
     } // End __construct()
+
+    public static function get_type_name_plural(){
+        return __( 'Contacts', 'disciple_tools' );
+    }
+    public static function get_type_name_singular(){
+        return __( 'Contacts', 'disciple_tools' );
+    }
 
     /**
      * Register the post type.
@@ -121,6 +124,10 @@ class Disciple_Tools_Contact_Post_Type
      * @return void
      */
     public function register_post_type() {
+        $this->singular = __( 'Contact', 'disciple_tools' );
+        $this->plural = __( 'Contacts', 'disciple_tools' );
+        $this->search_items = sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural );
+
         $labels = [
             'name'                  => $this->plural,
             'singular_name'         => $this->singular,
@@ -189,7 +196,7 @@ class Disciple_Tools_Contact_Post_Type
         // Status Section
         $fields['overall_status'] = [
             'name'        => __( 'Contact Status', 'disciple_tools' ),
-            'description' => _x( 'The Contact Status describes our progress in communicating with the contact', "Contact Status field description", 'disciple_tools' ),
+            'description' => _x( 'The Contact Status describes the progress in communicating with the contact.', "Contact Status field description", 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'new'   => [
@@ -447,6 +454,7 @@ class Disciple_Tools_Contact_Post_Type
                 'transfer'             => [ "label" => _x( 'Transferred contact to partner', 'Reason Closed label', 'disciple_tools' ) ],
                 'martyred'             => [ "label" => _x( 'Martyred', 'Reason Closed label', 'disciple_tools' ) ],
                 'moved'                => [ "label" => _x( 'Moved or relocated', 'Reason Closed label', 'disciple_tools' ) ],
+                'gdpr'                 => [ "label" => _x( 'GDPR request', 'Reason Closed label', 'disciple_tools' ) ],
                 'unknown'              => [ "label" => _x( 'Unknown', 'Reason Closed label', 'disciple_tools' ) ]
             ],
             'section'     => 'misc',
@@ -460,12 +468,36 @@ class Disciple_Tools_Contact_Post_Type
             'hidden'      => true
         ];
 
-        $sources_default = [];
+        $sources_default = [
+            'personal'           => [
+                'label'       => __( 'Personal', 'disciple_tools' ),
+                'key'         => 'personal',
+            ],
+            'web'           => [
+                'label'       => __( 'Web', 'disciple_tools' ),
+                'key'         => 'web',
+            ],
+            'facebook'      => [
+                'label'       => __( 'Facebook', 'disciple_tools' ),
+                'key'         => 'facebook',
+            ],
+            'twitter'       => [
+                'label'       => __( 'Twitter', 'disciple_tools' ),
+                'key'         => 'twitter',
+            ],
+            'transfer' => [
+                'label'       => __( 'Transfer', 'disciple_tools' ),
+                'key'         => 'transfer',
+                'description' => __( 'Contacts transferred from a partnership with another Disciple.Tools site.', 'disciple_tools' ),
+            ]
+        ];
         foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $key => $value ) {
-            if ( isset( $value['enabled'] ) && $value["enabled"] === false ) {
-                $value["deleted"] = true;
+            if ( !isset( $sources_default[$key] ) ) {
+                if ( isset( $value['enabled'] ) && $value["enabled"] === false ) {
+                    $value["deleted"] = true;
+                }
+                $sources_default[ $key ] = $value;
             }
-            $sources_default[ $key ] = $value;
         }
 
         $fields['sources'] = [
@@ -481,7 +513,8 @@ class Disciple_Tools_Contact_Post_Type
             "name" => __( "Source Details", 'disciple_tools' ),
             'type' => 'text',
             'default' => '',
-            'section'     => 'misc',
+            'section' => 'misc',
+            'hidden' => true
         ];
 
         // contact buttons
@@ -491,7 +524,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
-            'icon'        => "no-answer.svg",
+            'icon'        => get_template_directory_uri() . "/dt-assets/images/no-answer.svg",
         ];
         $fields['quick_button_contact_established'] = [
             'name'        => __( 'Contact Established', 'disciple_tools' ),
@@ -499,7 +532,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
-            'icon'        => "successful-conversation.svg",
+            'icon'        => get_template_directory_uri() . "/dt-assets/images/successful-conversation.svg",
         ];
         $fields['quick_button_meeting_scheduled'] = [
             'name'        => __( 'Meeting Scheduled', 'disciple_tools' ),
@@ -507,7 +540,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
-            'icon'        => "meeting-scheduled.svg",
+            'icon'        => get_template_directory_uri() . "/dt-assets/images/meeting-scheduled.svg",
         ];
         $fields['quick_button_meeting_complete'] = [
             'name'        => __( 'Meeting Complete', 'disciple_tools' ),
@@ -515,7 +548,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
-            'icon'        => "meeting-complete.svg",
+            'icon'        => get_template_directory_uri() . "/dt-assets/images/meeting-complete.svg",
         ];
         $fields['quick_button_no_show'] = [
             'name'        => __( 'Meeting No-show', 'disciple_tools' ),
@@ -523,7 +556,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'number',
             'default'     => 0,
             'section'     => 'quick_buttons',
-            'icon'        => "no-show.svg",
+            'icon'        => get_template_directory_uri() . "/dt-assets/images/no-show.svg",
         ];
 
         $fields['corresponds_to_user'] = [
@@ -531,24 +564,28 @@ class Disciple_Tools_Contact_Post_Type
             'description' => _x( 'The id of the user this contact corresponds to', 'Optional Documentation', 'disciple_tools' ),
             'type' => 'number',
             'default' => 0,
-            'section' => 'misc'
+            'section' => 'misc',
+            'customizable' => false
         ];
         $fields["type"] = [
-            'name'        => __( 'Contact type', 'disciple_tools' ),
+            'name'        => __( 'Contact Type', 'disciple_tools' ),
             'type'        => 'key_select',
             'default'     => [
                 'media'    => [ "label" => __( 'Media', 'disciple_tools' ) ],
-                'next_gen' => [ "label" => __( 'Next Generation', 'disciple_tools' ) ],
+                'seeker' => [ "label" => __( 'Seeker', 'disciple_tools' ) ],
+                'believer' => [ "label" => __( 'Believer', 'disciple_tools' ) ],
+                'leader' => [ "label" => __( 'Leader', 'disciple_tools' ) ],
                 'user'     => [ "label" => __( 'User', 'disciple_tools' ) ]
             ],
             'section'     => 'misc',
             'hidden'      => true
         ];
         $fields["last_modified"] =[
-            'name' => __( 'Last modified', 'disciple_tools' ),
+            'name' => __( 'Last Modified', 'disciple_tools' ),
             'type' => 'number',
             'default' => 0,
-            'section' => 'admin'
+            'section' => 'admin',
+            'customizable' => false
         ];
         $fields["duplicate_data"] = [
             "name" => 'Duplicates', //system string does not need translation
@@ -656,8 +693,8 @@ class Disciple_Tools_Contact_Post_Type
             'default'     => [],
         ];
         $fields['location_grid_meta'] = [
-            'name'        => __( 'Location Grid Meta', 'disciple_tools' ),
-            'type'        => 'location',
+            'name'        => 'Location Grid Meta', //system string does not need translation
+            'type'        => 'location_meta',
             'default'     => [],
             'hidden' => true
         ];
@@ -670,6 +707,11 @@ class Disciple_Tools_Contact_Post_Type
         $fields['tasks'] = [
             'name' => __( 'Tasks', 'disciple_tools' ),
             'type' => 'post_user_meta',
+        ];
+        $fields["languages"] = [
+            'name' => __( 'Languages', 'disciple_tools' ),
+            'type' => 'multi_select',
+            'default' => dt_get_option( "dt_working_languages" ) ?: [],
         ];
 
         return $fields;
@@ -694,6 +736,9 @@ class Disciple_Tools_Contact_Post_Type
         }
         $fields = $this->get_contact_field_defaults( $post_id, $include_current_post );
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
+
+        $langs = dt_get_available_languages();
+
         foreach ( $fields as $field_key => $field ){
             if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
                 foreach ( $field["default"] as $option_key => $option_value ){
@@ -711,7 +756,7 @@ class Disciple_Tools_Contact_Post_Type
                     if ( !isset( $fields[ $key ] ) ) {
                         $fields[ $key ] = $field;
                     } else {
-                        if ( isset( $field["name"] ) ) {
+                        if ( !empty( $field["name"] ) ) {
                             $fields[ $key ]["name"] = $field["name"];
                         }
                         if ( isset( $field["tile"] ) ) {
@@ -719,7 +764,17 @@ class Disciple_Tools_Contact_Post_Type
                         }
                         if ( $field_type === "key_select" || $field_type === "multi_select" ) {
                             if ( isset( $field["default"] ) ) {
+                                foreach ( $field["default"] as $custom_key => &$custom_value ) {
+                                    if ( isset( $custom_value["label"] ) && empty( $custom_value["label"] ) ) {
+                                        unset( $custom_value["label"] );
+                                    }
+                                }
                                 $fields[ $key ]["default"] = array_replace_recursive( $fields[ $key ]["default"], $field["default"] );
+                            }
+                        }
+                        foreach ( $langs as $lang => $val ) {
+                            if ( !empty( $field["translations"][$val['language']] ) ) {
+                                $fields[ $key ]["translations"][$val['language']] = $field["translations"][$val['language']];
                             }
                         }
                     }
@@ -749,12 +804,31 @@ class Disciple_Tools_Contact_Post_Type
                 }
             }
         }
-
         $fields = apply_filters( 'dt_custom_fields_settings_after_combine', $fields, "contacts" );
-
         wp_cache_set( "contact_field_settings" . $cache_with_deleted, $fields );
         return $fields;
     } // End get_custom_fields_settings()
+
+    public function dt_get_custom_fields_translation( $fields, $post_type ) {
+        if (is_admin()) {
+            return $fields;
+        } else {
+            $user_locale = get_user_locale();
+            foreach ( $fields as $field => $value ) {
+                if ( $value["type"] == "key_select" || $value["type"] == "multi_select" ) {
+                    foreach ( $value["default"] as $option_key => $option_value ) {
+                        if ( !empty( $option_value["translations"][$user_locale] ) ) {
+                            $fields[$field]["default"][$option_key]["label"] = $option_value["translations"][$user_locale];
+                        }
+                    }
+                }
+                if ( !empty( $value["translations"][$user_locale] ) ) {
+                    $fields[$field]["name"] = $value["translations"][$user_locale];
+                }
+            }
+            return $fields;
+        }
+    }
 
     public function get_post_type_settings_hook( $settings, $post_type ){
         if ( $post_type === "contacts" ){
@@ -861,17 +935,20 @@ class Disciple_Tools_Contact_Post_Type
             "phone"     => [
                 "label" => __( 'Phone', 'disciple_tools' ),
                 "types" => [],
-                "description" => ''
+                "description" => '',
+                "icon" => get_template_directory_uri() . "/dt-assets/images/phone.svg",
             ],
             "email"     => [
                 "label" => __( 'Email', 'disciple_tools' ),
                 "types" => [],
-                "description" => ''
+                "description" => '',
+                "icon" => get_template_directory_uri() . "/dt-assets/images/email.svg",
             ],
             "address" => [
                 "label" => __( "Address", 'disciple_tools' ),
                 "types" => dt_get_option( "dt_site_custom_lists" )["contact_address_types"],
-                "description" => ''
+                "description" => '',
+                "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg",
             ],
             "facebook"  => [
                 "label" => __( 'Facebook', 'disciple_tools' ),
@@ -917,7 +994,18 @@ class Disciple_Tools_Contact_Post_Type
         return apply_filters( 'dt_custom_channels', $channel_list );
     }
 
-
+    public function dt_get_custom_channels_translation( $channel_list ) {
+        if (is_admin()) {
+            return $channel_list;
+        }
+        $user_locale = get_user_locale();
+        foreach ( $channel_list as $channel_key => $channel_value ) {
+            if ( !empty( $channel_value["translations"][$user_locale] ) ) {
+                $channel_list[$channel_key]["label"] = $channel_value["translations"][$user_locale];
+            }
+        }
+        return $channel_list;
+    }
 
     /**
      * Run on activation.

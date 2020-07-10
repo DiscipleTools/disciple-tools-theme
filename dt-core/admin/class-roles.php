@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 16;
+    private static $target_roles_version_number = 24;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -84,8 +84,6 @@ class Disciple_Tools_Roles
          * $target_roles_version_number by one, set above.
          */
 
-        /* TODO: Different capabilities are commented out below in the different roles as we configure usage in development, but should be removed for distribution. */
-
         if ( get_role( 'strategist' ) ) {
             remove_role( 'strategist' );
         }
@@ -104,10 +102,9 @@ class Disciple_Tools_Roles
             [
                 'read'                      => true, //access to admin
 
-                /* Manage DT Options */
-                'manage_dt'                 => true, // key capability for wp-admin dt administration
+                'list_users'                => true,
 
-                'view_project_metrics' => true,
+                'view_project_metrics'      => true,
 
                 /* Add custom caps for contacts */
                 'access_contacts'           => true,
@@ -160,6 +157,8 @@ class Disciple_Tools_Roles
                 'publish_locations'         => true,
                 'read_private_locations'    => true,
 
+                'list_peoplegroups'        => true,
+
                 /* Add custom caps for people groups */
                 'read_peoplegroup'          => true,
                 'edit_peoplegroup'          => true,
@@ -189,10 +188,32 @@ class Disciple_Tools_Roles
                 'access_contacts'           => true,
                 'create_contacts'           => true,  //create a new contact
                 'update_shared_contacts'    => true,
-                //'access_specific_sources'   => true, @todo move to a partner role
-                'view_any_contacts'         => true,  //view any contacts
+                'access_specific_sources'   => true,
+                //'view_any_contacts'         => true,  //view any contacts
                 'assign_any_contacts'       => true,  //assign contacts to others
-                'update_any_contacts'       => true,  //update any contacts
+                //'update_any_contacts'       => true,  //update any contacts
+                'access_peoplegroups'      => true,
+                'list_peoplegroups'        => true,
+            ]
+        );
+
+        if ( get_role( 'partner' ) ) {
+            remove_role( 'partner' );
+        }
+        add_role(
+            'partner', __( 'Partner', 'disciple_tools' ),
+            [
+                'access_groups' => true,
+                'create_groups' => true,
+
+                 /* Add custom caps for contacts */
+                'access_contacts'           => true,
+                'create_contacts'           => true,
+                'access_specific_sources'   => true,
+
+                'read_location' => true,
+                'access_peoplegroups'      => true,
+                'list_peoplegroups'        => true,
             ]
         );
 
@@ -283,6 +304,8 @@ class Disciple_Tools_Roles
 
                 /* Add custom caps for people groups */
                 'delete_any_peoplegroup'     => true,
+                'access_peoplegroups'      => true,
+                'list_peoplegroups'        => true,
 
             ]
         );
@@ -300,7 +323,9 @@ class Disciple_Tools_Roles
                 'access_groups' => true,
                 'create_groups' => true,
 
-                'read_location' => true
+                'read_location' => true,
+                'access_peoplegroups' => true,
+                'list_peoplegroups' => true,
             ]
         );
 
@@ -334,6 +359,7 @@ class Disciple_Tools_Roles
 
             /* Manage DT configuration */
             $role->add_cap( 'manage_dt' ); // gives access to dt plugin options
+
             /* Add contacts permissions */
             $role->add_cap( 'access_contacts' );
             $role->add_cap( 'create_contacts' );
@@ -405,6 +431,8 @@ class Disciple_Tools_Roles
 
             /* Add custom caps for people groups */
             $role->add_cap( 'delete_any_peoplegroups' );
+            $role->add_cap( 'access_peoplegroups' );
+            $role->add_cap( 'list_peoplegroups' );
         }
 
         update_option( 'dt_roles_number', self::$target_roles_version_number );
@@ -422,6 +450,7 @@ class Disciple_Tools_Roles
         remove_role( 'strategist' );
         remove_role( 'multiplier' );
         remove_role( 'marketer' );
+        remove_role( 'partner' );
         remove_role( 'multiplier_leader' );
         remove_role( 'marketer_leader' );
         remove_role( 'prayer_supporter' );

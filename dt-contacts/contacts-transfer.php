@@ -100,7 +100,7 @@ class Disciple_Tools_Contacts_Transfer
                 <?php endif; ?>
 
                 <div class="cell" id="transfer-form" <?php if ( $foreign_key_exists ) { echo 'style="display:none;"'; }?>>
-                    <h6><a href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/admin.html?highlight=transfer#site-links" target="_blank"> <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/></a> <?php esc_html_e( 'Transfer this contact to:', 'disciple_tools' ) ?></h6>
+                    <h6><a href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/admin.html#site-links" target="_blank"> <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/></a> <?php esc_html_e( 'Transfer this contact to:', 'disciple_tools' ) ?></h6>
                     <select name="transfer_contact" id="transfer_contact" onchange="jQuery('#transfer_button_div').show();">
                         <option value=""></option>
                         <?php
@@ -395,3 +395,48 @@ class Disciple_Tools_Contacts_Transfer
     }
 }
 Disciple_Tools_Contacts_Transfer::instance();
+
+function dt_get_comments_with_redacted_user_data( $post_id ) {
+    $comments = get_comments( [ 'post_id' => $post_id ] );
+    if ( empty( $comments ) ) {
+        return $comments;
+    }
+    $email_note = __( 'redacted email' );
+    $name_note = __( 'redacted name' );
+    $redacted_note = __( 'redacted' );
+
+    $users = get_users();
+
+    foreach ( $comments as $index => $comment ) {
+        $comment_content = $comment->comment_content;
+
+        // replace @mentions with user number
+        preg_match_all( '/\@\[(.*?)\]\((.+?)\)/', $comment_content, $matches );
+        foreach ( $matches[0] as $match_key => $match ){
+            $comment_content = str_replace( $match, '@' . $redacted_note . '_' . $matches[2][$match_key], $comment_content );
+        }
+
+        // replace non-@mention references to login names, display names, or user emails
+        foreach ( $users as $user ) {
+            if ( ! empty( $user->data->user_login ) ) {
+                $comment_content = str_replace( $user->data->user_login, '(' . $name_note . ')', $comment_content );
+            }
+            if ( ! empty( $user->data->display_name ) ) {
+                $comment_content = str_replace( $user->data->display_name, '(' . $name_note . ')', $comment_content );
+            }
+            if ( ! empty( $user->data->user_nicename ) ) {
+                $comment_content = str_replace( $user->data->user_nicename, '(' . $name_note . ')', $comment_content );
+            }
+            if ( ! empty( $user->data->user_email ) ) {
+                $comment_content = str_replace( $user->data->user_email, '(' . $email_note . ')', $comment_content );
+            }
+        }
+
+        // replace duplicate notes
+        $comment_content = str_replace( site_url(), '#', $comment_content );
+
+        $comments[$index]->comment_content = $comment_content;
+    }
+
+    return $comments;
+}
