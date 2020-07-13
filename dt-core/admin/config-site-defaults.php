@@ -703,7 +703,11 @@ function dt_redirect_logged_in() {
     if ( 'logout' === $action || !is_user_logged_in()) {
         return;
     }
-    dt_route_front_page();
+    if ( !empty( $_GET["redirect_to"] ) ) {
+        wp_safe_redirect( esc_url_raw( wp_unslash( $_GET["redirect_to"] ) ) );
+    } else {
+        dt_route_front_page();
+    }
     exit;
 }
 
