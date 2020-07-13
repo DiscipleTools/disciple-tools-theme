@@ -271,6 +271,7 @@ class Disciple_Tools_Groups_Endpoints
      * @return int|WP_Error
      */
     public function update_group( WP_REST_Request $request ) {
+        dt_write_log('did it');
         $params = $request->get_params();
         $body = $request->get_json_params();
         if ( isset( $params['id'] ) ) {

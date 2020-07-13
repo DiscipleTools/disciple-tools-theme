@@ -974,7 +974,7 @@ jQuery(document).ready(function($) {
       tags: {
         display: ["name"],
         ajax: {
-          url: contactsDetailsWpApiSettings.root  + 'dt-posts/v2/contacts/multi-select-values',
+          url: wpApiGroupsSettings.root  + 'dt-posts/v2/groups/multi-select-values',
           data: {
             s: "{{query}}",
             field: "tags"
@@ -998,18 +998,18 @@ jQuery(document).ready(function($) {
     multiselect: {
       matchOn: ["name"],
       data: function () {
-        return (contact.tags || []).map(t=>{
+        return (group.tags || []).map(t=>{
           return {name:t}
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.update_post('contacts', contactId, {'tags': {values:[{value:item.name, delete:true}]}})
+          API.update_post('group', groupId, {'tags': {values:[{value:item.name, delete:true}]}})
         }
       }
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.update_post('contacts', contactId, {tags: {values:[{value:item.name}]}})
+        API.update_post('group', groupId, {tags: {values:[{value:item.name}]}})
         this.addMultiselectItemLayout(item)
         event.preventDefault()
         this.hideLayout();
@@ -1034,7 +1034,7 @@ jQuery(document).ready(function($) {
   $("#create-tag-return").on("click", function () {
     let tag = $("#new-tag").val()
     Typeahead['.js-typeahead-tags'].addMultiselectItemLayout({name:tag})
-    API.update_post('contacts', contactId, {tags: {values:[{value:tag}]}})
+    API.update_post('group', groupId, {tags: {values:[{value:tag}]}})
 
   })
 
