@@ -1056,6 +1056,7 @@
   })
 
   $('#filter-modal .dt_date_picker').datepicker({
+    constrainInput: false,
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
       let id = $(this).data('field')
