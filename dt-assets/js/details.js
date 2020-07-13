@@ -74,7 +74,6 @@ jQuery(document).ready(function($) {
         }
         let id = $(this).attr('id')
         rest_api.update_post( post_type, post_id, { [id]: moment(date).unix() }).then((resp)=>{
-          console.log(resp);
           if (this.value) {
             this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
           }
