@@ -479,10 +479,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $dt_roles = dt_multi_role_get_editable_role_names();
             foreach ( $dt_roles as $role_key => $name ) :
                 $role_object = get_role( $role_key );
-                if ( isset( $_POST[$role_key] ) && !array_key_exists( 'list_users', $role_object->capabilities ) ) {
-                    $role_object->add_cap( 'list_users' );
-                } else if ( !isset( $_POST[$role_key] ) && array_key_exists( 'list_users', $role_object->capabilities ) ) {
-                    $role_object->remove_cap( 'list_users' );
+                if ( isset( $_POST[$role_key] ) && !array_key_exists( 'dt_list_users', $role_object->capabilities ) ) {
+                    $role_object->add_cap( 'dt_list_users' );
+                } else if ( !isset( $_POST[$role_key] ) && array_key_exists( 'dt_list_users', $role_object->capabilities ) ) {
+                    $role_object->remove_cap( 'dt_list_users' );
                 }
             endforeach;
         }
@@ -502,7 +502,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 ?>
                 <tr>
                     <td>
-                        <input type="checkbox" name="<?php echo esc_attr( $role_key ); ?>" <?php checked( array_key_exists( 'list_users', $role_object->capabilities ) ); ?>/> <?php echo esc_attr( $name ); ?>
+                        <input type="checkbox" name="<?php echo esc_attr( $role_key ); ?>" <?php checked( array_key_exists( 'dt_list_users', $role_object->capabilities ) ); ?>/> <?php echo esc_attr( $name ); ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

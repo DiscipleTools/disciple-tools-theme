@@ -62,7 +62,7 @@ class Disciple_Tools_Posts
      * @return bool
      */
     public static function can_view_users() {
-        return current_user_can( "list_users" );
+        return current_user_can( "dt_list_users" );
     }
 
     /**
