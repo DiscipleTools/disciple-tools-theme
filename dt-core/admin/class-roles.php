@@ -371,7 +371,7 @@ class Disciple_Tools_Roles
             $role->add_cap( 'assign_any_contacts' );
             $role->add_cap( 'update_any_contacts' );
             $role->add_cap( 'delete_any_contacts' );
-            $role->add_cap( 'dt_list_users');
+            $role->add_cap( 'dt_list_users' );
 
             /* Add WP-Admin caps for contacts */
             $role->add_cap( 'edit_contact' );
