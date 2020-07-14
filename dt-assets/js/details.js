@@ -61,11 +61,14 @@ jQuery(document).ready(function($) {
   });
 
   $('.dt_date_picker').datepicker({
+    constrainInput: false,
     dateFormat: 'yy-mm-dd',
     onClose: function (date) {
       if (document.querySelector('#group-details-edit-modal') && document.querySelector('#group-details-edit-modal').contains( this)) {
         // do nothing
       } else {
+        date = window.SHAREDFUNCTIONS.convertArabicToEnglishNumbers(date);
+
         if (!$(this).val()) {
           date = " ";//null;
         }
@@ -82,6 +85,8 @@ jQuery(document).ready(function($) {
     changeYear: true,
     yearRange: "1900:2050",
   })
+
+
 
   function initActions(inputid) {
     $(`#${inputid}`).val("");

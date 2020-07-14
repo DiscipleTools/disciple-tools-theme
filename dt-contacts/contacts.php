@@ -846,7 +846,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 GROUP BY meta_value
                 HAVING count(meta_id) > 1 AND count(meta_id) < 10
             ) dup ON dup.meta_value = pm.meta_value
-            LEFT JOIN $wpdb->posts as p ON ( p.ID = pm.post_id AND p.post_type = 'contacts' )
+            INNER JOIN $wpdb->posts as p ON ( p.ID = pm.post_id AND p.post_type = 'contacts' )
             LEFT JOIN $wpdb->postmeta as dd ON ( dd.post_id = pm.post_id AND dd.meta_key = 'duplicate_data' )
             LEFT JOIN $wpdb->postmeta as rc ON ( rc.post_id = pm.post_id AND rc.meta_key = 'reason_closed' )
             LEFT JOIN $wpdb->postmeta as status ON ( status.post_id = pm.post_id AND status.meta_key = 'overall_status' )
