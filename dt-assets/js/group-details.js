@@ -884,7 +884,7 @@ jQuery(document).ready(function($) {
     const id = $(this).attr('id')
     const val = $(this).val()
 
-    window.API.update_post("groups", groupId, { [id]: val }).then((resp)=>{
+    window.API.update_post( 'groups', groupId, { [id]: val }).then((resp)=>{
       $( document ).trigger( "text-input-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
   })
@@ -1003,13 +1003,13 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.update_post('group', groupId, {'tags': {values:[{value:item.name, delete:true}]}})
+          API.update_post( 'groups', groupId, {'tags': {values:[{value:item.name, delete:true}]}})
         }
       }
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.update_post('group', groupId, {tags: {values:[{value:item.name}]}})
+        API.update_post( 'groups', groupId, {tags: {values:[{value:item.name}]}})
         this.addMultiselectItemLayout(item)
         event.preventDefault()
         this.hideLayout();
@@ -1034,7 +1034,7 @@ jQuery(document).ready(function($) {
   $("#create-tag-return").on("click", function () {
     let tag = $("#new-tag").val()
     Typeahead['.js-typeahead-tags'].addMultiselectItemLayout({name:tag})
-    API.update_post('group', groupId, {tags: {values:[{value:tag}]}})
+    API.update_post( 'groups', groupId, {tags: {values:[{value:tag}]}})
 
   })
 
