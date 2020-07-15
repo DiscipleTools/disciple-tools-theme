@@ -1250,7 +1250,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         $error_message = $result->get_error_message() ?? '';
                         if (strpos( $error_message, 'not resolve' ) > -1 || strpos( $error_message, 'timed out' ) > -1) {
                             return new WP_Error( "site_check_error", $not_found, [ 'status' => 400 ] );
-                        } else if ( strpos($error_message, 'SSL' ) > -1 || strpos( $error_message, 'HTTPS' ) > -1) {
+                        } else if ( strpos( $error_message, 'SSL' ) > -1 || strpos( $error_message, 'HTTPS' ) > -1) {
                             return new WP_Error( "site_check_error", $no_ssl, [ 'status' => 400 ] );
                         }
                         return $result;
@@ -1258,7 +1258,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 }
 
                 $result_body = json_decode( $result['body'] );
-                if ( !empty($result_body) && $result_body === true ) {
+                if ( !empty( $result_body ) && $result_body === true ) {
                     return [
                         "success" => true,
                         "message" => $linked,
