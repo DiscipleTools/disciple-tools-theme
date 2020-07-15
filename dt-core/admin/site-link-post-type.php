@@ -941,7 +941,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         data: JSON.stringify({ \"site_link_id\": site_link_id } ),
                         contentType: 'application/json; charset=utf-8',
                         dataType: 'json',
-                        url: '$url/wp-json/dt-public/v1/sites/site_link_server_check',
+                        url: '" . esc_js( $url ) . "/wp-json/dt-public/v1/sites/site_link_server_check',
                     })
                     .done(function (data) {
                         if( data && data.success ) {
