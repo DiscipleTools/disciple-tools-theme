@@ -928,7 +928,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                 $url = '';
                 if ( isset( $_SERVER["HTTP_HOST"] ) ) {
-                  $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
+                    $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
                 }
                 echo "<script type='text/javascript'>
 
@@ -1179,7 +1179,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 $namespace, '/sites/site_link_server_check', [
                     [
                         'methods' => WP_REST_Server::CREATABLE,
-                        'callback' => [ $this, 'site_link_server_check']
+                        'callback' => [ $this, 'site_link_server_check' ]
                     ],
                 ]
             );
@@ -1225,51 +1225,51 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             $no_ssl = __( 'Remote is not secured with SSL.' );
 
             if ( isset( $params['site_link_id'] ) ) {
-              $siteLinkId = $params['site_link_id'];
-              $transferToken = self::create_transfer_token_for_site( $this->get_site_key_by_id( $siteLinkId ) );
-              $url = self::get_non_local_site_by_id( $siteLinkId );
-              $args = [
-                'method' => 'POST',
-                'body' => [
-                  'transfer_token' => $transferToken,
-                ],
-                'sslverify' => apply_filters( 'dt_https_local_ssl_verify', true ), // ignore self-signed certificate issues if this is a dev site
-              ];
-
-              $result = wp_remote_post( 'https://' . $url . '/wp-json/dt-public/v1/sites/site_link_check', $args );
-              $https_failed = false;
-              if ( is_wp_error( $result ) ){
-                $error_message = $result->get_error_message() ?? '';
-                $https_failed = strpos($error_message, 'SSL') > -1 || strpos($error_message, 'HTTPS') > -1;
-
-                // If first request fails, attempt without HTTPS in case of local SSL issues
-                $result = wp_remote_post( 'http://' . $url . '/wp-json/dt-public/v1/sites/site_link_check', $args );
-
-                if ( is_wp_error( $result ) ) {
-                  // Second request failed too. Return appropriate error
-                  $error_message = $result->get_error_message() ?? '';
-                  if (strpos($error_message, 'not resolve') > -1 || strpos($error_message, 'timed out') > -1) {
-                    return new WP_Error("site_check_error", $not_found, ['status' => 400]);
-                  } else if (strpos($error_message, 'SSL') > -1 || strpos($error_message, 'HTTPS') > -1) {
-                    return new WP_Error("site_check_error", $no_ssl, ['status' => 400]);
-                  }
-                  return $result;
-                }
-              }
-
-              $result_body = json_decode( $result['body'] );
-              if (!empty($result_body) && $result_body === true) {
-                return [
-                  "success" => true,
-                  "message" => $linked,
+                $siteLinkId = $params['site_link_id'];
+                $transferToken = self::create_transfer_token_for_site( $this->get_site_key_by_id( $siteLinkId ) );
+                $url = self::get_non_local_site_by_id( $siteLinkId );
+                $args = [
+                    'method' => 'POST',
+                    'body' => [
+                        'transfer_token' => $transferToken,
+                    ],
+                    'sslverify' => apply_filters( 'dt_https_local_ssl_verify', true ), // ignore self-signed certificate issues if this is a dev site
                 ];
-              } else if ( $https_failed ) {
-                // If verification failed on HTTP and HTTPS, throw SSL error message
-                return new WP_Error( "site_check_error", $no_ssl, [ 'status' => 400 ]);
-              } else {
-                return new WP_Error( "site_check_error", $not_linked, [ 'status' => 400 ]);
-              }
-              return $result_body;
+
+                $result = wp_remote_post( 'https://' . $url . '/wp-json/dt-public/v1/sites/site_link_check', $args );
+                $https_failed = false;
+                if ( is_wp_error( $result ) ){
+                    $error_message = $result->get_error_message() ?? '';
+                    $https_failed = strpos($error_message, 'SSL') > -1 || strpos($error_message, 'HTTPS') > -1;
+
+                    // If first request fails, attempt without HTTPS in case of local SSL issues
+                    $result = wp_remote_post( 'http://' . $url . '/wp-json/dt-public/v1/sites/site_link_check', $args );
+
+                    if ( is_wp_error( $result ) ) {
+                        // Second request failed too. Return appropriate error
+                        $error_message = $result->get_error_message() ?? '';
+                        if (strpos($error_message, 'not resolve') > -1 || strpos($error_message, 'timed out') > -1) {
+                            return new WP_Error("site_check_error", $not_found, ['status' => 400]);
+                        } else if (strpos($error_message, 'SSL') > -1 || strpos($error_message, 'HTTPS') > -1) {
+                            return new WP_Error("site_check_error", $no_ssl, ['status' => 400]);
+                        }
+                        return $result;
+                    }
+                }
+
+                $result_body = json_decode( $result['body'] );
+                if (!empty($result_body) && $result_body === true) {
+                    return [
+                        "success" => true,
+                        "message" => $linked,
+                    ];
+                } else if ( $https_failed ) {
+                    // If verification failed on HTTP and HTTPS, throw SSL error message
+                    return new WP_Error( "site_check_error", $no_ssl, [ 'status' => 400 ]);
+                } else {
+                    return new WP_Error( "site_check_error", $not_linked, [ 'status' => 400 ]);
+                }
+                return $result_body;
             } else {
                 return new WP_Error( "site_check_error", "Malformed request", [ 'status' => 400 ] );
             }
