@@ -447,7 +447,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         </span>
                         <script>
                             jQuery(document).ready(function () {
-                                check_link_status('<?php echo esc_attr( self::create_transfer_token_for_site( $this->get_site_key_by_id( $post->ID ) ) ); ?>', '<?php echo esc_attr( self::get_non_local_site_by_id( $post->ID ) ); ?>', '<?php echo esc_attr( md5( $post->ID ) ); ?>');
+                                check_link_status('<?php echo esc_attr( $post->ID ); ?>', '<?php echo esc_attr( md5( $post->ID ) ); ?>');
                             })
                         </script>
                         <?php
@@ -877,7 +877,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                             <script>
                                 jQuery(document).ready(function () {
-                                    check_link_status('<?php echo esc_attr( self::create_transfer_token_for_site( $site_key ) ); ?>', '<?php echo esc_attr( self::get_non_local_site_by_id( $post_id ) ); ?>', '<?php echo esc_attr( md5( $post_id ) ); ?>');
+                                    check_link_status('<?php echo esc_attr( $post_id ); ?>', '<?php echo esc_attr( md5( $post_id ) ); ?>');
                                 })
                             </script>
                         <?php endif; // check for non-wp ?>
@@ -926,56 +926,39 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             if ( $this->post_type === $pt ) {
 
+                $url = '';
+                if ( isset( $_SERVER["HTTP_HOST"] ) ) {
+                    $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
+                }
                 echo "<script type='text/javascript'>
 
-                function check_link_status( transfer_token, url, id ) {
+                function check_link_status( site_link_id, id ) {
 
                     let linked = '" . esc_attr__( 'Linked' ) . "';
-                    let not_linked = '" . esc_attr__( 'Connected with remote, but token verification failed' ) . "';
-                    let not_found = '" . esc_attr__( 'Failed to connect with the URL provided.' ) . "';
-                    let no_ssl = '" . esc_attr__( 'Remote is not secured with SSL.' ) . "';
 
                     return jQuery.ajax({
                         type: 'POST',
-                        data: JSON.stringify({ \"transfer_token\": transfer_token } ),
+                        data: JSON.stringify({ \"site_link_id\": site_link_id } ),
                         contentType: 'application/json; charset=utf-8',
                         dataType: 'json',
-                        url: 'https://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
+                        url: '" . esc_js( $url ) . "/wp-json/dt-public/v1/sites/site_link_server_check',
                     })
                     .done(function (data) {
-                        if( data ) {
+                        if( data && data.success ) {
                             jQuery('#' + id + '-status').html( linked ).attr('class', 'success-green')
+                        } else if ( data && data.message) {
+                            jQuery('#' + id + '-status').html( data.message ).attr('class', 'fail-red')
                         } else {
-                            jQuery('#' + id + '-status').html( not_linked ).attr('class', 'fail-red');
-                            jQuery('#' + id + '-message').show();
+                            jQuery('#' + id + '-status').html( JSON.stringify( request.statusText ) ).attr('class', 'fail-red');
                         }
                     })
                     .fail(function (request) {
-                        jQuery.ajax({
-                            type: 'POST',
-                            data: JSON.stringify({ \"transfer_token\": transfer_token } ),
-                            contentType: 'application/json; charset=utf-8',
-                            dataType: 'json',
-                            url: 'http://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
-                        }).done(data=>{
-                            jQuery('#' + id + '-message').show();
-                            if( data ) {
-                                jQuery('#' + id + '-status').html( linked ).attr('class', 'success-green')
-                            } else if (request.status === 0) {
-                                jQuery('#' + id + '-status').html( no_ssl ).attr('class', 'fail-red')
-                            } else {
-                                jQuery('#' + id + '-status').html( not_linked ).attr('class', 'fail-red');
-                            }
-                        }).fail(function(err) {
-                            jQuery( document ).ajaxError(function( event, request, settings ) {
-                                jQuery('#' + id + '-message').show();
-                                if( request.status === 0 ) {
-                                    jQuery('#' + id + '-status').html( not_found ).attr('class', 'fail-red')
-                                } else {
-                                    jQuery('#' + id + '-status').html( JSON.stringify( request.statusText ) ).attr('class', 'fail-red')
-                                }
-                            });
-                        })
+                        jQuery('#' + id + '-message').show();
+                        if (request && request.responseJSON && request.responseJSON.message) {
+                            jQuery('#' + id + '-status').html( request.responseJSON.message ).attr('class', 'fail-red')
+                        } else {
+                            jQuery('#' + id + '-status').html( JSON.stringify( err.statusText ) ).attr('class', 'fail-red')
+                        }
                     });
                 }
                 </script>";
@@ -1192,6 +1175,14 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     ],
                 ]
             );
+            register_rest_route(
+                $namespace, '/sites/site_link_server_check', [
+                    [
+                        'methods' => WP_REST_Server::CREATABLE,
+                        'callback' => [ $this, 'site_link_server_check' ]
+                    ],
+                ]
+            );
 
             // Enable cross origin resource requests (CORS) for approved sites.
             self::add_cors_sites();
@@ -1214,6 +1205,71 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 } else {
                     return false;
                 }
+            } else {
+                return new WP_Error( "site_check_error", "Malformed request", [ 'status' => 400 ] );
+            }
+        }
+
+        /**
+         * Verify site is linked with request from server to replicate how transfer will happen
+         *
+         * @param  WP_REST_Request $request
+         *
+         * @return string|WP_Error|array The contact on success
+         */
+        public function site_link_server_check( WP_REST_Request $request ) {
+            $params = $request->get_params();
+            $linked = __( 'Linked' );
+            $not_linked = __( 'Connected with remote, but token verification failed' );
+            $not_found = __( 'Failed to connect with the URL provided.' );
+            $no_ssl = __( 'Remote is not secured with SSL.' );
+
+            if ( isset( $params['site_link_id'] ) ) {
+                $site_link_id = $params['site_link_id'];
+                $transfer_token = self::create_transfer_token_for_site( $this->get_site_key_by_id( $site_link_id ) );
+                $url = self::get_non_local_site_by_id( $site_link_id );
+                $args = [
+                    'method' => 'POST',
+                    'body' => [
+                        'transfer_token' => $transfer_token,
+                    ],
+                    'sslverify' => apply_filters( 'dt_https_local_ssl_verify', true ), // ignore self-signed certificate issues if this is a dev site
+                ];
+
+                $result = wp_remote_post( 'https://' . $url . '/wp-json/dt-public/v1/sites/site_link_check', $args );
+                $https_failed = false;
+                if ( is_wp_error( $result ) ){
+                    $error_message = $result->get_error_message() ?? '';
+                    $https_failed = strpos( $error_message, 'SSL' ) > -1 || strpos( $error_message, 'HTTPS' ) > -1 || strpos( $error_message, 'certificate verification failed' ) > -1;
+
+                    // If first request fails, attempt without HTTPS in case of local SSL issues
+                    $result = wp_remote_post( 'http://' . $url . '/wp-json/dt-public/v1/sites/site_link_check', $args );
+
+                    if ( is_wp_error( $result ) ) {
+                        // Second request failed too. Return appropriate error
+                        $error_message = $result->get_error_message() ?? '';
+                        if (strpos( $error_message, 'not resolve' ) > -1 || strpos( $error_message, 'timed out' ) > -1) {
+                            return new WP_Error( "site_check_error", $not_found, [ 'status' => 400 ] );
+                        } else if ( strpos( $error_message, 'SSL' ) > -1 || strpos( $error_message, 'HTTPS' ) > -1 || strpos( $error_message, 'certificate verification failed' ) > -1) {
+                            return new WP_Error( "site_check_error", $no_ssl, [ 'status' => 400 ] );
+                        }
+                        return $result;
+                    }
+                }
+
+                $result_body = json_decode( $result['body'] );
+                if ( !empty( $result_body ) && $result_body === true ) {
+                    return [
+                        "success" => true,
+                        "message" => $linked,
+                    ];
+                } else if ( $https_failed ) {
+                    // If verification failed on HTTP and HTTPS, throw SSL error message
+                    return new WP_Error( "site_check_error", $no_ssl, [ 'status' => 400 ] );
+                } else {
+                    return new WP_Error( "site_check_error", $not_linked, [ 'status' => 400 ] );
+                }
+                return $result_body;
             } else {
                 return new WP_Error( "site_check_error", "Malformed request", [ 'status' => 400 ] );
             }
