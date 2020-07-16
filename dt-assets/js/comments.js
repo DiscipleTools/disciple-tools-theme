@@ -114,7 +114,7 @@ jQuery(document).ready(function($) {
         if (a.comment){ %>
           <% is_Comment = true; %>
             <div dir="auto" class="comment-bubble <%- a.comment_ID %>">
-              <div class="comment-text" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
+              <div class="comment-text" title="<%- date %>" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
             </div>
             <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate' ) { %>
               <div class="translation-bubble" dir=auto></div>
@@ -133,7 +133,7 @@ jQuery(document).ready(function($) {
                <% } %>
             </p>
         <% } else { %>
-            <p class="activity-bubble">  <%- a.text %> <% print(a.action) %> </p>
+            <p class="activity-bubble" title="<%- date %>">  <%- a.text %> <% print(a.action) %> </p>
         <%  }
     }); %>
     <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate'
@@ -356,7 +356,7 @@ jQuery(document).ready(function($) {
         commentsWrapper.append(commentTemplate({
           name: array[0].name,
           gravatar: array[0].gravatar,
-          date:window.SHAREDFUNCTIONS.formatDate(moment(array[0].date).unix()),
+          date:window.SHAREDFUNCTIONS.formatDate(moment(array[0].date).unix(), true),
           activity: array
         }))
         array = [obj]
@@ -366,7 +366,7 @@ jQuery(document).ready(function($) {
       commentsWrapper.append(commentTemplate({
         gravatar: array[0].gravatar,
         name: array[0].name,
-        date:window.SHAREDFUNCTIONS.formatDate(moment(array[0].date).unix()),
+        date:window.SHAREDFUNCTIONS.formatDate(moment(array[0].date).unix(), true),
         activity: array
       }))
     }
