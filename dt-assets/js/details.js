@@ -14,6 +14,13 @@ jQuery(document).ready(function($) {
       $( document ).trigger( "text-input-updated", [ newPost, id, val ] );
     }).catch(handleAjaxError)
   })
+  $('.dt_textarea').change(function(){
+    const id = $(this).attr('id')
+    const val = $(this).val()
+    rest_api.update_post(post_type, post_id, { [id]: val }).then((newPost)=>{
+      $( document ).trigger( "text-input-updated", [ newPost, id, val ] );
+    }).catch(handleAjaxError)
+  })
 
   $('button.dt_multi_select').on('click',function () {
     let fieldKey = $(this).data("field-key")
