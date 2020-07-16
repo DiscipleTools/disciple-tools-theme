@@ -1240,7 +1240,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 $https_failed = false;
                 if ( is_wp_error( $result ) ){
                     $error_message = $result->get_error_message() ?? '';
-                    $https_failed = strpos( $error_message, 'SSL' ) > -1 || strpos( $error_message, 'HTTPS' ) > -1;
+                    $https_failed = strpos( $error_message, 'SSL' ) > -1 || strpos( $error_message, 'HTTPS' ) > -1 || strpos( $error_message, 'certificate verification failed' ) > -1;
 
                     // If first request fails, attempt without HTTPS in case of local SSL issues
                     $result = wp_remote_post( 'http://' . $url . '/wp-json/dt-public/v1/sites/site_link_check', $args );
@@ -1250,7 +1250,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         $error_message = $result->get_error_message() ?? '';
                         if (strpos( $error_message, 'not resolve' ) > -1 || strpos( $error_message, 'timed out' ) > -1) {
                             return new WP_Error( "site_check_error", $not_found, [ 'status' => 400 ] );
-                        } else if ( strpos( $error_message, 'SSL' ) > -1 || strpos( $error_message, 'HTTPS' ) > -1) {
+                        } else if ( strpos( $error_message, 'SSL' ) > -1 || strpos( $error_message, 'HTTPS' ) > -1 || strpos( $error_message, 'certificate verification failed' ) > -1) {
                             return new WP_Error( "site_check_error", $no_ssl, [ 'status' => 400 ] );
                         }
                         return $result;
