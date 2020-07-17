@@ -1258,7 +1258,7 @@ class Disciple_Tools_Mapping_Queries {
                 JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
                 LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
                 WHERE pm.meta_key = 'location_grid'
-                AND pm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'group_status' AND p.meta_value = %s );
+                AND pm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'group_status' AND p.meta_value = %s )
             ) as t0
             GROUP BY t0.admin0_grid_id
             UNION
@@ -1269,7 +1269,7 @@ class Disciple_Tools_Mapping_Queries {
                 JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
                 LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
                 WHERE pm.meta_key = 'location_grid'
-                AND pm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'group_status' AND p.meta_value = %s );
+                AND pm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'group_status' AND p.meta_value = %s )
             ) as t1
             GROUP BY t1.admin1_grid_id
             UNION
@@ -1280,7 +1280,7 @@ class Disciple_Tools_Mapping_Queries {
                 JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
                 LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
                 WHERE pm.meta_key = 'location_grid'
-                AND pm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'group_status' AND p.meta_value = %s );
+                AND pm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'group_status' AND p.meta_value = %s )
             ) as t2
             GROUP BY t2.admin2_grid_id
             UNION
@@ -1291,7 +1291,7 @@ class Disciple_Tools_Mapping_Queries {
                 JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
                 LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
                 WHERE pm.meta_key = 'location_grid'
-                AND pm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'group_status' AND p.meta_value = %s );
+                AND pm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'group_status' AND p.meta_value = %s )
             ) as t3
             GROUP BY t3.admin3_grid_id
             UNION
@@ -1302,7 +1302,7 @@ class Disciple_Tools_Mapping_Queries {
                 JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
                 LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
                 WHERE pm.meta_key = 'location_grid'
-                AND pm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'group_status' AND p.meta_value = %s );
+                AND pm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'group_status' AND p.meta_value = %s )
             ) as t4
             GROUP BY t4.admin4_grid_id
             UNION
@@ -1313,7 +1313,7 @@ class Disciple_Tools_Mapping_Queries {
                 JOIN $wpdb->posts as p ON p.ID=pm.post_id AND p.post_type = 'groups'
                 LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
                 WHERE pm.meta_key = 'location_grid'
-                AND pm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'group_status' AND p.meta_value = %s );
+                AND pm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE p.meta_key = 'group_status' AND p.meta_value = %s )
             ) as t5
             GROUP BY t5.admin5_grid_id;
             ", $status, $status, $status, $status, $status, $status
@@ -1704,3 +1704,4 @@ class Disciple_Tools_Mapping_Queries {
 
 
 }
+Disciple_Tools_Mapping_Queries::query_groups_location_grid_totals( 'active');
