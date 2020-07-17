@@ -500,12 +500,13 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <?php
                 $role_object = get_role( $role_key );
                 ?>
+                <?php if ( !array_key_exists( 'view_any_contacts', $role_object->capabilities ) ) : ?>
                 <tr>
                     <td>
-                        <input type="checkbox" name="<?php echo esc_attr( $role_key ); ?>" <?php checked( array_key_exists( 'dt_list_users', $role_object->capabilities ) );
-                        if ( array_key_exists( 'view_any_contacts', $role_object->capabilities ) ) { echo esc_attr( "disabled" ); }  ?>/> <?php echo esc_attr( $name ); ?>
+                        <input type="checkbox" name="<?php echo esc_attr( $role_key ); ?>" <?php checked( array_key_exists( 'dt_list_users', $role_object->capabilities ) ); ?>/> <?php echo esc_attr( $name ); ?>
                     </td>
                 </tr>
+                <?php endif; ?>
             <?php endforeach; ?>
 
                 <?php wp_nonce_field( 'user_visibility' . get_current_user_id(), 'user_visibility_nonce' )?>
