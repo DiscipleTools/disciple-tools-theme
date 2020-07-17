@@ -103,6 +103,7 @@ class Disciple_Tools_Roles
                 'read'                      => true, //access to admin
 
                 'list_users'                => true,
+                'dt_list_users'             => true,
 
                 'view_project_metrics'      => true,
 
@@ -236,6 +237,7 @@ class Disciple_Tools_Roles
                 'create_users'              => true,
                 'delete_users'              => true,
                 'list_users'                => true,
+                'dt_list_users'             => true,
 
                 /* Add custom caps for contacts */
                 'access_contacts'           => true,
@@ -369,6 +371,7 @@ class Disciple_Tools_Roles
             $role->add_cap( 'assign_any_contacts' );
             $role->add_cap( 'update_any_contacts' );
             $role->add_cap( 'delete_any_contacts' );
+            $role->add_cap( 'dt_list_users' );
 
             /* Add WP-Admin caps for contacts */
             $role->add_cap( 'edit_contact' );

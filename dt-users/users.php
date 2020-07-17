@@ -66,7 +66,7 @@ class Disciple_Tools_Users
         $user_id = get_current_user_id();
         $users = [];
         $update_needed = [];
-        if ( !user_can( get_current_user_id(), 'view_any_contacts' ) ){
+        if ( !user_can( get_current_user_id(), 'view_any_contacts' ) && !user_can( get_current_user_id(), 'dt_list_users' ) ){
             // users that are shared posts that are shared with me
             $users_ids = $wpdb->get_results( $wpdb->prepare("
                 SELECT user_id

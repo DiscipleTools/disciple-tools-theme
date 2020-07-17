@@ -87,6 +87,13 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* Site Notifications */
 
+            /* User Visability */
+            $this->box( 'top', 'User Visibility Preferences' );
+            $this->process_user_visibility();
+            $this->update_user_visibility();
+            $this->box( 'bottom' );
+            /* User Visability */
+
             $this->template( 'right_column' );
 
             $this->template( 'end' );
@@ -168,7 +175,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         if ( isset( $roles['administrator'] ) ) {
             unset( $roles['administrator'] );
         }
-//        dt_write_log( $roles );
 
         if ( isset( $_POST['metrics_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['metrics_nonce'] ) ), 'metrics' . get_current_user_id() ) ) {
 
@@ -458,6 +464,52 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                 </tr>
                 <?php wp_nonce_field( 'group_preferences' . get_current_user_id(), 'group_preferences_nonce' )?>
+            </table>
+            <br>
+            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
+        </form>
+        <?php
+    }
+
+    /** User Visibility Preferences */
+    public function process_user_visibility(){
+        if ( isset( $_POST['user_visibility_nonce'] ) &&
+             wp_verify_nonce( sanitize_key( wp_unslash( $_POST['user_visibility_nonce'] ) ), 'user_visibility' . get_current_user_id() ) ) {
+
+            $dt_roles = dt_multi_role_get_editable_role_names();
+            foreach ( $dt_roles as $role_key => $name ) :
+                $role_object = get_role( $role_key );
+                if ( isset( $_POST[$role_key] ) && !array_key_exists( 'dt_list_users', $role_object->capabilities ) ) {
+                    $role_object->add_cap( 'dt_list_users' );
+                } else if ( !isset( $_POST[$role_key] ) && array_key_exists( 'dt_list_users', $role_object->capabilities ) ) {
+                    $role_object->remove_cap( 'dt_list_users' );
+                }
+            endforeach;
+        }
+
+    }
+
+    public function update_user_visibility(){
+        $group_preferences = dt_get_option( 'group_preferences' );
+        $dt_roles = dt_multi_role_get_editable_role_names();
+        ?>
+        <p><?php esc_html_e( "User Roles that can view all other Disciple Tools users names" ) ?></p>
+        <form method="post" >
+            <table class="widefat">
+            <?php foreach ( $dt_roles as $role_key => $name ) : ?>
+                <?php
+                $role_object = get_role( $role_key );
+                ?>
+                <?php if ( !array_key_exists( 'view_any_contacts', $role_object->capabilities ) ) : ?>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="<?php echo esc_attr( $role_key ); ?>" <?php checked( array_key_exists( 'dt_list_users', $role_object->capabilities ) ); ?>/> <?php echo esc_attr( $name ); ?>
+                    </td>
+                </tr>
+                <?php endif; ?>
+            <?php endforeach; ?>
+
+                <?php wp_nonce_field( 'user_visibility' . get_current_user_id(), 'user_visibility_nonce' )?>
             </table>
             <br>
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
