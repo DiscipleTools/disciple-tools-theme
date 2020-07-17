@@ -1704,4 +1704,3 @@ class Disciple_Tools_Mapping_Queries {
 
 
 }
-Disciple_Tools_Mapping_Queries::query_groups_location_grid_totals( 'active');
