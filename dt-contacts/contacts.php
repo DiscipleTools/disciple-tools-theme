@@ -164,6 +164,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     $fields["overall_status"] = "new";
                 }
             }
+            if ( !isset( $fields["sources"] ) ) {
+                $fields["sources"] = [ "values" => [ [ "value" => "personal" ] ] ];
+            }
         }
         return $fields;
     }
