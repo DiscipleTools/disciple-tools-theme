@@ -884,7 +884,7 @@ jQuery(document).ready(function($) {
     const id = $(this).attr('id')
     const val = $(this).val()
 
-    window.API.update_post("groups", groupId, { [id]: val }).then((resp)=>{
+    window.API.update_post( 'groups', groupId, { [id]: val }).then((resp)=>{
       $( document ).trigger( "text-input-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
   })
@@ -962,6 +962,82 @@ jQuery(document).ready(function($) {
   })
 
 
+  /**
+   * Tags
+   */
+  $.typeahead({
+    input: '.js-typeahead-tags',
+    minLength: 0,
+    maxItem: 20,
+    searchOnFocus: true,
+    source: {
+      tags: {
+        display: ["name"],
+        ajax: {
+          url: wpApiGroupsSettings.root  + 'dt-posts/v2/groups/multi-select-values',
+          data: {
+            s: "{{query}}",
+            field: "tags"
+          },
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+          },
+          callback: {
+            done: function (data) {
+              return (data || []).map(tag=>{
+                return {name:tag}
+              })
+            }
+          }
+        }
+      }
+    },
+    display: "name",
+    templateValue: "{{name}}",
+    dynamic: true,
+    multiselect: {
+      matchOn: ["name"],
+      data: function () {
+        return (group.tags || []).map(t=>{
+          return {name:t}
+        })
+      }, callback: {
+        onCancel: function (node, item) {
+          API.update_post( 'groups', groupId, {'tags': {values:[{value:item.name, delete:true}]}})
+        }
+      }
+    },
+    callback: {
+      onClick: function(node, a, item, event){
+        API.update_post( 'groups', groupId, {tags: {values:[{value:item.name}]}})
+        this.addMultiselectItemLayout(item)
+        event.preventDefault()
+        this.hideLayout();
+        this.resetInput();
+        masonGrid.masonry('layout')
+      },
+      onResult: function (node, query, result, resultCount) {
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+        $('#tags-result-container').html(text);
+        masonGrid.masonry('layout')
+      },
+      onHideLayout: function () {
+        $('#tags-result-container').html("");
+        masonGrid.masonry('layout')
+      },
+      onShowLayout (){
+        masonGrid.masonry('layout')
+      }
+    }
+  });
+
+  $("#create-tag-return").on("click", function () {
+    let tag = $("#new-tag").val()
+    Typeahead['.js-typeahead-tags'].addMultiselectItemLayout({name:tag})
+    API.update_post( 'groups', groupId, {tags: {values:[{value:tag}]}})
+
+  })
+
 
 
 
@@ -974,6 +1050,3 @@ jQuery(document).ready(function($) {
   });
 
 })
-
-
-

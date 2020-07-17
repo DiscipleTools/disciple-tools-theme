@@ -1089,11 +1089,11 @@ class Disciple_Tools_Posts
             LEFT JOIN $wpdb->posts on $wpdb->posts.ID = $wpdb->postmeta.post_id
             WHERE $wpdb->postmeta.meta_key = %s
             AND $wpdb->postmeta.meta_value LIKE %s
-            AND $wpdb->posts.post_type = %s
             AND $wpdb->posts.post_status = 'publish'
             ORDER BY $wpdb->postmeta.meta_value ASC
             LIMIT 20
-        ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%', esc_sql( $post_type )));
+        ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%'));
+
         return $options;
     }
 

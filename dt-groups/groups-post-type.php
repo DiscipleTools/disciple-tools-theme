@@ -450,7 +450,13 @@ class Disciple_Tools_Groups_Post_Type
             'section' => 'admin',
             'customizable' => false
         ];
-
+        $fields['tags'] = [
+            'name'        => __( 'Tags', 'disciple_tools' ),
+            'description' => _x( 'A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags.', 'Optional Documentation', 'disciple_tools' ),
+            'type'        => 'multi_select',
+            'default'     => [],
+            'section'     => 'misc',
+        ];
 
         $id = isset( $post->ID ) ? $post->ID : $post_id;
         if ( $include_current_post &&

@@ -884,7 +884,7 @@
           [field]: {
             display: ["value"],
             ajax: {
-              url: `${wpApiListSettings.root}dt-posts/v2/contacts/multi-select-values`,
+              url: `${wpApiListSettings.root}dt-posts/v2/${wpApiListSettings.current_post_type}/multi-select-values`,
               data: {
                 s: "{{query}}",
                 field

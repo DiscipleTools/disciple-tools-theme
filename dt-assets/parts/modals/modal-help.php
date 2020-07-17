@@ -270,6 +270,12 @@
             </ul>
         </div>
 
+        <!--  Other tile  -->
+        <div class="help-section" id="other-tile-help-text" style="display: none">
+            <h3><?php esc_html_e( "Other", 'disciple_tools' ) ?></h3>
+            <h4><?php echo esc_html( $group_fields["tags"]["name"] ) ?></h4>
+            <p><?php echo esc_html( $group_fields["tags"]["description"] ) ?></p>
+        </div>
 
     <?php endif; ?>
 
