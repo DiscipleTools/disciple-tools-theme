@@ -48,7 +48,12 @@
     <section class="cell bordered-box">
         <div style="display: flex;">
             <div class="item-details-header" style="flex-grow:1">
-                <i class="fi-torso large" style="padding-bottom: 1.2rem"></i>
+                <?php $picture = apply_filters( 'dt_record_picture', null, "contacts", $contact['ID'] );
+                if ( !empty( $picture ) ) : ?>
+                    <img src="<?php echo esc_html( $picture )?>" style="height:50px; vertical-align:middle">
+                <?php else : ?>
+                    <i class="fi-torso large" style="padding-bottom: 1.2rem"></i>
+                <?php endif; ?>
                 <span class="title"><?php the_title_attribute(); ?></span>
                 <button class="help-button" data-section="contact-details-help-text">
                     <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
