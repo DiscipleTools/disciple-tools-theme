@@ -779,7 +779,11 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $response_body = [];
         foreach ( $comments as $comment ){
-            $url = !empty( $comment->comment_author_url ) ? $comment->comment_author_url : get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
+            if ( $comment->comment_author_url ){
+                $url = str_replace( "&amp;", "&", $comment->comment_author_url );
+            } else {
+                $url = get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
+            }
             $c = [
                 "comment_ID" => $comment->comment_ID,
                 "comment_author" => !empty( $display_name ) ? $display_name : $comment->comment_author,
@@ -795,7 +799,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             $response_body[] =$c;
         }
 
-        $response_body = apply_filters( "dt_filter_post_comments", $response_body );
+        $response_body = apply_filters( "dt_filter_post_comments", $response_body, $post_type, $post_id );
 
         return [
             "comments" => $response_body,
