@@ -176,6 +176,8 @@ class Disciple_Tools_Users
             return strcmp( $a["name"], $b["name"] );
         }
 
+        $list = apply_filters( 'dt_assignable_users_compact', $list, $search_string, $get_all );
+
         usort( $list, "asc_meth" );
         return $list;
     }
