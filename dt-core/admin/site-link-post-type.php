@@ -889,7 +889,11 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     <p class="text-small"><?php esc_attr_e( 'Timestamp' ) ?>: <span
                                 class="info-color"><?php echo esc_attr( current_time( 'Y-m-d H:i', 1 ) ) ?></span>
                         <em>( <?php esc_attr_e( 'Compare this number to linked site. It should be identical.' ) ?> )</em></p>
-
+                    <p><?php esc_attr_e( 'Server IP' ) ?>: <span
+                          class="info-color">
+                            <span id="server-ip"></span>
+                            <button id="get-server-ip" type="button" onclick="get_server_ip(event)"><?php echo esc_attr_e( 'Get Server IP' ) ?></button></span>
+                      <em>( <?php esc_attr_e( 'Use if you need to whitelist API requests on your server' ) ?> )</em></p>
                     <?php
 
                 } else {
@@ -958,6 +962,31 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                             jQuery('#' + id + '-status').html( request.responseJSON.message ).attr('class', 'fail-red')
                         } else {
                             jQuery('#' + id + '-status').html( JSON.stringify( err.statusText ) ).attr('class', 'fail-red')
+                        }
+                    });
+                }
+                
+                function get_server_ip ( e ) {
+                    if ( e ) {
+                        console.log('preventing default');
+                        e.preventDefault();
+                    }
+                    console.log('getting server ip');
+                    jQuery('#server-ip').html( 'Fetching IP Address...' )
+                    return jQuery.ajax({
+                        type: 'GET',
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        url: '" . esc_js( $url ) . "/wp-json/dt-public/v1/sites/server_ip',
+                    })
+                    .done(function (data) {
+                        jQuery('#server-ip').html(data);
+                    })
+                    .fail(function (request) {
+                        if (request && request.responseJSON && request.responseJSON.message) {
+                            jQuery('#server-ip').html( request.responseJSON.message )
+                        } else {
+                            jQuery('#server-ip').html( JSON.stringify( err.statusText ) )
                         }
                     });
                 }
@@ -1183,6 +1212,14 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     ],
                 ]
             );
+            register_rest_route(
+                $namespace, '/sites/server_ip', [
+                    [
+                        'methods' => WP_REST_Server::READABLE,
+                        'callback' => [ $this, 'server_ip' ]
+                    ],
+                ]
+            );
 
             // Enable cross origin resource requests (CORS) for approved sites.
             self::add_cors_sites();
@@ -1273,6 +1310,24 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             } else {
                 return new WP_Error( "site_check_error", "Malformed request", [ 'status' => 400 ] );
             }
+        }
+
+        /**
+         * Get the IP address of the server
+         *
+         * @return string The IP address
+         */
+        public function server_ip() {
+            $args = [
+                'method' => 'GET',
+            ];
+
+            $result = wp_remote_post( 'http://ifconfig.co/ip', $args );
+            if ( is_wp_error( $result ) ){
+                $error_message = $result->get_error_message() ?? '';
+                return $error_message;
+            }
+            return $result['body'];
         }
 
         /****************************************************************************************************************
