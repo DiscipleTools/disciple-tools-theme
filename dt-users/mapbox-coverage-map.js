@@ -424,7 +424,7 @@ jQuery(document).ready(function() {
                   jQuery.each(window.user_list[details.admin0_grid_id], function(i,v) {
                     level_list.append(`
                       <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
-                        <a href="/user-management/user/${_.escape(v.user_id)}">
+                        <a href="${_.escape(window.wpApiShare.site_url)}/user-management/user/${_.escape(v.user_id)}">
                           ${_.escape(v.name)}
                         </a>
                       </div>
@@ -452,7 +452,7 @@ jQuery(document).ready(function() {
                   jQuery.each(window.user_list[details.admin1_grid_id], function(i,v) {
                     level_list.append(`
                         <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
-                          <a href="/user-management/user/${_.escape(v.user_id)}">
+                          <a href="${_.escape(window.wpApiShare.site_url)}/user-management/user/${_.escape(v.user_id)}">
                             ${_.escape(v.name)}
                           </a>
                         </div>
@@ -479,7 +479,7 @@ jQuery(document).ready(function() {
                   jQuery.each(window.user_list[details.admin2_grid_id], function(i,v) {
                     level_list.append(`
                         <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
-                          <a href="/user-management/user/${_.escape(v.user_id)}">
+                          <a href="${_.escape(window.wpApiShare.site_url)}/user-management/user/${_.escape(v.user_id)}">
                             ${_.escape(v.name)}
                           </a>
                         </div>
@@ -601,7 +601,7 @@ jQuery(document).ready(function() {
 
                               jQuery('#'+list_level+'_list').prepend(`
                               <div class="cell small-10 align-self-middle" data-id="${_.escape(v.grid_meta_id)}">
-                                <a  href="/user-management/user/${_.escape(response.user_id)}">
+                                <a  href="${_.escape(window.wpApiShare.site_url)}/user-management/user/${_.escape(response.user_id)}">
                                   ${_.escape(response.user_title)}
                                 </a>
                               </div>

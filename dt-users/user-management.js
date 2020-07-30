@@ -839,8 +839,9 @@ jQuery(document).ready(function($) {
 
         makeRequest( "POST", `users/create`, { "user-email": email, "user-display": name, "corresponds_to_contact": corresponds_to_contact })
           .done(response=>{
-            console.log(response)
-            result_div.html(`<a href="/user-management/user/${response}">View New User</a>`)
+            result_div.html(`<a href="${_.escape(window.wpApiShare.site_url)}/user-management/user/${_.escape(response)}">
+              ${ _.escape( dt_user_management_localized.translations.view_new_user ) }</a>
+            `)
             jQuery('#new-user-form').empty()
           })
           .catch(err=>{
@@ -878,14 +879,13 @@ jQuery(document).ready(function($) {
         dynamic: true,
         callback: {
           onClick: function(node, a, item, event){
-            console.log(item)
             spinner_span.html(spinner)
             submit_button.prop('disabled', true)
 
             makeRequest('GET', 'contacts/'+item.ID, null, 'dt-posts/v2/' )
               .done(function(response){
                 if ( item.user ) {
-                  jQuery('#contact-result').html(`This contact is already a user. <a href="/user-management/users/?user_id=${_.escape(response.corresponds_to_user)}">View User</a>`)
+                  jQuery('#contact-result').html(`${_.escape(dt_user_management_localized.translations.already_user)} <a href="${_.escape(window.wpApiShare.site_url)}/user-management/user/${_.escape(response.corresponds_to_user)}">${_.escape(dt_user_management_localized.translations.view_user)}</a>`)
                 } else {
                   window.contact_record = response
                   submit_button.prop('disabled', false)
