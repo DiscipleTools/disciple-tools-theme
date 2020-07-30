@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-  if ('/metrics' === window.location.pathname || '/metrics/' === window.location.pathname || '/metrics/personal/overview' === window.location.pathname || '/metrics/personal/overview/' === window.location.pathname) {
+  if ('metrics' === window.wpApiShare.url_path || 'metrics/' === window.wpApiShare.url_path || window.wpApiShare.url_path.startsWith( 'metrics/personal/overview' ) ) {
     my_stats()
   }
 

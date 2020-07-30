@@ -1,15 +1,11 @@
 jQuery(document).ready(function($) {
-
-  if( '/user-management/users/' === window.location.pathname.substring(0,"/user-management/users/".length) ) {
+  if( window.wpApiShare.url_path.includes('user-management/users') ) {
     write_users_list()
-  }
-  if( '/user-management/user/' === window.location.pathname.substring(0,"/user-management/user/".length) ) {
-    console.log( window.location.pathname.replace( '/user-management/user/','').replace('/','') )
+  } else if ( window.wpApiShare.url_path.includes('user-management/user/')){
     write_users_list()
-    open_user_modal( window.location.pathname.replace( '/user-management/user/','').replace('/','') )
-
+    open_user_modal( window.wpApiShare.url_path.replace( 'user-management/user','').replace('/','') )
   }
-  if( '/user-management/add-user/' === window.location.pathname ) {
+  if( 'user-management/add-user' === window.wpApiShare.url_path ) {
     write_add_user()
   }
 
