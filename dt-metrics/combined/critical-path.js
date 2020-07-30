@@ -3,7 +3,7 @@ const chart_row_height = 25
 const chart_min_height = 84
 
 jQuery(document).ready(function() {
-  if ('/metrics/combined/critical_path' === window.location.pathname || '/metrics/combined/critical_path/' === window.location.pathname) {
+  if ( window.wpApiShare.url_path.startsWith( 'metrics/combined/critical_path' ) ) {
     project_critical_path()
   }
 })

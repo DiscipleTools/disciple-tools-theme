@@ -186,7 +186,7 @@ jQuery(document).ready(function($) {
                       <div class="cell"><h4>${_.escape( details.title )}</h4></div>
                       <div class="cell">${_.escape( obj.translations.status)/*Status*/}: ${_.escape( status )}</div>
                       <div class="cell">${ _.escape( obj.translations.assigned_to  )/*Assigned To*/}: ${_.escape( details.assigned_to.display )}</div>
-                      <div class="cell"><a href="/${_.escape( window.post_type )}/${_.escape( details.ID )}">${_.escape( obj.translations.view_record  )/*View Record*/}</a></div>
+                      <div class="cell"><a href="${_.escape(window.wpApiShare.site_url)}/${_.escape( window.post_type )}/${_.escape( details.ID )}">${_.escape( obj.translations.view_record  )/*View Record*/}</a></div>
                       <div class="cell"><hr></div>
                   `)
 

@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-  if ('/metrics/contacts/baptism-tree' === window.location.pathname || '/metrics/contacts/baptism-tree/' === window.location.pathname) {
+  if ( window.wpApiShare.url_path.startsWith( 'metrics/contacts/baptism-tree' ) ) {
     project_baptism_tree()
   }
 
