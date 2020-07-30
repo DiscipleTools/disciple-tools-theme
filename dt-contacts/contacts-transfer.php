@@ -264,9 +264,9 @@ class Disciple_Tools_Contacts_Transfer
         $errors = new WP_Error();
         $site_link_post_id = Site_Link_System::get_post_id_by_site_key( Site_Link_System::decrypt_transfer_token( $params['transfer_token'] ) );
 
-    /**
-     * Insert contact record and meta
-     */
+        /**
+         * Insert contact record and meta
+         */
         // build meta value elements
         foreach ( $contact_data['postmeta'] as $key => $value ) {
             if ( isset( $value[1] ) ) {
@@ -274,7 +274,7 @@ class Disciple_Tools_Contacts_Transfer
                     $lagging_meta_input[] = [ $key => $item ];
                 }
             } else {
-                $meta_input[$key] = $value[0];
+                $meta_input[$key] = maybe_unserialize( $value[0] );
             }
         }
         $post_args['meta_input'] = $meta_input;
@@ -309,16 +309,18 @@ class Disciple_Tools_Contacts_Transfer
         }
 
         // insert lagging post meta
-        foreach ( $lagging_meta_input as $key => $value ) {
-            $meta_id = add_post_meta( $post_id, $key, $value, true );
-            if ( ! $meta_id ) {
-                $errors->add( 'meta_insert_fail', 'Meta data insert fail for "'. $key . '"' );
+        foreach ( $lagging_meta_input as $index => $row ) {
+            foreach ( $row as $key => $value ) {
+                $meta_id = add_post_meta( $post_id, $key, $value, false );
+                if ( !$meta_id ) {
+                    $errors->add( 'meta_insert_fail', 'Meta data insert fail for "'. $key . '"' );
+                }
             }
         }
 
-    /**
-     * Insert comments
-     */
+        /**
+         * Insert comments
+         */
         if ( ! empty( $comment_data ) ) {
             foreach ( $comment_data as $comment ) {
                 // set variables
@@ -370,7 +372,8 @@ class Disciple_Tools_Contacts_Transfer
         return [
             'status' => 'OK',
             'transfer_foreign_key' => $post_args['meta_input']['transfer_foreign_key'],
-            'errors' => $errors
+            'errors' => $errors,
+            'created_id' => $post_id
         ];
     }
 
