@@ -43,7 +43,7 @@ $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_s
                 </select>
 
                 <div style="text-align: center">
-                    <a href="<?php echo esc_html( get_site_url() . "/groups/")?>" class="button small clear"><?php echo esc_html__( 'Cancel', 'disciple_tools' )?></a>
+                    <a href="<?php echo esc_html( get_site_url() . "/groups/" )?>" class="button small clear"><?php echo esc_html__( 'Cancel', 'disciple_tools' )?></a>
                     <button class="button loader js-create-group-button dt-green" type="submit" disabled title="<?php esc_html_e( 'Save and continue editing', 'disciple_tools' )?>"><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
                 </div>
             </form>

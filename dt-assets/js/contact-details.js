@@ -826,22 +826,34 @@ jQuery(document).ready(function($) {
 
     let html = ""
     _.forOwn( contact, (fieldVal, field)=>{
-      if ( field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field) ){
+      if ( field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field) && !field.includes("_details")){
         let channel = field.replace("contact_", "")
-        contact[field].forEach(socialField=>{
-          html += `<div class="grid-x grid-margin-x social-media-row" data-id="${_.escape(socialField.key)}">
-              <div class="cell small-4">
-                  ${_.escape( _.get(contactsDetailsWpApiSettings, 'channels[' + channel + '].label' ,field) )}
-              </div>
-              <div class="cell small-8" style="display: flex">
-                <input class="contact-input" type="text" id="${_.escape(socialField.key)}" value="${_.escape(socialField.value)}" data-type="${_.escape( field )}"/>
-                <button class="button clear delete-social-media delete-button" data-id="${_.escape(socialField.key)}" data-type="${_.escape( field )}">
-                    <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
-                </button>
-              </div>
+        if ( Array.isArray(contact[field]) ){
+          contact[field].forEach(socialField=>{
+            html += `<div class="grid-x grid-margin-x social-media-row" data-id="${_.escape(socialField.key)}">
+                <div class="cell small-4">
+                    ${_.escape( _.get(contactsDetailsWpApiSettings, 'channels[' + channel + '].label' ,field) )}
+                </div>
+                <div class="cell small-8" style="display: flex">
+                  <input class="contact-input" type="text" id="${_.escape(socialField.key)}" value="${_.escape(socialField.value)}" data-type="${_.escape( field )}"/>
+                  <button class="button clear delete-social-media delete-button" data-id="${_.escape(socialField.key)}" data-type="${_.escape( field )}">
+                      <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
+                  </button>
+                </div>
+            </div>
+            `
+          })
+        } else {
+          html += `<div class="grid-x grid-margin-x social-media-row" data-id="${_.escape(field)}">
+            <div class="cell small-4">
+                ${_.escape( field )}
+            </div>
+            <div class="cell small-8" style="display: flex">
+              ${_.escape(contact[field])}
+            </div>
           </div>
           `
-        })
+        }
 
       }
     })
@@ -999,11 +1011,12 @@ jQuery(document).ready(function($) {
     let socialHTMLField = $(`ul.social`).empty()
     let socialIsEmpty = true
     _.forOwn(contact, ( value, contact_method)=>{
-      if ( contact_method.indexOf("contact_") === 0 && !contact_methods.includes( contact_method )){
+      if ( contact_method.indexOf("contact_") === 0 && !contact_methods.includes( contact_method ) && !contact_method.includes("_details")){
         let fieldDesignator = contact_method.replace('contact_', '')
         let channel = _.get(contactsDetailsWpApiSettings, `channels.${fieldDesignator}`, {})
         let fields = contact[contact_method]
-        fields.forEach(field=>{
+        if ( !Array.isArray(fields) ) { return }
+        ;(fields || []).forEach(field=>{
           socialIsEmpty = false
           let value = _.escape(field.value)
           let validURL = new RegExp(urlRegex).exec(value)
