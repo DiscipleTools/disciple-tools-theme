@@ -673,7 +673,7 @@ jQuery(document).ready(function($) {
   })
 
   let resetDetailsFields = (group=>{
-    $('.title').html(_.escape(group.title))
+    $('.title').html(group.title)
     let contact_methods = ["contact_address"]
     contact_methods.forEach(contact_method=>{
       let fieldDesignator = contact_method.replace('contact_', '')
