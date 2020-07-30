@@ -1019,7 +1019,7 @@ jQuery(document).ready(function($) {
           socialHTMLField.append(`<li class="details-list ${_.escape(contact_method)}">${_.escape(contact_method.split('_')[1] || contact_method)}: ${_.escape(fields)}</li>`)
           return
         }
-        ;(fields || []).forEach(field=>{
+        (fields || []).forEach(field=>{
           socialIsEmpty = false
           let value = _.escape(field.value)
           let validURL = new RegExp(urlRegex).exec(value)
