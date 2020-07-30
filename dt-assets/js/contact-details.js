@@ -1015,8 +1015,11 @@ jQuery(document).ready(function($) {
         let fieldDesignator = contact_method.replace('contact_', '')
         let channel = _.get(contactsDetailsWpApiSettings, `channels.${fieldDesignator}`, {})
         let fields = contact[contact_method]
-        if ( !Array.isArray(fields) ) { return }
-        ;(fields || []).forEach(field=>{
+        if ( !Array.isArray(fields) ) {
+          socialHTMLField.append(`<li class="details-list ${_.escape(contact_method)}">${_.escape(contact_method.split('_')[1] || contact_method)}: ${_.escape(fields)}</li>`)
+          return
+        }
+        (fields || []).forEach(field=>{
           socialIsEmpty = false
           let value = _.escape(field.value)
           let validURL = new RegExp(urlRegex).exec(value)

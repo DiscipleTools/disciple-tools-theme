@@ -153,6 +153,9 @@ class Disciple_Tools_Contacts_Transfer
 
         $post_data = get_post( $contact_id, ARRAY_A );
         $postmeta_data = get_post_meta( $contact_id );
+        if ( isset( $postmeta_data['duplicate_data'] ) ) {
+            unset( $postmeta_data['duplicate_data'] );
+        }
         $contact = Disciple_Tools_Contacts::get_contact( $contact_id );
 
         $args = [
@@ -163,7 +166,6 @@ class Disciple_Tools_Contacts_Transfer
                     'post' => $post_data,
                     'postmeta' => $postmeta_data,
                     'comments' => dt_get_comments_with_redacted_user_data( $contact_id ),
-                    'locations' => $contact['locations'], // @todo remove or rewrite? Because of location_grid upgrade.
                     'people_groups' => $contact['people_groups'],
                     'transfer_foreign_key' => $contact['transfer_foreign_key'] ?? 0,
                 ],
@@ -207,11 +209,16 @@ class Disciple_Tools_Contacts_Transfer
             }
         }
 
+
+        $comment = sprintf( __( 'This contact was transferred to %s for further follow-up.', 'disciple_tools' ), esc_attr( get_the_title( $site_post_id ) ) );
+        if ( isset( $result_body->created_id )){
+            $comment .= ' [link](https://' . $site['url'] . '/contacts/' . esc_attr( $result_body->created_id ) . ')';
+        }
         // add note that the record was transferred
         $time_in_mysql_format = current_time( 'mysql' );
         $comment_result = wp_insert_comment([
             'comment_post_ID' => $contact_id,
-            'comment_content' => sprintf( 'This contact was transferred to %s for further follow-up.', esc_attr( get_the_title( $site_post_id ) ) ),
+            'comment_content' => $comment,
             'comment_type' => '',
             'comment_parent' => 0,
             'user_id' => get_current_user_id(),
@@ -264,9 +271,9 @@ class Disciple_Tools_Contacts_Transfer
         $errors = new WP_Error();
         $site_link_post_id = Site_Link_System::get_post_id_by_site_key( Site_Link_System::decrypt_transfer_token( $params['transfer_token'] ) );
 
-    /**
-     * Insert contact record and meta
-     */
+        /**
+         * Insert contact record and meta
+         */
         // build meta value elements
         foreach ( $contact_data['postmeta'] as $key => $value ) {
             if ( isset( $value[1] ) ) {
@@ -274,7 +281,7 @@ class Disciple_Tools_Contacts_Transfer
                     $lagging_meta_input[] = [ $key => $item ];
                 }
             } else {
-                $meta_input[$key] = $value[0];
+                $meta_input[$key] = maybe_unserialize( $value[0] );
             }
         }
         $post_args['meta_input'] = $meta_input;
@@ -309,16 +316,18 @@ class Disciple_Tools_Contacts_Transfer
         }
 
         // insert lagging post meta
-        foreach ( $lagging_meta_input as $key => $value ) {
-            $meta_id = add_post_meta( $post_id, $key, $value, true );
-            if ( ! $meta_id ) {
-                $errors->add( 'meta_insert_fail', 'Meta data insert fail for "'. $key . '"' );
+        foreach ( $lagging_meta_input as $index => $row ) {
+            foreach ( $row as $key => $value ) {
+                $meta_id = add_post_meta( $post_id, $key, $value, false );
+                if ( !$meta_id ) {
+                    $errors->add( 'meta_insert_fail', 'Meta data insert fail for "'. $key . '"' );
+                }
             }
         }
 
-    /**
-     * Insert comments
-     */
+        /**
+         * Insert comments
+         */
         if ( ! empty( $comment_data ) ) {
             foreach ( $comment_data as $comment ) {
                 // set variables
@@ -370,7 +379,8 @@ class Disciple_Tools_Contacts_Transfer
         return [
             'status' => 'OK',
             'transfer_foreign_key' => $post_args['meta_input']['transfer_foreign_key'],
-            'errors' => $errors
+            'errors' => $errors,
+            'created_id' => $post_id
         ];
     }
 
