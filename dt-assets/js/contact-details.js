@@ -1245,10 +1245,17 @@ jQuery(document).ready(function($) {
           location.reload();
         }
       }).catch(err=>{
-        jQuery('#transfer_spinner').empty().append(err.responseJSON.message).append('&nbsp;' + contactsDetailsWpApiSettings.translations.transfer_error )
-        // jQuery("#errors").empty()
-        console.log("error")
-        console.log(err)
+        // try a second time.
+        API.transfer_contact( contactId, siteId )
+        .then(data=>{
+          if ( data ) {
+            location.reload();
+          }
+        }).catch(err=> {
+          jQuery('#transfer_spinner').empty().append(err.responseJSON.message).append('&nbsp;' + contactsDetailsWpApiSettings.translations.transfer_error)
+          console.log("error")
+          console.log(err)
+        })
       })
   });
 
