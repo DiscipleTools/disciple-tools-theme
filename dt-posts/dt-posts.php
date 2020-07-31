@@ -378,7 +378,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $fields["permalink"] = get_permalink( $post_id );
 
         self::adjust_post_custom_fields( $post_settings, $post_id, $fields );
-        $fields["title"] = $wp_post->post_title;
+        $fields["title"] = str_replace( "&amp;", "&", $wp_post->post_title );
 
         $fields = apply_filters( 'dt_after_get_post_fields_filter', $fields, $post_type );
         wp_cache_set( "post_" . $current_user_id . '_' . $post_id, $fields );
@@ -486,6 +486,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
             self::adjust_post_custom_fields( $post_settings, $record["ID"], $record, $fields_to_return, $all_posts[$record["ID"]] ?? [], $all_post_user_meta[$record["ID"]] ?? [] );
             $record["permalink"] = $site_url . '/' . $post_type .'/' . $record["ID"];
+            $record["post_title"] = str_replace( "&amp;", "&", $record["post_title"] );
         }
         $data["posts"] = $records;
 

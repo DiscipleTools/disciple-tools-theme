@@ -269,6 +269,8 @@ class Disciple_Tools_Posts
             $from_title = $p2p_from["post_title"];
             $to_title = $p2p_to["post_title"];
         }
+        $from_title = str_replace( "&amp;", "&", $from_title );
+        $to_title = str_replace( "&amp;", "&", $to_title );
         $object_note_from = '';
         $object_note_to = '';
 
@@ -1870,7 +1872,7 @@ class Disciple_Tools_Posts
             "post_type" => $post->post_type,
             "post_date_gmt" => $post->post_date_gmt,
             "post_date" => $post->post_date,
-            "post_title" => $post->post_title,
+            "post_title" => str_replace( "&amp;", "&", $post->post_title ),
             "permalink" => get_permalink( $post->ID )
         ];
         if ( $post->post_type === "peoplegroups" ){
