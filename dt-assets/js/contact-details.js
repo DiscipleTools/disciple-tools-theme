@@ -977,7 +977,7 @@ jQuery(document).ready(function($) {
   let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi
   let protocolRegex = /^(?:https?:\/\/)?(?:www.)?/gi
   let resetDetailsFields = (contact=>{
-    $('.title').html(contact.title)
+    $('.title').html(_.replace(_.escape(contact.title), "&amp;", "&"));
     let contact_methods = ["contact_email", "contact_phone", "contact_address"]
     contact_methods.forEach(contact_method=>{
       let fieldDesignator = contact_method.replace('contact_', '')
@@ -1420,7 +1420,7 @@ jQuery(document).ready(function($) {
     html += `<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
       <h5 style='font-weight: bold; color: #3f729b;'>
       <a href="${window.wpApiShare.site_url}/contacts/${_.escape(dupe.ID)}" target=_blank>
-      ${ _.escape(dupe.contact.title) }
+      ${  _.replace(_.escape(contact.title), "&amp;", "&") }
       <span style="font-weight: normal; font-size:16px"> #${dupe.ID} (${_.get(dupe.contact, "overall_status.label") ||""}) </span>
       </a>
     </h5>`
@@ -1489,7 +1489,7 @@ jQuery(document).ready(function($) {
       let original_contact_html = `<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
         <h5 style='font-weight: bold; color: #3f729b;'>
         <a href="${window.wpApiShare.site_url}/contacts/${_.escape(contact.ID)}" target=_blank>
-        ${ _.escape(contact.title) }
+        ${  _.replace(_.escape(contact.title), "&amp;", "&") }
         <span style="font-weight: normal; font-size:16px"> #${contact.ID} (${_.get(contact, "overall_status.label") ||""}) </span>
         </a>
         </h5>`
