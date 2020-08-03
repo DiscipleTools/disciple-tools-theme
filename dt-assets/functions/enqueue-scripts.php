@@ -296,7 +296,7 @@ function dt_site_scripts() {
                 );
             }
 
-            if ( DT_Mapbox_API::get_key() ) {
+            if ( class_exists( "DT_Mapbox_API" ) && DT_Mapbox_API::get_key() ) {
                 DT_Mapbox_API::load_mapbox_header_scripts();
                 DT_Mapbox_API::load_mapbox_search_widget();
             }
@@ -309,7 +309,7 @@ function dt_site_scripts() {
         $dependencies = [ 'jquery', 'jquery-ui', 'lodash', 'moment' ];
         $contact_id = dt_get_associated_user_id( get_current_user_id(), 'user' );
         $contact = [];
-        if ( DT_Mapbox_API::get_key() ) {
+        if ( class_exists( "DT_Mapbox_API" ) && DT_Mapbox_API::get_key() ) {
             DT_Mapbox_API::load_mapbox_header_scripts();
             DT_Mapbox_API::load_mapbox_search_widget_users();
             $dependencies[] = 'mapbox-search-widget';

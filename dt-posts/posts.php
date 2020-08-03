@@ -1783,7 +1783,7 @@ class Disciple_Tools_Posts
             }
         }
 
-        if ( DT_Mapbox_API::get_key() && isset( $fields['location_grid_meta'] ) ) {
+        if ( class_exists( "DT_Mapbox_API" ) && DT_Mapbox_API::get_key() && isset( $fields['location_grid_meta'] ) ) {
             $fields['location_grid'] = [];
             foreach ( $fields['location_grid_meta'] as $meta ) {
                 $fields['location_grid'][] = [

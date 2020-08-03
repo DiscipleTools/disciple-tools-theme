@@ -264,29 +264,29 @@ else {
             /**
              * dt-contacts
              */
-            require_once( get_template_directory() . '/dt-contacts/contacts-post-type.php' );
-            $this->post_types['contacts'] = Disciple_Tools_Contact_Post_Type::instance();
-            require_once( get_template_directory() . '/dt-contacts/contacts.php' );
-            new Disciple_Tools_Contacts();
+//            require_once( get_template_directory() . '/dt-contacts/contacts-post-type.php' );
+//            $this->post_types['contacts'] = Disciple_Tools_Contact_Post_Type::instance();
+//            require_once( get_template_directory() . '/dt-contacts/contacts.php' );
+//            new Disciple_Tools_Contacts();
             require_once( get_template_directory() . '/dt-contacts/contacts-template.php' ); // Functions to support theme
-            require_once( get_template_directory() . '/dt-contacts/contacts-transfer.php' ); // Functions to support theme
-            if ( strpos( $url_path, 'contact' ) !== false ){
-                require_once( get_template_directory() . '/dt-contacts/contacts-endpoints.php' );
-                $this->endpoints['contacts'] = Disciple_Tools_Contacts_Endpoints::instance();
-            }
+//            require_once( get_template_directory() . '/dt-contacts/contacts-transfer.php' ); // Functions to support theme
+//            if ( strpos( $url_path, 'contact' ) !== false ){
+//                require_once( get_template_directory() . '/dt-contacts/contacts-endpoints.php' );
+//                $this->endpoints['contacts'] = Disciple_Tools_Contacts_Endpoints::instance();
+//            }
 
             /**
              * dt-groups
              */
-            require_once( get_template_directory() . '/dt-groups/groups-post-type.php' );
-            $this->post_types['groups'] = Disciple_Tools_Groups_Post_Type::instance();
-            require_once( get_template_directory() . '/dt-groups/groups-template.php' ); // Functions to support theme
-            require_once( get_template_directory() . '/dt-groups/groups.php' );
-            new Disciple_Tools_Groups();
-            if ( strpos( $url_path, 'group' ) !== false ){
-                require_once( get_template_directory() . '/dt-groups/groups-endpoints.php' ); // builds rest endpoints
-                $this->endpoints['groups'] = Disciple_Tools_Groups_Endpoints::instance();
-            }
+//            require_once( get_template_directory() . '/dt-groups/groups-post-type.php' );
+//            $this->post_types['groups'] = Disciple_Tools_Groups_Post_Type::instance();
+//            require_once( get_template_directory() . '/dt-groups/groups-template.php' ); // Functions to support theme
+//            require_once( get_template_directory() . '/dt-groups/groups.php' );
+//            new Disciple_Tools_Groups();
+//            if ( strpos( $url_path, 'group' ) !== false ){
+//                require_once( get_template_directory() . '/dt-groups/groups-endpoints.php' ); // builds rest endpoints
+//                $this->endpoints['groups'] = Disciple_Tools_Groups_Endpoints::instance();
+//            }
             /**
              * dt-mapping
              */
@@ -297,22 +297,22 @@ else {
             /**
              * dt-people-groups
              */
-            require_once( get_template_directory() . '/dt-people-groups/people-groups-post-type.php' );
-            $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
-            require_once( get_template_directory() . '/dt-people-groups/people-groups.php' );
-            if ( strpos( $url_path, 'people-groups' ) !== false ){
-                require_once( get_template_directory() . '/dt-people-groups/people-groups-template.php' );
-                require_once( get_template_directory() . '/dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
-                $this->endpoints['peoplegroups'] = Disciple_Tools_People_Groups_Endpoints::instance();
-            }
+//            require_once( get_template_directory() . '/dt-people-groups/people-groups-post-type.php' );
+//            $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
+//            require_once( get_template_directory() . '/dt-people-groups/people-groups.php' );
+//            if ( strpos( $url_path, 'people-groups' ) !== false ){
+//                require_once( get_template_directory() . '/dt-people-groups/people-groups-template.php' );
+//                require_once( get_template_directory() . '/dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
+//                $this->endpoints['peoplegroups'] = Disciple_Tools_People_Groups_Endpoints::instance();
+//            }
             /**
              * dt-metrics
              */
-            require_once( get_template_directory() . '/dt-metrics/counter.php' );
-            require_once( get_template_directory() . '/dt-metrics/charts-base.php' );
-            if ( strpos( $url_path, 'metrics' ) !== false ) {
-                require_once( get_template_directory() . '/dt-metrics/metrics.php' );
-            }
+//            require_once( get_template_directory() . '/dt-metrics/counter.php' );
+//            require_once( get_template_directory() . '/dt-metrics/charts-base.php' );
+//            if ( strpos( $url_path, 'metrics' ) !== false ) {
+//                require_once( get_template_directory() . '/dt-metrics/metrics.php' );
+//            }
 
             /**
              * dt-users
@@ -322,12 +322,12 @@ else {
             require_once( get_template_directory() . '/dt-users/users-template.php' );
             require_once( get_template_directory() . '/dt-users/users-endpoints.php' );
             $this->endpoints['users'] = new Disciple_Tools_Users_Endpoints();
-            if ( !$is_rest ){
-                require_once( get_template_directory() . '/dt-users/users-product-tour.php' );
-            }
-            require_once( get_template_directory() . '/dt-users/user-management.php' );
-            require_once( get_template_directory() . '/dt-users/hover-coverage-map.php' );
-            require_once( get_template_directory() . '/dt-users/mapbox-coverage-map.php' );
+//            if ( !$is_rest ){
+//                require_once( get_template_directory() . '/dt-users/users-product-tour.php' );
+//            }
+//            require_once( get_template_directory() . '/dt-users/user-management.php' );
+//            require_once( get_template_directory() . '/dt-users/hover-coverage-map.php' );
+//            require_once( get_template_directory() . '/dt-users/mapbox-coverage-map.php' );
 
 
             /**
@@ -362,26 +362,26 @@ else {
             /**
              * Workflows
              */
-            require_once( get_template_directory() . '/dt-workflows/workflows.php' );
-            $this->workflows = Disciple_Tools_Workflows::instance();
+//            require_once( get_template_directory() . '/dt-workflows/workflows.php' );
+//            $this->workflows = Disciple_Tools_Workflows::instance();
 
             /**
              * Network
              */
-            if ( get_option( 'dt_network_enabled' ) ) {
-                require_once( get_template_directory() . '/dt-network/network-endpoints.php' );
-            }
-            require_once( get_template_directory() . '/dt-network/network.php' );
-            require_once( get_template_directory() . '/dt-network/network-queries.php' );
-
-
-            require_once( get_template_directory() . '/dt-core/multisite.php' );
+//            if ( get_option( 'dt_network_enabled' ) ) {
+//                require_once( get_template_directory() . '/dt-network/network-endpoints.php' );
+//            }
+//            require_once( get_template_directory() . '/dt-network/network.php' );
+//            require_once( get_template_directory() . '/dt-network/network-queries.php' );
+//
+//
+//            require_once( get_template_directory() . '/dt-core/multisite.php' );
 
             /**
              * core
              */
-            require_once( get_template_directory() . '/dt-core/core-endpoints.php' );
-            new Disciple_Tools_Core_Endpoints();
+//            require_once( get_template_directory() . '/dt-core/core-endpoints.php' );
+//            new Disciple_Tools_Core_Endpoints();
 
             /**
              * Admin panel
@@ -428,10 +428,10 @@ else {
 
 
                 // Contacts
-                require_once( get_template_directory() . '/dt-contacts/contacts-config.php' );
-                $this->config_contacts = Disciple_Tools_Config_Contacts::instance();
-                require_once( get_template_directory() . '/dt-groups/groups-config.php' );
-                $this->config_groups = Disciple_Tools_Groups_Config::instance();
+//                require_once( get_template_directory() . '/dt-contacts/contacts-config.php' );
+//                $this->config_contacts = Disciple_Tools_Config_Contacts::instance();
+//                require_once( get_template_directory() . '/dt-groups/groups-config.php' );
+//                $this->config_groups = Disciple_Tools_Groups_Config::instance();
 
             }
             /* End Admin configuration section */
