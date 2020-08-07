@@ -79,6 +79,14 @@ class Disciple_Tools_Activity_Log_API {
             $args["user_caps"] = $user->site_key;
         }
 
+        // trim values that are too long.
+        $text_fields = [ 'object_note', 'meta_value', 'old_value', 'action', 'object_type', 'object_subtype', 'object_name' ];
+        foreach ( $text_fields as $field ){
+            if ( isset( $args[$field] ) && strlen( $args[$field] ) >= 250 ) {
+                $args[$field] = is_serialized( $args[$field] ) ? "" : substr( $args[$field], 0, 250 ) . "...";
+            }
+        }
+
         $wpdb->insert(
             $wpdb->dt_activity_log,
             [
