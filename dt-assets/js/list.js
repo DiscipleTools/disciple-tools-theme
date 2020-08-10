@@ -597,7 +597,7 @@
   })
 
   $("#search").on("click", function () {
-    let searchText = _.escape( $("#search-query").val() )
+    let searchText = $("#search-query").val()
     showClosedCheckbox.prop('checked', true)
     let query = {text:searchText, assigned_to:["all"]}
     let labels = [{ id:"search", name:searchText, field: "search"}]
