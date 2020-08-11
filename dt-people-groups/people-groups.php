@@ -345,6 +345,10 @@ class Disciple_Tools_People_Groups
 
         $total_found_posts = $query->found_posts + $meta_query->found_posts;
 
+        $list = array_intersect_key($list, array_unique( array_map( function ( $el ) {
+            return $el['ID'];
+        }, $list ) ) );
+
         return [
         "total" => $total_found_posts,
         "posts" => $list
