@@ -75,7 +75,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         if ( 'custom-fields' == $tab ) :
             $show_add_field = false;
             $field_key = false;
-            $post_type = null;
+            if ( isset( $_POST['field_key'] ) ){
+                $field_key = sanitize_text_field( wp_unslash( $_POST["field_key"] ) ) ?: false;
+            }
+            $post_type = isset( $_POST['post_type'] ) ? sanitize_text_field( wp_unslash( $_POST["post_type"] ) ) : null;
             $this->template( 'begin' );
 
             if ( !empty( $_GET["field-select"] ) ){
@@ -109,10 +112,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     $post_submission[sanitize_text_field( wp_unslash( $key ) )] = sanitize_text_field( wp_unslash( $value ) );
                 }
                 $field_key = $this->process_add_field( $post_submission );
-                if ( $field_key === false ){
-                    $show_add_field = true;
-                }
                 $post_type = $post_submission["post_type"];
+                $show_add_field = $field_key === false;
             }
             /*
              * Process Edit field
@@ -134,7 +135,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
 
 
-            if ( $show_add_field ){
+            if ( empty( $field_key ) && $show_add_field ){
                 $this->box( 'top', __( "Create new field", 'disciple_tools' ) );
                 $this->add_field();
                 $this->box( 'bottom' );
