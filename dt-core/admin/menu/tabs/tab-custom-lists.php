@@ -407,7 +407,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             return strcmp( $a['label'], $b['label'] );
         });
         ?>
-        <form method="post" name="languages_box">
+        <form method="post" name="languages_box" id="languages">
             <input type="hidden" name="languages_box_nonce" value="<?php echo esc_attr( wp_create_nonce( 'languages_box' ) ) ?>" />
             <table class="widefat">
                 <thead>
@@ -423,7 +423,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <tbody>
                 <?php foreach ( $languages as $language_key => $language_option ) :
 
-                    $enabled = !isset( $language_option['enabled'] ) || $language_option['enabled'] !== false; ?>
+                    $enabled = !isset( $language_option['deleted'] ) || $language_option['deleted'] == false; ?>
 
                     <tr>
                         <td><?php echo esc_html( $language_key ) ?></td>
@@ -529,7 +529,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     }
                 }
             }
-            $languages[$language_key]["enabled"] = isset( $_POST["language_enabled"][$language_key] );
+            $languages[$language_key]["deleted"] = !isset( $_POST["language_enabled"][$language_key] );
         }
 
         if ( !empty( $_POST["new_lang_select"] ) ) {

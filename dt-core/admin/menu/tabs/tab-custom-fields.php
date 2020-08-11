@@ -220,10 +220,21 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         }
         $field = $post_fields[$field_key];
 
+        $core_fields = [ "languages" ];
+
         if ( isset( $field["customizable"] ) && $field["customizable"] === false ){
             ?>
             <p>
                 <strong>This field is not customizable</strong>
+            </p>
+            <?php
+            return;
+        }
+
+        if ( in_array( $field_key, $core_fields ) ){
+            ?>
+            <p>
+                <strong>This is a core field. <a href="<?php echo esc_url( admin_url() ) ?>edit.php?page=dt_options&tab=custom-lists#<?php echo esc_attr( $field_key ) ?>"  class="">Go to Custom Lists page to edit.</a></strong>
             </p>
             <?php
             return;
