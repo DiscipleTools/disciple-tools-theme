@@ -4,19 +4,19 @@
 Disciple.Tools software boosts collaboration, clarity, and accountability for disciple and church multiplication movements.
 
 ## Description
-As a contact relationship management (CRM) system it is : 
+As a contact relationship management (CRM) system it is :
 
 - unique – able to track and organize individuals or groups generationally
 - insightful - giving end-to-end dashboards, charts, and maps on contacts, baptisms, groups, churches, and movements
 - secure – restricting database access based on permission levels and specific assignments
-- federated - designed to host how and where you want and inter-link instances as desired 
+- federated - designed to host how and where you want and inter-link instances as desired
 - scalable – relevant for individuals, groups, or movements
-- customizable – highly adaptable through settings, built-in modifications, external plugins, and  requiring low-tech skills 
-- multilingual  – translatable, facilitating cross-cultural collaboration 
-- mobile-friendly - giving full-functionality from a mobile device 
+- customizable – highly adaptable through settings, built-in modifications, external plugins, and  requiring low-tech skills
+- multilingual  – translatable, facilitating cross-cultural collaboration
+- mobile-friendly - giving full-functionality from a mobile device
 - free and open source – created in the WordPress environment and improved by a volunteer community on Github (https://github.com/DiscipleTools/disciple-tools)
 
-The commit team will shape the development of Disciple.Tools, and is currently implementing generational mapping, a mobile app with offline use, and people group tracking. 
+The commit team will shape the development of Disciple.Tools, and is currently implementing generational mapping, a mobile app with offline use, and people group tracking.
 
 ## Purpose
 There needs to exist a simple, low-cost, highly distributable CRM that is tailored to the process of using digital marketing to accelerate disciple making movements. Most CRM solutions are too expensive to be used by small volunteer teams, and they often require significant configuration and development to implement. This project is attempting to make a rapid launch, low cost system that is tailored for movements.
@@ -26,7 +26,7 @@ We are building on the Wordpress platform because of its open-source availabilit
 
 ## Guidebook
 
-Visit our [online guidebook](https://disciple-tools.readthedocs.io/en/latest/index.html)
+Visit our [online guidebook](https://disciple.tools/user-doccs)
 
 
 ## Theme

@@ -151,7 +151,7 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
                         <?php if ( current_user_can( 'manage_dt' ) || current_user_can( 'list_users' ) ) : ?>
                             <li><a href="<?php echo esc_url( site_url( '/user-management/users/' ) ); ?>"><?php esc_html_e( "Users", "disciple_tools" ); ?></a></li>
                         <?php endif; ?>
-                        <li><a href="https://disciple-tools.readthedocs.io/en/latest/index.html" target="_blank" rel="noreferrer"><?php esc_html_e( 'Help', 'disciple_tools' ) ?></a></li>
+                        <li><a href="https://disciple.tools/user-docs" target="_blank" rel="noreferrer"><?php esc_html_e( 'Help', 'disciple_tools' ) ?></a></li>
 
                         <?php do_action( 'dt_settings_menu_post' ) ?>
 
