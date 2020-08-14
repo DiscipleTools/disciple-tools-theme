@@ -85,7 +85,7 @@ declare(strict_types=1);
                 </div>
 
                 <br>
-                <?php do_action('dt_post_contact_list_sidebar' ) ?>
+                <?php do_action( 'dt_post_contact_list_sidebar' ) ?>
 
             </aside>
 
