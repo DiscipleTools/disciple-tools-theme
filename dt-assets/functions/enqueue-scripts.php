@@ -89,7 +89,6 @@ function dt_site_scripts() {
         wp_enqueue_script( 'comment-reply' );
     }
 
-
     global $pagenow;
     if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
         return;
@@ -160,6 +159,10 @@ function dt_site_scripts() {
 
     dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
     dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
+
+    if ( DT_Mapbox_API::get_key() ) {
+        DT_Mapbox_API::load_mapbox_header_scripts();
+    }
 
     $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
     if ( is_singular( $post_types ) ) {
@@ -298,7 +301,6 @@ function dt_site_scripts() {
             }
 
             if ( DT_Mapbox_API::get_key() ) {
-                DT_Mapbox_API::load_mapbox_header_scripts();
                 DT_Mapbox_API::load_mapbox_search_widget();
             }
         }
@@ -311,7 +313,6 @@ function dt_site_scripts() {
         $contact_id = dt_get_associated_user_id( get_current_user_id(), 'user' );
         $contact = [];
         if ( DT_Mapbox_API::get_key() ) {
-            DT_Mapbox_API::load_mapbox_header_scripts();
             DT_Mapbox_API::load_mapbox_search_widget_users();
             $dependencies[] = 'mapbox-search-widget';
             $dependencies[] = 'mapbox-gl';
@@ -389,6 +390,8 @@ function dt_site_scripts() {
             'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
         ) );
     }
+
+
 
     add_action( 'wp_footer', function() {
         if ( WP_DEBUG ){
