@@ -94,7 +94,6 @@
         items = data.posts || []
       }
       window.contact_list = data // adds global access to current list for plugins
-
       $('#load-more').toggle(items.length !== parseInt( data.total ))
       let result_text = wpApiListSettings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", data.total)
       $('.filter-result-text').html(result_text)
