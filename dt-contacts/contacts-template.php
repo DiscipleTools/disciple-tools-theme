@@ -69,9 +69,21 @@ function dt_get_users_shared_with( $contact_id ) {
 function render_field_for_display( $field_key, $fields, $post ){
     if ( isset( $fields[$field_key]["type"] ) ){
         $field_type = $fields[$field_key]["type"];
+        $allowed_types = [ 'key_select', 'multi_select', 'date', 'text', 'number', 'connection', 'location', 'communication_channel' ];
+        if ( !in_array( $field_type, $allowed_types ) ){
+            return;
+        }
         ?>
         <div class="section-subheader">
-            <?php echo esc_html( $fields[$field_key]["name"] )?>
+            <?php if ( isset( $fields[$field_key]["icon"] ) ) : ?>
+                <img src="<?php echo esc_url( $fields[$field_key]["icon"] ) ?>">
+            <?php endif;
+            echo esc_html( $fields[$field_key]["name"] );
+            if ( $field_type === "communication_channel" ) : ?>
+                 <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button" type="button">
+                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
+                </button>
+            <?php endif ?>
         </div>
         <?php
         if ( $field_type === "key_select" ) : ?>
@@ -89,7 +101,7 @@ function render_field_for_display( $field_key, $fields, $post ){
                     <?php
                     $class = ( in_array( $option_key, $post[$field_key] ?? [] ) ) ?
                         "selected-select-button" : "empty-select-button"; ?>
-                    <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( $field_key ) ?>"
+                    <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="<?php echo esc_html( $field_key ) ?>"
                             class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
                         <?php echo esc_html( $fields[$field_key]["default"][$option_key]["label"] ) ?>
                     </button>
@@ -108,7 +120,7 @@ function render_field_for_display( $field_key, $fields, $post ){
                 <input id="<?php echo esc_html( $field_key ) ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off"
                         value="<?php echo esc_html( $post[$field_key]["timestamp"] ?? '' ) ?>" >
                 <div class="input-group-button">
-                    <button id="<?php echo esc_html( $field_key ) ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $field_key ) ?>" title="Delete Date">x</button>
+                    <button id="<?php echo esc_html( $field_key ) ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $field_key ) ?>" title="Delete Date" type="button">x</button>
                 </div>
             </div>
         <?php elseif ( $field_type === "connection" ) :?>
@@ -118,7 +130,9 @@ function render_field_for_display( $field_key, $fields, $post ){
                     <div class="typeahead__container">
                         <div class="typeahead__field">
                             <span class="typeahead__query">
-                                <input class="js-typeahead-<?php echo esc_html( $field_key ) ?>"
+                                <input class="js-typeahead-<?php echo esc_html( $field_key ) ?>" data-field="<?php echo esc_html( $field_key ) ?>"
+                                       data-post_type="<?php echo esc_html( $fields[$field_key]["post_type"] ) ?>"
+                                       data-field_type="connection"
                                        name="<?php echo esc_html( $field_key ) ?>[query]"
                                        placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                        autocomplete="off">
@@ -135,6 +149,8 @@ function render_field_for_display( $field_key, $fields, $post ){
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-location_grid input-height"
+                                       data-field="<?php echo esc_html( $field_key ) ?>"
+                                       data-field_type="location"
                                        name="location_grid[query]"
                                        placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                        autocomplete="off">
@@ -143,6 +159,22 @@ function render_field_for_display( $field_key, $fields, $post ){
                     </div>
                 </div>
             </div>
+        <?php elseif ( $field_type === "communication_channel" ) : ?>
+            <ul id="edit-<?php echo esc_html( $field_key ) ?>" >
+                <?php foreach ( $post[$field_key] ?? [] as $field_value ) : ?>
+                    <input id="<?php echo esc_html( $field_value["key"] ) ?>"
+                           type="text"
+                           data-type="<?php echo esc_html( $field_key ) ?>"
+                           value="<?php echo esc_html( $field_value["value"] ) ?>"
+                           class="dt-communication-channel">
+                <?php endforeach;
+                if ( empty( $post[$field_key] ) ?? [] ): ?>
+                    <input data-type="<?php echo esc_html( $field_key ) ?>"
+                           type="text"
+                           class="dt-communication-channel">
+                <?php endif ?>
+            </ul>
+
         <?php endif;
     }
 }

@@ -320,7 +320,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 if ( $field_type === 'user_select' && ( !is_string( $field_value ) || strpos( $field_value, 'user-' ) !== 0 ) ) {
                     return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
                 }
-                $already_handled = [ "multi_select", "post_user_meta", "location", "location_meta" ];
+                $already_handled = [ "multi_select", "post_user_meta", "location", "location_meta", "communication_channel" ];
                 if ( $field_type && !in_array( $field_type, $already_handled ) ) {
                     update_post_meta( $post_id, $field_key, $field_value );
                 }
@@ -1157,6 +1157,88 @@ class DT_Posts extends Disciple_Tools_Posts {
         ", ARRAY_A );
         //phpcs:enable
 
+    }
+
+
+    public static function get_post_field_settings( $post_type, $load_from_cache = true, $with_deleted_options = false ){
+        $cached = wp_cache_get( $post_type . "_field_settings" );
+        if ( $load_from_cache && $cached ){
+            return $cached;
+        }
+        $fields = [];
+        $fields = apply_filters( 'dt_custom_fields_settings', $fields, $post_type );
+
+        $langs = dt_get_available_languages();
+
+        foreach ( $fields as $field_key => $field ){
+            if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
+                foreach ( $field["default"] as $option_key => $option_value ){
+                    if ( !is_array( $option_value )){
+                        $fields[$field_key]["default"][$option_key] = [ "label" => $option_value ];
+                    }
+                }
+            }
+        }
+        $custom_field_options = dt_get_option( "dt_field_customizations" );
+        if ( isset( $custom_field_options[$post_type] )){
+            foreach ( $custom_field_options[$post_type] as $key => $field ){
+                $field_type = $field["type"] ?? $fields[$key]["type"] ?? "";
+                if ( $field_type ) {
+                    if ( !isset( $fields[ $key ] ) ) {
+                        $fields[ $key ] = $field;
+                    } else {
+                        foreach ( $field as $custom_option_key => $custom_option_value ){
+                            if ( !is_array( $custom_option_value ) && $custom_option_value !== "" ) {
+                                $fields[$key][$custom_option_key] = $custom_option_value;
+                            }
+                        }
+                        if ( $field_type === "key_select" || $field_type === "multi_select" ) {
+                            if ( isset( $field["default"] ) ) {
+                                foreach ( $field["default"] as $custom_key => &$custom_value ) {
+                                    if ( isset( $custom_value["label"] ) && empty( $custom_value["label"] ) ) {
+                                        unset( $custom_value["label"] );
+                                    }
+                                }
+                                $fields[ $key ]["default"] = array_replace_recursive( $fields[ $key ]["default"], $field["default"] );
+                            }
+                        }
+                        foreach ( $langs as $lang => $val ) {
+                            if ( !empty( $field["translations"][$val['language']] ) ) {
+                                $fields[ $key ]["translations"][$val['language']] = $field["translations"][$val['language']];
+                            }
+                        }
+                    }
+                    //set the order of key_select and multiselect fields
+                    if ( $field_type === "key_select" || $field_type === "multi_select" ) {
+                        if ( isset( $field["order"] ) ) {
+                            $with_order = [];
+                            foreach ( $field["order"] as $ordered_key ) {
+                                $with_order[ $ordered_key ] = [];
+                            }
+                            foreach ( $fields[ $key ]["default"] as $option_key => $option_value ) {
+                                $with_order[ $option_key ] = $option_value;
+                            }
+                            $fields[ $key ]["default"] = $with_order;
+                        }
+                    }
+                }
+            }
+        }
+        if ( $with_deleted_options === false ){
+            foreach ( $fields as $field_key => $field ){
+                if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
+                    foreach ( $field["default"] as $option_key => $option_value ){
+                        if ( isset( $option_value["deleted"] ) && $option_value["deleted"] == true ){
+                            unset( $fields[$field_key]["default"][$option_key] );
+                        }
+                    }
+                }
+            }
+        }
+
+        $fields = apply_filters( 'dt_custom_fields_settings_after_combine', $fields, $post_type );
+        wp_cache_set( $post_type . "_field_settings", $fields );
+        return $fields;
     }
 }
 

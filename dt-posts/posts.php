@@ -1126,7 +1126,8 @@ class Disciple_Tools_Posts
         foreach ( $post_settings["channels"] as $channel_key => $channel_value ) {
             $channel_keys[] = "contact_" . $channel_key;
         }
-        return in_array( $key, $post_settings["connection_types"] ) || in_array( $key, $channel_keys );
+        $is_communication_method = isset( $post_settings["fields"][$key]["type"] ) && $post_settings["fields"][$key]["type"] === "communication_channel";
+        return in_array( $key, $post_settings["connection_types"] ) || in_array( $key, $channel_keys ) || $is_communication_method;
     }
 
     /**
@@ -1305,8 +1306,11 @@ class Disciple_Tools_Posts
 
     public static function update_post_contact_methods( array $post_settings, int $post_id, array $fields, array $existing_contact = null ){
         // update contact details (phone, facebook, etc)
-        foreach ( array_keys( $post_settings["channels"] ) as $channel_key ){
-            $details_key = "contact_" . $channel_key;
+        foreach ( $post_settings["fields"] as $field_key => $field_settings ) {
+            if ( $field_settings["type"] !== "communication_channel" ){
+                continue;
+            }
+            $details_key = $field_key;
             $values = [];
             if ( isset( $fields[$details_key] ) && isset( $fields[$details_key]["values"] ) ){
                 $values = $fields[$details_key]["values"];
@@ -1354,7 +1358,7 @@ class Disciple_Tools_Posts
                     //update field
                     $potential_error = self::update_post_contact_method( $post_id, $field["key"], $field );
                 } else if ( isset( $field["value"] ) ) {
-                    $field["key"] = "new-".$channel_key;
+                    $field["key"] = "new-".$details_key;
                     //create field
                     $potential_error = self::add_post_contact_method( $post_settings, $post_id, $field["key"], $field["value"], $field );
 
@@ -1485,11 +1489,13 @@ class Disciple_Tools_Posts
     public static function add_post_contact_method( array $post_settings, int $post_id, string $key, string $value, array $field ) {
 //        @todo permissions
         if ( strpos( $key, "new-" ) === 0 ) {
-            $type = explode( '-', $key )[1];
+            $field_key = explode( '-', $key )[1];
+            $type = str_replace( "contact_", "", $field_key );
+
 
             $new_meta_key = '';
             //check if this is a new field and is in the channel list
-            if ( isset( $post_settings["channels"][ $type ] ) ) {
+            if ( isset( $post_settings["fields"][ $field_key ] ) ) {
                 $new_meta_key = self::create_channel_metakey( $type, "contact" );
             }
             update_post_meta( $post_id, $new_meta_key, $value );
@@ -1693,7 +1699,13 @@ class Disciple_Tools_Posts
         foreach ( $meta_fields as $key => $value ) {
             if ( empty( $fields_to_return ) || in_array( $key, $fields_to_return ) || strpos( $key, "contact_" ) === 0) {
                 //if is contact details and is in a channel
-                if ( strpos( $key, "contact_" ) === 0 && isset( $post_settings["channels"][explode( '_', $key )[1]] ) ) {
+                $key_without_ramdomizers = null;
+                if ( strpos( $key, "contact_" ) === 0 ){
+                    $exploded = explode( '_', $key );
+                    $key_without_ramdomizers = $exploded[0] . '_' . $exploded[1];
+                }
+
+                if ( strpos( $key, "contact_" ) === 0 && isset( $post_settings["fields"][$key_without_ramdomizers] ) ) {
                     if ( strpos( $key, "details" ) === false ) {
                         $type = explode( '_', $key )[1];
                         if ( empty( $fields_to_return ) || in_array( 'contact_' . $type, $fields_to_return ) ) {
