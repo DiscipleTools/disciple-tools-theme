@@ -157,20 +157,24 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         }
         $field_type = "";
         $object_note = '';
-        switch ($parent_post['post_type']) { // get custom fields for post type. Else, skip object note.
-            case 'contacts':
-                $fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( true, $object_id );
-                if (strpos( $meta_key, "quick_button" ) !== false ){
-                    $object_note = $this->_key_name( $meta_key, $fields );
-                }
-                break;
-            case 'groups':
-                $fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
-                break;
-            default:
-                $fields = '';
-                break;
-        }
+        $post_settings = apply_filters( "dt_get_post_type_settings", [], $parent_post['post_type'] );
+        $fields = $post_settings["fields"];
+//        @todo test
+//        switch () {
+//            // get custom fields for post type. Else, skip object note.
+//            case 'contacts':
+//                $fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( true, $object_id );
+//                if (strpos( $meta_key, "quick_button" ) !== false ){
+//                    $object_note = $this->_key_name( $meta_key, $fields );
+//                }
+//                break;
+//            case 'groups':
+//                $fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+//                break;
+//            default:
+//                $fields = '';
+//                break;
+//        }
 
         //build message for verifying and invalidating contact information fields.
         if (strpos( $meta_key, "_details" ) !== false && is_array( $meta_value )) {

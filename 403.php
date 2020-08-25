@@ -13,12 +13,8 @@
                 <section class="entry-content">
                     <p>
                         <?php
-                        $dt_post_type = "item";
-                        if ( is_singular( "contacts" )){
-                            $dt_post_type = Disciple_Tools_Contact_Post_Type::instance()->singular;
-                        } elseif ( is_singular( "groups" )){
-                            $dt_post_type = Disciple_Tools_Groups_Post_Type::instance()->singular;
-                        }
+                        $post_settings = apply_filters( "dt_get_post_type_settings", [],  get_post_type() );
+                        $dt_post_type = $post_settings["singular"] ?: "item";
                         $dt_id = GET_THE_ID();
                         echo sprintf( esc_html__( 'Sorry, you don\'t have permission to view the %1$s with id %2$s.', 'disciple_tools' ), esc_html( $dt_post_type ), esc_html( $dt_id ) ) . ' ';
                         echo esc_html__( 'Request permission from your administrator.', 'disciple_tools' );

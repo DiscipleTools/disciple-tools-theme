@@ -12,22 +12,13 @@ function disciple_tools_top_nav_desktop() {
 
     $tabs = [];
     if ( current_user_can( 'access_contacts' ) ){
-        $tabs = [
-//            [
-//                "link" => site_url( '/contacts/' ),
-//                "label" => __( "Contacts", 'disciple_tools' )
-//            ],
-//            [
-//                "link" => site_url( '/groups/' ),
-//                "label" => __( "Groups", 'disciple_tools' )
-//            ],
-        ];
+        $tabs = [];
     }
     if ( current_user_can( "view_project_metrics" ) || current_user_can( "access_contacts" ) ){
-//        $tabs[] = [
-//            "link" => site_url( '/metrics/' ),
-//            "label" => __( "Metrics", 'disciple_tools' )
-//        ];
+        $tabs[] = [
+            "link" => site_url( '/metrics/' ),
+            "label" => __( "Metrics", 'disciple_tools' )
+        ];
     }
     $tabs = apply_filters( "desktop_navbar_menu_options", $tabs );
 
@@ -59,18 +50,10 @@ function disciple_tools_off_canvas_nav() {
         $tabs = [];
         if ( user_can( get_current_user_id(), 'access_contacts' ) ){
             $tabs = [
-//                [
-//                    "link" => site_url( '/contacts/' ),
-//                    "label" => __( "Contacts", 'disciple_tools' )
-//                ],
-//                [
-//                    "link" => site_url( '/groups/' ),
-//                    "label" => __( "Groups", 'disciple_tools' )
-//                ],
-//                [
-//                    "link" => site_url( '/metrics/' ),
-//                    "label" => __( "Metrics", 'disciple_tools' )
-//                ],
+                [
+                    "link" => site_url( '/metrics/' ),
+                    "label" => __( "Metrics", 'disciple_tools' )
+                ],
             ];
         }
         $tabs = apply_filters( "off_canvas_menu_options", $tabs );

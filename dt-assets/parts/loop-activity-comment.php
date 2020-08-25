@@ -58,8 +58,9 @@
         <div class="cell grid-x" style="margin-bottom: 20px">
             <div class="cell auto">
                 <?php if ( is_singular( "contacts" ) ) :
-                    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true, true );
-                    $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
+                    $contact = DT_Posts::get_post( "contacts", get_the_ID(), true, true );
+                    $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
+                    $contact_fields = $post_settings["fields"];
                     ?>
 
                     <ul class="dropdown menu" data-dropdown-menu style="display: inline-block">

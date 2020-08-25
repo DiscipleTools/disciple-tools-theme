@@ -56,14 +56,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     }
 
     private function get_post_fields( $post_type ){
-        if ( $post_type === "groups" ){
-            return Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( null, null, true, false );
-        } elseif ( $post_type === "contacts" ){
-            return Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( null, null, true, false );
-        } else {
-            $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type, false );
-            return isset( $post_settings["fields"] ) ? $post_settings["fields"] : null;
-        }
+        return DT_Posts::get_post_field_settings( $post_type, false, true );
     }
 
     /**
@@ -139,7 +132,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $this->add_field();
                 $this->box( 'bottom' );
             }
-            if ( $this->get_post_fields( $post_type )[$field_key] && $post_type ){
+            if ( $post_type && $this->get_post_fields( $post_type )[$field_key] ){
                 $this->box( 'top', $this->get_post_fields( $post_type )[$field_key]["name"] );
                 $this->edit_field( $field_key, $post_type );
                 $this->box( 'bottom' );
@@ -154,7 +147,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     private function field_select(){
         global $wp_post_types;
         $select_options = [];
-        $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
+        $post_types = apply_filters( 'dt_registered_post_types', [] );
         foreach ( $post_types as $post_type ){
             $select_options[$post_type] = [];
             $fields = $this->get_post_fields( $post_type );
@@ -229,12 +222,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             return;
         }
 
-        $defaults = [];
-        if ( $post_type === "contacts" ){
-            $defaults = Disciple_Tools_Contact_Post_Type::instance()->get_contact_field_defaults();
-        } elseif ( $post_type === "groups" ){
-            $defaults = Disciple_Tools_Groups_Post_Type::instance()->get_group_field_defaults();
-        }
+        $defaults = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+        DT_Posts::get_post_field_settings( $post_type );
 
         $field_options = $field["default"] ?? [];
 
@@ -595,7 +584,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     private function add_field(){
         global $wp_post_types;
         $tile_options = dt_get_option( "dt_custom_tiles" );
-        $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
+        $post_types = apply_filters( 'dt_registered_post_types', [] );
         foreach ( $post_types as $post_type ){
             $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type );
             if ( !isset( $tile_options[$post_type] ) ){

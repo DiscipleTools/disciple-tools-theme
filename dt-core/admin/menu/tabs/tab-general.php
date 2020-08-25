@@ -73,11 +73,12 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* Site Notifications */
 
-        /* Update Required */
-            $this->box( 'top', 'Update Needed Triggers' );
-            $this->process_update_required();
-            $this->update_required_options();
-            $this->box( 'bottom' );
+            /* Update Required */
+            //@todo reimplement
+//            $this->box( 'top', 'Update Needed Triggers' );
+//            $this->process_update_required();
+//            $this->update_required_options();
+//            $this->box( 'bottom' );
             /* Site Notifications */
 
             /* Update Required */
@@ -340,7 +341,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function update_required_options(){
         $site_options = dt_get_option( 'dt_site_options' );
         $update_required_options = $site_options['update_required']["options"];
-        $field_options = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false )
+        $field_options = DT_Posts::get_post_field_settings( "contacts" );
         ?>
         <h3><?php esc_html_e( "Contacts", 'disciple_tools' ) ?></h3>
         <form method="post" name="update_required-form">

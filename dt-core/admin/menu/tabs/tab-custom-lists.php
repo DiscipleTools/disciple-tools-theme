@@ -72,12 +72,13 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             /* end Worker Profile */
 
 
-            /* Channels */
-            $this->box( 'top', __( 'Contact Communication Channels', 'disciple_tools' ) );
-            $this->process_channels_box();
-            $this->channels_box(); // prints
-            $this->box( 'bottom' );
-            /* end Channels */
+//           @todo reimplement
+//            /* Channels */
+//            $this->box( 'top', __( 'Contact Communication Channels', 'disciple_tools' ) );
+//            $this->process_channels_box();
+//            $this->channels_box(); // prints
+//            $this->box( 'bottom' );
+//            /* end Channels */
 
 
             /* Languages */
