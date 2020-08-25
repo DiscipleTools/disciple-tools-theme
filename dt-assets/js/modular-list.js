@@ -282,16 +282,13 @@
     window.SHAREDFUNCTIONS.save_json_cookie('list_columns', list_columns, list_settings.post_type )
     window.location.reload()
   })
-  $('#sortable-columns').sortable({
-    revert:true,
-  })
 
   $('#records-table').dragableColumns({
     drag: true,
     dragClass: 'drag',
     overClass: 'over',
     movedContainerSelector: '.dnd-moved',
-    onDragEnd: (a, b)=>{
+    onDragEnd: ()=>{
       let list_columns = []
       $('.table-headers th').each((i, e)=>{
         let field = $(e).data('id')
@@ -336,6 +333,10 @@
             } else if ( field_settings.type === "communication_channel" ){
               values_html = field_value.map(v => {
                 return `<li>${_.escape( v.value )}</li>`;
+              }).join('')
+            } else if ( field_settings.type === "connection" ){
+              values_html = field_value.map(v => {
+                return `<li>${_.escape( v.post_title )}</li>`;
               }).join('')
             }
           }

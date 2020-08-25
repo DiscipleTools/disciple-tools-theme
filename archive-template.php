@@ -125,8 +125,6 @@ declare(strict_types=1);
                         <span style="display: inline-block; margin-right:15px; cursor:pointer">
                             <label><input type="checkbox" value="name" checked disabled><?php esc_html_e( 'Name', 'disciple_tools' ); ?></label>
                         </span>
-                        <div id="sortable-columns" style="display:inline-block">
-
                         <?php foreach ( $post_settings["fields"] as $field_key => $field_options ):
                             if ( !empty( $field_options["hidden"] )){
                                 continue;
@@ -142,7 +140,6 @@ declare(strict_types=1);
                                 </label>
                             </span>
                         <?php endforeach; ?>
-                        </div>
                         <button class="button" id="save_column_choices" style="display: block"><?php esc_html_e( 'Apply column selection', 'disciple_tools' ); ?></button>
                     </div>
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>

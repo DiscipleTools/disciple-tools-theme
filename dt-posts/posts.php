@@ -1705,7 +1705,7 @@ class Disciple_Tools_Posts
                     $key_without_ramdomizers = $exploded[0] . '_' . $exploded[1];
                 }
 
-                if ( strpos( $key, "contact_" ) === 0 && isset( $post_settings["fields"][$key_without_ramdomizers] ) ) {
+                if ( strpos( $key, "contact_" ) === 0 && isset( $post_settings["fields"][$key_without_ramdomizers]["type"] ) && $post_settings["fields"][$key_without_ramdomizers]["type"] === "communication_channel" ) {
                     if ( strpos( $key, "details" ) === false ) {
                         $type = explode( '_', $key )[1];
                         if ( empty( $fields_to_return ) || in_array( 'contact_' . $type, $fields_to_return ) ) {
