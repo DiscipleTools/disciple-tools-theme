@@ -15,6 +15,7 @@ if ( !defined( 'ABSPATH' ) ) {
 
 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-general.php' );
 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-lists.php' );
+require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-create.php' );
 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-tiles.php' );
 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-fields.php' );
 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-site-links.php' );

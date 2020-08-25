@@ -77,54 +77,98 @@ declare(strict_types=1);
 
             <main id="main" class="large-9 cell padding-bottom" role="main">
                 <div class="bordered-box">
-                    <div class="section-header" style="display: inline-block">
-                        <span>
+                    <div >
+                        <span class="section-header" style="display: inline-block">
                             <?php esc_html_e( 'Records List', 'disciple_tools' )?>
-                            <span id="list-loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
+                        </span>
+                        <span id="list-loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
+                        <span style="display: inline-block" class="filter-result-text"></span>
+                        <div class="js-sort-dropdown" style="display: inline-block">
+                            <ul class="dropdown menu" data-dropdown-menu>
+                                <li>
+                                    <a href="#"><?php esc_html_e( "Sort", "disciple_tools" ); ?></a>
+                                    <ul class="menu">
+                                        <li>
+                                            <a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="post_date">
+                                                <?php esc_html_e( "Newest", "disciple_tools" ); ?></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="js-sort-by" data-column-index="6" data-order="asc" data-field="post_date">
+                                                <?php esc_html_e( "Oldest", "disciple_tools" ); ?></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="last_modified">
+                                                <?php esc_html_e( "Most recently modified", "disciple_tools" ); ?></a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="js-sort-by" data-column-index="6" data-order="asc" data-field="last_modified">
+                                                <?php esc_html_e( "Least recently modified", "disciple_tools" ); ?></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <span style="display:inline-block">
+                            <button class="button clear" id="choose_list_columns" style="margin:0; padding:0"><?php esc_html_e( 'Columns', 'disciple_tools' ); ?></button>
                         </span>
                     </div>
-                    <p style="display: inline-block" class="filter-result-text"></p>
-                    <div style="display: flex; flex-wrap:wrap;" id="current-filters"></div>
-                    <div class="js-sort-dropdown" style="display: inline-block">
-                        <ul class="dropdown menu" data-dropdown-menu>
-                            <li>
-                                <a href="#"><?php esc_html_e( "Sort", "disciple_tools" ); ?></a>
-                                <ul class="menu">
-                                    <li>
-                                        <a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="post_date">
-                                            <?php esc_html_e( "Newest", "disciple_tools" ); ?></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="js-sort-by" data-column-index="6" data-order="asc" data-field="post_date">
-                                            <?php esc_html_e( "Oldest", "disciple_tools" ); ?></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="last_modified">
-                                            <?php esc_html_e( "Most recently modified", "disciple_tools" ); ?></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="js-sort-by" data-column-index="6" data-order="asc" data-field="last_modified">
-                                            <?php esc_html_e( "Least recently modified", "disciple_tools" ); ?></a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
+                    <div id="list_column_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
+                        <p style="font-weight:bold"><?php esc_html_e( 'Choose which columns to display', 'disciple_tools' ); ?></p>
+                        <?php
+                        $list_columns = [];
+                        if ( isset( $_COOKIE["list_columns"] ) ) {
+                            $list_columns = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE["list_columns"] ) ) ) );
+                            if ( $list_columns ){
+                                $list_columns = dt_sanitize_array_html( $list_columns );
+                            }
+                        } ?>
+                        <span style="display: inline-block; margin-right:15px; cursor:pointer">
+                            <label><input type="checkbox" value="name" checked disabled><?php esc_html_e( 'Name', 'disciple_tools' ); ?></label>
+                        </span>
+                        <div id="sortable-columns" style="display:inline-block">
+
+                        <?php foreach ( $post_settings["fields"] as $field_key => $field_options ):
+                            if ( !empty( $field_options["hidden"] )){
+                                continue;
+                            }
+                            ?>
+                            <span style="display:inline-block" class="">
+                                <label style="margin-right:15px; cursor:pointer">
+                                    <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
+                                           <?php echo esc_html( in_array( $field_key, $list_columns ) ? "checked" : '' ); ?>
+                                           <?php echo esc_html( !empty( $field_options["show_in_table"] ) ? "disabled checked" : '' ); ?>
+                                           style="margin:0">
+                                    <?php echo esc_html( $field_options["name"] ); ?>
+                                </label>
+                            </span>
+                        <?php endforeach; ?>
+                        </div>
+                        <button class="button" id="save_column_choices" style="display: block"><?php esc_html_e( 'Apply column selection', 'disciple_tools' ); ?></button>
                     </div>
+                    <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
 
                     <div>
                         <table class="table-remove-top-border js-list stack striped" id="records-table">
                             <thead>
-                                <tr class="sortable">
-                                    <th></th>
-                                    <th class="all" data-id="name"><?php esc_html_e( "Name", "disciple_tools" ); ?></th>
-                                    <?php foreach ( $field_options as $field_key => $field_value ){
-                                        if ( isset( $field_value["show_in_table"] ) && $field_value["show_in_table"] ) : ?>
+                                <tr class="table-headers dnd-moved ">
+                                    <th style="width:32px; background-image:none; cursor:default"></th>
+
+                                    <?php $columns = [];
+                                    foreach ( $post_settings["fields"] as $field_key => $field_value ){
+                                        if ( ( isset( $field_value["show_in_table"] ) && $field_value["show_in_table"] ) ){
+                                            $columns[] = $field_key;
+                                        }
+                                    }
+                                    $columns = array_unique( array_merge( $list_columns, $columns ) );
+                                    foreach ( $columns as $field_key ):
+                                        if ( $field_key === "name" ): ?>
+                                            <th class="all" data-id="name"><?php esc_html_e( "Name", "disciple_tools" ); ?></th>
+                                        <?php elseif ( isset( $post_settings["fields"][$field_key]["name"] ) ) : ?>
                                             <th class="all" data-id="<?php echo esc_html( $field_key ) ?>">
-                                                <?php echo esc_html( $field_value["name"] ) ?>
+                                                <?php echo esc_html( $post_settings["fields"][$field_key]["name"] ) ?>
                                             </th>
                                         <?php endif;
-                                    }
-                                    ?>
+                                    endforeach ?>
                                 </tr>
                             </thead>
                             <tbody id="table-content">

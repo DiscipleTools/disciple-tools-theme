@@ -212,3 +212,17 @@ table.js-list{
 .group-status--inactive_church    { color: #F43636; }
 .group-status--inactive_group     { color: #F43636; }
 .group-status--inactive_pre_group { color: #F43636; }
+
+
+#table-content {
+    tr {
+        cursor: pointer;
+        ul {
+            list-style: none;
+            margin:0
+        }
+    }
+    tr:hover{
+        background-color: #ecf5fc
+    }
+}

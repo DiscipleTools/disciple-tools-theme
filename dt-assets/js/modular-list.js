@@ -14,6 +14,7 @@
   let loading_spinner = $("#list-loading-spinner")
   let old_filters = JSON.stringify(list_settings.filters)
   let table_header_row = $('.js-list thead .sortable th')
+  let list_columns = window.SHAREDFUNCTIONS.get_json_cookie( 'list_columns', [] )
 
   let items = []
   try {
@@ -38,6 +39,8 @@
       fields_to_show_in_table.push(field_key)
     }
   })
+  fields_to_show_in_table = _.uniq(_.union(list_columns,fields_to_show_in_table))
+
 
   //open the filter tabs
   $(`#list-filter-tabs [data-id='${_.escape( current_filter.tab )}'] a`).click()
@@ -88,7 +91,7 @@
         <a href="#" class="accordion-title">
           ${_.escape(tab.label)}
           <span class="tab-count-span" data-tab="${_.escape(tab.key)}">
-              ${tab.count || tab.count >= 0 ? `(${_.escape(tab.count)})`: ``} 
+              ${tab.count || tab.count >= 0 ? `(${_.escape(tab.count)})`: ``}
           </span>
         </a>
         <div class="accordion-content" data-tab-content>
@@ -230,7 +233,7 @@
     currentFilters.html(html)
   }
 
-  
+
   let sort_field = _.get( current_filter, "query.sort", "name" )
   //reset sorting in table header
   table_header_row.removeClass("sorting_asc")
@@ -239,7 +242,7 @@
   header_cell.addClass(`sorting_${ sort_field.startsWith('-') ? 'desc' : 'asc'}`)
   table_header_row.data("sort", '')
   header_cell.data("sort", 'asc')
-  
+
   $('.js-sort-by').on("click", function () {
     table_header_row.removeClass("sorting_asc")
     table_header_row.removeClass("sorting_desc")
@@ -268,17 +271,55 @@
     get_records(0, id)
   })
 
+  $('#choose_list_columns').on('click', function(){
+    $('#list_column_picker').toggle()
+  })
+  $('#save_column_choices').on('click', function(){
+    let list_columns = [];
+    $('#list_column_picker input:checked').each((index, elem)=>{
+      list_columns.push($(elem).val())
+    })
+    window.SHAREDFUNCTIONS.save_json_cookie('list_columns', list_columns, list_settings.post_type )
+    window.location.reload()
+  })
+  $('#sortable-columns').sortable({
+    revert:true,
+  })
+
+  $('#records-table').dragableColumns({
+    drag: true,
+    dragClass: 'drag',
+    overClass: 'over',
+    movedContainerSelector: '.dnd-moved',
+    onDragEnd: (a, b)=>{
+      let list_columns = []
+      $('.table-headers th').each((i, e)=>{
+        let field = $(e).data('id')
+        if ( field ){
+          list_columns.push(field)
+        }
+      })
+      window.SHAREDFUNCTIONS.save_json_cookie('list_columns', list_columns, list_settings.post_type )
+    }
+  }).on('click', 'tr', function(){
+    window.location = $(this).data('link')
+  })
+
+
   let build_table = (records)=>{
     let table_rows = ``
-
     records.forEach( ( record, index )=>{
       let row_fields_html = ''
-      _.forOwn( list_settings.post_type_settings.fields, (field_settings, field_key)=>{
-        if ( _.get( field_settings, 'show_in_table' ) === true ) {
+      fields_to_show_in_table.forEach(field_key=>{
+        let values_html = '';
+        if ( field_key === "name" ){
+            values_html = `<a href="${ _.escape( record.permalink ) }">${ _.escape( record.post_title ) }</a>`
+        } else if ( list_settings.post_type_settings.fields[field_key] ) {
+          let field_settings = list_settings.post_type_settings.fields[field_key]
           let field_value = _.get( record, field_key, false )
-          let values_html = '';
+
           if ( field_value !== false ) {
-            if (field_settings.type === 'text') {
+            if (['text', 'number'].includes(field_settings.type)) {
               values_html = _.escape(field_value)
             } else if (field_settings.type === 'date') {
               values_html = _.escape(field_value.formatted)
@@ -292,22 +333,24 @@
               values_html = field_value.map(v => {
                 return `<li>${_.escape( v.label )}</li>`;
               }).join('')
+            } else if ( field_settings.type === "communication_channel" ){
+              values_html = field_value.map(v => {
+                return `<li>${_.escape( v.value )}</li>`;
+              }).join('')
             }
           }
-
-          row_fields_html += `
-            <td>
-              <ul style="margin: 0; list-style: none">
-                ${values_html}
-              </ul>
-            </td>
-          `
         }
+        row_fields_html += `
+          <td>
+            <ul>
+              ${values_html}
+            </ul>
+          </td>
+        `
       })
 
-      table_rows += `<tr>
-        <td>${index+1}.</td>
-        <td><a href="${ _.escape( record.permalink ) }">${ _.escape( record.post_title ) }</a></td>
+      table_rows += `<tr class="dnd-moved" data-link="${_.escape(record.permalink)}">
+        <td style="white-space: nowrap" >${index+1}.</td>
         ${ row_fields_html }
       `
     })
@@ -862,3 +905,4 @@
 
 
 })(window.jQuery, window.list_settings, window.Foundation);
+

@@ -109,7 +109,7 @@ $post_settings = apply_filters( "dt_get_post_type_settings", [], $dt_post_type )
 
 
             API.create_post( '<?php echo esc_html( $dt_post_type ) ?>', new_contact).promise().then(function(data) {
-                // window.location = data.permalink;
+                window.location = data.permalink;
             }).catch(function(error) {
                 $(".js-create-post-button").removeClass("loading").addClass("alert");
                 $(".js-create-post").append(
