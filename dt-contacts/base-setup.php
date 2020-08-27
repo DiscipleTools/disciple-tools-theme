@@ -12,13 +12,13 @@ class DT_Contacts_Base {
     public function __construct() {
         add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
         add_action( 'p2p_init', [ $this, 'p2p_init' ] );
-        add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 10, 2 );
+        add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
 
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 10, 2 );
-        add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
         add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
+
     }
 
 
@@ -163,37 +163,16 @@ class DT_Contacts_Base {
         );
     }
 
-    public function dt_details_additional_section_ids( $sections, $post_type = "" ){
-        if ( $post_type === "contacts"){
-            $sections[] = 'faith';
-            $sections[] = 'other';
+    public function dt_details_additional_tiles( $tiles, $post_type = "" ){
+        if ( $post_type === "contacts" ){
+            $tiles["faith"] = [
+                "label" => __( "Faith", 'disciple_tools' )
+            ];
+            $tiles["other"] = [ "label" => __( "Faith", 'disciple_tools' ) ];
         }
-        return $sections;
+        return $tiles;
     }
 
-    public function dt_details_additional_section( $section, $post_type ){
-        if ($section == "faith" && $post_type === "contacts"){
-            $post_type = get_post_type();
-            $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
-            $dt_post = DT_Posts::get_post( $post_type, get_the_ID() );
-            ?>
-            <h3 class="section-header">
-                <?php esc_html_e( 'Faith', 'disciple_tools' )?>
-                <button class="section-chevron chevron_down">
-                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                </button>
-                <button class="section-chevron chevron_up">
-                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
-                </button>
-            </h3>
-            <div class="section-body">
-                <?php render_field_for_display( 'milestones', $post_settings["fields"], $dt_post ) ?>
-            </div>
-
-        <?php }
-
-
-    }
 
     private function update_contact_counts( $contact_id, $action = "added", $type = 'contacts' ){
 

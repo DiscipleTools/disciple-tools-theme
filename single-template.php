@@ -97,32 +97,19 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                     <div class="cell small-12">
                         <div class="grid-x grid-margin-x grid-margin-y grid">
                             <?php
-                            //get sections added by plugins
-                            $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type );
-                            //get custom sections
-                            $custom_tiles = dt_get_option( "dt_custom_tiles" );
-                            foreach ( $custom_tiles[$post_type] ?? [] as $tile_key => $tile_options ){
-                                if ( !in_array( $tile_key, $sections ) ){
-                                    $sections[] = $tile_key;
+                            $tiles = DT_Posts::get_post_tiles( $post_type );
+                            foreach ( $tiles as $tile_key => $tile_options ){
+                                if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ) {
+                                    continue;
                                 }
-                                //remove section if hidden
-                                if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
-                                    $index = array_search( $tile_key, $sections );
-                                    if ( $index !== false) {
-                                        unset( $sections[ $index ] );
-                                    }
-                                }
-                            }
-
-                            foreach ( $sections as $section ){
                                 ?>
-                                <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
-                                    <div class="bordered-box">
+                                <section id="<?php echo esc_html( $tile_key ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
+                                    <div class="bordered-box" id="<?php echo esc_html( $tile_key ) ?>-tile">
                                         <?php
                                         //setup tile label if see by customizations
-                                        if ( isset( $custom_tiles[$post_type][$section]["label"] ) ){ ?>
+                                        if ( isset( $tile_options["label"] ) ){ ?>
                                             <h3 class="section-header">
-                                                <?php echo esc_html( $custom_tiles[$post_type][$section]["label"] )?>
+                                                <?php echo esc_html( $tile_options["label"] )?>
                                                 <button class="section-chevron chevron_down">
                                                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                                                 </button>
@@ -133,15 +120,15 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                             </h3>
                                         <?php }
                                         // let the plugin add section content
-                                        do_action( "dt_details_additional_section", $section, $post_type );
+                                        do_action( "dt_details_additional_section", $tile_key, $post_type );
 
                                         ?>
                                         <div class="section-body">
                                             <?php
                                             //setup the order of the tile fields
-                                            $order = $custom_tiles[$post_type][$section]["order"] ?? [];
+                                            $order = $tile_options["order"] ?? [];
                                             foreach ( $post_settings["fields"] as $key => $option ){
-                                                if ( isset( $option["tile"] ) && $option["tile"] === $section ){
+                                                if ( isset( $option["tile"] ) && $option["tile"] === $tile_key ){
                                                     if ( !in_array( $key, $order )){
                                                         $order[] = $key;
                                                     }
@@ -153,7 +140,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                                 }
 
                                                 $field = $post_settings["fields"][$field_key];
-                                                if ( isset( $field["tile"] ) && $field["tile"] === $section){
+                                                if ( isset( $field["tile"] ) && $field["tile"] === $tile_key){
                                                     render_field_for_display( $field_key, $post_settings["fields"], $dt_post );
                                                 }
                                             }

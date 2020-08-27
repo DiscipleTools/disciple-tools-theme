@@ -33,14 +33,14 @@ class Disciple_Tools_Tab_Custom_Create extends Disciple_Tools_Abstract_Menu_Base
     } // End __construct()
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'Custom Create', 'disciple_tools' ), __( 'Custom Create', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=custom-create', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_options', __( 'Create Form Fields', 'disciple_tools' ), __( 'Create Form Fields', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=custom-create', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
     }
 
     public function add_tab( $tab ) {
         ?>
         <a href="<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_options&tab=custom-create"
            class="nav-tab <?php echo esc_html( $tab == 'custom-create' ? 'nav-tab-active' : '' ) ?>">
-            <?php echo esc_html__( 'Custom Create' ) ?>
+            <?php echo esc_html__( 'Create Form Fields' ) ?>
         </a>
         <?php
     }
