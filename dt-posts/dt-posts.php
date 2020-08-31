@@ -736,7 +736,14 @@ class DT_Posts extends Disciple_Tools_Posts {
             "comment_ID" => $comment_id,
             "comment_type" => $comment_type
         ];
-        return wp_update_comment( $comment );
+        $update = wp_update_comment( $comment );
+        if ( $update === 1 ){
+            return $comment_id;
+        } else if ( is_wp_error( $update )) {
+              return $update;
+        } else {
+            return new WP_Error( __FUNCTION__, "Error updating comment with id: " . $comment_id, [ 'status' => 500 ] );
+        }
     }
 
     public static function delete_post_comment( int $comment_id, bool $check_permissions = true ){
