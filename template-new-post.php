@@ -22,19 +22,17 @@ $post_settings = apply_filters( "dt_get_post_type_settings", [], $dt_post_type )
 
             <div class="large-8 medium-12 small-12 cell">
                 <form class="js-create-post bordered-box">
-                    <label for="title">
-                        <?php esc_html_e( "Name", "disciple_tools" ); ?>
-                    </label>
-                    <input name="title" type="text" placeholder="<?php echo esc_html_x( "Name", 'input field placeholder', 'disciple_tools' ); ?>" required aria-describedby="name-help-text">
-                    <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
-
                     <?php foreach ( $post_settings["fields"] as $field_key => $field_settings ) {
                         if ( !empty( $field_settings['in_create_form'] ) ) {
                             render_field_for_display( $field_key, $post_settings['fields'], [] );
+                            if ( isset( $field_settings["required"] ) && $field_settings["required"] === true ) { ?>
+                                <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
+                            <?php }
                         }
                     } ?>
                     <div style="text-align: center">
-                        <button class="button loader js-create-post-button" type="submit" disabled><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
+                        <a href="<?php echo esc_html( get_site_url() . "/" . $dt_post_type )?>" class="button small clear"><?php echo esc_html__( 'Cancel', 'disciple_tools' )?></a>
+                        <button class="button loader js-create-post-button dt-green" type="submit" disabled><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
                     </div>
                 </form>
 

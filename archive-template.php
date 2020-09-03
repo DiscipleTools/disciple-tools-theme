@@ -125,8 +125,8 @@ declare(strict_types=1);
                         <span style="display: inline-block; margin-right:15px; cursor:pointer">
                             <label><input type="checkbox" value="name" checked disabled><?php esc_html_e( 'Name', 'disciple_tools' ); ?></label>
                         </span>
-                        <?php foreach ( $post_settings["fields"] as $field_key => $field_options ):
-                            if ( !empty( $field_options["hidden"] )){
+                        <?php foreach ( $post_settings["fields"] as $field_key => $field_values ):
+                            if ( !empty( $field_values["hidden"] )){
                                 continue;
                             }
                             ?>
@@ -134,9 +134,9 @@ declare(strict_types=1);
                                 <label style="margin-right:15px; cursor:pointer">
                                     <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
                                            <?php echo esc_html( in_array( $field_key, $list_columns ) ? "checked" : '' ); ?>
-                                           <?php echo esc_html( !empty( $field_options["show_in_table"] ) ? "disabled checked" : '' ); ?>
+                                           <?php echo esc_html( !empty( $field_values["show_in_table"] ) ? "disabled checked" : '' ); ?>
                                            style="margin:0">
-                                    <?php echo esc_html( $field_options["name"] ); ?>
+                                    <?php echo esc_html( $field_values["name"] ); ?>
                                 </label>
                             </span>
                         <?php endforeach; ?>
@@ -199,7 +199,7 @@ declare(strict_types=1);
                     <?php $fields = [];
                     $allowed_types = [ "multi_select", "key_select", "boolean", "date", "location", "connection" ];
                     foreach ( $field_options as $field_key => $field){
-                        if ( $field_key && in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
+                        if ( $field_key && in_array( $field["type"] ?? "", $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
                             $fields[] = $field_key;
                         }
                     }

@@ -123,8 +123,9 @@ class Disciple_Tools_Tab_Custom_Create extends Disciple_Tools_Abstract_Menu_Base
     private function edit_create_fields( $post_type ){
         $fields = DT_Posts::get_post_field_settings( $post_type, false );
 
-        $tiles = apply_filters( 'dt_details_additional_section_ids', [ 'details' ], $post_type );
-        $tiles[] = "no_tile";
+        $tile_options = DT_Posts::get_post_tiles( $post_type );
+        $tile_options["details"] = [ "label" => "Details" ];
+        $tile_options["no_tile"] = [ "label" => "No Tile" ];
         foreach ( $fields as $field_key => &$field_value ) {
             if ( !isset( $field_value["tile"] ) && ( !isset( $field_value["hidden"] ) || $field_value["hidden"] === false ) ){
                 $field_value['tile'] = "no_tile";
@@ -141,15 +142,15 @@ class Disciple_Tools_Tab_Custom_Create extends Disciple_Tools_Abstract_Menu_Base
             <input type="hidden" name="create_fields_edit_nonce" id="create_fields_edit_nonce" value="<?php echo esc_attr( wp_create_nonce( 'create_fields_edit' ) ) ?>" />
 
             <div style="display:flex; flex-wrap:wrap">
-            <?php foreach ( $tiles as $tile ) :
+            <?php foreach ( $tile_options as $tile_key => $tile) :
                 $index = 0;
                 ?>
                 <div style="flex-basis:20%">
                     <div style="border:1px solid;margin:10px; padding:10px;">
-                        <h3><?php echo esc_html( $tile ); ?></h3>
+                        <h3><?php echo esc_html( $tile["label"] ?? $tile_key ); ?></h3>
                         <div>
                             <?php foreach ( $fields as $field_key => $field_settings ):
-                                if ( ( $field_settings["tile"] ?? "" ) === $tile ) :
+                                if ( ( $field_settings["tile"] ?? "" ) === $tile_key ) :
                                     $index++;?>
                                     <div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between">
                                         <span><?php echo esc_html( $index ); ?>.</span>

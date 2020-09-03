@@ -8,70 +8,7 @@
 
 function dt_my_connection_types() {
 
-    /**
-     * Contact Coaching field
-     */
-    p2p_register_connection_type(
-        [
-            'name'        => 'contacts_to_contacts',
-            'from'        => 'contacts',
-            'to'          => 'contacts',
-            'admin_box' => [
-                'show' => false,
-            ],
-            'title'       => [
-                'from' => __( 'Coached by', 'disciple_tools' ),
-                'to'   => __( 'Coaching', 'disciple_tools' ),
-            ]
-        ]
-    );
 
-    /**
-     * Contact Connection or Relation
-     */
-    p2p_register_connection_type(
-        [
-            'name'        => 'contacts_to_relation',
-            'from'        => 'contacts',
-            'to'          => 'contacts'
-        ]
-    );
-
-    /**
-     * Contact Sub-assigned to
-     */
-    p2p_register_connection_type(
-        [
-            'name'        => 'contacts_to_subassigned',
-            'from'        => 'contacts',
-            'to'          => 'contacts',
-            'admin_box' => [
-                'show' => false,
-            ],
-            'title'       => [
-                'from' => __( 'Sub-assigned by', 'disciple_tools' ),
-                'to'   => __( 'Sub-assigned', 'disciple_tools' ),
-            ]
-        ]
-    );
-
-    /**
-     * Contact Baptism Field
-     */
-    p2p_register_connection_type(
-        [
-            'name'        => 'baptizer_to_baptized',
-            'from'        => 'contacts',
-            'to'          => 'contacts',
-            'admin_box' => [
-                'show' => false,
-            ],
-            'title'       => [
-                'from' => __( 'Baptized by', 'disciple_tools' ),
-                'to'   => __( 'Baptized', 'disciple_tools' ),
-            ]
-        ]
-    );
 
     /**
      * Contact People Groups
@@ -89,23 +26,6 @@ function dt_my_connection_types() {
     );
 
 
-    /**
-     * Group members field
-     */
-    p2p_register_connection_type(
-        [
-            'name'           => 'contacts_to_groups',
-            'from'           => 'contacts',
-            'to'             => 'groups',
-            'admin_box' => [
-                'show' => false,
-            ],
-            'title'          => [
-                'from' => __( 'Contacts', 'disciple_tools' ),
-                'to'   => __( 'Members', 'disciple_tools' ),
-            ]
-        ]
-    );
     /**
      * Group leaders field
      */

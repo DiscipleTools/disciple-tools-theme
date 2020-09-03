@@ -379,7 +379,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $fields["permalink"] = get_permalink( $post_id );
 
         self::adjust_post_custom_fields( $post_settings, $post_id, $fields );
-        $fields["title"] = $wp_post->post_title;
+        $fields["name"] = $wp_post->post_title;
 
         $fields = apply_filters( 'dt_after_get_post_fields_filter', $fields, $post_type );
         wp_cache_set( "post_" . $current_user_id . '_' . $post_id, $fields );
@@ -1266,6 +1266,12 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !isset( $tile_options[$post_type][$section_id] ) ) {
                 $tile_options[$post_type][$section_id] = [];
             }
+        }
+        //tile available on all records
+        if ( !isset( $tile_options[$post_type]["details"] ) ) {
+            $tile_options[$post_type]["details"] = [
+                "label" => "Details"
+            ];
         }
         return $tile_options[$post_type];
     }

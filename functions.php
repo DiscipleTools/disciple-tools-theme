@@ -273,7 +273,7 @@ else {
             /**
              * dt-groups
              */
-//            require_once( get_template_directory() . '/dt-groups/groups.php' );
+            require_once( get_template_directory() . '/dt-groups/groups.php' );
 //            new Disciple_Tools_Groups();
 //            if ( strpos( $url_path, 'group' ) !== false ){
 //                require_once( get_template_directory() . '/dt-groups/groups-endpoints.php' ); // builds rest endpoints

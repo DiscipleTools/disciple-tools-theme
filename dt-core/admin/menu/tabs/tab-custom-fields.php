@@ -228,14 +228,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         $field_options = $field["default"] ?? [];
 
         $first = true;
-        $tile_options = dt_get_option( "dt_custom_tiles" );
-        $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type );
-        if ( !isset( $tile_options[$post_type] ) ){
-            $tile_options[$post_type] = [];
-        }
-        foreach ( $sections as $section_id ){
-            $tile_options[$post_type][$section_id] = [];
-        }
+        $tile_options = DT_Posts::get_post_tiles( $post_type );
 
         $langs = dt_get_available_languages();
         ?>
@@ -280,7 +273,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <?php if ( !isset( $defaults[$field_key] ) ) : ?>
                             <select name="tile_select">
                                 <option><?php esc_html_e( "No tile / hidden", 'disciple_tools' ) ?></option>
-                                <?php foreach ( $tile_options[$post_type] as $tile_key => $tile_option ) :
+                                <?php foreach ( $tile_options as $tile_key => $tile_option ) :
                                     $select = isset( $field["tile"] ) && $field["tile"] === $tile_key;
                                     ?>
                                     <option value="<?php echo esc_html( $tile_key ) ?>" <?php echo esc_html( $select ? "selected" : "" )?>>
@@ -583,16 +576,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
     private function add_field(){
         global $wp_post_types;
-        $tile_options = dt_get_option( "dt_custom_tiles" );
         $post_types = apply_filters( 'dt_registered_post_types', [] );
+        $tile_options = [];
         foreach ( $post_types as $post_type ){
-            $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type );
-            if ( !isset( $tile_options[$post_type] ) ){
-                $tile_options[$post_type] = [];
-            }
-            foreach ( $sections as $section_id ){
-                $tile_options[$post_type][$section_id] = [];
-            }
+            $tile_options[ $post_type ] = DT_Posts::get_post_tiles( $post_type );
         }
 
         ?>
