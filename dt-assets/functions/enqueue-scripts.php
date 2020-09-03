@@ -73,7 +73,7 @@ function dt_site_scripts() {
     // phpcs:ignore WordPress.WP.EnqueuedResourceParameters
     wp_enqueue_style( 'jquery-ui-site-css', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css', array(), '', 'all' );
     wp_deregister_script( 'jquery' );
-    wp_register_script( 'jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js', false, '3.5.0' );
+    wp_register_script( 'jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js', false, '3.5.1' );
     wp_enqueue_script( 'jquery' );
     wp_register_script( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', false, '1.12.1' );
     wp_enqueue_script( 'jquery-ui' );
@@ -139,7 +139,8 @@ function dt_site_scripts() {
                 'showing_x_items' => _x( 'Showing %s items', 'Showing 30 items', 'disciple_tools' ),
                 'showing_x_items_matching' => _x( 'Showing %1$s items matching %2$s', 'Showing 30 items matching bob', 'disciple_tools' ),
             ],
-            'post_type' => $post_type ? $post_type : $url_path
+            'post_type' => $post_type ? $post_type : $url_path,
+            'url_path' => $url_path
         )
     );
 
@@ -160,7 +161,11 @@ function dt_site_scripts() {
     dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
     dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
 
-    $post_types = apply_filters( 'dt_registered_post_types', [] );
+    if ( DT_Mapbox_API::get_key() ) {
+        DT_Mapbox_API::load_mapbox_header_scripts();
+    }
+
+    $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
     if ( is_singular( $post_types ) ) {
         $post = DT_Posts::get_post( get_post_type(), get_the_ID() );
         if ( !is_wp_error( $post )){
@@ -245,8 +250,7 @@ function dt_site_scripts() {
                 'duplicates_on' => __( "Duplicates on: %s", 'disciple_tools' ),
             ];
 
-            if ( class_exists( "DT_Mapbox_API" ) && DT_Mapbox_API::get_key() ) {
-                DT_Mapbox_API::load_mapbox_header_scripts();
+            if ( DT_Mapbox_API::get_key() ) {
                 DT_Mapbox_API::load_mapbox_search_widget();
             }
         }
@@ -258,8 +262,7 @@ function dt_site_scripts() {
         $dependencies = [ 'jquery', 'jquery-ui', 'lodash', 'moment' ];
         $contact_id = dt_get_associated_user_id( get_current_user_id(), 'user' );
         $contact = [];
-        if ( class_exists( "DT_Mapbox_API" ) && DT_Mapbox_API::get_key() ) {
-            DT_Mapbox_API::load_mapbox_header_scripts();
+        if ( DT_Mapbox_API::get_key() ) {
             DT_Mapbox_API::load_mapbox_search_widget_users();
             $dependencies[] = 'mapbox-search-widget';
             $dependencies[] = 'mapbox-gl';

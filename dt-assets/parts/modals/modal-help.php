@@ -470,7 +470,7 @@
             <!-- documentation link -->
             <div class="help-more">
                 <h5><?php echo esc_html_x( "Need more help?", 'Optional Documentation', 'disciple_tools' ) ?></h5>
-                <a class="button small" id="docslink" href="https://disciple-tools.readthedocs.io/en/latest/index.html"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
+                <a class="button small" id="docslink" href="https://disciple.tools/user-docs"><?php echo esc_html_x( 'Read the documentation', 'Optional Documentation', 'disciple_tools' )?></a>
             </div>
         </div>
         <button class="close-button" data-close aria-label="Close modal" type="button">

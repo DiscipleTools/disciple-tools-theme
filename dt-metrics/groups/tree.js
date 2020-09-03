@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-  if ('/metrics/groups/tree' === window.location.pathname || '/metrics/groups/tree/' === window.location.pathname  ) {
+  if ( window.wpApiShare.url_path.startsWith( 'metrics/groups/tree' ) ) {
     project_group_tree()
   }
 
@@ -54,7 +54,7 @@ function open_modal_details( id ) {
       // console.log(data)
       if( data ) {
         let list = '<dt>'+_.escape( translations.members )+'</dt><ul>'
-        jQuery.each(data.members, function(i, v)  { list += `<li><a href="/contacts/${_.escape( data.members[i].ID )}">${_.escape( data.members[i].post_title )}</a></li>` } )
+        jQuery.each(data.members, function(i, v)  { list += `<li><a href="${_.escape(window.wpApiShare.site_url)}/contacts/${_.escape( data.members[i].ID )}">${_.escape( data.members[i].post_title )}</a></li>` } )
         list += '</ul>'
         modal.empty().append(`
           <div class="grid-x">
@@ -67,7 +67,7 @@ function open_modal_details( id ) {
                       ${list}
                   </dl>
               </div>
-              <div class="cell center"><hr><a href="/groups/${_.escape( id )}">${translations.view_group /*View Group*/}</a></div>
+              <div class="cell center"><hr><a href="${_.escape(window.wpApiShare.site_url)}/groups/${_.escape( id )}">${translations.view_group /*View Group*/}</a></div>
           </div>
           <button class="close-button" data-close aria-label="Close modal" type="button">
               <span aria-hidden="true">&times;</span>
