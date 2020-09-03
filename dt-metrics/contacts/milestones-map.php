@@ -163,7 +163,7 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
         //     'key'   => 'churches',
         //     'label' => __( 'Churches', 'disciple_tools' )
         // ];
-        $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $field_settings = DT_Posts::get_post_field_settings( "contacts" );
         $milestones_options = $field_settings["milestones"]["default"];
         foreach ( $milestones_options as $option_key => $option_value ){
             $column_labels[] = [

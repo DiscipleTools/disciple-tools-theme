@@ -1,8 +1,8 @@
 "use strict";
 jQuery(document).ready(function($) {
-  let post_id = detailsSettings.post_id
-  let post_type = detailsSettings.post_type
-  let post = detailsSettings.post_fields
+  let post_id = window.detailsSettings.post_id
+  let post_type = window.detailsSettings.post_type
+  let post = window.detailsSettings.post_fields
   let rest_api = window.API
   let typeaheadTotals = {}
 
@@ -52,21 +52,6 @@ jQuery(document).ready(function($) {
     })
   })
 
-   /**
-   * .DT - baptism date  management
-   * - check for the right location
-   * - save and/or clear date value, even if member leaves it blank
-   */
-
-  $('.dt_date_picker').each(function( index ) {
-    if (this.value && moment.unix(this.value).isValid()
-    ) {
-      if (document.querySelector('#group-details-edit-modal') && document.querySelector('#group-details-edit-modal').contains( this)) {
-      } else {
-        this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
-      }
-    }
-  });
 
   $('.dt_date_picker').datepicker({
     constrainInput: false,
@@ -92,6 +77,10 @@ jQuery(document).ready(function($) {
     changeMonth: true,
     changeYear: true,
     yearRange: "1900:2050",
+  }).each(function() {
+    if (this.value && moment.unix(this.value).isValid()) {
+      this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
+    }
   })
 
 
@@ -241,7 +230,7 @@ jQuery(document).ready(function($) {
     })
   })
 
-  $('.dt_location_grid').each((key, el)=> {
+  $('.dt_location_grid').each(()=> {
     let field_id = 'location_grid'
     $.typeahead({
       input: '.js-typeahead-location_grid',

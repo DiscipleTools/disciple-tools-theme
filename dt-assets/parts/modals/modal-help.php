@@ -1,8 +1,8 @@
 <div class="reveal" id="help-modal" data-reveal>
     <?php
-    $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+    $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
     $contact_channels = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
-    $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+    $group_fields = DT_Posts::get_post_field_settings( "groups" );
     $group_channels = Disciple_Tools_Groups_Post_Type::instance()->get_channels_list();
     /**
      * Contact Record

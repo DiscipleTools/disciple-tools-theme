@@ -64,6 +64,10 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( !$continue ){
             return new WP_Error( __FUNCTION__, "Could not create this post. Maybe it already exists", [ 'status' => 409 ] );
         }
+
+        //get extra fields and defaults
+        $fields = apply_filters( "dt_post_create_fields", $fields, $post_type );
+
         //set title
         if ( !isset( $fields ["title"] ) ) {
             return new WP_Error( __FUNCTION__, "title needed", [ 'fields' => $fields ] );
@@ -90,9 +94,6 @@ class DT_Posts extends Disciple_Tools_Posts {
                 return new WP_Error( __FUNCTION__, "'notes' field expected to be an array" );
             }
         }
-
-        //get extra fields and defaults
-        $fields = apply_filters( "dt_post_create_fields", $fields, $post_type );
 
         $allowed_fields = apply_filters( "dt_post_create_allow_fields", [], $post_type );
         $bad_fields = self::check_for_invalid_post_fields( $post_settings, $fields, $allowed_fields );
@@ -1274,6 +1275,20 @@ class DT_Posts extends Disciple_Tools_Posts {
             ];
         }
         return $tile_options[$post_type];
+    }
+
+//    @todo
+    public function dt_get_custom_channels_translation( $channel_list ) {
+        if (is_admin()) {
+            return $channel_list;
+        }
+        $user_locale = get_user_locale();
+        foreach ( $channel_list as $channel_key => $channel_value ) {
+            if ( !empty( $channel_value["translations"][$user_locale] ) ) {
+                $channel_list[$channel_key]["label"] = $channel_value["translations"][$user_locale];
+            }
+        }
+        return $channel_list;
     }
 }
 

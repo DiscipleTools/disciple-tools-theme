@@ -264,7 +264,7 @@ else {
              */
             require_once( get_template_directory() . '/dt-contacts/contacts.php' );
 
-//            require_once( get_template_directory() . '/dt-contacts/contacts-transfer.php' ); // Functions to support theme
+            require_once( get_template_directory() . '/dt-contacts/contacts-transfer.php' ); // Functions to support theme
 //            if ( strpos( $url_path, 'contact' ) !== false ){
 //                require_once( get_template_directory() . '/dt-contacts/contacts-endpoints.php' );
 //                $this->endpoints['contacts'] = Disciple_Tools_Contacts_Endpoints::instance();

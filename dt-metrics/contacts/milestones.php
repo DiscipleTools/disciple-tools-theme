@@ -136,7 +136,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
             GROUP BY log.meta_value
         ", $start, $end ), ARRAY_A );
 
-        $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $field_settings = DT_Posts::get_post_field_settings( "contacts" );
         $milestones_options = $field_settings["milestones"]["default"];
         $milestones_data = [];
 

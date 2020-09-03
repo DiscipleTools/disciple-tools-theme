@@ -21,6 +21,7 @@ class DT_Contacts_Base {
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
 
         // hooks
+        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
         add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
         add_filter( "dt_post_update_fields", [ $this, "update_post_field_hook" ], 10, 3 );
@@ -93,64 +94,6 @@ class DT_Contacts_Base {
 
 
 
-            $fields['location_grid'] = [
-                'name'        => __( 'Locations', 'disciple_tools' ),
-                'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
-                'type'        => 'location',
-                'default'     => [],
-                "in_create_form" => true,
-                "tile" => "details",
-                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg",
-            ];
-            $fields['location_grid_meta'] = [
-                'name'        => 'Location Grid Meta', //system string does not need translation
-                'type'        => 'location_meta',
-                'default'     => [],
-                'hidden' => true
-            ];
-
-
-//            $fields['quick_button_no_answer'] = [
-//                'name'        => __( 'No Answer', 'disciple_tools' ),
-//                'description' => '',
-//                'type'        => 'number',
-//                'default'     => 0,
-//                'section'     => 'quick_buttons',
-//                'icon'        => get_template_directory_uri() . "/dt-assets/images/no-answer.svg",
-//            ];
-//            $fields['quick_button_contact_established'] = [
-//                'name'        => __( 'Contact Established', 'disciple_tools' ),
-//                'description' => '',
-//                'type'        => 'number',
-//                'default'     => 0,
-//                'section'     => 'quick_buttons',
-//                'icon'        => get_template_directory_uri() . "/dt-assets/images/successful-conversation.svg",
-//            ];
-//            $fields['quick_button_meeting_scheduled'] = [
-//                'name'        => __( 'Meeting Scheduled', 'disciple_tools' ),
-//                'description' => '',
-//                'type'        => 'number',
-//                'default'     => 0,
-//                'section'     => 'quick_buttons',
-//                'icon'        => get_template_directory_uri() . "/dt-assets/images/meeting-scheduled.svg",
-//            ];
-//            $fields['quick_button_meeting_complete'] = [
-//                'name'        => __( 'Meeting Complete', 'disciple_tools' ),
-//                'description' => '',
-//                'type'        => 'number',
-//                'default'     => 0,
-//                'section'     => 'quick_buttons',
-//                'icon'        => get_template_directory_uri() . "/dt-assets/images/meeting-complete.svg",
-//            ];
-//            $fields['quick_button_no_show'] = [
-//                'name'        => __( 'Meeting No-show', 'disciple_tools' ),
-//                'description' => '',
-//                'type'        => 'number',
-//                'default'     => 0,
-//                'section'     => 'quick_buttons',
-//                'icon'        => get_template_directory_uri() . "/dt-assets/images/no-show.svg",
-//            ];
-
             $fields['tags'] = [
                 'name'        => __( 'Tags', 'disciple_tools' ),
                 'description' => _x( 'A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags.', 'Optional Documentation', 'disciple_tools' ),
@@ -183,26 +126,7 @@ class DT_Contacts_Base {
                 "p2p_key" => "contacts_to_relation",
                 "tile" => "other"
             ];
-            $fields["groups"] = [
-                "name" => __( "Groups", 'disciple_tools' ),
-                "description" => _x( "Groups this contact is a member of.", 'Optional Documentation', 'disciple_tools' ),
-                "type" => "connection",
-                "post_type" => "groups",
-                "p2p_direction" => "from",
-                "p2p_key" => "contacts_to_groups",
-                "tile" => "other",
-                'icon' => get_template_directory_uri() . "/dt-assets/images/group-type.svg",
-            ];
-            $fields["subassigned"] = [
-                "name" => __( "Sub-assigned to", 'disciple_tools' ),
-                "description" => __( "Contact or User assisting the Assigned To user to follow up with the contact.", 'disciple_tools' ),
-                "type" => "connection",
-                "post_type" => "contacts",
-                "p2p_direction" => "to",
-                "p2p_key" => "contacts_to_subassigned",
-                "tile" => "other",
-                'icon' => get_template_directory_uri() . "/dt-assets/images/subassigned.svg",
-            ];
+
             $fields['tasks'] = [
                 'name' => __( 'Tasks', 'disciple_tools' ),
                 'type' => 'post_user_meta',
@@ -252,28 +176,39 @@ class DT_Contacts_Base {
                     $fields['contact_' . $channel_key] = $field;
                 }
             }
+            $fields['location_grid'] = [
+                'name'        => __( 'Locations', 'disciple_tools' ),
+                'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
+                'type'        => 'location',
+                'default'     => [],
+                "in_create_form" => true,
+                "tile" => "details",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg",
+            ];
+            $fields['location_grid_meta'] = [
+                'name'        => 'Location Grid Meta', //system string does not need translation
+                'type'        => 'location_meta',
+                'default'     => [],
+                'hidden' => true
+            ];
+            $fields['gender'] = [
+                'name'        => __( 'Gender', 'disciple_tools' ),
+                'type'        => 'key_select',
+                'default'     => [
+                    'not-set' => [ "label" => '' ],
+                    'male'    => [ "label" => __( 'Male', 'disciple_tools' ) ],
+                    'female'  => [ "label" => __( 'Female', 'disciple_tools' ) ],
+                ],
+                'tile'     => 'details',
+                "icon" => get_template_directory_uri() . "/dt-assets/images/gender.svg",
+            ];
+
+
         }
-
-
-        $fields['gender'] = [
-            'name'        => __( 'Gender', 'disciple_tools' ),
-            'type'        => 'key_select',
-            'default'     => [
-                'not-set' => [ "label" => '' ],
-                'male'    => [ "label" => __( 'Male', 'disciple_tools' ) ],
-                'female'  => [ "label" => __( 'Female', 'disciple_tools' ) ],
-            ],
-            'tile'     => 'details',
-            "icon" => get_template_directory_uri() . "/dt-assets/images/gender.svg",
-        ];
-
-
-
         return $fields;
     }
 
     public static function get_channels_list() {
-//        @todo remove extra channels
         $channel_list = [
             "phone"     => [
                 "label" => __( 'Phone', 'disciple_tools' ),
@@ -356,23 +291,7 @@ class DT_Contacts_Base {
                 'to'          => 'contacts'
             ]
         );
-        /**
-         * Contact Sub-assigned to
-         */
-        p2p_register_connection_type(
-            [
-                'name'        => 'contacts_to_subassigned',
-                'from'        => 'contacts',
-                'to'          => 'contacts',
-                'admin_box' => [
-                    'show' => false,
-                ],
-                'title'       => [
-                    'from' => __( 'Sub-assigned by', 'disciple_tools' ),
-                    'to'   => __( 'Sub-assigned', 'disciple_tools' ),
-                ]
-            ]
-        );
+
     }
 
     public function dt_details_additional_tiles( $tiles, $post_type = "" ){
@@ -475,6 +394,66 @@ class DT_Contacts_Base {
                 <?php
                 get_template_part( 'dt-assets/parts/merge', 'details' );
             }
+        }
+    }
+
+
+
+    public function add_api_routes() {
+        $namespace = "dt-posts/v2";
+        register_rest_route(
+            $namespace, '/contact/transfer', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'contact_transfer' ],
+            ]
+        );
+        register_rest_route(
+            $namespace, '/contact/receive-transfer', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'receive_transfer' ],
+            ]
+        );
+    }
+    public function contact_transfer( WP_REST_Request $request ){
+
+        if ( ! ( current_user_can( 'view_any_contacts' ) || current_user_can( 'manage_dt' ) ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions' );
+        }
+
+        $params = $request->get_params();
+        if ( ! isset( $params['contact_id'] ) || ! isset( $params['site_post_id'] ) ){
+            return new WP_Error( __METHOD__, "Missing required parameters.", [ 'status' => 400 ] );
+        }
+
+        return Disciple_Tools_Contacts_Transfer::contact_transfer( $params['contact_id'], $params['site_post_id'] );
+
+    }
+
+    public function receive_transfer( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if ( ! current_user_can( 'create_contacts' ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions' );
+        }
+
+        if ( isset( $params['contact_data'] ) ) {
+            $result = Disciple_Tools_Contacts_Transfer::receive_transferred_contact( $params );
+            if ( is_wp_error( $result ) ) {
+                return [
+                    'status' => 'FAIL',
+                    'error' => $result->get_error_message(),
+                ];
+            } else {
+                return [
+                    'status' => 'OK',
+                    'error' => $result['errors'],
+                    'created_id' => $result['created_id'],
+                ];
+            }
+        } else {
+            return [
+                'status' => 'FAIL',
+                'error' => 'Missing required parameter'
+            ];
         }
     }
 }

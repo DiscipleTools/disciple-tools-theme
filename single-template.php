@@ -30,8 +30,13 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
     ?>
     <div id="content" class="single-template">
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
+
+            <?php do_action( 'dt_record_top_full_with', $post_type, $dt_post ) ?>
+
             <main id="main" class="large-7 medium-12 small-12 cell" role="main" style="padding:0">
                 <div class="cell grid-y grid-margin-y">
+
+                    <?php do_action( 'dt_record_top_above_details', $post_type, $post_id ); ?>
 
                     <!--
                         Status section

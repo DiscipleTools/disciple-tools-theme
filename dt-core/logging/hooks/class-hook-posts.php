@@ -157,8 +157,8 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         }
         $field_type = "";
         $object_note = '';
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], $parent_post['post_type'] );
-        $fields = $post_settings["fields"];
+        $fields = DT_Posts::get_post_field_settings( $parent_post['post_type'] );
+
 //        @todo test
 //        switch () {
 //            // get custom fields for post type. Else, skip object note.
@@ -169,7 +169,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 //                }
 //                break;
 //            case 'groups':
-//                $fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+//                $fields = DT_Posts::get_post_field_settings( "groups" );
 //                break;
 //            default:
 //                $fields = '';

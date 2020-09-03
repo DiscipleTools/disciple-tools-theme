@@ -84,12 +84,7 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'contact_transfer' ],
             ]
         );
-        register_rest_route(
-            $namespace, '/contacts/(?P<id>\d+)/revert/(?P<activity_id>\d+)', [
-                "methods"  => "GET",
-                "callback" => [ $this, 'revert_activity' ],
-            ]
-        );
+
         register_rest_route(
             $namespace, '/contacts/(?P<id>\d+)/accept', [
                 "methods"  => "POST",
@@ -165,20 +160,6 @@ class Disciple_Tools_Contacts_Endpoints
         return false;
     }
 
-    public function contact_transfer( WP_REST_Request $request ){
-
-        if ( ! ( current_user_can( 'view_any_contacts' ) || current_user_can( 'manage_dt' ) ) ) {
-            return new WP_Error( __METHOD__, 'Insufficient permissions' );
-        }
-
-        $params = $request->get_params();
-        if ( ! isset( $params['contact_id'] ) || ! isset( $params['site_post_id'] ) ){
-            return new WP_Error( __METHOD__, "Missing required parameters.", [ 'status' => 400 ] );
-        }
-
-        return Disciple_Tools_Contacts_Transfer::contact_transfer( $params['contact_id'], $params['site_post_id'] );
-
-    }
 
     public function public_contact_transfer( WP_REST_Request $request ){
 

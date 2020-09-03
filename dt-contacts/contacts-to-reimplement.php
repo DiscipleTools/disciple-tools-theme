@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * Class Disciple_Tools_Contacts
  */
-class Disciple_Tools_Contacts extends Disciple_Tools_Posts
+class Disciple_Tools_Contacts_Dead extends Disciple_Tools_Posts
 {
 
     /**
@@ -104,58 +104,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
     }
 
-    //add the required fields to the DT_Post::create_contact() function
-    public function update_post_field_hook( $fields, $post_type, $post_id ){
-        if ( $post_type === "contacts" ){
-            if ( isset( $fields["assigned_to"] ) ) {
-                if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
-                    $user = get_user_by( "email", $fields["assigned_to"] );
-                    if ( $user ) {
-                        $fields["assigned_to"] = $user->ID;
-                    } else {
-                        return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
-                    }
-                }
-                //make sure the assigned to is in the right format (user-1)
-                if ( is_numeric( $fields["assigned_to"] ) ||
-                     strpos( $fields["assigned_to"], "user" ) === false ){
-                    $fields["assigned_to"] = "user-" . $fields["assigned_to"];
-                }
-                $existing_contact = DT_Posts::get_post( 'contacts', $post_id, true, false );
-                if ( !isset( $existing_contact["assigned_to"] ) || $fields["assigned_to"] !== $existing_contact["assigned_to"]["assigned-to"] ){
-                    $user_id = explode( '-', $fields["assigned_to"] )[1];
-                    if ( !isset( $fields["overall_status"] ) ){
-                        if ( $user_id != get_current_user_id() ){
-                            if ( current_user_can( "assign_any_contacts" ) ) {
-                                $fields["overall_status"] = 'assigned';
-                            }
-                            $fields['accepted'] = false;
-                        } elseif ( isset( $existing_contact["overall_status"]["key"] ) && $existing_contact["overall_status"]["key"] === "assigned" ) {
-                            $fields["overall_status"] = 'active';
-                        }
-                    }
-                    if ( $user_id ){
-                        DT_Posts::add_shared( "contacts", $post_id, $user_id, null, false, true, false );
-                    }
-                }
-            }
-            if ( isset( $fields["seeker_path"] ) ){
-                self::update_quick_action_buttons( $post_id, $fields["seeker_path"] );
-            }
-            foreach ( $fields as $field_key => $value ){
-                if ( strpos( $field_key, "quick_button" ) !== false ){
-                    self::handle_quick_action_button_event( $post_id, [ $field_key => $value ] );
-                }
-            }
-            if ( isset( $fields["overall_status"], $fields["reason_paused"] ) && $fields["overall_status"] === "paused"){
-                $fields["requires_update"] = false;
-            }
-            if ( isset( $fields["overall_status"], $fields["reason_closed"] ) && $fields["overall_status"] === "closed"){
-                $fields["requires_update"] = false;
-            }
-        }
-        return $fields;
-    }
 
     public function post_updated_hook( $post_type, $post_id, $update_query, $previous_values, $new_values ){
         if ( $post_type === 'contacts' ){
@@ -217,23 +165,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
 
-    //check to see if the contact is marked as needing an update
-    //if yes: mark as updated
-    private static function check_requires_update( $contact_id ){
-        if ( get_current_user_id() ){
-            $requires_update = get_post_meta( $contact_id, "requires_update", true );
-            if ( $requires_update == "yes" || $requires_update == true || $requires_update == "1"){
-                //don't remove update needed if the user is a dispatcher (and not assigned to the contacts.)
-                if ( self::can_view_all( 'contacts' ) ){
-                    if ( dt_get_user_id_from_assigned_to( get_post_meta( $contact_id, "assigned_to", true ) ) === get_current_user_id() ){
-                        update_post_meta( $contact_id, "requires_update", false );
-                    }
-                } else {
-                    update_post_meta( $contact_id, "requires_update", false );
-                }
-            }
-        }
-    }
 
 
     /**
@@ -243,104 +174,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return bool|int|WP_Error
      */
     public static function revert_activity( $contact_id, $activity_id ){
-        if ( !self::can_update( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
-        }
-        $activity = self::get_single_activity( $contact_id, $activity_id );
-        if ( empty( $activity->old_value ) ){
-            if ( strpos( $activity->meta_key, "quick_button_" ) !== false ){
-                $activity->old_value = 0;
-            }
-        }
-        update_post_meta( $contact_id, $activity->meta_key, $activity->old_value ?? "" );
-        return self::get_contact( $contact_id );
-    }
-
-
-
-    /**
-     * @param int    $contact_id
-     * @param string $path_option
-     * @param bool   $check_permissions
-     *
-     * @return array|int|WP_Error
-     */
-    public static function update_seeker_path( int $contact_id, string $path_option, $check_permissions = true ) {
-        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
-        $seeker_path_options = $contact_fields["seeker_path"]["default"];
-        $option_keys = array_keys( $seeker_path_options );
-        $current_seeker_path = get_post_meta( $contact_id, "seeker_path", true );
-        $current_index = array_search( $current_seeker_path, $option_keys );
-        $new_index = array_search( $path_option, $option_keys );
-        if ( $new_index > $current_index ) {
-            $current_index = $new_index;
-            $update = self::update_contact( $contact_id, [ "seeker_path" => $path_option ], $check_permissions );
-            if ( is_wp_error( $update ) ) {
-                return $update;
-            }
-            $current_seeker_path = $path_option;
-        }
-
-        return [
-            "currentKey" => $current_seeker_path,
-            "current" => $seeker_path_options[ $option_keys[ $current_index ] ],
-            "next"    => isset( $option_keys[ $current_index + 1 ] ) ? $seeker_path_options[ $option_keys[ $current_index + 1 ] ] : "",
-        ];
 
     }
 
-    public static function update_quick_action_buttons( $contact_id, $seeker_path ){
-        if ( $seeker_path === "established" ){
-            $quick_button = get_post_meta( $contact_id, "quick_button_contact_established", true );
-            if ( empty( $quick_button ) || $quick_button == "0" ){
-                update_post_meta( $contact_id, "quick_button_contact_established", "1" );
-            }
-        }
-        if ( $seeker_path === "scheduled" ){
-            $quick_button = get_post_meta( $contact_id, "quick_button_meeting_scheduled", true );
-            if ( empty( $quick_button ) || $quick_button == "0" ){
-                update_post_meta( $contact_id, "quick_button_meeting_scheduled", "1" );
-            }
-        }
-        if ( $seeker_path === "met" ){
-            $quick_button = get_post_meta( $contact_id, "quick_button_meeting_complete", true );
-            if ( empty( $quick_button ) || $quick_button == "0" ){
-                update_post_meta( $contact_id, "quick_button_meeting_complete", "1" );
-            }
-        }
-        self::check_requires_update( $contact_id );
-    }
 
-    /**
-     * @param int   $contact_id
-     * @param array $field
-     * @param bool  $check_permissions
-     *
-     * @return array|int|WP_Error
-     */
-    private static function handle_quick_action_button_event( int $contact_id, array $field, bool $check_permissions = true ) {
-        $update = [];
-        $key = key( $field );
-
-        if ( $key == "quick_button_no_answer" ) {
-            $update["seeker_path"] = "attempted";
-        } elseif ( $key == "quick_button_phone_off" ) {
-            $update["seeker_path"] = "attempted";
-        } elseif ( $key == "quick_button_contact_established" ) {
-            $update["seeker_path"] = "established";
-        } elseif ( $key == "quick_button_meeting_scheduled" ) {
-            $update["seeker_path"] = "scheduled";
-        } elseif ( $key == "quick_button_meeting_complete" ) {
-            $update["seeker_path"] = "met";
-        }
-
-        if ( isset( $update["seeker_path"] ) ) {
-            self::check_requires_update( $contact_id );
-            return self::update_seeker_path( $contact_id, $update["seeker_path"], $check_permissions );
-        } else {
-            return $contact_id;
-        }
-    }
 
     public function dt_comment_created( $post_type, $post_id, $comment_id, $type ){
         if ( $post_type === "contacts" ){
@@ -452,7 +289,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( isset( $contact["seeker_path"]["key"] ) && $contact["seeker_path"]["key"] != "none" ){
             $current_key = $contact["seeker_path"]["key"];
             $prev_key = isset( $previous_values["seeker_path"]["key"] ) ? $previous_values["seeker_path"]["key"] : "none";
-            $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+            $field_settings = DT_Posts::get_post_field_settings( "contacts" );
             $seeker_path_options = $field_settings["seeker_path"]["default"];
             $option_keys = array_keys( $seeker_path_options );
             $current_index = array_search( $current_key, $option_keys );

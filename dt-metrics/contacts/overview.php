@@ -55,7 +55,7 @@ class DT_Metrics_Contacts_Overview extends DT_Metrics_Chart_Base
     }
 
     public function data() {
-        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
         return [
             'translations' => [
                 'title_contact_overview' => __( 'Contacts Overview', 'disciple_tools' ),
@@ -115,7 +115,7 @@ class DT_Metrics_Contacts_Overview extends DT_Metrics_Chart_Base
 
         $query_results = [];
 
-        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
         $seeker_path_options = $contact_fields["seeker_path"]["default"];
 
         foreach ( $seeker_path_options as $seeker_path_key => $seeker_path_option ){
