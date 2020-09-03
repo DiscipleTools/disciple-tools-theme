@@ -1887,7 +1887,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <p>Thank you for completing this important step in using D.T.</p>
                         <p>This tool is to help you migrate from the old locations system, to the new one that uses the <a target="_blank" href="https://github.com/DiscipleTools/location-grid-project">LOCATION GRID PROJECT</a> as it's base.</p>
                         <p>You may wish to select a <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=focus' ) ) ?>">mapping focus</a> to narrow the options given.</p>
-                        <p>Click <a target="_blank" href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/admin.html#mapping">here</a> for a detailed explanation on the locations system and instructions on how to use this tool</p>
+                        <p>Click <a target="_blank" href="https://disciple.tools/user-docs/getting-started-info/admin/mapping/">here</a> for a detailed explanation on the locations system and instructions on how to use this tool</p>
                         <h1>Instructions</h1>
                         <p>1. Select the corresponding Grid Location for the old location. If you choose a wrong location, click "World" to undo it.</p>
                         <p>2. Then click click one of the two options:</p>

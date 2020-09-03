@@ -737,7 +737,14 @@ class DT_Posts extends Disciple_Tools_Posts {
             "comment_ID" => $comment_id,
             "comment_type" => $comment_type
         ];
-        return wp_update_comment( $comment );
+        $update = wp_update_comment( $comment );
+        if ( $update === 1 ){
+            return $comment_id;
+        } else if ( is_wp_error( $update )) {
+              return $update;
+        } else {
+            return new WP_Error( __FUNCTION__, "Error updating comment with id: " . $comment_id, [ 'status' => 500 ] );
+        }
     }
 
     public static function delete_post_comment( int $comment_id, bool $check_permissions = true ){
@@ -780,7 +787,11 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $response_body = [];
         foreach ( $comments as $comment ){
-            $url = !empty( $comment->comment_author_url ) ? $comment->comment_author_url : get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
+            if ( $comment->comment_author_url ){
+                $url = str_replace( "&amp;", "&", $comment->comment_author_url );
+            } else {
+                $url = get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
+            }
             $c = [
                 "comment_ID" => $comment->comment_ID,
                 "comment_author" => !empty( $display_name ) ? $display_name : $comment->comment_author,
@@ -796,7 +807,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             $response_body[] =$c;
         }
 
-        $response_body = apply_filters( "dt_filter_post_comments", $response_body );
+        $response_body = apply_filters( "dt_filter_post_comments", $response_body, $post_type, $post_id );
 
         return [
             "comments" => $response_body,

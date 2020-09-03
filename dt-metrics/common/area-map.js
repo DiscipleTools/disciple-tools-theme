@@ -479,7 +479,7 @@ jQuery(document).ready(function() {
                 let level_list = jQuery('#'+level)
                 level_list.empty()
                 jQuery.each(list_by_grid, function(i,v) {
-                  level_list.append(`<div class="cell"><a href="/${_.escape( window.post_type )}/${_.escape( v.post_id )}">${_.escape( v.post_title ) }</a></div>`)
+                  level_list.append(`<div class="cell"><a href="${_.escape(window.wpApiShare.site_url)}/${_.escape( window.post_type )}/${_.escape( v.post_id )}">${_.escape( v.post_title ) }</a></div>`)
                 })
               }
 

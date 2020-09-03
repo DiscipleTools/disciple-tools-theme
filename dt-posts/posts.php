@@ -487,11 +487,11 @@ class Disciple_Tools_Posts
                     if ( isset( $channel[1] ) && isset( $post_type_settings["channels"][ $channel[1] ] ) ){
                         $channel = $post_type_settings["channels"][ $channel[1] ];
                         if ( $activity->old_value === "" ){
-                            $message = sprintf( _x( 'Added %1$s: %2$s', 'Added Facebook: facebook.com/123', 'disciple_tools' ), $channel["label"], $activity->meta_value );
+                            $message = sprintf( _x( 'Added %1$s: %2$s', 'Added Facebook: facebook.com/123', 'disciple_tools' ), $channel["label"] ?? $activity->meta_key, $activity->meta_value );
                         } else if ( $activity->meta_value != "value_deleted" ){
-                            $message = sprintf( _x( 'Updated %1$s from %2$s to %3$s', 'Update Facebook form facebook.com/123 to facebook.com/mark', 'disciple_tools' ), $channel["label"], $activity->old_value, $activity->meta_value );
+                            $message = sprintf( _x( 'Updated %1$s from %2$s to %3$s', 'Update Facebook form facebook.com/123 to facebook.com/mark', 'disciple_tools' ), $channel["label"] ?? $activity->meta_key, $activity->old_value, $activity->meta_value );
                         } else {
-                            $message = sprintf( _x( 'Deleted %1$s: %2$s', 'Deleted Facebook: facebook.com/123', 'disciple_tools' ), $channel["label"], $activity->old_value );
+                            $message = sprintf( _x( 'Deleted %1$s: %2$s', 'Deleted Facebook: facebook.com/123', 'disciple_tools' ), $channel["label"] ?? $activity->meta_key, $activity->old_value );
                         }
                     }
                 } else if ( $activity->meta_key == "title" ){
@@ -815,7 +815,7 @@ class Disciple_Tools_Posts
             $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
             $meta_query .= "AND ( ( $wpdb->posts.post_title LIKE '%%" . esc_sql( $search ) . "%%' )
                 OR ( search.meta_key LIKE 'contact_%' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0 )
-                OR ( search.meta_key LIKE 'contact_phone_%' AND REPLACE( '" . esc_sql( $search ) . "', ' ', '') = REPLACE( search.meta_value, ' ', '') )";
+                OR ( search.meta_key LIKE 'contact_%' AND REPLACE( '" . esc_sql( $search ) . "', ' ', '') = REPLACE( search.meta_value, ' ', '') )";
             foreach ( $other_search_fields as $field ){
                 $meta_query .= " OR ( search.meta_key LIKE '" . esc_sql( $field ) . "' AND search.meta_value LIKE '%%" . esc_sql( $search ) . "%%'   ) ";
             }
@@ -1790,7 +1790,7 @@ class Disciple_Tools_Posts
                         }
                     }
                 } else {
-                    $fields[$key] = $value[0];
+                    $fields[$key] = maybe_unserialize( $value[0] );
                 }
             }
         }

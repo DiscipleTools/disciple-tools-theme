@@ -1108,15 +1108,11 @@ class Disciple_Tools_Mapping_Queries {
                 LEFT JOIN $wpdb->dt_location_grid as lg ON pm.meta_value=lg.grid_id
                 WHERE pm.meta_key = 'location_grid'
                 AND pm.post_id NOT IN (
-                  SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p 
-                  WHERE ( p.meta_key = 'corresponds_to_user' AND p.meta_value != '') 
+                  SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p
+                  WHERE ( p.meta_key = 'corresponds_to_user' AND p.meta_value != '')
                   OR ( p.meta_key = 'overall_status' AND p.meta_value = 'closed')
                 )
-            )
-            WHERE lgm.post_type = 'contacts'
-                AND lgm.post_id NOT IN (SELECT DISTINCT(p.post_id) FROM $wpdb->postmeta as p WHERE ( p.meta_key = 'corresponds_to_user' AND p.meta_value != '') )
             ) as t0
-            GROUP BY t0.admin0_grid_id
             UNION
             SELECT t1.admin1_grid_id as grid_id, count(t1.admin1_grid_id) as count
             FROM (

@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-  if ('/metrics/personal/coaching-tree' === window.location.pathname || '/metrics/personal/coaching-tree/' === window.location.pathname) {
+  if ( window.wpApiShare.url_path.startsWith( 'metrics/personal/coaching-tree' ) ) {
     coaching_tree()
   }
 
