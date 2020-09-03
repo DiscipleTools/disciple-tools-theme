@@ -135,9 +135,9 @@ class Disciple_Tools_People_Groups
         // check for duplicate and return fail install because of duplicate.
         global $wpdb;
         $duplicate = $wpdb->get_var( $wpdb->prepare( "
-            SELECT count(meta_id) 
-            FROM $wpdb->postmeta 
-            WHERE meta_key = 'ROP3' AND 
+            SELECT count(meta_id)
+            FROM $wpdb->postmeta
+            WHERE meta_key = 'ROP3' AND
             post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = 'peoplegroups' ) AND
             meta_value = %s",
         $rop3 ) );
@@ -276,6 +276,21 @@ class Disciple_Tools_People_Groups
         </select>
         <button class="button" id="search_button" onclick="group_search()">Get List</button>
         <br><br>
+        <a id="add_all_groups" href="javascript:void(0)" style="display:none;">add all groups</a>
+        <script>
+            function add_all(){
+                jQuery.each(jQuery('#results button'), function(i,v){
+                    console.log(v.id)
+                    task(v.id);
+                })
+                function task(i) {
+                    setTimeout(function() {
+                        console.log(i);
+                        jQuery('#'+i).click()
+                    }, 4000 * i);
+                }
+            }
+        </script>
         <div id="results"></div>
         <?php
     }

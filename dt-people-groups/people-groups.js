@@ -23,19 +23,30 @@ function group_search() {
         },
     })
         .done(function (data) {
-            let div = jQuery('#results')
-            div.empty()
-            search_button.empty().text('Get List')
+          let div = jQuery('#results')
+          div.empty()
+          search_button.empty().text('Get List')
 
 
-            div.append(`<dl><dt><strong>`+sval+`</strong></dt>`)
+          div.append(`<dl><dt><strong>` + sval + `</strong></dt>`)
 
-            jQuery.each(data, function(i, v) {
-                div.append(`
-                <dd>`+ v[4] +` ( `+ v[1] + ` | ` + v[3] +` ) <button onclick="add_single_people_group('`+v[3]+`','`+v[1]+`')" id="button-`+v[3]+`">add</button> <span id="message-`+v[3]+`"></span></dd>
+          jQuery.each(data, function (i, v) {
+            div.append(`
+                <dd>` + v[4] + ` ( ` + v[1] + ` | ` + v[3] + ` ) <button onclick="add_single_people_group('` + v[3] + `','` + v[1] + `')" id="button-` + v[3] + `">add</button> <span id="message-` + v[3] + `"></span></dd>
                 `)
+          })
+          div.append(`</dl>`)
+
+          // add listener for select all button
+          jQuery('#add_all_groups').show().on('click', function () {
+            div.prepend('<span><strong>DO NOT NAVIGATE WAY FROM THIS PAGE UNTIL INSTALL IS COMPLETE!</strong></span><br>')
+            jQuery.each(jQuery('#results button'), function (i, v) {
+              setTimeout(function () {
+                console.log(v.id);
+                jQuery('#' + v.id).click()
+              }, 700 * i);
             })
-            div.append(`</dl>`)
+          })
 
         })
         .fail(function (err) {
