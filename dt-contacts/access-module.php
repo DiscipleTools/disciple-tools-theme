@@ -387,27 +387,7 @@ class DT_Contacts_Access {
 
                 <!-- SUBASSIGNED -->
                 <div class="cell small-12 medium-4">
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/subassigned.svg' ?>">
-                        <?php echo esc_html( $contact_fields["subassigned"]["name"] )?>
-                        <button class="help-button" data-section="subassigned-to-help-text">
-                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                        </button>
-                    </div>
-                    <div class="subassigned details">
-                        <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
-                        <div id="subassigned_t" name="form-subassigned" class="scrollable-typeahead">
-                            <div class="typeahead__container">
-                                <div class="typeahead__field">
-                                    <span class="typeahead__query">
-                                        <input class="js-typeahead-subassigned input-height"
-                                               name="subassigned[query]" placeholder="<?php echo esc_html_x( "Search multipliers and contacts", 'input field placeholder', 'disciple_tools' )?>"
-                                               autocomplete="off">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php render_field_for_display( "subassigned", $contact_fields, $contact, true ); ?>
                 </div>
             </div>
             <div class="reveal" id="closed-contact-modal" data-reveal>

@@ -256,7 +256,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
 
                                                 $field = $post_settings["fields"][$field_key];
                                                 if ( isset( $field["tile"] ) && $field["tile"] === $tile_key){
-                                                    render_field_for_display( $field_key, $post_settings["fields"], $dt_post );
+                                                    render_field_for_display( $field_key, $post_settings["fields"], $dt_post, true );
                                                 }
                                             }
                                             ?>
@@ -283,6 +283,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
 
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'share' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'tasks' ); ?>
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-contact' ); ?>
 
     <div class="reveal" id="create-tag-modal" data-reveal data-reset-on-close>
         <h3><?php esc_html_e( 'Create Tag', 'disciple_tools' )?></h3>

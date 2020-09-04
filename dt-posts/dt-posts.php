@@ -378,6 +378,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $fields["ID"] = $post_id;
         $fields["created_date"] = $wp_post->post_date;
         $fields["permalink"] = get_permalink( $post_id );
+        $fields["post_type"] = $post_type;
 
         self::adjust_post_custom_fields( $post_settings, $post_id, $fields );
         $fields["name"] = $wp_post->post_title;

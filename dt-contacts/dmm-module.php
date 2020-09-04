@@ -88,7 +88,7 @@ class DT_Contacts_DMM {
                 "post_type" => "contacts",
                 "p2p_direction" => "to",
                 "p2p_key" => "contacts_to_subassigned",
-                "tile" => "status",
+//                "tile" => "status",
                 'icon' => get_template_directory_uri() . "/dt-assets/images/subassigned.svg",
             ];
 
@@ -102,6 +102,7 @@ class DT_Contacts_DMM {
                 "p2p_key" => "contacts_to_groups",
                 "tile" => "other",
                 'icon' => get_template_directory_uri() . "/dt-assets/images/group-type.svg",
+                'create-icon' => get_template_directory_uri() . "/dt-assets/images/add-group.svg",
             ];
 
 

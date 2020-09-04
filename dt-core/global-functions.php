@@ -291,16 +291,16 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
 
-
     /**
      * Accepts types: key_select, multi_select, text, date, connection, location
      *
      * @param $field_key
      * @param $fields
      * @param $post
+     * @param bool $show_typeahead_create
      */
-    function render_field_for_display( $field_key, $fields, $post ){
-        if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) ) {
+    function render_field_for_display( $field_key, $fields, $post, $show_typeahead_create = false ){
+        if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
             $field_type = $fields[$field_key]["type"];
             $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
             $allowed_types = [ 'key_select', 'multi_select', 'date', 'text', 'number', 'connection', 'location', 'communication_channel' ];
@@ -374,14 +374,22 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <div id="<?php echo esc_html( $field_key ) ?>_t" name="form-<?php echo esc_html( $field_key ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
                         <div class="typeahead__container">
                             <div class="typeahead__field">
-                            <span class="typeahead__query">
-                                <input class="js-typeahead-<?php echo esc_html( $field_key ) ?>" data-field="<?php echo esc_html( $field_key ) ?>"
-                                       data-post_type="<?php echo esc_html( $fields[$field_key]["post_type"] ) ?>"
-                                       data-field_type="connection"
-                                       name="<?php echo esc_html( $field_key ) ?>[query]"
-                                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
-                                       autocomplete="off">
-                            </span>
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-<?php echo esc_html( $field_key ) ?> input-height" data-field="<?php echo esc_html( $field_key ) ?>"
+                                           data-post_type="<?php echo esc_html( $fields[$field_key]["post_type"] ) ?>"
+                                           data-field_type="connection"
+                                           name="<?php echo esc_html( $field_key ) ?>[query]"
+                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
+                                           autocomplete="off">
+                                </span>
+                                <?php if ( $show_typeahead_create ) : ?>
+                                <span class="typeahead__button">
+                                    <button type="button" data-connection-key="<?php echo esc_html( $field_key ) ?>" class="create-new-record typeahead__image_button input-height">
+                                        <?php $icon = isset( $fields[$field_key]["create-icon"] ) ? $fields[$field_key]["create-icon"] : get_template_directory_uri() . '/dt-assets/images/add-contact.svg'; ?>
+                                        <img src="<?php echo esc_html( $icon ) ?>"/>
+                                    </button>
+                                </span>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

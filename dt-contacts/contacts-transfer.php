@@ -169,10 +169,10 @@ class Disciple_Tools_Contacts_Transfer
                     'people_groups' => $contact['people_groups'],
                     'transfer_foreign_key' => $contact['transfer_foreign_key'] ?? 0,
                 ],
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $site['transfer_token'],
-                ],
-            ]
+            ],
+            'headers' => [
+                'Authorization' => 'Bearer ' . $site['transfer_token'],
+            ],
         ];
 
         $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-posts/v2/contact/receive-transfer', $args );

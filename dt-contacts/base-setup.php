@@ -66,8 +66,8 @@ class DT_Contacts_Base {
                     'leader' => [ "label" => __( 'Leader', 'disciple_tools' ) ],
                     'user'     => [ "label" => __( 'User', 'disciple_tools' ) ]
                 ],
-                'tile'     => 'status',
-                'hidden'      => true
+                'tile'     => 'other',
+//                'hidden'      => true
             ];
             $fields["last_modified"] =[
                 'name' => __( 'Last Modified', 'disciple_tools' ),

@@ -3,6 +3,7 @@ jQuery(document).ready(function($) {
   let post_id = window.detailsSettings.post_id
   let post_type = window.detailsSettings.post_type
   let post = window.detailsSettings.post_fields
+  let field_settings = window.detailsSettings.post_settings.fields
   let rest_api = window.API
   let typeaheadTotals = {}
 
@@ -227,6 +228,49 @@ jQuery(document).ready(function($) {
           masonGrid.masonry('layout')
         }
       }
+    })
+  })
+
+  //new record off a typeahead
+  $('.create-new-record').on('click', function(){
+    let connection_type = null
+    connection_type = $(this).data('connection-key');
+    $('#create-record-modal').foundation('open');
+    $('.js-create-record .error-text').empty();
+    $(".js-create-record-button").attr("disabled", false).removeClass("alert")
+    //create new record
+    $(".js-create-record").on("submit", function(e) {
+      e.preventDefault();
+      $(".js-create-record-button").attr("disabled", true).addClass("loading");
+      let title = $(".js-create-record input[name=title]").val()
+      if ( !connection_type){
+        $(".js-create-record .error-text").text(
+          "Something went wrong. Please refresh and try again"
+        );
+        return;
+      }
+      let update_field = connection_type;
+      API.create_post( field_settings[update_field].post_type, {
+        title,
+      }).then((newRecord)=>{
+        return API.update_post( post_type, post_id, { [update_field]: { values: [ { value:newRecord.ID }]}}).then(response=>{
+          $(".js-create-record-button").attr("disabled", false).removeClass("loading");
+          $(".reveal-after-record-create").show()
+          $("#new-record-link").html(`<a href="${_.escape( newRecord.permalink )}">${_.escape( title )}</a>`)
+          $(".hide-after-record-create").hide()
+          $('#go-to-record').attr('href', _.escape( newRecord.permalink ));
+          post = response
+          Typeahead[`.js-typeahead-${connection_type}`].addMultiselectItemLayout({ID:newRecord.ID.toString(), name:title})
+          masonGrid.masonry('layout')
+        })
+      })
+      .catch(function(error) {
+        $(".js-create-record-button").removeClass("loading").addClass("alert");
+        $(".js-create-record .error-text").text(
+          _.get( error, "responseJSON.message", "Something went wrong. Please refresh and try again" )
+        );
+        console.error(error);
+      });
     })
   })
 
