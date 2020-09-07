@@ -7,19 +7,23 @@ jQuery(document).ready(function($) {
   let rest_api = window.API
   let typeaheadTotals = {}
 
-  let masonGrid = $('.grid') // responsible for resizing and moving the tiles
+  window.masonGrid = $('.grid') // responsible for resizing and moving the tiles
 
   $('input.text-input').change(function(){
     const id = $(this).attr('id')
     const val = $(this).val()
+    $(`#${id}-spinner`).addClass('active')
     rest_api.update_post(post_type, post_id, { [id]: val }).then((newPost)=>{
+      $(`#${id}-spinner`).removeClass('active')
       $( document ).trigger( "text-input-updated", [ newPost, id, val ] );
     }).catch(handleAjaxError)
   })
   $('.dt_textarea').change(function(){
     const id = $(this).attr('id')
     const val = $(this).val()
+    $(`#${id}-spinner`).addClass('active')
     rest_api.update_post(post_type, post_id, { [id]: val }).then((newPost)=>{
+      $(`#${id}-spinner`).removeClass('active')
       $( document ).trigger( "text-input-updated", [ newPost, id, val ] );
     }).catch(handleAjaxError)
   })
@@ -41,7 +45,9 @@ jQuery(document).ready(function($) {
       fieldValue = {values:[{value:optionKey}]}
     }
     data[optionKey] = fieldValue
+    $(`#${fieldKey}-spinner`).addClass('active')
     rest_api.update_post(post_type, post_id, {[fieldKey]: fieldValue}).then((resp)=>{
+      $(`#${fieldKey}-spinner`).removeClass('active')
       field.removeClass("submitting-select-button selected-select-button")
       field.blur();
       field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
@@ -67,7 +73,9 @@ jQuery(document).ready(function($) {
           date = " ";//null;
         }
         let id = $(this).attr('id')
+        $(`#${id}-spinner`).addClass('active')
         rest_api.update_post( post_type, post_id, { [id]: moment(date).unix() }).then((resp)=>{
+          $(`#${id}-spinner`).removeClass('active')
           if (this.value) {
             this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
           }
@@ -90,7 +98,9 @@ jQuery(document).ready(function($) {
     let input_id = this.dataset.inputid;
     $(`#${input_id}`).val("");
     let date = null;
+    $(`#${input_id}-spinner`).addClass('active')
     rest_api.update_post(post_type, post_id, { [input_id]: date }).then((resp) => {
+      $(`#${input_id}-spinner`).removeClass('active')
       $(document).trigger("dt_date_picker-updated", [resp, input_id, date]);
 
     }).catch(handleAjaxError)
@@ -99,8 +109,10 @@ jQuery(document).ready(function($) {
   $('select.select-field').change(e => {
     const id = $(e.currentTarget).attr('id')
     const val = $(e.currentTarget).val()
+    $(`#${id}-spinner`).addClass('active')
 
     rest_api.update_post(post_type, post_id, { [id]: val }).then(resp => {
+      $(`#${id}-spinner`).removeClass('active')
       $( document ).trigger( "select-field-updated", [ resp, id, val ] );
       if ( $(e.currentTarget).hasClass( "color-select")){
         $(`#${id}`).css("background-color", _.get(window.detailsSettings, `post_settings.fields[${id}].default[${val}].color`) )
@@ -111,8 +123,9 @@ jQuery(document).ready(function($) {
   $('input.number-input').on("blur", function(){
     const id = $(this).attr('id')
     const val = $(this).val()
-
+    $(`#${id}-spinner`).addClass('active')
     rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
+      $(`#${id}-spinner`).removeClass('active')
       $( document ).trigger( "number-input-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
   })
@@ -131,25 +144,46 @@ jQuery(document).ready(function($) {
     const $list = $(`#edit-${listClass}`)
 
     $list.append(`<li style="display: flex">
-      <input type="text" class="dt-communication-channel" data-type="${_.escape( listClass )}"/>
-      <button class="button clear delete-button new-${_.escape( listClass )}" data-id="new">
+      <input type="text" class="dt-communication-channel" data-field="${_.escape( listClass )}"/>
+      <button class="button clear channel-delete-button new-${_.escape( listClass )}" data-key="new" data-field="${listClass}">
           <img src="${_.escape( wpApiShare.template_dir )}/dt-assets/images/invalid.svg">
       </button>
     </li>`)
   })
+  $(document).on('click', '.channel-delete-button', function(){
+    let field = $(this).data('field')
+    let key = $(this).data('key')
+    let update = { delete:true }
+    if ( key === 'new' ){
+      $(this).parent().remove()
+    } else if ( key ){
+      $(`#${field}-spinner`).addClass('active')
+      update["key"] = key;
+      API.update_post(post_type, post_id, { [field]: [update]}).then((updatedContact)=>{
+        $(this).parent().remove()
+        $(`#${field}-spinner`).removeClass('active')
+        post = updatedContact
+        resetDetailsFields()
+      }).catch(handleAjaxError)
+    }
+  })
+
   $( document).on('blur', 'input.dt-communication-channel', function(){
-    let field_key = $(this).data('type')
+    let field_key = $(this).data('field')
     let value = $(this).val()
     let id = $(this).attr('id')
     let update = { value }
     if ( id ) {
       update["key"] = id;
     }
+    $(`#${field_key}-spinner`).addClass('active')
     API.update_post(post_type, post_id, { [field_key]: [update]}).then((updatedContact)=>{
+      $(`#${field_key}-spinner`).removeClass('active')
+      let key = _.last(updatedContact[field_key]).key
+      $(this).attr('id', key)
+      $(this).parent().find('.channel-delete-button').data('key', key)
       post = updatedContact
-      //@todo visual queue that saving happened
-      // @todo resetDetailsFields(contact)
-      $(`#contact-details-edit-modal`).foundation('close')
+      resetDetailsFields()
     }).catch(handleAjaxError)
   })
 
@@ -173,6 +207,12 @@ jQuery(document).ready(function($) {
     $('#details-section').toggle()
     $('#details-tile').toggleClass('collapsed')
     $('#show-details-edit-button').toggle()
+    $(`#details-section .typeahead__query input`).each((i, element)=>{
+      let field_key = $(element).data("field")
+      if ( Typeahead[`.js-typeahead-${field_key}`]){
+        Typeahead[`.js-typeahead-${field_key}`].adjustInputSize()
+      }
+    })
   })
 
 
@@ -201,15 +241,21 @@ jQuery(document).ready(function($) {
           })
         }, callback: {
           onCancel: function (node, item) {
-            API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}})
-              .catch(err => { console.error(err) })
+            $(`#${field_id}-spinner`).addClass('active')
+            API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}}).then(()=>{
+              $(`#${field_id}-spinner`).removeClass('active')
+            }).catch(err => { console.error(err) })
           }
         },
         href: window.wpApiShare.site_url + `/${listing_post_type}/{{ID}}`
       },
       callback: {
         onClick: function(node, a, item, event){
-          API.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).catch(err => { console.error(err) })
+          $(`#${field_id}-spinner`).addClass('active')
+          API.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).then(new_post=>{
+            $(`#${field_id}-spinner`).removeClass('active')
+            $( document ).trigger( "dt-post-connection-added", [ new_post, field_id ] );
+          }).catch(err => { console.error(err) })
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();
@@ -231,47 +277,53 @@ jQuery(document).ready(function($) {
     })
   })
 
+  let connection_type = null
   //new record off a typeahead
   $('.create-new-record').on('click', function(){
-    let connection_type = null
     connection_type = $(this).data('connection-key');
     $('#create-record-modal').foundation('open');
     $('.js-create-record .error-text').empty();
     $(".js-create-record-button").attr("disabled", false).removeClass("alert")
+    $(".reveal-after-record-create").hide()
+    $(".hide-after-record-create").show()
+    $(".js-create-record input[name=title]").val('')
     //create new record
-    $(".js-create-record").on("submit", function(e) {
-      e.preventDefault();
-      $(".js-create-record-button").attr("disabled", true).addClass("loading");
-      let title = $(".js-create-record input[name=title]").val()
-      if ( !connection_type){
-        $(".js-create-record .error-text").text(
-          "Something went wrong. Please refresh and try again"
-        );
-        return;
-      }
-      let update_field = connection_type;
-      API.create_post( field_settings[update_field].post_type, {
-        title,
-      }).then((newRecord)=>{
-        return API.update_post( post_type, post_id, { [update_field]: { values: [ { value:newRecord.ID }]}}).then(response=>{
-          $(".js-create-record-button").attr("disabled", false).removeClass("loading");
-          $(".reveal-after-record-create").show()
-          $("#new-record-link").html(`<a href="${_.escape( newRecord.permalink )}">${_.escape( title )}</a>`)
-          $(".hide-after-record-create").hide()
-          $('#go-to-record').attr('href', _.escape( newRecord.permalink ));
-          post = response
+  })
+  $(".js-create-record").on("submit", function(e) {
+    e.preventDefault();
+    $(".js-create-record-button").attr("disabled", true).addClass("loading");
+    let title = $(".js-create-record input[name=title]").val()
+    if ( !connection_type){
+      $(".js-create-record .error-text").text(
+        "Something went wrong. Please refresh and try again"
+      );
+      return;
+    }
+    let update_field = connection_type;
+    API.create_post( field_settings[update_field].post_type, {
+      title,
+    }).then((newRecord)=>{
+      return API.update_post( post_type, post_id, { [update_field]: { values: [ { value:newRecord.ID }]}}).then(response=>{
+        $(".js-create-record-button").attr("disabled", false).removeClass("loading");
+        $(".reveal-after-record-create").show()
+        $("#new-record-link").html(`<a href="${_.escape( newRecord.permalink )}">${_.escape( title )}</a>`)
+        $(".hide-after-record-create").hide()
+        $('#go-to-record').attr('href', _.escape( newRecord.permalink ));
+        post = response
+        $( document ).trigger( "dt-post-connection-created", [ post, update_field ] );
+        if ( Typeahead[`.js-typeahead-${connection_type}`] ){
           Typeahead[`.js-typeahead-${connection_type}`].addMultiselectItemLayout({ID:newRecord.ID.toString(), name:title})
           masonGrid.masonry('layout')
-        })
+        }
       })
-      .catch(function(error) {
-        $(".js-create-record-button").removeClass("loading").addClass("alert");
-        $(".js-create-record .error-text").text(
-          _.get( error, "responseJSON.message", "Something went wrong. Please refresh and try again" )
-        );
-        console.error(error);
-      });
     })
+    .catch(function(error) {
+      $(".js-create-record-button").removeClass("loading").addClass("alert");
+      $(".js-create-record .error-text").text(
+        _.get( error, "responseJSON.message", "Something went wrong. Please refresh and try again" )
+      );
+      console.error(error);
+    });
   })
 
   $('.dt_location_grid').each(()=> {
@@ -576,9 +628,10 @@ jQuery(document).ready(function($) {
     API.update_post(post_type, post_id, {tags: {values:[{value:tag}]}})
   })
 
+  function resetDetailsFields(){
   _.forOwn( window.detailsSettings.post_settings.fields, (field_options, field_key)=>{
     if ( field_options.tile === 'details' && !field_options.hidden && post[field_key]){
-      let field_value = _.get( window.detailsSettings.post_fields, field_key, false )
+      let field_value = _.get( post, field_key, false )
       let values_html = ``
       if ( field_options.type === 'text' ){
         values_html = _.escape( field_value )
@@ -603,6 +656,8 @@ jQuery(document).ready(function($) {
       $(`#collapsed-detail-${field_key} .collapsed-items`).html(values_html)
     }
   })
+  }
+  resetDetailsFields()
 
   //leave at the end of this file
   masonGrid.masonry({

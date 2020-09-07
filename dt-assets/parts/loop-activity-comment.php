@@ -6,7 +6,7 @@
         <h3 class="section-header">
             <span>
                 <?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?>
-                <span id="comments-activity-spinner" style="display: inline-block" class="loading-spinner"></span>
+                <span id="comments-activity-spinner" class="loading-spinner"></span>
             </span>
             <button class="help-button" data-section="comments-activity-help-text">
                 <img class="help-icon"

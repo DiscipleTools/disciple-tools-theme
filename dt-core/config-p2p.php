@@ -10,98 +10,11 @@ function dt_my_connection_types() {
 
 
 
-    /**
-     * Contact People Groups
-     */
-    p2p_register_connection_type(
-        [
-            'name'        => 'contacts_to_peoplegroups',
-            'from'        => 'contacts',
-            'to'          => 'peoplegroups',
-            'title'       => [
-                'from' => __( 'People Groups', 'disciple_tools' ),
-                'to'   => __( 'Contacts', 'disciple_tools' ),
-            ]
-        ]
-    );
-
-
-    /**
-     * Group leaders field
-     */
-    p2p_register_connection_type(
-        [
-            'name'           => 'groups_to_leaders',
-            'from'           => 'groups',
-            'to'             => 'contacts',
-            'admin_box' => [
-                'show' => false,
-            ],
-            'title'          => [
-                'from' => __( 'Groups', 'disciple_tools' ),
-                'to'   => __( 'Leaders', 'disciple_tools' ),
-            ]
-        ]
-    );
-    /**
-     * Group coaches field
-     */
-    p2p_register_connection_type(
-        [
-            'name'           => 'groups_to_coaches',
-            'from'           => 'groups',
-            'to'             => 'contacts',
-            'admin_box' => [
-                'show' => false,
-            ],
-            'title'          => [
-                'from' => __( 'Groups', 'disciple_tools' ),
-                'to'   => __( 'Coaches', 'disciple_tools' ),
-            ]
-        ]
-    );
-
-
-    /**
-     * Parent and child groups
-     */
-    p2p_register_connection_type(
-        [
-            'name'         => 'groups_to_groups',
-            'from'         => 'groups',
-            'to'           => 'groups',
-            'title'        => [
-                'from' => __( 'Planted by', 'disciple_tools' ),
-                'to'   => __( 'Planting', 'disciple_tools' ),
-            ],
-        ]
-    );
-
-    /**
-     * Peer groups
-     */
-    p2p_register_connection_type( [
-        'name'         => 'groups_to_peers',
-        'from'         => 'groups',
-        'to'           => 'groups',
-    ] );
 
 
 
-    /**
-     * Group People Groups field
-     */
-    p2p_register_connection_type(
-        [
-            'name'        => 'groups_to_peoplegroups',
-            'from'        => 'groups',
-            'to'          => 'peoplegroups',
-            'title'       => [
-                'from' => __( 'People Groups', 'disciple_tools' ),
-                'to'   => __( 'Groups', 'disciple_tools' ),
-            ]
-        ]
-    );
+
+
 
     //    } // end options filter for people groups
 }

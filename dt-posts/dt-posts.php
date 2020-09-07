@@ -69,11 +69,18 @@ class DT_Posts extends Disciple_Tools_Posts {
         $fields = apply_filters( "dt_post_create_fields", $fields, $post_type );
 
         //set title
-        if ( !isset( $fields ["title"] ) ) {
+        if ( !isset( $fields["title"] ) && !isset( $fields["name"] ) ) {
             return new WP_Error( __FUNCTION__, "title needed", [ 'fields' => $fields ] );
         }
-        $title = $fields["title"];
-        unset( $fields["title"] );
+        $title = null;
+        if ( isset( $fields["title"] ) ){
+            $title = $fields["title"];
+            unset( $fields["title"] );
+        }
+        if ( isset( $fields["name"] ) ){
+            $title = $fields["name"];
+            unset( $fields["name"] );
+        }
 
         $create_date = null;
         if ( isset( $fields["create_date"] )){
@@ -489,6 +496,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
             self::adjust_post_custom_fields( $post_settings, $record["ID"], $record, $fields_to_return, $all_posts[$record["ID"]] ?? [], $all_post_user_meta[$record["ID"]] ?? [] );
             $record["permalink"] = $site_url . '/' . $post_type .'/' . $record["ID"];
+            $record["name"] = $record["post_title"];
         }
         $data["posts"] = $records;
 

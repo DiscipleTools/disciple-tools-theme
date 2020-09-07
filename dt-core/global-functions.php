@@ -313,7 +313,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <img class="dt-icon" src="<?php echo esc_url( $fields[$field_key]["icon"] ) ?>">
                 <?php endif;
                 echo esc_html( $fields[$field_key]["name"] );
-                if ( $field_type === "communication_channel" ) : ?>
+                ?> <span id="<?php echo esc_html( $field_key ); ?>-spinner" class="loading-spinner"></span>
+                <?php if ( $field_type === "communication_channel" ) : ?>
                     <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button" type="button">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
@@ -415,14 +416,19 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <?php elseif ( $field_type === "communication_channel" ) : ?>
                 <ul id="edit-<?php echo esc_html( $field_key ) ?>" >
                     <?php foreach ( $post[$field_key] ?? [] as $field_value ) : ?>
-                        <input id="<?php echo esc_html( $field_value["key"] ) ?>"
-                               type="text"
-                               data-type="<?php echo esc_html( $field_key ) ?>"
-                               value="<?php echo esc_html( $field_value["value"] ) ?>"
-                               class="dt-communication-channel">
+                        <li style="display:flex">
+                            <input id="<?php echo esc_html( $field_value["key"] ) ?>"
+                                   type="text"
+                                   data-field="<?php echo esc_html( $field_key ) ?>"
+                                   value="<?php echo esc_html( $field_value["value"] ) ?>"
+                                   class="dt-communication-channel">
+                            <button class="button clear channel-delete-button new-<?php echo esc_html( $field_key ); ?>" data-field="<?php echo esc_html( $field_key ); ?>" data-key="<?php echo esc_html( $field_value["key"] ); ?>">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/invalid.svg' ) ?>">
+                            </button>
+                        </li>
                     <?php endforeach;
                     if ( empty( $post[$field_key] ) ?? [] ): ?>
-                        <input data-type="<?php echo esc_html( $field_key ) ?>"
+                        <input data-field="<?php echo esc_html( $field_key ) ?>"
                                type="text" <?php echo esc_html( $required_tag ) ?>
                                class="dt-communication-channel">
                     <?php endif ?>
@@ -430,6 +436,13 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
             <?php endif;
         }
+    }
+
+    function dt_increment( &$var, $val ){
+        if ( !isset( $var ) ){
+            $var = 0;
+        }
+        $var += (int) $val;
     }
 
 

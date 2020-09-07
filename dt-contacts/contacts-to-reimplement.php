@@ -145,16 +145,12 @@ class Disciple_Tools_Contacts_Dead extends Disciple_Tools_Posts
                         DT_Posts::add_shared( "groups", $value, $user_id, null, false, false );
                     }
                 }
-                do_action( 'group_member_count', $value, "added" );
             }
         }
     }
 
     public function post_connection_removed( $post_type, $post_id, $post_key, $value ){
         if ( $post_type === "contacts" ){
-            if ( $post_key === "groups" ){
-                do_action( 'group_member_count', $value, "removed" );
-            }
             if ( $post_key === "baptized_by" ){
                 Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $post_id );
             }
@@ -422,12 +418,12 @@ class Disciple_Tools_Contacts_Dead extends Disciple_Tools_Posts
             foreach ( $counts as $count ){
                 if ( $count["type"] != "user" ){
                     $total_my += $count["count"];
-                    self::increment( $status_counts[$count["overall_status"]], $count["count"] );
+                    dt_increment( $status_counts[$count["overall_status"]], $count["count"] );
                     if ( $count["overall_status"] === "active" ){
                         if ( isset( $count["update_needed"] ) ) {
                             $update_needed += (int) $count["update_needed"];
                         }
-                        self::increment( $active_counts[$count["seeker_path"]], $count["count"] );
+                        dt_increment( $active_counts[$count["seeker_path"]], $count["count"] );
                     }
                 }
             }
@@ -523,12 +519,12 @@ class Disciple_Tools_Contacts_Dead extends Disciple_Tools_Posts
                 foreach ( $counts as $count ){
                     if ( $count["type"] !== "user" ){
                         $total_all += $count["count"];
-                        self::increment( $all_status_counts[$count["overall_status"]], $count["count"] );
+                        dt_increment( $all_status_counts[$count["overall_status"]], $count["count"] );
                         if ( $count["overall_status"] === "active" ){
                             if ( isset( $count["update_needed"] ) ) {
                                 $all_update_needed += (int) $count["update_needed"];
                             }
-                            self::increment( $all_active_counts[$count["seeker_path"]], $count["count"] );
+                            dt_increment( $all_active_counts[$count["seeker_path"]], $count["count"] );
                         }
                     }
                 }

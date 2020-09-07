@@ -52,7 +52,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     LEFT JOIN $wpdb->postmeta AS mt4 ON ( $wpdb->posts.ID = mt4.post_id )
                     WHERE ( mt1.meta_value = '' OR mt1.meta_value = '0' OR mt1.meta_key IS NULL )
                     AND ( mt2.meta_key = 'overall_status' AND mt2.meta_value = %s )
-                    AND %d >= ( SELECT MAX( hist_time ) FROM $wpdb->dt_activity_log WHERE object_id = $wpdb->posts.ID and user_id != 0 ) 
+                    AND %d >= ( SELECT MAX( hist_time ) FROM $wpdb->dt_activity_log WHERE object_id = $wpdb->posts.ID and user_id != 0 )
                     AND ( mt4.meta_key = 'seeker_path' AND mt4.meta_value = %s )
                     AND $wpdb->posts.post_type = 'contacts' AND $wpdb->posts.post_status = 'publish'
                     AND $wpdb->posts.ID NOT IN (
@@ -106,11 +106,11 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                 foreach ( $groups_need_update as $group ) {
                     $user_name    = ( "@" . dt_get_assigned_name( $group->ID, true ) . " " ) ?? "";
                     $comment_html = esc_html( $user_name . $setting["comment"] );
-                    Disciple_Tools_Groups::add_comment( $group->ID, $comment_html, "updated_needed", [
+                    DT_Posts::add_post_comment( "groups", $group->ID, $comment_html, "updated_needed", [
                         "user_id" => 0,
                         "comment_author" => __( "Updated Needed", 'disciple_tools' )
                     ], false, true );
-                    Disciple_Tools_Groups::update_group( $group->ID, [ "requires_update" => true ], false );
+                    DT_Posts::update_post( "groups", $group->ID, [ "requires_update" => true ], false );
                 }
             }
         }

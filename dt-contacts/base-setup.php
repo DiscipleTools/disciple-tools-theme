@@ -47,13 +47,13 @@ class DT_Contacts_Base {
                 'in_create_form' => true,
                 'required' => true,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/name.svg",
+                "show_in_table" => 5
             ];
             $fields["nickname"] = [
                 'name' => __( "Nickname", 'disciple_tools' ),
                 'type' => 'text',
                 'tile' => 'details',
                 'in_create_form' => true,
-                'required' => true,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/name.svg",
             ];
             $fields["type"] = [
@@ -71,10 +71,11 @@ class DT_Contacts_Base {
             ];
             $fields["last_modified"] =[
                 'name' => __( 'Last Modified', 'disciple_tools' ),
-                'type' => 'number',
+                'type' => 'date',
                 'default' => 0,
                 'section' => 'admin',
-                'customizable' => false
+                'customizable' => false,
+                "show_in_table" => 100
             ];
             $fields["duplicate_data"] = [
                 "name" => 'Duplicates', //system string does not need translation

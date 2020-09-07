@@ -36,6 +36,15 @@ class DT_Contacts_Access {
 
     public function dt_custom_fields_settings( $fields, $post_type ){
         if ( $post_type === 'contacts' ){
+            $fields['assigned_to'] = [
+                'name'        => __( 'Assigned To', 'disciple_tools' ),
+                'description' => __( 'Select the main person who is responsible for reporting on this contact.', 'disciple_tools' ),
+                'type'        => 'user_select',
+                'default'     => '',
+                'tile'        => 'status',
+                'icon' => get_template_directory_uri() . "/dt-assets/images/assigned-to.svg",
+                "show_in_table" => 25
+            ];
             $fields['seeker_path'] = [
                 'name'        => __( 'Seeker Path', 'disciple_tools' ),
                 'description' => _x( "Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward.", 'Seeker Path field description', 'disciple_tools' ),
@@ -71,16 +80,10 @@ class DT_Contacts_Access {
                     ],
                 ],
                 'customizable' => 'add_only',
-                'tile' => 'followup'
+                'tile' => 'followup',
+                "show_in_table" => 15
             ];
-            $fields['assigned_to'] = [
-                'name'        => __( 'Assigned To', 'disciple_tools' ),
-                'description' => __( 'Select the main person who is responsible for reporting on this contact.', 'disciple_tools' ),
-                'type'        => 'user_select',
-                'default'     => '',
-                'tile'        => 'status',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/assigned-to.svg",
-            ];
+
             $fields['overall_status'] = [
                 'name'        => __( 'Contact Status', 'disciple_tools' ),
                 'description' => _x( 'The Contact Status describes the progress in communicating with the contact.', "Contact Status field description", 'disciple_tools' ),
@@ -127,7 +130,7 @@ class DT_Contacts_Access {
                 'customizable' => 'add_only',
                 'custom_display' => true,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/status.svg",
-
+                "show_in_table" => 10
             ];
             $fields['requires_update'] = [
                 'name'        => __( 'Requires Update', 'disciple_tools' ),

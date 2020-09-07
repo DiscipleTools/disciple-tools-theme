@@ -385,7 +385,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
         <?php
         $update_required_options = $site_options['group_update_required']["options"];
-        $field_options = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( false )
+        $field_options = DT_Posts::get_post_field_settings( "groups" );
         ?>
         <h3><?php esc_html_e( "Groups", 'disciple_tools' ) ?></h3>
         <form method="post" name="group_update_required-form" style="margin-top: 50px">

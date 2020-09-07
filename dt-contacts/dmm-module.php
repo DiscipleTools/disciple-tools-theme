@@ -78,7 +78,7 @@ class DT_Contacts_DMM {
                 ],
                 "customizable" => "add_only",
                 "tile" => "faith",
-                "show_in_table" => true
+                "show_in_table" => 20
             ];
 
             $fields["subassigned"] = [
@@ -103,6 +103,7 @@ class DT_Contacts_DMM {
                 "tile" => "other",
                 'icon' => get_template_directory_uri() . "/dt-assets/images/group-type.svg",
                 'create-icon' => get_template_directory_uri() . "/dt-assets/images/add-group.svg",
+                "show_in_table" => 35
             ];
 
 
@@ -265,6 +266,20 @@ class DT_Contacts_DMM {
                 'title'       => [
                     'from' => __( 'Sub-assigned by', 'disciple_tools' ),
                     'to'   => __( 'Sub-assigned', 'disciple_tools' ),
+                ]
+            ]
+        );
+        /**
+         * Contact People Groups
+         */
+        p2p_register_connection_type(
+            [
+                'name'        => 'contacts_to_peoplegroups',
+                'from'        => 'contacts',
+                'to'          => 'peoplegroups',
+                'title'       => [
+                    'from' => __( 'People Groups', 'disciple_tools' ),
+                    'to'   => __( 'Contacts', 'disciple_tools' ),
                 ]
             ]
         );

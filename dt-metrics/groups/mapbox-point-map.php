@@ -47,7 +47,7 @@ class DT_Metrics_Mapbox_Groups_Points_Map extends DT_Metrics_Chart_Base
             filemtime( get_theme_file_path() . $this->js_file_name ),
             true
         );
-        $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_group_field_defaults();
+        $group_fields = DT_Posts::get_post_field_settings( "groups" );
         wp_localize_script(
             'dt_mapbox_script', 'dt_mapbox_metrics', [
                 'translations' => [

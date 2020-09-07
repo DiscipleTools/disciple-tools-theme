@@ -51,7 +51,7 @@ $post_settings = apply_filters( "dt_get_post_type_settings", [], $dt_post_type )
             const $list = $(`#edit-${listClass}`)
 
             $list.append(`<li style="display: flex">
-              <input type="text" class="dt-communication-channel" data-type="${_.escape( listClass )}"/>
+              <input type="text" class="dt-communication-channel" data-field="${_.escape( listClass )}"/>
               <button class="button clear delete-button new-${_.escape( listClass )}" type="button">
                   <img src="${_.escape( window.wpApiShare.template_dir )}/dt-assets/images/invalid.svg">
               </button>
@@ -86,7 +86,7 @@ $post_settings = apply_filters( "dt_get_post_type_settings", [], $dt_post_type )
                 new_contact[$(entry).attr('id')] = $(entry).val()
             })
             $('.dt-communication-channel').each((index, entry)=>{
-                let channel = $(entry).data('type')
+                let channel = $(entry).data('field')
                 if ( !new_contact[channel]){
                     new_contact[channel] =[]
                 }
