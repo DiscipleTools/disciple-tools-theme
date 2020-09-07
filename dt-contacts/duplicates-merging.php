@@ -486,3 +486,88 @@ array_push( $params, ...$ignore_keys );
 $wpdb->query( $wpdb->prepare( $sql, $params ) ); // @codingStandardsIgnoreLine
 }
 }
+
+
+public static function find_contacts_by_title( $title, $exclude_id, $exact_match = false ){
+global $wpdb;
+$dups = $wpdb->get_results(
+$wpdb->prepare("
+SELECT ID, post_title FROM $wpdb->posts
+WHERE post_title
+LIKE %s
+AND ID != %s
+AND post_type = 'contacts' AND post_status = 'publish'
+ORDER BY (post_title = %s) desc, length(post_title);
+",
+$exact_match ? $wpdb->esc_like( $title ) : '%'. $wpdb->esc_like( $title ) .'%',
+$exclude_id,
+$wpdb->esc_like( $title )
+), ARRAY_A
+);
+// if there are more than 25, it is most likely not a duplicate
+return sizeof( $dups ) > 25 ? [] : $dups;
+}
+
+
+private function setup_contacts_specific_endpoints( string $namespace ){
+register_rest_route(
+$namespace, '/contacts/mergedetails', [
+"methods" => "GET",
+"callback" => [ $this, 'get_viewable_contacts' ]
+]
+);
+register_rest_route(
+$namespace, '/contacts/(?P<id>\d+)/duplicates', [
+    "methods"  => "GET",
+    "callback" => [ $this, 'get_duplicates_on_contact' ],
+    ]
+    );
+
+    //Merge Posts
+    register_rest_route(
+    $namespace, '/contacts/merge', [
+    "methods"  => "POST",
+    "callback" => [ $this, 'merge_posts' ],
+    ]
+    );
+    //Dismiss Duplicates
+    register_rest_route(
+    $namespace, '/contacts/(?P<id>\d+)/dismiss-duplicates', [
+        "methods"  => "GET",
+        "callback" => [ $this, 'dismiss_post_duplicate' ]
+        ]
+        );
+        }
+
+
+
+        public function get_duplicates_on_contact( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $contact_id = $params["id"] ?? null;
+        if ( $contact_id ){
+        return Disciple_Tools_Contacts::get_duplicates_on_contact( $contact_id, $params["include_contacts"] ?? "" !== "false", $params["exact_match"] ?? "" === "true" );
+        } else {
+        return new WP_Error( 'get_duplicates_on_contact', "Missing field for request", [ 'status' => 400 ] );
+        }
+        }
+
+        public function merge_posts( WP_REST_Request $request ){
+        $body = $request->get_json_params() ?? $request->get_body_params();
+        if ( isset( $body["contact1"], $body["contact2"] ) ) {
+        return Disciple_Tools_Contacts::merge_posts( $body["contact1"], $body["contact2"], $body );
+        }
+        return false;
+        }
+
+        public function dismiss_post_duplicate( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+        $get_params = $request->get_query_params();
+        if ( isset( $get_params["id"] ) ) {
+        if ( $get_params["id"] === "all" ){
+        return Disciple_Tools_Contacts::dismiss_all( $url_params["id"] );
+        } else {
+        return Disciple_Tools_Contacts::dismiss_duplicate( $url_params["id"], $get_params["id"] );
+        }
+        }
+        return false;
+        }

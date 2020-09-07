@@ -1,9 +1,9 @@
 <div class="reveal" id="help-modal" data-reveal>
     <?php
     $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
-    $contact_channels = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
+    $contact_channels = DT_Posts::get_post_settings( "contacts" )["channels"];
     $group_fields = DT_Posts::get_post_field_settings( "groups" );
-    $group_channels = Disciple_Tools_Groups_Post_Type::instance()->get_channels_list();
+    $group_channels = DT_Posts::get_post_settings( "groups" )["channels"];
     /**
      * Contact Record
      */
@@ -150,7 +150,6 @@
             <h3><?php esc_html_e( "Group Details", 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( "This is the area where you can view and edit the contact details for this group.", 'Optional Documentation', 'disciple_tools' ) ?></p>
             <ul>
-                <?php //$field = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings()["group_name"]; ?>
                 <li><strong><?php esc_html_e( "Group Name", 'disciple_tools' ) ?></strong> - <?php echo esc_html_x( "The name of the group is searchable and can be used to help you filter your contacts in the Groups List page.", 'Optional Documentation', 'disciple_tools' ) ?></li>
                 <li><strong><?php echo esc_html( $group_fields["group_status"]["name"] ) ?></strong> - <?php echo esc_html( $group_fields["group_status"]["description"] ) ?>
                     <ul>

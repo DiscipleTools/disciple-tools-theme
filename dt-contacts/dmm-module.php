@@ -299,25 +299,46 @@ class DT_Contacts_DMM {
 
     }
     public function post_connection_added( $post_type, $post_id, $post_key, $value ){
+        if ( $post_type === "contacts" ){
+            if ( $post_key === "subassigned" ){
+                $user_id = get_post_meta( $value, "corresponds_to_user", true );
+                if ( $user_id ){
+                    DT_Posts::add_shared( $post_type, $post_id, $user_id, null, false, false, false );
+                    Disciple_Tools_Notifications::insert_notification_for_subassigned( $user_id, $post_id );
+                }
+            }
+            if ( $post_key === 'baptized' ){
+                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $value );
+                $milestones = get_post_meta( $post_id, 'milestones' );
+                if ( empty( $milestones ) || !in_array( "milestone_baptizing", $milestones ) ){
+                    add_post_meta( $post_id, "milestones", "milestone_baptizing" );
+                }
+                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $post_id );
+            }
+            if ( $post_key === 'baptized_by' ){
+                $milestones = get_post_meta( $post_id, 'milestones' );
+                if ( empty( $milestones ) || !in_array( "milestone_baptized", $milestones ) ){
+                    add_post_meta( $post_id, "milestones", "milestone_baptized" );
+                }
+                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $post_id );
+            }
+        }
     }
     public function post_connection_removed( $post_type, $post_id, $post_key, $value ){
+        if ( $post_type === "contacts" ){
+            if ( $post_key === "baptized_by" ){
+                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $post_id );
+            }
+            if ( $post_key === "baptized" ){
+                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $value );
+            }
+        }
     }
 
     public static function dt_user_list_filters( $filters, $post_type ) {
-        if ( $post_type === 'contacts' ) {
-            $filters["tabs"][] = [
-                "key" => "all_contacts",
-                "label" => _x( "All", 'List Filters', 'disciple_tools' ),
-                "order" => 10
-            ];
-            // add assigned to me filters
-            $filters["filters"][] = [
-                'ID' => 'all_contacts',
-                'tab' => 'all_contacts',
-                'name' => _x( "All", 'List Filters', 'disciple_tools' ),
-                'query' => [],
-            ];
-        }
+//        if ( $post_type === 'contacts' ) {
+//
+//        }
         return $filters;
     }
 

@@ -36,7 +36,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
             <main id="main" class="large-7 medium-12 small-12 cell" role="main" style="padding:0">
                 <div class="cell grid-y grid-margin-y">
 
-                    <?php do_action( 'dt_record_top_above_details', $post_type, $post_id ); ?>
+                    <?php do_action( 'dt_record_top_above_details', $post_type, $dt_post ); ?>
 
                     <!--
                         Status section

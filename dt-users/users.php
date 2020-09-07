@@ -388,7 +388,7 @@ class Disciple_Tools_Users
             }
 
             if ( empty( $corresponds_to_contact ) || get_post( $corresponds_to_contact ) === null ) {
-                $new_id = Disciple_Tools_Contacts::create_contact( [
+                $new_id = DT_Posts::create_post( "contacts", [
                     "title"               => $user->display_name,
                     "assigned_to"         => "user-" . $user_id,
                     "type"                => "user",
@@ -402,7 +402,7 @@ class Disciple_Tools_Users
             } else {
                 $contact = get_post( $corresponds_to_contact );
                 if ( $contact && $contact->post_title != $user->display_name && $user->display_name != $user->user_login ){
-                    Disciple_Tools_Contacts::update_contact( $corresponds_to_contact, [
+                    DT_Posts::update_post( "contacts", $corresponds_to_contact, [
                         "title" => $user->display_name
                     ], false, true );
                 }
@@ -454,7 +454,7 @@ class Disciple_Tools_Users
             if ( isset( $data["corresponds_to_contact"] ) ){
                 $corresponds_to_contact = $data["corresponds_to_contact"];
                 update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
-                Disciple_Tools_Contacts::update_contact( (int) $corresponds_to_contact, [
+                DT_Posts::update_post( "contacts", (int) $corresponds_to_contact, [
                     "corresponds_to_user" => $user_id
                 ], false, true );
             }
@@ -462,7 +462,7 @@ class Disciple_Tools_Users
         if ( isset( $_POST["corresponds_to_contact_id"] ) ) {
             $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
             update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
-            Disciple_Tools_Contacts::update_contact( (int) $corresponds_to_contact, [
+            DT_Posts::update_post( "contacts", (int) $corresponds_to_contact, [
                 "corresponds_to_user" => $user_id
             ], false, true );
         }
@@ -1001,7 +1001,7 @@ Please click the following link to confirm the invite:
         if ( empty( $user_id ) ) {
             $user_id = get_current_user_id();
         }
-
+        $umeta_id = null;
         // use grid_id as primary value
         if ( isset( $location_grid_meta["grid_id"] ) && ! empty( $location_grid_meta["grid_id"] ) ) {
             $geocoder = new Location_Grid_Geocoder();

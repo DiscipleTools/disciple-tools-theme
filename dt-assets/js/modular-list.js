@@ -227,8 +227,7 @@
       } else if (  sortLabel.includes('post_date') ) {
         sortLabel = list_settings.translations.creation_date
       } else  {
-        //get label for table header
-        sortLabel = $(`.sortable [data-id="${_.escape( sortLabel.replace('-', '') )}"]`).text()
+        sortLabel = _.get( list_settings, `post_type_settings.fields[${filter.query.sort}].name`, sortLabel)
       }
       html += `<span class="current-filter" data-id="sort">
           ${_.escape( list_settings.translations.sorting_by )}: ${_.escape( sortLabel )}
@@ -304,7 +303,7 @@
       })
       window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type )
     }
-  }).on('click', 'tr', function(){
+  }).on('click', 'tbody tr', function(){
     window.location = $(this).data('link')
   })
 

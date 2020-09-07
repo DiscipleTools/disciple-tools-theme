@@ -18,12 +18,12 @@ if ( is_wp_error( $dt_current_id ) || is_wp_error( $dt_dupe_id ) ) {
 }
 get_header();
 
-$dt_contact = Disciple_Tools_Contacts::get_contact( $dt_current_id, true );
-$dt_channel_list = Disciple_Tools_Contacts::get_channel_list();
+$dt_contact = DT_Posts::get_post( "contacts", $dt_current_id, true );
+$dt_channel_list = DT_Posts::get_post_settings( "contacts" )["channels"];
 $dt_current_user = wp_get_current_user();
-$dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
+$dt_contact_fields = DT_Posts::get_post_field_settings( "contacts" );
 
-$dt_duplicate_contact = Disciple_Tools_Contacts::get_contact( $dt_dupe_id, true );
+$dt_duplicate_contact = DT_Posts::get_post( "contacts", $dt_dupe_id, true );
 
 $dt_fields = array(
     'contact_phone' => isset( $dt_channel_list['phone']["label"] ) ? $dt_channel_list['phone']["label"] : "Phone",

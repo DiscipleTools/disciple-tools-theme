@@ -49,7 +49,7 @@ class Disciple_Tools_Migration_0014 extends Disciple_Tools_Migration {
         " );
 
 
-        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( null, null, true );
+        $contact_fields = DT_Posts::get_post_field_settings( 'contacts' );
         $custom_field_options = dt_get_option( "dt_field_customizations" );
         $custom_lists = dt_get_option( "dt_site_custom_lists" );
         $custom_milestones = $custom_lists["custom_milestones"] ?? [];

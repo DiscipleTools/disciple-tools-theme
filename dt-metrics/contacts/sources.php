@@ -58,7 +58,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
             filemtime( get_theme_file_path() . $this->js_file_name )
         );
 
-        $contacts_custom_field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false );
+        $contacts_custom_field_settings = DT_Posts::get_post_field_settings( "contacts" );
         $sources = [];
         foreach ( $contacts_custom_field_settings["sources"]["default"] as $key => $values ){
             $sources[ $key ] = $values["label"];

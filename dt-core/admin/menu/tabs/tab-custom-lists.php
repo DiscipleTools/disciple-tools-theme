@@ -228,7 +228,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
 
     public function channels_box(){
-        $channels = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
+        $channels = DT_Posts::get_post_settings( "contacts" )["channels"];
         ?>
         <form method="post" name="channels_box">
             <input type="hidden" name="channels_box_nonce" value="<?php echo esc_attr( wp_create_nonce( 'channels_box' ) ) ?>" />
@@ -315,7 +315,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
     public function process_channels_box(){
         if ( isset( $_POST["channels_box_nonce"] ) ){
-            $channels = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
+            $channels = DT_Posts::get_post_settings( "contacts" )["channels"];
             $custom_channels = dt_get_option( "dt_custom_channels" );
             if ( !wp_verify_nonce( sanitize_key( $_POST['channels_box_nonce'] ), 'channels_box' ) ){
                 self::admin_notice( __( "Something went wrong", 'disciple_tools' ), "error" );

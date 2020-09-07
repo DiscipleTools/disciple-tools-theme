@@ -287,11 +287,11 @@ class DT_User_Management
         }
 
         if ( $section === 'details' || $section === 'pace' || $section === null ) {
-            $to_accept = Disciple_Tools_Contacts::search_viewable_contacts([
+            $to_accept = DT_Posts::search_viewable_post( "contacts", [
                 'overall_status' => [ 'assigned' ],
                 'assigned_to' => [ $user->ID ]
             ]);
-            $update_needed = Disciple_Tools_Contacts::search_viewable_contacts([
+            $update_needed = DT_Posts::search_viewable_post( "contacts", [
                 'requires_update' => [ "true" ],
                 'assigned_to' => [ $user->ID ],
                 'overall_status' => [ '-closed', '-paused' ],

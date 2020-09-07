@@ -65,7 +65,7 @@ class Disciple_Tools_Contacts_Transfer
     /**
      * Section to display in the share panel for the transfer function
      *
-     * @param $post_type
+     * @param $post
      */
     public function share_panel( $post ) {
         if ( empty( $post ) ) {
@@ -87,7 +87,7 @@ class Disciple_Tools_Contacts_Transfer
             }
 
             ?>
-            <hr size="1px">
+            <hr>
             <div class="grid-x">
 
                 <?php if ( $foreign_key_exists ) : ?>

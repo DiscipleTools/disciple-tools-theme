@@ -111,6 +111,10 @@ class DT_Posts extends Disciple_Tools_Posts {
             ] );
         }
 
+        if ( !isset( $fields["last_modified"] ) ){
+            $fields["last_modified"] = time();
+        }
+
         $contact_methods_and_connections = [];
         $multi_select_fields = [];
         $location_meta = [];
@@ -524,7 +528,6 @@ class DT_Posts extends Disciple_Tools_Posts {
         $compact = [];
         $search_string = esc_sql( sanitize_text_field( $search_string ) );
         $shared_with_user = [];
-        $users_interacted_with =[];
 
         //search by post_id
         if ( is_numeric( $search_string ) ){
@@ -1187,7 +1190,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $load_from_cache && $cached ){
             return $cached;
         }
-        $fields = [];
+        $fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, $post_type );
 
         $langs = dt_get_available_languages();

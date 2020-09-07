@@ -42,26 +42,6 @@ class DT_Groups_Base {
 
     public function dt_custom_fields_settings( $fields, $post_type ){
         if ( $post_type === 'groups' ){
-            $fields["name"] = [
-                'name' => __( "Name", 'disciple_tools' ),
-                'type' => 'text',
-                'tile' => 'details',
-                'in_create_form' => true,
-                'required' => true,
-                'icon' => get_template_directory_uri() . "/dt-assets/images/name.svg",
-                "show_in_table" => 5
-            ];
-
-            $fields["last_modified"] =[
-                'name' => __( 'Last Modified', 'disciple_tools' ),
-                'type' => 'date',
-                'default' => 0,
-                'section' => 'admin',
-                'customizable' => false,
-                "show_in_table" => 100
-            ];
-
-
             $fields['tags'] = [
                 'name'        => __( 'Tags', 'disciple_tools' ),
                 'description' => _x( 'A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags.', 'Optional Documentation', 'disciple_tools' ),
@@ -685,6 +665,14 @@ class DT_Groups_Base {
         }
         if ( $post_type === "contacts" && $field_key === "groups" ){
             self::update_group_member_count( $value );
+            // share the group with the owner of the contact.
+            $assigned_to = get_post_meta( $post_id, "assigned_to", true );
+            if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){
+                $user_id = explode( "-", $assigned_to )[1];
+                if ( $user_id ){
+                    DT_Posts::add_shared( "groups", $value, $user_id, null, false, false );
+                }
+            }
         }
     }
 

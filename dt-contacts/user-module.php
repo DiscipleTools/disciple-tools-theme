@@ -55,9 +55,6 @@ class DT_Contacts_User {
     public function dt_details_additional_section( $section, $post_type ){
     }
 
-    private function update_contact_counts( $contact_id, $action = "added", $type = 'contacts' ){
-
-    }
     public function post_connection_added( $post_type, $post_id, $post_key, $value ){
     }
     public function post_connection_removed( $post_type, $post_id, $post_key, $value ){

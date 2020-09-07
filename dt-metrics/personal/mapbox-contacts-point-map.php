@@ -48,7 +48,7 @@ class DT_Metrics_Personal_Contacts_Points_Map extends DT_Metrics_Chart_Base
             filemtime( get_theme_file_path() . $this->js_file_name ),
             true
         );
-        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_contact_field_defaults();
+        $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
         wp_localize_script(
             'dt_mapbox_script', 'dt_mapbox_metrics', [
                 'translations' => [

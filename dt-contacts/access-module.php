@@ -11,13 +11,14 @@ class DT_Contacts_Access {
 
     public function __construct() {
 //        add_action( 'p2p_init', [ $this, 'p2p_init' ] );
+        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
 
         //setup fields
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 20, 2 );
-
         //display tiles and fields
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 20, 2 );
+        add_action( 'dt_record_top_above_details', [ $this, 'dt_record_top_above_details' ], 20, 2 );
 
         //@todo if access type
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
@@ -29,6 +30,10 @@ class DT_Contacts_Access {
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 20, 4 );
         add_action( "post_connection_added", [ $this, "post_connection_added" ], 20, 4 );
         add_filter( "dt_post_update_fields", [ $this, "dt_post_update_fields" ], 10, 3 );
+        add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 20, 4 );
+        add_action( "dt_post_created", [ $this, "dt_post_created" ], 10, 3 );
+        add_filter( "dt_post_create_fields", [ $this, "dt_post_create_fields" ], 10, 2 );
+        add_action( "dt_post_updated", [ $this, "dt_post_updated" ], 10, 5 );
     }
 
 
@@ -282,7 +287,15 @@ class DT_Contacts_Access {
         return $fields;
     }
 
-
+    public function add_api_routes(){
+        $namespace = "dt-posts/v2";
+        register_rest_route(
+            $namespace, '/contacts/(?P<id>\d+)/accept', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'accept_contact' ],
+            ]
+        );
+    }
 
     public function dt_details_additional_tiles( $sections, $post_type = "" ){
         if ( $post_type === "contacts"){
@@ -488,9 +501,23 @@ class DT_Contacts_Access {
         }
     }
 
-    private function update_contact_counts( $contact_id, $action = "added", $type = 'contacts' ){
-
+    public function dt_record_top_above_details( $post_type, $contact ){
+        if ( $post_type === "contacts" && $contact["type"]["key"] === "access" ) {
+            $current_user = wp_get_current_user();
+            if ( isset( $contact['overall_status'] ) && $contact['overall_status']['key'] == 'assigned' &&
+                isset( $contact['assigned_to'] ) && $contact['assigned_to']['id'] == $current_user->ID ) { ?>
+                <section class="cell accept-contact" id="accept-contact">
+                    <div class="bordered-box detail-notification-box">
+                        <h4><?php esc_html_e( 'This contact has been assigned to you.', 'disciple_tools' )?></h4>
+                        <button class="accept-button button small accept-decline" data-action="accept"><?php esc_html_e( 'Accept', 'disciple_tools' )?></button>
+                        <button class="decline-button button small accept-decline" data-action="decline"><?php esc_html_e( 'Decline', 'disciple_tools' )?></button>
+                    </div>
+                </section>
+                <?php
+            }
+        }
     }
+
     public function post_connection_added( $post_type, $post_id, $post_key, $value ){
     }
     public function post_connection_removed( $post_type, $post_id, $post_key, $value ){
@@ -546,6 +573,140 @@ class DT_Contacts_Access {
             }
         }
         return $fields;
+    }
+
+    public function dt_comment_created( $post_type, $post_id, $created_comment_id, $comment_type ){
+        if ( $post_type === "contacts" ){
+            if ( $comment_type === "comment" ){
+                self::check_requires_update( $post_id );
+            }
+        }
+    }
+
+    // Runs after post is created and fields are processed.
+    public function dt_post_created( $post_type, $post_id, $initial_request_fields ){
+        if ( $post_type === "contacts" ){
+            // share the post with the assigned to user.
+            $post = DT_Posts::get_post( $post_type, $post_id, true, false );
+            if ( isset( $post["assigned_to"] )) {
+                if ( $post["assigned_to"]["id"] ) {
+                    DT_Posts::add_shared( $post_type, $post_id, $post["assigned_to"]["id"], null, false, false, false );
+                }
+            }
+        }
+    }
+
+    // Add, remove or modify fields before the fields are processed on post create.
+    public function dt_post_create_fields( $fields, $post_type ){
+        //@todo still need?
+        if ( !isset( $fields["seeker_path"] ) ){
+            $fields["seeker_path"] = "none";
+        }
+        if ( !isset( $fields["assigned_to"] ) ){
+            if ( get_current_user_id() ) {
+                $fields["assigned_to"] = sprintf( "user-%d", get_current_user_id() );
+            } else {
+                $base_id = dt_get_base_user( true );
+                if ( is_wp_error( $base_id ) ) { // if default editor does not exist, get available administrator
+                    $users = get_users( [ 'role' => 'administrator' ] );
+                    if ( count( $users ) > 0 ) {
+                        foreach ( $users as $user ) {
+                            $base_id = $user->ID;
+                        }
+                    }
+                }
+                $fields["assigned_to"] = sprintf( "user-%d", $base_id );
+            }
+        } else {
+            if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
+                $user = get_user_by( "email", $fields["assigned_to"] );
+                if ( $user ) {
+                    $fields["assigned_to"] = $user->ID;
+                } else {
+                    return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
+                }
+            }
+            if ( is_numeric( $fields["assigned_to"] ) ||
+                strpos( $fields["assigned_to"], "user" ) === false ){
+                $fields["assigned_to"] = "user-" . $fields["assigned_to"];
+            }
+        }
+        if ( !isset( $fields["overall_status"] ) ){
+            $current_roles = wp_get_current_user()->roles;
+            if (in_array( "dispatcher", $current_roles, true ) || in_array( "marketer", $current_roles, true )) {
+                $fields["overall_status"] = "new";
+            } else if (in_array( "multiplier", $current_roles, true ) ) {
+                $fields["overall_status"] = "active";
+            } else {
+                $fields["overall_status"] = "new";
+            }
+        }
+        if ( !isset( $fields["sources"] ) ) {
+            $fields["sources"] = [ "values" => [ [ "value" => "personal" ] ] ];
+        }
+        return $fields;
+    }
+
+    //Runs after fields are processed on update
+    public function dt_post_updated( $post_type, $post_id, $initial_request_fields, $post_fields_before_update, $post_fields_after_update ){
+        if ( $post_type === "contacts" ){
+            self::check_seeker_path( $post_id, $post_fields_after_update, $post_fields_before_update );
+        }
+    }
+
+
+
+    /**
+     * Make sure activity is created for all the steps before the current seeker path
+     *
+     * @param $contact_id
+     * @param $contact
+     * @param $previous_values
+     */
+    public function check_seeker_path( $contact_id, $contact, $previous_values ){
+        if ( isset( $contact["seeker_path"]["key"] ) && $contact["seeker_path"]["key"] != "none" ){
+            $current_key = $contact["seeker_path"]["key"];
+            $prev_key = isset( $previous_values["seeker_path"]["key"] ) ? $previous_values["seeker_path"]["key"] : "none";
+            $field_settings = DT_Posts::get_post_field_settings( "contacts" );
+            $seeker_path_options = $field_settings["seeker_path"]["default"];
+            $option_keys = array_keys( $seeker_path_options );
+            $current_index = array_search( $current_key, $option_keys );
+            $prev_option_key = $option_keys[ $current_index - 1 ];
+
+            if ( $prev_option_key != $prev_key && $current_index > array_search( $prev_key, $option_keys ) ){
+                global $wpdb;
+                $seeker_path_activity = $wpdb->get_results( $wpdb->prepare( "
+                    SELECT meta_value, hist_time, meta_id
+                    FROM $wpdb->dt_activity_log
+                    WHERE object_id = %s
+                    AND meta_key = 'seeker_path'
+                ", $contact_id), ARRAY_A );
+                $existing_keys = [];
+                $most_recent = 0;
+                $meta_id = 0;
+                foreach ( $seeker_path_activity as $activity ){
+                    $existing_keys[] = $activity["meta_value"];
+                    if ( $activity["hist_time"] > $most_recent ){
+                        $most_recent = $activity["hist_time"];
+                    }
+                    $meta_id = $activity["meta_id"];
+                }
+                $activity_to_create = [];
+                for ( $i = $current_index; $i > 0; $i-- ){
+                    if ( !in_array( $option_keys[$i], $existing_keys ) ){
+                        $activity_to_create[] = $option_keys[$i];
+                    }
+                }
+                foreach ( $activity_to_create as $missing_key ){
+                    $wpdb->query( $wpdb->prepare("
+                        INSERT INTO $wpdb->dt_activity_log
+                        ( action, object_type, object_subtype, object_id, user_id, hist_time, meta_id, meta_key, meta_value, field_type )
+                        VALUES ( 'field_update', 'contacts', 'seeker_path', %s, %d, %d, %d, 'seeker_path', %s, 'key_select' )",
+                        $contact_id, get_current_user_id(), $most_recent - 1, $meta_id, $missing_key
+                    ));
+                }
+            }
+        }
     }
 
     public static function dt_user_list_filters( $filters, $post_type ) {
@@ -647,4 +808,73 @@ class DT_Contacts_Access {
         }
     }
 
+    public static function accept_contact( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $body = $request->get_json_params() ?? $request->get_body_params();
+        if ( !isset( $params['id'] ) ) {
+            return new WP_Error( "accept_contact", "Missing a valid contact id", [ 'status' => 400 ] );
+        } else {
+            $contact_id = $params['id'];
+            $accepted = $body["accept"];
+            if ( !DT_Posts::can_update( 'contacts', $contact_id ) ) {
+                return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
+            }
+
+            if ( $accepted ) {
+                $update = [
+                    "overall_status" => 'active',
+                    "accepted" => true
+                ];
+                dt_activity_insert(
+                    [
+                        'action'         => 'assignment_accepted',
+                        'object_type'    => get_post_type( $contact_id ),
+                        'object_subtype' => '',
+                        'object_name'    => get_the_title( $contact_id ),
+                        'object_id'      => $contact_id,
+                        'meta_id'        => '', // id of the comment
+                        'meta_key'       => '',
+                        'meta_value'     => '',
+                        'meta_parent'    => '',
+                        'object_note'    => '',
+                    ]
+                );
+                return DT_Posts::update_post( "contacts", $contact_id, $update, true );
+            } else {
+                $assign_to_id = 0;
+                $last_activity = DT_Posts::get_most_recent_activity_for_field( $contact_id, "assigned_to" );
+                if ( isset( $last_activity->user_id )){
+                    $assign_to_id = $last_activity->user_id;
+                } else {
+                    $base_user = dt_get_base_user( true );
+                    if ( $base_user ){
+                        $assign_to_id = $base_user;
+                    }
+                }
+
+                $update = [
+                    "assigned_to" => $assign_to_id,
+                    "overall_status" => 'unassigned'
+                ];
+                $contact = DT_Posts::update_post( "contacts", $contact_id, $update, true );
+                $current_user = wp_get_current_user();
+                dt_activity_insert(
+                    [
+                        'action'         => 'assignment_decline',
+                        'object_type'    => get_post_type( $contact_id ),
+                        'object_subtype' => 'decline',
+                        'object_name'    => get_the_title( $contact_id ),
+                        'object_id'      => $contact_id,
+                        'meta_id'        => '', // id of the comment
+                        'meta_key'       => '',
+                        'meta_value'     => '',
+                        'meta_parent'    => '',
+                        'object_note'    => ''
+                    ]
+                );
+                Disciple_Tools_Notifications::insert_notification_for_assignment_declined( $current_user->ID, $assign_to_id, $contact_id );
+                return $contact;
+            }
+        }
+    }
 }

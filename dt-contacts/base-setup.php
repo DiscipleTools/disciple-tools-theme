@@ -25,6 +25,9 @@ class DT_Contacts_Base {
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
         add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
         add_filter( "dt_post_update_fields", [ $this, "update_post_field_hook" ], 10, 3 );
+        add_filter( "dt_post_create_fields", [ $this, "dt_post_create_fields" ], 10, 2 );
+        add_filter( "dt_comments_additional_sections", [ $this, "add_comm_channel_comment_section" ], 10, 2 );
+
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
@@ -40,15 +43,6 @@ class DT_Contacts_Base {
 
     public function dt_custom_fields_settings( $fields, $post_type ){
         if ( $post_type === 'contacts' ){
-            $fields["name"] = [
-                'name' => __( "Name", 'disciple_tools' ),
-                'type' => 'text',
-                'tile' => 'details',
-                'in_create_form' => true,
-                'required' => true,
-                'icon' => get_template_directory_uri() . "/dt-assets/images/name.svg",
-                "show_in_table" => 5
-            ];
             $fields["nickname"] = [
                 'name' => __( "Nickname", 'disciple_tools' ),
                 'type' => 'text',
@@ -60,22 +54,13 @@ class DT_Contacts_Base {
                 'name'        => __( 'Contact Type', 'disciple_tools' ),
                 'type'        => 'key_select',
                 'default'     => [
-                    'media'    => [ "label" => __( 'Media', 'disciple_tools' ) ],
-                    'seeker' => [ "label" => __( 'Seeker', 'disciple_tools' ) ],
-                    'believer' => [ "label" => __( 'Believer', 'disciple_tools' ) ],
-                    'leader' => [ "label" => __( 'Leader', 'disciple_tools' ) ],
-                    'user'     => [ "label" => __( 'User', 'disciple_tools' ) ]
+                    'access'    => [ "label" => __( 'Access', 'disciple_tools' ) ],
+                    'user'     => [ "label" => __( 'User', 'disciple_tools' ) ],
+                    'personal' => [ "label" => __( 'Personal', 'disciple_tools' ) ],
+                    'fruit' => [ "label" => __( 'Fruit', 'disciple_tools' ) ],
                 ],
                 'tile'     => 'other',
-//                'hidden'      => true
-            ];
-            $fields["last_modified"] =[
-                'name' => __( 'Last Modified', 'disciple_tools' ),
-                'type' => 'date',
-                'default' => 0,
-                'section' => 'admin',
-                'customizable' => false,
-                "show_in_table" => 100
+                'in_create_form' => true,
             ];
             $fields["duplicate_data"] = [
                 "name" => 'Duplicates', //system string does not need translation
@@ -307,9 +292,6 @@ class DT_Contacts_Base {
     }
 
 
-    private function update_contact_counts( $contact_id, $action = "added", $type = 'contacts' ){
-
-    }
     public function post_connection_added( $post_type, $post_id, $post_key, $value ){
     }
     public function post_connection_removed( $post_type, $post_id, $post_key, $value ){
@@ -319,24 +301,370 @@ class DT_Contacts_Base {
         return $fields;
     }
 
-    public static function dt_user_list_filters( $filters, $post_type ) {
-        if ( $post_type === 'contacts' ) {
+    //Add, remove or modify fields before the fields are processed in post create
+    public function dt_post_create_fields( $fields, $post_type ){
+        if ( $post_type === "contacts" ){
+            if ( !isset( $fields["type"] ) ){
+                $fields["type"] = "personal"; //@todo
+            }
+        }
+        return $fields;
+    }
+
+    public static function dt_user_list_filters( $filters, $post_type ){
+        if ( $post_type === 'contacts' ){
+            $counts = self::get_my_contacts_status_seeker_path();
+            $fields = DT_Posts::get_post_field_settings( $post_type );
+
+            /**
+             * Setup my contacts filters
+             */
+            $active_counts = [];
+            $update_needed = 0;
+            $status_counts = [];
+            $total_my = 0;
+            foreach ( $counts as $count ){
+                if ( $count["type"] != "user" ){
+                    $total_my += $count["count"];
+                    dt_increment( $status_counts[$count["overall_status"]], $count["count"] );
+                    if ( $count["overall_status"] === "active" ){
+                        if ( isset( $count["update_needed"] ) ) {
+                            $update_needed += (int) $count["update_needed"];
+                        }
+                        dt_increment( $active_counts[$count["seeker_path"]], $count["count"] );
+                    }
+                }
+            }
+            if ( !isset( $status_counts["closed"] ) ) {
+                $status_counts["closed"] = '';
+            }
+
             $filters["tabs"][] = [
-                "key" => "all_contacts",
-                "label" => _x( "All", 'List Filters', 'disciple_tools' ),
-                "order" => 10
+                "key" => "assigned_to_me",
+                "label" => sprintf( _x( "My %s", 'My records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
+                "count" => $total_my,
+                "order" => 20
             ];
             // add assigned to me filters
             $filters["filters"][] = [
-                'ID' => 'all_contacts',
-                'tab' => 'all_contacts',
+                'ID' => 'my_all',
+                'tab' => 'assigned_to_me',
                 'name' => _x( "All", 'List Filters', 'disciple_tools' ),
-                'query' => [],
+                'query' => [
+                    'assigned_to' => [ 'me' ],
+                    'subassigned' => [ 'me' ],
+                    'combine' => [ 'subassigned' ],
+                    'overall_status' => [ '-closed' ],
+                    'sort' => 'overall_status'
+                ],
+                "count" => $total_my,
             ];
+            foreach ( $fields["overall_status"]["default"] as $status_key => $status_value ) {
+                if ( isset( $status_counts[$status_key] ) ) {
+                    $filters["filters"][] = [
+                        "ID" => 'my_' . $status_key,
+                        "tab" => 'assigned_to_me',
+                        "name" => $status_value["label"],
+                        "query" => [
+                            'assigned_to' => [ 'me' ],
+                            'subassigned' => [ 'me' ],
+                            'combine' => [ 'subassigned' ],
+                            'overall_status' => [ $status_key ],
+                            'sort' => 'seeker_path'
+                        ],
+                        "count" => $status_counts[$status_key]
+                    ];
+                    if ( $status_key === "active" ){
+                        if ( $update_needed > 0 ){
+                            $filters["filters"][] = [
+                                "ID" => 'my_update_needed',
+                                "tab" => 'assigned_to_me',
+                                "name" => $fields["requires_update"]["name"],
+                                "query" => [
+                                    'assigned_to' => [ 'me' ],
+                                    'subassigned' => [ 'me' ],
+                                    'combine' => [ 'subassigned' ],
+                                    'overall_status' => [ 'active' ],
+                                    'requires_update' => [ true ],
+                                    'sort' => 'seeker_path'
+                                ],
+                                "count" => $update_needed,
+                                'subfilter' => true
+                            ];
+                        }
+                        foreach ( $fields["seeker_path"]["default"] as $seeker_path_key => $seeker_path_value ) {
+                            if ( isset( $active_counts[$seeker_path_key] ) ) {
+                                $filters["filters"][] = [
+                                    "ID" => 'my_' . $seeker_path_key,
+                                    "tab" => 'assigned_to_me',
+                                    "name" => $seeker_path_value["label"],
+                                    "query" => [
+                                        'assigned_to' => [ 'me' ],
+                                        'subassigned' => [ 'me' ],
+                                        'combine' => [ 'subassigned' ],
+                                        'overall_status' => [ 'active' ],
+                                        'seeker_path' => [ $seeker_path_key ],
+                                        'sort' => 'name'
+                                    ],
+                                    "count" => $active_counts[$seeker_path_key],
+                                    'subfilter' => true
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+
+            /**
+             * Setup dispatcher filters
+             */
+            if ( current_user_can( "view_any_contacts" ) || current_user_can( 'access_specific_sources' ) ) {
+                $counts = self::get_all_contacts_status_seeker_path();
+                $all_active_counts = [];
+                $all_update_needed = 0;
+                $all_status_counts = [];
+                $total_all = 0;
+                foreach ( $counts as $count ){
+                    if ( $count["type"] !== "user" ){
+                        $total_all += $count["count"];
+                        dt_increment( $all_status_counts[$count["overall_status"]], $count["count"] );
+                        if ( $count["overall_status"] === "active" ){
+                            if ( isset( $count["update_needed"] ) ) {
+                                $all_update_needed += (int) $count["update_needed"];
+                            }
+                            dt_increment( $all_active_counts[$count["seeker_path"]], $count["count"] );
+                        }
+                    }
+                }
+                if ( !isset( $all_status_counts["closed"] ) ) {
+                    $all_status_counts["closed"] = '';
+                }
+                $filters["tabs"][] = [
+                    "key" => "all_dispatch",
+                    "label" => sprintf( _x( "All %s", 'All records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
+                    "count" => $total_all,
+                    "order" => 10
+                ];
+                // add assigned to me filters
+                $filters["filters"][] = [
+                    'ID' => 'all_dispatch',
+                    'tab' => 'all_dispatch',
+                    'name' => _x( "All", 'List Filters', 'disciple_tools' ),
+                    'query' => [
+                        'overall_status' => [ '-closed' ],
+                        'sort' => 'overall_status'
+                    ],
+                    "count" => $total_all,
+                ];
+
+                foreach ( $fields["overall_status"]["default"] as $status_key => $status_value ) {
+                    if ( isset( $all_status_counts[$status_key] ) ) {
+                        $filters["filters"][] = [
+                            "ID" => 'all_' . $status_key,
+                            "tab" => 'all_dispatch',
+                            "name" => $status_value["label"],
+                            "query" => [
+                                'overall_status' => [ $status_key ],
+                                'sort' => 'seeker_path'
+                            ],
+                            "count" => $all_status_counts[$status_key]
+                        ];
+                        if ( $status_key === "active" ){
+                            if ( $all_update_needed > 0 ){
+                                $filters["filters"][] = [
+                                    "ID" => 'all_update_needed',
+                                    "tab" => 'all_dispatch',
+                                    "name" => $fields["requires_update"]["name"],
+                                    "query" => [
+                                        'overall_status' => [ 'active' ],
+                                        'requires_update' => [ true ],
+                                        'sort' => 'seeker_path'
+                                    ],
+                                    "count" => $all_update_needed,
+                                    'subfilter' => true
+                                ];
+                            }
+                            foreach ( $fields["seeker_path"]["default"] as $seeker_path_key => $seeker_path_value ) {
+                                if ( isset( $all_active_counts[$seeker_path_key] ) ) {
+                                    $filters["filters"][] = [
+                                        "ID" => 'all_' . $seeker_path_key,
+                                        "tab" => 'all_dispatch',
+                                        "name" => $seeker_path_value["label"],
+                                        "query" => [
+                                            'overall_status' => [ 'active' ],
+                                            'seeker_path' => [ $seeker_path_key ],
+                                            'sort' => 'name'
+                                        ],
+                                        "count" => $all_active_counts[$seeker_path_key],
+                                        'subfilter' => true
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            $filters["filters"] = self::add_default_custom_list_filters( $filters["filters"] );
         }
         return $filters;
     }
 
+    //list page filters function
+    private static function add_default_custom_list_filters( $filters ){
+        if ( empty( $filters )){
+            $filters = [];
+        }
+        $default_filters = [
+            [
+                'ID' => 'my_coached',
+                'visible' => "1",
+                'type' => 'default',
+                'tab' => 'custom',
+                'name' => 'Coached by me',
+                'query' => [
+                    'coached_by' => [ 'me' ],
+                    'sort' => 'seeker_path',
+                ],
+                'labels' => [
+                    [
+                        'id' => 'my_coached',
+                        'name' => 'Coached by be',
+                        'field' => 'coached_by',
+                    ],
+                ],
+            ],
+            [
+                'ID' => 'my_subassigned',
+                'visible' => "1",
+                'type' => 'default',
+                'tab' => 'custom',
+                'name' => 'Subassigned to me',
+                'query' => [
+                    'subassigned' => [ 'me' ],
+                    'sort' => 'overall_status',
+                ],
+                'labels' => [
+                    [
+                        'id' => 'my_subassigned',
+                        'name' => 'Subassigned to me',
+                        'field' => 'subassigned',
+                    ],
+                ],
+            ],
+            [
+                'ID' => 'my_shared',
+                'visible' => "1",
+                'type' => 'default',
+                'tab' => 'custom',
+                'name' => 'Shared with me',
+                'query' => [
+                    'assigned_to' => [ 'shared' ],
+                    'sort' => 'overall_status',
+                ],
+                'labels' => [
+                    [
+                        'id' => 'my_shared',
+                        'name' => 'Shared with me',
+                        'field' => 'subassigned',
+                    ],
+                ],
+            ]
+        ];
+        $contact_filter_ids = array_map( function ( $a ){
+            return $a["ID"];
+        }, $filters );
+        foreach ( $default_filters as $filter ) {
+            if ( !in_array( $filter["ID"], $contact_filter_ids ) ){
+                array_unshift( $filters, $filter );
+            }
+        }
+        //translation for default fields
+        foreach ( $filters as $index => $filter ) {
+            if ( $filter["name"] === 'Subassigned to me' ) {
+                $filters[$index]["name"] = __( 'Subassigned only', 'disciple_tools' );
+                $filters[$index]['labels'][0]['name'] = __( 'Subassigned only', 'disciple_tools' );
+            }
+            if ( $filter["name"] === 'Shared with me' ) {
+                $filters[$index]["name"] = __( 'Shared with me', 'disciple_tools' );
+                $filters[$index]['labels'][0]['name'] = __( 'Shared with me', 'disciple_tools' );
+            }
+            if ( $filter["name"] === 'Coached by me' ) {
+                $filters[$index]["name"] = __( 'Coached by me', 'disciple_tools' );
+                $filters[$index]['labels'][0]['name'] = __( 'Coached by me', 'disciple_tools' );
+            }
+        }
+        return $filters;
+    }
+
+    //list page filters function
+    private static function get_all_contacts_status_seeker_path(){
+        global $wpdb;
+        $results = [];
+
+        $can_view_all = false;
+        if ( current_user_can( 'access_specific_sources' ) ) {
+            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+            if ( empty( $sources ) || in_array( 'all', $sources ) ) {
+                $can_view_all = true;
+            }
+        }
+
+        if ( current_user_can( "view_any_contacts" ) || $can_view_all ) {
+            $results = $wpdb->get_results("
+                SELECT type.meta_value as type, status.meta_value as overall_status, pm.meta_value as seeker_path, count(pm.post_id) as count, count(un.post_id) as update_needed
+                FROM $wpdb->postmeta pm
+                INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' AND status.meta_value != 'closed' )
+                INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'contacts' and a.post_status = 'publish' )
+                LEFT JOIN $wpdb->postmeta type ON ( type.post_id = pm.post_id AND type.meta_key = 'type' )
+                LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
+                WHERE pm.meta_key = 'seeker_path'
+                GROUP BY type.meta_value, status.meta_value, pm.meta_value
+            ", ARRAY_A);
+        } else if ( current_user_can( 'access_specific_sources' ) ) {
+            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+            $sources_sql = dt_array_to_sql( $sources );
+            // phpcs:disable
+            $results = $wpdb->get_results( $wpdb->prepare( "
+                SELECT type.meta_value as type, status.meta_value as overall_status, pm.meta_value as seeker_path, count(pm.post_id) as count, count(un.post_id) as update_needed
+                FROM $wpdb->postmeta pm
+                INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' AND status.meta_value != 'closed' )
+                INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'contacts' and a.post_status = 'publish' )
+                LEFT JOIN $wpdb->postmeta type ON ( type.post_id = pm.post_id AND type.meta_key = 'type' )
+                LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
+                WHERE pm.meta_key = 'seeker_path'
+                AND (
+                    pm.post_id IN ( SELECT post_id from $wpdb->postmeta as source where source.meta_value IN ( $sources_sql ) )
+                    OR pm.post_id IN ( SELECT post_id FROM $wpdb->dt_share AS shares where shares.user_id = %s )
+                )
+                GROUP BY type.meta_value, status.meta_value, pm.meta_value
+            ", esc_sql( get_current_user_id() ) ) , ARRAY_A );
+            // phpcs:enable
+        }
+        return $results;
+    }
+
+    //list page filters function
+    private static function get_my_contacts_status_seeker_path(){
+        global $wpdb;
+        $user_post = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() ) ?? 0;
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT type.meta_value as type, status.meta_value as overall_status, pm.meta_value as seeker_path, count(pm.post_id) as count, count(un.post_id) as update_needed
+            FROM $wpdb->postmeta pm
+            INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' AND status.meta_value != 'closed')
+            INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'contacts' and a.post_status = 'publish' )
+            LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
+            LEFT JOIN $wpdb->postmeta type ON ( type.post_id = pm.post_id AND type.meta_key = 'type' )
+            WHERE pm.meta_key = 'seeker_path'
+            AND (
+                pm.post_id IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'assigned_to' AND meta_value = CONCAT( 'user-', %s ) )
+                OR pm.post_id IN ( SELECT p2p_to from $wpdb->p2p WHERE p2p_from = %s AND p2p_type = 'contacts_to_subassigned' )
+            )
+            GROUP BY type.meta_value, status.meta_value, pm.meta_value
+        ", get_current_user_id(), $user_post ), ARRAY_A);
+        return $results;
+    }
+
+    //add options to the "Admin Actions" dropdown on the record page
     public static function dt_record_admin_actions( $post_type, $post_id ){
         if ( $post_type === "contacts" ){
             $contact = DT_Posts::get_post( $post_type, $post_id );
@@ -456,5 +784,24 @@ class DT_Contacts_Base {
                 'error' => 'Missing required parameter'
             ];
         }
+    }
+
+    public function add_comm_channel_comment_section( $sections, $post_type ){
+        $channels = self::get_channels_list();
+        if ( $post_type === "contacts" ){
+            foreach ( $channels as $channel_key => $channel_option ) {
+                $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
+                $hide_domain = isset( $channel_option['hide_domain'] ) && $channel_option['hide_domain'] == true;
+                if ( $channel_key == 'phone' || $channel_key == 'email' || $channel_key == 'address' ){
+                    continue;
+                }
+
+                $sections[] = [
+                    "key" => $channel_key,
+                    "label" => esc_html( $channel_option["label"] ?? $channel_key )
+                ];
+            }
+        }
+        return $sections;
     }
 }

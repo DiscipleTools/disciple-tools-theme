@@ -144,7 +144,7 @@ declare(strict_types=1);
                     <div>
                         <table class="table-remove-top-border js-list stack striped" id="records-table">
                             <thead>
-                                <tr class="table-headers dnd-moved ">
+                                <tr class="table-headers dnd-moved sortable">
                                     <th style="width:32px; background-image:none; cursor:default"></th>
 
                                     <?php $columns = [];

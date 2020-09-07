@@ -44,7 +44,7 @@ function dt_print_details_bar(
                                 <li style="border-radius: 5px">
                                     <a class="button menu-white-dropdown-arrow"
                                        style="background-color: #00897B; color: white;">
-                                        <?php esc_html_e( "Admin actions", 'disciple_tools' ) ?></a>
+                                        <?php esc_html_e( "Admin Actions", 'disciple_tools' ) ?></a>
                                     <ul class="menu">
                                         <!-- example -->
                                         <!-- <li><a data-open="make-user-from-contact-modal"><?php esc_html_e( "Make a user from this contact", 'disciple_tools' ) ?></a></li>-->

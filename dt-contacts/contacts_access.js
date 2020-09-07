@@ -124,6 +124,20 @@ jQuery(document).ready(function($) {
   $('#edit-reason').on('click', function () {
     setStatus(post, true)
   })
-
+  /**
+   * Accept or decline a contact
+   */
+  $('.accept-decline').on('click', function () {
+    let action = $(this).data("action")
+    let data = {accept:action === "accept"}
+    makeRequestOnPosts( "POST", `contacts/${post_id}/accept`, data)
+    .then(function (resp) {
+      setStatus(resp)
+      jQuery('#accept-contact').hide()
+    }).catch(err=>{
+      console.log('error')
+      console.log(err.responseText)
+    })
+  })
 
 })
