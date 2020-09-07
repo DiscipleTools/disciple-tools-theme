@@ -1,7 +1,5 @@
 <?php
 declare(strict_types=1);
-
-
 /**
  * @param bool $share_button
  * @param bool $comment_button
@@ -22,6 +20,8 @@ function dt_print_details_bar(
     array $dispatcher_actions = [],
     bool $task = false
 ) {
+    $dt_post_type = get_post_type();
+    $post_id = get_the_ID();
     ?>
 
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
@@ -40,32 +40,22 @@ function dt_print_details_bar(
                             <?php } ?>
                         </div>
                         <div class="cell grid-x shrink center-items">
-                            <?php if ( sizeof( $dispatcher_actions ) > 0 ): ?>
                             <ul class="dropdown menu" data-dropdown-menu dropdownmenu-arrow-color="white">
                                 <li style="border-radius: 5px">
                                     <a class="button menu-white-dropdown-arrow"
                                        style="background-color: #00897B; color: white;">
-                                        <?php esc_html_e( "Admin actions", 'disciple_tools' ) ?></a>
+                                        <?php esc_html_e( "Admin Actions", 'disciple_tools' ) ?></a>
                                     <ul class="menu">
-                                        <?php foreach ( $dispatcher_actions as $action ) :
-                                            if ( $action == "make-user-from-contact-modal" ) : ?>
-                                                <li><a data-open="make-user-from-contact-modal"><?php esc_html_e( "Make a user from this contact", 'disciple_tools' ) ?></a></li>
-                                            <?php elseif ( $action == "link-to-user-modal") : ?>
-                                                <li><a data-open="link-to-user-modal"><?php esc_html_e( "Link to an existing user", 'disciple_tools' ) ?></a></li>
-                                            <?php elseif ( $action == "merge_with_contact") : ?>
-                                                <li><a id="open_merge_with_contact"><?php esc_html_e( "Merge with another contact", 'disciple_tools' ) ?></a></li>
-                                            <?php elseif ( $action == "duplicates-modal") : ?>
-                                                <li><a data-open="merge-dupe-edit-modal"><?php esc_html_e( "See duplicates", 'disciple_tools' ) ?></a></li>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
+                                        <!-- example -->
+                                        <!-- <li><a data-open="make-user-from-contact-modal"><?php esc_html_e( "Make a user from this contact", 'disciple_tools' ) ?></a></li>-->
+                                        <?php do_action( 'dt_record_admin_actions', $dt_post_type, $post_id ); ?>
                                     </ul>
                                 </li>
                             </ul>
-                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="cell small-4 center hide-for-small-only">
-                        <strong><?php the_title_attribute(); ?></strong>
+                        <strong id="second-bar-name"><?php the_title_attribute(); ?></strong>
                     </div>
                     <div class="cell small-4 align-right grid-x grid-margin-x">
                         <?php if ( $task ) : ?>

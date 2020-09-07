@@ -28,7 +28,7 @@ class Disciple_Tools_Reports_API
      * @since  0.1.0
      *
      * @param  array $args
-     * @param        date   'report_date'
+     * @param        string|false   'report_date'
      * @param        string 'report_source'
      * @param        string 'report_subsource'
      * @param        array  'meta_input' this is an array of meta_key and meta_value
@@ -413,7 +413,7 @@ class Disciple_Tools_Reports_API
         if ( !empty( $subsource ) ) {
             // Build full query
             $results = $wpdb->get_results( $wpdb->prepare(
-                "SELECT %s 
+                "SELECT %s
                 FROM `$wpdb->dt_reports`
                 WHERE
                     `report_date` LIKE %s

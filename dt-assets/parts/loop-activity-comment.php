@@ -6,7 +6,7 @@
         <h3 class="section-header">
             <span>
                 <?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?>
-                <span id="comments-activity-spinner" style="display: inline-block" class="loading-spinner"></span>
+                <span id="comments-activity-spinner" class="loading-spinner"></span>
             </span>
             <button class="help-button" data-section="comments-activity-help-text">
                 <img class="help-icon"
@@ -57,47 +57,7 @@
         </div>
         <div class="cell grid-x" style="margin-bottom: 20px">
             <div class="cell auto">
-                <?php if ( is_singular( "contacts" ) ) :
-                    $contact = DT_Posts::get_post( "contacts", get_the_ID(), true, true );
-                    $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
-                    $contact_fields = $post_settings["fields"];
-                    ?>
-
-                    <ul class="dropdown menu" data-dropdown-menu style="display: inline-block">
-                        <li style="border-radius: 5px">
-                            <a class="button menu-white-dropdown-arrow"
-                               style="background-color: #00897B; color: white;">
-                                <?php esc_html_e( "Quick Actions", 'disciple_tools' ) ?></a>
-                            <ul class="menu" style="width: max-content">
-                                <?php
-                                foreach ( $contact_fields as $field => $val ) {
-                                    if ( strpos( $field, "quick_button" ) === 0 ) {
-                                        $current_value = 0;
-                                        if ( isset( $contact[$field] ) ) {
-                                            $current_value = $contact[$field];
-                                        } ?>
-                                        <li class="quick-action-menu" data-id="<?php echo esc_attr( $field ) ?>">
-                                            <a>
-                                                <img src="<?php echo esc_url( $val['icon'] ); ?>">
-                                                <?php echo esc_html( $val["name"] ); ?>
-                                                (<span class="<?php echo esc_attr( $field ) ?>"><?php echo esc_html( $current_value ); ?></span>)
-                                            </a>
-                                        </li>
-
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </ul>
-                        </li>
-                    </ul>
-                    <button class="help-button" data-section="quick-action-help-text">
-                        <img class="help-icon"
-                             src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                    </button>
-                <?php endif; ?>
-
-
+                <?php do_action( 'dt_comment_action_quick_action', get_post_type() ); ?>
             </div>
 
             <div class="shrink cell" id="add-comment-button-container">

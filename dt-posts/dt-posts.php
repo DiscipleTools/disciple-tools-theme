@@ -64,12 +64,23 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( !$continue ){
             return new WP_Error( __FUNCTION__, "Could not create this post. Maybe it already exists", [ 'status' => 409 ] );
         }
+
+        //get extra fields and defaults
+        $fields = apply_filters( "dt_post_create_fields", $fields, $post_type );
+
         //set title
-        if ( !isset( $fields ["title"] ) ) {
+        if ( !isset( $fields["title"] ) && !isset( $fields["name"] ) ) {
             return new WP_Error( __FUNCTION__, "title needed", [ 'fields' => $fields ] );
         }
-        $title = $fields["title"];
-        unset( $fields["title"] );
+        $title = null;
+        if ( isset( $fields["title"] ) ){
+            $title = $fields["title"];
+            unset( $fields["title"] );
+        }
+        if ( isset( $fields["name"] ) ){
+            $title = $fields["name"];
+            unset( $fields["name"] );
+        }
 
         $create_date = null;
         if ( isset( $fields["create_date"] )){
@@ -91,9 +102,6 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        //get extra fields and defaults
-        $fields = apply_filters( "dt_post_create_fields", $fields, $post_type );
-
         $allowed_fields = apply_filters( "dt_post_create_allow_fields", [], $post_type );
         $bad_fields = self::check_for_invalid_post_fields( $post_settings, $fields, $allowed_fields );
         if ( !empty( $bad_fields ) ) {
@@ -101,6 +109,10 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'bad_fields' => $bad_fields,
                 'status' => 400
             ] );
+        }
+
+        if ( !isset( $fields["last_modified"] ) ){
+            $fields["last_modified"] = time();
         }
 
         $contact_methods_and_connections = [];
@@ -377,9 +389,10 @@ class DT_Posts extends Disciple_Tools_Posts {
         $fields["ID"] = $post_id;
         $fields["created_date"] = $wp_post->post_date;
         $fields["permalink"] = get_permalink( $post_id );
+        $fields["post_type"] = $post_type;
 
         self::adjust_post_custom_fields( $post_settings, $post_id, $fields );
-        $fields["title"] = $wp_post->post_title;
+        $fields["name"] = $wp_post->post_title;
 
         $fields = apply_filters( 'dt_after_get_post_fields_filter', $fields, $post_type );
         wp_cache_set( "post_" . $current_user_id . '_' . $post_id, $fields );
@@ -487,6 +500,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
             self::adjust_post_custom_fields( $post_settings, $record["ID"], $record, $fields_to_return, $all_posts[$record["ID"]] ?? [], $all_post_user_meta[$record["ID"]] ?? [] );
             $record["permalink"] = $site_url . '/' . $post_type .'/' . $record["ID"];
+            $record["name"] = $record["post_title"];
         }
         $data["posts"] = $records;
 
@@ -514,7 +528,6 @@ class DT_Posts extends Disciple_Tools_Posts {
         $compact = [];
         $search_string = esc_sql( sanitize_text_field( $search_string ) );
         $shared_with_user = [];
-        $users_interacted_with =[];
 
         //search by post_id
         if ( is_numeric( $search_string ) ){
@@ -1177,7 +1190,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $load_from_cache && $cached ){
             return $cached;
         }
-        $fields = [];
+        $fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, $post_type );
 
         $langs = dt_get_available_languages();
@@ -1251,6 +1264,54 @@ class DT_Posts extends Disciple_Tools_Posts {
         $fields = apply_filters( 'dt_custom_fields_settings_after_combine', $fields, $post_type );
         wp_cache_set( $post_type . "_field_settings", $fields );
         return $fields;
+    }
+
+    private static function array_merge_recursive_distinct( array &$array1, array &$array2 ){
+        $merged = $array1;
+        foreach ( $array2 as $key => &$value ){
+            if ( is_array( $value ) && isset( $merged[$key] ) && is_array( $merged[$key] ) ){
+                $merged[$key] = self::array_merge_recursive_distinct( $merged[$key], $value );
+            } else {
+                $merged[$key] = $value;
+            }
+        }
+        return $merged;
+    }
+
+    public static function get_post_tiles( $post_type ){
+        $tile_options = dt_get_option( "dt_custom_tiles" );
+        $sections = apply_filters( 'dt_details_additional_tiles', [], $post_type );
+        if ( !isset( $tile_options[$post_type] ) ){
+            $tile_options[$post_type] = [];
+        }
+        $tile_options[$post_type] = self::array_merge_recursive_distinct( $sections, $tile_options[$post_type] );
+        $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type );
+        foreach ( $sections as $section_id ){
+            if ( !isset( $tile_options[$post_type][$section_id] ) ) {
+                $tile_options[$post_type][$section_id] = [];
+            }
+        }
+        //tile available on all records
+        if ( !isset( $tile_options[$post_type]["details"] ) ) {
+            $tile_options[$post_type]["details"] = [
+                "label" => "Details"
+            ];
+        }
+        return $tile_options[$post_type];
+    }
+
+//    @todo
+    public function dt_get_custom_channels_translation( $channel_list ) {
+        if (is_admin()) {
+            return $channel_list;
+        }
+        $user_locale = get_user_locale();
+        foreach ( $channel_list as $channel_key => $channel_value ) {
+            if ( !empty( $channel_value["translations"][$user_locale] ) ) {
+                $channel_list[$channel_key]["label"] = $channel_value["translations"][$user_locale];
+            }
+        }
+        return $channel_list;
     }
 }
 

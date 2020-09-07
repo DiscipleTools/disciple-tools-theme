@@ -14,7 +14,7 @@
   let loading_spinner = $("#list-loading-spinner")
   let old_filters = JSON.stringify(list_settings.filters)
   let table_header_row = $('.js-list thead .sortable th')
-  let list_columns = window.SHAREDFUNCTIONS.get_json_cookie( 'list_columns', [] )
+  let fields_to_show_in_table = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_show_in_table', [] )
 
   let items = []
   try {
@@ -33,14 +33,18 @@
   }
 
   setup_filters()
-  let fields_to_show_in_table = [];
-  _.forOwn( list_settings.post_type_settings.fields, (field_settings, field_key)=> {
-    if (_.get(field_settings, 'show_in_table')===true) {
-      fields_to_show_in_table.push(field_key)
-    }
-  })
-  fields_to_show_in_table = _.uniq(_.union(list_columns,fields_to_show_in_table))
-
+  if ( _.isEmpty(fields_to_show_in_table)){
+    _.forOwn( list_settings.post_type_settings.fields, (field_settings, field_key)=> {
+      if (_.get(field_settings, 'show_in_table')===true || _.get(field_settings, 'show_in_table') > 0) {
+        fields_to_show_in_table.push(field_key)
+      }
+    })
+    fields_to_show_in_table.sort((a,b)=>{
+      let a_order = list_settings.post_type_settings.fields[a].show_in_table ? ( list_settings.post_type_settings.fields[a].show_in_table === true ? 50 : list_settings.post_type_settings.fields[a].show_in_table ) : 200
+      let b_order = list_settings.post_type_settings.fields[b].show_in_table ? ( list_settings.post_type_settings.fields[b].show_in_table === true ? 50 : list_settings.post_type_settings.fields[b].show_in_table ) : 200
+      return a_order > b_order ? 1 : -1
+    })
+  }
 
   //open the filter tabs
   $(`#list-filter-tabs [data-id='${_.escape( current_filter.tab )}'] a`).click()
@@ -223,8 +227,7 @@
       } else if (  sortLabel.includes('post_date') ) {
         sortLabel = list_settings.translations.creation_date
       } else  {
-        //get label for table header
-        sortLabel = $(`.sortable [data-id="${_.escape( sortLabel.replace('-', '') )}"]`).text()
+        sortLabel = _.get( list_settings, `post_type_settings.fields[${filter.query.sort}].name`, sortLabel)
       }
       html += `<span class="current-filter" data-id="sort">
           ${_.escape( list_settings.translations.sorting_by )}: ${_.escape( sortLabel )}
@@ -271,15 +274,17 @@
     get_records(0, id)
   })
 
-  $('#choose_list_columns').on('click', function(){
+  $('#choose_fields_to_show_in_table').on('click', function(){
     $('#list_column_picker').toggle()
   })
   $('#save_column_choices').on('click', function(){
-    let list_columns = [];
+    let new_selected = [];
     $('#list_column_picker input:checked').each((index, elem)=>{
-      list_columns.push($(elem).val())
+      new_selected.push($(elem).val())
     })
-    window.SHAREDFUNCTIONS.save_json_cookie('list_columns', list_columns, list_settings.post_type )
+    fields_to_show_in_table = _.intersection( fields_to_show_in_table, new_selected ) // remove unchecked
+    fields_to_show_in_table = _.uniq(_.union( fields_to_show_in_table, new_selected ))
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type )
     window.location.reload()
   })
 
@@ -289,16 +294,16 @@
     overClass: 'over',
     movedContainerSelector: '.dnd-moved',
     onDragEnd: ()=>{
-      let list_columns = []
+      fields_to_show_in_table = []
       $('.table-headers th').each((i, e)=>{
         let field = $(e).data('id')
         if ( field ){
-          list_columns.push(field)
+          fields_to_show_in_table.push(field)
         }
       })
-      window.SHAREDFUNCTIONS.save_json_cookie('list_columns', list_columns, list_settings.post_type )
+      window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type )
     }
-  }).on('click', 'tr', function(){
+  }).on('click', 'tbody tr', function(){
     window.location = $(this).data('link')
   })
 

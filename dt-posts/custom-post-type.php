@@ -155,6 +155,30 @@ class Disciple_Tools_Post_Type_Template {
         <?php
     }
 
+
+    public static function get_base_post_type_fields(){
+        $fields = [];
+        $fields["name"] = [
+            'name' => __( "Name", 'disciple_tools' ),
+            'type' => 'text',
+            'tile' => 'details',
+            'in_create_form' => true,
+            'required' => true,
+            'icon' => get_template_directory_uri() . "/dt-assets/images/name.svg",
+            "show_in_table" => 5
+        ];
+        $fields["last_modified"] =[
+            'name' => __( 'Last Modified', 'disciple_tools' ),
+            'type' => 'date',
+            'default' => 0,
+            'section' => 'admin',
+            'customizable' => false,
+            "show_in_table" => 100
+        ];
+        //tasks, location, ppl group? follow, unfollow?
+        return $fields;
+    }
+
     /**
      * Get the settings for the custom fields.
      *

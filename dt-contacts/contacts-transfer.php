@@ -65,7 +65,7 @@ class Disciple_Tools_Contacts_Transfer
     /**
      * Section to display in the share panel for the transfer function
      *
-     * @param $post_type
+     * @param $post
      */
     public function share_panel( $post ) {
         if ( empty( $post ) ) {
@@ -87,7 +87,7 @@ class Disciple_Tools_Contacts_Transfer
             }
 
             ?>
-            <hr size="1px">
+            <hr>
             <div class="grid-x">
 
                 <?php if ( $foreign_key_exists ) : ?>
@@ -156,7 +156,7 @@ class Disciple_Tools_Contacts_Transfer
         if ( isset( $postmeta_data['duplicate_data'] ) ) {
             unset( $postmeta_data['duplicate_data'] );
         }
-        $contact = Disciple_Tools_Contacts::get_contact( $contact_id );
+        $contact = DT_Posts::get_post( "contacts", $contact_id );
 
         $args = [
             'method' => 'POST',
@@ -169,10 +169,13 @@ class Disciple_Tools_Contacts_Transfer
                     'people_groups' => $contact['people_groups'],
                     'transfer_foreign_key' => $contact['transfer_foreign_key'] ?? 0,
                 ],
-            ]
+            ],
+            'headers' => [
+                'Authorization' => 'Bearer ' . $site['transfer_token'],
+            ],
         ];
 
-        $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/contact/transfer', $args );
+        $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-posts/v2/contact/receive-transfer', $args );
         if ( is_wp_error( $result ) ){
             return $result;
         }

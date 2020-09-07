@@ -291,17 +291,18 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
 
-
     /**
      * Accepts types: key_select, multi_select, text, date, connection, location
      *
      * @param $field_key
      * @param $fields
      * @param $post
+     * @param bool $show_typeahead_create
      */
-    function render_field_for_display( $field_key, $fields, $post ){
-        if ( isset( $fields[$field_key]["type"] ) ){
+    function render_field_for_display( $field_key, $fields, $post, $show_typeahead_create = false ){
+        if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
             $field_type = $fields[$field_key]["type"];
+            $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
             $allowed_types = [ 'key_select', 'multi_select', 'date', 'text', 'number', 'connection', 'location', 'communication_channel' ];
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
@@ -309,18 +310,30 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             ?>
             <div class="section-subheader">
                 <?php if ( isset( $fields[$field_key]["icon"] ) ) : ?>
-                    <img src="<?php echo esc_url( $fields[$field_key]["icon"] ) ?>">
+                    <img class="dt-icon" src="<?php echo esc_url( $fields[$field_key]["icon"] ) ?>">
                 <?php endif;
                 echo esc_html( $fields[$field_key]["name"] );
-                if ( $field_type === "communication_channel" ) : ?>
+                ?> <span id="<?php echo esc_html( $field_key ); ?>-spinner" class="loading-spinner"></span>
+                <?php if ( $field_type === "communication_channel" ) : ?>
                     <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button" type="button">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 <?php endif ?>
             </div>
             <?php
-            if ( $field_type === "key_select" ) : ?>
-                <select class="select-field" id="<?php echo esc_html( $field_key ); ?>">
+            if ( $field_type === "key_select" ) :
+                $color_select = false;
+                $active_color = "";
+                if ( isset( $fields[$field_key]["default_color"] ) ) {
+                    $color_select = true;
+                    $active_color = $fields[$field_key]["default_color"];
+                    $current_key = $post[$field_key]["key"] ?? "";
+                    if ( isset( $fields[$field_key]["default"][ $current_key ]["color"] )){
+                        $active_color = $fields[$field_key]["default"][ $current_key ]["color"];
+                    }
+                }
+                ?>
+                <select class="select-field <?php echo esc_html( $color_select ? "color-select" : "" ); ?>" id="<?php echo esc_html( $field_key ); ?>" style="<?php echo esc_html( $color_select ? ( "background-color: " . $active_color ) : "" ); ?>">
                     <?php foreach ($fields[$field_key]["default"] as $option_key => $option_value):
                         $selected = isset( $post[$field_key]["key"] ) && $post[$field_key]["key"] === $option_key; ?>
                         <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
@@ -341,16 +354,16 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <?php endforeach; ?>
                 </div>
             <?php elseif ( $field_type === "text" ) :?>
-                <input id="<?php echo esc_html( $field_key ) ?>" type="text"
+                <input id="<?php echo esc_html( $field_key ) ?>" type="text" <?php echo esc_html( $required_tag ) ?>
                        class="text-input"
                        value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>"/>
             <?php elseif ( $field_type === "number" ) :?>
-                <input id="<?php echo esc_html( $field_key ) ?>" type="number"
+                <input id="<?php echo esc_html( $field_key ) ?>" type="number" <?php echo esc_html( $required_tag ) ?>
                        class="text-input"
                        value="<?php echo esc_html( $post[$field_key] ?? "" ) ?>"/>
             <?php elseif ( $field_type === "date" ) :?>
                 <div class="<?php echo esc_html( $field_key ) ?> input-group">
-                    <input id="<?php echo esc_html( $field_key ) ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off"
+                    <input id="<?php echo esc_html( $field_key ) ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off" <?php echo esc_html( $required_tag ) ?>
                            value="<?php echo esc_html( $post[$field_key]["timestamp"] ?? '' ) ?>" >
                     <div class="input-group-button">
                         <button id="<?php echo esc_html( $field_key ) ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $field_key ) ?>" title="Delete Date" type="button">x</button>
@@ -362,14 +375,22 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <div id="<?php echo esc_html( $field_key ) ?>_t" name="form-<?php echo esc_html( $field_key ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
                         <div class="typeahead__container">
                             <div class="typeahead__field">
-                            <span class="typeahead__query">
-                                <input class="js-typeahead-<?php echo esc_html( $field_key ) ?>" data-field="<?php echo esc_html( $field_key ) ?>"
-                                       data-post_type="<?php echo esc_html( $fields[$field_key]["post_type"] ) ?>"
-                                       data-field_type="connection"
-                                       name="<?php echo esc_html( $field_key ) ?>[query]"
-                                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
-                                       autocomplete="off">
-                            </span>
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-<?php echo esc_html( $field_key ) ?> input-height" data-field="<?php echo esc_html( $field_key ) ?>"
+                                           data-post_type="<?php echo esc_html( $fields[$field_key]["post_type"] ) ?>"
+                                           data-field_type="connection"
+                                           name="<?php echo esc_html( $field_key ) ?>[query]"
+                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
+                                           autocomplete="off">
+                                </span>
+                                <?php if ( $show_typeahead_create ) : ?>
+                                <span class="typeahead__button">
+                                    <button type="button" data-connection-key="<?php echo esc_html( $field_key ) ?>" class="create-new-record typeahead__image_button input-height">
+                                        <?php $icon = isset( $fields[$field_key]["create-icon"] ) ? $fields[$field_key]["create-icon"] : get_template_directory_uri() . '/dt-assets/images/add-contact.svg'; ?>
+                                        <img src="<?php echo esc_html( $icon ) ?>"/>
+                                    </button>
+                                </span>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -395,21 +416,33 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <?php elseif ( $field_type === "communication_channel" ) : ?>
                 <ul id="edit-<?php echo esc_html( $field_key ) ?>" >
                     <?php foreach ( $post[$field_key] ?? [] as $field_value ) : ?>
-                        <input id="<?php echo esc_html( $field_value["key"] ) ?>"
-                               type="text"
-                               data-type="<?php echo esc_html( $field_key ) ?>"
-                               value="<?php echo esc_html( $field_value["value"] ) ?>"
-                               class="dt-communication-channel">
+                        <li style="display:flex">
+                            <input id="<?php echo esc_html( $field_value["key"] ) ?>"
+                                   type="text"
+                                   data-field="<?php echo esc_html( $field_key ) ?>"
+                                   value="<?php echo esc_html( $field_value["value"] ) ?>"
+                                   class="dt-communication-channel">
+                            <button class="button clear channel-delete-button new-<?php echo esc_html( $field_key ); ?>" data-field="<?php echo esc_html( $field_key ); ?>" data-key="<?php echo esc_html( $field_value["key"] ); ?>">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/invalid.svg' ) ?>">
+                            </button>
+                        </li>
                     <?php endforeach;
                     if ( empty( $post[$field_key] ) ?? [] ): ?>
-                        <input data-type="<?php echo esc_html( $field_key ) ?>"
-                               type="text"
+                        <input data-field="<?php echo esc_html( $field_key ) ?>"
+                               type="text" <?php echo esc_html( $required_tag ) ?>
                                class="dt-communication-channel">
                     <?php endif ?>
                 </ul>
 
             <?php endif;
         }
+    }
+
+    function dt_increment( &$var, $val ){
+        if ( !isset( $var ) ){
+            $var = 0;
+        }
+        $var += (int) $val;
     }
 
 

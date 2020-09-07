@@ -410,7 +410,7 @@ class Disciple_Tools_Snapshot_Report {
      */
     public static function get_contacts_status(): array {
         $data            = [];
-        $contact_fields  = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $contact_fields  = DT_Posts::get_post_field_settings( "contacts" );
         $status_defaults = $contact_fields['overall_status']['default'];
         $current_state   = Disciple_Tools_Network_Queries::contacts_current_state();
         foreach ( $status_defaults as $key => $status ) {
@@ -691,7 +691,7 @@ class Disciple_Tools_Snapshot_Report {
         $keyed_practicing = [];
 
         // Make key list
-        $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+        $group_fields = DT_Posts::get_post_field_settings( "groups" );
         foreach ( $group_fields["health_metrics"]["default"] as $key => $option ) {
             $labels[ $key ] = $option["label"];
         }
@@ -774,7 +774,7 @@ class Disciple_Tools_Snapshot_Report {
         $labels       = [];
         $keyed_result = [];
 
-        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
 
         foreach ( $contact_fields['seeker_path']['default'] as $key => $value ) {
             $labels[ $key ] = $value['label'];

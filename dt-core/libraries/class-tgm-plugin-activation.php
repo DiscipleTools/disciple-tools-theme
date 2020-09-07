@@ -915,10 +915,10 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 
                 // Display message based on if all plugins are now active or not.
                 if ( $this->is_tgmpa_complete() ) {
-                    echo '<p>', sprintf( esc_html( $this->strings['complete'], 'disciple_tools' ), '<a href="' . esc_url( self_admin_url() ) . '">' . esc_html__( 'Return to the Dashboard', 'tgmpa' ) . '</a>' ), '</p>';
+                    echo '<p>', sprintf( esc_html( $this->strings['complete'] ), '<a href="' . esc_url( self_admin_url() ) . '">' . esc_html__( 'Return to the Dashboard', 'tgmpa' ) . '</a>' ), '</p>';
                     echo '<style type="text/css">#adminmenu .wp-submenu li.current { display: none !important; }</style>';
                 } else {
-                    echo '<p><a href="', esc_url( $this->get_tgmpa_url() ), '" target="_parent">', esc_html( $this->strings['return'], 'disciple_tools' ), '</a></p>';
+                    echo '<p><a href="', esc_url( $this->get_tgmpa_url() ), '" target="_parent">', esc_html( $this->strings['return'] ), '</a></p>';
                 }
 
                 return true;
@@ -1049,7 +1049,7 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 
                 if ( is_wp_error( $activate ) ) {
                     echo '<div id="message" class="error"><p>', wp_kses_post( $activate->get_error_message() ), '</p></div>',
-                    '<p><a href="', esc_url( $this->get_tgmpa_url() ), '" target="_parent">', esc_html( $this->strings['return'], 'disciple_tools' ), '</a></p>';
+                    '<p><a href="', esc_url( $this->get_tgmpa_url() ), '" target="_parent">', esc_html( $this->strings['return'] ), '</a></p>';
 
                     return false; // End it here if there is an error with activation.
                 } else {
@@ -1057,11 +1057,11 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
                         // Make sure message doesn't display again if bulk activation is performed
                         // immediately after a single activation.
                         if ( ! isset( $_POST['action'] ) ) { // WPCS: CSRF OK.
-                            echo '<div id="message" class="updated"><p>', esc_html( $this->strings['activated_successfully'], 'disciple_tools' ), ' <strong>', esc_html( $this->plugins[ $slug ]['name'], 'disciple_tools' ), '.</strong></p></div>';
+                            echo '<div id="message" class="updated"><p>', esc_html( $this->strings['activated_successfully'] ), ' <strong>', esc_html( $this->plugins[ $slug ]['name'] ), '.</strong></p></div>';
                         }
                     } else {
                         // Simpler message layout for use on the plugin install page.
-                        echo '<p>', esc_html( $this->strings['plugin_activated'], 'disciple_tools' ), '</p>';
+                        echo '<p>', esc_html( $this->strings['plugin_activated'] ), '</p>';
                     }
                 }
             } elseif ( $this->is_plugin_active( $slug ) ) {
@@ -1069,8 +1069,8 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
                 // on the plugin install page.
                 echo '<div id="message" class="error"><p>',
                     sprintf(
-                    esc_html( $this->strings['plugin_already_active'], 'disciple_tools' ),
-                    '<strong>' . esc_html( $this->plugins[ $slug ]['name'], 'disciple_tools' ) . '</strong>'
+                    esc_html( $this->strings['plugin_already_active'] ),
+                    '<strong>' . esc_html( $this->plugins[ $slug ]['name'] ) . '</strong>'
                     ),
                     '</p></div>';
             } elseif ( $this->does_plugin_require_update( $slug ) ) {
@@ -1080,14 +1080,14 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
                     if ( ! isset( $_POST['action'] ) ) { // WPCS: CSRF OK.
                         echo '<div id="message" class="error"><p>',
                             sprintf(
-                            esc_html( $this->strings['plugin_needs_higher_version'], 'disciple_tools' ),
-                            '<strong>' . esc_html( $this->plugins[ $slug ]['name'], 'disciple_tools' ) . '</strong>'
+                            esc_html( $this->strings['plugin_needs_higher_version'] ),
+                            '<strong>' . esc_html( $this->plugins[ $slug ]['name'] ) . '</strong>'
                             ),
                             '</p></div>';
                     }
                 } else {
                     // Simpler message layout for use on the plugin install page.
-                    echo '<p>', sprintf( esc_html( $this->strings['plugin_needs_higher_version'], 'disciple_tools' ), esc_html( $this->plugins[ $slug ]['name'], 'disciple_tools' ) ), '</p>';
+                    echo '<p>', sprintf( esc_html( $this->strings['plugin_needs_higher_version'] ), esc_html( $this->plugins[ $slug ]['name'] ) ), '</p>';
                 }
             }
 
@@ -1187,7 +1187,7 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
                 $line_template = '<span style="display: block; margin: 0.5em 0.5em 0 0; clear: both;">%s</span>' . "\n";
 
                 if ( ! current_user_can( 'activate_plugins' ) && ! current_user_can( 'install_plugins' ) && ! current_user_can( 'update_plugins' ) ) {
-                    $rendered  = esc_html( $this->strings['notice_cannot_install_activate'], 'disciple_tools' ) . ' ' . esc_html( $this->strings['contact_admin'], 'disciple_tools' );
+                    $rendered  = esc_html( $this->strings['notice_cannot_install_activate'] ) . ' ' . esc_html( $this->strings['contact_admin'] );
                     $rendered .= $this->create_user_action_links_for_notice( 0, 0, 0, $line_template );
                 } else {
 
@@ -1253,7 +1253,7 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
                 'install'  => '',
                 'update'   => '',
                 'activate' => '',
-                'dismiss'  => $this->dismissable ? '<a href="' . esc_url( wp_nonce_url( add_query_arg( 'tgmpa-dismiss', 'dismiss_admin_notices' ), 'tgmpa-dismiss-' . get_current_user_id() ) ) . '" class="dismiss-notice" target="_parent">' . esc_html( $this->strings['dismiss'], 'disciple_tools' ) . '</a>' : '',
+                'dismiss'  => $this->dismissable ? '<a href="' . esc_url( wp_nonce_url( add_query_arg( 'tgmpa-dismiss', 'dismiss_admin_notices' ), 'tgmpa-dismiss-' . get_current_user_id() ) ) . '" class="dismiss-notice" target="_parent">' . esc_html( $this->strings['dismiss'] ) . '</a>' : '',
             );
 
             $link_template = '<a href="%2$s">%1$s</a>';
@@ -1651,7 +1651,7 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
                 $api[ $slug ] = false;
 
                 if ( is_wp_error( $response ) ) {
-                    wp_die( esc_html( $this->strings['oops'], 'disciple_tools' ) );
+                    wp_die( esc_html( $this->strings['oops'] ) );
                 } else {
                     $api[ $slug ] = $response;
                 }
@@ -1674,7 +1674,7 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
                 $link = sprintf(
                     '<a href="%1$s" target="_blank">%2$s</a>',
                     esc_url( $this->plugins[ $slug ]['external_url'] ),
-                    esc_html( $this->plugins[ $slug ]['name'], 'disciple_tools' )
+                    esc_html( $this->plugins[ $slug ]['name'] )
                 );
             } elseif ( 'repo' === $this->plugins[ $slug ]['source_type'] ) {
                 $url = add_query_arg(
@@ -1691,10 +1691,10 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
                 $link = sprintf(
                     '<a href="%1$s" class="thickbox">%2$s</a>',
                     esc_url( $url ),
-                    esc_html( $this->plugins[ $slug ]['name'], 'disciple_tools' )
+                    esc_html( $this->plugins[ $slug ]['name'] )
                 );
             } else {
-                $link = esc_html( $this->plugins[ $slug ]['name'], 'disciple_tools' ); // No hyperlink.
+                $link = esc_html( $this->plugins[ $slug ]['name'] ); // No hyperlink.
             }
 
             return $link;
@@ -2070,7 +2070,7 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
                 esc_html(sprintf(/* translators: %s: version number */
                                  __( 'TGMPA v%s', 'tgmpa' ),
                                  self::TGMPA_VERSION
-                         , 'disciple_tools' )
+                          )
                 ),
                 '</small></strong></p>';
         }
@@ -2719,9 +2719,9 @@ if ( ! class_exists( 'TGMPA_List_Table' ) ) {
                 );
 
                 $action_links[ $action ] = sprintf(
-                    '<a href="%1$s">' . esc_html( $text, 'disciple_tools' ) . '</a>', // $text contains the second placeholder.
+                    '<a href="%1$s">' . esc_html( $text ) . '</a>', // $text contains the second placeholder.
                     esc_url( $nonce_url ),
-                    '<span class="screen-reader-text">' . esc_html( $item['sanitized_plugin'], 'disciple_tools' ) . '</span>'
+                    '<span class="screen-reader-text">' . esc_html( $item['sanitized_plugin'] ) . '</span>'
                 );
             }
 
@@ -2848,7 +2848,7 @@ if ( ! class_exists( 'TGMPA_List_Table' ) ) {
                         $message = __( 'No plugins were selected to be updated. No action taken.', 'tgmpa' );
                     }
 
-                    echo '<div id="message" class="error"><p>', esc_html( $message, 'disciple_tools' ), '</p></div>';
+                    echo '<div id="message" class="error"><p>', esc_html( $message ), '</p></div>';
 
                     return false;
                 }
@@ -2891,7 +2891,7 @@ if ( ! class_exists( 'TGMPA_List_Table' ) ) {
                         $message = __( 'No plugins are available to be updated at this time.', 'tgmpa' );
                     }
 
-                    echo '<div id="message" class="error"><p>', esc_html( $message, 'disciple_tools' ), '</p></div>';
+                    echo '<div id="message" class="error"><p>', esc_html( $message ), '</p></div>';
 
                     return false;
                 }
@@ -2966,7 +2966,7 @@ if ( ! class_exists( 'TGMPA_List_Table' ) ) {
 
                 // Wrap the install process with the appropriate HTML.
                 echo '<div class="tgmpa">',
-                '<h2 style="font-size: 23px; font-weight: 400; line-height: 29px; margin: 0; padding: 9px 15px 4px 0;">', esc_html( get_admin_page_title(), 'disciple_tools' ), '</h2>
+                '<h2 style="font-size: 23px; font-weight: 400; line-height: 29px; margin: 0; padding: 9px 15px 4px 0;">', esc_html( get_admin_page_title() ), '</h2>
 					<div class="update-php" style="width: 100%; height: 98%; min-height: 850px; padding-top: 1px;">';
 
                 // Process the bulk installation submissions.
@@ -3623,7 +3623,7 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
                      */
                     public function before( $title = '' ) {
                         if ( empty( $title ) ) {
-                            $title = esc_html( $this->plugin_names[ $this->i ], 'disciple_tools' );
+                            $title = esc_html( $this->plugin_names[ $this->i ] );
                         }
                         parent::before( $title );
                     }
@@ -3640,7 +3640,7 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
                      */
                     public function after( $title = '' ) {
                         if ( empty( $title ) ) {
-                            $title = esc_html( $this->plugin_names[ $this->i ], 'disciple_tools' );
+                            $title = esc_html( $this->plugin_names[ $this->i ] );
                         }
                         parent::after( $title );
 
@@ -3668,11 +3668,11 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
                             // All plugins are active, so we display the complete string and hide the menu to protect users.
                             echo '<style type="text/css">#adminmenu .wp-submenu li.current { display: none !important; }</style>';
                             $update_actions['dashboard'] = sprintf(
-                                esc_html( $this->tgmpa->strings['complete'], 'disciple_tools' ),
+                                esc_html( $this->tgmpa->strings['complete'] ),
                                 '<a href="' . esc_url( self_admin_url() ) . '">' . esc_html__( 'Return to the Dashboard', 'tgmpa' ) . '</a>'
                             );
                         } else {
-                            $update_actions['tgmpa_page'] = '<a href="' . esc_url( $this->tgmpa->get_tgmpa_url() ) . '" target="_parent">' . esc_html( $this->tgmpa->strings['return'], 'disciple_tools' ) . '</a>';
+                            $update_actions['tgmpa_page'] = '<a href="' . esc_url( $this->tgmpa->get_tgmpa_url() ) . '" target="_parent">' . esc_html( $this->tgmpa->strings['return'] ) . '</a>';
                         }
 
                         /**

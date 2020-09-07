@@ -13,7 +13,7 @@
                 <section class="entry-content">
                     <p>
                         <?php
-                        $post_settings = apply_filters( "dt_get_post_type_settings", [],  get_post_type() );
+                        $post_settings = apply_filters( "dt_get_post_type_settings", [], get_post_type() );
                         $dt_post_type = $post_settings["singular"] ?: "item";
                         $dt_id = GET_THE_ID();
                         echo sprintf( esc_html__( 'Sorry, you don\'t have permission to view the %1$s with id %2$s.', 'disciple_tools' ), esc_html( $dt_post_type ), esc_html( $dt_id ) ) . ' ';

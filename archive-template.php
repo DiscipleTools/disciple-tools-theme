@@ -109,34 +109,31 @@ declare(strict_types=1);
                             </ul>
                         </div>
                         <span style="display:inline-block">
-                            <button class="button clear" id="choose_list_columns" style="margin:0; padding:0"><?php esc_html_e( 'Columns', 'disciple_tools' ); ?></button>
+                            <button class="button clear" id="choose_fields_to_show_in_table" style="margin:0; padding:0"><?php esc_html_e( 'Columns', 'disciple_tools' ); ?></button>
                         </span>
                     </div>
                     <div id="list_column_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
                         <p style="font-weight:bold"><?php esc_html_e( 'Choose which columns to display', 'disciple_tools' ); ?></p>
                         <?php
-                        $list_columns = [];
-                        if ( isset( $_COOKIE["list_columns"] ) ) {
-                            $list_columns = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE["list_columns"] ) ) ) );
-                            if ( $list_columns ){
-                                $list_columns = dt_sanitize_array_html( $list_columns );
+                        $fields_to_show_in_table = [];
+                        if ( isset( $_COOKIE["fields_to_show_in_table"] ) ) {
+                            $fields_to_show_in_table = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE["fields_to_show_in_table"] ) ) ) );
+                            if ( $fields_to_show_in_table ){
+                                $fields_to_show_in_table = dt_sanitize_array_html( $fields_to_show_in_table );
                             }
                         } ?>
-                        <span style="display: inline-block; margin-right:15px; cursor:pointer">
-                            <label><input type="checkbox" value="name" checked disabled><?php esc_html_e( 'Name', 'disciple_tools' ); ?></label>
-                        </span>
-                        <?php foreach ( $post_settings["fields"] as $field_key => $field_options ):
-                            if ( !empty( $field_options["hidden"] )){
+                        <?php foreach ( $post_settings["fields"] as $field_key => $field_values ):
+                            if ( !empty( $field_values["hidden"] )){
                                 continue;
                             }
                             ?>
                             <span style="display:inline-block" class="">
                                 <label style="margin-right:15px; cursor:pointer">
                                     <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
-                                           <?php echo esc_html( in_array( $field_key, $list_columns ) ? "checked" : '' ); ?>
-                                           <?php echo esc_html( !empty( $field_options["show_in_table"] ) ? "disabled checked" : '' ); ?>
+                                           <?php echo esc_html( in_array( $field_key, $fields_to_show_in_table ) ? "checked" : '' ); ?>
+                                           <?php echo esc_html( ( empty( $fields_to_show_in_table ) && !empty( $field_values["show_in_table"] ) ) ? "checked" : '' ); ?>
                                            style="margin:0">
-                                    <?php echo esc_html( $field_options["name"] ); ?>
+                                    <?php echo esc_html( $field_values["name"] ); ?>
                                 </label>
                             </span>
                         <?php endforeach; ?>
@@ -147,16 +144,29 @@ declare(strict_types=1);
                     <div>
                         <table class="table-remove-top-border js-list stack striped" id="records-table">
                             <thead>
-                                <tr class="table-headers dnd-moved ">
+                                <tr class="table-headers dnd-moved sortable">
                                     <th style="width:32px; background-image:none; cursor:default"></th>
 
                                     <?php $columns = [];
-                                    foreach ( $post_settings["fields"] as $field_key => $field_value ){
-                                        if ( ( isset( $field_value["show_in_table"] ) && $field_value["show_in_table"] ) ){
-                                            $columns[] = $field_key;
+                                    if ( empty( $fields_to_show_in_table ) ){
+                                        uasort( $post_settings["fields"], function( $a, $b ){
+                                            $a_order = 0;
+                                            if ( isset( $a["show_in_table"] ) ){
+                                                $a_order = is_numeric( $a["show_in_table"] ) ? $a["show_in_table"] : 90;
+                                            }
+                                            $b_order = 0;
+                                            if ( isset( $b["show_in_table"] ) ){
+                                                $b_order = is_numeric( $b["show_in_table"] ) ? $b["show_in_table"] : 90;
+                                            }
+                                            return $a_order > $b_order;
+                                        });
+                                        foreach ( $post_settings["fields"] as $field_key => $field_value ){
+                                            if ( ( isset( $field_value["show_in_table"] ) && $field_value["show_in_table"] ) ){
+                                                $columns[] = $field_key;
+                                            }
                                         }
                                     }
-                                    $columns = array_unique( array_merge( $list_columns, $columns ) );
+                                    $columns = array_unique( array_merge( $fields_to_show_in_table, $columns ) );
                                     foreach ( $columns as $field_key ):
                                         if ( $field_key === "name" ): ?>
                                             <th class="all" data-id="name"><?php esc_html_e( "Name", "disciple_tools" ); ?></th>
@@ -199,7 +209,7 @@ declare(strict_types=1);
                     <?php $fields = [];
                     $allowed_types = [ "multi_select", "key_select", "boolean", "date", "location", "connection" ];
                     foreach ( $field_options as $field_key => $field){
-                        if ( $field_key && in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
+                        if ( $field_key && in_array( $field["type"] ?? "", $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
                             $fields[] = $field_key;
                         }
                     }
