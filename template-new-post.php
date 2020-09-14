@@ -21,7 +21,7 @@ $post_settings = apply_filters( "dt_get_post_type_settings", [], $dt_post_type )
             <div class="large-2 medium-12 small-12 cell"></div>
 
             <div class="large-8 medium-12 small-12 cell">
-                <form class="js-create-post bordered-box">
+                <form class="js-create-post bordered-box display-fields">
                     <?php foreach ( $post_settings["fields"] as $field_key => $field_settings ) {
                         if ( !empty( $field_settings['in_create_form'] ) ) {
                             render_field_for_display( $field_key, $post_settings['fields'], [] );

@@ -297,9 +297,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * @param $field_key
      * @param $fields
      * @param $post
-     * @param bool $show_typeahead_create
+     * @param bool $show_extra_controls
+     * @param bool $show_hidden
      */
-    function render_field_for_display( $field_key, $fields, $post, $show_typeahead_create = false ){
+    function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false ){
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
             $field_type = $fields[$field_key]["type"];
             $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
@@ -307,6 +308,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
+            if ( isset( $post['type']["key"], $fields[$field_key]["only_for_types"] ) ) {
+                if ( !in_array( $post['type']["key"], $fields[$field_key]["only_for_types"] ) ) {
+                    return;
+                }
+            }
+
             ?>
             <div class="section-subheader">
                 <?php if ( isset( $fields[$field_key]["icon"] ) ) : ?>
@@ -328,13 +335,17 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     $color_select = true;
                     $active_color = $fields[$field_key]["default_color"];
                     $current_key = $post[$field_key]["key"] ?? "";
-                    if ( isset( $fields[$field_key]["default"][ $current_key ]["color"] )){
+                    if ( isset( $fields[$field_key]["default"][ $current_key ]["color"] ) ){
                         $active_color = $fields[$field_key]["default"][ $current_key ]["color"];
                     }
                 }
                 ?>
                 <select class="select-field <?php echo esc_html( $color_select ? "color-select" : "" ); ?>" id="<?php echo esc_html( $field_key ); ?>" style="<?php echo esc_html( $color_select ? ( "background-color: " . $active_color ) : "" ); ?>">
+                    <option value="" <?php echo esc_html( !isset( $post[$field_key] ) ?: "selected" ) ?>></option>
                     <?php foreach ($fields[$field_key]["default"] as $option_key => $option_value):
+                        if ( !$show_hidden && isset( $option_value["hidden"] ) && $option_value["hidden"] === true ){
+                            continue;
+                        }
                         $selected = isset( $post[$field_key]["key"] ) && $post[$field_key]["key"] === $option_key; ?>
                         <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
                             <?php echo esc_html( $option_value["label"] ) ?>
@@ -383,7 +394,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                            placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                            autocomplete="off">
                                 </span>
-                                <?php if ( $show_typeahead_create ) : ?>
+                                <?php if ( $show_extra_controls ) : ?>
                                 <span class="typeahead__button">
                                     <button type="button" data-connection-key="<?php echo esc_html( $field_key ) ?>" class="create-new-record typeahead__image_button input-height">
                                         <?php $icon = isset( $fields[$field_key]["create-icon"] ) ? $fields[$field_key]["create-icon"] : get_template_directory_uri() . '/dt-assets/images/add-contact.svg'; ?>

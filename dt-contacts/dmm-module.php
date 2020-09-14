@@ -22,6 +22,7 @@ class DT_Contacts_DMM {
         //hooks
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
         add_action( "post_connection_added", [ $this, "post_connection_added" ], 10, 4 );
+        add_filter( "dt_post_create_fields", [ $this, "dt_post_create_fields" ], 10, 2 );
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
@@ -34,6 +35,10 @@ class DT_Contacts_DMM {
 
     public function dt_custom_fields_settings( $fields, $post_type ){
         if ( $post_type === 'contacts' ){
+            $fields["type"]["default"]["placeholder"] = [
+                "label" => __( 'Placeholder', 'disciple_tools' ),
+                "color" => "#FF9800",
+            ];
             $fields["milestones"] = [
                 "name"    => __( 'Faith Milestones', 'disciple_tools' ),
                 "description" => _x( 'Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order.', 'Optional Documentation', 'disciple_tools' ),
@@ -80,7 +85,23 @@ class DT_Contacts_DMM {
                 "tile" => "faith",
                 "show_in_table" => 20
             ];
-
+            $fields["faith_status"] =[
+                "name" => __( 'Faith Status', 'disciple_tools' ),
+                'type' => "key_select",
+                "default" => [
+                    "seeker"     => [
+                        "label" => __( 'Seeker', 'disciple_tools' ),
+                    ],
+                    "believer"     => [
+                        "label" => __( 'Believer', 'disciple_tools' ),
+                    ],
+                    "leader"     => [
+                        "label" => __( 'Leader', 'disciple_tools' ),
+                    ],
+                ],
+                'tile' => "status",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/cross.svg",
+            ];
             $fields["subassigned"] = [
                 "name" => __( "Sub-assigned to", 'disciple_tools' ),
                 "description" => __( "Contact or User assisting the Assigned To user to follow up with the contact.", 'disciple_tools' ),
@@ -109,7 +130,7 @@ class DT_Contacts_DMM {
 
 
             $fields["coaching"] = [
-                "name" => __( "Coached", 'disciple_tools' ),
+                "name" => __( "Is Coaching", 'disciple_tools' ),
                 "description" => _x( "Who is this contact coaching", 'Optional Documentation', 'disciple_tools' ),
                 "type" => "connection",
                 "post_type" => "contacts",
@@ -122,7 +143,7 @@ class DT_Contacts_DMM {
                 'description' => '',
                 'type'        => 'date',
                 'default'     => '',
-                'tile'     => 'faith',
+                'tile'     => 'details',
             ];
 
             $fields['baptism_generation'] = [
@@ -138,16 +159,7 @@ class DT_Contacts_DMM {
                 "post_type" => "contacts",
                 "p2p_direction" => "from",
                 "p2p_key" => "contacts_to_contacts",
-                "tile" => "other"
-            ];
-            $fields["coaching"] = [
-                "name" => __( "Coached", 'disciple_tools' ),
-                "description" => _x( "Who is this contact coaching", 'Optional Documentation', 'disciple_tools' ),
-                "type" => "connection",
-                "post_type" => "contacts",
-                "p2p_direction" => "to",
-                "p2p_key" => "contacts_to_contacts",
-                "tile" => "other"
+                "tile" => "status"
             ];
             $fields["baptized_by"] = [
                 "name" => __( "Baptized by", 'disciple_tools' ),
@@ -218,6 +230,8 @@ class DT_Contacts_DMM {
                 'section'     => 'quick_buttons',
                 'icon'        => get_template_directory_uri() . "/dt-assets/images/no-show.svg",
             ];
+
+
 
         }
 
@@ -295,9 +309,6 @@ class DT_Contacts_DMM {
     }
 
 
-    private function update_contact_counts( $contact_id, $action = "added", $type = 'contacts' ){
-
-    }
     public function post_connection_added( $post_type, $post_id, $post_key, $value ){
         if ( $post_type === "contacts" ){
             if ( $post_key === "subassigned" ){
@@ -335,10 +346,64 @@ class DT_Contacts_DMM {
         }
     }
 
+    //Add, remove or modify fields before the fields are processed in post create
+    public function dt_post_create_fields( $fields, $post_type ){
+        if ( $post_type === "contacts" ){
+            if ( !isset( $fields["type"] ) ){
+                $fields["type"] = "placeholder";
+            }
+        }
+        return $fields;
+    }
+
+
     public static function dt_user_list_filters( $filters, $post_type ) {
-//        if ( $post_type === 'contacts' ) {
-//
-//        }
+        if ( $post_type === 'contacts' ) {
+
+            global $wpdb;
+            $user_post_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() ) ?? 0;
+            $coached_by_me = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(p2p_to) FROM $wpdb->p2p WHERE p2p_to = %s AND p2p_type = 'contacts_to_contacts'", esc_sql( $user_post_id ) ) );
+
+            $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
+            $shared_by_type_counts = DT_Posts_Metrics::get_shared_with_meta_field_counts( "contacts", 'type' );
+            $filters["filters"][] = [
+                'ID' => 'placeholder',
+                'tab' => 'all',
+                'name' => sprintf( _x( "Connected %s", 'Personal records', 'disciple_tools' ), $post_label_plural ),
+                'query' => [
+                    'type' => [ 'placeholder' ],
+                    'sort' => 'name'
+                ],
+                "count" => $shared_by_type_counts['keys']['placeholder'],
+            ];
+            $filters["filters"][] = [
+                'ID' => 'my_coached',
+                'visible' => "1",
+                'type' => 'default',
+                'tab' => 'all',
+                'name' => 'Coached by me',
+                'count' => $coached_by_me,
+                'query' => [
+                    'coached_by' => [ 'me' ],
+                    'sort' => 'seeker_path',
+                ],
+                'labels' => [
+                    [
+                        'id' => 'my_coached',
+                        'name' => 'Coached by be',
+                        'field' => 'coached_by',
+                    ],
+                ],
+            ];
+        }
+
+        //translation for default fields
+        foreach ( $filters["filters"] as $index => $filter ) {
+            if ( $filter["name"] === 'Coached by me' ) {
+                $filters["filters"][$index]["name"] = __( 'Coached by me', 'disciple_tools' );
+                $filters["filters"][$index]['labels'][0]['name'] = __( 'Coached by me', 'disciple_tools' );
+            }
+        }
         return $filters;
     }
 

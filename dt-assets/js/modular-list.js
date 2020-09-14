@@ -62,6 +62,15 @@
     get_records_for_current_filter()
   });
 
+  $(document).on('click', '.accordion-title', function(){
+    let selected_filter = $(".js-list-view:checked").data('id')
+    let tab = $(this).data('id');
+    if ( selected_filter ){
+      $(`.accordion-item[data-id='${tab}'] .js-list-view`).first().prop('checked', true);
+      get_records_for_current_filter()
+    }
+  })
+
   function get_records_for_current_filter(){
     let checked = $(".js-list-view:checked")
     let current_view = checked.val()
@@ -92,7 +101,7 @@
     list_settings.filters.tabs.forEach( tab =>{
       html += `
       <li class="accordion-item" data-accordion-item data-id="${_.escape(tab.key)}">
-        <a href="#" class="accordion-title">
+        <a href="#" class="accordion-title" data-id="${_.escape(tab.key)}">
           ${_.escape(tab.label)}
           <span class="tab-count-span" data-tab="${_.escape(tab.key)}">
               ${tab.count || tab.count >= 0 ? `(${_.escape(tab.count)})`: ``}
@@ -325,6 +334,8 @@
               values_html = _.escape(field_value)
             } else if (field_settings.type === 'date') {
               values_html = _.escape(field_value.formatted)
+            } else if (field_settings.type === 'user_select') {
+              values_html = _.escape(field_value.display)
             } else if (field_settings.type === 'key_select') {
               values_html = _.escape(field_value.label)
             } else if (field_settings.type === 'multi_select') {
@@ -343,8 +354,12 @@
               values_html = field_value.map(v => {
                 return `<li>${_.escape( v.post_title )}</li>`;
               }).join('')
+            } else if ( field_settings.type === "boolean" ){
+              values_html = '&check;'
             }
           }
+        } else {
+          return;
         }
         row_fields_html += `
           <td>
@@ -375,7 +390,7 @@
     loading_spinner.addClass("active")
     let query = current_filter.query
 
-    document.cookie = `last_view=${JSON.stringify(current_filter)}`
+    window.SHAREDFUNCTIONS.save_json_cookie(`last_view`, current_filter, list_settings.post_type )
     if ( offset ){
       query["offset"] = offset
     }

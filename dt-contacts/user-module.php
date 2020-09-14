@@ -128,10 +128,10 @@ class DT_Contacts_User {
                              <div id="user-select_t" name="form-user-select">
                                  <div class="typeahead__container">
                                      <div class="typeahead__field">
-                        <span class="typeahead__query">
-                            <input class="js-typeahead-user-select input-height"
-                                   name="user-select[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
-                                   autocomplete="off">
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-user-select input-height"
+                                                   name="user-select[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
+                                                   autocomplete="off">
                                         </span>
                                              <span class="typeahead__button">
                                             <button type="button" class="search_user-select typeahead__image_button input-height" data-id="user-select_t">

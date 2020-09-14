@@ -27,13 +27,12 @@ class DT_Contacts_Access {
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 20, 2 );
 
         //api
-        add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 20, 4 );
-        add_action( "post_connection_added", [ $this, "post_connection_added" ], 20, 4 );
-        add_filter( "dt_post_update_fields", [ $this, "dt_post_update_fields" ], 10, 3 );
+        add_filter( "dt_post_update_fields", [ $this, "dt_post_update_fields" ], 10, 4 );
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 20, 4 );
         add_action( "dt_post_created", [ $this, "dt_post_created" ], 10, 3 );
         add_filter( "dt_post_create_fields", [ $this, "dt_post_create_fields" ], 10, 2 );
         add_action( "dt_post_updated", [ $this, "dt_post_updated" ], 10, 5 );
+
     }
 
 
@@ -41,6 +40,11 @@ class DT_Contacts_Access {
 
     public function dt_custom_fields_settings( $fields, $post_type ){
         if ( $post_type === 'contacts' ){
+            $fields["type"]["default"]["access"] = [
+                "label" => __( 'Access', 'disciple_tools' ),
+                "color" => "#2196F3",
+            ];
+
             $fields['assigned_to'] = [
                 'name'        => __( 'Assigned To', 'disciple_tools' ),
                 'description' => __( 'Select the main person who is responsible for reporting on this contact.', 'disciple_tools' ),
@@ -48,7 +52,9 @@ class DT_Contacts_Access {
                 'default'     => '',
                 'tile'        => 'status',
                 'icon' => get_template_directory_uri() . "/dt-assets/images/assigned-to.svg",
-                "show_in_table" => 25
+                "show_in_table" => 25,
+                "only_for_types" => [ "access" ],
+                "custom_display" => true
             ];
             $fields['seeker_path'] = [
                 'name'        => __( 'Seeker Path', 'disciple_tools' ),
@@ -86,7 +92,8 @@ class DT_Contacts_Access {
                 ],
                 'customizable' => 'add_only',
                 'tile' => 'followup',
-                "show_in_table" => 15
+                "show_in_table" => 15,
+                "only_for_types" => [ "access" ]
             ];
 
             $fields['overall_status'] = [
@@ -135,7 +142,8 @@ class DT_Contacts_Access {
                 'customizable' => 'add_only',
                 'custom_display' => true,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/status.svg",
-                "show_in_table" => 10
+                "show_in_table" => 10,
+                "only_for_types" => [ "access" ]
             ];
             $fields['requires_update'] = [
                 'name'        => __( 'Requires Update', 'disciple_tools' ),
@@ -143,6 +151,7 @@ class DT_Contacts_Access {
                 'type'        => 'boolean',
                 'default'     => false,
                 'section'     => 'status',
+                "only_for_types" => [ "access" ]
             ];
 
             $fields['age'] = [
@@ -158,6 +167,7 @@ class DT_Contacts_Access {
                 'tile'     => 'details',
                 "in_create_form" => true,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/contact-age.svg",
+                "only_for_types" => [ "access" ]
             ];
             $fields["reason_unassignable"] = [
                 'name'        => __( 'Reason Not Ready', 'disciple_tools' ),
@@ -187,7 +197,8 @@ class DT_Contacts_Access {
                     ],
                 ],
                 'section'     => 'misc',
-                'customizable' => 'all'
+                'customizable' => 'all',
+                "only_for_types" => [ "access" ]
             ];
 
             $fields['reason_paused'] = [
@@ -206,7 +217,8 @@ class DT_Contacts_Access {
                     'wait_and_see'         => [ "label" => _x( 'We want to see if/how the contact responds to automated text messages', 'Reason Paused label', 'disciple_tools' ) ],
                 ],
                 'section'     => 'misc',
-                'customizable' => 'all'
+                'customizable' => 'all',
+                "only_for_types" => [ "access" ]
             ];
 
             $fields['reason_closed'] = [
@@ -231,7 +243,8 @@ class DT_Contacts_Access {
                     'unknown'              => [ "label" => _x( 'Unknown', 'Reason Closed label', 'disciple_tools' ) ]
                 ],
                 'section'     => 'misc',
-                'customizable' => 'all'
+                'customizable' => 'all',
+                "only_for_types" => [ "access" ]
             ];
 
             $fields['accepted'] = [
@@ -239,7 +252,8 @@ class DT_Contacts_Access {
                 'type'        => 'boolean',
                 'default'     => false,
                 'section'     => 'status',
-                'hidden'      => true
+                'hidden'      => true,
+                "only_for_types" => [ "access" ]
             ];
             $sources_default = [
                 'personal'           => [
@@ -281,6 +295,7 @@ class DT_Contacts_Access {
                 'tile'     => 'details',
                 'customizable' => 'all',
                 'icon' => get_template_directory_uri() . "/dt-assets/images/source.svg",
+                "only_for_types" => [ "access" ]
             ];
         }
 
@@ -298,6 +313,12 @@ class DT_Contacts_Access {
     }
 
     public function dt_details_additional_tiles( $sections, $post_type = "" ){
+        if ( is_singular( "contacts" ) ) {
+            $contact = DT_Posts::get_post( "contacts", get_the_ID() );
+            if ( isset( $contact["type"]["key"] ) && $contact["type"]["key"] !== "access" ) {
+                return $sections;
+            }
+        }
         if ( $post_type === "contacts"){
             $sections['followup'] =[
                 "label" => "Follow Up"
@@ -309,102 +330,104 @@ class DT_Contacts_Access {
     public function dt_details_additional_section( $section, $post_type ){
         if ( $post_type === "contacts" && $section === "status" ){
             $contact = DT_Posts::get_post( $post_type, get_the_ID() );
+            if ( !isset( $contact["type"]["key"] ) || $contact["type"]["key"] !== "access" ){
+                return;
+            }
+
             $contact_fields = DT_Posts::get_post_field_settings( $post_type );
             ?>
-            <div class="grid-x grid-margin-x" style="margin-top: 20px">
-                <div class="cell small-12 medium-4">
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
-                        <?php esc_html_e( "Status", 'disciple_tools' ) ?>
-                        <button class="help-button" data-section="overall-status-help-text">
-                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                        </button>
-                    </div>
-                    <?php
-                    $active_color = "#366184";
-                    $current_key = $contact["overall_status"]["key"] ?? "";
-                    if ( isset( $contact_fields["overall_status"]["default"][ $current_key ]["color"] )){
-                        $active_color = $contact_fields["overall_status"]["default"][ $current_key ]["color"];
-                    }
-                    ?>
-                    <select id="overall_status" class="select-field color-select" style="margin-bottom:0; background-color: <?php echo esc_html( $active_color ) ?>">
-                        <?php foreach ($contact_fields["overall_status"]["default"] as $key => $option){
-                            $value = $option["label"] ?? "";
-                            if ( $contact["overall_status"]["key"] === $key ) {
-                                ?>
-                                <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
-                            <?php } else { ?>
-                                <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
-                            <?php } ?>
-                        <?php } ?>
-                    </select>
-                    <p>
-                        <span id="reason">
-                            <?php
-                            $hide_edit_button = false;
-                            $status_key = isset( $contact["overall_status"]["key"] ) ? $contact["overall_status"]["key"] : "";
-                            if ( $status_key === "paused" &&
-                                 isset( $contact["reason_paused"]["label"] )){
-                                echo '(' . esc_html( $contact["reason_paused"]["label"] ) . ')';
-                            } else if ( $status_key === "closed" &&
-                                        isset( $contact["reason_closed"]["label"] )){
-                                echo '(' . esc_html( $contact["reason_closed"]["label"] ) . ')';
-                            } else if ( $status_key === "unassignable" &&
-                                        isset( $contact["reason_unassignable"]["label"] )){
-                                echo '(' . esc_html( $contact["reason_unassignable"]["label"] ) . ')';
-                            } else {
-                                if ( !in_array( $status_key, [ "paused", "closed", "unassignable" ] ) ){
-                                    $hide_edit_button = true;
-                                }
-                            }
+            <div class="cell small-12 medium-4">
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
+                    <?php esc_html_e( "Status", 'disciple_tools' ) ?>
+                    <button class="help-button" data-section="overall-status-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
+                </div>
+                <?php
+                $active_color = "#366184";
+                $current_key = $contact["overall_status"]["key"] ?? "";
+                if ( isset( $contact_fields["overall_status"]["default"][ $current_key ]["color"] )){
+                    $active_color = $contact_fields["overall_status"]["default"][ $current_key ]["color"];
+                }
+                ?>
+                <select id="overall_status" class="select-field color-select" style="margin-bottom:0; background-color: <?php echo esc_html( $active_color ) ?>">
+                    <?php foreach ($contact_fields["overall_status"]["default"] as $key => $option){
+                        $value = $option["label"] ?? "";
+                        if ( $contact["overall_status"]["key"] === $key ) {
                             ?>
-                        </span>
-                        <button id="edit-reason" <?php if ( $hide_edit_button ) : ?> style="display: none"<?php endif; ?> ><i class="fi-pencil"></i></button>
-                    </p>
+                            <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
+                        <?php } else { ?>
+                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
+                        <?php } ?>
+                    <?php } ?>
+                </select>
+                <p>
+                    <span id="reason">
+                        <?php
+                        $hide_edit_button = false;
+                        $status_key = isset( $contact["overall_status"]["key"] ) ? $contact["overall_status"]["key"] : "";
+                        if ( $status_key === "paused" &&
+                             isset( $contact["reason_paused"]["label"] )){
+                            echo '(' . esc_html( $contact["reason_paused"]["label"] ) . ')';
+                        } else if ( $status_key === "closed" &&
+                                    isset( $contact["reason_closed"]["label"] )){
+                            echo '(' . esc_html( $contact["reason_closed"]["label"] ) . ')';
+                        } else if ( $status_key === "unassignable" &&
+                                    isset( $contact["reason_unassignable"]["label"] )){
+                            echo '(' . esc_html( $contact["reason_unassignable"]["label"] ) . ')';
+                        } else {
+                            if ( !in_array( $status_key, [ "paused", "closed", "unassignable" ] ) ){
+                                $hide_edit_button = true;
+                            }
+                        }
+                        ?>
+                    </span>
+                    <button id="edit-reason" <?php if ( $hide_edit_button ) : ?> style="display: none"<?php endif; ?> ><i class="fi-pencil"></i></button>
+                </p>
+            </div>
+
+            <!-- ASSIGNED TO -->
+            <div class="cell small-12 medium-4">
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
+                    <?php echo esc_html( $contact_fields["assigned_to"]["name"] )?>
+                    <button class="help-button" data-section="assigned-to-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
                 </div>
 
-                <!-- ASSIGNED TO -->
-                <div class="cell small-12 medium-4">
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
-                        <?php echo esc_html( $contact_fields["assigned_to"]["name"] )?>
-                        <button class="help-button" data-section="assigned-to-help-text">
-                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                        </button>
-                    </div>
-
-                    <div class="assigned_to details">
-                        <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
-                        <div id="assigned_to_t" name="form-assigned_to" class="scrollable-typeahead">
-                            <div class="typeahead__container" style="margin-bottom: 0">
-                                <div class="typeahead__field">
-                                    <span class="typeahead__query">
-                                        <input class="js-typeahead-assigned_to input-height" dir="auto"
-                                               name="assigned_to[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
-                                               autocomplete="off">
-                                    </span>
-                                    <span class="typeahead__button">
-                                        <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
-                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                                        </button>
-                                    </span>
-                                </div>
+                <div class="assigned_to details">
+                    <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
+                    <div id="assigned_to_t" name="form-assigned_to" class="scrollable-typeahead">
+                        <div class="typeahead__container" style="margin-bottom: 0">
+                            <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-assigned_to input-height" dir="auto"
+                                           name="assigned_to[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
+                                           autocomplete="off">
+                                </span>
+                                <span class="typeahead__button">
+                                    <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                    </button>
+                                </span>
                             </div>
                         </div>
                     </div>
-                    <p>
-                        <span id="reason_assigned_to">
-                            <?php if ( isset( $contact["reason_assigned_to"]["label"] ) ) : ?>
-                                (<?php echo esc_html( $contact["reason_assigned_to"]["label"] ); ?>)
-                            <?php endif; ?>
-                        </span>
-                    </p>
                 </div>
+                <p>
+                    <span id="reason_assigned_to">
+                        <?php if ( isset( $contact["reason_assigned_to"]["label"] ) ) : ?>
+                            (<?php echo esc_html( $contact["reason_assigned_to"]["label"] ); ?>)
+                        <?php endif; ?>
+                    </span>
+                </p>
+            </div>
 
-                <!-- SUBASSIGNED -->
-                <div class="cell small-12 medium-4">
-                    <?php render_field_for_display( "subassigned", $contact_fields, $contact, true ); ?>
-                </div>
+            <!-- SUBASSIGNED -->
+            <div class="cell small-12 medium-4">
+                <?php render_field_for_display( "subassigned", $contact_fields, $contact, true ); ?>
             </div>
             <div class="reveal" id="closed-contact-modal" data-reveal>
                 <h3><?php echo esc_html( $contact_fields["reason_closed"]["name"] ?? '' )?></h3>
@@ -502,7 +525,7 @@ class DT_Contacts_Access {
     }
 
     public function dt_record_top_above_details( $post_type, $contact ){
-        if ( $post_type === "contacts" && $contact["type"]["key"] === "access" ) {
+        if ( $post_type === "contacts" && isset( $contact["type"] ) && $contact["type"]["key"] === "access" ) {
             $current_user = wp_get_current_user();
             if ( isset( $contact['overall_status'] ) && $contact['overall_status']['key'] == 'assigned' &&
                 isset( $contact['assigned_to'] ) && $contact['assigned_to']['id'] == $current_user->ID ) { ?>
@@ -518,13 +541,12 @@ class DT_Contacts_Access {
         }
     }
 
-    public function post_connection_added( $post_type, $post_id, $post_key, $value ){
-    }
-    public function post_connection_removed( $post_type, $post_id, $post_key, $value ){
-    }
 
-    public function dt_post_update_fields( $fields, $post_type, $post_id ){
+    public function dt_post_update_fields( $fields, $post_type, $post_id, $existing_post ){
         if ( $post_type === "contacts" ){
+            if ( ( !isset( $existing_post["type"] ) || $existing_post["type"] !== "access" ) && ( !isset( $fields["type"] ) || $fields["type"] !== "access" ) ){
+                return $fields;
+            }
             if ( isset( $fields["assigned_to"] ) ) {
                 if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
                     $user = get_user_by( "email", $fields["assigned_to"] );
@@ -588,7 +610,10 @@ class DT_Contacts_Access {
         if ( $post_type === "contacts" ){
             // share the post with the assigned to user.
             $post = DT_Posts::get_post( $post_type, $post_id, true, false );
-            if ( isset( $post["assigned_to"] )) {
+            if ( !isset( $post["type"]["key"] ) || $post["type"]["key"] !== "access" ){
+                return;
+            }
+            if ( isset( $post["assigned_to"] ) ) {
                 if ( $post["assigned_to"]["id"] ) {
                     DT_Posts::add_shared( $post_type, $post_id, $post["assigned_to"]["id"], null, false, false, false );
                 }
@@ -598,6 +623,12 @@ class DT_Contacts_Access {
 
     // Add, remove or modify fields before the fields are processed on post create.
     public function dt_post_create_fields( $fields, $post_type ){
+        if ( $post_type !== "contacts" ){
+            return $fields;
+        }
+        if ( !isset( $fields["type"] ) || $fields["type"] !== "access" ){
+            return $fields;
+        }
         //@todo still need?
         if ( !isset( $fields["seeker_path"] ) ){
             $fields["seeker_path"] = "none";
@@ -648,9 +679,12 @@ class DT_Contacts_Access {
     }
 
     //Runs after fields are processed on update
-    public function dt_post_updated( $post_type, $post_id, $initial_request_fields, $post_fields_before_update, $post_fields_after_update ){
+    public function dt_post_updated( $post_type, $post_id, $initial_request_fields, $post_fields_before_update, $contact ){
         if ( $post_type === "contacts" ){
-            self::check_seeker_path( $post_id, $post_fields_after_update, $post_fields_before_update );
+            if ( !isset( $contact["type"]["key"] ) || $contact["type"]["key"] !== "access" ){
+                return;
+            }
+            self::check_seeker_path( $post_id, $contact, $post_fields_before_update );
         }
     }
 
@@ -709,15 +743,343 @@ class DT_Contacts_Access {
         }
     }
 
-    public static function dt_user_list_filters( $filters, $post_type ) {
+    //list page filters function
+    public static function dt_user_list_filters( $filters, $post_type ){
+        if ( $post_type === 'contacts' ){
+            $counts = self::get_my_contacts_status_seeker_path();
+            $fields = DT_Posts::get_post_field_settings( $post_type );
+
+            /**
+             * Setup my contacts filters
+             */
+            $active_counts = [];
+            $update_needed = 0;
+            $status_counts = [];
+            $total_my = 0;
+            foreach ( $counts as $count ){
+                $total_my += $count["count"];
+                dt_increment( $status_counts[$count["overall_status"]], $count["count"] );
+                if ( $count["overall_status"] === "active" ){
+                    if ( isset( $count["update_needed"] ) ) {
+                        $update_needed += (int) $count["update_needed"];
+                    }
+                    dt_increment( $active_counts[$count["seeker_path"]], $count["count"] );
+                }
+            }
+            if ( !isset( $status_counts["closed"] ) ) {
+                $status_counts["closed"] = '';
+            }
+
+            $filters["tabs"][] = [
+                "key" => "assigned_to_me",
+                "label" => sprintf( _x( "My Access %s", 'My records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
+                "count" => $total_my,
+                "order" => 20
+            ];
+            // add assigned to me filters
+            $filters["filters"][] = [
+                'ID' => 'my_all',
+                'tab' => 'assigned_to_me',
+                'name' => _x( "All", 'List Filters', 'disciple_tools' ),
+                'query' => [
+                    'assigned_to' => [ 'me' ],
+                    'subassigned' => [ 'me' ],
+                    'combine' => [ 'subassigned' ],
+                    'overall_status' => [ '-closed' ],
+                    'type' => [ 'access' ],
+                    'sort' => 'overall_status',
+                ],
+                "count" => $total_my,
+            ];
+            // add assigned to me filters
+            $filters["filters"][] = [
+                'ID' => 'my_all',
+                'tab' => 'all',
+                'name' => sprintf( _x( "My Access %s", 'My records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
+                'query' => [
+                    'assigned_to' => [ 'me' ],
+                    'subassigned' => [ 'me' ],
+                    'combine' => [ 'subassigned' ],
+                    'overall_status' => [ '-closed' ],
+                    'type' => [ 'access' ],
+                    'sort' => 'overall_status',
+                ],
+                "count" => $total_my,
+            ];
+            foreach ( $fields["overall_status"]["default"] as $status_key => $status_value ) {
+                if ( isset( $status_counts[$status_key] ) ) {
+                    $filters["filters"][] = [
+                        "ID" => 'my_' . $status_key,
+                        "tab" => 'assigned_to_me',
+                        "name" => $status_value["label"],
+                        "query" => [
+                            'assigned_to' => [ 'me' ],
+                            'subassigned' => [ 'me' ],
+                            'combine' => [ 'subassigned' ],
+                            'type' => [ 'access' ],
+                            'overall_status' => [ $status_key ],
+                            'sort' => 'seeker_path'
+                        ],
+                        "count" => $status_counts[$status_key]
+                    ];
+                    if ( $status_key === "active" ){
+                        if ( $update_needed > 0 ){
+                            $filters["filters"][] = [
+                                "ID" => 'my_update_needed',
+                                "tab" => 'assigned_to_me',
+                                "name" => $fields["requires_update"]["name"],
+                                "query" => [
+                                    'assigned_to' => [ 'me' ],
+                                    'subassigned' => [ 'me' ],
+                                    'combine' => [ 'subassigned' ],
+                                    'overall_status' => [ 'active' ],
+                                    'requires_update' => [ true ],
+                                    'type' => [ 'access' ],
+                                    'sort' => 'seeker_path'
+                                ],
+                                "count" => $update_needed,
+                                'subfilter' => true
+                            ];
+                        }
+                        foreach ( $fields["seeker_path"]["default"] as $seeker_path_key => $seeker_path_value ) {
+                            if ( isset( $active_counts[$seeker_path_key] ) ) {
+                                $filters["filters"][] = [
+                                    "ID" => 'my_' . $seeker_path_key,
+                                    "tab" => 'assigned_to_me',
+                                    "name" => $seeker_path_value["label"],
+                                    "query" => [
+                                        'assigned_to' => [ 'me' ],
+                                        'subassigned' => [ 'me' ],
+                                        'combine' => [ 'subassigned' ],
+                                        'overall_status' => [ 'active' ],
+                                        'seeker_path' => [ $seeker_path_key ],
+                                        'type' => [ 'access' ],
+                                        'sort' => 'name'
+                                    ],
+                                    "count" => $active_counts[$seeker_path_key],
+                                    'subfilter' => true
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+
+            /**
+             * Setup dispatcher filters
+             */
+            if ( current_user_can( "view_any_contacts" ) || current_user_can( 'access_specific_sources' ) ) {
+                $counts = self::get_all_contacts_status_seeker_path();
+                $all_active_counts = [];
+                $all_update_needed = 0;
+                $all_status_counts = [];
+                $total_all = 0;
+                foreach ( $counts as $count ){
+                    $total_all += $count["count"];
+                    dt_increment( $all_status_counts[$count["overall_status"]], $count["count"] );
+                    if ( $count["overall_status"] === "active" ){
+                        if ( isset( $count["update_needed"] ) ) {
+                            $all_update_needed += (int) $count["update_needed"];
+                        }
+                        dt_increment( $all_active_counts[$count["seeker_path"]], $count["count"] );
+                    }
+                }
+                if ( !isset( $all_status_counts["closed"] ) ) {
+                    $all_status_counts["closed"] = '';
+                }
+                $filters["tabs"][] = [
+                    "key" => "all_dispatch",
+                    "label" => sprintf( _x( "All Access %s", 'All records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
+                    "count" => $total_all,
+                    "order" => 10
+                ];
+                // add assigned to me filters
+                $filters["filters"][] = [
+                    'ID' => 'all_dispatch',
+                    'tab' => 'all_dispatch',
+                    'name' => _x( "All", 'List Filters', 'disciple_tools' ),
+                    'query' => [
+                        'overall_status' => [ '-closed' ],
+                        'type' => [ 'access' ],
+                        'sort' => 'overall_status'
+                    ],
+                    "count" => $total_all,
+                ];
+
+                foreach ( $fields["overall_status"]["default"] as $status_key => $status_value ) {
+                    if ( isset( $all_status_counts[$status_key] ) ) {
+                        $filters["filters"][] = [
+                            "ID" => 'all_' . $status_key,
+                            "tab" => 'all_dispatch',
+                            "name" => $status_value["label"],
+                            "query" => [
+                                'overall_status' => [ $status_key ],
+                                'type' => [ 'access' ],
+                                'sort' => 'seeker_path'
+                            ],
+                            "count" => $all_status_counts[$status_key]
+                        ];
+                        if ( $status_key === "active" ){
+                            if ( $all_update_needed > 0 ){
+                                $filters["filters"][] = [
+                                    "ID" => 'all_update_needed',
+                                    "tab" => 'all_dispatch',
+                                    "name" => $fields["requires_update"]["name"],
+                                    "query" => [
+                                        'overall_status' => [ 'active' ],
+                                        'requires_update' => [ true ],
+                                        'type' => [ 'access' ],
+                                        'sort' => 'seeker_path'
+                                    ],
+                                    "count" => $all_update_needed,
+                                    'subfilter' => true
+                                ];
+                            }
+                            foreach ( $fields["seeker_path"]["default"] as $seeker_path_key => $seeker_path_value ) {
+                                if ( isset( $all_active_counts[$seeker_path_key] ) ) {
+                                    $filters["filters"][] = [
+                                        "ID" => 'all_' . $seeker_path_key,
+                                        "tab" => 'all_dispatch',
+                                        "name" => $seeker_path_value["label"],
+                                        "query" => [
+                                            'overall_status' => [ 'active' ],
+                                            'seeker_path' => [ $seeker_path_key ],
+                                            'type' => [ 'access' ],
+                                            'sort' => 'name'
+                                        ],
+                                        "count" => $all_active_counts[$seeker_path_key],
+                                        'subfilter' => true
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            $filters["filters"] = self::add_default_custom_list_filters( $filters["filters"] );
+        }
         return $filters;
+    }
+
+    //list page filters function
+    private static function add_default_custom_list_filters( $filters ){
+        if ( empty( $filters )){
+            $filters = [];
+        }
+        $default_filters = [
+            [
+                'ID' => 'my_subassigned',
+                'visible' => "1",
+                'type' => 'default',
+                'tab' => 'custom',
+                'name' => 'Subassigned to me',
+                'query' => [
+                    'subassigned' => [ 'me' ],
+                    'sort' => 'overall_status',
+                ],
+                'labels' => [
+                    [
+                        'id' => 'my_subassigned',
+                        'name' => 'Subassigned to me',
+                        'field' => 'subassigned',
+                    ],
+                ],
+            ],
+        ];
+        $contact_filter_ids = array_map( function ( $a ){
+            return $a["ID"];
+        }, $filters );
+        foreach ( $default_filters as $filter ) {
+            if ( !in_array( $filter["ID"], $contact_filter_ids ) ){
+                array_unshift( $filters, $filter );
+            }
+        }
+        //translation for default fields
+        foreach ( $filters as $index => $filter ) {
+            if ( $filter["name"] === 'Subassigned to me' ) {
+                $filters[$index]["name"] = __( 'Subassigned only', 'disciple_tools' );
+                $filters[$index]['labels'][0]['name'] = __( 'Subassigned only', 'disciple_tools' );
+            }
+        }
+        return $filters;
+    }
+
+    //list page filters function
+    private static function get_all_contacts_status_seeker_path(){
+        global $wpdb;
+        $results = [];
+
+        $can_view_all = false;
+        if ( current_user_can( 'access_specific_sources' ) ) {
+            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+            if ( empty( $sources ) || in_array( 'all', $sources ) ) {
+                $can_view_all = true;
+            }
+        }
+
+        if ( current_user_can( "view_any_contacts" ) || $can_view_all ) {
+            $results = $wpdb->get_results("
+                SELECT status.meta_value as overall_status, pm.meta_value as seeker_path, count(pm.post_id) as count, count(un.post_id) as update_needed
+                FROM $wpdb->postmeta pm
+                INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' AND status.meta_value != 'closed' )
+                INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'contacts' and a.post_status = 'publish' )
+                INNER JOIN $wpdb->postmeta type ON ( type.post_id = pm.post_id AND type.meta_key = 'type' AND type.meta_value = 'access' )
+                LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
+                WHERE pm.meta_key = 'seeker_path'
+                GROUP BY status.meta_value, pm.meta_value
+            ", ARRAY_A);
+        } else if ( current_user_can( 'access_specific_sources' ) ) {
+            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+            $sources_sql = dt_array_to_sql( $sources );
+            // phpcs:disable
+            $results = $wpdb->get_results( $wpdb->prepare( "
+                SELECT status.meta_value as overall_status, pm.meta_value as seeker_path, count(pm.post_id) as count, count(un.post_id) as update_needed
+                FROM $wpdb->postmeta pm
+                INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' AND status.meta_value != 'closed' )
+                INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'contacts' and a.post_status = 'publish' )
+                INNER JOIN $wpdb->postmeta type ON ( type.post_id = pm.post_id AND type.meta_key = 'type'  AND type.meta_value = 'access'  )
+                LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
+                WHERE pm.meta_key = 'seeker_path'
+                AND (
+                    pm.post_id IN ( SELECT post_id from $wpdb->postmeta as source where source.meta_value IN ( $sources_sql ) )
+                    OR pm.post_id IN ( SELECT post_id FROM $wpdb->dt_share AS shares where shares.user_id = %s )
+                )
+                GROUP status.meta_value, pm.meta_value
+            ", esc_sql( get_current_user_id() ) ) , ARRAY_A );
+            // phpcs:enable
+        }
+        return $results;
+    }
+
+    //list page filters function
+    private static function get_my_contacts_status_seeker_path(){
+        global $wpdb;
+        $user_post = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() ) ?? 0;
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT status.meta_value as overall_status, pm.meta_value as seeker_path, count(pm.post_id) as count, count(un.post_id) as update_needed
+            FROM $wpdb->postmeta pm
+            INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'overall_status' AND status.meta_value != 'closed')
+            INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = 'contacts' and a.post_status = 'publish' )
+            LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
+            INNER JOIN $wpdb->postmeta type ON ( type.post_id = pm.post_id AND type.meta_key = 'type' AND type.meta_value = 'access' )
+            WHERE pm.meta_key = 'seeker_path'
+            AND (
+                pm.post_id IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'assigned_to' AND meta_value = CONCAT( 'user-', %s ) )
+                OR pm.post_id IN ( SELECT p2p_to from $wpdb->p2p WHERE p2p_from = %s AND p2p_type = 'contacts_to_subassigned' )
+            )
+            GROUP BY status.meta_value, pm.meta_value
+        ", get_current_user_id(), $user_post ), ARRAY_A);
+        return $results;
     }
 
     public function scripts(){
         if ( is_singular( "contacts" ) ){
-            wp_enqueue_script( 'dt_contacts_access', get_template_directory_uri() . '/dt-contacts/contacts_access.js', [
-                'jquery',
-            ], filemtime( get_theme_file_path() . '/dt-contacts/contacts_access.js' ), true );
+            $contact = DT_Posts::get_post( "contacts", get_the_ID() );
+            if ( isset( $contact["type"]["key"] ) && $contact["type"]["key"] === "access" ){
+                wp_enqueue_script( 'dt_contacts_access', get_template_directory_uri() . '/dt-contacts/contacts_access.js', [
+                    'jquery',
+                ], filemtime( get_theme_file_path() . '/dt-contacts/contacts_access.js' ), true );
+            }
         }
     }
 

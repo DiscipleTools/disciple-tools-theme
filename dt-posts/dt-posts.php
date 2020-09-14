@@ -29,7 +29,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|WP_Error
      */
     public static function get_post_settings( string $post_type ){
-//        @todo remove
+//        @todo cache, remove?
         if ( ! ( self::can_access( $post_type ) || self::can_create( $post_type ) ) ){
             return new WP_Error( __FUNCTION__, "No permissions to read " . $post_type, [ 'status' => 403 ] );
         }
@@ -258,8 +258,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             return new WP_Error( __FUNCTION__, "post does not exist" );
         }
 
+        $existing_post = self::get_post( $post_type, $post_id, false, false );
         //get extra fields and defaults
-        $fields = apply_filters( "dt_post_update_fields", $fields, $post_type, $post_id );
+        $fields = apply_filters( "dt_post_update_fields", $fields, $post_type, $post_id, $existing_post ); //@todo documentation update
         if ( is_wp_error( $fields ) ){
             return $fields;
         }
@@ -272,23 +273,29 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'status' => 400
             ] );
         }
-        $existing_post = self::get_post( $post_type, $post_id, false, false );
 
-        if ( isset( $fields['title'] ) && $existing_post["title"] != $fields['title'] ) {
-            wp_update_post( [
-                'ID' => $post_id,
-                'post_title' => $fields['title']
-            ] );
-            dt_activity_insert( [
-                'action'            => 'field_update',
-                'object_type'       => $post_type,
-                'object_subtype'    => 'title',
-                'object_id'         => $post_id,
-                'object_name'       => $fields['title'],
-                'meta_key'          => 'title',
-                'meta_value'        => $fields['title'],
-                'old_value'         => $existing_post['title'],
-            ] );
+        //set title
+        if ( isset( $fields["title"] ) || isset( $fields["name"] ) ) {
+            $title = $fields["title"] ?? $fields["name"];
+            if ( $existing_post["name"] != $title ) {
+                wp_update_post( [
+                    'ID' => $post_id,
+                    'post_title' => $title
+                ] );
+                dt_activity_insert( [
+                    'action'            => 'field_update',
+                    'object_type'       => $post_type,
+                    'object_subtype'    => 'title',
+                    'object_id'         => $post_id,
+                    'object_name'       => $title,
+                    'meta_key'          => 'title',
+                    'meta_value'        => $title,
+                    'old_value'         => $existing_post['name'],
+                ] );
+            }
+            if ( isset( $fields["name"] ) ){
+                unset( $fields["name"] );
+            }
         }
 
         $potential_error = self::update_post_contact_methods( $post_settings, $post_id, $fields, $existing_post );
@@ -390,6 +397,10 @@ class DT_Posts extends Disciple_Tools_Posts {
         $fields["created_date"] = $wp_post->post_date;
         $fields["permalink"] = get_permalink( $post_id );
         $fields["post_type"] = $post_type;
+        $fields["post_author"] = $wp_post->post_author;
+        $author = get_user_by( "ID", $wp_post->post_author );
+        $fields["post_author_display_name"] = $author ? $author->display_name : "";
+
 
         self::adjust_post_custom_fields( $post_settings, $post_id, $fields );
         $fields["name"] = $wp_post->post_title;

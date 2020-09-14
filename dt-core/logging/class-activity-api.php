@@ -86,6 +86,12 @@ class Disciple_Tools_Activity_Log_API {
                 $args[$field] = is_serialized( $args[$field] ) ? "" : substr( $args[$field], 0, 250 ) . "...";
             }
         }
+        if ( $args["object_name"] === null ){
+            $args["object_name"] = "";
+        }
+        if ( $args["old_value"] === null ){
+            $args["old_value"] = "";
+        }
 
         $wpdb->insert(
             $wpdb->dt_activity_log,

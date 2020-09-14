@@ -37,12 +37,12 @@ jQuery(document).ready(function($) {
     field.addClass("submitting-select-button")
     let action = "add"
     if (field.hasClass("selected-select-button")){
-      fieldValue = {values:[{value:optionKey,delete:true}]}
+      fieldValue.values = [{value:optionKey,delete:true}]
       action = "delete"
     } else {
       field.removeClass("empty-select-button")
       field.addClass("selected-select-button")
-      fieldValue = {values:[{value:optionKey}]}
+      fieldValue.values = [{value:optionKey}]
     }
     data[optionKey] = fieldValue
     $(`#${fieldKey}-spinner`).addClass('active')
@@ -146,7 +146,7 @@ jQuery(document).ready(function($) {
     $list.append(`<li style="display: flex">
       <input type="text" class="dt-communication-channel" data-field="${_.escape( listClass )}"/>
       <button class="button clear channel-delete-button new-${_.escape( listClass )}" data-key="new" data-field="${listClass}">
-          <img src="${_.escape( wpApiShare.template_dir )}/dt-assets/images/invalid.svg">
+          <img src="${_.escape( window.wpApiShare.template_dir )}/dt-assets/images/invalid.svg">
       </button>
     </li>`)
   })
@@ -197,6 +197,13 @@ jQuery(document).ready(function($) {
     }
   })
 
+  $( document ).on( 'contenteditable-updated', function (e, newContact, id, val){
+    if ( id === "title" ){
+      $("#name").val(_.escape(val))
+      $("#second-bar-name").html(_.escape(val))
+    }
+  })
+
   $( document ).on( 'dt_date_picker-updated', function (e, newContact, id, date){
   })
 
@@ -205,7 +212,6 @@ jQuery(document).ready(function($) {
 
   $('.show-details-section').on( "click", function (){
     $('#details-section').toggle()
-    $('#details-tile').toggleClass('collapsed')
     $('#show-details-edit-button').toggle()
     $(`#details-section .typeahead__query input`).each((i, element)=>{
       let field_key = $(element).data("field")
@@ -218,7 +224,7 @@ jQuery(document).ready(function($) {
 
   $('.dt_typeahead').each((key, el)=>{
     let field_id = $(el).attr('id').replace('_connection', '')
-    let listing_post_type = _.get(detailsSettings.post_settings.fields[field_id], "post_type", 'contacts')
+    let listing_post_type = _.get(window.detailsSettings.post_settings.fields[field_id], "post_type", 'contacts')
     $.typeahead({
       input: `.js-typeahead-${field_id}`,
       minLength: 0,
@@ -344,7 +350,7 @@ jQuery(document).ready(function($) {
         focus: {
           display: "name",
           ajax: {
-            url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+            url: window.wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
             data: {
               s: "{{query}}",
               filter: function () {
@@ -352,7 +358,7 @@ jQuery(document).ready(function($) {
               }
             },
             beforeSend: function (xhr) {
-              xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
             },
             callback: {
               done: function (data) {
@@ -419,8 +425,8 @@ jQuery(document).ready(function($) {
     $(this).html( following ? "Following" : "Follow")
     $(this).toggleClass( "hollow" )
     let update = {
-      follow: {values:[{value:detailsSettings.current_user_id, delete:!following}]},
-      unfollow: {values:[{value:detailsSettings.current_user_id, delete:following}]}
+      follow: {values:[{value:window.detailsSettings.current_user_id, delete:!following}]},
+      unfollow: {values:[{value:window.detailsSettings.current_user_id, delete:following}]}
     }
     rest_api.update_post( post_type, post_id, update )
   })
@@ -434,7 +440,7 @@ jQuery(document).ready(function($) {
   $('.open-share').on("click", function(){
     $('#share-contact-modal').foundation('open');
     if  (!shareTypeahead) {
-      shareTypeahead = TYPEAHEADS.share(post_type, post_id, !['contacts', 'groups'].includes(detailsSettings.post_type ) )
+      shareTypeahead = TYPEAHEADS.share(post_type, post_id, !['contacts', 'groups'].includes(window.detailsSettings.post_type ) )
     }
   })
 
@@ -449,22 +455,22 @@ jQuery(document).ready(function($) {
       let show_complete_button = task.category !== "reminder" && task.value.status !== 'task_complete'
       let task_row = `<strong>${_.escape( moment(task.date).format("MMM D YYYY") )}</strong> `
       if ( task.category === "reminder" ){
-        task_row += _.escape( detailsSettings.translations.reminder )
+        task_row += _.escape( window.detailsSettings.translations.reminder )
         if ( task.value.note ){
           task_row += ' ' + _.escape(task.value.note)
         }
       } else {
-         task_row += _.escape(task.value.note || detailsSettings.translations.no_note )
+         task_row += _.escape(task.value.note || window.detailsSettings.translations.no_note )
       }
       html += `<li>
         <span style="${task_done ? 'text-decoration:line-through' : ''}">
         ${task_row}
-        ${ show_complete_button ? `<button type="button" data-id="${_.escape(task.id)}" class="existing-task-action complete-task">${_.escape(detailsSettings.translations.complete).toLowerCase()}</button>` : '' }
-        <button type="button" data-id="${_.escape(task.id)}" class="existing-task-action remove-task" style="color: red;">${_.escape(detailsSettings.translations.remove).toLowerCase()}</button>
+        ${ show_complete_button ? `<button type="button" data-id="${_.escape(task.id)}" class="existing-task-action complete-task">${_.escape(window.detailsSettings.translations.complete).toLowerCase()}</button>` : '' }
+        <button type="button" data-id="${_.escape(task.id)}" class="existing-task-action remove-task" style="color: red;">${_.escape(window.detailsSettings.translations.remove).toLowerCase()}</button>
       </li>`
     })
     if (!html ){
-      $('#tasks-modal .existing-tasks').html(`<li>${_.escape(detailsSettings.translations.no_tasks)}</li>`)
+      $('#tasks-modal .existing-tasks').html(`<li>${_.escape(window.detailsSettings.translations.no_tasks)}</li>`)
     } else {
       $('#tasks-modal .existing-tasks').html(html)
     }
@@ -566,13 +572,13 @@ jQuery(document).ready(function($) {
       tags: {
         display: ["name"],
         ajax: {
-          url: window.wpApiShare.root  + 'dt-posts/v2/${post_type}/multi-select-values',
+          url: window.wpApiShare.root  + `dt-posts/v2/${post_type}/multi-select-values`,
           data: {
             s: "{{query}}",
             field: "tags"
           },
           beforeSend: function (xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+            xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
           },
           callback: {
             done: function (data) {
@@ -629,8 +635,11 @@ jQuery(document).ready(function($) {
   })
 
   function resetDetailsFields(){
-  _.forOwn( window.detailsSettings.post_settings.fields, (field_options, field_key)=>{
+  _.forOwn( field_settings, (field_options, field_key)=>{
     if ( field_options.tile === 'details' && !field_options.hidden && post[field_key]){
+      if ( field_options.only_for_types && ( post["type"] && !field_options.only_for_types.includes(post["type"].key) ) ){
+        return
+      }
       let field_value = _.get( post, field_key, false )
       let values_html = ``
       if ( field_options.type === 'text' ){

@@ -1360,8 +1360,9 @@ class Disciple_Tools_Posts
                 } else if ( isset( $field["value"] ) ) {
                     $field["key"] = "new-".$details_key;
                     //create field
-                    $potential_error = self::add_post_contact_method( $post_settings, $post_id, $field["key"], $field["value"], $field );
-
+                    if ( !empty( $field["value"] ) ){
+                        $potential_error = self::add_post_contact_method( $post_settings, $post_id, $field["key"], $field["value"], $field );
+                    }
                 } else {
                     return new WP_Error( __FUNCTION__, "Is not an array or missing value on: " . $details_key, [ 'status' => 400 ] );
                 }

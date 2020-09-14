@@ -492,6 +492,14 @@ class Disciple_Tools_Users
     public static function profile_update_hook( $user_id ) {
         self::create_contact_for_user( $user_id );
 
+        if ( isset( $_POST["corresponds_to_contact_id"] ) ) {
+            $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
+            update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
+            DT_Posts::update_post( "contacts", (int) $corresponds_to_contact, [
+                "corresponds_to_user" => $user_id
+            ], true, false );
+        }
+
         if ( !empty( $_POST["allowed_sources"] ) ) {
             if ( isset( $_REQUEST['action'] ) && 'update' == $_REQUEST['action'] ) {
                 check_admin_referer( 'update-user_' . $user_id );
@@ -670,7 +678,7 @@ class Disciple_Tools_Users
             <script type="application/javascript">
                 jQuery(document).ready(function($) {
                     jQuery(".corresponds_to_contact").each(function () {
-                        $(this).autocomplete({
+                        jQuery(this).autocomplete({
                             source: function (request, response) {
                                 jQuery.ajax({
                                     url: '<?php echo esc_html( rest_url() ) ?>dt-posts/v2/contacts/compact',
