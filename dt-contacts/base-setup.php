@@ -50,7 +50,6 @@ class DT_Contacts_Base {
                 'name' => __( "Nickname", 'disciple_tools' ),
                 'type' => 'text',
                 'tile' => 'details',
-                'in_create_form' => true,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/name.svg",
             ];
             $fields["type"] = [
@@ -65,9 +64,10 @@ class DT_Contacts_Base {
                     'personal' => [
                         "label" => __( 'Personal', 'disciple_tools' ),
                         "color" => "#9b379b",
+                        "description" => "Only i can see this contact",
+                        "icon" => get_template_directory_uri() . "/dt-assets/images/locked.svg",
                     ],
                 ],
-                'in_create_form' => true,
             ];
             $fields["duplicate_data"] = [
                 "name" => 'Duplicates', //system string does not need translation
@@ -137,21 +137,18 @@ class DT_Contacts_Base {
                 "icon" => get_template_directory_uri() . "/dt-assets/images/phone.svg",
                 "type" => "communication_channel",
                 "tile" => "details",
-                "in_create_form" => true,
             ];
             $fields["contact_email"] = [
                 "name" => __( 'Email', 'disciple_tools' ),
                 "icon" => get_template_directory_uri() . "/dt-assets/images/email.svg",
                 "type" => "communication_channel",
                 "tile" => "details",
-                "in_create_form" => true,
             ];
             $fields["contact_address"] = [
                 "name" => __( 'Address', 'disciple_tools' ),
                 "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg",
                 "type" => "communication_channel",
                 "tile" => "details",
-                "in_create_form" => true,
             ];
             $channels = self::get_channels_list();
             foreach ( $channels as $channel_key => $channel_options ){
@@ -408,7 +405,7 @@ class DT_Contacts_Base {
                     'type' => [ 'personal' ],
                     'sort' => 'name'
                 ],
-                "count" => $shared_by_type_counts['keys']['personal'],
+                "count" => $shared_by_type_counts['keys']['personal'] ?? 0,
             ];
 
             $filters["filters"] = self::add_default_custom_list_filters( $filters["filters"] );

@@ -1226,6 +1226,13 @@ class DT_Posts extends Disciple_Tools_Posts {
                         foreach ( $field as $custom_option_key => $custom_option_value ){
                             if ( !is_array( $custom_option_value ) && $custom_option_value !== "" ) {
                                 $fields[$key][$custom_option_key] = $custom_option_value;
+                            } else if ( is_array( $custom_option_value ) ){
+                                if ( !isset( $fields[$key][$custom_option_key] ) ){
+                                    $fields[$key][$custom_option_key] = [];
+                                }
+                                if ( is_array( $fields[$key][$custom_option_key] ) ){
+                                    $fields[$key][$custom_option_key] = self::array_merge_recursive_distinct( $fields[$key][$custom_option_key], $custom_option_value );
+                                }
                             }
                         }
                         if ( $field_type === "key_select" || $field_type === "multi_select" ) {
@@ -1305,25 +1312,18 @@ class DT_Posts extends Disciple_Tools_Posts {
         //tile available on all records
         if ( !isset( $tile_options[$post_type]["details"] ) ) {
             $tile_options[$post_type]["details"] = [
-                "label" => "Details"
+                "label" => __( "Details", 'disciple_tools' )
+            ];
+        }
+        //tile available on all records
+        if ( !isset( $tile_options[$post_type]["status"] ) ) {
+            $tile_options[$post_type]["status"] = [
+                "label" => __( "Status", 'disciple_tools' )
             ];
         }
         return $tile_options[$post_type];
     }
 
-//    @todo
-    public function dt_get_custom_channels_translation( $channel_list ) {
-        if (is_admin()) {
-            return $channel_list;
-        }
-        $user_locale = get_user_locale();
-        foreach ( $channel_list as $channel_key => $channel_value ) {
-            if ( !empty( $channel_value["translations"][$user_locale] ) ) {
-                $channel_list[$channel_key]["label"] = $channel_value["translations"][$user_locale];
-            }
-        }
-        return $channel_list;
-    }
 }
 
 

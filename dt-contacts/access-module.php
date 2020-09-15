@@ -20,7 +20,6 @@ class DT_Contacts_Access {
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 20, 2 );
         add_action( 'dt_record_top_above_details', [ $this, 'dt_record_top_above_details' ], 20, 2 );
 
-        //@todo if access type
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
         //list
@@ -43,6 +42,8 @@ class DT_Contacts_Access {
             $fields["type"]["default"]["access"] = [
                 "label" => __( 'Access', 'disciple_tools' ),
                 "color" => "#2196F3",
+                "description" => __( 'A ministry contact, designed for collaboration', 'disciple_tools' ),
+                "icon" => get_template_directory_uri() . "/dt-assets/images/share.svg"
             ];
 
             $fields['assigned_to'] = [
@@ -165,7 +166,6 @@ class DT_Contacts_Access {
                     '>41'     => [ "label" => __( 'Over 40 years old', 'disciple_tools' ) ],
                 ],
                 'tile'     => 'details',
-                "in_create_form" => true,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/contact-age.svg",
                 "only_for_types" => [ "access" ]
             ];
@@ -297,6 +297,22 @@ class DT_Contacts_Access {
                 'icon' => get_template_directory_uri() . "/dt-assets/images/source.svg",
                 "only_for_types" => [ "access" ]
             ];
+
+            if ( empty( $fields["contact_phone"]['in_create_form'] ) ){
+                $fields["contact_phone"]['in_create_form'] = [ 'access' ];
+            } elseif ( is_array( $fields["contact_phone"]['in_create_form'] ) ){
+                $fields["contact_phone"]['in_create_form'][] = 'access';
+            }
+            if ( empty( $fields["contact_email"]['in_create_form'] ) ){
+                $fields["contact_email"]['in_create_form'] = [ 'access' ];
+            } elseif ( is_array( $fields["contact_email"]['in_create_form'] ) ){
+                $fields["contact_email"]['in_create_form'][] = 'access';
+            }
+            if ( empty( $fields["contact_address"]['in_create_form'] ) ){
+                $fields["contact_address"]['in_create_form'] = [ 'access' ];
+            } elseif ( is_array( $fields["contact_address"]['in_create_form'] ) ){
+                $fields["contact_address"]['in_create_form'][] = 'access';
+            }
         }
 
         return $fields;

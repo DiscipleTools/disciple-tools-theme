@@ -14,6 +14,10 @@ if ( ! current_user_can( 'create_' . $dt_post_type ) ) {
 get_header();
 $post_settings = apply_filters( "dt_get_post_type_settings", [], $dt_post_type );
 
+$force_type_choice = false;
+if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields"]["type"]["default"] ) > 1 ){
+    $force_type_choice = true;
+}
 ?>
 
     <div id="content" class="template-new-post">
@@ -22,17 +26,64 @@ $post_settings = apply_filters( "dt_get_post_type_settings", [], $dt_post_type )
 
             <div class="large-8 medium-12 small-12 cell">
                 <form class="js-create-post bordered-box display-fields">
-                    <?php foreach ( $post_settings["fields"] as $field_key => $field_settings ) {
-                        if ( !empty( $field_settings['in_create_form'] ) ) {
-                            render_field_for_display( $field_key, $post_settings['fields'], [] );
-                            if ( isset( $field_settings["required"] ) && $field_settings["required"] === true ) { ?>
-                                <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
+                    <h3 class="section-header">
+                        <?php echo esc_html( sprintf( __( 'New %s', 'disciple_tools' ), $post_settings["label_singular"] ) ) ?>
+                    </h3>
+                    <?php if ( $force_type_choice ){ ?>
+
+                    <div class="type-control-field" style="margin:20px 0">
+                        <strong>
+                        <?php echo esc_html( sprintf( __( 'Select your %s type', 'disciple_tools' ), $post_settings["label_singular"] ) ) ?>
+                        </strong>
+                    </div>
+                    <div class="type-options">
+                        <?php foreach ( $post_settings["fields"]["type"]["default"] as $option_key => $type_option ) {
+                            if ( empty( $type_option["hidden"] ) ){ ?>
+                                <div class="type-option" id="<?php echo esc_html( $option_key ); ?>">
+                                    <input type="radio" name="type" value="<?php echo esc_html( $option_key ); ?>">
+                                    <div>
+                                        <?php if ( isset( $type_option["icon"] ) ) : ?>
+                                        <img class="dt-icon" src="<?php echo esc_url( $type_option["icon"] ) ?>">
+                                        <?php endif; ?>
+                                        <strong style="color:#3f729b"><?php echo esc_html( $type_option["label"] ); ?></strong>
+                                        <span style="display:block"><?php echo esc_html( $type_option["description"] ?? "" ); ?></span>
+                                    </div>
+                                </div>
                             <?php }
-                        }
-                    } ?>
-                    <div style="text-align: center">
-                        <a href="<?php echo esc_html( get_site_url() . "/" . $dt_post_type )?>" class="button small clear"><?php echo esc_html__( 'Cancel', 'disciple_tools' )?></a>
-                        <button class="button loader js-create-post-button dt-green" type="submit" disabled><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
+                        } ?>
+                    </div>
+                    <?php } ?>
+
+
+                    <div class="form-fields" <?php echo esc_html( $force_type_choice ? "style=display:none" : "" ); ?>>
+                        <?php foreach ( $post_settings["fields"] as $field_key => $field_settings ) {
+                            if ( !empty( $field_settings['in_create_form'] ) ) {
+                                $classes = "";
+                                if ( is_array( $field_settings['in_create_form'] ) ){
+                                    foreach ( $field_settings['in_create_form'] as $type_key ){
+                                        $classes .= $type_key . " ";
+                                    }
+                                } elseif ( $field_settings['in_create_form'] === true ){
+                                    $classes .= 'all';
+                                }
+
+
+                                ?><div <?php echo esc_html( $force_type_choice ? "style=display:none" : "" ); ?> class="form-field <?php echo esc_html( $classes ); ?>">
+                                <?php
+                                render_field_for_display( $field_key, $post_settings['fields'], [] );
+                                if ( isset( $field_settings["required"] ) && $field_settings["required"] === true ) { ?>
+                                    <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
+                                <?php } ?>
+                                </div>
+                            <?php }
+                        } ?>
+
+
+
+                        <div style="text-align: center">
+                            <a href="<?php echo esc_html( get_site_url() . "/" . $dt_post_type )?>" class="button small clear"><?php echo esc_html__( 'Cancel', 'disciple_tools' )?></a>
+                            <button class="button loader js-create-post-button dt-green" type="submit" disabled><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
+                        </div>
                     </div>
                 </form>
 
@@ -43,6 +94,20 @@ $post_settings = apply_filters( "dt_get_post_type_settings", [], $dt_post_type )
     </div>
 
     <script>jQuery(function($) {
+        let new_contact = {}
+        $('.type-option').on('click', function(){
+            let type = $(this).attr('id')
+            $('.type-option.selected').removeClass('selected')
+            $(this).addClass('selected')
+            $(`#${type} input`).prop('checked', true)
+            $('.form-fields').show();
+            $(`.form-field`).hide()
+            $(`.type-control-field`).hide()
+            $(`.form-field.all`).show()
+            $(`.form-field.${type}`).show()
+            new_contact.type = type
+        })
+
         $(".js-create-post-button").removeAttr("disabled");
 
         // Clicking the plus sign next to the field label
@@ -72,7 +137,7 @@ $post_settings = apply_filters( "dt_get_post_type_settings", [], $dt_post_type )
         $('.js-create-post').on('click', '.delete-button', function () {
             $(this).parent().remove()
         })
-        let new_contact = {}
+
 
         $(".js-create-post").on("submit", function() {
             $(".js-create-post-button")

@@ -1004,3 +1004,42 @@ img.dt-icon {
     height: 15px;
     width: 15px;
 }
+img.dt-blue-icon {
+    filter: invert(41%) sepia(42%) saturate(518%) hue-rotate(164deg) brightness(94%) contrast(100%);
+}
+
+.template-new-post {
+    .type-options {
+        display:flex;
+        flex-wrap:wrap;
+        margin-bottom: 15px;
+    }
+    .type-option:hover {
+        background-color: #ecf5fc;
+        border: 1px solid #c2e0ff;
+        border-radius:15px;
+    }
+    .type-option.selected {
+        background-color: #ecf5fc;
+        border: 1px solid #c2e0ff;
+        border-radius:15px;
+    }
+    .type-option{
+        display:flex;
+        padding: 5px 10px;
+        flex-basis: 25%;
+        input {
+            align-self:center;
+            margin-right:5px;
+            margin-bottom: 0;
+        }
+        div {
+            display: inline-block
+        }
+    }
+}
+@media screen and (max-width : 640px) {
+    .template-new-post .type-option {
+        flex-basis: 100%;
+    }
+}

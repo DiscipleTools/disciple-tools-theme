@@ -257,6 +257,7 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
 
 
                             <!-- People Groups -->
+                            <?php if ( isset( $contact_fields["people_groups"]["name"] ) ): ?>
                             <div class="section-subheader cell" style="margin-top:20px">
                                 <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
                                 <?php esc_html_e( 'People Groups you wish to serve', 'disciple_tools' ); ?>
@@ -277,6 +278,7 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
                                 </div>
                             </div>
                         </div>
+                        <?php endif; ?>
 
                         <div class="small-12 medium-6 cell" style="border-left: 1px solid lightgrey; padding-left: 1em;">
                             <!-- Workload -->

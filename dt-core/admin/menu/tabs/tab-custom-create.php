@@ -33,14 +33,14 @@ class Disciple_Tools_Tab_Custom_Create extends Disciple_Tools_Abstract_Menu_Base
     } // End __construct()
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'Create Form Fields', 'disciple_tools' ), __( 'Create Form Fields', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=custom-create', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_options', __( 'New Record Fields', 'disciple_tools' ), __( 'New Record Fields', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=custom-create', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
     }
 
     public function add_tab( $tab ) {
         ?>
         <a href="<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_options&tab=custom-create"
            class="nav-tab <?php echo esc_html( $tab == 'custom-create' ? 'nav-tab-active' : '' ) ?>">
-            <?php echo esc_html__( 'Create Form Fields' ) ?>
+            <?php echo esc_html__( 'New Record Fields' ) ?>
         </a>
         <?php
     }
@@ -81,14 +81,27 @@ class Disciple_Tools_Tab_Custom_Create extends Disciple_Tools_Abstract_Menu_Base
                 $this->process_edit_create_fields( $post_submission );
             }
 
-            $this->box( 'top', __( 'Create or update create', 'disciple_tools' ) );
+            $this->box( 'top', __( 'Choose which fields to include when creating a new record', 'disciple_tools' ) );
             $this->post_type_select();
             $this->box( 'bottom' );
 
+
+
             if ( $post_type ){
-                $this->box( 'top', "Select fields to display" );
+                $fields = DT_Posts::get_post_field_settings( $post_type );
+                $this->box( 'top', "Select default fields to display on new contact form for all types" );
                 $this->edit_create_fields( $post_type );
                 $this->box( 'bottom' );
+
+                if ( isset( $fields["type"]["default"] ) ){
+                    foreach ( $fields["type"]["default"] as $type_key => $type_settings ){
+                        if ( empty( $type_settings["hidden"] ) ){
+                            $this->box( 'top', "Select fields to display for " . $type_settings["label"] . " contacts" );
+                            $this->edit_create_fields( $post_type, $type_key );
+                            $this->box( 'bottom' );
+                        }
+                    }
+                }
             }
 
             $this->template( 'right_column' );
@@ -120,12 +133,12 @@ class Disciple_Tools_Tab_Custom_Create extends Disciple_Tools_Abstract_Menu_Base
 
     <?php }
 
-    private function edit_create_fields( $post_type ){
+    private function edit_create_fields( $post_type, $type_key = null ){
         $fields = DT_Posts::get_post_field_settings( $post_type, false );
 
         $tile_options = DT_Posts::get_post_tiles( $post_type );
         $tile_options["details"] = [ "label" => "Details" ];
-        $tile_options["no_tile"] = [ "label" => "No Tile" ];
+        $tile_options["no_tile"] = [ "label" => "Other Fields" ];
         foreach ( $fields as $field_key => &$field_value ) {
             if ( !isset( $field_value["tile"] ) && ( !isset( $field_value["hidden"] ) || $field_value["hidden"] === false ) ){
                 $field_value['tile'] = "no_tile";
@@ -151,11 +164,17 @@ class Disciple_Tools_Tab_Custom_Create extends Disciple_Tools_Abstract_Menu_Base
                         <div>
                             <?php foreach ( $fields as $field_key => $field_settings ):
                                 if ( ( $field_settings["tile"] ?? "" ) === $tile_key ) :
-                                    $index++;?>
+                                    $index++;
+                                    $disabled = ( $type_key && $field_settings["in_create_form"] === true ) ? 'disabled' : '';
+                                    $checked = $field_settings["in_create_form"] === true ? "checked" : '';
+                                    if ( $type_key && ( $field_settings["in_create_form"] === true || ( is_array( $field_settings["in_create_form"] ) && in_array( $type_key, $field_settings["in_create_form"] ) ) ) ){
+                                        $checked = 'checked';
+                                    }
+                                    ?>
                                     <div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between">
                                         <span><?php echo esc_html( $index ); ?>.</span>
                                         <span style="padding:0 5px; flex-grow:1"><?php echo esc_html( $field_settings["name"] ); ?></span>
-                                        <span><input type="checkbox" name="create_fields[<?php echo esc_html( $field_key ); ?>]" <?php echo esc_html( $field_settings["in_create_form"] ? 'checked' : '' ); ?>></span>
+                                        <span><input type="checkbox" name="create_fields[<?php echo esc_html( $field_key ); ?>]" <?php echo esc_html( $checked . " " . $disabled ); ?>></span>
                                     </div>
                                 <?php endif;
                             endforeach; ?>
@@ -168,7 +187,7 @@ class Disciple_Tools_Tab_Custom_Create extends Disciple_Tools_Abstract_Menu_Base
             </div>
 
             <div>
-                <button type="submit" class="button">Save</button>
+                <button type="submit" class="button" name="type_key" value="<?php echo esc_html( $type_key ); ?>">Save</button>
             </div>
         </form>
 
@@ -183,9 +202,10 @@ class Disciple_Tools_Tab_Custom_Create extends Disciple_Tools_Abstract_Menu_Base
         $post_type = $post_submission["post_type"];
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
         $custom_field_options = dt_get_option( "dt_field_customizations" );
+        $type_key = !empty( $post_submission["type_key"] ) ? $post_submission["type_key"] : null;
 
         if ( empty( $post_submission["create_fields"] ) ) {
-            return;
+            $post_submission["create_fields"] = [];
         }
         if ( !isset( $custom_field_options[$post_type] ) ) {
             $custom_field_options[$post_type] = [];
@@ -195,16 +215,32 @@ class Disciple_Tools_Tab_Custom_Create extends Disciple_Tools_Abstract_Menu_Base
             if ( !isset( $custom_field_options[$post_type][$field_key] ) ) {
                 $custom_field_options[$post_type][$field_key] = [];
             }
-            $custom_field_options[$post_type][$field_key]["in_create_form"] = true;
+            if ( !isset( $custom_field_options[$post_type][$field_key]["in_create_form"] ) ){
+                $custom_field_options[$post_type][$field_key]["in_create_form"] = [];
+            }
+            if ( $type_key ){
+                if ( is_array( $custom_field_options[$post_type][$field_key]["in_create_form"] ) && !in_array( $type_key, $custom_field_options[$post_type][$field_key]["in_create_form"] ) ){
+                    $custom_field_options[$post_type][$field_key]["in_create_form"][] = $type_key;
+                }
+            } else {
+                $custom_field_options[$post_type][$field_key]["in_create_form"] = true;
+            }
         }
         foreach ( $field_settings as $key => $val ) {
             //if the field has been removed from the create record form
             if ( isset( $val["in_create_form"] ) && $val["in_create_form"] === true && !isset( $post_submission["create_fields"][$key] ) ) {
-                $custom_field_options[$post_type][$key]["in_create_form"] = false;
+                if ( !$type_key && $custom_field_options[$post_type][$key]["in_create_form"] === true ){
+                    $custom_field_options[$post_type][$key]["in_create_form"] = false;
+                }
+            }
+            if ( isset( $val["in_create_form"] ) && is_array( $val["in_create_form"] ) && in_array( $type_key, $val["in_create_form"] ) && !isset( $post_submission["create_fields"][$key] ) ){
+                if ( isset( $custom_field_options[$post_type][$key]["in_create_form"] ) && is_array( $custom_field_options[$post_type][$key]["in_create_form"] ) ){
+                    $index = array_search( $type_key, $custom_field_options[$post_type][$key]["in_create_form"] );
+                    unset( $custom_field_options[$post_type][$key]["in_create_form"][$index] );
+                }
             }
         }
         update_option( "dt_field_customizations", $custom_field_options );
-
 
     }
 

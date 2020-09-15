@@ -36,8 +36,10 @@ class DT_Contacts_DMM {
     public function dt_custom_fields_settings( $fields, $post_type ){
         if ( $post_type === 'contacts' ){
             $fields["type"]["default"]["placeholder"] = [
-                "label" => __( 'Placeholder', 'disciple_tools' ),
+                "label" => __( 'Connection', 'disciple_tools' ),
                 "color" => "#FF9800",
+                "description" => __( 'Connected to a contact, or generational fruit', 'disciple_tools' ),
+                "icon" => get_template_directory_uri() . "/dt-assets/images/network.svg"
             ];
             $fields["milestones"] = [
                 "name"    => __( 'Faith Milestones', 'disciple_tools' ),
@@ -101,6 +103,7 @@ class DT_Contacts_DMM {
                 ],
                 'tile' => "status",
                 'icon' => get_template_directory_uri() . "/dt-assets/images/cross.svg",
+                'in_create_form' => true
             ];
             $fields["subassigned"] = [
                 "name" => __( "Sub-assigned to", 'disciple_tools' ),
@@ -374,7 +377,7 @@ class DT_Contacts_DMM {
                     'type' => [ 'placeholder' ],
                     'sort' => 'name'
                 ],
-                "count" => $shared_by_type_counts['keys']['placeholder'],
+                "count" => $shared_by_type_counts['keys']['placeholder'] ?? 0,
             ];
             $filters["filters"][] = [
                 'ID' => 'my_coached',
