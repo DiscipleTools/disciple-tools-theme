@@ -350,7 +350,7 @@
 
     const langcode = document.querySelector('html').getAttribute('lang').replace('_', '-');
     const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }
-    const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, options).format(new Date(contact.last_modified*1000))
+    const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, options).format(new Date(parseInt(contact.last_modified.timestamp)*1000))
 
     const context = _.assign({last_modified: 0}, contact, wpApiListSettings, {
       index,

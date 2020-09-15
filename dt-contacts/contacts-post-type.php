@@ -582,7 +582,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["last_modified"] =[
             'name' => __( 'Last Modified', 'disciple_tools' ),
-            'type' => 'number',
+            'type' => 'date',
             'default' => 0,
             'section' => 'admin',
             'customizable' => false
