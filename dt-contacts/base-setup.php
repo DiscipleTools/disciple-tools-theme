@@ -137,35 +137,39 @@ class DT_Contacts_Base {
                 "icon" => get_template_directory_uri() . "/dt-assets/images/phone.svg",
                 "type" => "communication_channel",
                 "tile" => "details",
+                "customizable" => false
             ];
             $fields["contact_email"] = [
                 "name" => __( 'Email', 'disciple_tools' ),
                 "icon" => get_template_directory_uri() . "/dt-assets/images/email.svg",
                 "type" => "communication_channel",
                 "tile" => "details",
+                "customizable" => false
             ];
             $fields["contact_address"] = [
                 "name" => __( 'Address', 'disciple_tools' ),
                 "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg",
                 "type" => "communication_channel",
                 "tile" => "details",
+                "customizable" => false
             ];
-            $channels = self::get_channels_list();
-            foreach ( $channels as $channel_key => $channel_options ){
-                if ( !isset( $fields['contact_'.$channel_key] )){
-//                    @todo deleted
-                    //communication channels start with contact_
-                    $field = [
-                        "name" => $channel_options["label"],
-                        "type" => "communication_channel",
-                        "tile" => "details",
-                    ];
-                    if ( isset( $channel_options['icon'] ) ) {
-                        $field['icon'] = $channel_options['icon'];
-                    }
-                    $fields['contact_' . $channel_key] = $field;
-                }
-            }
+            $fields["facebook"] = [
+                "name" => __( 'Facebook', 'disciple_tools' ),
+                "icon" => get_template_directory_uri() . "/dt-assets/images/facebook.svg",
+                "hide_domain" => true,
+                "type" => "communication_channel",
+                "tile" => "details",
+                "customizable" => false
+            ];
+            $fields["twitter"] = [
+                "name" => __( 'Twitter', 'disciple_tools' ),
+                "icon" => get_template_directory_uri() . "/dt-assets/images/twitter.svg",
+                "hide_domain" => true,
+                "type" => "communication_channel",
+                "tile" => "details",
+                "customizable" => false
+            ];
+
             $fields['location_grid'] = [
                 'name'        => __( 'Locations', 'disciple_tools' ),
                 'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
@@ -196,48 +200,6 @@ class DT_Contacts_Base {
         }
         return $fields;
     }
-
-    public static function get_channels_list() {
-        $channel_list = [
-            "phone"     => [
-                "label" => __( 'Phone', 'disciple_tools' ),
-                "types" => [],
-                "description" => '',
-                "icon" => get_template_directory_uri() . "/dt-assets/images/phone.svg",
-            ],
-            "email"     => [
-                "label" => __( 'Email', 'disciple_tools' ),
-                "types" => [],
-                "description" => '',
-                "icon" => get_template_directory_uri() . "/dt-assets/images/email.svg",
-            ],
-            "address" => [
-                "label" => __( "Address", 'disciple_tools' ),
-                "types" => [],
-                "description" => '',
-                "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg",
-            ],
-            "facebook"  => [
-                "label" => __( 'Facebook', 'disciple_tools' ),
-                "types" => [],
-                "icon" => get_template_directory_uri() . "/dt-assets/images/facebook.svg",
-                "hide_domain" => true
-            ],
-            "twitter"   => [
-                "label" => __( 'Twitter', 'disciple_tools' ),
-                "types" => [],
-                "icon" => get_template_directory_uri() . "/dt-assets/images/twitter.svg",
-                "hide_domain" => true
-            ]
-        ];
-
-        $custom_channels = dt_get_option( "dt_custom_channels" );
-        foreach ( $custom_channels as $custom_key => $custom_value ){
-            $channel_list[$custom_key] = array_merge( $channel_list[$custom_key] ?? [], $custom_value );
-        }
-        return apply_filters( 'dt_custom_channels', $channel_list );
-    }
-
 
     public function dt_details_additional_section( $section, $post_type ){
         if ( $post_type === "contacts" && $section === "other" ) :
@@ -524,18 +486,19 @@ class DT_Contacts_Base {
     }
 
     public function add_comm_channel_comment_section( $sections, $post_type ){
-        $channels = self::get_channels_list();
         if ( $post_type === "contacts" ){
+            $channels = DT_Posts::get_post_field_settings( $post_type );
             foreach ( $channels as $channel_key => $channel_option ) {
-                $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
-                $hide_domain = isset( $channel_option['hide_domain'] ) && $channel_option['hide_domain'] == true;
-                if ( $channel_key == 'phone' || $channel_key == 'email' || $channel_key == 'address' ){
+                if ( $channel_option["type"] !== "communication_channel" ){
                     continue;
                 }
-
+                $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
+                if ( $channel_key == 'contact_phone' || $channel_key == 'contact_email' || $channel_key == 'contact_address' || !$enabled ){
+                    continue;
+                }
                 $sections[] = [
                     "key" => $channel_key,
-                    "label" => esc_html( $channel_option["label"] ?? $channel_key )
+                    "label" => esc_html( $channel_option["name"] ?? $channel_key )
                 ];
             }
         }

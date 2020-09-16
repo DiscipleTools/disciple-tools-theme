@@ -200,6 +200,7 @@ class DT_Contacts_DMM {
                 'default'     => 0,
                 'section'     => 'quick_buttons',
                 'icon'        => get_template_directory_uri() . "/dt-assets/images/no-answer.svg",
+                "customizable" => false
             ];
             $fields['quick_button_contact_established'] = [
                 'name'        => __( 'Contact Established', 'disciple_tools' ),
@@ -208,6 +209,7 @@ class DT_Contacts_DMM {
                 'default'     => 0,
                 'section'     => 'quick_buttons',
                 'icon'        => get_template_directory_uri() . "/dt-assets/images/successful-conversation.svg",
+                "customizable" => false
             ];
             $fields['quick_button_meeting_scheduled'] = [
                 'name'        => __( 'Meeting Scheduled', 'disciple_tools' ),
@@ -216,6 +218,7 @@ class DT_Contacts_DMM {
                 'default'     => 0,
                 'section'     => 'quick_buttons',
                 'icon'        => get_template_directory_uri() . "/dt-assets/images/meeting-scheduled.svg",
+                "customizable" => false
             ];
             $fields['quick_button_meeting_complete'] = [
                 'name'        => __( 'Meeting Complete', 'disciple_tools' ),
@@ -224,6 +227,7 @@ class DT_Contacts_DMM {
                 'default'     => 0,
                 'section'     => 'quick_buttons',
                 'icon'        => get_template_directory_uri() . "/dt-assets/images/meeting-complete.svg",
+                "customizable" => false
             ];
             $fields['quick_button_no_show'] = [
                 'name'        => __( 'Meeting No-show', 'disciple_tools' ),
@@ -232,6 +236,7 @@ class DT_Contacts_DMM {
                 'default'     => 0,
                 'section'     => 'quick_buttons',
                 'icon'        => get_template_directory_uri() . "/dt-assets/images/no-show.svg",
+                "customizable" => false
             ];
 
 

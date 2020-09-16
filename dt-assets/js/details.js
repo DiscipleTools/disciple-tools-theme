@@ -210,6 +210,16 @@ jQuery(document).ready(function($) {
   $( document ).on( 'dt_multi_select-updated', function (e, newContact, fieldKey, optionKey, action) {
   })
 
+  $( document ).ajaxComplete(function(event, xhr, settings ) {
+    if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
+      if ( xhr.responseJSON && xhr.responseJSON.post_type && xhr.responseJSON.ID ){
+        post = xhr.responseJSON
+        resetDetailsFields()
+      }
+    }
+  });
+
+
   $('.show-details-section').on( "click", function (){
     $('#details-section').toggle()
     $('#show-details-edit-button').toggle()
@@ -272,8 +282,10 @@ jQuery(document).ready(function($) {
           let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $(`#${field_id}-result-container`).html(text);
         },
-        onHideLayout: function () {
-          $(`#${field_id}-result-container`).html("");
+        onHideLayout: function (event, query) {
+          if ( !query ){
+            $(`#${field_id}-result-container`).empty()
+          }
           masonGrid.masonry('layout')
         },
         onShowLayout (){
@@ -656,13 +668,13 @@ jQuery(document).ready(function($) {
         values_html = field_value.map(v=>{
           return _.escape(v.value);
         }).join(', ')
-      } else if ( field_options.type === 'location' ){
+      } else if ( ['location', 'connection'].includes(field_options.type) ){
         values_html = field_value.map(v=>{
           return _.escape(v.label);
         }).join(', ')
       }
       $(`#collapsed-detail-${field_key}`).toggle(values_html !== ``)
-      $(`#collapsed-detail-${field_key} .collapsed-items`).html(values_html)
+      $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${values_html}">${values_html}</span>`)
     }
   })
   }

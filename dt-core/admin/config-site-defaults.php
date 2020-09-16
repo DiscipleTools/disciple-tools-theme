@@ -238,7 +238,7 @@ function dt_get_option( string $name ) {
                     "es" => [ "label" => "Spanish" ]
                 ];
             }
-            $languages = DT_Posts_Hooks::dt_get_custom_channels_translation( $languages );
+            $languages = DT_Posts_Hooks::dt_get_field_options_translation( $languages );
             return apply_filters( 'dt_working_languages', $languages );
 
         default:

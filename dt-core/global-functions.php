@@ -382,7 +382,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 </div>
             <?php elseif ( $field_type === "connection" ) :?>
                 <div id="<?php echo esc_attr( $field_key . '_connection' ) ?>" class="dt_typeahead">
-                    <var id="<?php echo esc_html( $field_key ) ?>-result-container" class="result-container"></var>
+                    <span id="<?php echo esc_html( $field_key ) ?>-result-container" class="result-container"></span>
                     <div id="<?php echo esc_html( $field_key ) ?>_t" name="form-<?php echo esc_html( $field_key ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
                         <div class="typeahead__container">
                             <div class="typeahead__field">

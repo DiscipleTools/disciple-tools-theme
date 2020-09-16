@@ -90,37 +90,9 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
 
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $type );
         $fields = $post_settings["fields"];
-        $channels = isset( $post_settings["channels"] ) ? $post_settings["channels"] : [];
-
-        ?>
 
 
-        <?php
-        if ( !empty( $channels ) ){
-            ?>
-            <h3>Contact Methods / Channels</h3>
-            <table class="widefat striped">
-                <tr>
-                    <th style="width:30%">Name</th>
-                    <th style="width:20%">Key</th>
-                    <th style="width:10%"></th>
-                    <th style="width:40%"></th>
-                </tr>
-            <?php
-            foreach ( $channels as $channel_key => $channel_value ) : ?>
-                <tr>
-                    <th><?php echo esc_html( $channel_value["label"] ) ?></th>
-                    <th><?php echo esc_html( 'contact_' . $channel_key ) ?></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            <?php endforeach; ?>
-            </table>
-            <?php
-        }
-
-
-        $types = [ "text", "date", 'boolean', 'key_select', 'multi_select', 'array', 'connection', 'post_user_meta', 'number' ];
+        $types = [ "text", "date", 'boolean', 'key_select', 'multi_select', 'array', 'connection', 'post_user_meta', 'number', 'communication_channel' ];
         foreach ( $types as $type ){
             ?>
             <h3>Field type: <?php echo esc_html( $type ) ?></h3>

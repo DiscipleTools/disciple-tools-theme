@@ -238,7 +238,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                         <div class="grid-x grid-margin-x grid-margin-y grid">
                             <?php
                             foreach ( $tiles as $tile_key => $tile_options ){
-                                if ( ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ) || in_array( $tile_key, [ 'details' ] ) ) {
+                                if ( ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ) || in_array( $tile_key, [ 'details', 'status' ] ) ) {
                                     continue;
                                 }
                                 ?>

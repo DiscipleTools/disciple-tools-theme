@@ -122,12 +122,13 @@ declare(strict_types=1);
                                 $fields_to_show_in_table = dt_sanitize_array_html( $fields_to_show_in_table );
                             }
                         } ?>
+                        <ul class="ul-no-bullets" style="column-count:4">
                         <?php foreach ( $post_settings["fields"] as $field_key => $field_values ):
                             if ( !empty( $field_values["hidden"] )){
                                 continue;
                             }
                             ?>
-                            <span style="display:inline-block" class="">
+                            <li style="" class="">
                                 <label style="margin-right:15px; cursor:pointer">
                                     <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
                                            <?php echo esc_html( in_array( $field_key, $fields_to_show_in_table ) ? "checked" : '' ); ?>
@@ -135,8 +136,9 @@ declare(strict_types=1);
                                            style="margin:0">
                                     <?php echo esc_html( $field_values["name"] ); ?>
                                 </label>
-                            </span>
+                            </li>
                         <?php endforeach; ?>
+                        </ul>
                         <button class="button" id="save_column_choices" style="display: block"><?php esc_html_e( 'Apply column selection', 'disciple_tools' ); ?></button>
                     </div>
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
