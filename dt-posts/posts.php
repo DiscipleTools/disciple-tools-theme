@@ -525,82 +525,315 @@ class Disciple_Tools_Posts
 
 
     /**
-     * @param string $post_type
-     *
-     * @param int $most_recent
-     *
-     * @return array|WP_Error|WP_Query
+     * Get the sql to query D.T fields.
+     * @param $post_type
+     * @param $query_array
+     * @param string $operator
+     * @param array $args
+     * @return array|mixed
      */
-    public static function get_viewable( string $post_type, int $most_recent = 0 ) {
-        if ( !self::can_access( $post_type ) ) {
-            return new WP_Error( __FUNCTION__, sprintf( _x( "You do not have access to these %s", 'message', 'disciple_tools' ), $post_type ), [ 'status' => 403 ] );
-        }
-        $current_user = wp_get_current_user();
-
-        $query_args = [
-            'post_type' => $post_type,
-            'meta_query' => [
-                'relation' => "AND",
-                [
-                    'key' => "last_modified",
-                    'value' => $most_recent,
-                    'compare' => '>'
-                ]
-            ],
-            'orderby' => 'meta_value_num',
-            'meta_key' => "last_modified",
-            'order' => 'ASC',
-            'posts_per_page' => 1000 // @phpcs:ignore WordPress.VIP.PostsPerPage
+    private static function fields_to_sql( $post_type, $query_array, $operator = "AND", $args = [] ){
+        $examples = [
+            "groups" => [ 3029, 39039 ],
+            "groups" => [ -3029 ],
+            "location_grid" => [ 123456 ],
+            "location_grid" => [ -123456 ],
+            "assigned_to" => [ 33 ],
+            "assigned_to" => [ -33 ],
+            "baptism_date" => [ "start" => "2018-01-01", "end" => "2019-01-01" ],
+            "requires_update" => [ "1" ],
+            "contact_phone" => [ "798456780" ],
+            "contact_phone" => [ "-798456780" ],
+            "nickname" => [ "hi" ],
+            "nickname" => [ "-hi" ],
+            "nickname" => [ "-hi", "-other" ],
+            "baptism_generation" => [ "equality" => ">", "number" => 4 ],
+            "overall_status" => [ 'active' ],
+            "overall_status" => [ '-close' ],
+            "milestones" => [ 'milestone_has_bible', 'milestone_reading_bible' ],
+            "milestones" => [ '-milestone_has_bible', '-milestone_reading_bible' ],
         ];
-        $posts_shared_with_user = [];
-        if ( !self::can_view_all( $post_type ) ) {
-            $posts_shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID );
 
-            $query_args['meta_key'] = 'assigned_to';
-            $query_args['meta_value'] = "user-" . $current_user->ID;
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+
+        if ( empty( $args ) ){
+            $args = [
+                "joins_fields" => [],
+                "joins_sql" => "",
+                "where_sql" => "1=1 "
+            ];
         }
-        $queried_posts = new WP_Query( $query_args );
-        if ( is_wp_error( $queried_posts ) ) {
-            return $queried_posts;
-        }
-        $posts = $queried_posts->posts;
-        $post_ids = array_map(
-            function( $post ) {
-                return $post->ID;
-            },
-            $posts
-        );
-        //add shared posts to the list avoiding duplicates
-        foreach ( $posts_shared_with_user as $shared ) {
-            if ( !in_array( $shared->ID, $post_ids ) ) {
-                $posts[] = $shared;
+
+        global $wpdb;
+
+        $index_pos = 0;
+
+
+        foreach ( $query_array as $query_key => $query_value ) {
+            if ( is_string( $query_key ) ){
+                $where_sql = "";
+                $table_key = esc_sql( "field_" . $query_key );
+                if ( isset( $field_settings[$query_key]["type"] ) ){
+                    $field_type = $field_settings[$query_key]["type"];
+
+
+                    // add postmeta join fields
+                    if ( in_array( $field_type, [ 'key_select', 'multi_select', 'boolean', 'date', 'number', 'user_select', 'number' ] ) ){
+                        if ( !in_array( $table_key, $args["joins_fields"] ) ){
+                            $args["joins_fields"][] = $table_key;
+                            $args["joins_sql"] .= " LEFT JOIN $wpdb->postmeta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key = '" . esc_sql( $query_key ) . "' )";
+                        }
+                    }
+
+                    if ( in_array( $field_type, [ 'key_select', 'multi_select', 'boolean', 'date', 'user_select' ] ) ){
+                        /**
+                         * key_select, multi_select, boolean, date
+                         */
+                        $index = -1;
+                        $query_for_null_values = false;
+                        if ( !is_array( $query_value ) ){
+                            return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
+                        }
+                        foreach ( $query_value as $value_key => $value ){
+                            $index++;
+                            $connector = " OR ";
+                            $equality = "=";
+                            //allow negative searches
+                            if ( strpos( $value, "-" ) === 0 ){
+                                $equality = "!=";
+                                $value = ltrim( $value, "-" );
+                                $connector = " AND ";
+                            }
+                            if ( $field_type === "boolean" ){
+                                if ( $value === "1" || $value === "yes" || $value === "true" ){
+                                    $value = true;
+                                } elseif ( $value === "0" || $value === "no" || $value === "false" ){
+                                    $value = false;
+                                }
+                                $where_sql .= ( $index > 0 ? $connector : " " ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
+                            }
+                            //date fields
+                            if ( $field_type === "date" ){
+                                $connector = " AND ";
+                                if ( $value_key === "start" ){
+                                    $value = strtotime( $value );
+                                    $equality = ">=";
+                                }
+                                if ( $value_key === "end" ){
+                                    $value = strtotime( $value );
+                                    $equality = "<=";
+                                }
+                                $where_sql .= ( $index > 0 ? $connector : " " ) . " $table_key.meta_value $equality " . esc_sql( $value );
+                            }
+                            if ( $field_type === "key_select" ){
+                                $where_sql .= ( $index > 0 ? $connector : " " ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
+                            }
+                            if ( $field_type === "multi_select" ){
+                                if ( $equality === "!=" && $field_type === "multi_select" ){
+                                    $where_sql .= ( $index > 0 ? $connector : " " ) . "not exists (select 1 from $wpdb->postmeta where $wpdb->postmeta.post_id = p.ID and $wpdb->postmeta.meta_key = '" . esc_sql( $query_key ) ."'  and $wpdb->postmeta.meta_value = '" . esc_sql( $value ) . "') ";
+                                } else {
+                                    $where_sql .= ( $index > 0 ? $connector : " " ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
+                                }
+                            }
+                            if ( $field_type === "user_select" ){
+                                if ( $equality === "!=" ){
+                                    $query_for_null_values = true;
+                                }
+                                $where_sql .= ( $index > 0 ? " $connector" : " " ) . " $table_key.meta_value $equality 'user-" . esc_sql( $value ) . "'";
+                            }
+                        }
+                        if ( $query_for_null_values ){
+                            $where_sql .= " OR $table_key.meta_value IS NULL ";
+                        }
+                        if ( empty( $query_value ) ){
+                            $where_sql .= " $table_key.meta_value IS NULL ";
+                        }
+                    } else if ( in_array( $field_type, [ 'connection' ] ) ){
+                        /**
+                         * connection
+                         */
+                        if ( !isset( $field_settings[$query_key]["p2p_direction"], $field_settings[$query_key]["p2p_key"] ) ){
+                            continue;
+                        }
+
+                        $in = [];
+                        $not_in = [];
+                        if ( !is_array( $query_value ) ){
+                            return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
+                        }
+                        foreach ( $query_value as &$connection ) {
+                            if ( $connection === "me" ){
+                                $contact_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
+                                if ( $contact_id ){
+                                    $connection = $contact_id;
+                                }
+                            }
+                            if ( strpos( $connection, "-" ) === 0 ){
+                                $connection = ltrim( $connection, "-" );
+                                $not_in[] = $connection;
+                            } else {
+                                $in[] = $connection;
+                            }
+                        }
+                        if ( !empty( $in ) ){
+                            $connection_ids = dt_array_to_sql( $in );
+                            if ( $field_settings[$query_key]["p2p_direction"] === "to" ){
+                                $where_sql .= " p.ID IN (
+                                    SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' AND p2p_from IN (" .  $connection_ids .")
+                                ) ";
+                            } else {
+                                $where_sql .= " p.ID IN (
+                                    SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' AND p2p_to IN (" .  $connection_ids .")
+                                ) ";
+                            }
+                        }
+                        if ( !empty( $not_in ) ){
+                            $connection_ids = dt_array_to_sql( $not_in );
+                            $where_sql .= ( !empty( $where_sql ) ? " AND " : "" );
+                            if ( $field_settings[$query_key]["p2p_direction"] === "to" ){
+                                $where_sql .= " p.ID NOT IN (
+                                    SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' AND p2p_from IN (" .  $connection_ids .")
+                                ) ";
+                            } else {
+                                $where_sql .= " p.ID NOT IN (
+                                    SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "' AND p2p_to IN (" .  $connection_ids .")
+                                ) ";
+                            }
+                        }
+                    } else if ( in_array( $field_type, [ 'location' ] ) ){
+                        /**
+                         * location
+                         */
+                        if ( !in_array( $table_key, $args["joins_fields"] ) ){
+                            $args["joins_fields"][] = $table_key;
+                            $args["joins_sql"] .= " LEFT JOIN (
+                                SELECT g.admin0_grid_id, g.admin1_grid_id,
+                                       g.admin2_grid_id, g.admin3_grid_id,
+                                       g.grid_id, g.level,
+                                       p.post_id
+                                FROM $wpdb->postmeta as p
+                                LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value
+                                WHERE p.meta_key = 'location_grid'
+
+                            ) as $table_key ON ( $table_key.post_id = p.ID )";
+                        }
+                        $in = [];
+                        $not_in = [];
+                        if ( !is_array( $query_value ) ){
+                            return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
+                        }
+                        foreach ( $query_value as $value ){
+                            if ( strpos( $value, "-" ) === 0 ){
+                                $value = ltrim( $value, "-" );
+                                $not_in[] = $value;
+                            } else {
+                                $in[] = $value;
+                            }
+                        }
+                        if ( !empty( $in ) ){
+                            $location_grid_ids = dt_array_to_sql( $in );
+                            $where_sql .= " (
+                                $table_key.admin0_grid_id IN (" . $location_grid_ids .")
+                                OR $table_key.admin1_grid_id IN (" . $location_grid_ids .")
+                                OR $table_key.admin2_grid_id IN (" . $location_grid_ids .")
+                                OR $table_key.admin3_grid_id IN (" . $location_grid_ids .")
+                                OR $table_key.grid_id IN (" . $location_grid_ids .") )
+                            ";
+                        }
+                        if ( !empty( $not_in ) ){
+                            $location_grid_ids = dt_array_to_sql( $not_in );
+                            $where_sql .= ( !empty( $where_sql ) ? " AND " : "" ) . "
+                                ( $table_key.admin0_grid_id IS NULL OR $table_key.admin0_grid_id NOT IN (" . $location_grid_ids .") )
+                                AND ( $table_key.admin1_grid_id IS NULL OR $table_key.admin1_grid_id NOT IN (" . $location_grid_ids .") )
+                                AND ( $table_key.admin2_grid_id IS NULL OR $table_key.admin2_grid_id NOT IN (" . $location_grid_ids .") )
+                                AND ( $table_key.admin3_grid_id IS NULL OR $table_key.admin3_grid_id NOT IN (" . $location_grid_ids .") )
+                                AND ( $table_key.grid_id IS NULL OR $table_key.grid_id NOT IN (" . $location_grid_ids .") )
+                            ";
+                        }
+                    } else if ( in_array( $field_type, [ 'text', 'communication_channel' ] ) ){
+                        /**
+                         * text, communication_channel
+                         */
+                        if ( !in_array( $table_key, $args["joins_fields"] ) ){
+                            $args["joins_fields"][] = $table_key;
+                            $extra = $field_type === 'communication_channel' ? '%' : '';
+                            $args["joins_sql"] .= " LEFT JOIN $wpdb->postmeta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key LIKE '" . esc_sql( $query_key . $extra ) . "' AND $table_key.meta_key NOT LIKE '%_details' )";
+                        }
+                        $index = -1;
+                        $connector = " OR ";
+                        $query_for_null_values = null;
+                        if ( !is_array( $query_value ) ){
+                            return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
+                        }
+                        foreach ( $query_value as $value_key => $value ){
+                            $index ++;
+                            $equality = "LIKE";
+                            //allow negative searches
+                            if ( strpos( $value, "-" ) === 0 ){
+                                $equality = "NOT LIKE";
+                                $value = ltrim( $value, "-" );
+                                $connector = " AND ";
+                            }
+                            $query_for_null_values = ( $query_for_null_values === null && $equality === "NOT LIKE" ) ? true : false;
+
+                            $where_sql .= ( $index > 0 ? $connector : " " ) . " $table_key.meta_value $equality '%" . esc_sql( $value ) . "%'";
+                        }
+                        if ( $query_for_null_values ){
+                            $where_sql .= " OR $table_key.meta_value IS NULL ";
+                        }
+                    } else if ( in_array( $field_type, [ 'number' ] ) ){
+                        /**
+                         * number
+                         */
+                        $equality = '=';
+                        $value = is_numeric( $query_value ) ? esc_sql( $query_value ) : [];
+                        if ( isset( $query_value['operator'] ) ){
+                            $equality = esc_sql( $query_value['operator'] );
+                        }
+                        if ( isset( $query_value['number'] ) ){
+                            $value = esc_sql( $query_value['number'] );
+                        }
+                        if ( empty( $value ) && $value !== 0 ){
+                            $where_sql .= " $table_key.meta_value IS NULL";
+                        } else {
+                            $where_sql .= " $table_key.meta_value $equality " . esc_sql( $value );
+                        }
+                    } else {
+                        return new WP_Error( __FUNCTION__, "you can not filter $field_type fields", [ 'status' => 400 ] );
+                    }
+                } else if ( $query_key === 'shared_with' ){
+                    if ( !in_array( $table_key, $args["joins_fields"] ) ){
+                        $args["joins_fields"][] = $table_key;
+                        $args["joins_sql"] .= " LEFT JOIN $wpdb->dt_share as $table_key ON ( $table_key.post_id = p.ID )";
+                    }
+                    foreach ( $query_value as &$v ){
+                        if ( $v === "me" ){
+                            $v = get_current_user_id();
+                        }
+                    }
+                    $user_ids = dt_array_to_sql( $query_value );
+                    $where_sql .= " $table_key.user_id IN ( $user_ids ) ";
+
+                } else {
+                    return new WP_Error( __FUNCTION__, "One or more fields do not exist", [ 'key' => $query_key, 'status' => 400 ] );
+                }
+                if ( !empty( $where_sql )){
+                    $index_pos++;
+
+                    $args["where_sql"] .= ( ( $index_pos > 1 || $operator === "AND" ) ? $operator : " " ) . " (";
+                    $args["where_sql"] .= $where_sql;
+                    $args["where_sql"] .= ')';
+                }
+            } else if ( is_array( $query_value ) ){
+                $index_pos++;
+                $args["where_sql"] .= ( ( $index_pos > 0 ) ? $operator : " " ) . " (";
+                $args = self::fields_to_sql( $post_type, $query_value, $operator === "AND" ? "OR" : "AND", $args );
+                $args["where_sql"] .= ")";
             }
         }
+        $args["where_sql"] = str_replace( "$operator ()", "", $args["where_sql"] );
+        return $args;
 
-        $delete_posts = [];
-        if ($most_recent){
-            global $wpdb;
-            $deleted_query = $wpdb->get_results( $wpdb->prepare(
-                "SELECT object_id
-                FROM `$wpdb->dt_activity_log`
-                WHERE
-                    ( `action` = 'deleted' || `action` = 'trashed' )
-                    AND `object_subtype` = %s
-                    AND hist_time > %d
-                ",
-                $post_type,
-                $most_recent
-            ), ARRAY_A);
-            foreach ( $deleted_query as $deleted ){
-                $delete_posts[] = $deleted["object_id"];
-            }
-        }
-
-        return [
-            $post_type => $posts,
-            "total" => $queried_posts->found_posts,
-            "deleted" => $delete_posts
-        ];
     }
 
 
@@ -608,20 +841,19 @@ class Disciple_Tools_Posts
         if ( $check_permissions && !self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, "You do not have access to these", [ 'status' => 403 ] );
         }
+        $post_types = apply_filters( 'dt_registered_post_types', [] );
+        if ( !in_array( $post_type, $post_types ) ){
+            return new WP_Error( __FUNCTION__, "$post_type in not a valid post type", [ 'status' => 400 ] );
+        }
+
         //filter in to add or remove query parameters.
         $query = apply_filters( 'dt_search_viewable_posts_query', $query );
 
         global $wpdb;
-        $current_user = wp_get_current_user();
 
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
         $post_fields = $post_settings["fields"];
 
-        $include = [];
-        if ( isset( $query["include"] ) ){
-            $include = $query["include"];
-            unset( $query["include"] );
-        }
         $search = "";
         if ( isset( $query["text"] )){
             $search = sanitize_text_field( $query["text"] );
@@ -637,11 +869,6 @@ class Disciple_Tools_Posts
             $limit = esc_sql( sanitize_text_field( $query["limit"] ) );
             unset( $query["limit"] );
         }
-        $combine = [];
-        if ( isset( $query["combine"] )){
-            $combine = $query["combine"];
-            unset( $query["combine"] );
-        }
         $sort = "post_title";
         $sort_dir = "asc";
         if ( isset( $query["sort"] )){
@@ -653,297 +880,52 @@ class Disciple_Tools_Posts
             unset( $query["sort"] );
         }
 
-        $inner_joins = "";
-        $connections_sql_to = "";
-        $connections_sql_from = "";
-        $location_sql = "";
-
-        $meta_query = "";
-        $includes_query = "";
-        $share_joins = "";
-        $access_joins = "";
-        $access_query = "";
-        if ( isset( $query["assigned_to"] ) ){
-            if ( !is_array( $query["assigned_to"] ) ){
-                return new WP_Error( __FUNCTION__, "Assigned_to must be an array. found: " . esc_html( $query["assigned_to"] ), [ 'status' => 400 ] );
-            }
-        }
-        if ( !isset( $query["assigned_to"] ) || in_array( "all", $query["assigned_to"] ) ){
-            $query["assigned_to"] = [ "all" ];
-            if ( !self::can_view_all( $post_type ) && $check_permissions ){
-                if ( current_user_can( 'access_specific_sources' ) && in_array( 'all', get_user_option( 'allowed_sources' ) ?? [] ) ){
-                    $query["assigned_to"] = [ "all" ];
-                } else {
-                    $query["assigned_to"] = [ "me" ];
-                    if ( !in_array( "shared", $include )){
-                        $include[] = "shared";
-                    }
-                    if ( current_user_can( 'access_specific_sources' ) ){
-                        $include[] = "allowed_sources";
-                    }
-                }
-            };
-        }
-        foreach ( $include as $i ){
-            if ( $i === "shared" ){
-                $share_joins = "LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
-                $access_query = "shares.user_id = $current_user->ID ";
-            }
-            if ( $i === "allowed_sources" ){
-                $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
-                if ( !empty( $allowed_sources ) && !in_array( "restrict_all_sources", $allowed_sources ) ){
-                    $sources_sql = dt_array_to_sql( $allowed_sources );
-                    $access_joins .= "LEFT JOIN $wpdb->postmeta AS source_access ON ( $wpdb->posts.ID = source_access.post_id AND source_access.meta_key = 'sources' ) ";
-                    $access_query .= ( !empty( $access_query ) ? "OR" : "" ) ." ( source_access.meta_key = 'sources' AND source_access.meta_value IN ( $sources_sql ) )";
-
-                }
-            }
-        }
-        if ( in_array( "shared", $query["assigned_to"] ) ){
-            $share_joins = "LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
-            $access_query = ( !empty( $access_query ) ? "OR" : "" ) ." shares.user_id = $current_user->ID ";
-            if ( !in_array( "me", $query["assigned_to"] ) && !in_array( "all", $query["assigned_to"] ) ){
-                $access_joins .= "INNER JOIN $wpdb->postmeta AS assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id ) ";
-                $access_query .= ( !empty( $access_query ) ? "AND" : "" ) ." ( assigned_to.meta_key = 'assigned_to' AND assigned_to.meta_value != 'user-$current_user->ID' )";
-            }
-        }
+        $joins = "";
+        $post_query = "";
 
         /**
          * Filter by creation date
          */
         if ( isset( $query["created_on"] ) ){
             if ( isset( $query["created_on"]["start"] ) ){
-                $meta_query .= "AND $wpdb->posts.post_date >= '" . esc_sql( $query["created_on"]["start"] ) . "' ";
+                $post_query .= "AND p.post_date >= '" . esc_sql( $query["created_on"]["start"] ) . "' ";
             }
             if ( isset( $query["created_on"]["end"] ) ){
-                $meta_query .= "AND $wpdb->posts.post_date <= '" . esc_sql( $query["created_on"]["end"] ) . "' ";
+                $post_query .= "AND p.post_date <= '" . esc_sql( $query["created_on"]["end"] ) . "' ";
             }
             unset( $query["created_on"] );
         }
 
-        foreach ( $query as $query_key => $query_value ){
-            $meta_field_sql = "";
-            if ( !is_array( $query_value )){
-                return new WP_Error( __FUNCTION__, "Filter queries must be arrays for $query_key. Got " . strval( $query_value ), [ 'status' => 400 ] );
-            }
-            if ( !in_array( $query_key, $post_settings["connection_types"] ) && strpos( $query_key, "contact_" ) !== 0 && $query_key !== "location_grid" ){
-                if ( $query_key == "assigned_to" ){
-                    foreach ( $query_value as $assigned_to ){
-                        $connector = "OR";
-                        if ( $assigned_to == "me" ){
-                            $assigned_to = "user-" . $current_user->ID;
-                        } else if ( $assigned_to != "all" && $assigned_to != "shared" ) {
-                            if ( self::can_view_all( $post_type ) || !$check_permissions ){
-                                $assigned_to = "user-" . $assigned_to;
-                            } else {
-                                $assigned_to = "user-" . $assigned_to;
-                                if ( !$share_joins ){
-                                    $share_joins = "INNER JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
-                                    $access_query = "shares.user_id = $current_user->ID ";
-                                    $connector = "AND";
-                                }
-                            }
-                        } else {
-                            break;
-                        }
-                        if ( !empty( $access_query ) ){
-                            $access_query .= $connector;
-                        }
-                        $access_query .= ( $connector == "AND" ? " ( " : "" ) . " ( $wpdb->posts.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'assigned_to' AND meta_value = '" . esc_sql( $assigned_to ) . "' ) ) " . ( $connector == "AND" ? " ) " : "" );
-
-                    }
-                } else {
-                    $connector = " OR ";
-                    foreach ( $query_value as $value_key => $value ){
-                        $equality = "=";
-                        $field_type = isset( $post_fields[$query_key]["type"] ) ? $post_fields[$query_key]["type"] : null;
-                        // boolean fields
-                        if ( $field_type === "boolean" ){
-                            if ( $value === "1" || $value === "yes" || $value === "true" ){
-                                $value = true;
-                            } elseif ( $value === "0" || $value === "no" || $value === "false" ){
-                                $value = false;
-                            }
-                        }
-                        //date fields
-                        if ( $field_type === "date" ){
-                            $connector = "AND";
-                            if ( $value_key === "start" ){
-                                $value = strtotime( $value );
-                                $equality = ">=";
-                            }
-                            if ( $value_key === "end" ){
-                                $value = strtotime( $value );
-                                $equality = "<=";
-                            }
-                        }
-
-                        //allow negative searches
-                        if ( strpos( $value, "-" ) === 0 ){
-                            $equality = "!=";
-                            $value = ltrim( $value, "-" );
-                            $connector = " AND ";
-                        }
-                        if ( !empty( $meta_field_sql ) ){
-                            $meta_field_sql .= $connector;
-                        }
-                        if ($equality === "!=" && $field_type === "multi_select"){
-                            //find one with the value to exclude
-                            if ( $meta_field_sql ){
-                                $meta_field_sql .= "not exists (select 1 from $wpdb->postmeta where $wpdb->postmeta.post_id = $wpdb->posts.ID and $wpdb->postmeta.meta_key = '" . esc_sql( $query_key ) ."'  and $wpdb->postmeta.meta_value = '" . esc_sql( $value ) . "') ";
-                            } else {
-                                $meta_query .= " AND not exists (select 1 from $wpdb->postmeta where $wpdb->postmeta.post_id = $wpdb->posts.ID and $wpdb->postmeta.meta_key = '" . esc_sql( $query_key ) ."'  and $wpdb->postmeta.meta_value = '" . esc_sql( $value ) . "') ";
-                            }
-                        } else {
-                            if ( $field_type === "date" ){
-                                $meta_field_sql .= " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value " . $equality . " " . esc_sql( $value ) . " ) ";
-                            } else {
-                                $meta_field_sql .= " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value " . $equality . " '" . esc_sql( $value ) . "' ) ";
-                            }
-                        }
-                    }
-                }
-                if ( $meta_field_sql ){
-                    $inner_joins .= "INNER JOIN $wpdb->postmeta AS " . esc_sql( $query_key ) . " ON ( $wpdb->posts.ID = " . esc_sql( $query_key ) . ".post_id ) ";
-                    $meta_query .= "AND ( " .$meta_field_sql . ") ";
-                }
-            }
-        }
-
         if ( !empty( $search )){
-            $inner_joins .= "INNER JOIN $wpdb->postmeta AS search ON ( $wpdb->posts.ID = search.post_id ) ";
-            $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
-            $meta_query .= "AND ( ( $wpdb->posts.post_title LIKE '%%" . esc_sql( $search ) . "%%' )
-                OR ( search.meta_key LIKE 'contact_%' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0 )
-                OR ( search.meta_key LIKE 'contact_%' AND REPLACE( '" . esc_sql( $search ) . "', ' ', '') = REPLACE( search.meta_value, ' ', '') )";
-            foreach ( $other_search_fields as $field ){
-                $meta_query .= " OR ( search.meta_key LIKE '" . esc_sql( $field ) . "' AND search.meta_value LIKE '%%" . esc_sql( $search ) . "%%'   ) ";
-            }
-            $meta_query .= " ) ";
-
+            $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
+                OR p.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key LIKE 'contact_%' AND meta_value LIKE '%" . esc_sql( $search ) . "%' ) )";
         }
-
-        foreach ( $query as $query_key => $query_value ) {
-            if ( $query_key === "location_grid" ) {
-                $location_grid_ids = dt_array_to_sql( $query_value );
-                $location_sql .= "
-                    AND (
-                        location_grid_counter.admin0_grid_id IN (" . $location_grid_ids .")
-                        OR location_grid_counter.admin1_grid_id IN (" . $location_grid_ids .")
-                        OR location_grid_counter.admin2_grid_id IN (" . $location_grid_ids .")
-                        OR location_grid_counter.admin3_grid_id IN (" . $location_grid_ids .")
-                        OR location_grid_counter.grid_id IN (" . $location_grid_ids .")
-                    )";
-            }
-            if ( isset( $post_fields[$query_key]["type"] ) && $post_fields[$query_key]["type"] === "connection" ) {
-
-                $connection_ids = "";
-                foreach ( $query_value as $connection ) {
-                    if ( $connection === "me" ){
-                        $contact_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
-                        $l = get_post( $contact_id );
-                    } else {
-                        $l = get_post( $connection );
-                    }
-                    if ( $l ){
-                        $connection_ids .= empty( $connection_ids ) ? $l->ID : ( ",".$l->ID );
-                    }
-                }
-                if ( !empty( $connection_ids ) ){
-                    if ( $query_key === "subassigned" ) {
-                        if ( !empty( $access_query ) && in_array( "subassigned", $combine ) ){
-                            $access_query .= "OR ( $wpdb->posts.ID IN ( SELECT p2p_to FROM $wpdb->p2p WHERE p2p_from IN  (" . esc_sql( $connection_ids ) .")  AND p2p_type = 'contacts_to_subassigned' ) )";
-                        } else {
-                            $connections_sql_from .= "AND ( $wpdb->posts.ID IN ( SELECT p2p_to FROM $wpdb->p2p WHERE p2p_from IN  (" . esc_sql( $connection_ids ) .")  AND p2p_type = 'contacts_to_subassigned' ) )";
-                        }
-                    } else {
-                        if ( $post_fields[$query_key]["p2p_direction"] === "to" ){
-                            $meta_query .= " AND ( $wpdb->posts.ID IN (
-                                SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $post_fields[$query_key]["p2p_key"] ) . "' AND p2p_from IN (" . esc_sql( $connection_ids ) .")
-                            ) ) ";
-                        } else {
-                            $meta_query .= " AND ( $wpdb->posts.ID IN (
-                                SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $post_fields[$query_key]["p2p_key"] ) . "' AND p2p_to IN (" . esc_sql( $connection_ids ) .")
-                            ) ) ";
-                        }
-                    }
-                }
-            }
-        }
-        if ( !empty( $connections_sql_to )){
-            $inner_joins .= " INNER JOIN $wpdb->p2p as to_p2p ON ( to_p2p.p2p_from = $wpdb->posts.ID )";
-        }
-        if ( !empty( $connections_sql_from )){
-            $inner_joins .= " LEFT JOIN $wpdb->p2p as from_p2p ON ( from_p2p.p2p_to = $wpdb->posts.ID )";
-        }
-        if ( !empty( $location_sql )){
-            $inner_joins .= " INNER JOIN (
-                    SELECT
-                        g.admin0_grid_id,
-                        g.admin1_grid_id,
-                        g.admin2_grid_id,
-                        g.admin3_grid_id,
-                        g.grid_id,
-                        g.level,
-                        p.post_id
-                    FROM $wpdb->postmeta as p
-                        LEFT JOIN $wpdb->dt_location_grid as g ON g.grid_id=p.meta_value
-                    WHERE p.meta_key = 'location_grid'
-            ) as location_grid_counter ON ( location_grid_counter.post_id = $wpdb->posts.ID )";
-        }
-
-        $access_query = $access_query ? ( "AND ( " . $access_query . " ) " ) : "";
 
         $sort_sql = "";
-        $sort_join = "";
-        $post_type_check = "";
-        if ( $post_type == "contacts" ){
-            $post_type_check = "AND $wpdb->posts.ID NOT IN (
-                SELECT post_id FROM $wpdb->postmeta
-                WHERE meta_key = 'type' AND meta_value = 'user'
-                GROUP BY post_id
-            )";
-            if ( $sort === "overall_status" ) {
-                $keys = array_keys( $post_fields[$sort]["default"] );
-                $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
-                $sort_sql  = "CASE ";
-                foreach ( $keys as $index => $key ) {
-                    $i        = $key == "closed" ? 99 : $index;
-                    $sort_sql .= "WHEN ( sort.meta_value = '" . esc_sql( $key ) . "' ) THEN $i ";
-                }
-                $sort_sql .= "else 98 end ";
-                $sort_sql .= $sort_dir;
-            }
-        } elseif ( $post_type === "groups" ){
-            if ( $sort === "member_count" ){
-                $sort_join = "LEFT JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
-                $sort_sql = "cast(sort.meta_value as unsigned) $sort_dir";
-            }
-        }
         if ( $sort === "name" || $sort === "post_title"){
-            $sort_sql = "$wpdb->posts.post_title  " . $sort_dir;
+            $sort_sql = "p.post_title  " . $sort_dir;
         } elseif ( $sort === "post_date" ){
-            $sort_sql = "$wpdb->posts.post_date  " . $sort_dir;
+            $sort_sql = "p.post_date  " . $sort_dir;
         }
 
         if ( empty( $sort_sql ) && isset( $sort, $post_fields[$sort] ) ) {
             if ( $post_fields[$sort]["type"] === "key_select" ) {
                 $keys = array_keys( $post_fields[ $sort ]["default"] );
-                $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $joins = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql  = "CASE ";
                 foreach ( $keys as $index => $key ) {
                     $sort_sql .= "WHEN ( sort.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
                 }
                 $sort_sql .= "else 98 end ";
                 $sort_sql .= $sort_dir;
-            } elseif ( $post_fields[$sort]["type"] === "multi_select" ){
+            } elseif ( $post_fields[$sort]["type"] === "multi_select" && !empty( $post_fields[$sort]["default"] )){
                 $sort_sql = "CASE ";
-                $sort_join = "";
+                $joins = "";
                 $keys = array_reverse( array_keys( $post_fields[$sort]["default"] ) );
                 foreach ( $keys as $index  => $key ){
                     $alias = $sort . '_' . esc_sql( $key );
-                    $sort_join .= "LEFT JOIN $wpdb->postmeta as $alias ON
-                    ( $wpdb->posts.ID = $alias.post_id AND $alias.meta_key = '$sort' AND $alias.meta_value = '" . esc_sql( $key ) . "') ";
+                    $joins .= "LEFT JOIN $wpdb->postmeta as $alias ON
+                    ( p.ID = $alias.post_id AND $alias.meta_key = '$sort' AND $alias.meta_value = '" . esc_sql( $key ) . "') ";
                     $sort_sql .= "WHEN ( $alias.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
                 }
                 $sort_sql .= "else 1000 end ";
@@ -951,46 +933,55 @@ class Disciple_Tools_Posts
             } elseif ( $post_fields[$sort]["type"] === "connection" ){
                 if ( isset( $post_fields[$sort]["p2p_key"], $post_fields[$sort]["p2p_direction"] ) ){
                     if ( $post_fields[$sort]["p2p_direction"] === "from" ){
-                        $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = $wpdb->posts.ID AND sort.p2p_type = '" .  esc_sql( $post_fields[$sort]["p2p_key"] ) . "' )
+                        $joins = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = p.ID AND sort.p2p_type = '" .  esc_sql( $post_fields[$sort]["p2p_key"] ) . "' )
                         LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_to)";
                     } else {
-                        $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_to = $wpdb->posts.ID AND sort.p2p_type = '" .  esc_sql( $post_fields[$sort]["p2p_key"] ) . "' )
+                        $joins = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_to = p.ID AND sort.p2p_type = '" .  esc_sql( $post_fields[$sort]["p2p_key"] ) . "' )
                         LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_from)";
                     }
                     $sort_sql = "ISNULL(p2p_post.post_title), p2p_post.post_title $sort_dir";
                 }
+            } elseif ( $post_fields[$sort]["type"] === "communication_channel" ){
+                $joins = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key LIKE '{$sort}%' AND sort.meta_key NOT LIKE '%_details' )";
+                $sort_sql = "sort.meta_value IS NULL, sort.meta_value * 1 $sort_dir, sort.meta_value $sort_dir";
             } else {
-                $sort_join = "LEFT JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
-                $sort_sql = "sort.meta_value $sort_dir";
+                $joins = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
             }
         }
         if ( empty( $sort_sql ) ){
-            $sort_sql = "$wpdb->posts.post_title asc";
+            $sort_sql = "p.post_title asc";
         }
 
-
         $group_by_sql = "";
-        if ( strpos( $sort_sql, 'sort.meta_value' ) != false ){
+        if ( strpos( $sort_sql, 'sort.meta_value' ) !== false ){
             $group_by_sql = ", sort.meta_value";
         }
 
+        $permissions = [
+            "shared_with" => [ "me" ]
+        ];
+        $permissions = apply_filters( "dt_filter_access_permissions", $permissions, $post_type );
+
+        if ( $check_permissions ){
+            $query[] = $permissions;
+        }
+
+        $fields_sql = self::fields_to_sql( $post_type, $query );
+        if ( is_wp_error( $fields_sql ) ){
+            return $fields_sql;
+        }
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
-        $prepared_sql = $wpdb->prepare("
-            SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, $wpdb->posts.post_title, $wpdb->posts.post_type, $wpdb->posts.post_date FROM $wpdb->posts
-            " . $inner_joins . " " . $share_joins . " " . $access_joins . " " . $sort_join . "
-            WHERE 1=1
-            " . $post_type_check . " " . $connections_sql_to . " ". $connections_sql_from . " " . $location_sql . " " . $meta_query . " " . $includes_query . " " . $access_query . "
-            AND $wpdb->posts.post_type = %s
-            AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
-            GROUP BY $wpdb->posts.ID " . $group_by_sql . "
+        $posts = $wpdb->get_results("
+            SELECT SQL_CALC_FOUND_ROWS p.ID, p.post_title, p.post_type, p.post_date
+            FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " WHERE " . $fields_sql["where_sql"] . "
+            AND (p.post_status = 'publish') AND p.post_type = '" . esc_sql ( $post_type ) . "' " .  $post_query . "
+            GROUP BY p.ID " . $group_by_sql . "
             ORDER BY " . $sort_sql . "
-            LIMIT %d, " . $limit . "
-            ",
-            esc_sql( $post_type ),
-            $offset
-        );
-        $posts = $wpdb->get_results( $prepared_sql, OBJECT );
+            LIMIT " . esc_sql( $offset ) .", " . $limit . "
+        ", OBJECT );
+
 
         // phpcs:enable
         $total_rows = $wpdb->get_var( "SELECT found_rows();" );
@@ -1601,7 +1592,8 @@ class Disciple_Tools_Posts
                             }
                         }
                     } else {
-                        return new WP_Error( __FUNCTION__, "Cannot determine target on connection: " . $connection_type . ", with value: " . $connection_value["value"] ?? "", [ 'status' => 500 ] );
+                        $value = isset( $connection_value["value"] ) ?: json_encode( $connection_value );
+                        return new WP_Error( __FUNCTION__, "Missing 'value' key on : " . $connection_type . ", go: " . $value, [ 'status' => 500 ] );
                     }
                 }
                 //check for deleted connections

@@ -151,7 +151,7 @@ class DT_Contacts_DMM {
 
             $fields['baptism_generation'] = [
                 'name'        => __( 'Baptism Generation', 'disciple_tools' ),
-                'type'        => 'text',
+                'type'        => 'number',
                 'default'     => '',
                 'section'     => 'misc',
             ];

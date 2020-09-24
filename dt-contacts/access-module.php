@@ -24,6 +24,7 @@ class DT_Contacts_Access {
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 20, 2 );
+        add_filter( "dt_filter_access_permissions", [ $this, "dt_filter_access_permissions" ], 20, 2 );
 
         //api
         add_filter( "dt_post_update_fields", [ $this, "dt_post_update_fields" ], 10, 4 );
@@ -798,9 +799,7 @@ class DT_Contacts_Access {
                 'tab' => 'assigned_to_me',
                 'name' => _x( "All", 'List Filters', 'disciple_tools' ),
                 'query' => [
-                    'assigned_to' => [ 'me' ],
-                    'subassigned' => [ 'me' ],
-                    'combine' => [ 'subassigned' ],
+                    [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
                     'overall_status' => [ '-closed' ],
                     'type' => [ 'access' ],
                     'sort' => 'overall_status',
@@ -813,9 +812,7 @@ class DT_Contacts_Access {
                 'tab' => 'all',
                 'name' => sprintf( _x( "My Access %s", 'My records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
                 'query' => [
-                    'assigned_to' => [ 'me' ],
-                    'subassigned' => [ 'me' ],
-                    'combine' => [ 'subassigned' ],
+                    [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
                     'overall_status' => [ '-closed' ],
                     'type' => [ 'access' ],
                     'sort' => 'overall_status',
@@ -829,9 +826,7 @@ class DT_Contacts_Access {
                         "tab" => 'assigned_to_me',
                         "name" => $status_value["label"],
                         "query" => [
-                            'assigned_to' => [ 'me' ],
-                            'subassigned' => [ 'me' ],
-                            'combine' => [ 'subassigned' ],
+                            [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
                             'type' => [ 'access' ],
                             'overall_status' => [ $status_key ],
                             'sort' => 'seeker_path'
@@ -845,9 +840,7 @@ class DT_Contacts_Access {
                                 "tab" => 'assigned_to_me',
                                 "name" => $fields["requires_update"]["name"],
                                 "query" => [
-                                    'assigned_to' => [ 'me' ],
-                                    'subassigned' => [ 'me' ],
-                                    'combine' => [ 'subassigned' ],
+                                    [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
                                     'overall_status' => [ 'active' ],
                                     'requires_update' => [ true ],
                                     'type' => [ 'access' ],
@@ -864,9 +857,7 @@ class DT_Contacts_Access {
                                     "tab" => 'assigned_to_me',
                                     "name" => $seeker_path_value["label"],
                                     "query" => [
-                                        'assigned_to' => [ 'me' ],
-                                        'subassigned' => [ 'me' ],
-                                        'combine' => [ 'subassigned' ],
+                                        [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
                                         'overall_status' => [ 'active' ],
                                         'seeker_path' => [ $seeker_path_key ],
                                         'type' => [ 'access' ],
@@ -1088,10 +1079,25 @@ class DT_Contacts_Access {
         return $results;
     }
 
+    public static function dt_filter_access_permissions( $permissions, $post_type ){
+        if ( $post_type === "contacts" ){
+            if ( DT_Posts::can_view_all( $post_type ) ){
+                $permissions["type"] = [ "access" ];
+            } else if ( current_user_can( 'access_specific_sources' ) ){
+                $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+                if ( !empty( $allowed_sources ) && !in_array( "restrict_all_sources", $allowed_sources ) ){
+                    $permissions[] = [ "type" => [ "access" ], "sources" => $allowed_sources];
+                }
+            }
+        }
+        return $permissions;
+    }
+
+
     public function scripts(){
         if ( is_singular( "contacts" ) ){
             $contact = DT_Posts::get_post( "contacts", get_the_ID() );
-            if ( isset( $contact["type"]["key"] ) && $contact["type"]["key"] === "access" ){
+            if ( !is_wp_error( $contact ) && isset( $contact["type"]["key"] ) && $contact["type"]["key"] === "access" ){
                 wp_enqueue_script( 'dt_contacts_access', get_template_directory_uri() . '/dt-contacts/contacts_access.js', [
                     'jquery',
                 ], filemtime( get_theme_file_path() . '/dt-contacts/contacts_access.js' ), true );

@@ -138,13 +138,17 @@ class DT_Posts extends Disciple_Tools_Posts {
                 unset( $fields[ $field_key ] );
             }
             if ( $field_type === 'date' && !is_numeric( $field_value )){
-                $fields[$field_value] = strtotime( $field_value );
+                $fields[$field_key] = strtotime( $field_value );
             }
             if ( $field_type === 'key_select' && !is_string( $field_value ) ){
                 return new WP_Error( __FUNCTION__, "key_select value must in string format: $field_key, received $field_value", [ 'status' => 400 ] );
             }
-            if ( $field_type === 'user_select' && ( !is_string( $field_value ) || strpos( $field_value, 'user-' ) !== 0 ) ) {
-                return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
+            if ( $field_type === 'user_select' ) {
+                if ( is_numeric( $field_value ) ){
+                    $fields[$field_key] = "user-" . $field_value;
+                } else if ( !is_string( $field_value ) || strpos( $field_value, 'user-' ) !== 0 ){
+                    return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
+                }
             }
         }
         /**
@@ -337,8 +341,12 @@ class DT_Posts extends Disciple_Tools_Posts {
                 if ( $field_type === 'key_select' && !is_string( $field_value ) ){
                     return new WP_Error( __FUNCTION__, "key_select value must in string format: $field_key, received $field_value", [ 'status' => 400 ] );
                 }
-                if ( $field_type === 'user_select' && ( !is_string( $field_value ) || strpos( $field_value, 'user-' ) !== 0 ) ) {
-                    return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
+                if ( $field_type === 'user_select' ) {
+                    if ( is_numeric( $field_value ) ){
+                        $field_value = "user-" . $field_value;
+                    } else if ( !is_string( $field_value ) || strpos( $field_value, 'user-' ) !== 0 ){
+                        return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
+                    }
                 }
                 $already_handled = [ "multi_select", "post_user_meta", "location", "location_meta", "communication_channel" ];
                 if ( $field_type && !in_array( $field_type, $already_handled ) ) {

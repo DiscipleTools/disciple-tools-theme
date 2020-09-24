@@ -75,6 +75,7 @@
     let checked = $(".js-list-view:checked")
     let current_view = checked.val()
     let filter_id = checked.data("id") || current_view || ""
+    let sort = current_filter.query.sort || null;
     if ( current_view === "custom_filter" ){
       let filterId = checked.data("id")
       current_filter = _.find(custom_filters, {ID:filterId})
@@ -84,6 +85,7 @@
       current_filter.type = 'default'
       current_filter.labels = current_filter.labels || [{ id:filter_id, name:current_filter.name}]
     }
+    current_filter.query.sort = sort || current_filter.query.sort;
     if ( Array.isArray(current_filter.query) ){
       current_filter.query = {}; //make sure query is an object instead of an array.
     }
@@ -389,8 +391,6 @@
   function get_records( offset = 0, sort = null ){
     loading_spinner.addClass("active")
     let query = current_filter.query
-
-    window.SHAREDFUNCTIONS.save_json_cookie(`last_view`, current_filter, list_settings.post_type )
     if ( offset ){
       query["offset"] = offset
     }
@@ -398,6 +398,8 @@
       query.sort = sort
       query.offset = 0
     }
+
+    window.SHAREDFUNCTIONS.save_json_cookie(`last_view`, current_filter, list_settings.post_type )
     if ( get_records_promise && _.get(get_records_promise, "readyState") !== 4){
       get_records_promise.abort()
     }
@@ -522,7 +524,7 @@
           [field]: {
             display: ["value"],
             ajax: {
-              url: `${list_settings.root}dt-posts/v2/contacts/multi-select-values`,
+              url: window.wpApiShare.root + `dt-posts/v2/${list_settings.post_type}/multi-select-values`,
               data: {
                 s: "{{query}}",
                 field
@@ -895,7 +897,7 @@
 
   $("#search").on("click", function () {
     let searchText = $("#search-query").val()
-    let query = {text:searchText, assigned_to:["all"]}
+    let query = {text:searchText}
     let labels = [{ id:"search", name:searchText, field: "search"}]
     add_custom_filter(searchText, "search", query, labels)
   })

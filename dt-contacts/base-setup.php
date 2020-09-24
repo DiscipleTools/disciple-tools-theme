@@ -84,9 +84,6 @@ class DT_Contacts_Base {
             ];
 
 
-
-
-
             $fields['tags'] = [
                 'name'        => __( 'Tags', 'disciple_tools' ),
                 'description' => _x( 'A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags.', 'Optional Documentation', 'disciple_tools' ),
@@ -230,7 +227,7 @@ class DT_Contacts_Base {
             </div>
         <?php endif;
 
-        if ( $post_type === "contacts" ){
+        if ( $post_type === "contacts" && $section === "status" ){
             $contact_fields = DT_Posts::get_post_field_settings( $post_type );
             $post = DT_Posts::get_post( $post_type, GET_THE_ID() );
             ?>
@@ -348,7 +345,7 @@ class DT_Contacts_Base {
                 'tab' => 'all',
                 'name' => _x( "All", 'List Filters', 'disciple_tools' ),
                 'query' => [
-                    'assigned_to' => [ 'shared' ],
+                    'shared_with' => [ 'me' ],
                     'sort' => 'name',
                 ],
                 'labels' => [
@@ -388,7 +385,7 @@ class DT_Contacts_Base {
                 'tab' => 'custom',
                 'name' => 'Shared with me',
                 'query' => [
-                    'assigned_to' => [ 'shared' ],
+                    'shared_with' => [ 'me' ],
                     'sort' => 'name',
                 ],
                 'labels' => [

@@ -432,8 +432,10 @@ class Disciple_Tools_Notifications
         }
         if ( !in_array( 'email', $already_sent ) && dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $user_id ) ) {
             $user = get_userdata( $user_id );
-            $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
-            dt_send_email_about_post( $user->user_email, $notification["post_id"], $message_plain_text );
+            if ( $user ){
+                $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
+                dt_send_email_about_post( $user->user_email, $notification["post_id"], $message_plain_text );
+            }
         }
     }
 

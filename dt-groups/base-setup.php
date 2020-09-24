@@ -260,7 +260,7 @@ class DT_Groups_Base {
             $fields["member_count"] = [
                 'name' => __( 'Member Count', 'disciple_tools' ),
                 'description' => _x( 'The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the group.', 'Optional Documentation', 'disciple_tools' ),
-                'type' => 'text',
+                'type' => 'number',
                 'default' => '',
                 'tile' => 'relationships',
                 "show_in_table" => 25

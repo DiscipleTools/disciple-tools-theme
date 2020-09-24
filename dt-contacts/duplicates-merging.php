@@ -441,7 +441,7 @@ public static function merge_posts( $contact1, $contact2, $args ){
             SELECT user_id, %d
             FROM $wpdb->dt_share
             WHERE post_id = %d
-            AND user_id NOT IN ( SELECT user_id FROM wp_dt_share WHERE post_id = %d )
+            AND user_id NOT IN ( SELECT user_id FROM $wpdb->dt_share WHERE post_id = %d )
         ", $master_id, $non_master_id, $master_id ) );
 
     //Keep duplicate data override info.
