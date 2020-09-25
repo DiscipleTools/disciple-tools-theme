@@ -9,9 +9,12 @@ class DT_Contacts_Base {
         return self::$_instance;
     } // End instance()
 
+    public $post_type = "contacts";
+
     public function __construct() {
         //setup post type
         add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
+        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 10, 1 );
 
         //setup tiles and fields
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
@@ -42,6 +45,53 @@ class DT_Contacts_Base {
         if ( class_exists( 'Disciple_Tools_Post_Type_Template' )) {
             new Disciple_Tools_Post_Type_Template( "contacts", 'Contact', 'Contacts' );
         }
+    }
+
+    public function dt_set_roles_and_permissions( $expected_roles ){
+        $roles = [
+            "multiplier" => __( 'Multiplier', 'disciple_tools' ),
+            "manage_users" => __( 'User Manager', 'disciple_tools' ),
+            "dt_admin" => __( 'Disciple.Tools Admin', 'disciple_tools' ),
+            "strategist" => __( 'Strategist', 'disciple_tools' ),
+        ];
+        foreach ( $roles as $role => $label ){
+            if ( !isset( $expected_roles[$role] ) ){
+                $expected_roles[$role] = [
+                    "label" => $label,
+                    "permissions" => []
+                ];
+            }
+        }
+        $expected_roles["multiplier"]["permissions"]['access_' . $this->post_type] = true;
+        $expected_roles["multiplier"]["permissions"]['create_' . $this->post_type] = true;
+        $expected_roles["multiplier"]["permissions"]['read_location'] = true;
+
+        $expected_roles["manage_users"]["permissions"]['read'] = true; //allow access to wp-admin to set 2nd factor auth settings per user.
+        // Manage Users
+        $expected_roles["manage_users"]["permissions"]['promote_users'] = true;
+        $expected_roles["manage_users"]["permissions"]['edit_users'] = true;
+        $expected_roles["manage_users"]["permissions"]['create_users'] = true;
+        $expected_roles["manage_users"]["permissions"]['delete_users'] = true;
+        $expected_roles["manage_users"]["permissions"]['list_users'] = true;
+        $expected_roles["manage_users"]["permissions"]['dt_list_users'] = true;
+
+        $expected_roles["dt_admin"]["permissions"]['read'] = true; //allow access to wp-admin to set 2nd factor auth settings per user.
+        $expected_roles["dt_admin"]["permissions"]['manage_dt'] = true;
+        $expected_roles["dt_admin"]["permissions"]['view_project_metrics'] = true;
+        $expected_roles["dt_admin"]["permissions"]['promote_users'] = true;
+        $expected_roles["dt_admin"]["permissions"]['edit_users'] = true;
+        $expected_roles["dt_admin"]["permissions"]['create_users'] = true;
+        $expected_roles["dt_admin"]["permissions"]['delete_users'] = true;
+        $expected_roles["dt_admin"]["permissions"]['list_users'] = true;
+        $expected_roles["dt_admin"]["permissions"]['dt_list_users'] = true;
+        $expected_roles["dt_admin"]["permissions"]['read_location'] = true;
+        $expected_roles["dt_admin"]["permissions"]['delete_any_locations'] = true;
+        $expected_roles["dt_admin"]["permissions"]['list_peoplegroups'] = true;
+
+        $expected_roles["strategist"]["permissions"]['view_project_metrics'] = true;
+
+
+        return $expected_roles;
     }
 
     public function dt_custom_fields_settings( $fields, $post_type ){

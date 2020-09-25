@@ -19,10 +19,7 @@ class Disciple_Tools_Posts
     /**
      * Disciple_Tools_Posts constructor.
      */
-    public function __construct() {
-        add_filter( "dt_can_view_permission", [ $this, 'can_view_permission_filter' ], 10, 2 );
-        add_filter( "dt_can_update_permission", [ $this, 'can_update_permission_filter' ], 10, 2 );
-    }
+    public function __construct() {}
 
     /**
      * Permissions for interaction with contacts Custom Post Types
@@ -97,53 +94,33 @@ class Disciple_Tools_Posts
         if ( $post_type !== get_post_type( $post_id ) ){
             return false;
         }
-        //check if the user has access to all posts
+        //check if the user agent has access to all posts. Recommended only for apis
         if ( current_user_can( 'view_any_' . $post_type ) ) {
             return true;
         }
 
-        //check if a user is assigned to the post or if the post is shared with the user
         $user = wp_get_current_user();
-        $assigned_to = get_post_meta( $post_id, "assigned_to", true );
-        if ( $assigned_to && $assigned_to === "user-" . $user->ID ) {
-            return true;
-        } else {
-            $shares = $wpdb->get_results( $wpdb->prepare(
-                "SELECT
-                    *
-                FROM
-                    `$wpdb->dt_share`
-                WHERE
-                    post_id = %s",
-                $post_id
-            ), ARRAY_A );
-            foreach ( $shares as $share ) {
-                if ( (int) $share['user_id'] === $user->ID ) {
-                    return true;
-                }
+        $shares = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                *
+            FROM
+                `$wpdb->dt_share`
+            WHERE
+                post_id = %s
+                AND user_id = %s
+                ",
+            $post_id, $user->ID
+        ), ARRAY_A );
+        foreach ( $shares as $share ) {
+            if ( (int) $share['user_id'] === $user->ID ) {
+                return true;
             }
         }
         //return false if the user does not have access to the post
-        return apply_filters( 'dt_can_view_permission', false, $post_id );
+        return apply_filters( 'dt_can_view_permission', false, $post_id, $post_type );
     }
 
 
-    public function can_view_permission_filter( $has_permission, $post_id ){
-        //check if the user has access to all posts of a specific source
-        if ( current_user_can( 'access_specific_sources' ) ){
-            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
-            if ( empty( $sources ) || in_array( 'all', $sources ) ) {
-                return true;
-            }
-            $post_sources = get_post_meta( $post_id, 'sources' );
-            foreach ( $post_sources as $s ){
-                if ( in_array( $s, $sources ) ){
-                    return true;
-                }
-            }
-        }
-        return $has_permission;
-    }
 
     /**
      * A user can update the record if they have the global permission or
@@ -159,48 +136,31 @@ class Disciple_Tools_Posts
             return false;
         }
         global $wpdb;
+        //Recommended only for apis
         if ( current_user_can( 'update_any_' . $post_type ) ) {
             return true;
         }
         $user = wp_get_current_user();
-        $assigned_to = get_post_meta( $post_id, "assigned_to", true );
-        if ( isset( $assigned_to ) && $assigned_to === "user-" . $user->ID ) {
-            return true;
-        } else {
-            $shares = $wpdb->get_results( $wpdb->prepare(
-                "SELECT
-                    *
-                FROM
-                    `$wpdb->dt_share`
-                WHERE
-                    post_id = %s",
-                $post_id
-            ), ARRAY_A );
-            foreach ( $shares as $share ) {
-                if ( (int) $share['user_id'] === $user->ID ) {
-                    return true;
-                }
+
+        $shares = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                *
+            FROM
+                `$wpdb->dt_share`
+            WHERE
+                post_id = %s
+                AND user_id = %s",
+            $post_id, $user->ID
+        ), ARRAY_A );
+        foreach ( $shares as $share ) {
+            if ( (int) $share['user_id'] === $user->ID ) {
+                return true;
             }
         }
 
-        return apply_filters( 'dt_can_update_permission', false, $post_id );
+        return apply_filters( 'dt_can_update_permission', false, $post_id, $post_type );
     }
-    public function can_update_permission_filter( $has_permission, $post_id ){
-        //check if the user has access to all posts of a specific source
-        if ( current_user_can( 'access_specific_sources' ) ){
-            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
-            if ( empty( $sources ) || in_array( 'all', $sources ) ) {
-                return true;
-            }
-            $post_sources = get_post_meta( $post_id, 'sources' );
-            foreach ( $post_sources as $s ){
-                if ( in_array( $s, $sources ) ){
-                    return true;
-                }
-            }
-        }
-        return $has_permission;
-    }
+
 
     public static function get_label_for_post_type( $post_type, $singular = false ){
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
@@ -560,7 +520,7 @@ class Disciple_Tools_Posts
             $args = [
                 "joins_fields" => [],
                 "joins_sql" => "",
-                "where_sql" => "1=1 "
+                "where_sql" => ""
             ];
         }
 
@@ -639,6 +599,9 @@ class Disciple_Tools_Posts
                                 if ( $equality === "!=" ){
                                     $query_for_null_values = true;
                                 }
+                                if ( $value === "me" ){
+                                    $value = get_current_user_id();
+                                }
                                 $where_sql .= ( $index > 0 ? " $connector" : " " ) . " $table_key.meta_value $equality 'user-" . esc_sql( $value ) . "'";
                             }
                         }
@@ -661,6 +624,18 @@ class Disciple_Tools_Posts
                         if ( !is_array( $query_value ) ){
                             return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
                         }
+                        if ( empty( $query_value ) ){
+                            if ( $field_settings[$query_key]["p2p_direction"] === "to" ){
+                                $where_sql .= " p.ID NOT IN (
+                                    SELECT p2p_to from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "'
+                                ) ";
+                            } else {
+                                $where_sql .= " p.ID NOT IN (
+                                    SELECT p2p_from from $wpdb->p2p WHERE p2p_type = '" . esc_html( $field_settings[$query_key]["p2p_key"] ) . "'
+                                ) ";
+                            }
+                        }
+
                         foreach ( $query_value as &$connection ) {
                             if ( $connection === "me" ){
                                 $contact_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
@@ -722,6 +697,9 @@ class Disciple_Tools_Posts
                         if ( !is_array( $query_value ) ){
                             return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
                         }
+                        if ( empty( $query_value ) ){
+                            $where_sql .= "$table_key.post_id IS NULL";
+                        }
                         foreach ( $query_value as $value ){
                             if ( strpos( $value, "-" ) === 0 ){
                                 $value = ltrim( $value, "-" );
@@ -764,6 +742,9 @@ class Disciple_Tools_Posts
                         $query_for_null_values = null;
                         if ( !is_array( $query_value ) ){
                             return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
+                        }
+                        if ( empty( $query_value ) ){
+                            $where_sql .= " $table_key.meta_value IS NULL ";
                         }
                         foreach ( $query_value as $value_key => $value ){
                             $index ++;
@@ -820,13 +801,13 @@ class Disciple_Tools_Posts
                 if ( !empty( $where_sql )){
                     $index_pos++;
 
-                    $args["where_sql"] .= ( ( $index_pos > 1 || $operator === "AND" ) ? $operator : " " ) . " (";
+                    $args["where_sql"] .= ( ( $index_pos > 1 ) ? $operator : " " ) . " (";
                     $args["where_sql"] .= $where_sql;
                     $args["where_sql"] .= ')';
                 }
             } else if ( is_array( $query_value ) ){
                 $index_pos++;
-                $args["where_sql"] .= ( ( $index_pos > 0 ) ? $operator : " " ) . " (";
+                $args["where_sql"] .= ( ( $index_pos > 1 ) ? $operator : " " ) . " (";
                 $args = self::fields_to_sql( $post_type, $query_value, $operator === "AND" ? "OR" : "AND", $args );
                 $args["where_sql"] .= ")";
             }
@@ -975,8 +956,8 @@ class Disciple_Tools_Posts
         // WordPress.WP.PreparedSQL.NotPrepared
         $posts = $wpdb->get_results("
             SELECT SQL_CALC_FOUND_ROWS p.ID, p.post_title, p.post_type, p.post_date
-            FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " WHERE " . $fields_sql["where_sql"] . "
-            AND (p.post_status = 'publish') AND p.post_type = '" . esc_sql ( $post_type ) . "' " .  $post_query . "
+            FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " WHERE " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
+            (p.post_status = 'publish') AND p.post_type = '" . esc_sql ( $post_type ) . "' " .  $post_query . "
             GROUP BY p.ID " . $group_by_sql . "
             ORDER BY " . $sort_sql . "
             LIMIT " . esc_sql( $offset ) .", " . $limit . "

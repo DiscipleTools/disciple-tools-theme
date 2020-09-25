@@ -227,10 +227,10 @@ class DT_Posts extends Disciple_Tools_Posts {
             self::add_shared( $post_type, $post_id, get_current_user_id(), null, false, false, false );
         }
 
-        if ( !self::can_view( $post_type, $post_id ) ){
+        if ( $check_permissions && !self::can_view( $post_type, $post_id ) ){
             return [ "ID" => $post_id ];
         } else {
-            return self::get_post( $post_type, $post_id );
+            return self::get_post( $post_type, $post_id, true, $check_permissions );
         }
     }
 
@@ -362,7 +362,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             Disciple_Tools_Notifications::insert_notification_for_post_update( $post_type, $post, $existing_post, array_keys( $fields ) );
         }
 
-        if ( !self::can_view( $post_type, $post_id ) ){
+        if ( $check_permissions && !self::can_view( $post_type, $post_id ) ){
             return [ "ID" => $post_id ];
         } else {
             return $post;
@@ -412,6 +412,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         self::adjust_post_custom_fields( $post_settings, $post_id, $fields );
         $fields["name"] = $wp_post->post_title;
+        $fields["title"] = $wp_post->post_title;
 
         $fields = apply_filters( 'dt_after_get_post_fields_filter', $fields, $post_type );
         wp_cache_set( "post_" . $current_user_id . '_' . $post_id, $fields );

@@ -29,6 +29,8 @@ class PostsTest extends WP_UnitTestCase {
 
 
     public function test_expected_fields(){
+        $user_id = wp_create_user( "dispatcher1", "test", "test2@example.com" );
+        wp_set_current_user( $user_id );
         $current_user = wp_get_current_user();
         $current_user->set_role( 'dispatcher' );
         $group1 = DT_Posts::create_post( "groups", $this->sample_group );
@@ -46,6 +48,8 @@ class PostsTest extends WP_UnitTestCase {
     }
 
     public function test_member_count(){
+        $user_id = wp_create_user( "user3", "test", "test3@example.com" );
+        wp_set_current_user( $user_id );
         $current_user = wp_get_current_user();
         $current_user->set_role( 'dispatcher' );
 
@@ -128,16 +132,16 @@ class PostsTest extends WP_UnitTestCase {
 
     public function test_force_values() {
         //create values for multi_select, connection, location and details fields
-        $group1 = DT_Posts::create_post( 'groups', [ "title" => "group1" ] );
-        $group2 = DT_Posts::create_post( 'groups', [ "title" => "group2" ] );
-        $group3 = DT_Posts::create_post( 'groups', [ "title" => "group3" ] );
+        $group1 = DT_Posts::create_post( 'groups', [ "title" => "group1" ], true, false );
+        $group2 = DT_Posts::create_post( 'groups', [ "title" => "group2" ], true, false );
+        $group3 = DT_Posts::create_post( 'groups', [ "title" => "group3" ], true, false );
         $contact1 = DT_Posts::create_post( "contacts", [
             "title" => "bob",
             'milestones' => [ "values" => [ [ "value" => 'milestone_has_bible' ], [ "value" => "milestone_baptizing" ] ] ],
             'groups' => [ "values" => [ [ "value" => $group1["ID"] ], [ "value" => $group2["ID"] ] ] ],
             'location_grid' => [ "values" => [ [ "value" => 100089589 ], [ "value" => 100056133 ] ] ],
-            'contact_phone' => [ "values" => [ [ "value" => '123', "verified" => true ], [ "value" => "321" ] ] ]//@phpcs:ignore
-        ] );
+            'contact_phone' => [ "values" => [ [ "value" => '123', "verified" => true ], [ "value" => "321" ] ] ]
+        ], true, false );
         $this->assertNotWPError( $contact1 );
         $this->assertSame( sizeof( $contact1["milestones"] ), 2 );
         $this->assertSame( sizeof( $contact1["groups"] ), 2 );
@@ -148,10 +152,10 @@ class PostsTest extends WP_UnitTestCase {
         $phone_key = $contact1['contact_phone'][0]["key"];
         $contact1 = DT_Posts::update_post( 'contacts', $contact1["ID"], [
             'milestones' => [ "values" => [ [ "value" => 'milestone_has_bible' ], [ "value" => "milestone_sharing" ] ], "force_values" => true ], //@phpcs:ignore
-            'groups' => [ "values" => [ [ "value" => $group1["ID"] ], [ "value" => $group3["ID"] ] ], "force_values" => true ], //@phpcs:ignore
-            'location_grid' => [ "values" => [ [ "value" => 100089589 ] ], "force_values" => true ], //@phpcs:ignore
-            'contact_phone' => [ "values" => [ [ "key" => $phone_key, "value" => '456' ] ], "force_values" => true ], //@phpcs:ignore
-        ] );
+            'groups' => [ "values" => [ [ "value" => $group1["ID"] ], [ "value" => $group3["ID"] ] ], "force_values" => true ],
+            'location_grid' => [ "values" => [ [ "value" => 100089589 ] ], "force_values" => true ],
+            'contact_phone' => [ "values" => [ [ "key" => $phone_key, "value" => '456' ] ], "force_values" => true ],
+        ], true, false );
         $this->assertNotWPError( $contact1 );
         $this->assertSame( sizeof( $contact1["milestones"] ), 2 );
         $this->assertSame( sizeof( $contact1["groups"] ), 2 );
@@ -162,11 +166,11 @@ class PostsTest extends WP_UnitTestCase {
 
         //remove all values with force_values
         $contact1 = DT_Posts::update_post( 'contacts', $contact1["ID"], [
-            'milestones' => [ "values" => [], "force_values" => true ], //@phpcs:ignore
-            'groups' => [ "values" => [], "force_values" => true ], //@phpcs:ignore
-            'location_grid' => [ "values" => [], "force_values" => true ], //@phpcs:ignore
-            'contact_phone' => [ "values" => [], "force_values" => true ], //@phpcs:ignore
-        ] );
+            'milestones' => [ "values" => [], "force_values" => true ],
+            'groups' => [ "values" => [], "force_values" => true ],
+            'location_grid' => [ "values" => [], "force_values" => true ],
+            'contact_phone' => [ "values" => [], "force_values" => true ],
+        ], true, false );
         $this->assertNotWPError( $contact1 );
         $this->assertSame( sizeof( $contact1["milestones"] ?? [] ), 0 );
         $this->assertSame( sizeof( $contact1["groups"] ?? [] ), 0 );
@@ -176,12 +180,12 @@ class PostsTest extends WP_UnitTestCase {
 
 
     public function test_post_user_meta_fields(){
-        $user1_id = wp_create_user( "user1", "test", "test@example.com" );
+        $user1_id = wp_create_user( "user1m", "test", "test1m@example.com" );
         wp_set_current_user( $user1_id );
         $user1 = wp_get_current_user();
         $user1->set_role( 'multiplier' );
 
-        $user2_id = wp_create_user( "user2", "test", "user2@example.com" );
+        $user2_id = wp_create_user( "user2m", "test", "user2m@example.com" );
         $user2 = get_user_by( "id", $user2_id );
 
 
@@ -311,7 +315,7 @@ class PostsTest extends WP_UnitTestCase {
         wp_set_current_user( $user2_id );
         $user2 = wp_get_current_user();
         $user2->set_role( 'dispatcher' );
-        $dispatch_contact_2 = DT_Posts::get_post( "contacts", $contact2["ID"] );
+        $dispatch_contact_2 = DT_Posts::get_post( "contacts", $contact2["ID"], true, false );
         $this->assertNotWPError( $dispatch_contact_2 );
         //access user1's tasks
         $this->assertArrayNotHasKey( 'tasks', $dispatch_contact_2 );
@@ -326,7 +330,7 @@ class PostsTest extends WP_UnitTestCase {
                     ]
                 ]
             ]
-        ] );
+        ], true, false );
         $this->assertWPError( $update_anothers_task );
         $delete_anothers_task = DT_Posts::update_post( "contacts", $contact2["ID"], [
             "tasks" => [
@@ -339,7 +343,7 @@ class PostsTest extends WP_UnitTestCase {
                     ]
                 ]
             ]
-        ] );
+        ], true, false );
         $this->assertWPError( $delete_anothers_task );
     }
 
@@ -374,6 +378,7 @@ class PostsTest extends WP_UnitTestCase {
         //search for posts with no values set for field x
         $res = DT_Posts::search_viewable_post( "contacts", [ "groups" => [] ], false );
         $this->assertContains( $empty_contact["ID"], self::map_ids( $res["posts"] ) );
+        $this->assertNotContains( $contact1["ID"], self::map_ids( $res["posts"] ) ); //@todo more?
         //bad request
         $res = DT_Posts::search_viewable_post( "contacts", [ "groups" => $group1["ID"] ], false );
         $this->assertWPError( $res );
@@ -392,6 +397,7 @@ class PostsTest extends WP_UnitTestCase {
         //search for posts with no values set for field x
         $res = DT_Posts::search_viewable_post( "contacts", [ "location_grid" => [] ], false );
         $this->assertContains( $empty_contact["ID"], self::map_ids( $res["posts"] ) );
+        $this->assertNotContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
         //bad request
         $res = DT_Posts::search_viewable_post( "contacts", [ "location_grid" => 100089652 ], false );
         $this->assertWPError( $res );
@@ -407,6 +413,7 @@ class PostsTest extends WP_UnitTestCase {
         //search for posts with no values set for field x
         $res = DT_Posts::search_viewable_post( "contacts", [ "assigned_to" => [] ], false );
         $this->assertContains( $empty_contact["ID"], self::map_ids( $res["posts"] ) );
+        $this->assertNotContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
         //bad request
         $res = DT_Posts::search_viewable_post( "contacts", [ "assigned_to" => 1 ], false );
         $this->assertWPError( $res );
@@ -426,6 +433,7 @@ class PostsTest extends WP_UnitTestCase {
         //search for posts with no values set for field x
         $res = DT_Posts::search_viewable_post( "contacts", [ "baptism_date" => [] ], false );
         $this->assertContains( $empty_contact["ID"], self::map_ids( $res["posts"] ) );
+        $this->assertNotContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
         //bad request
         $res = DT_Posts::search_viewable_post( "contacts", [ "baptism_date" => "1980-01-03" ], false );
         $this->assertWPError( $res );
@@ -448,6 +456,7 @@ class PostsTest extends WP_UnitTestCase {
         //search for posts with no values set for field x
         $res = DT_Posts::search_viewable_post( "contacts", [ "requires_update" => [] ], false );
         $this->assertContains( $empty_contact["ID"], self::map_ids( $res["posts"] ) );
+        $this->assertNotContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
         //bad request
         $res = DT_Posts::search_viewable_post( "contacts", [ "requires_update" => true ], false );
         $this->assertWPError( $res );
@@ -466,6 +475,7 @@ class PostsTest extends WP_UnitTestCase {
         //search for posts with no values set for field x
         $res = DT_Posts::search_viewable_post( "contacts", [ "contact_phone" => [] ], false );
         $this->assertContains( $empty_contact["ID"], self::map_ids( $res["posts"] ) );
+        $this->assertNotContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
         //bad request
         $res = DT_Posts::search_viewable_post( "contacts", [ "contact_phone" => "79845678" ], false );
         $this->assertWPError( $res );
@@ -485,6 +495,7 @@ class PostsTest extends WP_UnitTestCase {
         // search for posts with no values set for field x
         $res = DT_Posts::search_viewable_post( "groups", [ "member_count" => [] ], false );
         $this->assertContains( $empty_group["ID"], self::map_ids( $res["posts"] ) );
+        $this->assertNotContains( $group1["ID"], self::map_ids( $res["posts"] ) );
 
         /**
          * text
@@ -507,6 +518,7 @@ class PostsTest extends WP_UnitTestCase {
         //search for posts with no values set for field x
         $res = DT_Posts::search_viewable_post( "contacts", [ "nickname" => [] ], false );
         $this->assertContains( $empty_contact["ID"], self::map_ids( $res["posts"] ) );
+        $this->assertNotContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
         //bad request
         $res = DT_Posts::search_viewable_post( "contacts", [ "nickname" => "Bob" ], false );
         $this->assertWPError( $res );
@@ -555,7 +567,6 @@ class PostsTest extends WP_UnitTestCase {
         $res = DT_Posts::search_viewable_post( "contacts", [ "milestones" => "active" ], false );
         $this->assertWPError( $res );
 
-//        @todo user meta
 
         /**
          * weird

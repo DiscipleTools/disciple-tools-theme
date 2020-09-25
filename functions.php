@@ -406,6 +406,7 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-metrics-edit.php' );
                 /* End menu tab section */
 
+                require_once( get_template_directory() . '/dt-core/setup-functions.php' );
 
             }
             /* End Admin configuration section */

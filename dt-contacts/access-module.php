@@ -1,6 +1,7 @@
 <?php
 
 class DT_Contacts_Access {
+    public $post_type = "contacts";
     private static $_instance = null;
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
@@ -12,6 +13,10 @@ class DT_Contacts_Access {
     public function __construct() {
 //        add_action( 'p2p_init', [ $this, 'p2p_init' ] );
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 10, 1 );
+        add_filter( "dt_can_view_permission", [ $this, 'can_view_permission_filter' ], 10, 3 );
+        add_filter( "dt_can_update_permission", [ $this, 'can_update_permission_filter' ], 10, 3 );
+
 
         //setup fields
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 20, 2 );
@@ -35,8 +40,53 @@ class DT_Contacts_Access {
 
     }
 
-
-    public function p2p_init(){}
+    public function dt_set_roles_and_permissions( $expected_roles ){
+        if ( !isset( $expected_roles['marketer'] ) ){
+            $expected_roles['marketer'] = [
+                "label" => __( "Marketer", "disciple_tools" ),
+                "permissions" => [
+                    'access_specific_sources',
+                    'access_' . $this->post_type => true,
+                    'create_' . $this->post_type => true,
+                    'access_groups' => true,
+                    'create_groups' => true,
+                    'read_location' => true,
+                    'assign_any_contacts'       => true,  //assign contacts to others,
+                    'list_peoplegroups'        => true,
+                ]
+            ];
+            $expected_roles['partner'] = [
+                "label" => __( "Partner", "disciple_tools" ),
+                "permissions" => [
+                    'access_specific_sources',
+                    'access_' . $this->post_type => true,
+                    'create_' . $this->post_type => true,
+                    'access_groups' => true,
+                    'create_groups' => true,
+                    'read_location' => true,
+                    'list_peoplegroups' => true,
+                ]
+            ];
+            $expected_roles['dispatcher'] = [
+                "label" => __( "Dispatcher", "disciple_tools" ),
+                "permissions" => [
+                    'dt_all_access_contacts' => true,
+                    'view_project_metrics' => true,
+                    'access_' . $this->post_type => true,
+                    'create_' . $this->post_type => true,
+                    'read_location' => true,
+                    'access_groups' => true,
+                    'create_groups' => true,
+                    'read' => true,
+                    'list_users' => true,
+                    'dt_list_users' => true,
+                    'list_peoplegroups' => true,
+                    'assign_any_contacts'       => true,  //assign contacts to others
+                ]
+            ];
+        }
+        return $expected_roles;
+    }
 
     public function dt_custom_fields_settings( $fields, $post_type ){
         if ( $post_type === 'contacts' ){
@@ -875,7 +925,7 @@ class DT_Contacts_Access {
             /**
              * Setup dispatcher filters
              */
-            if ( current_user_can( "view_any_contacts" ) || current_user_can( 'access_specific_sources' ) ) {
+            if ( current_user_can( "dt_all_access_contacts" ) || current_user_can( 'access_specific_sources' ) ) {
                 $counts = self::get_all_contacts_status_seeker_path();
                 $all_active_counts = [];
                 $all_update_needed = 0;
@@ -1024,7 +1074,7 @@ class DT_Contacts_Access {
             }
         }
 
-        if ( current_user_can( "view_any_contacts" ) || $can_view_all ) {
+        if ( current_user_can( "dt_all_access_contacts" ) || $can_view_all ) {
             $results = $wpdb->get_results("
                 SELECT status.meta_value as overall_status, pm.meta_value as seeker_path, count(pm.post_id) as count, count(un.post_id) as update_needed
                 FROM $wpdb->postmeta pm
@@ -1083,6 +1133,8 @@ class DT_Contacts_Access {
         if ( $post_type === "contacts" ){
             if ( DT_Posts::can_view_all( $post_type ) ){
                 $permissions["type"] = [ "access" ];
+            } else if ( current_user_can( "dt_all_access_contacts" ) ){
+                $permissions[] = [ "type" => [ "access" ] ];
             } else if ( current_user_can( 'access_specific_sources' ) ){
                 $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
                 if ( !empty( $allowed_sources ) && !in_array( "restrict_all_sources", $allowed_sources ) ){
@@ -1093,6 +1145,53 @@ class DT_Contacts_Access {
         return $permissions;
     }
 
+    // filter for access to a specific record
+    public function can_view_permission_filter( $has_permission, $post_id, $post_type ){
+        if ( $post_type === "contacts" ){
+            if ( current_user_can( 'dt_all_access_contacts' ) ){
+                $contact_type = get_post_meta( $post_id, "type", true );
+                if ( $contact_type === "access" ){
+                    return true;
+                }
+            }
+            //check if the user has access to all posts of a specific source
+            if ( current_user_can( 'access_specific_sources' ) ){
+                $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+                if ( empty( $sources ) || in_array( 'all', $sources ) ) {
+                    return true;
+                }
+                $post_sources = get_post_meta( $post_id, 'sources' );
+                foreach ( $post_sources as $s ){
+                    if ( in_array( $s, $sources ) ){
+                        return true;
+                    }
+                }
+            }
+        }
+        return $has_permission;
+    }
+    public function can_update_permission_filter( $has_permission, $post_id, $post_type ){
+        if ( current_user_can( 'dt_all_access_contacts' ) ){
+            $contact_type = get_post_meta( $post_id, "type", true );
+            if ( $contact_type === "access" ){
+                return true;
+            }
+        }
+        //check if the user has access to all posts of a specific source
+        if ( current_user_can( 'access_specific_sources' ) ){
+            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
+            if ( empty( $sources ) || in_array( 'all', $sources ) ) {
+                return true;
+            }
+            $post_sources = get_post_meta( $post_id, 'sources' );
+            foreach ( $post_sources as $s ){
+                if ( in_array( $s, $sources ) ){
+                    return true;
+                }
+            }
+        }
+        return $has_permission;
+    }
 
     public function scripts(){
         if ( is_singular( "contacts" ) ){

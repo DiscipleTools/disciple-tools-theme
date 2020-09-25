@@ -18,7 +18,7 @@ class DT_User_Management
             if ( strpos( $url_path, 'user-management' ) !== false || strpos( $url_path, 'user-management' ) !== false ) {
                 add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 20 );
             }
-            if ( strpos( $url_path, 'user-management/user' ) !== false || strpos( $url_path, 'user-management/add-user' ) !== false ) {
+            if ( strpos( $url_path, 'user-management/user' ) !== false || ( strpos( $url_path, 'user-management/add-user' ) !== false && current_user_can( "create_users" ) ) ){
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
                 add_filter( 'dt_templates_for_urls', [ $this, 'dt_templates_for_urls' ] );
 
@@ -88,7 +88,9 @@ class DT_User_Management
 
     public function add_menu( $content ) {
         $content .= '<li><a href="'. site_url( '/user-management/users/' ) .'" >' .  esc_html__( 'Users', 'disciple_tools' ) . '</a></li>';
-        $content .= '<li><a href="'. esc_url( site_url( '/user-management/add-user/' ) ) .'" >' .  esc_html__( 'Add User', 'disciple_tools' ) . '</a></li>';
+        if ( current_user_can( "create_users" ) ){
+            $content .= '<li><a href="'. esc_url( site_url( '/user-management/add-user/' ) ) .'" >' .  esc_html__( 'Add User', 'disciple_tools' ) . '</a></li>';
+        }
         return $content;
     }
 
@@ -290,13 +292,13 @@ class DT_User_Management
             $to_accept = DT_Posts::search_viewable_post( "contacts", [
                 'overall_status' => [ 'assigned' ],
                 'assigned_to' => [ $user->ID ]
-            ]);
+            ], false );
             $update_needed = DT_Posts::search_viewable_post( "contacts", [
                 'requires_update' => [ "true" ],
                 'assigned_to' => [ $user->ID ],
                 'overall_status' => [ '-closed', '-paused' ],
                 'sort' => 'last_modified'
-            ]);
+            ], false );
             if (sizeof( $update_needed["contacts"] ) > 5) {
                 $update_needed["contacts"] = array_slice( $update_needed["contacts"], 0, 5 );
             }
@@ -658,6 +660,10 @@ class DT_User_Management
                 if ( !current_user_can( 'promote_users' ) ) {
                     return false;
                 }
+                $can_not_promote_to_roles = [ 'administrator' ];
+                if ( !current_user_can( 'manage_dt' ) ){
+                    $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
+                }
 
                 // Create a new user object.
                 $u = new WP_User( $user->ID );
@@ -676,7 +682,7 @@ class DT_User_Management
 
                         // If the user doesn't already have the role, add it.
                         if ( dt_multi_role_is_role_editable( $new_role ) && ! in_array( $new_role, (array) $user->roles ) ) {
-                            if ( $new_role !== "administrator" ){
+                            if ( !in_array( $new_role, $can_not_promote_to_roles ) ){
                                 $u->add_role( $new_role );
                             }
                         }
@@ -687,7 +693,7 @@ class DT_User_Management
 
                         // If the role is editable and not in the new roles array, remove it.
                         if ( dt_multi_role_is_role_editable( $old_role ) && ! in_array( $old_role, $new_roles ) ) {
-                            if ( $old_role !== "administrator" ) {
+                            if ( !in_array( $old_role, $can_not_promote_to_roles ) ){
                                 $u->remove_role( $old_role );
                             }
                         }

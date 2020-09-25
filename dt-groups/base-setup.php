@@ -2,6 +2,7 @@
 
 class DT_Groups_Base {
     private static $_instance = null;
+    public $post_type = "groups";
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
@@ -12,6 +13,7 @@ class DT_Groups_Base {
     public function __construct() {
         //setup post type
         add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
+        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 10, 1 );
 
         //setup tiles and fields
         add_action( 'p2p_init', [ $this, 'p2p_init' ] );
@@ -38,7 +40,33 @@ class DT_Groups_Base {
         if ( class_exists( 'Disciple_Tools_Post_Type_Template' )) {
             new Disciple_Tools_Post_Type_Template( "groups", 'Group', 'Groups' );
         }
+        $expected_roles = [
+            "multiplier" => [
+                "label" => __( 'Multiplier', 'disciple_tools' ),
+                "permissions" => [
+                    'access_' . $this->post_type => true,
+                    'create_' . $this->post_type => true,
+                    'read_location' => true
+                ]
+            ],
+        ];
+        $expected_roles = apply_filters( 'dt_set_roles_and_permissions', $expected_roles, $this->post_type );
+        Disciple_Tools_Post_Type_Template::set_roles_and_permissions( $expected_roles );
     }
+    public function dt_set_roles_and_permissions( $expected_roles ){
+        if ( !isset( $expected_roles["multiplier"] ) ){
+            $expected_roles["multiplier"] = [
+                "label" => __( 'Multiplier', 'disciple_tools' ),
+                "permissions" => []
+            ];
+        }
+        $expected_roles["multiplier"]["permissions"]['access_' . $this->post_type] = true;
+        $expected_roles["multiplier"]["permissions"]['create_' . $this->post_type] = true;
+        $expected_roles["multiplier"]["permissions"]['read_location'] = true;
+
+        return $expected_roles;
+    }
+
 
     public function dt_custom_fields_settings( $fields, $post_type ){
         if ( $post_type === 'groups' ){

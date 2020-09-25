@@ -78,19 +78,6 @@ class Disciple_Tools_Post_Type_Template {
 
         register_post_type( $this->post_type, $defaults );
 
-
-
-        $roles = [ 'dispatcher', 'administrator', 'dt_admin', 'multiplier', 'marketer', 'strategist' ];
-        foreach ( $roles as $role ) {
-            $role = get_role( $role );
-            $role->add_cap( 'access_' . $this->post_type );
-            $role->add_cap( 'create_' . $this->post_type );
-            if ( $role->name != "multiplier" ){
-                $role->add_cap( 'view_any_' . $this->post_type );
-                $role->add_cap( 'update_any_' . $this->post_type );
-                $role->add_cap( 'delete_any_' . $this->post_type );
-            }
-        }
     }
 
     public function rewrite_init(){
@@ -145,14 +132,16 @@ class Disciple_Tools_Post_Type_Template {
     }
 
     public function dt_nav_add_post_menu(){
-        ?>
-        <li>
-            <a class="add-new-menu-item" href="<?php echo esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new'; ?>">
-                <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-plus.svg" ?>">
-                <?php echo sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ) ?>
-            </a>
-        </li>
-        <?php
+        if ( current_user_can( "create_" . $this->post_type ) ){
+            ?>
+            <li>
+                <a class="add-new-menu-item" href="<?php echo esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new'; ?>">
+                    <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-plus.svg" ?>">
+                    <?php echo sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ) ?>
+                </a>
+            </li>
+            <?php
+        }
     }
 
 
