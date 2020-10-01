@@ -388,23 +388,23 @@ class Disciple_Tools_Users
             }
 
             if ( empty( $corresponds_to_contact ) || get_post( $corresponds_to_contact ) === null ) {
-                $new_id = DT_Posts::create_post( "contacts", [
+                $new_user_contact = DT_Posts::create_post( "contacts", [
                     "title"               => $user->display_name,
                     "assigned_to"         => "user-" . $user_id,
                     "type"                => "user",
                     "overall_status"      => "assigned",
                     "corresponds_to_user" => $user_id,
-                ], false );
-                if ( !is_wp_error( $new_id )){
-                    update_user_option( $user_id, "corresponds_to_contact", $new_id );
+                ], false, false );
+                if ( !is_wp_error( $new_user_contact )){
+                    update_user_option( $user_id, "corresponds_to_contact", $new_user_contact["ID"] );
                 }
-                return $new_id;
+                return $new_user_contact["ID"];
             } else {
                 $contact = get_post( $corresponds_to_contact );
                 if ( $contact && $contact->post_title != $user->display_name && $user->display_name != $user->user_login ){
                     DT_Posts::update_post( "contacts", $corresponds_to_contact, [
                         "title" => $user->display_name
-                    ], false, true );
+                    ], false, false );
                 }
                 return $contact->ID;
             }
@@ -459,7 +459,7 @@ class Disciple_Tools_Users
                 ], false, true );
             }
         }
-        if ( isset( $_POST["corresponds_to_contact_id"] ) ) {
+        if ( isset( $_POST["corresponds_to_contact_id"] ) && !empty( $_POST["corresponds_to_contact_id"] ) ) {
             $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
             update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
             DT_Posts::update_post( "contacts", (int) $corresponds_to_contact, [
@@ -492,7 +492,7 @@ class Disciple_Tools_Users
     public static function profile_update_hook( $user_id ) {
         self::create_contact_for_user( $user_id );
 
-        if ( isset( $_POST["corresponds_to_contact_id"] ) ) {
+        if ( isset( $_POST["corresponds_to_contact_id"] ) && !empty( $_POST["corresponds_to_contact_id"] ) ){
             $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
             update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
             DT_Posts::update_post( "contacts", (int) $corresponds_to_contact, [

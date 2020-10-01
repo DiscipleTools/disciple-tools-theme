@@ -42,7 +42,7 @@ class Disciple_Tools_Post_Type_Template {
             'feeds'      => false,
         ];
         $capabilities = [
-//            'create_posts'        => 'do_not_allow', //@todo reenable
+            'create_posts'        => 'do_not_allow',
             'edit_post'           => 'access_' . $this->post_type,
             'read_post'           => 'access_' . $this->post_type,
             'delete_post'         => 'delete_any_' . $this->post_type,

@@ -430,6 +430,11 @@ class PostsTest extends WP_UnitTestCase {
         $this->assertEquals( $baptism["ID"], $exact["posts"][0]->ID );
         $this->assertGreaterThan( 1, $start["total"] );
         $this->assertEquals( $baptism["ID"], $end["posts"][0]->ID );
+
+        $contact = DT_Posts::create_post( "contacts", ["name" => 'x', "post_date" => "2003-01-02" ], true, false );
+        $res = DT_Posts::search_viewable_post( "contacts", [ "post_date" => [ "start" => "2003-01-02", "end" => "2003-01-02" ] ], false );
+        $this->assertEquals( $contact["ID"], $res["posts"][0]->ID );
+        $this->assertCount( 1, $res["posts"] );
         //search for posts with no values set for field x
         $res = DT_Posts::search_viewable_post( "contacts", [ "baptism_date" => [] ], false );
         $this->assertContains( $empty_contact["ID"], self::map_ids( $res["posts"] ) );
@@ -567,6 +572,14 @@ class PostsTest extends WP_UnitTestCase {
         $res = DT_Posts::search_viewable_post( "contacts", [ "milestones" => "active" ], false );
         $this->assertWPError( $res );
 
+
+        /**
+         * Default fields
+         */
+        $contact = DT_Posts::create_post( "contacts", ["name" => 'dh39ent' ], true, false );
+        $res = DT_Posts::search_viewable_post( "contacts", [ "name" => [ "dh39ent" ] ], false );
+        $this->assertEquals( $contact["ID"], $res["posts"][0]->ID );
+        $this->assertCount( 1, $res["posts"] );
 
         /**
          * weird

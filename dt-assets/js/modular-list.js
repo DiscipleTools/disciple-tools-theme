@@ -473,7 +473,7 @@
         search_query[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "key")
       } if ( type === "location" ){
         search_query[field] = _.map( _.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID')
-      } else if ( type === "date" || field === "created_on" ) {
+      } else if ( type === "date" || field === "post_date" ) {
         search_query[field] = {}
         let start = $(`.dt_date_picker[data-field="${field}"][data-delimit="start"]`).val()
         if ( start ){
@@ -827,7 +827,7 @@
       let delimiter = $(this).data('delimit')
       let delimiter_label = list_settings.translations[`range_${delimiter}`]
       let field_name = _.get( list_settings, `post_type_settings.fields.${id}.name` , id)
-      if ( id === "created_on" ){
+      if ( id === "post_date" ){
         field_name = list_settings.translations.creation_date
       }
       //remove existing filters

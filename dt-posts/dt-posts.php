@@ -82,10 +82,10 @@ class DT_Posts extends Disciple_Tools_Posts {
             unset( $fields["name"] );
         }
 
-        $create_date = null;
-        if ( isset( $fields["create_date"] )){
-            $create_date = $fields["create_date"];
-            unset( $fields["create_date"] );
+        $post_date = null;
+        if ( isset( $fields["post_date"] )){
+            $post_date = $fields["post_date"];
+            unset( $fields["post_date"] );
         }
         $initial_comment = null;
         if ( isset( $fields["initial_comment"] ) ) {
@@ -160,8 +160,8 @@ class DT_Posts extends Disciple_Tools_Posts {
             "post_status" => 'publish',
             "meta_input"  => $fields,
         ];
-        if ( $create_date ){
-            $post["post_date"] = $create_date;
+        if ( $post_date ){
+            $post["post_date"] = $post_date;
         }
         $post_id = wp_insert_post( $post );
 
@@ -391,6 +391,14 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         $wp_post = get_post( $post_id );
+        if ( $use_cache === true && $current_user_id ){
+            dt_activity_insert( [
+                'action' => 'viewed',
+                'object_type' => $post_type,
+                'object_id' => $post_id,
+                'object_name' => $wp_post->post_title
+            ] );
+        }
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
         if ( !$wp_post ){
             return new WP_Error( __FUNCTION__, "post does not exist", [ 'status' => 400 ] );

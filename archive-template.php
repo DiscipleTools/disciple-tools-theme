@@ -215,7 +215,7 @@ declare(strict_types=1);
                             $fields[] = $field_key;
                         }
                     }
-                    $fields[] = "created_on";
+                    $fields[] = "post_date";
                     $fields = apply_filters( 'dt_filters_additional_fields', $fields, $post_type ) ?? [];
                     ?>
                     <ul class="vertical tabs" data-tabs id="filter-tabs">
@@ -225,7 +225,7 @@ declare(strict_types=1);
                                     <a href="#<?php echo esc_html( $field )?>" <?php if ( $index === 0 ){ echo 'aria-selected="true"'; } ?>>
                                         <?php echo esc_html( $field_options[$field]["name"] ) ?></a>
                                 </li>
-                            <?php elseif ( $field === "created_on" ) : ?>
+                            <?php elseif ( $field === "post_date" ) : ?>
                                 <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>">
                                         <?php esc_html_e( "Creation Date", 'disciple_tools' ) ?></a>
@@ -264,7 +264,7 @@ declare(strict_types=1);
 
                         <?php else : ?>
                             <div class="tabs-panel" id="<?php echo esc_html( $field ) ?>">
-                                <div class="section-header"><?php echo esc_html( $field === "created_on" ? __( "Creation Date", "disciple_tools" ) : $field_options[$field]["name"] ?? $field ) ?></div>
+                                <div class="section-header"><?php echo esc_html( $field === "post_date" ? __( "Creation Date", "disciple_tools" ) : $field_options[$field]["name"] ?? $field ) ?></div>
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "key_select" ) :
                                         foreach ( $field_options[$field]["default"] as $option_key => $option_value ) :
@@ -291,7 +291,7 @@ declare(strict_types=1);
                                                        value="1"> <?php esc_html_e( "Yes", 'disciple_tools' ) ?>
                                             </label>
                                         </div>
-                                    <?php elseif ( $field === "created_on" || isset( $field_options[$field] ) && $field_options[$field]["type"] == "date" ) : ?>
+                                    <?php elseif ( $field === "post_date" || isset( $field_options[$field] ) && $field_options[$field]["type"] == "date" ) : ?>
                                         <strong><?php echo esc_html_x( "Range Start", 'The start date of a date range', 'disciple_tools' ) ?></strong>
                                         <button class="clear-date-picker" style="color:firebrick"
                                                 data-for="<?php echo esc_html( $field ) ?>_start">

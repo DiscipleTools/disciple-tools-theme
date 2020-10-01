@@ -51,8 +51,10 @@ class DT_Contacts_Access {
                     'access_groups' => true,
                     'create_groups' => true,
                     'read_location' => true,
-                    'assign_any_contacts'       => true,  //assign contacts to others,
-                    'list_peoplegroups'        => true,
+                    'assign_any_contacts' => true,  //assign contacts to others,
+                    'access_peoplegroups' => true,
+                    'list_peoplegroups' => true,
+                    'view_project_metrics' => true,
                 ]
             ];
             $expected_roles['partner'] = [
@@ -64,6 +66,7 @@ class DT_Contacts_Access {
                     'access_groups' => true,
                     'create_groups' => true,
                     'read_location' => true,
+                    'access_peoplegroups' => true,
                     'list_peoplegroups' => true,
                 ]
             ];
@@ -80,6 +83,7 @@ class DT_Contacts_Access {
                     'read' => true,
                     'list_users' => true,
                     'dt_list_users' => true,
+                    'access_peoplegroups' => true,
                     'list_peoplegroups' => true,
                     'assign_any_contacts'       => true,  //assign contacts to others
                 ]
@@ -337,7 +341,7 @@ class DT_Contacts_Access {
                     $sources_default[ $key ] = $value;
                 }
             }
-            //@todo sources?
+
             $fields['sources'] = [
                 'name'        => __( 'Sources', 'disciple_tools' ),
                 'description' => _x( 'The website, event or location this contact came from.', 'Optional Documentation', 'disciple_tools' ),
@@ -346,7 +350,8 @@ class DT_Contacts_Access {
                 'tile'     => 'details',
                 'customizable' => 'all',
                 'icon' => get_template_directory_uri() . "/dt-assets/images/source.svg",
-                "only_for_types" => [ "access" ]
+                "only_for_types" => [ "access" ],
+                "in_create_form" => [ "access" ]
             ];
 
             if ( empty( $fields["contact_phone"]['in_create_form'] ) ){

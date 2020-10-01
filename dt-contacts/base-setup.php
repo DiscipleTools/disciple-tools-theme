@@ -49,10 +49,14 @@ class DT_Contacts_Base {
 
     public function dt_set_roles_and_permissions( $expected_roles ){
         $roles = [
-            "multiplier" => __( 'Multiplier', 'disciple_tools' ),
             "manage_users" => __( 'User Manager', 'disciple_tools' ),
             "dt_admin" => __( 'Disciple.Tools Admin', 'disciple_tools' ),
             "strategist" => __( 'Strategist', 'disciple_tools' ),
+        ];
+        $roles["multiplier"] = [
+            "label" => __( 'Multiplier', 'disciple_tools' ),
+            "description" => "Interacts with Contacts and Groups",
+            "permissions" => []
         ];
         foreach ( $roles as $role => $label ){
             if ( !isset( $expected_roles[$role] ) ){
@@ -62,12 +66,17 @@ class DT_Contacts_Base {
                 ];
             }
         }
+        // Multiplier
+        $expected_roles["multiplier"]["permissions"]['read'] = true; //allow access to wp-admin to set 2nd factor auth settings per user.
         $expected_roles["multiplier"]["permissions"]['access_' . $this->post_type] = true;
         $expected_roles["multiplier"]["permissions"]['create_' . $this->post_type] = true;
         $expected_roles["multiplier"]["permissions"]['read_location'] = true;
+        $expected_roles["multiplier"]["permissions"]['access_peoplegroups'] = true;
+        $expected_roles["multiplier"]["permissions"]['list_peoplegroups'] = true;
 
+
+        // User Manager
         $expected_roles["manage_users"]["permissions"]['read'] = true; //allow access to wp-admin to set 2nd factor auth settings per user.
-        // Manage Users
         $expected_roles["manage_users"]["permissions"]['promote_users'] = true;
         $expected_roles["manage_users"]["permissions"]['edit_users'] = true;
         $expected_roles["manage_users"]["permissions"]['create_users'] = true;
@@ -75,6 +84,7 @@ class DT_Contacts_Base {
         $expected_roles["manage_users"]["permissions"]['list_users'] = true;
         $expected_roles["manage_users"]["permissions"]['dt_list_users'] = true;
 
+        // D.T Admin
         $expected_roles["dt_admin"]["permissions"]['read'] = true; //allow access to wp-admin to set 2nd factor auth settings per user.
         $expected_roles["dt_admin"]["permissions"]['manage_dt'] = true;
         $expected_roles["dt_admin"]["permissions"]['view_project_metrics'] = true;
@@ -85,10 +95,19 @@ class DT_Contacts_Base {
         $expected_roles["dt_admin"]["permissions"]['list_users'] = true;
         $expected_roles["dt_admin"]["permissions"]['dt_list_users'] = true;
         $expected_roles["dt_admin"]["permissions"]['read_location'] = true;
-        $expected_roles["dt_admin"]["permissions"]['delete_any_locations'] = true;
         $expected_roles["dt_admin"]["permissions"]['list_peoplegroups'] = true;
+        $expected_roles["dt_admin"]["permissions"]['edit_page'] = true; //site links
+        $expected_roles["dt_admin"]["permissions"]['edit_posts'] = true; //site links
 
         $expected_roles["strategist"]["permissions"]['view_project_metrics'] = true;
+
+        $expected_roles["administrator"]["permissions"]['read'] = true; //allow access to wp-admin to set 2nd factor auth settings per user.
+        $expected_roles["administrator"]["permissions"]['promote_users'] = true;
+        $expected_roles["administrator"]["permissions"]['edit_users'] = true;
+        $expected_roles["administrator"]["permissions"]['create_users'] = true;
+        $expected_roles["administrator"]["permissions"]['delete_users'] = true;
+        $expected_roles["administrator"]["permissions"]['list_users'] = true;
+        $expected_roles["administrator"]["permissions"]['dt_list_users'] = true;
 
 
         return $expected_roles;
@@ -114,7 +133,7 @@ class DT_Contacts_Base {
                     'personal' => [
                         "label" => __( 'Personal', 'disciple_tools' ),
                         "color" => "#9b379b",
-                        "description" => "Only i can see this contact",
+                        "description" => "Only I can see this contact.",
                         "icon" => get_template_directory_uri() . "/dt-assets/images/locked.svg",
                     ],
                 ],

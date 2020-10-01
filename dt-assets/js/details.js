@@ -245,7 +245,7 @@ jQuery(document).ready(function($) {
       matcher: function (item) {
         return item.ID !== post_id
       },
-      source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type),
+      source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key:field_id}),
       display: "name",
       templateValue: "{{name}}",
       dynamic: true,

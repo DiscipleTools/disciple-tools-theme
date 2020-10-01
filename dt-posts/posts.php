@@ -538,7 +538,7 @@ class Disciple_Tools_Posts
 
 
                     // add postmeta join fields
-                    if ( in_array( $field_type, [ 'key_select', 'multi_select', 'boolean', 'date', 'number', 'user_select', 'number' ] ) ){
+                    if ( in_array( $field_type, [ 'key_select', 'multi_select', 'boolean', 'date', 'number', 'user_select' ] ) ){
                         if ( !in_array( $table_key, $args["joins_fields"] ) ){
                             $args["joins_fields"][] = $table_key;
                             $args["joins_sql"] .= " LEFT JOIN $wpdb->postmeta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key = '" . esc_sql( $query_key ) . "' )";
@@ -867,14 +867,28 @@ class Disciple_Tools_Posts
         /**
          * Filter by creation date
          */
-        if ( isset( $query["created_on"] ) ){
-            if ( isset( $query["created_on"]["start"] ) ){
-                $post_query .= "AND p.post_date >= '" . esc_sql( $query["created_on"]["start"] ) . "' ";
+        if ( isset( $query["post_date"] ) ){
+            if ( isset( $query["post_date"]["start"] ) ){
+                $post_query .= "AND p.post_date >= '" . esc_sql( $query["post_date"]["start"] ) . "' ";
             }
-            if ( isset( $query["created_on"]["end"] ) ){
-                $post_query .= "AND p.post_date <= '" . esc_sql( $query["created_on"]["end"] ) . "' ";
+            if ( isset( $query["post_date"]["end"] ) ){
+                $post_query .= "AND p.post_date <= '" . esc_sql( $query["post_date"]["end"] ) . "' ";
             }
-            unset( $query["created_on"] );
+            unset( $query["post_date"] );
+        }
+        /**
+         * Search on post_title
+         */
+        if ( isset( $query["name"] ) ){
+            if ( !is_array( $query["name"] )){
+                $query["name"] = [ $query["name"] ];
+            }
+            $post_query .= "AND ( ";
+            foreach ( $query["name"] as $index => $name ){
+                $post_query .= ( $index > 0 ? " OR " : " " ) . "p.post_title LIKE '%" . esc_sql( $name ) . "%' ";
+            }
+            $post_query .= " )";
+            unset( $query["name"] );
         }
 
         if ( !empty( $search )){
@@ -962,6 +976,10 @@ class Disciple_Tools_Posts
             ORDER BY " . $sort_sql . "
             LIMIT " . esc_sql( $offset ) .", " . $limit . "
         ", OBJECT );
+
+        if ( empty( $posts ) && !empty( $wpdb->last_error )){
+            return new WP_Error( __FUNCTION__, "Sorry, we had a query issue.", [ 'status' => 500 ] );
+        }
 
 
         // phpcs:enable

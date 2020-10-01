@@ -40,18 +40,6 @@ class DT_Groups_Base {
         if ( class_exists( 'Disciple_Tools_Post_Type_Template' )) {
             new Disciple_Tools_Post_Type_Template( "groups", 'Group', 'Groups' );
         }
-        $expected_roles = [
-            "multiplier" => [
-                "label" => __( 'Multiplier', 'disciple_tools' ),
-                "permissions" => [
-                    'access_' . $this->post_type => true,
-                    'create_' . $this->post_type => true,
-                    'read_location' => true
-                ]
-            ],
-        ];
-        $expected_roles = apply_filters( 'dt_set_roles_and_permissions', $expected_roles, $this->post_type );
-        Disciple_Tools_Post_Type_Template::set_roles_and_permissions( $expected_roles );
     }
     public function dt_set_roles_and_permissions( $expected_roles ){
         if ( !isset( $expected_roles["multiplier"] ) ){
