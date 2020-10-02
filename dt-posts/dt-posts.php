@@ -1169,6 +1169,34 @@ class DT_Posts extends Disciple_Tools_Posts {
         //phpcs:enable
 
     }
+
+    private static function array_merge_recursive_distinct( array &$array1, array &$array2 ){
+        $merged = $array1;
+        foreach ( $array2 as $key => &$value ){
+            if ( is_array( $value ) && isset( $merged[$key] ) && is_array( $merged[$key] ) ){
+                $merged[$key] = self::array_merge_recursive_distinct( $merged[$key], $value );
+            } else {
+                $merged[$key] = $value;
+            }
+        }
+        return $merged;
+    }
+
+    public static function get_post_tiles( $post_type ){
+        $tile_options = dt_get_option( "dt_custom_tiles" );
+        $sections = apply_filters( 'dt_details_additional_tiles', [], $post_type );
+        if ( !isset( $tile_options[$post_type] ) ){
+            $tile_options[$post_type] = [];
+        }
+        $tile_options[$post_type] = self::array_merge_recursive_distinct( $sections, $tile_options[$post_type] );
+        $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type );
+        foreach ( $sections as $section_id ){
+            if ( !isset( $tile_options[$post_type][$section_id] ) ) {
+                $tile_options[$post_type][$section_id] = [];
+            }
+        }
+        return $tile_options[$post_type];
+    }
 }
 
 
