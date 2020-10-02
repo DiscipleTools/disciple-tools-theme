@@ -215,7 +215,6 @@ declare(strict_types=1);
                             $fields[] = $field_key;
                         }
                     }
-                    $fields[] = "post_date";
                     $fields = apply_filters( 'dt_filters_additional_fields', $fields, $post_type ) ?? [];
                     ?>
                     <ul class="vertical tabs" data-tabs id="filter-tabs">
@@ -291,7 +290,7 @@ declare(strict_types=1);
                                                        value="1"> <?php esc_html_e( "Yes", 'disciple_tools' ) ?>
                                             </label>
                                         </div>
-                                    <?php elseif ( $field === "post_date" || isset( $field_options[$field] ) && $field_options[$field]["type"] == "date" ) : ?>
+                                    <?php elseif ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "date" ) : ?>
                                         <strong><?php echo esc_html_x( "Range Start", 'The start date of a date range', 'disciple_tools' ) ?></strong>
                                         <button class="clear-date-picker" style="color:firebrick"
                                                 data-for="<?php echo esc_html( $field ) ?>_start">

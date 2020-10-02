@@ -121,7 +121,7 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
                     <br>
                     <span><?php echo esc_html( '#' . $dt_contact["ID"] ) ?></span><br>
                     <span><?php esc_html_e( "Status:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_contact["overall_status"]["label"] ?? "" ) ?></span><br>
-                    <span><?php esc_html_e( "Created:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_contact["created_date"] ?? "" ) ?></span><br>
+                    <span><?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), dt_format_date( $dt_contact["post_date"] ) ) ); ?></span><br>
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>
                   <div class="merge-column">
@@ -130,7 +130,7 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
                     <br>
                     <span><?php echo esc_html( '#' . $dt_duplicate_contact["ID"] ) ?></span><br>
                     <span><?php esc_html_e( "Status:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_duplicate_contact["overall_status"]["label"] ?? "" ) ?></span><br>
-                    <span><?php esc_html_e( "Created:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_duplicate_contact["created_date"] ?? "" ) ?></span><br>
+                    <span><?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), dt_format_date( $dt_duplicate_contact["post_date"] ) ) ); ?></span><br>
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>
                 </div>

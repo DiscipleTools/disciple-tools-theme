@@ -52,7 +52,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                 <a data-open="contact-type-modal" style="font-size: 10px"><?php echo esc_html( $dt_post["type"]["label"] ?? "" )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
                                 <?php endif; ?>
                                 <span style="font-size: 10px">
-                                    <?php echo esc_html( sprintf( _x( 'Created on %s', ' Create on the 21 of auguste', 'disciple_tools' ), dt_format_date( $dt_post["created_date"] ) ) );
+                                    <?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), dt_format_date( $dt_post["post_date"] ) ) );
                                     if ( $dt_post["post_author_display_name"] ):
                                         echo esc_html( ' ' . sprintf( _x( 'by %s', '(record created) by multiplier1', 'disciple_tools' ), $dt_post["post_author_display_name"] ) );
                                     endif; ?>
@@ -327,6 +327,25 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
             </button>
             <button class="button" data-close type="button" id="create-tag-return">
                 <?php esc_html_e( 'Create and apply tag', 'disciple_tools' ); ?>
+            </button>
+            <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="reveal" id="delete-record-modal" data-reveal data-reset-on-close>
+        <h3><?php echo esc_html( sprintf( _x( "Delete %s", "Delete Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></h3>
+        <p><?php echo esc_html( sprintf( _x( "Are you sure you want to delete %s?", "Are you sure you want to delete name?", 'disciple_tools' ), $dt_post["name"] ) ) ?></p>
+
+
+
+        <div class="grid-x">
+            <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
+            </button>
+            <button class="button alert loader" type="button" id="delete-record">
+                <?php esc_html_e( 'Delete', 'disciple_tools' ); ?>
             </button>
             <button class="close-button" data-close aria-label="Close modal" type="button">
                 <span aria-hidden="true">&times;</span>

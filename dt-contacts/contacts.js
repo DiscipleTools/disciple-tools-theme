@@ -6,7 +6,7 @@ jQuery(document).ready(function($) {
   /**
    * User-select
    */
-  if ( !post.corresponds_to_user ) {
+  if ( !post.corresponds_to_user && $('.js-typeahead-user-select').length) {
     $.typeahead({
       input: '.js-typeahead-user-select',
       minLength: 0,
@@ -55,4 +55,25 @@ jQuery(document).ready(function($) {
       user_select_input.focus()
     })
   }
+
+    $("#create-user-return").on("click", function (e) {
+      e.preventDefault();
+      $(this).toggleClass("loading")
+      let $inputs = $('#create-user-form :input');
+      let values = {};
+      $inputs.each(function() {
+          values[this.name] = $(this).val();
+      });
+      values["corresponds_to_contact"] = post_id;
+      window.API.create_user(values).then(()=>{
+        $(this).removeClass("loading")
+        $(`#make-user-from-contact-modal`).foundation('close')
+        location.reload();
+      }).catch(err=>{
+        $(this).removeClass("loading")
+        $('#create-user-errors').html(_.get(err, "responseJSON.message", "Something went wrong"))
+      })
+      return false;
+    })
+
 })

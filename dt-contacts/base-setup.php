@@ -343,7 +343,6 @@ class DT_Contacts_Base {
 
     public static function dt_record_admin_actions( $post_type, $post_id ){
         if ( $post_type === "contacts" ){
-            $contact = DT_Posts::get_post( $post_type, $post_id );
             ?>
             <li>
                 <a data-open="contact-type-modal"><?php echo esc_html( sprintf( _x( "Change %s Type", "Change Record Type", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>

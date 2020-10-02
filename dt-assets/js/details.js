@@ -680,6 +680,13 @@ jQuery(document).ready(function($) {
   }
   resetDetailsFields()
 
+  $('#delete-record').on('click', function(){
+    $(this).attr("disabled", true).addClass("loading");
+    API.delete_post( post_type, post_id ).then(()=>{
+      window.location = '/' + post_type
+    })
+  })
+
   //leave at the end of this file
   masonGrid.masonry({
     itemSelector: '.grid-item',

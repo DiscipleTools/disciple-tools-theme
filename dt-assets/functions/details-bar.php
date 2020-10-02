@@ -48,6 +48,9 @@ function dt_print_details_bar(
                                     <ul class="menu">
                                         <!-- example -->
                                         <!-- <li><a data-open="make-user-from-contact-modal"><?php esc_html_e( "Make a user from this contact", 'disciple_tools' ) ?></a></li>-->
+                                        <?php if ( DT_Posts::can_delete( $dt_post_type, $post_id ) ) : ?>
+                                            <a data-open="delete-record-modal"><?php echo esc_html( sprintf( _x( "Delete %s", "Delete Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $dt_post_type )["label_singular"] ) ) ?></a>
+                                        <?php endif; ?>
                                         <?php do_action( 'dt_record_admin_actions', $dt_post_type, $post_id ); ?>
                                     </ul>
                                 </li>

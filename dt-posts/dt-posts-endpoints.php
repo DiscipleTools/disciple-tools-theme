@@ -116,6 +116,19 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
+        //delete_post
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)', [
+                [
+                    "methods"  => "DELETE",
+                    "callback" => [ $this, 'delete_post' ],
+                    "args" => [
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
+                    ]
+                ]
+            ]
+        );
 
         //get_posts
         register_rest_route(
@@ -402,12 +415,18 @@ class Disciple_Tools_Posts_Endpoints {
         return DT_Posts::get_post( $url_params["post_type"], $url_params["id"] );
     }
 
+
     public function update_post( WP_REST_Request $request ){
         $fields = $request->get_json_params() ?? $request->get_body_params();
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
         $silent = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
         return DT_Posts::update_post( $url_params["post_type"], $url_params["id"], $fields, $silent );
+    }
+
+    public function delete_post( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+        return DT_Posts::delete_post( $url_params["post_type"], $url_params["id"] );
     }
 
     public function get_list( WP_REST_Request $request ){

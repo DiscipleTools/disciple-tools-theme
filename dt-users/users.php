@@ -66,26 +66,54 @@ class Disciple_Tools_Users
         $user_id = get_current_user_id();
         $users = [];
         $update_needed = [];
-        if ( !user_can( get_current_user_id(), 'view_any_contacts' ) && !user_can( get_current_user_id(), 'dt_list_users' ) ){
+        if ( !current_user_can( 'view_any_contacts' ) && !current_user_can( 'dt_list_users' ) ){
             // users that are shared posts that are shared with me
-            $users_ids = $wpdb->get_results( $wpdb->prepare("
-                SELECT user_id
-                FROM $wpdb->dt_share
-                WHERE post_id IN (
-                      SELECT post_id
-                      FROM $wpdb->dt_share
-                      WHERE user_id = %1\$s
-                )
-                GROUP BY user_id
-                ",
-                $user_id
-            ), ARRAY_N );
+            if ( $search_string ){
+                $users_ids = $wpdb->get_results( $wpdb->prepare("
+                    SELECT user_id
+                    FROM $wpdb->dt_share
+                    INNER JOIN $wpdb->users as u ON ( u.ID = user_id AND display_name LIKE %s )
+                    WHERE post_id IN (
+                          SELECT post_id
+                          FROM $wpdb->dt_share
+                          WHERE user_id = %s
+                    )
+                    GROUP BY user_id
+                    ",
+                    '%' . $search_string .'%',
+                    $user_id
+                ), ARRAY_N );
+            } else {
+                $users_ids = $wpdb->get_results( $wpdb->prepare("
+                    SELECT user_id
+                    FROM $wpdb->dt_share
+                    WHERE post_id IN (
+                          SELECT post_id
+                          FROM $wpdb->dt_share
+                          WHERE user_id = %1\$s
+                    )
+                    GROUP BY user_id
+                    ",
+                    $user_id
+                ), ARRAY_N );
 
-            $dispatchers = $wpdb->get_results("
-                SELECT user_id FROM $wpdb->usermeta
-                WHERE meta_key = '{$wpdb->prefix}capabilities'
-                AND meta_value LIKE '%dispatcher%'
-            ");
+            }
+
+            if ( $search_string ){
+                $dispatchers = $wpdb->get_results($wpdb->prepare( "
+                    SELECT user_id FROM $wpdb->usermeta um
+                    INNER JOIN $wpdb->users u ON ( u.ID = um.user_id AND display_name LIKE %s )
+                    WHERE meta_key = '{$wpdb->prefix}capabilities'
+                    AND meta_value LIKE %s
+                ", '%' . esc_sql( $search_string ) . '%', '%dispatcher%' ) );
+
+            } else {
+                $dispatchers = $wpdb->get_results("
+                    SELECT user_id FROM $wpdb->usermeta
+                    WHERE meta_key = '{$wpdb->prefix}capabilities'
+                    AND meta_value LIKE '%dispatcher%'
+                ");
+            }
 
             $assure_unique = [];
             foreach ( $dispatchers as $index ){
@@ -902,6 +930,7 @@ Please click the following link to confirm the invite:
         if ( $corresponds_to_contact ) {
             update_user_meta( $user_id, $wpdb->prefix . 'corresponds_to_contact', $corresponds_to_contact );
             update_post_meta( $corresponds_to_contact, 'corresponds_to_user', $user_id );
+            update_post_meta( $corresponds_to_contact, 'type', 'user' );
         }
 
         return $user_id;

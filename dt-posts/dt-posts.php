@@ -410,7 +410,7 @@ class DT_Posts extends Disciple_Tools_Posts {
          */
         self::get_all_connection_fields( $post_settings, $post_id, $fields );
         $fields["ID"] = $post_id;
-        $fields["created_date"] = $wp_post->post_date;
+        $fields["post_date"] = $wp_post->post_date;
         $fields["permalink"] = get_permalink( $post_id );
         $fields["post_type"] = $post_type;
         $fields["post_author"] = $wp_post->post_author;
@@ -555,7 +555,6 @@ class DT_Posts extends Disciple_Tools_Posts {
         $current_user = wp_get_current_user();
         $compact = [];
         $search_string = esc_sql( sanitize_text_field( $search_string ) );
-        $shared_with_user = [];
 
         //search by post_id
         if ( is_numeric( $search_string ) ){
@@ -572,92 +571,78 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $send_quick_results = false;
         if ( empty( $search_string ) ){
-            //find the most recent posts interacted with by the user
+            $field_settings = DT_Posts::get_post_field_settings( $post_type );
+            //find the most recent posts viewed by the user from the activity log
             $posts = $wpdb->get_results( $wpdb->prepare( "
-                SELECT *, statusReport.meta_value as overall_status, pm.meta_value as corresponds_to_user
+                SELECT *
                 FROM $wpdb->posts p
                 INNER JOIN (
                     SELECT log.object_id
                     FROM $wpdb->dt_activity_log log
-                    WHERE log.histid IN (
-                        SELECT max(l.histid) FROM $wpdb->dt_activity_log l
-                        WHERE l.user_id = %s  AND l.object_type = %s
-                        GROUP BY l.object_id
-                    )
-                    ORDER BY log.histid desc
-                    LIMIT 30
+                    INNER JOIN (
+                        SELECT max(l.histid) as maxid FROM $wpdb->dt_activity_log l
+                        WHERE l.user_id = %s  AND l.action = 'viewed' AND l.object_type = %s
+                        group by l.object_id
+                    ) x on log.histid = x.maxid
+                ORDER BY log.histid desc
+                LIMIT 5
                 ) as log
                 ON log.object_id = p.ID
-                LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = p.ID AND statusReport.meta_key = 'overall_status')
-                LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = p.ID AND pm.meta_key = 'corresponds_to_user' )
                 WHERE p.post_type = %s AND (p.post_status = 'publish' OR p.post_status = 'private')
+
             ", $current_user->ID, $post_type, $post_type ), OBJECT );
-            if ( !empty( $posts ) ){
+
+            //find what the user previously chose as values for this field.
+            if ( isset( $args["field_key"], $field_settings[$args["field_key"]] ) && $field_settings[$args["field_key"]]["type"] === 'connection' ){
+                $action = 'connected to';
+                $field_type = 'connection from';
+                if ( $field_settings[$args["field_key"]]["p2p_direction"] === "from" ){
+                    $field_type = 'connection to';
+                }
+                //find the most recent posts interacted with by the user
+                $posts_2 = $wpdb->get_results( $wpdb->prepare( "
+                    SELECT *
+                    FROM $wpdb->posts p
+                    INNER JOIN (
+                        SELECT log.object_id
+                        FROM $wpdb->dt_activity_log log
+                        INNER JOIN (
+                            SELECT max(l.histid) as maxid FROM $wpdb->dt_activity_log l
+                            WHERE l.user_id = %s  AND l.action = %s AND l.object_type = %s AND l.meta_key = %s AND l.field_type = %s
+                            group by l.object_id
+                        ) x on log.histid = x.maxid
+                    ORDER BY log.histid desc
+                    LIMIT 5
+                    ) as log
+                    ON log.object_id = p.ID
+                    WHERE p.post_type = %s AND (p.post_status = 'publish' OR p.post_status = 'private')
+
+                ", $current_user->ID, $action, $post_type, $field_settings[$args["field_key"]]["p2p_key"], $field_type, $post_type ), OBJECT );
+
+                $post_ids = array_map( function( $post ) { return $post->ID; }, $posts );
+                foreach ( $posts_2 as $p ){
+                    if ( !in_array( $p->ID, $post_ids ) ){
+                        $posts[] = $p;
+                    }
+                }
+            }
+            if ( !empty( $posts ) && sizeof( $posts ) > 2 ){
                 $send_quick_results = true;
             }
         }
+
         if ( !$send_quick_results ){
-            if ( !self::can_view_all( $post_type ) && !self::can_list_all( $post_type )) {
-                if ( $post_type === "contacts" && self::can_view_users() ) {
-                    $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID, $search_string );
-                    $query_args['meta_key'] = 'assigned_to';
-                    $query_args['meta_value'] = "user-" . $current_user->ID;
-                    $posts = $wpdb->get_results( $wpdb->prepare( "
-                        SELECT *, statusReport.meta_value as overall_status, pm.meta_value as corresponds_to_user
-                        FROM $wpdb->posts
-                        INNER JOIN $wpdb->postmeta as assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id AND assigned_to.meta_key = 'assigned_to')
-                        LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = $wpdb->posts.ID AND statusReport.meta_key = 'overall_status')
-                        LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = $wpdb->posts.ID AND pm.meta_key = 'corresponds_to_user' )
-                        WHERE ( assigned_to.meta_value = %s OR ( pm.meta_key = 'corresponds_to_user' AND pm.meta_value IS NOT NULL ) )
-                        AND $wpdb->posts.post_title LIKE %s
-                        AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
-                        ORDER BY CASE
-                            WHEN $wpdb->posts.post_title LIKE %s then 1
-                            ELSE 2
-                        END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
-                        LIMIT 0, 30
-                    ", "user-". $current_user->ID, '%' . $search_string . '%', $post_type, '%' . $search_string . '%'
-                    ), OBJECT );
-                } else {
-                    //@todo better way to get the contact records for users my contacts are shared with
-                    $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID, $search_string );
-                    $query_args['meta_key'] = 'assigned_to';
-                    $query_args['meta_value'] = "user-" . $current_user->ID;
-                    $posts = $wpdb->get_results( $wpdb->prepare( "
-                        SELECT *, statusReport.meta_value as overall_status, pm.meta_value as corresponds_to_user
-                        FROM $wpdb->posts
-                        INNER JOIN $wpdb->postmeta as assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id AND assigned_to.meta_key = 'assigned_to')
-                        LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = $wpdb->posts.ID AND statusReport.meta_key = 'overall_status')
-                        LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = $wpdb->posts.ID AND pm.meta_key = 'corresponds_to_user' )
-                        WHERE assigned_to.meta_value = %s
-                        AND $wpdb->posts.post_title LIKE %s
-                        AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
-                        ORDER BY CASE
-                            WHEN $wpdb->posts.post_title LIKE %s then 1
-                            ELSE 2
-                        END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
-                        LIMIT 0, 30
-                    ", "user-". $current_user->ID, '%' . $search_string . '%', $post_type, '%' . $search_string . '%'
-                    ), OBJECT );
-                }
-            } else {
-                $posts = $wpdb->get_results( $wpdb->prepare( "
-                    SELECT ID, post_title, pm.meta_value as corresponds_to_user, statusReport.meta_value as overall_status
-                    FROM $wpdb->posts p
-                    LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = p.ID AND pm.meta_key = 'corresponds_to_user' )
-                    LEFT JOIN $wpdb->postmeta statusReport ON ( statusReport.post_id = p.ID AND statusReport.meta_key = 'overall_status')
-                    WHERE p.ID IN ( SELECT ID FROM $wpdb->posts WHERE post_title LIKE %s )
-                    AND p.post_type = %s AND (p.post_status = 'publish' OR p.post_status = 'private')
-                    ORDER BY  CASE
-                        WHEN pm.meta_value > 0 then 1
-                        WHEN CHAR_LENGTH(%s) > 0 && p.post_title LIKE %s then 2
-                        ELSE 3
-                    END, CHAR_LENGTH(p.post_title), p.post_title
-                    LIMIT 0, 30
-                ", '%' . $search_string . '%', $post_type, $search_string, '%' . $search_string . '%'
-                ), OBJECT );
+            $query = [ "limit" => 50 ];
+            if ( !empty( $search_string)){
+                $query["name"] = [ $search_string ];
             }
+            $posts_list = self::search_viewable_post( $post_type, $query );
+            if ( is_wp_error( $posts_list ) ){
+                return $posts_list;
+            }
+            $posts = $posts_list["posts"];
         }
+
         if ( is_wp_error( $posts ) ) {
             return $posts;
         }
@@ -668,10 +653,13 @@ class DT_Posts extends Disciple_Tools_Posts {
             },
             $posts
         );
-        if ( $post_type === 'contacts' && !self::can_view_all( $post_type ) && sizeof( $posts ) < 30
+
+        //add in user results when searching contacts.
+        if ( $search_string && $post_type === 'contacts' && !self::can_view_all( $post_type )
             && !( isset( $args["include-users"] ) && $args["include-users"] === "false" )
         ) {
             $users_interacted_with = Disciple_Tools_Users::get_assignable_users_compact( $search_string );
+            $users_interacted_with = array_slice( $users_interacted_with, 0, 5 );
             foreach ( $users_interacted_with as $user ) {
                 $post_id = Disciple_Tools_Users::get_contact_for_user( $user["ID"] );
                 if ( $post_id ){
@@ -685,14 +673,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 }
             }
         }
-        foreach ( $shared_with_user as $shared ) {
-            if ( !in_array( $shared->ID, $post_ids ) ) {
-                $compact[] = [
-                    "ID" => $shared->ID,
-                    "name" => $shared->post_title
-                ];
-            }
-        }
+
+        //filter out users if requested.
         foreach ( $posts as $post ) {
             if ( isset( $args["include-users"] ) && $args["include-users"] === "false" && $post->corresponds_to_user >= 1 ){
                 continue;
@@ -704,11 +686,30 @@ class DT_Posts extends Disciple_Tools_Posts {
                 "status" => $post->overall_status
             ];
         }
+        //set user field if the contact is a user.
+        if ( $post_type === "contacts" ){
+            $post_ids_sql = dt_array_to_sql( $post_ids );
+            $user_post_ids = $wpdb->get_results( "
+                SELECT post_id, meta_value
+                FROM $wpdb->postmeta pm
+                WHERE pm.post_id in ( $post_ids_sql )
+                AND meta_key = 'corresponds_to_user'
+                ", ARRAY_A
+            );
+            foreach( $user_post_ids as $res ){
+                foreach( $compact as $index => &$p ){
+                    if ( $p["ID"] === $res["post_id"] ){
+                        $compact[$index]['user'] = true;
+                    }
+                }
+            }
+        }
 
-        return [
+        $return = [
             "total" => sizeof( $compact ),
             "posts" => array_slice( $compact, 0, 50 )
         ];
+        return apply_filters( 'dt_get_viewable_compact', $return, $post_type, $search_string, $args );
     }
 
     /**

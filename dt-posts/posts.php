@@ -74,10 +74,19 @@ class Disciple_Tools_Posts
     /**
      * @param string $post_type
      *
+     * @param $post_id
      * @return bool
      */
-    public static function can_delete( string $post_type ) {
-        return current_user_can( 'delete_any_' . $post_type );
+    public static function can_delete( string $post_type, $post_id ) {
+        $can_delete = current_user_can( 'delete_any_' . $post_type );
+        if ( !$can_delete ){
+            $contact = DT_Posts::get_post( $post_type, $post_id );
+            if ( is_wp_error( $contact ) ){
+                return false;
+            }
+            $can_delete = (int) $contact["post_author"] === get_current_user_id();
+        }
+        return apply_filters( 'dt_can_delete_permission', $can_delete, $post_id, $post_type );
     }
 
     /**
@@ -1095,8 +1104,8 @@ class Disciple_Tools_Posts
         return $options;
     }
 
-    public static function delete_post( int $post_id, string $post_type ){
-        if ( !self::can_delete( $post_type ) ) {
+    public static function delete_post( string $post_type, int $post_id ){
+        if ( !self::can_delete( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
 
@@ -1107,6 +1116,7 @@ class Disciple_Tools_Posts
         $wpdb->query( $wpdb->prepare( "DELETE p, pm FROM $wpdb->posts p left join $wpdb->postmeta pm on pm.post_id = p.ID WHERE p.ID = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE c, cm FROM $wpdb->comments c left join $wpdb->commentmeta cm on cm.comment_id = c.comment_ID WHERE c.comment_post_ID = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_activity_log WHERE object_id = %s", $post_id ) );
+        $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_post_user_meta WHERE post_id = %s", $post_id ) );
 
         return true;
     }

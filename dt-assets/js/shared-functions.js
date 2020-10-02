@@ -89,6 +89,8 @@ window.API = {
 
     update_post: (post_type, postId, postData) => makeRequestOnPosts('POST', `${post_type}/${postId}`, postData),
 
+    delete_post: (post_type, postId) => makeRequestOnPosts('DELETE', `${post_type}/${postId}`),
+
     post_comment: (post_type, postId, comment, comment_type = "comment") => makeRequestOnPosts('POST', `${post_type}/${postId}/comments`, { comment, comment_type }),
 
     delete_comment: (post_type, postId, comment_ID) => makeRequestOnPosts('DELETE', `${post_type}/${postId}/comments/${comment_ID}`),
