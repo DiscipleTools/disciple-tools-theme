@@ -1190,7 +1190,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             $tile_options[$post_type] = [];
         }
         $tile_options[$post_type] = self::array_merge_recursive_distinct( $sections, $tile_options[$post_type] );
-        $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type );
+//        $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type ); // conflicts with plugin tiles that check contact fields
         foreach ( $sections as $section_id ){
             if ( !isset( $tile_options[$post_type][$section_id] ) ) {
                 $tile_options[$post_type][$section_id] = [];
