@@ -391,9 +391,12 @@ class DT_Contacts_Access {
                 return $sections;
             }
         }
-        if ( $post_type === "contacts"){
-            $sections['followup'] =[
-                "label" => "Follow Up"
+        if ( $post_type === "contacts" ){
+            $sections['followup'] = [
+                "label" => "Follow Up",
+                "display_for" => [
+                    "type" => [ "access" ],
+                ]
             ];
         }
         return $sections;
@@ -844,7 +847,7 @@ class DT_Contacts_Access {
 
             $filters["tabs"][] = [
                 "key" => "assigned_to_me",
-                "label" => sprintf( _x( "My Access %s", 'My records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
+                "label" => sprintf( _x( "My Follow-Up %s", 'My records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
                 "count" => $total_my,
                 "order" => 20
             ];
@@ -865,7 +868,7 @@ class DT_Contacts_Access {
             $filters["filters"][] = [
                 'ID' => 'my_all',
                 'tab' => 'all',
-                'name' => sprintf( _x( "My Access %s", 'My records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
+                'name' => sprintf( _x( "My Follow-Up %s", 'My records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
                 'query' => [
                     [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
                     'overall_status' => [ '-closed' ],
@@ -951,7 +954,7 @@ class DT_Contacts_Access {
                 }
                 $filters["tabs"][] = [
                     "key" => "all_dispatch",
-                    "label" => sprintf( _x( "All Access %s", 'All records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
+                    "label" => sprintf( _x( "All Follow-Up %s", 'All records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
                     "count" => $total_all,
                     "order" => 10
                 ];

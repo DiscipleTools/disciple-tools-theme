@@ -40,7 +40,8 @@ class DT_Contacts_User {
                 'type' => 'number',
                 'default' => 0,
                 'section' => 'misc',
-                'customizable' => false
+                'customizable' => false,
+                'hidden' => true
             ];
         }
 

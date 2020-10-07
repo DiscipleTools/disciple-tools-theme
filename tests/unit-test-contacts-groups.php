@@ -433,8 +433,16 @@ class PostsTest extends WP_UnitTestCase {
 
         $contact = DT_Posts::create_post( "contacts", ["name" => 'x', "post_date" => "2003-01-02" ], true, false );
         $res = DT_Posts::search_viewable_post( "contacts", [ "post_date" => [ "start" => "2003-01-02", "end" => "2003-01-02" ] ], false );
-        $this->assertEquals( $contact["ID"], $res["posts"][0]->ID );
         $this->assertCount( 1, $res["posts"] );
+        $this->assertEquals( $contact["ID"], $res["posts"][0]->ID );
+        $contact = DT_Posts::create_post( "contacts", ["name" => 'x', "post_date" => "2002-01-02" ], true, false );
+        $res = DT_Posts::search_viewable_post( "contacts", [ "name" => "x", [ "post_date" => [ "start" => "2002-01-02", "end" => "2002-01-02" ] ] ], false );
+        $this->assertCount( 1, $res["posts"] );
+        $this->assertEquals( $contact["ID"], $res["posts"][0]->ID );
+        $contact = DT_Posts::create_post( "contacts", ["name" => 'x', "baptism_date" => "2003-01-02" ], true, false );
+        $res = DT_Posts::search_viewable_post( "contacts", [ "baptism_date" => [ "start" => "2003-01-02", "end" => "2003-01-02" ] ], false );
+        $this->assertCount( 1, $res["posts"] );
+        $this->assertEquals( $contact["ID"], $res["posts"][0]->ID );
         //search for posts with no values set for field x
         $res = DT_Posts::search_viewable_post( "contacts", [ "baptism_date" => [] ], false );
         $this->assertContains( $empty_contact["ID"], self::map_ids( $res["posts"] ) );
@@ -476,6 +484,10 @@ class PostsTest extends WP_UnitTestCase {
         $phone = DT_Posts::search_viewable_post( "contacts", [ "contact_phone" => [ "79845678" ] ], false );
         $this->assertContains( $phone_contact["ID"], self::map_ids( $phone["posts"] ) );
         $phone = DT_Posts::search_viewable_post( "contacts", [ "contact_phone" => [ "-798456780" ] ], false );
+        $this->assertNotContains( $sample_contact["ID"], self::map_ids( $phone["posts"] ) );
+        $phone = DT_Posts::search_viewable_post( "contacts", [ "contact_phone" => [ "^798456780" ] ], false );
+        $this->assertContains( $sample_contact["ID"], self::map_ids( $phone["posts"] ) );
+        $phone = DT_Posts::search_viewable_post( "contacts", [ "contact_phone" => [ "^79845678" ] ], false );
         $this->assertNotContains( $sample_contact["ID"], self::map_ids( $phone["posts"] ) );
         //search for posts with no values set for field x
         $res = DT_Posts::search_viewable_post( "contacts", [ "contact_phone" => [] ], false );
@@ -520,6 +532,11 @@ class PostsTest extends WP_UnitTestCase {
         $res = DT_Posts::search_viewable_post( "contacts", [ "nickname" => [ "-build", "bob" ] ], false );
         $this->assertContains( $nick["ID"], self::map_ids( $res["posts"] ) );
         $this->assertCount( 1, $res["posts"] );
+        $res = DT_Posts::search_viewable_post( "contacts", [ "nickname" => [ "^build" ] ], false );
+        $this->assertCount( 0, $res["posts"] );
+        $res = DT_Posts::search_viewable_post( "contacts", [ "nickname" => [ "^Bob the teacher" ] ], false );
+        $this->assertCount( 1, $res["posts"] );
+        $this->assertContains( $nick["ID"], self::map_ids( $res["posts"] ) );
         //search for posts with no values set for field x
         $res = DT_Posts::search_viewable_post( "contacts", [ "nickname" => [] ], false );
         $this->assertContains( $empty_contact["ID"], self::map_ids( $res["posts"] ) );
@@ -527,6 +544,19 @@ class PostsTest extends WP_UnitTestCase {
         //bad request
         $res = DT_Posts::search_viewable_post( "contacts", [ "nickname" => "Bob" ], false );
         $this->assertWPError( $res );
+        //name
+        $res = DT_Posts::search_viewable_post( "contacts", [ "name" => [ "Bob" ] ], false );
+        $this->assertContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
+        $res = DT_Posts::search_viewable_post( "contacts", [ "name" => "Bob" ], false );
+        $this->assertContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
+        $res = DT_Posts::search_viewable_post( "contacts", [ [ "name" => "Bob" ] ], false );
+        $this->assertContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
+        $res = DT_Posts::search_viewable_post( "contacts", [ [ "name" => [ "Bob" ] ] ], false );
+        $this->assertContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
+        $res = DT_Posts::search_viewable_post( "contacts", [ "name" => [ "^Bo" ] ], false );
+        $this->assertCount( 0, $res["posts"] );
+        $res = DT_Posts::search_viewable_post( "contacts", [ "name" => [ "^Bob" ] ], false );
+        $this->assertContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
 
 
         /**
@@ -576,7 +606,7 @@ class PostsTest extends WP_UnitTestCase {
         /**
          * Default fields
          */
-        $contact = DT_Posts::create_post( "contacts", ["name" => 'dh39ent' ], true, false );
+        $contact = DT_Posts::create_post( "contacts", [ "name" => 'dh39ent' ], true, false );
         $res = DT_Posts::search_viewable_post( "contacts", [ "name" => [ "dh39ent" ] ], false );
         $this->assertEquals( $contact["ID"], $res["posts"][0]->ID );
         $this->assertCount( 1, $res["posts"] );

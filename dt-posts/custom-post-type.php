@@ -10,6 +10,7 @@ class Disciple_Tools_Post_Type_Template {
     public $singular;
     public $plural;
     public $search_items;
+    private $cache = [];
 
     public function __construct( string $post_type, string $singular, string $plural ) {
         $this->post_type = $post_type;
@@ -189,6 +190,9 @@ class Disciple_Tools_Post_Type_Template {
 
     public function dt_get_post_type_settings( $settings, $post_type ){
         if ( $post_type === $this->post_type ){
+            if ( isset( $this->cache[$post_type] )){
+                return $this->cache[$post_type];
+            }
             $fields = $this->get_custom_fields_settings();
             $settings = [
                 'fields' => $fields,
@@ -200,9 +204,10 @@ class Disciple_Tools_Post_Type_Template {
                 } ) ),
                 'label_singular' => $this->singular,
                 'label_plural' => $this->plural,
-                'post_type' => $this->post_type
+                'post_type' => $this->post_type,
             ];
         }
+        $this->cache[$post_type] = $settings;
         return $settings;
     }
 

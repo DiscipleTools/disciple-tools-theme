@@ -79,7 +79,7 @@ declare(strict_types=1);
                 <div class="bordered-box">
                     <div >
                         <span class="section-header" style="display: inline-block">
-                            <?php esc_html_e( 'Records List', 'disciple_tools' )?>
+                            <?php echo esc_html( sprintf( _x( '%s List', 'Contacts List', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_plural"] ) ) ?>
                         </span>
                         <span id="list-loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
                         <span style="display: inline-block" class="filter-result-text"></span>
@@ -109,11 +109,14 @@ declare(strict_types=1);
                             </ul>
                         </div>
                         <span style="display:inline-block">
-                            <button class="button clear" id="choose_fields_to_show_in_table" style="margin:0; padding:0"><?php esc_html_e( 'Columns', 'disciple_tools' ); ?></button>
+                            <button class="button clear" id="choose_fields_to_show_in_table" style="margin:0; padding:0">
+                                <?php esc_html_e( 'Fields', 'disciple_tools' ); ?>
+                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>"/>
+                            </button>
                         </span>
                     </div>
                     <div id="list_column_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
-                        <p style="font-weight:bold"><?php esc_html_e( 'Choose which columns to display', 'disciple_tools' ); ?></p>
+                        <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
                         <?php
                         $fields_to_show_in_table = [];
                         if ( isset( $_COOKIE["fields_to_show_in_table"] ) ) {
@@ -121,8 +124,15 @@ declare(strict_types=1);
                             if ( $fields_to_show_in_table ){
                                 $fields_to_show_in_table = dt_sanitize_array_html( $fields_to_show_in_table );
                             }
-                        } ?>
-                        <ul class="ul-no-bullets" style="column-count:4">
+                        }
+
+                        //order fields alphabetically by Name
+                        uasort( $post_settings["fields"], function ( $a, $b ){
+                            return $a['name'] <=> $b['name'];
+                        });
+
+                        ?>
+                        <ul class="ul-no-bullets" style="column-count:4; margin-bottom: 10px">
                         <?php foreach ( $post_settings["fields"] as $field_key => $field_values ):
                             if ( !empty( $field_values["hidden"] )){
                                 continue;
@@ -139,7 +149,8 @@ declare(strict_types=1);
                             </li>
                         <?php endforeach; ?>
                         </ul>
-                        <button class="button" id="save_column_choices" style="display: block"><?php esc_html_e( 'Apply column selection', 'disciple_tools' ); ?></button>
+                        <button class="button" id="save_column_choices" style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
+                        <a class="button clear" id="reset_column_choices" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
                     </div>
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
 

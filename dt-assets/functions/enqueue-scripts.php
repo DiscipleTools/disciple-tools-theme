@@ -297,21 +297,22 @@ function dt_site_scripts() {
         );
     }
 
-    $translations = [
-        'save' => __( 'Save', 'disciple_tools' ),
-        'edit' => __( 'Edit', 'disciple_tools' ),
-        'delete' => __( 'Delete', 'disciple_tools' ),
-        'txt_info' => _x( 'Showing _START_ of _TOTAL_', 'just copy as they are: _START_ and _TOTAL_', 'disciple_tools' ),
-        'sorting_by' => __( 'Sorting By', 'disciple_tools' ),
-        'creation_date' => __( 'Creation Date', 'disciple_tools' ),
-        'date_modified' => __( 'Date Modified', 'disciple_tools' ),
-        'empty_custom_filters' => __( 'No filters, create one below', 'disciple_tools' ),
-        'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' )
-    ];
 
     //list page
     if ( in_array( $url_path, $post_types ) ){
         $post_type = $url_path;
+        $translations = [
+            'save' => __( 'Save', 'disciple_tools' ),
+            'edit' => __( 'Edit', 'disciple_tools' ),
+            'delete' => __( 'Delete', 'disciple_tools' ),
+            'txt_info' => _x( 'Showing _START_ of _TOTAL_', 'just copy as they are: _START_ and _TOTAL_', 'disciple_tools' ),
+            'sorting_by' => __( 'Sorting By', 'disciple_tools' ),
+            'creation_date' => __( 'Creation Date', 'disciple_tools' ),
+            'date_modified' => __( 'Date Modified', 'disciple_tools' ),
+            'empty_custom_filters' => __( 'No filters, create one below', 'disciple_tools' ),
+            'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' ),
+            'all_records' => sprintf( _x( 'All %s', 'Contacts List', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_plural"] )
+        ];
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
         dt_theme_enqueue_script( 'drag-n-drop-table-columns', 'dt-core/dependencies/drag-n-drop-table-columns.js', array( 'jquery' ), true );
         dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/js/modular-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js', 'drag-n-drop-table-columns' ), true );
@@ -322,27 +323,5 @@ function dt_site_scripts() {
             'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
         ) );
     }
-
-    add_action( 'wp_footer', function() {
-        if ( WP_DEBUG ){
-            return;
-        }
-        ?>
-        <!-- BEGIN GROOVE WIDGET CODE -->
-        <script id="grv-widget">
-            /*<![CDATA[*/
-            window.groove = window.groove || {}; groove.widget = function(){ groove._widgetQueue.push(Array.prototype.slice.call(arguments)); }; groove._widgetQueue = [];
-            groove.widget('setWidgetId', 'fbdef482-8bc6-b65d-1f25-bef642edf597');
-            <?php if (is_user_logged_in()): ?>
-            groove.widget('setCustomer', {email: "<?php echo esc_js( wp_get_current_user()->user_email ); ?>"});
-            <?php endif; ?>
-            !function(g,r,v){var a,n,c=r.createElement("iframe");(c.frameElement||c).style.cssText="width: 0; height: 0; border: 0",c.title="",c.role="presentation",c.src="javascript:false",r.body.appendChild(c);try{a=c.contentWindow.document}catch(i){n=r.domain;var b=["javascript:document.write('<he","ad><scri","pt>document.domain=","\"",n,"\";</scri","pt></he","ad><bo","dy></bo","dy>')"];c.src=b.join(""),a=c.contentWindow.document}var d="https:"==r.location.protocol?"https://":"http://",s="http://groove-widget-production.s3.amazonaws.com".replace("http://",d);c.className="grv-widget-tag",a.open()._l=function(){n&&(this.domain=n);var t=this.createElement("script");t.type="text/javascript",t.charset="utf-8",t.async=!0,t.src=s+"/loader.js",this.body.appendChild(t)};var p=["<bo",'dy onload="document._l();">'];a.write(p.join("")),a.close()}(window,document)
-            /*]]>*/
-        </script>
-        <!-- END GROOVE WIDGET CODE -->
-        <?php
-    } );
-
-
 }
 add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );

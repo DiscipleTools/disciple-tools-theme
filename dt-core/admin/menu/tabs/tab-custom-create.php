@@ -137,8 +137,7 @@ class Disciple_Tools_Tab_Custom_Create extends Disciple_Tools_Abstract_Menu_Base
         $fields = DT_Posts::get_post_field_settings( $post_type, false );
 
         $tile_options = DT_Posts::get_post_tiles( $post_type );
-        $tile_options["details"] = [ "label" => "Details" ];
-        $tile_options["no_tile"] = [ "label" => "Other Fields" ];
+
         foreach ( $fields as $field_key => &$field_value ) {
             if ( !isset( $field_value["tile"] ) && ( !isset( $field_value["hidden"] ) || $field_value["hidden"] === false ) ){
                 $field_value['tile'] = "no_tile";

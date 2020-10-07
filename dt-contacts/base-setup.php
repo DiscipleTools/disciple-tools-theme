@@ -53,11 +53,6 @@ class DT_Contacts_Base {
             "dt_admin" => __( 'Disciple.Tools Admin', 'disciple_tools' ),
             "strategist" => __( 'Strategist', 'disciple_tools' ),
         ];
-        $roles["multiplier"] = [
-            "label" => __( 'Multiplier', 'disciple_tools' ),
-            "description" => "Interacts with Contacts and Groups",
-            "permissions" => []
-        ];
         foreach ( $roles as $role => $label ){
             if ( !isset( $expected_roles[$role] ) ){
                 $expected_roles[$role] = [
@@ -66,6 +61,11 @@ class DT_Contacts_Base {
                 ];
             }
         }
+        $roles["multiplier"] = [
+            "label" => __( 'Multiplier', 'disciple_tools' ),
+            "description" => "Interacts with Contacts and Groups",
+            "permissions" => []
+        ];
         // Multiplier
         $expected_roles["multiplier"]["permissions"]['read'] = true; //allow access to wp-admin to set 2nd factor auth settings per user.
         $expected_roles["multiplier"]["permissions"]['access_' . $this->post_type] = true;

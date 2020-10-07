@@ -7,7 +7,9 @@
 /**
  * make sure roles and permissions conform to the values set by the modules
  */
-add_action( 'init', function (){
+add_action( 'init', "dt_setup_roles_and_permissions" );
+
+function dt_setup_roles_and_permissions(){
     $expected_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
     $role_keys = dt_multi_role_get_role_slugs();
     foreach ( $expected_roles as $role_key => $role_values ){
@@ -47,4 +49,4 @@ add_action( 'init', function (){
             remove_role( $role_key );
         }
     }
-} );
+}

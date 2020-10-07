@@ -80,6 +80,11 @@
       let filterId = checked.data("id")
       current_filter = _.find(custom_filters, {ID:filterId})
       current_filter.type = current_view
+    } else if ( current_view === "everything" ){
+      current_filter = {
+        query: {},
+        labels: [{name: _.escape(list_settings.translations.all_records)}]
+      }
     } else {
       current_filter = _.find(list_settings.filters.filters, {ID:filter_id}) || _.find(list_settings.filters.filters, {ID:filter_id.toString()}) || current_filter
       current_filter.type = 'default'
@@ -99,7 +104,12 @@
     }
     let selected_tab = $('.accordion-item.is-active').data('id');
     let selected_filter = $(".js-list-view:checked").data('id')
-    let html = ``;
+    let html = `
+      <label>
+        <input type="radio" name="view" value="everything" data-id="everything" class="js-list-view" autocomplete="off">
+        <span>${_.escape(list_settings.translations.all_records)}</span>
+      </label>
+    `;
     list_settings.filters.tabs.forEach( tab =>{
       html += `
       <li class="accordion-item" data-accordion-item data-id="${_.escape(tab.key)}">
@@ -298,6 +308,12 @@
     window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type )
     window.location.reload()
   })
+  $('#reset_column_choices').on('click', function(){
+    fields_to_show_in_table = []
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type )
+    window.location.reload()
+  })
+
 
   $('#records-table').dragableColumns({
     drag: true,
