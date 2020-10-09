@@ -388,7 +388,7 @@ msgstr "Dodeljeno za"
 msgid "Social Media"
 msgstr "Družabna omrežja"
 
-#: dt-contacts/contacts-post-type.php:948
+#: dt-contacts/contacts-post-type.php:949
 #: dt-core/admin/config-site-defaults.php:511
 #: dt-groups/groups-post-type.php:615 template-settings.php:131
 msgid "Address"
@@ -756,7 +756,7 @@ msgstr "Viri"
 msgid "Un-Follow"
 msgstr "Prenehaj slediti"
 
-#: dt-contacts/contacts-post-type.php:936
+#: dt-contacts/contacts-post-type.php:937
 #: dt-core/admin/config-site-defaults.php:499 template-settings.php:120
 msgid "Phone"
 msgstr "Telefon"
@@ -771,14 +771,14 @@ msgstr "Doma"
 
 #: dt-assets/parts/modals/modal-help.php:135
 #: dt-assets/parts/modals/modal-help.php:275
-#: dt-contacts/contacts-post-type.php:985
+#: dt-contacts/contacts-post-type.php:986
 #: dt-core/admin/config-site-defaults.php:515
 #: dt-core/admin/config-site-defaults.php:525 single-contacts.php:330
 #: single-groups.php:195 template-settings.php:153
 msgid "Other"
 msgstr "Drugo"
 
-#: dt-contacts/contacts-post-type.php:942
+#: dt-contacts/contacts-post-type.php:943
 #: dt-core/admin/config-site-defaults.php:303
 #: dt-core/admin/config-site-defaults.php:503 dt-users/user-management.php:156
 #: single-contacts.php:567 template-contacts-new.php:44
@@ -787,23 +787,23 @@ msgid "Email"
 msgstr "E-pošta"
 
 #: dt-contacts/contacts-post-type.php:481
-#: dt-contacts/contacts-post-type.php:954
-#: dt-contacts/contacts-post-type.php:957
+#: dt-contacts/contacts-post-type.php:955
+#: dt-contacts/contacts-post-type.php:958
 msgid "Facebook"
 msgstr "Facebook"
 
 #: dt-contacts/contacts-post-type.php:485
-#: dt-contacts/contacts-post-type.php:964
+#: dt-contacts/contacts-post-type.php:965
 msgid "Twitter"
 msgstr "Twitter"
 
-#: dt-contacts/contacts-post-type.php:970
-#: dt-contacts/contacts-post-type.php:972
+#: dt-contacts/contacts-post-type.php:971
+#: dt-contacts/contacts-post-type.php:973
 msgid "Instagram"
 msgstr "Instagram"
 
-#: dt-contacts/contacts-post-type.php:978
-#: dt-contacts/contacts-post-type.php:980
+#: dt-contacts/contacts-post-type.php:979
+#: dt-contacts/contacts-post-type.php:981
 msgid "Skype"
 msgstr "Skype"
 
@@ -1213,11 +1213,11 @@ msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "Izbrisano %1$s: %2$s"
 
-#: dt-posts/dt-posts.php:1009
+#: dt-posts/dt-posts.php:1010
 msgid "Record not deleted."
 msgstr "Zapis ni izbrisan."
 
-#: dt-posts/dt-posts.php:1106
+#: dt-posts/dt-posts.php:1107
 msgid "Post already shared with user."
 msgstr "Objava je že v skupni rabi z uporabnikom."
 
@@ -4427,7 +4427,7 @@ msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s združen v %2$s v ta zapis"
 
-#: dt-posts/dt-posts.php:880
+#: dt-posts/dt-posts.php:881
 msgid "D.T System"
 msgstr "Sistem D. T."
 

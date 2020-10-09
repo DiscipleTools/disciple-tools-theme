@@ -386,7 +386,7 @@ msgstr "Subasignado a"
 msgid "Social Media"
 msgstr "Redes Sociales"
 
-#: dt-contacts/contacts-post-type.php:948
+#: dt-contacts/contacts-post-type.php:949
 #: dt-core/admin/config-site-defaults.php:511
 #: dt-groups/groups-post-type.php:615 template-settings.php:131
 msgid "Address"
@@ -754,7 +754,7 @@ msgstr "Fuentes"
 msgid "Un-Follow"
 msgstr "Dejar de Seguir"
 
-#: dt-contacts/contacts-post-type.php:936
+#: dt-contacts/contacts-post-type.php:937
 #: dt-core/admin/config-site-defaults.php:499 template-settings.php:120
 msgid "Phone"
 msgstr "Teléfono"
@@ -769,14 +769,14 @@ msgstr "Casa"
 
 #: dt-assets/parts/modals/modal-help.php:135
 #: dt-assets/parts/modals/modal-help.php:275
-#: dt-contacts/contacts-post-type.php:985
+#: dt-contacts/contacts-post-type.php:986
 #: dt-core/admin/config-site-defaults.php:515
 #: dt-core/admin/config-site-defaults.php:525 single-contacts.php:330
 #: single-groups.php:195 template-settings.php:153
 msgid "Other"
 msgstr "Otro"
 
-#: dt-contacts/contacts-post-type.php:942
+#: dt-contacts/contacts-post-type.php:943
 #: dt-core/admin/config-site-defaults.php:303
 #: dt-core/admin/config-site-defaults.php:503 dt-users/user-management.php:156
 #: single-contacts.php:567 template-contacts-new.php:44
@@ -785,23 +785,23 @@ msgid "Email"
 msgstr "Correo"
 
 #: dt-contacts/contacts-post-type.php:481
-#: dt-contacts/contacts-post-type.php:954
-#: dt-contacts/contacts-post-type.php:957
+#: dt-contacts/contacts-post-type.php:955
+#: dt-contacts/contacts-post-type.php:958
 msgid "Facebook"
 msgstr "Facebook"
 
 #: dt-contacts/contacts-post-type.php:485
-#: dt-contacts/contacts-post-type.php:964
+#: dt-contacts/contacts-post-type.php:965
 msgid "Twitter"
 msgstr "Twitter"
 
-#: dt-contacts/contacts-post-type.php:970
-#: dt-contacts/contacts-post-type.php:972
+#: dt-contacts/contacts-post-type.php:971
+#: dt-contacts/contacts-post-type.php:973
 msgid "Instagram"
 msgstr "Instagram"
 
-#: dt-contacts/contacts-post-type.php:978
-#: dt-contacts/contacts-post-type.php:980
+#: dt-contacts/contacts-post-type.php:979
+#: dt-contacts/contacts-post-type.php:981
 msgid "Skype"
 msgstr "Skype"
 
@@ -1212,11 +1212,11 @@ msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "Eliminado %1$s: %2$s"
 
-#: dt-posts/dt-posts.php:1009
+#: dt-posts/dt-posts.php:1010
 msgid "Record not deleted."
 msgstr "Registro no ha sido borrado."
 
-#: dt-posts/dt-posts.php:1106
+#: dt-posts/dt-posts.php:1107
 msgid "Post already shared with user."
 msgstr "Publicación ya ha sido compartida con usuario."
 
@@ -4380,95 +4380,95 @@ msgstr "Mi árbol de grupos"
 
 #: dt-assets/functions/details-bar.php:58
 msgid "See duplicates"
-msgstr ""
+msgstr "Ver duplicados"
 
 #: dt-assets/functions/enqueue-scripts.php:254
 msgid "Dismissed Duplicates"
-msgstr ""
+msgstr "Duplicados despedidos"
 
 #: dt-assets/functions/enqueue-scripts.php:255
 msgid "Duplicates on: %s"
-msgstr ""
+msgstr "Duplicados en: %s"
 
 #: dt-assets/parts/merge-details.php:19
 msgid "No duplicates found."
-msgstr ""
+msgstr "No se encontraron duplicados."
 
 #: dt-contacts/contacts-post-type.php:712
 msgid "Languages"
-msgstr ""
+msgstr "Idiomas"
 
 #: dt-contacts/contacts-transfer.php:213
 msgid "This contact was transferred to %s for further follow-up."
-msgstr ""
+msgstr "Este contacto fue transferido a %s para más seguimiento."
 
 #: dt-contacts/contacts.php:1098
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
-msgstr ""
+msgstr "Este archivo es un duplicado y se unió a %2$s"
 
 #: dt-contacts/contacts.php:1102 dt-contacts/contacts.php:1285
 msgid "Duplicate Checker"
-msgstr ""
+msgstr "Inspector de duplicados"
 
 #: dt-contacts/contacts.php:1111
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
-msgstr ""
+msgstr "%1$s unió %2$s a este archivo"
 
-#: dt-posts/dt-posts.php:880
+#: dt-posts/dt-posts.php:881
 msgid "D.T System"
-msgstr ""
+msgstr "Sistema D.T"
 
 #: dt-users/user-management.php:152
 msgid "View New User"
-msgstr ""
+msgstr "Ver Nuevo Usuario"
 
 #: dt-users/user-management.php:162
 msgid "This contact is already a user."
-msgstr ""
+msgstr "Este contacto ya es un usuario."
 
 #: dt-users/user-management.php:163
 msgid "View User"
-msgstr ""
+msgstr "Ver Usuario"
 
 #: single-groups.php:212
 msgid "Search Tags"
-msgstr ""
+msgstr "Buscar Etiquetas"
 
 #: single-groups.php:453
 msgid "tag"
-msgstr ""
+msgstr "etiqueta"
 
 #: template-settings.php:43 template-settings.php:206
 msgid "Multiplier Preferences"
-msgstr ""
+msgstr "Preferencias para multiplicadores"
 
 #: template-settings.php:214 template-settings.php:219
 msgid "Locations you are willing to be responsible for"
-msgstr ""
+msgstr "Ubicaciones por los que estás dispuesto a ser responsables"
 
 #: template-settings.php:242
 msgid "Languages you are comfortable speaking"
-msgstr ""
+msgstr "Idiomas que se sienta cómodo hablando"
 
 #: template-settings.php:262
 msgid "People Groups you wish to serve"
-msgstr ""
+msgstr "Grupos Étnicos que desean servir"
 
 #: template-settings.php:284
 msgid "Availability to receive contacts from the Dispatcher"
-msgstr ""
+msgstr "Disponibilidad para recibir los contactos del Despachador"
 
 #: template-settings.php:514
 msgid "System Language"
-msgstr ""
+msgstr "Idioma del sistema"
 
 #: template-view-duplicates.php:35
 msgid "Exact matches on: %s"
-msgstr ""
+msgstr "Coincidencias exactas sobre: %s"
 
 #: template-view-duplicates.php:49
 msgid "Dismiss Row"
-msgstr ""
+msgstr "Despedir Fila"
 
