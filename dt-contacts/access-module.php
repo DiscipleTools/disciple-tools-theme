@@ -35,7 +35,7 @@ class DT_Contacts_Access {
         add_filter( "dt_post_update_fields", [ $this, "dt_post_update_fields" ], 10, 4 );
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 20, 4 );
         add_action( "dt_post_created", [ $this, "dt_post_created" ], 10, 3 );
-        add_filter( "dt_post_create_fields", [ $this, "dt_post_create_fields" ], 10, 2 );
+        add_filter( "dt_post_create_fields", [ $this, "dt_post_create_fields" ], 5, 2 );
         add_action( "dt_post_updated", [ $this, "dt_post_updated" ], 10, 5 );
 
     }
@@ -703,10 +703,14 @@ class DT_Contacts_Access {
         if ( $post_type !== "contacts" ){
             return $fields;
         }
+        if ( !isset( $fields["type"] ) && isset( $fields["sources"] ) ){
+            if ( !empty( $fields["sources"] ) ){
+                $fields["type"] = "access";
+            }
+        }
         if ( !isset( $fields["type"] ) || $fields["type"] !== "access" ){
             return $fields;
         }
-        //@todo still need?
         if ( !isset( $fields["seeker_path"] ) ){
             $fields["seeker_path"] = "none";
         }

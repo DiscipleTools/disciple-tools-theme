@@ -74,11 +74,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             /* Site Notifications */
 
             /* Update Required */
-            //@todo reimplement
-//            $this->box( 'top', 'Update Needed Triggers' );
-//            $this->process_update_required();
-//            $this->update_required_options();
-//            $this->box( 'bottom' );
+            $this->box( 'top', 'Update Needed Triggers' );
+            $this->process_update_required();
+            $this->update_required_options();
+            $this->box( 'bottom' );
             /* Site Notifications */
 
             /* Update Required */

@@ -13,18 +13,19 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
         get_template_part( "403" );
         die();
     }
+    $current_user_id = get_current_user_id();
     $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
     $dt_post = DT_Posts::get_post( $post_type, $post_id );
     $tiles = DT_Posts::get_post_tiles( $post_type );
+    $following = DT_Posts::get_users_following_post( $post_type, $post_id );
     get_header();
     dt_print_details_bar(
         true,
-        false,
-        false,
-        $post_type === "contacts" && ( $dt_post["type"] ?? "" ) === "access",
-        false,
-        false,
-        [],
+        true,
+        current_user_can( "assign_any_contacts" ),
+        isset( $dt_post["requires_update"] ) && $dt_post["requires_update"] === true,
+        in_array( $current_user_id, $following ),
+        isset( $dt_post["assigned_to"]["id"] ) ? $dt_post["assigned_to"]["id"] == $current_user_id : false,
         true
     );
     ?>
@@ -34,31 +35,48 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
             <?php do_action( 'dt_record_top_full_with', $post_type, $dt_post ) ?>
 
             <main id="main" class="large-7 medium-12 small-12 cell" role="main" style="padding:0">
+
                 <div class="cell grid-y grid-margin-y">
-                        <?php $type_color = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ?
-                            $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] : "#000000";
-                        ?>
-                        <section class="cell" id="contact-type">
-                            <div class="bordered-box detail-notification-box" style="color:black; border: 2px solid <?php echo esc_html( $type_color ); ?>">
-                                <?php $picture = apply_filters( 'dt_record_picture', null, $post_type, $post_id );
-                                if ( !empty( $picture ) ) : ?>
-                                    <img src="<?php echo esc_html( $picture )?>" style="height:50px; vertical-align:middle">
-                                <?php else : ?>
-                                    <i class="fi-torso large" style="padding-bottom: 1.2rem; color:<?php echo esc_html( $type_color ); ?>"></i>
-                                <?php endif; ?>
-                                <span id="title" style="margin:0 10px" contenteditable="true" class="title dt_contenteditable item-details-header"><?php the_title_attribute(); ?></span>
-                                <?php do_action( 'dt_post_record_name_tagline' ); ?>
-                                <?php if ( isset( $dt_post["type"]["label"] ) ) : ?>
-                                <a data-open="contact-type-modal" style="font-size: 10px"><?php echo esc_html( $dt_post["type"]["label"] ?? "" )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
-                                <?php endif; ?>
-                                <span style="font-size: 10px">
-                                    <?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), dt_format_date( $dt_post["post_date"] ) ) );
-                                    if ( $dt_post["post_author_display_name"] ):
-                                        echo esc_html( ' ' . sprintf( _x( 'by %s', '(record created) by multiplier1', 'disciple_tools' ), $dt_post["post_author_display_name"] ) );
-                                    endif; ?>
-                                </span>
-                            </div>
-                        </section>
+
+
+                    <!-- Requires update block -->
+                    <section class="cell small-12 update-needed-notification"
+                             style="display: <?php echo esc_html( ( isset( $dt_post['requires_update'] ) && $dt_post['requires_update'] === true ) ? "block" : "none" ) ?> ">
+                        <div class="bordered-box detail-notification-box" style="background-color:#F43636">
+                            <h4>
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/>
+                                <?php echo esc_html( sprintf( __( 'This %s needs an update.', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?>
+                            </h4>
+                            <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?></p>
+                        </div>
+                    </section>
+
+
+                    <!-- Name section -->
+                    <?php $type_color = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ?
+                        $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] : "#000000";
+                    ?>
+                    <section class="cell" id="contact-type">
+                        <div class="bordered-box detail-notification-box" style="color:black; border: 2px solid <?php echo esc_html( $type_color ); ?>">
+                            <?php $picture = apply_filters( 'dt_record_picture', null, $post_type, $post_id );
+                            if ( !empty( $picture ) ) : ?>
+                                <img src="<?php echo esc_html( $picture )?>" style="height:50px; vertical-align:middle">
+                            <?php else : ?>
+                                <i class="fi-torso large" style="padding-bottom: 1.2rem; color:<?php echo esc_html( $type_color ); ?>"></i>
+                            <?php endif; ?>
+                            <span id="title" style="margin:0 10px" contenteditable="true" class="title dt_contenteditable item-details-header"><?php the_title_attribute(); ?></span>
+                            <?php do_action( 'dt_post_record_name_tagline' ); ?>
+                            <?php if ( isset( $dt_post["type"]["label"] ) ) : ?>
+                            <a data-open="contact-type-modal" style="font-size: 10px"><?php echo esc_html( $dt_post["type"]["label"] ?? "" )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
+                            <?php endif; ?>
+                            <span style="font-size: 10px">
+                                <?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), dt_format_date( $dt_post["post_date"] ) ) );
+                                if ( $dt_post["post_author_display_name"] ):
+                                    echo esc_html( ' ' . sprintf( _x( 'by %s', '(record created) by multiplier1', 'disciple_tools' ), $dt_post["post_author_display_name"] ) );
+                                endif; ?>
+                            </span>
+                        </div>
+                    </section>
 
 
 
@@ -352,6 +370,8 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
             </button>
         </div>
     </div>
+
+    <?php do_action( "dt_record_footer", $post_type, $post_id ) ?>
 
     <?php get_footer();
 } )();

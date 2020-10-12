@@ -243,7 +243,7 @@ jQuery(document).ready(function($) {
       searchOnFocus: true,
       template: window.TYPEAHEADS.contactListRowTemplate,
       matcher: function (item) {
-        return item.ID !== post_id
+        return parseInt(item.ID) !== parseInt(post_id)
       },
       source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key:field_id}),
       display: "name",
@@ -647,36 +647,36 @@ jQuery(document).ready(function($) {
   })
 
   function resetDetailsFields(){
-  _.forOwn( field_settings, (field_options, field_key)=>{
-    if ( field_options.tile === 'details' && !field_options.hidden && post[field_key]){
-      if ( field_options.only_for_types && ( post["type"] && !field_options.only_for_types.includes(post["type"].key) ) ){
-        return
+    _.forOwn( field_settings, (field_options, field_key)=>{
+      if ( field_options.tile === 'details' && !field_options.hidden && post[field_key]){
+        if ( field_options.only_for_types && ( post["type"] && !field_options.only_for_types.includes(post["type"].key) ) ){
+          return
+        }
+        let field_value = _.get( post, field_key, false )
+        let values_html = ``
+        if ( field_options.type === 'text' ){
+          values_html = _.escape( field_value )
+        } else if ( field_options.type === 'date' ){
+          values_html = _.escape( field_value.formatted )
+        } else if ( field_options.type === 'key_select' ){
+          values_html = _.escape( field_value.label )
+        } else if ( field_options.type === 'multi_select' ){
+          values_html = field_value.map(v=>{
+            return `${_.escape( _.get( field_options, `default[${v}].label`, v ))}`;
+          }).join(', ')
+        } else if ( field_options.type === 'communication_channel' ){
+          values_html = field_value.map(v=>{
+            return _.escape(v.value);
+          }).join(', ')
+        } else if ( ['location', 'connection'].includes(field_options.type) ){
+          values_html = field_value.map(v=>{
+            return _.escape(v.label);
+          }).join(', ')
+        }
+        $(`#collapsed-detail-${field_key}`).toggle(values_html !== ``)
+        $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${values_html}">${values_html}</span>`)
       }
-      let field_value = _.get( post, field_key, false )
-      let values_html = ``
-      if ( field_options.type === 'text' ){
-        values_html = _.escape( field_value )
-      } else if ( field_options.type === 'date' ){
-        values_html = _.escape( field_value.formatted )
-      } else if ( field_options.type === 'key_select' ){
-        values_html = _.escape( field_value.label )
-      } else if ( field_options.type === 'multi_select' ){
-        values_html = field_value.map(v=>{
-          return `${_.escape( _.get( field_options, `default[${v}].label`, v ))}`;
-        }).join(', ')
-      } else if ( field_options.type === 'communication_channel' ){
-        values_html = field_value.map(v=>{
-          return _.escape(v.value);
-        }).join(', ')
-      } else if ( ['location', 'connection'].includes(field_options.type) ){
-        values_html = field_value.map(v=>{
-          return _.escape(v.label);
-        }).join(', ')
-      }
-      $(`#collapsed-detail-${field_key}`).toggle(values_html !== ``)
-      $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${values_html}">${values_html}</span>`)
-    }
-  })
+    })
   }
   resetDetailsFields()
 

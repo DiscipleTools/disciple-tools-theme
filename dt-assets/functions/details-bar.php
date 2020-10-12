@@ -7,7 +7,6 @@ declare(strict_types=1);
  * @param bool $update_needed
  * @param bool $following
  * @param bool $disable_following_toggle_function
- * @param array $dispatcher_actions
  * @param bool $task
  */
 function dt_print_details_bar(
@@ -17,7 +16,6 @@ function dt_print_details_bar(
     bool $update_needed = false,
     bool $following = false,
     bool $disable_following_toggle_function = false,
-    array $dispatcher_actions = [],
     bool $task = false
 ) {
     $dt_post_type = get_post_type();

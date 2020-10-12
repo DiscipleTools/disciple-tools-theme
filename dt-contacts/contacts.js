@@ -76,6 +76,10 @@ jQuery(document).ready(function($) {
     return false;
   })
 
+
+  /**
+   * Duplicates
+   */
   window.makeRequestOnPosts( "GET", `${post_type}/${post_id}/duplicates` ).then(response => {
     if ( response.ids && response.ids.length > 0 ){
       $('#admin-bar-issues').html(`
@@ -221,9 +225,7 @@ jQuery(document).ready(function($) {
 
   /**
    * Merging
-   *
    */
-
   $('#open_merge_with_contact').on("click", function () {
     if (!window.Typeahead['.js-typeahead-merge_with']) {
       $.typeahead({
@@ -261,6 +263,7 @@ jQuery(document).ready(function($) {
     })
     $('#merge-with-contact-modal').foundation('open');
   })
+
 
   /**
    * Transfer Contact

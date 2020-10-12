@@ -18,6 +18,7 @@ class DT_Contacts_DMM {
          //display tiles and fields
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
+        add_action( 'dt_record_footer', [ $this, 'dt_record_footer' ], 10, 2 );
 
         //hooks
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
@@ -415,11 +416,8 @@ class DT_Contacts_DMM {
         return $filters;
     }
 
-    public function dt_details_additional_section( $section, $post_type ) {
-        if ( $post_type === "contacts" ) {
-            get_template_part( 'dt-assets/parts/modals/modal', 'revert' );
-        }
-    }
+    public function dt_details_additional_section( $section, $post_type ) {}
+
     public function dt_comment_action_quick_action( $post_type ){
         if ( $post_type === "contacts" ){
             $contact = DT_Posts::get_post( "contacts", get_the_ID() );
@@ -496,6 +494,58 @@ class DT_Contacts_DMM {
         } else {
             return new WP_Error( "get_activity", "Missing a valid contact id or activity id", [ 'status' => 400 ] );
         }
+    }
+
+
+    public function dt_record_footer( $post_type, $post_id ){
+        if ( $post_type !== "contacts" ){
+            return;
+        }
+        get_template_part( 'dt-assets/parts/modals/modal', 'revert' );
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+        $post = DT_Posts::get_post( "contacts", $post_id );
+        ?>
+        <div class="reveal" id="baptism-modal" data-reveal data-close-on-click="false">
+
+            <h3><?php echo esc_html( $field_settings["baptized"]["name"] )?></h3>
+            <p><?php esc_html_e( "Who was this contact baptized by and when?", 'disciple_tools' )?></p>
+
+            <div>
+                <div class="section-subheader">
+                    <?php echo esc_html( $field_settings["baptized_by"]["name"] )?>
+                </div>
+                <div class="modal_baptized_by details">
+                    <var id="modal_baptized_by-result-container" class="result-container modal_baptized_by-result-container"></var>
+                    <div id="modal_baptized_by_t" name="form-modal_baptized_by" class="scrollable-typeahead typeahead-margin-when-active">
+                        <div class="typeahead__container">
+                            <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-modal_baptized_by input-height"
+                                           name="modal_baptized_by[query]"
+                                           placeholder="<?php echo esc_html_x( "Search multipliers and contacts", 'input field placeholder', 'disciple_tools' ) ?>"
+                                           autocomplete="off">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <span class="section-subheader"><?php echo esc_html( $field_settings["baptism_date"]["name"] )?></span>
+                <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $post["baptism_date"]["timestamp"] ?? '' );?>" id="modal-baptism-date-picker" autocomplete="off">
+
+            </div>
+
+
+            <div class="grid-x">
+                <button class="button" data-close type="button" id="close-baptism-modal">
+                    <?php echo esc_html__( 'Close', 'disciple_tools' )?>
+                </button>
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <?php
     }
 
 }
