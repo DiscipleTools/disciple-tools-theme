@@ -125,7 +125,7 @@ window.API = {
 
     delete_filter: ( post_type, id ) => makeRequest('DELETE', 'users/save_filters', { id, post_type }),
 
-    get_duplicates_on_post: (post_type, postId, args) => makeRequestOnPosts('GET', `${post_type}/${postId}/duplicates`, args),
+    get_duplicates_on_post: (post_type, postId, args) => makeRequestOnPosts('GET', `${post_type}/${postId}/all_duplicates`, args),
 
     create_user: user => makeRequest('POST', 'users/create', user),
 

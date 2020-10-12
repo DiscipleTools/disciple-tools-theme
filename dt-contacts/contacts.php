@@ -1,7 +1,5 @@
 <?php
 
-//require_once 'contacts-endpoints.php';
-//DT_Contacts_Endpoints::instance();
 require_once 'base-setup.php';
 DT_Contacts_Base::instance();
 
@@ -13,3 +11,6 @@ DT_Contacts_Access::instance();
 
 require_once 'user-module.php';
 DT_Contacts_User::instance();
+
+require_once 'duplicates-merging.php';
+new DT_Duplicate_Checker_And_Merging();

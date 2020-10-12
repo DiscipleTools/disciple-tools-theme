@@ -683,16 +683,18 @@ class DT_Contacts_Access {
     // Runs after post is created and fields are processed.
     public function dt_post_created( $post_type, $post_id, $initial_request_fields ){
         if ( $post_type === "contacts" ){
-            // share the post with the assigned to user.
             $post = DT_Posts::get_post( $post_type, $post_id, true, false );
             if ( !isset( $post["type"]["key"] ) || $post["type"]["key"] !== "access" ){
                 return;
             }
             if ( isset( $post["assigned_to"] ) ) {
                 if ( $post["assigned_to"]["id"] ) {
+                    // share the post with the assigned to user.
                     DT_Posts::add_shared( $post_type, $post_id, $post["assigned_to"]["id"], null, false, false, false );
                 }
             }
+            //check for duplicate along other access contacts
+            $this->check_for_duplicates( $post_type, $post_id );
         }
     }
 
@@ -1365,6 +1367,32 @@ class DT_Contacts_Access {
                 );
                 Disciple_Tools_Notifications::insert_notification_for_assignment_declined( $current_user->ID, $assign_to_id, $contact_id );
                 return $contact;
+            }
+        }
+    }
+
+    /*
+     * Check other access contacts for possible duplicates
+     */
+    private function check_for_duplicates( $post_type, $post_id ){
+        if ( get_current_user_id() === 0 ){
+            $current_user = wp_get_current_user();
+            $had_cap = current_user_can( 'dt_all_access_contacts' );
+            $current_user->add_cap( "dt_all_access_contacts" );
+            $dup_ids = DT_Duplicate_Checker_And_Merging::ids_of_non_dismissed_duplicates( $post_type, $post_id, true );
+            if ( sizeof( $dup_ids["ids"] ) < 10 ){
+                $comment = __( "This record might be a duplicate of: ", 'disciple_tools' );
+                foreach ( $dup_ids["ids"] as $id_of_duplicate ){
+                    $comment .= " \n -  [$id_of_duplicate]($id_of_duplicate)";
+                }
+                $args = [
+                    "user_id" => 0,
+                    "comment_author" => __( "Duplicate Checker", 'disciple_tools' )
+                ];
+                DT_Posts::add_post_comment( $post_type, $post_id, $comment, "duplicate", $args, false, true );
+            }
+            if ( !$had_cap ){
+                $current_user->remove_cap( "dt_all_access_contacts" );
             }
         }
     }

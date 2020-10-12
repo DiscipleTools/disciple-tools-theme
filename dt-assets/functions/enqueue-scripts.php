@@ -219,36 +219,14 @@ function dt_site_scripts() {
                     'no_tasks' => __( 'No task created', 'disciple_tools' ),
                     'reminder' => __( 'Reminder', 'disciple_tools' ),
                     'no_note' => __( 'No note set', 'disciple_tools' ),
+                    'duplicates_detected' => __( 'Duplicates Detected', 'disciple_tools' ),
+                    'merge' => __( "Merge", 'disciple_tools' ),
+                    'dismiss' => __( "Dismiss", 'disciple_tools' ),
+                    'dismissed_duplicates' => __( "Dismissed Duplicates", 'disciple_tools' ),
+                    'duplicates_on' => __( "Duplicates on: %s", 'disciple_tools' ),
+                    'transfer_error' => __( 'Transfer failed. Check site-to-site configuration.', 'disciple_tools' ),
                 ]
             ]);
-
-
-            $translations = [
-                "not-set"     => [
-                    "source"     => __( 'No source set', 'disciple_tools' ),
-                    "location_grid"     => __( 'No location set', 'disciple_tools' ),
-                    "leaders"     => __( 'No leaders set', 'disciple_tools' ),
-                    "people_groups" => __( 'No people group set', 'disciple_tools' ),
-                    "email"        => __( 'No email set', 'disciple_tools' ),
-                    "phone"        => __( 'No phone set', 'disciple_tools' ),
-                    "address"      => __( 'No address set', 'disciple_tools' ),
-                    "social"       => __( 'None set', 'disciple_tools' ),
-                    "subassigned"  => __( 'No sub-assigned set', 'disciple_tools' ),
-                    "age" => __( 'No age set', 'disciple_tools' ),
-                    "gender" => __( 'No gender set', 'disciple_tools' ),
-                    "start_date" => __( "No start date", 'disciple_tools' ),
-                    "end_date" => __( "No end date", 'disciple_tools' ),
-                    "church_start_date" => __( "No church start date", 'disciple_tools' ),
-                ],
-                "valid"       => __( 'Valid', 'disciple_tools' ),
-                "invalid"     => __( 'Invalid', 'disciple_tools' ),
-                "unconfirmed" => __( 'Unconfirmed', 'disciple_tools' ),
-                'transfer_error' => __( 'Transfer failed. Check site-to-site configuration.', 'disciple_tools' ),
-                'merge' => __( "Merge", 'disciple_tools' ),
-                'dismiss' => __( "Dismiss", 'disciple_tools' ),
-                'dismissed_duplicates' => __( "Dismissed Duplicates", 'disciple_tools' ),
-                'duplicates_on' => __( "Duplicates on: %s", 'disciple_tools' ),
-            ];
 
             if ( DT_Mapbox_API::get_key() ) {
                 DT_Mapbox_API::load_mapbox_search_widget();
