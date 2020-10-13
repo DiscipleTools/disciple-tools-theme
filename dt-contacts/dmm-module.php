@@ -1,6 +1,9 @@
 <?php
 
-class DT_Contacts_DMM {
+class DT_Contacts_DMM  extends DT_Module_Base {
+    public $post_type = "contacts";
+    public $module = "dmm_module";
+
     private static $_instance = null;
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
@@ -9,7 +12,11 @@ class DT_Contacts_DMM {
         return self::$_instance;
     } // End instance()
 
-    public function __construct() {
+    public function __construct(){
+        parent::__construct();
+        if ( !self::check_enabled_and_prerequisites() ){
+            return;
+        }
         //setup fields
         add_action( 'p2p_init', [ $this, 'p2p_init' ] );
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 10, 2 );

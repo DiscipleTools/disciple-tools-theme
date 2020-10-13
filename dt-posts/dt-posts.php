@@ -1248,7 +1248,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                                     $fields[$key][$custom_option_key] = [];
                                 }
                                 if ( is_array( $fields[$key][$custom_option_key] ) ){
-                                    $fields[$key][$custom_option_key] = self::array_merge_recursive_distinct( $fields[$key][$custom_option_key], $custom_option_value );
+                                    $fields[$key][$custom_option_key] = dt_array_merge_recursive_distinct( $fields[$key][$custom_option_key], $custom_option_value );
                                 }
                             }
                         }
@@ -1301,17 +1301,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $fields;
     }
 
-    private static function array_merge_recursive_distinct( array &$array1, array &$array2 ){
-        $merged = $array1;
-        foreach ( $array2 as $key => &$value ){
-            if ( is_array( $value ) && isset( $merged[$key] ) && is_array( $merged[$key] ) ){
-                $merged[$key] = self::array_merge_recursive_distinct( $merged[$key], $value );
-            } else {
-                $merged[$key] = $value;
-            }
-        }
-        return $merged;
-    }
+
 
     public static function get_post_tiles( $post_type ){
         $tile_options = dt_get_option( "dt_custom_tiles" );
@@ -1319,7 +1309,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( !isset( $tile_options[$post_type] ) ){
             $tile_options[$post_type] = [];
         }
-        $tile_options[$post_type] = self::array_merge_recursive_distinct( $sections, $tile_options[$post_type] );
+        $tile_options[$post_type] = dt_array_merge_recursive_distinct( $sections, $tile_options[$post_type] );
         $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type );
         foreach ( $sections as $section_id ){
             if ( !isset( $tile_options[$post_type][$section_id] ) ) {

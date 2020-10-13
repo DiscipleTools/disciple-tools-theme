@@ -292,6 +292,26 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
 
     /**
+     * Recursively merge array2 on to array1
+     *
+     * @param array $array1
+     * @param array $array2
+     * @return array
+     */
+    function dt_array_merge_recursive_distinct( array &$array1, array &$array2 ){
+        $merged = $array1;
+        foreach ( $array2 as $key => &$value ){
+            if ( is_array( $value ) && isset( $merged[$key] ) && is_array( $merged[$key] ) ){
+                $merged[$key] = dt_array_merge_recursive_distinct( $merged[$key], $value );
+            } else {
+                $merged[$key] = $value;
+            }
+        }
+        return $merged;
+    }
+
+
+    /**
      * Accepts types: key_select, multi_select, text, date, connection, location
      *
      * @param $field_key

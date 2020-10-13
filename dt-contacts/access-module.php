@@ -1,7 +1,10 @@
 <?php
 
-class DT_Contacts_Access {
+
+class DT_Contacts_Access extends DT_Module_Base {
     public $post_type = "contacts";
+    public $module = "access_module";
+
     private static $_instance = null;
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
@@ -10,15 +13,18 @@ class DT_Contacts_Access {
         return self::$_instance;
     } // End instance()
 
-    public function __construct() {
-//        add_action( 'p2p_init', [ $this, 'p2p_init' ] );
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+    public function __construct(){
+        parent::__construct();
+        if ( !self::check_enabled_and_prerequisites() ){
+            return;
+        }
+        //permissions
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 10, 1 );
         add_filter( "dt_can_view_permission", [ $this, 'can_view_permission_filter' ], 10, 3 );
         add_filter( "dt_can_update_permission", [ $this, 'can_update_permission_filter' ], 10, 3 );
 
-
         //setup fields
+        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 20, 2 );
         //display tiles and fields
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
