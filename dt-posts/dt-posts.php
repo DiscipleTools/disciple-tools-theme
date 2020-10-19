@@ -409,7 +409,10 @@ class DT_Posts extends Disciple_Tools_Posts {
          */
         self::get_all_connection_fields( $post_settings, $post_id, $fields );
         $fields["ID"] = $post_id;
-        $fields["post_date"] = $wp_post->post_date;
+        $fields["post_date"] = [
+            "timestamp" => is_numeric( $wp_post->post_date ) ? $wp_post->post_date : dt_format_date( $wp_post->post_date, "U" ),
+            "formatted" => dt_format_date( $wp_post->post_date )
+        ];
         $fields["permalink"] = get_permalink( $post_id );
         $fields["post_type"] = $post_type;
         $fields["post_author"] = $wp_post->post_author;
@@ -528,6 +531,10 @@ class DT_Posts extends Disciple_Tools_Posts {
             self::adjust_post_custom_fields( $post_settings, $record["ID"], $record, $fields_to_return, $all_posts[$record["ID"]] ?? [], $all_post_user_meta[$record["ID"]] ?? [] );
             $record["permalink"] = $site_url . '/' . $post_type .'/' . $record["ID"];
             $record["name"] = $record["post_title"];
+            $record["post_date"] = [
+                "timestamp" => is_numeric( $record["post_date"] ) ? $record["post_date"] : dt_format_date( $record["post_date"], "U" ),
+                "formatted" => dt_format_date( $record["post_date"] )
+            ];
         }
         $data["posts"] = $records;
 

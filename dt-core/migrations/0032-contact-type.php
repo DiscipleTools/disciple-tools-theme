@@ -12,6 +12,12 @@ class Disciple_Tools_Migration_0032 extends Disciple_Tools_Migration {
             WHERE meta_key = 'type'
             AND meta_value = 'media'
         " );
+        $wpdb->query( "
+            UPDATE $wpdb->postmeta
+            SET meta_value = 'placeholder'
+            WHERE meta_key = 'type'
+            AND meta_value = 'next_gen'
+        " );
 
     }
 

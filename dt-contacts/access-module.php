@@ -857,35 +857,21 @@ class DT_Contacts_Access extends DT_Module_Base {
                 $status_counts["closed"] = '';
             }
 
-            $filters["tabs"][] = [
-                "key" => "assigned_to_me",
-                "label" => sprintf( _x( "My Follow-Up %s", 'My records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
-                "count" => $total_my,
-                "order" => 20
-            ];
             // add assigned to me filters
             $filters["filters"][] = [
                 'ID' => 'my_all',
-                'tab' => 'assigned_to_me',
-                'name' => _x( "All", 'List Filters', 'disciple_tools' ),
+                'tab' => 'my',
+                'name' => __( "My Follow-Up", 'disciple_tools' ),
                 'query' => [
                     [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
                     'overall_status' => [ '-closed' ],
                     'type' => [ 'access' ],
                     'sort' => 'overall_status',
                 ],
-                "count" => $total_my,
-            ];
-            // add assigned to me filters
-            $filters["filters"][] = [
-                'ID' => 'my_all',
-                'tab' => 'all',
-                'name' => sprintf( _x( "My Follow-Up %s", 'My records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
-                'query' => [
-                    [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
-                    'overall_status' => [ '-closed' ],
-                    'type' => [ 'access' ],
-                    'sort' => 'overall_status',
+                "labels" => [
+                    [ "name" => __( "My Follow-Up", 'disciple_tools' ), ],
+                    [ "name" => __( "Assigned to me", 'disciple_tools' ) ],
+                    [ "name" => __( "Sub-assigned to me", 'disciple_tools' ) ],
                 ],
                 "count" => $total_my,
             ];
@@ -893,7 +879,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 if ( isset( $status_counts[$status_key] ) ) {
                     $filters["filters"][] = [
                         "ID" => 'my_' . $status_key,
-                        "tab" => 'assigned_to_me',
+                        "tab" => 'my',
                         "name" => $status_value["label"],
                         "query" => [
                             [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
@@ -901,13 +887,19 @@ class DT_Contacts_Access extends DT_Module_Base {
                             'overall_status' => [ $status_key ],
                             'sort' => 'seeker_path'
                         ],
-                        "count" => $status_counts[$status_key]
+                        "labels" => [
+                            [ "name" => $status_value["label"] ],
+                            [ "name" => __( "Assigned to me", 'disciple_tools' ) ],
+                            [ "name" => __( "Sub-assigned to me", 'disciple_tools' ) ],
+                        ],
+                        "count" => $status_counts[$status_key],
+                        'subfilter' => 1
                     ];
                     if ( $status_key === "active" ){
                         if ( $update_needed > 0 ){
                             $filters["filters"][] = [
                                 "ID" => 'my_update_needed',
-                                "tab" => 'assigned_to_me',
+                                "tab" => 'my',
                                 "name" => $fields["requires_update"]["name"],
                                 "query" => [
                                     [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
@@ -916,15 +908,20 @@ class DT_Contacts_Access extends DT_Module_Base {
                                     'type' => [ 'access' ],
                                     'sort' => 'seeker_path'
                                 ],
+                                "labels" => [
+                                    [ "name" => $fields["requires_update"]["name"] ],
+                                    [ "name" => __( "Assigned to me", 'disciple_tools' ) ],
+                                    [ "name" => __( "Sub-assigned to me", 'disciple_tools' ) ],
+                                ],
                                 "count" => $update_needed,
-                                'subfilter' => true
+                                'subfilter' => 2
                             ];
                         }
                         foreach ( $fields["seeker_path"]["default"] as $seeker_path_key => $seeker_path_value ) {
                             if ( isset( $active_counts[$seeker_path_key] ) ) {
                                 $filters["filters"][] = [
                                     "ID" => 'my_' . $seeker_path_key,
-                                    "tab" => 'assigned_to_me',
+                                    "tab" => 'my',
                                     "name" => $seeker_path_value["label"],
                                     "query" => [
                                         [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
@@ -933,8 +930,13 @@ class DT_Contacts_Access extends DT_Module_Base {
                                         'type' => [ 'access' ],
                                         'sort' => 'name'
                                     ],
+                                    "labels" => [
+                                        [ "name" => $seeker_path_value["label"] ],
+                                        [ "name" => __( "Assigned to me", 'disciple_tools' ) ],
+                                        [ "name" => __( "Sub-assigned to me", 'disciple_tools' ) ],
+                                    ],
                                     "count" => $active_counts[$seeker_path_key],
-                                    'subfilter' => true
+                                    'subfilter' => 2
                                 ];
                             }
                         }
@@ -966,7 +968,8 @@ class DT_Contacts_Access extends DT_Module_Base {
                 }
                 $filters["tabs"][] = [
                     "key" => "all_dispatch",
-                    "label" => sprintf( _x( "All Follow-Up %s", 'All records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
+//                    "label" => __( "Follow-Up", 'disciple_tools' ),
+                    "label" => sprintf( _x( "Follow-Up %s", 'All records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
                     "count" => $total_all,
                     "order" => 10
                 ];
@@ -974,7 +977,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 $filters["filters"][] = [
                     'ID' => 'all_dispatch',
                     'tab' => 'all_dispatch',
-                    'name' => _x( "All", 'List Filters', 'disciple_tools' ),
+                    'name' => __( "All Follow-Up", 'disciple_tools' ),
                     'query' => [
                         'overall_status' => [ '-closed' ],
                         'type' => [ 'access' ],

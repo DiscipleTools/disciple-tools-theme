@@ -57,7 +57,8 @@ declare(strict_types=1);
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
             <aside class="cell large-3" id="list-filters">
                 <div class="bordered-box">
-                    <div class="section-header"><?php esc_html_e( 'Filters', 'disciple_tools' )?>
+                    <div class="section-header">
+                        <?php echo esc_html( sprintf( _x( '%s Filters', 'Contacts Filters', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_plural"] ) ) ?>
                         <button class="section-chevron chevron_down">
                             <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                         </button>

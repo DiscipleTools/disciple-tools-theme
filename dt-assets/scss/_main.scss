@@ -158,9 +158,7 @@ NAVIGATION STYLES
     vertical-align: top;
     position: relative;
     top: -5px;
-}
-.menu .notification-count {
-    left: -15px;
+    margin-left:-15px;
 }
 .add-new-items-dropdown {
     background-color: #3f729b;
@@ -655,12 +653,18 @@ html[dir='rtl'] {
     }
 
     .float-left {
+
         float: right !important;
     }
-    .menu .notification-count {
+    .notification-count {
         right: -15px;
         left: 0;
+        margin-left:-15px;
     }
+    .title-bar-right {
+        text-align: left;
+    }
+
 }
 
 .empty-notification-message {

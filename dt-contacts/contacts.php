@@ -17,7 +17,7 @@ add_filter( 'dt_post_type_modules', function( $modules ){
     ];
     $modules["access_module"] = [
         "name" => "Access Module",
-        "enabled" => false,
+        "enabled" => true,
         "prerequisites" =>[ "dmm_module", "contacts_base" ],
         "post_type" => "contacts",
         "description" => "Field and workflows for follow-up ministries"

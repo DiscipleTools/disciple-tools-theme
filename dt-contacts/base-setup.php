@@ -406,15 +406,15 @@ class DT_Contacts_Base {
             $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
 
             $filters["tabs"][] = [
-                "key" => "all",
+                "key" => "my",
                 "label" => sprintf( _x( "My %s", 'My records', 'disciple_tools' ), $post_label_plural ),
                 "count" => $shared_by_type_counts['total'],
-                "order" => 5
+                "order" => 7
             ];
             $filters["filters"][] = [
-                'ID' => 'all_contacts',
-                'tab' => 'all',
-                'name' => _x( "All", 'List Filters', 'disciple_tools' ),
+                'ID' => 'all_my_contacts',
+                'tab' => 'my',
+                'name' => sprintf( _x( "My %s", 'My records', 'disciple_tools' ), $post_label_plural ),
                 'query' => [
                     'shared_with' => [ 'me' ],
                     'sort' => 'name',
@@ -422,15 +422,15 @@ class DT_Contacts_Base {
                 'labels' => [
                     [
                         'id' => 'my_shared',
-                        'name' => 'Shared with me'
+                        'name' => __( 'Shared with me', 'disciple_tools' )
                     ]
                 ],
                 "count" => $shared_by_type_counts['total'],
             ];
             $filters["filters"][] = [
                 'ID' => 'personal',
-                'tab' => 'all',
-                'name' => sprintf( _x( "Personal %s", 'Personal records', 'disciple_tools' ), $post_label_plural ),
+                'tab' => 'my',
+                'name' => __( "Personal", 'disciple_tools' ),
                 'query' => [
                     'type' => [ 'personal' ],
                     'sort' => 'name'
@@ -454,7 +454,7 @@ class DT_Contacts_Base {
                 'visible' => "1",
                 'type' => 'default',
                 'tab' => 'custom',
-                'name' => 'Shared with me',
+                'name' => __( 'Shared with me', 'disciple_tools' ),
                 'query' => [
                     'shared_with' => [ 'me' ],
                     'sort' => 'name',
@@ -462,7 +462,7 @@ class DT_Contacts_Base {
                 'labels' => [
                     [
                         'id' => 'my_shared',
-                        'name' => 'Shared with me',
+                        'name' => __( 'Shared with me', 'disciple_tools' ),
                     ],
                 ],
             ]

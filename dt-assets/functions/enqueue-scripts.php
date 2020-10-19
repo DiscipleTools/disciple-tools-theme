@@ -288,8 +288,7 @@ function dt_site_scripts() {
             'creation_date' => __( 'Creation Date', 'disciple_tools' ),
             'date_modified' => __( 'Date Modified', 'disciple_tools' ),
             'empty_custom_filters' => __( 'No filters, create one below', 'disciple_tools' ),
-            'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' ),
-            'all_records' => sprintf( _x( 'All %s', 'Contacts List', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_plural"] )
+            'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' )
         ];
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
         dt_theme_enqueue_script( 'drag-n-drop-table-columns', 'dt-core/dependencies/drag-n-drop-table-columns.js', array( 'jquery' ), true );

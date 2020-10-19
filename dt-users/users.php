@@ -418,9 +418,7 @@ class Disciple_Tools_Users
             if ( empty( $corresponds_to_contact ) || get_post( $corresponds_to_contact ) === null ) {
                 $new_user_contact = DT_Posts::create_post( "contacts", [
                     "title"               => $user->display_name,
-                    "assigned_to"         => "user-" . $user_id,
                     "type"                => "user",
-                    "overall_status"      => "assigned",
                     "corresponds_to_user" => $user_id,
                 ], false, false );
                 if ( !is_wp_error( $new_user_contact )){
@@ -884,6 +882,13 @@ Please click the following link to confirm the invite:
         return $user_id;
     }
 
+    /**
+     * @param $user_name
+     * @param $user_email
+     * @param $display_name
+     * @param null $corresponds_to_contact
+     * @return int|WP_Error
+     */
     public static function create_user( $user_name, $user_email, $display_name, $corresponds_to_contact = null ){
         if ( !current_user_can( "create_users" ) ){
             return new WP_Error( "no_permissions", "You don't have permissions to create users", [ 'status' => 401 ] );

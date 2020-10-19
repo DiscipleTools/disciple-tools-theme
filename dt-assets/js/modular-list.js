@@ -80,11 +80,6 @@
       let filterId = checked.data("id")
       current_filter = _.find(custom_filters, {ID:filterId})
       current_filter.type = current_view
-    } else if ( current_view === "everything" ){
-      current_filter = {
-        query: {},
-        labels: [{name: _.escape(list_settings.translations.all_records)}]
-      }
     } else {
       current_filter = _.find(list_settings.filters.filters, {ID:filter_id}) || _.find(list_settings.filters.filters, {ID:filter_id.toString()}) || current_filter
       current_filter.type = 'default'
@@ -104,12 +99,7 @@
     }
     let selected_tab = $('.accordion-item.is-active').data('id');
     let selected_filter = $(".js-list-view:checked").data('id')
-    let html = `
-      <label>
-        <input type="radio" name="view" value="everything" data-id="everything" class="js-list-view" autocomplete="off">
-        <span>${_.escape(list_settings.translations.all_records)}</span>
-      </label>
-    `;
+    let html = ``;
     list_settings.filters.tabs.forEach( tab =>{
       html += `
       <li class="accordion-item" data-accordion-item data-id="${_.escape(tab.key)}">
@@ -122,16 +112,17 @@
         <div class="accordion-content" data-tab-content>
           <div class="list-views">
             ${  list_settings.filters.filters.map( filter =>{
-              if (filter.tab===tab.key && filter.tab !== 'custom') {
-                return `
-                      <label class="list-view" style="${ filter.subfilter ? 'margin-left:15px' : ''}">
-                        <input type="radio" name="view" value="${_.escape(filter.ID)}" data-id="${_.escape(filter.ID)}" class="js-list-view" autocomplete="off">
-                        <span id="total_filter_label">${_.escape(filter.name)}</span>
-                        <span class="list-view__count js-list-view-count" data-value="${_.escape(filter.ID)}">${_.escape(filter.count )}</span>
-                      </label>
-                      `
-              }
-            }).join('')}
+        if (filter.tab===tab.key && filter.tab !== 'custom') {
+          let indent = filter.subfilter && Number.isInteger(filter.subfilter) ? 15 * filter.subfilter : 15;
+          return `
+                  <label class="list-view" style="${ filter.subfilter ? `margin-left:${indent}px` : ''}">
+                    <input type="radio" name="view" value="${_.escape(filter.ID)}" data-id="${_.escape(filter.ID)}" class="js-list-view" autocomplete="off">
+                    <span id="total_filter_label">${_.escape(filter.name)}</span>
+                    <span class="list-view__count js-list-view-count" data-value="${_.escape(filter.ID)}">${_.escape(filter.count )}</span>
+                  </label>
+                  `
+        }
+      }).join('')}
           </div>
         </div>
       </li>
@@ -337,12 +328,14 @@
 
   let build_table = (records)=>{
     let table_rows = ``
+    let mobile = $(window).width() < 640
     records.forEach( ( record, index )=>{
       let row_fields_html = ''
       fields_to_show_in_table.forEach(field_key=>{
         let values_html = '';
         if ( field_key === "name" ){
-            values_html = `<a href="${ _.escape( record.permalink ) }">${ _.escape( record.post_title ) }</a>`
+          if ( mobile ){ return }
+          values_html = `<a href="${ _.escape( record.permalink ) }">${ _.escape( record.post_title ) }</a>`
         } else if ( list_settings.post_type_settings.fields[field_key] ) {
           let field_settings = list_settings.post_type_settings.fields[field_key]
           let field_value = _.get( record, field_key, false )
@@ -359,19 +352,19 @@
             } else if (field_settings.type === 'multi_select') {
               values_html = field_value.map(v => {
                 return `<li>${_.escape(_.get(field_settings, `default[${v}].label`, v))}</li>`;
-              }).join('')
+              }).join(mobile ? ', ' : '')
             } else if ( field_settings.type === "location" ){
               values_html = field_value.map(v => {
                 return `<li>${_.escape( v.label )}</li>`;
-              }).join('')
+              }).join(mobile ? ', ' : '')
             } else if ( field_settings.type === "communication_channel" ){
               values_html = field_value.map(v => {
                 return `<li>${_.escape( v.value )}</li>`;
-              }).join('')
+              }).join(mobile ? ', ' : '')
             } else if ( field_settings.type === "connection" ){
               values_html = field_value.map(v => {
                 return `<li>${_.escape( v.post_title )}</li>`;
-              }).join('')
+              }).join(mobile ? ', ' : '')
             } else if ( field_settings.type === "boolean" ){
               values_html = '&check;'
             }
@@ -379,19 +372,51 @@
         } else {
           return;
         }
-        row_fields_html += `
-          <td>
-            <ul>
-              ${values_html}
-            </ul>
-          </td>
-        `
+        if ( $(window).width() < 640 ){
+          row_fields_html += `
+            <td>
+              <div class="mobile-list-field-name">
+                <ul>
+                ${_.escape(_.get(list_settings, `post_type_settings.fields[${field_key}].name`, field_key))}
+                </ul>
+              </div>
+              <div class="mobile-list-field-value">
+                <ul style="line-height:20px" >
+                  ${values_html}
+                </ul>
+              </div>
+
+            </td>
+          `
+        } else {
+          row_fields_html += `
+            <td>
+              <ul>
+                ${values_html}
+              </ul>
+            </td>
+          `
+        }
       })
 
-      table_rows += `<tr class="dnd-moved" data-link="${_.escape(record.permalink)}">
-        <td style="white-space: nowrap" >${index+1}.</td>
-        ${ row_fields_html }
-      `
+      if ( mobile ){
+        table_rows += `<tr data-link="${_.escape(record.permalink)}">
+          <td>
+            <div class="mobile-list-field-name">
+                ${index+1}.
+              </div>
+              <div class="mobile-list-field-value">
+                  <a href="${ _.escape( record.permalink ) }">${ _.escape( record.post_title ) }</a>
+              </div>
+          </td>
+          ${ row_fields_html }
+        `
+      } else {
+        table_rows += `<tr class="dnd-moved" data-link="${_.escape(record.permalink)}">
+          <td style="white-space: nowrap" >${index+1}.</td>
+          ${ row_fields_html }
+        `
+      }
     })
     if ( records.length === 0 ){
       table_rows = `<tr><td colspan="10">${_.escape(list_settings.translations.empty_list)}</td></tr>`
