@@ -2,9 +2,9 @@
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
+
 /**
- * Default Structure
- * This is for default structure settings.
+ * Setting and lists to be used in D.T
  *
  * @author  Chasm Solutions
  * @package Disciple_Tools
@@ -13,70 +13,13 @@ if ( !defined( 'ABSPATH' ) ) {
 /*********************************************************************************************
  * Action and Filters
  */
-
-add_action( 'init', 'dt_set_permalink_structure' );
-add_action( 'update_option_permalink_structure', 'dt_permalink_structure_changed_callback' );
-//unconditionally allow duplicate comments
-add_filter( 'duplicate_comment_id', '__return_false' );
-//allow multiple comments in quick succession
-add_filter( 'comment_flood_filter', '__return_false' );
-add_filter( 'pre_comment_approved', 'dt_filter_handler', '99', 2 );
-add_filter( 'comment_notification_recipients', 'dt_override_comment_notice_recipients', 10, 2 );
 add_filter( 'language_attributes', 'dt_custom_dir_attr' );
-add_filter( 'wpmu_signup_blog_notification_email', 'dt_wpmu_signup_blog_notification_email', 10, 8 );
-add_filter( 'login_errors', 'login_error_messages' );
-remove_action( 'plugins_loaded', 'wp_maybe_load_widgets', 0 );  //don't load widgets as we don't use them
-remove_action( "init", "wp_widgets_init", 1 );
-//set security headers
-add_action( 'send_headers', 'dt_security_headers_insert' );
-// admin section doesn't have a send_headers action so we abuse init
-add_action( 'admin_init', 'dt_security_headers_insert' );
-// wp-login.php doesn't have a send_headers action so we abuse init
-add_action( 'login_init', 'dt_security_headers_insert' );
-//add_filter( 'wp_handle_upload_prefilter', 'dt_disable_file_upload' ); //this breaks uploading plugins and themes
-add_filter( 'cron_schedules', 'dt_cron_schedules' );
-add_action( 'login_init', 'dt_redirect_logged_in' );
-add_filter( 'options_dt_custom_tiles', 'dt_get_custom_tile_translations' );
+
 /*********************************************************************************************
  * Functions
  */
 
-/**
- * Set default premalink structure
- * Needed for the rest api url structure (for wp-json to work)
- */
-function dt_set_permalink_structure() {
-    global $wp_rewrite;
-    $wp_rewrite->set_permalink_structure( '/%postname%/' );
-    flush_rewrite_rules();
-}
 
-/**
- *
- */
-function dt_warn_user_about_permalink_settings() {
-    ?>
-    <div class="error notices">
-        <p>You may only set your permalink settings to "Post name"'</p>
-    </div>
-    <?php
-}
-
-/**
- * Notification that 'posttype' is the only permalink structure available.
- *
- * @param $permalink_structure
- */
-function dt_permalink_structure_changed_callback( $permalink_structure ) {
-    global $wp_rewrite;
-    if ( $permalink_structure !== '/%postname%/' ) {
-        add_action( 'admin_notices', 'dt_warn_user_about_permalink_settings' );
-    }
-}
-
-function dt_override_comment_notice_recipients() {
-    return [];
-}
 
 /**
  * Admin panel svg icon for disciple tools.
@@ -611,182 +554,8 @@ function dt_site_options_upgrade_version( string $name ) {
     return update_option( $name, $new_options, "no" );
 }
 
-
-/**
- * @param $approved
- * @param $commentdata
- *
- * @return int
- */
-function dt_filter_handler( $approved, $commentdata ){
-    // inspect $commentdata to determine approval, disapproval, or spam status
-    //approve all comments.
-    return 1;
-}
-
-function dt_custom_dir_attr( $lang ){
-    if (is_admin()) {
-        return $lang;
-    }
-
-    $current_user = wp_get_current_user();
-    $user_language = get_user_locale( $current_user->ID );
-    /* translators: If your language is written right to left make this tranlation as 'rtl', if it is written ltr make the translated text 'ltr' or leave it blank */
-    $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
-
-    if ( $dir === 'ltr' || $dir === 'text direction' || !$dir || empty( $dir ) ){
-        $dir = "ltr";
-    } else {
-        $dir = "rtl";
-    }
-    $dir_attr = 'dir="' . $dir . '"';
-
-    return 'lang="' . $user_language .'" ' .$dir_attr;
-}
-
-
-function dt_wpmu_signup_blog_notification_email( $message, $domain, $path, $title, $user, $user_email, $key, $meta ){
-    return str_replace( "blog", "site", $message );
-}
-
-/**
- * change the error message if it is invalid_username or incorrect password
- *
- * @param $message string Error string provided by WordPress
- * @return $message string Modified error string
-*/
-function login_error_messages( $message ){
-    global $errors;
-    if ( isset( $errors->errors['invalid_username'] ) || isset( $errors->errors['incorrect_password'] ) || isset( $errors->errors['invalid_email'] ) ) {
-        $message = __( 'ERROR: Invalid username/password combination.', 'disciple_tools' ) . ' ' .
-        sprintf(
-            ( '<a href="%1$s" title="%2$s">%3$s</a>?' ),
-            site_url( 'wp-login.php?action=lostpassword', 'login' ),
-            __( 'Reset password', 'disciple_tools' ),
-            __( 'Lost your password', 'disciple_tools' )
-        );
-    }
-    return $message;
-}
-
-
-/*
- * Add security headers
- */
-function dt_security_headers_insert() {
-    $xss_disabled = get_option( "dt_disable_header_xss" );
-    $referer_disabled = get_option( "dt_disable_header_referer" );
-    $content_type_disabled = get_option( "dt_disable_header_content_type" );
-    $strict_transport_disabled = get_option( "dt_disable_header_strict_transport" );
-    if ( !$xss_disabled ){
-        header( "X-XSS-Protection: 1; mode=block" );
-    }
-    if ( !$referer_disabled ){
-        header( "Referrer-Policy: same-origin" );
-    }
-    if ( !$content_type_disabled ){
-        header( "X-Content-Type-Options: nosniff" );
-    }
-    if ( !$strict_transport_disabled && is_ssl() ){
-        header( "Strict-Transport-Security: max-age=2592000" );
-    }
-//    header( "Content-Security-Policy: default-src 'self' https:; img-src 'self' https: data:; script-src https: 'self' 'unsafe-inline' 'unsafe-eval'; style-src  https: 'self' 'unsafe-inline'" );
-}
-
-
-
-function dt_cron_schedules( $schedules ) {
-    $schedules['weekly'] = array(
-        'interval' => 60 * 60 * 24 * 7, # 604,800, seconds in a week
-        'display'  => __( 'Weekly' )
-    );
-    return $schedules;
-}
-
-//redirect already logged in users from the login page.
-function dt_redirect_logged_in() {
-    global $action;
-    if ( 'logout' === $action || !is_user_logged_in()) {
-        return;
-    }
-    if ( !empty( $_GET["redirect_to"] ) ) {
-        wp_safe_redirect( esc_url_raw( wp_unslash( $_GET["redirect_to"] ) ) );
-    } else {
-        dt_route_front_page();
-    }
-    exit;
-}
-
-
-
-/**
- * Force password reset to remain on current site for multi-site installations.
- */
-add_filter("lostpassword_url", function ( $url, $redirect) {
-
-    $args = array( 'action' => 'lostpassword' );
-
-    if ( !empty( $redirect ) ) {
-        $args['redirect_to'] = $redirect;
-    }
-
-    return add_query_arg( $args, site_url( 'wp-login.php' ) );
-}, 10, 2);
-
-// fixes other password reset related urls
-add_filter( 'network_site_url', function( $url, $path, $scheme) {
-
-    if (stripos( $url, "action=lostpassword" ) !== false) {
-        return site_url( 'wp-login.php?action=lostpassword', $scheme );
-    }
-
-    if (stripos( $url, "action=resetpass" ) !== false) {
-        return site_url( 'wp-login.php?action=resetpass', $scheme );
-    }
-
-    return $url;
-}, 10, 3 );
-
-// fixes URLs in email that goes out.
-function dt_multisite_retrieve_password_message( $message, $key, $user_login, $user_data) {
-    $message = __( 'Someone has requested a password reset for the following account:' ) . "\r\n\r\n";
-    /* translators: %s: Site name. */
-    $message .= sprintf( __( 'DT Site Name: %s' ), wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) ) . "\r\n\r\n";
-    /* translators: %s: User login. */
-    $message .= sprintf( __( 'Username: %s' ), $user_login ) . "\r\n\r\n";
-    $message .= __( 'If this was a mistake, just ignore this email and nothing will happen.' ) . "\r\n\r\n";
-    $message .= __( 'To reset your password, visit the following address:' ) . "\r\n\r\n";
-    $message .= '<' . site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'https' ) . ">\r\n";
-    return $message;
-}
-add_filter( "retrieve_password_message", 'dt_multisite_retrieve_password_message', 99, 4 );
-
-// fixes email title
-add_filter("retrieve_password_title", function( $title) {
-    return "[" . wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) . "] Password Reset";
-});
-
-
-function dt_get_custom_tile_translations( $custom_tiles ) {
-    if ( is_admin() ) {
-        return $custom_tiles;
-    } else {
-        $user_locale = get_user_locale();
-        foreach ( $custom_tiles as $post_type => $tile_keys ) {
-            foreach ( $tile_keys as $key => $value) {
-                if ( !empty( $custom_tiles[$post_type][$key][$user_locale] ) ) {
-                    $custom_tiles[$post_type][$key]['label'] = $custom_tiles[$post_type][$key][$user_locale];
-                }
-            }
-        }
-        return $custom_tiles;
-    }
-}
-
 function dt_get_global_languages_list(){
-    //phpcs:disable
-    //phpcs disable each value should start on a new line.
-    $global_languages_list =  [
+    $global_languages_list = [
         "af_NA" => [ "label" => "Afrikaans (Namibia)" ],
         "af_ZA" => [ "label" => "Afrikaans (South Africa)" ],
         "af" => [ "label" => "Afrikaans" ],
@@ -1224,7 +993,6 @@ function dt_get_global_languages_list(){
         "zu_ZA" => [ "label" => "Zulu (South Africa)" ],
         "zu" => [ "label" => "Zulu" ],
     ];
-    //@phpcs:enable
 
     return apply_filters( "dt_global_languages_list", $global_languages_list );
 }

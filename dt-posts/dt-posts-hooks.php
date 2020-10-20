@@ -3,6 +3,7 @@
 class DT_Posts_Hooks {
     public function __construct() {
         add_filter( 'dt_custom_fields_settings_after_combine', [ $this, 'dt_get_custom_fields_translation' ], 10, 1 );
+        add_filter( 'options_dt_custom_tiles', 'dt_get_custom_tile_translations' );
     }
 
     /**
@@ -47,6 +48,22 @@ class DT_Posts_Hooks {
             }
         }
         return $field_options;
+    }
+
+    public static function dt_get_custom_tile_translations( $custom_tiles ) {
+        if ( is_admin() ) {
+            return $custom_tiles;
+        } else {
+            $user_locale = get_user_locale();
+            foreach ( $custom_tiles as $post_type => $tile_keys ) {
+                foreach ( $tile_keys as $key => $value) {
+                    if ( !empty( $custom_tiles[$post_type][$key][$user_locale] ) ) {
+                        $custom_tiles[$post_type][$key]['label'] = $custom_tiles[$post_type][$key][$user_locale];
+                    }
+                }
+            }
+            return $custom_tiles;
+        }
     }
 
 }

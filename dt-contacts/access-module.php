@@ -47,54 +47,32 @@ class DT_Contacts_Access extends DT_Module_Base {
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){
-        if ( !isset( $expected_roles['marketer'] ) ){
-            $expected_roles['marketer'] = [
-                "label" => __( "Marketer", "disciple_tools" ),
-                "permissions" => [
-                    'access_specific_sources',
-                    'access_' . $this->post_type => true,
-                    'create_' . $this->post_type => true,
-                    'access_groups' => true,
-                    'create_groups' => true,
-                    'read_location' => true,
-                    'assign_any_contacts' => true,  //assign contacts to others,
-                    'access_peoplegroups' => true,
-                    'list_peoplegroups' => true,
-                    'view_project_metrics' => true,
-                ]
-            ];
-            $expected_roles['partner'] = [
-                "label" => __( "Partner", "disciple_tools" ),
-                "permissions" => [
-                    'access_specific_sources',
-                    'access_' . $this->post_type => true,
-                    'create_' . $this->post_type => true,
-                    'access_groups' => true,
-                    'create_groups' => true,
-                    'read_location' => true,
-                    'access_peoplegroups' => true,
-                    'list_peoplegroups' => true,
-                ]
-            ];
-            $expected_roles['dispatcher'] = [
-                "label" => __( "Dispatcher", "disciple_tools" ),
-                "permissions" => [
-                    'dt_all_access_contacts' => true,
-                    'view_project_metrics' => true,
-                    'access_' . $this->post_type => true,
-                    'create_' . $this->post_type => true,
-                    'read_location' => true,
-                    'access_groups' => true,
-                    'create_groups' => true,
-                    'read' => true,
-                    'list_users' => true,
-                    'dt_list_users' => true,
-                    'access_peoplegroups' => true,
-                    'list_peoplegroups' => true,
-                    'assign_any_contacts'       => true,  //assign contacts to others
-                ]
-            ];
-        }
+        $multiplier_permissions = Disciple_Tools_Roles::default_multiplier_caps();
+        $expected_roles['marketer'] = [
+            "label" => __( "Marketer", "disciple_tools" ),
+            "permissions" => wp_parse_args( [
+                'access_specific_sources' => true,
+                'assign_any_contacts' => true, //assign contacts to others,
+                'view_project_metrics' => true,
+            ], $multiplier_permissions )
+        ];
+        $expected_roles['partner'] = [
+            "label" => __( "Partner", "disciple_tools" ),
+            "permissions" => wp_parse_args( [
+                'access_specific_sources' => true,
+            ], $multiplier_permissions )
+        ];
+        $expected_roles['dispatcher'] = [
+            "label" => __( "Dispatcher", "disciple_tools" ),
+            "permissions" => wp_parse_args( [
+                'dt_all_access_contacts' => true,
+                'view_project_metrics' => true,
+                'list_users' => true,
+                'dt_list_users' => true,
+                'assign_any_contacts' => true, //assign contacts to others
+            ], $multiplier_permissions )
+        ];
+
         return $expected_roles;
     }
 

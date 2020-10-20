@@ -59,6 +59,31 @@ class Disciple_Tools_Roles
     public function __construct() {} // End __construct()
 
 
+    public static function default_multiplier_caps(){
+        return [
+            'read' => true,  //allow access to wp-admin to set 2nd factor auth settings per user.
+            'access_contacts' => true,
+            'create_contacts' => true,
+            'read_location' => true,
+            'access_peoplegroups' => true,
+            'list_peoplegroups' => true,
+            'access_groups' => true,
+            'create_groups' => true,
+        ];
+    }
+
+    public static function default_user_management_caps(){
+        return [
+            'promote_users' => true,
+            'edit_users' => true,
+            'create_users' => true,
+            'delete_users' => true,
+            'list_users' => true,
+            'dt_list_users' => true,
+        ];
+    }
+
+
     /**
      * Call set_roles(), only if the roles version number stored in options is
      * too low.

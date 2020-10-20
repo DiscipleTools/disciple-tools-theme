@@ -61,54 +61,33 @@ class DT_Contacts_Base {
                 ];
             }
         }
-        $roles["multiplier"] = [
+        $expected_roles["multiplier"] = [
             "label" => __( 'Multiplier', 'disciple_tools' ),
             "description" => "Interacts with Contacts and Groups",
             "permissions" => []
         ];
-        // Multiplier
-        $expected_roles["multiplier"]["permissions"]['read'] = true; //allow access to wp-admin to set 2nd factor auth settings per user.
-        $expected_roles["multiplier"]["permissions"]['access_' . $this->post_type] = true;
-        $expected_roles["multiplier"]["permissions"]['create_' . $this->post_type] = true;
-        $expected_roles["multiplier"]["permissions"]['read_location'] = true;
-        $expected_roles["multiplier"]["permissions"]['access_peoplegroups'] = true;
-        $expected_roles["multiplier"]["permissions"]['list_peoplegroups'] = true;
 
+        $multiplier_permissions = Disciple_Tools_Roles::default_multiplier_caps();
+
+        $user_management_permissions = Disciple_Tools_Roles::default_user_management_caps();
+
+        // Multiplier
+        $expected_roles["multiplier"]["permissions"] = array_merge( $expected_roles["multiplier"]["permissions"], $multiplier_permissions );
 
         // User Manager
-        $expected_roles["manage_users"]["permissions"]['read'] = true; //allow access to wp-admin to set 2nd factor auth settings per user.
-        $expected_roles["manage_users"]["permissions"]['promote_users'] = true;
-        $expected_roles["manage_users"]["permissions"]['edit_users'] = true;
-        $expected_roles["manage_users"]["permissions"]['create_users'] = true;
-        $expected_roles["manage_users"]["permissions"]['delete_users'] = true;
-        $expected_roles["manage_users"]["permissions"]['list_users'] = true;
-        $expected_roles["manage_users"]["permissions"]['dt_list_users'] = true;
+        $expected_roles["manage_users"]["permissions"] = array_merge( $expected_roles["manage_users"]["permissions"], $multiplier_permissions );
+        $expected_roles["manage_users"]["permissions"] = array_merge( $expected_roles["manage_users"]["permissions"], $user_management_permissions );
 
         // D.T Admin
-        $expected_roles["dt_admin"]["permissions"]['read'] = true; //allow access to wp-admin to set 2nd factor auth settings per user.
+        $expected_roles["dt_admin"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $multiplier_permissions );
+        $expected_roles["dt_admin"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $user_management_permissions );
         $expected_roles["dt_admin"]["permissions"]['manage_dt'] = true;
         $expected_roles["dt_admin"]["permissions"]['view_project_metrics'] = true;
-        $expected_roles["dt_admin"]["permissions"]['promote_users'] = true;
-        $expected_roles["dt_admin"]["permissions"]['edit_users'] = true;
-        $expected_roles["dt_admin"]["permissions"]['create_users'] = true;
-        $expected_roles["dt_admin"]["permissions"]['delete_users'] = true;
-        $expected_roles["dt_admin"]["permissions"]['list_users'] = true;
-        $expected_roles["dt_admin"]["permissions"]['dt_list_users'] = true;
-        $expected_roles["dt_admin"]["permissions"]['read_location'] = true;
-        $expected_roles["dt_admin"]["permissions"]['list_peoplegroups'] = true;
         $expected_roles["dt_admin"]["permissions"]['edit_page'] = true; //site links
         $expected_roles["dt_admin"]["permissions"]['edit_posts'] = true; //site links
 
+        //strategist
         $expected_roles["strategist"]["permissions"]['view_project_metrics'] = true;
-
-        $expected_roles["administrator"]["permissions"]['read'] = true; //allow access to wp-admin to set 2nd factor auth settings per user.
-        $expected_roles["administrator"]["permissions"]['promote_users'] = true;
-        $expected_roles["administrator"]["permissions"]['edit_users'] = true;
-        $expected_roles["administrator"]["permissions"]['create_users'] = true;
-        $expected_roles["administrator"]["permissions"]['delete_users'] = true;
-        $expected_roles["administrator"]["permissions"]['list_users'] = true;
-        $expected_roles["administrator"]["permissions"]['dt_list_users'] = true;
-
 
         return $expected_roles;
     }

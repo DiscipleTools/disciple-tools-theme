@@ -34,7 +34,7 @@ else {
      */
     function dt_theme_loaded() {
         /** We want to make sure roles are up-to-date. */
-        require_once( get_template_directory() . '/dt-core/admin/class-roles.php' );
+        require_once( get_template_directory() . '/dt-core/configuration/class-roles.php' );
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
         disciple_tools();
@@ -44,7 +44,7 @@ else {
          * @see https://www.sitepoint.com/wordpress-plugin-updates-right-way/
          */
         try {
-            require_once( get_template_directory() . '/dt-core/admin/class-migration-engine.php' );
+            require_once( get_template_directory() . '/dt-core/configuration/class-migration-engine.php' );
             Disciple_Tools_Migration_Engine::migrate( Disciple_Tools::instance()->migration_number );
         } catch ( Throwable $e ) {
             new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
@@ -165,12 +165,11 @@ else {
             $is_rest = dt_is_rest();
             $url_path = dt_get_url_path();
             require_once( get_template_directory() . '/dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin. Required before DT instance
-            require_once( get_template_directory() . '/dt-core/admin/config-site-defaults.php' ); // Force required site configurations
+            require_once( get_template_directory() . '/dt-core/configuration/config-site-defaults.php' ); // Force required site configurations
             require_once( get_template_directory() . '/dt-core/wp-async-request.php' ); // Async Task Processing
-
-
-            require_once( get_template_directory() . '/dt-core/admin/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
-            require_once( get_template_directory() . '/dt-core/admin/restrict-site-access.php' ); // protect against DDOS attacks.
+            require_once( get_template_directory() . '/dt-core/configuration/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
+            require_once( get_template_directory() . '/dt-core/configuration/restrict-site-access.php' ); // protect against DDOS attacks.
+            require_once( get_template_directory() . '/dt-core/configuration/dt-configuration.php' ); //settings and configuration to alter default WP
 
             /**
              * User Groups & Multi Roles

@@ -13,7 +13,7 @@ class DT_Groups_Base {
     public function __construct() {
         //setup post type
         add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
-        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 10, 1 );
+        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 20, 1 );
 
         //setup tiles and fields
         add_action( 'p2p_init', [ $this, 'p2p_init' ] );
@@ -48,9 +48,12 @@ class DT_Groups_Base {
                 "permissions" => []
             ];
         }
-        $expected_roles["multiplier"]["permissions"]['access_' . $this->post_type] = true;
-        $expected_roles["multiplier"]["permissions"]['create_' . $this->post_type] = true;
-        $expected_roles["multiplier"]["permissions"]['read_location'] = true;
+        foreach ( $expected_roles as $role => $role_value ){
+            if ( isset( $expected_roles[$role]["permissions"]['access_contacts'] ) && $expected_roles[$role]["permissions"]['access_contacts'] ){
+                $expected_roles[$role]["permissions"]['access_' . $this->post_type] = true;
+                $expected_roles[$role]["permissions"]['create_' . $this->post_type] = true;
+            }
+        }
 
         return $expected_roles;
     }
