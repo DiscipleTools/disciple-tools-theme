@@ -416,11 +416,14 @@ class Disciple_Tools_Users
             }
 
             if ( empty( $corresponds_to_contact ) || get_post( $corresponds_to_contact ) === null ) {
+                $current_user_id = get_current_user_id();
+                wp_set_current_user( 0 );
                 $new_user_contact = DT_Posts::create_post( "contacts", [
                     "title"               => $user->display_name,
                     "type"                => "user",
                     "corresponds_to_user" => $user_id,
-                ], false, false );
+                ], true, false );
+                wp_set_current_user( $current_user_id );
                 if ( !is_wp_error( $new_user_contact )){
                     update_user_option( $user_id, "corresponds_to_contact", $new_user_contact["ID"] );
                 }

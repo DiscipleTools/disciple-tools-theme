@@ -446,7 +446,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             $fields_to_return = $search_and_filter_query["fields_to_return"];
             unset( $search_and_filter_query["fields_to_return"] );
         }
-        $data = self::search_viewable_post( $post_type, $search_and_filter_query );
+        if ( isset( $search_and_filter_query["dt_recent"] ) ){
+            $data = self::get_recently_viewed_posts( $post_type );
+        } else {
+            $data = self::search_viewable_post( $post_type, $search_and_filter_query );
+        }
         if ( is_wp_error( $data ) ) {
             return $data;
         }

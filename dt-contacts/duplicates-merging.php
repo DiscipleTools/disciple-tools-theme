@@ -91,13 +91,19 @@ class DT_Duplicate_Checker_And_Merging {
         foreach ( $post as $field_key => $field_value ){
             if ( $fields[$field_key]["type"] === "communication_channel" ){
                 if ( !empty( $field_value ) ){
-                    $fields_with_values[] = $field_key;
-                    $search_query[$field_key] = [];
+                    $channel_queries = [];
                     foreach ( $field_value as $value ){
-                        $search_query[$field_key][] = $exact_template . $value["value"];
+                        if ( !empty( $value["value"] ) ){
+                             $channel_queries[] = $exact_template . $value["value"];
+                        }
+                    }
+                    if ( !empty( $channel_queries ) ){
+                        $fields_with_values[] = $field_key;
+                        $search_query[$field_key] = [];
+                        $search_query[$field_key] = $channel_queries;
                     }
                 }
-            } else if ( $field_key === "name" ){
+            } else if ( $field_key === "name" && !empty( $field_value ) ){
                 $fields_with_values[] = $field_key;
                 $search_query[$field_key] = [ $exact_template . $field_value ];
             }

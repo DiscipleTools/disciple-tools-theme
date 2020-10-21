@@ -492,6 +492,43 @@ class Disciple_Tools_Posts
         return apply_filters( "dt_format_activity_message", $message, $activity );
     }
 
+    /**
+     * Get the posts the user has recently viewed
+     *
+     * @param string $post_type
+     * @param int|null $user_id
+     * @param int $limit
+     * @return array|object|null
+     */
+    public static function get_recently_viewed_posts( string $post_type, int $user_id = null, int $limit = 30 ){
+        if ( !$user_id ){
+            $user_id = get_current_user_id();
+        }
+        global $wpdb;
+        $posts = $wpdb->get_results( $wpdb->prepare( "
+            SELECT p.ID, p.post_title, p.post_type, p.post_date
+            FROM $wpdb->posts p
+            INNER JOIN (
+                SELECT log.object_id
+                FROM $wpdb->dt_activity_log log
+                INNER JOIN (
+                    SELECT max(l.histid) as maxid FROM $wpdb->dt_activity_log l
+                    WHERE l.user_id = %s  AND l.action = 'viewed' AND l.object_type = %s
+                    group by l.object_id
+                ) x on log.histid = x.maxid
+            ORDER BY log.histid desc
+            LIMIT %d
+            ) as log
+            ON log.object_id = p.ID
+            WHERE p.post_type = %s AND (p.post_status = 'publish' OR p.post_status = 'private')
+        ", esc_sql( $user_id ), esc_sql( $post_type ), esc_sql( $limit ), esc_sql( $post_type ) ), OBJECT );
+
+        $total_rows = min( $limit, sizeof( $posts ) );
+        return [
+            "posts" => $posts,
+            "total" => $total_rows,
+        ];
+    }
 
     /**
      * Get the sql to query D.T fields.
@@ -1122,8 +1159,8 @@ class Disciple_Tools_Posts
         return $options;
     }
 
-    public static function delete_post( string $post_type, int $post_id ){
-        if ( !self::can_delete( $post_type, $post_id ) ) {
+    public static function delete_post( string $post_type, int $post_id, bool $check_permissions = true ){
+        if ( $check_permissions && !self::can_delete( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
 

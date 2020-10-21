@@ -72,6 +72,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'assign_any_contacts' => true, //assign contacts to others
             ], $multiplier_permissions )
         ];
+        $expected_roles["administrator"]["permissions"]["dt_all_access_contacts"] = true;
 
         return $expected_roles;
     }
@@ -838,7 +839,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             // add assigned to me filters
             $filters["filters"][] = [
                 'ID' => 'my_all',
-                'tab' => 'my',
+                'tab' => 'default',
                 'name' => __( "My Follow-Up", 'disciple_tools' ),
                 'query' => [
                     [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
@@ -857,7 +858,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 if ( isset( $status_counts[$status_key] ) ) {
                     $filters["filters"][] = [
                         "ID" => 'my_' . $status_key,
-                        "tab" => 'my',
+                        "tab" => 'default',
                         "name" => $status_value["label"],
                         "query" => [
                             [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
@@ -877,7 +878,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                         if ( $update_needed > 0 ){
                             $filters["filters"][] = [
                                 "ID" => 'my_update_needed',
-                                "tab" => 'my',
+                                "tab" => 'default',
                                 "name" => $fields["requires_update"]["name"],
                                 "query" => [
                                     [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
@@ -899,7 +900,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                             if ( isset( $active_counts[$seeker_path_key] ) ) {
                                 $filters["filters"][] = [
                                     "ID" => 'my_' . $seeker_path_key,
-                                    "tab" => 'my',
+                                    "tab" => 'default',
                                     "name" => $seeker_path_value["label"],
                                     "query" => [
                                         [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],

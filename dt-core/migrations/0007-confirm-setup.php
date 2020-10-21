@@ -9,7 +9,7 @@ class Disciple_Tools_Migration_0007 extends Disciple_Tools_Migration {
             P2P_Storage::install();
         }
 
-        require_once( get_template_directory() . '/dt-core/admin/class-roles.php' );
+        require_once( get_template_directory() . '/dt-core/configuration/class-roles.php' );
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
         /** Initialize default dt site options */

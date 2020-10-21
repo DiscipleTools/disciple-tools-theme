@@ -52,6 +52,7 @@ class DT_Contacts_Base {
             "manage_users" => __( 'User Manager', 'disciple_tools' ),
             "dt_admin" => __( 'Disciple.Tools Admin', 'disciple_tools' ),
             "strategist" => __( 'Strategist', 'disciple_tools' ),
+            "administrator" => __( 'Administrator', 'disciple_tools' ),
         ];
         foreach ( $roles as $role => $label ){
             if ( !isset( $expected_roles[$role] ) ){
@@ -88,6 +89,9 @@ class DT_Contacts_Base {
 
         //strategist
         $expected_roles["strategist"]["permissions"]['view_project_metrics'] = true;
+
+        $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $multiplier_permissions );
+        $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $user_management_permissions );
 
         return $expected_roles;
     }
@@ -385,30 +389,35 @@ class DT_Contacts_Base {
             $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
 
             $filters["tabs"][] = [
-                "key" => "my",
-                "label" => sprintf( _x( "My %s", 'My records', 'disciple_tools' ), $post_label_plural ),
-                "count" => $shared_by_type_counts['total'],
+                "key" => "default",
+                "label" => __( "Default Filters", 'disciple_tools' ),
                 "order" => 7
             ];
             $filters["filters"][] = [
                 'ID' => 'all_my_contacts',
-                'tab' => 'my',
-                'name' => sprintf( _x( "My %s", 'My records', 'disciple_tools' ), $post_label_plural ),
-                'query' => [
-                    'shared_with' => [ 'me' ],
-                    'sort' => 'name',
-                ],
-                'labels' => [
+                'tab' => 'default',
+                'name' => sprintf( _x( "All %s", 'All records', 'disciple_tools' ), $post_label_plural ),
+                'labels' =>[
                     [
-                        'id' => 'my_shared',
-                        'name' => __( 'Shared with me', 'disciple_tools' )
+                        'id' => 'all',
+                        'name' => sprintf( _x( "All %s I can view", 'All records I can view', 'disciple_tools' ), $post_label_plural ),
                     ]
                 ],
-                "count" => $shared_by_type_counts['total'],
+                'query' => [
+                    'sort' => '-post_date',
+                ],
+            ];
+            $filters["filters"][] = [
+                'ID' => 'recent',
+                'tab' => 'default',
+                'name' => __( "Recent", 'disciple_tools' ),
+                'query' => [
+                    'dt_recent' => true
+                ],
             ];
             $filters["filters"][] = [
                 'ID' => 'personal',
-                'tab' => 'my',
+                'tab' => 'default',
                 'name' => __( "Personal", 'disciple_tools' ),
                 'query' => [
                     'type' => [ 'personal' ],

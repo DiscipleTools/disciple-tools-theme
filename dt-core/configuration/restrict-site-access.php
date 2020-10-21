@@ -298,7 +298,7 @@ add_filter("retrieve_password_title", function( $title) {
 //Filter permissions for super admin users
 add_filter( 'map_meta_cap', 'restrict_super_admin', 10, 4 );
 function restrict_super_admin( $caps, $cap, $user_id, $args ){
-    if ( is_super_admin( $user_id ) ){
+    if ( is_multisite() && is_super_admin( $user_id ) ){
         $user = get_user_by( "ID", $user_id );
         $expected_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
         $dt_roles = array_map( function ( $a ){

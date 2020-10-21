@@ -101,14 +101,25 @@ final class Disciple_Tools_Admin_User_Edit {
 
                 <td>
                     <ul>
-                    <?php foreach ( $editable_roles as $role => $name ) : ?>
+                    <?php
+                    $expected_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
+                    foreach ( $editable_roles as $role => $name ) : ?>
                         <li>
                             <label>
                                 <input type="checkbox" name="dt_multi_role_user_roles[]"
                                        value="<?php echo esc_attr( $role ); ?>"
                                        <?php checked( in_array( $role, $user_roles ) ); ?>
                                        <?php echo esc_html( in_array( $role, $can_not_promote_to_roles ) ? 'disabled' : '' ) ?>/>
-                                <?php echo esc_html( $name ); ?>
+                                <?php
+                                if ( isset( $expected_roles[$role]["label"] ) && !empty( $expected_roles[$role]["label"] ) ){
+                                    echo esc_html( $expected_roles[$role]["label"] );
+                                } else {
+                                    echo esc_html( $name );
+                                }
+                                if ( isset( $expected_roles[$role]["description"] ) ){
+                                    echo ' - ' . esc_html( $expected_roles[$role]["description"] );
+                                }
+                                ?>
                             </label>
                         </li>
                     <?php endforeach; ?>

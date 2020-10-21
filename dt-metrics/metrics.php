@@ -31,6 +31,8 @@ class Disciple_Tools_Metrics
     public function __construct() {
         $url_path = dt_get_url_path();
         if ( strpos( $url_path, "metrics" ) !== false ) {
+            $modules = dt_get_option( "dt_post_type_modules" );
+
 
             // Personal
             //@todo fix query and re-enable
@@ -46,15 +48,19 @@ class Disciple_Tools_Metrics
             require_once( get_template_directory() . '/dt-metrics/personal/overview.php' );
 
             /* Contacts */
-            require_once( get_template_directory() . '/dt-metrics/contacts/baptism-tree.php' );
-            require_once( get_template_directory() . '/dt-metrics/contacts/coaching-tree.php' );
-            require_once( get_template_directory() . '/dt-metrics/contacts/sources.php' );
-            require_once( get_template_directory() . '/dt-metrics/contacts/milestones.php' );
-            require_once( get_template_directory() . '/dt-metrics/contacts/milestones-map.php' );
+            if ( !empty( $modules["dmm_module"]["enabled"] ) ){
+                require_once( get_template_directory() . '/dt-metrics/contacts/baptism-tree.php' );
+                require_once( get_template_directory() . '/dt-metrics/contacts/coaching-tree.php' );
+                require_once( get_template_directory() . '/dt-metrics/contacts/milestones.php' );
+                require_once( get_template_directory() . '/dt-metrics/contacts/milestones-map.php' );
+            }
             require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-cluster-map.php' );
             require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-point-map.php' );
             require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-area-map.php' );
-            require_once( get_template_directory() . '/dt-metrics/contacts/overview.php' );
+            if ( !empty( $modules["access_module"]["enabled"] ) ){
+                require_once( get_template_directory() . '/dt-metrics/contacts/sources.php' );
+                require_once( get_template_directory() . '/dt-metrics/contacts/overview.php' );
+            }
 
             /* Groups */
             require_once( get_template_directory() . '/dt-metrics/groups/tree.php' );
@@ -66,22 +72,26 @@ class Disciple_Tools_Metrics
             // Combined
             require_once( get_template_directory() . '/dt-metrics/combined/locations-list.php' );
             require_once( get_template_directory() . '/dt-metrics/combined/hover-map.php' );
-            require_once( get_template_directory() . '/dt-metrics/combined/critical-path.php' );
+            if ( !empty( $modules["access_module"]["enabled"] ) ){
+                require_once( get_template_directory() . '/dt-metrics/combined/critical-path.php' );
+            }
 
             // default menu order
             add_filter( 'dt_metrics_menu', function ( $content ){
+                $modules = dt_get_option( "dt_post_type_modules" );
                 if ( $content === "" ){
-                    $content .= '
-                        <li><a>' . __( "Personal", "disciple_tools" ) . '</a>
-                            <ul class="menu vertical nested" id="personal-menu"></ul>
-                        </li>
-                        <li><a>' . __( "Project", "disciple_tools" ) . '</a>
-                            <ul class="menu vertical nested" id="combined-menu"></ul>
-                        </li>
-                        <li><a>' . __( "Contacts", "disciple_tools" ) . '</a>
+                    $content .= '<li><a>' . __( "Personal", "disciple_tools" ) . '</a>
+                        <ul class="menu vertical nested" id="personal-menu"></ul>
+                    </li>';
+                    $content .= '<li><a>' . __( "Project", "disciple_tools" ) . '</a>
+                        <ul class="menu vertical nested" id="combined-menu"></ul>
+                    </li>';
+                    if ( !empty( $modules["dmm_module"]["enabled"] ) ){
+                        $content .= '<li><a>' . __( "Contacts", "disciple_tools" ) . '</a>
                             <ul class="menu vertical nested" id="contacts-menu"></ul>
-                        </li>
-                        <li><a>' . __( "Groups", "disciple_tools" ) . '</a>
+                        </li>';
+                    }
+                    $content .= '<li><a>' . __( "Groups", "disciple_tools" ) . '</a>
                             <ul class="menu vertical nested" id="groups-menu"></ul>
                         </li>
                     ';
@@ -93,19 +103,4 @@ class Disciple_Tools_Metrics
 
 }
 Disciple_Tools_Metrics::instance();
-
-
-function dt_get_time_until_midnight() {
-    $midnight = mktime( 0, 0, 0, gmdate( 'n' ), gmdate( 'j' ) +1, gmdate( 'Y' ) );
-    return intval( $midnight - current_time( 'timestamp' ) );
-}
-
-// Tests if timestamp is valid.
-if ( ! function_exists( 'is_valid_timestamp' ) ) {
-    function is_valid_timestamp( $timestamp ) {
-        return ( (string) (int) $timestamp === $timestamp )
-            && ( $timestamp <= PHP_INT_MAX )
-            && ( $timestamp >= ~PHP_INT_MAX );
-    }
-}
 

@@ -46,10 +46,16 @@
     })
   }
 
-  //open the filter tabs
-  $(`#list-filter-tabs [data-id='${_.escape( current_filter.tab )}'] a`).click()
+
   if ( current_filter.ID ){
-    $(`.is-active input[name=view][data-id="${_.escape( current_filter.ID )}"].js-list-view`).prop('checked', true);
+    //open the filter tabs
+    $(`#list-filter-tabs [data-id='${_.escape( current_filter.tab )}'] a`).click()
+    let filter_element = $(`.is-active input[name=view][data-id="${_.escape( current_filter.ID )}"].js-list-view`)
+    if ( filter_element.length ){
+      filter_element.prop('checked', true);
+    } else {
+      $($('.js-list-view')[0]).prop('checked', true)
+    }
   } else {
     $('#list-filter-tabs .accordion-item a')[0].click()
     $($('.js-list-view')[0]).prop('checked', true)
@@ -333,45 +339,50 @@
       let row_fields_html = ''
       fields_to_show_in_table.forEach(field_key=>{
         let values_html = '';
+        let values = [];
         if ( field_key === "name" ){
           if ( mobile ){ return }
-          values_html = `<a href="${ _.escape( record.permalink ) }">${ _.escape( record.post_title ) }</a>`
+          values_html = `<a href="${ _.escape( record.permalink ) }" title="${ _.escape( record.post_title ) }">${ _.escape( record.post_title ) }</a>`
         } else if ( list_settings.post_type_settings.fields[field_key] ) {
           let field_settings = list_settings.post_type_settings.fields[field_key]
           let field_value = _.get( record, field_key, false )
 
           if ( field_value !== false ) {
             if (['text', 'number'].includes(field_settings.type)) {
-              values_html = _.escape(field_value)
+              values = [_.escape(field_value)]
             } else if (field_settings.type === 'date') {
-              values_html = _.escape(field_value.formatted)
+              values = [_.escape(field_value.formatted)]
             } else if (field_settings.type === 'user_select') {
-              values_html = _.escape(field_value.display)
+              values = [_.escape(field_value.display)]
             } else if (field_settings.type === 'key_select') {
-              values_html = _.escape(field_value.label)
+              values = [_.escape(field_value.label)]
             } else if (field_settings.type === 'multi_select') {
-              values_html = field_value.map(v => {
-                return `<li>${_.escape(_.get(field_settings, `default[${v}].label`, v))}</li>`;
-              }).join(mobile ? ', ' : '')
+              values = field_value.map(v => {
+                return `${_.escape(_.get(field_settings, `default[${v}].label`, v))}`;
+              })
             } else if ( field_settings.type === "location" ){
-              values_html = field_value.map(v => {
-                return `<li>${_.escape( v.label )}</li>`;
-              }).join(mobile ? ', ' : '')
+              values = field_value.map(v => {
+                return `${_.escape( v.label )}`;
+              })
             } else if ( field_settings.type === "communication_channel" ){
-              values_html = field_value.map(v => {
-                return `<li>${_.escape( v.value )}</li>`;
-              }).join(mobile ? ', ' : '')
+              values = field_value.map(v => {
+                return `${_.escape( v.value )}`;
+              })
             } else if ( field_settings.type === "connection" ){
-              values_html = field_value.map(v => {
-                return `<li>${_.escape( v.post_title )}</li>`;
-              }).join(mobile ? ', ' : '')
+              values = field_value.map(v => {
+                return `${_.escape( v.post_title )}`;
+              })
             } else if ( field_settings.type === "boolean" ){
-              values_html = '&check;'
+              values = ['&check;']
             }
           }
         } else {
           return;
         }
+        values_html += values.map(v=>{
+          return `<li>${v}</li>`
+        }).join('')
+
         if ( $(window).width() < 640 ){
           row_fields_html += `
             <td>
@@ -382,7 +393,7 @@
               </div>
               <div class="mobile-list-field-value">
                 <ul style="line-height:20px" >
-                  ${values_html}
+                  ${values.join(', ')}
                 </ul>
               </div>
 
@@ -390,7 +401,7 @@
           `
         } else {
           row_fields_html += `
-            <td>
+            <td title="${values.join(', ')}">
               <ul>
                 ${values_html}
               </ul>

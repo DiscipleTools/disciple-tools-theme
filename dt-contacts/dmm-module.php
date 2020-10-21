@@ -384,7 +384,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             $shared_by_type_counts = DT_Posts_Metrics::get_shared_with_meta_field_counts( "contacts", 'type' );
             $filters["filters"][] = [
                 'ID' => 'placeholder',
-                'tab' => 'my',
+                'tab' => 'default',
                 'name' => sprintf( _x( "Connected %s", 'Personal records', 'disciple_tools' ), $post_label_plural ),
                 'query' => [
                     'type' => [ 'placeholder' ],
@@ -396,7 +396,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'ID' => 'my_coached',
                 'visible' => "1",
                 'type' => 'default',
-                'tab' => 'my',
+                'tab' => 'default',
                 'name' => __( 'Coached by me', 'disciple_tools' ),
                 'count' => $coached_by_me,
                 'query' => [
