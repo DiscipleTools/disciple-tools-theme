@@ -221,7 +221,7 @@ declare(strict_types=1);
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
                     <?php $fields = [];
-                    $allowed_types = [ "multi_select", "key_select", "boolean", "date", "location", "connection" ];
+                    $allowed_types = [ "user_select", "multi_select", "key_select", "boolean", "date", "location", "connection" ];
                     foreach ( $field_options as $field_key => $field){
                         if ( $field_key && in_array( $field["type"] ?? "", $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
                             $fields[] = $field_key;
@@ -236,11 +236,6 @@ declare(strict_types=1);
                                     <a href="#<?php echo esc_html( $field )?>" <?php if ( $index === 0 ){ echo 'aria-selected="true"'; } ?>>
                                         <?php echo esc_html( $field_options[$field]["name"] ) ?></a>
                                 </li>
-                            <?php elseif ( $field === "post_date" ) : ?>
-                                <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
-                                    <a href="#<?php echo esc_html( $field )?>">
-                                        <?php esc_html_e( "Creation Date", 'disciple_tools' ) ?></a>
-                                </li>
                             <?php else : ?>
                                 <?php wp_die( "Cannot implement filter options for field " . esc_html( $field ) ); ?>
                             <?php endif; ?>
@@ -251,7 +246,7 @@ declare(strict_types=1);
                 <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="filter-tabs">
                     <?php foreach ( $fields as $index => $field ) :
                         $is_multi_select = isset( $field_options[$field] ) && $field_options[$field]["type"] == "multi_select";
-                        if ( isset( $field_options[$field] ) && ( $field_options[$field]["type"] === "connection" || $field_options[$field]["type"] === "location" || $is_multi_select ) ) : ?>
+                        if ( isset( $field_options[$field] ) && ( $field_options[$field]["type"] === "connection" || $field_options[$field]["type"] === "location" || $field_options[$field]["type"] === "user_select" || $is_multi_select ) ) : ?>
                             <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>" id="<?php echo esc_html( $field ) ?>">
                                 <div class="section-header"><?php echo esc_html( $field_options[$field]["name"] ) ?></div>
                                 <div class="<?php echo esc_html( $field );?>  <?php echo esc_html( $is_multi_select ? "multi_select" : "" ) ?> details" >

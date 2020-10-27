@@ -22,17 +22,33 @@
   } catch (e) {
     cached_filter = {}
   }
-  let current_filter = {
-    query:{},
-  }
-  if ( cached_filter && !_.isEmpty(cached_filter)){
-    if ( cached_filter.type === "custom_filter" ){
+  let current_filter = (cached_filter && !_.isEmpty(cached_filter)) ? cached_filter : { query:{} }
+
+  //set up main filters
+  setup_filters()
+
+  //set up custom cached filter
+  if ( cached_filter && !_.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ){
       add_custom_filter(cached_filter.name, "default", cached_filter.query, cached_filter.labels, false)
+  } else {
+    //check select filter
+    if ( current_filter.ID ){
+      //open the filter tabs
+      $(`#list-filter-tabs [data-id='${_.escape( current_filter.tab )}'] a`).click()
+      let filter_element = $(`input[name=view][data-id="${_.escape( current_filter.ID )}"].js-list-view`)
+      if ( filter_element.length ){
+        filter_element.prop('checked', true);
+      } else {
+        $('#list-filter-tabs .accordion-item a')[0].click()
+        $($('.js-list-view')[0]).prop('checked', true)
+      }
+    } else {
+      $('#list-filter-tabs .accordion-item a')[0].click()
+      $($('.js-list-view')[0]).prop('checked', true)
     }
-    current_filter = cached_filter
   }
 
-  setup_filters()
+  //determine list columns
   if ( _.isEmpty(fields_to_show_in_table)){
     _.forOwn( list_settings.post_type_settings.fields, (field_settings, field_key)=> {
       if (_.get(field_settings, 'show_in_table')===true || _.get(field_settings, 'show_in_table') > 0) {
@@ -46,28 +62,13 @@
     })
   }
 
-
-  if ( current_filter.ID ){
-    //open the filter tabs
-    $(`#list-filter-tabs [data-id='${_.escape( current_filter.tab )}'] a`).click()
-    let filter_element = $(`.is-active input[name=view][data-id="${_.escape( current_filter.ID )}"].js-list-view`)
-    if ( filter_element.length ){
-      filter_element.prop('checked', true);
-    } else {
-      $($('.js-list-view')[0]).prop('checked', true)
-    }
-  } else {
-    $('#list-filter-tabs .accordion-item a')[0].click()
-    $($('.js-list-view')[0]).prop('checked', true)
-  }
+  // get records on load and when a filter is clicked
   get_records_for_current_filter()
-
-
-
   $(document).on('change', '.js-list-view', () => {
     get_records_for_current_filter()
   });
 
+  //load record for the first filter when a tile is clicked
   $(document).on('click', '.accordion-title', function(){
     let selected_filter = $(".js-list-view:checked").data('id')
     let tab = $(this).data('id');
@@ -682,6 +683,51 @@
     })
   }
 
+  let load_user_select_typeaheads = ()=>{
+    $(".typeahead__query [data-type='user_select']").each((key, el)=>{
+      let field_key = $(el).data('field')
+      if (!window.Typeahead[`.js-typeahead-${field_key}`]) {
+        $.typeahead({
+          input: `.js-typeahead-${field_key}`,
+          minLength: 0,
+          accent: true,
+          searchOnFocus: true,
+          maxItem: 20,
+          template: function (query, item) {
+            return `<span dir="auto">${_.escape(item.name)} (#${_.escape( item.ID )})</span>`
+          },
+          source: TYPEAHEADS.typeaheadUserSource(),
+          display: "name",
+          templateValue: "{{name}}",
+          dynamic: true,
+          multiselect: {
+            matchOn: ["ID"],
+            data: [],
+            callback: {
+              onCancel: function (node, item) {
+                $(`.current-filter[data-id="${item.ID}"].${field_key}`).remove()
+                _.pullAllBy(new_filter_labels, [{id: item.ID}], "id")
+              }
+            }
+          },
+          callback: {
+            onResult: function (node, query, result, resultCount) {
+              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              $(`#${field_key}-result-container`).html(text);
+            },
+            onHideLayout: function () {
+              $(`#${field_key}-result-container`).html("");
+            },
+            onClick: function (node, a, item) {
+              new_filter_labels.push({id: item.ID, name: item.name, field: field_key})
+              selected_filters.append(`<span class="current-filter ${field_key}" data-id="${_.escape( item.ID )}">${_.escape( item.name )}</span>`)
+            }
+          }
+        });
+      }
+    })
+  }
+
   /**
    * location_grid
    */
@@ -770,6 +816,7 @@
     new_filter_labels=[]
     loadLocationTypeahead()
     load_post_type_typeaheads()
+    load_user_select_typeaheads()
     typeaheads_loaded = load_multi_select_typeaheads().catch(err => { console.error(err) })
     $('#new-filter-name').val('')
     $("#filter-modal input.dt_date_picker").each(function () {

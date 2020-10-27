@@ -276,14 +276,6 @@ class Disciple_Tools_Posts
                 $object_note_to = sprintf( esc_html_x( 'Removed sub-assigned %s', 'Removed sub-assigned contact1', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( 'No longer sub-assigned on %s', 'No longer sub-assigned on contact1', 'disciple_tools' ), $to_title );
             }
-        } else if ( $p2p_type === "contacts_to_locations" || $p2p_type === "groups_to_locations"){
-            if ($action == "connected to"){
-                $object_note_to = sprintf( esc_html_x( '%1$s added as location on %2$s', 'Paris added as location on contact1', 'disciple_tools' ), $to_title, $from_title );
-                $object_note_from = sprintf( esc_html_x( '%s added to locations', 'Paris added to locations', 'disciple_tools' ), $to_title );
-            } else {
-                $object_note_to = sprintf( esc_html_x( '%1$s removed from locations on %2$s', 'Paris removed from locations on contact1', 'disciple_tools' ), $to_title, $from_title );
-                $object_note_from = sprintf( esc_html_x( '%s removed from locations', 'Paris removed from locations', 'disciple_tools' ), $to_title );
-            }
         } else if ( $p2p_type === "contacts_to_peoplegroups" || $p2p_type === "groups_to_peoplegroups"){
             if ($action == "connected to"){
                 $object_note_to = sprintf( esc_html_x( '%1$s added as people group on %2$s', 'Shaikh added as people group on contact1', 'disciple_tools' ), $to_title, $from_title );

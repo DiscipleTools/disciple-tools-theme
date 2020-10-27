@@ -122,7 +122,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                     <!--
                         Main details section
                     -->
-                    <section id="details-tile" class="small-12 cell bordered-box" >
+                    <section id="details-tile" class="small-12 cell bordered-box collapsed" >
                         <h3 class="section-header">
                             <?php echo esc_html__( "Details", "disciple_tools" )?>
                             <button class="section-chevron chevron_down show-details-section">

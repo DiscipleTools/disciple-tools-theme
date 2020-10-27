@@ -32,8 +32,6 @@ jQuery(document).ready(function($) {
       let id = $(item).attr('id')
       if ( id && id.includes('-tile') && collapsed_tiles.includes(id) ){
         $(item).addClass('collapsed')
-      } else {
-        $(item).removeClass('collapsed')
       }
     })
 
@@ -204,7 +202,7 @@ window.TYPEAHEADS = {
               }
           }
       }
-  },
+    },
     typeaheadUserSource : function (field, ur) {
         return {
             users: {
@@ -246,7 +244,7 @@ window.TYPEAHEADS = {
                 }
             }
         }
-  },
+    },
     typeaheadPostsSource : function (post_type, args = {}){
       return {
         contacts: {

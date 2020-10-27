@@ -334,6 +334,12 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                     Disciple_Tools_Notifications::insert_notification_for_subassigned( $user_id, $post_id );
                 }
             }
+            if ( $post_key === "coached_by" ){
+                $user_id = get_post_meta( $value, "corresponds_to_user", true );
+                if ( $user_id ){
+                    DT_Posts::add_shared( $post_type, $post_id, $user_id, null, false, false, true );
+                }
+            }
             if ( $post_key === 'baptized' ){
                 Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $value );
                 $milestones = get_post_meta( $post_id, 'milestones' );
