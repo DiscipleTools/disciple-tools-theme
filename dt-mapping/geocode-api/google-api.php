@@ -26,14 +26,19 @@ if ( !defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
     class Disciple_Tools_Google_Geocode_API {
         public function __construct() {
+
         }
 
-        public static function key() {
-            return self::get_map_key();
+        public static function get_key() {
+            return get_option( 'dt_google_map_key' );
         }
 
-        public static function get_map_key() {
-            return get_option( 'google_map_key' );
+        public static function update_key( string $key ) {
+            return update_option( 'dt_google_map_key', $key, true );
+        }
+
+        public static function delete_key(){
+            return delete_option( 'dt_google_map_key' );
         }
 
         /**
@@ -168,67 +173,101 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
             return $output;
         }
 
-        /**
-         * @param $ip_address
-         *
-         * @return bool|array False on fail, or result array on success
-         */
-        public static function geocode_ip_address( $ip_address ) {
-            if ( is_null( $ip_address ) || empty( $ip_address ) ) {
-                $ip_address = self::get_real_ip_address();
+
+        /**************************************************************************************************************
+         * ADMIN
+         **************************************************************************************************************/
+        public static function metabox_for_admin() {
+
+            if ( isset( $_POST['google_key'] )
+                && ( isset( $_POST['google_geocoding_key_nonce'] )
+                    && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['google_geocoding_key_nonce'] ) ), 'google_geocoding_key' . get_current_user_id() ) ) ) {
+
+                $key = sanitize_text_field( wp_unslash( $_POST['google_key'] ) );
+                if ( empty( $key ) ) {
+                    self::delete_key();
+                } else {
+                    self::update_key( $key );
+                }
             }
+            $key = self::get_key();
+            $hidden_key = '**************' . substr( $key, -5, 5 );
 
-            $api_key     = 'bc09c19cf847fa2e616facc110699f17';
-            $url_address = 'http://api.ipstack.com/' . $ip_address . '?access_key=' . $api_key;
-            $details     = json_decode( self::url_get_contents( $url_address ), true );
-
-            if ( ! $details ) {
-                return false;
-            }
-
-            $latlng = $details['latitude'] . ',' . $details['longitude'];
-            $raw    = self::query_google_api( $latlng, 'core' );
-
-            return $raw;
-        }
-
-        /**
-         * Check Google for address validation
-         *
-         * @param $address
-         *
-         * @return mixed
-         */
-        public static function check_for_valid_address( $address ) {
-            $address     = str_replace( '   ', ' ', $address );
-            $address     = str_replace( '  ', ' ', $address );
-            $address     = urlencode( trim( $address ) );
-            $url_address = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&key=' . self::key();
-            $details     = json_decode( self::url_get_contents( $url_address ) );
-
-            if ( $details->status == 'ZERO_RESULTS' ) {
-                return false;
+            if ( self::is_active_google_key() ) {
+                $status_class = 'connected';
+                $message = 'Successfully connected to Google Maps API.';
             } else {
-                return true;
+                $status_class = 'not-connected';
+                $message = 'API NOT AVAILABLE. CHECK YOR API KEY';
             }
-        }
+            ?>
+            <form method="post">
+                <table class="widefat striped">
+                    <thead>
+                    <tr><th>Google Geocoding Service (optional)</th></tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            For some countries, the address lookup service provided by the Open Street Maps (Mapbox) service may not sufficiently support
+                            addresses or addresses in certain languages. If this is the case for your country, you can add the Google Maps Geocoding API
+                            on top of the MapBox service. The system will still run Mapbox maps for metrics, but the search for location provide on records,
+                            will use the Google APi to lookup addresses.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php wp_nonce_field( 'google_geocoding_key' . get_current_user_id(), 'google_geocoding_key_nonce' ); ?>
+                            Google API Token: <input type="text" class="regular-text" name="google_key" value="<?php echo ( $key ) ? esc_attr( $hidden_key ) : ''; ?>" /> <button type="submit" class="button">Update</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p id="reachable_source" class="<?php echo esc_attr( $status_class ) ?>">
+                                <?php echo esc_html( $message ); ?>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php if ( empty( self::get_key() ) ) : ?>
+                                <ol>
+                                    <li>
+                                        Go to <a href="https://ipstack.com">https://console.cloud.google.com</a>.
+                                    </li>
+                                    <li>
+                                        Register for a new free account (<a href="https://ipstack.com/product">IpStack.com</a>)<br>
+                                        <em>(email required, no credit card required)</em>
+                                    </li>
+                                    <li>
+                                        Once registered, go to your account home page. (<a href="https://ipstack.com/quickstart/">Account Page</a>)<br>
+                                    </li>
+                                    <li>
+                                        Inside the section labeled "Your API Access Key". Copy this token.
+                                    </li>
+                                    <li>
+                                        Paste the token into the "Google API Token" field in the box above.
+                                    </li>
+                                </ol>
+                            <?php endif; ?>
 
-        /**
-         * @return string
-         */
-        public static function get_real_ip_address() {
-            $ip = '';
-            if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) )   //check ip from share internet
-            {
-                $ip = sanitize_text_field( wp_unslash( $_SERVER['HTTP_CLIENT_IP'] ) );
-            } else if ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) )   //to check ip is pass from proxy
-            {
-                $ip = sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) );
-            } else if ( ! empty( $_SERVER['REMOTE_ADDR'] ) ) {
-                $ip = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
-            }
+                            <?php if ( ! empty( self::get_key() ) ) : ?>
+                                <a onclick="jQuery('#ip-geocode-report').toggle();" class="button">Show Report</a>
+                                <div id="ip-geocode-report" style="display:none;">
+                                    <?php print '<br>Your IP Response<br><pre>';
+//                                    print_r( self::geocode_current_visitor() );
+                                    print '</pre>'; ?>
+                                </div>
 
-            return $ip;
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+            <br>
+
+            <?php
         }
 
         /**
@@ -536,43 +575,27 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
             switch ( $item ) {
                 case 'is_country':
                     return $raw['types'][0] == 'country';
-                    break;
 
                 case 'is_admin1':
                     return $raw['types'][0] == 'administrative_area_level_1';
-                    break;
 
                 case 'is_admin2':
                     return $raw['types'][0] == 'administrative_area_level_2';
-                    break;
 
                 case 'is_admin3':
                     return $raw['types'][0] == 'administrative_area_level_3';
-                    break;
 
                 case 'is_admin4':
                     return $raw['types'][0] == 'administrative_area_level_4';
-                    break;
 
                 case 'locality':
-                    return $raw['types'][0] == 'locality';
-                    break;
-
                 case 'neighborhood':
-                    return $raw['types'][0] == 'locality';
-                    break;
-
                 case 'route':
-                    return $raw['types'][0] == 'locality';
-                    break;
-
                 case 'street_address':
                     return $raw['types'][0] == 'locality';
-                    break;
 
                 default:
                     return false;
-                    break;
             }
         }
 
@@ -586,6 +609,18 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
             }
 
             return false;
+        }
+
+        public static function is_active_google_key(){
+            // @todo test if key is live
+
+            return self::get_key();
+
+        }
+
+        public static function load_google_geocoding_scripts() {
+            $api_key = self::get_key();
+            wp_enqueue_script( 'google-search-widget', 'https://maps.googleapis.com/maps/api/js?libraries=places&key='.$api_key, [ 'jquery', 'mapbox-gl', 'shared-functions' ], '1', false );
         }
 
     }

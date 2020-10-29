@@ -135,8 +135,13 @@ function validate_timer() {
 
   // set timer
   window.validate_timer_id = setTimeout(function(){
+
     // call geocoder
-    mapbox_autocomplete( jQuery('#mapbox-search').val() )
+    if ( dtMapbox.google_map_key ) {
+      google_autocomplete( jQuery('#mapbox-search').val() )
+    } else {
+      mapbox_autocomplete( jQuery('#mapbox-search').val() )
+    }
 
     // toggle buttons back
     jQuery('#mapbox-spinner-button').hide()
@@ -157,7 +162,6 @@ function mapbox_autocomplete(address){
   let root = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
   let settings = '.json?types=country,region,postcode,district,place,locality,neighborhood,address&limit=6&access_token='
   let key = dtMapbox.map_key
-
   let url = root + encodeURI( address ) + settings + key
 
   jQuery.get( url, function( data ) {
@@ -186,6 +190,37 @@ function mapbox_autocomplete(address){
   }); // end get request
 } // end validate
 
+function google_autocomplete(address){
+  console.log('google_autocomplete: ' + address )
+  if ( address.length < 1 ) {
+    return;
+  }
+
+  let service = new google.maps.places.AutocompleteService();
+  service.getPlacePredictions({ 'input': address }, function(predictions, status ) {
+    if (status === 'OK') {
+          console.log(predictions)
+          let list = jQuery('#mapbox-autocomplete-list')
+          list.empty()
+
+          jQuery.each( predictions, function( index, value ) {
+            list.append(`<div data-value="${index}">${_.escape( value.description )}</div>`)
+          })
+
+          jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
+            close_all_lists(e.target.attributes['data-value'].value);
+          });
+
+          // Set globals
+          window.mapbox_result_features = predictions
+
+        } else {
+          console.log('Predictions was not successful for the following reason: ' + status)
+        }
+  } )
+
+} // end validate
+
 function add_active(x) {
   /*a function to classify an item as "active":*/
   if (!x) return false;
@@ -204,39 +239,97 @@ function remove_active(x) {
 }
 function close_all_lists(selection_id) {
 
-  jQuery('#mapbox-search').val(window.mapbox_result_features[selection_id].place_name)
-  jQuery('#mapbox-autocomplete-list').empty()
-  let spinner = jQuery('#mapbox-spinner-button').show()
+  if ( dtMapbox.google_map_key ) {
+    jQuery('#mapbox-search').val(window.mapbox_result_features[selection_id].description)
+    jQuery('#mapbox-autocomplete-list').empty()
+    let spinner = jQuery('#mapbox-spinner-button').show()
 
-  let data = {
-    location_grid_meta: {
-      values: [
-        {
-          lng: window.mapbox_result_features[selection_id].center[0],
-          lat: window.mapbox_result_features[selection_id].center[1],
-          level: window.mapbox_result_features[selection_id].place_type[0],
-          label: window.mapbox_result_features[selection_id].place_name,
-          source: 'user'
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ placeId: window.mapbox_result_features[selection_id].place_id }, (results, status) => {
+      if (status !== "OK") {
+        console.log("Geocoder failed due to: " + status);
+        return;
+      }
+
+      console.log('results from geocoding')
+     console.log(results)
+     console.log(results[0].geometry.location.lng())
+
+
+      window.location_data = {
+        location_grid_meta: {
+          values: [
+            {
+              lng: results[0].geometry.location.lng(),
+              lat: results[0].geometry.location.lat(),
+              level: results[0].types[0],
+              label: results[0].formatted_address,
+              source: 'user'
+            }
+          ]
         }
-      ]
+      }
+
+      if ( jQuery('#mapbox-autocomplete').data('autosubmit') ) {
+        /* if post_type = user, else all other post types */
+        API.update_post( dtMapbox.post_type, dtMapbox.post_id, window.location_data ).then(function (response) {
+          console.log( response )
+
+          dtMapbox.post = response
+          jQuery('#mapbox-wrapper').empty()
+          write_results_box()
+
+        }).catch(err => { console.error(err) })
+
+      } else {
+        window.selected_location_grid_meta = window.location_data
+        spinner.hide()
+      }
+
+    });
+
+    console.log('established location data')
+    console.log(window.location_data)
+
+
+
+  } else {
+    jQuery('#mapbox-search').val(window.mapbox_result_features[selection_id].place_name)
+    jQuery('#mapbox-autocomplete-list').empty()
+    let spinner = jQuery('#mapbox-spinner-button').show()
+
+    window.location_data = {
+      location_grid_meta: {
+        values: [
+          {
+            lng: window.mapbox_result_features[selection_id].center[0],
+            lat: window.mapbox_result_features[selection_id].center[1],
+            level: window.mapbox_result_features[selection_id].place_type[0],
+            label: window.mapbox_result_features[selection_id].place_name,
+            source: 'user'
+          }
+        ]
+      }
+    }
+
+    if ( jQuery('#mapbox-autocomplete').data('autosubmit') ) {
+      /* if post_type = user, else all other post types */
+      API.update_post( dtMapbox.post_type, dtMapbox.post_id, window.location_data ).then(function (response) {
+        console.log( response )
+
+        dtMapbox.post = response
+        jQuery('#mapbox-wrapper').empty()
+        write_results_box()
+
+      }).catch(err => { console.error(err) })
+
+    } else {
+      window.selected_location_grid_meta = window.location_data
+      spinner.hide()
     }
   }
 
-  if ( jQuery('#mapbox-autocomplete').data('autosubmit') ) {
-    /* if post_type = user, else all other post types */
-    API.update_post( dtMapbox.post_type, dtMapbox.post_id, data ).then(function (response) {
-      console.log( response )
 
-      dtMapbox.post = response
-      jQuery('#mapbox-wrapper').empty()
-      write_results_box()
-
-    }).catch(err => { console.error(err) })
-
-  } else {
-    window.selected_location_grid_meta = data
-    spinner.hide()
-  }
 
 }
 
