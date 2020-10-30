@@ -314,6 +314,11 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     )
                 );
                 add_action( 'wp_head', [ 'DT_Mapbox_API', 'mapbox_search_widget_css' ] );
+
+                // load Google Geocoder if key is present.
+                if ( Disciple_Tools_Google_Geocode_API::get_key() ){
+                    Disciple_Tools_Google_Geocode_API::load_google_geocoding_scripts();
+                }
             }
         }
 

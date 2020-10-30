@@ -197,8 +197,8 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
                 $status_class = 'connected';
                 $message = 'Successfully connected to Google Maps API.';
             } else {
-                $status_class = 'not-connected';
-                $message = 'API NOT AVAILABLE. CHECK YOR API KEY';
+                $status_class = '';
+                $message = 'API NOT CONFIGURED.';
             }
             ?>
             <form method="post">
@@ -218,7 +218,7 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
                     <tr>
                         <td>
                             <?php wp_nonce_field( 'google_geocoding_key' . get_current_user_id(), 'google_geocoding_key_nonce' ); ?>
-                            Google API Token: <input type="text" class="regular-text" name="google_key" value="<?php echo ( $key ) ? esc_attr( $hidden_key ) : ''; ?>" /> <button type="submit" class="button">Update</button>
+                            Google API Key: <input type="text" class="regular-text" name="google_key" value="<?php echo ( $key ) ? esc_attr( $hidden_key ) : ''; ?>" /> <button type="submit" class="button">Update</button>
                         </td>
                     </tr>
                     <tr>
@@ -231,35 +231,34 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
                     <tr>
                         <td>
                             <?php if ( empty( self::get_key() ) ) : ?>
-                                <ol>
+                                <a onclick="jQuery('#google-geocode-instructions').toggle();" class="button">Show Instructions</a>
+                                <ol id="google-geocode-instructions" style="display:none;">
                                     <li>
-                                        Go to <a href="https://ipstack.com">https://console.cloud.google.com</a>.
+                                        Go to <a href="https://console.cloud.google.com">https://console.cloud.google.com</a>.
                                     </li>
                                     <li>
-                                        Register for a new free account (<a href="https://ipstack.com/product">IpStack.com</a>)<br>
-                                        <em>(email required, no credit card required)</em>
+                                        Register with your Google Account or Gmail Account
                                     </li>
                                     <li>
-                                        Once registered, go to your account home page. (<a href="https://ipstack.com/quickstart/">Account Page</a>)<br>
+                                        Once registered, create a new project.<br>
                                     </li>
                                     <li>
-                                        Inside the section labeled "Your API Access Key". Copy this token.
+                                        Then go to APIs & Services > Credentials and "Create Credentials" API Key. Copy this key.
                                     </li>
                                     <li>
-                                        Paste the token into the "Google API Token" field in the box above.
+                                        Paste the key into the "Google API Key" field in the box above here in the Disciple Tools Mapping Admin.
+                                    </li>
+                                    <li>
+                                        Again, in Google Cloud Console, in APIs & Services go to Library. Find and enable: (1) Maps Javascript API,
+                                        (2) Places API, and (3) GeoCoding API.
+                                    </li>
+                                    <li>
+                                        Lastly, in  in Credentials for the API key it is recommended in the settings of the API key to be set "None" for Application Restrictions
+                                        and "Don't restrict key" in API Restrictions.
                                     </li>
                                 </ol>
                             <?php endif; ?>
 
-                            <?php if ( ! empty( self::get_key() ) ) : ?>
-                                <a onclick="jQuery('#ip-geocode-report').toggle();" class="button">Show Report</a>
-                                <div id="ip-geocode-report" style="display:none;">
-                                    <?php print '<br>Your IP Response<br><pre>';
-//                                    print_r( self::geocode_current_visitor() );
-                                    print '</pre>'; ?>
-                                </div>
-
-                            <?php endif; ?>
                         </td>
                     </tr>
                     </tbody>

@@ -238,11 +238,10 @@ function remove_active(x) {
   }
 }
 function close_all_lists(selection_id) {
-
+  let spinner = jQuery('#mapbox-spinner-button').show()
   if ( dtMapbox.google_map_key ) {
     jQuery('#mapbox-search').val(window.mapbox_result_features[selection_id].description)
     jQuery('#mapbox-autocomplete-list').empty()
-    let spinner = jQuery('#mapbox-spinner-button').show()
 
     const geocoder = new google.maps.Geocoder();
     geocoder.geocode({ placeId: window.mapbox_result_features[selection_id].place_id }, (results, status) => {
@@ -251,52 +250,24 @@ function close_all_lists(selection_id) {
         return;
       }
 
-      console.log('results from geocoding')
-     console.log(results)
-     console.log(results[0].geometry.location.lng())
-
-
       window.location_data = {
         location_grid_meta: {
           values: [
             {
               lng: results[0].geometry.location.lng(),
               lat: results[0].geometry.location.lat(),
-              level: results[0].types[0],
+              level: convert_level( results[0].types[0] ),
               label: results[0].formatted_address,
               source: 'user'
             }
           ]
         }
       }
-
-      if ( jQuery('#mapbox-autocomplete').data('autosubmit') ) {
-        /* if post_type = user, else all other post types */
-        API.update_post( dtMapbox.post_type, dtMapbox.post_id, window.location_data ).then(function (response) {
-          console.log( response )
-
-          dtMapbox.post = response
-          jQuery('#mapbox-wrapper').empty()
-          write_results_box()
-
-        }).catch(err => { console.error(err) })
-
-      } else {
-        window.selected_location_grid_meta = window.location_data
-        spinner.hide()
-      }
-
+      post_geocoded_location()
     });
-
-    console.log('established location data')
-    console.log(window.location_data)
-
-
-
   } else {
     jQuery('#mapbox-search').val(window.mapbox_result_features[selection_id].place_name)
     jQuery('#mapbox-autocomplete-list').empty()
-    let spinner = jQuery('#mapbox-spinner-button').show()
 
     window.location_data = {
       location_grid_meta: {
@@ -311,26 +282,26 @@ function close_all_lists(selection_id) {
         ]
       }
     }
-
-    if ( jQuery('#mapbox-autocomplete').data('autosubmit') ) {
-      /* if post_type = user, else all other post types */
-      API.update_post( dtMapbox.post_type, dtMapbox.post_id, window.location_data ).then(function (response) {
-        console.log( response )
-
-        dtMapbox.post = response
-        jQuery('#mapbox-wrapper').empty()
-        write_results_box()
-
-      }).catch(err => { console.error(err) })
-
-    } else {
-      window.selected_location_grid_meta = window.location_data
-      spinner.hide()
-    }
+    post_geocoded_location()
   }
+}
 
+function post_geocoded_location() {
+  if ( jQuery('#mapbox-autocomplete').data('autosubmit') ) {
+    /* if post_type = user, else all other post types */
+    API.update_post( dtMapbox.post_type, dtMapbox.post_id, window.location_data ).then(function (response) {
+      console.log( response )
 
+      dtMapbox.post = response
+      jQuery('#mapbox-wrapper').empty()
+      write_results_box()
 
+    }).catch(err => { console.error(err) })
+
+  } else {
+    window.selected_location_grid_meta = window.location_data
+    jQuery('#mapbox-spinner-button').hide()
+  }
 }
 
 function get_label_without_country( label, feature ) {
@@ -347,4 +318,28 @@ function get_label_without_country( label, feature ) {
   }
 
   return label
+}
+
+function convert_level( level ) {
+  switch(level){
+    case 'administrative_area_level_0':
+      level = 'admin0'
+      break
+    case 'administrative_area_level_1':
+      level = 'admin1'
+      break
+    case 'administrative_area_level_2':
+      level = 'admin2'
+      break
+    case 'administrative_area_level_3':
+      level = 'admin3'
+      break
+    case 'administrative_area_level_4':
+      level = 'admin4'
+      break
+    case 'administrative_area_level_5':
+      level = 'admin5'
+      break
+  }
+  return level
 }
