@@ -229,7 +229,9 @@ $user_management_options = DT_User_Management::user_management_options();
                             <!-- Contacts -->
                             <div class="bordered-box">
                                 <h4><?php esc_html_e( 'Contacts', 'disciple_tools' ); ?></h4>
-                                <div id="status_chart_div"></div>
+                                <div style="width:100%; height:400px; position:relative">
+                                    <div id="status_chart_div" style="position:absolute; width: 100%; height:400px;  right: -30px; left: -30px;"></div>
+                                </div>
                             </div>
 
                             <div id="user-id-reveal" style="color:darkgrey;margin:0 auto;text-align:center;"></div>

@@ -604,7 +604,7 @@ class DT_Contacts_Access extends DT_Module_Base {
 
     public function dt_post_update_fields( $fields, $post_type, $post_id, $existing_post ){
         if ( $post_type === "contacts" ){
-            if ( ( !isset( $existing_post["type"] ) || $existing_post["type"] !== "access" ) && ( !isset( $fields["type"] ) || $fields["type"] !== "access" ) ){
+            if ( ( !isset( $existing_post["type"]["key"] ) || $existing_post["type"]["key"] !== "access" ) && ( !isset( $fields["type"] ) || $fields["type"] !== "access" ) ){
                 return $fields;
             }
             if ( isset( $fields["assigned_to"] ) ) {

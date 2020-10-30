@@ -39,6 +39,25 @@ jQuery(document).ready(function($) {
     }
   }
 
+  function updateCriticalPath(key) {
+    $('#seeker_path').val(key)
+    let seekerPathKeys = _.keys(post.seeker_path.default)
+    let percentage = (_.indexOf(seekerPathKeys, key) || 0) / (seekerPathKeys.length-1) * 100
+    $('#seeker-progress').css("width", `${percentage}%`)
+  }
+
+  $( document ).on( 'dt_record_updated', function (e, response, request ){
+    _.forOwn(request, (val, key)=>{
+      if (key.indexOf("quick_button")>-1){
+        if (_.get(response, "seeker_path.key")){
+          updateCriticalPath(response.seeker_path.key)
+        }
+      }
+    })
+
+  })
+
+
   /**
    * Assigned_to
    */

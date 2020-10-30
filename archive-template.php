@@ -222,12 +222,15 @@ declare(strict_types=1);
                 <div class="cell small-4 filter-modal-left">
                     <?php $fields = [];
                     $allowed_types = [ "user_select", "multi_select", "key_select", "boolean", "date", "location", "connection" ];
+                    //order fields alphabetically by Name
+                    uasort( $field_options, function ( $a, $b ){
+                        return $a['name'] <=> $b['name'];
+                    });
                     foreach ( $field_options as $field_key => $field){
                         if ( $field_key && in_array( $field["type"] ?? "", $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
                             $fields[] = $field_key;
                         }
                     }
-                    $fields = apply_filters( 'dt_filters_additional_fields', $fields, $post_type ) ?? [];
                     ?>
                     <ul class="vertical tabs" data-tabs id="filter-tabs">
                         <?php foreach ( $fields as $index => $field ) :

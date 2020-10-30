@@ -6,7 +6,7 @@ class Disciple_Tools_Migration_0033 extends Disciple_Tools_Migration {
          * Remove contact channels that are now saved with the fields settings
          */
 
-        $custom_channels = dt_get_option( "dt_custom_channels" );
+        $custom_channels = get_option( "dt_custom_channels" );
         DT_Posts::get_post_field_settings( "contacts" );
         $custom_field_options = dt_get_option( "dt_field_customizations" );
         foreach ( $custom_channels as $custom_key => $custom_value ){

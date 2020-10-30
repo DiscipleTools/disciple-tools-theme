@@ -95,9 +95,6 @@ function dt_get_option( string $name ) {
 
              return $custom_tiles_with_translations;
 
-        case 'dt_custom_channels':
-            return get_option( 'dt_custom_channels', [] );
-
         case 'base_user':
             if ( ! get_option( 'dt_base_user' ) ) { // options doesn't exist, create new.
                 // set base users to system admin
@@ -288,15 +285,6 @@ function dt_get_site_options_defaults() {
             ]
         ]
     ];
-
-    $fields['extension_modules'] = [
-        'add_people_groups' => true,
-        'add_assetmapping'  => true,
-        'add_prayer'        => true,
-        'add_worker'        => true,
-    ];
-
-    $fields['clear_data_on_deactivate'] = false; // todo need to add this option wrapper to the deactivate.php file for table deletes
 
     $fields['daily_reports'] = [
         'build_report_for_contacts'  => true,

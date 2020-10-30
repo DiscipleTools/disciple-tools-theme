@@ -110,13 +110,14 @@ class DT_Contacts_Base {
                 'default'     => [
                     'user' => [
                         "label" => __( 'User', 'disciple_tools' ),
+                        "description" => __( "Representing a User in the system", 'disciple_tools' ),
                         "color" => "#3F729B",
                         "hidden" => true,
                     ],
                     'personal' => [
                         "label" => __( 'Personal', 'disciple_tools' ),
                         "color" => "#9b379b",
-                        "description" => "Only I can see this contact.",
+                        "description" => __( "Visible only to me", 'disciple_tools' ),
                         "icon" => get_template_directory_uri() . "/dt-assets/images/locked.svg",
                     ],
                 ],
@@ -288,14 +289,18 @@ class DT_Contacts_Base {
                 <p><?php echo esc_html( $contact_fields["type"]["description"] ?? '' )?></p>
                 <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
 
-<!--                @todo choose user option permissions-->
                 <select id="type-options">
                     <?php
                     foreach ( $contact_fields["type"]["default"] as $option_key => $option ) {
-                        if ( !empty( $option["label"] ) ) {
+                        if ( !empty( $option["label"] ) && !$option["hidden"]) {
                             $selected = ( $option_key === ( $post["type"]["key"] ?? "" ) ) ? "selected" : "";
                             ?>
-                            <option value="<?php echo esc_attr( $option_key ) ?>" <?php echo esc_html( $selected ) ?>> <?php echo esc_html( $option["label"] ?? "" ) ?></option>
+                            <option value="<?php echo esc_attr( $option_key ) ?>" <?php echo esc_html( $selected ) ?>>
+                                <?php echo esc_html( $option["label"] ?? "" ) ?>
+                                <?php if ( !empty( $option["description"] ) ){
+                                    echo esc_html( ' - ' . $option["description"] ?? "" );
+                                } ?>
+                            </option>
                             <?php
                         }
                     }
@@ -313,7 +318,6 @@ class DT_Contacts_Base {
                 </button>
             </div>
             <script type="text/javascript">
-                //@todo?
                 jQuery('#confirm-type-close').on('click', function(){
                     $(this).toggleClass('loading')
                     API.update_post('contacts', <?php echo esc_html( GET_THE_ID() ); ?>, {type:$('#type-options').val()}).then(contactData=>{

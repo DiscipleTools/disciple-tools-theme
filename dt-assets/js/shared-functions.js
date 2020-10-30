@@ -139,11 +139,19 @@ function handleAjaxError (err) {
 }
 
 jQuery(document).ajaxComplete((event, xhr, settings) => {
-    if (_.get(xhr, 'responseJSON.data.status') === 401) {
-        window.location.reload()
+  if ( xhr && xhr.responseJSON ){
+    // Event that a contact record has been updated
+    if ( xhr.responseJSON.ID && xhr.responseJSON.post_type ){
+      let request = settings.data ? JSON.parse( settings.data ) : {};
+      $( document ).trigger( "dt_record_updated", [ xhr.responseJSON, request ] );
     }
+  }
+
+  if (_.get(xhr, 'responseJSON.data.status') === 401) {
+      window.location.reload()
+  }
 }).ajaxError((event, xhr) => {
-    handleAjaxError(xhr)
+  handleAjaxError(xhr)
 })
 
 jQuery(document).on('click', '.help-button', function () {

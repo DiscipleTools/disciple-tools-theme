@@ -10,7 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Update_Needed {
 
     public function __construct() {
-//        @todo set the cron on plugin activation
 //        https://codex.wordpress.org/Function_Reference/wp_schedule_event
         if ( ! wp_next_scheduled( 'update-required' ) ) {
             wp_schedule_event( strtotime( 'today 1am' ), 'daily', 'update-required' );

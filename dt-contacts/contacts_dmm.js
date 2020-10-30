@@ -5,14 +5,6 @@ jQuery(document).ready(function($) {
   let post = window.detailsSettings.post_fields
 
 
-  //@todo access
-  function updateCriticalPath(key) {
-    $('#seeker_path').val(key)
-    let seekerPathKeys = _.keys(post.seeker_path.default)
-    let percentage = (_.indexOf(seekerPathKeys, key) || 0) / (seekerPathKeys.length-1) * 100
-    $('#seeker-progress').css("width", `${percentage}%`)
-  }
-
   $('.quick-action-menu').on("click", function () {
     let fieldKey = $(this).data("id")
 
@@ -21,14 +13,7 @@ jQuery(document).ready(function($) {
     let newNumber = parseInt(numberIndicator.first().text() || "0" ) + 1
     data[fieldKey] = newNumber
     API.update_post('contacts', post_id, data)
-    .then(data=>{
-      if (fieldKey.indexOf("quick_button")>-1){
-        if (_.get(data, "seeker_path.key")){
-          updateCriticalPath(data.seeker_path.key)
-        }
-      }
-      // contactUpdated(false) //update needed
-    }).catch(err=>{
+    .catch(err=>{
       console.log("error")
       console.log(err)
     })
@@ -118,13 +103,12 @@ jQuery(document).ready(function($) {
   /**
    * detect if an update is made on the baptized_by field.
    */
-  jQuery(document).ajaxComplete((event, xhr, settings) => {
-    if ( settings.data ){
-      if ( _.get(JSON.parse( settings.data ), "baptized_by" ) && _.get( xhr, "responseJSON.baptized_by[0]" ) ) {
-        openBaptismModal( xhr.responseJSON )
-      }
+  $( document ).on( 'dt_record_updated', function (e, response, request ){
+    if ( _.get(request, "baptized_by" ) && _.get( response, "baptized_by[0]" ) ) {
+      openBaptismModal( response )
     }
   })
+
   /**
    * detect if an update is made on the milestone field for baptized.
    */

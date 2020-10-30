@@ -210,14 +210,10 @@ jQuery(document).ready(function($) {
   $( document ).on( 'dt_multi_select-updated', function (e, newContact, fieldKey, optionKey, action) {
   })
 
-  $( document ).ajaxComplete(function(event, xhr, settings ) {
-    if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
-      if ( xhr.responseJSON && xhr.responseJSON.post_type && xhr.responseJSON.ID ){
-        post = xhr.responseJSON
-        resetDetailsFields()
-      }
-    }
-  });
+  $( document ).on( 'dt_record_updated', function (e, response, request ){
+    post = response;
+    resetDetailsFields()
+  })
 
 
   $('.show-details-section').on( "click", function (){

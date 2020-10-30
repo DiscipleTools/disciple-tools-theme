@@ -114,8 +114,14 @@ class DT_Duplicate_Checker_And_Merging {
         ];
     }
 
+    /**
+     * @param $post_type
+     * @param $post_id
+     * @param bool $exact //whether the field strings have to be exactly the same or if one can contain the other.
+     * @return array|WP_Error
+     */
     public static function ids_of_non_dismissed_duplicates( $post_type, $post_id, $exact = true ){
-        $post = DT_Posts::get_post( $post_type, $post_id );
+        $post = DT_Posts::get_post( $post_type, $post_id, true, true, true );
         if ( is_wp_error( $post ) ){
             return $post;
         }

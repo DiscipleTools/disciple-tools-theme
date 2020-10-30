@@ -252,7 +252,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             return new WP_Error( __FUNCTION__, "Post type does not exist", [ 'status' => 403 ] );
         }
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ){
-            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission to update $post_type with ID $post_id", [ 'status' => 403 ] );
         }
         $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
         $initial_fields = $fields;
@@ -263,7 +263,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $existing_post = self::get_post( $post_type, $post_id, false, false );
         //get extra fields and defaults
-        $fields = apply_filters( "dt_post_update_fields", $fields, $post_type, $post_id, $existing_post ); //@todo documentation update
+        $fields = apply_filters( "dt_post_update_fields", $fields, $post_type, $post_id, $existing_post );
         if ( is_wp_error( $fields ) ){
             return $fields;
         }
@@ -376,12 +376,12 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @param int $post_id
      * @param bool $use_cache
      * @param bool $check_permissions
-     *
+     * @param bool $silent create activity log for the view
      * @return array|WP_Error
      */
-    public static function get_post( string $post_type, int $post_id, bool $use_cache = true, bool $check_permissions = true ){
+    public static function get_post( string $post_type, int $post_id, bool $use_cache = true, bool $check_permissions = true, bool $silent = false ){
         if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
-            return new WP_Error( __FUNCTION__, "No permissions to read " . $post_type, [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "No permissions to read $post_type with ID $post_id", [ 'status' => 403 ] );
         }
         $current_user_id = get_current_user_id();
         $cached = wp_cache_get( "post_" . $current_user_id . '_' . $post_id );
@@ -390,7 +390,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         $wp_post = get_post( $post_id );
-        if ( $use_cache === true && $current_user_id ){
+        if ( $use_cache === true && $current_user_id && !$silent ){
             dt_activity_insert( [
                 'action' => 'viewed',
                 'object_type' => $post_type,

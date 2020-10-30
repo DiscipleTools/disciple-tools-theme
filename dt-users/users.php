@@ -334,13 +334,17 @@ class Disciple_Tools_Users
     }
 
 
+    /**
+     * @param $user_id
+     * @return int|WP_Error|null the contact ID
+     */
     public static function get_contact_for_user( $user_id ){
         if ( !current_user_can( "access_contacts" )){
             return new WP_Error( 'no_permission', __( "Insufficient permissions" ), [ 'status' => 403 ] );
         }
         $contact_id = get_user_option( "corresponds_to_contact", $user_id );
         if ( !empty( $contact_id )){
-            return $contact_id;
+            return (int) $contact_id;
         }
         $args = [
             'post_type'  => 'contacts',
@@ -359,7 +363,7 @@ class Disciple_Tools_Users
         $contacts = new WP_Query( $args );
         if ( isset( $contacts->post->ID ) ){
             update_user_option( $user_id, "corresponds_to_contact", $contacts->post->ID );
-            return $contacts->post->ID;
+            return (int) $contacts->post->ID;
         } else {
             return null;
         }
@@ -417,13 +421,13 @@ class Disciple_Tools_Users
 
             if ( empty( $corresponds_to_contact ) || get_post( $corresponds_to_contact ) === null ) {
                 $current_user_id = get_current_user_id();
-                wp_set_current_user( 0 );
+//                wp_set_current_user( 0 );
                 $new_user_contact = DT_Posts::create_post( "contacts", [
                     "title"               => $user->display_name,
                     "type"                => "user",
                     "corresponds_to_user" => $user_id,
                 ], true, false );
-                wp_set_current_user( $current_user_id );
+//                wp_set_current_user( $current_user_id );
                 if ( !is_wp_error( $new_user_contact )){
                     update_user_option( $user_id, "corresponds_to_contact", $new_user_contact["ID"] );
                 }

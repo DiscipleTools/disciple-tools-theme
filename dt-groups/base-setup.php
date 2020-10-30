@@ -385,6 +385,20 @@ class DT_Groups_Base {
 
         }
 
+        if ( $post_type === "contacts" ){
+            $fields["groups"] = [
+                "name" => __( "Groups", 'disciple_tools' ),
+                "description" => _x( "Groups this contact is a member of.", 'Optional Documentation', 'disciple_tools' ),
+                "type" => "connection",
+                "post_type" => "groups",
+                "p2p_direction" => "from",
+                "p2p_key" => "contacts_to_groups",
+                "tile" => "other",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/group-type.svg",
+                'create-icon' => get_template_directory_uri() . "/dt-assets/images/add-group.svg",
+                "show_in_table" => 35
+            ];
+        }
         return $fields;
     }
 

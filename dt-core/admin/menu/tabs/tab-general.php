@@ -177,63 +177,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
 
     /**
-     * Print extension module box for options page // @todo in progress
-     */
-    public function metrics() {
-
-//        $site_options = dt_get_option( 'dt_site_options' ); // @todo create new default section for dt_get_option()
-        $roles = dt_multi_role_get_roles();
-        if ( isset( $roles['administrator'] ) ) {
-            unset( $roles['administrator'] );
-        }
-
-        if ( isset( $_POST['metrics_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['metrics_nonce'] ) ), 'metrics' . get_current_user_id() ) ) {
-
-            dt_write_log( $_POST ); // @todo add saving logic
-
-        }
-
-
-        ?>
-        <form method="post" name="extension_modules_form">
-
-            <button type="submit" class="button-like-link" name="reset_extension_modules" value="1"><?php echo esc_html__( 'reset' ) ?></button>
-
-            <p><?php esc_html_e( 'Configure which groups see metrics', 'disciple_tools' ) ?></p>
-
-            <input type="hidden" name="extension_modules_nonce" id="extension_modules_nonce" value="<?php echo esc_attr( wp_create_nonce( 'metrics' . get_current_user_id() ) ) ?>" />
-
-            <table class="widefat">
-                <thead>
-                    <tr>
-                        <th><?php echo esc_html( 'Role' ) ?></th>
-                        <th><?php echo esc_html( 'Hide Personal' ) ?></th>
-                        <th><?php echo esc_html( 'Hide Project Basic' ) ?></th>
-                        <th><?php echo esc_html( 'Hide Project Advanced' ) ?></th>
-                        <th><?php echo esc_html( 'Hide Extensions' ) ?></th>
-                    </tr>
-                </thead>
-
-                <?php foreach ( $roles as $role ) : ?>
-                <tr>
-                    <td><?php echo esc_html( $role->name ) ?></td>
-                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-personal" type="checkbox" <?php echo ( false ? "checked" : "" ) ?> /></td>
-                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-project-basic" type="checkbox" <?php echo ( false ? "checked" : "" ) ?> /></td>
-                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-project-advanced" type="checkbox" <?php echo ( false ? "checked" : "" ) ?> /></td>
-                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-extensions" type="checkbox" <?php echo ( false ? "checked" : "" ) ?> /></td>
-                </tr>
-                <?php endforeach; ?>
-            </table>
-
-            <br>
-            <span style="float:right;"><button type="submit" class="button float-right">Save</button></span>
-        </form>
-        <?php
-    }
-
-
-
-    /**
      * Set base user assigns the catch-all user
      */
     public function base_user() {

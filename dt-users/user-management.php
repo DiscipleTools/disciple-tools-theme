@@ -288,7 +288,8 @@ class DT_User_Management
             $user_response['unread_notifications'] = $notification_count;
         }
 
-        if ( $section === 'details' || $section === 'pace' || $section === null ) {
+        $modules = dt_get_option( "dt_post_type_modules" );
+        if ( ( $section === 'details' || $section === 'pace' || $section === null ) && isset( $modules["access_module"]["enabled"] ) && $modules["access_module"]["enabled"] ) {
             $to_accept = DT_Posts::search_viewable_post( "contacts", [
                 'overall_status' => [ 'assigned' ],
                 'assigned_to' => [ $user->ID ]

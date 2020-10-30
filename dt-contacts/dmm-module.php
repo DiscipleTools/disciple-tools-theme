@@ -124,21 +124,6 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'icon' => get_template_directory_uri() . "/dt-assets/images/subassigned.svg",
             ];
 
-//            @todo move to group declaration
-            $fields["groups"] = [
-                "name" => __( "Groups", 'disciple_tools' ),
-                "description" => _x( "Groups this contact is a member of.", 'Optional Documentation', 'disciple_tools' ),
-                "type" => "connection",
-                "post_type" => "groups",
-                "p2p_direction" => "from",
-                "p2p_key" => "contacts_to_groups",
-                "tile" => "other",
-                'icon' => get_template_directory_uri() . "/dt-assets/images/group-type.svg",
-                'create-icon' => get_template_directory_uri() . "/dt-assets/images/add-group.svg",
-                "show_in_table" => 35
-            ];
-
-
 
             $fields["coaching"] = [
                 "name" => __( "Is Coaching", 'disciple_tools' ),
@@ -192,7 +177,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             ];
             $fields["people_groups"] = [
                 "name" => __( 'People Groups', 'disciple_tools' ),
-                'description' => _x( 'The people groups represented by this group.', 'Optional Documentation', 'disciple_tools' ),
+                'description' => _x( 'The people groups represented by this contact.', 'Optional Documentation', 'disciple_tools' ),
                 "type" => "connection",
                 "post_type" => "peoplegroups",
                 "p2p_direction" => "from",
@@ -373,6 +358,13 @@ class DT_Contacts_DMM  extends DT_Module_Base {
         if ( $post_type === "contacts" ){
             if ( !isset( $fields["type"] ) ){
                 $fields["type"] = "placeholder";
+            }
+            //mark a new user contact as being coached be the user who added the new user.
+            if ( $fields["type"] === "user" ){
+                $current_user_contact = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
+                if ( $current_user_contact && !is_wp_error( $current_user_contact ) ){
+                    $fields["coached_by"] = [ "values" => [ [ "value" => $current_user_contact ] ] ];
+                }
             }
         }
         return $fields;
