@@ -177,7 +177,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 </td>
                 <td>
                     <?php echo esc_html__( "Setup backups to a remote location. Note: Only the Premium version works with Disciple.Tools. See our help page:", 'disciple_tools' ); ?>
-                    <a target="_blank" href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/development/self_hosting.html#backups">Backups</a>
+                    <a target="_blank" href="https://disciple.tools/dev-docs/hosting/backups/">Backups</a>
                 </td>
                 <td>
                     <?php

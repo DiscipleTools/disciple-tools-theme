@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-  if ('/metrics/personal/baptism-tree' === window.location.pathname || '/metrics/personal/baptism-tree/' === window.location.pathname) {
+  if ( window.wpApiShare.url_path.startsWith( 'metrics/personal/baptism-tree/' ) ) {
     baptism_tree()
   }
 

@@ -830,7 +830,7 @@
   })
 
   $("#search").on("click", function () {
-    let searchText = _.escape( $("#search-query").val() )
+    let searchText = $("#search-query").val()
     let query = {text:searchText, assigned_to:["all"]}
     let labels = [{ id:"search", name:searchText, field: "search"}]
     add_custom_filter(searchText, "search", query, labels)

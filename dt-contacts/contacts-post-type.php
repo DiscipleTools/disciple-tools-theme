@@ -582,7 +582,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
         $fields["last_modified"] =[
             'name' => __( 'Last Modified', 'disciple_tools' ),
-            'type' => 'number',
+            'type' => 'date',
             'default' => 0,
             'section' => 'admin',
             'customizable' => false
@@ -843,7 +843,8 @@ class Disciple_Tools_Contact_Post_Type
                 } ) ),
                 'label_singular' => $this->singular,
                 'label_plural' => $this->plural,
-                'post_type' => 'contacts'
+                'post_type' => 'contacts',
+                'tiles' => DT_Posts::get_post_tiles( $post_type ),
             ];
         }
         return $settings;
