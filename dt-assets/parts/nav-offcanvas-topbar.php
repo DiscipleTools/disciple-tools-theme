@@ -134,6 +134,9 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
                         <li><a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( 'Log Off', 'disciple_tools' )?></a></li>
                     </ul>
                 </li>
+
+                <?php do_action( 'dt_nav_add_post_settings' ) ?>
+
             </ul>
         </div>
     </div>

@@ -435,12 +435,13 @@ class DT_Posts extends Disciple_Tools_Posts {
      * Get a list of posts
      * For query format see https://github.com/DiscipleTools/disciple-tools-theme/wiki/Filter-and-Search-Lists
      *
-     * @param $post_type
-     * @param $search_and_filter_query
+     * @param string $post_type
+     * @param array $search_and_filter_query
+     * @param bool $check_permissions
      *
      * @return array|WP_Error
      */
-    public static function list_posts( $post_type, $search_and_filter_query ){
+    public static function list_posts( string $post_type, array $search_and_filter_query, bool $check_permissions = true ){
         $fields_to_return = [];
         if ( isset( $search_and_filter_query["fields_to_return"] ) ){
             $fields_to_return = $search_and_filter_query["fields_to_return"];
@@ -449,7 +450,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( isset( $search_and_filter_query["dt_recent"] ) ){
             $data = self::get_recently_viewed_posts( $post_type );
         } else {
-            $data = self::search_viewable_post( $post_type, $search_and_filter_query );
+            $data = self::search_viewable_post( $post_type, $search_and_filter_query, $check_permissions );
         }
         if ( is_wp_error( $data ) ) {
             return $data;

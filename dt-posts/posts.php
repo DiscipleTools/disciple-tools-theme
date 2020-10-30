@@ -249,7 +249,7 @@ class Disciple_Tools_Posts
                 $object_note_from = sprintf( esc_html_x( 'Baptized by %s', 'Baptized by contact1', 'disciple_tools' ), $to_title );
             } else {
                 $object_note_to = sprintf( esc_html_x( 'Did not baptize %s', 'Did not baptize contact1', 'disciple_tools' ), $from_title );
-                $object_note_form = sprintf( esc_html_x( 'Not baptized by %s', 'Not baptized by contact1', 'disciple_tools' ), $to_title );
+                $object_note_from = sprintf( esc_html_x( 'Not baptized by %s', 'Not baptized by contact1', 'disciple_tools' ), $to_title );
             }
         } else if ($p2p_type === "contacts_to_groups"){
             if ($action == "connected to"){
