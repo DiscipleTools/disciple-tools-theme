@@ -570,11 +570,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <?php $this->box_mapbox(); ?>
                             <?php if ( DT_Mapbox_API::get_key() ) : ?>
 
+                                <?php $this->box_google_maps(); ?><br>
+
                                 <?php $this->box_mapbox_post_upgrade(); ?><br>
                                 <?php $this->box_mapbox_user_upgrade(); ?><br>
 
                             <?php endif; ?>
-<!--                            --><?php //$this->box_mapbox_address_upgrade(); ?>
+
+
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
@@ -1549,6 +1552,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 require_once( 'geocode-api/mapbox-api.php' );
             }
             DT_Mapbox_API::metabox_for_admin();
+        }
+
+        public function box_google_maps() {
+            if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
+                require_once( 'geocode-api/google-api.php' );
+            }
+            Disciple_Tools_Google_Geocode_API::metabox_for_admin();
         }
 
         public function box_mapbox_post_upgrade() {
