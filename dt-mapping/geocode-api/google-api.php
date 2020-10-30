@@ -230,35 +230,32 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
                     </tr>
                     <tr>
                         <td>
-                            <?php if ( empty( self::get_key() ) ) : ?>
-                                <a onclick="jQuery('#google-geocode-instructions').toggle();" class="button">Show Instructions</a>
-                                <ol id="google-geocode-instructions" style="display:none;">
-                                    <li>
-                                        Go to <a href="https://console.cloud.google.com">https://console.cloud.google.com</a>.
-                                    </li>
-                                    <li>
-                                        Register with your Google Account or Gmail Account
-                                    </li>
-                                    <li>
-                                        Once registered, create a new project.<br>
-                                    </li>
-                                    <li>
-                                        Then go to APIs & Services > Credentials and "Create Credentials" API Key. Copy this key.
-                                    </li>
-                                    <li>
-                                        Paste the key into the "Google API Key" field in the box above here in the Disciple Tools Mapping Admin.
-                                    </li>
-                                    <li>
-                                        Again, in Google Cloud Console, in APIs & Services go to Library. Find and enable: (1) Maps Javascript API,
-                                        (2) Places API, and (3) GeoCoding API.
-                                    </li>
-                                    <li>
-                                        Lastly, in  in Credentials for the API key it is recommended in the settings of the API key to be set "None" for Application Restrictions
-                                        and "Don't restrict key" in API Restrictions.
-                                    </li>
-                                </ol>
-                            <?php endif; ?>
-
+                            <a onclick="jQuery('#google-geocode-instructions').toggle();" class="button">Show Instructions</a>
+                            <ol id="google-geocode-instructions" style="display:none;">
+                                <li>
+                                    Go to <a href="https://console.cloud.google.com">https://console.cloud.google.com</a>.
+                                </li>
+                                <li>
+                                    Register with your Google Account or Gmail Account
+                                </li>
+                                <li>
+                                    Once registered, create a new project.<br>
+                                </li>
+                                <li>
+                                    Then go to APIs & Services > Credentials and "Create Credentials" API Key. Copy this key.
+                                </li>
+                                <li>
+                                    Paste the key into the "Google API Key" field in the box above here in the Disciple Tools Mapping Admin.
+                                </li>
+                                <li>
+                                    Again, in Google Cloud Console, in APIs & Services go to Library. Find and enable: (1) Maps Javascript API,
+                                    (2) Places API, and (3) GeoCoding API.
+                                </li>
+                                <li>
+                                    Lastly, in  in Credentials for the API key it is recommended in the settings of the API key to be set "None" for Application Restrictions
+                                    and "Don't restrict key" in API Restrictions.
+                                </li>
+                            </ol>
                         </td>
                     </tr>
                     </tbody>
