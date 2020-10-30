@@ -34,6 +34,7 @@ before_script:
     if [[ ! -z "$WP_VERSION" ]] ; then
       bash tests/install-wp-tests.sh wordpress_test root '' localhost latest
       composer global require "phpunit/phpunit=7.5.*"
+      phpunit --version
     fi
 script:
   - ./tests/test_for_syntax_errors.sh
@@ -50,6 +51,7 @@ script:
   # of npm.)
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
+      phpunit --version
       phpunit
       WP_MULTISITE=1 phpunit
     fi
