@@ -7,7 +7,6 @@ node_modules/
 .DS_Store
 dt-people-groups/json/*
 composer.phar
-composer.lock
 .vscode/*
 CodeSniffer.conf
 phpcbf.phar
