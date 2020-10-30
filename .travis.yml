@@ -34,7 +34,6 @@ before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
-      composer require "phpunit/phpunit=7.5.*"
       bash tests/install-wp-tests.sh wordpress_test root '' localhost latest
     fi
 script:
@@ -44,7 +43,7 @@ script:
   - ./tests/test_eslint.sh
   - find dt-assets/ -iname "*.min.js" -or -iname "*.map" -or -iname "*.min.css" -delete && rm -rf build/
   - gulp
-  - git diff --exit-code -- . ':(exclude)package-lock.json' ':(exclude)composer.lock'
+  - git diff --exit-code -- . ':(exclude)package-lock.json'
   # If the previous command returns a non-zero exit code, that means gulp has
   # modified some files in version control. This shouldn't happen, developers
   # should remember to run gulp before committing. (We're excluding
@@ -52,6 +51,7 @@ script:
   # of npm.)
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
+      composer require "phpunit/phpunit=7.5.*"
       vendor/phpunit/phpunit/phpunit --version
       vendor/phpunit/phpunit/phpunit
       WP_MULTISITE=1 vendor/phpunit/phpunit/phpunit
