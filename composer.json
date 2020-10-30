@@ -3,6 +3,6 @@
         "dealerdirect/phpcodesniffer-composer-installer": "*",
         "wp-coding-standards/wpcs": "*",
         "squizlabs/php_codesniffer": "*",
-        "phpunit/phpunit": "7.5.*"
+        "phpunit/phpunit": "7.*"
     }
 }
