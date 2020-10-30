@@ -625,14 +625,14 @@ function dt_custom_dir_attr( $lang ){
 
     $current_user = wp_get_current_user();
     $user_language = get_user_locale( $current_user->ID );
-    /* translators: If your language is written right to left make this translation as 'rtl', if it is written ltr make the translated text 'ltr' or leave it blank */
+    /* translators: If your language is written right to left make this tranlation as 'rtl', if it is written ltr make the translated text 'ltr' or leave it blank */
     $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
 
-    //default direction to ltr
-    if ( $dir !== "rtl" ){
+    if ( $dir === 'ltr' || $dir === 'text direction' || !$dir || empty( $dir ) ){
         $dir = "ltr";
+    } else {
+        $dir = "rtl";
     }
-
     $dir_attr = 'dir="' . $dir . '"';
 
     return 'lang="' . $user_language .'" ' .$dir_attr;

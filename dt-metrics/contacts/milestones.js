@@ -1,7 +1,8 @@
 jQuery(document).ready(function($) {
 
-  if ( window.wpApiShare.url_path.startsWith( 'metrics/contacts/milestones' ) ) {
+  if ('/metrics/contacts/milestones' === window.location.pathname || '/metrics/contacts/milestones/' === window.location.pathname) {
     get_milestones()
+    console.log('here')
   }
 
   function get_milestones() {

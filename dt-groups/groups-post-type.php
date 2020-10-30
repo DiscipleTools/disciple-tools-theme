@@ -172,6 +172,26 @@ class Disciple_Tools_Groups_Post_Type
 
     public function get_group_field_defaults( $post_id = null, $include_current_post = null ){
         global $post;
+        global $wpdb;
+
+        /* GET THE PROGRESS CIRCLE OPTIONS FROM DATA BASE */
+        $progressCircleOptionsActive = json_decode(get_option('vc_progress_circle_options'), TRUE);
+
+        if($progressCircleOptionsActive){
+            foreach ($progressCircleOptionsActive["default"] as $key => $value) {
+                if($value["disable"] == 1) {
+                    unset($progressCircleOptionsActive["default"][$key]);
+                }
+            }
+        }
+
+        $pluginIsActive = false;
+
+        if(in_array('disciple-tools-visual-customization-plugin/disciple-tools-visual-customization-plugin.php', apply_filters('active_plugins', get_option('active_plugins')))){ 
+            $pluginIsActive = true;
+        } else {
+            $pluginIsActive = false;
+        }
 
         $fields = [];
 
@@ -227,64 +247,69 @@ class Disciple_Tools_Groups_Post_Type
             'section'     => 'info',
         ];
 
-        $fields['health_metrics'] = [
-            "name" => __( 'Church Health', 'disciple_tools' ),
-            'description' => _x( "Track the progress and health of a group/church.", 'Optional Documentation', 'disciple_tools' ),
-            "type" => "multi_select",
-            "default" => [
-                "church_baptism" => [
-                    "label" => __( "Baptism", 'disciple_tools' ),
-                    "description" => _x( "The group is baptising.", 'Optional Documentation', 'disciple_tools' ),
-                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/baptism.svg'
+        /* VALID IF PLUGIN IS ACTIVE */
+        if($pluginIsActive){
+            $fields['health_metrics'] = $progressCircleOptionsActive;
+        }else {
+            $fields['health_metrics'] = [
+                "name" => __( 'Church Health', 'disciple_tools' ),
+                'description' => _x( "Track the progress and health of a group/church.", 'Optional Documentation', 'disciple_tools' ),
+                "type" => "multi_select",
+                "default" => [
+                    "church_baptism" => [
+                        "label" => __( "Baptism", 'disciple_tools' ),
+                        "description" => _x( "The group is baptising.", 'Optional Documentation', 'disciple_tools' ),
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/baptism.svg'
+                    ],
+                    "church_bible" => [
+                        "label" => __( "Bible Study", 'disciple_tools' ),
+                        "description" => _x( "The group is studying the bible.", 'Optional Documentation', 'disciple_tools' ),
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/word.svg'
+                    ],
+                    "church_communion" => [
+                        "label" => __( "Communion", 'disciple_tools' ),
+                        "description" => _x( "The group is practicing communion.", 'Optional Documentation', 'disciple_tools' ),
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/communion.svg'
+                    ],
+                    "church_fellowship" => [
+                        "label" => __( "Fellowship", 'disciple_tools' ),
+                        "description" => _x( "The group is fellowshiping.", 'Optional Documentation', 'disciple_tools' ),
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/heart.svg'
+                    ],
+                    "church_giving" => [
+                        "label" => __( "Giving", 'disciple_tools' ),
+                        "description" => _x( "The group is giving.", 'Optional Documentation', 'disciple_tools' ),
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/giving.svg'
+                    ],
+                    "church_prayer" => [
+                        "label" => __( "Prayer", 'disciple_tools' ),
+                        "description" => _x( "The group is praying.", 'Optional Documentation', 'disciple_tools' ),
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/prayer.svg'
+                    ],
+                    "church_praise" => [
+                        "label" => __( "Praise", 'disciple_tools' ),
+                        "description" => _x( "The group is praising.", 'Optional Documentation', 'disciple_tools' ),
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/praise.svg'
+                    ],
+                    "church_sharing" => [
+                        "label" => __( "Sharing the Gospel", 'disciple_tools' ),
+                        "description" => _x( "The group is sharing the gospel.", 'Optional Documentation', 'disciple_tools' ),
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/evangelism.svg'
+                    ],
+                    "church_leaders" => [
+                        "label" => __( "Leaders", 'disciple_tools' ),
+                        "description" => _x( "The group has leaders.", 'Optional Documentation', 'disciple_tools' ),
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/leadership.svg'
+                    ],
+                    "church_commitment" => [
+                        "label" => __( "Church Commitment", 'disciple_tools' ),
+                        "description" => _x( "The group has committed to be church.", 'Optional Documentation', 'disciple_tools' ),
+                        "image" => get_template_directory_uri() . '/dt-assets/images/groups/covenant.svg'
+                    ],
                 ],
-                "church_bible" => [
-                    "label" => __( "Bible Study", 'disciple_tools' ),
-                    "description" => _x( "The group is studying the bible.", 'Optional Documentation', 'disciple_tools' ),
-                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/word.svg'
-                ],
-                "church_communion" => [
-                    "label" => __( "Communion", 'disciple_tools' ),
-                    "description" => _x( "The group is practicing communion.", 'Optional Documentation', 'disciple_tools' ),
-                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/communion.svg'
-                ],
-                "church_fellowship" => [
-                    "label" => __( "Fellowship", 'disciple_tools' ),
-                    "description" => _x( "The group is fellowshiping.", 'Optional Documentation', 'disciple_tools' ),
-                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/heart.svg'
-                ],
-                "church_giving" => [
-                    "label" => __( "Giving", 'disciple_tools' ),
-                    "description" => _x( "The group is giving.", 'Optional Documentation', 'disciple_tools' ),
-                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/giving.svg'
-                ],
-                "church_prayer" => [
-                    "label" => __( "Prayer", 'disciple_tools' ),
-                    "description" => _x( "The group is praying.", 'Optional Documentation', 'disciple_tools' ),
-                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/prayer.svg'
-                ],
-                "church_praise" => [
-                    "label" => __( "Praise", 'disciple_tools' ),
-                    "description" => _x( "The group is praising.", 'Optional Documentation', 'disciple_tools' ),
-                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/praise.svg'
-                ],
-                "church_sharing" => [
-                    "label" => __( "Sharing the Gospel", 'disciple_tools' ),
-                    "description" => _x( "The group is sharing the gospel.", 'Optional Documentation', 'disciple_tools' ),
-                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/evangelism.svg'
-                ],
-                "church_leaders" => [
-                    "label" => __( "Leaders", 'disciple_tools' ),
-                    "description" => _x( "The group has leaders.", 'Optional Documentation', 'disciple_tools' ),
-                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/leadership.svg'
-                ],
-                "church_commitment" => [
-                    "label" => __( "Church Commitment", 'disciple_tools' ),
-                    "description" => _x( "The group has committed to be church.", 'Optional Documentation', 'disciple_tools' ),
-                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/covenant.svg'
-                ],
-            ],
-            "customizable" => "add_only"
-        ];
+                "customizable" => "add_only"
+            ];
+        }
 
         /* 4 fields */
         $fields["four_fields_unbelievers"] = [
@@ -445,7 +470,7 @@ class Disciple_Tools_Groups_Post_Type
         ];
         $fields["last_modified"] =[
             'name' => __( 'Last modified', 'disciple_tools' ),
-            'type' => 'date',
+            'type' => 'number',
             'default' => 0,
             'section' => 'admin',
             'customizable' => false

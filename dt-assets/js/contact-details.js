@@ -826,34 +826,22 @@ jQuery(document).ready(function($) {
 
     let html = ""
     _.forOwn( contact, (fieldVal, field)=>{
-      if ( field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field) && !field.includes("_details")){
+      if ( field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field) ){
         let channel = field.replace("contact_", "")
-        if ( Array.isArray(contact[field]) ){
-          contact[field].forEach(socialField=>{
-            html += `<div class="grid-x grid-margin-x social-media-row" data-id="${_.escape(socialField.key)}">
-                <div class="cell small-4">
-                    ${_.escape( _.get(contactsDetailsWpApiSettings, 'channels[' + channel + '].label' ,field) )}
-                </div>
-                <div class="cell small-8" style="display: flex">
-                  <input class="contact-input" type="text" id="${_.escape(socialField.key)}" value="${_.escape(socialField.value)}" data-type="${_.escape( field )}"/>
-                  <button class="button clear delete-social-media delete-button" data-id="${_.escape(socialField.key)}" data-type="${_.escape( field )}">
-                      <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
-                  </button>
-                </div>
-            </div>
-            `
-          })
-        } else {
-          html += `<div class="grid-x grid-margin-x social-media-row" data-id="${_.escape(field)}">
-            <div class="cell small-4">
-                ${_.escape( field )}
-            </div>
-            <div class="cell small-8" style="display: flex">
-              ${_.escape(contact[field])}
-            </div>
+        contact[field].forEach(socialField=>{
+          html += `<div class="grid-x grid-margin-x social-media-row" data-id="${_.escape(socialField.key)}">
+              <div class="cell small-4">
+                  ${_.escape( _.get(contactsDetailsWpApiSettings, 'channels[' + channel + '].label' ,field) )}
+              </div>
+              <div class="cell small-8" style="display: flex">
+                <input class="contact-input" type="text" id="${_.escape(socialField.key)}" value="${_.escape(socialField.value)}" data-type="${_.escape( field )}"/>
+                <button class="button clear delete-social-media delete-button" data-id="${_.escape(socialField.key)}" data-type="${_.escape( field )}">
+                    <img src="${_.escape( contactsDetailsWpApiSettings.template_dir )}/dt-assets/images/invalid.svg">
+                </button>
+              </div>
           </div>
           `
-        }
+        })
 
       }
     })
@@ -1011,15 +999,11 @@ jQuery(document).ready(function($) {
     let socialHTMLField = $(`ul.social`).empty()
     let socialIsEmpty = true
     _.forOwn(contact, ( value, contact_method)=>{
-      if ( contact_method.indexOf("contact_") === 0 && !contact_methods.includes( contact_method ) && !contact_method.includes("_details")){
+      if ( contact_method.indexOf("contact_") === 0 && !contact_methods.includes( contact_method )){
         let fieldDesignator = contact_method.replace('contact_', '')
         let channel = _.get(contactsDetailsWpApiSettings, `channels.${fieldDesignator}`, {})
         let fields = contact[contact_method]
-        if ( !Array.isArray(fields) ) {
-          socialHTMLField.append(`<li class="details-list ${_.escape(contact_method)}">${_.escape(contact_method.split('_')[1] || contact_method)}: ${_.escape(fields)}</li>`)
-          return
-        }
-        (fields || []).forEach(field=>{
+        fields.forEach(field=>{
           socialIsEmpty = false
           let value = _.escape(field.value)
           let validURL = new RegExp(urlRegex).exec(value)
@@ -1248,17 +1232,10 @@ jQuery(document).ready(function($) {
           location.reload();
         }
       }).catch(err=>{
-        // try a second time.
-        API.transfer_contact( contactId, siteId )
-        .then(data=>{
-          if ( data ) {
-            location.reload();
-          }
-        }).catch(err=> {
-          jQuery('#transfer_spinner').empty().append(err.responseJSON.message).append('&nbsp;' + contactsDetailsWpApiSettings.translations.transfer_error)
-          console.log("error")
-          console.log(err)
-        })
+        jQuery('#transfer_spinner').empty().append(err.responseJSON.message).append('&nbsp;' + contactsDetailsWpApiSettings.translations.transfer_error )
+        // jQuery("#errors").empty()
+        console.log("error")
+        console.log(err)
       })
   });
 

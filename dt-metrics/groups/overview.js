@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-  if ( window.wpApiShare.url_path.startsWith( 'metrics/groups/overview' ) ) {
+  if ('/metrics/groups/overview' === window.location.pathname || '/metrics/groups/overview/' === window.location.pathname) {
     groups_overview()
   }
 

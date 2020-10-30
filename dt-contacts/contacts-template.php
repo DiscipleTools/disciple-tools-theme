@@ -76,8 +76,7 @@ function render_field_for_display( $field_key, $fields, $post ){
         <?php
         if ( $field_type === "key_select" ) : ?>
             <select class="select-field" id="<?php echo esc_html( $field_key ); ?>">
-                <option value="" <?php echo esc_html( !isset( $post[$field_key] ) ?: "selected" ) ?>></option>
-                <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ):
+                <?php foreach ($fields[$field_key]["default"] as $option_key => $option_value):
                     $selected = isset( $post[$field_key]["key"] ) && $post[$field_key]["key"] === $option_key; ?>
                     <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
                         <?php echo esc_html( $option_value["label"] ) ?>

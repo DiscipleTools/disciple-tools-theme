@@ -823,7 +823,6 @@ class Disciple_Tools_Contacts_Endpoints
                 return [
                     'status' => 'OK',
                     'error' => $result['errors'],
-                    'created_id' => $result['created_id'],
                 ];
             }
         } else {

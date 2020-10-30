@@ -14,6 +14,7 @@ if ( !defined( 'ABSPATH' ) ) {
 
 class Disciple_Tools_Network {
 
+
     private static $_instance = null;
     public static function instance() {
         if ( is_null( self::$_instance ) ) {

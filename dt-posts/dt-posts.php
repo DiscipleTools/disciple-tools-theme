@@ -217,6 +217,30 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
     }
 
+    /**
+     * Create or update the value of influence value
+     * 
+     * @param string $post_type
+     * @param int $post_id
+     * @param array $fields
+     * @param bool $check_permissions
+     * 
+     */
+    public static function create_or_update_influence( string $post_type, int $post_id, array $fields, bool $check_permissions = true ){
+
+        foreach ( $fields as $field_key => $field_value ){
+
+            $field_in_database = get_post_meta( $post_id, $field_key );
+
+            if ($field_in_database != null){
+                update_post_meta( $post_id, $field_key, $field_value );
+            } else {
+                add_post_meta( $post_id, $field_key, $field_value );
+            }
+
+        }
+    }
+
 
     /**
      * Update post
@@ -391,19 +415,18 @@ class DT_Posts extends Disciple_Tools_Posts {
      * Get a list of posts
      * For query format see https://github.com/DiscipleTools/disciple-tools-theme/wiki/Filter-and-Search-Lists
      *
-     * @param string $post_type
-     * @param array $search_and_filter_query
-     * @param bool $check_permissions
+     * @param $post_type
+     * @param $search_and_filter_query
      *
      * @return array|WP_Error
      */
-    public static function list_posts( string $post_type, array $search_and_filter_query, bool $check_permissions = true ){
+    public static function list_posts( $post_type, $search_and_filter_query ){
         $fields_to_return = [];
         if ( isset( $search_and_filter_query["fields_to_return"] ) ){
             $fields_to_return = $search_and_filter_query["fields_to_return"];
             unset( $search_and_filter_query["fields_to_return"] );
         }
-        $data = self::search_viewable_post( $post_type, $search_and_filter_query, $check_permissions );
+        $data = self::search_viewable_post( $post_type, $search_and_filter_query );
         if ( is_wp_error( $data ) ) {
             return $data;
         }
@@ -737,14 +760,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             "comment_ID" => $comment_id,
             "comment_type" => $comment_type
         ];
-        $update = wp_update_comment( $comment );
-        if ( $update === 1 ){
-            return $comment_id;
-        } else if ( is_wp_error( $update )) {
-              return $update;
-        } else {
-            return new WP_Error( __FUNCTION__, "Error updating comment with id: " . $comment_id, [ 'status' => 500 ] );
-        }
+        return wp_update_comment( $comment );
     }
 
     public static function delete_post_comment( int $comment_id, bool $check_permissions = true ){
@@ -1169,34 +1185,6 @@ class DT_Posts extends Disciple_Tools_Posts {
         ", ARRAY_A );
         //phpcs:enable
 
-    }
-
-    private static function array_merge_recursive_distinct( array &$array1, array &$array2 ){
-        $merged = $array1;
-        foreach ( $array2 as $key => &$value ){
-            if ( is_array( $value ) && isset( $merged[$key] ) && is_array( $merged[$key] ) ){
-                $merged[$key] = self::array_merge_recursive_distinct( $merged[$key], $value );
-            } else {
-                $merged[$key] = $value;
-            }
-        }
-        return $merged;
-    }
-
-    public static function get_post_tiles( $post_type ){
-        $tile_options = dt_get_option( "dt_custom_tiles" );
-        $sections = apply_filters( 'dt_details_additional_tiles', [], $post_type );
-        if ( !isset( $tile_options[$post_type] ) ){
-            $tile_options[$post_type] = [];
-        }
-        $tile_options[$post_type] = self::array_merge_recursive_distinct( $sections, $tile_options[$post_type] );
-//        $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type ); // conflicts with plugin tiles that check contact fields
-        foreach ( $sections as $section_id ){
-            if ( !isset( $tile_options[$post_type][$section_id] ) ) {
-                $tile_options[$post_type][$section_id] = [];
-            }
-        }
-        return $tile_options[$post_type];
     }
 }
 

@@ -24,6 +24,21 @@ $translations = dt_get_translations();
 
 $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" )["fields"];
 
+$plugin2FAIsActive = false;
+$viewLoaded = true;
+
+if(in_array('disciple-tools-2FA-plugin/disciple-tools-2FA.php', apply_filters('active_plugins', get_option('active_plugins')))){ 
+    $plugin2FAIsActive = true;
+
+    if($dt_user_meta["two_factor_authentication"][0] != "0" && $dt_user_meta["two_factor_authentication"][0] != "1"){
+        add_user_meta($dt_user->ID, 'two_factor_authentication', "0");
+    }
+
+} else {
+    $plugin2FAIsActive = false;
+}
+
+
 ?>
 
 <?php get_header(); ?>
@@ -43,6 +58,9 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
                         <li><a href="#multiplier"><?php esc_html_e( 'Multiplier Preferences', 'disciple_tools' )?></a></li>
                         <li><a href="#availability"><?php esc_html_e( 'Availability', 'disciple_tools' )?></a></li>
                         <li><a href="#notifications"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></a></li>
+                        <?php if ( $plugin2FAIsActive ) : ?>
+                        <li><a href="#authentications">Two Factor Authentication</a></li>
+                        <?php endif; ?>
                     </ul>
 
                 </div>
@@ -421,6 +439,38 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
 
                 </div>
 
+                <?php if ( $plugin2FAIsActive ) : ?>
+
+                <!-- Begin 2FA-->
+                <div class="small-12 cell">
+
+                    <div class="bordered-box cell" id="authentications" data-magellan-target="authentications">
+
+                        <span class="section-header">Two Factor Authentication</span>
+                        <hr/>
+
+                        <table class="form-table">
+                            <tbody>
+                                <tr>
+                                    <td>Enable or disable two factor authentication</td>
+                                    <td>
+                                        <div class="switch">
+                                            <input class="switch-input" id="twoFactorAuthentication" type="checkbox" name="twoFactorAuthentication"
+                                            onclick="switch_preference( 'two_factor_authentication', 'notifications' );" >
+                                            <label class="switch-paddle inactive" for="twoFactorAuthentication">
+                                                <span class="show-for-sr">2FA</span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+                <?php endif; ?>
+
                 <div class="reveal" id="edit-profile-modal" data-reveal>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
@@ -544,5 +594,17 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
         </div>
     </div> <!-- end #inner-content -->
 </div> <!-- end #content -->
+
+<script>
+
+var twoFactorAuthentication = <?php echo $dt_user_meta["two_factor_authentication"][0]; ?>
+
+if (twoFactorAuthentication == '1') {
+    if(document.getElementById("twoFactorAuthentication")) {
+        document.getElementById("twoFactorAuthentication").setAttribute("checked", "checked");
+    }
+}
+
+</script>
 
 <?php get_footer(); ?>

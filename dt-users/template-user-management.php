@@ -327,7 +327,7 @@ $user_management_options = DT_User_Management::user_management_options();
                                     $dt_roles = dt_multi_role_get_editable_role_names();
                                     ?>
 
-                                    <p> <a href="https://disciple.tools/user-docs/getting-started-info/roles/" target="_blank"><?php esc_html_e( 'Click here to see roles documentation', 'disciple_tools' ); ?></a>  </p>
+                                    <p> <a href="https://disciple-tools.readthedocs.io/en/latest/Disciple_Tools_Theme/getting_started/roles.html" target="_blank"><?php esc_html_e( 'Click here to see roles documentation', 'disciple_tools' ); ?></a>  </p>
 
                                     <ul id="user_roles_list" class="no-bullet">
                                         <?php foreach ( $dt_roles as $role_key => $name ) : ?>

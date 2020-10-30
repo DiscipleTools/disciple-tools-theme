@@ -2028,28 +2028,4 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
         return $sections;
     }
-
-    public static function find_contacts_with( $field, $value, $exclude_id = "", $exact_match = false ){
-        global $wpdb;
-        $contact_ids = $wpdb->get_results(
-            $wpdb->prepare(
-                "
-                        SELECT post_id
-                        FROM {$wpdb->prefix}postmeta
-                        INNER JOIN $wpdb->posts posts ON ( posts.ID = post_id AND posts.post_type = 'contacts' AND posts.post_status = 'publish' )
-                        WHERE meta_key
-                        LIKE %s
-                        AND meta_value LIKE %s
-                        AND post_id != %s
-                        ",
-                [
-                    esc_sql( $field ) .'%',
-                    $exact_match ? esc_sql( $value ) : ( '%' . trim( esc_sql( $value ) ) . '%' ),
-                    esc_sql( $exclude_id )
-                ]
-            ),
-            ARRAY_N
-        );
-        return $contact_ids;
-    }
 }

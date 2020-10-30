@@ -189,12 +189,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 "english_name" => "Swahili",
                 "iso" => [ "sw" ]
             ];
-            $translations["sr_BA"] = [
-                "language" => "sr_BA",
-                "native_name" => "српски",
-                "english_name" => "Serbian",
-                "iso" => [ "sr" ]
-            ];
             return $translations;
         }
     }

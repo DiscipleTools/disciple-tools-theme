@@ -275,7 +275,6 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         "post_id" => $post->ID ?? 0,
                         "post" => $post_record ?? false,
                         "map_key" => self::get_key(),
-                        "google_map_key" => ( Disciple_Tools_Google_Geocode_API::get_key() ) ? Disciple_Tools_Google_Geocode_API::get_key() : false,
                         "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
                         "theme_uri" => get_stylesheet_directory_uri(),
                         "translations" => array(
@@ -284,11 +283,6 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     )
                 );
                 add_action( 'wp_head', [ 'DT_Mapbox_API', 'mapbox_search_widget_css' ] );
-
-                // load Google Geocoder if key is present.
-                if ( Disciple_Tools_Google_Geocode_API::get_key() ){
-                    Disciple_Tools_Google_Geocode_API::load_google_geocoding_scripts();
-                }
             }
         }
 
@@ -305,7 +299,6 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         "user_id" => get_current_user_id(),
                         "user_location" => Disciple_Tools_Users::get_user_location( get_current_user_id() ),
                         "map_key" => self::get_key(),
-                        "google_map_key" => ( Disciple_Tools_Google_Geocode_API::get_key() ) ? Disciple_Tools_Google_Geocode_API::get_key() : false,
                         "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
                         "theme_uri" => get_stylesheet_directory_uri(),
                         "translations" => array(
@@ -314,11 +307,6 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     )
                 );
                 add_action( 'wp_head', [ 'DT_Mapbox_API', 'mapbox_search_widget_css' ] );
-
-                // load Google Geocoder if key is present.
-                if ( Disciple_Tools_Google_Geocode_API::get_key() ){
-                    Disciple_Tools_Google_Geocode_API::load_google_geocoding_scripts();
-                }
             }
         }
 

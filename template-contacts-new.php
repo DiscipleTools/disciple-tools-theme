@@ -137,7 +137,7 @@ get_header();
                 </label>
 
                 <div style="text-align: center">
-                    <a href="<?php echo esc_html( get_site_url() . "/contacts/" )?>" class="button small clear"><?php echo esc_html__( 'Cancel', 'disciple_tools' )?></a>
+                    <a href="/contacts/" class="button small clear"><?php echo esc_html__( 'Cancel', 'disciple_tools' )?></a>
                     <button class="button loader js-create-contact-button dt-green" type="submit" disabled title="<?php esc_html_e( 'Save and continue editing', 'disciple_tools' )?>"><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
                 </div>
             </form>

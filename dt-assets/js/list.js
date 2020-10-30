@@ -74,7 +74,7 @@
     }
     let fields = [];
     if ( wpApiListSettings.current_post_type === "contacts" ){
-      fields = [ 'milestones', 'overall_status', 'seeker_path', 'assigned_to', 'location_grid', 'groups', 'last_modified', 'contact_phone', 'contact_email', 'requires_update' ]
+      fields = [ 'milestones', 'overall_status', 'seeker_path', 'assigned_to', 'location_grid', 'groups', 'last_modified', 'contact_phone', 'requires_update' ]
     } else {
       fields = [ 'group_status', 'group_type', 'member_count', 'leaders', 'location_grid', 'last_modified', 'requires_updated' ]
     }
@@ -93,7 +93,6 @@
       } else  {
         items = data.posts || []
       }
-      window.contact_list = data // adds global access to current list for plugins
       $('#load-more').toggle(items.length !== parseInt( data.total ))
       let result_text = wpApiListSettings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", data.total)
       $('.filter-result-text').html(result_text)
@@ -350,7 +349,7 @@
 
     const langcode = document.querySelector('html').getAttribute('lang').replace('_', '-');
     const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }
-    const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, options).format(new Date(parseInt(contact.last_modified.timestamp)*1000))
+    const last_modified = new Intl.DateTimeFormat(`${langcode}-u-ca-gregory`, options).format(new Date(contact.last_modified*1000))
 
     const context = _.assign({last_modified: 0}, contact, wpApiListSettings, {
       index,
@@ -481,7 +480,6 @@
     headerCell.data("sort", 'asc')
 
     currentFilter = JSON.parse(JSON.stringify(filter))
-    window.current_filter = currentFilter
     get_contacts()
   }
   if (!getContactsPromise){
@@ -599,7 +597,7 @@
   })
 
   $("#search").on("click", function () {
-    let searchText = $("#search-query").val()
+    let searchText = _.escape( $("#search-query").val() )
     showClosedCheckbox.prop('checked', true)
     let query = {text:searchText, assigned_to:["all"]}
     let labels = [{ id:"search", name:searchText, field: "search"}]

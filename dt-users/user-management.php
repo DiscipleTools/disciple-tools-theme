@@ -149,7 +149,6 @@ class DT_User_Management
                         'contact_attempt_time' => _x( 'Contact with %1$s was attempted on %2$s after %3$s days', 'Contact with Bob was attempted on Jul 8 after 10 days', 'disciple_tools' ),
                         'unable_to_update' => __( 'Unable to update', 'disciple_tools' ),
                         'add_new_user' => __( 'Add New User', 'disciple_tools' ),
-                        'view_new_user' => __( 'View New User', 'disciple_tools' ),
                         'there_are_some_errors' => __( 'There are some errors in your form.', 'disciple_tools' ),
                         'contact_to_user' => __( 'Contact to make a user (optional)', 'disciple_tools' ),
                         'nickname' => __( 'Nickname (Display Name)', 'disciple_tools' ),
@@ -159,8 +158,6 @@ class DT_User_Management
                         'username_in_system' => __( 'Username is already in the system as a user!', 'disciple_tools' ),
                         'search' => __( 'Search multipliers and contacts', 'disciple_tools' ),
                         'remove' => __( 'Remove', 'disciple_tools' ),
-                        'already_user' => __( 'This contact is already a user.', 'disciple_tools' ),
-                        'view_user' => __( 'View User', 'disciple_tools' ),
                     ]
 
                 ]

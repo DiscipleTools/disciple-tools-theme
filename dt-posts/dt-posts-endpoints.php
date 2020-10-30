@@ -116,6 +116,19 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
+        //create or update incluence create_or_update_influence
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/influence/(?P<id>\d+)', [
+                [
+                    "methods"  => "POST",
+                    "callback" => [ $this, 'create_or_update_influence' ],
+                    "args" => [
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
+                    ]
+                ]
+            ]
+        );
 
         //get_posts
         register_rest_route(
@@ -408,6 +421,12 @@ class Disciple_Tools_Posts_Endpoints {
         $get_params = $request->get_query_params();
         $silent = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
         return DT_Posts::update_post( $url_params["post_type"], $url_params["id"], $fields, $silent );
+    }
+ 
+    public function create_or_update_influence( WP_REST_Request $request ){
+        $fields = $request->get_json_params() ?? $request->get_body_params();
+        $url_params = $request->get_url_params();
+        return DT_Posts::create_or_update_influence($url_params["post_type"], $url_params["id"], $fields );
     }
 
     public function get_list( WP_REST_Request $request ){

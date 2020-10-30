@@ -16,8 +16,26 @@ if ( ! current_user_can( 'access_groups' ) ) {
     $following = DT_Posts::get_users_following_post( "groups", get_the_ID() );
     $group = Disciple_Tools_Groups::get_group( get_the_ID(), true, true );
     $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+
+    if (get_option('vc_progress_circle_template') != null) {
+        $progressCircleTemplates = json_decode(get_option('vc_progress_circle_template'), TRUE);
+    }
+
     $group_preferences = dt_get_option( 'group_preferences' );
     $current_user_id = get_current_user_id();
+    $pluginIsActive = false;
+
+    // Valid is plugin is active
+    if(in_array('disciple-tools-visual-customization-plugin/disciple-tools-visual-customization-plugin.php', apply_filters('active_plugins', get_option('active_plugins')))){ 
+        $pluginIsActive = true;
+    } else {
+        $pluginIsActive = false;
+    }
+
+    // Get the active health metrics of a group
+    global $wpdb;
+    $results = $wpdb->get_results( "SELECT meta_value FROM wp_postmeta WHERE post_id = {$group["ID"]} AND meta_key = 'health_metrics'", OBJECT );
+
     get_header();?>
 
     <?php
@@ -31,6 +49,61 @@ if ( ! current_user_can( 'access_groups' ) ) {
         [],
         true
     ); ?>
+
+<style>
+    #slider-influence {
+        background: #82CFD0;
+        border: solid 1px #82CFD0;
+        border-radius: 8px;
+        height: 7px;
+        width: 356px;
+        outline: none;
+        -webkit-appearance: none;
+    }
+
+    #message-modal-influence {
+        margin-bottom: 0;
+        text-align: center;
+    }
+
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 16%; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 20%;
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover, .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+</style>
 
 <!--<div id="errors"> </div>-->
 <div id="content" class="single-groups">
@@ -221,12 +294,27 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- Show the Slider if the plugin is active -->
+
+                                    <?php if ( $pluginIsActive ) : ?>
+                                    
+                                    <div class="section-subheader">
+                                        Influence: <span id="influence-number"></span>
+                                    </div>
+                                    <div class="influence">
+                                        <input id="slider-influence" style="width: 100%;" type="range" min="0" max="100" onchange="onChangeSlider(this.value)">
+                                    </div>
+
+                                    <?php endif; ?>
+                                    <!-- End Slider element -->
+
                                 </div>
 
                             </section>
 
-                        <!-- Health Metrics-->
-                        <?php if ( ! empty( $group_preferences['church_metrics'] ) ) : ?>
+                        <!-- Health Metrics -->
+                        <?php if ( !empty( $group_preferences['church_metrics']) && !$pluginIsActive ) : ?>
                             <section id="health-metrics" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box js-progress-bordered-box half-opacity" id="health-tile">
 
@@ -258,6 +346,32 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                             </div>
                                         <?php endforeach; ?>
 
+                                    </div>
+
+                                </div><!-- end collapse --></div>
+                            </section>
+                        <?php endif; ?>
+
+                        <!-- Health Metrics with Customization plugin -->
+                        <?php if ( !empty( $group_preferences['church_metrics']) && $pluginIsActive ) : ?>
+                            <section id="health-metrics_2" class="xlarge-12 large-12 medium-12 cell grid-item">
+                                <div class="bordered-box js-progress-bordered-box" id="health-tile">
+
+                                    <h3 class="section-header"><?php echo esc_html( $group_fields["health_metrics"]["name"] )?>
+                                        <button class="help-button" data-section="health-metrics-help-text">
+                                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                        </button>
+                                        <button class="section-chevron chevron_down">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
+                                        <button class="section-chevron chevron_up">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                        </button>
+                                    </h3>
+                                    <div class="section-body"><!-- start collapse -->
+
+                                    <div style="text-align: center;">
+                                        <canvas id="canvas-church-metrics" width="450" height="450"></canvas>
                                     </div>
 
                                 </div><!-- end collapse --></div>
@@ -399,8 +513,453 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
     </div> <!-- end #inner-content -->
 
+    <!-- Modal with message for the level of influence -->
+    <div id="modal-influence" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="message-modal-influence"></p>
+        </div>
+    </div>
+
 </div> <!-- end #content -->
 
+<!-- Start script visual customization -->
+<script type="application/javascript">
+
+    var canvas = document.getElementById('canvas-church-metrics');
+    let group = wpApiGroupsSettings.group
+    let groupId = group.ID
+    var progressCircleBackground = <?php echo json_encode($group_fields["health_metrics"]); ?>;
+    var inputInfluenceValue = <?php echo json_encode(get_post_meta($group['ID'], 'influence')) ?>;
+    var progressCircleTemplates = <?php echo json_encode($progressCircleTemplates); ?>;
+    var progressCircleOptionsActive = <?php echo json_encode($group_fields["health_metrics"]["default"]); ?>;
+    var iconsActive = <?php echo json_encode($results); ?>;
+    var selected_group = <?php echo json_encode($group); ?>;
+    var countCircleOptionsActive = Object.keys(progressCircleOptionsActive).length
+
+    /* VALID IF CANVAS EXISTS */
+    if(canvas){
+
+        var context = canvas.getContext('2d');
+        var centerX = canvas.width / 2;
+        var centerY = canvas.height / 2;
+        var radius = 200;
+        var canvasIcons = []
+    
+        /* SELECT THE TAMPLATE FOR THE CIRCLE */
+        switch(countCircleOptionsActive){
+    
+            case 5:
+                applyTemplate(progressCircleTemplates["iconTemplate5"])
+            break;
+            case 6:
+                applyTemplate(progressCircleTemplates["iconTemplate6"])
+            break;
+            case 7:
+                applyTemplate(progressCircleTemplates["iconTemplate7"])
+            break;
+            case 8:
+                applyTemplate(progressCircleTemplates["iconTemplate8"])
+            break;
+            case 9:
+                applyTemplate(progressCircleTemplates["iconTemplate9"])
+            break;
+            case 10:
+                applyTemplate(progressCircleTemplates["iconTemplate10"])
+            break;
+            case 11:
+                applyTemplate(progressCircleTemplates["iconTemplate11"])
+            break;
+            case 12:
+                applyTemplate(progressCircleTemplates["iconTemplate12"])
+            break;
+        }
+
+        canvas.addEventListener('mousedown', function(e) {
+            getCursorPosition(canvas, e)
+        })
+    }
+
+    /* APPLY THE SELECTED TEMPLATE */
+    function applyTemplate (template) {
+
+        var index = 0
+
+        for (var key in progressCircleOptionsActive) {
+            
+            var option = progressCircleOptionsActive[key]
+            var icon = template[index]
+            var imagePath = null
+
+            if(option.image){
+                if(option.image.includes("dt-assets")){
+                    imagePath = '<?php echo get_template_directory_uri(); ?>';
+                } else {
+
+                    path = '<?php echo get_template_directory_uri(); ?>'
+                    arrayUrlImages = path.split('/themes/disciple-tools-theme-edited')
+
+                    imagePath = arrayUrlImages[0] + '/uploads'
+                }
+            }
+
+            icon.id = key
+            icon.label = option.label
+            icon.imageUrl = imagePath ? imagePath + option.image : ""
+            canvasIcons.push(icon)
+            index ++
+            imagePath = null
+        }
+
+        index = 0
+        drawProgressCircle()
+    }
+
+    /* DRAW THE PROGRESS CIRCLE */
+    function drawProgressCircle () {
+
+        var churchCommitmentActive = false
+
+        iconsActive.forEach((elem, key) => {
+            if(elem.meta_value == "church_commitment"){
+                churchCommitmentActive = true
+            }
+        });
+
+        context.beginPath();
+        if (!churchCommitmentActive) {
+            context.setLineDash([10, 10]);
+        } else {
+            context.setLineDash([]);
+        }
+        context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        context.strokeStyle = progressCircleBackground["border"];
+        context.lineWidth = 2;
+        context.fillStyle = progressCircleBackground["background"];
+        context.globalAlpha = 1;
+        context.fill();
+        context.stroke();
+
+        canvasIcons.forEach((element, key) => {
+            var icon = canvas.getContext('2d');
+            var label = canvas.getContext('2d');
+            var img = new Image;
+            var iconIsActive = findIconInArray(element.id)
+
+            icon.id = element.id
+            img.onload = function () {
+
+                var imgWidth = img.width
+                var imgHeight = img.height
+
+                labelArray = element.label.split(' ')
+                label.globalAlpha = iconIsActive ? 1 : element.globalAlpha
+                label.fillStyle = progressCircleBackground["label"]
+
+                if (labelArray[0].length > 5 && labelArray.length > 1) {
+
+                    var labelWidth = labelArray[0].length * 4
+                    var labelTwo = labelArray[2] ? labelArray[1] + ' ' + labelArray[2] : labelArray[1]
+                    var labelTwoWidth = labelTwo.length * 4
+
+                    if (labelWidth > imgWidth) {
+
+                        var diferent = labelWidth - imgWidth
+
+                        label.fillText(labelArray[0], (element.x - diferent), element.y + (imgHeight + 10));
+                    } else {
+
+                        var diferent = (imgWidth - labelWidth)
+
+                        label.fillText(labelArray[0], element.x + Math.round(diferent / 3), element.y + (imgHeight + 10));
+                    }
+
+                    if (labelTwoWidth > imgWidth) {
+
+                        var diferent = labelTwoWidth - imgWidth
+
+                        label.fillText(labelTwo, (element.x - diferent), (element.y + 10) + (imgHeight + 10));
+                    } else {
+
+                        var diferent = (imgWidth - labelTwoWidth)
+
+                        label.fillText(labelTwo, element.x + Math.round(diferent / 3), (element.y + 10) + (imgHeight + 10));
+                    }
+
+                    
+                } else {
+
+                    var labelWidth = element.label.length * 4
+
+                    if (labelWidth > imgWidth) {
+
+                        var diferent = labelWidth - imgWidth
+
+                        label.fillText(element.label, (element.x - diferent), element.y + (imgHeight + 10));
+                    } else {
+
+                        var diferent = (imgWidth - labelWidth)
+
+                        label.fillText(element.label, element.x + Math.round(diferent / 3), element.y + (imgHeight + 10));
+                    }
+
+                }
+
+                icon.globalAlpha = iconIsActive ? 1 : element.globalAlpha
+                element.globalAlpha = iconIsActive ? 1 : element.globalAlpha
+                icon.drawImage(img, element.x, element.y);
+            }
+            img.src = element.imageUrl;
+        });
+    }
+
+    /* VALID IF THE ICON IS IN THE ARRANGEMENT OF ACTIVE ICONS */
+    function findIconInArray (key){
+
+        var iconFined = false
+
+        iconsActive.forEach(element => {
+            if(!iconFined){
+                if(key == element.meta_value) {
+                    iconFined = true
+                }
+            }
+        });
+
+        return iconFined;
+    }
+
+    /* GET CURSOR POSITION IN PROGRESS CRICLE */
+    function getCursorPosition(canvas, event) {
+
+        const rect = canvas.getBoundingClientRect()
+        const xAxis = event.clientX - rect.left
+        const yAxis = event.clientY - rect.top
+        var contextIcon = null
+
+        canvasIcons.forEach(element => {
+
+            if (!contextIcon) {
+                if ((xAxis >= element.x && xAxis <= element.x + 40) && (yAxis >= element.y && yAxis <= element.y + 40)){
+
+                    contextIcon = element
+                    var contextIconCopy = contextIcon
+                    
+                    let fieldId = element.id
+                    $("#"+fieldId).css('opacity', ".6");
+                    let already_set = _.get(group, `health_metrics`, []).includes(fieldId)
+                    let update = {values:[{value:fieldId}]}
+
+                    if ( already_set ){
+                        update.values[0].delete = true;
+                    }
+
+                    API.update_post( 'groups', groupId, {"health_metrics": update }).then(groupData => {
+
+                        group = groupData
+
+                        iconsActive = []
+
+                        if(group.health_metrics){
+                            group.health_metrics.forEach(metrics => {
+                                iconsActive.push({meta_value: metrics})
+                            });
+                        }
+
+                        context.clearRect(0, 0, canvas.width, canvas.height);
+
+                        var churchCommitmentActive = false
+
+                        iconsActive.forEach((elem, key) => {
+                            if(elem.meta_value == "church_commitment"){
+                                churchCommitmentActive = true
+                            }
+                        });
+
+                        context.beginPath();
+                        if (!churchCommitmentActive) {
+                            context.setLineDash([10, 10]);
+                        } else {
+                            context.setLineDash([]);
+                        }
+                        context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+                        context.strokeStyle = progressCircleBackground["border"];
+                        context.lineWidth = 2;
+                        context.fillStyle = progressCircleBackground["background"];
+                        context.globalAlpha = 1;
+                        context.fill();
+                        context.stroke();
+
+                        canvasIcons.forEach((element, key) => {
+                            
+                            var icon = canvas.getContext('2d');
+                            var label = canvas.getContext('2d');
+                            var img = new Image;
+                            var iconIsActive = findIconInArray(element.id)
+
+                            icon.id = element.id
+
+                            if (icon.id == contextIconCopy.id) {
+                                if(iconIsActive && contextIconCopy.globalAlpha == 1){
+                                    iconIsActive = false
+
+                                } else if(!iconIsActive && contextIconCopy.globalAlpha == 0.3) {
+                                    iconIsActive = true
+                                }
+                            }
+
+                            img.onload = function () {
+
+                                var imgWidth = img.width
+                                var imgHeight = img.height
+
+                                labelArray = element.label.split(' ')
+                                label.globalAlpha = iconIsActive ? 1 : 0.3
+                                label.fillStyle = progressCircleBackground["label"];
+
+                                // VALIDATION IF LABEL HAVE SPACES
+
+                                if (labelArray[0].length > 5 && labelArray.length > 1) {
+
+                                    var labelWidth = labelArray[0].length * 4
+                                    var labelTwo = labelArray[2] ? labelArray[1] + ' ' + labelArray[2] : labelArray[1]
+                                    var labelTwoWidth = labelTwo.length * 4
+
+                                    // LOGIC FOR LABEL ONE
+
+                                    if (labelWidth > imgWidth) {
+
+                                        var diferent = labelWidth - imgWidth
+
+                                        label.fillText(labelArray[0], (element.x - diferent), element.y + (imgHeight + 10));
+                                    } else {
+
+                                        var diferent = (imgWidth - labelWidth)
+
+                                        label.fillText(labelArray[0], element.x + Math.round(diferent / 3), element.y + (imgHeight + 10));
+                                    }
+
+                                    // LOGIC FOR LABEL TWO
+
+                                    if (labelTwoWidth > imgWidth) {
+
+                                        var diferent = labelTwoWidth - imgWidth
+
+                                        label.fillText(labelTwo, (element.x - diferent), (element.y + 10) + (imgHeight + 10));
+                                    } else {
+
+                                        var diferent = (imgWidth - labelTwoWidth)
+
+                                        label.fillText(labelTwo, element.x + Math.round(diferent / 3), (element.y + 10) + (imgHeight + 10));
+                                    }
+
+                                    
+                                } else {
+
+                                    // LOGIC FOR LABEL
+
+                                    var labelWidth = element.label.length * 4
+
+                                    if (labelWidth > imgWidth) {
+
+                                        var diferent = labelWidth - imgWidth
+
+                                        label.fillText(element.label, (element.x - diferent), element.y + (imgHeight + 10));
+                                    } else {
+
+                                        var diferent = (imgWidth - labelWidth)
+
+                                        label.fillText(element.label, element.x + Math.round(diferent / 3), element.y + (imgHeight + 10));
+                                    }
+
+                                }
+
+                                icon.globalAlpha = iconIsActive ? 1 : 0.3
+                                element.globalAlpha = iconIsActive ? 1 : 0.3
+                                icon.drawImage(img, element.x, element.y);
+                            }
+                            img.src = element.imageUrl;
+                        });
+
+                    }).catch(err=>{
+                        console.log(err)
+                    })
+
+
+                }
+            } else {
+                contextIcon = null
+            }
+        });
+
+    }
+
+
+
+    /* LOGIC FOR INFLUENCE SLIDER */
+
+    let sliderInfluence = document.getElementById('slider-influence'),
+    influenceNumber = document.getElementById("influence-number"),
+    modalInfluence = document.getElementById("modal-influence"),
+    messageModalInfluence = document.getElementById("message-modal-influence")
+
+    /* VALID IF SLIDER EXISTS */
+    if(sliderInfluence){
+
+        sliderInfluence.value = inputInfluenceValue =! null ? inputInfluenceValue[0] : 0
+        influenceNumber.innerHTML = sliderInfluence.value;
+        setColorToSlider(false)
+    
+        sliderInfluence.addEventListener('input', function () {
+            setColorToSlider(true)
+            influenceNumber.innerHTML = sliderInfluence.value
+        }, false);
+    }
+
+    /* SET COLOR TO SLIDER */
+    function setColorToSlider (showModal) {
+        if(sliderInfluence.value > 99){
+            sliderInfluence.style.background = '#027500'
+            sliderInfluence.style.border = 'solid 1px #027500'
+            if(showModal){
+                messageModalInfluence.innerHTML = "COMPLETE INFLUENCE"
+                modalInfluence.style.display = "block";
+            }
+        } else if (sliderInfluence.value < 1) {
+            sliderInfluence.style.background = '#750000'
+            sliderInfluence.style.border = 'solid 1px #750000'
+            if(showModal){
+                messageModalInfluence.innerHTML = "NO INFLUENCE"
+                modalInfluence.style.display = "block";
+            }
+        } else {
+            sliderInfluence.style.background = '#82CFD0'
+            sliderInfluence.style.border = 'solid 1px #82CFD0'
+        }
+    }
+
+    /* ON CHANGE SLIDER EVENT */
+    function onChangeSlider(value) {
+        API.create_or_update_influence( 'groups', groupId, {"influence": value }).then(data => {
+            console.log(data)
+        }).catch(err=>{
+            console.log(err)
+        })
+    }
+
+    // CLOSE MODAL EVENT
+    document.getElementsByClassName("close")[0].onclick = function() {
+        modalInfluence.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modalInfluence) {
+            modalInfluence.style.display = "none";
+        }
+    }
+
+</script>
+<!-- End script visual customization -->
 
 <!--    Modals-->
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'share' ); ?>

@@ -139,7 +139,7 @@
                                            id="tab-button-<?php echo esc_html( $section["key"] ) ?>"
                                            data-id="<?php echo esc_html( $section["key"] ) ?>"
                                            class="tabs-section"
-                                           checked
+                                        <?php echo esc_html( ( isset( $section["selected_by_default"] ) && $section["selected_by_default"] === true ) ? 'checked' : '' ) ?>
                                     >
                                     <span class="tab-button-label" dir="auto"
                                           data-id="<?php echo esc_html( $section["key"] ) ?>"> <?php echo esc_html( $section["label"] ) ?></span>

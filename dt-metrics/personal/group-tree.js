@@ -1,10 +1,10 @@
-"use strict";
 jQuery(document).ready(function() {
-  if ( window.wpApiShare.url_path.startsWith( 'metrics/personal/group-tree' )) {
+  if ('/metrics/personal/group-tree' === window.location.pathname || '/metrics/personal/group-tree/' === window.location.pathname  ) {
     group_tree()
   }
 
   function group_tree() {
+    "use strict";
     let chart = jQuery('#chart')
     let spinner = ' <span class="loading-spinner active"></span> '
 
@@ -54,7 +54,7 @@ function open_modal_details( id ) {
       // console.log(data)
       if( data ) {
         let list = '<dt>'+_.escape( translations.members )+'</dt><ul>'
-        jQuery.each(data.members, function(i, v)  { list += `<li><a href="${_.escape(window.wpApiShare.site_url)}/contacts/${_.escape( data.members[i].ID )}">${_.escape( data.members[i].post_title )}</a></li>` } )
+        jQuery.each(data.members, function(i, v)  { list += `<li><a href="/contacts/${_.escape( data.members[i].ID )}">${_.escape( data.members[i].post_title )}</a></li>` } )
         list += '</ul>'
         let content = `
                 <div class="grid-x">
@@ -67,7 +67,7 @@ function open_modal_details( id ) {
                             ${list}
                         </dl>
                     </div>
-                    <div class="cell center"><hr><a href="${_.escape(window.wpApiShare.site_url)}/groups/${_.escape( id )}">${_.escape(translations.view_group)}</a></div>
+                    <div class="cell center"><hr><a href="/groups/${_.escape( id )}">View Group</a></div>
                 </div>
                 <button class="close-button" data-close aria-label="Close modal" type="button">
                     <span aria-hidden="true">&times;</span>

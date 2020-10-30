@@ -11,7 +11,7 @@ jQuery(document).ready(function() {
   `)
 
 
-  if( window.wpApiShare.url_path.startsWith( 'metrics/combined/locations_list' )) {
+  if('/metrics/combined/locations_list' === window.location.pathname) {
     LISTDATA = window.wp_js_object.mapping_module
     page_mapping_list()
   }

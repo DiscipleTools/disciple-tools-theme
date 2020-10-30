@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-  if ( window.wpApiShare.url_path.startsWith(  'metrics/contacts/overview' ) ) {
+  if ('/metrics/contacts/overview' === window.location.pathname || '/metrics/contacts/overview/' === window.location.pathname) {
     project_contacts_overview()
   }
 

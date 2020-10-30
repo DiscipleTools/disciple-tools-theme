@@ -296,21 +296,32 @@ jQuery(document).ready(function($) {
   }
 
   function display_activity_comment() {
-    let hiddenTabs = [];
+    let savedTabs = window.SHAREDFUNCTIONS.getCookie("contact_details_tabs")
+    let activeTabIds = [];
     try {
-      hiddenTabs = JSON.parse( window.SHAREDFUNCTIONS.getCookie("dt_activity_comments_hidden_tabs") )
+      activeTabIds = JSON.parse(savedTabs)
     } catch (e) {}
-    hiddenTabs.forEach(tab=>{
-      $(`#tab-button-${tab}`).prop('checked', false)
+    if ( activeTabIds.length === 0 ){
+      let activeTabs = $('#comment-activity-tabs .tabs-section:checked')
+      activeTabs.each((i, e)=>{
+        activeTabIds.push($(e).data("id"))
+      })
+    }
+    let possibleTabs = _.union( [ 'activity', 'comment' ], commentsSettings.additional_sections.map((l)=>{return l['key']}))
+    possibleTabs.forEach(tab=>{
+      $(`#tab-button-${tab}`).prop('checked', activeTabIds.includes(tab))
     })
+
     let commentsWrapper = $("#comments-wrapper")
     commentsWrapper.empty()
     let displayed = []
-    if ( !hiddenTabs.includes("activity")){
+    if ( activeTabIds.includes("activity")){
       displayed = _.union(displayed, activity)
     }
     comments.forEach(comment=>{
-      if (!hiddenTabs.includes(comment.comment_type)){
+      if (activeTabIds.includes(comment.comment_type)){
+        displayed.push(comment)
+      } else if ( !possibleTabs.includes(comment.comment_type)){
         displayed.push(comment)
       }
     })
@@ -502,12 +513,12 @@ jQuery(document).ready(function($) {
     saveTabs()
   })
   let saveTabs = ()=>{
-    let hiddenTabs = $('#comment-activity-tabs .tabs-section:not(:checked)')
-    let hiddenTabIds = [];
-    hiddenTabs.each((i, e)=>{
-      hiddenTabIds.push($(e).data("id"))
+    let activeTabs = $('#comment-activity-tabs .tabs-section:checked')
+    let activeTabIds = [];
+    activeTabs.each((i, e)=>{
+      activeTabIds.push($(e).data("id"))
     })
-    document.cookie = `dt_activity_comments_hidden_tabs=${JSON.stringify(hiddenTabIds)};path=/;expires=Fri, 31 Dec 9999 23:59:59 GMT"`
+    document.cookie = `contact_details_tabs=${JSON.stringify(activeTabIds)};path=/;expires=Fri, 31 Dec 9999 23:59:59 GMT"`
     display_activity_comment()
   }
 
