@@ -107,13 +107,9 @@ window.API = {
 
     remove_shared: (post_type, postId, userId)=> makeRequestOnPosts('DELETE', `${post_type}/${postId}/shares`, { user_id: userId }),
 
-    create_contact: fields => makeRequest('POST', `contact/create`, fields),
-
     save_field_api: (post_type, postId, postData) => makeRequestOnPosts('POST', `${post_type}/${postId}`, postData),
 
     revert_activity: (post_type, postId, activityId) => makeRequestOnPosts('GET', `${post_type}/${postId}/revert/${activityId}`),
-
-    create_group: fields => makeRequest('POST', 'group/create', fields),
 
     search_users: query => makeRequest('GET', `users/get_users?s=${query}`),
 
@@ -127,7 +123,7 @@ window.API = {
 
     create_user: user => makeRequest('POST', 'users/create', user),
 
-    transfer_contact: (contactId, siteId) => makeRequest('POST', 'contact/transfer', { contact_id: contactId, site_post_id: siteId }),
+    transfer_contact: (contactId, siteId) => makeRequestOnPosts('POST', 'contacts/transfer', { contact_id: contactId, site_post_id: siteId }),
 }
 
 function handleAjaxError (err) {

@@ -489,61 +489,10 @@ class DT_Contacts_Base {
 
     public function add_api_routes() {
         $namespace = "dt-posts/v2";
-        register_rest_route(
-            $namespace, '/contact/transfer', [
-                "methods"  => "POST",
-                "callback" => [ $this, 'contact_transfer' ],
-            ]
-        );
-        register_rest_route(
-            $namespace, '/contact/receive-transfer', [
-                "methods"  => "POST",
-                "callback" => [ $this, 'receive_transfer' ],
-            ]
-        );
-    }
-    public function contact_transfer( WP_REST_Request $request ){
-
-        if ( ! ( current_user_can( 'view_any_contacts' ) || current_user_can( 'manage_dt' ) ) ) {
-            return new WP_Error( __METHOD__, 'Insufficient permissions' );
-        }
-
-        $params = $request->get_params();
-        if ( ! isset( $params['contact_id'] ) || ! isset( $params['site_post_id'] ) ){
-            return new WP_Error( __METHOD__, "Missing required parameters.", [ 'status' => 400 ] );
-        }
-
-        return Disciple_Tools_Contacts_Transfer::contact_transfer( $params['contact_id'], $params['site_post_id'] );
 
     }
 
-    public function receive_transfer( WP_REST_Request $request ){
-        $params = $request->get_params();
-        if ( ! current_user_can( 'create_contacts' ) ) {
-            return new WP_Error( __METHOD__, 'Insufficient permissions' );
-        }
 
-        if ( isset( $params['contact_data'] ) ) {
-            $result = Disciple_Tools_Contacts_Transfer::receive_transferred_contact( $params );
-            if ( is_wp_error( $result ) ) {
-                return [
-                    'status' => 'FAIL',
-                    'error' => $result->get_error_message(),
-                ];
-            } else {
-                return [
-                    'status' => 'OK',
-                    'error' => $result['errors'],
-                    'created_id' => $result['created_id'],
-                ];
-            }
-        } else {
-            return [
-                'status' => 'FAIL',
-                'error' => 'Missing required parameter'
-            ];
-        }
-    }
 
     public function add_comm_channel_comment_section( $sections, $post_type ){
         if ( $post_type === "contacts" ){
