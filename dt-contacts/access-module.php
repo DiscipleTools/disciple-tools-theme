@@ -78,6 +78,7 @@ class DT_Contacts_Access extends DT_Module_Base {
     }
 
     public function dt_custom_fields_settings( $fields, $post_type ){
+        $declared_fields = $fields;
         if ( $post_type === 'contacts' ){
             $fields["type"]["default"]["access"] = [
                 "label" => __( 'Access', 'disciple_tools' ),
@@ -356,7 +357,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             }
         }
 
-        return $fields;
+        return dt_array_merge_recursive_distinct( $declared_fields, $fields );
     }
 
     public function add_api_routes(){

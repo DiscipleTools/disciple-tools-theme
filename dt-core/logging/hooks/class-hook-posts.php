@@ -159,23 +159,6 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         $object_note = '';
         $fields = DT_Posts::get_post_field_settings( $parent_post['post_type'] );
 
-//        @todo test
-//        switch () {
-//            // get custom fields for post type. Else, skip object note.
-//            case 'contacts':
-//                $fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( true, $object_id );
-//                if (strpos( $meta_key, "quick_button" ) !== false ){
-//                    $object_note = $this->_key_name( $meta_key, $fields );
-//                }
-//                break;
-//            case 'groups':
-//                $fields = DT_Posts::get_post_field_settings( "groups" );
-//                break;
-//            default:
-//                $fields = '';
-//                break;
-//        }
-
         //build message for verifying and invalidating contact information fields.
         if (strpos( $meta_key, "_details" ) !== false && is_array( $meta_value )) {
             $original_key = str_replace( "_details", "", $meta_key );

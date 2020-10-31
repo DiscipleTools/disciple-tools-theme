@@ -42,6 +42,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
     }
 
     public function dt_custom_fields_settings( $fields, $post_type ){
+        $declared_fields = $fields;
         if ( $post_type === 'contacts' ){
             $fields["type"]["default"]["placeholder"] = [
                 "label" => __( 'Connection', 'disciple_tools' ),
@@ -235,8 +236,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
 
 
         }
-
-        return $fields;
+        return dt_array_merge_recursive_distinct( $declared_fields, $fields );
     }
 
     public function p2p_init(){

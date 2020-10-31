@@ -21,7 +21,7 @@ class Disciple_Tools_Contacts_Transfer
         add_action( 'dt_share_panel', [ $this, 'share_panel' ], 10, 1 );
         add_filter( 'site_link_type', [ $this, 'site_link_type' ], 10, 1 );
         add_filter( 'site_link_type_capabilities', [ $this, 'site_link_capabilities' ], 10, 1 );
-        add_action( 'dt_contact_detail_notification', [ $this, 'contact_transfer_notification' ] );
+        add_action( 'dt_record_top_above_details', [ $this, 'contact_transfer_notification' ], 10, 2 );
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
@@ -45,8 +45,8 @@ class Disciple_Tools_Contacts_Transfer
         return $args;
     }
 
-    public function contact_transfer_notification( $contact ) {
-        if ( isset( $contact['reason_closed']['key'] ) && $contact['reason_closed']['key'] === 'transfer' ) {
+    public function contact_transfer_notification( $post_type, $contact ) {
+        if ( $post_type === "contacts" && isset( $contact['reason_closed']['key'] ) && $contact['reason_closed']['key'] === 'transfer' ) {
             ?>
             <section class="cell small-12">
                 <div class="bordered-box detail-notification-box" style="background-color:#3F729B">

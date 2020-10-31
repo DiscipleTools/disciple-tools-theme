@@ -948,8 +948,22 @@ class Disciple_Tools_Posts
         $post_query = "";
 
         if ( !empty( $search )){
+            $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
             $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
-                OR p.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key LIKE 'contact_%' AND meta_value LIKE '%" . esc_sql( $search ) . "%' ) )";
+                OR p.ID IN ( SELECT post_id
+                             FROM $wpdb->postmeta
+                             WHERE meta_key LIKE 'contact_%'
+                             AND REPLACE( meta_value, ' ', '') LIKE REPLACE( '" . esc_sql( $search ) . "', ' ', '')
+                )
+            ";
+            foreach ( $other_search_fields as $field ){
+                $post_query .= " OR p.ID IN ( SELECT post_id
+                             FROM $wpdb->postmeta
+                             WHERE meta_key LIKE '" . esc_sql( $field ) . "'
+                             AND meta_value LIKE '%\"" . esc_sql( $search ) . "%'
+                ) ";
+            }
+            $post_query .= " ) ";
         }
 
         $sort_sql = "";

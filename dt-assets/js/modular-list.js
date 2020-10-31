@@ -507,9 +507,6 @@
         ${_.escape( name )}
     `).append(save_filter)
     $(".custom-filters").append(filterRow)
-    $(".custom-filters input").on("change", function () {
-      get_records_for_current_filter()
-    })
     if ( load_records ){
       get_records_for_current_filter()
     }
