@@ -213,6 +213,12 @@ class Disciple_Tools_Contacts_Endpoints
             ]
         );
         register_rest_route(
+            $namespace, '/contacts/receive-transfer', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'receive_transfer_endpoint' ],
+            ]
+        );
+        register_rest_route(
             $namespace, '/contacts/(?P<id>\d+)/revert/(?P<activity_id>\d+)', [
                 "methods"  => "GET",
                 "callback" => [ $this, 'revert_activity' ],
@@ -793,6 +799,35 @@ class Disciple_Tools_Contacts_Endpoints
 
         return Disciple_Tools_Contacts_Transfer::contact_transfer( $params['contact_id'], $params['site_post_id'] );
 
+    }
+
+
+    public function receive_transfer_endpoint( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if ( ! current_user_can( 'create_contacts' ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions' );
+        }
+
+        if ( isset( $params['contact_data'] ) ) {
+            $result = Disciple_Tools_Contacts_Transfer::receive_transferred_contact( $params );
+            if ( is_wp_error( $result ) ) {
+                return [
+                    'status' => 'FAIL',
+                    'error' => $result->get_error_message(),
+                ];
+            } else {
+                return [
+                    'status' => 'OK',
+                    'error' => $result['errors'],
+                    'created_id' => $result['created_id'],
+                ];
+            }
+        } else {
+            return [
+                'status' => 'FAIL',
+                'error' => 'Missing required parameter'
+            ];
+        }
     }
 
     public function public_contact_transfer( WP_REST_Request $request ){
