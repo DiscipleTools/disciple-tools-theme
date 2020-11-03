@@ -110,12 +110,16 @@ final class Disciple_Tools_Admin_User_Edit {
                                        value="<?php echo esc_attr( $role ); ?>"
                                        <?php checked( in_array( $role, $user_roles ) ); ?>
                                        <?php echo esc_html( in_array( $role, $can_not_promote_to_roles ) ? 'disabled' : '' ) ?>/>
+                                <strong>
                                 <?php
                                 if ( isset( $expected_roles[$role]["label"] ) && !empty( $expected_roles[$role]["label"] ) ){
                                     echo esc_html( $expected_roles[$role]["label"] );
                                 } else {
                                     echo esc_html( $name );
                                 }
+                                ?>
+                                </strong>
+                                <?php
                                 if ( isset( $expected_roles[$role]["description"] ) ){
                                     echo ' - ' . esc_html( $expected_roles[$role]["description"] );
                                 }

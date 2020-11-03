@@ -340,12 +340,16 @@ $user_management_options = DT_User_Management::user_management_options();
                                                            value="<?php echo esc_attr( $role_key ); ?>"
                                                         <?php checked( in_array( $role_key, $user_roles ) ); ?>
                                                         <?php disabled( $role_key === 'administrator' ); ?> />
+                                                    <strong>
                                                     <?php
                                                     if ( isset( $expected_roles[$role_key]["label"] ) && !empty( $expected_roles[$role_key]["label"] ) ){
                                                         echo esc_html( $expected_roles[$role_key]["label"] );
                                                     } else {
                                                         echo esc_html( $name );
                                                     }
+                                                    ?>
+                                                    </strong>
+                                                    <?php
                                                     if ( isset( $expected_roles[$role_key]["description"] ) ){
                                                         echo ' - ' . esc_html( $expected_roles[$role_key]["description"] );
                                                     }

@@ -47,9 +47,10 @@ class DT_Contacts_Access extends DT_Module_Base {
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){
-        $multiplier_permissions = Disciple_Tools_Roles::default_multiplier_caps();
+        $multiplier_permissions = Disciple_Tools_Roles::default_multiplier_caps(); // get the base multiplier permissions
         $expected_roles['marketer'] = [
-            "label" => __( "Marketer", "disciple_tools" ),
+            "label" => __( "Digital Responder", "disciple_tools" ),
+            "description" => "Talk to leads online and report in D.T when Contacts are ready for follow-up",
             "permissions" => wp_parse_args( [
                 'access_specific_sources' => true,
                 'assign_any_contacts' => true, //assign contacts to others,
@@ -58,12 +59,14 @@ class DT_Contacts_Access extends DT_Module_Base {
         ];
         $expected_roles['partner'] = [
             "label" => __( "Partner", "disciple_tools" ),
+            "description" => "Allow access to a specific contact source so a partner can see progress",
             "permissions" => wp_parse_args( [
                 'access_specific_sources' => true,
             ], $multiplier_permissions )
         ];
         $expected_roles['dispatcher'] = [
             "label" => __( "Dispatcher", "disciple_tools" ),
+            "description" => "Monitor new D.T contacts and assign the to waiting Multipliers",
             "permissions" => wp_parse_args( [
                 'dt_all_access_contacts' => true,
                 'view_project_metrics' => true,
@@ -1137,8 +1140,10 @@ class DT_Contacts_Access extends DT_Module_Base {
             if ( DT_Posts::can_view_all( $post_type ) ){
                 $permissions["type"] = [ "access" ];
             } else if ( current_user_can( "dt_all_access_contacts" ) ){
+                //give user permission to all contacts af type 'access'
                 $permissions[] = [ "type" => [ "access" ] ];
             } else if ( current_user_can( 'access_specific_sources' ) ){
+                //give user permission to all 'access' that also have a source the user can view.
                 $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?? [];
                 if ( !empty( $allowed_sources ) && !in_array( "restrict_all_sources", $allowed_sources ) ){
                     $permissions[] = [ "type" => [ "access" ], "sources" => $allowed_sources];

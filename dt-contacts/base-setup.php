@@ -48,23 +48,29 @@ class DT_Contacts_Base {
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){
-        $roles = [
-            "manage_users" => __( 'User Manager', 'disciple_tools' ),
-            "dt_admin" => __( 'Disciple.Tools Admin', 'disciple_tools' ),
-            "strategist" => __( 'Strategist', 'disciple_tools' ),
-            "administrator" => __( 'Administrator', 'disciple_tools' ),
-        ];
-        foreach ( $roles as $role => $label ){
-            if ( !isset( $expected_roles[$role] ) ){
-                $expected_roles[$role] = [
-                    "label" => $label,
-                    "permissions" => []
-                ];
-            }
-        }
         $expected_roles["multiplier"] = [
             "label" => __( 'Multiplier', 'disciple_tools' ),
             "description" => "Interacts with Contacts and Groups",
+            "permissions" => []
+        ];
+        $expected_roles["strategist"] = [
+            "label" => __( 'Strategist', 'disciple_tools' ),
+            "description" => "View project metrics",
+            "permissions" => []
+        ];
+        $expected_roles["user_manager"] = [
+            "label" => __( 'User Manager', 'disciple_tools' ),
+            "description" => "List, invite, promote and demote users",
+            "permissions" => []
+        ];
+        $expected_roles["dt_admin"] = [
+            "label" => __( 'Disciple.Tools Admin', 'disciple_tools' ),
+            "description" => "All D.T permissions",
+            "permissions" => []
+        ];
+        $expected_roles["administrator"] = [
+            "label" => __( 'Administrator', 'disciple_tools' ),
+            "description" => "All D.T permissions plus the ability to manage plugins.",
             "permissions" => []
         ];
 
@@ -76,8 +82,8 @@ class DT_Contacts_Base {
         $expected_roles["multiplier"]["permissions"] = array_merge( $expected_roles["multiplier"]["permissions"], $multiplier_permissions );
 
         // User Manager
-        $expected_roles["manage_users"]["permissions"] = array_merge( $expected_roles["manage_users"]["permissions"], $multiplier_permissions );
-        $expected_roles["manage_users"]["permissions"] = array_merge( $expected_roles["manage_users"]["permissions"], $user_management_permissions );
+        $expected_roles["user_manager"]["permissions"] = array_merge( $expected_roles["user_manager"]["permissions"], $multiplier_permissions );
+        $expected_roles["user_manager"]["permissions"] = array_merge( $expected_roles["user_manager"]["permissions"], $user_management_permissions );
 
         // D.T Admin
         $expected_roles["dt_admin"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $multiplier_permissions );
