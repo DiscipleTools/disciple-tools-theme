@@ -417,11 +417,12 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
                                 </label>
                             </div>
                         <?php endif; ?>
-
-
-                    </div> <!-- End Notifications -->
-
+                    </div>
                 </div>
+                <!-- End Notifications -->
+
+                <!-- hook for more sections added by plugins -->
+                <?php do_action( 'dt_profile_settings_page_sections' ) ?>
 
                 <div class="reveal" id="edit-profile-modal" data-reveal>
                     <button class="close-button" data-close aria-label="Close modal" type="button">

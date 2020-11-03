@@ -390,8 +390,11 @@ window.SHAREDFUNCTIONS = {
       if ( with_time ){
         options.hour = 'numeric'
         options.minute = 'numeric'
+      } else {
+        options.timeZone = 'UTC';
       }
-      const formattedDate = new Intl.DateTimeFormat(langcode, options).format(date * 1000);
+
+      const formattedDate = new Intl.DateTimeFormat(langcode, options).format(date*1000);
 
       return formattedDate;
     },
