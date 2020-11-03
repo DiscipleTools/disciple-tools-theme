@@ -1,50 +1,51 @@
+let post_id = window.detailsSettings.post_id
+let post_type = window.detailsSettings.post_type
+let post = window.detailsSettings.post_fields
+
+function setStatus(contact, openModal) {
+  let statusSelect = $('#overall_status')
+  let status = _.get(contact, "overall_status.key")
+  let reasonLabel = _.get(contact, `reason_${status}.label`)
+  let statusColor = _.get(window.detailsSettings,
+    `post_settings.fields.overall_status.default.${status}.color`
+  )
+  statusSelect.val(status)
+
+  if (openModal){
+    if (status === "paused"){
+      $('#paused-contact-modal').foundation('open');
+    } else if (status === "closed"){
+      $('#closed-contact-modal').foundation('open');
+    } else if (status === 'unassignable'){
+      $('#unassignable-contact-modal').foundation('open');
+    }
+  }
+
+  if (statusColor){
+    statusSelect.css("background-color", statusColor)
+  } else {
+    statusSelect.css("background-color", "#366184")
+  }
+
+  if (["paused", "closed", "unassignable"].includes(status)){
+    $('#reason').text(`(${reasonLabel})`)
+    $(`#edit-reason`).show()
+  } else {
+    $('#reason').text(``)
+    $(`#edit-reason`).hide()
+  }
+}
+
+function updateCriticalPath(key) {
+  $('#seeker_path').val(key)
+  let seekerPathKeys = _.keys(post.seeker_path.default)
+  let percentage = (_.indexOf(seekerPathKeys, key) || 0) / (seekerPathKeys.length-1) * 100
+  $('#seeker-progress').css("width", `${percentage}%`)
+}
+
+
 jQuery(document).ready(function($) {
 
-  let post_id = window.detailsSettings.post_id
-  let post_type = window.detailsSettings.post_type
-  let post = window.detailsSettings.post_fields
-
-
-  function setStatus(contact, openModal) {
-    let statusSelect = $('#overall_status')
-    let status = _.get(contact, "overall_status.key")
-    let reasonLabel = _.get(contact, `reason_${status}.label`)
-    let statusColor = _.get(window.detailsSettings,
-      `post_settings.fields.overall_status.default.${status}.color`
-    )
-    statusSelect.val(status)
-
-    if (openModal){
-      if (status === "paused"){
-        $('#paused-contact-modal').foundation('open');
-      } else if (status === "closed"){
-        $('#closed-contact-modal').foundation('open');
-      } else if (status === 'unassignable'){
-        $('#unassignable-contact-modal').foundation('open');
-      }
-    }
-
-    if (statusColor){
-      statusSelect.css("background-color", statusColor)
-    } else {
-      statusSelect.css("background-color", "#366184")
-    }
-
-    if (["paused", "closed", "unassignable"].includes(status)){
-      $('#reason').text(`(${reasonLabel})`)
-      $(`#edit-reason`).show()
-    } else {
-      $('#reason').text(``)
-      $(`#edit-reason`).hide()
-    }
-  }
-
-  function updateCriticalPath(key) {
-    $('#seeker_path').val(key)
-    let seekerPathKeys = _.keys(post.seeker_path.default)
-    let percentage = (_.indexOf(seekerPathKeys, key) || 0) / (seekerPathKeys.length-1) * 100
-    $('#seeker-progress').css("width", `${percentage}%`)
-  }
 
   $( document ).on( 'dt_record_updated', function (e, response, request ){
     _.forOwn(request, (val, key)=>{
@@ -54,9 +55,15 @@ jQuery(document).ready(function($) {
         }
       }
     })
-
   })
-
+  $('#content')[0].addEventListener('comment_posted', function (e) {
+    if ( $('#update-needed').prop("checked") === true ){
+      API.get_post("contacts",  post_id ).then(resp=>{
+        post = resp
+        record_updated(_.get(resp, "requires_update") === true )
+      }).catch(err => { console.error(err) })
+    }
+  }, false);
 
   /**
    * Assigned_to

@@ -190,14 +190,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                 "show_in_table" => 10,
                 "only_for_types" => [ "access" ]
             ];
-            $fields['requires_update'] = [
-                'name'        => __( 'Requires Update', 'disciple_tools' ),
-                'description' => '',
-                'type'        => 'boolean',
-                'default'     => false,
-                'section'     => 'status',
-                "only_for_types" => [ "access" ]
-            ];
 
             $fields['age'] = [
                 'name'        => __( 'Age', 'disciple_tools' ),

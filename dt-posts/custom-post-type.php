@@ -206,8 +206,8 @@ class Disciple_Tools_Post_Type_Template {
                 'label_plural' => $this->plural,
                 'post_type' => $this->post_type
             ];
+            wp_cache_set( $post_type . "_type_settings", $settings );
         }
-        wp_cache_set( $post_type . "_type_settings", $settings );
         return $settings;
     }
 

@@ -74,6 +74,9 @@ declare(strict_types=1);
                         <div class="custom-filters"></div>
                     </div>
                 </div>
+
+                <br>
+                <?php do_action( 'dt_post_list_filters_sidebar', $post_type ) ?>
             </aside>
 
             <main id="main" class="large-9 cell padding-bottom" role="main">

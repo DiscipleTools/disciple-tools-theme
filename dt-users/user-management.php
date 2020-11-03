@@ -300,13 +300,13 @@ class DT_User_Management
                 'overall_status' => [ '-closed', '-paused' ],
                 'sort' => 'last_modified'
             ], false );
-            if (sizeof( $update_needed["contacts"] ) > 5) {
-                $update_needed["contacts"] = array_slice( $update_needed["contacts"], 0, 5 );
+            if (sizeof( $update_needed["posts"] ) > 5) {
+                $update_needed["posts"] = array_slice( $update_needed["posts"], 0, 5 );
             }
-            if (sizeof( $to_accept["contacts"] ) > 10) {
-                $to_accept["contacts"] = array_slice( $to_accept["contacts"], 0, 10 );
+            if (sizeof( $to_accept["posts"] ) > 10) {
+                $to_accept["posts"] = array_slice( $to_accept["posts"], 0, 10 );
             }
-            foreach ($update_needed["contacts"] as &$contact) {
+            foreach ($update_needed["posts"] as &$contact) {
                 $now = time();
                 $last_modified = get_post_meta( $contact->ID, "last_modified", true );
                 $days_different = (int) round( ( $now - (int) $last_modified ) / ( 60 * 60 * 24 ) );
