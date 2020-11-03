@@ -12,7 +12,9 @@ jQuery(document).ready(function($) {
     let numberIndicator = $(`span.${fieldKey}`)
     let newNumber = parseInt(numberIndicator.first().text() || "0" ) + 1
     data[fieldKey] = newNumber
-    API.update_post('contacts', post_id, data)
+    API.update_post('contacts', post_id, data).then(()=>{
+      record_updated(false)
+    })
     .catch(err=>{
       console.log("error")
       console.log(err)

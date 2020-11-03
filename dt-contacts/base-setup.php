@@ -246,6 +246,14 @@ class DT_Contacts_Base {
                 "icon" => get_template_directory_uri() . "/dt-assets/images/gender.svg",
             ];
 
+            $fields['requires_update'] = [
+                'name'        => __( 'Requires Update', 'disciple_tools' ),
+                'description' => '',
+                'type'        => 'boolean',
+                'default'     => false,
+                'section'     => 'status'
+            ];
+
 
         }
         return $fields;

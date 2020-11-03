@@ -464,6 +464,8 @@
       } else  {
         items = response.posts || []
       }
+      window.records_list = response // adds global access to current list for plugins
+
       $('#load-more').toggle(items.length !== parseInt( response.total ))
       let result_text = list_settings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", response.total)
       $('.filter-result-text').html(result_text)

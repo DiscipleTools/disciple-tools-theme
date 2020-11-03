@@ -213,7 +213,22 @@ jQuery(document).ready(function($) {
   $( document ).on( 'dt_record_updated', function (e, response, request ){
     post = response;
     resetDetailsFields()
+    record_updated(_.get(response, "requires_update", false));
+
   })
+
+
+
+  /**
+   * Update Needed
+   */
+  $('#update-needed.dt-switch').change(function () {
+    let updateNeeded = $(this).is(':checked')
+    API.update_post( post_type, post_id, {"requires_update":updateNeeded}).then(resp=>{
+      post = resp
+    })
+  })
+
 
 
   $('.show-details-section').on( "click", function (){
@@ -673,6 +688,7 @@ jQuery(document).ready(function($) {
         $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${values_html}">${values_html}</span>`)
       }
     })
+    $( document ).trigger( "dt_record_details_reset", [post] );
   }
   resetDetailsFields()
 
@@ -690,3 +706,10 @@ jQuery(document).ready(function($) {
   });
   //leave at the end of this file
 })
+
+
+// change update needed notification and switch if needed.
+function record_updated(updateNeeded) {
+  $('.update-needed-notification').toggle(updateNeeded)
+  $('#update-needed').prop("checked", updateNeeded)
+}

@@ -49,7 +49,7 @@ class DT_Contacts_Access extends DT_Module_Base {
     public function dt_set_roles_and_permissions( $expected_roles ){
         $multiplier_permissions = Disciple_Tools_Roles::default_multiplier_caps();
         $expected_roles['marketer'] = [
-            "label" => __( "Marketer", "disciple_tools" ),
+            "label" => __( "Digital Responder", "disciple_tools" ),
             "permissions" => wp_parse_args( [
                 'access_specific_sources' => true,
                 'assign_any_contacts' => true, //assign contacts to others,
@@ -185,14 +185,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'custom_display' => true,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/status.svg",
                 "show_in_table" => 10,
-                "only_for_types" => [ "access" ]
-            ];
-            $fields['requires_update'] = [
-                'name'        => __( 'Requires Update', 'disciple_tools' ),
-                'description' => '',
-                'type'        => 'boolean',
-                'default'     => false,
-                'section'     => 'status',
                 "only_for_types" => [ "access" ]
             ];
 

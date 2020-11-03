@@ -280,6 +280,7 @@ function dt_site_scripts() {
     //list page
     if ( in_array( $url_path, $post_types ) ){
         $post_type = $url_path;
+        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
         $translations = [
             'save' => __( 'Save', 'disciple_tools' ),
             'edit' => __( 'Edit', 'disciple_tools' ),
@@ -289,9 +290,9 @@ function dt_site_scripts() {
             'creation_date' => __( 'Creation Date', 'disciple_tools' ),
             'date_modified' => __( 'Date Modified', 'disciple_tools' ),
             'empty_custom_filters' => __( 'No filters, create one below', 'disciple_tools' ),
-            'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' )
+            'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' ),
+            'filter_all' => sprintf( _x( "All %s", 'All records', 'disciple_tools' ), $post_settings["label_plural"] ),
         ];
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
         dt_theme_enqueue_script( 'drag-n-drop-table-columns', 'dt-core/dependencies/drag-n-drop-table-columns.js', array( 'jquery' ), true );
         dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/js/modular-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js', 'drag-n-drop-table-columns' ), true );
         wp_localize_script( 'modular-list-js', 'list_settings', array(
