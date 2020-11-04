@@ -280,27 +280,31 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                         <div class="section-body">
                                             <?php
                                             // let the plugin add section content
-                                            do_action( "dt_details_additional_section", $tile_key, $post_type );
-
-                                            //setup the order of the tile fields
-                                            $order = $tile_options["order"] ?? [];
-                                            foreach ( $post_settings["fields"] as $key => $option ){
-                                                if ( isset( $option["tile"] ) && $option["tile"] === $tile_key ){
-                                                    if ( !in_array( $key, $order )){
-                                                        $order[] = $key;
+                                            add_action( "dt_details_additional_section", function ( $t_key, $pt ) use ( $post_type, $tile_key, $post_settings, $dt_post ){
+                                                if ( $pt !== $post_type || $tile_key !== $t_key ){
+                                                    return;
+                                                }
+                                                //setup the order of the tile fields
+                                                $order = $tile_options["order"] ?? [];
+                                                foreach ( $post_settings["fields"] as $key => $option ){
+                                                    if ( isset( $option["tile"] ) && $option["tile"] === $tile_key ){
+                                                        if ( !in_array( $key, $order )){
+                                                            $order[] = $key;
+                                                        }
                                                     }
                                                 }
-                                            }
-                                            foreach ( $order as $field_key ) {
-                                                if ( !isset( $post_settings["fields"][$field_key] ) ){
-                                                    continue;
-                                                }
+                                                foreach ( $order as $field_key ) {
+                                                    if ( !isset( $post_settings["fields"][$field_key] ) ){
+                                                        continue;
+                                                    }
 
-                                                $field = $post_settings["fields"][$field_key];
-                                                if ( isset( $field["tile"] ) && $field["tile"] === $tile_key){
-                                                    render_field_for_display( $field_key, $post_settings["fields"], $dt_post, true );
+                                                    $field = $post_settings["fields"][$field_key];
+                                                    if ( isset( $field["tile"] ) && $field["tile"] === $tile_key){
+                                                        render_field_for_display( $field_key, $post_settings["fields"], $dt_post, true );
+                                                    }
                                                 }
-                                            }
+                                            }, 20, 2 );
+                                            do_action( "dt_details_additional_section", $tile_key, $post_type );
                                             ?>
                                         </div>
                                     </div>
