@@ -127,6 +127,7 @@ class DT_Contacts_Base {
                         "icon" => get_template_directory_uri() . "/dt-assets/images/locked.svg",
                     ],
                 ],
+                'customizable' => false
             ];
             $fields["duplicate_data"] = [
                 "name" => 'Duplicates', //system string does not need translation
@@ -150,7 +151,7 @@ class DT_Contacts_Base {
                 'default'     => [],
                 'tile'        => 'other',
                 'custom_display' => true,
-                'icon' => get_template_directory_uri() . "/dt-assets/images/phone.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/tag.svg",
             ];
             $fields["follow"] = [
                 'name'        => __( 'Follow', 'disciple_tools' ),
@@ -165,15 +166,6 @@ class DT_Contacts_Base {
                 'default'     => [],
                 'section'     => 'misc',
                 'hidden'      => true
-            ];
-            $fields["relation"] = [
-                "name" => sprintf( _x( "Connections to other %s", 'connections to other records', 'disciple_tools' ), __( "Contacts", 'disciple_tools' ) ),
-                "description" => _x( "Relationship this contact has with another contact in the system.", 'Optional Documentation', 'disciple_tools' ),
-                "type" => "connection",
-                "post_type" => "contacts",
-                "p2p_direction" => "any",
-                "p2p_key" => "contacts_to_relation",
-                "tile" => "other"
             ];
 
             $fields['tasks'] = [
@@ -193,7 +185,8 @@ class DT_Contacts_Base {
                 "icon" => get_template_directory_uri() . "/dt-assets/images/phone.svg",
                 "type" => "communication_channel",
                 "tile" => "details",
-                "customizable" => false
+                "customizable" => false,
+                "in_create_form" => true,
             ];
             $fields["contact_email"] = [
                 "name" => __( 'Email', 'disciple_tools' ),
@@ -209,7 +202,7 @@ class DT_Contacts_Base {
                 "tile" => "details",
                 "customizable" => false
             ];
-            $fields["facebook"] = [
+            $fields["contact_facebook"] = [
                 "name" => __( 'Facebook', 'disciple_tools' ),
                 "icon" => get_template_directory_uri() . "/dt-assets/images/facebook.svg",
                 "hide_domain" => true,
@@ -217,13 +210,25 @@ class DT_Contacts_Base {
                 "tile" => "details",
                 "customizable" => false
             ];
-            $fields["twitter"] = [
+            $fields["contact_twitter"] = [
                 "name" => __( 'Twitter', 'disciple_tools' ),
                 "icon" => get_template_directory_uri() . "/dt-assets/images/twitter.svg",
                 "hide_domain" => true,
                 "type" => "communication_channel",
                 "tile" => "details",
                 "customizable" => false
+            ];
+
+            $fields["relation"] = [
+                "name" => sprintf( _x( "Connections to other %s", 'connections to other records', 'disciple_tools' ), __( "Contacts", 'disciple_tools' ) ),
+                "description" => _x( "Relationship this contact has with another contact in the system.", 'Optional Documentation', 'disciple_tools' ),
+                "type" => "connection",
+                "post_type" => "contacts",
+                "p2p_direction" => "any",
+                "p2p_key" => "contacts_to_relation",
+                "tile" => "other",
+                "in_create_form" => [ "placeholder" ],
+                'icon' => get_template_directory_uri() . "/dt-assets/images/connection.svg",
             ];
 
             $fields['location_grid'] = [
@@ -270,6 +275,7 @@ class DT_Contacts_Base {
             $contact_fields = DT_Posts::get_post_field_settings( $post_type );
             ?>
             <div class="section-subheader">
+                <img class="dt-icon" src="<?php echo esc_url( $contact_fields["tags"]["icon"] ) ?>">
                 <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
             </div>
             <div class="tags">

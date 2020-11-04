@@ -378,18 +378,38 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </option>
                     <?php endforeach; ?>
                 </select>
-            <?php elseif ( $field_type === "multi_select" ) : ?>
-                <div class="small button-group" style="display: inline-block">
-                    <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
-                        <?php
-                        $class = ( in_array( $option_key, $post[$field_key] ?? [] ) ) ?
-                            "selected-select-button" : "empty-select-button"; ?>
-                        <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="<?php echo esc_html( $field_key ) ?>"
-                                class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
-                            <?php echo esc_html( $fields[$field_key]["default"][$option_key]["label"] ) ?>
-                        </button>
-                    <?php endforeach; ?>
-                </div>
+            <?php elseif ( $field_type === "multi_select" ) :
+                if ( isset( $fields[$field_key]["display"] ) && $fields[$field_key]["display"] === "typeahead" ){
+                    ?>
+                    <div class="multi_select">
+                        <var id="tags-result-container" class="result-container"></var>
+                        <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
+                            <div class="typeahead__container">
+                                <div class="typeahead__field">
+                                    <span class="typeahead__query">
+                                        <input class="js-typeahead-<?php echo esc_html( $field_key ) ?> input-height"
+                                               data-field="<?php echo esc_html( $field_key )?>"
+                                               name="<?php echo esc_html( $field_key ) ?>[query]"
+                                               placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
+                                               autocomplete="off">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php } else { ?>
+                    <div class="small button-group" style="display: inline-block">
+                        <?php foreach ( $fields[$field_key]["default"] as $option_key => $option_value ): ?>
+                            <?php
+                            $class = ( in_array( $option_key, $post[$field_key] ?? [] ) ) ?
+                                "selected-select-button" : "empty-select-button"; ?>
+                            <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="<?php echo esc_html( $field_key ) ?>"
+                                    class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
+                                <?php echo esc_html( $fields[$field_key]["default"][$option_key]["label"] ) ?>
+                            </button>
+                        <?php endforeach; ?>
+                    </div>
+                <?php } ?>
             <?php elseif ( $field_type === "text" ) :?>
                 <input id="<?php echo esc_html( $field_key ) ?>" type="text" <?php echo esc_html( $required_tag ) ?>
                        class="text-input"

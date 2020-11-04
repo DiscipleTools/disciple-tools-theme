@@ -306,6 +306,107 @@ jQuery(document).ready(function($) {
     })
   })
 
+  //multi_select typeaheads
+  for (let input of $(".multi_select .typeahead__query input")) {
+    let field = $(input).data('field')
+    let typeahead_name = `.js-typeahead-${field}`
+
+    if (window.Typeahead[typeahead_name]) {
+      return
+    }
+
+    let source_data =  { data: [] }
+    let field_options = _.get(field_settings, `${field}.default`, {})
+    if ( Object.keys(field_options).length > 0 ){
+      _.forOwn(field_options, (val, key)=>{
+        if ( !val.deleted ){
+          source_data.data.push({
+            key: key,
+            name:key,
+            value: val.label || key
+          })
+        }
+      })
+    } else {
+      source_data = {
+        [field]: {
+          display: ["value"],
+          ajax: {
+            url: window.wpApiShare.root + `dt-posts/v2/${post_type}/multi-select-values`,
+            data: {
+              s: "{{query}}",
+              field
+            },
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+            },
+            callback: {
+              done: function (data) {
+                return (data || []).map(tag => {
+                  let label = _.get(field_options, tag + ".label", tag)
+                  return {value: label, key: tag}
+                })
+              }
+            }
+          }
+        }
+      }
+    }
+    $.typeahead({
+      input: `.js-typeahead-${field}`,
+      minLength: 0,
+      maxItem: 20,
+      searchOnFocus: true,
+      template: function (query, item) {
+        return `<span>${_.escape(item.value)}</span>`
+      },
+      source: source_data,
+      display: "value",
+      templateValue: "{{value}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["key"],
+        data: function (){
+          return (post[field] || [] ).map(g=>{
+            return {key:g, value:_.get(field_settings, `${field}.default.${g}.label`, g)}
+          })
+        },
+        callback: {
+          onCancel: function (node, item, event) {
+            $(`#${field}-spinner`).addClass('active')
+            API.update_post(post_type, post_id, {[field]: {values:[{value:item.key, delete:true}]}}).then((new_post)=>{
+              $(`#${field}-spinner`).removeClass('active')
+              this.hideLayout();
+              this.resetInput();
+              $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
+            }).catch(err => { console.error(err) })
+          }
+        }
+      },
+      callback: {
+        onClick: function(node, a, item, event){
+          $(`#${field}-spinner`).addClass('active')
+          API.update_post(post_type, post_id, {[field]: {values:[{"value":item.key}]}}).then(new_post=>{
+            $(`#${field}-spinner`).removeClass('active')
+            $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
+            this.addMultiselectItemLayout(item)
+            event.preventDefault()
+            this.hideLayout();
+            this.resetInput();
+          }).catch(err => { console.error(err) })
+        },
+        onResult: function (node, query, result, resultCount) {
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $(`#${field}-result-container`).html(text);
+        },
+        onHideLayout: function () {
+          $(`#${field}-result-container`).html("");
+        }
+      }
+    });
+  }
+
+
   let connection_type = null
   //new record off a typeahead
   $('.create-new-record').on('click', function(){

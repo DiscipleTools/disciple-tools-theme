@@ -330,6 +330,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'default'     => $sources_default,
                 'tile'     => 'details',
                 'customizable' => 'all',
+                'display' => "typeahead",
                 'icon' => get_template_directory_uri() . "/dt-assets/images/source.svg",
                 "only_for_types" => [ "access" ],
                 "in_create_form" => [ "access" ]

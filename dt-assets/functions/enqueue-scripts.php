@@ -302,5 +302,16 @@ function dt_site_scripts() {
             'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
         ) );
     }
+
+    if ( strpos( $url_path, "/new" ) !== false && in_array( str_replace( "/new", "", $url_path ), $post_types ) ){
+        $post_type = str_replace( "/new", "", $url_path );
+        $post_settings = DT_Posts::get_post_settings( $post_type );
+        dt_theme_enqueue_script( 'new-record', 'dt-assets/js/new-record.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ), true );
+
+        wp_localize_script( 'new-record', 'new_record_localized', array(
+            'post_type' => $post_type,
+            'post_type_settings' => $post_settings
+        ) );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );

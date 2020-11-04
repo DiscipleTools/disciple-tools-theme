@@ -94,7 +94,8 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 ],
                 "customizable" => "add_only",
                 "tile" => "faith",
-                "show_in_table" => 20
+                "show_in_table" => 20,
+                "icon" => get_template_directory_uri() . "/dt-assets/images/bible.svg",
             ];
             $fields["faith_status"] =[
                 "name" => __( 'Faith Status', 'disciple_tools' ),
