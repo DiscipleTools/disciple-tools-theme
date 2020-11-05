@@ -963,7 +963,7 @@ msgstr "Već neko vrijeme nismo čuli o ovoj grupi. Imate li novosti za ovu grup
 #: dt-core/admin/config-site-defaults.php:629
 msgctxt "either rtl or ltr"
 msgid "ltr"
-msgstr "s lijeva nadesno"
+msgstr "ltr"
 
 #: dt-core/admin/config-site-defaults.php:746
 msgid "Someone has requested a password reset for the following account:"
