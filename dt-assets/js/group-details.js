@@ -624,7 +624,7 @@ jQuery(document).ready(function($) {
           date = $(val).val();
         }
         let id = $(val).attr('id')
-        API.update_post( 'groups', groupId, { [id]: moment(date).unix() }).then((resp)=>{
+        API.update_post( 'groups', groupId, { [id]: moment.utc(date).unix() }).then((resp)=>{
           if (val.value) {
               $(val).val(moment.unix(resp[id]["timestamp"]).format("YYYY-MM-DD"));
           }

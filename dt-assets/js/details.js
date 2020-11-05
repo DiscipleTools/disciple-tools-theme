@@ -80,7 +80,7 @@ jQuery(document).ready(function($) {
           date = " ";//null;
         }
         let id = $(this).attr('id')
-        rest_api.update_post( post_type, post_id, { [id]: moment(date).unix() }).then((resp)=>{
+        rest_api.update_post( post_type, post_id, { [id]: moment.utc(date).unix() }).then((resp)=>{
           if (this.value) {
             this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
           }
