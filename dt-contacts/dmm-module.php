@@ -138,9 +138,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             ];
             $fields['baptism_date'] = [
                 'name'        => __( 'Baptism Date', 'disciple_tools' ),
-                'description' => '',
                 'type'        => 'date',
-                'default'     => '',
                 'tile'     => 'details',
             ];
 
@@ -148,7 +146,6 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'name'        => __( 'Baptism Generation', 'disciple_tools' ),
                 'type'        => 'number',
                 'default'     => '',
-                'section'     => 'misc',
             ];
             $fields["coached_by"] = [
                 "name" => __( "Coached by", 'disciple_tools' ),
@@ -190,7 +187,6 @@ class DT_Contacts_DMM  extends DT_Module_Base {
 
             $fields['quick_button_no_answer'] = [
                 'name'        => __( 'No Answer', 'disciple_tools' ),
-                'description' => '',
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',

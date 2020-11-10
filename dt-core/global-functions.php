@@ -318,13 +318,13 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
 
     /**
-     * Accepts types: key_select, multi_select, text, date, connection, location
+     * Accepts types: key_select, multi_select, text, number, date, connection, location, communication_channel
      *
      * @param $field_key
      * @param $fields
      * @param $post
-     * @param bool $show_extra_controls
-     * @param bool $show_hidden
+     * @param bool $show_extra_controls // show typeahead create button
+     * @param bool $show_hidden // show hidden select options
      */
     function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false ){
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {

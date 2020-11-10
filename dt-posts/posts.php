@@ -931,6 +931,7 @@ class Disciple_Tools_Posts
         $limit = 100;
         if ( isset( $query["limit"] )){
             $limit = esc_sql( sanitize_text_field( $query["limit"] ) );
+            $limit = MIN( $limit, 1000 );
             unset( $query["limit"] );
         }
         $sort = "post_title";

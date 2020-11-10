@@ -133,13 +133,11 @@ class DT_Contacts_Base {
                 "name" => 'Duplicates', //system string does not need translation
                 'type' => 'array',
                 'default' => [],
-                'section' => 'admin',
                 "hidden" => true
             ];
             $fields["duplicate_of"] = [
                 "name" => "Duplicate of", //system string does not need translation
                 "type" => "text",
-                "default" => '',
                 "hidden" => true
             ];
 
@@ -157,14 +155,12 @@ class DT_Contacts_Base {
                 'name'        => __( 'Follow', 'disciple_tools' ),
                 'type'        => 'multi_select',
                 'default'     => [],
-                'section'     => 'misc',
                 'hidden'      => true
             ];
             $fields["unfollow"] = [
                 'name'        => __( 'Un-Follow', 'disciple_tools' ),
                 'type'        => 'multi_select',
                 'default'     => [],
-                'section'     => 'misc',
                 'hidden'      => true
             ];
 
@@ -235,7 +231,6 @@ class DT_Contacts_Base {
                 'name'        => __( 'Locations', 'disciple_tools' ),
                 'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'location',
-                'default'     => [],
                 "in_create_form" => true,
                 "tile" => "details",
                 "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg",
@@ -243,7 +238,6 @@ class DT_Contacts_Base {
             $fields['location_grid_meta'] = [
                 'name'        => 'Location Grid Meta', //system string does not need translation
                 'type'        => 'location_meta',
-                'default'     => [],
                 'hidden' => true
             ];
             $fields['gender'] = [
@@ -259,10 +253,8 @@ class DT_Contacts_Base {
 
             $fields['requires_update'] = [
                 'name'        => __( 'Requires Update', 'disciple_tools' ),
-                'description' => '',
                 'type'        => 'boolean',
                 'default'     => false,
-                'section'     => 'status'
             ];
 
 

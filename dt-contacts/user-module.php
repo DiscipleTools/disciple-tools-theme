@@ -39,7 +39,6 @@ class DT_Contacts_User {
                 'description' => _x( 'The id of the user this contact corresponds to', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'number',
                 'default' => 0,
-                'section' => 'misc',
                 'customizable' => false,
                 'hidden' => true
             ];

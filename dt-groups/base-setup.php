@@ -80,7 +80,6 @@ class DT_Groups_Base {
                 'name'        => __( 'Un-Follow', 'disciple_tools' ),
                 'type'        => 'multi_select',
                 'default'     => [],
-                'section'     => 'misc',
                 'hidden'      => true
             ];
 
@@ -93,7 +92,6 @@ class DT_Groups_Base {
                 "name" => 'Duplicates', //system string does not need translation
                 'type' => 'array',
                 'default' => [],
-                'section' => 'admin'
             ];
 
 
@@ -154,7 +152,7 @@ class DT_Groups_Base {
                 'tile' => 'status',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/assigned-to.svg',
                 "show_in_table" => 16,
-                'custom_display' => 20,
+                'custom_display' => true,
             ];
 
             $fields['health_metrics'] = [

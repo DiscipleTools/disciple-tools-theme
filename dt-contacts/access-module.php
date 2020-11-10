@@ -232,7 +232,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                         "label" => __( 'Waiting for Confirmation', 'disciple_tools' )
                     ],
                 ],
-                'section'     => 'misc',
                 'customizable' => 'all',
                 "only_for_types" => [ "access" ]
             ];
@@ -252,7 +251,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                     'ball_in_their_court'  => [ "label" => _x( 'Ball is in the contact\'s court', 'Reason Paused label', 'disciple_tools' ) ],
                     'wait_and_see'         => [ "label" => _x( 'We want to see if/how the contact responds to automated text messages', 'Reason Paused label', 'disciple_tools' ) ],
                 ],
-                'section'     => 'misc',
                 'customizable' => 'all',
                 "only_for_types" => [ "access" ]
             ];
@@ -278,7 +276,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                     'gdpr'                 => [ "label" => _x( 'GDPR request', 'Reason Closed label', 'disciple_tools' ) ],
                     'unknown'              => [ "label" => _x( 'Unknown', 'Reason Closed label', 'disciple_tools' ) ]
                 ],
-                'section'     => 'misc',
                 'customizable' => 'all',
                 "only_for_types" => [ "access" ]
             ];
@@ -287,7 +284,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'name'        => __( 'Accepted', 'disciple_tools' ),
                 'type'        => 'boolean',
                 'default'     => false,
-                'section'     => 'status',
                 'hidden'      => true,
                 "only_for_types" => [ "access" ]
             ];

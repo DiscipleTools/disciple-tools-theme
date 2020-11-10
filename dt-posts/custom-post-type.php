@@ -160,7 +160,6 @@ class Disciple_Tools_Post_Type_Template {
             'name' => __( 'Last Modified', 'disciple_tools' ),
             'type' => 'date',
             'default' => 0,
-            'section' => 'admin',
             'customizable' => false,
             "show_in_table" => 100
         ];
@@ -168,7 +167,6 @@ class Disciple_Tools_Post_Type_Template {
             'name' => __( 'Creation Date', 'disciple_tools' ),
             'type' => 'date',
             'default' => 0,
-            'section' => 'admin',
             'customizable' => false,
         ];
         //tasks, location, ppl group? follow, unfollow?
