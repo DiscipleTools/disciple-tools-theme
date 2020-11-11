@@ -165,6 +165,33 @@ declare(strict_types=1);
 
                     <div id="bulk_edit_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
                         <p style="font-weight:bold"><?php esc_html_e( 'Select all the contacts you want to update from the list, and update them below', 'disciple_tools' ); ?></p>
+
+                    <div class="section-subheader">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
+                        <?php esc_html_e( 'Assigned To', 'disciple_tools') ?>
+                        <button class="help-button" data-section="assigned-to-help-text">
+                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                        </button>
+                    </div>
+                        <div class="bulk_assigned_to details">
+                    <var id="bulk_assigned_to-result-container" class="result-container bulk_assigned_to-result-container"></var>
+                    <div id="bulk_assigned_to_t" name="form-bulk_assigned_to" class="scrollable-typeahead">
+                        <div class="typeahead__container" style="margin-bottom: 0">
+                            <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-bulk_assigned_to input-height" dir="auto"
+                                           name="bulk_assigned_to[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
+                                           autocomplete="off">
+                                </span>
+                                <span class="typeahead__button">
+                                    <button type="button" class="search_bulk_assigned_to typeahead__image_button input-height" data-id="bulk_assigned_to_t">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                     </div>
 
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>

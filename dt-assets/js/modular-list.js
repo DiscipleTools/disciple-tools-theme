@@ -333,10 +333,63 @@
     window.location = $(this).data('link')
   })
 
+  /***
+   * Bulk Edit
+   */
   $('#bulk_edit_controls').on('click', function(){
     $('#bulk_edit_picker').toggle();
     $('.bulk_edit_checkbox').toggle();
   })
+
+  /**
+   * Bulk_Assigned_to
+   */
+  let bulk_assigned_to_input = $(`.js-typeahead-bulk_assigned_to`)
+  $.typeahead({
+    input: '.js-typeahead-bulk_assigned_to',
+    minLength: 0,
+    maxItem: 0,
+    accent: true,
+    searchOnFocus: true,
+    source: TYPEAHEADS.typeaheadUserSource(),
+    templateValue: "{{name}}",
+    template: function (query, item) {
+      return `<div class="assigned-to-row" dir="auto">
+        <span>
+            <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
+            ${_.escape( item.name )}
+        </span>
+        ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
+        ${ item.update_needed && item.update_needed > 0 ? `<span>
+          <img style="height: 12px;" src="${_.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+          <span style="font-size: 14px">${_.escape(item.update_needed)}</span>
+        </span>` : '' }
+      </div>`
+    },
+    dynamic: true,
+    hint: true,
+    emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
+    callback: {
+      onClick: function(node, a, item){
+        $('.bulk_edit_checkbox input').each(function () {
+          if (this.checked) {
+              API.update_post('contacts', $(this).val(), {assigned_to: "user-" + item.ID}).then(function(response) {
+                $(`tr[data-link="${response.permalink.replace(/\/$/, "")}"] > td:nth-child(7) > ul > li`).text(response.assigned_to.display)
+              }).catch(err => { console.error(err) });
+          }
+        });
+      },
+      onResult: function (node, query, result, resultCount) {
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+        $('#bulk_assigned_to-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('.bulk_assigned_to-result-container').html("");
+      },
+      onReady: function () {
+      }
+    },
+  });
 
   let build_table = (records)=>{
     let table_rows = ``
