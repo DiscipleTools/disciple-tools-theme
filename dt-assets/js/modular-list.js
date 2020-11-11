@@ -371,13 +371,18 @@
     emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
     callback: {
       onClick: function(node, a, item){
+        console.log(item);
         $('.bulk_edit_checkbox input').each(function () {
           if (this.checked) {
-              API.update_post('contacts', $(this).val(), {assigned_to: "user-" + item.ID}).then(function(response) {
-                $(`tr[data-link="${response.permalink.replace(/\/$/, "")}"] > td:nth-child(7) > ul > li`).text(response.assigned_to.display)
+            console.log(this);
+              API.update_post(list_settings.post_type, $(this).val(), {assigned_to: "user-" + item.ID}).then(function(response) {
+
+                console.log($(`tr[data-link="${response.permalink.replace(/\/$/, "")}"] td[title="${item.name}"] ul > li`).text())
+
+                $(`tr[data-link="${response.permalink.replace(/\/$/, "")}"] td[title="${item.name}"] ul > li`).text(response.assigned_to.display)
               }).catch(err => { console.error(err) });
           }
-        });
+        }).promise().done( function() {window.location.reload()});
       },
       onResult: function (node, query, result, resultCount) {
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
