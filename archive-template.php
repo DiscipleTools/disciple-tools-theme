@@ -118,6 +118,12 @@ declare(strict_types=1);
                                 <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>"/>
                             </button>
                         </span>
+                        <span style="display:inline-block">
+                            <button class="button clear" id="bulk_edit_controls" style="margin:0; padding:0">
+                                <?php esc_html_e( 'Bulk Edit', 'disciple_tools' ); ?>
+                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg' ) ?>"/>
+                            </button>
+                        </span>
                     </div>
                     <div id="list_column_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
                         <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
@@ -156,12 +162,18 @@ declare(strict_types=1);
                         <button class="button" id="save_column_choices" style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
                         <a class="button clear" id="reset_column_choices" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
                     </div>
+
+                    <div id="bulk_edit_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
+                        <p style="font-weight:bold"><?php esc_html_e( 'Select all the contacts you want to update from the list, and update them below', 'disciple_tools' ); ?></p>
+                    </div>
+
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
 
                     <div>
                         <table class="table-remove-top-border js-list stack striped" id="records-table">
                             <thead>
                                 <tr class="table-headers dnd-moved sortable">
+                                    <th class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default"></th>
                                     <th style="width:32px; background-image:none; cursor:default"></th>
 
                                     <?php $columns = [];

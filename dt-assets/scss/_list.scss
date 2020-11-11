@@ -236,6 +236,14 @@ table.js-list{
         background-color: #ecf5fc
     }
 }
+
+.bulk_edit_checkbox {
+    cursor: default;
+    display: none;
+    input[type="checkbox"] {
+        margin: 0;
+    }
+}
 @media screen and (max-width : 640px) {
     #table-content {
         tr {

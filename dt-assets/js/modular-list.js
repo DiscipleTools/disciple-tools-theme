@@ -329,9 +329,14 @@
       window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type )
     }
   }).on('click', 'tbody tr', function(){
+    console.log("why");
     window.location = $(this).data('link')
   })
 
+  $('#bulk_edit_controls').on('click', function(){
+    $('#bulk_edit_picker').toggle();
+    $('.bulk_edit_checkbox').toggle();
+  })
 
   let build_table = (records)=>{
     let table_rows = ``
@@ -413,7 +418,8 @@
 
       if ( mobile ){
         table_rows += `<tr data-link="${_.escape(record.permalink)}">
-          <td>
+          <td class="bulk_edit_checkbox">
+          <input type="checkbox" name="bulk_edit_id" value="${record.ID}">
             <div class="mobile-list-field-name">
                 ${index+1}.
               </div>
@@ -425,6 +431,7 @@
         `
       } else {
         table_rows += `<tr class="dnd-moved" data-link="${_.escape(record.permalink)}">
+          <td class="bulk_edit_checkbox" ><input type="checkbox" name="bulk_edit_id" value="${record.ID}"></td>
           <td style="white-space: nowrap" >${index+1}.</td>
           ${ row_fields_html }
         `
@@ -438,8 +445,15 @@
       ${table_rows}
     `
     $('#table-content').html(table_html)
+    bulk_edit_checkbox_event();
   }
 
+  function bulk_edit_checkbox_event() {
+    $("tbody tr td.bulk_edit_checkbox").on('click', function(e) {
+      e.stopImmediatePropagation()
+
+    });
+  }
 
   function get_records( offset = 0, sort = null ){
     loading_spinner.addClass("active")
