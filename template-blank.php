@@ -37,17 +37,17 @@ if ( ! apply_filters( 'dt_blank_access', false ) ){
         <meta name="theme-color" content="#3f729b">
     <?php } ?>
 
-    <title><?php do_action('dt_blank_title' ) ?></title>
+    <title><?php do_action( 'dt_blank_title' ) ?></title>
 
-    <?php do_action('dt_blank_head' ) ?>
+    <?php do_action( 'dt_blank_head' ) ?>
 
 </head>
 <body>
     <!-- Page Body -->
-    <?php do_action('dt_blank_body' ); ?>
+    <?php do_action( 'dt_blank_body' ); ?>
 
     <!-- Page Footer-->
-    <?php do_action('dt_blank_footer' ) ?>
+    <?php do_action( 'dt_blank_footer' ) ?>
 
 </body>
 </html>
