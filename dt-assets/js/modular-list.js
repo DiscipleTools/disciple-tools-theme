@@ -343,6 +343,54 @@
   /**
    * Bulk_Assigned_to
    */
+  let bulk_edit_submit_button = $('#bulk_edit_submit');
+
+  bulk_edit_submit_button.on('click', function(e) {
+    bulk_edit_submit();
+  });
+
+  function bulk_edit_submit() {
+    console.log("make the bulk changes NOW!!!");
+    let allInputs = $('#bulk_edit_picker input');
+    let updatePayload = {};
+
+    allInputs.each(function () {
+        let inputData = $(this).data();
+        console.log(inputData);
+        $.each(inputData, function (key, value) {
+          console.log(key);
+          if (key.includes('bulk_key_') && value) {
+            let field_key = key.replace('bulk_key_', '');
+            console.log(field_key)
+            updatePayload[field_key] = value;
+          }
+        })
+    })
+
+    console.log(updatePayload);
+
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked) {
+          API.update_post(list_settings.post_type, $(this).val(), {bulk_key_assigned_to: "user-" + item.ID}).catch(err => { console.error(err) });
+      }
+    }).promise().done( function() {
+      //window.location.reload()
+    });
+  }
+
+  function bulk_edit_count() {
+    let bulk_edit_total_checked = $('.bulk_edit_checkbox input:checked').length;
+    bulk_edit_submit_button.text(`Update ${bulk_edit_total_checked} ${list_settings.post_type}`)
+  }
+
+  let bulk_edit_picker_checkboxes = $('#bulk_edit_picker input[type=checkbox]');
+  bulk_edit_picker_checkboxes.on('click', function(e) {
+    if ($(this).is(':checked')) {
+      $(this).data('bulk_key_requires_update', true);
+    }
+  })
+
+
   let bulk_assigned_to_input = $(`.js-typeahead-bulk_assigned_to`)
   $.typeahead({
     input: '.js-typeahead-bulk_assigned_to',
@@ -370,11 +418,7 @@
     emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
     callback: {
       onClick: function(node, a, item){
-        $('.bulk_edit_checkbox input').each(function () {
-          if (this.checked) {
-              API.update_post(list_settings.post_type, $(this).val(), {assigned_to: "user-" + item.ID}).catch(err => { console.error(err) });
-          }
-        }).promise().done( function() {window.location.reload()});
+        node.data('bulk_key_assigned_to', `user-${item.ID}`);
       },
       onResult: function (node, query, result, resultCount) {
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
@@ -501,7 +545,7 @@
   function bulk_edit_checkbox_event() {
     $("tbody tr td.bulk_edit_checkbox").on('click', function(e) {
       e.stopImmediatePropagation()
-
+      bulk_edit_count();
     });
   }
 
