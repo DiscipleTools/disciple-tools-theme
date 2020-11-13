@@ -332,106 +332,6 @@
     window.location = $(this).data('link')
   })
 
-  /***
-   * Bulk Edit
-   */
-  $('#bulk_edit_controls').on('click', function(){
-    $('#bulk_edit_picker').toggle();
-    $('.bulk_edit_checkbox').toggle();
-  })
-
-  /**
-   * Bulk_Assigned_to
-   */
-  let bulk_edit_submit_button = $('#bulk_edit_submit');
-
-  bulk_edit_submit_button.on('click', function(e) {
-    bulk_edit_submit();
-  });
-
-  function bulk_edit_submit() {
-    console.log("make the bulk changes NOW!!!");
-    let allInputs = $('#bulk_edit_picker input');
-    let updatePayload = {};
-
-    allInputs.each(function () {
-        let inputData = $(this).data();
-        console.log(inputData);
-        $.each(inputData, function (key, value) {
-          console.log(key);
-          if (key.includes('bulk_key_') && value) {
-            let field_key = key.replace('bulk_key_', '');
-            console.log(field_key)
-            updatePayload[field_key] = value;
-          }
-        })
-    })
-
-    console.log(updatePayload);
-
-    $('.bulk_edit_checkbox input').each(function () {
-      if (this.checked) {
-          API.update_post(list_settings.post_type, $(this).val(), {bulk_key_assigned_to: "user-" + item.ID}).catch(err => { console.error(err) });
-      }
-    }).promise().done( function() {
-      //window.location.reload()
-    });
-  }
-
-  function bulk_edit_count() {
-    let bulk_edit_total_checked = $('.bulk_edit_checkbox input:checked').length;
-    bulk_edit_submit_button.text(`Update ${bulk_edit_total_checked} ${list_settings.post_type}`)
-  }
-
-  let bulk_edit_picker_checkboxes = $('#bulk_edit_picker input[type=checkbox]');
-  bulk_edit_picker_checkboxes.on('click', function(e) {
-    if ($(this).is(':checked')) {
-      $(this).data('bulk_key_requires_update', true);
-    }
-  })
-
-
-  let bulk_assigned_to_input = $(`.js-typeahead-bulk_assigned_to`)
-  $.typeahead({
-    input: '.js-typeahead-bulk_assigned_to',
-    minLength: 0,
-    maxItem: 0,
-    accent: true,
-    searchOnFocus: true,
-    source: TYPEAHEADS.typeaheadUserSource(),
-    templateValue: "{{name}}",
-    template: function (query, item) {
-      return `<div class="assigned-to-row" dir="auto">
-        <span>
-            <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-            ${_.escape( item.name )}
-        </span>
-        ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
-        ${ item.update_needed && item.update_needed > 0 ? `<span>
-          <img style="height: 12px;" src="${_.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-          <span style="font-size: 14px">${_.escape(item.update_needed)}</span>
-        </span>` : '' }
-      </div>`
-    },
-    dynamic: true,
-    hint: true,
-    emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
-    callback: {
-      onClick: function(node, a, item){
-        node.data('bulk_key_assigned_to', `user-${item.ID}`);
-      },
-      onResult: function (node, query, result, resultCount) {
-        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-        $('#bulk_assigned_to-result-container').html(text);
-      },
-      onHideLayout: function () {
-        $('.bulk_assigned_to-result-container').html("");
-      },
-      onReady: function () {
-      }
-    },
-  });
-
   let build_table = (records)=>{
     let table_rows = ``
     let mobile = $(window).width() < 640
@@ -540,13 +440,6 @@
     `
     $('#table-content').html(table_html)
     bulk_edit_checkbox_event();
-  }
-
-  function bulk_edit_checkbox_event() {
-    $("tbody tr td.bulk_edit_checkbox").on('click', function(e) {
-      e.stopImmediatePropagation()
-      bulk_edit_count();
-    });
   }
 
   function get_records( offset = 0, sort = null ){
@@ -1127,6 +1020,412 @@
   //toggle show search input on mobile
   $("#open-search").on("click", function () {
     $(".hideable-search").toggle()
+  })
+
+
+
+  /***
+   * Bulk Edit
+   */
+  $('#bulk_edit_controls').on('click', function(){
+    $('#bulk_edit_picker').toggle();
+    $('.bulk_edit_checkbox').toggle();
+  })
+
+  function bulk_edit_checkbox_event() {
+    $("tbody tr td.bulk_edit_checkbox").on('click', function(e) {
+      e.stopImmediatePropagation()
+      bulk_edit_count();
+    });
+  }
+  /**
+   * Bulk_Assigned_to
+   */
+  let bulk_edit_submit_button = $('#bulk_edit_submit');
+
+  bulk_edit_submit_button.on('click', function(e) {
+    bulk_edit_submit();
+  });
+
+  function bulk_edit_submit() {
+    let allInputs = $('#bulk_edit_picker input, #bulk_edit_picker select, #bulk_edit_picker .select-button');
+    let updatePayload = {};
+
+    allInputs.each(function () {
+        let inputData = $(this).data();
+        $.each(inputData, function (key, value) {
+          if (key.includes('bulk_key_') && value) {
+            let field_key = key.replace('bulk_key_', '');
+            updatePayload[field_key] = value;
+          }
+        })
+    })
+
+    console.log(updatePayload);
+
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked) {
+          API.update_post(list_settings.post_type, $(this).val(), updatePayload).catch(err => { console.error(err) });
+      }
+    }).promise().done( function() {
+      // window.location.reload()
+    });
+  }
+
+  function bulk_edit_count() {
+    let bulk_edit_total_checked = $('.bulk_edit_checkbox input:checked').length;
+    bulk_edit_submit_button.text(`Update ${bulk_edit_total_checked} ${list_settings.post_type}`)
+  }
+
+  let bulk_edit_picker_checkboxes = $('#bulk_edit_picker input[type=checkbox]');
+  bulk_edit_picker_checkboxes.on('click', function(e) {
+    if ($(this).is(':checked')) {
+      $(this).data('bulk_key_requires_update', true);
+    }
+  })
+
+  let bulk_edit_picker_select_field = $('#bulk_edit_picker input, #bulk_edit_picker select');
+  bulk_edit_picker_select_field.on('change', function(e) {
+      let field_key = this.id.replace('bulk_', '');
+      console.log(this.value);
+      $(this).data(`bulk_key_${field_key}`, this.value);
+  })
+
+  let bulk_edit_picker_button_groups= $('#bulk_edit_picker .select-button');
+  bulk_edit_picker_button_groups.on('click', function(e) {
+      let field_key = $(this).data('field-key').replace('bulk_', '');
+
+      let value = `{${field_key}: {"values": [{"value": ${this.id},"delete": true}]}}`;
+
+      console.log(value);
+
+      $(this).addClass('selected-select-button');
+      $(this).data(`bulk_key_${field_key}`, value);
+  })
+
+  let bulk_assigned_to_input = $(`.js-typeahead-bulk_assigned_to`)
+  $.typeahead({
+    input: '.js-typeahead-bulk_assigned_to',
+    minLength: 0,
+    maxItem: 0,
+    accent: true,
+    searchOnFocus: true,
+    source: TYPEAHEADS.typeaheadUserSource(),
+    templateValue: "{{name}}",
+    template: function (query, item) {
+      return `<div class="assigned-to-row" dir="auto">
+        <span>
+            <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
+            ${_.escape( item.name )}
+        </span>
+        ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
+        ${ item.update_needed && item.update_needed > 0 ? `<span>
+          <img style="height: 12px;" src="${_.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+          <span style="font-size: 14px">${_.escape(item.update_needed)}</span>
+        </span>` : '' }
+      </div>`
+    },
+    dynamic: true,
+    hint: true,
+    emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
+    callback: {
+      onClick: function(node, a, item){
+        node.data('bulk_key_assigned_to', `user-${item.ID}`);
+      },
+      onResult: function (node, query, result, resultCount) {
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+        $('#bulk_assigned_to-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('.bulk_assigned_to-result-container').html("");
+      },
+      onReady: function () {
+      }
+    },
+  });
+
+/**
+ * Bulk typeaheads
+ */
+
+  let field_settings = window.list_settings.post_type_settings.fields;
+
+  $('.dt_typeahead').each((key, el)=>{
+    let field_id = $(el).attr('id').replace('_connection', '').replace('bulk_', '');
+    let element_id =  $(el).attr('id').replace('_connection', '');
+    let listing_post_type = _.get(window.list_settings.post_type_settings.fields[field_id], "post_type", 'contacts')
+    $.typeahead({
+      input: `.js-typeahead-${element_id}`,
+      minLength: 0,
+      accent: true,
+      maxItem: 30,
+      searchOnFocus: true,
+      template: window.TYPEAHEADS.contactListRowTemplate,
+      source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key:field_id}),
+      display: "name",
+      templateValue: "{{name}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["ID"],
+        data: '',
+        callback: {
+          onCancel: function (node, item) {
+            //$(`#${element_id}-spinner`).addClass('active')
+            // API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}}).then(()=>{
+            //   $(`#${element_id}-spinner`).removeClass('active')
+            // }).catch(err => { console.error(err) })
+          }
+        },
+        href: window.wpApiShare.site_url + `/${listing_post_type}/{{ID}}`
+      },
+      callback: {
+        onClick: function(node, a, item, event){
+          $(`#${element_id}-spinner`).addClass('active');
+          node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
+
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
+          //masonGrid.masonry('layout')
+        },
+        onResult: function (node, query, result, resultCount) {
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $(`#${element_id}-result-container`).html(text);
+        },
+        onHideLayout: function (event, query) {
+          if ( !query ){
+            $(`#${element_id}-result-container`).empty()
+          }
+          //masonGrid.masonry('layout')
+        },
+        onShowLayout (){
+          //masonGrid.masonry('layout')
+        }
+      }
+    })
+  })
+
+  //multi_select typeaheads
+  for (let input of $(".multi_select .typeahead__query input")) {
+    let field = $(input).data('field')
+    let typeahead_name = `.js-typeahead-${field}`
+
+    if (window.Typeahead[typeahead_name]) {
+      return
+    }
+
+    let source_data =  { data: [] }
+    let field_options = _.get(field_settings, `${field}.default`, {})
+    if ( Object.keys(field_options).length > 0 ){
+      _.forOwn(field_options, (val, key)=>{
+        if ( !val.deleted ){
+          source_data.data.push({
+            key: key,
+            name:key,
+            value: val.label || key
+          })
+        }
+      })
+    } else {
+      source_data = {
+        [field]: {
+          display: ["value"],
+          ajax: {
+            url: window.wpApiShare.root + `dt-posts/v2/${list_settings.post_type}/multi-select-values`,
+            data: {
+              s: "{{query}}",
+              field
+            },
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+            },
+            callback: {
+              done: function (data) {
+                return (data || []).map(tag => {
+                  let label = _.get(field_options, tag + ".label", tag)
+                  return {value: label, key: tag}
+                })
+              }
+            }
+          }
+        }
+      }
+    }
+    $.typeahead({
+      input: `.js-typeahead-${field}`,
+      minLength: 0,
+      maxItem: 20,
+      searchOnFocus: true,
+      template: function (query, item) {
+        return `<span>${_.escape(item.value)}</span>`
+      },
+      source: source_data,
+      display: "value",
+      templateValue: "{{value}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["key"],
+        data: '',
+        callback: {
+          onCancel: function (node, item, event) {
+            // $(`#${field}-spinner`).addClass('active')
+            // API.update_post(post_type, post_id, {[field]: {values:[{value:item.key, delete:true}]}}).then((new_post)=>{
+            //   $(`#${field}-spinner`).removeClass('active')
+            //   this.hideLayout();
+            //   this.resetInput();
+            //   $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
+            // }).catch(err => { console.error(err) })
+          }
+        }
+      },
+      callback: {
+        onClick: function(node, a, item, event){
+          // $(`#${field}-spinner`).addClass('active')
+          // API.update_post(post_type, post_id, {[field]: {values:[{"value":item.key}]}}).then(new_post=>{
+          //   $(`#${field}-spinner`).removeClass('active')
+          //   $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
+          //   this.addMultiselectItemLayout(item)
+          //   event.preventDefault()
+          //   this.hideLayout();
+          //   this.resetInput();
+          // }).catch(err => { console.error(err) })
+        },
+        onResult: function (node, query, result, resultCount) {
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $(`#${field}-result-container`).html(text);
+        },
+        onHideLayout: function () {
+          $(`#${field}-result-container`).html("");
+        }
+      }
+    });
+  }
+
+
+  let connection_type = null
+  //new record off a typeahead
+  $('.create-new-record').on('click', function(){
+    connection_type = $(this).data('connection-key');
+    $('#create-record-modal').foundation('open');
+    $('.js-create-record .error-text').empty();
+    $(".js-create-record-button").attr("disabled", false).removeClass("alert")
+    $(".reveal-after-record-create").hide()
+    $(".hide-after-record-create").show()
+    $(".js-create-record input[name=title]").val('')
+    //create new record
+  })
+  $(".js-create-record").on("submit", function(e) {
+    e.preventDefault();
+    $(".js-create-record-button").attr("disabled", true).addClass("loading");
+    let title = $(".js-create-record input[name=title]").val()
+    if ( !connection_type){
+      $(".js-create-record .error-text").text(
+        "Something went wrong. Please refresh and try again"
+      );
+      return;
+    }
+    let update_field = connection_type;
+    API.create_post( field_settings[update_field].post_type, {
+      title,
+    }).then((newRecord)=>{
+      return API.update_post( post_type, post_id, { [update_field]: { values: [ { value:newRecord.ID }]}}).then(response=>{
+        $(".js-create-record-button").attr("disabled", false).removeClass("loading");
+        $(".reveal-after-record-create").show()
+        $("#new-record-link").html(`<a href="${_.escape( newRecord.permalink )}">${_.escape( title )}</a>`)
+        $(".hide-after-record-create").hide()
+        $('#go-to-record').attr('href', _.escape( newRecord.permalink ));
+        post = response
+        $( document ).trigger( "dt-post-connection-created", [ post, update_field ] );
+        if ( Typeahead[`.js-typeahead-${connection_type}`] ){
+          Typeahead[`.js-typeahead-${connection_type}`].addMultiselectItemLayout({ID:newRecord.ID.toString(), name:title})
+          //masonGrid.masonry('layout')
+        }
+      })
+    })
+    .catch(function(error) {
+      $(".js-create-record-button").removeClass("loading").addClass("alert");
+      $(".js-create-record .error-text").text(
+        _.get( error, "responseJSON.message", "Something went wrong. Please refresh and try again" )
+      );
+      console.error(error);
+    });
+  })
+
+  $('.dt_location_grid').each(()=> {
+    let field_id = 'location_grid'
+    $.typeahead({
+      input: '.js-typeahead-location_grid',
+      minLength: 0,
+      accent: true,
+      searchOnFocus: true,
+      maxItem: 20,
+      dropdownFilter: [{
+        key: 'group',
+        value: 'focus',
+        template: _.escape(window.wpApiShare.translations.regions_of_focus),
+        all: _.escape(window.wpApiShare.translations.all_locations),
+      }],
+      source: {
+        focus: {
+          display: "name",
+          ajax: {
+            url: window.wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+            data: {
+              s: "{{query}}",
+              filter: function () {
+                return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+              }
+            },
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+            },
+            callback: {
+              done: function (data) {
+                if (typeof typeaheadTotals!=="undefined") {
+                  typeaheadTotals.field = data.total
+                }
+                return data.location_grid
+              }
+            }
+          }
+        }
+      },
+      display: "name",
+      templateValue: "{{name}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["ID"],
+        data: '',
+        callback: {
+          onCancel: function (node, item) {
+            // API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}})
+            // .catch(err => { console.error(err) })
+          }
+        }
+      },
+      callback: {
+        onClick: function (node, a, item, event) {
+          $(`#${element_id}-spinner`).addClass('active');
+          node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
+        },
+        onReady() {
+          this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
+          this.container
+          .removeClass("filter")
+          .find("." + this.options.selector.filterButton)
+          .html(_.escape(window.wpApiShare.translations.regions_of_focus));
+        },
+        onResult: function (node, query, result, resultCount) {
+          resultCount = typeaheadTotals.location_grid
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $('#location_grid-result-container').html(text);
+        },
+        onHideLayout: function () {
+          $('#location_grid-result-container').html("");
+        }
+      }
+    });
   })
 
 
