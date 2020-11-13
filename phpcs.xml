@@ -147,6 +147,7 @@
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.NoSpaceAfterComma" />
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma" />
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceBeforeComma" />
+    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound" />
     <exclude name="WordPress.PHP.YodaConditions.NotYoda" />
     <!-- <exclude name="WordPress.WhiteSpace.CastStructureSpacing.NoSpaceBeforeOpenParenthesis" /> -->
     <!-- <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.BlankLineAfterEnd" /> -->
