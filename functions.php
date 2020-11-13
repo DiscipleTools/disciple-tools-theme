@@ -348,11 +348,11 @@ else {
             /**
              * Network
              */
-            if ( get_option( 'dt_network_enabled' ) ) {
-                require_once( get_template_directory() . '/dt-network/network-endpoints.php' );
-            }
-            require_once( get_template_directory() . '/dt-network/network.php' );
-            require_once( get_template_directory() . '/dt-network/network-queries.php' );
+//            if ( get_option( 'dt_network_enabled' ) ) {
+//                require_once( get_template_directory() . '/dt-network/network-endpoints.php' );
+//            }
+//            require_once( get_template_directory() . '/dt-network/network.php' );
+//            require_once( get_template_directory() . '/dt-network/network-queries.php' );
 
 
             require_once( get_template_directory() . '/dt-core/multisite.php' );
