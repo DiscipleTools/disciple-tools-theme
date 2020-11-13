@@ -10,26 +10,10 @@
 // The Top Menu
 function disciple_tools_top_nav_desktop() {
 
-    $tabs = [];
-    if ( current_user_can( 'access_contacts' ) ){
-        $tabs = [];
-    }
-    if ( current_user_can( "view_project_metrics" ) || current_user_can( "access_contacts" ) ){
-        $tabs[] = [
-            "link" => site_url( '/metrics/' ),
-            "label" => __( "Metrics", 'disciple_tools' )
-        ];
-    }
-    $tabs = apply_filters( "desktop_navbar_menu_options", $tabs );
-
-    if ( apply_filters( 'dt_show_default_top_menu', true ) ) {
-        foreach ( $tabs as $tab ) : ?>
-            <li><a href="<?php echo esc_url( $tab["link"] ) ?>"> <?php echo esc_html( $tab["label"] ) ?> </a></li>
-        <?php endforeach;
-    }
-
     /**
-     * Fires after the top menu
+     * Loads top row menu
+     * @note Main post types (Contacts, Groups, Metrics) fire between 20-30. If you want to add an item before the
+     * main post types, load before 20, if you want to load after the list, load after 30.
      */
     do_action( 'dt_top_nav_desktop' );
 }
@@ -47,22 +31,11 @@ function disciple_tools_off_canvas_nav() {
         </li>
 
         <?php
-        $tabs = [];
-        if ( user_can( get_current_user_id(), 'access_contacts' ) ){
-            $tabs = [
-                [
-                    "link" => site_url( '/metrics/' ),
-                    "label" => __( "Metrics", 'disciple_tools' )
-                ],
-            ];
-        }
-        $tabs = apply_filters( "off_canvas_menu_options", $tabs );
-        foreach ( $tabs as $tab ) : ?>
-            <li><a href="<?php echo esc_url( $tab["link"] ) ?>"> <?php echo esc_html( $tab["label"] ) ?> </a></li>
-        <?php endforeach;
 
         /**
-         * Fires at the end of the off canvas menu
+         * Loads main menu items
+         * @note Main post types (Contacts, Groups, Metrics) fire between 20-30. If you want to add an item before the
+         * main post types, load before 20, if you want to load after the list, load after 30.
          */
         do_action( 'dt_off_canvas_nav' );
 
