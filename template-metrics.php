@@ -19,10 +19,7 @@ if ( !current_user_can( 'access_contacts' ) && !current_user_can( "view_project_
 
                     <div class="bordered-box">
 
-                        <div class="section-header"><?php esc_html_e( 'List Exports', 'disciple_tools' )?>&nbsp;
-                            <button class="float-right" data-open="export-help-text">
-                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>" alt="help"/>
-                            </button>
+                        <div class="section-header show-for-small-only"><?php esc_html_e( 'Menu', 'disciple_tools' )?>&nbsp;
                             <button class="section-chevron chevron_down">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>" alt="expand"/>
                             </button>
@@ -30,19 +27,20 @@ if ( !current_user_can( 'access_contacts' ) && !current_user_can( "view_project_
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>" alt="collapse"/>
                             </button>
                         </div>
-                        <div class="section-body" style="padding-top:1em;">
 
-                        <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu>
+                        <div class="section-body">
 
-                            <?php
+                            <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu>
 
-                            // WordPress.XSS.EscapeOutput.OutputNotEscaped
-                            // @phpcs:ignore
-                            echo apply_filters( 'dt_metrics_menu', '' );
+                                <?php
 
-                            ?>
+                                // WordPress.XSS.EscapeOutput.OutputNotEscaped
+                                // @phpcs:ignore
+                                echo apply_filters( 'dt_metrics_menu', '' );
 
-                        </ul>
+                                ?>
+
+                            </ul>
 
                         </div>
 
