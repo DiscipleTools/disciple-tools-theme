@@ -295,9 +295,8 @@ else {
              */
             require_once( get_template_directory() . '/dt-metrics/counter.php' );
             require_once( get_template_directory() . '/dt-metrics/charts-base.php' );
-            if ( strpos( $url_path, 'metrics' ) !== false ) {
-                require_once( get_template_directory() . '/dt-metrics/metrics.php' );
-            }
+            require_once( get_template_directory() . '/dt-metrics/metrics.php' );
+
 
             /**
              * dt-users

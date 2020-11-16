@@ -101,6 +101,19 @@ class Disciple_Tools_Metrics
 
         }
 
+        /**
+         * Add Navigation Menu
+         */
+        add_action( 'dt_top_nav_desktop', function(){
+            ?>
+            <li><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li>
+            <?php
+        }, 21 );
+        add_action( 'dt_off_canvas_nav', function(){
+            ?>
+            <li><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li>
+            <?php
+        }, 21 );
     }
 
 }
