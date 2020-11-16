@@ -168,7 +168,7 @@ declare(strict_types=1);
                             <div class="cell small-12 medium-4">
                             <div class="section-subheader">
                                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
-                                <?php esc_html_e( 'Assigned To', 'disciple_tools' ) ?>
+                                <?php esc_html_e( 'Assign To', 'disciple_tools' ) ?>
                                 <button class="help-button" data-section="assigned-to-help-text">
                                     <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                 </button>
@@ -188,30 +188,59 @@ declare(strict_types=1);
                                                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                                                 </button>
                                             </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- SUBASSIGNED -->
-                        <div class="cell small-12 medium-4">
-                            <?php
-                            if ( $post_type == "contacts" ) {
-                                render_field_for_display( "subassigned", $field_options, null, false, false, true );
-                            } elseif ( $post_type == "groups" ) {
-                                render_field_for_display( "coaches", $field_options, null, false, false, true );
-                            } ?>
+                            <div class="cell small-12 medium-4">
+                                <?php
+                                if ( $post_type == "contacts" ) {
+                                    render_field_for_display( "subassigned", $field_options, null, false, false, true );
+                                } elseif ( $post_type == "groups" ) {
+                                    render_field_for_display( "coaches", $field_options, null, false, false, true );
+                                } ?>
+                            </div>
+                            <div class="cell small-12 medium-4">
+                                <div class="section-subheader">
+                                  <?php esc_html_e( 'Share with:', 'disciple_tools' );?>
+                                </div>
+                                <div id="<?php echo esc_attr( 'bulk_share_connection' ) ?>" class="dt_typeahead">
+                                    <span id="<?php echo esc_html( 'share' ); ?>-result-container" class="result-container"></span>
+                                    <div id="<?php echo esc_html( 'share' ); ?>_t" name="form-<?php echo esc_html( 'share' ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
+                                        <div class="typeahead__container">
+                                            <div class="typeahead__field">
+                                                <span class="typeahead__query">
+                                                    <input class="js-typeahead-share input-height" data-field="<?php echo esc_html( ';share' ); ?>"
+                                                        data-post_type="<?php echo esc_html( $post_type ) ?>"
+                                                        data-field_type="connection"
+                                                        name="share[query]"
+                                                        placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), 'Users' ) )?>"
+                                                        autocomplete="off">
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="cell small-12 medium-4">
+                            <span style="margin-right:5px"><?php esc_html_e( 'Request Update', 'disciple_tools' )?>:</span>
+                                    <input type="checkbox" id="update-needed" class="dt-switch update-needed" data-bulk_key_requires_update=""/>
+                                    <label class="dt-switch" for="update-needed" style="vertical-align: top;"></label>
+                            </div>
+                            <div class="cell small-12 medium-4">
+                            <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?></button>
+                            </div>
                         </div>
 
-                        <div class="cell small-12 medium-4">
-                        <span style="margin-right:5px"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?>:</span>
-                                <input type="checkbox" id="update-needed" class="dt-switch update-needed" data-bulk_key_requires_update=""/>
-                                <label class="dt-switch" for="update-needed" style="vertical-align: top;"></label>
-                        </div>
-
-                        </div>
-
-                        <button class="button" id="bulk_edit_submit">Update <?php esc_html_e( $post_type, 'disciple_tools' ) ?></button>
+                        <button class="button" id="bulk_edit_submit">Update <?php
+                        if ( $post_type == "contacts" ) {
+                            esc_html_e( 'Contacts', 'disciple_tools' );
+                        } elseif ( $post_type == "groups" ) {
+                            esc_html_e( 'Groups', 'disciple_tools' );
+                        }
+                        ?></button>
                     </div>
 
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
