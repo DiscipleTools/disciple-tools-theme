@@ -406,7 +406,6 @@ class DT_Groups_Base {
             $group_fields = DT_Posts::get_post_field_settings( $post_type );
             ?>
 
-            <div class="grid-x grid-margin-x" style="margin-top: 20px">
                 <div class="cell small-12 medium-4">
                     <?php render_field_for_display( "group_status", $group_fields, $group, true ); ?>
                 </div>
@@ -442,7 +441,6 @@ class DT_Groups_Base {
                 <div class="cell small-12 medium-4">
                     <?php render_field_for_display( "coaches", $group_fields, $group, true ); ?>
                 </div>
-            </div>
         <?php }
 
 
