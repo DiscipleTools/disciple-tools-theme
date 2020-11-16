@@ -249,7 +249,9 @@ declare(strict_types=1);
                         <table class="table-remove-top-border js-list stack striped" id="records-table">
                             <thead>
                                 <tr class="table-headers dnd-moved sortable">
-                                    <th class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default"></th>
+                                    <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default">
+                                    <input type="checkbox" name="bulk_edit_id" value="">
+                                    </th>
                                     <th style="width:32px; background-image:none; cursor:default"></th>
 
                                     <?php $columns = [];

@@ -14,7 +14,8 @@
   let loading_spinner = $("#list-loading-spinner")
   let old_filters = JSON.stringify(list_settings.filters)
   let table_header_row = $('.js-list thead .sortable th')
-  let fields_to_show_in_table = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_show_in_table', [] )
+  let fields_to_show_in_table = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_show_in_table', [] );
+  let current_user_id = wpApiNotifications.current_user_id;
 
   let items = []
   try {
@@ -275,7 +276,11 @@
 
   //sort the table by clicking the header
   $('.js-list th').on("click", function () {
-    let id = $(this).data('id')
+    //check is this is the bulk_edit_master checkbox
+    if ( this.id == "bulk_edit_master") {
+      return;
+    }
+    let id = $(this).data('id');
     let sort = $(this).data('sort')
     table_header_row.removeClass("sorting_asc")
     table_header_row.removeClass("sorting_desc")
@@ -1029,15 +1034,24 @@
    */
   $('#bulk_edit_controls').on('click', function(){
     $('#bulk_edit_picker').toggle();
-    $('.bulk_edit_checkbox').toggle();
+    $('#records-table').toggleClass('bulk_edit_on');
   })
 
   function bulk_edit_checkbox_event() {
     $("tbody tr td.bulk_edit_checkbox").on('click', function(e) {
-      e.stopImmediatePropagation()
+      e.stopImmediatePropagation();
       bulk_edit_count();
     });
   }
+
+  $('#bulk_edit_master').on('click', function(e){
+    e.stopImmediatePropagation();
+    let checked = $(this).children('input').is(':checked');
+    console.log(checked);
+    $('.bulk_edit_checkbox input').each(function() {
+        $(this).attr('checked', checked);
+    })
+  })
   /**
    * Bulk_Assigned_to
    */
@@ -1048,17 +1062,32 @@
   });
 
   function bulk_edit_submit() {
-    let allInputs = $('#bulk_edit_picker input, #bulk_edit_picker select, #bulk_edit_picker .select-button');
+    let allInputs = $('#bulk_edit_picker input, #bulk_edit_picker select, #bulk_edit_picker .select-button, #bulk_edit_picker .button');
+    let shareInput = $('.js-typeahead-share');
     let updatePayload = {};
+    let sharePayload = {};
 
     allInputs.each(function () {
         let inputData = $(this).data();
         $.each(inputData, function (key, value) {
           if (key.includes('bulk_key_') && value) {
+            console.log(key);
+            console.log(value);
             let field_key = key.replace('bulk_key_', '');
             updatePayload[field_key] = value;
           }
         })
+    })
+
+    shareInput.each(function () {
+      let shareInputData = $(this).data();
+      $.each(shareInputData, function (key, value) {
+        console.log(key);
+        if (key.includes('bulk_key_') && value) {
+          let field_key = key.replace('bulk_key_', '');
+          sharePayload[field_key] = value;
+        }
+      })
     })
 
     console.log(updatePayload);
@@ -1066,6 +1095,7 @@
     $('.bulk_edit_checkbox input').each(function () {
       if (this.checked) {
           API.update_post(list_settings.post_type, $(this).val(), updatePayload).catch(err => { console.error(err) });
+          API.add_shared(list_settings.post_type, $(this).val(), sharePayload).catch(err => { console.error(err) });
       }
     }).promise().done( function() {
       // window.location.reload()
@@ -1087,7 +1117,7 @@
   let bulk_edit_picker_select_field = $('#bulk_edit_picker input, #bulk_edit_picker select');
   bulk_edit_picker_select_field.on('change', function(e) {
       let field_key = this.id.replace('bulk_', '');
-      console.log(this.value);
+      console.log(this);
       $(this).data(`bulk_key_${field_key}`, this.value);
   })
 
@@ -1151,11 +1181,12 @@
   let field_settings = window.list_settings.post_type_settings.fields;
 
   $('.dt_typeahead').each((key, el)=>{
+    console.log(el);
     let field_id = $(el).attr('id').replace('_connection', '').replace('bulk_', '');
     let element_id =  $(el).attr('id').replace('_connection', '');
     let listing_post_type = _.get(window.list_settings.post_type_settings.fields[field_id], "post_type", 'contacts')
     $.typeahead({
-      input: `.js-typeahead-${element_id}`,
+      input: `.js-typeahead-${field_id}`,
       minLength: 0,
       accent: true,
       maxItem: 30,
@@ -1182,7 +1213,7 @@
         onClick: function(node, a, item, event){
           $(`#${element_id}-spinner`).addClass('active');
           node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
-
+console.log(node);
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();
@@ -1281,6 +1312,9 @@
       },
       callback: {
         onClick: function(node, a, item, event){
+          let field_id = $(node).attr('id').replace('_connection', '').replace('bulk_', '');
+
+          node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
           // $(`#${field}-spinner`).addClass('active')
           // API.update_post(post_type, post_id, {[field]: {values:[{"value":item.key}]}}).then(new_post=>{
           //   $(`#${field}-spinner`).removeClass('active')
@@ -1428,6 +1462,18 @@
     });
   })
 
+  $('button.follow').on("click", function () {
+    let following = !($(this).data('value') === "following")
+    $(this).data("value", following ? "following" : "" )
+    $(this).html( following ? "Unfollow" : "Follow")
+    $(this).toggleClass( "hollow" )
+    let follow = { values:[{value:current_user_id, delete:!following}] }
+
+    let unfollow = {values:[{value:current_user_id, delete:following}]}
+
+    $(this).data('bulk_key_follow', follow);
+    $(this).data('bulk_key_unfollow', unfollow);
+  })
 
 })(window.jQuery, window.list_settings, window.Foundation);
 

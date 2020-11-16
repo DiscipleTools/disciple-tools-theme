@@ -244,6 +244,12 @@ table.js-list{
         margin: 0;
     }
 }
+
+.bulk_edit_on {
+    .bulk_edit_checkbox {
+        display: table-cell;
+    }
+}
 @media screen and (max-width : 640px) {
     #table-content {
         tr {
