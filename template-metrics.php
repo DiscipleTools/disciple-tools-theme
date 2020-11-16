@@ -19,6 +19,19 @@ if ( !current_user_can( 'access_contacts' ) && !current_user_can( "view_project_
 
                     <div class="bordered-box">
 
+                        <div class="section-header"><?php esc_html_e( 'List Exports', 'disciple_tools' )?>&nbsp;
+                            <button class="float-right" data-open="export-help-text">
+                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>" alt="help"/>
+                            </button>
+                            <button class="section-chevron chevron_down">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>" alt="expand"/>
+                            </button>
+                            <button class="section-chevron chevron_up">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>" alt="collapse"/>
+                            </button>
+                        </div>
+                        <div class="section-body" style="padding-top:1em;">
+
                         <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu>
 
                             <?php
@@ -30,6 +43,8 @@ if ( !current_user_can( 'access_contacts' ) && !current_user_can( "view_project_
                             ?>
 
                         </ul>
+
+                        </div>
 
                     </div>
 
