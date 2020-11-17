@@ -105,21 +105,19 @@ class Disciple_Tools_Metrics
          * Add Navigation Menu
          */
         add_action( 'dt_top_nav_desktop', function(){
-            if ( current_user_can( "view_project_metrics" ) || current_user_can( "access_contacts" ) ){
-                ?>
-                <li><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li>
-                <?php
-            }
+            ?>
+            <li><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li>
+            <?php
         }, 21 );
         add_action( 'dt_off_canvas_nav', function(){
-            if ( current_user_can( "view_project_metrics" ) || current_user_can( "access_contacts" ) ){
-                ?>
-                <li><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li>
-                <?php
-            }
+            ?>
+            <li><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li>
+            <?php
         }, 21 );
     }
 
 }
+
+
 Disciple_Tools_Metrics::instance();
 
