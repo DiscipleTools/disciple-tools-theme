@@ -221,6 +221,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                             </div>
                                         </div>
                                     </div>
+                                    <?php do_action( "dt_details_additional_section", "other", "groups" ); ?>
                                 </div>
 
                             </section>
@@ -260,6 +261,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
                                     </div>
 
+                                    <?php do_action( "dt_details_additional_section", "church_metrics", "groups" ); ?>
                                 </div><!-- end collapse --></div>
                             </section>
                         <?php endif; ?>
@@ -286,6 +288,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                     <div class="grid-x" id="four-fields-inputs">
                                         <div style="width:100%; height:375px;background-image:url('<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/four-fields.svg' ); ?>');background-repeat:no-repeat;"></div>
                                     </div>
+                                    <?php do_action( "dt_details_additional_section", "four-fields-tile", "groups" ); ?>
                                 </div><!-- end collapse --></div>
                             </section>
                         <?php endif; ?>
