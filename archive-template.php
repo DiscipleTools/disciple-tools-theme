@@ -211,7 +211,7 @@ declare(strict_types=1);
                                         <div class="typeahead__container">
                                             <div class="typeahead__field">
                                                 <span class="typeahead__query">
-                                                    <input class="js-typeahead-share input-height" data-field="<?php echo esc_html( ';share' ); ?>"
+                                                    <input class="js-typeahead-share input-height" data-field="<?php echo esc_html( 'share' ); ?>"
                                                         data-post_type="<?php echo esc_html( $post_type ) ?>"
                                                         data-field_type="connection"
                                                         name="share[query]"
