@@ -183,11 +183,6 @@ declare(strict_types=1);
                                                     name="bulk_assigned_to[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
                                                     autocomplete="off">
                                             </span>
-                                            <span class="typeahead__button">
-                                                <button type="button" class="search_bulk_assigned_to typeahead__image_button input-height" data-id="bulk_assigned_to_t">
-                                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                                                </button>
-                                            </span>
                                             </div>
                                         </div>
                                     </div>
@@ -211,7 +206,7 @@ declare(strict_types=1);
                                         <div class="typeahead__container">
                                             <div class="typeahead__field">
                                                 <span class="typeahead__query">
-                                                    <input class="js-typeahead-share input-height" data-field="<?php echo esc_html( 'share' ); ?>"
+                                                    <input class="js-typeahead-bulk_share input-height" data-field="<?php echo esc_html( 'share' ); ?>"
                                                         data-post_type="<?php echo esc_html( $post_type ) ?>"
                                                         data-field_type="connection"
                                                         name="share[query]"

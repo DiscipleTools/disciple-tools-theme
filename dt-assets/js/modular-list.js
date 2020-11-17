@@ -1061,10 +1061,10 @@
   });
 
   function bulk_edit_submit() {
-    let allInputs = $('#bulk_edit_picker input, #bulk_edit_picker select, #bulk_edit_picker .select-button, #bulk_edit_picker .button').not('.js-typeahead-share');
-    let shareInput = $('.js-typeahead-share');
+    let allInputs = $('#bulk_edit_picker input, #bulk_edit_picker select, #bulk_edit_picker .select-button, #bulk_edit_picker .button').not('.js-typeahead-bulk_share');
+    let shareInput = $('.js-typeahead-bulk_share');
     let updatePayload = {};
-    let sharePayload = {};
+    let sharePayload;
 
     allInputs.each(function () {
         let inputData = $(this).data();
@@ -1079,34 +1079,25 @@
     })
 
     shareInput.each(function () {
-      let shareInputData = $(this).data();
-      console.log(shareInputData);
-      $.each(shareInputData, function (key, value) {
-                if (key.includes('bulk_key_') && value) {
-          let field_key = key.replace('bulk_key_', '');
-          if(field_key) {
-            console.log(value);
-            sharePayload[field_key] = value;
-          }
-        }
-      })
+      sharePayload = $(this).data('bulk_key_share');
     })
-
-    console.log(updatePayload);
-    console.log(sharePayload);
 
     $('.bulk_edit_checkbox input').each(function () {
       if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
         if (Object.keys(updatePayload).length) {
-                    API.update_post(list_settings.post_type, $(this).val(), updatePayload).catch(err => { console.error(err) });
+          API.update_post(list_settings.post_type, $(this).val(), updatePayload).catch(err => { console.error(err) });
         }
 
-        if (Object.keys(sharePayload).length) {
-                    API.add_shared(list_settings.post_type, $(this).val(), sharePayload).catch(err => { console.error(err) });
+        if (sharePayload.length) {
+          let postId = parseInt($(this).val());
+
+          sharePayload.forEach(function(value) {
+            API.add_shared(list_settings.post_type, postId, value).catch(err => { console.error(err) });
+          })
         }
       }
     }).promise().done( function() {
-      //window.location.reload()
+      window.location.reload()
     });
   }
 
@@ -1115,17 +1106,16 @@
     bulk_edit_submit_button.text(`Update ${bulk_edit_total_checked} ${list_settings.post_type}`)
   }
 
-  let bulk_edit_picker_checkboxes = $('#bulk_edit_picker input[type=checkbox]');
+  let bulk_edit_picker_checkboxes = $('#bulk_edit_picker #update-needed');
   bulk_edit_picker_checkboxes.on('click', function(e) {
     if ($(this).is(':checked')) {
       $(this).data('bulk_key_requires_update', true);
     }
   })
 
-  let bulk_edit_picker_select_field = $('#bulk_edit_picker input, #bulk_edit_picker select');
+  let bulk_edit_picker_select_field = $('#bulk_edit_picker select');
   bulk_edit_picker_select_field.on('change', function(e) {
       let field_key = this.id.replace('bulk_', '');
-      console.log(this);
       $(this).data(`bulk_key_${field_key}`, this.value);
   })
 
@@ -1180,292 +1170,334 @@
     },
   });
 
+
+/**
+ * Bulk share
+*/
+$.typeahead({
+  input: '.js-typeahead-bulk_share',
+  minLength: 0,
+  maxItem: 0,
+  accent: true,
+  searchOnFocus: true,
+  source: TYPEAHEADS.typeaheadUserSource(),
+  templateValue: "{{name}}",
+  dynamic: true,
+  multiselect: {
+    matchOn: ["ID"],
+    callback: {
+      onCancel: function (node, item) {
+        $('#share-result-container').html("");
+
+      }
+    },
+  },
+  callback: {
+    onClick: function (node, a, item, event) {
+      // window.API.add_shared(post_type, id, item.ID)
+      if (node.data('bulk_key_share')) {
+        var shareUserArray = node.data('bulk_key_share');
+      } else {
+        var shareUserArray = [];
+      }
+      shareUserArray.push(item.ID);
+      node.data(`bulk_key_share`, shareUserArray);
+    },
+    onResult: function (node, query, result, resultCount) {
+      if (query) {
+        let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+        $('#share-result-container').html(text);
+      }
+    },
+    onHideLayout: function () {
+      $('#share-result-container').html("");
+    }
+  }
+});
+
 /**
  * Bulk typeaheads
  */
 
-  let field_settings = window.list_settings.post_type_settings.fields;
+  // let field_settings = window.list_settings.post_type_settings.fields;
 
-  $('#bulk_edit_picker .dt_typeahead').each((key, el)=>{
-    let field_id = $(el).attr('id').replace('_connection', '').replace('bulk_', '');
-    let element_id =  $(el).attr('id').replace('_connection', '');
-    let listing_post_type = _.get(window.list_settings.post_type_settings.fields[field_id], "post_type", 'contacts')
-    $.typeahead({
-      input: `.js-typeahead-${field_id}`,
-      minLength: 0,
-      accent: true,
-      maxItem: 30,
-      searchOnFocus: true,
-      template: window.TYPEAHEADS.contactListRowTemplate,
-      source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key:field_id}),
-      display: "name",
-      templateValue: "{{name}}",
-      dynamic: true,
-      multiselect: {
-        matchOn: ["ID"],
-        data: '',
-        callback: {
-          onCancel: function (node, item) {
-            //$(`#${element_id}-spinner`).addClass('active')
-            // API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}}).then(()=>{
-            //   $(`#${element_id}-spinner`).removeClass('active')
-            // }).catch(err => { console.error(err) })
-          }
-        },
-        href: window.wpApiShare.site_url + `/${listing_post_type}/{{ID}}`
-      },
-      callback: {
-        onClick: function(node, a, item, event){
-          $(`#${element_id}-spinner`).addClass('active');
-          node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
-console.log(node);
-          this.addMultiselectItemLayout(item)
-          event.preventDefault()
-          this.hideLayout();
-          this.resetInput();
-          //masonGrid.masonry('layout')
-        },
-        onResult: function (node, query, result, resultCount) {
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-          $(`#${element_id}-result-container`).html(text);
-        },
-        onHideLayout: function (event, query) {
-          if ( !query ){
-            $(`#${element_id}-result-container`).empty()
-          }
-          //masonGrid.masonry('layout')
-        },
-        onShowLayout (){
-          //masonGrid.masonry('layout')
-        }
-      }
-    })
-  })
+  // $('#bulk_edit_picker .dt_typeahead').each((key, el)=>{
+  //   let field_id = $(el).attr('id').replace('_connection', '').replace('bulk_', '');
+  //   let element_id =  $(el).attr('id').replace('_connection', '');
 
-  //multi_select typeaheads
-  for (let input of $(".multi_select .typeahead__query input")) {
-    let field = $(input).data('field')
-    let typeahead_name = `.js-typeahead-${field}`
+  //   console.log(field_id);
+  //   console.log(element_id);
 
-    if (window.Typeahead[typeahead_name]) {
-      return
-    }
+  //   let listing_post_type = _.get(window.list_settings.post_type_settings.fields[field_id], "post_type", 'contacts')
+  //   $.typeahead({
+  //     input: `.js-typeahead-${element_id}`,
+  //     minLength: 0,
+  //     accent: true,
+  //     maxItem: 30,
+  //     searchOnFocus: true,
+  //     template: window.TYPEAHEADS.contactListRowTemplate,
+  //     source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key:field_id}),
+  //     display: "name",
+  //     templateValue: "{{name}}",
+  //     dynamic: true,
+  //     multiselect: {
+  //       matchOn: ["ID"],
+  //       data: '',
+  //       callback: {
+  //         onCancel: function (node, item) {
+  //           $(node).removeData( `bulk_key_${field_id}` );
+  //         }
+  //       },
+  //       href: window.wpApiShare.site_url + `/${listing_post_type}/{{ID}}`
+  //     },
+  //     callback: {
+  //       onClick: function(node, a, item, event){
+  //         node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
+  //         this.addMultiselectItemLayout(item)
+  //         event.preventDefault()
+  //         this.hideLayout();
+  //         this.resetInput();
+  //         //masonGrid.masonry('layout')
+  //       },
+  //       onResult: function (node, query, result, resultCount) {
+  //         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+  //         $(`#${element_id}-result-container`).html(text);
+  //       },
+  //       onHideLayout: function (event, query) {
+  //         if ( !query ){
+  //           $(`#${element_id}-result-container`).empty()
+  //         }
+  //         //masonGrid.masonry('layout')
+  //       },
+  //       onShowLayout (){
+  //         //masonGrid.masonry('layout')
+  //       }
+  //     }
+  //   })
+  // })
 
-    let source_data =  { data: [] }
-    let field_options = _.get(field_settings, `${field}.default`, {})
-    if ( Object.keys(field_options).length > 0 ){
-      _.forOwn(field_options, (val, key)=>{
-        if ( !val.deleted ){
-          source_data.data.push({
-            key: key,
-            name:key,
-            value: val.label || key
-          })
-        }
-      })
-    } else {
-      source_data = {
-        [field]: {
-          display: ["value"],
-          ajax: {
-            url: window.wpApiShare.root + `dt-posts/v2/${list_settings.post_type}/multi-select-values`,
-            data: {
-              s: "{{query}}",
-              field
-            },
-            beforeSend: function (xhr) {
-              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-            },
-            callback: {
-              done: function (data) {
-                return (data || []).map(tag => {
-                  let label = _.get(field_options, tag + ".label", tag)
-                  return {value: label, key: tag}
-                })
-              }
-            }
-          }
-        }
-      }
-    }
-    $.typeahead({
-      input: `.js-typeahead-${field}`,
-      minLength: 0,
-      maxItem: 20,
-      searchOnFocus: true,
-      template: function (query, item) {
-        return `<span>${_.escape(item.value)}</span>`
-      },
-      source: source_data,
-      display: "value",
-      templateValue: "{{value}}",
-      dynamic: true,
-      multiselect: {
-        matchOn: ["key"],
-        data: '',
-        callback: {
-          onCancel: function (node, item, event) {
-            // $(`#${field}-spinner`).addClass('active')
-            // API.update_post(post_type, post_id, {[field]: {values:[{value:item.key, delete:true}]}}).then((new_post)=>{
-            //   $(`#${field}-spinner`).removeClass('active')
-            //   this.hideLayout();
-            //   this.resetInput();
-            //   $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
-            // }).catch(err => { console.error(err) })
-          }
-        }
-      },
-      callback: {
-        onClick: function(node, a, item, event){
-          let field_id = $(node).attr('id').replace('_connection', '').replace('bulk_', '');
+  // //multi_select typeaheads
+  // for (let input of $(".multi_select .typeahead__query input")) {
+  //   let field = $(input).data('field')
+  //   let typeahead_name = `.js-typeahead-${field}`
 
-          node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
-          // $(`#${field}-spinner`).addClass('active')
-          // API.update_post(post_type, post_id, {[field]: {values:[{"value":item.key}]}}).then(new_post=>{
-          //   $(`#${field}-spinner`).removeClass('active')
-          //   $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
-          //   this.addMultiselectItemLayout(item)
-          //   event.preventDefault()
-          //   this.hideLayout();
-          //   this.resetInput();
-          // }).catch(err => { console.error(err) })
-        },
-        onResult: function (node, query, result, resultCount) {
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-          $(`#${field}-result-container`).html(text);
-        },
-        onHideLayout: function () {
-          $(`#${field}-result-container`).html("");
-        }
-      }
-    });
-  }
+  //   if (window.Typeahead[typeahead_name]) {
+  //     return
+  //   }
 
+  //   let source_data =  { data: [] }
+  //   let field_options = _.get(field_settings, `${field}.default`, {})
+  //   if ( Object.keys(field_options).length > 0 ){
+  //     _.forOwn(field_options, (val, key)=>{
+  //       if ( !val.deleted ){
+  //         source_data.data.push({
+  //           key: key,
+  //           name:key,
+  //           value: val.label || key
+  //         })
+  //       }
+  //     })
+  //   } else {
+  //     source_data = {
+  //       [field]: {
+  //         display: ["value"],
+  //         ajax: {
+  //           url: window.wpApiShare.root + `dt-posts/v2/${list_settings.post_type}/multi-select-values`,
+  //           data: {
+  //             s: "{{query}}",
+  //             field
+  //           },
+  //           beforeSend: function (xhr) {
+  //             xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+  //           },
+  //           callback: {
+  //             done: function (data) {
+  //               return (data || []).map(tag => {
+  //                 let label = _.get(field_options, tag + ".label", tag)
+  //                 return {value: label, key: tag}
+  //               })
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //   $.typeahead({
+  //     input: `.js-typeahead-${field}`,
+  //     minLength: 0,
+  //     maxItem: 20,
+  //     searchOnFocus: true,
+  //     template: function (query, item) {
+  //       return `<span>${_.escape(item.value)}</span>`
+  //     },
+  //     source: source_data,
+  //     display: "value",
+  //     templateValue: "{{value}}",
+  //     dynamic: true,
+  //     multiselect: {
+  //       matchOn: ["key"],
+  //       data: '',
+  //       callback: {
+  //         onCancel: function (node, item, event) {
+  //           // $(`#${field}-spinner`).addClass('active')
+  //           // API.update_post(post_type, post_id, {[field]: {values:[{value:item.key, delete:true}]}}).then((new_post)=>{
+  //           //   $(`#${field}-spinner`).removeClass('active')
+  //           //   this.hideLayout();
+  //           //   this.resetInput();
+  //           //   $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
+  //           // }).catch(err => { console.error(err) })
+  //         }
+  //       }
+  //     },
+  //     callback: {
+  //       onClick: function(node, a, item, event){
+  //         let field_id = $(node).attr('id').replace('_connection', '').replace('bulk_', '');
 
-  let connection_type = null
-  //new record off a typeahead
-  $('.create-new-record').on('click', function(){
-    connection_type = $(this).data('connection-key');
-    $('#create-record-modal').foundation('open');
-    $('.js-create-record .error-text').empty();
-    $(".js-create-record-button").attr("disabled", false).removeClass("alert")
-    $(".reveal-after-record-create").hide()
-    $(".hide-after-record-create").show()
-    $(".js-create-record input[name=title]").val('')
-    //create new record
-  })
-  $(".js-create-record").on("submit", function(e) {
-    e.preventDefault();
-    $(".js-create-record-button").attr("disabled", true).addClass("loading");
-    let title = $(".js-create-record input[name=title]").val()
-    if ( !connection_type){
-      $(".js-create-record .error-text").text(
-        "Something went wrong. Please refresh and try again"
-      );
-      return;
-    }
-    let update_field = connection_type;
-    API.create_post( field_settings[update_field].post_type, {
-      title,
-    }).then((newRecord)=>{
-      return API.update_post( post_type, post_id, { [update_field]: { values: [ { value:newRecord.ID }]}}).then(response=>{
-        $(".js-create-record-button").attr("disabled", false).removeClass("loading");
-        $(".reveal-after-record-create").show()
-        $("#new-record-link").html(`<a href="${_.escape( newRecord.permalink )}">${_.escape( title )}</a>`)
-        $(".hide-after-record-create").hide()
-        $('#go-to-record').attr('href', _.escape( newRecord.permalink ));
-        post = response
-        $( document ).trigger( "dt-post-connection-created", [ post, update_field ] );
-        if ( Typeahead[`.js-typeahead-${connection_type}`] ){
-          Typeahead[`.js-typeahead-${connection_type}`].addMultiselectItemLayout({ID:newRecord.ID.toString(), name:title})
-          //masonGrid.masonry('layout')
-        }
-      })
-    })
-    .catch(function(error) {
-      $(".js-create-record-button").removeClass("loading").addClass("alert");
-      $(".js-create-record .error-text").text(
-        _.get( error, "responseJSON.message", "Something went wrong. Please refresh and try again" )
-      );
-      console.error(error);
-    });
-  })
+  //         node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
+  //         // $(`#${field}-spinner`).addClass('active')
+  //         // API.update_post(post_type, post_id, {[field]: {values:[{"value":item.key}]}}).then(new_post=>{
+  //         //   $(`#${field}-spinner`).removeClass('active')
+  //         //   $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
+  //         //   this.addMultiselectItemLayout(item)
+  //         //   event.preventDefault()
+  //         //   this.hideLayout();
+  //         //   this.resetInput();
+  //         // }).catch(err => { console.error(err) })
+  //       },
+  //       onResult: function (node, query, result, resultCount) {
+  //         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+  //         $(`#${field}-result-container`).html(text);
+  //       },
+  //       onHideLayout: function () {
+  //         $(`#${field}-result-container`).html("");
+  //       }
+  //     }
+  //   });
+  // }
+  // let connection_type = null
+  // //new record off a typeahead
+  // $('.create-new-record').on('click', function(){
+  //   connection_type = $(this).data('connection-key');
+  //   $('#create-record-modal').foundation('open');
+  //   $('.js-create-record .error-text').empty();
+  //   $(".js-create-record-button").attr("disabled", false).removeClass("alert")
+  //   $(".reveal-after-record-create").hide()
+  //   $(".hide-after-record-create").show()
+  //   $(".js-create-record input[name=title]").val('')
+  //   //create new record
+  // })
+  // $(".js-create-record").on("submit", function(e) {
+  //   e.preventDefault();
+  //   $(".js-create-record-button").attr("disabled", true).addClass("loading");
+  //   let title = $(".js-create-record input[name=title]").val()
+  //   if ( !connection_type){
+  //     $(".js-create-record .error-text").text(
+  //       "Something went wrong. Please refresh and try again"
+  //     );
+  //     return;
+  //   }
+  //   let update_field = connection_type;
+  //   API.create_post( field_settings[update_field].post_type, {
+  //     title,
+  //   }).then((newRecord)=>{
+  //     return API.update_post( post_type, post_id, { [update_field]: { values: [ { value:newRecord.ID }]}}).then(response=>{
+  //       $(".js-create-record-button").attr("disabled", false).removeClass("loading");
+  //       $(".reveal-after-record-create").show()
+  //       $("#new-record-link").html(`<a href="${_.escape( newRecord.permalink )}">${_.escape( title )}</a>`)
+  //       $(".hide-after-record-create").hide()
+  //       $('#go-to-record').attr('href', _.escape( newRecord.permalink ));
+  //       post = response
+  //       $( document ).trigger( "dt-post-connection-created", [ post, update_field ] );
+  //       if ( Typeahead[`.js-typeahead-${connection_type}`] ){
+  //         Typeahead[`.js-typeahead-${connection_type}`].addMultiselectItemLayout({ID:newRecord.ID.toString(), name:title})
+  //         //masonGrid.masonry('layout')
+  //       }
+  //     })
+  //   })
+  //   .catch(function(error) {
+  //     $(".js-create-record-button").removeClass("loading").addClass("alert");
+  //     $(".js-create-record .error-text").text(
+  //       _.get( error, "responseJSON.message", "Something went wrong. Please refresh and try again" )
+  //     );
+  //     console.error(error);
+  //   });
+  // })
 
-  $('.dt_location_grid').each(()=> {
-    let field_id = 'location_grid'
-    $.typeahead({
-      input: '.js-typeahead-location_grid',
-      minLength: 0,
-      accent: true,
-      searchOnFocus: true,
-      maxItem: 20,
-      dropdownFilter: [{
-        key: 'group',
-        value: 'focus',
-        template: _.escape(window.wpApiShare.translations.regions_of_focus),
-        all: _.escape(window.wpApiShare.translations.all_locations),
-      }],
-      source: {
-        focus: {
-          display: "name",
-          ajax: {
-            url: window.wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
-            data: {
-              s: "{{query}}",
-              filter: function () {
-                return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
-              }
-            },
-            beforeSend: function (xhr) {
-              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-            },
-            callback: {
-              done: function (data) {
-                if (typeof typeaheadTotals!=="undefined") {
-                  typeaheadTotals.field = data.total
-                }
-                return data.location_grid
-              }
-            }
-          }
-        }
-      },
-      display: "name",
-      templateValue: "{{name}}",
-      dynamic: true,
-      multiselect: {
-        matchOn: ["ID"],
-        data: '',
-        callback: {
-          onCancel: function (node, item) {
-            // API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}})
-            // .catch(err => { console.error(err) })
-          }
-        }
-      },
-      callback: {
-        onClick: function (node, a, item, event) {
-          $(`#${element_id}-spinner`).addClass('active');
-          node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
-        },
-        onReady() {
-          this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
-          this.container
-          .removeClass("filter")
-          .find("." + this.options.selector.filterButton)
-          .html(_.escape(window.wpApiShare.translations.regions_of_focus));
-        },
-        onResult: function (node, query, result, resultCount) {
-          resultCount = typeaheadTotals.location_grid
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-          $('#location_grid-result-container').html(text);
-        },
-        onHideLayout: function () {
-          $('#location_grid-result-container').html("");
-        }
-      }
-    });
-  })
+  // $('.dt_location_grid').each(()=> {
+  //   let field_id = 'location_grid'
+  //   $.typeahead({
+  //     input: '.js-typeahead-location_grid',
+  //     minLength: 0,
+  //     accent: true,
+  //     searchOnFocus: true,
+  //     maxItem: 20,
+  //     dropdownFilter: [{
+  //       key: 'group',
+  //       value: 'focus',
+  //       template: _.escape(window.wpApiShare.translations.regions_of_focus),
+  //       all: _.escape(window.wpApiShare.translations.all_locations),
+  //     }],
+  //     source: {
+  //       focus: {
+  //         display: "name",
+  //         ajax: {
+  //           url: window.wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+  //           data: {
+  //             s: "{{query}}",
+  //             filter: function () {
+  //               return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+  //             }
+  //           },
+  //           beforeSend: function (xhr) {
+  //             xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+  //           },
+  //           callback: {
+  //             done: function (data) {
+  //               if (typeof typeaheadTotals!=="undefined") {
+  //                 typeaheadTotals.field = data.total
+  //               }
+  //               return data.location_grid
+  //             }
+  //           }
+  //         }
+  //       }
+  //     },
+  //     display: "name",
+  //     templateValue: "{{name}}",
+  //     dynamic: true,
+  //     multiselect: {
+  //       matchOn: ["ID"],
+  //       data: '',
+  //       callback: {
+  //         onCancel: function (node, item) {
+  //           // API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}})
+  //           // .catch(err => { console.error(err) })
+  //         }
+  //       }
+  //     },
+  //     callback: {
+  //       onClick: function (node, a, item, event) {
+  //         $(`#${element_id}-spinner`).addClass('active');
+  //         node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
+  //       },
+  //       onReady() {
+  //         this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
+  //         this.container
+  //         .removeClass("filter")
+  //         .find("." + this.options.selector.filterButton)
+  //         .html(_.escape(window.wpApiShare.translations.regions_of_focus));
+  //       },
+  //       onResult: function (node, query, result, resultCount) {
+  //         resultCount = typeaheadTotals.location_grid
+  //         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+  //         $('#location_grid-result-container').html(text);
+  //       },
+  //       onHideLayout: function () {
+  //         $('#location_grid-result-container').html("");
+  //       }
+  //     }
+  //   });
+  // })
 
   $('button.follow').on("click", function () {
     let following = !($(this).data('value') === "following")
