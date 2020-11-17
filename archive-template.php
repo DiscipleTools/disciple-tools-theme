@@ -250,7 +250,7 @@ declare(strict_types=1);
                             <thead>
                                 <tr class="table-headers dnd-moved sortable">
                                     <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default">
-                                    <input type="checkbox" name="bulk_edit_id" value="">
+                                    <input type="checkbox" name="bulk_edit_id" value="" id="bulk_edit_master_checkbox">
                                     </th>
                                     <th style="width:32px; background-image:none; cursor:default"></th>
 

@@ -1047,8 +1047,7 @@
   $('#bulk_edit_master').on('click', function(e){
     e.stopImmediatePropagation();
     let checked = $(this).children('input').is(':checked');
-    console.log(checked);
-    $('.bulk_edit_checkbox input').each(function() {
+        $('.bulk_edit_checkbox input').each(function() {
         $(this).attr('checked', checked);
     })
   })
@@ -1062,7 +1061,7 @@
   });
 
   function bulk_edit_submit() {
-    let allInputs = $('#bulk_edit_picker input, #bulk_edit_picker select, #bulk_edit_picker .select-button, #bulk_edit_picker .button');
+    let allInputs = $('#bulk_edit_picker input, #bulk_edit_picker select, #bulk_edit_picker .select-button, #bulk_edit_picker .button').not('.js-typeahead-share');
     let shareInput = $('.js-typeahead-share');
     let updatePayload = {};
     let sharePayload = {};
@@ -1071,34 +1070,43 @@
         let inputData = $(this).data();
         $.each(inputData, function (key, value) {
           if (key.includes('bulk_key_') && value) {
-            console.log(key);
-            console.log(value);
             let field_key = key.replace('bulk_key_', '');
-            updatePayload[field_key] = value;
+            if(field_key) {
+              updatePayload[field_key] = value;
+            }
           }
         })
     })
 
     shareInput.each(function () {
       let shareInputData = $(this).data();
+      console.log(shareInputData);
       $.each(shareInputData, function (key, value) {
-        console.log(key);
-        if (key.includes('bulk_key_') && value) {
+                if (key.includes('bulk_key_') && value) {
           let field_key = key.replace('bulk_key_', '');
-          sharePayload[field_key] = value;
+          if(field_key) {
+            console.log(value);
+            sharePayload[field_key] = value;
+          }
         }
       })
     })
 
     console.log(updatePayload);
+    console.log(sharePayload);
 
     $('.bulk_edit_checkbox input').each(function () {
-      if (this.checked) {
-          API.update_post(list_settings.post_type, $(this).val(), updatePayload).catch(err => { console.error(err) });
-          API.add_shared(list_settings.post_type, $(this).val(), sharePayload).catch(err => { console.error(err) });
+      if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
+        if (Object.keys(updatePayload).length) {
+                    API.update_post(list_settings.post_type, $(this).val(), updatePayload).catch(err => { console.error(err) });
+        }
+
+        if (Object.keys(sharePayload).length) {
+                    API.add_shared(list_settings.post_type, $(this).val(), sharePayload).catch(err => { console.error(err) });
+        }
       }
     }).promise().done( function() {
-      // window.location.reload()
+      //window.location.reload()
     });
   }
 
@@ -1126,8 +1134,6 @@
       let field_key = $(this).data('field-key').replace('bulk_', '');
 
       let value = `{${field_key}: {"values": [{"value": ${this.id},"delete": true}]}}`;
-
-      console.log(value);
 
       $(this).addClass('selected-select-button');
       $(this).data(`bulk_key_${field_key}`, value);
@@ -1180,8 +1186,7 @@
 
   let field_settings = window.list_settings.post_type_settings.fields;
 
-  $('.dt_typeahead').each((key, el)=>{
-    console.log(el);
+  $('#bulk_edit_picker .dt_typeahead').each((key, el)=>{
     let field_id = $(el).attr('id').replace('_connection', '').replace('bulk_', '');
     let element_id =  $(el).attr('id').replace('_connection', '');
     let listing_post_type = _.get(window.list_settings.post_type_settings.fields[field_id], "post_type", 'contacts')
