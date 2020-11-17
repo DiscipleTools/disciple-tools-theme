@@ -418,7 +418,11 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 $message = 'Successfully connected to selected source.';
             } else {
                 $status_class = 'not-connected';
-                $message = 'API NOT AVAILABLE';
+                if ( empty( $key )){
+                    $message = 'Please add a Mapbox API Token';
+                } else {
+                    $message = 'Could not connect to the Mapbox API or could not verify the token';
+                }
             }
             ?>
             <form method="post">
@@ -467,15 +471,23 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                         Paste the token into the "Mapbox API Token" field in the box above.
                                     </li>
                                 </ol>
+                            <?php else :
+                                global $wpdb;
+                                $location_wo_meta = $wpdb->get_var( "SELECT count(*) FROM $wpdb->postmeta WHERE meta_key = 'location_grid' AND meta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta) AND meta_value >= 100000000" );
+                                $user_location_wo_meta = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->usermeta WHERE meta_key = %s AND umeta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta ) AND meta_value >= 100000000", $wpdb->prefix . 'location_grid' ) );
+                                if ( !empty( $location_wo_meta ) && !empty( $user_location_wo_meta ) ) : ?>
+                                    <p class="not-connected">
+                                        <strong>Next:</strong> Please upgrade Users, Contacts and Groups below for the Locations to show up on maps and charts.
+                                    </p>
+                                <?php endif; ?>
                             <?php endif; ?>
-
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </form>
             <style>
-                .connected{ padding: 10px; background-color: lightgreen;}
+                #reachable_source.connected{ padding: 0 10px 0 0; color: darkgreen; background-color: transparent}
                 .not-connected { padding: 10px; background-color: lightcoral; }
             </style>
             <br>

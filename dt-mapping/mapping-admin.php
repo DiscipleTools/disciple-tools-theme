@@ -1563,11 +1563,19 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
         public function box_mapbox_post_upgrade() {
             global $wpdb;
-            $location_wo_meta = $wpdb->get_var( "SELECT count(*) FROM $wpdb->postmeta WHERE meta_key = 'location_grid' AND meta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta)" );
+            $location_wo_meta = $wpdb->get_var( "SELECT count(*) FROM $wpdb->postmeta WHERE meta_key = 'location_grid' AND meta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta) AND meta_value >= 100000000" );
             ?>
             <table class="widefat striped">
             <thead>
-            <tr><th>Upgrade Contacts and Groups and Other Types (<?php echo esc_attr( $location_wo_meta ) ?>)</th></tr>
+            <tr>
+                <th>
+                    Upgrade Contacts and Groups and Other Types (<?php echo esc_attr( $location_wo_meta ) ?>)
+                    <?php if ( !empty( $location_wo_meta ) ) : ?>
+                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' ) ?>"/>
+                    <?php endif; ?>
+                </th>
+            </tr>
+
             </thead>
             <tbody>
             <tr>
@@ -1577,6 +1585,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <input type="hidden" name="loop" value="1" />
                         <input type="hidden" name="tab" value="geocoding" />
                         <?php wp_nonce_field( 'upgrade_database'.get_current_user_id(), 'upgrade_database', false ) ?>
+                        <p>Upgrading the non-Mapbox locations lets D.T display them in maps. Please stay on this page until the process is complete. It may take a while if you have many contacts and groups.</p>
                         <button class="button" type="submit" >Upgrade Non-Mapbox Locations</button>
                     </form>
                 </td>
@@ -1608,15 +1617,18 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 global $wpdb;
                 $geocoder = new Location_Grid_Geocoder();
                 $query = $wpdb->get_results( $wpdb->prepare( "
-                            SELECT *
-                            FROM $wpdb->postmeta
-                            WHERE meta_key = 'location_grid'
-                              AND meta_id NOT IN (
-                                  SELECT DISTINCT( postmeta_id_location_grid )
-                                  FROM $wpdb->dt_location_grid_meta)
-                            LIMIT %d",
+                    SELECT *
+                    FROM $wpdb->postmeta
+                    WHERE meta_key = 'location_grid'
+                      AND meta_id NOT IN (
+                        SELECT DISTINCT( postmeta_id_location_grid )
+                        FROM $wpdb->dt_location_grid_meta
+                      )
+                      AND meta_value >= 100000000
+                    LIMIT %d",
                     $limit
                 ), ARRAY_A);
+
                 if ( ! empty( $query ) ) {
                     foreach ( $query as $row ) {
                         $grid = $geocoder->query_by_grid_id( $row["meta_value"] );
@@ -1659,11 +1671,17 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
         public function box_mapbox_user_upgrade() {
             global $wpdb;
-            $location_wo_meta = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->usermeta WHERE meta_key = %s AND umeta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta )", $wpdb->prefix . 'location_grid' ) );
+            $location_wo_meta = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->usermeta WHERE meta_key = %s AND umeta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta ) AND meta_value >= 100000000", $wpdb->prefix . 'location_grid' ) );
             ?>
             <table class="widefat striped">
                 <thead>
-                <tr><th>Upgrade Users (<?php echo esc_attr( $location_wo_meta ) ?>)</th></tr>
+                <tr>
+                    <th>Upgrade Users (<?php echo esc_attr( $location_wo_meta ) ?>)
+                        <?php if ( !empty( $location_wo_meta ) ) : ?>
+                            <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' ) ?>"/>
+                        <?php endif; ?>
+                    </th>
+                </tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -1673,6 +1691,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <input type="hidden" name="user-loop" value="true" />
                             <input type="hidden" name="tab" value="geocoding" />
                             <?php wp_nonce_field( 'upgrade_database'.get_current_user_id(), 'upgrade_user_database', false ) ?>
+                            <p>Upgrading the non-Mapbox locations lets D.T display them in maps. Please stay on this page until the process is complete. It may take a while if you have many Users.</p>
                             <button class="button" type="submit" >Upgrade Non-Mapbox User Locations</button>
                         </form>
                     </td>
