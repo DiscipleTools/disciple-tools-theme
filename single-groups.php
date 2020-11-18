@@ -261,7 +261,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
                                     </div>
 
-                                    <?php do_action( "dt_details_additional_section", "church_metrics", "groups" ); ?>
+                                    <?php do_action( "dt_details_additional_section", "health-metrics", "groups" ); ?>
                                 </div><!-- end collapse --></div>
                             </section>
                         <?php endif; ?>
@@ -387,9 +387,11 @@ if ( ! current_user_can( 'access_groups' ) ) {
                             </section>
                             <?php
                         }
+                        do_action( 'dt_record_bottom_after_tiles', "groups", $group );
                         ?>
                     </div>
                 </div>
+                <?php do_action( 'dt_record_bottom_below_tiles', "groups", $group ); ?>
             </div>
         </main> <!-- end #main -->
 
