@@ -261,9 +261,9 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
                                     </div>
 
-                                    <?php do_action( "dt_details_additional_section", "church_metrics", "groups" ); ?>
                                 </div><!-- end collapse --></div>
                             </section>
+                            <?php do_action( "dt_details_additional_section", "church_metrics", "groups" ); ?>
                         <?php endif; ?>
 
 
