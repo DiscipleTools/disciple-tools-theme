@@ -1194,11 +1194,11 @@ $.typeahead({
   },
   callback: {
     onClick: function (node, a, item, event) {
-      // window.API.add_shared(post_type, id, item.ID)
+      let shareUserArray;
       if (node.data('bulk_key_share')) {
-        var shareUserArray = node.data('bulk_key_share');
+        shareUserArray = node.data('bulk_key_share');
       } else {
-        var shareUserArray = [];
+        shareUserArray = [];
       }
       shareUserArray.push(item.ID);
       node.data(`bulk_key_share`, shareUserArray);
@@ -1216,7 +1216,7 @@ $.typeahead({
 });
 
 /**
- * Bulk Share Typeahead
+ * Bulk Typeahead
  */
 
   let field_settings = window.list_settings.post_type_settings.fields;
@@ -1249,7 +1249,14 @@ $.typeahead({
         },
         callback: {
           onClick: function(node, a, item, event){
-            node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
+            if ( node.data(`bulk_key_${field_id}`) ) {
+              var multiUserArray = node.data(`bulk_key_${field_id}`).values;
+            } else {
+              var multiUserArray = [];
+            }
+            multiUserArray.push({"value":item.ID});
+
+            node.data(`bulk_key_${field_id}`, {values: multiUserArray});
             this.addMultiselectItemLayout(item)
             event.preventDefault()
             this.hideLayout();
