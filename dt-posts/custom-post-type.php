@@ -19,7 +19,8 @@ class Disciple_Tools_Post_Type_Template {
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'rewrite_init' ] );
         add_filter( 'post_type_link', [ $this, 'permalink' ], 1, 3 );
-        add_action( 'dt_top_nav_desktop', [ $this, 'add_menu_link' ] );
+        add_action( 'dt_top_nav_desktop', [ $this, 'add_menu_link' ], 20 );
+        add_action( 'dt_off_canvas_nav', [ $this, 'add_menu_link' ], 20 );
         add_filter( 'off_canvas_menu_options', [ $this, 'add_hamburger_menu' ] );
         add_filter( 'dt_templates_for_urls', [ $this, 'add_template_for_url' ] );
         add_action( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ] );

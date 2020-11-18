@@ -295,9 +295,8 @@ else {
              */
             require_once( get_template_directory() . '/dt-metrics/counter.php' );
             require_once( get_template_directory() . '/dt-metrics/charts-base.php' );
-            if ( strpos( $url_path, 'metrics' ) !== false ) {
-                require_once( get_template_directory() . '/dt-metrics/metrics.php' );
-            }
+            require_once( get_template_directory() . '/dt-metrics/metrics.php' );
+
 
             /**
              * dt-users
@@ -344,15 +343,6 @@ else {
              */
             require_once( get_template_directory() . '/dt-workflows/workflows.php' );
             $this->workflows = Disciple_Tools_Workflows::instance();
-
-            /**
-             * Network
-             */
-            if ( get_option( 'dt_network_enabled' ) ) {
-                require_once( get_template_directory() . '/dt-network/network-endpoints.php' );
-            }
-            require_once( get_template_directory() . '/dt-network/network.php' );
-            require_once( get_template_directory() . '/dt-network/network-queries.php' );
 
 
             require_once( get_template_directory() . '/dt-core/multisite.php' );

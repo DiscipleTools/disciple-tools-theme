@@ -304,7 +304,7 @@ class DT_Contacts_Base {
                 <select id="type-options">
                     <?php
                     foreach ( $contact_fields["type"]["default"] as $option_key => $option ) {
-                        if ( !empty( $option["label"] ) && !$option["hidden"]) {
+                        if ( !empty( $option["label"] ) && ! $option["hidden"] ) {
                             $selected = ( $option_key === ( $post["type"]["key"] ?? "" ) ) ? "selected" : "";
                             ?>
                             <option value="<?php echo esc_attr( $option_key ) ?>" <?php echo esc_html( $selected ) ?>>

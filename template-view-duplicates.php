@@ -9,7 +9,7 @@ if ( ! current_user_can( 'view_any_contacts' ) ) {
 
 get_header();
 
-$dt_duplicates = Disciple_Tools_Contacts::get_all_duplicates();
+$dt_duplicates = Disciple_Tools_Contacts::get_all_duplicates(); // @todo upgrade for the DT 1.0 post type upgrade
 $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
 ?>
 
