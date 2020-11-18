@@ -1249,10 +1249,11 @@ $.typeahead({
         },
         callback: {
           onClick: function(node, a, item, event){
+            let multiUserArray;
             if ( node.data(`bulk_key_${field_id}`) ) {
-              var multiUserArray = node.data(`bulk_key_${field_id}`).values;
+              multiUserArray = node.data(`bulk_key_${field_id}`).values;
             } else {
-              var multiUserArray = [];
+              multiUserArray = [];
             }
             multiUserArray.push({"value":item.ID});
 
