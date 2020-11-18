@@ -13,7 +13,7 @@ class DT_Groups_Base {
     public function __construct() {
         //setup post type
         add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
-        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 20, 1 );
+        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 20, 1 ); //after contacts
 
         //setup tiles and fields
         add_action( 'p2p_init', [ $this, 'p2p_init' ] );
@@ -32,6 +32,7 @@ class DT_Groups_Base {
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
+        add_filter( "dt_filter_access_permissions", [ $this, "dt_filter_access_permissions" ], 20, 2 );
 
     }
 
@@ -48,11 +49,22 @@ class DT_Groups_Base {
                 "permissions" => []
             ];
         }
+        // if the user can access contact they also can access group
         foreach ( $expected_roles as $role => $role_value ){
             if ( isset( $expected_roles[$role]["permissions"]['access_contacts'] ) && $expected_roles[$role]["permissions"]['access_contacts'] ){
                 $expected_roles[$role]["permissions"]['access_' . $this->post_type] = true;
                 $expected_roles[$role]["permissions"]['create_' . $this->post_type] = true;
             }
+        }
+
+        if ( isset( $expected_roles["administrator"] ) ){
+            $expected_roles["administrator"]["permissions"]['view_any_groups'] = true;
+        }
+        if ( isset( $expected_roles["dispatcher"] ) ){
+            $expected_roles["dispatcher"]["permissions"]['view_any_groups'] = true;
+        }
+        if ( isset( $expected_roles["dt_admin"] ) ){
+            $expected_roles["dt_admin"]["permissions"]['view_any_groups'] = true;
         }
 
         return $expected_roles;
@@ -1068,6 +1080,15 @@ class DT_Groups_Base {
             }
         }
         return $filters;
+    }
+
+    public static function dt_filter_access_permissions( $permissions, $post_type ){
+        if ( $post_type === "groups" ){
+            if ( DT_Posts::can_view_all( $post_type ) ){
+                $permissions = [];
+            }
+        }
+        return $permissions;
     }
 
     public function scripts(){

@@ -1029,7 +1029,7 @@ class Disciple_Tools_Posts
         ];
         $permissions = apply_filters( "dt_filter_access_permissions", $permissions, $post_type );
 
-        if ( $check_permissions ){
+        if ( $check_permissions && !empty( $permissions )){
             $query[] = $permissions;
         }
 
