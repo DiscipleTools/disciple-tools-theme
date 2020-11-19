@@ -1057,6 +1057,7 @@
   let bulk_edit_submit_button = $('#bulk_edit_submit');
 
   bulk_edit_submit_button.on('click', function(e) {
+    $('#bulk_edit_submit-spinner').addClass('active');
     bulk_edit_submit();
   });
 

@@ -235,7 +235,9 @@ declare(strict_types=1);
                         } elseif ( $post_type == "groups" ) {
                             esc_html_e( 'Groups', 'disciple_tools' );
                         }
-                        ?></button>
+                        ?>
+                        <span id="bulk_edit_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
+                        </button>
                     </div>
 
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
