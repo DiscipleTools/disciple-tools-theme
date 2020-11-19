@@ -502,6 +502,15 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         $var += (int) $val;
     }
 
+    function dt_get_keys_map( $array, $key = "ID" ){
+        return array_map(  function ( $a ) use ( $key ) {
+            if ( isset( $a[$key] ) ){
+                return $a[$key];
+            } else {
+                return null;
+            }
+        }, $array );
+    }
 
     /**
      * All code above here.

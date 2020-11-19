@@ -1860,12 +1860,14 @@ class Disciple_Tools_Posts
         }
 
         if ( class_exists( "DT_Mapbox_API" ) && DT_Mapbox_API::get_key() && isset( $fields['location_grid_meta'] ) ) {
-            $fields['location_grid'] = [];
+            $ids = dt_get_keys_map( $fields['location_grid'] ?? [], 'id' );
             foreach ( $fields['location_grid_meta'] as $meta ) {
-                $fields['location_grid'][] = [
-                    'id' => (int) $meta['grid_id'],
-                    'label' => $meta['label']
-                ];
+                if ( !in_array( (int) $meta['grid_id'], $ids ) ){
+                    $fields['location_grid'][] = [
+                        'id' => (int) $meta['grid_id'],
+                        'label' => $meta['label']
+                    ];
+                }
             }
         }
 
