@@ -448,7 +448,7 @@
   }
 
   function get_records( offset = 0, sort = null ){
-    loading_spinner.addClass("active")
+    loading_spinner.addClass("active");
     let query = current_filter.query
     if ( offset ){
       query["offset"] = offset
@@ -471,6 +471,8 @@
         items = response.posts || []
       }
       window.records_list = response // adds global access to current list for plugins
+
+      $('#bulk_edit_master_checkbox').prop("checked", false); //unchecks the bulk edit master checkbox when the list reloads.
 
       $('#load-more').toggle(items.length !== parseInt( response.total ))
       let result_text = list_settings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", response.total)
