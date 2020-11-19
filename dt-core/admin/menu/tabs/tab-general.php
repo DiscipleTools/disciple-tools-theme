@@ -68,7 +68,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             /* End Email Settings */
 
             /* Modules */
-            $this->box( 'top', 'Contact Modules' );
+            $this->box( 'top', 'Modules' );
             $this->process_contact_modules();
             $this->display_contact_modules();
             $this->box( 'bottom' );

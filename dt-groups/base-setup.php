@@ -1,8 +1,9 @@
 <?php
 
-class DT_Groups_Base {
+class DT_Groups_Base extends DT_Module_Base {
     private static $_instance = null;
     public $post_type = "groups";
+    public $module = "groups_base";
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
@@ -11,6 +12,11 @@ class DT_Groups_Base {
     } // End instance()
 
     public function __construct() {
+        parent::__construct();
+        if ( !self::check_enabled_and_prerequisites() ){
+            return;
+        }
+
         //setup post type
         add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 20, 1 ); //after contacts
