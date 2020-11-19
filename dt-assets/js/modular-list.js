@@ -1059,11 +1059,11 @@
   let bulk_edit_submit_button = $('#bulk_edit_submit');
 
   bulk_edit_submit_button.on('click', function(e) {
-    $('#bulk_edit_submit-spinner').addClass('active');
     bulk_edit_submit();
   });
 
   function bulk_edit_submit() {
+    $('#bulk_edit_submit-spinner').addClass('active');
     let allInputs = $('#bulk_edit_picker input, #bulk_edit_picker select, #bulk_edit_picker .select-button, #bulk_edit_picker .button').not('#bulk_share');
     let shareInput = $('#bulk_share');
     let updatePayload = {};
@@ -1085,21 +1085,25 @@
       sharePayload = $(this).data('bulk_key_share');
     })
 
+    let promises = [];
+    let count = 0;
     $('.bulk_edit_checkbox input').each(function () {
       if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
+        let postId = parseInt($(this).val());
+
         if (Object.keys(updatePayload).length) {
-          API.update_post(list_settings.post_type, $(this).val(), updatePayload).catch(err => { console.error(err) });
+          promises.push( API.update_post(list_settings.post_type, postId, updatePayload).catch(err => { console.error(err); count++ }) );
         }
 
         if (sharePayload) {
-          let postId = parseInt($(this).val());
-
           sharePayload.forEach(function(value) {
-            API.add_shared(list_settings.post_type, postId, value).catch(err => { console.error(err) });
+            promises.push( API.add_shared(list_settings.post_type, postId, value).catch(err => { console.error(err); count++ }) );
           })
         }
       }
-    }).promise().done( function() {
+    });
+    Promise.all(promises).then( function() {
+      $('#bulk_edit_submit-spinner').removeClass('active');
       window.location.reload()
     });
   }
