@@ -1085,27 +1085,15 @@
       sharePayload = $(this).data('bulk_key_share');
     })
 
-    let promises = [];
+    let queue =  [];
     let count = 0;
     $('.bulk_edit_checkbox input').each(function () {
       if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
         let postId = parseInt($(this).val());
-
-        if (Object.keys(updatePayload).length) {
-          promises.push( API.update_post(list_settings.post_type, postId, updatePayload).catch(err => { console.error(err); count++ }) );
-        }
-
-        if (sharePayload) {
-          sharePayload.forEach(function(value) {
-            promises.push( API.add_shared(list_settings.post_type, postId, value).catch(err => { console.error(err); count++ }) );
-          })
-        }
+        queue.push( postId );
       }
     });
-    Promise.all(promises).then( function() {
-      $('#bulk_edit_submit-spinner').removeClass('active');
-      window.location.reload()
-    });
+    process(queue, 10, doEach, doDone, updatePayload, sharePayload);
   }
 
   function bulk_edit_count() {
@@ -1135,6 +1123,63 @@
       $(this).addClass('selected-select-button');
       $(this).data(`bulk_key_${field_key}`, value);
   })
+
+  //Bulk Update Queue
+  function process( q, num, fn, done, update, share ) {
+    // remove a batch of items from the queue
+    let items = q.splice(0, num),
+        count = items.length;
+
+    // no more items?
+    if ( !count ) {
+        // exec done callback if specified
+        done && done();
+        // quit
+        return;
+    }
+
+    // loop over each item
+    for ( let i = 0; i < count; i++ ) {
+        // call callback, passing item and
+        // a "done" callback
+        fn(items[i], function() {
+            // when done, decrement counter and
+            // if counter is 0, process next batch
+            --count || process(q, num, fn, done, update, share);
+        }, update, share);
+
+    }
+  }
+
+  // a per-item action
+  function doEach( item, done, update, share ) {
+    console.log('starting ...' ); //t('starting ...');
+    console.log(item);
+    console.log(update);
+    let promises = [];
+
+    if (Object.keys(update).length) {
+      promises.push( API.update_post(list_settings.post_type, item, update).catch(err => { console.error(err);}));
+    }
+
+    if (share) {
+      share.forEach(function(value) {
+        promises.push( API.add_shared(list_settings.post_type, item, value).catch(err => { console.error(err) }));
+      })
+    }
+
+    Promise.all(promises).then( function() {
+        done();
+    });
+  }
+
+  function doDone() {
+    console.log('done');
+    $('#bulk_edit_submit-spinner').removeClass('active');
+    window.location.reload();
+  }
+
+
 
   let bulk_assigned_to_input = $(`.js-typeahead-bulk_assigned_to`)
   $.typeahead({
