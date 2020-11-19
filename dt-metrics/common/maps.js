@@ -133,11 +133,7 @@ jQuery(document).ready(function($) {
                         <option value="area">Map Type - Area</option>
                     </select>
                 </div>
-                <div class="cell small-2 center border-left">
-                    <select id="status" class="small" style="width:170px;">
-                        ${status_list}
-                    </select>
-                </div>
+
             </div>
         </div>
         <div id="spinner">${spinner_html}</div>
@@ -149,7 +145,7 @@ jQuery(document).ready(function($) {
         </div>
     </div>
   `)
-  let spinner = ("#spinner")
+  let spinner = $("#spinner")
 
   //set_info_boxes
   let map_wrapper = jQuery('#map-wrapper')
@@ -181,11 +177,19 @@ jQuery(document).ready(function($) {
     set_map_start( window.map_bounds_token, map.getBounds() )
   })
   // end set bounds
+  // disable map rotation using right click + drag
+  map.dragRotate.disable();
+
+  // disable map rotation using touch rotation gesture
+  map.touchZoomRotate.disableRotation();
 
   function load_map(){
     spinner.show()
     clear_cluster_map_layer()
     clear_area_map_layers()
+    if ( map.getLayer('pointsLayer')){
+      map.removeLayer( 'pointsLayer' )
+    }
     if ( current_map_type === "cluster" ){
       write_cluster()
     } else if ( current_map_type === "area" ){
@@ -203,9 +207,6 @@ jQuery(document).ready(function($) {
     load_map()
   });
 
-  function write_points(){
-
-  }
 
   function standardize_longitude(lng){
     if (lng > 180) {
@@ -252,11 +253,89 @@ jQuery(document).ready(function($) {
     }
   }
 
+  async function write_points(){
+    let points = await makeRequest('POST', obj.settings.points_rest_url, { post_type: window.post_type, status: null }, obj.settings.rest_base_url )
+    load_layer( points )
+    function load_layer( points ) {
+
+      let mapLayer = map.getLayer('pointsLayer');
+      if(typeof mapLayer !== 'undefined') {
+        map.off('click', 'pointsLayer', on_click );
+        map.removeLayer( 'pointsLayer' )
+      }
+      let mapSource= map.getSource('pointsSource');
+      if(typeof mapSource !== 'undefined') {
+        map.removeSource( 'pointsSource' )
+      }
+
+      map.addSource('pointsSource', {
+        'type': 'geojson',
+        'data': points
+      });
+      map.addLayer({
+        id: 'pointsLayer',
+        type: 'circle',
+        source: 'pointsSource',
+        paint: {
+          'circle-color': '#11b4da',
+          'circle-radius': 6,
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#fff'
+        }
+      });
+
+      map.on('click', 'pointsLayer', on_click );
+
+      map.on('mouseenter', 'pointsLayer', function () {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+      map.on('mouseleave', 'pointsLayer', function () {
+        map.getCanvas().style.cursor = '';
+      });
+
+      let spinner = jQuery('#spinner')
+      spinner.hide()
+    }
+    function on_click(e) {
+      window.list = []
+      jQuery('#geocode-details').show()
+
+      let content = jQuery('#geocode-details-content')
+      content.empty().html( window.spinner )
+
+      jQuery.each(e.features, function(i,v) {
+        content.append(`<div class="grid-x" id="list-${_.escape( i )}"></div>`)
+        makeRequest('GET', _.escape( window.post_type ) +'/'+_.escape( e.features[i].properties.pid )+'/', null, 'dt-posts/v2/' )
+        .done(details=>{
+          window.list[i] = jQuery('#list-'+i)
+
+          let status = ''
+          if ( window.post_type === 'contacts') {
+            status = details.overall_status.label
+          } else if ( window.post_type === 'groups' ) {
+            status = details.group_status.label
+          } else if ( typeof details.status.label !== "undefined") {
+            status = details.status.label
+          }
+
+          window.list[i].append(`
+            <div class="cell"><h4>${_.escape( details.title )}</h4></div>
+            <div class="cell">${_.escape( obj.translations.status)/*Status*/}: ${_.escape( status )}</div>
+            <div class="cell">${ _.escape( obj.translations.assigned_to  )/*Assigned To*/}: ${_.escape( details.assigned_to.display )}</div>
+            <div class="cell"><a href="${_.escape(window.wpApiShare.site_url)}/${_.escape( window.post_type )}/${_.escape( details.ID )}">${_.escape( obj.translations.view_record  )/*View Record*/}</a></div>
+            <div class="cell"><hr></div>
+          `)
+
+          jQuery('.loading-spinner').hide()
+        })
+      })
+
+    }
+  }
+
   async function write_cluster( ) {
 
     let data = await makeRequest( "POST", obj.settings.rest_url, { post_type: window.post_type, status: null} , obj.settings.rest_base_url )
-
-
     load_layer( data )
 
     function load_layer( geojson ) {
@@ -317,11 +396,11 @@ jQuery(document).ready(function($) {
         }
       });
       map.on('click', 'clusters', function(e) {
-        var features = map.queryRenderedFeatures(e.point, {
+        let features = map.queryRenderedFeatures(e.point, {
           layers: ['clusters']
         });
 
-        var clusterId = features[0].properties.cluster_id;
+        let clusterId = features[0].properties.cluster_id;
         map.getSource('clusterSource').getClusterExpansionZoom(
           clusterId,
           function(err, zoom) {
@@ -385,14 +464,8 @@ jQuery(document).ready(function($) {
 
   async function write_area() {
     if ( !window.grid_data ){
-      window.grid_data = await makeRequest( "POST", obj.settings.area.endpoint, { post_type: obj.settings.post_type, status: null} , obj.settings.rest_base_url )
+      window.grid_data = await makeRequest( "POST", obj.settings.totals_rest_url, { post_type: obj.settings.post_type, status: null} , obj.settings.rest_base_url )
     }
-
-
-    // disable map rotation using right click + drag
-    map.dragRotate.disable();
-    // disable map rotation using touch rotation gesture
-    map.touchZoomRotate.disableRotation();
 
     // grid memory vars
     window.previous_grid_list = []
@@ -447,7 +520,7 @@ jQuery(document).ready(function($) {
           loaded_ids.push(parent_id)
 
           // is defined test
-          var mapLayer = map.getLayer(parent_id);
+          let mapLayer = map.getLayer(parent_id);
           if(typeof mapLayer === 'undefined') {
 
             // get geojson collection
@@ -587,7 +660,7 @@ jQuery(document).ready(function($) {
 
           if ( details.admin2_grid_id !== null ) {
             jQuery('#admin2_list').html( spinner_html )
-            makeRequest( "POST", obj.settings.area.list_grid_endpoint, { grid_id: details.admin2_grid_id, status: window.current_status } , obj.settings.rest_base_url )
+            makeRequest( "POST", obj.settings.list_by_grid_rest_url, { grid_id: details.admin2_grid_id, status: window.current_status } , obj.settings.rest_base_url )
             .done(list_by_grid=>{
               if ( list_by_grid.length > 0 ) {
                 write_list( 'admin2_list', list_by_grid )
@@ -597,7 +670,7 @@ jQuery(document).ready(function($) {
             })
           } else if ( details.admin1_grid_id !== null ) {
             jQuery('#admin1_list').html( spinner_html )
-            makeRequest( "POST", obj.settings.area.list_grid_endpoint, { grid_id: details.admin1_grid_id, status: window.current_status } , obj.settings.rest_base_url )
+            makeRequest( "POST", obj.settings.list_by_grid_rest_url, { grid_id: details.admin1_grid_id, status: window.current_status } , obj.settings.rest_base_url )
             .done(list_by_grid=>{
               if ( list_by_grid.length > 0 ) {
                 write_list( 'admin1_list', list_by_grid )
@@ -607,7 +680,7 @@ jQuery(document).ready(function($) {
             })
           } else if ( details.admin0_grid_id !== null ) {
             jQuery('#admin0_list').html( spinner_html )
-            makeRequest( "POST", obj.settings.area.list_grid_endpoint, { grid_id: details.admin0_grid_id, status: window.current_status } , obj.settings.rest_base_url )
+            makeRequest( "POST", obj.settings.list_by_grid_rest_url, { grid_id: details.admin0_grid_id, status: window.current_status } , obj.settings.rest_base_url )
             .done(list_by_grid=>{
               if ( list_by_grid.length > 0 ) {
                 write_list( 'admin0_list', list_by_grid )
