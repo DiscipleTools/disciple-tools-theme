@@ -530,7 +530,7 @@ class Disciple_Tools_Posts
      * @param array $args
      * @return array|mixed
      */
-    private static function fields_to_sql( $post_type, $query_array, $operator = "AND", $args = [] ){
+    public static function fields_to_sql( $post_type, $query_array, $operator = "AND", $args = [] ){
         $examples = [
             "groups" => [ 3029, 39039 ],
             "groups" => [ -3029 ],
