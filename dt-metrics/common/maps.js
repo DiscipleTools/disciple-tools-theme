@@ -2,6 +2,7 @@ jQuery(document).ready(function($) {
   if ( typeof window.dt_mapbox_metrics.settings === undefined ) {
     return;
   }
+  let current_map_type = 'cluster'
 
   let obj = window.dt_mapbox_metrics
 
@@ -12,9 +13,10 @@ jQuery(document).ready(function($) {
   jQuery('#metrics-sidemenu').foundation('down', jQuery(`#${obj.settings.menu_slug}-menu`));
 
   let chart = jQuery('#chart')
-  let spinner = ' <span class="loading-spinner users-spinner active"></span> '
+  let spinner_html = ' <span class="loading-spinner users-spinner active"></span> '
 
-  chart.empty().html(spinner)
+  chart.empty().html(spinner_html)
+
 
   /* build status list */
   let status_list = `<option value="none" disabled></option>
@@ -138,7 +140,7 @@ jQuery(document).ready(function($) {
                 </div>
             </div>
         </div>
-        <div id="spinner">${spinner}</div>
+        <div id="spinner">${spinner_html}</div>
         <div id="cross-hair">&#8982</div>
         <div id="geocode-details" class="geocode-details">
             ${_.escape( title )}<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
@@ -147,6 +149,7 @@ jQuery(document).ready(function($) {
         </div>
     </div>
   `)
+  let spinner = ("#spinner")
 
   //set_info_boxes
   let map_wrapper = jQuery('#map-wrapper')
@@ -160,9 +163,9 @@ jQuery(document).ready(function($) {
   let map = new window.mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/light-v10',
-    center: [-98, 38.88],
-    minZoom: 0,
-    zoom: 0
+    center: [2, 46],
+    minZoom: 1,
+    zoom: 1.8
   });
 
   // SET BOUNDS
@@ -179,25 +182,25 @@ jQuery(document).ready(function($) {
   })
   // end set bounds
 
-
-  $('#map-type').on('change', function (e){
-    $('#spinner').show()
-    let type = $(this).val();
+  function load_map(){
+    spinner.show()
     clear_cluster_map_layer()
     clear_area_map_layers()
-    if ( type === "cluster" ){
+    if ( current_map_type === "cluster" ){
       write_cluster()
-    } else if ( type === "area" ){
+    } else if ( current_map_type === "area" ){
       write_area()
     } else {
       write_points()
     }
+  }
 
+  $('#map-type').on('change', function (e){
+    current_map_type = $(this).val();
+    load_map()
   })
   map.on('load', function() {
-
-    // write_cluster()
-    write_area()
+    load_map()
   });
 
   function write_points(){
@@ -215,13 +218,28 @@ jQuery(document).ready(function($) {
     return lng;
   }
 
-  function clear_area_map_layers ( grid_id = null ) {
-    jQuery.each(window.previous_grid_list, function(i,v) {
-      let mapLayer = map.getLayer(v.toString());
-      if(typeof mapLayer !== 'undefined' && v !== grid_id) {
-        map.removeLayer( v.toString() )
-        map.removeLayer( v.toString() + 'line' )
-        map.removeSource( v.toString() )
+  function get_level( ) {
+    let level = 'world'
+    if ( map.getZoom() >= 4 ) {
+      level = 'admin1'
+    } if ( map.getZoom() >= 5.5 ){
+      level = 'admin2'
+    }
+    return level;
+  }
+
+
+  jQuery('.close-details').on('click', function() {
+    jQuery('#geocode-details').hide()
+  })
+
+  function clear_area_map_layers (data = []) {
+    (window.previous_grid_list || []).forEach(grid_item=>{
+      let parent_id = grid_item.parent_id
+      let mapLayer = map.getLayer(parent_id.toString());
+      if(typeof mapLayer !== 'undefined' && !_.find(data, {parent_id:parent_id})) {
+        map.removeLayer( parent_id.toString() )
+        map.removeSource( parent_id.toString() )
       }
     })
   }
@@ -234,319 +252,174 @@ jQuery(document).ready(function($) {
     }
   }
 
-  function write_cluster( ) {
-    console.log("cluster");
+  async function write_cluster( ) {
 
-    makeRequest( "POST", obj.settings.rest_url, { post_type: window.post_type, status: null} , obj.settings.rest_base_url )
-    .then(data=>{
-      load_layer( data )
-      jQuery('#status').on('change', function() {
-        window.current_status = jQuery('#status').val()
-        close_details()
-        makeRequest( "POST", obj.settings.rest_url, { post_type: window.post_type, status: window.current_status} , obj.settings.rest_base_url )
-        .then(data=> {
-          clear_cluster_map_layer()
-          load_layer( data )
+    let data = await makeRequest( "POST", obj.settings.rest_url, { post_type: window.post_type, status: null} , obj.settings.rest_base_url )
+
+
+    load_layer( data )
+
+    function load_layer( geojson ) {
+      map.addSource('clusterSource', {
+        type: 'geojson',
+        data: geojson,
+        cluster: true,
+        clusterMaxZoom: 14,
+        clusterRadius: 50
+      });
+      map.addLayer({
+        id: 'clusters',
+        type: 'circle',
+        source: 'clusterSource',
+        filter: ['has', 'point_count'],
+        paint: {
+          'circle-color': [
+            'step',
+            ['get', 'point_count'],
+            '#51bbd6',
+            100,
+            '#f1f075',
+            750,
+            '#f28cb1'
+          ],
+          'circle-radius': [
+            'step',
+            ['get', 'point_count'],
+            20,
+            100,
+            30,
+            750,
+            40
+          ]
+        }
+      });
+      map.addLayer({
+        id: 'cluster-count',
+        type: 'symbol',
+        source: 'clusterSource',
+        filter: ['has', 'point_count'],
+        layout: {
+          'text-field': '{point_count_abbreviated}',
+          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+          'text-size': 12
+        }
+      });
+      map.addLayer({
+        id: 'unclustered-point',
+        type: 'circle',
+        source: 'clusterSource',
+        filter: ['!', ['has', 'point_count']],
+        paint: {
+          'circle-color': '#11b4da',
+          'circle-radius':12,
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#fff'
+        }
+      });
+      map.on('click', 'clusters', function(e) {
+        var features = map.queryRenderedFeatures(e.point, {
+          layers: ['clusters']
+        });
+
+        var clusterId = features[0].properties.cluster_id;
+        map.getSource('clusterSource').getClusterExpansionZoom(
+          clusterId,
+          function(err, zoom) {
+            if (err) return;
+
+            map.easeTo({
+              center: features[0].geometry.coordinates,
+              zoom: zoom
+            });
+          }
+        );
+      })
+      map.on('click', 'unclustered-point', on_click );
+      map.on('mouseenter', 'clusters', function() {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+      map.on('mouseleave', 'clusters', function() {
+        map.getCanvas().style.cursor = '';
+      });
+      spinner.hide()
+    }
+    function on_click(e) {
+      window.list = []
+      jQuery('#geocode-details').show()
+
+      let content = jQuery('#geocode-details-content')
+      content.empty().html(spinner_html)
+
+      jQuery.each(e.features, function (i, v) {
+        if ( i > 10 ){
+          return;
+        }
+        content.append(`<div class="grid-x" id="list-${_.escape( i )}"></div>`)
+        window.API.get_post( _.escape( window.post_type), _.escape( e.features[i].properties.post_id ))
+        .done(details => {
+          window.list[i] = jQuery('#list-' + _.escape( i ))
+
+          let status = ''
+          if (window.post_type === 'contacts') {
+            status = details.overall_status.label
+          } else if (window.post_type === 'groups') {
+            status = details.group_status.label
+          } else if ( typeof details.status.label !== "undefined") {
+            status = details.status.label
+          }
+
+          window.list[i].append(`
+              <div class="cell"><h4>${_.escape( details.title )}</h4></div>
+              <div class="cell">${_.escape( obj.translations.status)/*Status*/}: ${_.escape( status )}</div>
+              <div class="cell">${ _.escape( obj.translations.assigned_to  )/*Assigned To*/}: ${_.escape( details.assigned_to.display )}</div>
+              <div class="cell"><a target="_blank" href="${_.escape(window.wpApiShare.site_url)}/${_.escape( window.post_type )}/${_.escape( details.ID )}">${_.escape( obj.translations.view_record  )/*View Record*/}</a></div>
+              <div class="cell"><hr></div>
+          `)
+
+          jQuery('.loading-spinner').hide()
         })
       })
-      function close_details() {
-        jQuery('#geocode-details').hide()
-      }
+    }
 
-
-      function load_layer( geojson ) {
-        map.addSource('clusterSource', {
-          type: 'geojson',
-          data: geojson,
-          cluster: true,
-          clusterMaxZoom: 14,
-          clusterRadius: 50
-        });
-        map.addLayer({
-          id: 'clusters',
-          type: 'circle',
-          source: 'clusterSource',
-          filter: ['has', 'point_count'],
-          paint: {
-            'circle-color': [
-              'step',
-              ['get', 'point_count'],
-              '#51bbd6',
-              100,
-              '#f1f075',
-              750,
-              '#f28cb1'
-            ],
-            'circle-radius': [
-              'step',
-              ['get', 'point_count'],
-              20,
-              100,
-              30,
-              750,
-              40
-            ]
-          }
-        });
-        map.addLayer({
-          id: 'cluster-count',
-          type: 'symbol',
-          source: 'clusterSource',
-          filter: ['has', 'point_count'],
-          layout: {
-            'text-field': '{point_count_abbreviated}',
-            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-            'text-size': 12
-          }
-        });
-        map.addLayer({
-          id: 'unclustered-point',
-          type: 'circle',
-          source: 'clusterSource',
-          filter: ['!', ['has', 'point_count']],
-          paint: {
-            'circle-color': '#11b4da',
-            'circle-radius':12,
-            'circle-stroke-width': 1,
-            'circle-stroke-color': '#fff'
-          }
-        });
-        map.on('click', 'clusters', function(e) {
-          var features = map.queryRenderedFeatures(e.point, {
-            layers: ['clusters']
-          });
-
-          var clusterId = features[0].properties.cluster_id;
-          map.getSource('clusterSource').getClusterExpansionZoom(
-            clusterId,
-            function(err, zoom) {
-              if (err) return;
-
-              map.easeTo({
-                center: features[0].geometry.coordinates,
-                zoom: zoom
-              });
-            }
-          );
-        })
-        map.on('click', 'unclustered-point', on_click );
-        map.on('mouseenter', 'clusters', function() {
-          map.getCanvas().style.cursor = 'pointer';
-        });
-        map.on('mouseleave', 'clusters', function() {
-          map.getCanvas().style.cursor = '';
-        });
-        $('#spinner').hide()
-      }
-      function on_click(e) {
-        window.list = []
-        jQuery('#geocode-details').show()
-
-        let content = jQuery('#geocode-details-content')
-        content.empty().html(spinner)
-
-        jQuery.each(e.features, function (i, v) {
-          if ( i > 10 ){
-            return;
-          }
-          content.append(`<div class="grid-x" id="list-${_.escape( i )}"></div>`)
-          window.API.get_post( _.escape( window.post_type), _.escape( e.features[i].properties.post_id ))
-          .done(details => {
-            window.list[i] = jQuery('#list-' + _.escape( i ))
-
-            let status = ''
-            if (window.post_type === 'contacts') {
-              status = details.overall_status.label
-            } else if (window.post_type === 'groups') {
-              status = details.group_status.label
-            } else if ( typeof details.status.label !== "undefined") {
-              status = details.status.label
-            }
-
-            window.list[i].append(`
-                <div class="cell"><h4>${_.escape( details.title )}</h4></div>
-                <div class="cell">${_.escape( obj.translations.status)/*Status*/}: ${_.escape( status )}</div>
-                <div class="cell">${ _.escape( obj.translations.assigned_to  )/*Assigned To*/}: ${_.escape( details.assigned_to.display )}</div>
-                <div class="cell"><a target="_blank" href="${_.escape(window.wpApiShare.site_url)}/${_.escape( window.post_type )}/${_.escape( details.ID )}">${_.escape( obj.translations.view_record  )/*View Record*/}</a></div>
-                <div class="cell"><hr></div>
-            `)
-
-            jQuery('.loading-spinner').hide()
-          })
-        })
-      }
-
-      jQuery('.close-details').on('click', function() {
-        close_details()
-      })
-
-    }).catch(err=>{
-      console.log("error")
-      console.log(err)
-    })
   }
 
-  function write_area() {
-
-    console.log("Area");
-    makeRequest( "POST", obj.settings.area.endpoint, { post_type: obj.settings.post_type, status: null} , obj.settings.rest_base_url )
-    .done(grid_data=>{
-      window.grid_data = grid_data
-
-      // disable map rotation using right click + drag
-      map.dragRotate.disable();
-
-      // disable map rotation using touch rotation gesture
-      map.touchZoomRotate.disableRotation();
-
-      // cross-hair
-      // map.on('zoomstart', function() {
-      //   // jQuery('#cross-hair').show()
-      // })
-      // map.on('zoomend', function() {
-      //   // jQuery('#cross-hair').hide()
-      // })
-      // map.on('dragstart', function() {
-      //   // jQuery('#cross-hair').show()
-      // })
-      // map.on('dragend', function() {
-      //   // jQuery('#cross-hair').hide()
-      // })
-
-      // grid memory vars
-      window.previous_grid_id = 0
-      window.previous_grid_list = []
+  async function write_area() {
+    if ( !window.grid_data ){
+      window.grid_data = await makeRequest( "POST", obj.settings.area.endpoint, { post_type: obj.settings.post_type, status: null} , obj.settings.rest_base_url )
+    }
 
 
-      if ( window.map_start ) { // if bounds defined
-        let lnglat = map.getCenter()
-        load_layer( lnglat.lng, lnglat.lat, 'zoom' )
+    // disable map rotation using right click + drag
+    map.dragRotate.disable();
+    // disable map rotation using touch rotation gesture
+    map.touchZoomRotate.disableRotation();
 
-      } else { // if no bounds defined
+    // grid memory vars
+    window.previous_grid_list = []
 
-        window.previous_grid_id = '1'
-        window.previous_grid_list.push('1')
-        jQuery.get(obj.settings.map_mirror + 'collection/1.geojson', null, null, 'json')
-        .done(function (geojson) {
+    await load_layer()
 
-          jQuery.each(geojson.features, function (i, v) {
-            if (window.grid_data[geojson.features[i].properties.id]) {
-              geojson.features[i].properties.value = parseInt(window.grid_data[geojson.features[i].properties.id].count)
-            } else {
-              geojson.features[i].properties.value = 0
-            }
-          })
-          map.addSource('1', {
-            'type': 'geojson',
-            'data': geojson
-          });
-          map.addLayer({
-            'id': '1',
-            'type': 'fill',
-            'source': '1',
-            'paint': {
-              'fill-color': [
-                'interpolate',
-                ['linear'],
-                ['get', 'value'],
-                0,
-                'rgba(0, 0, 0, 0)',
-                1,
-                '#547df8',
-                50,
-                '#3754ab',
-                100,
-                '#22346a'
-              ],
-              'fill-opacity': 0.75
-            }
-          });
-          map.addLayer({
-            'id': '1line',
-            'type': 'line',
-            'source': '1',
-            'paint': {
-              'line-color': 'black',
-              'line-width': 1
-            }
-          });
-        })
 
-      }
+    // load new layer on event
+    map.on('zoomend', function() {
+      if ( current_map_type !== 'area'){return;}
+      load_layer()
+    } )
+    map.on('dragend', function() {
+      if ( current_map_type !== 'area'){return;}
+      load_layer()
+    } )
+    async function load_layer() {
+      spinner.show()
+      // set geocode level, default to auto
+      let level = get_level()
 
-      // update info box on zoom
-      map.on('zoom', function() {
-        // document.getElementById('zoom').innerHTML = Math.floor(map.getZoom())
+      let bbox = map.getBounds()
 
-        let level = get_level()
-        let name = ''
-        if ( level === 'world') {
-          name = 'World'
-        } else if ( level === 'admin0') {
-          name = 'Country'
-        } else if ( level === 'admin1' ) {
-          name = 'State'
-        }
-        // document.getElementById('admin').innerHTML = name
-      })
-
-      // click controls
-      window.click_behavior = 'layer'
-
-      map.on('click', function( e ) {
-        // this section increments up the result on level because
-        // it corresponds better to the viewable user intent for details
-        let level = get_level()
-        if ( level === 'world' ) {
-          level = 'admin0'
-        }
-        else if ( level === 'admin0' ) {
-          level = 'admin1'
-        }
-        else if ( level === 'admin1' ) {
-          level = 'admin2'
-        }
-        load_detail_panel( e.lngLat.lng, e.lngLat.lat, level )
-      })
-
-      // Status
-      jQuery('#status').on('change', function() {
-        window.current_status = jQuery('#status').val()
-
-        makeRequest( "POST", obj.settings.totals_rest_url, { post_type: window.post_type, status: window.current_status} , obj.settings.totals_rest_base_url )
-        .done(grid_data=>{
-          window.previous_grid_id = 0
-          clear_area_map_layers()
-          window.grid_data = grid_data
-          close_geocode_details()
-
-          let lnglat = map.getCenter()
-          load_layer( lnglat.lng, lnglat.lat )
-        }).catch((e)=>{
-          console.log('error getting grid_totals')
-          console.log(e)
-        })
-
-      })
-      // load new layer on event
-      map.on('zoomend', function() {
-        let lnglat = map.getCenter()
-        load_layer( lnglat.lng, lnglat.lat, 'zoom' )
-      } )
-      map.on('dragend', function() {
-        let lnglat = map.getCenter()
-        load_layer( lnglat.lng, lnglat.lat, 'drag' )
-      } )
-      function load_layer( lng, lat, event_type ) {
-        $('#spinner').show()
-        // set geocode level, default to auto
-        let level = get_level()
-
-        console.log("api" + level);
-        let bbox = map.getBounds()
-        // geocode
-        makeRequest('GET', `${obj.settings.geocoder_url}dt-mapping/location-grid-list-api.php`,
-          {
+      let data = [{ grid_id:'1', parent_id:'1'}]
+      if ( level !== "world" ){
+        data = await makeRequest('GET', `${obj.settings.geocoder_url}dt-mapping/location-grid-list-api.php`,
+        {
             type: 'match_within_bbox',
             north_latitude: bbox._ne.lat,
             south_latitude: bbox._sw.lat,
@@ -556,102 +429,94 @@ jQuery(document).ready(function($) {
             nonce: obj.settings.geocoder_nonce
           }
         )
-        .done(data=>{
-          console.log(data);
-          // default layer to world
-          if ( level === 'world' ) {
-            data = ['1']
+      }
+
+      // default layer to world
+      if ( level === 'world' ) {
+        data = [{ grid_id:'1', parent_id:'1'}]
+      }
+
+      let status404 = window.SHAREDFUNCTIONS.get_json_cookie('geojson_failed', [] )
+
+      let loaded_ids = [];
+      data.forEach( res=>{
+        let grid_id = res.grid_id
+        let parent_id = res.parent_id
+        // is new test
+        if ( !_.find(window.previous_grid_list, {parent_id:parent_id}) && !status404.includes(parent_id) && !loaded_ids.includes(parent_id) ) {
+          loaded_ids.push(parent_id)
+
+          // is defined test
+          var mapLayer = map.getLayer(parent_id);
+          if(typeof mapLayer === 'undefined') {
+
+            // get geojson collection
+            jQuery.get( obj.settings.map_mirror + 'collection/' + parent_id + '.geojson', null, null, 'json')
+            .done(function (geojson) {
+              // add data to geojson properties
+              jQuery.each(geojson.features, function (i, v) {
+                if (window.grid_data[geojson.features[i].properties.id]) {
+                  geojson.features[i].properties.value = parseInt(window.grid_data[geojson.features[i].properties.id].count)
+                } else {
+                  geojson.features[i].properties.value = 0
+                }
+              })
+
+              // add source
+              map.addSource(parent_id.toString(), {
+                'type': 'geojson',
+                'data': geojson
+              });
+
+              // add fill layer
+              map.addLayer({
+                'id': parent_id.toString(),
+                'type': 'fill',
+                'source': parent_id.toString(),
+                'paint': {
+                  'fill-color': [
+                    'interpolate',
+                    ['linear'],
+                    ['get', 'value'],
+                    0,
+                    'rgba(0, 0, 0, 0)',
+                    1,
+                    '#547df8',
+                    50,
+                    '#3754ab',
+                    100,
+                    '#22346a'
+                  ],
+                  'fill-opacity': 0.75
+                }
+              });
+            }).catch(()=>{
+              status404.push(parent_id)
+              window.SHAREDFUNCTIONS.save_json_cookie( 'geojson_failed', status404, 'metrics' )
+            })// end get geojson collection
           }
+        } // end load new layer
+      })
+      window.previous_grid_list.forEach(grid_item=>{
+        let parent_id = grid_item.parent_id
+        let mapLayer = map.getLayer(parent_id.toString());
+        if(typeof mapLayer !== 'undefined' && !_.find(data, {parent_id:parent_id})) {
+          map.removeLayer( parent_id.toString() )
+          map.removeSource( parent_id.toString() )
+        }
+      })
+      window.previous_grid_list = data
+      spinner.hide()
+    } // end load section function
 
-          let status404 = window.SHAREDFUNCTIONS.get_json_cookie('geojson_failed', [] )
-
-          let loaded_ids = [];
-          data.forEach( grid_id=>{
-            // is new test
-            if ( !window.previous_grid_list.includes(grid_id) && !status404.includes(grid_id) ) {
-
-              // is defined test
-              var mapLayer = map.getLayer(grid_id);
-              if(typeof mapLayer === 'undefined') {
-
-                // get geojson collection
-                jQuery.get( obj.settings.map_mirror + 'collection/' + grid_id + '.geojson', null, null, 'json')
-                .done(function (geojson) {
-                  loaded_ids.push(grid_id)
-                  // add data to geojson properties
-                  jQuery.each(geojson.features, function (i, v) {
-                    if (window.grid_data[geojson.features[i].properties.id]) {
-                      geojson.features[i].properties.value = parseInt(window.grid_data[geojson.features[i].properties.id].count)
-                    } else {
-                      geojson.features[i].properties.value = 0
-                    }
-                  })
-
-                  // add source
-                  map.addSource(grid_id.toString(), {
-                    'type': 'geojson',
-                    'data': geojson
-                  });
-
-                  // add fill layer
-                  map.addLayer({
-                    'id': grid_id.toString(),
-                    'type': 'fill',
-                    'source': grid_id.toString(),
-                    'paint': {
-                      'fill-color': [
-                        'interpolate',
-                        ['linear'],
-                        ['get', 'value'],
-                        0,
-                        'rgba(0, 0, 0, 0)',
-                        1,
-                        '#547df8',
-                        50,
-                        '#3754ab',
-                        100,
-                        '#22346a'
-                      ],
-                      'fill-opacity': 0.75
-                    }
-                  });
-
-                  // // add border lines
-                  // map.addLayer({
-                  //   'id': grid_id.toString() + 'line',
-                  //   'type': 'line',
-                  //   'source': grid_id.toString(),
-                  //   'paint': {
-                  //     'line-color': 'black',
-                  //     'line-width': 1
-                  //   }
-                  // });
-                  // remove_layer( grid_id, event_type )
-                }).catch(e=>{
-                  status404.push(grid_id)
-                  console.log(e);
-                  window.SHAREDFUNCTIONS.save_json_cookie( 'geojson_failed', status404, 'metrics' )
-                })
-
-                // end get geojson collection
-              }
-            } // end load new layer
-          })
-          console.log(window.previous_grid_list);
-          window.previous_grid_list.forEach(id=>{
-            let mapLayer = map.getLayer(id.toString());
-            if(typeof mapLayer !== 'undefined' && !data.includes(id)) {
-              map.removeLayer( id.toString() )
-              // map.removeLayer( id.toString() + 'line' )
-              map.removeSource( id.toString() )
-            }
-          })
-          window.previous_grid_list = data
-          $('#spinner').hide()
-        }); // end geocode
-      } // end load section function
-
-      function load_detail_panel( lng, lat, level ) {
+    map.on('click', function( e ) {
+      if ( current_map_type !== 'area'){return;}
+      // this section increments up the result on level because
+      // it corresponds better to the viewable user intent for details
+      let level = get_level()
+      load_detail_panel( e.lngLat.lng, e.lngLat.lat, level )
+    })
+    function load_detail_panel( lng, lat, level ) {
 
         // standardize longitude
         if (lng > 180) {
@@ -667,7 +532,7 @@ jQuery(document).ready(function($) {
         }
 
         let content = jQuery('#geocode-details-content')
-        content.empty().html( spinner )
+        content.empty().html( spinner_html )
 
         jQuery('#geocode-details').show()
 
@@ -721,7 +586,7 @@ jQuery(document).ready(function($) {
           /* end hierarchy list */
 
           if ( details.admin2_grid_id !== null ) {
-            jQuery('#admin2_list').html( spinner )
+            jQuery('#admin2_list').html( spinner_html )
             makeRequest( "POST", obj.settings.area.list_grid_endpoint, { grid_id: details.admin2_grid_id, status: window.current_status } , obj.settings.rest_base_url )
             .done(list_by_grid=>{
               if ( list_by_grid.length > 0 ) {
@@ -731,7 +596,7 @@ jQuery(document).ready(function($) {
               }
             })
           } else if ( details.admin1_grid_id !== null ) {
-            jQuery('#admin1_list').html( spinner )
+            jQuery('#admin1_list').html( spinner_html )
             makeRequest( "POST", obj.settings.area.list_grid_endpoint, { grid_id: details.admin1_grid_id, status: window.current_status } , obj.settings.rest_base_url )
             .done(list_by_grid=>{
               if ( list_by_grid.length > 0 ) {
@@ -741,7 +606,7 @@ jQuery(document).ready(function($) {
               }
             })
           } else if ( details.admin0_grid_id !== null ) {
-            jQuery('#admin0_list').html( spinner )
+            jQuery('#admin0_list').html( spinner_html )
             makeRequest( "POST", obj.settings.area.list_grid_endpoint, { grid_id: details.admin0_grid_id, status: window.current_status } , obj.settings.rest_base_url )
             .done(list_by_grid=>{
               if ( list_by_grid.length > 0 ) {
@@ -756,59 +621,17 @@ jQuery(document).ready(function($) {
             let level_list = jQuery('#'+level)
             level_list.empty()
             jQuery.each(list_by_grid, function(i,v) {
-              level_list.append(`<div class="cell"><a href="${_.escape(window.wpApiShare.site_url)}/${_.escape( window.post_type )}/${_.escape( v.post_id )}">${_.escape( v.post_title ) }</a></div>`)
+              if ( i > 20 ){ return }
+              level_list.append(`<div class="cell"><a target="_blank" href="${_.escape(window.wpApiShare.site_url)}/${_.escape( window.post_type )}/${_.escape( v.post_id )}">${_.escape( v.post_title ) }</a></div>`)
             })
+            if ( list_by_grid.length > 20 ){
+              level_list.append(`<div class="cell">...</div>`)
+            }
           }
 
 
         }); // end geocode
       }
-      function get_level( ) {
-        let level = jQuery('#level').val()
-        console.log(map.getZoom());
-        level = 'world'
 
-        if ( map.getZoom() >= 4 ) {
-          level = 'admin0'
-        } if ( map.getZoom() >= 5.5 ){
-          level = 'admin1'
-        }
-
-        console.log(level);
-        return level;
-      }
-      function set_level( auto = false) {
-        if ( auto ) {
-          jQuery('#level :selected').attr('selected', false)
-          jQuery('#level').val('auto')
-        } else {
-          jQuery('#level :selected').attr('selected', false)
-          jQuery('#level').val(get_level())
-        }
-      }
-      function remove_layer( grid_id, event_type ) {
-        window.previous_grid_list.push( grid_id )
-        window.previous_grid_id = grid_id
-
-        if ( event_type === 'click' && window.click_behavior === 'add' ) {
-          window.click_add_list.push( grid_id )
-        }
-        else {
-          clear_area_map_layers ( grid_id )
-        }
-      }
-
-      function close_geocode_details() {
-        jQuery('#geocode-details').hide()
-      }
-
-      jQuery('.close-details').on('click', function() {
-        close_geocode_details()
-      })
-
-    }).catch(err=>{
-      console.log("error")
-      console.log(err)
-    })
   }
 })
