@@ -3,6 +3,7 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
+
 /**
  * @see   Disciple_Tools_Activity_Log_API::insert
  * @since 0.1.0
@@ -12,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) {
  * @return mixed
  */
 function dt_report_insert( $args = [] ) {
-    return disciple_tools()->logging_reports_api->insert( $args );
+    return Disciple_Tools_Reports_API::insert( $args );
 }
 
 /**
@@ -25,33 +26,40 @@ class Disciple_Tools_Reports_API
     /**
      * Insert Report into _reports and _reportmeta tables
      *
-     * @since  0.1.0
-     *
-     * @param  array $args
-     * @param        string|false   'report_date'
-     * @param        string 'report_source'
-     * @param        string 'report_subsource'
-     * @param        array  'meta_input' this is an array of meta_key and meta_value
-     *
-     * @return int/bool
+     * @param array $args
+     * @return false|int
      */
-    public function insert( $args ) {
+    public static function insert( array $args ) {
         global $wpdb;
+
+        if ( ! isset( $args['type'] ) ){
+            return false;
+        }
+
+        if ( ! isset( $args['post_id'] ) ){
+            $args['post_id'] = 0;
+        }
 
         $args = wp_parse_args(
             $args,
             [
-                'report_date'      => gmdate( 'Y-m-d' ),
-                'report_source'    => '',
-                'report_subsource' => '',
-                'focus'            => '',
-                'category'         => '',
-                'meta_input'       => [],
+                'hash' => null,
+                'subtype' => null,
+                'payload' => [],
+                'value' => 1,
+                'lng' => null,
+                'lat' => null,
+                'level' => null,
+                'label' => null,
+                'grid_id' => null,
+                'time_begin' => null,
+                'time_end' => time(),
+                'timestamp' => time(),
+                'meta_input' => [],
             ]
         );
 
-        $args['report_date'] = date_create( $args['report_date'] ); // Format submitted date
-        $args['report_date'] = date_format( $args['report_date'], "Y-m-d" );
+        $args['hash'] = hash( 'sha256', maybe_serialize( $args ) );
 
         // Make sure for non duplicate.
         $check_duplicate = $wpdb->get_row(
@@ -60,17 +68,8 @@ class Disciple_Tools_Reports_API
                     `id`
                 FROM
                     `$wpdb->dt_reports`
-                WHERE
-                    `report_date` = %s
-                    AND `report_source` = %s
-                    AND `report_subsource` = %s
-                    AND `focus` = %s
-                    AND `category` = %s",
-                $args['report_date'],
-                $args['report_source'],
-                $args['report_subsource'],
-                $args['focus'],
-                $args['category']
+                WHERE hash = %s;",
+                $args['hash']
             )
         );
 
@@ -81,22 +80,59 @@ class Disciple_Tools_Reports_API
         $wpdb->insert(
             $wpdb->dt_reports,
             [
-                'report_date'      => $args['report_date'],
-                'report_source'    => $args['report_source'],
-                'report_subsource' => $args['report_subsource'],
-                'focus'            => $args['focus'],
-                'category'         => $args['category'],
+                'hash' => $args['hash'],
+                'post_id' => $args['post_id'],
+                'type' => $args['type'],
+                'subtype' => $args['subtype'],
+                'payload' => maybe_serialize( $args['payload'] ),
+                'value' => $args['value'],
+                'lng' => $args['lng'],
+                'lat' => $args['lat'],
+                'level' => $args['level'],
+                'label' => $args['label'],
+                'grid_id' => $args['grid_id'],
+                'time_begin' => $args['time_begin'],
+                'time_end' => $args['time_end'],
+                'timestamp' => time(),
             ],
-            [ '%s', '%s', '%s', '%s', '%s' ]
+            [
+                '%s', // hash
+                '%d', // post_id
+                '%s', // type
+                '%s', // subtype
+                '%s', // payload
+                '%d', // value
+                '%f', // lng
+                '%f', // lat
+                '%s', // level
+                '%s', // label
+                '%d', // grid_id
+                '%d', // time_begin
+                '%d', // time_end
+                '%d', // timestamp
+            ]
         );
 
         $report_id = $wpdb->insert_id;
 
         if ( !empty( $args['meta_input'] ) ) {
-            foreach ( $args['meta_input'] as $field => $value ) {
-                $this->add_report_meta( $report_id, $field, $value );
+            foreach ( $args['meta_input'] as $meta_key => $meta_value ) {
+                self::add_meta( $report_id, $meta_key, $meta_value );
             }
         }
+
+        dt_activity_insert(
+            [
+                'action' => 'create_report',
+                'object_type' => $args['type'],
+                'object_subtype' => empty( $args['subtype'] ) ? ' ' : $args['subtype'],
+                'object_id' => $report_id,
+                'object_name' => 'report',
+                'meta_id'           => $args['post_id'],
+                'meta_key'          => 'post_id',
+                'object_note'       => __( 'Added new report', 'disciple_tools' ),
+            ]
+        );
 
         // Final action on insert.
         do_action( 'dt_insert_report', $args );
@@ -105,47 +141,136 @@ class Disciple_Tools_Reports_API
     }
 
     /**
-     * Add Report Metadata
+     * Update Report
      *
-     * @since 0.1.0
-     *
-     * @param  int    $report_id
-     * @param  string $field
-     * @param  string $value
-     *
-     * @return void
+     * @param array $args
+     * @return false|int
      */
-    private function add_report_meta( $report_id, $field, $value ) {
+    public static function update( array $args ) {
         global $wpdb;
 
-        $wpdb->insert(
-            $wpdb->dt_reportmeta,
-            [
-                'report_id'  => $report_id,
-                'meta_key'   => $field,
-                'meta_value' => $value,
-            ],
-            [ '%d', '%s', '%s' ]
-        );
-    }
+        if ( ! isset( $args['id'] ) ){
+            return false;
+        }
 
-    public function update_report_meta( $report_id, $field, $value ){
-        global $wpdb;
+        $current_report = self::get( $args['id'], 'id' );
+        $current_report['meta'] = self::get_meta( $args['id'] );
+
+        $args = wp_parse_args( $args, $current_report );
+
+        if ( isset( $args['hash'] ) ){
+            unset( $args['hash'] );
+        }
+        $args['hash'] = hash( 'sha256', maybe_serialize( $args ) );
+
         $wpdb->update(
-            $wpdb->dt_reportmeta,
+            $wpdb->dt_reports,
             [
-                'meta_value' => $value,
+                'hash' => $args['hash'],
+                'post_id' => $args['post_id'],
+                'type' => $args['type'],
+                'subtype' => $args['subtype'],
+                'payload' => maybe_serialize( $args['payload'] ),
+                'value' => $args['value'],
+                'lng' => $args['lng'],
+                'lat' => $args['lat'],
+                'level' => $args['level'],
+                'label' => $args['label'],
+                'grid_id' => $args['grid_id'],
+                'time_begin' => $args['time_begin'],
+                'time_end' => $args['time_end'],
+                'timestamp' => time(),
             ],
             [
-                'report_id'  => $report_id,
-                'meta_key'   => $field,
+                'id' => $args['id'],
             ],
-            [ '%s' ],
-            [ '%d', '%s' ]
+            [
+                '%s', // hash
+                '%d', // post_id
+                '%s', // type
+                '%s', // subtype
+                '%s', // payload
+                '%d', // value
+                '%f', // lng
+                '%f', // lat
+                '%s', // level
+                '%s', // label
+                '%d', // grid_id
+                '%d', // time_begin
+                '%d', // time_end
+                '%d', // timestamp
+            ]
         );
+
+        $report_id = $wpdb->insert_id;
+
+        if ( !empty( $args['meta_input'] ) ) {
+            foreach ( $args['meta_input'] as $meta_key => $meta_value ) {
+                self::add_meta( $report_id, $meta_key, $meta_value );
+            }
+        }
+
+        dt_activity_insert(
+            [
+                'action' => 'update_report',
+                'object_type' => $args['type'],
+                'object_subtype' => $args['subtype'],
+                'object_id' => $report_id,
+                'object_name' => 'report',
+                'meta_id'      => $args['post_id'],
+                'meta_key'     => 'post_id',
+                'object_note'  => __( 'Updated report', 'disciple_tools' ),
+            ]
+        );
+
+        // Final action on insert.
+        do_action( 'dt_update_report', $args );
+
+        return $report_id;
     }
 
-    public function delete_report( $report_id ){
+    /**
+     * Get report
+     *
+     * @param $value
+     * @param $type string (post_id, id)
+     * @return array|false|object|null
+     */
+    public static function get( $value, $type ) : array {
+        global $wpdb;
+        $report = [];
+        switch ( $type ){
+
+            case 'post_id':
+                $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->dt_reports WHERE post_id = %s", $value ), ARRAY_A );
+                if ( ! empty( $results ) ) {
+                    foreach ( $results as $index => $result ){
+                        if ( isset( $result['payload'] ) ){
+                            $results[$index]['payload'] = maybe_unserialize( $result['payload'] );
+                        }
+                    }
+                    $report = $results;
+                }
+                break;
+
+            case 'id':
+                $results = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_reports WHERE id = %s", $value ), ARRAY_A );
+                if ( ! empty( $results ) ) {
+                    $results['payload'] = maybe_unserialize( $results['payload'] );
+                    $report = $results;
+                }
+                break;
+        }
+
+        return $report;
+    }
+
+    /**
+     * Delete report
+     *
+     * @param $report_id
+     */
+    public static function delete( $report_id ){
         global $wpdb;
         $wpdb->delete(
             $wpdb->dt_reports,
@@ -160,27 +285,68 @@ class Disciple_Tools_Reports_API
     }
 
     /**
-     * @param $report_source
+     * Add Report Metadata
      *
-     * @return array|null|object
+     * @since 0.1.0
+     *
+     * @param  int    $report_id
+     * @param  string $meta_key
+     * @param  string $meta_value
+     *
+     * @return void
      */
-    public function get_reports_by_source( $report_source ) {
+    public static function add_meta( $report_id, $meta_key, $meta_value ) {
         global $wpdb;
 
-        $results = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT
-                    *
-                FROM
-                    `$wpdb->dt_reports`
-                WHERE
-                    `report_source` = %s",
-                $report_source
-            )
+        $wpdb->insert(
+            $wpdb->dt_reportmeta,
+            [
+                'report_id'  => $report_id,
+                'meta_key'   => $meta_key,
+                'meta_value' => $meta_value,
+            ],
+            [ '%d', '%s', '%s' ]
         );
-
-        return $results;
     }
+
+    /**
+     * Get all meta for a record
+     *
+     * @param $report_id
+     * @return array
+     */
+    public static function get_meta( $report_id ) : array {
+        global $wpdb;
+        $meta = [];
+        $results = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key, meta_value FROM $wpdb->dt_reportmeta WHERE report_id = %s", $report_id ), ARRAY_A );
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ){
+                $meta[$result['meta_key']] = $result[$result['meta_value']];
+            }
+        }
+        return $meta;
+    }
+
+    public static function update_meta( $report_id, $meta_key, $meta_value ){
+        global $wpdb;
+        $wpdb->update(
+            $wpdb->dt_reportmeta,
+            [
+                'meta_value' => $meta_value,
+            ],
+            [
+                'report_id'  => $report_id,
+                'meta_key'   => $meta_key,
+            ],
+            [ '%s' ],
+            [ '%d', '%s' ]
+        );
+    }
+
+
+
+
+
 
     /**
      * Gets a single report including metadata by the report id
@@ -234,7 +400,7 @@ class Disciple_Tools_Reports_API
      *
      * @return mixed
      */
-    public function get_meta_value( $id, $key ) {
+    public function get_report_meta( $id, $meta_key ) {
         global $wpdb;
 
         // Get all metadata values for the report
@@ -248,321 +414,11 @@ class Disciple_Tools_Reports_API
                     `report_id` = %s
                     AND `meta_key` = %s",
                 $id,
-                $key
+                $meta_key
             ),
             ARRAY_A
         );
 
         return $meta_value['meta_value'];
     }
-
-    /**
-     * Get meta key total
-     *
-     * @param        $date
-     * @param        $source
-     * @param        $meta_key
-     * @param string $type
-     *
-     * @return int
-     * @throws \Exception Type should be one of sum max min and average.
-     */
-    public function get_meta_key_total( $date, $source, $meta_key, $type = 'sum' ) {
-        global $wpdb;
-        $results_int = 0;
-
-        if ( !in_array( strtolower( $type ), [ 'sum', 'max', 'min', 'average' ], true ) ) {
-            throw new Exception( "Type should be one of sum max min and average" );
-        }
-
-        if ( !preg_match( '/^[a-zA-Z_]+$/', $meta_key ) ) {
-            throw new Exception( "To protect against SQL injection attacks, only [a-zA-Z_]+ meta_key arguments are accepted, not $meta_key" );
-        }
-
-        $results = $wpdb->get_results( $wpdb->prepare(
-            "SELECT "
-            . " %s AS %s
-                FROM
-                    `$wpdb->dt_reports`
-                RIGHT JOIN
-                    `$wpdb->dt_reportmeta`
-                ON
-                    `$wpdb->dt_reports`.id = `$wpdb->dt_reportmeta`.report_id
-                WHERE
-                    `$wpdb->dt_reports`.report_date LIKE %s
-                    AND `$wpdb->dt_reports`.report_source = %s
-                    AND `$wpdb->dt_reportmeta`.meta_key = %s",
-            $type . '( `meta_value` )',
-            $meta_key,
-            $wpdb->esc_like( $date ) . '%',
-            $source,
-            $meta_key
-        ), ARRAY_A );
-
-        if ( isset( $results[0] ) ) {
-            $results_int = $results[0][ $meta_key ];
-        }
-
-        return (int) $results_int;
-    }
-
-    /**
-     * Gets report ids by date
-     *
-     * @param  $date      string     This is the supplied date for the report gmdate('Y-m-d') format
-     * @param  $source    string    (optional) This argument limits the results to a certain source
-     * @param  $subsource string (optional) This argument further limits the results to a specific subsource of the source. Source is still required, in case of subsource naming conflicts.
-     *
-     * @return array            Returns list of ids that match date and other arguments.
-     */
-    public function get_report_ids_by_date( $date, $source = null, $subsource = null ) {
-        global $wpdb;
-
-        if ( !empty( $subsource ) && !empty( $source ) ) {
-            // Build full query
-            $results = $wpdb->get_results( $wpdb->prepare(
-                "SELECT
-                    id
-                FROM
-                    `$wpdb->dt_reports`
-                WHERE
-                    `report_date` LIKE %s,
-                    AND `report_source` = %s,
-                    AND `report_subsource` = %s",
-                $wpdb->esc_like( $date ) . '%',
-                $source,
-                $subsource
-            ), ARRAY_A );
-        } elseif ( !empty( $source ) ) {
-            // Build limited query
-            $results = $wpdb->get_results( $wpdb->prepare(
-                "SELECT
-                    id
-                FROM
-                    `$wpdb->dt_reports`
-                WHERE
-                    `report_date` LIKE %s
-                    AND `report_source` = %s",
-                $wpdb->esc_like( $date ) . '%',
-                $source
-            ), ARRAY_A );
-        } else {
-            // Build date query
-            $results = $wpdb->get_results( $wpdb->prepare(
-                "SELECT
-                    id
-                FROM
-                    `$wpdb->dt_reports`
-                WHERE
-                    `report_date` LIKE %s",
-                $wpdb->esc_like( $date ) . '%'
-            ), ARRAY_A );
-        }
-
-        return $results;
-    }
-
-    /**
-     * Gets full reports with metadata for a single date, and can be filtered by source and subsource
-     *
-     * @param  $date       string      (required) This is a date formated '2017-03-22'
-     * @param  $source     string      (optional) This is the source
-     * @param  $subsource  string  (optional) If this is supplied, the source must also be supplied.
-     *
-     * @return array
-     */
-    public function get_reports_by_date( $date, $source = null, $subsource = null ) {
-        $report = [];
-        $i = 0;
-
-        // get the ids
-        $results = $this->get_report_ids_by_date( $date, $source, $subsource );
-
-        // build full record by the id
-        foreach ( $results as $result ) {
-            $report[ $i ] = $this->get_report_by_id( $result['id'] );
-            $i++;
-        }
-
-        return $report;
-    }
-
-    /**
-     * Get the reports for a year, month, and day ranges based on source and optional subsource
-     *
-     * @param  $date       string  (required)  The month is a formated year and month. 2017-03
-     * @param  $source     string  (required)  The source
-     * @param  $subsource  string  (optional)  The subsource
-     * @param  $id_only    boolean (optional)  By default this is true and will return the ids records, but if set to true it will return only IDs of reports in this date range.
-     *
-     * @return array
-     */
-    public function get_month_by_source( $date, $source, $subsource = '', $id_only = true ) {
-
-        global $wpdb;
-        $results = [];
-
-        // check required fields
-        if ( empty( $date ) || empty( $source ) ) {
-            $results['error'] = 'required fields error';
-
-            return $results;
-        }
-
-        // prepare sql
-        if ( !empty( $subsource ) ) {
-            // Build full query
-            $results = $wpdb->get_results( $wpdb->prepare(
-                "SELECT %s
-                FROM `$wpdb->dt_reports`
-                WHERE
-                    `report_date` LIKE %s
-                    AND `report_source` = %s
-                    AND `report_subsource` = %s",
-                ( $id_only ? "id " : "* " ),
-                $wpdb->esc_like( $date ) . '%',
-                $source,
-                $subsource
-            ), ARRAY_A );
-        } else {
-            // Build full query
-            $results = $wpdb->get_results( $wpdb->prepare(
-                "SELECT %s FROM
-                    `$wpdb->dt_reports`
-                WHERE
-                    `report_date` LIKE %s
-                    AND `report_source` = %s",
-                ( $id_only ? "id " : "* " ),
-                $wpdb->esc_like( $date ) . '%',
-                $source
-            ), ARRAY_A );
-        }
-
-        return $results;
-    }
-
-    /**
-     * Gets full reports with metadata for a single date, and can be filtered by source and subsource
-     *
-     * @param  $date       string      (required) This is a date formated '2017-03-22'
-     * @param  $source     string      (optional) This is the source
-     * @param  $subsource  string  (optional) If this is supplied, the source must also be supplied.
-     *
-     * @return mixed
-     */
-    public function get_month_by_source_full( $date, $source, $subsource ) {
-        $report = [];
-        $i = 0;
-        $results = $this->get_month_by_source( $date, $source, $subsource, true );
-
-        foreach ( $results as $result ) {
-            $report[ $i ] = $this->get_report_by_id( $result['id'] );
-            $i++;
-        }
-
-        return $report;
-    }
-
-    /**
-     * Get last value
-     *
-     * @param        $source
-     * @param        $meta_key
-     * @param string $subsource
-     *
-     * @return bool|int
-     */
-    public function get_last_value( $source, $meta_key, $subsource = '' ) {
-
-        //        global $wpdb;
-        //        $today = gmdate( 'Y-m-d' );
-
-        if ( empty( $source ) || empty( $meta_key ) ) {
-            return false;
-        }
-
-        // check for recent date
-        if ( !empty( $subsource ) ) {
-            // loop date to find match with source and subsource
-
-            // select meta value
-            $count = 0;
-        } else {
-            // loop date to find all matches with source
-
-            // select meta values and add
-            $count = 0;
-        }
-
-        return $count;
-    }
-
-    /**
-     * @param $source
-     *
-     * @return bool
-     */
-    public static function get_last_record_of_source( $source ) {
-        global $wpdb;
-        if ( empty( $source ) ) {
-            return false;
-        }
-
-        $results = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT
-                    *
-                FROM
-                    `$wpdb->dt_reports`
-                WHERE
-                    `report_source` = %s
-                    AND report_date = (select max(report_date) from `$wpdb->dt_reports` where `report_source` = %s)",
-                $source,
-                $source
-            )
-        );
-
-        if ( sizeof( $results ) > 0 ) {
-            return $results[0];
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @param $source
-     * @param $subsource
-     *
-     * @return bool
-     */
-    public static function get_last_record_of_source_and_subsource( $source, $subsource ) {
-        global $wpdb;
-        if ( empty( $source ) ) {
-            return false;
-        }
-
-        $results = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT
-                    *
-                FROM
-                    `$wpdb->dt_reports`
-                WHERE
-                    `report_source` = %s
-                    AND `report_subsource` = %s
-                    AND report_date = (select max(report_date) from `$wpdb->dt_reports` where `report_source` = %s AND `report_subsource` = %s)",
-                $source,
-                $subsource,
-                $source,
-                $subsource
-            )
-        );
-
-        if ( sizeof( $results ) > 0 ) {
-            return $results[0];
-        } else {
-            return false;
-        }
-    }
-
 }

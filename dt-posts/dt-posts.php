@@ -1235,7 +1235,6 @@ class DT_Posts extends Disciple_Tools_Posts {
 
     }
 
-
     public static function get_post_field_settings( $post_type, $load_from_cache = true, $with_deleted_options = false ){
         $cached = wp_cache_get( $post_type . "_field_settings" );
         if ( $load_from_cache && $cached ){
