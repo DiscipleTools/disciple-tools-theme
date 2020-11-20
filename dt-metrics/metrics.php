@@ -49,6 +49,8 @@ class Disciple_Tools_Metrics
 
             require_once( get_template_directory() . '/dt-metrics/metrics-mapping.php' );
 
+            require_once( get_template_directory() . '/dt-metrics/combined/mapbox-maps.php' );
+
             /* Contacts */
             if ( !empty( $modules["dmm_module"]["enabled"] ) ){
                 require_once( get_template_directory() . '/dt-metrics/contacts/baptism-tree.php' );
@@ -64,9 +66,7 @@ class Disciple_Tools_Metrics
 
             /* Groups */
             require_once( get_template_directory() . '/dt-metrics/groups/tree.php' );
-            require_once( get_template_directory() . '/dt-metrics/groups/mapbox-cluster-map.php' );
-            require_once( get_template_directory() . '/dt-metrics/groups/mapbox-point-map.php' );
-            require_once( get_template_directory() . '/dt-metrics/groups/mapbox-area-map.php' );
+            require_once( get_template_directory() . '/dt-metrics/groups/mapbox-maps.php' );
             require_once( get_template_directory() . '/dt-metrics/groups/overview.php' );
 
             // Combined

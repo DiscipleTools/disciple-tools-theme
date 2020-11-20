@@ -3,7 +3,7 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
-class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
+class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
 {
 
     //slug and title of the top menu folder
@@ -11,7 +11,7 @@ class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
     public $base_title;
 
     public $title;
-    public $slug = 'mapbox_maps'; // lowercase
+    public $slug = 'mapbox_combined_maps'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/common/maps_library.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
@@ -25,7 +25,7 @@ class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->title = __( 'Access Contact Maps', 'disciple_tools' );
+        $this->title = __( 'Combined Maps', 'disciple_tools' );
         $this->base_title = __( 'Contacts', 'disciple_tools' );
 
         $url_path = dt_get_url_path();
@@ -47,7 +47,16 @@ class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
             filemtime( get_theme_file_path() .  $this->js_file_name ),
             true
         );
-        $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
+        wp_enqueue_script( 'dt_mapbox_caller',
+            get_template_directory_uri() .  '/dt-metrics/combined/combined.js',
+            [
+                'jquery',
+                'lodash',
+                'dt_mapbox_script'
+            ],
+            filemtime( get_theme_file_path() .  '/dt-metrics/combined/combined.js' ),
+            true
+        );
         wp_localize_script(
             'dt_mapbox_script', 'dt_mapbox_metrics', [
                 'translations' => [
@@ -115,13 +124,9 @@ class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
         if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
             return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
         }
+        $post_type = $params['post_type'];
 
-        $status = null;
-        if ( isset( $params['status'] ) && $params['status'] !== 'all' ) {
-            $status = sanitize_text_field( wp_unslash( $params['status'] ) );
-        }
-
-        return DT_Metrics_Mapping_Queries::cluster_geojson( "contacts", [ "type" => [ "access" ], "overall_status" => [ "-closed" ] ] );
+        return DT_Metrics_Mapping_Queries::cluster_geojson( $post_type );
     }
 
 
@@ -134,13 +139,9 @@ class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
         if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
             return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
         }
+        $post_type = $params['post_type'];
 
-        $status = null;
-        if ( isset( $params['status'] ) && $params['status'] !== 'all' ) {
-            $status = sanitize_text_field( wp_unslash( $params['status'] ) );
-        }
-
-        $results = DT_Metrics_Mapping_Queries::query_location_grid_meta_totals( "contacts", [ "type" => [ "access" ], "overall_status" => [ "-closed" ] ] );
+        $results = DT_Metrics_Mapping_Queries::query_location_grid_meta_totals( $post_type, [] );
 
         $list = [];
         foreach ( $results as $result ) {
@@ -158,12 +159,12 @@ class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
         }
         $grid_id = sanitize_text_field( wp_unslash( $params['grid_id'] ) );
 
-        $status = null;
-        if ( isset( $params['status'] ) && $params['status'] !== 'all' ) {
-            $status = sanitize_text_field( wp_unslash( $params['status'] ) );
+        if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
+            return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
         }
+        $post_type = $params['post_type'];
 
-        return DT_Metrics_Mapping_Queries::query_under_location_grid_meta_id( "contacts", $grid_id, [ "type" => [ "access" ], "overall_status" => [ "-closed" ] ] );
+        return DT_Metrics_Mapping_Queries::query_under_location_grid_meta_id( $post_type, $grid_id, [] );
     }
 
 
@@ -179,15 +180,11 @@ class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
         if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
             return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
         }
+        $post_type = $params['post_type'];
 
-        $status = null;
-        if ( isset( $params['status'] ) && $params['status'] !== 'all' ) {
-            $status = sanitize_text_field( wp_unslash( $params['status'] ) );
-        }
-
-        return DT_Metrics_Mapping_Queries::points_geojson( "contacts", [ "type" => [ "access" ], "overall_status" => [ "-closed" ] ] );
+        return DT_Metrics_Mapping_Queries::points_geojson( $post_type );
     }
 
 
 }
-new DT_Metrics_Mapbox_Contacts_Maps();
+new DT_Metrics_Mapbox_Combined_Maps();
