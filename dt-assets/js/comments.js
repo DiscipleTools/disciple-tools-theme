@@ -8,6 +8,7 @@ jQuery(document).ready(function($) {
   let rest_api = window.API;
 
   let comments = [];
+  let rootComments = [];
   let activity = []; // not guaranteed to be in any particular order
   let langcode = document.querySelector("html").getAttribute("lang")
     ? document
@@ -138,12 +139,13 @@ jQuery(document).ready(function($) {
     <% _.forEach(activity, function(a){
         if (a.comment){ %>
           <% is_Comment = true; %>
-            <div dir="auto" class="comment-bubble <%- a.comment_ID %>">
+            <div dir="auto" id= "comment-<%- a.comment_ID%>" class="comment-bubble <%- a.comment_ID %>">
               <div class="comment-text" title="<%- date %>" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
             </div>
             <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate' ) { %>
               <div class="translation-bubble" dir=auto></div>
             <% } %>
+
             <p class="comment-controls">
                <% if ( a.comment_ID ) { %>
                 <% has_Comment_ID = true %>
@@ -161,6 +163,7 @@ jQuery(document).ready(function($) {
                   </a>
                <% } %>
             </p>
+              <a href="#" role="button" class="reply" id="reply-<%- a.comment_ID%>">Reply</a>
         <% } else { %>
             <p class="activity-bubble" title="<%- date %>">  <%- a.text %> <% print(a.action) %> </p>
         <%  }
@@ -257,6 +260,60 @@ jQuery(document).ready(function($) {
     translation_bubble.empty();
     $(this).addClass("hide");
     translate_button.removeClass("hide");
+  });
+
+  $(document).on("click", ".reply", function() {
+    let id = this.id.split("reply-")[1];
+    let inputElem = `
+    					<li id="input-${id}">
+    						<textarea rows="5" id="content-${id}" class="comment-box" placeholder="Your reply...."></textarea>
+    						<div>
+    							<button id="addreply-${id}" class="add-btn">Submit</button>
+    						</div>
+    					</li>
+    					`;
+
+    let childListElemId = `childlist-${id}`;
+    let childListElem = document.getElementById(childListElemId);
+
+    if (childListElem == null) {
+      childListElem = `<ul id="childlist-${id}"> ${inputElem} </ul>`;
+      document.getElementById(`comment-${id}`).innerHTML += childListElem;
+    } else {
+      childListElem.innerHTML = inputElem + childListElem.innerHTML;
+    }
+  });
+
+  $(document).on("click", ".add-btn", function() {
+    let commentType = $("#comment_type_selector").val();
+
+    // const id = this.id;
+    // console.dir(id);
+    const comment_parent = this.id.split("addreply-")[1];
+    let content = document.getElementById(`content-${comment_parent}`).value;
+    // post_type, postId, comment, (comment_type = "comment");
+    rest_api
+      .post_comment(postType, postId, content, commentType, comment_parent)
+      .then(data => {
+        let updated_comment = data.comment || data;
+
+        updated_comment.date = moment(updated_comment.comment_date_gmt + "Z");
+
+        comments.push(updated_comment);
+        rootComments.push(updated_comment);
+
+        //       if(parent != null) {
+        // 	commentArr[parent].childrenIds.push(commentArr.length-1);
+        // }
+        display_activity_comment();
+
+        $("#content")[0].dispatchEvent(commentPostedEvent);
+      })
+      .catch(err => {
+        console.log("error");
+        console.log(err);
+        jQuery("#errors").append(err.responseText);
+      });
   });
 
   $(document).on("click", ".open-delete-comment", function() {
@@ -363,12 +420,15 @@ jQuery(document).ready(function($) {
     let commentsWrapper = $("#comments-wrapper");
     commentsWrapper.empty();
     let displayed = [];
-    if (!hiddenTabs.includes("activity")) {
-      displayed = _.union(displayed, activity);
-    }
+
     comments.forEach(comment => {
-      if (!hiddenTabs.includes(comment.comment_type)) {
-        displayed.push(comment);
+      if (comments.length) {
+        if (!hiddenTabs.includes("activity")) {
+          displayed = _.union(displayed, activity);
+        }
+        if (!hiddenTabs.includes(comment.comment_type)) {
+          displayed.push(comment);
+        }
       }
     });
     displayed = _.orderBy(displayed, "date", "desc");
@@ -384,6 +444,7 @@ jQuery(document).ready(function($) {
         );
       }
       let first = _.first(array);
+
       let name = d.comment_author || d.name;
       let gravatar = d.gravatar || "";
       let obj = {
@@ -462,6 +523,7 @@ jQuery(document).ready(function($) {
   });
 
   let refreshActivity = () => {
+    console.log("refreshing now");
     get_all();
   };
 
@@ -528,6 +590,7 @@ jQuery(document).ready(function($) {
       .then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
         $("#comments-activity-spinner.loading-spinner").removeClass("active");
         const commentData = commentDataStatusJQXHR[0].comments;
+
         const activityData = activityDataStatusJQXHR[0].activity;
         prepareData(commentData, activityData);
       })
@@ -540,9 +603,10 @@ jQuery(document).ready(function($) {
   }
 
   let prepareData = function(commentData, activityData) {
+    // console.log(comments);
+    // console.log(commentsSettings.comments.comments);
     let typesCount = {};
     commentData.forEach(comment => {
-      console.log("test");
       comment.date = moment(comment.comment_date_gmt + "Z");
 
       /* comment_content should be HTML. However, we want to make sure that
