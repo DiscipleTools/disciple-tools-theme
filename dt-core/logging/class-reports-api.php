@@ -126,10 +126,10 @@ class Disciple_Tools_Reports_API
                 'action' => 'create_report',
                 'object_type' => $args['type'],
                 'object_subtype' => empty( $args['subtype'] ) ? ' ' : $args['subtype'],
-                'object_id' => $report_id,
+                'object_id' => $args['post_id'],
                 'object_name' => 'report',
-                'meta_id'           => $args['post_id'],
-                'meta_key'          => 'post_id',
+                'meta_id'           => $report_id ,
+                'meta_key'          => ' ',
                 'object_note'       => __( 'Added new report', 'disciple_tools' ),
             ]
         );
@@ -215,10 +215,10 @@ class Disciple_Tools_Reports_API
                 'action' => 'update_report',
                 'object_type' => $args['type'],
                 'object_subtype' => $args['subtype'],
-                'object_id' => $report_id,
+                'object_id' => $args['post_id'],
                 'object_name' => 'report',
-                'meta_id'      => $args['post_id'],
-                'meta_key'     => 'post_id',
+                'meta_id'      => $report_id,
+                'meta_key'     => ' ',
                 'object_note'  => __( 'Updated report', 'disciple_tools' ),
             ]
         );
