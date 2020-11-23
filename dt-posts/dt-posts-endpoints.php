@@ -462,20 +462,29 @@ class Disciple_Tools_Posts_Endpoints {
     }
 
     public function add_comment( WP_REST_Request $request ){
+
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
         $body = $request->get_json_params() ?? $request->get_body_params();
         $silent = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
         $args = [];
+
+
         if ( isset( $body["date"] ) ){
             $args["comment_date"] = $body["date"];
         }
+
         $type = 'comment';
         if ( isset( $body["comment_type"] ) ){
             $type = $body["comment_type"];
         }
 
-        $result = DT_Posts::add_post_comment( $url_params["post_type"], $url_params["id"], $body["comment"], $type, $args, true, $silent );
+        if ( isset( $body["comment_parent"] ) ){
+            $args["comment_parent"] = $body["comment_parent"];
+        }
+
+
+        $result = DT_Posts::add_post_comment( $url_params["post_type"], $url_params["id"], $body["comment"],$type, $args, true, $silent );
         if ( is_wp_error( $result ) ) {
             return $result;
         } else {

@@ -475,10 +475,11 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function post_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
+
         $body = $request->get_json_params() ?? $request->get_body_params();
         $silent = isset( $params["silent"] ) && ( $params["silent"] === "true" || $params["silent"] == true );
         if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
-            $result = DT_Posts::add_post_comment( 'contacts', $params['id'], $body["comment"], 'comment', [ "comment_date" => $body["date"] ?? null ], true, $silent );
+            $result = DT_Posts::add_post_comment( 'contacts', $params['id'], $body["comment"], 'comment', [ "comment_date" => $body["date"] ?? null ], true, $silent, $body["comment_parent"]);
 
             if ( is_wp_error( $result ) ) {
                 return $result;
@@ -487,7 +488,8 @@ class Disciple_Tools_Contacts_Endpoints
 
                 return new WP_REST_Response( [
                     "comment_id" => $result,
-                    "comment" => $comment
+                    "comment" => $comment,
+
                 ] );
             }
         } else {
@@ -510,7 +512,7 @@ class Disciple_Tools_Contacts_Endpoints
             );
         }
         if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
-            $result = DT_Posts::add_post_comment( 'contacts', $params['id'], $body["comment"], "comment", [ "comment_date" => $body["date"] ?? null ], false, $silent );
+            $result = DT_Posts::add_post_comment( 'contacts', $params['id'], $body["comment"], "comment", [ "comment_date" => $body["date"] ?? null ], false, $silent ,$body["comment_parent"] );
 
             if ( is_wp_error( $result ) ) {
                 return $result;

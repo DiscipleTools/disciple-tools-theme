@@ -684,7 +684,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @return false|int|WP_Error
      */
-    public static function add_post_comment( string $post_type, int $post_id, string $comment_html, string $type = "comment", array $args = [], bool $check_permissions = true, $silent = false ) {
+    public static function add_post_comment( string $post_type, int $post_id, string $comment_html, string $type = "comment",  array $args = [], bool $check_permissions = true, $silent = false ) {
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
@@ -699,6 +699,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'comment_post_ID'      => $post_id,
                 'comment_content'      => wp_kses($comment, self::$allowable_comment_tags),
                 'user_id'              => $user_id,
+                'comment_parent'       => $args["comment_parent"],
                 'comment_author'       => $args["comment_author"] ?? $user->display_name,
                 'comment_author_url'   => $args["comment_author_url"] ?? "",
                 'comment_author_email' => $user->user_email,
@@ -1170,5 +1171,3 @@ class DT_Posts extends Disciple_Tools_Posts {
 
     }
 }
-
-
