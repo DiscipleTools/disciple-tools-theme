@@ -39,12 +39,9 @@ class Disciple_Tools_Metrics
             //require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
             //require_once( get_template_directory() . '/dt-metrics/personal/baptism-tree.php' );
             //require_once( get_template_directory() . '/dt-metrics/personal/group-tree.php' );
-            require_once( get_template_directory() . '/dt-metrics/personal/mapbox-groups-cluster-map.php' );
-            require_once( get_template_directory() . '/dt-metrics/personal/mapbox-groups-point-map.php' );
-            require_once( get_template_directory() . '/dt-metrics/personal/mapbox-groups-area-map.php' );
-            require_once( get_template_directory() . '/dt-metrics/personal/mapbox-contacts-cluster-map.php' );
-            require_once( get_template_directory() . '/dt-metrics/personal/mapbox-contacts-point-map.php' );
-            require_once( get_template_directory() . '/dt-metrics/personal/mapbox-contacts-area-map.php' );
+
+            require_once( get_template_directory() . '/dt-metrics/personal/mapbox-contacts-maps.php' );
+            require_once( get_template_directory() . '/dt-metrics/personal/mapbox-groups-maps.php' );
             require_once( get_template_directory() . '/dt-metrics/personal/overview.php' );
 
             require_once( get_template_directory() . '/dt-metrics/metrics-mapping.php' );
@@ -58,8 +55,8 @@ class Disciple_Tools_Metrics
                 require_once( get_template_directory() . '/dt-metrics/contacts/milestones.php' );
                 require_once( get_template_directory() . '/dt-metrics/contacts/milestones-map.php' );
             }
-            require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-maps.php' );
             if ( !empty( $modules["access_module"]["enabled"] ) ){
+                require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-maps.php' );
                 require_once( get_template_directory() . '/dt-metrics/contacts/sources.php' );
                 require_once( get_template_directory() . '/dt-metrics/contacts/overview.php' );
             }

@@ -9,6 +9,7 @@ class DT_Metrics_Mapbox_Groups_Maps extends DT_Metrics_Chart_Base
     //slug and title of the top menu folder
     public $base_slug = 'groups'; // lowercase
     public $base_title;
+    public $post_type = 'groups';
 
     public $title;
     public $slug = 'mapbox_groups_maps'; // lowercase
@@ -16,6 +17,7 @@ class DT_Metrics_Mapbox_Groups_Maps extends DT_Metrics_Chart_Base
     public $js_file_name = '/dt-metrics/common/maps_library.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_groups', 'view_project_metrics' ];
     public $namespace = 'dt-metrics/groups/';
+    public $base_filter = [];
 
     public function __construct() {
         if ( ! DT_Mapbox_API::get_key() ) {
@@ -48,11 +50,9 @@ class DT_Metrics_Mapbox_Groups_Maps extends DT_Metrics_Chart_Base
             filemtime( get_theme_file_path() .  $this->js_file_name ),
             true
         );
+        $field_settings = DT_Posts::get_post_field_settings( $this->post_type );
         wp_localize_script(
             'dt_mapbox_script', 'dt_mapbox_metrics', [
-                'translations' => [
-                    'title' => __( "Mapping", "disciple_tools" ),
-                ],
                 'settings' => [
                     'map_key' => DT_Mapbox_API::get_key(),
                     'map_mirror' => dt_get_location_grid_mirror( true ),
@@ -66,6 +66,8 @@ class DT_Metrics_Mapbox_Groups_Maps extends DT_Metrics_Chart_Base
                     'totals_rest_url' => 'get_grid_totals',
                     'list_by_grid_rest_url' => 'get_list_by_grid_id',
                     'points_rest_url' => 'points_geojson',
+
+                    'split_by' => [ "group_status" => $field_settings["group_status"] ],
                 ],
             ]
         );
@@ -116,8 +118,10 @@ class DT_Metrics_Mapbox_Groups_Maps extends DT_Metrics_Chart_Base
             return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
         }
         $post_type = $params['post_type'];
+        $query = ( isset( $params["query"] ) && !empty( $params["query"] ) ) ? $params["query"] : [];
+        $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
 
-        return DT_Metrics_Mapping_Queries::cluster_geojson( $post_type );
+        return DT_Metrics_Mapping_Queries::cluster_geojson( $post_type, $query );
     }
 
 
@@ -131,8 +135,9 @@ class DT_Metrics_Mapbox_Groups_Maps extends DT_Metrics_Chart_Base
             return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
         }
         $post_type = $params['post_type'];
-
-        $results = DT_Metrics_Mapping_Queries::query_location_grid_meta_totals( $post_type, [] );
+        $query = ( isset( $params["query"] ) && !empty( $params["query"] ) ) ? $params["query"] : [];
+        $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
+        $results = DT_Metrics_Mapping_Queries::query_location_grid_meta_totals( $post_type, $query );
 
         $list = [];
         foreach ( $results as $result ) {
@@ -154,8 +159,10 @@ class DT_Metrics_Mapbox_Groups_Maps extends DT_Metrics_Chart_Base
             return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
         }
         $post_type = $params['post_type'];
+        $query = ( isset( $params["query"] ) && !empty( $params["query"] ) ) ? $params["query"] : [];
+        $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
 
-        return DT_Metrics_Mapping_Queries::query_under_location_grid_meta_id( $post_type, $grid_id, [] );
+        return DT_Metrics_Mapping_Queries::query_under_location_grid_meta_id( $post_type, $grid_id, $query );
     }
 
 
@@ -172,8 +179,10 @@ class DT_Metrics_Mapbox_Groups_Maps extends DT_Metrics_Chart_Base
             return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
         }
         $post_type = $params['post_type'];
+        $query = ( isset( $params["query"] ) && !empty( $params["query"] ) ) ? $params["query"] : [];
+        $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
 
-        return DT_Metrics_Mapping_Queries::points_geojson( $post_type );
+        return DT_Metrics_Mapping_Queries::points_geojson( $post_type, $query );
     }
 
 

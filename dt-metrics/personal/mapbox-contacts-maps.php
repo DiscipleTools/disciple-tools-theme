@@ -3,21 +3,21 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
-class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
+class DT_Metrics_Mapbox_Personal_Contacts_Maps extends DT_Metrics_Chart_Base
 {
 
     //slug and title of the top menu folder
-    public $base_slug = 'contacts'; // lowercase
+    public $base_slug = 'personal'; // lowercase
     public $base_title;
     public $post_type = 'contacts';
 
     public $title;
-    public $slug = 'mapbox_maps'; // lowercase
+    public $slug = 'personal_contacts'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/common/maps_library.js'; // should be full file name plus extension
-    public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
-    public $namespace = 'dt-metrics/contacts/';
-    public $base_filter = [ "type" => [ "access" ] ];
+    public $permissions = [ 'access_contacts' ];
+    public $namespace = 'dt-metrics/personal/contacts/';
+    public $base_filter = [ [ [ "type" => [ "access" ], "assigned_to" => [ "me" ], "overall_status" => [ '-closed' ] ], [ "type" => [ "connection", "personal" ], "shared_with" => [ "me" ] ] ] ];
 
     public function __construct() {
         if ( ! DT_Mapbox_API::get_key() ) {
@@ -27,7 +27,7 @@ class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->title = __( 'Access Contact Maps', 'disciple_tools' );
+        $this->title = __( 'Contacts Maps', 'disciple_tools' );
         $this->base_title = __( 'Contacts', 'disciple_tools' );
 
         $url_path = dt_get_url_path();
@@ -66,8 +66,6 @@ class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
                     'totals_rest_url' => 'get_grid_totals',
                     'list_by_grid_rest_url' => 'get_list_by_grid_id',
                     'points_rest_url' => 'points_geojson',
-
-                    'split_by' => [ "overall_status" => $field_settings["overall_status"] ],
                 ],
             ]
         );
@@ -183,4 +181,4 @@ class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
 
 
 }
-new DT_Metrics_Mapbox_Contacts_Maps();
+new DT_Metrics_Mapbox_Personal_Contacts_Maps();

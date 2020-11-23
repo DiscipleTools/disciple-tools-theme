@@ -7,7 +7,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
 {
 
     //slug and title of the top menu folder
-    public $base_slug = 'contacts'; // lowercase
+    public $base_slug = 'combined'; // lowercase
     public $base_title;
 
     public $title;
@@ -15,7 +15,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/common/maps_library.js'; // should be full file name plus extension
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
-    public $namespace = 'dt-metrics/contacts/';
+    public $namespace = 'dt-metrics/combined/';
 
     public function __construct() {
         if ( ! DT_Mapbox_API::get_key() ) {
@@ -26,7 +26,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
             return;
         }
         $this->title = __( 'Combined Maps', 'disciple_tools' );
-        $this->base_title = __( 'Contacts', 'disciple_tools' );
+        $this->base_title = __( 'Project', 'disciple_tools' );
 
         $url_path = dt_get_url_path();
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
@@ -75,6 +75,14 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
                     'totals_rest_url' => 'get_grid_totals',
                     'list_by_grid_rest_url' => 'get_list_by_grid_id',
                     'points_rest_url' => 'points_geojson',
+                ],
+            ]
+        );
+        wp_localize_script(
+            'dt_mapbox_caller', 'dt_metrics_mapbox_caller_js', [
+                'translations' => [
+                    'contacts' => __( "Contacts", "disciple_tools" ),
+                    'groups' => __( "Groups", "disciple_tools" ),
                 ],
             ]
         );
