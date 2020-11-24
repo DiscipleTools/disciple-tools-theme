@@ -8,6 +8,7 @@ jQuery(document).ready(function($) {
   let rest_api = window.API;
 
   let comments = [];
+  // root comments is a test variable to see if it stores the parent_comment value.
   let rootComments = [];
   let activity = []; // not guaranteed to be in any particular order
   let langcode = document.querySelector("html").getAttribute("lang")
@@ -300,11 +301,8 @@ jQuery(document).ready(function($) {
         updated_comment.date = moment(updated_comment.comment_date_gmt + "Z");
 
         comments.push(updated_comment);
-        rootComments.push(updated_comment);
+        // this is where we lose parent_comment
 
-        //       if(parent != null) {
-        // 	commentArr[parent].childrenIds.push(commentArr.length-1);
-        // }
         display_activity_comment();
 
         $("#content")[0].dispatchEvent(commentPostedEvent);
