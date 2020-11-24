@@ -83,7 +83,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
                     'map_key'            => DT_Mapbox_API::get_key(),
                     'map_mirror'         => trailingslashit( dt_get_location_grid_mirror( true ) ),
                     'url_path'           => dt_get_url_path(),
-                    'totals_rest_url' => 'grid_totals',
+                    'totals_rest_url' => 'user_grid_totals',
                     'list_by_grid_rest_url' => 'get_user_list',
                     'rest_base_url' => $this->namespace,
                     'geocoder_url' => trailingslashit( get_stylesheet_directory_uri() ),
@@ -110,7 +110,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
 
     public function add_api_routes() {
         register_rest_route(
-            $this->namespace, '/grid_totals', [
+            $this->namespace, '/user_grid_totals', [
                 [
                     'methods'  => "POST",
                     'callback' => [ $this, 'grid_totals' ],

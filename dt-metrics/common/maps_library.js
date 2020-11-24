@@ -399,7 +399,9 @@ let cluster_map = {
 let area_map = {
   grid_data: null,
   previous_grid_list:[],
-  setup: async function (){
+  behind_layer: null,
+  setup: async function ( behind_layer = null ){
+    area_map.behind_layer = behind_layer
     area_map.grid_data = await makeRequest( "POST", mapbox_library_api.obj.settings.totals_rest_url, { post_type: mapbox_library_api.obj.settings.post_type, query: mapbox_library_api.query_args || {}} , mapbox_library_api.obj.settings.rest_base_url )
     await area_map.load_layer()
     // load new layer on event
@@ -419,10 +421,12 @@ let area_map = {
       area_map.load_detail_panel( e.lngLat.lng, e.lngLat.lat, level )
     })
   },
-  load_layer: async function (){
+  load_layer: async function ( level = null){
     mapbox_library_api.spinner.show()
     // set geocode level, default to auto
-    let level = mapbox_library_api.get_level()
+    if ( !level ){
+      level = mapbox_library_api.get_level()
+    }
 
     let bbox =mapbox_library_api.map.getBounds()
 
@@ -496,7 +500,7 @@ let area_map = {
                 'fill-opacity': 0.75,
                 'fill-outline-color': '#707070',
               }
-            });
+            }, area_map.behind_layer);
           }).catch(()=>{
             status404.push(parent_id)
             window.SHAREDFUNCTIONS.save_json_cookie( 'geojson_failed', status404, 'metrics' )
