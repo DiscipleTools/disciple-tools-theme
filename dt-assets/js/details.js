@@ -130,7 +130,7 @@ jQuery(document).ready(function($) {
     }).catch(handleAjaxError)
   })
 
-  $('.dt_contenteditable').on('blur', function () {
+  $('.dt_contenteditable').on('blur', function(){
     const id = $(this).attr('id')
     let val = $(this).html()
     rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
@@ -168,7 +168,7 @@ jQuery(document).ready(function($) {
     }
   })
 
-  $( document).on('blur', 'input.dt-communication-channel', function(){
+  $(document).on('blur', 'input.dt-communication-channel', function(){
     let field_key = $(this).data('field')
     let value = $(this).val()
     let id = $(this).attr('id')

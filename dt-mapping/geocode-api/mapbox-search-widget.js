@@ -8,41 +8,43 @@ jQuery(document).ready(function(){
   jQuery( '#new-mapbox-search' ).on( "click", function() {
     write_input_widget()
   });
-
 })
 
+// write location list from post contents
 function write_results_box() {
-  jQuery('#mapbox-wrapper').empty().append(`<div class="grid-x" style="width:100%;" id="location-grid-meta-results"></div>`)
+  jQuery('#mapbox-wrapper').empty().append(`<div id="location-grid-meta-results"></div>`)
 
-  if ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) {
+  if ( ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) || ( dtMapbox.post.contact_address !== undefined && dtMapbox.post.contact_address.length !== 0 ) ) {
+
     let lgm_results = jQuery('#location-grid-meta-results')
-    jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
-      lgm_results.append(`<div class="cell small-10">${v.label}</div>
-                          <div class="cell small-2">
-                              <a class="button clear delete-button mapbox-delete-button small float-right" data-id="${v.grid_meta_id}">
-                                  <img src="${dtMapbox.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
-                              </a>
-                          </div>`)
-    })
-    delete_location_listener()
+
+    if ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) {
+      jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
+        lgm_results.append(`<div class="input-group">
+                              <input type="text" class="active-location" id="location-${_.escape( v.grid_meta_id )}" value="${_.escape( v.label )}" readonly />
+                              <div class="input-group-button">
+                                <button type="button" style="height:37px;" class="button alert clear-date-button delete-button mapbox-delete-button" title="Delete Location" data-id="${_.escape( v.grid_meta_id )}">&times;</button>
+                              </div>
+                            </div>`)
+      })
+    }
+
+    if ( dtMapbox.post.contact_address !== undefined && dtMapbox.post.contact_address.length !== 0 ) {
+      jQuery.each( dtMapbox.post.contact_address, function(i,v) {
+        lgm_results.append(`<div class="input-group">
+                              <input type="text" class="dt-communication-channel" id="${_.escape( v.key )}" value="${_.escape( v.value )}" data-field="contact_address" />
+                              <button type="button" class="button alert input-height clear-date-button channel-delete-button delete-button" title="No location data. Note only." data-field="contact_address" data-key="${v.key}">&times;</button>
+                            </div>`)
+      })
+    }
+
+    delete_click_listener()
     reset_tile_spacing()
   } /*end valid check*/
 }
 
-function write_result_list() {
-  jQuery('#mapbox-list').empty()
-
-  if ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) {
-    let lgm_results = jQuery('#location-grid-meta-results')
-    jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
-      lgm_results.append(`<li>${v.label}</li>`)
-    })
-
-    reset_tile_spacing()
-  }
-}
-
-function delete_location_listener() {
+// adds listener for delete buttons
+function delete_click_listener() {
   jQuery( '.mapbox-delete-button' ).on( "click", function(e) {
 
     let data = {
@@ -65,6 +67,7 @@ function delete_location_listener() {
   });
 }
 
+// resets the tiles for new spacing
 function reset_tile_spacing() {
   let masonGrid = jQuery('.grid')
   masonGrid.masonry({
@@ -73,6 +76,7 @@ function reset_tile_spacing() {
   });
 }
 
+// writes the geocoding field at the top of the mapping area for adding a new location
 function write_input_widget() {
 
   if ( jQuery('#mapbox-autocomplete').length === 0 ) {
@@ -121,10 +125,26 @@ function write_input_widget() {
   })
 
   reset_tile_spacing()
-
+}
+function add_active(x) {
+  /*a function to classify an item as "active":*/
+  if (!x) return false;
+  /*start by removing the "active" class on all items:*/
+  remove_active(x);
+  if (window.currentfocus >= x.length) window.currentfocus = 0;
+  if (window.currentfocus < 0) window.currentfocus = (x.length - 1);
+  /*add class "autocomplete-active":*/
+  x[window.currentfocus].classList.add("mapbox-autocomplete-active");
+}
+function remove_active(x) {
+  /*a function to remove the "active" class from all autocomplete items:*/
+  for (var i = 0; i < x.length; i++) {
+    x[i].classList.remove("mapbox-autocomplete-active");
+  }
 }
 
-// delay location lookup
+// delay location lookup (this saves unnecessary geocoding requests and keeps DT usage in the free tier of Mapbox
+// essentially the timer is reset each time a new character is added, and waits 1 second after key strokes stop
 window.validate_timer_id = '';
 function validate_timer() {
 
@@ -153,6 +173,68 @@ function clear_timer() {
 }
 // end delay location lookup
 
+// main processor and router for selection of autocomplete results
+function close_all_lists(selection_id) {
+
+  /* if Geocoding overridden, and plain text address selected */
+  if( 'address' === selection_id ) {
+    jQuery('#mapbox-autocomplete-list').empty()
+    let address = jQuery('#mapbox-search').val()
+    let update = { value: address }
+    post_contact_address( update )
+  }
+
+  /* if Google Geocoding enabled*/
+  else if ( dtMapbox.google_map_key ) {
+    jQuery('#mapbox-search').val(window.mapbox_result_features[selection_id].description)
+    jQuery('#mapbox-autocomplete-list').empty()
+
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ placeId: window.mapbox_result_features[selection_id].place_id }, (results, status) => {
+      if (status !== "OK") {
+        console.log("Geocoder failed due to: " + status);
+        return;
+      }
+
+      window.location_data = {
+        location_grid_meta: {
+          values: [
+            {
+              lng: results[0].geometry.location.lng(),
+              lat: results[0].geometry.location.lat(),
+              level: convert_level( results[0].types[0] ),
+              label: results[0].formatted_address,
+              source: 'user'
+            }
+          ]
+        }
+      }
+      post_geocoded_location()
+    });
+
+    /* if Mapbox enabled */
+  } else {
+    jQuery('#mapbox-search').val(window.mapbox_result_features[selection_id].place_name)
+    jQuery('#mapbox-autocomplete-list').empty()
+
+    window.location_data = {
+      location_grid_meta: {
+        values: [
+          {
+            lng: window.mapbox_result_features[selection_id].center[0],
+            lat: window.mapbox_result_features[selection_id].center[1],
+            level: window.mapbox_result_features[selection_id].place_type[0],
+            label: window.mapbox_result_features[selection_id].place_name,
+            source: 'user'
+          }
+        ]
+      }
+    }
+    post_geocoded_location()
+  }
+}
+
+// builds the mapbox autocomplete list for selection
 function mapbox_autocomplete(address){
   console.log('mapbox_autocomplete: ' + address )
   if ( address.length < 1 ) {
@@ -176,8 +258,11 @@ function mapbox_autocomplete(address){
     list.empty()
 
     jQuery.each( data.features, function( index, value ) {
+
       list.append(`<div data-value="${index}">${_.escape( value.place_name )}</div>`)
     })
+
+    list.append(`<div data-value="address">Stay with: "${address}"</div>`)
 
     jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
       close_all_lists(e.target.attributes['data-value'].value);
@@ -190,6 +275,7 @@ function mapbox_autocomplete(address){
   }); // end get request
 } // end validate
 
+// builds the autocomplete list from Google (if Google key is installed)
 function google_autocomplete(address){
   console.log('google_autocomplete: ' + address )
   if ( address.length < 1 ) {
@@ -219,73 +305,9 @@ function google_autocomplete(address){
         }
   } )
 
-} // end validate
-
-function add_active(x) {
-  /*a function to classify an item as "active":*/
-  if (!x) return false;
-  /*start by removing the "active" class on all items:*/
-  remove_active(x);
-  if (window.currentfocus >= x.length) window.currentfocus = 0;
-  if (window.currentfocus < 0) window.currentfocus = (x.length - 1);
-  /*add class "autocomplete-active":*/
-  x[window.currentfocus].classList.add("mapbox-autocomplete-active");
-}
-function remove_active(x) {
-  /*a function to remove the "active" class from all autocomplete items:*/
-  for (var i = 0; i < x.length; i++) {
-    x[i].classList.remove("mapbox-autocomplete-active");
-  }
-}
-function close_all_lists(selection_id) {
-  let spinner = jQuery('#mapbox-spinner-button').show()
-  if ( dtMapbox.google_map_key ) {
-    jQuery('#mapbox-search').val(window.mapbox_result_features[selection_id].description)
-    jQuery('#mapbox-autocomplete-list').empty()
-
-    const geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ placeId: window.mapbox_result_features[selection_id].place_id }, (results, status) => {
-      if (status !== "OK") {
-        console.log("Geocoder failed due to: " + status);
-        return;
-      }
-
-      window.location_data = {
-        location_grid_meta: {
-          values: [
-            {
-              lng: results[0].geometry.location.lng(),
-              lat: results[0].geometry.location.lat(),
-              level: convert_level( results[0].types[0] ),
-              label: results[0].formatted_address,
-              source: 'user'
-            }
-          ]
-        }
-      }
-      post_geocoded_location()
-    });
-  } else {
-    jQuery('#mapbox-search').val(window.mapbox_result_features[selection_id].place_name)
-    jQuery('#mapbox-autocomplete-list').empty()
-
-    window.location_data = {
-      location_grid_meta: {
-        values: [
-          {
-            lng: window.mapbox_result_features[selection_id].center[0],
-            lat: window.mapbox_result_features[selection_id].center[1],
-            level: window.mapbox_result_features[selection_id].place_type[0],
-            label: window.mapbox_result_features[selection_id].place_name,
-            source: 'user'
-          }
-        ]
-      }
-    }
-    post_geocoded_location()
-  }
 }
 
+// submits geocoded results and resets list
 function post_geocoded_location() {
   if ( jQuery('#mapbox-autocomplete').data('autosubmit') ) {
     /* if post_type = user, else all other post types */
@@ -304,22 +326,16 @@ function post_geocoded_location() {
   }
 }
 
-function get_label_without_country( label, feature ) {
-
-  if ( feature.context !== undefined ) {
-    let newLabel = ''
-    jQuery.each( feature.context, function(i,v) {
-
-      if ( v.id.substring(0,7) === 'country' ) {
-        label = label.replace( ', ' + v.text, '' ).trim()
-      }
-
-    } )
-  }
-
-  return label
+// submits address override and resets list
+function post_contact_address( update ) {
+  API.update_post(window.dtMapbox.post_type, window.dtMapbox.post_id, { ["contact_address"]: [update]}).then((updatedContact)=>{
+    dtMapbox.post = updatedContact
+    jQuery('#mapbox-wrapper').empty()
+    write_results_box()
+  }).catch(handleAjaxError)
 }
 
+// converts the long admin level response to a location grid version
 function convert_level( level ) {
   switch(level){
     case 'administrative_area_level_0':

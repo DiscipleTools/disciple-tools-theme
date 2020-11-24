@@ -339,7 +339,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     return;
                 }
             }
-
             ?>
             <div class="section-subheader">
                 <?php if ( isset( $fields[$field_key]["icon"] ) ) : ?>
@@ -347,8 +346,15 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <?php endif;
                 echo esc_html( $fields[$field_key]["name"] );
                 ?> <span id="<?php echo esc_html( $field_key ); ?>-spinner" class="loading-spinner"></span>
+                <!-- communication channels-->
                 <?php if ( $field_type === "communication_channel" ) : ?>
                     <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button" type="button">
+                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
+                    </button>
+                <?php endif ?>
+                <!-- location add -->
+                <?php if ( $field_type === "location" && DT_Mapbox_API::get_key() ) : ?>
+                    <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button" id="new-mapbox-search" type="button">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 <?php endif ?>
@@ -453,23 +459,27 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     </div>
                 </div>
             <?php elseif ( $field_type === "location" ) :?>
-                <div class="dt_location_grid">
-                    <var id="location_grid-result-container" class="result-container"></var>
-                    <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
+                <?php if ( DT_Mapbox_API::get_key() ) : // test if Mapbox key is present ?>
+                    <div id="mapbox-wrapper"></div>
+                <?php else : ?>
+                    <div class="dt_location_grid">
+                        <var id="location_grid-result-container" class="result-container"></var>
+                        <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
+                            <div class="typeahead__container">
+                                <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-location_grid input-height"
                                        data-field="<?php echo esc_html( $field_key ) ?>"
                                        data-field_type="location"
                                        name="location_grid[query]"
                                        placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
-                                       autocomplete="off">
+                                       autocomplete="off" />
                             </span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                <?php endif; ?>
             <?php elseif ( $field_type === "communication_channel" ) : ?>
                 <ul id="edit-<?php echo esc_html( $field_key ) ?>" >
                     <?php foreach ( $post[$field_key] ?? [] as $field_value ) : ?>
@@ -490,7 +500,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                class="dt-communication-channel">
                     <?php endif ?>
                 </ul>
-
             <?php endif;
         }
     }

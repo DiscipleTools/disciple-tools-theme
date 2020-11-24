@@ -400,6 +400,9 @@ class Disciple_Tools_Posts_Endpoints {
         // If we got this far then the data is valid.
         return true;
     }
+    public static function prefix_validate_args_static( $value, $request, $param ) {
+        return self::instance()->prefix_validate_args( $value, $request, $param );
+    }
 
     public function create_post( WP_REST_Request $request ){
         $fields = $request->get_json_params() ?? $request->get_body_params();
