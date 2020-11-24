@@ -163,7 +163,6 @@ class DT_Contacts_Base {
                 'default'     => [],
                 'hidden'      => true
             ];
-
             $fields['tasks'] = [
                 'name' => __( 'Tasks', 'disciple_tools' ),
                 'type' => 'post_user_meta',
@@ -265,7 +264,7 @@ class DT_Contacts_Base {
             ];
 
         }
-        return apply_filters( 'dt_contact_custom_fields', $fields );
+        return $fields;
     }
 
     public function dt_details_additional_section( $section, $post_type ){
@@ -310,7 +309,7 @@ class DT_Contacts_Base {
                 <select id="type-options">
                     <?php
                     foreach ( $contact_fields["type"]["default"] as $option_key => $option ) {
-                        if ( !empty( $option["label"] ) && ! $option["hidden"] ) {
+                        if ( !empty( $option["label"] ) && ( isset( $option["hidden"] ) && true !== $option["hidden"] ) ) {
                             $selected = ( $option_key === ( $post["type"]["key"] ?? "" ) ) ? "selected" : "";
                             ?>
                             <option value="<?php echo esc_attr( $option_key ) ?>" <?php echo esc_html( $selected ) ?>>
