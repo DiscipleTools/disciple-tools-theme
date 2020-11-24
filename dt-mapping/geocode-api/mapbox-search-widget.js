@@ -33,7 +33,7 @@ function write_results_box() {
       jQuery.each( dtMapbox.post.contact_address, function(i,v) {
         lgm_results.append(`<div class="input-group">
                               <input type="text" class="dt-communication-channel" id="${_.escape( v.key )}" value="${_.escape( v.value )}" data-field="contact_address" />
-                              <button type="button" class="button alert input-height clear-date-button channel-delete-button delete-button" title="No location data. Note only." data-field="contact_address" data-key="${v.key}">&times;</button>
+                              <button type="button" class="button alert input-height clear-date-button channel-delete-button delete-button" title="No location data. Note only." data-field="contact_address" data-key="${_.escape( v.key )}">&times;</button>
                             </div>`)
       })
     }
@@ -84,7 +84,7 @@ function write_input_widget() {
     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true">
         <input id="mapbox-search" type="text" name="mapbox_search" placeholder="Search Location" />
         <div class="input-group-button">
-            <button class="button hollow" id="mapbox-spinner-button" style="display:none;"><img src="${dtMapbox.spinner_url}" alt="spinner" style="width: 18px;" /></button>
+            <button class="button hollow" id="mapbox-spinner-button" style="display:none;"><img src="${_.escape( dtMapbox.spinner_url )}" alt="spinner" style="width: 18px;" /></button>
         </div>
         <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
     </div>
@@ -259,10 +259,10 @@ function mapbox_autocomplete(address){
 
     jQuery.each( data.features, function( index, value ) {
 
-      list.append(`<div data-value="${index}">${_.escape( value.place_name )}</div>`)
+      list.append(`<div data-value="${_.escape( index )}">${_.escape( value.place_name )}</div>`)
     })
 
-    list.append(`<div data-value="address">Stay with: "${address}"</div>`)
+    list.append(`<div data-value="address">${_.escape( window.dtMapbox.translations.stay_with )}: "${_.escape( address )}"</div>`)
 
     jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
       close_all_lists(e.target.attributes['data-value'].value);

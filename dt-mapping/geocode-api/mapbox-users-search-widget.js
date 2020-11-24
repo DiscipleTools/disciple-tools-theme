@@ -12,34 +12,21 @@ jQuery(document).ready(function(){
 })
 
 function write_results_box() {
-  jQuery('#mapbox-wrapper').empty().append(`<div class="grid-x" style="width:100%;" id="location-grid-meta-results"></div>`)
+  jQuery('#mapbox-wrapper').empty().append(`<div id="location-grid-meta-results"></div>`)
 
   if ( dtMapbox.user_location.location_grid_meta !== undefined && dtMapbox.user_location.location_grid_meta.length !== 0 ) {
     let lgm_results = jQuery('#location-grid-meta-results')
     jQuery.each( dtMapbox.user_location.location_grid_meta, function(i,v) {
-      lgm_results.append(`<div class="cell small-10">${_.escape(v.label)}</div>
-                          <div class="cell small-2">
-                              <a class="button clear delete-button mapbox-delete-button small float-right" data-id="${_.escape(v.grid_meta_id)}">
-                                  <img src="${_.escape(dtMapbox.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
-                              </a>
-                          </div>`)
+      lgm_results.append(`<div class="input-group">
+                              <input type="text" class="active-location input-group-field " id="location-${_.escape( v.grid_meta_id )}" value="${_.escape( v.label )}" readonly />
+                              <div class="input-group-button">
+                                <button type="button" class="button alert clear-date-button delete-button mapbox-delete-button" title="Delete Location" data-id="${_.escape( v.grid_meta_id )}">&times;</button>
+                              </div>
+                            </div>`)
     })
     delete_location_listener()
     reset_tile_spacing()
   } /*end valid check*/
-}
-
-function write_result_list() {
-  jQuery('#mapbox-list').empty()
-
-  if ( dtMapbox.user_location.location_grid_meta !== undefined && dtMapbox.user_location.location_grid_meta.length !== 0 ) {
-    let lgm_results = jQuery('#location-grid-meta-results')
-    jQuery.each( dtMapbox.user_location.location_grid_meta, function(i,v) {
-      lgm_results.append(`<li>${_.escape(v.label)}</li>`)
-    })
-
-    reset_tile_spacing()
-  }
 }
 
 function delete_location_listener() {
@@ -172,7 +159,7 @@ function mapbox_autocomplete(address){
     list.empty()
 
     jQuery.each( data.features, function( index, value ) {
-      list.append(`<div data-value="${_.escape(index)}">${_.escape( _.escape(value.place_name) )}</div>`)
+      list.append(`<div data-value="${_.escape(index)}">${_.escape(value.place_name)}</div>`)
     })
 
     jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
@@ -198,7 +185,7 @@ function google_autocomplete(address){
       list.empty()
 
       jQuery.each( predictions, function( index, value ) {
-        list.append(`<div data-value="${_.escape(index)}">${_.escape( _.escape(value.description) )}</div>`)
+        list.append(`<div data-value="${_.escape(index)}">${_.escape(value.description)}</div>`)
       })
 
       jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
@@ -232,7 +219,7 @@ function remove_active(x) {
   }
 }
 function close_all_lists(selection_id) {
-  let spinner = jQuery('#mapbox-spinner-button').show()
+
   if ( dtMapbox.google_map_key ) {
     jQuery('#mapbox-search').val(window.mapbox_result_features[selection_id].description)
     jQuery('#mapbox-autocomplete-list').empty()
@@ -295,22 +282,6 @@ function post_geocoded_location(){
     window.selected_location_grid_meta = window.location_data
     jQuery('#mapbox-spinner-button').hide()
   }
-}
-
-function get_label_without_country( label, feature ) {
-
-  if ( feature.context !== undefined ) {
-    let newLabel = ''
-    jQuery.each( feature.context, function(i,v) {
-
-      if ( v.id.substring(0,7) === 'country' ) {
-        label = label.replace( ', ' + v.text, '' ).trim()
-      }
-
-    } )
-  }
-
-  return label
 }
 
 function convert_level( level ) {

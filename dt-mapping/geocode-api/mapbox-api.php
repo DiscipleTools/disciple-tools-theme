@@ -279,7 +279,8 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
                         "theme_uri" => get_stylesheet_directory_uri(),
                         "translations" => array(
-                            'add' => __( 'add', 'disciple-tools' )
+                            'add' => __( 'add', 'disciple-tools' ),
+                            'stay_with' => __( 'Stay with', 'disciple-tools' ),
                         )
                     )
                 );
