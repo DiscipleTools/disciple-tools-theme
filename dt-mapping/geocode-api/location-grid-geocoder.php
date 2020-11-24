@@ -720,26 +720,25 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
         public function query_centerpoints_within_bbox( $north_latitude, $south_latitude, $west_longitude, $east_longitude, $level ) {
             global $wpdb;
             if ( $level ) {
-                $query = $wpdb->get_col( $wpdb->prepare( "
-                SELECT grid_id
-                FROM $wpdb->dt_location_grid as g
-                WHERE
-                g.latitude <= %f AND
-                g.latitude >= %f AND
-                g.longitude >= %f AND
-                g.longitude <= %f AND
-                g.level = %d
-        ", $north_latitude, $south_latitude, $west_longitude, $east_longitude, $level ) );
+                $query = $wpdb->get_results( $wpdb->prepare( "
+                    SELECT grid_id, parent_id
+                    FROM $wpdb->dt_location_grid as g
+                    WHERE
+                    g.latitude <= %f AND
+                    g.latitude >= %f AND
+                    ( ( g.longitude >= %f AND g.longitude <= %f ) OR ( g.longitude <= %f AND g.longitude >= %f ) )
+                    AND g.level_name = %s
+                ", $north_latitude, $south_latitude, $west_longitude, $east_longitude, -$west_longitude, -$east_longitude, $level ), ARRAY_A );
             } else {
                 $query = $wpdb->get_col( $wpdb->prepare( "
-                SELECT grid_id
-                FROM $wpdb->dt_location_grid as g
-                WHERE
-                g.latitude <= %f AND
-                g.latitude >= %f AND
-                g.longitude >= %f AND
-                g.longitude <= %f
-        ", $north_latitude, $south_latitude, $west_longitude, $east_longitude ) );
+                    SELECT grid_id, parent_id
+                    FROM $wpdb->dt_location_grid as g
+                    WHERE
+                    g.latitude <= %f AND
+                    g.latitude >= %f AND
+                    g.longitude >= %f AND
+                    g.longitude <= %f
+                ", $north_latitude, $south_latitude, $west_longitude, $east_longitude ) );
             }
 
             if ( empty( $query ) ) {
@@ -747,7 +746,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             }
 
             foreach ( $query as $index => $item ) {
-                $query[ $index ] = (int) $item;
+                $query[ $index ] = $item;
             }
 
             return $query;
