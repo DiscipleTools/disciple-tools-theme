@@ -71,21 +71,27 @@
     cursor:pointer;
 }
 #map-wrapper {
-    img {
-        height: 30px;
-        width: 30px;
-    }
-    #map-type {
-        padding: 0 10px 0 10px;
-        button{
-            margin-bottom: 0;
-            padding: 2px;
+    #legend {
+        img {
+            height: 30px;
+            width: 30px;
         }
-        button.selected-select-button {
-            img {
-                filter: invert(100%) sepia(0%) saturate(7481%) hue-rotate(180deg) brightness(109%) contrast(100%);
+        #map-type {
+            padding: 0 10px 0 10px;
+            button{
+                margin-bottom: 0;
+                padding: 2px;
+            }
+            button.selected-select-button {
+                img {
+                    filter: invert(100%) sepia(0%) saturate(7481%) hue-rotate(180deg) brightness(109%) contrast(100%);
+                }
+            }
+        }
+        .map-option-buttons {
+            button {
+                margin: 0 0 0 3px;
             }
         }
     }
-
 }

@@ -121,7 +121,7 @@ class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
         $query = ( isset( $params["query"] ) && !empty( $params["query"] ) ) ? $params["query"] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
 
-        return DT_Metrics_Mapping_Queries::cluster_geojson( $post_type, $query );
+        return Disciple_Tools_Mapping_Queries::cluster_geojson( $post_type, $query );
     }
 
 
@@ -137,7 +137,7 @@ class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
         $post_type = $params['post_type'];
         $query = ( isset( $params["query"] ) && !empty( $params["query"] ) ) ? $params["query"] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
-        $results = DT_Metrics_Mapping_Queries::query_location_grid_meta_totals( $post_type, $query );
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( $post_type, $query );
 
         $list = [];
         foreach ( $results as $result ) {
@@ -158,7 +158,7 @@ class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
         $query = ( isset( $params["query"] ) && !empty( $params["query"] ) ) ? $params["query"] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
 
-        return DT_Metrics_Mapping_Queries::query_under_location_grid_meta_id( $post_type, $grid_id, $query );
+        return Disciple_Tools_Mapping_Queries::query_under_location_grid_meta_id( $post_type, $grid_id, $query );
     }
 
 
@@ -178,7 +178,7 @@ class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
         $query = ( isset( $params["query"] ) && !empty( $params["query"] ) ) ? $params["query"] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
 
-        return DT_Metrics_Mapping_Queries::points_geojson( $post_type, $query );
+        return Disciple_Tools_Mapping_Queries::points_geojson( $post_type, $query );
     }
 
 

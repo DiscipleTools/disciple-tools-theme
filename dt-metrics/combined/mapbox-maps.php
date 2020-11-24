@@ -59,9 +59,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
         );
         wp_localize_script(
             'dt_mapbox_script', 'dt_mapbox_metrics', [
-                'translations' => [
-                    'title' => __( "Mapping", "disciple_tools" ),
-                ],
+                'translations' => [],
                 'settings' => [
                     'map_key' => DT_Mapbox_API::get_key(),
                     'map_mirror' => dt_get_location_grid_mirror( true ),
@@ -134,7 +132,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
         }
         $post_type = $params['post_type'];
 
-        return DT_Metrics_Mapping_Queries::cluster_geojson( $post_type );
+        return Disciple_Tools_Mapping_Queries::cluster_geojson( $post_type );
     }
 
 
@@ -149,7 +147,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
         }
         $post_type = $params['post_type'];
 
-        $results = DT_Metrics_Mapping_Queries::query_location_grid_meta_totals( $post_type, [] );
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( $post_type, [] );
 
         $list = [];
         foreach ( $results as $result ) {
@@ -172,7 +170,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
         }
         $post_type = $params['post_type'];
 
-        return DT_Metrics_Mapping_Queries::query_under_location_grid_meta_id( $post_type, $grid_id, [] );
+        return Disciple_Tools_Mapping_Queries::query_under_location_grid_meta_id( $post_type, $grid_id, [] );
     }
 
 
@@ -190,7 +188,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
         }
         $post_type = $params['post_type'];
 
-        return DT_Metrics_Mapping_Queries::points_geojson( $post_type );
+        return Disciple_Tools_Mapping_Queries::points_geojson( $post_type );
     }
 
 

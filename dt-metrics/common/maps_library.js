@@ -30,7 +30,6 @@ let mapbox_library_api = {
             width:100%;
             height: ${window.innerHeight - 100}px;
         }
-
       </style>
       <div id="map-wrapper">
         <div id='map'></div>
@@ -87,12 +86,12 @@ let mapbox_library_api = {
       _.forOwn( mapbox_library_api.obj.settings.split_by, (field_values, field_key)=>{
         let options_html = ``
         _.forOwn(field_values.default, (option, option_key)=>{
-          options_html += `<button class="button small selected-select-button" data-key="${_.escape(option_key)}" id=${_.escape(field_key)}_${_.escape(option_key)}  style="margin: 0 0 0 3px">
+          options_html += `<button class="button small selected-select-button" data-key="${_.escape(option_key)}" id=${_.escape(field_key)}_${_.escape(option_key)}>
             ${_.escape(option.label)}
           </button>`
         })
         let split_by_html = `
-          <div id="${field_key}" class="border-left"  style="padding: 0 10px 0 10px;">
+          <div id="${field_key}" class="border-left map-option-buttons">
             ${_.escape(field_values.name)}:
             ${options_html}
           </div>
@@ -257,20 +256,20 @@ let mapbox_library_api = {
         })
       })
     }
+  },
+  standardize_longitude: function (lng){
+    if (lng > 180) {
+      lng = lng - 180
+      lng = -Math.abs(lng)
+    } else if (lng < -180) {
+      lng = lng + 180
+      lng = Math.abs(lng)
+    }
+    return lng;
   }
 
 }
 
-function standardize_longitude(lng){
-  if (lng > 180) {
-    lng = lng - 180
-    lng = -Math.abs(lng)
-  } else if (lng < -180) {
-    lng = lng + 180
-    lng = Math.abs(lng)
-  }
-  return lng;
-}
 jQuery('.close-details').on('click', function() {
   jQuery('#geocode-details').hide()
 })
@@ -398,33 +397,27 @@ let cluster_map = {
 }
 
 let area_map = {
-  setup_done: false,
   grid_data: null,
   previous_grid_list:[],
   setup: async function (){
-    if ( !area_map.grid_data ){
-    }
     area_map.grid_data = await makeRequest( "POST", mapbox_library_api.obj.settings.totals_rest_url, { post_type: mapbox_library_api.obj.settings.post_type, query: mapbox_library_api.query_args || {}} , mapbox_library_api.obj.settings.rest_base_url )
     await area_map.load_layer()
     // load new layer on event
-    if ( !area_map.setup_done ){
-      area_map.setup_done = true
-      mapbox_library_api.map.on('zoomend', function() {
-        if ( mapbox_library_api.current_map_type !== 'area'){return;}
-        area_map.load_layer()
-      })
-      mapbox_library_api.map.on('dragend', function() {
-        if ( mapbox_library_api.current_map_type !== 'area'){return;}
-        area_map.load_layer()
-      })
-      mapbox_library_api.map.on('click', function( e ) {
-        if ( mapbox_library_api.current_map_type !== 'area'){return;}
-        // this section increments up the result on level because
-        // it corresponds better to the viewable user intent for details
-        let level = mapbox_library_api.get_level()
-        area_map.load_detail_panel( e.lngLat.lng, e.lngLat.lat, level )
-      })
-    }
+    mapbox_library_api.map.on('zoomend', function() {
+      if ( mapbox_library_api.current_map_type !== 'area'){return;}
+      area_map.load_layer()
+    })
+    mapbox_library_api.map.on('dragend', function() {
+      if ( mapbox_library_api.current_map_type !== 'area'){return;}
+      area_map.load_layer()
+    })
+    mapbox_library_api.map.on('click', function( e ) {
+      if ( mapbox_library_api.current_map_type !== 'area'){return;}
+      // this section increments up the result on level because
+      // it corresponds better to the viewable user intent for details
+      let level = mapbox_library_api.get_level()
+      area_map.load_detail_panel( e.lngLat.lng, e.lngLat.lat, level )
+    })
   },
   load_layer: async function (){
     mapbox_library_api.spinner.show()
@@ -440,8 +433,8 @@ let area_map = {
           type: 'match_within_bbox',
           north_latitude: bbox._ne.lat,
           south_latitude: bbox._sw.lat,
-          west_longitude: standardize_longitude(bbox._sw.lng),
-          east_longitude: standardize_longitude(bbox._ne.lng),
+          west_longitude: window.mapbox_library_api.standardize_longitude(bbox._sw.lng),
+          east_longitude: window.mapbox_library_api.standardize_longitude(bbox._ne.lng),
           level: level,
           nonce: mapbox_library_api.obj.settings.geocoder_nonce,
           query: mapbox_library_api.query_args || {}
@@ -523,7 +516,7 @@ let area_map = {
     mapbox_library_api.spinner.hide()
   },
   load_detail_panel: function (lng, lat, level){
-    lng = standardize_longitude( lng )
+    lng = window.mapbox_library_api.standardize_longitude( lng )
     if ( level === 'world' ) {
       level = 'admin0'
     }

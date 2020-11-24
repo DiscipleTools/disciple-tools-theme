@@ -1,7 +1,5 @@
 /** Mapbox search box widget for users */
 jQuery(document).ready(function(){
-  console.log('mapbox-users')
-  console.log(dtMapbox)
 
   // load widget
   if ( dtMapbox.user_location.length !== 0 ) {
@@ -19,10 +17,10 @@ function write_results_box() {
   if ( dtMapbox.user_location.location_grid_meta !== undefined && dtMapbox.user_location.location_grid_meta.length !== 0 ) {
     let lgm_results = jQuery('#location-grid-meta-results')
     jQuery.each( dtMapbox.user_location.location_grid_meta, function(i,v) {
-      lgm_results.append(`<div class="cell small-10">${v.label}</div>
+      lgm_results.append(`<div class="cell small-10">${_.escape(v.label)}</div>
                           <div class="cell small-2">
-                              <a class="button clear delete-button mapbox-delete-button small float-right" data-id="${v.grid_meta_id}">
-                                  <img src="${dtMapbox.theme_uri}/dt-assets/images/invalid.svg" alt="delete">
+                              <a class="button clear delete-button mapbox-delete-button small float-right" data-id="${_.escape(v.grid_meta_id)}">
+                                  <img src="${_.escape(dtMapbox.theme_uri)}/dt-assets/images/invalid.svg" alt="delete">
                               </a>
                           </div>`)
     })
@@ -37,7 +35,7 @@ function write_result_list() {
   if ( dtMapbox.user_location.location_grid_meta !== undefined && dtMapbox.user_location.location_grid_meta.length !== 0 ) {
     let lgm_results = jQuery('#location-grid-meta-results')
     jQuery.each( dtMapbox.user_location.location_grid_meta, function(i,v) {
-      lgm_results.append(`<li>${v.label}</li>`)
+      lgm_results.append(`<li>${_.escape(v.label)}</li>`)
     })
 
     reset_tile_spacing()
@@ -60,7 +58,6 @@ function delete_location_listener() {
 
     makeRequest( "DELETE", `users/user_location`, data )
     .then(function (response) {
-      console.log( response )
       dtMapbox.user_location = response.user_location
       dtMapbox.user_id = response.user_id
       write_results_box()
@@ -84,7 +81,7 @@ function write_input_widget() {
     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true">
         <input id="mapbox-search" type="text" name="mapbox_search" placeholder="Search Location" />
         <div class="input-group-button">
-            <button class="button hollow" id="mapbox-spinner-button" style="display:none;"><img src="${dtMapbox.spinner_url}" alt="spinner" style="width: 18px;" /></button>
+            <button class="button hollow" id="mapbox-spinner-button" style="display:none;"><img src="${_.escape(dtMapbox.spinner_url)}" alt="spinner" style="width: 18px;" /></button>
         </div>
         <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
     </div>
@@ -100,14 +97,12 @@ function write_input_widget() {
     if (e.which === 40) {
       /*If the arrow DOWN key is pressed,
       increase the currentFocus variable:*/
-      console.log('down')
       window.currentfocus++;
       /*and and make the current item more visible:*/
       add_active(x);
     } else if (e.which === 38) { //up
       /*If the arrow UP key is pressed,
       decrease the currentFocus variable:*/
-      console.log('up')
       window.currentfocus--;
       /*and and make the current item more visible:*/
       add_active(x);
@@ -157,7 +152,6 @@ function clear_timer() {
 // end delay location lookup
 
 function mapbox_autocomplete(address){
-  console.log('mapbox_autocomplete: ' + address )
   if ( address.length < 1 ) {
     return;
   }
@@ -169,10 +163,8 @@ function mapbox_autocomplete(address){
   let url = root + encodeURI( address ) + settings + key
 
   jQuery.get( url, function( data ) {
-    console.log(data)
     if( data.features.length < 1 ) {
       // destroy lists
-      console.log('no results')
       return
     }
 
@@ -180,7 +172,7 @@ function mapbox_autocomplete(address){
     list.empty()
 
     jQuery.each( data.features, function( index, value ) {
-      list.append(`<div data-value="${index}">${_.escape( value.place_name )}</div>`)
+      list.append(`<div data-value="${_.escape(index)}">${_.escape( _.escape(value.place_name) )}</div>`)
     })
 
     jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
@@ -195,7 +187,6 @@ function mapbox_autocomplete(address){
 } // end validate
 
 function google_autocomplete(address){
-  console.log('google_autocomplete: ' + address )
   if ( address.length < 1 ) {
     return;
   }
@@ -203,12 +194,11 @@ function google_autocomplete(address){
   let service = new google.maps.places.AutocompleteService();
   service.getPlacePredictions({ 'input': address }, function(predictions, status ) {
     if (status === 'OK') {
-      console.log(predictions)
       let list = jQuery('#mapbox-autocomplete-list')
       list.empty()
 
       jQuery.each( predictions, function( index, value ) {
-        list.append(`<div data-value="${index}">${_.escape( value.description )}</div>`)
+        list.append(`<div data-value="${_.escape(index)}">${_.escape( _.escape(value.description) )}</div>`)
       })
 
       jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
@@ -295,13 +285,12 @@ function close_all_lists(selection_id) {
 function post_geocoded_location(){
   if ( jQuery('#mapbox-autocomplete').data('autosubmit') ) {
     makeRequest( "POST", `users/user_location`, window.location_data )
-      .done(response => {
-        console.log(response)
-        dtMapbox.user_location = response.user_location
-        dtMapbox.user_id = response.user_id
-        write_results_box()
-      })
-      .catch(err => { console.error(err) })
+    .done(response => {
+      dtMapbox.user_location = response.user_location
+      dtMapbox.user_id = response.user_id
+      write_results_box()
+    })
+    .catch(err => { console.error(err) })
   } else {
     window.selected_location_grid_meta = window.location_data
     jQuery('#mapbox-spinner-button').hide()
