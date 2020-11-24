@@ -458,7 +458,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </div>
                     </div>
                 </div>
-            <?php elseif ( $field_type === "location" || $field_type === "location_meta"  ) :?>
+            <?php elseif ( $field_type === "location" || $field_type === "location_meta" ) :?>
                 <?php if ( DT_Mapbox_API::get_key() && empty( $post ) ) : // test if Mapbox key is present ?>
                     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
                         <input id="mapbox-search" type="text" name="mapbox_search" placeholder="Search Location" />

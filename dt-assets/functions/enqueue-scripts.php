@@ -306,7 +306,7 @@ function dt_site_scripts() {
     if ( strpos( $url_path, "/new" ) !== false && in_array( str_replace( "/new", "", $url_path ), $post_types ) ){
         $post_type = str_replace( "/new", "", $url_path );
         $post_settings = DT_Posts::get_post_settings( $post_type );
-        $dependencies = ['jquery', 'lodash', 'shared-functions', 'typeahead-jquery'];
+        $dependencies = [ 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ];
         if ( DT_Mapbox_API::get_key() ){
             DT_Mapbox_API::load_mapbox_search_widget();
             $dependencies[] = 'mapbox-search-widget';
