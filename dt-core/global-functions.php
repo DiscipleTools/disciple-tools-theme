@@ -330,7 +330,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
             $field_type = $fields[$field_key]["type"];
             $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
-            $allowed_types = [ 'key_select', 'multi_select', 'date', 'text', 'number', 'connection', 'location', 'communication_channel' ];
+            $allowed_types = [ 'key_select', 'multi_select', 'date', 'text', 'number', 'connection', 'location', 'location_meta', 'communication_channel' ];
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
@@ -353,7 +353,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     </button>
                 <?php endif ?>
                 <!-- location add -->
-                <?php if ( $field_type === "location" && DT_Mapbox_API::get_key() ) : ?>
+                <?php if ( ( $field_type === "location" || "location_meta" === $field_type ) && DT_Mapbox_API::get_key() && ! empty( $post ) ) : ?>
                     <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button" id="new-mapbox-search" type="button">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
@@ -458,8 +458,21 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </div>
                     </div>
                 </div>
-            <?php elseif ( $field_type === "location" ) :?>
-                <?php if ( DT_Mapbox_API::get_key() ) : // test if Mapbox key is present ?>
+            <?php elseif ( $field_type === "location" || $field_type === "location_meta"  ) :?>
+                <?php if ( DT_Mapbox_API::get_key() && empty( $post ) ) : // test if Mapbox key is present ?>
+                    <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
+                        <input id="mapbox-search" type="text" name="mapbox_search" placeholder="Search Location" />
+                        <div class="input-group-button">
+                            <button class="button hollow" id="mapbox-spinner-button" style="display:none;"><span class="loading-spinner active"></span></button>
+                        </div>
+                        <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
+                    </div>
+                    <script>
+                        jQuery(document).ready(function(){
+                            write_input_widget()
+                        })
+                    </script>
+                <?php elseif ( DT_Mapbox_API::get_key() ) : // test if Mapbox key is present ?>
                     <div id="mapbox-wrapper"></div>
                 <?php else : ?>
                     <div class="dt_location_grid">

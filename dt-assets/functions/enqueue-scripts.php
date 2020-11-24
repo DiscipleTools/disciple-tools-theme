@@ -306,7 +306,13 @@ function dt_site_scripts() {
     if ( strpos( $url_path, "/new" ) !== false && in_array( str_replace( "/new", "", $url_path ), $post_types ) ){
         $post_type = str_replace( "/new", "", $url_path );
         $post_settings = DT_Posts::get_post_settings( $post_type );
-        dt_theme_enqueue_script( 'new-record', 'dt-assets/js/new-record.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ), true );
+        $dependencies = ['jquery', 'lodash', 'shared-functions', 'typeahead-jquery'];
+        if ( DT_Mapbox_API::get_key() ){
+            DT_Mapbox_API::load_mapbox_search_widget();
+            $dependencies[] = 'mapbox-search-widget';
+            $dependencies[] = 'mapbox-gl';
+        }
+        dt_theme_enqueue_script( 'new-record', 'dt-assets/js/new-record.js', $dependencies, true );
 
         wp_localize_script( 'new-record', 'new_record_localized', array(
             'post_type' => $post_type,

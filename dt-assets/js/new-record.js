@@ -100,6 +100,9 @@ jQuery(function($) {
         "value": optionKey
       })
     })
+    if ( typeof window.selected_location_grid_meta !== 'undefined' ){
+      new_post['location_grid_meta'] = window.selected_location_grid_meta.location_grid_meta
+    }
 
 
     API.create_post( window.new_record_localized.post_type, new_post).promise().then(function(data) {

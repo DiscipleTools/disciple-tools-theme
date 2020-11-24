@@ -196,13 +196,17 @@ class DT_Contacts_Base {
                 'name'        => __( 'Locations', 'disciple_tools' ),
                 'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'location',
+                'mapbox'    => false,
                 "in_create_form" => true,
                 "tile" => "details",
                 "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg",
             ];
             $fields['location_grid_meta'] = [
-                'name'        => 'Location Grid Meta', //system string does not need translation
+                'name'        => __( 'Locations', 'disciple_tools' ), //system string does not need translation
+                'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'location_meta',
+                "tile"      => "details",
+                'mapbox'    => false,
                 'hidden' => true
             ];
             $fields["contact_address"] = [
@@ -210,10 +214,14 @@ class DT_Contacts_Base {
                 "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg",
                 "type" => "communication_channel",
                 "tile" => "details",
+                'mapbox'    => false,
                 "customizable" => false
             ];
             if ( DT_Mapbox_API::get_key() ){
                 $fields["contact_address"]["hidden"] = true;
+                $fields["contact_address"]["mapbox"] = true;
+                $fields["location_grid"]["mapbox"] = true;
+                $fields["location_grid_meta"]["mapbox"] = true;
             }
 
             // add social media

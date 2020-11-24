@@ -137,6 +137,8 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             Details section
                         -->
                         <div class="collapsed-details-section" style="">
+
+                            <!-- row for communication channel elements -->
                             <div style="display:flex">
                             <?php
                             //setup the order of the tile fields
@@ -170,6 +172,8 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             }
                             ?>
                             </div>
+
+                            <!-- row for misc elements -->
                             <div style="display:flex">
                             <?php
                             $order = $custom_tiles[$post_type]['details']["order"] ?? [];
@@ -187,6 +191,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
 
                                 $field = $post_settings["fields"][$field_key];
                                 if ( isset( $post['type']["key"], $fields[$field_key]["only_for_types"] ) ) {
+
                                     if ( !in_array( $post['type']["key"], $fields[$field_key]["only_for_types"] ) ) {
                                         return;
                                     }
@@ -208,7 +213,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             }
                             ?>
                             </div>
-                        </div>
+                        </div> <!-- end collapse details section -->
                         <div id="show-details-edit-button" class="show-details-section" style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px -15px -15px; border-radius: 0 0 10px 10px;">
                             <a class="button clear " style="margin:0;padding:3px 0; width:100%">
                                 <?php esc_html_e( 'Edit all details fields', 'disciple_tools' ); ?>
