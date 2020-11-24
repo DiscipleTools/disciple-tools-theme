@@ -211,10 +211,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                         </div>
                         <div id="show-details-edit-button" class="show-details-section" style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px -15px -15px; border-radius: 0 0 10px 10px;">
                             <a class="button clear " style="margin:0;padding:3px 0; width:100%">
-<!--                                <img class="dt-icon" style="margin-left:0px; height:10px; width:10px; filter:invert(22%) sepia(0%) saturate(0%) hue-rotate(223deg) brightness(101%) contrast(84%)" src="--><?php //echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/facebook.svg' ?><!--" alt="facebook">-->
                                 <?php esc_html_e( 'Edit all details fields', 'disciple_tools' ); ?>
-<!--                                <img class="dt-icon" style="margin-left:0px; height:10px; width:10px; filter:invert(22%) sepia(0%) saturate(0%) hue-rotate(223deg) brightness(101%) contrast(84%)" src="--><?php //echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/gender.svg' ?><!--" alt="gender">-->
-<!--                                <img class="dt-icon" style="margin-left:0px; height:10px; width:10px; filter:invert(22%) sepia(0%) saturate(0%) hue-rotate(223deg) brightness(101%) contrast(84%)" src="--><?php //echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?><!--" alt="location">-->
                             </a></div>
 
                         <div id="details-section" class="display-fields" style="display: none; margin-top:20px">
@@ -233,6 +230,9 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                 }
                                 foreach ( $order as $field_key ) {
                                     if ( !isset( $post_settings["fields"][$field_key] ) ){
+                                        continue;
+                                    }
+                                    if ( isset( $post_settings["fields"][$field_key]["hidden"] ) && true === $post_settings["fields"][$field_key]["hidden"]  ){
                                         continue;
                                     }
 
@@ -273,7 +273,6 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                                 <button class="section-chevron chevron_up">
                                                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
                                                 </button>
-
                                             </h3>
                                         <?php } ?>
 

@@ -191,6 +191,21 @@ class DT_Contacts_Base {
                 "tile" => "details",
                 "customizable" => false
             ];
+
+            // add location fields
+            $fields['location_grid'] = [
+                'name'        => __( 'Locations', 'disciple_tools' ),
+                'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
+                'type'        => 'location',
+                "in_create_form" => true,
+                "tile" => "details",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg",
+            ];
+            $fields['location_grid_meta'] = [
+                'name'        => 'Location Grid Meta', //system string does not need translation
+                'type'        => 'location_meta',
+                'hidden' => true
+            ];
             $fields["contact_address"] = [
                 "name" => __( 'Address', 'disciple_tools' ),
                 "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg",
@@ -198,6 +213,11 @@ class DT_Contacts_Base {
                 "tile" => "details",
                 "customizable" => false
             ];
+            if ( DT_Mapbox_API::get_key() ){
+                $fields["contact_address"]["hidden"] = true;
+            }
+
+            // add social media
             $fields["contact_facebook"] = [
                 "name" => __( 'Facebook', 'disciple_tools' ),
                 "icon" => get_template_directory_uri() . "/dt-assets/images/facebook.svg",
@@ -227,19 +247,6 @@ class DT_Contacts_Base {
                 'icon' => get_template_directory_uri() . "/dt-assets/images/connection.svg",
             ];
 
-            $fields['location_grid'] = [
-                'name'        => __( 'Locations', 'disciple_tools' ),
-                'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
-                'type'        => 'location',
-                "in_create_form" => true,
-                "tile" => "details",
-                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg",
-            ];
-            $fields['location_grid_meta'] = [
-                'name'        => 'Location Grid Meta', //system string does not need translation
-                'type'        => 'location_meta',
-                'hidden' => true
-            ];
             $fields['gender'] = [
                 'name'        => __( 'Gender', 'disciple_tools' ),
                 'type'        => 'key_select',
@@ -257,9 +264,8 @@ class DT_Contacts_Base {
                 'default'     => false,
             ];
 
-
         }
-        return $fields;
+        return apply_filters( 'dt_contact_custom_fields', $fields );
     }
 
     public function dt_details_additional_section( $section, $post_type ){
