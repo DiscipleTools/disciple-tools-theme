@@ -21,9 +21,9 @@ function write_results_box() {
     if ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) {
       jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
         lgm_results.append(`<div class="input-group">
-                              <input type="text" class="active-location" id="location-${_.escape( v.grid_meta_id )}" value="${_.escape( v.label )}" readonly />
+                              <input type="text" class="active-location input-group-field " id="location-${_.escape( v.grid_meta_id )}" value="${_.escape( v.label )}" readonly />
                               <div class="input-group-button">
-                                <button type="button" style="height:37px;" class="button alert clear-date-button delete-button mapbox-delete-button" title="Delete Location" data-id="${_.escape( v.grid_meta_id )}">&times;</button>
+                                <button type="button" class="button alert clear-date-button delete-button mapbox-delete-button" title="Delete Location" data-id="${_.escape( v.grid_meta_id )}">&times;</button>
                               </div>
                             </div>`)
       })
