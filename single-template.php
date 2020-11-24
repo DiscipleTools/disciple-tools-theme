@@ -232,7 +232,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                     if ( !isset( $post_settings["fields"][$field_key] ) ){
                                         continue;
                                     }
-                                    if ( isset( $post_settings["fields"][$field_key]["hidden"] ) && true === $post_settings["fields"][$field_key]["hidden"]  ){
+                                    if ( isset( $post_settings["fields"][$field_key]["hidden"] ) && true === $post_settings["fields"][$field_key]["hidden"] ){
                                         continue;
                                     }
 

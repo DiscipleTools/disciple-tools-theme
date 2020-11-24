@@ -401,7 +401,7 @@ class Disciple_Tools_Posts_Endpoints {
         return true;
     }
     public static function prefix_validate_args_static( $value, $request, $param ) {
-        return Disciple_Tools_Posts_Endpoints::instance()->prefix_validate_args( $value, $request, $param );
+        return self::instance()->prefix_validate_args( $value, $request, $param );
     }
 
     public function create_post( WP_REST_Request $request ){
