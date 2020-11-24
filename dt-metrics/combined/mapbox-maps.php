@@ -79,8 +79,8 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
         wp_localize_script(
             'dt_mapbox_caller', 'dt_metrics_mapbox_caller_js', [
                 'translations' => [
-                    'contacts' => __( "Contacts", "disciple_tools" ),
-                    'groups' => __( "Groups", "disciple_tools" ),
+                    'contacts' => __( "Active Contacts", "disciple_tools" ),
+                    'groups' => __( "Active Groups", "disciple_tools" ),
                     'active_users' => __( "Active Users", 'disciple_tools' )
                 ],
             ]
@@ -88,30 +88,30 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
     }
 
     public function add_api_routes() {
-        register_rest_route(
-            $this->namespace, 'cluster_geojson', [
-                [
-                    'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'cluster_geojson' ],
-                ],
-            ]
-        );
-        register_rest_route(
-            $this->namespace, 'get_grid_totals', [
-                [
-                    'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'get_grid_totals' ],
-                ],
-            ]
-        );
-        register_rest_route(
-            $this->namespace, 'get_list_by_grid_id', [
-                [
-                    'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'get_list_by_grid_id' ],
-                ],
-            ]
-        );
+//        register_rest_route(
+//            $this->namespace, 'cluster_geojson', [
+//                [
+//                    'methods'  => WP_REST_Server::CREATABLE,
+//                    'callback' => [ $this, 'cluster_geojson' ],
+//                ],
+//            ]
+//        );
+//        register_rest_route(
+//            $this->namespace, 'get_grid_totals', [
+//                [
+//                    'methods'  => WP_REST_Server::CREATABLE,
+//                    'callback' => [ $this, 'get_grid_totals' ],
+//                ],
+//            ]
+//        );
+//        register_rest_route(
+//            $this->namespace, 'get_list_by_grid_id', [
+//                [
+//                    'methods'  => WP_REST_Server::CREATABLE,
+//                    'callback' => [ $this, 'get_list_by_grid_id' ],
+//                ],
+//            ]
+//        );
         register_rest_route(
             $this->namespace, 'points_geojson', [
                 [
@@ -204,8 +204,18 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
             return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
         }
         $post_type = $params['post_type'];
+        $query = [];
+        $modules = dt_get_option( "dt_post_type_modules" );
+        if ( $post_type === "contacts" ){
+            if ( !empty( $modules["access_module"]["enabled"] ) ){
+                $query = [ "type" => [ "access" ],  "overall_status" => [ '-closed' ] ];
+            }
+        }
+        if ( $post_type === "groups" ){
+            $query = [ "group_status" => [ "-inactive" ] ];
+        }
 
-        return Disciple_Tools_Mapping_Queries::points_geojson( $post_type );
+        return Disciple_Tools_Mapping_Queries::points_geojson( $post_type, $query );
     }
 
     public function grid_totals( WP_REST_Request $request ) {

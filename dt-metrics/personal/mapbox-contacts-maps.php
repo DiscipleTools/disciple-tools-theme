@@ -17,7 +17,7 @@ class DT_Metrics_Mapbox_Personal_Contacts_Maps extends DT_Metrics_Chart_Base
     public $js_file_name = '/dt-metrics/common/maps_library.js'; // should be full file name plus extension
     public $permissions = [ 'access_contacts' ];
     public $namespace = 'dt-metrics/personal/contacts/';
-    public $base_filter = [ [ [ "type" => [ "access" ], "assigned_to" => [ "me" ], "overall_status" => [ '-closed' ] ], [ "type" => [ "connection", "personal" ], "shared_with" => [ "me" ] ] ] ];
+    public $base_filter = [ "shared_with" => [ "me" ] ];
 
     public function __construct() {
         if ( ! DT_Mapbox_API::get_key() ) {
@@ -29,6 +29,12 @@ class DT_Metrics_Mapbox_Personal_Contacts_Maps extends DT_Metrics_Chart_Base
         }
         $this->title = __( 'Contacts Maps', 'disciple_tools' );
         $this->base_title = __( 'Contacts', 'disciple_tools' );
+
+        $modules = dt_get_option( "dt_post_type_modules" );
+
+        if ( !empty( $modules["access_module"]["enabled"] ) ){
+            $this->base_filter = [ [ [ "type" => [ "access" ], "assigned_to" => [ "me" ], "overall_status" => [ '-closed' ] ], [ "type" => [ "connection", "personal" ], "shared_with" => [ "me" ] ] ] ];
+        }
 
         $url_path = dt_get_url_path();
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
