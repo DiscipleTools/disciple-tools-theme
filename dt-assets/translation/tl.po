@@ -5,8 +5,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.4.2\n"
 "Project-Id-Version: Disciple.Tools\n"
-"Language: zh_CN\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: tl\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
@@ -14,62 +14,62 @@ msgstr ""
 
 #: 403.php:9
 msgid "Permission denied"
-msgstr "没有权限"
+msgstr "Tinanggihan ang pahintulot"
 
 #: 403.php:23
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
-msgstr "抱歉，您无权查看ID为％2 $ s的％1 $ s。"
+msgstr "Paumanhin, wala kang pahintulot na tingnan ang %1$s na may id na %2$s."
 
 #: 403.php:24
 msgid "Request permission from your administrator."
-msgstr "向管理员请求权限。"
+msgstr "Humiling ng pahintulot mula sa iyong administrator."
 
 #: 403.php:26
 msgid "Back"
-msgstr "背部"
+msgstr "Bumalik"
 
 #: 404.php:12
 msgid "Epic 404 - Not Found"
-msgstr "史诗404-找不到"
+msgstr "Epic 404 - Hindi Nakita"
 
 #: 404.php:16
 msgid "The page you were looking for was not found or was deleted"
-msgstr "找不到或删除了您要查找的页面"
+msgstr "Hindi nakita ang pahinang hinahanap mo o tinanggal ito"
 
 #: dt-contacts/contacts-post-type.php:223 dt-groups/groups-post-type.php:189
 #: dt-users/mapbox-coverage-map.php:87 dt-users/template-user-management.php:77
 #: dt-users/user-management.php:98
 msgid "Active"
-msgstr "活性"
+msgstr "Aktibo"
 
 #: template-notifications.php:40
 msgid "New"
-msgstr "新"
+msgstr "Bago"
 
 #: dt-contacts/contacts-post-type.php:218
 msgid "Waiting to be accepted"
-msgstr "等待被接受"
+msgstr "Naghihintay na matanggap"
 
 #: archive-contacts.php:23
 msgid "Create new contact"
-msgstr "建立新联络人"
+msgstr "Gumawa ng bagong contact"
 
 #: archive-contacts.php:31
 msgid "View Duplicates"
-msgstr "查看重复项"
+msgstr "Tingnan ang mga Duplicate"
 
 #: archive-contacts.php:37 archive-contacts.php:56 archive-groups.php:32
 #: archive-groups.php:50 archive-template.php:34 archive-template.php:53
 msgid "Search"
-msgstr "搜索"
+msgstr "Hanapin"
 
 #: dt-contacts/contacts.php:2002 dt-contacts/contacts.php:2003
 msgid "Shared with me"
-msgstr "与我分享"
+msgstr "Ibinahagi sa akin"
 
 #: archive-contacts.php:81 archive-groups.php:78 archive-template.php:71
 msgid "Add new filter"
-msgstr "新增过滤器"
+msgstr "Magdagdag ng bagong filter"
 
 #: dt-contacts/contacts-post-type.php:189 dt-groups/groups-post-type.php:223
 #: dt-metrics/contacts/mapbox-cluster-map.php:67
@@ -82,35 +82,35 @@ msgstr "新增过滤器"
 #: dt-metrics/personal/mapbox-groups-cluster-map.php:68
 #: dt-metrics/personal/mapbox-groups-point-map.php:67
 msgid "Assigned To"
-msgstr "分配给"
+msgstr "Itinalaga Kay"
 
 #: archive-contacts.php:139 archive-contacts.php:185 archive-groups.php:130
 #: archive-groups.php:169 archive-template.php:178 archive-template.php:214
 #: dt-assets/functions/enqueue-scripts.php:356
 msgid "Creation Date"
-msgstr "创立日期"
+msgstr "Petsa ng Paggawa"
 
 #: archive-contacts.php:176
 msgid "Filter for subassigned OR Assigned To"
-msgstr "筛选子分配或分配给"
+msgstr "Filter para sa subassigned O Assigned To"
 
 #: archive-contacts.php:200 archive-contacts.php:201 archive-groups.php:184
 #: archive-groups.php:185 archive-template.php:230 archive-template.php:231
 #: template-settings.php:414
 msgid "No"
-msgstr "没有"
+msgstr "Hindi"
 
 #: archive-contacts.php:206 archive-contacts.php:207 archive-groups.php:190
 #: archive-groups.php:191 archive-template.php:237 archive-template.php:238
 #: template-settings.php:413
 msgid "Yes"
-msgstr "是"
+msgstr "Oo"
 
 #: archive-contacts.php:214 archive-contacts.php:225 archive-groups.php:198
 #: archive-groups.php:209 archive-template.php:245 archive-template.php:256
 msgctxt "Clear/empty input"
 msgid "Clear"
-msgstr "明确"
+msgstr "I-clear"
 
 #: archive-contacts.php:253 archive-groups.php:239 archive-template.php:284
 #: dt-assets/functions/enqueue-scripts.php:339
@@ -120,129 +120,129 @@ msgstr "明确"
 #: template-merge-details.php:119 template-merge-details.php:129
 #: template-merge-details.php:167 template-settings.php:537
 msgid "Save"
-msgstr "保存"
+msgstr "I-save"
 
 #: archive-groups.php:26 archive-groups.php:235
 msgid "Filter Groups"
-msgstr "筛选器组"
+msgstr "I-filter ang mga Grupo"
 
 #: dt-assets/functions/details-bar.php:37
 #: dt-core/admin/config-site-defaults.php:326
 #: dt-users/template-user-management.php:76
 msgid "Update Needed"
-msgstr "需要更新"
+msgstr "Kailangan ng Pag-update"
 
 #: dt-assets/functions/details-bar.php:52
 msgid "Make a user from this contact"
-msgstr "通过此联系人建立用户"
+msgstr "Gumawa ng user mula sa contact na ito"
 
 #: dt-assets/functions/details-bar.php:54
 msgid "Link to an existing user"
-msgstr "链接到现有用户"
+msgstr "I-link sa umiiral na user"
 
 #: dt-assets/functions/details-bar.php:56
 msgid "Merge with another contact"
-msgstr "与其他联系人合并"
+msgstr "Isama sa ibang contact"
 
 #: dt-assets/functions/details-bar.php:81
 #: dt-assets/functions/details-bar.php:84
 #: dt-assets/functions/details-bar.php:128
 #: dt-assets/functions/details-bar.php:131
 msgid "Following"
-msgstr "以下"
+msgstr "Nag-fa-follow"
 
 #: dt-assets/functions/details-bar.php:86
 #: dt-assets/functions/details-bar.php:133
 #: dt-contacts/contacts-post-type.php:606 dt-groups/groups-post-type.php:348
 msgid "Follow"
-msgstr "跟随"
+msgstr "I-follow"
 
 #: dt-assets/functions/details-bar.php:94
 #: dt-assets/functions/details-bar.php:122
 msgid "Share"
-msgstr "分享"
+msgstr "I-share"
 
 #: dt-assets/functions/details-bar.php:113
 #: dt-assets/parts/loop-activity-comment.php:119
 #: dt-assets/parts/loop-activity-comment.php:197
 msgid "Comments"
-msgstr "注释"
+msgstr "Mga komento"
 
 #: dt-assets/functions/enqueue-scripts.php:154
 msgid "You don't have any unread notifications"
-msgstr "您没有任何未读的通知"
+msgstr "Wala kang kahit anong notipikasyong hindi nabasa"
 
 #: dt-assets/functions/enqueue-scripts.php:155
 msgid "You don't have any notifications"
-msgstr "您没有任何通知"
+msgstr "Wala kang kahit anong notipikasyon"
 
 #: dt-assets/functions/enqueue-scripts.php:336
 msgid "delete"
-msgstr "删除"
+msgstr "Tanggalin"
 
 #: dt-assets/functions/enqueue-scripts.php:233
 #: dt-assets/parts/contact-details.php:238
 #: dt-assets/parts/contact-details.php:289
 msgid "No source set"
-msgstr "未设定来源"
+msgstr "Walang itinakdang pinagmulan"
 
 #: dt-assets/functions/enqueue-scripts.php:234
 msgid "No location set"
-msgstr "未设置位置"
+msgstr "Walang itinakdang lokasyon"
 
 #: dt-assets/functions/enqueue-scripts.php:235
 msgid "No leaders set"
-msgstr "没有领导者"
+msgstr "Walang itinakdang mga pinuno"
 
 #: dt-assets/functions/enqueue-scripts.php:236
 msgid "No people group set"
-msgstr "没有人组"
+msgstr "Walang itinakdang grupo ng mga tao"
 
 #: dt-assets/functions/enqueue-scripts.php:237
 msgid "No email set"
-msgstr "未设置电子邮件"
+msgstr "Walang itinakdang email"
 
 #: dt-assets/functions/enqueue-scripts.php:238
 msgid "No phone set"
-msgstr "没有电话"
+msgstr "Walang itinakdang telepono"
 
 #: dt-assets/functions/enqueue-scripts.php:239
 msgid "No address set"
-msgstr "未设置地址"
+msgstr "Walang itinakdang address"
 
 #: dt-assets/functions/enqueue-scripts.php:240
 msgid "None set"
-msgstr "没有设置"
+msgstr "Walang itinakda"
 
 #: dt-assets/functions/enqueue-scripts.php:241
 msgid "No sub-assigned set"
-msgstr "没有子分配集"
+msgstr "Walang itinakdang sub-assigned"
 
 #: dt-assets/functions/enqueue-scripts.php:242
 #: dt-assets/parts/contact-details.php:311
 msgid "No age set"
-msgstr "没有年龄设定"
+msgstr "Walang itinakdang edad"
 
 #: dt-assets/functions/enqueue-scripts.php:243
 #: dt-assets/parts/contact-details.php:330
 msgid "No gender set"
-msgstr "没有性别"
+msgstr "Walang itinakdang kasarian"
 
 #: dt-assets/functions/enqueue-scripts.php:248
 msgid "Valid"
-msgstr "有效"
+msgstr "Balido"
 
 #: dt-assets/functions/enqueue-scripts.php:249
 msgid "Invalid"
-msgstr "无效"
+msgstr "Hindi balido"
 
 #: dt-assets/functions/enqueue-scripts.php:250
 msgid "Unconfirmed"
-msgstr "未确认"
+msgstr "Hindi kumpirmado"
 
 #: dt-assets/functions/enqueue-scripts.php:251
 msgid "Transfer failed. Check site-to-site configuration."
-msgstr "转移失败。检查站点到站点的配置。"
+msgstr "Hindi nailipat. Tingnan ang site-to-site na konpigurasyon."
 
 #: dt-assets/functions/enqueue-scripts.php:198
 #: dt-assets/functions/enqueue-scripts.php:352
@@ -251,27 +251,27 @@ msgstr "转移失败。检查站点到站点的配置。"
 #: template-merge-details.php:129 template-merge-details.php:165
 #: template-settings.php:70 template-settings.php:428
 msgid "Edit"
-msgstr "编辑"
+msgstr "I-edit"
 
 #: dt-assets/functions/enqueue-scripts.php:199
 #: dt-assets/functions/enqueue-scripts.php:222
 #: dt-assets/functions/enqueue-scripts.php:353
 #: dt-assets/parts/loop-activity-comment.php:176
 msgid "Delete"
-msgstr "删除"
+msgstr "Tanggalin"
 
 #: dt-assets/functions/enqueue-scripts.php:354
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
-msgstr "显示_START_ __TOTAL_"
+msgstr "Ipinapakita ang  _START_ of _TOTAL_"
 
 #: dt-assets/functions/enqueue-scripts.php:355
 msgid "Sorting By"
-msgstr "排序依据"
+msgstr "Pinagbubukod-bukod sa Pamamagitan ng"
 
 #: dt-assets/functions/enqueue-scripts.php:357
 msgid "Date Modified"
-msgstr "修改日期"
+msgstr "Petsa nang Baguhin"
 
 #: dt-assets/functions/menu.php:18 dt-assets/functions/menu.php:64
 #: dt-contacts/contacts-post-type.php:114
@@ -292,7 +292,7 @@ msgstr "修改日期"
 #: dt-metrics/personal/overview.php:62
 #: dt-users/template-user-management.php:231 template-view-duplicates.php:40
 msgid "Contacts"
-msgstr "联络人"
+msgstr "Mga Contact"
 
 #: dt-assets/functions/menu.php:22 dt-assets/functions/menu.php:68
 #: dt-contacts/contacts-post-type.php:674 dt-groups/groups-post-type.php:117
@@ -306,59 +306,59 @@ msgstr "联络人"
 #: dt-metrics/metrics.php:84 dt-metrics/personal/overview.php:63
 #: single-groups.php:108
 msgid "Groups"
-msgstr "团体"
+msgstr "Mga grupo"
 
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:29 dt-assets/functions/menu.php:72
 msgid "Metrics"
-msgstr "指标"
+msgstr "Metrics"
 
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:89 dt-assets/parts/nav-offcanvas-topbar.php:57
 #: dt-assets/parts/nav-offcanvas-topbar.php:132 template-notifications.php:31
 #: template-settings.php:45 template-settings.php:363
 msgid "Notifications"
-msgstr "通知事项"
+msgstr "Mga Notipikasyon"
 
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:92 dt-assets/parts/modals/modal-help.php:444
 #: dt-assets/parts/nav-offcanvas-topbar.php:62
 #: dt-assets/parts/nav-offcanvas-topbar.php:145 template-notifications.php:57
 msgid "Settings"
-msgstr "设定值"
+msgstr "Settings"
 
 #: dt-assets/functions/menu.php:98 dt-assets/parts/nav-offcanvas-topbar.php:148
 msgid "Admin"
-msgstr "管理员"
+msgstr "Admin"
 
 #: dt-assets/functions/menu.php:101
 #: dt-assets/parts/nav-offcanvas-topbar.php:158
 msgid "Log Off"
-msgstr "注销"
+msgstr "Mag-log Off"
 
 #: dt-assets/parts/contact-details.php:20
 msgid "This contact needs an update"
-msgstr "此联系人需要更新"
+msgstr "Kailangan ng update ng contact na ito"
 
 #: dt-assets/parts/contact-details.php:21 single-groups.php:51
 msgid "Please provide an update by posting a comment."
-msgstr "请通过发表评论来提供更新。"
+msgstr "Mangyaring magbigay ng update sa pamamagitan ng pagpo-post ng komento."
 
 #: dt-assets/parts/contact-details.php:31
 msgid "This contact has been assigned to you."
-msgstr "此联系人已分配给您。"
+msgstr "Itinalaga sa iyo ang contact na ito."
 
 #: dt-assets/parts/contact-details.php:32
 msgid "Accept"
-msgstr "接受"
+msgstr "Tanggapin"
 
 #: dt-assets/parts/contact-details.php:33
 msgid "Decline"
-msgstr "下降"
+msgstr "Tanggihan"
 
 #: dt-assets/parts/contact-details.php:41
 msgid "This contact represents a user."
-msgstr "该联系人代表用户。"
+msgstr "Kumakatawan sa user ang contact na ito."
 
 #: dt-assets/parts/contact-details.php:74
 #: dt-metrics/contacts/mapbox-area-map.php:60
@@ -377,46 +377,46 @@ msgstr "该联系人代表用户。"
 #: dt-users/mapbox-coverage-map.php:85 dt-users/template-user-management.php:73
 #: dt-users/template-user-management.php:158
 msgid "Status"
-msgstr "状态"
+msgstr "Kalagayan"
 
 #: dt-contacts/contacts-post-type.php:682
 msgid "Sub-assigned to"
-msgstr "子分配给"
+msgstr "Naka-sub-assign kay"
 
 #: dt-assets/parts/contact-details.php:214
 #: dt-assets/parts/contact-details.php:391
 #: dt-assets/parts/modals/modal-help.php:25
 #: dt-core/admin/config-site-defaults.php:507
 msgid "Social Media"
-msgstr "社交媒体"
+msgstr "Social Media"
 
 #: dt-contacts/contacts-post-type.php:949
 #: dt-core/admin/config-site-defaults.php:511
 #: dt-groups/groups-post-type.php:615 template-settings.php:131
 msgid "Address"
-msgstr "地址"
+msgstr "Address"
 
 #: dt-assets/parts/modals/modal-help.php:411
 #: dt-contacts/contacts-post-type.php:690 dt-groups/groups-post-type.php:430
 msgid "Locations"
-msgstr "地点"
+msgstr "Mga lokasyon"
 
 #: dt-contacts/contacts-post-type.php:666 dt-groups/groups-post-type.php:400
 #: dt-people-groups/people-groups-post-type.php:130
 msgid "People Groups"
-msgstr "人民团体"
+msgstr "Mga Grupo ng Tao"
 
 #: dt-contacts/contacts-post-type.php:377
 msgid "Age"
-msgstr "年龄"
+msgstr "Edad"
 
 #: dt-contacts/contacts-post-type.php:367
 msgid "Gender"
-msgstr "性别"
+msgstr "Kasarian"
 
 #: dt-assets/parts/contact-details.php:349
 msgid "Edit Contact"
-msgstr "更改联系资料"
+msgstr "I-edit ang Contact"
 
 #: archive-template.php:119 dt-assets/parts/contact-details.php:354
 #: dt-assets/parts/content-contacts.php:52
@@ -438,136 +438,136 @@ msgstr "更改联系资料"
 #: dt-metrics/personal/mapbox-groups-point-map.php:58 template-new-post.php:22
 #: template-settings.php:87
 msgid "Name"
-msgstr "名称"
+msgstr "Pangalan"
 
 #: archive-template.php:91 dt-assets/parts/content-contacts.php:21
 #: dt-assets/parts/content-groups.php:21
 msgid "Sort"
-msgstr "分类"
+msgstr "Pagbukud-bukurin"
 
 #: archive-template.php:95 dt-assets/parts/content-contacts.php:24
 #: dt-assets/parts/content-groups.php:24
 msgid "Newest"
-msgstr "最新"
+msgstr "Pinakabago"
 
 #: archive-template.php:99 dt-assets/parts/content-contacts.php:27
 #: dt-assets/parts/content-groups.php:27
 msgid "Oldest"
-msgstr "最老的"
+msgstr "Pinakaluma"
 
 #: archive-template.php:103 dt-assets/parts/content-contacts.php:30
 #: dt-assets/parts/content-groups.php:30
 msgid "Most recently modified"
-msgstr "最近修改"
+msgstr "Pinakahuling binago"
 
 #: archive-template.php:107 dt-assets/parts/content-contacts.php:33
 #: dt-assets/parts/content-groups.php:33
 msgid "Least recently modified"
-msgstr "最近最少修改"
+msgstr "Kamakailan lang binago"
 
 #: dt-assets/parts/content-contacts.php:40
 msgid "Closed Contacts"
-msgstr "封闭的联系人"
+msgstr "Mga Isinarang Contact"
 
 #: dt-contacts/contacts-post-type.php:244
 #: dt-metrics/contacts/seeker-path.php:25
 #: dt-metrics/contacts/seeker-path.php:62
 msgid "Seeker Path"
-msgstr "搜寻路径"
+msgstr "Landas ng Naghahanap"
 
 #. Could be either Hitos or Pilares
 #: dt-contacts/contacts-post-type.php:305
 msgid "Faith Milestones"
-msgstr "信仰里程碑"
+msgstr "Makasaysayang Pangyayari sa Pananampalataya"
 
 #: dt-groups/groups-post-type.php:116 dt-groups/groups-post-type.php:206
 #: dt-metrics/groups/overview.php:80 dt-metrics/personal/group-tree.php:158
 #: dt-metrics/personal/overview.php:74
 msgid "Group"
-msgstr "组"
+msgstr "Grupo"
 
 #: archive-template.php:131 dt-assets/parts/content-contacts.php:63
 #: dt-assets/parts/content-groups.php:61
 msgid "Loading..."
-msgstr "载入中..."
+msgstr "Naglo-load..."
 
 #: dt-assets/parts/content-contacts.php:67
 msgid "Load more contacts"
-msgstr "加载更多联系人"
+msgstr "Mag-load ng mas maraming contact"
 
 #: dt-assets/parts/content-groups.php:40
 msgid "Inactive Groups"
-msgstr "非活动组"
+msgstr "Mga Grupong Hindi Aktibo"
 
 #: dt-assets/parts/content-groups.php:65
 msgid "Load more groups"
-msgstr "载入更多群组"
+msgstr "Mag-load ng mas maraming grupo"
 
 #: dt-groups/groups-post-type.php:416
 msgid "Group Coach / Church Planter"
-msgstr "小组教练/教会主持人"
+msgstr "Tagapagturo ng Grupo / Tagapagtatag ng Iglesia"
 
 #: dt-groups/groups-post-type.php:322 dt-users/template-user-management.php:310
 #: template-settings.php:321 template-settings.php:340
 msgid "Start Date"
-msgstr "开始日期"
+msgstr "Petsa ng Simula"
 
 #: dt-assets/functions/enqueue-scripts.php:244
 msgid "No start date"
-msgstr "没有开始日期"
+msgstr "Walang petsa ng simula"
 
 #: dt-groups/groups-post-type.php:329
 msgid "Church Start Date"
-msgstr "教会开始日期"
+msgstr "Petsa ng Simula ng Iglesia"
 
 #: dt-assets/functions/enqueue-scripts.php:246
 #: dt-assets/parts/group-details.php:181
 msgid "No church start date"
-msgstr "没有教堂开始日期"
+msgstr "Walang petsa ng simula ng iglesia"
 
 #: dt-groups/groups-post-type.php:335 dt-users/template-user-management.php:311
 #: template-settings.php:327 template-settings.php:341
 msgid "End Date"
-msgstr "结束日期"
+msgstr "Petsa ng Pagtatapos"
 
 #: dt-assets/functions/enqueue-scripts.php:245
 #: dt-assets/parts/group-details.php:196
 msgid "No end date"
-msgstr "没有结束日期"
+msgstr "Walang petsa ng pagtatapos"
 
 #: dt-assets/parts/group-details.php:207
 msgid "Edit Group"
-msgstr "编辑组"
+msgstr "I-edit ang Grupo"
 
 #: dt-assets/parts/loop-activity-comment.php:104
 msgid "Submit comment"
-msgstr "提交评论"
+msgstr "Isumite ang komento"
 
 #: dt-assets/parts/loop-activity-comment.php:8
 #: dt-assets/parts/modals/modal-help.php:284
 msgid "Comments and Activity"
-msgstr "评论和活动"
+msgstr "Mga Komento at Aktibidad"
 
 #: dt-assets/parts/loop-activity-comment.php:112
 msgid "Showing:"
-msgstr "显示："
+msgstr "Ipinapakita:"
 
 #: dt-assets/parts/loop-activity-comment.php:124
 #: dt-users/template-user-management.php:408
 msgid "Activity"
-msgstr "活动"
+msgstr "Aktibidad"
 
 #: dt-assets/parts/loop-activity-comment.php:153
 msgid "show all"
-msgstr "显示所有"
+msgstr "ipakita lahat"
 
 #: dt-assets/parts/loop-activity-comment.php:157
 msgid "hide all"
-msgstr "全部藏起来"
+msgstr "Huwag ipakita lahat"
 
 #: dt-assets/parts/loop-activity-comment.php:169
 msgid "Delete Comment:"
-msgstr "删除评论："
+msgstr "Tanggalin ang Komento:"
 
 #: dt-assets/parts/loop-activity-comment.php:173
 #: dt-assets/parts/loop-activity-comment.php:220
@@ -578,198 +578,198 @@ msgstr "删除评论："
 #: dt-assets/parts/modals/modal-tasks.php:46 single-contacts.php:547
 #: single-groups.php:435
 msgid "Close"
-msgstr "关"
+msgstr "Isara"
 
 #: dt-assets/parts/loop-activity-comment.php:183
 #: dt-assets/parts/loop-activity-comment.php:230 template-merge-details.php:393
 msgid "Sorry, something went wrong"
-msgstr "抱歉，出了一些问题"
+msgstr "Paumanhin, may nangyaring hindi maganda"
 
 #: dt-assets/parts/loop-activity-comment.php:184
 msgid "The comment could not be deleted."
-msgstr "无法删除评论。"
+msgstr "Hindi matatanggal ang komentong ito."
 
 #: dt-assets/parts/loop-activity-comment.php:189
 msgid "Edit Comment:"
-msgstr "编辑评论："
+msgstr "I-edit ang Komento:"
 
 #: dt-assets/parts/loop-activity-comment.php:223
 msgid "Update"
-msgstr "更新资料"
+msgstr "I-update"
 
 #: dt-assets/parts/loop-activity-comment.php:231
 msgid "The comment could not be updated."
-msgstr "该评论无法更新。"
+msgstr "Hindi ma-update ang komento."
 
 #: dt-assets/parts/merge-details.php:8 template-view-duplicates.php:22
 msgid "Duplicate Contacts"
-msgstr "联系人重复"
+msgstr "Kopyahin ang mga Contact"
 
 #: dt-assets/parts/merge-details.php:10
 msgid "Original Contact"
-msgstr "原始联系人"
+msgstr "Orihinal na Contact"
 
 #: dt-assets/parts/merge-details.php:14
 msgid "Possible Duplicates"
-msgstr "可能重复"
+msgstr "Posibleng mga Kopya"
 
 #: dt-assets/parts/merge-details.php:16
 msgid "Dismiss All"
-msgstr "关闭所有"
+msgstr "Balewalain Lahat"
 
 #: dt-assets/functions/enqueue-scripts.php:253 template-view-duplicates.php:38
 msgid "Dismiss"
-msgstr "解雇"
+msgstr "Balewalain"
 
 #: dt-assets/parts/modals/modal-filters.php:3
 #: dt-assets/parts/modals/modal-filters.php:12
 msgid "Save Filter"
-msgstr "保存过滤器"
+msgstr "I-save ang Filter"
 
 #: dt-assets/parts/modals/modal-filters.php:4
 msgid "What do you want to call this filter?"
-msgstr "您要如何称呼此过滤器？"
+msgstr "Ano ang gusto mong itawag sa filter na ito?"
 
 #: dt-assets/parts/modals/modal-filters.php:22
 #: dt-assets/parts/modals/modal-filters.php:31
 msgid "Delete Filter"
-msgstr "删除过滤器"
+msgstr "Tanggalin ang Filter"
 
 #: dt-groups/groups-post-type.php:179
 msgid "Group Status"
-msgstr "组状态"
+msgstr "Kalagayan ng Grupo"
 
 #: dt-assets/parts/modals/modal-new-contact.php:3
 #: dt-assets/parts/modals/modal-new-contact.php:12
 msgid "Create Contact"
-msgstr "建立联络人"
+msgstr "Gumawa ng Contact"
 
 #: dt-assets/parts/modals/modal-help.php:365 template-contacts-new.php:25
 msgid "Name of Contact"
-msgstr "联系人姓名"
+msgstr "Pangalan ng Contact"
 
 #: single-contacts.php:498 single-contacts.php:570 single-groups.php:454
 #: template-contacts-new.php:31 template-groups-new.php:30
 #: template-new-post.php:25
 msgid "This is required"
-msgstr "这是必需的"
+msgstr "Kailangan ito"
 
 #: dt-assets/parts/modals/modal-new-contact.php:20
 msgid "Contact Created"
-msgstr "已建立联络人"
+msgstr "Ginawa na Contact"
 
 #: dt-assets/parts/modals/modal-new-contact.php:26
 msgid "Edit New Contact"
-msgstr "编辑新联系人"
+msgstr "I-edit ang Bagong Contact"
 
 #: dt-assets/parts/modals/modal-new-group.php:3
 #: dt-assets/parts/modals/modal-new-group.php:12
 msgid "Create Group"
-msgstr "创建组"
+msgstr "Gumawa ng Grupo"
 
 #: dt-assets/parts/modals/modal-new-group.php:19
 msgid "Group Created"
-msgstr "群组已建立"
+msgstr "Ginawa na Grupo"
 
 #: dt-assets/parts/modals/modal-revert.php:4
 msgid "Revert Activity"
-msgstr "还原活动"
+msgstr "Ibalik ang Aktibidad"
 
 #: dt-assets/parts/modals/modal-revert.php:5
 msgid "Field"
-msgstr "领域"
+msgstr "Field"
 
 #: dt-assets/parts/modals/modal-revert.php:8
 msgid "Current Value"
-msgstr "当前值"
+msgstr "Kasalukuyang Halaga"
 
 #: dt-assets/parts/modals/modal-revert.php:10
 msgid "Old Value"
-msgstr "旧值"
+msgstr "Lumang Value"
 
 #: dt-assets/parts/modals/modal-revert.php:18
 msgid "Revert to old value?"
-msgstr "恢复为旧值？"
+msgstr "Bumalik sa lumang value?"
 
 #: dt-assets/parts/modals/modal-share.php:7
 msgid "Share settings"
-msgstr "共享设置"
+msgstr "Ibahagi ang mga setting"
 
 #: dt-assets/parts/modals/modal-share.php:12
 msgid "This group is shared with:"
-msgstr "该组与以下人员共享："
+msgstr "Ang grupong ito ay ibinabahagi sa:"
 
 #: dt-assets/parts/modals/modal-share.php:14
 msgid "This contact is shared with:"
-msgstr "此联系人共享给："
+msgstr "Ang contact na ito ay ibinabahagi sa:"
 
 #: dt-assets/parts/nav-offcanvas-topbar.php:36
 #: dt-assets/parts/nav-offcanvas-topbar.php:110
 #: dt-posts/custom-post-type.php:151
 msgid "Add New"
-msgstr "添新"
+msgstr "Magdagdag ng Bago"
 
 #: dt-assets/parts/nav-offcanvas-topbar.php:42
 #: dt-assets/parts/nav-offcanvas-topbar.php:117
 #: dt-contacts/contacts-post-type.php:203
 msgid "New Contact"
-msgstr "新联系人"
+msgstr "Bagong Contact"
 
 #: dt-assets/parts/nav-offcanvas-topbar.php:48
 #: dt-assets/parts/nav-offcanvas-topbar.php:123
 msgid "New Group"
-msgstr "新组"
+msgstr "Bagong Grupo"
 
 #: dt-assets/parts/nav-offcanvas-topbar.php:103 template-settings.php:42
 msgid "Profile"
-msgstr "轮廓"
+msgstr "Profile"
 
 #: dt-assets/parts/nav-offcanvas-topbar.php:154
 msgid "Help"
-msgstr "救命"
+msgstr "Tulong"
 
 #: dt-contacts/contacts-post-type.php:269 dt-metrics/counter.php:139
 msgid "Ongoing Meetings"
-msgstr "正在进行的会议"
+msgstr "Mga Nagaganap na Pulong"
 
 #: dt-contacts/contacts-post-type.php:282 dt-groups/groups-post-type.php:424
 msgid "Requires Update"
-msgstr "需要更新"
+msgstr "Nangangailangan ng Update"
 
 #: dt-contacts/contacts-post-type.php:330
 #: dt-contacts/contacts-post-type.php:658
 msgid "Baptized"
-msgstr "受洗"
+msgstr "Nabinyagan"
 
 #: dt-contacts/contacts-post-type.php:350
 msgid "Baptism Date"
-msgstr "洗礼日期"
+msgstr "Petsa ng Binyag"
 
 #: dt-contacts/contacts-post-type.php:358 dt-metrics/counter.php:156
 msgid "Baptism Generation"
-msgstr "洗礼代"
+msgstr "Nagbinyag"
 
 #: dt-contacts/contacts-post-type.php:504 dt-metrics/contacts/sources.php:90
 #: dt-users/users.php:732
 msgid "Sources"
-msgstr "资料来源"
+msgstr "Mga Sanggunian"
 
 #: dt-contacts/contacts-post-type.php:613 dt-groups/groups-post-type.php:355
 msgid "Un-Follow"
-msgstr "取消关注"
+msgstr "I-Un-Follow"
 
 #: dt-contacts/contacts-post-type.php:937
 #: dt-core/admin/config-site-defaults.php:499 template-settings.php:120
 msgid "Phone"
-msgstr "电话"
+msgstr "Telepono"
 
 #: dt-core/admin/config-site-defaults.php:524
 msgid "Work"
-msgstr "工作"
+msgstr "Trabaho"
 
 #: dt-core/admin/config-site-defaults.php:523
 msgid "Home"
-msgstr "家"
+msgstr "Bahay"
 
 #: dt-assets/parts/modals/modal-help.php:135
 #: dt-assets/parts/modals/modal-help.php:275
@@ -778,7 +778,7 @@ msgstr "家"
 #: dt-core/admin/config-site-defaults.php:525 single-contacts.php:330
 #: single-groups.php:195 template-settings.php:153
 msgid "Other"
-msgstr "其他"
+msgstr "Iba pa"
 
 #: dt-contacts/contacts-post-type.php:943
 #: dt-core/admin/config-site-defaults.php:303
@@ -786,169 +786,169 @@ msgstr "其他"
 #: single-contacts.php:567 template-contacts-new.php:44
 #: template-contacts-new.php:48 template-settings.php:107
 msgid "Email"
-msgstr "电子邮件"
+msgstr "Email"
 
 #: dt-contacts/contacts-post-type.php:481
 #: dt-contacts/contacts-post-type.php:955
 #: dt-contacts/contacts-post-type.php:958
 msgid "Facebook"
-msgstr "脸书"
+msgstr "Facebook"
 
 #: dt-contacts/contacts-post-type.php:485
 #: dt-contacts/contacts-post-type.php:965
 msgid "Twitter"
-msgstr "推特"
+msgstr "Twitter"
 
 #: dt-contacts/contacts-post-type.php:971
 #: dt-contacts/contacts-post-type.php:973
 msgid "Instagram"
-msgstr "Instagram的"
+msgstr "Instagram"
 
 #: dt-contacts/contacts-post-type.php:979
 #: dt-contacts/contacts-post-type.php:981
 msgid "Skype"
-msgstr "Skype的"
+msgstr "Skype"
 
 #: dt-contacts/contacts-transfer.php:29
 msgid "Contact Transfer Both Ways"
-msgstr "双向联系人转移"
+msgstr "Paglilipat ng Contact Sa Parehong Paraan"
 
 #: dt-contacts/contacts-transfer.php:30
 msgid "Contact Transfer Sending Only"
-msgstr "联系人转移仅发送"
+msgstr "Paglilipat ng Contact Pagpapadala Lamang"
 
 #: dt-contacts/contacts-transfer.php:31
 msgid "Contact Transfer Receiving Only"
-msgstr "联系人转移仅接收"
+msgstr "Paglilipat ng Contact Pagtanggap Lamang"
 
 #: dt-contacts/contacts-transfer.php:52
 msgid "This contact has been transferred"
-msgstr "此联系人已转移"
+msgstr "Nailipat na ang contact na ito"
 
 #: dt-contacts/contacts-transfer.php:53
 msgid "This contact has been transferred to"
-msgstr "此联系人已转移到"
+msgstr "Nailipat na ang contact na ito sa"
 
 #: dt-contacts/contacts-transfer.php:86
 msgid "another site"
-msgstr "另一个网站"
+msgstr "iba pang site"
 
 #: dt-contacts/contacts-transfer.php:96
 msgid "Already transfered to %s"
-msgstr "已经转移到％s"
+msgstr "Nailipat na sa %s"
 
 #: dt-contacts/contacts-transfer.php:97
 msgid "NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
-msgstr "注意：您已经转移了此联系人。再次传输可能会创建重复项。您是否仍要覆盖此警告并继续进行传输？"
+msgstr "PAALALA: Nailipat mo na ang contact na ito. Kapag inilipat ulit, pwedeng madoble. Gusto mo pa rin bang balewalain ang babalang ito at ituloy ang iyong paglipat?"
 
 #: dt-contacts/contacts-transfer.php:98
 msgid "Override and Continue"
-msgstr "覆盖并继续"
+msgstr "Balewalain at Magpatuloy"
 
 #: dt-contacts/contacts-transfer.php:103
 msgid "Transfer this contact to:"
-msgstr "将此联系人转移到："
+msgstr "Ilipat ang contact na ito sa:"
 
 #: dt-contacts/contacts-transfer.php:115
 msgid "Confirm Transfer"
-msgstr "确认转账"
+msgstr "Kumpirmahin ang Paglipat"
 
 #: dt-contacts/contacts-transfer.php:182
 msgid "Unknown error."
-msgstr "未知错误。"
+msgstr "Hindi alam na error."
 
 #: dt-contacts/contacts-transfer.php:191
 msgid "Minor transfer error."
-msgstr "较小的传输错误。"
+msgstr "Minor na error sa paglipat."
 
 #: dt-contacts/contacts-transfer.php:335 dt-contacts/contacts-transfer.php:353
 #: dt-contacts/contacts-transfer.php:370
 msgid "Transfer Bot"
-msgstr "转移机器人"
+msgstr "Bot ng Paglipat"
 
 #: dt-contacts/contacts-transfer.php:355
 msgid "Contact transferred from site"
-msgstr "联系人已从网站转移"
+msgstr "Nailipat na ang contact mula sa site"
 
 #: dt-contacts/contacts-transfer.php:362
 msgid "ALERT: Possible duplicate contact from a previous transfer."
-msgstr "警报：上一次传输可能重复的联系人。"
+msgstr "BABALA: Posibleng nadoble ang contact mula sa dating paglipat."
 
 #: dt-contacts/contacts.php:1312
 msgctxt "Contact1 is a duplicated and was merged into Contact2"
 msgid "%1$s is a duplicate and was merged into %2$s"
-msgstr "％1 $ s是重复项，已合并到％2 $ s"
+msgstr "Ang %1$s ay dobleng kopya at isinanib sa %2$s"
 
 #: dt-contacts/contacts.php:1319
 msgctxt "Contact1 was merged into Contact2"
 msgid "%1$s was merged into %2$s"
-msgstr "％1 $ s已合并到％2 $ s"
+msgstr "Ang %1$s ay isinanib sa %2$s"
 
 #: dt-contacts/contacts.php:1260
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
-msgstr "（来自重复项）：％s"
+msgstr "(Mula sa Dobleng Kopya): %s"
 
 #: dt-contacts/contacts.php:1100
 msgid "more duplicates not shown"
-msgstr "没有显示更多重复"
+msgstr "mas marami pang kopya ang hindi ipinakikita"
 
 #: dt-core/admin/admin-theme-design.php:44
 msgid "Welcome, %1$s"
-msgstr "欢迎，％1 $ s"
+msgstr "Maligayang pagdating, %1$s"
 
 #: dt-core/admin/class-roles.php:91
 msgid "Strategist"
-msgstr "战略家"
+msgstr "Estratehista"
 
 #: dt-core/admin/class-roles.php:101
 msgid "Dispatcher"
-msgstr "调度员"
+msgstr "Dispatcher"
 
 #: dt-core/admin/class-roles.php:181
 msgid "Digital Responder"
-msgstr "数字响应器"
+msgstr "Digital Responder"
 
 #: dt-core/admin/class-roles.php:225
 msgid "Disciple.Tools Admin"
-msgstr "门徒工具管理员"
+msgstr "Disipulo.Admin ng Tools"
 
 #: dt-core/admin/class-roles.php:319
 msgid "Multiplier"
-msgstr "乘数"
+msgstr "Multiplier"
 
 #: dt-core/admin/class-roles.php:338
 msgid "Registered"
-msgstr "注册"
+msgstr "Nakarehistro"
 
 #: dt-core/admin/class-roles.php:463
 msgid "Subscriber"
-msgstr "订户"
+msgstr "Subscriber"
 
 #: dt-core/admin/config-site-defaults.php:311
 msgid "Newly Assigned Contact"
-msgstr "新分配的联系人"
+msgstr "Bagong Talagang Contact"
 
 #: dt-core/admin/config-site-defaults.php:316
 msgid "@Mentions"
-msgstr "@提及"
+msgstr "@Mentions"
 
 #: dt-core/admin/config-site-defaults.php:331
 msgid "Contact Info Changed"
-msgstr "联系信息已更改"
+msgstr "Binago ang Impormasyon ng Contact"
 
 #: dt-core/admin/config-site-defaults.php:336
 #: dt-core/migrations/0012-typo-rename.php:7
 msgid "Contact Milestones and Group Health metrics"
-msgstr "联系人里程碑和组健康指标"
+msgstr "Mga Milestone ng Contact at mga sukatan ng Kalusugan ng Grupo"
 
 #: dt-core/admin/config-site-defaults.php:370
 msgid "This contact is active but there is no record of anybody contacting them. Please do contact them."
-msgstr "该联系人处于活动状态，但是没有任何人与他们联系的记录。请与他们联系。"
+msgstr "Aktibo ang contact na ito ngunit walang rekord ng kahit na sinong kumokontak sa kanila. Pakikontak sila."
 
 #: dt-core/admin/config-site-defaults.php:376
 msgid "Please try connecting with this contact again."
-msgstr "请尝试再次与此联系人联系。"
+msgstr "Pakisubukang kumonekta ulit sa contact na ito."
 
 #: dt-core/admin/config-site-defaults.php:382
 #: dt-core/admin/config-site-defaults.php:388
@@ -956,11 +956,11 @@ msgstr "请尝试再次与此联系人联系。"
 #: dt-core/admin/config-site-defaults.php:400
 #: dt-core/admin/config-site-defaults.php:406
 msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
-msgstr "我们已经有一段时间没有听说这个人了。您有此联系人的最新消息吗？"
+msgstr "Matagal-tagal na kaming hindi nakakarinig mula sa taong ito. May update ba kayo para sa contact na ito?"
 
 #: dt-core/admin/config-site-defaults.php:416
 msgid "We haven't heard about this group in a while. Do you have an update?"
-msgstr "我们已经有一段时间没有听说过这个小组了。你有更新吗？"
+msgstr "Matagal-tagal na kaming hindi nakakarinig mula sa grupong ito. May update ka ba?"
 
 #: dt-core/admin/config-site-defaults.php:629
 msgctxt "either rtl or ltr"
@@ -969,348 +969,348 @@ msgstr "ltr"
 
 #: dt-core/admin/config-site-defaults.php:746
 msgid "Someone has requested a password reset for the following account:"
-msgstr "有人要求重置以下帐户的密码："
+msgstr "May humiling ng pag-reset ng password para sa sumusunod na account:"
 
 #. translators: %s: site name
 #: dt-core/admin/config-site-defaults.php:675
 msgid "Site Name: %s"
-msgstr "网站名称：％s"
+msgstr "Pangalan ng Site: %s"
 
 #. translators: %s: user login
 #: dt-core/admin/config-site-defaults.php:750
 msgid "Username: %s"
-msgstr "用户名：％s"
+msgstr "Username: %s"
 
 #: dt-core/admin/config-site-defaults.php:751
 msgid "If this was a mistake, just ignore this email and nothing will happen."
-msgstr "如果这是一个错误，请忽略此电子邮件，将不会发生任何事情。"
+msgstr "Kung pagkakamali ito, balewalain lang ang email na ito at walang mangyayari."
 
 #: dt-core/admin/config-site-defaults.php:752
 msgid "To reset your password, visit the following address:"
-msgstr "要重置密码，请访问以下地址："
+msgstr "Upang i-reset ang iyong password, bisitahin ang sumusunod na address:"
 
 #: dt-users/template-user-management.php:323 template-settings.php:100
 msgid "Roles"
-msgstr "的角色"
+msgstr "Mga Papel"
 
 #: dt-core/logging/hooks/class-hook-posts.php:28
 msgid "(no title)"
-msgstr "（无题）"
+msgstr "(walang pamagat)"
 
 #: dt-groups/groups-post-type.php:276 dt-groups/groups-post-type.php:408
 msgid "Leaders"
-msgstr "领导者"
+msgstr "Mga Pinuno"
 
 #: dt-posts/posts.php:279
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
-msgstr "受洗的％s"
+msgstr "Bininyagan si %s"
 
 #: dt-posts/posts.php:280
 msgctxt "Baptized by contact1"
 msgid "Baptized by %s"
-msgstr "受洗的％s"
+msgstr "Nabinyagan ni %s"
 
 #: dt-posts/posts.php:282
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
-msgstr "没有为％s施洗"
+msgstr "Hindi bininyagan si %s"
 
 #: dt-posts/posts.php:283
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
-msgstr "未受％s的洗礼"
+msgstr "Hindi bininyagan ni %s"
 
 #: dt-posts/posts.php:287
 msgctxt "contact1 added to members"
 msgid "%s added to members"
-msgstr "％s已添加到成员"
+msgstr "Idinagdag si %s sa mga miyembro"
 
 #: dt-posts/posts.php:288
 msgctxt "Added to group group1"
 msgid "Added to group %s"
-msgstr "已添加到组％s"
+msgstr "Idinagdag sa grupong %s"
 
 #: dt-posts/posts.php:290
 msgctxt "Removed contact1 from group"
 msgid "Removed %s from group"
-msgstr "从群组中删除了％s"
+msgstr "Inalis si %s mula sa grupo"
 
 #: dt-posts/posts.php:291
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
-msgstr "已从％s组中删除"
+msgstr "Inalis mula sa grupong %s"
 
 #: dt-posts/posts.php:296
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
-msgstr "教练％s"
+msgstr "Tinuturuan si %s"
 
 #: dt-posts/posts.php:297
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
-msgstr "由％s指导"
+msgstr "Tinuturuan ni %s"
 
 #: dt-posts/posts.php:299
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
-msgstr "不再指导％s"
+msgstr "Hindi na tinuturuan si %s"
 
 #: dt-posts/posts.php:304
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
-msgstr "转让给％s"
+msgstr "Na-sub assign si %s"
 
 #: dt-posts/posts.php:305
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
-msgstr "已在％s上分配"
+msgstr "Na-sub-assign sa %s"
 
 #: dt-posts/posts.php:307
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
-msgstr "删除了已分配的％s"
+msgstr "Tinanggal ang pag-sub-assign kay %s"
 
 #: dt-posts/posts.php:312
 msgctxt "Paris added as location on contact1"
 msgid "%1$s added as location on %2$s"
-msgstr "已将％1 $ s作为位置添加到％2 $ s"
+msgstr "Idinagdag ang %1$s bilang lokasyon sa %2$s"
 
 #: dt-posts/posts.php:313
 msgctxt "Paris added to locations"
 msgid "%s added to locations"
-msgstr "％s已添加到位置"
+msgstr "Idinagdag ang %s sa mga lokasyon"
 
 #: dt-posts/posts.php:315
 msgctxt "Paris removed from locations on contact1"
 msgid "%1$s removed from locations on %2$s"
-msgstr "从％2 $ s的位置中删除了％1 $ s"
+msgstr "Tinanggal ang %1$s mula sa mga lokasyon sa %2$s"
 
 #: dt-posts/posts.php:316
 msgctxt "Paris removed from locations"
 msgid "%s removed from locations"
-msgstr "已从位置删除％s"
+msgstr "Tinanggal ang %s sa mga lokasyon"
 
 #: dt-posts/posts.php:328
 msgctxt "contact1 added as leader on group1"
 msgid "%1$s added as leader on %2$s"
-msgstr "已将％1 $ s作为领导者添加到％2 $ s"
+msgstr "Idinagdag si %1$s bilang pinuno sa %2$s"
 
 #: dt-posts/posts.php:329
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
-msgstr "％s已添加到领导者"
+msgstr "Idinagdag si %s added sa mga pinuno"
 
 #: dt-posts/posts.php:331
 msgctxt "contact1 removed from leaders on group1"
 msgid "%1$s removed from leaders on %2$s"
-msgstr "已从％2 $ s的领导者中删除了％1 $ s"
+msgstr "Tinanggal si %1$s mula sa mga pinuno sa %2$s"
 
 #: dt-posts/posts.php:332
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
-msgstr "已将％s从领导者中移除"
+msgstr "Tinanggal si %s mula sa mga pinuno"
 
 #: dt-posts/posts.php:336
 msgctxt "contact1 added as coach on group1"
 msgid "%1$s added as coach on %2$s"
-msgstr "已将％1 $ s作为教练添加到％2 $ s"
+msgstr "Idinagdag si %1$s bilang coach noong %2$s"
 
 #: dt-posts/posts.php:337
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
-msgstr "％s已加入教练"
+msgstr "Idinagdag si %s sa mga coach"
 
 #: dt-posts/posts.php:339
 msgctxt "contact1 removed from coaches on group2"
 msgid "%1$s removed from coaches on %2$s"
-msgstr "已从％2 $ s的教练中删除％1 $ s"
+msgstr "Tinanggal si %1$s sa mga coach sa %2$s"
 
 #: dt-posts/posts.php:340
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
-msgstr "已将％s从教练中移除"
+msgstr "Tinanggal si %s sa mga coach"
 
 #: dt-posts/posts.php:344
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
-msgstr "％s已添加到子组"
+msgstr "Idinagdag si %s sa mga grupo ng anak"
 
 #: dt-posts/posts.php:345
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
-msgstr "％s已添加到父组"
+msgstr "Idinagdag si %s sa mga grupo ng magulang"
 
 #: dt-posts/posts.php:347
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
-msgstr "从子组中删除了％s"
+msgstr "Tinanggal si %s mula sa mga grupo ng anak"
 
 #: dt-posts/posts.php:348
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
-msgstr "从父组中删除了％s"
+msgstr "Tinanggal si %s mula sa mga grupo ng magulang"
 
 #: dt-posts/posts.php:353 dt-posts/posts.php:354
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
-msgstr "％s已添加到对等组"
+msgstr "Idinagdag si %s sa mga grupo ng kaedad"
 
 #: dt-posts/posts.php:356 dt-posts/posts.php:357
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
-msgstr "已从同级组中删除％s"
+msgstr "Tinanggal si %s mula sa mga grupo ng kaedad"
 
 #: dt-posts/posts.php:361 dt-posts/posts.php:362 dt-posts/posts.php:369
 #: dt-posts/posts.php:370
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
-msgstr "已连接到％s"
+msgstr "Naikonekta kay %s"
 
 #: dt-posts/posts.php:364 dt-posts/posts.php:365 dt-posts/posts.php:372
 #: dt-posts/posts.php:373
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
-msgstr "删除了与％s的连接"
+msgstr "Tinanggal ang koneksyon kay %s"
 
 #: dt-posts/posts.php:393
 msgctxt "Assigned to: User1"
 msgid "Assigned to: %s"
-msgstr "分配给：％s"
+msgstr "Itinalaga kay: %s"
 
 #: dt-posts/posts.php:393
 msgid "Nobody"
-msgstr "没有人"
+msgstr "Wala"
 
 #: dt-posts/posts.php:406
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
-msgstr "已从％2 $ s中删除％1 $ s"
+msgstr "Tinanggal si %1$s mula sa %2$s"
 
 #: dt-posts/posts.php:409
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
-msgstr "已将％1 $ s添加到％2 $ s"
+msgstr "Idinagdag si %1$s sa %2$s"
 
 #: dt-posts/posts.php:421
 msgid "yes"
-msgstr "是"
+msgstr "oo"
 
 #: dt-posts/posts.php:423
 msgid "no"
-msgstr "没有"
+msgstr "hindi"
 
 #: dt-posts/posts.php:490
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
-msgstr "添加了％1 $ s：％2 $ s"
+msgstr "Idinagdag ang %1$s: %2$s"
 
 #: dt-posts/posts.php:492
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
-msgstr "已将％1 $ s从％2 $ s更新为％3 $ s"
+msgstr "Na-update ang %1$s mula %2$s tungong %3$s"
 
 #: dt-posts/posts.php:494
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
-msgstr "删除的％1 $ s：％2 $ s"
+msgstr "Binura ang %1$s: %2$s"
 
 #: dt-posts/dt-posts.php:1010
 msgid "Record not deleted."
-msgstr "记录未删除。"
+msgstr "Hindi nabura ang rekord."
 
 #: dt-posts/dt-posts.php:1107
 msgid "Post already shared with user."
-msgstr "帖子已与用户共享。"
+msgstr "Naibahagi na ang post sa user."
 
 #: dt-groups/groups-post-type.php:197
 msgid "Group Type"
-msgstr "团体类型"
+msgstr "Uri ng Grupo"
 
 #: dt-groups/groups-post-type.php:202 dt-metrics/groups/overview.php:79
 #: dt-metrics/personal/overview.php:73
 msgid "Pre-Group"
-msgstr "小组前"
+msgstr "Pre-Group"
 
 #: dt-groups/groups-post-type.php:210 dt-metrics/groups/overview.php:81
 #: dt-metrics/personal/overview.php:75
 msgid "Church"
-msgstr "教会"
+msgstr "Simbahan"
 
 #: dt-groups/groups-post-type.php:386
 msgid "Member Count"
-msgstr "会员人数"
+msgstr "Bilang ng Miyembro"
 
 #: dt-mapping/mapping.php:149
 msgid "Map"
-msgstr "地图"
+msgstr "Mapa"
 
 #: dt-metrics/combined/critical-path.php:221 dt-metrics/counter.php:129
 msgid "New Contacts"
-msgstr "新联络人"
+msgstr "Mga Bagong Contact"
 
 #: dt-metrics/counter.php:134
 msgid "First Meetings"
-msgstr "第一次会议"
+msgstr "Mga Unang Pulong"
 
 #: dt-metrics/counter.php:144
 msgid "Total Baptisms"
-msgstr "总洗礼"
+msgstr "Kabuuang Binyag"
 
 #: dt-metrics/counter.php:149
 msgid "Total Baptizers"
-msgstr "浸胶总数"
+msgstr "Kabuuang Tagabinyag"
 
 #: dt-metrics/counter.php:162
 msgid "Total Churches and Groups"
-msgstr "教会和团体总数"
+msgstr "Kabuuang Simbahan at Grupo"
 
 #: dt-metrics/combined/critical-path.php:308 dt-metrics/counter.php:167
 msgid "Active Groups"
-msgstr "活跃团体"
+msgstr "Mga Aktibong Grupo"
 
 #: dt-metrics/combined/critical-path.php:318 dt-metrics/counter.php:172
 msgid "Active Churches"
-msgstr "活跃的教会"
+msgstr "Mga Aktibong Simbahan"
 
 #: dt-metrics/counter.php:179
 msgid "Church Generation"
-msgstr "教会世代"
+msgstr "Henerasyon ng Simbahan"
 
 #: dt-metrics/combined/critical-path.php:342 dt-metrics/counter.php:185
 msgid "Church Planters"
-msgstr "教堂种植园主"
+msgstr "Mga Tagatanim ng Simbahan"
 
 #. This could be either Hitos or Pilares depending on the context.
 #: dt-metrics/contacts/milestones-map.php:65
 #: dt-metrics/contacts/milestones.php:66
 msgid "Milestones"
-msgstr "大事记"
+msgstr "Mga Milestone"
 
 #: dt-metrics/combined/critical-path.php:24
 #: dt-metrics/combined/critical-path.php:55
 #: dt-metrics/combined/critical-path.php:88
 msgid "Critical Path"
-msgstr "关键路径"
+msgstr "Kritikal na Landas"
 
 #: dt-metrics/combined/critical-path.php:231
 msgid "Assigned Contacts"
-msgstr "分配的联系人"
+msgstr "Mga Itinalagang Contact"
 
 #: dt-metrics/combined/critical-path.php:240
 #: dt-metrics/contacts/overview.php:63 dt-metrics/groups/overview.php:66
 #: dt-metrics/personal/overview.php:68
 #: dt-users/template-user-management.php:162
 msgid "Active Contacts"
-msgstr "活动联系人"
+msgstr "Mga Aktibong Contact"
 
 #: dt-metrics/combined/critical-path.php:269
 msgid "Baptisms"
-msgstr "洗礼"
+msgstr "Mga Binyag"
 
 #: dt-metrics/combined/critical-path.php:298
 msgid "Baptizers"
-msgstr "浸礼"
+msgstr "Mga Tagabinyag"
 
 #: dt-contacts/contacts-post-type.php:473 dt-metrics/metrics.php:75
 #: dt-metrics/personal/baptism-tree.php:26
@@ -1324,134 +1324,134 @@ msgstr "浸礼"
 #: dt-metrics/personal/mapbox-groups-point-map.php:31
 #: dt-metrics/personal/overview.php:23
 msgid "Personal"
-msgstr "个人"
+msgstr "Personal"
 
 #: dt-metrics/personal/overview.php:59
 msgid "My Overview"
-msgstr "我的概述"
+msgstr "Aking Overview"
 
 #: dt-metrics/contacts/overview.php:64 dt-metrics/groups/overview.php:67
 #: dt-metrics/personal/overview.php:60
 msgid "Waiting on Accept"
-msgstr "等待接受"
+msgstr "Hinihintay na Tanggapin"
 
 #: dt-metrics/contacts/overview.php:65 dt-metrics/groups/overview.php:68
 #: dt-metrics/personal/overview.php:61
 msgid "Waiting on Update"
-msgstr "等待更新"
+msgstr "Hinihintay Ang Update"
 
 #: dt-metrics/contacts/overview.php:66 dt-metrics/groups/overview.php:69
 #: dt-metrics/personal/overview.php:64 dt-metrics/personal/overview.php:69
 msgid "Total Groups"
-msgstr "总人数"
+msgstr "Kabuuang Grupo"
 
 #: dt-metrics/groups/overview.php:71 dt-metrics/groups/overview.php:78
 #: dt-metrics/personal/overview.php:65
 msgid "Group Types"
-msgstr "组类型"
+msgstr "Mga Uri ng Grupo"
 
 #: dt-metrics/groups/overview.php:70 dt-metrics/personal/overview.php:66
 msgid "Group and Church Generations"
-msgstr "团体和教会世代"
+msgstr "Mga Henerasyon ng Grupo at Simbahan"
 
 #: dt-metrics/personal/overview.php:67
 msgid "Lead Teams"
-msgstr "领导团队"
+msgstr "Mga Lead Team"
 
 #: dt-metrics/personal/overview.php:70
 msgid "Follow-up of my active contacts"
-msgstr "跟进我的活跃联系人"
+msgstr "Follow-up sa aking mga aktibong contact"
 
 #: dt-metrics/groups/overview.php:74 dt-metrics/personal/overview.php:71
 msgid "Active Group Health Metrics"
-msgstr "活动组健康指标"
+msgstr "Sukatan ng Kalusugan ng Aktibong Grupo"
 
 #: dt-metrics/combined/critical-path.php:25
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26 dt-metrics/metrics.php:78
 msgid "Project"
-msgstr "项目"
+msgstr "Proyekto"
 
 #: dt-metrics/contacts/overview.php:24 dt-metrics/groups/overview.php:24
 #: dt-metrics/personal/overview.php:22
 msgid "Overview"
-msgstr "总览"
+msgstr "Overview"
 
 #: dt-metrics/contacts/baptism-tree.php:24
 msgid "Baptism Tree"
-msgstr "洗礼树"
+msgstr "Puno ng Binyag"
 
 #: dt-metrics/contacts/coaching-tree.php:24
 msgid "Coaching Tree"
-msgstr "教练树"
+msgstr "Puno ng Pagtuturo"
 
 #: dt-metrics/groups/overview.php:61
 msgid "Project Overview"
-msgstr "项目概况"
+msgstr "Overview ng Proyekto"
 
 #: dt-metrics/combined/critical-path.php:87
 msgid "Outreach"
-msgstr "外展"
+msgstr "Outreach"
 
 #: dt-metrics/combined/critical-path.php:86
 msgid "Follow Up"
-msgstr "跟进"
+msgstr "Follow Up"
 
 #: dt-metrics/contacts/overview.php:62 dt-metrics/groups/overview.php:65
 msgid "All Contacts"
-msgstr "所有联系人"
+msgstr "Lahat ng Contact"
 
 #: dt-metrics/groups/tree.php:80 dt-metrics/personal/group-tree.php:81
 msgid "Group Generation Tree"
-msgstr "组生成树"
+msgstr "Tree ng Henerasyon ng Grupo"
 
 #: dt-metrics/contacts/baptism-tree.php:56
 msgid "Baptism Generation Tree"
-msgstr "洗礼世代树"
+msgstr "Tree ng Henerasyon ng Binyag"
 
 #: dt-metrics/contacts/coaching-tree.php:57
 #: dt-metrics/personal/coaching-tree.php:58
 msgid "Coaching Generation Tree"
-msgstr "教练代树"
+msgstr "Tree ng Henerasyon ng Pagtuturo"
 
 #: dt-metrics/groups/overview.php:72
 msgid "Teams"
-msgstr "队伍"
+msgstr "Mga Team"
 
 #: dt-metrics/groups/overview.php:75
 msgid "groups"
-msgstr "团体"
+msgstr "mga grupo"
 
 #: dt-metrics/groups/overview.php:76
 msgid "generations"
-msgstr "世代"
+msgstr "mga henerasyon"
 
 #: dt-users/template-user-management.php:63
 msgid "Multipliers"
-msgstr "乘数"
+msgstr "Mga Multiplier"
 
 #: dt-metrics/metrics-workers.php:177
 msgid "Dispatchers"
-msgstr "调度员"
+msgstr "Mga Dispatcher"
 
 #: dt-notifications/notifications-email.php:117
 msgid "Click here to view or reply"
-msgstr "点击这里查看或回复"
+msgstr "Mag-click dito upang makita o sumagot"
 
 #: dt-notifications/notifications-email.php:123
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
-msgstr "更新％1 $ s＃％2 $ s"
+msgstr "Update sa %1$s #%2$s"
 
 #: dt-notifications/notifications.php:751
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
-msgstr "％s已创建并分配给您。"
+msgstr "Ang %s ay ginawa at itinalaga sa iyo."
 
 #: dt-notifications/notifications.php:759
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
-msgstr "％1 $ s已将％2 $ s分配给％3 $ s。"
+msgstr "Itinalaga ni %1$s si %2$s kay %3$s."
 
 #: dt-notifications/notifications.php:762
 #: dt-notifications/notifications.php:769
@@ -1460,374 +1460,374 @@ msgstr "％1 $ s已将％2 $ s分配给％3 $ s。"
 #: dt-notifications/notifications.php:790
 #: dt-notifications/notifications.php:797
 msgid "System"
-msgstr "系统"
+msgstr "Sistema"
 
 #: dt-notifications/notifications.php:763
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
-msgstr "％1 $ s与您分享了％2 $ s。"
+msgstr "Ibinahagi ni %1$s ang %2$s sa iyo."
 
 #: dt-notifications/notifications.php:770
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
-msgstr "％1 $ s在％2 $ s上说了您：％3 $ s"
+msgstr "Binanggit ka ni %1$s noong %2$s at sinabing: %3$s"
 
 #: dt-notifications/notifications.php:777
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
-msgstr "％1 $ s对％2 $ s说：％3 $ s"
+msgstr "Nagkomento si %1$s noong %2$s at sinabing: %3$s"
 
 #: dt-notifications/notifications.php:781
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
-msgstr "％1 $ s已将％2 $ s分配给您。"
+msgstr "Ini-subassign ni %1$s ang %2$s sa iyo."
 
 #: dt-notifications/notifications.php:791
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
-msgstr "％1 $ s在％3 $ s上添加了里程碑％2 $ s。"
+msgstr "Idinagdag ni %1$s ang milestone %2$s sa %3$s."
 
 #: dt-notifications/notifications.php:798
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
-msgstr "％1 $ s已修改％2 $ s上的联系方式。"
+msgstr "Binago ni %1$s ang mga detalye ng contact sa %2$s."
 
 #: dt-notifications/notifications.php:801
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
-msgstr "％1 $ s拒绝分配：％2 $ s。"
+msgstr "Tinanggihan ni %1$s ang pagkakatalag sa: %2$s."
 
 #: dt-people-groups/people-groups-post-type.php:129
 msgid "People Group"
-msgstr "人民团体"
+msgstr "Grupo ng Mga Tao"
 
 #: dt-people-groups/people-groups-post-type.php:279
 msgid "Add/Update People Group"
-msgstr "添加/更新人员组"
+msgstr "Magdagdag/Mag-update ng Grupo ng Tao"
 
 #: dt-people-groups/people-groups-post-type.php:280
 msgid "People Group Details"
-msgstr "人群组详细信息"
+msgstr "Mga Detalye ng Grupo ng Mga Tao"
 
 #: dt-people-groups/people-groups-post-type.php:587
 msgid "Enter the People Group title here"
-msgstr "在此处输入人员组标题"
+msgstr "Ilagay ang pamagat ng Grupo ng Mga Tao rito"
 
 #: dt-users/users.php:62
 msgid "No permissions to assign"
-msgstr "没有分配权限"
+msgstr "Walang permiso para magtalaga"
 
 #: dt-users/users.php:311
 msgid "Insufficient permissions"
-msgstr "权限不足"
+msgstr "Hindi sapat ang permiso"
 
 #: dt-users/users.php:703
 msgid "Extra Disciple.Tools Information"
-msgstr "额外的门徒工具信息"
+msgstr "Impormasyon sa Dagdag na Disciple.Tools"
 
 #: dt-users/users.php:706
 msgid "Corresponds to Contact"
-msgstr "对应联系人"
+msgstr "Tumutugma sa Contact"
 
 #: dt-users/users.php:915
 msgid "View contact record"
-msgstr "查看联系记录"
+msgstr "Tingnan ang rekord ng contact"
 
 #: dt-workflows/update-required.php:73 dt-workflows/update-required.php:111
 msgid "Updated Needed"
-msgstr "需要更新"
+msgstr "Kailangan ng Mga Update"
 
 #: functions.php:504
 msgid "Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:"
-msgstr "门徒工具主题需要PHP 7.0或更高版本。您当前的版本是："
+msgstr "Kailangan ng Disciple Tools theme ng bersyon ng PHP na 7.0 o higit pa. Ang kasalukuyang bersyon mo ay:"
 
 #: functions.php:506
 msgid "Please upgrade PHP or uninstall this theme"
-msgstr "请升级PHP或卸载此主题"
+msgstr "Mangyaring i-upgrade ang PHP o i-uninstall ang temang ito"
 
 #: header.php:65
 msgid "Javascript must be enabled for this site to function correctly."
-msgstr "必须启用Javascript，此网站才能正常运行。"
+msgstr "Dapat i-enable ang Javascript para maayos na gumana ang site na ito."
 
 #: header.php:71
 msgid "You seem to be using an out-of-date web browser. Without the most up-to-date version of your browser, this may site may not function correctly. Please note that Internet Explorer is not supported."
-msgstr "您似乎正在使用过时的Web浏览器。如果没有最新版本的浏览器，则该网站可能无法正常运行。请注意，不支持Internet Explorer。"
+msgstr "Mukhang gumagamit ka ng lumang web browser. Kapag wala ang pinakabagong bersyon ng iyong browser, maaaring hindi gumana nang maayos ang site na ito. Pakitandaan na hindi suportado ang Internet Explorer."
 
 #: header.php:73
 msgid "See what browser you are using."
-msgstr "查看您使用的浏览器。"
+msgstr "Tingnan kung anong ginagamit ng iyong browser."
 
 #: single-contacts.php:71
 msgid "View Comments"
-msgstr "查看评论"
+msgstr "Tingnan ang Mga Komento"
 
 #: single-contacts.php:82
 msgid "This contact has possible duplicates."
-msgstr "此联系人可能重复。"
+msgstr "Posibleng nadoble ang contact na ito."
 
 #: single-contacts.php:84
 msgid "Go to duplicates"
-msgstr "去重复"
+msgstr "Magpunta sa dobleng kopya"
 
 #: single-contacts.php:102
 msgid "Connections"
-msgstr "连接数"
+msgstr "Mga Koneksyon"
 
 #: dt-assets/parts/modals/modal-help.php:80 single-contacts.php:179
 msgid "Progress"
-msgstr "进展"
+msgstr "Pag-usad"
 
 #: single-contacts.php:490 single-groups.php:447
 msgid "Create Tag"
-msgstr "创建标签"
+msgstr "Gumawa ng Tag"
 
 #: single-contacts.php:495 single-contacts.php:497 single-groups.php:451
 msgid "Tag"
-msgstr "标签"
+msgstr "Tag"
 
 #: single-contacts.php:506 single-groups.php:462
 msgid "Create and apply tag"
-msgstr "创建并应用标签"
+msgstr "Gumawa at gamitin ang tag"
 
 #: dt-users/template-user-management.php:72 single-contacts.php:572
 #: single-contacts.php:575
 msgid "Display Name"
-msgstr "显示名称"
+msgstr "Pangalang Ipinakikita"
 
 #: single-contacts.php:586
 msgid "Create user"
-msgstr "创建用户"
+msgstr "Lumikha ng user"
 
 #: single-contacts.php:599
 msgid "Link this contact to an existing user"
-msgstr "将此联系人链接到现有用户"
+msgstr "I-link ang contact na ito sa umiiral na user"
 
 #: single-contacts.php:679
 msgid "Click merge to continue."
-msgstr "单击合并以继续。"
+msgstr "I-click ang pagsanibin upang magpatuloy."
 
 #: single-groups.php:50
 msgid "This group needs an update"
-msgstr "该组需要更新"
+msgstr "Kailangang i-update ang grupong ito"
 
 #: dt-groups/groups-post-type.php:392 single-groups.php:84
 #: single-groups.php:414
 msgid "Member List"
-msgstr "会员名单"
+msgstr "Listahan ng Miyembro"
 
 #: dt-groups/groups-post-type.php:362
 msgid "Parent Group"
-msgstr "家长小组"
+msgstr "Grupo ng Magulang"
 
 #: dt-groups/groups-post-type.php:370
 msgid "Peer Group"
-msgstr "同行组"
+msgstr "Grupo ng Kaedad"
 
 #: template-contacts-new.php:35 template-contacts-new.php:39
 msgid "Phone number"
-msgstr "电话号码"
+msgstr "Numero ng telepono"
 
 #: template-contacts-new.php:141 template-groups-new.php:47
 #: template-new-post.php:28
 msgid "Save and continue editing"
-msgstr "保存并继续编辑"
+msgstr "I-save at ituloy ang pag-edit"
 
 #: template-merge-details.php:108
 msgid "Merge Duplicate Contacts"
-msgstr "合并重复的联系人"
+msgstr "Pagsanibin ang Mga Nadobleng Contact"
 
 #: template-merge-details.php:109
 msgid "When you merge, the master record is updated with the values you choose, and relationships to other items are shifted to the master record"
-msgstr "合并时，将使用您选择的值更新主记录，并将与其他项目的关系转移到主记录"
+msgstr "Kapag pinagsanib mo, maa-update ang master record gamit ang values na pipiliin mo, at ililipat ang mga relasyon sa iba pang item sa master record"
 
 #: template-merge-details.php:123 template-merge-details.php:132
 msgid "Status:"
-msgstr "状态："
+msgstr "Status:"
 
 #: template-merge-details.php:124 template-merge-details.php:133
 msgid "Created:"
-msgstr "创建时间："
+msgstr "Nilikha:"
 
 #: template-merge-details.php:125 template-merge-details.php:134
 msgid "Select All"
-msgstr "全选"
+msgstr "Piliin Lahat"
 
 #: template-merge-details.php:142
 msgid "Master Record"
-msgstr "主记录"
+msgstr "Master Record"
 
 #: template-merge-details.php:147 template-merge-details.php:150
 msgid "Use as master"
-msgstr "用作主人"
+msgstr "Gamitin bilang master"
 
 #: template-notifications.php:49
 msgid "Unread"
-msgstr "未读"
+msgstr "Hindi pa nababasa"
 
 #: template-notifications.php:61
 msgid "Mark All"
-msgstr "全部标记"
+msgstr "Markahan Lahat"
 
 #: dt-users/template-user-management.php:293 template-settings.php:44
 #: template-settings.php:308
 msgid "Availability"
-msgstr "可用性"
+msgstr "Pagiging Available"
 
 #: template-settings.php:68
 msgid "Your Profile"
-msgstr "你的个人资料"
+msgstr "Ang Iyong Profile"
 
 #: template-settings.php:81 template-settings.php:448
 msgid "Username"
-msgstr "用户名"
+msgstr "Username"
 
 #: dt-users/user-management.php:155 template-settings.php:94
 #: template-settings.php:483
 msgid "Nickname (Display Name)"
-msgstr "昵称（显示名称）"
+msgstr "Palayag (Pangalang Ipinakikita)"
 
 #: template-settings.php:142
 msgid "Social"
-msgstr "社会的"
+msgstr "Social"
 
 #: template-settings.php:167
 msgid "Language"
-msgstr "语言"
+msgstr "Lingguwahe"
 
 #: template-settings.php:173
 msgid "English"
-msgstr "英语"
+msgstr "Ingles"
 
 #: template-settings.php:177
 msgid "Biography"
-msgstr "传"
+msgstr "Biograpiya"
 
 #: template-settings.php:369
 msgid "Type of Notification"
-msgstr "通知类型"
+msgstr "Uri ng Notipikasyon"
 
 #: dt-contacts/contacts-post-type.php:477
 #: dt-core/admin/config-site-defaults.php:306
 msgid "Web"
-msgstr "网页"
+msgstr "Web"
 
 #: template-settings.php:382
 msgid "required"
-msgstr "需要"
+msgstr "kinakailangan"
 
 #: template-settings.php:405
 msgid "Follow all contacts"
-msgstr "关注所有联系人"
+msgstr "I-follow lahat ng contacts"
 
 #: template-settings.php:412
 msgid "Enable"
-msgstr "启用"
+msgstr "I-enable"
 
 #: template-settings.php:442
 msgid "Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
-msgstr "门徒工具系统不存储图像。对于个人资料图片，我们使用Gravatar（全球公认的头像）。如果您出于安全考虑，建议您不要使用个人照片，而应选择卡通，抽象或别名照片来代表您。"
+msgstr "Hindi nag-iimbak ng mga imahe ang Disciple Tools System. Para sa mga imahe ng profile, gumagamit kami ng Gravatar (Globally Recognized Avatar). Kung mayroon kang mga alalahanin sa seguridad, iminumungkahi naming huwag gumamit ng personal na larawan, kundi isang cartoon, abstrakto, o alyas na larawang kakatawan sa iyo."
 
 #: template-settings.php:443
 msgid "edit image on gravatar.com"
-msgstr "在gravatar.com上编辑图像"
+msgstr "i-edit ang imahe sa gravatar.com"
 
 #: template-settings.php:449 template-settings.php:450
 msgid "Username cannot be changed"
-msgstr "用户名无法更改"
+msgstr "Hindi pwedeng baguhin ang username"
 
 #: template-settings.php:110 template-settings.php:454
 msgid "System Email"
-msgstr "系统电子邮件"
+msgstr "Email ng Sistema"
 
 #: template-settings.php:455
 msgid "User email can be changed by site administrator."
-msgstr "用户电子邮件可以由站点管理员更改。"
+msgstr "Maaaring palitan ng tagapangasiwa ng site ang user email."
 
 #: template-settings.php:462
 msgid "Password"
-msgstr "密码"
+msgstr "Password"
 
 #: template-settings.php:463
 msgid "Use this email reset form to create a new password."
-msgstr "使用此电子邮件重设表格创建新密码。"
+msgstr "Gamitin ang email reset form na ito upang lumikha ng bagong password."
 
 #: template-settings.php:465
 msgid "go to password change form"
-msgstr "进入密码变更表"
+msgstr "magpunta sa form ng pagpapalit ng password"
 
 #: template-settings.php:472
 msgid "First Name"
-msgstr "名字"
+msgstr "Pangalan"
 
 #: template-settings.php:478
 msgid "Last Name"
-msgstr "姓"
+msgstr "Apelyido"
 
 #: template-settings.php:507
 msgid "Description"
-msgstr "描述"
+msgstr "Paglalarawan"
 
 #: dt-notifications/notifications-email.php:118
 msgid "Do not reply directly to this email."
-msgstr "不要直接回复此电子邮件。"
+msgstr "Huwag direktang sumagot sa email na ito."
 
 #: dt-core/admin/config-site-defaults.php:659
 msgid "Reset password"
-msgstr "重设密码"
+msgstr "I-reset ang password"
 
 #: dt-metrics/contacts/sources.php:91
 msgid "Showing contacts created during"
-msgstr "显示在期间创建的联系人"
+msgstr "Ipinakikita ang mga contact na nilikha habang"
 
 #: dt-metrics/contacts/sources.php:92
 msgid "All contacts, by source and status"
-msgstr "所有联系人，按来源和状态"
+msgstr "Lahat ng contact, ayon sa pinagmulan at status"
 
 #: dt-metrics/contacts/sources.php:93
 msgid "A contact can come from more than one source."
-msgstr "联系人可以来自多个来源。"
+msgstr "Maaaring magmula sa mahigit isang pinagmulan ang isang contact."
 
 #: dt-metrics/contacts/sources.php:96
 msgid "Active contacts, by source and faith milestone"
-msgstr "主动联系，按来源和信念里程碑"
+msgstr "Mga aktibong contact, ayon sa pinagmulan at milestone sa pananampalataya"
 
 #: dt-metrics/combined/critical-path.php:89
 msgid "Filter Critical Path fields"
-msgstr "筛选关键路径字段"
+msgstr "Salain ang mga patlang ng Kritikal na Landas"
 
 #: dt-metrics/combined/critical-path.php:90
 msgid "Movement Tracking"
-msgstr "运动追踪"
+msgstr "Pagsubaybay sa Paggalaw"
 
 #: dt-metrics/contacts/milestones.php:67 dt-metrics/contacts/seeker-path.php:63
 #: dt-metrics/contacts/sources.php:87
 msgid "Filter contacts to date range:"
-msgstr "将联系人过滤到日期范围："
+msgstr "Salain ang mga contact ayon sa saklaw na petsa:"
 
 #: dt-metrics/contacts/milestones.php:69 dt-metrics/contacts/seeker-path.php:65
 #: dt-metrics/contacts/sources.php:89
 msgid "Filter to date range"
-msgstr "筛选日期范围"
+msgstr "Salain sa saklaw na petsa"
 
 #: dt-metrics/contacts/sources.php:94
 msgid "Active contacts, by source and seeker path"
-msgstr "活动联系人，按来源和搜索者路径"
+msgstr "Mga aktibong contact, ayon sa pinagmulan at landas ng seeker"
 
 #: dt-metrics/contacts/sources.php:98
 msgid "A contact can come from more than one source, and it can have more than one faith milestone at the same time."
-msgstr "一个联系人可以来自多个来源，并且可以同时具有多个信仰里程碑。"
+msgstr "Maaaring magmula sa mahigit isang pinagmulan ang isang contact, at maaari itong magkaroon ng mahigit isang milestone sa pananampalataya nang magkasabay."
 
 #: dt-metrics/groups/overview.php:77 dt-metrics/personal/overview.php:76
 msgid "Generation"
-msgstr "代"
+msgstr "Henerasyon"
 
 #: dt-users/users.php:716
 msgid "Add the name of the contact record this user corresponds to."
-msgstr "添加该用户对应的联系人记录的名称。"
+msgstr "Idagdag ang pangalan ng rekord ng contact kung saan tumutugma ang user na ito."
 
 #: dt-users/users.php:717
 msgid "Learn more."
-msgstr "学到更多。"
+msgstr "Alamin pa."
 
 #: dt-users/users.php:833
 msgid ""
@@ -1839,28 +1839,28 @@ msgid ""
 "Please click the following link to confirm the invite:\n"
 "%4$s"
 msgstr ""
-"你好\n"
+"Kumusta,\n"
 "\n"
-"您受邀加入“％1 $ s”\n"
-"具有％3 $ s角色的％2 $ s。\n"
+"Inimbitahan kang sumali sa '%1$s' sa\n"
+"%2$s na may papel na %3$s.\n"
 "\n"
-"请点击以下链接确认邀请：\n"
-"％4 $ s"
+"Paki-click ang sumusunod na link upang makumpirma ang imbitasyon:\n"
+"%4$s"
 
 #. translators: Joining confirmation notification email subject. %s: Site title
 #: dt-users/users.php:843
 msgid "[%s] Joining Confirmation"
-msgstr "[％s]加入确认"
+msgstr "[%s] Kumpirmasyon sa Pagsali"
 
 #: dt-core/admin/config-site-defaults.php:660
 msgid "Lost your password"
-msgstr "忘记密码"
+msgstr "Nawala ang iyong password"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:217
 #: dt-metrics/combined/locations-list.php:210
 msgid "Churches"
-msgstr "教堂"
+msgstr "Mga simbahan"
 
 #: dt-mapping/mapping-module-config.php:76 dt-mapping/mapping.php:147
 #: dt-mapping/mapping.php:302 dt-metrics/contacts/mapbox-area-map.php:56
@@ -1876,7 +1876,7 @@ msgstr "教堂"
 #: dt-metrics/personal/mapbox-groups-cluster-map.php:56
 #: dt-metrics/personal/mapbox-groups-point-map.php:55
 msgid "Mapping"
-msgstr "制图"
+msgstr "Pagma-map"
 
 #: dt-mapping/mapping.php:304 dt-metrics/contacts/mapbox-area-map.php:58
 #: dt-metrics/contacts/mapbox-cluster-map.php:57
@@ -1891,11 +1891,11 @@ msgstr "制图"
 #: dt-metrics/personal/mapbox-groups-cluster-map.php:58
 #: dt-metrics/personal/mapbox-groups-point-map.php:57
 msgid "Population"
-msgstr "人口"
+msgstr "Populasyon"
 
 #: dt-mapping/mapping.php:150
 msgid "List"
-msgstr "清单"
+msgstr "Listahan"
 
 #: dt-mapping/mapping.php:606 dt-mapping/mapping.php:687
 #: dt-metrics/contacts/mapbox-area-map.php:64
@@ -1912,24 +1912,24 @@ msgstr "清单"
 #: dt-metrics/personal/mapbox-groups-point-map.php:63
 #: dt-users/mapbox-coverage-map.php:82
 msgid "World"
-msgstr "世界"
+msgstr "Mundo"
 
 #: dt-posts/custom-post-type.php:152
 msgid "New %s"
-msgstr "新％s"
+msgstr "Bagong %s"
 
 #: dt-posts/posts.php:442 dt-posts/posts.php:451
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
-msgstr "已将％1 $ s添加到位置"
+msgstr "Idinagdag ang %1$s sa mga lokasyon"
 
 #: single-groups.php:273
 msgid "Four Fields"
-msgstr "四个领域"
+msgstr "Four Fields"
 
 #: dt-core/admin/config-site-defaults.php:695
 msgid "Weekly"
-msgstr "每周"
+msgstr "Linggo-linggo"
 
 #: dt-mapping/mapping.php:303 dt-metrics/contacts/mapbox-area-map.php:57
 #: dt-metrics/contacts/mapbox-cluster-map.php:56
@@ -1944,493 +1944,493 @@ msgstr "每周"
 #: dt-metrics/personal/mapbox-groups-cluster-map.php:57
 #: dt-metrics/personal/mapbox-groups-point-map.php:56
 msgid "Refresh Cached Data"
-msgstr "刷新缓存的数据"
+msgstr "I-refresh ang Naka-cache na Data"
 
 #: dt-metrics/contacts/overview.php:68 dt-metrics/groups/overview.php:73
 msgid "Follow-up of all active contacts"
-msgstr "所有活动联系人的跟进"
+msgstr "Pag-follow-up ng lahat ng aktibong kontak"
 
 #: dt-notifications/notifications.php:794
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@％1 $ s，请求对％2 $ s进行更新。"
+msgstr "@%1$s, may update na ni-request sa %2$s."
 
 #: dt-core/admin/config-site-defaults.php:534
 msgid "Accepting new contacts"
-msgstr "接受新联系人"
+msgstr "Tumatanggap ng mga bagong kontak"
 
 #: dt-core/admin/config-site-defaults.php:538
 msgid "I'm only investing in existing contacts"
-msgstr "我只投资现有的联系人"
+msgstr "Mag-i-invest lang ako sa mga bagong kontak"
 
 #: dt-core/admin/config-site-defaults.php:542
 msgid "I have too many contacts"
-msgstr "我的联络人太多"
+msgstr "Napakarami kong mga kontak"
 
 #: template-settings.php:311
 msgid "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
-msgstr "设置您要旅行或不可用的日期，以便调度员知道您是否有空接收新的联系人"
+msgstr "I-set ang mga petsa kung kailan ka magbibiyahe o hindi pwede para malaman ng Dispatcher kung kailan ka pwedeng tumanggap ng mga bagong kontak"
 
 #: template-settings.php:315
 msgid "Schedule Travel or Dates Unavailable"
-msgstr "安排旅行或日期不可用"
+msgstr "Iiskedyul ang Biyahe o mga Petsang Hindi Ka Pwede"
 
 #: template-settings.php:332
 msgid "Add Unavailable dates"
-msgstr "添加不可用的日期"
+msgstr "Idagdag ang mga petsang Hindi ka pwede"
 
 #: template-settings.php:346
 msgid "No Travel Scheduled"
-msgstr "没有预定行程"
+msgstr "Walang Nakaiskedyul na Biyahe"
 
 #: template-settings.php:407
 msgid "You will receive a notification for any update that happens in the system."
-msgstr "您将收到系统中发生的任何更新的通知。"
+msgstr "Makakatanggap ka ng notipikasyon para sa kahit anong update na magaganap sa system."
 
 #: dt-assets/parts/modals/modal-help.php:353 template-contacts-new.php:132
 #: template-contacts-new.php:136
 msgid "Initial Comment"
-msgstr "初步评论"
+msgstr "Unang Komento"
 
 #: dt-metrics/combined/critical-path.php:222
 msgid "Any new created contact"
-msgstr "任何新创建的联系人"
+msgstr "Kahit anong bagong-gawang kontak"
 
 #: dt-metrics/combined/critical-path.php:232
 msgid "Number of contacts assigned for a face-to-face visit"
-msgstr "指定进行面对面访问的联系人数量"
+msgstr "Bilang ng mga kontak na nakatakda para sa harapang pagbisita"
 
 #: dt-metrics/combined/critical-path.php:241
 msgid "Number of contacts that had the active status"
-msgstr "处于活动状态的联系人数量"
+msgstr "Bilang ng mga kontak na nagkaroon ng aktibong status"
 
 #: dt-metrics/combined/critical-path.php:251
 msgid "Number of contacts on %s at the end of the time range"
-msgstr "时间范围末尾％s上的联系数"
+msgstr "Bilang ng mga kontak sa %s sa katapusan ng saklaw na oras"
 
 #: dt-metrics/combined/critical-path.php:253
 msgid "Number of contacts where %s was set on the seeker path"
-msgstr "在搜寻者路径上设置了％s的联系人数"
+msgstr "Bilang ng mga kontak kung saan ang %s ay na-set sa seeker path"
 
 #: dt-metrics/combined/critical-path.php:270
 msgid "Number of baptized contact with a baptism date in date range and baptized by connection"
-msgstr "受洗日期在日期范围内并通过连接受洗的受洗联系人的数量"
+msgstr "Bilang ng nabautismuhang kontak na may petsa ng bautismo sa saklaw na petsa at nabautismuhan sa pamamagitan ng koneksyon"
 
 #: dt-metrics/combined/critical-path.php:287
 msgid "Generation %s Baptisms"
-msgstr "世代％s的洗礼"
+msgstr "Mga Pagbabautismo ng henerasyon %s"
 
 #: dt-metrics/combined/critical-path.php:288
 msgid "Number of generation %s baptisms"
-msgstr "％s受洗的世代数"
+msgstr "Bilang ng mga pagbabautismo ng henerasyon %s"
 
 #: dt-metrics/combined/critical-path.php:299
 msgid "Number of contacts or users who have baptized a contact"
-msgstr "受洗的联系人或用户数"
+msgstr "Bilang ng mga kontak o user na may nabautismuhang kontak"
 
 #: dt-metrics/combined/critical-path.php:331
 msgid "Generation %s Churches"
-msgstr "％s代教会"
+msgstr "Mga Simbahan ng henerasyon %s"
 
 #: dt-metrics/combined/critical-path.php:332
 msgid "Number of generation %s churches at the end of the time range"
-msgstr "时间范围末尾的世代％s教堂数量"
+msgstr "Bilang ng mga simbahan ng henerasyon %s sa katapusan ng saklaw na oras"
 
 #: dt-metrics/combined/critical-path.php:343
 msgid "Number of contacts or users who have started a church and are marked as the church coach"
-msgstr "已开始教会并被标记为教会教练的联系人或用户数量"
+msgstr "Bilang ng mga kontak o user na nakapagsimula ng simbahan at namarkahan bilang ang tagapagturo ng simbahan"
 
 #: dt-notifications/notifications.php:753
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
-msgstr "您已分配：％1 $ s。"
+msgstr "Ikaw ay naitakda: %1$s."
 
 #: dt-groups/groups-post-type.php:378
 msgid "Child Group"
-msgstr "儿童组"
+msgstr "Pambatang Grupo"
 
 #: archive-contacts.php:65
 msgid "Contacts Filters"
-msgstr "联系人过滤器"
+msgstr "Mga Filter ng Kontak"
 
 #: archive-groups.php:61
 msgid "Groups Filters"
-msgstr "组过滤器"
+msgstr "Mga Filter ng mga Grupo"
 
 #: dt-assets/parts/modals/modal-help.php:15
 msgid "Contact Details"
-msgstr "联系方式"
+msgstr "Mga Detalye ng Kontak"
 
 #: dt-assets/parts/content-contacts.php:9
 msgid "Contacts List"
-msgstr "通讯录"
+msgstr "Listahan ng mga Kontak"
 
 #: dt-assets/parts/content-groups.php:9
 msgid "Groups List"
-msgstr "团体名单"
+msgstr "Listahan ng Grupo"
 
 #: dt-assets/parts/modals/modal-help.php:150
 msgid "Group Details"
-msgstr "组详细信息"
+msgstr "Mga Detalye ng Grupo"
 
 #: dt-groups/groups-post-type.php:616
 msgid "The address where this group meets. (e.g., 124 Market St or “Jon’s Famous Coffee Shop)."
-msgstr "该小组见面的地址。 （例如，市场街124号或“乔恩的著名咖啡店”）。"
+msgstr "Ang address kung saan nagkikita ang grupong ito. (hal., 124 Market St o “Jon’s Famous Coffee Shop)."
 
 #: dt-contacts/contacts-post-type.php:208
 msgid "Not Ready"
-msgstr "没有准备好"
+msgstr "Hindi Handa"
 
 #: template-groups-new.php:24
 msgid "Name of Group"
-msgstr "组名"
+msgstr "Pangalan ng Grupo"
 
 #: archive-contacts.php:27 archive-contacts.php:250
 msgid "Filter Contacts"
-msgstr "筛选联络人"
+msgstr "I-filter ang mga Kontak"
 
 #: archive-contacts.php:211 archive-groups.php:195 archive-template.php:242
 msgctxt "The start date of a date range"
 msgid "Range Start"
-msgstr "范围开始"
+msgstr "Simula ng Saklaw"
 
 #: archive-contacts.php:221 archive-groups.php:205 archive-template.php:252
 msgctxt "The end date of a date range"
 msgid "Range End"
-msgstr "范围结束"
+msgstr "Katapusan ng Saklaw"
 
 #: dt-assets/functions/enqueue-scripts.php:337
 msgid "Locations you are responsible for"
-msgstr "您负责的位置"
+msgstr "Mga lokasyon na ikaw ang may-pananagutan"
 
 #: archive-groups.php:22 dt-assets/parts/modals/modal-help.php:383
 #: template-groups-new.php:19
 msgid "Create New Group"
-msgstr "建立新群组"
+msgstr "Gumawa ng Bagong Grupo"
 
 #: dt-contacts/contacts-post-type.php:204
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
-msgstr "该联系人是系统中的新联系人。"
+msgstr "Ang kontak ay bago sa system."
 
 #: dt-contacts/contacts-post-type.php:209
 msgctxt "Contact Status field description"
 msgid "There is not enough information to move forward with the contact at this time."
-msgstr "目前没有足够的信息与联系人继续前进。"
+msgstr "Walang sapat na impormasyon para isulong ang kontak sa ngayon."
 
 #: dt-contacts/contacts-post-type.php:214
 msgctxt "Contact Status field description"
 msgid "This contact needs to be assigned to a multiplier."
-msgstr "该联系人需要分配给一个乘数。"
+msgstr "Kailangang itakda ang kontak na ito sa isang multiplier."
 
 #: dt-contacts/contacts-post-type.php:219
 msgctxt "Contact Status field description"
 msgid "The contact has been assigned to someone, but has not yet been accepted by that person."
-msgstr "该联系人已分配给某人，但尚未被该人接受。"
+msgstr "Itinakda ang kontak na ito sa isang tao, ngunit hindi pa natatanggap ng taong iyon."
 
 #: dt-contacts/contacts-post-type.php:224
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
-msgstr "联系人正在进行和/或不断更新。"
+msgstr "Ang kontak na ito ay sumusulong at/o patuloy na ina-update."
 
 #: dt-contacts/contacts-post-type.php:229
 msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
-msgstr "此联系人当前处于保留状态（即正在休假或未回复）。"
+msgstr "Ang kontak na ito ay kasalukuyang nakahinto (ibig sabihin, nakabakasyon o hindi tumutugon)"
 
 #: dt-contacts/contacts-post-type.php:234
 msgctxt "Contact Status field description"
 msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
-msgstr "此联系表明他们不再想要继续，或者您已决定不再与他/她继续。"
+msgstr "Ipinaalam ng kontak na ito na ayaw na niyang magpatuloy o nagpasya kang huwag nang magpatuloy kasama niya."
 
 #: dt-contacts/contacts-post-type.php:245
 msgctxt "Seeker Path field description"
 msgid "Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
-msgstr "设置联系人的进度状态。这些是按特定顺序执行的步骤，可帮助联系人继续前进。"
+msgstr "Itakda ang status ng iyong pagsulong kasama ang kontak. Ito ang mga hakbang na nagaganap sa nakatakdang pagkakasunod-sunod upang matulungang makapagpatuloy ang isang kontak."
 
 #: dt-contacts/contacts-post-type.php:426
 msgctxt "Reason Paused label"
 msgid "Contact on vacation"
-msgstr "假期联系"
+msgstr "Nakabakasyon ang kontak"
 
 #: dt-contacts/contacts-post-type.php:427
 msgctxt "Reason Paused label"
 msgid "Contact not responding"
-msgstr "联系人无响应"
+msgstr "Hindi tumutugon ang kontak"
 
 #: dt-contacts/contacts-post-type.php:428
 msgctxt "Reason Paused label"
 msgid "Contact not available"
-msgstr "联系人不可用"
+msgstr "Hindi pwede ang kontak"
 
 #: dt-contacts/contacts-post-type.php:429
 msgctxt "Reason Paused label"
 msgid "Contact has little interest/hunger"
-msgstr "联系人没有兴趣/渴望"
+msgstr "Kaunti ang interes/pananabik ng kontak"
 
 #: dt-contacts/contacts-post-type.php:430
 msgctxt "Reason Paused label"
 msgid "Contact shows no initiative"
-msgstr "联系人没有主动权"
+msgstr "Walang inisyatibong ipinapakita ang kontak"
 
 #: dt-contacts/contacts-post-type.php:431
 msgctxt "Reason Paused label"
 msgid "Contact has questionable motives"
-msgstr "接触有可疑的动机"
+msgstr "Kaduda-duda ang mga motibo ng kontak"
 
 #: dt-contacts/contacts-post-type.php:432
 msgctxt "Reason Paused label"
 msgid "Ball is in the contact's court"
-msgstr "球在联络人的法庭上"
+msgstr "Nasa kontak na ang bola"
 
 #: dt-contacts/contacts-post-type.php:433
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
-msgstr "我们想看看联系人是否/如何响应自动短信"
+msgstr "Gusto naming makita kung/kung paano tutugon ang kontak sa naka-automate na text message"
 
 #: dt-contacts/contacts-post-type.php:445
 msgctxt "Reason Closed label"
 msgid "Duplicate"
-msgstr "重复"
+msgstr "Kopyahin"
 
 #: dt-contacts/contacts-post-type.php:446
 msgctxt "Reason Closed label"
 msgid "Insufficient contact info"
-msgstr "联系信息不足"
+msgstr "Di-sapat ang impormasyon ng kontak"
 
 #: dt-contacts/contacts-post-type.php:447
 msgctxt "Reason Closed label"
 msgid "Denies submitting contact request"
-msgstr "拒绝提交联系请求"
+msgstr "Ayaw magsumite ng request sa kontak"
 
 #: dt-contacts/contacts-post-type.php:449
 msgctxt "Reason Closed label"
 msgid "Only wants to argue or debate"
-msgstr "只想争论或辩论"
+msgstr "Gusto lang makipag-argumento o makipagdebate"
 
 #: dt-contacts/contacts-post-type.php:450
 msgctxt "Reason Closed label"
 msgid "Just wanted media or book"
-msgstr "想要媒体或书籍"
+msgstr "Gusto lang ng media o libro"
 
 #: dt-contacts/contacts-post-type.php:451
 msgctxt "Reason Closed label"
 msgid "No longer interested"
-msgstr "不再感兴趣"
+msgstr "Hindi na interesado"
 
 #: dt-contacts/contacts-post-type.php:452
 msgctxt "Reason Closed label"
 msgid "No longer responding"
-msgstr "不再回应"
+msgstr "Hindi na tumutugon"
 
 #: dt-contacts/contacts-post-type.php:453
 msgctxt "Reason Closed label"
 msgid "Already in church or connected with others"
-msgstr "已经在教堂或与他人有联系"
+msgstr "Nasa simabahan na o konektado sa iba"
 
 #: dt-contacts/contacts-post-type.php:454
 msgctxt "Reason Closed label"
 msgid "Transferred contact to partner"
-msgstr "将联系人转移到合作伙伴"
+msgstr "Inilipat ang kontak sa ka-partner"
 
 #: dt-contacts/contacts-post-type.php:455
 msgctxt "Reason Closed label"
 msgid "Martyred"
-msgstr "烈士"
+msgstr "Nagpakamartir"
 
 #: dt-contacts/contacts-post-type.php:456
 msgctxt "Reason Closed label"
 msgid "Moved or relocated"
-msgstr "搬家或搬迁"
+msgstr "Inilipat o iniba ang lokasyon"
 
 #: dt-contacts/contacts-post-type.php:458
 msgctxt "Reason Closed label"
 msgid "Unknown"
-msgstr "未知"
+msgstr "Di-alam"
 
 #: dt-core/admin/config-site-defaults.php:447
 msgid "Personal Phone"
-msgstr "个人电话"
+msgstr "Personal na Telepono"
 
 #: dt-core/admin/config-site-defaults.php:450
 msgid "Personal phone is private to the team, not for distribution."
-msgstr "个人电话是团队专用的，不用于分发。"
+msgstr "Ang personal na telepono ay pribado para sa pangkat, hindi para sa pagbabahagi."
 
 #: dt-core/admin/config-site-defaults.php:454
 msgid "Personal Email"
-msgstr "私人邮箱"
+msgstr "Personal na Email"
 
 #: dt-core/admin/config-site-defaults.php:457
 msgid "Personal email is private to the team, not for distribution."
-msgstr "个人电子邮件是团队专用的，不能分发。"
+msgstr "Ang personal na email ay pribado para sa pangkat, hindi para sa pagbabahagi."
 
 #: dt-core/admin/config-site-defaults.php:461
 msgid "Personal Address"
-msgstr "个人地址"
+msgstr "Personal na Address"
 
 #: dt-core/admin/config-site-defaults.php:464
 msgid "Personal address is private to the team, not for distribution."
-msgstr "个人地址仅供团队使用，不能用于分发。"
+msgstr "Ang personal na address ay pribado para sa pangkat, hindi para sa pagbabahagi."
 
 #: dt-core/admin/config-site-defaults.php:468
 msgid "Work Phone"
-msgstr "工作电话"
+msgstr "Telepono sa Trabaho"
 
 #: dt-core/admin/config-site-defaults.php:471
 msgid "Work phone is for distribution to contacts and seekers."
-msgstr "工作电话用于分发给联系人和寻求者。"
+msgstr "Ang telepono sa trabaho ay para sa pamamahagi sa mga kontak at seeker."
 
 #: dt-core/admin/config-site-defaults.php:475
 msgid "Work Email"
-msgstr "工作电邮"
+msgstr "Email sa Trabaho"
 
 #: dt-core/admin/config-site-defaults.php:478
 msgid "Work email is for distribution to contacts and seekers."
-msgstr "工作电子邮件用于分发给联系人和求职者。"
+msgstr "Ang email sa trabaho ay para sa pamamahagi sa mga kontak at seeker."
 
 #: dt-core/admin/config-site-defaults.php:482
 msgid "Work Facebook"
-msgstr "工作Facebook"
+msgstr "Facebook sa Trabaho"
 
 #: dt-core/admin/config-site-defaults.php:485
 msgid "Work Facebook is for distribution to contacts and seekers."
-msgstr "Facebook工作用于向联系人和求职者分发。"
+msgstr "Ang Facebook sa trabaho ay para sa pamamahagi sa mga kontak at seeker."
 
 #: dt-core/admin/config-site-defaults.php:489
 msgid "Work WhatsApp"
-msgstr "工作WhatsApp"
+msgstr "WhatsApp sa Trabaho"
 
 #: dt-core/admin/config-site-defaults.php:492
 msgid "Work WhatsApp is for distribution to contacts and seekers."
-msgstr "工作WhatsApp用于分发给联系人和寻求者。"
+msgstr "Ang WhatsApp sa trabaho ay para sa pamamahagi sa mga kontak at seeker."
 
 #: dt-contacts/contacts-post-type.php:489
 msgid "Transfer"
-msgstr "传递"
+msgstr "Ilipat"
 
 #: dt-groups/groups-post-type.php:180
 msgctxt "field description"
 msgid "Set the current status of the group."
-msgstr "设置组的当前状态。"
+msgstr "Itakda ang kasalukuyang status ng grupo."
 
 #: dt-groups/groups-post-type.php:185
 msgctxt "field description"
 msgid "The group is no longer meeting."
-msgstr "该小组不再开会。"
+msgstr "Hindi na nagkikita ang grupo."
 
 #: dt-groups/groups-post-type.php:190
 msgctxt "field description"
 msgid "The group is actively meeting."
-msgstr "该小组正在积极开会。"
+msgstr "Aktibong nagkikita ang grupo."
 
 #: dt-posts/posts.php:439 dt-posts/posts.php:448
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
-msgstr "从位置删除了％1 $ s"
+msgstr "Inalis ang %1$s sa mga lokasyon"
 
 #: dt-posts/posts.php:472
 msgctxt "message"
 msgid "verified"
-msgstr "已验证"
+msgstr "naberipika"
 
 #: dt-posts/posts.php:472
 msgctxt "message"
 msgid "not verified"
-msgstr "未经审核的"
+msgstr "hindi naberipika"
 
 #: dt-posts/posts.php:475
 msgctxt "message"
 msgid "invalidated"
-msgstr "无效"
+msgstr "minalian"
 
 #: dt-posts/posts.php:475
 msgctxt "message"
 msgid "not invalidated"
-msgstr "没有失效"
+msgstr "hindi minalian"
 
 #: dt-posts/posts.php:498
 msgctxt "message"
 msgid "Name changed to: %s"
-msgstr "名称更改为：％s"
+msgstr "Binago ang pangalan sa: %s"
 
 #: dt-posts/posts.php:500
 msgctxt "message"
 msgid "Created from Demo Plugin"
-msgstr "从演示插件创建"
+msgstr "Nagawa mula sa Demo na Plugin"
 
 #: dt-posts/posts.php:507
 msgctxt "message"
 msgid "%s declined assignment"
-msgstr "％s拒绝分配"
+msgstr "tinanggihan ni %s ang assignment"
 
 #: dt-posts/posts.php:507 dt-posts/posts.php:510
 msgctxt "message"
 msgid "A user"
-msgstr "一个用户"
+msgstr "Isang user"
 
 #: dt-posts/posts.php:510
 msgctxt "message"
 msgid "%s accepted assignment"
-msgstr "％s接受了分配"
+msgstr "tinanggap ni %s ang assignment"
 
 #: dt-posts/posts.php:515
 msgctxt "message"
 msgid "Shared with %s"
-msgstr "与％s共享"
+msgstr "Na-share kay %s"
 
 #: dt-posts/posts.php:517
 msgctxt "message"
 msgid "Unshared with %s"
-msgstr "未与％s共享"
+msgstr "In-unshare kay %s"
 
 #: dt-posts/posts.php:536
 msgctxt "message"
 msgid "You do not have access to these %s"
-msgstr "您无权访问这些％s"
+msgstr "Wala kang access dito sa mga %s"
 
 #: dt-assets/parts/loop-activity-comment.php:69 single-contacts.php:56
 msgid "Quick Actions"
-msgstr "快速行动"
+msgstr "Mga Mabilisang Aksyon"
 
 #: archive-contacts.php:34 archive-contacts.php:55
 msgctxt "input field placeholder"
 msgid "Search Contacts"
-msgstr "搜索联系人"
+msgstr "Maghanap ng mga Kontak"
 
 #: archive-contacts.php:166 archive-groups.php:49 archive-groups.php:157
 #: archive-template.php:203
 msgctxt "input field placeholder"
 msgid "Type to search"
-msgstr "输入搜索"
+msgstr "Mag-type para maghanap"
 
 #: archive-groups.php:29
 msgctxt "input field placeholder"
 msgid "Search Groups"
-msgstr "搜索组"
+msgstr "Maghanap ng mga Grupo"
 
 #: dt-assets/parts/contact-details.php:138 dt-assets/parts/group-details.php:78
 #: dt-assets/parts/modals/modal-share.php:27 single-contacts.php:615
 msgctxt "input field placeholder"
 msgid "Search Users"
-msgstr "搜索用户"
+msgstr "Maghanap ng mga User"
 
 #: dt-assets/parts/contact-details.php:175
 #: dt-assets/parts/group-details.php:106 single-contacts.php:156
 #: single-contacts.php:531 single-contacts.php:663
 msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
-msgstr "搜索乘数和联系方式"
+msgstr "Maghanap ng mga multiplier at kontak"
 
 #: dt-assets/parts/loop-activity-comment.php:25
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
-msgstr "在这里写下您的评论或注释"
+msgstr "Isulat ang iyong komento o tala dito"
 
 #: dt-assets/parts/modals/modal-new-group.php:9 template-contacts-new.php:29
 #: template-groups-new.php:29 template-new-post.php:24
 msgctxt "input field placeholder"
 msgid "Name"
-msgstr "名称"
+msgstr "Pangalan"
 
 #: archive-template.php:31 archive-template.php:52
 #: dt-assets/parts/contact-details.php:429
@@ -2446,110 +2446,110 @@ msgstr "名称"
 #: template-settings.php:272
 msgctxt "Search 'something'"
 msgid "Search %s"
-msgstr "搜索％s"
+msgstr "Maghanap ng %s"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
 msgid "This is displaying only the contacts with an 'active' status right now."
-msgstr "现在仅显示状态为“活动”的联系人。"
+msgstr "Ipinapakita lang nito ang mga kontak na may 'aktibong' status sa ngayon."
 
 #: dt-posts/posts.php:398
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
-msgstr "％1 $ s更改为％2 $ s"
+msgstr "Binago ang %$s sa %2$s"
 
 #: single-contacts.php:491
 msgid "Create a tag and apply it to this contact."
-msgstr "创建标签并将其应用于此联系人。"
+msgstr "Gumawa ng tag at ilapat ito sa kontak na ito."
 
 #: single-contacts.php:517
 msgid "Who was this contact baptized by and when?"
-msgstr "该联系人是谁以及何时受洗的？"
+msgstr "Sino ang nagbautismo sa kontak na ito at kailan?"
 
 #: single-contacts.php:556
 msgctxt "Make user modal"
 msgid "Make User From Contact"
-msgstr "使用户成为联系人"
+msgstr "Gumawa ng User Mula sa Kontak"
 
 #: single-contacts.php:559
 msgctxt "Make user modal"
 msgid "This contact is already connected to a user."
-msgstr "此联系人已连接到用户。"
+msgstr "Nakakonekta na sa isang user ang kontak na ito."
 
 #: single-contacts.php:562
 msgctxt "Make user modal"
 msgid "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'."
-msgstr "这将邀请此联系人成为该系统的用户。默认情况下，它们将被赋予“乘数”的作用。"
+msgstr "Iimbitahan nito ang kontak na ito para maging isang user ng system na ito. Sa default, bibigyan sila ng tungkulin bilang isang 'mulitiplier'."
 
 #: single-contacts.php:563
 msgctxt "Make user modal"
 msgid "In the fields below, enter their email address and a 'Display Name' which they can change later."
-msgstr "在下面的字段中，输入他们的电子邮件地址和一个“显示名称”，以后可以更改。"
+msgstr "Sa mga blangko sa ibaba, ilagay ang kanilang email address pati na ang isang 'Ipapakitang Pangalan' na maaari nilang baguhin sa ibang pagkakataon."
 
 #: single-contacts.php:602
 msgid "This contact already represents a user."
-msgstr "此联系人已经代表一个用户。"
+msgstr "Kumakatawan na sa isang user ang kontak na ito."
 
 #: single-contacts.php:606
 msgctxt "Step 1 of link user"
 msgid "To link to an existing user, first, find the user using the field below."
-msgstr "要链接到现有用户，请首先使用以下字段查找该用户。"
+msgstr "Upang mag-link na umiiral nang user, una, hanapin ang user gamit ang blangko sa ibaba."
 
 #: single-contacts.php:630
 msgctxt "Step 2 of link user"
 msgid "To finish the linking, merge this contact with the existing user details."
-msgstr "要完成链接，请将此联系人与现有用户详细信息合并。"
+msgstr "Upang tapusin ang pagli-link, isama ang kontak na ito sa mga umiiral na detalye ng user."
 
 #: single-contacts.php:653
 msgid "Merge Contact"
-msgstr "合并联络人"
+msgstr "Isama ang Kontak"
 
 #: single-contacts.php:654
 msgid "Merge this contact with another contact."
-msgstr "将此联系人与另一个联系人合并。"
+msgstr "Pagsamahin ang kontak na ito at isa pang kontak."
 
 #: single-contacts.php:678
 msgctxt "added to the end of a sentence"
 msgid "selected."
-msgstr "已选择。"
+msgstr "pinili."
 
 #: single-groups.php:412
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
-msgstr "从现有联系人添加成员"
+msgstr "Magdagdag ng mga miyembro mula sa mga kasalukuyang kontak"
 
 #: dt-people-groups/people-groups-post-type.php:281
 msgid "Translations"
-msgstr "翻译"
+msgstr "Mga Pagsasalin"
 
 #: dt-posts/posts.php:300
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
-msgstr "不再由％s指导"
+msgstr "Hindi na tinuturuan ni %s"
 
 #: dt-posts/posts.php:308
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
-msgstr "不再在％s上分配"
+msgstr "Hindi na pangalawang itinalaga sa %s"
 
 #: single-groups.php:97
 msgid "To add new members, click on 'Create' or 'Select'."
-msgstr "要添加新成员，请单击“创建”或“选择”。"
+msgstr "Upang magdagdag ng mga bagong miyembro, mag-click sa 'Gumawa' o 'Pumili'."
 
 #: archive-template.php:27 archive-template.php:60
 msgid "Filters"
-msgstr "筛选器"
+msgstr "Mga Filter"
 
 #: archive-template.php:82
 msgid "Records List"
-msgstr "记录清单"
+msgstr "Listahan ng mga Rekord"
 
 #: archive-template.php:136
 msgid "Load More"
-msgstr "装载更多"
+msgstr "Mag-load ng Higit Pa"
 
 #: archive-contacts.php:109 archive-groups.php:101 archive-template.php:148
 msgid "Filter Name"
-msgstr "筛选器名称"
+msgstr "Pangalan ng Filter"
 
 #: archive-contacts.php:245 archive-groups.php:229 archive-template.php:276
 #: dt-assets/parts/contact-details.php:547
@@ -2565,192 +2565,192 @@ msgstr "筛选器名称"
 #: template-merge-details.php:118 template-merge-details.php:129
 #: template-merge-details.php:166
 msgid "Cancel"
-msgstr "取消"
+msgstr "Kanselahin"
 
 #: archive-template.php:281
 msgid "Filter Records"
-msgstr "筛选记录"
+msgstr "Mag-filter ng mga Rekord"
 
 #: dt-assets/functions/details-bar.php:74
 #: dt-assets/functions/details-bar.php:140
 #: dt-assets/parts/modals/modal-tasks.php:7
 #: dt-contacts/contacts-post-type.php:708 dt-groups/groups-post-type.php:442
 msgid "Tasks"
-msgstr "任务"
+msgstr "Mga Gawain"
 
 #: dt-assets/functions/enqueue-scripts.php:121
 msgctxt "Dates"
 msgid "January"
-msgstr "一月"
+msgstr "Enero"
 
 #: dt-assets/functions/enqueue-scripts.php:122
 msgctxt "Dates"
 msgid "February"
-msgstr "二月"
+msgstr "Pebrero"
 
 #: dt-assets/functions/enqueue-scripts.php:123
 msgctxt "Dates"
 msgid "March"
-msgstr "游行"
+msgstr "Marso"
 
 #: dt-assets/functions/enqueue-scripts.php:124
 msgctxt "Dates"
 msgid "April"
-msgstr "四月"
+msgstr "Abril"
 
 #: dt-assets/functions/enqueue-scripts.php:125
 msgctxt "Dates"
 msgid "May"
-msgstr "可以"
+msgstr "Mayo"
 
 #: dt-assets/functions/enqueue-scripts.php:126
 msgctxt "Dates"
 msgid "June"
-msgstr "六月"
+msgstr "Hunyo"
 
 #: dt-assets/functions/enqueue-scripts.php:127
 msgctxt "Dates"
 msgid "July"
-msgstr "七月"
+msgstr "Hulyo"
 
 #: dt-assets/functions/enqueue-scripts.php:128
 msgctxt "Dates"
 msgid "August"
-msgstr "八月"
+msgstr "Agosto"
 
 #: dt-assets/functions/enqueue-scripts.php:129
 msgctxt "Dates"
 msgid "September"
-msgstr "九月"
+msgstr "Setyembre"
 
 #: dt-assets/functions/enqueue-scripts.php:130
 msgctxt "Dates"
 msgid "October"
-msgstr "十月"
+msgstr "Oktubre"
 
 #: dt-assets/functions/enqueue-scripts.php:131
 msgctxt "Dates"
 msgid "November"
-msgstr "十一月"
+msgstr "Nobyembre"
 
 #: dt-assets/functions/enqueue-scripts.php:132
 msgctxt "Dates"
 msgid "December"
-msgstr "十二月"
+msgstr "Disyembre"
 
 #: dt-assets/functions/enqueue-scripts.php:134
 msgid "Regions of Focus"
-msgstr "重点领域"
+msgstr "Mga Rehiyong Binibigyang Pokus"
 
 #: dt-assets/functions/enqueue-scripts.php:135
 msgid "All Locations"
-msgstr "所有地点"
+msgstr "Lahat ng Lokasyon"
 
 #: dt-assets/functions/enqueue-scripts.php:136
 msgid "Used Locations"
-msgstr "使用地点"
+msgstr "Mga Lokasyong Ginamit"
 
 #: dt-assets/functions/enqueue-scripts.php:137
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "找不到与“ {{query}}”匹配的结果"
+msgstr "Walang nakitang mga resultang tumutugma sa \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:358
 msgid "No filters, create one below"
-msgstr "没有过滤条件，请在下面创建一个"
+msgstr "Walang mga filter, gumawa ng isa sa ibaba"
 
 #: dt-assets/functions/enqueue-scripts.php:359
 msgid "No records found matching your filter."
-msgstr "找不到与您的过滤器匹配的记录。"
+msgstr "Walang nakitang mga rekord na tumutugma sa iyong filter."
 
 #: dt-contacts/contacts.php:1767 dt-contacts/contacts.php:1867
 #: dt-groups/groups.php:570 dt-groups/groups.php:643 dt-groups/groups.php:651
 #: template-notifications.php:45
 msgctxt "List Filters"
 msgid "All"
-msgstr "所有"
+msgstr "Lahat"
 
 #: dt-contacts/contacts.php:1998 dt-contacts/contacts.php:1999
 msgid "Subassigned only"
-msgstr "仅子分配"
+msgstr "Pangalawang itinalaga lang"
 
 #: dt-contacts/contacts.php:2006 dt-contacts/contacts.php:2007
 msgid "Coached by me"
-msgstr "由我指导"
+msgstr "Tinuturuan ko"
 
 #: dt-groups/groups-post-type.php:443
 msgid "Tasks related to this group."
-msgstr "与该小组有关的任务。"
+msgstr "Mga gawaing nauugnay sa grupong ito."
 
 #: dt-groups/groups.php:562
 msgctxt "List Filters"
 msgid "Assigned to me"
-msgstr "分配给我"
+msgstr "Iniatas sa akin"
 
 #: dt-metrics/combined/critical-path.php:309
 msgid "Groups active at the end of the time range"
-msgstr "时间范围结束时处于活动状态的组"
+msgstr "Mga grupong aktibo sa katapusan ng saklaw ng oras"
 
 #: dt-metrics/combined/critical-path.php:319
 msgid "Churches active at the end of the time range"
-msgstr "在时间范围结束时活跃的教堂"
+msgstr "Mga simbahang aktibo sa katapusan ng saklaw ng oras"
 
 #: dt-users/users.php:580
 msgctxt "List Filters"
 msgid "Custom Filters"
-msgstr "自定义过滤器"
+msgstr "Nababagong mga Filter"
 
 #: archive-template.php:23
 msgctxt "Create New record"
 msgid "Create New %s"
-msgstr "建立新的％s"
+msgstr "Gumawa ng Bagong %s"
 
 #: dt-assets/functions/enqueue-scripts.php:224
 msgid "No task created"
-msgstr "未创建任务"
+msgstr "Walang gawaing ginawa"
 
 #: dt-assets/functions/enqueue-scripts.php:225
 #: dt-assets/parts/modals/modal-tasks.php:17
 msgid "Reminder"
-msgstr "提醒"
+msgstr "Paalala"
 
 #: dt-assets/functions/enqueue-scripts.php:226
 msgid "No note set"
-msgstr "没有音符集"
+msgstr "Walang itinakdang tala"
 
 #: dt-assets/functions/enqueue-scripts.php:365 dt-contacts/contacts.php:1859
 msgctxt "All records"
 msgid "All %s"
-msgstr "所有％s"
+msgstr "Lahat ng %s"
 
 #: dt-assets/functions/menu.php:53
 msgid "Disciple.Tools"
-msgstr "门徒工具"
+msgstr "Mga Pantulong.Para Sa Disipulo"
 
 #: dt-assets/functions/enqueue-scripts.php:252 single-contacts.php:643
 #: single-contacts.php:690 template-merge-details.php:180
 msgid "Merge"
-msgstr "合并"
+msgstr "Pagsamahin"
 
 #: dt-assets/parts/modals/modal-help.php:16
 msgctxt "Optional Documentation"
 msgid "This is the area where you can view and edit the contact details for this contact."
-msgstr "您可以在这里查看和编辑此联系人的详细联系信息。"
+msgstr "Ito ang lugar kung saan maaari mong tingnan at i-edit ang mga detalye para sa pakikipag-ugnayan sa kontak na ito."
 
 #: dt-assets/parts/modals/modal-help.php:25
 msgctxt "Optional Documentation"
 msgid "Social media accounts for this contact."
-msgstr "社交媒体负责此联系人。"
+msgstr "Mga social media account para sa kontak na ito."
 
 #: dt-assets/parts/modals/modal-help.php:52
 msgctxt "Optional Documentation"
 msgid "User workload status icons legend:"
-msgstr "用户工作负载状态图标图例："
+msgstr "Listahang nagpapaliwanag ng mga icon ng katayuan ng mga gawain ng gumagamit:"
 
 #: dt-assets/parts/modals/modal-help.php:72
 msgctxt "Optional Documentation"
 msgid "These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done."
-msgstr "这些快速操作按钮可以帮助您更快地更新联系人记录，并记录每个操作已执行了多少次。"
+msgstr "Ang mga buton ng pangmabilisang aksyon na ito ay narito upang tulungan ka sa pag-update ng rekord ng kontak nang mas mabilis at bilangin kung gaano karaming beses nagawa ang bawa't aksyon."
 
 #: dt-assets/parts/modals/modal-help.php:73
 msgctxt "Optional Documentation"
@@ -2758,300 +2758,300 @@ msgid ""
 "For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer.\n"
 "                This action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"例如，如果您单击“无人接听”按钮4次，我们将记录您尝试联系该联系人4次，但他们没有接听。\n"
-"                此操作还将“搜索者路径”更改为“尝试联系”。"
+"Halimbawa, kung 4 na beses kang nag-click sa buton na 'Walang Sagot', ila-log namin na tinangka mong makipag-ugnayan sa kontak na ito nang 4 na beses, nguni't hindi sila sumagot.\n"
+"                 Papalitan din ng aksyong ito ang 'Landas ng Naghahanap' sa 'Sinubukang Makipag-ugnayan'."
 
 #: dt-assets/parts/modals/modal-help.php:81
 msgctxt "Optional Documentation"
 msgid "Here you can track the progress of the contact's faith journey."
-msgstr "在这里，您可以跟踪联系人的信任旅程的进度。"
+msgstr "Maaari mong subaybayan dito ang pag-unlad ng paglalakbay sa pananampalataya ng kontak."
 
 #: dt-assets/parts/modals/modal-help.php:121
 msgctxt "Optional Documentation"
 msgid "Contact Connections"
-msgstr "接触连接"
+msgstr "Mga Koneksyon ng Kontak"
 
 #: dt-assets/parts/modals/modal-help.php:122
 msgctxt "Optional Documentation"
 msgid "Connections this contact has with other contacts (and groups) in this system."
-msgstr "该联系人与该系统中其他联系人（和组）的连接。"
+msgstr "Mga koneksyong mayroon ang kontak na ito sa iba pang kontak (at grupo) sa sistemang ito."
 
 #: dt-assets/parts/modals/modal-help.php:151
 msgctxt "Optional Documentation"
 msgid "This is the area where you can view and edit the contact details for this group."
-msgstr "您可以在这里查看和编辑该组的联系方式。"
+msgstr "Ito ang lugar kung saan maaari mong tingnan at i-edit ang mga detalye para sa pakikipag-ugnayan sa grupong ito."
 
 #: dt-assets/parts/modals/modal-help.php:154
 #: dt-assets/parts/modals/modal-help.php:390
 msgctxt "Optional Documentation"
 msgid "The name of the group is searchable and can be used to help you filter your contacts in the Groups List page."
-msgstr "该组的名称是可搜索的，可用于帮助您在“组列表”页面中过滤联系人。"
+msgstr "Ang pangalan ng grupo ay maaaring hanapin at magagamit upang matulungan kang mag-filter ng iyong mga kontak sa pahina ng Listahan ng mga Grupo."
 
 #: dt-assets/parts/modals/modal-help.php:195
 msgctxt "Optional Documentation"
 msgid "If the group/church regularly practices any of the elements listed, then click each element to add them inside the circle."
-msgstr "如果小组/教堂定期练习列出的任何元素，请单击每个元素以将其添加到圈子中。"
+msgstr "Kung regular na isinasagawa ng grupo/simbahan ang alinman sa mga elementong nakalista, i-click ang bawa't elemento upang idagdag ito sa loob ng bilog."
 
 #: dt-assets/parts/modals/modal-help.php:196
 msgctxt "Optional Documentation"
 msgid "If the group has committed to be a church, indicate this by clicking the \"Church Commitment\" button to make the dotted line circle solid."
-msgstr "如果该团体已承诺成为教堂，请单击“教堂承诺”按钮以使虚线圆圈变实，以表明这一点。"
+msgstr "Kung ang grupo ay nangakong magiging isang simbahan, ipahiwatig ito sa pamamagitan ng pag-click sa buton na \"Pangakong Magiging Simbahan\" upang ang tuldok-tuldok na linya ng bilog ay gawing solido."
 
 #: dt-assets/parts/modals/modal-help.php:202
 msgctxt "Optional Documentation"
 msgid "This is the area where you manage the contacts that are a part of the group."
-msgstr "这是您管理组中联系人的区域。"
+msgstr "Ito ang lugar kung saan pinamamahalaan mo ang mga kontak na bahagi ng grupo."
 
 #: dt-assets/parts/modals/modal-help.php:207
 msgctxt "Optional Documentation"
 msgid "To remove a member, click the X icon to the right side of the member name. Click the footprint icon next to the members name to signify that this person is a leader of this group. (Multiple leaders can be assigned to a group)."
-msgstr "要删除成员，请单击成员名称右侧的X图标。单击成员名称旁边的足迹图标，以表明此人是该组的负责人。 （可以将多个领导者分配给一个组）。"
+msgstr "Upang alisin ang isang miyembro, i-click ang icon na X sa kanang bahagi ng pangalan ng miyembro. I-click ang icon na bakas ng paa sa tabi ng pangalan ng miyembro upang ipahiwatig na ang taong ito ay isang pinuno ng pangkat na ito (maaaring maraming pinuno ang maitalaga sa isang grupo)."
 
 #: dt-assets/parts/modals/modal-help.php:208
 msgctxt "Optional Documentation"
 msgid "To add new members, click on the 'Create' or 'Select' and click on the name or search for them."
-msgstr "要添加新成员，请单击“创建”或“选择”，然后单击名称或进行搜索。"
+msgstr "Upang magdagdag ng mga bagong miyembro, mag-click sa 'Gumawa' o 'Pumili' at mag-click sa pangalan o hanapin ang mga ito."
 
 #: dt-assets/parts/modals/modal-help.php:238
 #: dt-assets/parts/modals/modal-help.php:249
 msgctxt "Optional Documentation"
 msgid "Group Connections"
-msgstr "组连接"
+msgstr "Mga Koneksyon ng Grupo"
 
 #: dt-assets/parts/modals/modal-help.php:239
 msgctxt "Optional Documentation"
 msgid "Here you can select what type of group this is and how it is related to other groups in the system."
-msgstr "在这里，您可以选择这是什么类型的组，以及它与系统中其他组的关系。"
+msgstr "Maaari mong piliin dito kung anong uri ng grupo ito at kung paano ito nauugnay sa iba pang grupo sa sistema."
 
 #: dt-assets/parts/modals/modal-help.php:250
 msgctxt "Optional Documentation"
 msgid "Connections this group has with other groups in this system."
-msgstr "该组与该系统中其他组的连接。"
+msgstr "Mga koneksyong mayroon ang grupong ito sa iba pang grupo sa sistemang ito."
 
 #: dt-assets/parts/modals/modal-help.php:261
 msgctxt "Optional Documentation"
 msgid "Four Fields"
-msgstr "四个领域"
+msgstr "Apat na Field"
 
 #: dt-assets/parts/modals/modal-help.php:262
 msgctxt "Optional Documentation"
 msgid "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
-msgstr "四场图中有5个正方形。从左上象限开始，顺时针旋转，第五个在中间，它们代表："
+msgstr "Mayroong 5 parisukat sa dayagram na Apat na Field. Simula sa kuwadrante sa kaliwang itaas at paikot na pakanan at ang ikalima ay nasa gitna, ang mga ito ay kumakatawan sa:"
 
 #: dt-assets/parts/modals/modal-help.php:285
 msgctxt "Optional Documentation"
 msgid "This is where you can record notes from meetings and conversations."
-msgstr "您可以在此处记录会议和对话的笔记。"
+msgstr "Dito ka maaaring magtala ng mga tala mula sa mga miting at pag-uusap."
 
 #: dt-assets/parts/modals/modal-help.php:286
 msgctxt "Optional Documentation"
 msgid "Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
-msgstr "键入@以及要在评论中提及他们的用户名。然后，该用户将收到通知。"
+msgstr "I-type ang @ at ang pangalan ng gumagamit upang banggitin sila sa isang komento. Pagkatapos ay makakatanggap ang gumagamit na ito ng notipikasyon."
 
 #: dt-assets/parts/modals/modal-help.php:287
 msgctxt "Optional Documentation"
 msgid "This section also includes the history of activity, such as when the contact or group status became active etc."
-msgstr "此部分还包括活动的历史记录，例如联系人或组的状态何时变为活动状态等。"
+msgstr "Kasama rin sa seksyong ito ang kasaysayan ng aktibidad, tulad ng kung kailan naging aktibo ang kontak o katayuan ng grupo atbp."
 
 #: dt-assets/parts/modals/modal-help.php:288
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
-msgstr "您可以按“全部”，“评论”或“活动”过滤此部分。"
+msgstr "Maaari mong i-filter ang seksyong ito ayon sa alinman sa 'Lahat', 'Mga Komento', o 'Aktibidad'."
 
 #: dt-assets/parts/modals/modal-help.php:299
 msgctxt "Optional Documentation"
 msgid "Use these filters to focus in on the contacts or groups you are responsible for. If the default filters do not fit your needs you can create your own custom filter."
-msgstr "使用这些过滤器可以将重点放在您负责的联系人或组上。如果默认过滤器无法满足您的需求，则可以创建自己的自定义过滤器。"
+msgstr "Gamitin ang mga filter na ito upang magpokus sa mga kontak o grupo na iyong responsibilidad. Kung ang mga default na filter ay hindi angkop sa iyong mga pangangailangan maaari kang gumawa ng iyong sariling nababagong filter."
 
 #: dt-assets/parts/modals/modal-help.php:304
 msgctxt "Optional Documentation"
 msgid "Contacts List Tile"
-msgstr "联系人列表图块"
+msgstr "Tile ng Listahan ng mga Kontak"
 
 #: dt-assets/parts/modals/modal-help.php:305
 msgctxt "Optional Documentation"
 msgid "Your list of contacts will show up here. Whenever you filter contacts, the list will also be changed in this section too. You can sort your contacts by newest, oldest, most recently modified, and least recently modified. If you have a long list of contacts they will not all load at once, so clicking the 'Load more contacts' button at the bottom of the list will allow you to load more."
-msgstr "您的联系人列表将显示在此处。每当您过滤联系人时，该列表也会在此部分中更改。您可以按最新，最旧，最近修改和最近修改的顺序对联系人进行排序。如果您的联系人列表很长，则不会一次全部加载它们，因此，单击列表底部的“加载更多联系人”按钮将允许您加载更多。"
+msgstr "Lalabas dito ang iyong listahan ng mga kontak. Sa tuwing pag-filter mo ng mga kontak, mababago rin ang listahan sa seksyong ito. Maaari mong pag-uri-uriin ang iyong mga kontak ayon sa pinakabago, pinakaluma, pinakahuling binago, at pinakamatagal nang binago. Kung mayroon kang mahabang listahan ng mga kontak hindi sabay-sabay na maglo-load ang mga ito, kaya ang pag-click sa buton na 'Mag-load ng Higit Pang mga Kontak' sa ilalim ng listahan ay magpapahintulot sa iyo na mag-load ng higit pa."
 
 #: dt-assets/parts/modals/modal-help.php:310
 msgctxt "Optional Documentation"
 msgid "Groups List Tile"
-msgstr "组列表图块"
+msgstr "Tile ng Listahan ng mga Grupo"
 
 #: dt-assets/parts/modals/modal-help.php:311
 msgctxt "Optional Documentation"
 msgid "Your list of groups will show up here. Whenever you filter groups, the list will also be changed in this section too. You can sort your groups by newest, oldest, most recently modified, and least recently modified. If you have a long list of groups they will not all load at once, so clicking the 'Load more groups' button at the bottom of the list will allow you to load more."
-msgstr "您的群组列表将显示在此处。每当您过滤组时，列表也会在此部分中更改。您可以按最新，最旧，最近修改和最近修改的顺序对组进行排序。如果组列表较长，它们将不会一次全部加载，因此，单击列表底部的“加载更多组”按钮将允许您加载更多。"
+msgstr "Lalabas dito ang iyong listahan ng mga grupo. Sa tuwing pag-filter mo ng mga grupo, mababago rin ang listahan sa seksyong ito. Maaari mong pag-uri-uriin ang iyong mga grupo ayon sa pinakabago, pinakaluma, pinakahuling binago, at pinakamatagal nang binago. Kung mayroon kang mahabang listahan ng mga grupo hindi sabay-sabay na maglo-load ang mga ito, kaya ang pag-click sa buton na 'Mag-load ng Higit Pang mga Grupo' sa ilalim ng listahan ay magpapahintulot sa iyo na mag-load ng higit pa."
 
 #: dt-assets/parts/modals/modal-help.php:317
 msgctxt "Optional Documentation"
 msgid "Use this toggle switch to either show or not show closed contacts in the list."
-msgstr "使用此拨动开关可以显示或不显示列表中的已关闭联系人。"
+msgstr "Gamitin ang toggle switch na ito upang ipakita o kaya ay hindi ipakita ang mga isinarang kontak sa listahan."
 
 #: dt-assets/parts/modals/modal-help.php:323
 msgctxt "Optional Documentation"
 msgid "Use this toggle switch to either show or not show inactive groups in the list."
-msgstr "使用此切换开关可以显示或不显示列表中的非活动组。"
+msgstr "Gamitin ang toggle switch na ito upang ipakita o kaya ay hindi ipakita ang mga hindi aktibong grupo sa listahan."
 
 #: dt-assets/parts/modals/modal-help.php:354
 msgctxt "Optional Documentation"
 msgid "The Initial Comment field is for any extra information. It will be saved as the first comment under the Activity and Comments Tile."
-msgstr "“初始注释”字段用于任何其他信息。它将被保存为“活动和评论”磁贴下的第一个评论。"
+msgstr "Ang field ng Paunang Komento ay para sa anumang karagdagang impormasyon. Mase-save ito bilang unang komento sa ilalim ng Tile ng Aktibidad at Mga Komento."
 
 #: dt-assets/parts/modals/modal-help.php:360
 msgctxt "Optional Documentation"
 msgid "After writing the name of the contact, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new contact has just been just created."
-msgstr "输入联系人的姓名后，请在单击“保存并继续编辑”之前，尽可能多地填写其他字段。在下一个屏幕上，您可以编辑和添加有关刚刚创建的新联系人的更多信息。"
+msgstr "Matapos isulat ang pangalan ng kontak, kumpletuhin ang maraming pang ibang field hangga't magagawa mo, bago i-click ang 'I-save at magpatuloy sa pag-edit'. Sa susunod na screen maaari kang mag-edit at magdagdag ng higit pang impormasyon tungkol sa bagong kontak na ito na kagagawa pa lang."
 
 #: dt-assets/parts/modals/modal-help.php:366
 msgctxt "Optional Documentation"
 msgid "The name of the contact is searchable and can be used to help you filter your contacts in the Contacts List page."
-msgstr "联系人名称是可搜索的，可用于帮助您在“联系人列表”页面中过滤联系人。"
+msgstr "Ang pangalan ng kontak ay maaaring hanapin at magagamit upang matulungan kang mag-filter ng iyong mga kontak sa pahina ng Listahan ng mga Kontak."
 
 #: dt-assets/parts/modals/modal-help.php:384
 msgctxt "Optional Documentation"
 msgid "After writing the name of the group, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new group has just been created."
-msgstr "输入组的名称后，请在单击“保存并继续编辑”之前，尽可能多地填写其他字段。在下一个屏幕上，您可以编辑和添加有关刚刚创建的新组的更多信息。"
+msgstr "Matapos isulat ang pangalan ng grupo, kumpletuhin ang maraming pang ibang field hangga't magagawa mo, bago i-click ang 'I-save at magpatuloy sa pag-edit'. Sa susunod na screen maaari kang mag-edit at magdagdag ng higit pang impormasyon tungkol sa bagong grupong ito na kagagawa pa lang."
 
 #: dt-assets/parts/modals/modal-help.php:403
 msgctxt "Optional Documentation"
 msgid "Your Profile"
-msgstr "你的个人资料"
+msgstr "Ang Iyong Profile"
 
 #: dt-assets/parts/modals/modal-help.php:404
 msgctxt "Optional Documentation"
 msgid "In this area you can see your user profile."
-msgstr "在此区域中，您可以看到您的用户个人资料。"
+msgstr "Sa lugar na ito maaari mong makita ang iyong profile ng gumagamit."
 
 #: dt-assets/parts/modals/modal-help.php:405
 msgctxt "Optional Documentation"
 msgid "You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
-msgstr "您无需填写任何这些配置文件字段。它们是可选的，可以满足您团队的需求。"
+msgstr "Hindi mo kinakailangang punan ang alinman sa mga profile field na ito. Opsyonal ang mga ito upang matugunan ang mga pangangailangan ng iyong pangkat."
 
 #: dt-assets/parts/modals/modal-help.php:406
 msgctxt "Optional Documentation"
 msgid "By clicking 'Edit', you will be able adjust things like the language that this system operates in."
-msgstr "通过单击“编辑”，您将能够调整诸如该系统使用的语言之类的内容。"
+msgstr "Sa pamamagitan ng pag-click sa 'I-edit', magagawa mong ayusin ang mga bagay tulad ng wikang gamit sa pagpapatakbo ng sistemang ito."
 
 #: dt-assets/parts/modals/modal-help.php:412
 msgctxt "Optional Documentation"
 msgid "These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
-msgstr "这些是您负责的领域。点击“添加”按钮将弹出一个位置列表供您选择。"
+msgstr "Ito ang mga lugar na iyong responsibilidad. Sa pag-click sa buton na 'Idagdag' ay may lalabas na listahan ng mga lokasyong mapagpipilian."
 
 #: dt-assets/parts/modals/modal-help.php:417
 msgctxt "Optional Documentation"
 msgid "Your Notifications"
-msgstr "您的通知"
+msgstr "Ang Iyong mga Notipikasyon"
 
 #: dt-assets/parts/modals/modal-help.php:418
 msgctxt "Optional Documentation"
 msgid "You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
-msgstr "您将根据您的通知首选项接收网络通知和电子邮件通知。要更改您的首选项，请单击切换按钮。"
+msgstr "Makakatanggap ka ng mga notipikasyon sa web at mga notipikasyon sa email batay sa iyong mga kagustuhan sa notipikasyon. Upang baguhin ang iyong kagustuhan, i-click ang mga buton ng toggle."
 
 #: dt-assets/parts/modals/modal-help.php:420
 msgctxt "Optional Documentation"
 msgid "Notifications Turned On: The toggle will appear blue."
-msgstr "通知已打开：切换将显示为蓝色。"
+msgstr "Naka-on ang mga Notipikasyon: Ang toggle ay lalabas na asul."
 
 #: dt-assets/parts/modals/modal-help.php:421
 msgctxt "Optional Documentation"
 msgid "Notifications Turned Off: The toggle will appear grey."
-msgstr "通知已关闭：此切换将显示为灰色。"
+msgstr "Naka-off ang mga Notipikasyon: Ang toggle ay lalabas na kulay-abo."
 
 #: dt-assets/parts/modals/modal-help.php:423
 msgctxt "Optional Documentation"
 msgid "Some of the types of notifications cannot be adjusted because they are required by the system."
-msgstr "某些通知类型无法调整，因为系统需要它们。"
+msgstr "Ang ilan sa mga uri ng notipikasyon ay hindi maaaring ayusin dahil ang mga ito ay kinakailangan ng sistema."
 
 #: dt-assets/parts/modals/modal-help.php:424
 msgctxt "Optional Documentation"
 msgid "Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
-msgstr "调整是否要查看有关新评论，联系人信息更改，联系人里程碑和组运行状况指标的通知，以及是否向您发送系统中发生的任何更新的通知。"
+msgstr "Isaayos kung gusto mong makakita ng mga notipikasyon tungkol sa mga bagong komento, mga pagbabago sa impormasyon para sa pakikipag-ugnayan, Mahahalagang Pangyayari sa Kontak at sukatan ng Kalusugan ng Grupo, at kung makakatanggap ka ng notipikasyon para sa anumang pag-update na nangyayari sa sistema."
 
 #: dt-assets/parts/modals/modal-help.php:437
 msgctxt "Optional Documentation"
 msgid "Notifications Page"
-msgstr "通知页面"
+msgstr "Pahina ng mga Notipikasyon"
 
 #: dt-assets/parts/modals/modal-help.php:438
 msgctxt "Optional Documentation"
 msgid "This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
-msgstr "在此通知页面上，您可以阅读用户和组的更新。它会在您的记录中显示有关活动的通知。"
+msgstr "Ang Pahina ng mga Notipikasyon na ito ay kung saan maaari mong mabasa ang mga update para sa mga gumagamit at grupo. Nagpapakita ito ng mga notipikasyon tungkol sa aktibidad sa iyong mga rekord."
 
 #: dt-assets/parts/modals/modal-help.php:439
 msgctxt "Optional Documentation"
 msgid "All / Unread"
-msgstr "全部/未读"
+msgstr "Lahat / Hindi nabasa"
 
 #: dt-assets/parts/modals/modal-help.php:440
 msgctxt "Optional Documentation"
 msgid "Click the 'All' button to show the full list of all of your notifications."
-msgstr "点击“全部”按钮以显示所有通知的完整列表。"
+msgstr "I-click ang buton na 'Lahat' upang ipakita ang buong listahan ng lahat ng iyong notipikasyon."
 
 #: dt-assets/parts/modals/modal-help.php:441
 msgctxt "Optional Documentation"
 msgid "Click the 'Unread' button to show the list of all of your unread notifications."
-msgstr "点击“未读”按钮以显示所有未读通知的列表。"
+msgstr "I-click ang buton na 'Hindi Nabasa' upang ipakita ang listahan ng lahat ng iyong hindi nabasang notipikasyon."
 
 #: dt-assets/parts/modals/modal-help.php:443
 msgctxt "Optional Documentation"
 msgid "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
-msgstr "如果您不想单击每行右侧的每个实心圆圈来表示已阅读通知，请单击顶部的“将所有内容标记为已读”链接以快速调整所有已包含的消息被阅读。"
+msgstr "Kung hindi mo gustong i-click ang bawa't napunan na bilog sa kanang bahagi ng bawa't hanay upang ipahiwatig na nabasa na ang notipikasyon, i-click ang link na 'Markahan Lahat Bilang Nabasa' sa itaas upang mabilis na ayusin ang lahat ng mensahe na ang lahat ng ito ay nabasa na."
 
 #: dt-assets/parts/modals/modal-help.php:445
 msgctxt "Optional Documentation"
 msgid "Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
-msgstr "单击“设置”链接转到通知设置区域，以调整是否要查看有关新评论，联系人信息更改，联系人里程碑和组运行状况指标的通知，以及是否收到有关以下内容的任何更新的通知：系统。"
+msgstr "I-click ang link na 'Mga Setting' upang pumunta sa lugar ng mga setting ng mga notipikasyon at upang ayusin kung gusto mong makakita ng mga notipikasyon tungkol sa mga bagong komento, mga pagbabago sa impormasyon para sa pakikipag-ugnayan, Mahahalagang Pangyayari sa Kontak at sukatan ng Kalusugan ng Grupo, at kung makakatanggap ka ng notipikasyon para sa anumang pag-update na nangyayari sa sistema."
 
 #: dt-assets/parts/modals/modal-help.php:450
 msgctxt "Optional Documentation"
 msgid "Duplicate Contact page"
-msgstr "联系人页面重复"
+msgstr "Pahina ng Magkakatulad na Kontak"
 
 #: dt-assets/parts/modals/modal-help.php:451
 msgctxt "Optional Documentation"
 msgid "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
-msgstr "在此重复联系人页面中，您可以查看，拒绝或合并系统已挑选的联系人（检查其姓名，电子邮件和电话），以作为与另一个现有联系人的重复。"
+msgstr "Ang Pahina ng Magkakatulad na Kontak na ito ay kung saan maaari mong suriin, tanggihan o pagsamahin ang mga kontak na nakuha ng sistema (sinusuri ayon sa kanilang pangalan, email at telepono) na posibleng mga kopya ng isa pang kasalukuyan nang kontak."
 
 #: dt-assets/parts/modals/modal-help.php:472
 msgctxt "Optional Documentation"
 msgid "Need more help?"
-msgstr "需要更多帮助吗？"
+msgstr "Kailangan mo pa ba ng tulong?"
 
 #: dt-assets/parts/modals/modal-help.php:473
 msgctxt "Optional Documentation"
 msgid "Read the documentation"
-msgstr "阅读文档"
+msgstr "Basahin ang dokumentasyon"
 
 #: dt-assets/parts/modals/modal-new-contact.php:30
 #: dt-assets/parts/modals/modal-new-group.php:29
 msgctxt "back to record"
 msgid "Back to %s"
-msgstr "返回％s"
+msgstr "Bumalik sa %s"
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid "Set a reminder or a task with a note and receive a notification on the due date."
-msgstr "设置带有注释的提醒或任务，并在到期日收到通知。"
+msgstr "Magtakda ng paalala o gawain na may tala at makatanggap ng notipikasyon sa takdang petsa."
 
 #: dt-assets/parts/modals/modal-tasks.php:22
 msgid "Custom"
-msgstr "自订"
+msgstr "Nababago"
 
 #: dt-assets/parts/modals/modal-tasks.php:28
 msgid "Due Date"
-msgstr "截止日期"
+msgstr "Takdang Petsa"
 
 #: dt-assets/parts/modals/modal-tasks.php:32
 msgid "Create Task"
-msgstr "创建任务"
+msgstr "Gumawa ng Gawain"
 
 #: dt-assets/parts/modals/modal-tasks.php:38
 msgid "Existing tasks for this record:"
-msgstr "该记录的现有任务："
+msgstr "Kasalukuyang mga gawain para sa rekord na ito:"
 
 #: dt-assets/parts/nav-offcanvas-topbar.php:95
 msgid "Theme Update Available!"
-msgstr "主题更新可用！"
+msgstr "May Magagamit na Update sa Tema!"
 
 #: dt-assets/functions/menu.php:95 dt-assets/parts/nav-offcanvas-topbar.php:152
 #: dt-mapping/columns/add-users-column.php:56
@@ -3059,1054 +3059,1060 @@ msgstr "主题更新可用！"
 #: dt-metrics/combined/locations-list.php:257
 #: dt-users/template-user-management.php:61 dt-users/user-management.php:90
 msgid "Users"
-msgstr "用户数"
+msgstr "Mga Gumagamit"
 
 #: dt-contacts/contacts-post-type.php:190
 msgid "Select the main person who is responsible for reporting on this contact."
-msgstr "选择负责报告此联系人的主要人员。"
+msgstr "Piliin ang pangunahing taong responsable para sa pag-uulat tungkol sa kontak na ito."
 
 #: dt-contacts/contacts-post-type.php:198
 msgid "Contact Status"
-msgstr "联络状态"
+msgstr "Katayuan ng Kontak"
 
 #: dt-contacts/contacts-post-type.php:213
 msgid "Dispatch Needed"
-msgstr "需要派遣"
+msgstr "Kailangang Ipadala"
 
 #: dt-contacts/contacts-post-type.php:228
 msgid "Paused"
-msgstr "已暂停"
+msgstr "Sandaling inihinto"
 
 #: dt-contacts/contacts-post-type.php:233
 msgid "Closed"
-msgstr "关闭"
+msgstr "Isinara"
 
 #: dt-contacts/contacts-post-type.php:249
 msgid "Contact Attempt Needed"
-msgstr "需要联系尝试"
+msgstr "Kailangang Subukang Makipag-ugnayan"
 
 #: dt-contacts/contacts-post-type.php:253
 msgid "Contact Attempted"
-msgstr "尝试联系"
+msgstr "Sinubukang Makipag-ugnayan"
 
 #: dt-contacts/contacts-post-type.php:257
 #: dt-contacts/contacts-post-type.php:530
 msgid "Contact Established"
-msgstr "已建立联系"
+msgstr "Mayroon Nang Ugnayan"
 
 #: dt-contacts/contacts-post-type.php:261
 msgid "First Meeting Scheduled"
-msgstr "安排第一次会议"
+msgstr "Naiskedyul ang Unang Miting"
 
 #: dt-contacts/contacts-post-type.php:265
 msgid "First Meeting Complete"
-msgstr "第一次会议完成"
+msgstr "Nakumpleto ang Unang Miting"
 
 #: dt-contacts/contacts-post-type.php:273
 msgid "Being Coached"
-msgstr "被教练"
+msgstr "Kasalukuyang Tinuturuan"
 
 #: dt-contacts/contacts-post-type.php:306
 msgctxt "Optional Documentation"
 msgid "Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
-msgstr "分配联系人在其信仰旅程中达到的里程碑。这些是联系人的精神之旅中值得庆祝的要点，但可以以任何顺序发生。"
+msgstr "Italaga kung aling mahahalagang pangyayari ang naabot ng kontak sa kanilang paglalakbay sa pananampalataya. Ito ang mga puntos sa espiritwal na paglalakbay ng kontak na nararapat na ipagdiwang nguni't maaaring mangyari sa anumang pagkakasunod-sunod."
 
 #: dt-contacts/contacts-post-type.php:310
 msgid "Has Bible"
-msgstr "有圣经"
+msgstr "Mayroong Bibliya"
 
 #: dt-contacts/contacts-post-type.php:314
 msgid "Reading Bible"
-msgstr "阅读圣经"
+msgstr "Binabasa ang Bibliya"
 
 #: dt-contacts/contacts-post-type.php:318
 msgid "States Belief"
-msgstr "国家信仰"
+msgstr "Ipinapahayag ang Paniniwala"
 
 #: dt-contacts/contacts-post-type.php:322
 msgid "Can Share Gospel/Testimony"
-msgstr "可以分享福音/见证"
+msgstr "Maaaring Magbahagi ng Ebanghelyo/Testimonya"
 
 #: dt-contacts/contacts-post-type.php:326
 msgid "Sharing Gospel/Testimony"
-msgstr "分享福音/见证"
+msgstr "Nagbabahagi ng Ebanghelyo/Testimonya"
 
 #: dt-contacts/contacts-post-type.php:334
 msgid "Baptizing"
-msgstr "洗礼"
+msgstr "Nagbabautismo"
 
 #: dt-contacts/contacts-post-type.php:338
 msgid "In Church/Group"
-msgstr "在教会/团体中"
+msgstr "Sa Simbahan/Grupo"
 
 #: dt-contacts/contacts-post-type.php:342
 msgid "Starting Churches"
-msgstr "开始教会"
+msgstr "Mga simbahang Nagsisimula"
 
 #: dt-contacts/contacts-post-type.php:371
 msgid "Male"
-msgstr "男"
+msgstr "Lalaki"
 
 #: dt-contacts/contacts-post-type.php:372
 msgid "Female"
-msgstr "女"
+msgstr "Babae"
 
 #: dt-contacts/contacts-post-type.php:381
 msgid "Under 18 years old"
-msgstr "18岁以下"
+msgstr "Wala pang 18 taong gulang"
 
 #: dt-contacts/contacts-post-type.php:382
 msgid "18-25 years old"
-msgstr "18-25岁"
+msgstr "18-25 taong gulang"
 
 #: dt-contacts/contacts-post-type.php:383
 msgid "26-40 years old"
-msgstr "26-40岁"
+msgstr "26-40 taong gulang"
 
 #: dt-contacts/contacts-post-type.php:384
 msgid "Over 40 years old"
-msgstr "超过40岁"
+msgstr "Mahigit 40 taong gulang"
 
 #: dt-contacts/contacts-post-type.php:390
 msgid "Reason Not Ready"
-msgstr "原因尚未就绪"
+msgstr "Dahilan Kung Bakit Hindi Handa"
 
 #: dt-contacts/contacts-post-type.php:391
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
-msgstr "联系人尚未准备好分配给用户的主要原因。"
+msgstr "Ang pangunahing dahilan kung bakit hindi handang maitakda ang contact sa user"
 
 #: dt-contacts/contacts-post-type.php:398
 msgid "Insufficient Contact Information"
-msgstr "联系信息不足"
+msgstr "Kulang na Impormasyon ng Contact"
 
 #: dt-contacts/contacts-post-type.php:401
 msgid "Unknown Location"
-msgstr "位置不明"
+msgstr "Hindi alam ang Lokasyon"
 
 #: dt-contacts/contacts-post-type.php:404
 msgid "Only wants media"
-msgstr "只想要媒体"
+msgstr "Gusto lang ng media"
 
 #: dt-contacts/contacts-post-type.php:407
 msgid "Outside Area"
-msgstr "外区"
+msgstr "Hindi Sakop"
 
 #: dt-contacts/contacts-post-type.php:410
 msgid "Needs Review"
-msgstr "需要审查"
+msgstr "Kailangan ng Pagsusuri"
 
 #: dt-contacts/contacts-post-type.php:413
 msgid "Waiting for Confirmation"
-msgstr "等待确认中"
+msgstr "Naghihintay ng Kompirmasyon"
 
 #: dt-contacts/contacts-post-type.php:421
 msgid "Reason Paused"
-msgstr "原因已暂停"
+msgstr "Dahilan kung bakit Naka-pause"
 
 #: dt-contacts/contacts-post-type.php:422
 msgctxt "Optional Documentation"
 msgid "A paused contact is one you are not currently interacting with but expect to in the future."
-msgstr "暂停的联系人是您当前未与之交互但希望在将来与之交互的联系人。"
+msgstr "Ang naka-pause na contact ay ang hindi mo pakikipag-ugnayan sa kasalukuyan ngunit asahan na gagawin mo sa hinaharap with but expect to in the future."
 
 #: dt-contacts/contacts-post-type.php:440
 msgid "Reason Closed"
-msgstr "原因关闭"
+msgstr "Dahilan kung bakit Sarado"
 
 #: dt-contacts/contacts-post-type.php:441
 msgctxt "Optional Documentation"
 msgid "A closed contact is one you can't or don't wish to interact with."
-msgstr "封闭联系人是您不愿或不希望与之互动的人。"
+msgstr "Ang saradong contact ay ang hindi mo o ayaw mong makipag-ugnayan."
 
 #: dt-contacts/contacts-post-type.php:448
 msgctxt "Reason Closed label"
 msgid "Hostile, playing games or self gain"
-msgstr "敌对，玩游戏或自我增益"
+msgstr "Laban, naglalaro o sariling pakinabang"
 
 #: dt-contacts/contacts-post-type.php:464
 msgid "Accepted"
-msgstr "公认"
+msgstr "Tanggap"
 
 #: dt-contacts/contacts-post-type.php:505
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
-msgstr "此联系人来自的网站，事件或位置。"
+msgstr "Ang website, event o lokasyon kung saan nanggaling ang contact na ito."
 
 #: dt-contacts/contacts-post-type.php:513
 msgid "Source Details"
-msgstr "资料来源"
+msgstr "Mga Detalye ng Pinagmulan"
 
 #: dt-contacts/contacts-post-type.php:522
 msgid "No Answer"
-msgstr "没有答案"
+msgstr "Walang Sagot"
 
 #: dt-contacts/contacts-post-type.php:538
 msgid "Meeting Scheduled"
-msgstr "会议预定"
+msgstr "Naiskedyul ang Pagpupulong"
 
 #: dt-contacts/contacts-post-type.php:546
 msgid "Meeting Complete"
-msgstr "会议完成"
+msgstr "Nakumpleto ang Pagpupulong"
 
 #: dt-contacts/contacts-post-type.php:554
 msgid "Meeting No-show"
-msgstr "会议未出现"
+msgstr "Di-dumalo sa Pagpupulong"
 
 #: dt-contacts/contacts-post-type.php:563
 msgid "Corresponds to user"
-msgstr "对应用户"
+msgstr "Tugon sa user"
 
 #: dt-contacts/contacts-post-type.php:564
 msgctxt "Optional Documentation"
 msgid "The id of the user this contact corresponds to"
-msgstr "此联系人对应的用户的ID"
+msgstr "Ang id ng user kung saan tumugon ang contact na ito"
 
 #: dt-contacts/contacts-post-type.php:574
 msgid "Media"
-msgstr "媒体"
+msgstr "Media"
 
 #: dt-contacts/contacts-post-type.php:578
 msgid "User"
-msgstr "用户"
+msgstr "User"
 
 #: dt-groups/groups-post-type.php:447
 msgid "Last modified"
-msgstr "上一次更改"
+msgstr "Huling binago"
 
 #: dt-contacts/contacts-post-type.php:598 dt-groups/groups-post-type.php:454
 #: single-groups.php:203
 msgid "Tags"
-msgstr "标签"
+msgstr "Mga tag"
 
 #: dt-contacts/contacts-post-type.php:599 dt-groups/groups-post-type.php:455
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags."
-msgstr "对相关项目进行分组的一种有用方法，可以帮助对与值得注意的特征相关联的联系人进行分组。例如企业主，体育爱好者。也可以使用这些标签过滤联系人。"
+msgstr "Isang kapaki-pakinabang na paraan upang maigrupo ang mga magkakaugnay na item at maaaring matulungan ang mga grupo ng contact na may mga kapansin-pansing katangian. hal. may-ari ng negosyo, mahilig sa sports. Maaari ring ma-filter ang mga contact gamit ang mga tag na ito."
 
 #: dt-contacts/contacts-post-type.php:626
 msgid "Relation"
-msgstr "关系"
+msgstr "Kaugnayan"
 
 #: dt-contacts/contacts-post-type.php:627
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
-msgstr "该联系人与系统中另一个联系人的关系。"
+msgstr "Kaugnayang mayroon ang contact na ito sa ibang contact na nasa system."
 
 #: dt-contacts/contacts-post-type.php:634
 msgid "Coached by"
-msgstr "指导人"
+msgstr "Tinuruan ni"
 
 #: dt-contacts/contacts-post-type.php:635
 msgctxt "Optional Documentation"
 msgid "Who is coaching this contact"
-msgstr "谁在指导此联系人"
+msgstr "Sino ang nagtuturo sa contact na ito"
 
 #: dt-contacts/contacts-post-type.php:642
 msgid "Coached"
-msgstr "辅导"
+msgstr "Tinuruan"
 
 #: dt-contacts/contacts-post-type.php:643
 msgctxt "Optional Documentation"
 msgid "Who is this contact coaching"
-msgstr "这是谁的联系教练"
+msgstr "Sino itong nagtuturo sa contact"
 
 #: dt-contacts/contacts-post-type.php:650
 msgid "Baptized by"
-msgstr "受洗"
+msgstr "Binautismuhan ni"
 
 #: dt-contacts/contacts-post-type.php:651
 msgctxt "Optional Documentation"
 msgid "Who baptized this contact"
-msgstr "谁为这个联系人洗礼"
+msgstr "Sinong nagbautismo sa contact na ito"
 
 #: dt-contacts/contacts-post-type.php:659
 msgctxt "Optional Documentation"
 msgid "Who this contact has baptized"
-msgstr "此联系人受洗的对象"
+msgstr "Sinong contact na ito ang nabautismuhan"
 
 #: dt-contacts/contacts-post-type.php:667 dt-groups/groups-post-type.php:401
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
-msgstr "该团体代表的人民团体。"
+msgstr "Ang mga grupo ng mga tao na kinatawan ng grupong ito."
 
 #: dt-contacts/contacts-post-type.php:675
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
-msgstr "该联系人所属的群组。"
+msgstr "Mga grupo kung saan miyembro ang contact na ito."
 
 #: dt-contacts/contacts-post-type.php:683
 msgid "Contact or User assisting the Assigned To user to follow up with the contact."
-msgstr "联系人或协助“分配给”用户的用户跟进该联系人。"
+msgstr "Contact o User na tinutulungan ang Assigned To user na mag-follow up sa contact."
 
 #: dt-contacts/contacts-post-type.php:691
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
-msgstr "此联系人所在的常规位置。"
+msgstr "Ang pangkalahatang lokasyon kung saan matatagpuan ang contact na ito."
 
 #: dt-contacts/contacts-post-type.php:702
 msgid "Coordinates"
-msgstr "座标"
+msgstr "Coordinates"
 
 #: dt-contacts/contacts.php:1759
 msgctxt "My records"
 msgid "My %s"
-msgstr "我的％s"
+msgstr "Ang aking %s"
 
 #: dt-core/admin/config-site-defaults.php:655
 msgid "ERROR: Invalid username/password combination."
-msgstr "错误：无效的用户名/密码组合。"
+msgstr "ERROR: Hindi balidong kombinasyon ng  username/password."
 
 #: dt-groups/groups-post-type.php:184 dt-users/mapbox-coverage-map.php:90
 #: dt-users/user-management.php:101
 msgid "Inactive"
-msgstr "不活跃"
+msgstr "Hindi aktibo"
 
 #: dt-groups/groups-post-type.php:203
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
-msgstr "一群主要是非信徒的人。"
+msgstr "Isang grupong nakararami ang hindi naniniwala."
 
 #: dt-groups/groups-post-type.php:207
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
-msgstr "具有三个或三个以上信徒但未标识为教会的团体。"
+msgstr "Isang grupo na may 3 o higit pang naniniwala ngunit hindi nagpapakilala bilang iglesia."
 
 #: dt-groups/groups-post-type.php:211
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers and identifying as church."
-msgstr "具有三个或更多信徒并标识为教会的团体。"
+msgstr "Isang grupo na may 3 o higit pang naniniwala at nagpapakilala bilang iglesia."
 
 #: dt-groups/groups-post-type.php:214
 msgid "Team"
-msgstr "球队"
+msgstr "Pangkat"
 
 #: dt-groups/groups-post-type.php:215
 msgctxt "Optional Documentation"
 msgid "A special group that is not meeting as a church (or trying to become church)."
-msgstr "一个不作为教会聚会（或试图成为教会）的特殊团体。"
+msgstr "Isang espesyal na grupo na hindi bilang isang iglesia (o sinusubukang maging iglesia)."
 
 #: dt-groups/groups-post-type.php:224
 msgid "Select the main person who is responsible for reporting on this group."
-msgstr "选择负责报告此组的主要人员。"
+msgstr "Piliin ang pangunahing tao na responsable para sa pag-uulat sa grupong ito."
 
 #: dt-groups/groups-post-type.php:231
 msgid "Church Health"
-msgstr "教会健康"
+msgstr "Kalusugan ng Iglesia"
 
 #: dt-groups/groups-post-type.php:232
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
-msgstr "跟踪小组/教堂的进度和健康状况。"
+msgstr "Sundan ang progreso at kalusugan ng grupo/iglesia."
 
 #: dt-groups/groups-post-type.php:236 dt-metrics/personal/baptism-tree.php:132
 msgid "Baptism"
-msgstr "洗礼"
+msgstr "Bautismo"
 
 #: dt-groups/groups-post-type.php:237
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
-msgstr "这个团体正在受洗。"
+msgstr "Nagbabautismo ang grupo."
 
 #: dt-groups/groups-post-type.php:241
 msgid "Bible Study"
-msgstr "圣经学习;圣经讨论"
+msgstr "Pag-aaral ng Bibliya"
 
 #: dt-groups/groups-post-type.php:242
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
-msgstr "该小组正在研究圣经。"
+msgstr "Pinag-aaralan ng grupo ang bibliya."
 
 #: dt-groups/groups-post-type.php:246
 msgid "Communion"
-msgstr "圣餐"
+msgstr "Komunyon"
 
 #: dt-groups/groups-post-type.php:247
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
-msgstr "该团体正在练习圣餐。"
+msgstr "Nagsasagawa ng komunyon ang grupo."
 
 #: dt-groups/groups-post-type.php:251
 msgid "Fellowship"
-msgstr "奖学金"
+msgstr "Pagsasama-sama"
 
 #: dt-groups/groups-post-type.php:252
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
-msgstr "该小组是团契。"
+msgstr "Nagsasama-sama ang grupo."
 
 #: dt-groups/groups-post-type.php:256
 msgid "Giving"
-msgstr "给予"
+msgstr "Pagbibigay"
 
 #: dt-groups/groups-post-type.php:257
 msgctxt "Optional Documentation"
 msgid "The group is giving."
-msgstr "小组正在给予。"
+msgstr "Namimigay ang grupo."
 
 #: dt-groups/groups-post-type.php:261
 msgid "Prayer"
-msgstr "祷告"
+msgstr "Panalangin"
 
 #: dt-groups/groups-post-type.php:262
 msgctxt "Optional Documentation"
 msgid "The group is praying."
-msgstr "该小组正在祈祷。"
+msgstr "Nananalangin ang grupo."
 
 #: dt-groups/groups-post-type.php:266
 msgid "Praise"
-msgstr "赞美"
+msgstr "Pagpupuri"
 
 #: dt-groups/groups-post-type.php:267
 msgctxt "Optional Documentation"
 msgid "The group is praising."
-msgstr "该小组称赞。"
+msgstr "Nagpupuri ang grupo."
 
 #: dt-groups/groups-post-type.php:271
 msgid "Sharing the Gospel"
-msgstr "分享福音"
+msgstr "Ibinabahagi ang Ebanghelyo"
 
 #: dt-groups/groups-post-type.php:281 dt-groups/groups-post-type.php:309
 msgid "Church Commitment"
-msgstr "教会的承诺"
+msgstr "Obligasyon sa Simbahan"
 
 #: dt-groups/groups-post-type.php:291
 msgid "Unbelievers"
-msgstr "不信者"
+msgstr "Mga hindi naniniwala"
 
 #: dt-groups/groups-post-type.php:297
 msgid "Believers"
-msgstr "信徒"
+msgstr "Mga naniniwala"
 
 #: dt-groups/groups-post-type.php:303
 msgid "Accountable"
-msgstr "问责"
+msgstr "Nananagot"
 
 #: dt-groups/groups-post-type.php:310
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
-msgstr "这是教堂-是或否？"
+msgstr "Ito ba ay iglesia - oo o hindi?"
 
 #: dt-groups/groups-post-type.php:315
 msgid "Multiplying"
-msgstr "相乘"
+msgstr "Dumarami"
 
 #: dt-groups/groups-post-type.php:316
 msgctxt "Optional Documentation"
 msgid "Number of people helping start other groups. How many members are multiplying?"
-msgstr "帮助启动其他小组的人数。有几名成员在成倍增加？"
+msgstr "Bilang ng mga taong tumutulong na simulan ang ibang mga grupo. Ilang miyembro ang nagpaparami?"
 
 #: dt-groups/groups-post-type.php:323
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
-msgstr "该小组开始开会的日期。"
+msgstr "Ang petsa kung kailan nagsimulang magpulong ang grupong ito."
 
 #: dt-groups/groups-post-type.php:330
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
-msgstr "该团体首次确定为教堂的日期。"
+msgstr "Ang petsa kung kailan unang ipinakilala bilang iglesia ang grupong ito."
 
 #: dt-groups/groups-post-type.php:336
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
-msgstr "该小组停止开会的日期（如果适用）。"
+msgstr "Ang petsa kung kailan tumigil ng pagpupulong ang grupong ito (kung aplikable)."
 
 #: dt-groups/groups-post-type.php:363
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
-msgstr "建立该小组的小组。"
+msgstr "Grupong nagtatag ng grupong ito."
 
 #: dt-groups/groups-post-type.php:371
 msgctxt "Optional Documentation"
 msgid "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
-msgstr "不是亲子关系的相关组。它可能表明正在协作，即将合并，最近分裂等的组。"
+msgstr "Isang magka-ugnay na grupo na hindi magulang/anak ang relasyon. Maaaring magpahiwatig ito ng mga grupo na nagtutulungan, malapit nang magsanib, kakahiwalay lang, atbp."
 
 #: dt-groups/groups-post-type.php:379
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
-msgstr "从这个组中诞生的一个组。"
+msgstr "Grupong hindi nagmula sa grupong ito."
 
 #: dt-groups/groups-post-type.php:387
 msgctxt "Optional Documentation"
 msgid "The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the group."
-msgstr "该组中的成员数。在成员列表中添加或删除新成员时，它将自动更新。手动更改此数字，以包括可能不在系统中但也是该组成员的人员。"
+msgstr "Bilang ng mga miyembro sa grupong ito. Awtomatiko itong maa-update kapag idinagdag ang mga bagong miyembro o tinanggal sa listahan ng miyembro. Mano-manong palitan ang numerong ito ng mga taong kabilang na wala sa system ngunit miyembro din ng grupo."
 
 #: dt-groups/groups-post-type.php:393
 msgctxt "Optional Documentation"
 msgid "The contacts who are members of this group."
-msgstr "该组的联系人。"
+msgstr "Ang mga contact na miyembro ng grupong ito."
 
 #: dt-groups/groups-post-type.php:417
 msgctxt "Optional Documentation"
 msgid "The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
-msgstr "种植和/或指导该小组的人。只能将一个人分配到一个组中，而可以将多个人作为该组的教练/教堂主。"
+msgstr "Ang taong nagtatag at/o nagtuturo sa grupong ito. Isang tao lang ang maaaring italaga sa isang grupo habang maraming tao ang maaaring maging tagapaguro / mga tagapagtatag ng iglesia ng grupong ito."
 
 #: dt-groups/groups-post-type.php:431
 msgctxt "Optional Documentation"
 msgid "The general location where this group meets."
-msgstr "该小组见面的一般地点。"
+msgstr "Ang pangkalahatang lokasyon kung saan magkikita ang grupong ito."
 
 #: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88 dt-users/template-user-management.php:206
 msgid "All Time"
-msgstr "整天"
+msgstr "Lahat ng Panahon"
 
 #: dt-users/template-user-management.php:202
 msgid "This Year"
-msgstr "今年"
+msgstr "Sa Taong Ito"
 
 #: dt-metrics/metrics-workers.php:186
 msgid "Last Year"
-msgstr "去年"
+msgstr "Nakaraang Taon"
 
 #: dt-users/template-user-management.php:196
 msgid "Last Month"
-msgstr "上个月"
+msgstr "Nakaraang Buwan"
 
 #: dt-users/template-user-management.php:192
 msgid "This Month"
-msgstr "这个月"
+msgstr "Buwan na Ito"
 
 #: dt-users/template-user-management.php:74
 #: dt-users/template-user-management.php:256
 msgid "Workload Status"
-msgstr "工作量状态"
+msgstr "Kalagayan ng Workload"
 
 #: dt-users/template-user-management.php:75
 msgid "Accept Needed"
-msgstr "接受需要"
+msgstr "Kinakailangan ang Pagtanggap"
 
 #: dt-users/template-user-management.php:79
 msgid "Last Activity"
-msgstr "最后活动"
+msgstr "Huling Aktibidad"
 
 #: dt-users/template-user-management.php:115
 msgid "No activity"
-msgstr "没有活动"
+msgstr "Walang aktibidad"
 
 #: dt-users/template-user-management.php:139
 msgid "Multiplier Name"
-msgstr "乘数名称"
+msgstr "Pangalan ng Tagapagparami"
 
 #: dt-users/template-user-management.php:174
 msgid "Pending"
-msgstr "待定"
+msgstr "Nakabinbin"
 
 #: dt-users/template-user-management.php:181
 msgid "Unread Notifications"
-msgstr "未读通知"
+msgstr "Mga Hindi Nabasang Notipikasyon"
 
 #: dt-users/template-user-management.php:245
 msgid "User Status"
-msgstr "用户状态"
+msgstr "Kalagayan ng User"
 
 #: dt-users/template-user-management.php:330
 msgid "Click here to see roles documentation"
-msgstr "单击此处查看角色文档"
+msgstr "I-click dito para makita ang dokumentasyon ng mga tungkulin"
 
 #: dt-users/template-user-management.php:345
 msgid "Save Roles"
-msgstr "保存角色"
+msgstr "I-save ang mga Tungkulin"
 
 #: dt-assets/parts/group-details.php:244
 #: dt-users/template-user-management.php:281 template-settings.php:229
 msgid "Search Locations"
-msgstr "搜索地点"
+msgstr "Hanapin ang Lokasyon"
 
 #: dt-users/template-user-management.php:294
 msgid "Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts"
-msgstr "设置您不可用的日期，以便调度员知道您有空接收新联系人"
+msgstr "Itakda ang mga petsa kung kailan ka hindi puwede para malaman ng Dispatcher kung kailan ka puwede para makatanggap ng bagong mga contact"
 
 #: dt-users/template-user-management.php:305
 msgid "Travel or Away Dates"
-msgstr "出行日期"
+msgstr "Mga Petsa ng Biyahe o Wala ka Rito"
 
 #: dt-users/template-user-management.php:402
 msgid "Daily Activity"
-msgstr "日常活动"
+msgstr "Pang-araw-araw ng Aktibidad"
 
 #: dt-users/mapbox-coverage-map.php:88 dt-users/user-management.php:99
 msgid "Away"
-msgstr "远"
+msgstr "Malayo"
 
 #: dt-users/mapbox-coverage-map.php:89 dt-users/user-management.php:100
 msgid "Inconsistent"
-msgstr "前后不一致"
+msgstr "Hindi pare-pareho"
 
 #: dt-users/user-management.php:147
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
-msgstr "％3 $ s天后，％2 $ s接受了％1 $ s"
+msgstr "%1$s ay tinanggap noong %2$s matapos ang %3$s araw"
 
 #: dt-users/user-management.php:148
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
-msgstr "％1 $ s等待％2 $ s天的联系尝试"
+msgstr "%1$s hinihintay ang Contact Attempt sa loob ng %2$s araw"
 
 #: dt-users/user-management.php:149
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
-msgstr "％3 $ s天后尝试在％2 $ s与％1 $ s联系"
+msgstr "Contact kay %1$s ay sinubukan noong %2$s matapos ang %3$s araw"
 
 #: dt-users/user-management.php:336
 msgctxt "Updated record Bob"
 msgid "Updated contact %s"
-msgstr "更新了联系人％s"
+msgstr "Na-update na contact na %s"
 
 #: dt-users/user-management.php:339
 msgctxt "Updated record Bob"
 msgid "Updated group %s"
-msgstr "更新了群组％s"
+msgstr "Na-update na grupo na %s"
 
 #: dt-users/user-management.php:344
 msgctxt "Commented on record Bob"
 msgid "Commented on contact %s"
-msgstr "对联系人％s进行了评论"
+msgstr "Nagkomento sa contact na %s"
 
 #: dt-users/user-management.php:347
 msgctxt "Commented on record Bob"
 msgid "Commented on group %s"
-msgstr "对群组％s发表了评论"
+msgstr "Nagkomento sa grupo na %s"
 
 #: dt-users/user-management.php:352
 msgctxt "Created record Bob"
 msgid "Created contact %s"
-msgstr "已建立联络人％s"
+msgstr "Gumawa ng contact na %s"
 
 #: dt-users/user-management.php:355
 msgctxt "Created record Bob"
 msgid "Created group %s"
-msgstr "建立的群组％s"
+msgstr "Gumawa ng grupo na %s"
 
 #: dt-users/user-management.php:359
 msgid "Logged In"
-msgstr "登录"
+msgstr "Nag-log In"
 
 #: dt-users/user-management.php:362
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
-msgstr "％s上的分配被拒绝"
+msgstr "Tinanggihang gawain sa %s"
 
 #: dt-users/user-management.php:310
 msgid "%s days since last update"
-msgstr "自上次更新以来的％s天"
+msgstr "%s araw mula huling update"
 
 #: dt-workflows/tasks.php:82
 msgctxt "You set a reminder for today on contact1"
 msgid "You set a reminder for today on %1$s"
-msgstr "您在％1 $ s设置了今天的提醒"
+msgstr "Nagtakda ka ng paalala para ngayong araw sa %1$s"
 
 #: dt-workflows/tasks.php:86
 msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
-msgstr "您在％1 $ s上设置了此任务：％2 $ s"
+msgstr "Itinakda mo ang gawaing ito noong %1$s: %2$s"
 
 #: single-contacts.php:400 single-contacts.php:429 single-contacts.php:460
 msgid "Choose an option:"
-msgstr "选择一个选项："
+msgstr "Pumili ng opsyon:"
 
 #: single-contacts.php:419 single-contacts.php:451 single-contacts.php:482
 msgid "Confirm"
-msgstr "确认"
+msgstr "Kompirmahin"
 
 #: single-groups.php:87
 msgid "Create"
-msgstr "创建"
+msgstr "Gumawa"
 
 #: single-groups.php:92
 msgid "Select"
-msgstr "选择"
+msgstr "Piliin"
 
 #: single-groups.php:413
 msgctxt "Add members modal"
 msgid "In the 'Member List' field, type the name of an existing contact to add them to this group."
-msgstr "在“成员列表”字段中，键入现有联系人的姓名，以将其添加到该组中。"
+msgstr "Sa blangkong 'Listahan ng Miyembro', mag-type ng pangalan ng umiiral na kontak para maidagdag siya sa grupong ito."
 
 #: dt-assets/parts/modals/modal-help.php:359 template-contacts-new.php:20
 msgid "Create New Contact"
-msgstr "建立新联络人"
+msgstr "Gumawa ng Bagong Kontak"
 
 #: template-view-duplicates.php:35
 msgid "duplicates"
-msgstr "重复项"
+msgstr "mga kopya"
 
 #: dt-notifications/notifications.php:371
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
-msgstr[0] "％s分钟前"
+msgstr[0] "%s minuto ang nakaraan"
+msgstr[1] "%s (na) minuto ang nakakaraan"
 
 #: dt-notifications/notifications.php:374
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] "％s小时前"
+msgstr[0] "%s oras ang nakakaraan"
+msgstr[1] "%s (na) oras ang nakakaraan"
 
 #: dt-notifications/notifications.php:377
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "％s天前"
+msgstr[0] "%s araw ang nakakaraan"
+msgstr[1] "%s (na) araw ang nakakaraan"
 
 #: dt-notifications/notifications.php:380
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] "％s周前"
+msgstr[0] "%s linggo ang nakakaraan"
+msgstr[1] "%s (na) linggo ang nakakaraan"
 
 #: dt-notifications/notifications.php:383
 msgid "%s month ago"
 msgid_plural "%s months ago"
-msgstr[0] "％s一个月前"
+msgstr[0] "%s buwan ang nakakaraan"
+msgstr[1] "%s (na) buwan ang nakakaraan"
 
 #: dt-notifications/notifications.php:386
 msgid "%s year ago"
 msgid_plural "%s years ago"
-msgstr[0] "％s年前"
+msgstr[0] "%s taon ang nakakaraan"
+msgstr[1] "%s (na) taon ang nakakaraan"
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Created record on {}"
-msgstr "在 {} 创建记录"
+msgstr "Nagawa ang record noong {}"
 
 #: dt-assets/functions/enqueue-scripts.php:200
 msgid "Translate with Google Translate"
-msgstr "使用“谷歌翻译器”进行翻译"
+msgstr "Isaling-wika gamit ang Google Translate"
 
 #: dt-assets/functions/enqueue-scripts.php:201
 msgid "Hide Translation"
-msgstr "隐藏翻译"
+msgstr "Itago ang Saling-wika"
 
 #: dt-assets/functions/enqueue-scripts.php:338
 msgid "Add"
-msgstr "添加"
+msgstr "Idagdag"
 
 #: dt-assets/parts/loop-activity-comment.php:32
 msgid "Comment"
-msgstr "评论"
+msgstr "Magkomento"
 
 #: dt-assets/parts/loop-activity-comment.php:41
 msgid "Type:"
-msgstr "类型："
+msgstr "I-type ang:"
 
 #: dt-assets/parts/loop-activity-comment.php:204
 msgid "Type of Comment"
-msgstr "评论类型"
+msgstr "Uri ng Komento"
 
 #: dt-contacts/contacts-post-type.php:491
 msgid "Contacts transferred from a partnership with another Disciple.Tools site."
-msgstr "从 Disciple.Tools 站点合作伙伴处已转移的联系人。"
+msgstr "Inilipat ang mga kontak mula sa isang samahan na may katuwang na isa pang Alagad. Lugar ng tools."
 
 #: dt-mapping/geocode-api/mapbox-api.php:281
 #: dt-mapping/geocode-api/mapbox-api.php:305
 #: dt-users/template-user-management.php:269 template-settings.php:214
 msgid "add"
-msgstr "添加"
+msgstr "idagdag"
 
 #: dt-posts/posts.php:431
 msgid "%s removed"
-msgstr "% 已移除"
+msgstr "inalis ang %s"
 
 #: dt-users/template-user-management.php:78
 msgid "Location"
-msgstr "地点"
+msgstr "Lokasyon"
 
 #: dt-users/template-user-management.php:168
 msgid "Updates Needed"
-msgstr "需要更新"
+msgstr "Kailangan ang mga Update"
 
 #: dt-users/template-user-management.php:188
 msgid "Assignments"
-msgstr "分配"
+msgstr "Mga assignment"
 
 #: dt-users/template-user-management.php:216
 msgid "Pace"
-msgstr "步调"
+msgstr "Bilis"
 
 #: dt-users/template-user-management.php:217
 msgid "Assigned and not accepted"
-msgstr "已分配但未接受"
+msgstr "Itinakda at hindi tinanggap"
 
 #: dt-users/template-user-management.php:219
 msgid "Time from assigned to contact accepted for the last 10 contacts"
-msgstr "最近的 10 个联系人中从分配到接受所花的时间"
+msgstr "Oras mula nang pagtatakda hanggang sa pagtanggap sa kontak para sa huling 10 kontak"
 
 #: dt-users/template-user-management.php:221
 msgid "Accepted with no contact attempt"
-msgstr "已接受但未尝试联系"
+msgstr "Tinanggap nang walang pagsubok na makipag-uganayan"
 
 #: dt-users/template-user-management.php:223
 msgid "Oldest 10 update needed"
-msgstr "最先的 10 个需要更新"
+msgstr "Kailangan ng update sa pinakanaunang 10"
 
 #: dt-users/template-user-management.php:225
 msgid "Time from assigned to contact attempt for the last 10 contacts"
-msgstr "最近的 10 个联系人中从分配到尝试联系所花的时间"
+msgstr "Oras mula nang pagtatakda hanggang sa pagsubok na makipag-ugnayan para sa huling 10 kontak"
 
 #: dt-users/template-user-management.php:269
 #: dt-users/template-user-management.php:272
 msgid "Location Responsibility"
-msgstr "对此地点所付的责任"
+msgstr "Pananagutan sa Lokasyon"
 
 #: dt-users/template-user-management.php:296
 msgid "Schedule Unavailability"
-msgstr "日程表不可用"
+msgstr "Iiskedyul kung Kailan Hindi Pwede"
 
 #: dt-users/user-management.php:91
 msgid "Add User"
-msgstr "添加用户"
+msgstr "Magdagdag ng User"
 
 #: dt-users/users.php:869
 msgid "Email already exists and is a user on this site"
-msgstr "电邮已存在，是本站点的用户"
+msgstr "Umiiral na ang email at ito ay user na sa site na ito"
 
 #: dt-users/users.php:875
 msgid "Failed to add user to site."
-msgstr "未能将用户添加到站点。"
+msgstr "Hindi naidagdag ang user sa site."
 
 #: dt-assets/functions/enqueue-scripts.php:112
 msgctxt "Abbreviation of Sunday"
 msgid "Su"
-msgstr "苏"
+msgstr "Lin"
 
 #: dt-assets/functions/enqueue-scripts.php:113
 msgctxt "Abbreviation of Monday"
 msgid "Mo"
-msgstr "莫"
+msgstr "Lun"
 
 #: dt-assets/functions/enqueue-scripts.php:114
 msgctxt "Abbreviation of Tuesday"
 msgid "Tu"
-msgstr "涂"
+msgstr "Mar"
 
 #: dt-assets/functions/enqueue-scripts.php:115
 msgctxt "Abbreviation of Wednesday"
 msgid "We"
-msgstr "我们"
+msgstr "Miy"
 
 #: dt-assets/functions/enqueue-scripts.php:116
 msgctxt "Abbreviation of Thursday"
 msgid "Th"
-msgstr "钍"
+msgstr "Huw"
 
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Abbreviation of Friday"
 msgid "Fr"
-msgstr "r"
+msgstr "Biy"
 
 #: dt-assets/functions/enqueue-scripts.php:118
 msgctxt "Abbreviation of Saturday"
 msgid "Sa"
-msgstr "萨"
+msgstr "Sab"
 
 #: dt-assets/functions/enqueue-scripts.php:223
 msgid "Mark as complete"
-msgstr "标记为完成"
+msgstr "Markahan bilang kumpleto na"
 
 #: dt-assets/parts/modals/modal-help.php:18
 msgid "Contact Name"
-msgstr "联系人姓名"
+msgstr "Pangalan ng Kontak"
 
 #: dt-assets/parts/modals/modal-help.php:58
 msgid "2 contacts need an update"
-msgstr "2位联络人需要更新"
+msgstr "2 kontak ang nangangailangan ng update"
 
 #: dt-assets/parts/modals/modal-help.php:71
 msgid "Quick Action Buttons"
-msgstr "快速动作按钮"
+msgstr "Mga Button ng Mabilisang Aksyon"
 
 #: dt-assets/parts/modals/modal-help.php:154
 #: dt-assets/parts/modals/modal-help.php:389
 msgid "Group Name"
-msgstr "组的名字"
+msgstr "Pangalan ng Grupo"
 
 #: dt-assets/parts/modals/modal-help.php:201 dt-metrics/groups/tree.php:83
 #: dt-metrics/personal/group-tree.php:84
 msgid "Members"
-msgstr "会员"
+msgstr "Mga miyembro"
 
 #: dt-assets/parts/modals/modal-help.php:298
 msgctxt "Optional Documentation"
 msgid "Default and Custom Filters Tile"
-msgstr "默认和自定义过滤器"
+msgstr "Tile ng mga Default at Custom na Filter"
 
 #: dt-assets/parts/modals/modal-help.php:316
 msgctxt "Optional Documentation"
 msgid "Closed Contacts Switch"
-msgstr "闭合触点开关"
+msgstr "Switch ng mga Isinarang Kontak"
 
 #: dt-assets/parts/modals/modal-help.php:322
 msgctxt "Optional Documentation"
 msgid "Inactive Groups Switch"
-msgstr "非活动组切换"
+msgstr "Switch ng mga Grupong Di-aktibo"
 
 #: dt-assets/parts/modals/modal-help.php:442 template-notifications.php:55
 msgid "Mark all as read"
-msgstr "标记为已读"
+msgstr "Markahan ang lahat bilang nabasa na"
 
 #: dt-assets/parts/modals/modal-new-group.php:25
 msgid "Edit New Group"
-msgstr "编辑新组"
+msgstr "I-edit ang Bagong Grupo"
 
 #: dt-assets/parts/modals/modal-tasks.php:13
 msgid "Task Type"
-msgstr "任务类型"
+msgstr "Uri ng Gawain"
 
 #: dt-contacts/contacts-post-type.php:199
 msgctxt "Contact Status field description"
 msgid "The Contact Status describes the progress in communicating with the contact."
-msgstr "联系人状态描述了我们与联系人交流的进展"
+msgstr "Inilalarawan ng Status ng Kontak ang pagsulong sa pakikipag-ugnayan sa kontak."
 
 #: dt-contacts/contacts-post-type.php:571
 msgid "Contact Type"
-msgstr "接触类型"
+msgstr "Uri ng Kontak"
 
 #: dt-contacts/contacts-post-type.php:584
 msgid "Last Modified"
-msgstr "上一次更改"
+msgstr "Huling Binago"
 
 #: dt-core/admin/config-site-defaults.php:321
 msgid "New Comments"
-msgstr "新评论"
+msgstr "Mga Bagong Komento"
 
 #: dt-groups/groups-post-type.php:272
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
-msgstr "该团体正在分享福音。"
+msgstr "Ibinabahagi ng grupo ang ebanghelyo."
 
 #: dt-groups/groups-post-type.php:277
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
-msgstr "该小组有领导人。"
+msgstr "May mga lider ang grupo."
 
 #: dt-groups/groups-post-type.php:282
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
-msgstr "该团体致力于成为教会。"
+msgstr "Nagtalaga ang grupo na maging Iglesia."
 
 #: dt-groups/groups-post-type.php:292
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
-msgstr "该组中不信者的数量。"
+msgstr "Bilang ng mga hindi naniniwala sa grupong ito."
 
 #: dt-groups/groups-post-type.php:298
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
-msgstr "该组中的信徒人数。"
+msgstr "Bilang ng mga naniniwala sa grupong ito."
 
 #: dt-groups/groups-post-type.php:304
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
-msgstr "问责制组中的人数。"
+msgstr "Bilang ng mga taong may-pananagutan sa grupong ito."
 
 #: dt-metrics/metrics-workers.php:183
 msgid "Select All Time or a specific year to display"
-msgstr "选择显示所有时间或特定年份"
+msgstr "Piliin ang Buong Panahon o isang espesipikong taon na ipapakita"
 
 #: dt-posts/posts.php:320
 msgctxt "Shaikh added as people group on contact1"
 msgid "%1$s added as people group on %2$s"
-msgstr "已将％1 $ s添加为“％2 $ s”上的人物组"
+msgstr "Idinagdag ang %1$s bilang grupo ng mga tao noong %2$s"
 
 #: dt-posts/posts.php:321
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
-msgstr "％s已添加到人员组"
+msgstr "Idinagdag ang %s sa mga grupo ng mga tao"
 
 #: dt-posts/posts.php:323
 msgctxt "Shaikh removed from people groups on contact1"
 msgid "%1$s removed from people groups on %2$s"
-msgstr "已将％1 $ s从“％2 $ s”的人组中删除"
+msgstr "Inalis ang %1$s mula sa grupo ng mga tao noong %2$s"
 
 #: dt-posts/posts.php:324
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
-msgstr "已将％s人群中删除"
+msgstr "Inalis ang %s sa mga grupo ng mga tao"
 
 #: dt-users/users.php:714
 msgid "View Contact"
-msgstr "查看联络人"
+msgstr "Tingnan ang Kontak"
 
 #: template-notifications.php:75 template-notifications.php:78
 msgid "Load more notifications"
-msgstr "加载更多通知"
+msgstr "Mag-load pa ng mga notipikasyon"
 
 #: dt-contacts/contacts-post-type.php:127
 msgid "Contact"
-msgstr "联系"
+msgstr "Kontak"
 
 #: dt-assets/functions/enqueue-scripts.php:138
 msgctxt "Showing 30 items"
 msgid "Showing %s items"
-msgstr "显示 %s 项"
+msgstr "Nagpapakita ng %s (na) item"
 
 #: dt-assets/functions/enqueue-scripts.php:139
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
-msgstr "显示符合 %2$s 的 %1$s 项"
+msgstr "Nagpapakita ng %s (na) item na tumutugma sa %2$s"
 
 #: dt-metrics/contacts/milestones-map.php:24
 #: dt-metrics/contacts/milestones-map.php:40
 msgid "Milestones Map"
-msgstr "里程碑地图"
+msgstr "Mapa ng Mahahalagang Nakamit"
 
 #: dt-users/user-management.php:150
 msgid "Unable to update"
-msgstr "不能更新"
+msgstr "Hindi ma-update"
 
 #: dt-assets/functions/details-bar.php:48
 msgid "Admin actions"
-msgstr "管理员操作"
+msgstr "Mga aksyon ng admin"
 
 #: dt-contacts/contacts-post-type.php:457
 msgctxt "Reason Closed label"
 msgid "GDPR request"
-msgstr "《通用数据保护条例》（GDPR）要求"
+msgstr "GDPR na request"
 
 #: dt-contacts/contacts-post-type.php:575
 msgid "Seeker"
-msgstr "探寻者"
+msgstr "Seeker"
 
 #: dt-contacts/contacts-post-type.php:576
 msgid "Believer"
-msgstr "信仰者"
+msgstr "Naniniwala"
 
 #: dt-contacts/contacts-post-type.php:577
 msgid "Leader"
-msgstr "领导者"
+msgstr "Lider"
 
 #: dt-contacts/contacts-transfer.php:414
 msgid "redacted email"
-msgstr "已编辑的电邮"
+msgstr "in-edit na email"
 
 #: dt-contacts/contacts-transfer.php:415
 msgid "redacted name"
-msgstr "已编辑的姓名"
+msgstr "in-edit na pangalan"
 
 #: dt-contacts/contacts-transfer.php:416
 msgid "redacted"
-msgstr "已编辑的"
+msgstr "in-edit"
 
 #: dt-core/admin/class-roles.php:205
 msgid "Partner"
-msgstr "伙伴"
+msgstr "Ka-partner"
 
 #. translators: %s: Site name.
 #: dt-core/admin/config-site-defaults.php:748
 msgid "DT Site Name: %s"
-msgstr "DT 站点名称： %s"
+msgstr "Pangalan ng DT Site: %"
 
 #: dt-metrics/combined/critical-path.php:169
 msgid "No Results"
-msgstr "无结果"
+msgstr "Walang mga Resulta"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
 #: dt-users/hover-coverage-map.php:52
 msgid "Hover Map"
-msgstr "悬停地图"
+msgstr "I-hover ang Mapa"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
-msgstr "地点清单"
+msgstr "Listahan ng Lokasyon"
 
 #: dt-metrics/contacts/mapbox-area-map.php:29
 #: dt-metrics/groups/mapbox-area-map.php:27
 msgid "Area Map"
-msgstr "区域地图"
+msgstr "Mapa ng Lugar"
 
 #: dt-metrics/contacts/mapbox-area-map.php:61
 #: dt-metrics/contacts/mapbox-cluster-map.php:60
@@ -4122,7 +4128,7 @@ msgstr "区域地图"
 #: dt-metrics/personal/mapbox-groups-point-map.php:60
 #: dt-users/mapbox-coverage-map.php:86
 msgid "Status - All"
-msgstr "状况——全部"
+msgstr "Status - Lahat"
 
 #: dt-metrics/contacts/mapbox-area-map.php:62
 #: dt-metrics/contacts/mapbox-cluster-map.php:61
@@ -4138,7 +4144,7 @@ msgstr "状况——全部"
 #: dt-metrics/personal/mapbox-groups-point-map.php:61
 #: dt-users/mapbox-coverage-map.php:80
 msgid "Zoom Level"
-msgstr "缩放等级"
+msgstr "Antas ng Pag-zoom"
 
 #: dt-metrics/contacts/mapbox-area-map.php:63
 #: dt-metrics/contacts/mapbox-cluster-map.php:62
@@ -4154,7 +4160,7 @@ msgstr "缩放等级"
 #: dt-metrics/personal/mapbox-groups-point-map.php:62
 #: dt-users/mapbox-coverage-map.php:81
 msgid "Auto Zoom"
-msgstr "自动缩放"
+msgstr "Awtomatikong Pag-zoom"
 
 #: dt-metrics/contacts/mapbox-area-map.php:65
 #: dt-metrics/contacts/mapbox-cluster-map.php:64
@@ -4170,7 +4176,7 @@ msgstr "自动缩放"
 #: dt-metrics/personal/mapbox-groups-point-map.php:64
 #: dt-users/mapbox-coverage-map.php:83
 msgid "Country"
-msgstr "国别"
+msgstr "Bansa"
 
 #: dt-metrics/contacts/mapbox-area-map.php:66
 #: dt-metrics/contacts/mapbox-cluster-map.php:65
@@ -4186,12 +4192,12 @@ msgstr "国别"
 #: dt-metrics/personal/mapbox-groups-point-map.php:65
 #: dt-users/mapbox-coverage-map.php:84
 msgid "State"
-msgstr "州别"
+msgstr "Estado"
 
 #: dt-metrics/contacts/mapbox-cluster-map.php:29
 #: dt-metrics/groups/mapbox-cluster-map.php:29
 msgid "Cluster Map"
-msgstr "群集地图"
+msgstr "Mapa ng Cluster"
 
 #: dt-metrics/contacts/mapbox-cluster-map.php:66
 #: dt-metrics/contacts/mapbox-point-map.php:66
@@ -4203,268 +4209,268 @@ msgstr "群集地图"
 #: dt-metrics/personal/mapbox-groups-cluster-map.php:67
 #: dt-metrics/personal/mapbox-groups-point-map.php:66
 msgid "View Record"
-msgstr "查看记录"
+msgstr "Tingnan ang Record"
 
 #: dt-metrics/contacts/mapbox-point-map.php:29
 #: dt-metrics/groups/mapbox-point-map.php:28
 msgid "Points Map"
-msgstr "点数地图"
+msgstr "Mapa ng mga Punto"
 
 #: dt-metrics/contacts/milestones.php:23
 msgid "Milestones Chart"
-msgstr "里程碑表"
+msgstr "Chart ng Mahahalagang Nakamit"
 
 #: dt-metrics/contacts/overview.php:61
 msgid "Contacts Overview"
-msgstr "联系人总览"
+msgstr "Buod ng mga Kontak"
 
 #: dt-metrics/contacts/sources.php:24
 msgid "Sources Chart"
-msgstr "来源表"
+msgstr "Chart ng mga Pinagmumulan"
 
 #: dt-metrics/groups/overview.php:62
 msgid "Groups Overview"
-msgstr "群组总览"
+msgstr "Buod ng mga Grupo"
 
 #: dt-metrics/groups/tree.php:81 dt-metrics/personal/group-tree.php:82
 msgid "Highlight Active"
-msgstr "凸显活跃用户"
+msgstr "Aktibo ang Highlight"
 
 #: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
 msgid "Highlight Churches"
-msgstr "凸显教堂"
+msgstr "Highlight"
 
 #: dt-metrics/groups/tree.php:87 dt-metrics/personal/group-tree.php:88
 msgid "Total Members"
-msgstr "全部成员"
+msgstr "Kabuuang Bilang ng mga Miyembro"
 
 #: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
 msgid "View Group"
-msgstr "查看群组"
+msgstr "Tingnan ang Grupo"
 
 #: dt-metrics/personal/baptism-tree.php:57
 msgid "My Baptism Generation Tree"
-msgstr "我的洗礼时代树状图"
+msgstr "Ang Aking Puno ng Henerasyon ng Pagbabautismo"
 
 #: dt-metrics/personal/coaching-tree.php:133
 msgid "Disciple"
-msgstr "追随者"
+msgstr "Alagad"
 
 #: dt-metrics/personal/mapbox-contacts-area-map.php:30
 msgid "Contacts Area Map"
-msgstr "联系人区域地图"
+msgstr "Mapa ng Lugar ng mga Kontak"
 
 #: dt-metrics/personal/mapbox-contacts-cluster-map.php:30
 msgid "Contacts Cluster Map"
-msgstr "联系人群集地图"
+msgstr "Mapa ng Cluster ng mga Kontak"
 
 #: dt-metrics/personal/mapbox-contacts-point-map.php:30
 msgid "Contacts Points Map"
-msgstr "联系人点数地图"
+msgstr "Mapa ng mga Punto ng mga Kontak"
 
 #: dt-metrics/personal/mapbox-groups-area-map.php:30
 msgid "Groups Area Map"
-msgstr "群组区域地图"
+msgstr "Mapa ng Lugar ng mga Grupo"
 
 #: dt-metrics/personal/mapbox-groups-cluster-map.php:30
 msgid "Groups Cluster Map"
-msgstr "群组群集地图"
+msgstr "Mapa ng Cluster ng mga Grupo"
 
 #: dt-metrics/personal/mapbox-groups-point-map.php:30
 msgid "Groups Points Map"
-msgstr "群组点数地图"
+msgstr "Mapa ng mga Punto ng mga Grupo"
 
 #: dt-metrics/personal/overview.php:72
 msgid "stats as of"
-msgstr "统计数据截止"
+msgstr "mga istatistika noong"
 
 #: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:55
 #: dt-users/mapbox-coverage-map.php:78
 msgid "Coverage Map"
-msgstr "覆盖范围地图"
+msgstr "Mapa ng Saklaw"
 
 #: dt-users/hover-coverage-map.php:140
 msgid "Locations Covered"
-msgstr "已覆盖地点"
+msgstr "Mga Nasasaklawang Lokasyon"
 
 #: dt-users/hover-coverage-map.php:191
 msgid "Locations with Active Users"
-msgstr "有活跃用户的地点"
+msgstr "Mga Lokasyon na may Aktibong mga User"
 
 #: dt-users/hover-coverage-map.php:242
 msgid "Locations with Inactive Assigned"
-msgstr "获分配不活跃用户的地点"
+msgstr "Mga Lokasyon na may Nakatakdang Di-aktibo"
 
 #: dt-users/mapbox-coverage-map.php:79
 msgid "Responsibility"
-msgstr "责任"
+msgstr "Pananagutan"
 
 #: dt-users/mapbox-coverage-map.php:91
 msgid "Response Coverage"
-msgstr "响应覆盖范围"
+msgstr "Saklaw ng Tugon"
 
 #: dt-users/template-user-management.php:353
 msgid "Access by Source"
-msgstr "按源访问"
+msgstr "I-access ayon sa Pinagmumulan"
 
 #: dt-users/template-user-management.php:359 dt-users/users.php:739
 msgid "All Sources - gives access to all contacts"
-msgstr "所有源——给予所有联系人访问权"
+msgstr "Lahat ng Pinagmumulan - nagbibigay ng access sa lahat ng kontak"
 
 #: dt-users/template-user-management.php:365 dt-users/users.php:746
 msgid "Custom - Access own contacts and all the contacts of the selected sources below"
-msgstr "自定义——访问自己的联系人及以下所选源的全部联系人"
+msgstr "Custom - pag-access sa sariling mga kontak at lahat ng kontak ng napiling mga pingmumulan sa ibaba"
 
 #: dt-users/template-user-management.php:371 dt-users/users.php:753
 msgid "No Sources - only own contacts"
-msgstr "无源——仅有自己的联系人"
+msgstr "Walang mga Pinagmumulan - mga sariling kontak lang"
 
 #: dt-users/template-user-management.php:377
 msgid "Sources List"
-msgstr "来源清单"
+msgstr "Listahan ng mga Pinagmumulan"
 
 #: dt-users/template-user-management.php:387
 msgid "Save Allowed Sources"
-msgstr "保存获准的来源"
+msgstr "I-save ang mga Pinapayagang Pinagmumulan"
 
 #: dt-users/user-management.php:151
 msgid "Add New User"
-msgstr "添加新用户"
+msgstr "Magdagdag ng Bagong User"
 
 #: dt-users/user-management.php:153
 msgid "There are some errors in your form."
-msgstr "您的表格存在错误。"
+msgstr "May ilang error sa form mo."
 
 #: dt-users/user-management.php:154
 msgid "Contact to make a user (optional)"
-msgstr "使用联系人创建用户 （可选的）"
+msgstr "Makipag-ugnayan upang magawang user ito (opsyonal)"
 
 #: dt-users/user-management.php:157
 msgid "Create User"
-msgstr "创建用户"
+msgstr "Gumawa ng User"
 
 #: dt-users/user-management.php:158
 msgid "Email address is already in the system as a user!"
-msgstr "在本系统此电邮已有使用者！"
+msgstr "Ang email address ay nasa system na bilang isang user!"
 
 #: dt-users/user-management.php:159
 msgid "Username is already in the system as a user!"
-msgstr "在本系统此用户名已存在！"
+msgstr "Ang username ay nasa system na bilang isang user!"
 
 #: dt-users/user-management.php:160
 msgid "Search multipliers and contacts"
-msgstr "搜索放大器和联系人"
+msgstr "Maghanap ng mga  multiplier at kontak"
 
 #: dt-users/user-management.php:161
 msgid "Remove"
-msgstr "移除"
+msgstr "Alisin"
 
 #: dt-metrics/groups/tree.php:25
 msgid "Groups Tree"
-msgstr "群组树状图"
+msgstr "Puno ng mga Grupo"
 
 #: dt-metrics/personal/baptism-tree.php:25
 msgid "My Baptism Tree"
-msgstr "我的洗礼树状图"
+msgstr "Ang Aking Puno ng Pagbabautismo"
 
 #: dt-metrics/personal/coaching-tree.php:25
 msgid "My Coaching Tree"
-msgstr "我的训导树状图"
+msgstr "Ang Aking Puno ng Pagtuturo"
 
 #: dt-metrics/personal/group-tree.php:26
 msgid "My Groups Tree"
-msgstr "我的群组树状图"
+msgstr "Ang Aking Puno ng mga Grupo"
 
 #: dt-assets/functions/details-bar.php:58
 msgid "See duplicates"
-msgstr "查看重复项"
+msgstr "Tingnan ang mga kopya"
 
 #: dt-assets/functions/enqueue-scripts.php:254
 msgid "Dismissed Duplicates"
-msgstr "已去除的重复项"
+msgstr "Mga Binalewalang Kopya"
 
 #: dt-assets/functions/enqueue-scripts.php:255
 msgid "Duplicates on: %s"
-msgstr "重复项为：%s"
+msgstr "Mga kopya sa: %s"
 
 #: dt-assets/parts/merge-details.php:19
 msgid "No duplicates found."
-msgstr "没有发现重复项。"
+msgstr "Walang mga kopyang nahanap."
 
 #: dt-contacts/contacts-post-type.php:712
 msgid "Languages"
-msgstr "语言"
+msgstr "Mga wika"
 
 #: dt-contacts/contacts-transfer.php:213
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "此联系人已移至 %s，作进一步跟进。"
+msgstr "Ang kontak ay inilipat sa %s para sa karagdagang pag-follow-up."
 
 #: dt-contacts/contacts.php:1098
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
-msgstr "此记录为重复项，已并入%2$s"
+msgstr "Ang record na ito ay isang kopya at isinama sa %2$s"
 
 #: dt-contacts/contacts.php:1102 dt-contacts/contacts.php:1285
 msgid "Duplicate Checker"
-msgstr "重复项检查器"
+msgstr "Kopyahin ang Checker"
 
 #: dt-contacts/contacts.php:1111
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
-msgstr "%1$s 将 %2$s 并入此记录"
+msgstr "Isinama ni %1$s si %2$s sa record na ito"
 
 #: dt-posts/dt-posts.php:881
 msgid "D.T System"
-msgstr "D.T 系统"
+msgstr "D.T System"
 
 #: dt-users/user-management.php:152
 msgid "View New User"
-msgstr "查看新用户"
+msgstr "Tingnan ang Bagong User"
 
 #: dt-users/user-management.php:162
 msgid "This contact is already a user."
-msgstr "此联系人已经是用户。"
+msgstr "User na ang kontak na ito."
 
 #: dt-users/user-management.php:163
 msgid "View User"
-msgstr "查看用户"
+msgstr "Tingnan ang User"
 
 #: single-groups.php:212
 msgid "Search Tags"
-msgstr "搜索标签"
+msgstr "Hanapin ang mga Tag"
 
 #: single-groups.php:453
 msgid "tag"
-msgstr "标签"
+msgstr "tag"
 
 #: template-settings.php:43 template-settings.php:206
 msgid "Multiplier Preferences"
-msgstr "放大器偏好"
+msgstr "Mga Preperensya ng Multiplier"
 
 #: template-settings.php:214 template-settings.php:219
 msgid "Locations you are willing to be responsible for"
-msgstr "您愿意负责的地点"
+msgstr "Mga lokasyon na handa mong panagutan"
 
 #: template-settings.php:242
 msgid "Languages you are comfortable speaking"
-msgstr "您习惯口头使用的语言"
+msgstr "Mga wika na madali para sa iyong gamitin sa pagsasalita"
 
 #: template-settings.php:262
 msgid "People Groups you wish to serve"
-msgstr "您希望服务的群组"
+msgstr "Mga Grupo ng mga Tao na gusto mong paglingkuran"
 
 #: template-settings.php:284
 msgid "Availability to receive contacts from the Dispatcher"
-msgstr "从调派者处接收联系人的可能性"
+msgstr "Libreng iskedyul upang makatanggap ng mga kontak mula sa Dispatcher"
 
 #: template-settings.php:514
 msgid "System Language"
-msgstr "系统语言"
+msgstr "Wika ng System"
 
 #: template-view-duplicates.php:35
 msgid "Exact matches on: %s"
-msgstr "精准匹配的为：%s"
+msgstr "Mga eksaktong katugma sa: %s"
 
 #: template-view-duplicates.php:49
 msgid "Dismiss Row"
-msgstr "取消行"
+msgstr "Balewalain ang Row"
