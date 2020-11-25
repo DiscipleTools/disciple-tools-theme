@@ -198,9 +198,9 @@ jQuery(document).ready(function($) {
   })
 
   $('.dt_location_grid').each((key, el)=> {
-    let field_id = 'location_grid'
+    let field_id = $(el).data('id') || 'location_grid'
     $.typeahead({
-      input: '.js-typeahead-location_grid',
+      input: `.js-typeahead-${field_id}`,
       minLength: 0,
       accent: true,
       searchOnFocus: true,
@@ -219,7 +219,7 @@ jQuery(document).ready(function($) {
             data: {
               s: "{{query}}",
               filter: function () {
-                return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                return _.get(window.Typeahead[`.js-typeahead-${field_id}`].filters.dropdown, 'value', 'all')
               }
             },
             beforeSend: function (xhr) {
@@ -242,7 +242,7 @@ jQuery(document).ready(function($) {
       multiselect: {
         matchOn: ["ID"],
         data: function () {
-          return (post.location_grid || []).map(g => {
+          return (post[field_id] || []).map(g => {
             return {ID: g.id, name: g.label}
           })
 
@@ -270,12 +270,12 @@ jQuery(document).ready(function($) {
           .html(_.escape(window.wpApiShare.translations.regions_of_focus));
         },
         onResult: function (node, query, result, resultCount) {
-          resultCount = typeaheadTotals.location_grid
+          resultCount = typeaheadTotals[field_id]
           let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-          $('#location_grid-result-container').html(text);
+          $(`#${field_id}-result-container`).html(text);
         },
         onHideLayout: function () {
-          $('#location_grid-result-container').html("");
+          $(`#${field_id}-result-container`).html("");
         }
       }
     });
