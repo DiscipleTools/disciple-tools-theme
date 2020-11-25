@@ -340,27 +340,19 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     return;
                 }
             }
-<<<<<<< HEAD
 
             $display_field_id = $field_key;
             if ( !empty( $field_id_prefix ) ) {
                 $display_field_id = $field_id_prefix . $field_key;
             }
 
-=======
->>>>>>> contact-types
             ?>
             <div class="section-subheader">
                 <?php if ( isset( $fields[$field_key]["icon"] ) ) : ?>
                     <img class="dt-icon" src="<?php echo esc_url( $fields[$field_key]["icon"] ) ?>">
                 <?php endif;
                 echo esc_html( $fields[$field_key]["name"] );
-<<<<<<< HEAD
                 ?> <span id="<?php echo esc_html( $display_field_id ); ?>-spinner" class="loading-spinner"></span>
-=======
-                ?> <span id="<?php echo esc_html( $field_key ); ?>-spinner" class="loading-spinner"></span>
-                <!-- communication channels-->
->>>>>>> contact-types
                 <?php if ( $field_type === "communication_channel" ) : ?>
                     <button data-list-class="<?php echo esc_html( $display_field_id ); ?>" class="add-button" type="button">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
