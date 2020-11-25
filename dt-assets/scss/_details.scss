@@ -48,6 +48,22 @@ html[dir='rtl'] {
         border-right: 0;
     }
 }
+.button.delete-button-style {
+    background: #eee;
+    border: 1px solid #cacaca;
+    border-left: 0;
+    color: #cc4b37;
+    &:hover {
+        background-color: #cc4b37;
+        color: #fefefe;
+    }
+}
+html[dir='rtl'] {
+    .button.delete-button-style {
+        border: 1px solid #cacaca;
+        border-right: 0;
+    }
+}
 /**
     Item details
  */

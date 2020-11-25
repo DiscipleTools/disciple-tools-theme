@@ -494,25 +494,28 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     </div>
                 <?php endif; ?>
             <?php elseif ( $field_type === "communication_channel" ) : ?>
-                <ul id="edit-<?php echo esc_html( $field_key ) ?>" >
+                <div id="edit-<?php echo esc_html( $field_key ) ?>" >
                     <?php foreach ( $post[$field_key] ?? [] as $field_value ) : ?>
-                        <li style="display:flex">
+                        <div class="input-group">
                             <input id="<?php echo esc_html( $field_value["key"] ) ?>"
                                    type="text"
                                    data-field="<?php echo esc_html( $field_key ) ?>"
                                    value="<?php echo esc_html( $field_value["value"] ) ?>"
-                                   class="dt-communication-channel">
-                            <button class="button clear channel-delete-button new-<?php echo esc_html( $field_key ); ?>" data-field="<?php echo esc_html( $field_key ); ?>" data-key="<?php echo esc_html( $field_value["key"] ); ?>">
-                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/invalid.svg' ) ?>">
-                            </button>
-                        </li>
+                                   class="dt-communication-channel input-group-field" />
+                            <div class="input-group-button">
+                                <button class="button alert input-height delete-button-style channel-delete-button delete-button new-<?php echo esc_html( $field_key ); ?>" data-field="<?php echo esc_html( $field_key ); ?>" data-key="<?php echo esc_html( $field_value["key"] ); ?>">&times;</button>
+                            </div>
+                        </div>
                     <?php endforeach;
                     if ( empty( $post[$field_key] ) ?? [] ): ?>
-                        <input data-field="<?php echo esc_html( $field_key ) ?>"
-                               type="text" <?php echo esc_html( $required_tag ) ?>
-                               class="dt-communication-channel">
+                        <div class="input-group">
+                            <input type="text"
+                                    <?php echo esc_html( $required_tag ) ?>
+                                   data-field="<?php echo esc_html( $field_key ) ?>"
+                                   class="dt-communication-channel input-group-field" />
+                        </div>
                     <?php endif ?>
-                </ul>
+                </div>
             <?php endif;
         }
     }
