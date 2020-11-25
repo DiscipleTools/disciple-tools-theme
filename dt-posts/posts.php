@@ -530,7 +530,7 @@ class Disciple_Tools_Posts
      * @param array $args
      * @return array|mixed
      */
-    private static function fields_to_sql( $post_type, $query_array, $operator = "AND", $args = [] ){
+    public static function fields_to_sql( $post_type, $query_array, $operator = "AND", $args = [] ){
         $examples = [
             "groups" => [ 3029, 39039 ],
             "groups" => [ -3029 ],
@@ -1029,7 +1029,7 @@ class Disciple_Tools_Posts
         ];
         $permissions = apply_filters( "dt_filter_access_permissions", $permissions, $post_type );
 
-        if ( $check_permissions ){
+        if ( $check_permissions && !empty( $permissions )){
             $query[] = $permissions;
         }
 
@@ -1860,12 +1860,14 @@ class Disciple_Tools_Posts
         }
 
         if ( class_exists( "DT_Mapbox_API" ) && DT_Mapbox_API::get_key() && isset( $fields['location_grid_meta'] ) ) {
-            $fields['location_grid'] = [];
+            $ids = dt_get_keys_map( $fields['location_grid'] ?? [], 'id' );
             foreach ( $fields['location_grid_meta'] as $meta ) {
-                $fields['location_grid'][] = [
-                    'id' => (int) $meta['grid_id'],
-                    'label' => $meta['label']
-                ];
+                if ( !in_array( (int) $meta['grid_id'], $ids ) ){
+                    $fields['location_grid'][] = [
+                        'id' => (int) $meta['grid_id'],
+                        'label' => $meta['label']
+                    ];
+                }
             }
         }
 

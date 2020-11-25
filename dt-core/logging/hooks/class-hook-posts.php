@@ -110,6 +110,9 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
     public function hooks_updated_post_meta( $meta_id, $object_id, $meta_key, $meta_value, $new = false, $deleted = false ) {
         global $wpdb;
         $parent_post = get_post( $object_id, ARRAY_A ); // get object info
+        if ( empty( $parent_post ) ){
+            return;
+        }
 
         $ignore_fields = [ '_edit_lock', '_edit_last', "last_modified", "follow" , "unfollow" ];
 

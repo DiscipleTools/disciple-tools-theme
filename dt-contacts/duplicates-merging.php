@@ -16,13 +16,13 @@ class DT_Duplicate_Checker_And_Merging {
                 "description" => "The post type",
                 "type" => 'post_type',
                 "required" => true,
-                "validate_callback" => [ "Disciple_Tools_Posts_Endpoints", "prefix_validate_args" ]
+                "validate_callback" => [ "Disciple_Tools_Posts_Endpoints", "prefix_validate_args_static" ]
             ],
             "id" => [
                 "description" => "The id of the post",
                 "type" => 'integer',
                 "required" => true,
-                "validate_callback" => [ $this, "prefix_validate_args" ]
+                "validate_callback" => [ "Disciple_Tools_Posts_Endpoints", "prefix_validate_args_static" ]
             ],
         ];
         //get duplicates
@@ -89,6 +89,9 @@ class DT_Duplicate_Checker_And_Merging {
         $exact_template = $exact ? "^" : "";
         $fields_with_values = [];
         foreach ( $post as $field_key => $field_value ){
+            if ( ! isset( $fields[$field_key]["type"] ) || empty( $fields[$field_key]["type"] ) ){
+                continue;
+            }
             if ( $fields[$field_key]["type"] === "communication_channel" ){
                 if ( !empty( $field_value ) ){
                     $channel_queries = [];

@@ -279,7 +279,8 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
                         "theme_uri" => get_stylesheet_directory_uri(),
                         "translations" => array(
-                            'add' => __( 'add', 'disciple-tools' )
+                            'add' => __( 'add', 'disciple-tools' ),
+                            'stay_with' => __( 'Stay with', 'disciple-tools' ),
                         )
                     )
                 );
@@ -475,7 +476,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                 global $wpdb;
                                 $location_wo_meta = $wpdb->get_var( "SELECT count(*) FROM $wpdb->postmeta WHERE meta_key = 'location_grid' AND meta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta) AND meta_value >= 100000000" );
                                 $user_location_wo_meta = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->usermeta WHERE meta_key = %s AND umeta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta ) AND meta_value >= 100000000", $wpdb->prefix . 'location_grid' ) );
-                                if ( !empty( $location_wo_meta ) && !empty( $user_location_wo_meta ) ) : ?>
+                                if ( !empty( $location_wo_meta ) || !empty( $user_location_wo_meta ) ) : ?>
                                     <p class="not-connected">
                                         <strong>Next:</strong> Please upgrade Users, Contacts and Groups below for the Locations to show up on maps and charts.
                                     </p>

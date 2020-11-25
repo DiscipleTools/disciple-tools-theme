@@ -142,7 +142,7 @@ else {
              */
             $this->token = 'disciple_tools';
             $this->version = '1.0.0';
-            $this->migration_number = 36;
+            $this->migration_number = 37;
 
             $this->theme_url = get_template_directory_uri() . '/';
             $this->theme_path = get_template_directory() . '/';
@@ -333,10 +333,6 @@ else {
             require_once( get_template_directory() . '/dt-core/logging/class-activity-hooks.php' ); // contacts and groups report building
             $this->logging_activity_hooks = Disciple_Tools_Activity_Hooks::instance();
             require_once( get_template_directory() . '/dt-core/logging/class-reports-api.php' );
-            $this->logging_reports_api = new Disciple_Tools_Reports_API();
-            require_once( get_template_directory() . '/dt-core/logging/class-reports-cron.php' ); // Cron scheduling for nightly builds of reports
-            $this->logging_reports_cron = Disciple_Tools_Reports_Cron::instance();
-            require_once( get_template_directory() . '/dt-core/logging/class-reports-dt.php' ); // contacts and groups report building
 
             /**
              * Workflows

@@ -4,7 +4,7 @@ Template Name: Blank
 */
 
 if ( ! apply_filters( 'dt_blank_access', false ) ){
-    echo 'Access to this page not permitted';
+    esc_html_e( 'Access to this page not permitted', 'disciple_tools' );
     exit;
 }
 ?>

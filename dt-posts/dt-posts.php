@@ -695,9 +695,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
             $compact[] = [
                 "ID" => $post->ID,
-                "name" => $post->post_title,
-                "user" => $post->corresponds_to_user >= 1,
-                "status" => $post->overall_status
+                "name" => $post->post_title
             ];
         }
         //set user field if the contact is a user.
@@ -717,6 +715,16 @@ class DT_Posts extends Disciple_Tools_Posts {
                     }
                 }
             }
+            //place user records first, then sort by name.
+            uasort( $compact, function ( $a, $b ){
+                if ( isset( $a['user'] ) && !empty( $a['user'] ) ){
+                    return -2;
+                } else if ( isset( $b['user'] ) && !empty( $b['user'] ) ){
+                    return 1;
+                } else {
+                    return $a['name'] <=> $b['name'];
+                }
+            });
         }
 
         $return = [
@@ -1226,7 +1234,6 @@ class DT_Posts extends Disciple_Tools_Posts {
         //phpcs:enable
 
     }
-
 
     public static function get_post_field_settings( $post_type, $load_from_cache = true, $with_deleted_options = false ){
         $cached = wp_cache_get( $post_type . "_field_settings" );

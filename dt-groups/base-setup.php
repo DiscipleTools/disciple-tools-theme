@@ -1,8 +1,9 @@
 <?php
 
-class DT_Groups_Base {
+class DT_Groups_Base extends DT_Module_Base {
     private static $_instance = null;
     public $post_type = "groups";
+    public $module = "groups_base";
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
@@ -11,9 +12,14 @@ class DT_Groups_Base {
     } // End instance()
 
     public function __construct() {
+        parent::__construct();
+        if ( !self::check_enabled_and_prerequisites() ){
+            return;
+        }
+
         //setup post type
         add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
-        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 20, 1 );
+        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 20, 1 ); //after contacts
 
         //setup tiles and fields
         add_action( 'p2p_init', [ $this, 'p2p_init' ] );
@@ -32,6 +38,7 @@ class DT_Groups_Base {
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
+        add_filter( "dt_filter_access_permissions", [ $this, "dt_filter_access_permissions" ], 20, 2 );
 
     }
 
@@ -48,11 +55,22 @@ class DT_Groups_Base {
                 "permissions" => []
             ];
         }
+        // if the user can access contact they also can access group
         foreach ( $expected_roles as $role => $role_value ){
             if ( isset( $expected_roles[$role]["permissions"]['access_contacts'] ) && $expected_roles[$role]["permissions"]['access_contacts'] ){
                 $expected_roles[$role]["permissions"]['access_' . $this->post_type] = true;
                 $expected_roles[$role]["permissions"]['create_' . $this->post_type] = true;
             }
+        }
+
+        if ( isset( $expected_roles["administrator"] ) ){
+            $expected_roles["administrator"]["permissions"]['view_any_groups'] = true;
+        }
+        if ( isset( $expected_roles["dispatcher"] ) ){
+            $expected_roles["dispatcher"]["permissions"]['view_any_groups'] = true;
+        }
+        if ( isset( $expected_roles["dt_admin"] ) ){
+            $expected_roles["dt_admin"]["permissions"]['view_any_groups'] = true;
         }
 
         return $expected_roles;
@@ -317,21 +335,40 @@ class DT_Groups_Base {
                 'type'        => 'boolean',
                 'default'     => false,
             ];
+
+            // Group Locations
             $fields['location_grid'] = [
                 'name'        => __( 'Locations', 'disciple_tools' ),
-                'description' => _x( 'The general location where this group meets.', 'Optional Documentation', 'disciple_tools' ),
+                'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'location',
-                'default'     => [],
-                'tile' => 'details',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/location.svg',
-                'show_in_table' => 40
+                'mapbox'    => false,
+                "in_create_form" => true,
+                "tile" => "details",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg",
             ];
             $fields['location_grid_meta'] = [
-                'name'        => 'Location Grid Meta', //system string does not need translation
+                'name'        => __( 'Locations', 'disciple_tools' ), //system string does not need translation
+                'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'location_meta',
-                'default'     => [],
-                'hidden' => true,
+                "tile"      => "details",
+                'mapbox'    => false,
+                'hidden' => true
             ];
+            $fields["contact_address"] = [
+                "name" => __( 'Address', 'disciple_tools' ),
+                "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg",
+                "type" => "communication_channel",
+                "tile" => "details",
+                'mapbox'    => false,
+                "customizable" => false
+            ];
+            if ( DT_Mapbox_API::get_key() ){
+                $fields["contact_address"]["hidden"] = true;
+                $fields["contact_address"]["mapbox"] = true;
+                $fields["location_grid"]["mapbox"] = true;
+                $fields["location_grid_meta"]["mapbox"] = true;
+            }
+
 
             $fields["people_groups"] = [
                 "name" => __( 'People Groups', 'disciple_tools' ),
@@ -374,12 +411,7 @@ class DT_Groups_Base {
                 'default' => ''
             ];
 
-            $fields["contact_address"] = [
-                "name" => __( 'Address', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg",
-                "type" => "communication_channel",
-                "tile" => "details",
-            ];
+
 
         }
 
@@ -1068,6 +1100,15 @@ class DT_Groups_Base {
             }
         }
         return $filters;
+    }
+
+    public static function dt_filter_access_permissions( $permissions, $post_type ){
+        if ( $post_type === "groups" ){
+            if ( DT_Posts::can_view_all( $post_type ) ){
+                $permissions = [];
+            }
+        }
+        return $permissions;
     }
 
     public function scripts(){

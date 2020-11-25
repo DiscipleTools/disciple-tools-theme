@@ -130,7 +130,7 @@ jQuery(document).ready(function($) {
     }).catch(handleAjaxError)
   })
 
-  $('.dt_contenteditable').on('blur', function () {
+  $('.dt_contenteditable').on('blur', function(){
     const id = $(this).attr('id')
     let val = $(this).html()
     rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
@@ -168,7 +168,7 @@ jQuery(document).ready(function($) {
     }
   })
 
-  $( document).on('blur', 'input.dt-communication-channel', function(){
+  $(document).on('blur', 'input.dt-communication-channel', function(){
     let field_key = $(this).data('field')
     let value = $(this).val()
     let id = $(this).attr('id')
@@ -760,7 +760,9 @@ jQuery(document).ready(function($) {
 
   function resetDetailsFields(){
     _.forOwn( field_settings, (field_options, field_key)=>{
+
       if ( field_options.tile === 'details' && !field_options.hidden && post[field_key]){
+
         if ( field_options.only_for_types && ( post["type"] && !field_options.only_for_types.includes(post["type"].key) ) ){
           return
         }
@@ -776,18 +778,26 @@ jQuery(document).ready(function($) {
           values_html = field_value.map(v=>{
             return `${_.escape( _.get( field_options, `default[${v}].label`, v ))}`;
           }).join(', ')
+        } else if ( ['location', 'location_meta' ].includes(field_options.type) ){
+          console.log(field_value)
+          values_html = field_value.map(v=>{
+            return _.escape(v.label);
+          }).join(', ')
         } else if ( field_options.type === 'communication_channel' ){
           values_html = field_value.map(v=>{
             return _.escape(v.value);
           }).join(', ')
-        } else if ( ['location', 'connection'].includes(field_options.type) ){
+
+        } else if ( ['connection'].includes(field_options.type) ){
           values_html = field_value.map(v=>{
             return _.escape(v.label);
           }).join(', ')
         }
+
         $(`#collapsed-detail-${field_key}`).toggle(values_html !== ``)
         $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${values_html}">${values_html}</span>`)
       }
+
     })
     $( document ).trigger( "dt_record_details_reset", [post] );
   }

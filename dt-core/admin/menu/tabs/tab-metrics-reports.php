@@ -88,14 +88,19 @@ class Disciple_Tools_Metric_Reports_Tab extends Disciple_Tools_Abstract_Menu_Bas
             $record_success = $wpdb->insert(
                 $wpdb->dt_reports,
                 array(
-                    'report_date' => $submitted_records['submit_date'] ?? current_time( 'mysql' ),
-                    'report_source' => $submitted_records['source'],
-                    'category' => 'manual'
+                    'post_id' => 0,
+                    'type' => $submitted_records['source'],
+                    'value' => 0,
+                    'time_end' => strtotime( $submitted_records['submit_date'] ) ?? time(),
+                    'timestamp' => strtotime( $submitted_records['submit_date'] ) ?? time()
                 ),
                 array(
-                    '%s',
-                    '%s',
-                    '%s',
+                    '%d',
+                '%d',
+                '%s',
+                '%d',
+                '%d',
+                '%d'
                 )
             );
 
@@ -142,17 +147,17 @@ class Disciple_Tools_Metric_Reports_Tab extends Disciple_Tools_Abstract_Menu_Bas
         $sources = get_option( 'dt_critical_path_sources', [] );
 
         $results = $wpdb->get_results("
-            SELECT report.id, report.report_date, meta_key, meta_value FROM $wpdb->dt_reports report
+            SELECT * FROM $wpdb->dt_reports report
             JOIN $wpdb->dt_reportmeta rm ON ( rm.report_id = report.id )
-            WHERE report.report_source = 'monthly_report'
+            WHERE report.type = 'monthly_report'
             GROUP BY report.id, rm.meta_key
-            ORDER BY report.report_date DESC
+            ORDER BY report.time_end DESC
         ", ARRAY_A );
         $reports = [];
         foreach ( $results as $result ){
             if ( !isset( $reports[ $result["id"] ] ) ) {
                 $reports[ $result["id"] ] = [
-                    "report_date" => $result["report_date"],
+                    "report_date" => gmdate( 'F Y', $result["time_end"] ),
                     "report_values" => []
                 ];
             }
@@ -177,7 +182,7 @@ class Disciple_Tools_Metric_Reports_Tab extends Disciple_Tools_Abstract_Menu_Bas
             <?php foreach ( $reports as $report_id => $report ) : ?>
                 <tr>
                     <td>
-                        <?php echo esc_html( dt_format_date( $report["report_date"], "F Y" ) ) ?>
+                        <?php echo esc_html( $report["report_date"] ) ?>
                     </td>
                     <?php foreach ( $sources as $source ): ?>
                     <td><?php echo esc_html( isset( $report["values"][ $source["key"] ] ) ? $report["values"][ $source["key"] ] : '' ) ?></td>

@@ -131,7 +131,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
                 $column_data[$key][$next_column_number] = 0;
             }
         }
-        $results = Disciple_Tools_Mapping_Queries::query_contacts_location_grid_totals();
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( "contacts", [ "overall_status" => [ "-closed" ], "type" => [ "access" ] ] );
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
                 if ( $result['count'] > 0 ) { // filter for only contact and positive counts
@@ -176,7 +176,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
                 $column_data[$key][$next_column_number] = 0;
             }
         }
-        $results = Disciple_Tools_Mapping_Queries::query_groups_location_grid_totals();
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( "groups", [ "group_type" => [ "group" ] ] );
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
                 if ( $result['count'] > 0 ) { // filter for only contact and positive counts
@@ -221,7 +221,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
                 $column_data[$key][$next_column_number] = 0;
             }
         }
-        $results = Disciple_Tools_Mapping_Queries::query_church_location_grid_totals();
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( "groups", [ "group_type" => [ "church" ] ] );
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
                 if ( $result['count'] > 0 ) { // filter for only contact and positive counts
