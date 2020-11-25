@@ -325,9 +325,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * @param $post
      * @param bool $show_extra_controls // show typeahead create button
      * @param bool $show_hidden // show hidden select options
-     * @param bool $is_bulk_edit // create display field for bulk edit on list pages.
+     * @param string $field_id_prefix // add a prefix to avoid fields with duplicate ids.
      */
-    function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false, $is_bulk_edit = false ){
+    function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false, $field_id_prefix = '' ){
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
             $field_type = $fields[$field_key]["type"];
             $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
@@ -336,17 +336,14 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 return;
             }
             if ( isset( $post['type']["key"], $fields[$field_key]["only_for_types"] ) ) {
-                if ( is_null( $post ) && $is_bulk_edit) {
-                    if ( !in_array( $post['type']["key"], $fields[$field_key]["only_for_types"] ) ) {
-                        return;
-                    }
+                if ( !in_array( $post['type']["key"], $fields[$field_key]["only_for_types"] ) ){
+                    return;
                 }
             }
 
-            if ( is_null( $post ) && $is_bulk_edit) {
-                $display_field_id = "bulk_" . $field_key;
-            } else {
-                $display_field_id = $field_key;
+            $display_field_id = $field_key;
+            if ( !empty( $field_id_prefix ) ) {
+                $display_field_id = $field_id_prefix . $field_key;
             }
 
             ?>

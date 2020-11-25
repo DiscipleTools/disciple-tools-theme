@@ -191,9 +191,9 @@ declare(strict_types=1);
                             <div class="cell small-12 medium-4">
                                 <?php
                                 if ( $post_type == "contacts" ) {
-                                    render_field_for_display( "subassigned", $field_options, null, false, false, true );
+                                    render_field_for_display( "subassigned", $field_options, null, false, false, "bulk_" );
                                 } elseif ( $post_type == "groups" ) {
-                                    render_field_for_display( "coaches", $field_options, null, false, false, true );
+                                    render_field_for_display( "coaches", $field_options, null, false, false, "bulk_" );
                                 } ?>
                             </div>
                             <div class="cell small-12 medium-4">
