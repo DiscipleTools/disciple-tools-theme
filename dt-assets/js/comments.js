@@ -301,8 +301,9 @@ jQuery(document).ready(function($) {
         updated_comment.date = moment(updated_comment.comment_date_gmt + "Z");
 
         comments.push(updated_comment);
-        // this is where we lose parent_comment
-
+        //       if(parent != null) {
+        // 	commentArr[parent].childrenIds.push(commentArr.length-1);
+        // }
         display_activity_comment();
 
         $("#content")[0].dispatchEvent(commentPostedEvent);
@@ -424,7 +425,10 @@ jQuery(document).ready(function($) {
         if (!hiddenTabs.includes("activity")) {
           displayed = _.union(displayed, activity);
         }
-        if (!hiddenTabs.includes(comment.comment_type)) {
+        if (
+          !hiddenTabs.includes(comment.comment_type) &&
+          comment.comment_parent == 0
+        ) {
           displayed.push(comment);
         }
       }
@@ -489,7 +493,6 @@ jQuery(document).ready(function($) {
       );
     }
   }
-
   function baptismTimestamptoDate(match, timestamp) {
     return window.SHAREDFUNCTIONS.formatDate(timestamp);
   }

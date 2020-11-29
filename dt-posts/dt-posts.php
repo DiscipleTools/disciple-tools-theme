@@ -802,7 +802,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 "comment_content" => wp_kses( $comment->comment_content, self::$allowable_comment_tags),
                 "user_id" => $comment->user_id,
                 "comment_type" => $comment->comment_type,
-                "comment_post_ID" => $comment->comment_post_ID
+                "comment_post_ID" => $comment->comment_post_ID,
+                "comment_parent" => $comment->comment_parent
             ];
             $response_body[] =$c;
         }
