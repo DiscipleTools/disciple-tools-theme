@@ -316,73 +316,45 @@ if ( ! current_user_can( 'access_groups' ) ) {
                             <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box" id="<?php echo esc_html( $section ); ?>-tile">
                                     <?php
-                                    // let the plugin add section content
-                                    do_action( "dt_details_additional_section", $section, 'groups' );
                                     //setup tile label if see by customizations
                                     if ( isset( $custom_tiles["groups"][$section]["label"] ) ){ ?>
-                                        <label class="section-header">
+                                        <h3 class="section-header">
                                             <?php echo esc_html( $custom_tiles["groups"][$section]["label"] )?>
-                                        </label>
+                                            <button class="section-chevron chevron_down">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                            </button>
+                                            <button class="section-chevron chevron_up">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                                            </button>
+                                        </h3>
                                     <?php }
-                                    //setup the order of the tile fields
-                                    $order = $custom_tiles["groups"][$section]["order"] ?? [];
-                                    foreach ( $group_fields as $key => $option ){
-                                        if ( isset( $option["tile"] ) && $option["tile"] === $section ){
-                                            if ( !in_array( $key, $order )){
-                                                $order[] = $key;
+                                    // let the plugin add section content
+                                    do_action( "dt_details_additional_section", $section, "groups" );
+
+                                    ?>
+                                    <div class="section-body">
+                                        <?php
+                                        //setup the order of the tile fields
+                                        $order = $custom_tiles["groups"][$section]["order"] ?? [];
+                                        foreach ( $group_fields as $key => $option ){
+                                            if ( isset( $option["tile"] ) && $option["tile"] === $section ){
+                                                if ( !in_array( $key, $order )){
+                                                    $order[] = $key;
+                                                }
                                             }
                                         }
-                                    }
-                                    foreach ( $order as $field_key ) {
-                                        if ( !isset( $group_fields[$field_key] ) ){
-                                            continue;
+                                        foreach ( $order as $field_key ) {
+                                            if ( !isset( $group_fields[$field_key] ) ){
+                                                continue;
+                                            }
+
+                                            $field = $group_fields[$field_key];
+                                            if ( isset( $field["tile"] ) && $field["tile"] === $section){
+                                                render_field_for_display( $field_key, $group_fields, $group );
+                                            }
                                         }
-                                        $field = $group_fields[$field_key];
-                                        if ( isset( $field["tile"] ) && $field["tile"] === $section ){ ?>
-                                            <div class="section-subheader">
-                                                <?php echo esc_html( $field["name"] )?>
-                                            </div>
-                                            <?php
-                                            /**
-                                             * Key Select
-                                             */
-                                            if ( $field["type"] === "key_select" ) : ?>
-                                                <select class="select-field" id="<?php echo esc_html( $field_key ); ?>">
-                                                    <?php foreach ($field["default"] as $option_key => $option_value):
-                                                        $selected = isset( $group[$field_key]["key"] ) && $group[$field_key]["key"] === $option_key; ?>
-                                                        <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
-                                                            <?php echo esc_html( $option_value["label"] ) ?>
-                                                        </option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            <?php elseif ( $field["type"] === "multi_select" ) : ?>
-                                                <div class="small button-group" style="display: inline-block">
-                                                    <?php foreach ( $group_fields[$field_key]["default"] as $option_key => $option_value ): ?>
-                                                        <?php
-                                                        $class = ( in_array( $option_key, $group[$field_key] ?? [] ) ) ?
-                                                            "selected-select-button" : "empty-select-button"; ?>
-                                                        <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( $field_key ) ?>"
-                                                                class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
-                                                            <?php echo esc_html( $group_fields[$field_key]["default"][$option_key]["label"] ) ?>
-                                                        </button>
-                                                    <?php endforeach; ?>
-                                                </div>
-                                            <?php elseif ( $field["type"] === "text" ) :?>
-                                                <input id="<?php echo esc_html( $field_key ) ?>" type="text"
-                                                       class="text-input"
-                                                       value="<?php echo esc_html( $group[$field_key] ?? "" ) ?>"/>
-                                            <?php elseif ( $field["type"] === "date" ) :?>
-                                                <div class="<?php echo esc_html( $field_key ) ?> input-group">
-                                                    <input id="<?php echo esc_html( $field_key ) ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off"
-                                                            value="<?php echo esc_html( $group[$field_key]["timestamp"] ?? '' ) ?>" >
-                                                    <div class="input-group-button">
-                                                        <button id="<?php echo esc_html( $field_key ) ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $field_key ) ?>" title="Delete Date">x</button>
-                                                    </div>
-                                                </div>
-                                            <?php endif;
-                                        }
-                                    }
-                                    ?>
+                                        ?>
+                                    </div>
                                 </div>
                             </section>
                             <?php
