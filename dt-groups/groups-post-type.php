@@ -631,11 +631,15 @@ class Disciple_Tools_Groups_Post_Type
                 } ) ),
                 'label_singular' => $this->singular,
                 'label_plural' => $this->plural,
-                'post_type' => 'groups'
+                'post_type' => 'groups',
+                'tiles' => DT_Posts::get_post_tiles( $post_type ),
             ];
         }
         return $settings;
     }
 
 
+    public static function __callStatic( $name, $arguments ){
+        // TODO: Implement __callStatic() method.
+    }
 } // End Class
