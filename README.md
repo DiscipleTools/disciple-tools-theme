@@ -66,6 +66,9 @@ Done! You now have a complete coalition management system for your movement.
 You can access it by clicking on the home button at the top of the navigation bar.
 
  Blessings!
+ 
+
+
 
 ## How to Contribute
 
@@ -82,6 +85,25 @@ To apply your changes to the plugin, update the contents of the `wp-content/them
 Make sure tests are passing!
 
 [Read more in `CONTRIBUTING`](https://github.com/DiscipleTools/disciple-tools-theme/wiki/Contribution-guidelines)
+
+ ## Setup for Developers
+
+Composer
+
+  Install via Homebrew or run Installer:
+```
+$ brew update
+$ brew install composer
+```
+  Run Composer to install dependencies
+```
+$ composer install
+```
+PHP Code Sniffer
+
+  Run `./vendor/bin/phpcs` to see list of PHP format errors
+
+  Run ```./vendor/bin/phpcbf``` to auto-fix all possible format errors
 
 
 ## How to responsibly disclose a security vulnerability
