@@ -288,6 +288,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                             'search_location' => __( 'Search Location', 'disciple-tools' ),
                             'delete_location' => __( 'Delete Location', 'disciple-tools' ),
                             'open_mapping' => __( 'Open Mapping', 'disciple-tools' ),
+                            'clear' => __( 'clear', 'disciple-tools' )
                         )
                     )
                 );
