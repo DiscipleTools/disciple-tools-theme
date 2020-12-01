@@ -71,12 +71,12 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
                     foreach ( $sources as $source ){
                         if ( isset( $_POST["report"][ $source["key"] ] ) ) {
                             $id = isset( $_GET["report_id"] ) ? sanitize_key( wp_unslash( $_GET["report_id"] ) ) : null;
-                            Disciple_Tools_Reports_API::update_meta( $id, $source["key"], sanitize_text_field( wp_unslash( $_POST["report"][ $source["key"] ] ) ) );
+                            Disciple_Tools_Reports::update_meta( $id, $source["key"], sanitize_text_field( wp_unslash( $_POST["report"][ $source["key"] ] ) ) );
                         }
                     }
                 } elseif ( isset( $_POST["delete_report"] ) ) {
                     $id = isset( $_GET["report_id"] ) ? sanitize_key( wp_unslash( $_GET["report_id"] ) ) : null;
-                    Disciple_Tools_Reports_API::delete( $id );
+                    Disciple_Tools_Reports::delete( $id );
                     wp_redirect( '?page=dt_metrics&tab=list' );
                 }
             }
@@ -115,7 +115,7 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
         } else {
             $this->box( 'top', 'Edit' );
             $id = isset( $_GET["report_id"] ) ? sanitize_key( wp_unslash( $_GET["report_id"] ) ) : null;
-            $result = Disciple_Tools_Reports_API::get( $id, 'id' );
+            $result = Disciple_Tools_Reports::get( $id, 'id' );
             $report["year"] = gmdate( 'Y', $result["report_date"] );
             $report["month"] = gmdate( 'm', $result["report_date"] );
 

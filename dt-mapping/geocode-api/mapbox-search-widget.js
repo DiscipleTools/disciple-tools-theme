@@ -181,7 +181,7 @@ function write_input_widget() {
   if ( jQuery('#mapbox-autocomplete').length === 0 ) {
     jQuery('#mapbox-wrapper').prepend(`
     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true">
-        <input id="mapbox-search" type="text" name="mapbox_search" placeholder="${ dtMapbox.translations.search_location /*Search Location*/ }" />
+        <input id="mapbox-search" type="text" name="mapbox_search" autocomplete="off" placeholder="${ dtMapbox.translations.search_location /*Search Location*/ }" />
         <div class="input-group-button">
             <button class="button hollow" id="mapbox-spinner-button" style="display:none;"><img src="${_.escape( dtMapbox.spinner_url )}" alt="spinner" style="width: 18px;" /></button>
         </div>
@@ -189,6 +189,10 @@ function write_input_widget() {
     </div>
   `)
   }
+
+  // @todo add blur watcher
+
+  // @todo update USE: to reflect change
 
   window.currentfocus = -1
 

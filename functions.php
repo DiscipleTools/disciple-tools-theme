@@ -332,7 +332,12 @@ else {
             $this->logging_activity_api = new Disciple_Tools_Activity_Log_API();
             require_once( get_template_directory() . '/dt-core/logging/class-activity-hooks.php' ); // contacts and groups report building
             $this->logging_activity_hooks = Disciple_Tools_Activity_Hooks::instance();
-            require_once( get_template_directory() . '/dt-core/logging/class-reports-api.php' );
+
+            /**
+             * Reports
+             */
+            require_once( get_template_directory() . '/dt-reports/reports.php' );
+            require_once( get_template_directory() . '/dt-reports/reports-endpoints.php' );
 
             /**
              * Workflows

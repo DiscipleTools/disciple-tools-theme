@@ -13,14 +13,14 @@ if ( !defined( 'ABSPATH' ) ) {
  * @return mixed
  */
 function dt_report_insert( $args = [] ) {
-    return Disciple_Tools_Reports_API::insert( $args );
+    return Disciple_Tools_Reports::insert( $args );
 }
 
 /**
- * Disciple_Tools_Reports_API
+ * Disciple_Tools_Reports
  * This handles the insert and other functions for the table _dt_reports and _dt_reportmeta tables
  */
-class Disciple_Tools_Reports_API
+class Disciple_Tools_Reports
 {
 
     /**
