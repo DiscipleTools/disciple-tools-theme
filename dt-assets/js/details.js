@@ -140,15 +140,14 @@ jQuery(document).ready(function($) {
 
   // Clicking the plus sign next to the field label
   $('button.add-button').on('click', e => {
-    const listClass = $(e.currentTarget).data('list-class')
-    const $list = $(`#edit-${listClass}`)
+    const field = $(e.currentTarget).data('list-class')
+    const $list = $(`#edit-${field}`)
 
-    $list.append(`<li style="display: flex">
-      <input type="text" class="dt-communication-channel" data-field="${_.escape( listClass )}"/>
-      <button class="button clear channel-delete-button new-${_.escape( listClass )}" data-key="new" data-field="${listClass}">
-          <img src="${_.escape( window.wpApiShare.template_dir )}/dt-assets/images/invalid.svg">
-      </button>
-    </li>`)
+    $list.append(`<div class="input-group">
+            <input type="text" data-field="${_.escape( field )}" class="dt-communication-channel input-group-field" />
+            <div class="input-group-button">
+            <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${_.escape( field )}" data-key="new" data-field="${_.escape( field )}">&times;</button>
+            </div></div>`)
   })
   $(document).on('click', '.channel-delete-button', function(){
     let field = $(this).data('field')
@@ -160,7 +159,13 @@ jQuery(document).ready(function($) {
       $(`#${field}-spinner`).addClass('active')
       update["key"] = key;
       API.update_post(post_type, post_id, { [field]: [update]}).then((updatedContact)=>{
-        $(this).parent().remove()
+        $(this).parent().parent().remove()
+        let list = $(`#edit-${field}`)
+        if ( list.children().length === 0 ){
+          list.append(`<div class="input-group">
+            <input type="text" data-field="${_.escape( field )}" class="dt-communication-channel input-group-field" />
+            </div>`)
+        }
         $(`#${field}-spinner`).removeClass('active')
         post = updatedContact
         resetDetailsFields()
@@ -181,7 +186,15 @@ jQuery(document).ready(function($) {
       $(`#${field_key}-spinner`).removeClass('active')
       let key = _.last(updatedContact[field_key]).key
       $(this).attr('id', key)
-      $(this).parent().find('.channel-delete-button').data('key', key)
+      if ( $(this).next('div.input-group-button').length === 1 ) {
+        console.log('present')
+        $(this).parent().find('.channel-delete-button').data('key', key)
+      } else {
+        console.log('new x')
+        $(this).parent().append(`<div class="input-group-button">
+            <button class="button alert delete-button-style input-height channel-delete-button delete-button" data-key="${_.escape( key )}" data-field="${_.escape( field_key )}">&times;</button>
+        </div>`)
+      }
       post = updatedContact
       resetDetailsFields()
     }).catch(handleAjaxError)
@@ -779,7 +792,6 @@ jQuery(document).ready(function($) {
             return `${_.escape( _.get( field_options, `default[${v}].label`, v ))}`;
           }).join(', ')
         } else if ( ['location', 'location_meta' ].includes(field_options.type) ){
-          console.log(field_value)
           values_html = field_value.map(v=>{
             return _.escape(v.label);
           }).join(', ')
@@ -787,7 +799,6 @@ jQuery(document).ready(function($) {
           values_html = field_value.map(v=>{
             return _.escape(v.value);
           }).join(', ')
-
         } else if ( ['connection'].includes(field_options.type) ){
           values_html = field_value.map(v=>{
             return _.escape(v.label);

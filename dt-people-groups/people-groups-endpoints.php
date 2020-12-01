@@ -102,7 +102,7 @@ class Disciple_Tools_People_Groups_Endpoints
         if ( isset( $params['s'] ) ) {
             $search = $params['s'];
         }
-        $people_groups = Disciple_Tools_people_groups::get_people_groups_compact( $search );
+        $people_groups = Disciple_Tools_People_Groups::get_people_groups_compact( $search );
 
         return $people_groups;
     }
@@ -116,7 +116,7 @@ class Disciple_Tools_People_Groups_Endpoints
 
         $params = $request->get_params();
         if ( isset( $params['s'] ) ) {
-            $people_groups = Disciple_Tools_people_groups::search_csv( $params['s'] );
+            $people_groups = Disciple_Tools_People_Groups::search_csv( $params['s'] );
             return $people_groups;
         } else {
             return new WP_Error( __METHOD__, 'Missing required parameter `s`' );
@@ -127,7 +127,7 @@ class Disciple_Tools_People_Groups_Endpoints
 
         $params = $request->get_params();
         if ( isset( $params['rop3'] ) ) {
-            $people_groups = Disciple_Tools_people_groups::search_csv_by_rop3( $params['rop3'] );
+            $people_groups = Disciple_Tools_People_Groups::search_csv_by_rop3( $params['rop3'] );
             return $people_groups;
         } else {
             return new WP_Error( __METHOD__, 'Missing required parameter `rop3`' );

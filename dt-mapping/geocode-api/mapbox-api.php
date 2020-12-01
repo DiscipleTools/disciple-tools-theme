@@ -267,6 +267,9 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     $post_record = false;
                 }
 
+                if ( ! function_exists( 'dt_get_location_grid_mirror' ) ) {
+                    require_once( get_template_directory() . '/dt-mapping/globals.php' );
+                }
 
                 wp_enqueue_script( 'mapbox-search-widget', trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/geocode-api/mapbox-search-widget.js', [ 'jquery', 'mapbox-gl', 'shared-functions' ], filemtime( get_template_directory() . '/dt-mapping/geocode-api/mapbox-search-widget.js' ), true );
                 wp_localize_script(
@@ -275,12 +278,16 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         "post_id" => $post->ID ?? 0,
                         "post" => $post_record ?? false,
                         "map_key" => self::get_key(),
+                        "mirror_source" => dt_get_location_grid_mirror( true ),
                         "google_map_key" => ( Disciple_Tools_Google_Geocode_API::get_key() ) ? Disciple_Tools_Google_Geocode_API::get_key() : false,
                         "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
                         "theme_uri" => get_stylesheet_directory_uri(),
                         "translations" => array(
                             'add' => __( 'add', 'disciple-tools' ),
-                            'stay_with' => __( 'Stay with', 'disciple-tools' ),
+                            'use' => __( 'Use', 'disciple-tools' ),
+                            'search_location' => __( 'Search Location', 'disciple-tools' ),
+                            'delete_location' => __( 'Delete Location', 'disciple-tools' ),
+                            'open_mapping' => __( 'Open Mapping', 'disciple-tools' ),
                         )
                     )
                 );

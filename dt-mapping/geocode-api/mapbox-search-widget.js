@@ -12,18 +12,27 @@ jQuery(document).ready(function(){
 
 // write location list from post contents
 function write_results_box() {
-  jQuery('#mapbox-wrapper').empty().append(`<div id="location-grid-meta-results"></div>`)
+  jQuery('#mapbox-wrapper').empty().append(`
+        <div id="location-grid-meta-results"></div>
+        <div class="reveal" id="mapping-modal" data-v-offset="0" data-reveal>
+          <div id="mapping-modal-contents"></div>
+          <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+    `)
+
+  let lgm_results = jQuery('#location-grid-meta-results')
 
   if ( ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) || ( dtMapbox.post.contact_address !== undefined && dtMapbox.post.contact_address.length !== 0 ) ) {
-
-    let lgm_results = jQuery('#location-grid-meta-results')
 
     if ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) {
       jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
         lgm_results.append(`<div class="input-group">
-                              <input type="text" class="active-location input-group-field " id="location-${_.escape( v.grid_meta_id )}" value="${_.escape( v.label )}" readonly />
+                              <input type="text" class="active-location input-group-field" id="location-${_.escape( v.grid_meta_id )}" value="${_.escape( v.label )}" readonly />
                               <div class="input-group-button">
-                                <button type="button" class="button alert clear-date-button delete-button mapbox-delete-button" title="Delete Location" data-id="${_.escape( v.grid_meta_id )}">&times;</button>
+                                <button type="button" class="button success delete-button-style open-mapping-grid-modal" title="${ _.escape( dtMapbox.translations.open_mapping ) /*Open Modal*/}" data-id="${_.escape( v.grid_meta_id )}"><i class="fi-map"></i></button>
+                                <button type="button" class="button alert delete-button-style delete-button mapbox-delete-button" title="${ _.escape( dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${_.escape( v.grid_meta_id )}">&times;</button>
                               </div>
                             </div>`)
       })
@@ -32,15 +41,26 @@ function write_results_box() {
     if ( dtMapbox.post.contact_address !== undefined && dtMapbox.post.contact_address.length !== 0 ) {
       jQuery.each( dtMapbox.post.contact_address, function(i,v) {
         lgm_results.append(`<div class="input-group">
-                              <input type="text" class="dt-communication-channel" id="${_.escape( v.key )}" value="${_.escape( v.value )}" data-field="contact_address" />
-                              <button type="button" class="button alert input-height clear-date-button channel-delete-button delete-button" title="No location data. Note only." data-field="contact_address" data-key="${_.escape( v.key )}">&times;</button>
+                              <input type="text" class="dt-communication-channel input-group-field" id="${_.escape( v.key )}" value="${_.escape( v.value )}" data-field="contact_address" />
+                              <div class="input-group-button">
+                                <button type="button" class="button success delete-button-style open-mapping-address-modal" title="${ _.escape( dtMapbox.translations.open_mapping ) /*Open Modal*/}" data-id="${_.escape( v.key )}" data-field="contact_address" data-key="${_.escape( v.key )}"><i class="fi-map"></i></button>
+                                <button type="button" class="button alert input-height delete-button-style channel-delete-button delete-button" title="${ _.escape( dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${_.escape( v.key )}" data-field="contact_address" data-key="${_.escape( v.key )}">&times;</button>
+                              </div>
                             </div>`)
       })
     }
 
     delete_click_listener()
+    open_modal_grid_listener()
+    open_modal_address_listener()
     reset_tile_spacing()
   } /*end valid check*/
+
+  new Foundation.Reveal(jQuery('#mapping-modal'))
+
+  if ( lgm_results.children().length === 0 ) {
+    write_input_widget()
+  }
 }
 
 // adds listener for delete buttons
@@ -59,12 +79,91 @@ function delete_click_listener() {
     }
 
     API.update_post( dtMapbox.post_type, dtMapbox.post_id, data ).then(function (response) {
-      console.log( response )
       dtMapbox.post = response
       write_results_box()
     }).catch(err => { console.error(err) })
 
   });
+}
+
+function open_modal_grid_listener(){
+  jQuery('.open-mapping-grid-modal').on("click", function(e){
+    let grid_meta_id = e.currentTarget.dataset.id
+
+    jQuery.each( dtMapbox.post.location_grid_meta, function(i,v){
+      if ( grid_meta_id === v.grid_meta_id ) {
+        console.log(v)
+        return load_modal( v.lng, v.lat, v.level, v.label, v.grid_id )
+      }
+    })
+  })
+}
+
+function open_modal_address_listener(){
+  jQuery('.open-mapping-address-modal').on("click", function(e){
+
+    let selected_key = jQuery(this).data('key')
+    let selected_value = jQuery(`#${selected_key}`).val()
+    if ( selected_value !== '' ){
+      write_input_widget()
+
+      let mabox_search_input = jQuery('#mapbox-search')
+      mabox_search_input.val( selected_value )
+
+      if ( dtMapbox.google_map_key ) {
+        google_autocomplete( mabox_search_input.val() )
+      } else {
+        mapbox_autocomplete( mabox_search_input.val() )
+      }
+
+      jQuery(this).parent().parent().hide()
+    }
+
+  })
+}
+
+function load_modal( lng, lat, level, label, grid_id ){
+  let spinner = '<span class="loading-spinner active"></span>'
+
+  let container = jQuery('#mapping-modal')
+  container.foundation('open')
+
+  let content = jQuery('#mapping-modal-contents')
+  content.empty().append(`
+           <div class="grid-x">
+            <div class="cell"><strong>${_.escape( label )}</strong></div>
+            <div class="cell">
+                <div id="map-wrapper">
+                    <div id='map'>${spinner}</div>
+                </div>
+            </div>
+           </div>
+        `)
+
+  let zoom = 15
+  if ( 'admin0' === level ){
+    zoom = 3
+  } else if ( 'admin1' === level ) {
+    zoom = 6
+  } else if ( 'admin2' === level ) {
+    zoom = 10
+  }
+
+  jQuery('#map').empty()
+  mapboxgl.accessToken = dtMapbox.map_key;
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [lng, lat],
+    minZoom: 1,
+    zoom: zoom
+  });
+
+  var marker = new mapboxgl.Marker()
+    .setLngLat([lng, lat])
+    .addTo(map);
+
+
 }
 
 // resets the tiles for new spacing
@@ -82,7 +181,7 @@ function write_input_widget() {
   if ( jQuery('#mapbox-autocomplete').length === 0 ) {
     jQuery('#mapbox-wrapper').prepend(`
     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true">
-        <input id="mapbox-search" type="text" name="mapbox_search" placeholder="Search Location" />
+        <input id="mapbox-search" type="text" name="mapbox_search" placeholder="${ dtMapbox.translations.search_location /*Search Location*/ }" />
         <div class="input-group-button">
             <button class="button hollow" id="mapbox-spinner-button" style="display:none;"><img src="${_.escape( dtMapbox.spinner_url )}" alt="spinner" style="width: 18px;" /></button>
         </div>
@@ -247,7 +346,6 @@ function mapbox_autocomplete(address){
   let url = root + encodeURI( address ) + settings + key
 
   jQuery.get( url, function( data ) {
-    console.log(data)
     if( data.features.length < 1 ) {
       // destroy lists
       console.log('no results')
@@ -258,11 +356,10 @@ function mapbox_autocomplete(address){
     list.empty()
 
     jQuery.each( data.features, function( index, value ) {
-
       list.append(`<div data-value="${_.escape( index )}">${_.escape( value.place_name )}</div>`)
     })
 
-    list.append(`<div data-value="address">${_.escape( window.dtMapbox.translations.stay_with )}: "${_.escape( address )}"</div>`)
+    list.append(`<div data-value="address" style="font-weight:bold;">${_.escape( window.dtMapbox.translations.use )}: "${_.escape( address )}"</div>`)
 
     jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
       close_all_lists(e.target.attributes['data-value'].value);
@@ -292,6 +389,8 @@ function google_autocomplete(address){
           jQuery.each( predictions, function( index, value ) {
             list.append(`<div data-value="${index}">${_.escape( value.description )}</div>`)
           })
+
+          list.append(`<div data-value="address" style="font-weight:bold;">${_.escape( window.dtMapbox.translations.use )}: "${_.escape( address )}"</div>`)
 
           jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
             close_all_lists(e.target.attributes['data-value'].value);
