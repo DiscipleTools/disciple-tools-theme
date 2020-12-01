@@ -2,7 +2,7 @@
 _ = _ || window.lodash // make sure lodash is defined so plugins like gutenberg don't break it.
 
 jQuery(document).ready(function($) {
-// Adds an active state to the top bar navigation
+  // Adds an active state to the top bar navigation
   let ref = "";
   if (wpApiShare && wpApiShare.site_url) {
     ref = window.location.href.replace(wpApiShare.site_url + '/', "");

@@ -106,6 +106,5 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
         </div>
     </div>
 
-
 <?php
 get_footer();

@@ -52,6 +52,7 @@ html[dir='rtl'] {
     background: #eee;
     border: 1px solid #cacaca;
     border-left: 0;
+    border-radius: 0;
     color: #cc4b37;
     &:hover {
         background-color: #cc4b37;
@@ -62,6 +63,7 @@ html[dir='rtl'] {
     .button.delete-button-style {
         border: 1px solid #cacaca;
         border-right: 0;
+        border-radius: 0;
     }
 }
 /**
