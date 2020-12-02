@@ -1,4 +1,5 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * find and the missed seeker path activity and create records for them.

@@ -1,5 +1,7 @@
 <?php
 
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
+
 class Disciple_Tools_Migration_0014 extends Disciple_Tools_Migration {
     public function up() {
 //        get all miltestones grouped by contact

@@ -45,7 +45,7 @@ else {
          */
         try {
             require_once( get_template_directory() . '/dt-core/configuration/class-migration-engine.php' );
-            Disciple_Tools_Migration_Engine::migrate( Disciple_Tools::instance()->migration_number );
+            Disciple_Tools_Migration_Engine::migrate( Disciple_Tools_Migration_Engine::$migration_number );
         } catch ( Throwable $e ) {
             new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
         }
@@ -142,7 +142,7 @@ else {
              */
             $this->token = 'disciple_tools';
             $this->version = '1.0.0';
-            $this->migration_number = 37;
+            // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
             $this->theme_path = get_template_directory() . '/';
@@ -337,7 +337,6 @@ else {
              * Reports
              */
             require_once( get_template_directory() . '/dt-reports/reports.php' );
-            require_once( get_template_directory() . '/dt-reports/reports-endpoints.php' );
 
             /**
              * Workflows
