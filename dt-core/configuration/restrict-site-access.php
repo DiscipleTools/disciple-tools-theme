@@ -12,6 +12,9 @@
 function dt_please_log_in() {
 
     global $wpdb, $pagenow;
+    if ( 'wp-login.php' === $pagenow ){
+        return 1;
+    }
     if ( is_multisite() ) { // tests if user has access to current site in multi-site
         if ( 'wp-activate.php' === $pagenow ) {
             return 1;
@@ -25,9 +28,6 @@ function dt_please_log_in() {
             auth_redirect();
             exit;
         }
-    }
-    if ( 'wp-login.php' === $pagenow ){
-        return 1;
     }
     if ( ! is_user_logged_in() ) {
         auth_redirect();
