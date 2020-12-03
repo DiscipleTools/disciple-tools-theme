@@ -629,8 +629,8 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             WHERE
             g.north_latitude >= %f AND
             g.south_latitude <= %f AND
-            g.west_longitude >= %f AND
-            g.east_longitude <= %f AND
+            g.west_longitude <= %f AND
+            g.east_longitude >= %f AND
             g.level = %d
             LIMIT 10;
 		", $latitude, $latitude, $longitude, $longitude, $level ), ARRAY_A );
@@ -659,8 +659,8 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 WHERE
                 g.north_latitude >= %f AND
                 g.south_latitude <= %f AND
-                g.west_longitude >= %f AND
-                g.east_longitude <= %f
+                g.west_longitude <= %f AND
+                g.east_longitude >= %f
                 ORDER BY g.level DESC
                 LIMIT 10;
             ", $latitude, $latitude, $longitude, $longitude ), ARRAY_A );
@@ -703,8 +703,8 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 g.level = %d AND
                 g.north_latitude >= %f AND
                 g.south_latitude <= %f AND
-                g.west_longitude >= %f AND
-                g.east_longitude <= %f
+                g.west_longitude <= %f AND
+                g.east_longitude >= %f
                 ORDER BY g.level DESC
                 LIMIT 10;
             ", $level, $latitude, $latitude, $longitude, $longitude ), ARRAY_A );
@@ -768,8 +768,8 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 WHERE
                 g.north_latitude >= %f AND
                 g.south_latitude <= %f AND
-                g.west_longitude >= %f AND
-                g.east_longitude <= %f AND
+                g.west_longitude <= %f AND
+                g.east_longitude >= %f AND
                 g.country_code = %s
                 ORDER BY g.level DESC
                 LIMIT 15;
@@ -787,8 +787,8 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 WHERE
                 g.north_latitude >= %f AND
                 g.south_latitude <= %f AND
-                g.west_longitude >= %f AND
-                g.east_longitude <= %f
+                g.west_longitude <= %f AND
+                g.east_longitude >= %f
                 ORDER BY g.level DESC
                 LIMIT 15;
             ", $latitude, $latitude, $longitude, $longitude ), ARRAY_A );

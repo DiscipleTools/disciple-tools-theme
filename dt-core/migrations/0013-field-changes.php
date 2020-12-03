@@ -1,5 +1,7 @@
 <?php
 
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
+
 class Disciple_Tools_Migration_0013 extends Disciple_Tools_Migration {
     public function up() {
         $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
