@@ -45,7 +45,7 @@ else {
          */
         try {
             require_once( get_template_directory() . '/dt-core/configuration/class-migration-engine.php' );
-            Disciple_Tools_Migration_Engine::migrate( Disciple_Tools::instance()->migration_number );
+            Disciple_Tools_Migration_Engine::migrate( Disciple_Tools_Migration_Engine::$migration_number );
         } catch ( Throwable $e ) {
             new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
         }
@@ -142,7 +142,7 @@ else {
              */
             $this->token = 'disciple_tools';
             $this->version = '1.0.0';
-            $this->migration_number = 37;
+            // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
             $this->theme_path = get_template_directory() . '/';
@@ -332,7 +332,11 @@ else {
             $this->logging_activity_api = new Disciple_Tools_Activity_Log_API();
             require_once( get_template_directory() . '/dt-core/logging/class-activity-hooks.php' ); // contacts and groups report building
             $this->logging_activity_hooks = Disciple_Tools_Activity_Hooks::instance();
-            require_once( get_template_directory() . '/dt-core/logging/class-reports-api.php' );
+
+            /**
+             * Reports
+             */
+            require_once( get_template_directory() . '/dt-reports/reports.php' );
 
             /**
              * Workflows

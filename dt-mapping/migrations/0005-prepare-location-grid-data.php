@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Class DT_Mapping_Module_Migration_0005
  *
@@ -32,7 +32,6 @@ class DT_Mapping_Module_Migration_0005 extends DT_Mapping_Module_Migration {
         $gn_source_url = $mirror_source . 'location_grid/dt_location_grid.tsv.zip';
 
         $zip_file = $uploads_dir . "location_grid_download/dt_location_grid.tsv.zip";
-
 
         $zip_resource = fopen( $zip_file, "w" );
 

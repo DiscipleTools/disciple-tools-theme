@@ -1,4 +1,5 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Migration_0016 extends Disciple_Tools_Migration {
     public function up() {
@@ -6,13 +7,13 @@ class Disciple_Tools_Migration_0016 extends Disciple_Tools_Migration {
         global $wpdb;
         $wpdb->get_results("
             UPDATE $wpdb->postmeta
-            SET meta_value = '1' 
+            SET meta_value = '1'
             WHERE meta_key IN ( 'requires_update', 'accepted' )
             AND meta_value = 'yes'
         ", ARRAY_A);
         $wpdb->get_results("
             UPDATE $wpdb->postmeta
-            SET meta_value = '' 
+            SET meta_value = ''
             WHERE meta_key IN ( 'requires_update', 'accepted' )
             AND meta_value = 'no'
         ", ARRAY_A);

@@ -13,15 +13,19 @@ if ( !defined( 'ABSPATH' ) ) {
  * @return mixed
  */
 function dt_report_insert( $args = [] ) {
-    return Disciple_Tools_Reports_API::insert( $args );
+    return Disciple_Tools_Reports::insert( $args );
 }
 
 /**
- * Disciple_Tools_Reports_API
+ * Disciple_Tools_Reports
  * This handles the insert and other functions for the table _dt_reports and _dt_reportmeta tables
  */
-class Disciple_Tools_Reports_API
+class Disciple_Tools_Reports
 {
+
+    /**
+     * @todo Add migration - Add parent_id column BIGINT 22, post_type column VARCHAR 20, add parent_id index, add post_type index, add hash index
+     */
 
     /**
      * Insert Report into _reports and _reportmeta tables
@@ -43,7 +47,10 @@ class Disciple_Tools_Reports_API
         $args = wp_parse_args(
             $args,
             [
-                'hash' => null,
+                'parent_id' => null,
+                'post_id' => 0,
+                'post_type' => null,
+                // 'type' => null, // required
                 'subtype' => null,
                 'payload' => [],
                 'value' => 1,
@@ -54,12 +61,13 @@ class Disciple_Tools_Reports_API
                 'grid_id' => null,
                 'time_begin' => null,
                 'time_end' => time(),
-                'timestamp' => time(),
+                'hash' => null,
                 'meta_input' => [],
             ]
         );
 
         $args['hash'] = hash( 'sha256', maybe_serialize( $args ) );
+        $args['timestamp'] = time();
 
         // Make sure for non duplicate.
         $check_duplicate = $wpdb->get_row(
@@ -80,8 +88,9 @@ class Disciple_Tools_Reports_API
         $wpdb->insert(
             $wpdb->dt_reports,
             [
-                'hash' => $args['hash'],
+                'parent_id' => $args['parent_id'],
                 'post_id' => $args['post_id'],
+                'post_type' => $args['post_type'],
                 'type' => $args['type'],
                 'subtype' => $args['subtype'],
                 'payload' => maybe_serialize( $args['payload'] ),
@@ -94,10 +103,12 @@ class Disciple_Tools_Reports_API
                 'time_begin' => $args['time_begin'],
                 'time_end' => $args['time_end'],
                 'timestamp' => time(),
+                'hash' => $args['hash'],
             ],
             [
-                '%s', // hash
+                '%d', // parent_id
                 '%d', // post_id
+                '%s', // post_type
                 '%s', // type
                 '%s', // subtype
                 '%s', // payload
@@ -110,6 +121,7 @@ class Disciple_Tools_Reports_API
                 '%d', // time_begin
                 '%d', // time_end
                 '%d', // timestamp
+                '%s', // hash
             ]
         );
 
