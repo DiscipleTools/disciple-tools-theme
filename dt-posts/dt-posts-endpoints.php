@@ -363,6 +363,18 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
+        //Get Post Field Settings
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/settings_fields', [
+                [
+                    "methods"  => "GET",
+                    "callback" => [ $this, 'get_post_field_settings' ],
+                    "args" => [
+                        "post_type" => $arg_schemas["post_type"],
+                    ]
+                ]
+            ]
+        );
     }
 
     /**
@@ -541,6 +553,11 @@ class Disciple_Tools_Posts_Endpoints {
     public function get_post_settings( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
         return DT_Posts::get_post_settings( $url_params["post_type"] );
+    }
+
+    public function get_post_field_settings( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+        return DT_Posts::get_post_field_settings( $url_params["post_type"] );
     }
 
 }
