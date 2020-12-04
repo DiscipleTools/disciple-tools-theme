@@ -83,7 +83,7 @@ function dt_gallery_style( $css ) {
 function dt_excerpt_more( $more ) {
     global $post;
 
-    // edit here if you like
+    // Edit here if you like
     return '<a class="excerpt-read-more" href="' . get_permalink( $post->ID ) . '" title="Read' . esc_html( get_the_title( $post->ID ) ) . '"> ... Read more &raquo; </a>';
 }
 
@@ -137,15 +137,15 @@ function dt_remove_dashboard_meta() {
     remove_meta_box( 'dashboard_recent_drafts', 'dashboard', 'side' );
     remove_meta_box( 'dashboard_right_now', 'dashboard', 'normal' );
 
-    // Remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
-    // Remove_meta_box( 'dashboard_activity', 'dashboard', 'normal');
+    // remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
+    // remove_meta_box( 'dashboard_activity', 'dashboard', 'normal');
 
-    // Remove_meta_box('dashboard_right_now', 'dashboard', 'core');    // Right Now Widget
+    // remove_meta_box('dashboard_right_now', 'dashboard', 'core');    // Right Now Widget
     remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'core' ); // Comments Widget
     remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'core' );  // Incoming Links Widget
     remove_meta_box( 'dashboard_plugins', 'dashboard', 'core' );         // Plugins Widget
 
-    // Remove_meta_box('dashboard_quick_press', 'dashboard', 'core');  // Quick Press Widget
+    // remove_meta_box('dashboard_quick_press', 'dashboard', 'core');  // Quick Press Widget
     remove_meta_box( 'dashboard_recent_drafts', 'dashboard', 'core' );   // Recent Drafts Widget
     remove_meta_box( 'dashboard_primary', 'dashboard', 'core' );
     remove_meta_box( 'dashboard_secondary', 'dashboard', 'core' );
@@ -172,13 +172,13 @@ function dt_change_admin_color( $result ) {
  */
 function dt_remove_post_admin_menus() {
 
-    remove_menu_page( 'edit.php' );                   //Posts
-    remove_menu_page( 'upload.php' );                 //Media
-    remove_menu_page( 'edit.php?post_type=page' );    //Pages
-    remove_menu_page( 'edit-comments.php' );          //Comments
+    remove_menu_page( 'edit.php' );                     // Posts
+    remove_menu_page( 'upload.php' );                   // Media
+    remove_menu_page( 'edit.php?post_type=page' );      // Pages
+    remove_menu_page( 'edit-comments.php' );            // Comments
 
-    if ( ! current_user_can( 'manage_dt' ) ) { // add menu items to hide from all but admin
-        remove_menu_page( 'tools.php' );                  //Tools
+    if ( ! current_user_can( 'manage_dt' ) ) {          // Add menu items to hide from all but admin
+        remove_menu_page( 'tools.php' );                // Tools
     }
 }
 
