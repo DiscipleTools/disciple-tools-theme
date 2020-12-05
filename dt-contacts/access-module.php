@@ -1367,7 +1367,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $had_cap = current_user_can( 'dt_all_access_contacts' );
             $current_user->add_cap( "dt_all_access_contacts" );
             $dup_ids = DT_Duplicate_Checker_And_Merging::ids_of_non_dismissed_duplicates( $post_type, $post_id, true );
-            if ( sizeof( $dup_ids["ids"] ) < 10 ){
+            if ( ! is_wp_error( $dup_ids ) && sizeof( $dup_ids["ids"] ) < 10 ){
                 $comment = __( "This record might be a duplicate of: ", 'disciple_tools' );
                 foreach ( $dup_ids["ids"] as $id_of_duplicate ){
                     $comment .= " \n -  [$id_of_duplicate]($id_of_duplicate)";

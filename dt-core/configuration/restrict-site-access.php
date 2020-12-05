@@ -15,7 +15,8 @@ function dt_please_log_in() {
     if ( 'wp-login.php' === $pagenow ){
         return 1;
     }
-    if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/dt-public/' ) !== false ) {
+    if ( dt_is_rest() ) {
+        // rest requests are secured by restrict-rest-api.php
         return 1;
     }
     if ( is_multisite() ) { // tests if user has access to current site in multi-site
