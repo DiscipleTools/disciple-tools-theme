@@ -136,10 +136,10 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                         <!--
                             Details section
                         -->
-                        <div class="collapsed-details-section" style="">
+                        <div class="collapsed-details-section">
 
                             <!-- row for communication channel elements -->
-                            <div style="display:flex">
+                            <div class="detail-snippet-row">
                             <?php
                             //setup the order of the tile fields
                             $order = $custom_tiles[$post_type]['details']["order"] ?? [];
@@ -157,13 +157,12 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
 
                                 $field = $post_settings["fields"][$field_key];
                                 if ( isset( $field["tile"] ) && $field["tile"] === 'details'){
-                                    $basis = ( isset( $field["in_create_form"] ) && $field["in_create_form"] === true ) ? '20%' : 'auto';
                                     ?>
-                                    <div style="display:none; flex-basis:<?php echo esc_html( $basis ); ?>; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right:15px; margin-bottom:5px" id="collapsed-detail-<?php echo esc_html( $field_key ); ?>">
+                                    <div class="detail-snippet" id="collapsed-detail-<?php echo esc_html( $field_key ); ?>">
                                         <?php if ( isset( $field["icon"] ) ) : ?>
-                                            <img src="<?php echo esc_html( $field["icon"] ); ?>" style="margin-right:3px; vertical-align:middle; height:15px;width:15px">
+                                            <img src="<?php echo esc_html( $field["icon"] ); ?>">
                                         <?php else : ?>
-                                            <strong><?php echo esc_html( $field['name'] ); ?></strong>
+                                            <strong class="snippet-field-name"><?php echo esc_html( $field['name'] ); ?></strong>
                                         <?php endif ?>
                                         <span class="collapsed-items"></span>
                                     </div>
@@ -174,7 +173,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             </div>
 
                             <!-- row for misc elements -->
-                            <div style="display:flex">
+                            <div class="detail-snippet-row">
                             <?php
                             $order = $custom_tiles[$post_type]['details']["order"] ?? [];
                             foreach ( $post_settings["fields"] as $key => $option ){
@@ -198,13 +197,12 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                 }
 
                                 if ( isset( $field["tile"] ) && $field["tile"] === 'details'){
-                                    $basis = ( isset( $field["in_create_form"] ) && $field["in_create_form"] === true ) ? '20%' : 'auto';
                                     ?>
-                                        <div style="display:none; flex-basis:<?php echo esc_html( $basis ); ?>; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right:15px; margin-bottom:5px" id="collapsed-detail-<?php echo esc_html( $field_key ); ?>">
+                                        <div class="detail-snippet" id="collapsed-detail-<?php echo esc_html( $field_key ); ?>">
                                             <?php if ( isset( $field["icon"] ) ) : ?>
-                                                <img src="<?php echo esc_html( $field["icon"] ); ?>" style="margin-right:3px; vertical-align:middle; height:15px;width:15px">
+                                                <img src="<?php echo esc_html( $field["icon"] ); ?>">
                                             <?php else : ?>
-                                                <strong><?php echo esc_html( $field['name'] ); ?></strong>
+                                                <strong class="snippet-field-name"><?php echo esc_html( $field['name'] ); ?></strong>
                                             <?php endif ?>
                                                 <span class="collapsed-items"></span>
                                         </div>

@@ -331,7 +331,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         if ( isset( $fields[$field_key]["type"] ) && empty( $fields[$field_key]["custom_display"] ) && empty( $fields[$field_key]["hidden"] ) ) {
             $field_type = $fields[$field_key]["type"];
             $required_tag = ( isset( $fields[$field_key]["required"] ) && $fields[$field_key]["required"] === true ) ? 'required' : '';
-            $allowed_types = [ 'key_select', 'multi_select', 'date', 'text', 'number', 'connection', 'location', 'location_meta', 'communication_channel' ];
+            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'number', 'connection', 'location', 'location_meta', 'communication_channel' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
@@ -467,9 +467,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <?php elseif ( $field_type === "location" || $field_type === "location_meta" ) :?>
                 <?php if ( DT_Mapbox_API::get_key() && empty( $post ) ) : // test if Mapbox key is present ?>
                     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
-                        <input id="mapbox-search" type="text" name="mapbox_search" placeholder="Search Location" />
+                        <input id="mapbox-search" type="text" class="input-group-field" name="mapbox_search" placeholder="Search Location" autocomplete="off"/>
                         <div class="input-group-button">
-                            <button class="button hollow" id="mapbox-spinner-button" style="display:none;"><span class="loading-spinner active"></span></button>
+                            <button id="mapbox-spinner-button" class="button hollow" style="display:none;"><span class="loading-spinner active"></span></button>
+                            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" style="display:none;" type="button">&times;</button>
                         </div>
                         <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
                     </div>
@@ -522,6 +523,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </div>
                     <?php endif ?>
                 </div>
+            <?php else : ?>
+                <?php do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag ); ?>
             <?php endif;
         }
     }

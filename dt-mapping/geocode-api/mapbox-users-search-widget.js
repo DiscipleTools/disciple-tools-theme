@@ -20,7 +20,7 @@ function write_results_box() {
       lgm_results.append(`<div class="input-group">
                               <input type="text" class="active-location input-group-field " id="location-${_.escape( v.grid_meta_id )}" value="${_.escape( v.label )}" readonly />
                               <div class="input-group-button">
-                                <button type="button" class="button alert clear-date-button delete-button mapbox-delete-button" title="Delete Location" data-id="${_.escape( v.grid_meta_id )}">&times;</button>
+                                <button type="button" class="button alert clear-date-button delete-button mapbox-delete-button" title="${ _.escape( dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${_.escape( v.grid_meta_id )}">&times;</button>
                               </div>
                             </div>`)
     })
@@ -66,9 +66,10 @@ function write_input_widget() {
   if ( jQuery('#mapbox-autocomplete').length === 0 ) {
     jQuery('#mapbox-wrapper').prepend(`
     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true">
-        <input id="mapbox-search" type="text" name="mapbox_search" placeholder="Search Location" />
+        <input id="mapbox-search" type="text" name="mapbox_search" placeholder="Search Location" autocomplete="off" />
         <div class="input-group-button">
-            <button class="button hollow" id="mapbox-spinner-button" style="display:none;"><img src="${_.escape(dtMapbox.spinner_url)}" alt="spinner" style="width: 18px;" /></button>
+            <button id="mapbox-spinner-button" class="button hollow" style="display:none;"><span class="loading-spinner active"></span></button>
+            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${ _.escape( dtMapbox.translations.clear ) /*Delete Location*/}" >&times;</button>
         </div>
         <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
     </div>
@@ -77,8 +78,34 @@ function write_input_widget() {
 
   window.currentfocus = -1
 
-  jQuery('#mapbox-search').on("keyup", function(e){
+  //hide the geocoding options when the user clicks out of the input.
+  let hide_list_setup = false
+  let setup_hide_list = function (){
+    if ( !hide_list_setup ){
+      hide_list_setup = true
+      $(document).mouseup(function(e){
+        let container = $("#mapbox-autocomplete");
+        let list = jQuery('#mapbox-autocomplete-list')
+        let isEmpty = !$.trim(list.html());
+        // if the target of the click isn't the container nor a descendant of the container
+        if (!container.is(e.target) && container.has(e.target).length === 0 && !isEmpty )
+        {
+          list.empty()
+        }
+      });
+    }
+  }
 
+  let mapbox_search = jQuery('#mapbox-search')
+  mapbox_search.on("keydown", function (e){
+    if (e.which === 13) {
+      /*If the ENTER key is pressed, prevent the form from being submitted,*/
+      e.preventDefault();
+    }
+  })
+
+  mapbox_search.on("keyup", function(e){
+    setup_hide_list()
     var x = document.getElementById("mapbox-autocomplete-list");
     if (x) x = x.getElementsByTagName("div");
     if (e.which === 40) {
@@ -106,6 +133,11 @@ function write_input_widget() {
 
   })
 
+  let mapbox_clear = jQuery('#mapbox-clear-autocomplete')
+  mapbox_clear.hide().on('click', function(){
+    clear_autocomplete()
+  })
+
   reset_tile_spacing()
 
 }
@@ -130,6 +162,7 @@ function validate_timer() {
 
     // toggle buttons back
     jQuery('#mapbox-spinner-button').hide()
+    jQuery('#mapbox-clear-autocomplete').show()
   }, 1000);
 
 }
@@ -140,6 +173,7 @@ function clear_timer() {
 
 function mapbox_autocomplete(address){
   if ( address.length < 1 ) {
+    jQuery('#mapbox-clear-autocomplete').hide()
     return;
   }
 
@@ -175,14 +209,15 @@ function mapbox_autocomplete(address){
 
 function google_autocomplete(address){
   if ( address.length < 1 ) {
+    jQuery('#mapbox-clear-autocomplete').hide()
     return;
   }
 
   let service = new google.maps.places.AutocompleteService();
   service.getPlacePredictions({ 'input': address }, function(predictions, status ) {
+    let list = jQuery('#mapbox-autocomplete-list')
+    list.empty()
     if (status === 'OK') {
-      let list = jQuery('#mapbox-autocomplete-list')
-      list.empty()
 
       jQuery.each( predictions, function( index, value ) {
         list.append(`<div data-value="${_.escape(index)}">${_.escape(value.description)}</div>`)
@@ -195,7 +230,11 @@ function google_autocomplete(address){
       // Set globals
       window.mapbox_result_features = predictions
 
-    } else {
+    }
+    else if ( status === 'ZERO_RESULTS' ) {
+      list.append(`<div>No Results Found</div>`)
+    }
+    else {
       console.log('Predictions was not successful for the following reason: ' + status)
     }
   } )
@@ -271,6 +310,7 @@ function close_all_lists(selection_id) {
 
 function post_geocoded_location(){
   if ( jQuery('#mapbox-autocomplete').data('autosubmit') ) {
+    jQuery('#mapbox-spinner-button').show()
     makeRequest( "POST", `users/user_location`, window.location_data )
     .done(response => {
       dtMapbox.user_location = response.user_location
@@ -281,7 +321,15 @@ function post_geocoded_location(){
   } else {
     window.selected_location_grid_meta = window.location_data
     jQuery('#mapbox-spinner-button').hide()
+    jQuery('#mapbox-clear-autocomplete').show()
   }
+}
+
+function clear_autocomplete(){
+  jQuery('#mapbox-search').val('')
+  jQuery('#mapbox-autocomplete-list').empty()
+  jQuery('#mapbox-spinner-button').hide()
+  jQuery('#mapbox-clear-autocomplete').hide()
 }
 
 function convert_level( level ) {

@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Class DT_Mapping_Module_Migration_0007
  *
@@ -117,7 +118,7 @@ class DT_Mapping_Module_Migration_0007 extends DT_Mapping_Module_Migration {
                     $wpdb->query( $wpdb->prepare( "
                         UPDATE $wpdb->postmeta
                         SET meta_key = 'location_grid',
-                            meta_value = %s 
+                            meta_value = %s
                         WHERE meta_key = 'geonames' and meta_value = %s
                         ", $geonames_ref[$ug["meta_value"]]['grid_id'], $ug["meta_value"]
                     ) );
@@ -129,7 +130,7 @@ class DT_Mapping_Module_Migration_0007 extends DT_Mapping_Module_Migration {
                     $wpdb->query( $wpdb->prepare( "
                         UPDATE $wpdb->dt_activity_log
                         SET meta_key = 'location_grid',
-                            meta_value = %s 
+                            meta_value = %s
                         WHERE meta_key = 'geonames' and meta_value = %s
                         ", $geonames_ref[$ug["meta_value"]]['grid_id'], $ug["meta_value"]
                     ) );
@@ -255,7 +256,7 @@ class DT_Mapping_Module_Migration_0007 extends DT_Mapping_Module_Migration {
                         if ( $value['parent_id'] < 1000000000 ) {
                             // not custom
                             $parent_record = $wpdb->get_row( $wpdb->prepare( "
-                            SELECT * FROM $wpdb->dt_location_grid 
+                            SELECT * FROM $wpdb->dt_location_grid
                             WHERE grid_id = %s",
                                 $parent_location_grid_id
                             ), ARRAY_A );

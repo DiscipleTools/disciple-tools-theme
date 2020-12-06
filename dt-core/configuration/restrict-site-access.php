@@ -11,8 +11,15 @@
  */
 function dt_please_log_in() {
 
+    global $wpdb, $pagenow;
+    if ( 'wp-login.php' === $pagenow ){
+        return 1;
+    }
+    if ( dt_is_rest() ) {
+        // rest requests are secured by restrict-rest-api.php
+        return 1;
+    }
     if ( is_multisite() ) { // tests if user has access to current site in multi-site
-        global $wpdb, $pagenow;
         if ( 'wp-activate.php' === $pagenow ) {
             return 1;
         }
@@ -32,7 +39,7 @@ function dt_please_log_in() {
     }
     return 1;
 }
-add_action( 'wp', 'dt_please_log_in', 0 );
+add_action( 'init', 'dt_please_log_in', 0 );
 
 /**
  * Removes feeds via filters

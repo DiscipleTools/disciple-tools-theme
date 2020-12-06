@@ -65,7 +65,7 @@ function write_results_box() {
 
 // adds listener for delete buttons
 function delete_click_listener() {
-  jQuery( '.mapbox-delete-button' ).on( "click", function(e) {
+  jQuery( '.mapbox-delete-button' ).on( "click", function() {
 
     let data = {
       location_grid_meta: {
@@ -92,7 +92,6 @@ function open_modal_grid_listener(){
 
     jQuery.each( dtMapbox.post.location_grid_meta, function(i,v){
       if ( grid_meta_id === v.grid_meta_id ) {
-        console.log(v)
         return load_modal( v.lng, v.lat, v.level, v.label, v.grid_id )
       }
     })
@@ -100,7 +99,7 @@ function open_modal_grid_listener(){
 }
 
 function open_modal_address_listener(){
-  jQuery('.open-mapping-address-modal').on("click", function(e){
+  jQuery('.open-mapping-address-modal').on("click", function(){
 
     let selected_key = jQuery(this).data('key')
     let selected_value = jQuery(`#${selected_key}`).val()
@@ -181,32 +180,57 @@ function write_input_widget() {
   if ( jQuery('#mapbox-autocomplete').length === 0 ) {
     jQuery('#mapbox-wrapper').prepend(`
     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true">
-        <input id="mapbox-search" type="text" name="mapbox_search" placeholder="${ dtMapbox.translations.search_location /*Search Location*/ }" />
+        <input id="mapbox-search" type="text" name="mapbox_search" class="input-group-field" autocomplete="off" placeholder="${ dtMapbox.translations.search_location /*Search Location*/ }" />
         <div class="input-group-button">
-            <button class="button hollow" id="mapbox-spinner-button" style="display:none;"><img src="${_.escape( dtMapbox.spinner_url )}" alt="spinner" style="width: 18px;" /></button>
+            <button id="mapbox-spinner-button" class="button hollow" style="display:none;"><span class="loading-spinner active"></span></button>
+            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${ _.escape( dtMapbox.translations.clear ) /*Delete Location*/}" style="display:none;">&times;</button>
         </div>
         <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
     </div>
   `)
   }
 
+  let mapbox_search = jQuery('#mapbox-search')
+
   window.currentfocus = -1
 
-  jQuery('#mapbox-search').on("keyup", function(e){
+  //hide the geocoding options when the user clicks out of the input.
+  let hide_list_setup = false
+  let setup_hide_list = function (){
+    if ( !hide_list_setup ){
+      hide_list_setup = true
+      $(document).mouseup(function(e){
+        let container = $("#mapbox-autocomplete");
+        let list = jQuery('#mapbox-autocomplete-list')
+        let isEmpty = !$.trim(list.html());
+        // if the target of the click isn't the container nor a descendant of the container
+        if (!container.is(e.target) && container.has(e.target).length === 0 && !isEmpty )
+        {
+          list.empty()
+        }
+      });
+    }
+  }
 
-    var x = document.getElementById("mapbox-autocomplete-list");
+  mapbox_search.on("keydown", function (e){
+    if (e.which === 13) {
+      /*If the ENTER key is pressed, prevent the form from being submitted,*/
+      e.preventDefault();
+    }
+  })
+  mapbox_search.on("keyup", function(e){
+    setup_hide_list()
+    let x = document.getElementById("mapbox-autocomplete-list");
     if (x) x = x.getElementsByTagName("div");
     if (e.which === 40) {
       /*If the arrow DOWN key is pressed,
       increase the currentFocus variable:*/
-      console.log('down')
       window.currentfocus++;
       /*and and make the current item more visible:*/
       add_active(x);
     } else if (e.which === 38) { //up
       /*If the arrow UP key is pressed,
       decrease the currentFocus variable:*/
-      console.log('up')
       window.currentfocus--;
       /*and and make the current item more visible:*/
       add_active(x);
@@ -215,12 +239,16 @@ function write_input_widget() {
       e.preventDefault();
       if (window.currentfocus > -1) {
         /*and simulate a click on the "active" item:*/
-        close_all_lists(window.currentfocus);
+        close_all_lists($($("#mapbox-autocomplete-list div")[window.currentfocus]).data("value"));
       }
     } else {
       validate_timer()
     }
+  })
 
+  let mapbox_clear = jQuery('#mapbox-clear-autocomplete')
+  mapbox_clear.hide().on('click', function(){
+    clear_autocomplete()
   })
 
   reset_tile_spacing()
@@ -264,6 +292,7 @@ function validate_timer() {
 
     // toggle buttons back
     jQuery('#mapbox-spinner-button').hide()
+    jQuery('#mapbox-clear-autocomplete').show()
   }, 1000);
 
 }
@@ -274,7 +303,6 @@ function clear_timer() {
 
 // main processor and router for selection of autocomplete results
 function close_all_lists(selection_id) {
-
   /* if Geocoding overridden, and plain text address selected */
   if( 'address' === selection_id ) {
     jQuery('#mapbox-autocomplete-list').empty()
@@ -335,8 +363,8 @@ function close_all_lists(selection_id) {
 
 // builds the mapbox autocomplete list for selection
 function mapbox_autocomplete(address){
-  console.log('mapbox_autocomplete: ' + address )
   if ( address.length < 1 ) {
+    jQuery('#mapbox-clear-autocomplete').hide()
     return;
   }
 
@@ -356,7 +384,9 @@ function mapbox_autocomplete(address){
     list.empty()
 
     jQuery.each( data.features, function( index, value ) {
-      list.append(`<div data-value="${_.escape( index )}">${_.escape( value.place_name )}</div>`)
+      if ( 4 > index ){
+        list.append(`<div data-value="${_.escape( index )}">${_.escape( value.place_name )}</div>`)
+      }
     })
 
     list.append(`<div data-value="address" style="font-weight:bold;">${_.escape( window.dtMapbox.translations.use )}: "${_.escape( address )}"</div>`)
@@ -374,45 +404,53 @@ function mapbox_autocomplete(address){
 
 // builds the autocomplete list from Google (if Google key is installed)
 function google_autocomplete(address){
-  console.log('google_autocomplete: ' + address )
   if ( address.length < 1 ) {
+    jQuery('#mapbox-clear-autocomplete').hide()
     return;
   }
 
   let service = new google.maps.places.AutocompleteService();
   service.getPlacePredictions({ 'input': address }, function(predictions, status ) {
-    if (status === 'OK') {
-          console.log(predictions)
-          let list = jQuery('#mapbox-autocomplete-list')
-          list.empty()
+    let list = jQuery('#mapbox-autocomplete-list')
+    list.empty()
 
-          jQuery.each( predictions, function( index, value ) {
-            list.append(`<div data-value="${index}">${_.escape( value.description )}</div>`)
-          })
-
-          list.append(`<div data-value="address" style="font-weight:bold;">${_.escape( window.dtMapbox.translations.use )}: "${_.escape( address )}"</div>`)
-
-          jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
-            close_all_lists(e.target.attributes['data-value'].value);
-          });
-
-          // Set globals
-          window.mapbox_result_features = predictions
-
-        } else {
-          console.log('Predictions was not successful for the following reason: ' + status)
+    if ( status === 'OK' ) {
+      jQuery.each( predictions, function( index, value ) {
+        if ( 4 > index ) {
+          list.append(`<div data-value="${index}">${_.escape(value.description)}</div>`)
         }
-  } )
+      })
 
+      list.append(`<div data-value="address" style="font-weight:bold;">${_.escape( window.dtMapbox.translations.use )}: "${_.escape( address )}"</div>`)
+
+      jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
+        close_all_lists(e.target.attributes['data-value'].value);
+      });
+
+      // Set globals
+      window.mapbox_result_features = predictions
+    }
+    else if ( status === 'ZERO_RESULTS' ) {
+      list.append(`<div>No Results Found</div>`)
+      list.append(`<div data-value="address" style="font-weight:bold;">${_.escape( window.dtMapbox.translations.use )}: "${_.escape( address )}"</div>`)
+
+      jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
+        close_all_lists(e.target.attributes['data-value'].value);
+      });
+    }
+    else {
+      console.log('Predictions was not successful for the following reason: ' + status)
+    }
+  })
 }
 
 // submits geocoded results and resets list
 function post_geocoded_location() {
   if ( jQuery('#mapbox-autocomplete').data('autosubmit') ) {
     /* if post_type = user, else all other post types */
-    API.update_post( dtMapbox.post_type, dtMapbox.post_id, window.location_data ).then(function (response) {
-      console.log( response )
+    jQuery('#mapbox-spinner-button').show()
 
+    API.update_post( dtMapbox.post_type, dtMapbox.post_id, window.location_data ).then(function (response) {
       dtMapbox.post = response
       jQuery('#mapbox-wrapper').empty()
       write_results_box()
@@ -422,16 +460,50 @@ function post_geocoded_location() {
   } else {
     window.selected_location_grid_meta = window.location_data
     jQuery('#mapbox-spinner-button').hide()
+    jQuery('#mapbox-clear-autocomplete').show()
   }
 }
 
 // submits address override and resets list
 function post_contact_address( update ) {
-  API.update_post(window.dtMapbox.post_type, window.dtMapbox.post_id, { ["contact_address"]: [update]}).then((updatedContact)=>{
-    dtMapbox.post = updatedContact
-    jQuery('#mapbox-wrapper').empty()
-    write_results_box()
-  }).catch(handleAjaxError)
+
+  let mapbox_autocomplete = jQuery('#mapbox-autocomplete')
+
+  // if autosubmit true (normal behavior on details pages)
+  if ( mapbox_autocomplete.data('autosubmit') ) {
+    jQuery('#mapbox-spinner-button').show()
+
+    API.update_post(window.dtMapbox.post_type, window.dtMapbox.post_id, {["contact_address"]: [update]}).then((updatedContact) => {
+      dtMapbox.post = updatedContact
+      jQuery('#mapbox-wrapper').empty()
+      write_results_box()
+    }).catch(handleAjaxError)
+
+  } else {
+
+    // if autosubmit false (primarily used on new post template)
+    jQuery(`<div class="input-group" id="new_contact_address_container">
+                <input type="text"
+                       id="new_contact_address"
+                       data-field="contact_address"
+                       value="${update.value}"
+                       class="dt-communication-channel input-group-field" />
+                <div class="input-group-button">
+                  <button class="button alert input-height delete-button-style channel-delete-button delete-button new-contact_address" data-field="contact_address" data-key="contact_address">&times;</button>
+                </div>
+           </div>`).insertAfter(mapbox_autocomplete)
+    jQuery('button.delete-button.new-contact_address').on('click', function(){
+      jQuery('#new_contact_address_container').remove()
+    })
+    clear_autocomplete()
+  }
+}
+
+function clear_autocomplete(){
+  jQuery('#mapbox-search').val('')
+  jQuery('#mapbox-autocomplete-list').empty()
+  jQuery('#mapbox-spinner-button').hide()
+  jQuery('#mapbox-clear-autocomplete').hide()
 }
 
 // converts the long admin level response to a location grid version
