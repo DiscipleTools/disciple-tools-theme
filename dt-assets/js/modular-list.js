@@ -1034,9 +1034,14 @@
   /***
    * Bulk Edit
    */
+
   $('#bulk_edit_controls').on('click', function(){
     $('#bulk_edit_picker').toggle();
     $('#records-table').toggleClass('bulk_edit_on');
+  })
+
+  $('#bulk_edit_seeMore').on('click', function(){
+    $('#bulk_more').toggle();
   })
 
   function bulk_edit_checkbox_event() {
@@ -1350,12 +1355,6 @@ $.typeahead({
     $(this).data('bulk_key_follow', follow);
     $(this).data('bulk_key_unfollow', unfollow);
   })
-
-
-
-
-  //TODO: Change the following JS to add the data attributes
-
 
   $('#bulk_edit_picker input.text-input').change(function(){
     const val = $(this).val()
