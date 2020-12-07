@@ -1334,6 +1334,7 @@ $.typeahead({
     }
   })
 
+
   // //multi_select typeaheads
   // for (let input of $(".multi_select .typeahead__query input")) {
   //   let field = $(input).data('field')
@@ -1569,6 +1570,121 @@ $.typeahead({
     $(this).data('bulk_key_follow', follow);
     $(this).data('bulk_key_unfollow', unfollow);
   })
+
+
+
+
+  //TODO: Change the following JS to add the data attributes
+
+
+  $('#bulk_edit_picker input.text-input').change(function(){
+    const val = $(this).val()
+    let field_key = this.id.replace('bulk_', '')
+    $(this).data(`bulk_key_${field_key}`, val);
+  });
+
+  $('#bulk_edit_picker .dt_textarea').change(function(){
+    const val = $(this).val()
+    let field_key = this.id.replace('bulk_', '')
+    $(this).data(`bulk_key_${field_key}`, val);
+  })
+
+  $('#bulk_edit_picker button.dt_multi_select').on('click',function () {
+    let fieldKey = $(this).data("field-key")
+    let optionKey = $(this).attr('id')
+    let fieldValue = {}
+    let data = {}
+    let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`)
+    field.addClass("submitting-select-button")
+    let action = "add"
+    if (field.hasClass("selected-select-button")){
+      fieldValue.values = [{value:optionKey,delete:true}]
+      action = "delete"
+    } else {
+      field.removeClass("empty-select-button")
+      field.addClass("selected-select-button")
+      fieldValue.values = [{value:optionKey}]
+    }
+    data[optionKey] = fieldValue
+    $(`#${fieldKey}-spinner`).addClass('active')
+    // rest_api.update_post(post_type, post_id, {[fieldKey]: fieldValue}).then((resp)=>{
+    //   $(`#${fieldKey}-spinner`).removeClass('active')
+    //   field.removeClass("submitting-select-button selected-select-button")
+    //   field.blur();
+    //   field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
+    //   $( document ).trigger( "dt_multi_select-updated", [ resp, fieldKey, optionKey, action ] );
+    // }).catch(err=>{
+    //   field.removeClass("submitting-select-button selected-select-button")
+    //   field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
+    //   handleAjaxError(err)
+    // })
+  })
+
+
+  $('#bulk_edit_picker .dt_date_picker').datepicker({
+    constrainInput: false,
+    dateFormat: 'yy-mm-dd',
+    onClose: function (date) {
+      if (document.querySelector('#group-details-edit-modal') && document.querySelector('#group-details-edit-modal').contains( this)) {
+        // do nothing
+      } else {
+        date = window.SHAREDFUNCTIONS.convertArabicToEnglishNumbers(date);
+
+        if (!$(this).val()) {
+          date = " ";//null;
+        }
+
+        let formattedDate = moment.utc(date).unix();
+
+        let field_key = this.id.replace('bulk_', '')
+        $(this).data(`bulk_key_${field_key}`, formattedDate);
+      }
+    },
+    changeMonth: true,
+    changeYear: true,
+    yearRange: "1900:2050",
+  }).each(function() {
+    if (this.value && moment.unix(this.value).isValid()) {
+      this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
+    }
+  })
+
+
+  let mcleardate = $("#bulk_edit_picker .clear-date-button");
+  mcleardate.click(function() {
+    let input_id = this.dataset.inputid;
+    let date = null;
+    $(`#${input_id}-spinner`).addClass('active')
+    let field_key = this.id.replace('bulk_', '')
+    $(this).removeData(`bulk_key_${field_key}`);
+  });
+
+  $('#bulk_edit_picker select.select-field').change(e => {
+    const val = $(e.currentTarget).val()
+
+    let field_key = e.currentTarget.id.replace('bulk_', '')
+    $(e.currentTarget).data(`bulk_key_${field_key}`, val);
+
+  })
+
+  $('#bulk_edit_picker input.number-input').on("blur", function(){
+    const id = $(this).attr('id')
+    const val = $(this).val()
+
+    let field_key = this.id.replace('bulk_', '')
+    $(this).data(`bulk_key_${field_key}`, val);
+  })
+
+  $('#bulk_edit_picker .dt_contenteditable').on('blur', function(){
+    const id = $(this).attr('id')
+    let val = $(this).html()
+
+    let field_key = this.id.replace('bulk_', '')
+    $(this).data(`bulk_key_${field_key}`, val);
+  })
+
+
+
 
 })(window.jQuery, window.list_settings, window.Foundation);
 

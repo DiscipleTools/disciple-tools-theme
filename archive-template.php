@@ -9,7 +9,6 @@ declare(strict_types=1);
     $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
 
     $field_options = $post_settings["fields"];
-
     get_header();
     ?>
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
@@ -226,6 +225,15 @@ declare(strict_types=1);
                             </div>
                             <div class="cell small-12 medium-4">
                             <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?></button>
+                            </div>
+                            <div class="bulk_more grid-x grid-margin-x">
+                                <?php foreach ( $field_options as $field_option => $value ) {
+                                    if ( $field_option != 'subassigned' && array_key_exists( 'type', $value ) && $value['type'] != "communication_channel") { ?>
+                                    <div class="cell small-12 medium-4">
+                                        <?php render_field_for_display( $field_option, $field_options, null, false, false, "bulk_" ); ?>
+                                    </div>
+                                    <?php }
+                                }?>
                             </div>
                         </div>
 
