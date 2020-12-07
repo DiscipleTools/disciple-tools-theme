@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+dt_please_log_in();
+
 ( function () {
     $post_type = dt_get_url_path();
     if ( !current_user_can( 'access_' . $post_type ) ) {
