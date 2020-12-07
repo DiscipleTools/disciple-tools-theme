@@ -1008,8 +1008,11 @@ class Disciple_Tools_Posts
                     $sort_sql = "ISNULL(p2p_post.post_title), p2p_post.post_title $sort_dir";
                 }
             } elseif ( $post_fields[$sort]["type"] === "communication_channel" ){
-                $joins = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key LIKE '{$sort}%' AND sort.meta_key NOT LIKE '%_details' )";
-                $sort_sql = "sort.meta_value IS NULL, sort.meta_value * 1 $sort_dir, sort.meta_value $sort_dir";
+                $joins = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key LIKE '{$sort}%' AND sort.meta_key NOT LIKE '%_details' AND sort.meta_id = ( SELECT meta_id FROM $wpdb->postmeta pm_sort  where pm_sort.post_id = p.ID AND pm_sort.meta_key LIKE '{$sort}%' AND sort.meta_key NOT LIKE '%_details' LIMIT 1 ))";
+                $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', sort.meta_value * 1 $sort_dir, sort.meta_value $sort_dir";
+            } elseif ( $post_fields[$sort]["type"] === "location" ){
+                $joins = "LEFT JOIN $wpdb->postmeta sort ON ( sort.post_id = p.ID AND sort.meta_key = '$sort' AND sort.meta_id = ( SELECT meta_id FROM $wpdb->postmeta pm_sort where pm_sort.post_id = p.ID AND pm_sort.meta_key = '$sort' LIMIT 1 ) )";
+                $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
             } else {
                 $joins = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";

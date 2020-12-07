@@ -227,7 +227,7 @@ declare(strict_types=1);
                     $allowed_types = [ "user_select", "multi_select", "key_select", "boolean", "date", "location", "connection" ];
                     //order fields alphabetically by Name
                     uasort( $field_options, function ( $a, $b ){
-                        return $a['name'] <=> $b['name'];
+                        return $a['name'] ?? 'z' <=> $b['name'] ?? 'z';
                     });
                     foreach ( $field_options as $field_key => $field){
                         if ( $field_key && in_array( $field["type"] ?? "", $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
@@ -242,8 +242,6 @@ declare(strict_types=1);
                                     <a href="#<?php echo esc_html( $field )?>" <?php if ( $index === 0 ){ echo 'aria-selected="true"'; } ?>>
                                         <?php echo esc_html( $field_options[$field]["name"] ) ?></a>
                                 </li>
-                            <?php else : ?>
-                                <?php wp_die( "Cannot implement filter options for field " . esc_html( $field ) ); ?>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </ul>

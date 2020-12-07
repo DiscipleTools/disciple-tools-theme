@@ -1315,6 +1315,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                         }
                     }
                 }
+                if ( !isset( $field["name"] ) ){
+                    $field["name"] = $field_key; //set a field name so integration can depend on it.
+                }
             }
         }
 
