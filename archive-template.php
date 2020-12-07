@@ -228,7 +228,7 @@ declare(strict_types=1);
                             </div>
                             <div class="bulk_more grid-x grid-margin-x">
                                 <?php foreach ( $field_options as $field_option => $value ) {
-                                    if ( $field_option != 'subassigned' && array_key_exists( 'type', $value ) && $value['type'] != "communication_channel") { ?>
+                                    if ( $field_option != 'subassigned' && array_key_exists( 'type', $value ) && $value['type'] != "communication_channel" && array_key_exists('tile', $value) ) { ?>
                                     <div class="cell small-12 medium-4">
                                         <?php render_field_for_display( $field_option, $field_options, null, false, false, "bulk_" ); ?>
                                     </div>
