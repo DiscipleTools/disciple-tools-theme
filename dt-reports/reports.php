@@ -24,10 +24,6 @@ class Disciple_Tools_Reports
 {
 
     /**
-     * @todo Add migration - Add parent_id column BIGINT 22, post_type column VARCHAR 20, add parent_id index, add post_type index, add hash index
-     */
-
-    /**
      * Insert Report into _reports and _reportmeta tables
      *
      * @param array $args
@@ -285,13 +281,13 @@ class Disciple_Tools_Reports
     public static function delete( $report_id ){
         global $wpdb;
         $wpdb->delete(
-            $wpdb->dt_reports,
-            [ 'id' => $report_id ],
-            [ '%d' ]
-        );
-        $wpdb->delete(
             $wpdb->dt_reportmeta,
             [ 'report_id' => $report_id ],
+            [ '%d' ]
+        );
+        return $wpdb->delete(
+            $wpdb->dt_reports,
+            [ 'id' => $report_id ],
             [ '%d' ]
         );
     }
