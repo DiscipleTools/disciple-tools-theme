@@ -19,6 +19,9 @@ function dt_please_log_in() {
         // rest requests are secured by restrict-rest-api.php
         return 1;
     }
+    if ( apply_filters( 'dt_allow_non_login_access', false ) ){
+        return 1;
+    }
     if ( is_multisite() ) { // tests if user has access to current site in multi-site
         if ( 'wp-activate.php' === $pagenow ) {
             return 1;
