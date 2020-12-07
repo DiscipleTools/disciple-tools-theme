@@ -30,6 +30,13 @@ class Disciple_Tools_Core_Endpoints {
                 'callback' => [ $this, 'get_settings' ]
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/activity', [
+                'methods'  => WP_REST_Server::CREATABLE,
+                'callback' => [ $this, 'log_activity' ]
+            ]
+        );
     }
 
 
@@ -46,6 +53,22 @@ class Disciple_Tools_Core_Endpoints {
         } else {
             return new WP_Error( "get_settings", "Something went wrong. Are you a user?", [ 'status' => 400 ] );
         }
+    }
+
+
+    /**
+     * These are settings available to any logged in user.
+     */
+    public function log_activity( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( !isset( $params['action'] ) ) {
+            return new WP_Error( "activity_param_error", "Please provide a valid array", [ 'status' => 400 ] );
+        }
+
+        dt_activity_insert( $params );
+        return [
+            "logged" => true
+        ];
     }
 
 }
