@@ -15,6 +15,10 @@ function dt_please_log_in() {
     if ( 'wp-login.php' === $pagenow ){
         return 1;
     }
+    if ( dt_is_rest() ) {
+        // rest requests are secured by restrict-rest-api.php
+        return 1;
+    }
     if ( is_multisite() ) { // tests if user has access to current site in multi-site
         if ( 'wp-activate.php' === $pagenow ) {
             return 1;

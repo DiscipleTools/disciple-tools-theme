@@ -480,7 +480,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                         Paste the token into the "Mapbox API Token" field in the box above.
                                     </li>
                                 </ol>
-                            <?php else :
+                            <?php elseif ( is_dt() ) :
                                 global $wpdb;
                                 $location_wo_meta = $wpdb->get_var( "SELECT count(*) FROM $wpdb->postmeta WHERE meta_key = 'location_grid' AND meta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta) AND meta_value >= 100000000" );
                                 $user_location_wo_meta = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->usermeta WHERE meta_key = %s AND umeta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta ) AND meta_value >= 100000000", $wpdb->prefix . 'location_grid' ) );
