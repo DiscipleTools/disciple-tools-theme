@@ -1365,6 +1365,231 @@ $.typeahead({
     }
   })
 
+
+  // //multi_select typeaheads
+  // for (let input of $(".multi_select .typeahead__query input")) {
+  //   let field = $(input).data('field')
+  //   let typeahead_name = `.js-typeahead-${field}`
+
+  //   if (window.Typeahead[typeahead_name]) {
+  //     return
+  //   }
+
+  //   let source_data =  { data: [] }
+  //   let field_options = _.get(field_settings, `${field}.default`, {})
+  //   if ( Object.keys(field_options).length > 0 ){
+  //     _.forOwn(field_options, (val, key)=>{
+  //       if ( !val.deleted ){
+  //         source_data.data.push({
+  //           key: key,
+  //           name:key,
+  //           value: val.label || key
+  //         })
+  //       }
+  //     })
+  //   } else {
+  //     source_data = {
+  //       [field]: {
+  //         display: ["value"],
+  //         ajax: {
+  //           url: window.wpApiShare.root + `dt-posts/v2/${list_settings.post_type}/multi-select-values`,
+  //           data: {
+  //             s: "{{query}}",
+  //             field
+  //           },
+  //           beforeSend: function (xhr) {
+  //             xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+  //           },
+  //           callback: {
+  //             done: function (data) {
+  //               return (data || []).map(tag => {
+  //                 let label = _.get(field_options, tag + ".label", tag)
+  //                 return {value: label, key: tag}
+  //               })
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //   $.typeahead({
+  //     input: `.js-typeahead-${field}`,
+  //     minLength: 0,
+  //     maxItem: 20,
+  //     searchOnFocus: true,
+  //     template: function (query, item) {
+  //       return `<span>${_.escape(item.value)}</span>`
+  //     },
+  //     source: source_data,
+  //     display: "value",
+  //     templateValue: "{{value}}",
+  //     dynamic: true,
+  //     multiselect: {
+  //       matchOn: ["key"],
+  //       data: '',
+  //       callback: {
+  //         onCancel: function (node, item, event) {
+  //           // $(`#${field}-spinner`).addClass('active')
+  //           // API.update_post(post_type, post_id, {[field]: {values:[{value:item.key, delete:true}]}}).then((new_post)=>{
+  //           //   $(`#${field}-spinner`).removeClass('active')
+  //           //   this.hideLayout();
+  //           //   this.resetInput();
+  //           //   $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
+  //           // }).catch(err => { console.error(err) })
+  //         }
+  //       }
+  //     },
+  //     callback: {
+  //       onClick: function(node, a, item, event){
+  //         let field_id = $(node).attr('id').replace('_connection', '').replace('bulk_', '');
+
+  //         node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
+  //         // $(`#${field}-spinner`).addClass('active')
+  //         // API.update_post(post_type, post_id, {[field]: {values:[{"value":item.key}]}}).then(new_post=>{
+  //         //   $(`#${field}-spinner`).removeClass('active')
+  //         //   $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
+  //         //   this.addMultiselectItemLayout(item)
+  //         //   event.preventDefault()
+  //         //   this.hideLayout();
+  //         //   this.resetInput();
+  //         // }).catch(err => { console.error(err) })
+  //       },
+  //       onResult: function (node, query, result, resultCount) {
+  //         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+  //         $(`#${field}-result-container`).html(text);
+  //       },
+  //       onHideLayout: function () {
+  //         $(`#${field}-result-container`).html("");
+  //       }
+  //     }
+  //   });
+  // }
+  // let connection_type = null
+  // //new record off a typeahead
+  // $('.create-new-record').on('click', function(){
+  //   connection_type = $(this).data('connection-key');
+  //   $('#create-record-modal').foundation('open');
+  //   $('.js-create-record .error-text').empty();
+  //   $(".js-create-record-button").attr("disabled", false).removeClass("alert")
+  //   $(".reveal-after-record-create").hide()
+  //   $(".hide-after-record-create").show()
+  //   $(".js-create-record input[name=title]").val('')
+  //   //create new record
+  // })
+  // $(".js-create-record").on("submit", function(e) {
+  //   e.preventDefault();
+  //   $(".js-create-record-button").attr("disabled", true).addClass("loading");
+  //   let title = $(".js-create-record input[name=title]").val()
+  //   if ( !connection_type){
+  //     $(".js-create-record .error-text").text(
+  //       "Something went wrong. Please refresh and try again"
+  //     );
+  //     return;
+  //   }
+  //   let update_field = connection_type;
+  //   API.create_post( field_settings[update_field].post_type, {
+  //     title,
+  //   }).then((newRecord)=>{
+  //     return API.update_post( post_type, post_id, { [update_field]: { values: [ { value:newRecord.ID }]}}).then(response=>{
+  //       $(".js-create-record-button").attr("disabled", false).removeClass("loading");
+  //       $(".reveal-after-record-create").show()
+  //       $("#new-record-link").html(`<a href="${_.escape( newRecord.permalink )}">${_.escape( title )}</a>`)
+  //       $(".hide-after-record-create").hide()
+  //       $('#go-to-record').attr('href', _.escape( newRecord.permalink ));
+  //       post = response
+  //       $( document ).trigger( "dt-post-connection-created", [ post, update_field ] );
+  //       if ( Typeahead[`.js-typeahead-${connection_type}`] ){
+  //         Typeahead[`.js-typeahead-${connection_type}`].addMultiselectItemLayout({ID:newRecord.ID.toString(), name:title})
+  //         //masonGrid.masonry('layout')
+  //       }
+  //     })
+  //   })
+  //   .catch(function(error) {
+  //     $(".js-create-record-button").removeClass("loading").addClass("alert");
+  //     $(".js-create-record .error-text").text(
+  //       _.get( error, "responseJSON.message", "Something went wrong. Please refresh and try again" )
+  //     );
+  //     console.error(error);
+  //   });
+  // })
+
+  $('#bulk_edit_picker .dt_location_grid').each(()=> {
+    let field_id = 'location_grid'
+    console.log(this);
+    $.typeahead({
+      input: '.js-typeahead-location_grid',
+      minLength: 0,
+      accent: true,
+      searchOnFocus: true,
+      maxItem: 20,
+      dropdownFilter: [{
+        key: 'group',
+        value: 'focus',
+        template: _.escape(window.wpApiShare.translations.regions_of_focus),
+        all: _.escape(window.wpApiShare.translations.all_locations),
+      }],
+      source: {
+        focus: {
+          display: "name",
+          ajax: {
+            url: window.wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+            data: {
+              s: "{{query}}",
+              filter: function () {
+                return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+              }
+            },
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+            },
+            callback: {
+              done: function (data) {
+                if (typeof typeaheadTotals!=="undefined") {
+                  typeaheadTotals.field = data.total
+                }
+                return data.location_grid
+              }
+            }
+          }
+        }
+      },
+      display: "name",
+      templateValue: "{{name}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["ID"],
+        data: '',
+        callback: {
+          onCancel: function (node, item) {
+            // API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}})
+            // .catch(err => { console.error(err) })
+          }
+        }
+      },
+      callback: {
+        onClick: function (node, a, item, event) {
+          $(`#${element_id}-spinner`).addClass('active');
+          node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
+        },
+        onReady() {
+          this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
+          this.container
+          .removeClass("filter")
+          .find("." + this.options.selector.filterButton)
+          .html(_.escape(window.wpApiShare.translations.regions_of_focus));
+        },
+        onResult: function (node, query, result, resultCount) {
+          resultCount = typeaheadTotals.location_grid
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $('#location_grid-result-container').html(text);
+        },
+        onHideLayout: function () {
+          $('#location_grid-result-container').html("");
+        }
+      }
+    });
+  })
+
   $('button.follow').on("click", function () {
     let following = !($(this).data('value') === "following")
     $(this).data("value", following ? "following" : "" )
@@ -1432,6 +1657,10 @@ $.typeahead({
   $('#bulk_edit_picker select.select-field').change(e => {
     const val = $(e.currentTarget).val()
 
+    if (val === "paused") {
+      $('#reason-paused-options').parent().toggle()
+    }
+
     let field_key = e.currentTarget.id.replace('bulk_', '')
     $(e.currentTarget).data(`bulk_key_${field_key}`, val);
 
@@ -1458,3 +1687,19 @@ $.typeahead({
 
 })(window.jQuery, window.list_settings, window.Foundation);
 
+
+function write_input_widget() {
+
+  if ( jQuery('#mapbox-autocomplete').length === 0 ) {
+    jQuery('#mapbox-wrapper').prepend(`
+    <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true">
+        <input id="mapbox-search" type="text" name="mapbox_search" class="input-group-field" autocomplete="off" placeholder="${ dtMapbox.translations.search_location /*Search Location*/ }" />
+        <div class="input-group-button">
+            <button id="mapbox-spinner-button" class="button hollow" style="display:none;"><span class="loading-spinner active"></span></button>
+            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${ _.escape( dtMapbox.translations.clear ) /*Delete Location*/}" style="display:none;">&times;</button>
+        </div>
+        <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
+    </div>
+  `)
+  }
+}
