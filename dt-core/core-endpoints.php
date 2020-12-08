@@ -57,12 +57,39 @@ class Disciple_Tools_Core_Endpoints {
 
 
     /**
-     * These are settings available to any logged in user.
+     * Log activity to the dt_activity_log
+     * @param WP_REST_Request $request
+     * @return array|WP_Error
      */
     public function log_activity( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( !isset( $params['action'] ) ) {
             return new WP_Error( "activity_param_error", "Please provide a valid array", [ 'status' => 400 ] );
+        }
+
+        // Validate user isn't trying to log activity for a different user
+        $user = wp_get_current_user();
+        if ( isset( $params['user_id'] ) && $params['user_id'] != $user->ID ) {
+            return new WP_Error( "activity_param_error", "Cannot log activity for another user", [ 'status' => 400 ] );
+        }
+
+        // If logging for a post, validate user has permission
+        if ( isset( $params['object_type'] ) && !empty( $params['object_type'] ) ) {
+            $type = $params['object_type'];
+            $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
+            if ( array_search( $type, $post_types ) !== false ) {
+                $post_id = isset( $params['object_id'] ) ? $params['object_id'] : null;
+
+                if ( !empty( $post_id ) ) {
+                    $has_permission = DT_Posts::can_update( $type, $post_id );
+                } else {
+                    $has_permission = DT_Posts::can_access( $type );
+                }
+
+                if ( !$has_permission ) {
+                    return new WP_Error(__FUNCTION__, "You do not have permission for this", ['status' => 403]);
+                }
+            }
         }
 
         dt_activity_insert( $params );
