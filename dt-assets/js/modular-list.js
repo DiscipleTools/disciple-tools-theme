@@ -1042,6 +1042,7 @@
 
   $('#bulk_edit_seeMore').on('click', function(){
     $('#bulk_more').toggle();
+    $('#bulk_edit_seeMore').children().toggle()
   })
 
   function bulk_edit_checkbox_event() {

@@ -264,18 +264,20 @@ declare(strict_types=1);
                                 ?>
                             </select>
                             </div>
-                            <div class="cell small-12 medium-4">
+                            <div class="cell small-12 medium-4 center-items">
                             <span style="margin-right:5px"><?php esc_html_e( 'Request Update', 'disciple_tools' )?>:</span>
                                     <input type="checkbox" id="update-needed" class="dt-switch update-needed" data-bulk_key_requires_update=""/>
                                     <label class="dt-switch" for="update-needed" style="vertical-align: top;"></label>
                             </div>
-                            <div class="cell small-12 medium-4">
+                            <div class="cell small-12 medium-4 center-items">
                             <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?></button>
                             </div>
 
-                            <span class="cell small-12 medium-12">
+                            <span class="cell small-12 medium-12 center">
                                 <a class="button" id="bulk_edit_seeMore">
-                                    <?php esc_html_e( 'See More Options', 'disciple_tools' ); ?></a>
+                                    <span class="seeMoreText"><?php esc_html_e( 'See More Options', 'disciple_tools' ); ?></span>
+                                    <span class="seeFewerText" style="display:none"><?php esc_html_e( 'See Fewer Options', 'disciple_tools' ); ?></span>
+                                </a>
                             </span>
                             <div id="bulk_more" class="grid-x grid-margin-x" style="display:none;">
                                 <?php foreach ( $field_options as $field_option => $value ) {
