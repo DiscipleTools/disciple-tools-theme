@@ -466,7 +466,7 @@ window.METRICS = {
 // nonce timeout fix
 // every 5 minutes will check if nonce timed out
 // if it did then it will redirect to login
-setInterval(function() {
+window.fiveMinuteTimer = setInterval(function() {
   //check if timed out
   get_new_notification_count()
   .fail(function(x) {

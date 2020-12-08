@@ -161,21 +161,21 @@ function load_modal( lng, lat, level, label, grid_id ){
   var marker = new mapboxgl.Marker()
     .setLngLat([lng, lat])
     .addTo(map);
-
-
 }
 
 // resets the tiles for new spacing
 function reset_tile_spacing() {
   let masonGrid = jQuery('.grid')
-  masonGrid.masonry({
-    itemSelector: '.grid-item',
-    percentPosition: true
-  });
+  if ( typeof masonGrid.masonry !== 'undefined' ){
+    masonGrid.masonry({
+      itemSelector: '.grid-item',
+      percentPosition: true
+    });
+  }
 }
 
 // writes the geocoding field at the top of the mapping area for adding a new location
-function write_input_widget() {
+window.write_input_widget = function write_input_widget() {
 
   if ( jQuery('#mapbox-autocomplete').length === 0 ) {
     jQuery('#mapbox-wrapper').prepend(`

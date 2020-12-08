@@ -4,6 +4,8 @@ if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
+dt_please_log_in();
+
 $url = dt_get_url_path();
 $dt_post_type = explode( "/", $url )[0];
 

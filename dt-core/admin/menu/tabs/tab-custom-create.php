@@ -112,7 +112,7 @@ class Disciple_Tools_Tab_Custom_Create extends Disciple_Tools_Abstract_Menu_Base
 
     private function post_type_select(){
         global $wp_post_types;
-        $post_types = apply_filters( 'dt_registered_post_types', [] );
+        $post_types = DT_Posts::get_post_types();
         ?>
         <form method="post">
             <input type="hidden" name="post_type_select_nonce" id="post_type_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'post_type_select' ) ) ?>" />

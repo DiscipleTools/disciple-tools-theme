@@ -30,7 +30,8 @@
 
   //set up custom cached filter
   if ( cached_filter && !_.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ){
-      add_custom_filter(cached_filter.name, "default", cached_filter.query, cached_filter.labels, false)
+    cached_filter.query.offset = 0;
+    add_custom_filter(cached_filter.name, "default", cached_filter.query, cached_filter.labels, false)
   } else {
     //check select filter
     if ( current_filter.ID ){
@@ -352,7 +353,7 @@
           let field_settings = list_settings.post_type_settings.fields[field_key]
           let field_value = _.get( record, field_key, false )
 
-          if ( field_value !== false ) {
+          if ( field_value ) {
             if (['text', 'number'].includes(field_settings.type)) {
               values = [_.escape(field_value)]
             } else if (field_settings.type === 'date') {

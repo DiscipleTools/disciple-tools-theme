@@ -148,7 +148,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     private function field_select(){
         global $wp_post_types;
         $select_options = [];
-        $post_types = apply_filters( 'dt_registered_post_types', [] );
+        $post_types = DT_Posts::get_post_types();
         foreach ( $post_types as $post_type ){
             $select_options[$post_type] = [];
             $fields = $this->get_post_fields( $post_type );
@@ -235,7 +235,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         }
 
         $defaults = apply_filters( 'dt_custom_fields_settings', [], $post_type );
-        DT_Posts::get_post_field_settings( $post_type );
 
         $field_options = $field["default"] ?? [];
 
@@ -282,18 +281,16 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <?php endif; ?>
                     </td>
                     <td>
-                        <?php if ( !isset( $defaults[$field_key] ) ) : ?>
-                            <select name="tile_select">
-                                <option><?php esc_html_e( "No tile / hidden", 'disciple_tools' ) ?></option>
-                                <?php foreach ( $tile_options as $tile_key => $tile_option ) :
-                                    $select = isset( $field["tile"] ) && $field["tile"] === $tile_key;
-                                    ?>
-                                    <option value="<?php echo esc_html( $tile_key ) ?>" <?php echo esc_html( $select ? "selected" : "" )?>>
-                                        <?php echo esc_html( $tile_option["label"] ?? $tile_key ) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        <?php endif; ?>
+                        <select name="tile_select">
+                            <option><?php esc_html_e( "No tile / hidden", 'disciple_tools' ) ?></option>
+                            <?php foreach ( $tile_options as $tile_key => $tile_option ) :
+                                $select = isset( $field["tile"] ) && $field["tile"] === $tile_key;
+                                ?>
+                                <option value="<?php echo esc_html( $tile_key ) ?>" <?php echo esc_html( $select ? "selected" : "" )?>>
+                                    <?php echo esc_html( $tile_option["label"] ?? $tile_key ) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </td>
                     <td>
                         <button class="button small expand_translations">
@@ -588,7 +585,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
     private function add_field(){
         global $wp_post_types;
-        $post_types = apply_filters( 'dt_registered_post_types', [] );
+        $post_types = DT_Posts::get_post_types();
         $tile_options = [];
         foreach ( $post_types as $post_type ){
             $tile_options[ $post_type ] = DT_Posts::get_post_tiles( $post_type );

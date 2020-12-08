@@ -2,6 +2,8 @@
 /*
 Template Name: Metrics
 */
+dt_please_log_in();
+
 if ( !current_user_can( 'access_contacts' ) && !current_user_can( "view_project_metrics" ) ) {
     wp_safe_redirect( '/settings' );
 }
