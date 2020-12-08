@@ -1069,7 +1069,8 @@
 
   function bulk_edit_submit() {
     $('#bulk_edit_submit-spinner').addClass('active');
-    let allInputs = $('#bulk_edit_picker input, #bulk_edit_picker select, #bulk_edit_picker .select-button, #bulk_edit_picker .button').not('#bulk_share');
+    let allInputs = $('#bulk_edit_picker input, #bulk_edit_picker select, #bulk_edit_picker .button').not('#bulk_share');
+    let multiSelectInputs = $('#bulk_edit_picker .dt_multi_select')
     let shareInput = $('#bulk_share');
     let updatePayload = {};
     let sharePayload;
@@ -1085,6 +1086,27 @@
           }
         })
     })
+
+    let multiSelectUpdatePayload = {};
+    multiSelectInputs.each(function () {
+      let inputData = $(this).data();
+      $.each(inputData, function (key, value) {
+        if (key.includes('bulk_key_') && value) {
+          let field_key = key.replace('bulk_key_', '');
+          if (!multiSelectUpdatePayload[field_key]) {
+            multiSelectUpdatePayload[field_key] = {'values': []};
+          }
+          multiSelectUpdatePayload[field_key].values.push(value.values);
+        }
+      })
+
+    })
+    const multiSelectKeys = Object.keys(multiSelectUpdatePayload);
+
+    multiSelectKeys.forEach((key, index) => {
+      console.log(`${key}: ${multiSelectUpdatePayload[key]}`);
+      updatePayload[key] = multiSelectUpdatePayload[key];
+    });
 
     shareInput.each(function () {
       sharePayload = $(this).data('bulk_key_share');
@@ -1126,7 +1148,7 @@
 
       let fieldValue = {};
 
-      fieldValue.values = [{value:optionKey}];
+      fieldValue.values = {value:optionKey};
 
 
       $(this).addClass('selected-select-button');
