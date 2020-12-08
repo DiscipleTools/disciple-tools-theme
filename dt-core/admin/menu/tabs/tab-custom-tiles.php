@@ -147,7 +147,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
     private function tile_select(){
         global $wp_post_types;
-        $post_types = apply_filters( 'dt_registered_post_types', [] );
+        $post_types = DT_Posts::get_post_types();
         $tile_options = [];
         foreach ( $post_types as $post_type ){
             $tile_options[$post_type] = DT_Posts::get_post_tiles( $post_type );
@@ -395,7 +395,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
     private function add_tile(){
         global $wp_post_types;
-        $post_types = apply_filters( 'dt_registered_post_types', [] );
+        $post_types = DT_Posts::get_post_types();
         ?>
         <form method="post">
             <input type="hidden" name="tile_add_nonce" id="tile_add_nonce" value="<?php echo esc_attr( wp_create_nonce( 'tile_add' ) ) ?>" />

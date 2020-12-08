@@ -905,7 +905,7 @@ class Disciple_Tools_Posts
         if ( $check_permissions && !self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, "You do not have access to these", [ 'status' => 403 ] );
         }
-        $post_types = apply_filters( 'dt_registered_post_types', [] );
+        $post_types = DT_Posts::get_post_types();
         if ( !in_array( $post_type, $post_types ) ){
             return new WP_Error( __FUNCTION__, "$post_type in not a valid post type", [ 'status' => 400 ] );
         }
