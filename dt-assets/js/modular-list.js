@@ -1057,7 +1057,7 @@
     e.stopImmediatePropagation();
     let checked = $(this).children('input').is(':checked');
         $('.bulk_edit_checkbox input').each(function() {
-        $(this).attr('checked', checked);
+        $(this).prop('checked', checked);
     })
   })
   /**
