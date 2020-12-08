@@ -569,7 +569,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                                 }
                                 else {
                                     echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th>
-                                    <td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" /> <a onclick="jQuery(\'#' . esc_attr( $k ) . '\').val( window.location.hostname );">add this site</a>' . "\n";
+                                    <td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" /> <a onclick="jQuery(\'#' . esc_attr( $k ) . '\').val( window.location.href.substring(0, window.location.href.indexOf(\'/wp-admin\')).replace(/http[s]?:\/\//, \'\') );">add this site</a>' . "\n";
                                     echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
                                     echo '</td><tr/>' . "\n";
                                 }
