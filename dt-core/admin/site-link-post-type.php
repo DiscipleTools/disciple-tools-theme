@@ -930,10 +930,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             if ( $this->post_type === $pt ) {
 
-                $url = '';
-                if ( isset( $_SERVER["HTTP_HOST"] ) ) {
-                    $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
-                }
+                $url = self::get_current_site_base_url();
+                $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? "http://$url" : "https://$url";
+
                 echo "<script type='text/javascript'>
 
                 function check_link_status( site_link_id, id ) {
