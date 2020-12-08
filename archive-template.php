@@ -217,7 +217,53 @@ declare(strict_types=1);
                                     </div>
                                 </div>
                             </div>
+                            <div class="cell small-12 medium-4">
+                                <div class="section-subheader">
+                                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
+                                    <?php esc_html_e( "Status", 'disciple_tools' ) ?>
+                                    <button class="help-button" data-section="overall-status-help-text">
+                                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                    </button>
+                                </div>
+                                <select id="overall_status" class="select-field">
+                                    <option></option>
+                                    <?php foreach ($field_options["overall_status"]["default"] as $key => $option){
+                                        $value = $option["label"] ?? "";
+                                        if ( $contact["overall_status"]["key"] === $key ) {
+                                            ?>
+                                            <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
+                                        <?php } else { ?>
+                                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
+                                        <?php } ?>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="cell small-12 medium-4" style="display:none">
 
+                            <div class="section-subheader">
+                                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
+                                    <?php echo esc_html( $field_options["reason_paused"]["name"] ?? '' ) ?>
+                                    </button>
+                                </div>
+
+                            <select id="reason-paused-options">
+                                <option></option>
+                                <?php
+                                foreach ( $field_options["reason_paused"]["default"] as $reason_key => $option ) {
+                                    if ( $option["label"] ) {
+                                        ?>
+                                        <option value="<?php echo esc_attr( $reason_key ) ?>"
+                                            <?php if ( ( $contact["reason_paused"]["key"] ?? "" ) === $reason_key ) {
+                                                echo "selected";
+                                            } ?>>
+                                            <?php echo esc_html( $option["label"] ?? "" ) ?>
+                                        </option>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </select>
+                            </div>
                             <div class="cell small-12 medium-4">
                             <span style="margin-right:5px"><?php esc_html_e( 'Request Update', 'disciple_tools' )?>:</span>
                                     <input type="checkbox" id="update-needed" class="dt-switch update-needed" data-bulk_key_requires_update=""/>
@@ -234,7 +280,7 @@ declare(strict_types=1);
                             <div id="bulk_more" class="grid-x grid-margin-x" style="display:none;">
                                 <?php foreach ( $field_options as $field_option => $value ) {
                                     if ( $field_option !== 'subassigned' && $field_option !== 'assigned_to' && $field_option !== 'overall_status' && $field_option !== 'location_grid' && $field_option !== 'location_grid_meta' && $field_option !== 'tags' && array_key_exists( 'type', $value ) && $value['type'] != "communication_channel" && array_key_exists( 'tile', $value ) ) { ?>
-                                    <div class="cell small-12 medium-4">
+                                    <div class="cell small-12 medium-<?php echo esc_attr( ( $field_option === "milestones" ) ? "12" : "4" ) ?>">
                                         <?php render_field_for_display( $field_option, $field_options, null, false, false, "bulk_" ); ?>
                                     </div>
                                     <?php }
