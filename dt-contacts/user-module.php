@@ -69,8 +69,12 @@ class DT_Contacts_User {
             $contact = DT_Posts::get_post( $post_type, $post_id );
             if ( current_user_can( "create_users" )){
                 ?>
-                <li><a data-open="make-user-from-contact-modal"><?php esc_html_e( "Make a user from this contact", 'disciple_tools' ) ?></a></li>
-                <li><a data-open="link-to-user-modal"><?php esc_html_e( "Link to an existing user", 'disciple_tools' ) ?></a></li>
+                <li><a data-open="make-user-from-contact-modal">
+                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/arrow-user.svg' ) ?>"/>
+                        <?php esc_html_e( "Make a user from this contact", 'disciple_tools' ) ?></a></li>
+                <li><a data-open="link-to-user-modal">
+                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/link.svg' ) ?>"/>
+                        <?php esc_html_e( "Link to an existing user", 'disciple_tools' ) ?></a></li>
 
                 <div class="reveal" id="make-user-from-contact-modal" data-reveal data-reset-on-close>
                     <h3><?php echo esc_html_x( 'Make User From Contact', 'Make user modal', 'disciple_tools' )?></h3>

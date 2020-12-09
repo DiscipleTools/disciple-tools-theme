@@ -91,7 +91,11 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                     <section id="contact-status" class="small-12 cell bordered-box">
                         <h3 class="section-header">
                             <?php echo esc_html__( "Status", "disciple_tools" )?>
+                            <button class="help-button-tile" data-tile="status">
+                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                            </button>
                         </h3>
+
                         <div class="grid-x grid-margin-x">
                         <?php do_action( "dt_details_additional_section", 'status', $post_type ); ?>
                         <?php
@@ -127,6 +131,9 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                     <section id="details-tile" class="small-12 cell bordered-box collapsed" >
                         <h3 class="section-header">
                             <?php echo esc_html__( "Details", "disciple_tools" )?>
+                            <button class="help-button-tile" data-tile="details">
+                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                            </button>
                             <button class="section-chevron chevron_down show-details-section">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                             </button>
@@ -272,6 +279,9 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                         if ( isset( $tile_options["label"] ) ){ ?>
                                             <h3 class="section-header">
                                                 <?php echo esc_html( $tile_options["label"] )?>
+                                                <button class="help-button-tile" data-tile="<?php echo esc_html( $tile_key ) ?>">
+                                                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                                </button>
                                                 <button class="section-chevron chevron_down">
                                                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                                                 </button>

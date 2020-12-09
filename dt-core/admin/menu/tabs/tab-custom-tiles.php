@@ -217,6 +217,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             <p><?php esc_html_e( "Note: This tile is hidden and will not show on the record page", 'disciple_tools' ) ?></p>
         <?php endif; ?>
 
+
         <table class="widefat">
             <thead>
             <tr>
@@ -273,6 +274,12 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 </tr>
             </tbody>
         </table>
+        <br>
+
+        <label><strong>Description</strong>
+            <input style="width: 100%" type="text" name="tile_description" value="<?php echo esc_html( $tile["description"] ?? "" )?>">
+        </label>
+        <button class="button" type="submit">Save Description</button>
 
         <br>
 
@@ -347,6 +354,9 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         }
         if ( isset( $post_submission["restore_tile"] ) ){
             $custom_tile["hidden"] = false;
+        }
+        if ( isset( $post_submission["tile_description"] ) && $post_submission["tile_description"] != ( $custom_tile["description"] ?? "" ) ){
+            $custom_tile["description"] = $post_submission["tile_description"];
         }
         //update other Translations
         $langs = dt_get_available_languages();

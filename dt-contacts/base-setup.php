@@ -357,10 +357,18 @@ class DT_Contacts_Base {
         if ( $post_type === "contacts" ){
             ?>
             <li>
-                <a data-open="contact-type-modal"><?php echo esc_html( sprintf( _x( "Change %s Type", "Change Record Type", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
+
+                <a data-open="contact-type-modal">
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg' ) ?>"/>
+                    <?php echo esc_html( sprintf( _x( "Change %s Type", "Change Record Type", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
             </li>
-            <li><a data-open="merge-dupe-edit-modal"><?php esc_html_e( "See duplicates", 'disciple_tools' ) ?></a></li>
-            <li><a id="open_merge_with_contact"><?php esc_html_e( "Merge with another contact", 'disciple_tools' ) ?></a></li>
+            <li><a data-open="merge-dupe-edit-modal">
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
+
+                    <?php esc_html_e( "See duplicates", 'disciple_tools' ) ?></a></li>
+            <li><a id="open_merge_with_contact">
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/merge.svg' ) ?>"/>
+                    <?php esc_html_e( "Merge with another contact", 'disciple_tools' ) ?></a></li>
             <?php get_template_part( 'dt-assets/parts/merge', 'details' ); ?>
             <?php
         }

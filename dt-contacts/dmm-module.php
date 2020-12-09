@@ -122,7 +122,8 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "post_type" => "contacts",
                 "p2p_direction" => "to",
                 "p2p_key" => "contacts_to_subassigned",
-//                "tile" => "status",
+                "tile" => "status",
+                "custom_display" => true,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/subassigned.svg",
             ];
 

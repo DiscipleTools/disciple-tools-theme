@@ -142,6 +142,7 @@ function dt_site_scripts() {
             'post_type' => $post_type ? $post_type : $url_path,
             'url_path' => $url_path,
             'post_type_modules' => dt_get_option( "dt_post_type_modules" ),
+            'tiles' => DT_Posts::get_post_tiles( $post_type ),
         )
     );
 

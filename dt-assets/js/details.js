@@ -4,6 +4,7 @@ jQuery(document).ready(function($) {
   let post_type = window.detailsSettings.post_type
   let post = window.detailsSettings.post_fields
   let field_settings = window.detailsSettings.post_settings.fields
+  window.post_type_fields = field_settings
   let rest_api = window.API
   let typeaheadTotals = {}
 
