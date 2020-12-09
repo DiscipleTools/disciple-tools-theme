@@ -6,6 +6,7 @@ dt_please_log_in();
 $dt_post_type = get_post_type();
 if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
     wp_safe_redirect( '/settings' );
+    exit();
 }
 
 ( function () {
