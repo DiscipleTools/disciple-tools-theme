@@ -1058,6 +1058,7 @@
     let checked = $(this).children('input').is(':checked');
         $('.bulk_edit_checkbox input').each(function() {
         $(this).prop('checked', checked);
+        bulk_edit_count();
     })
   })
   /**
@@ -1127,7 +1128,11 @@
 
   function bulk_edit_count() {
     let bulk_edit_total_checked = $('.bulk_edit_checkbox input:checked').length;
-    bulk_edit_submit_button.text(`Update ${bulk_edit_total_checked} ${list_settings.post_type}`)
+    if (bulk_edit_total_checked == 0) {
+      bulk_edit_submit_button.text(`Update ${list_settings.post_type}`)
+    } else {
+      bulk_edit_submit_button.text(`Update ${bulk_edit_total_checked} ${list_settings.post_type}`)
+    }
   }
 
   let bulk_edit_picker_checkboxes = $('#bulk_edit_picker #update-needed');
