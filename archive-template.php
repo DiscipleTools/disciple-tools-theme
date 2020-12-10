@@ -164,7 +164,8 @@ dt_please_log_in();
                     </div>
 
                     <div id="bulk_edit_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
-                        <p style="font-weight:bold"><?php esc_html_e( 'Select all the contacts you want to update from the list, and update them below', 'disciple_tools' ); ?></p>
+                        <p style="font-weight:bold"><?php
+                        echo sprintf( esc_html__( 'Select all the  %1$s you want to update from the list, and update them below', 'disciple_tools' ), esc_html( $post_type ) );?></p>
                         <div class="grid-x grid-margin-x">
                             <div class="cell small-12 medium-4">
                             <div class="section-subheader">
@@ -189,14 +190,65 @@ dt_please_log_in();
                                     </div>
                                 </div>
                             </div>
-                            <div class="cell small-12 medium-4">
                                 <?php
-                                if ( $post_type == "contacts" ) {
-                                    render_field_for_display( "subassigned", $field_options, null, false, false, "bulk_" );
-                                } elseif ( $post_type == "groups" ) {
-                                    render_field_for_display( "coaches", $field_options, null, false, false, "bulk_" );
-                                } ?>
-                            </div>
+                                if ( $post_type == "contacts" ) {?>
+                                    <div class="cell small-12 medium-4">
+                                    <?php render_field_for_display( "subassigned", $field_options, null, false, false, "bulk_" ); ?>
+                                    </div>
+                                    <div class="cell small-12 medium-4">
+                                        <div class="section-subheader">
+                                            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
+                                            <?php esc_html_e( "Status", 'disciple_tools' ) ?>
+                                            <button class="help-button" data-section="overall-status-help-text">
+                                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                            </button>
+                                        </div>
+                                        <select id="overall_status" class="select-field">
+                                            <option></option>
+                                            <?php foreach ($field_options["overall_status"]["default"] as $key => $option){
+                                                $value = $option["label"] ?? "";
+                                                if ( $contact["overall_status"]["key"] === $key ) {
+                                                    ?>
+                                                    <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
+                                                <?php } else { ?>
+                                                    <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <div class="cell small-12 medium-4" style="display:none">
+
+                                        <div class="section-subheader">
+                                                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
+                                                <?php echo esc_html( $field_options["reason_paused"]["name"] ?? '' ) ?>
+                                                </button>
+                                            </div>
+
+                                        <select id="reason-paused-options">
+                                            <option></option>
+                                            <?php
+                                            foreach ( $field_options["reason_paused"]["default"] as $reason_key => $option ) {
+                                                if ( $option["label"] ) {
+                                                    ?>
+                                                    <option value="<?php echo esc_attr( $reason_key ) ?>"
+                                                        <?php if ( ( $contact["reason_paused"]["key"] ?? "" ) === $reason_key ) {
+                                                            echo "selected";
+                                                        } ?>>
+                                                        <?php echo esc_html( $option["label"] ?? "" ) ?>
+                                                    </option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+
+                                <?php } elseif ( $post_type == "groups" ) {?>
+                                    <div class="cell small-12 medium-4">
+                                    <?php
+                                    render_field_for_display( "coaches", $field_options, null, false, false, "bulk_" ); ?>
+                                    </div>
+                                <?php } ?>
                             <div class="cell small-12 medium-4">
                                 <div class="section-subheader">
                                   <?php esc_html_e( 'Share with:', 'disciple_tools' );?>
@@ -218,53 +270,6 @@ dt_please_log_in();
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="cell small-12 medium-4">
-                                <div class="section-subheader">
-                                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
-                                    <?php esc_html_e( "Status", 'disciple_tools' ) ?>
-                                    <button class="help-button" data-section="overall-status-help-text">
-                                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                    </button>
-                                </div>
-                                <select id="overall_status" class="select-field">
-                                    <option></option>
-                                    <?php foreach ($field_options["overall_status"]["default"] as $key => $option){
-                                        $value = $option["label"] ?? "";
-                                        if ( $contact["overall_status"]["key"] === $key ) {
-                                            ?>
-                                            <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
-                                        <?php } else { ?>
-                                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
-                                        <?php } ?>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                            <div class="cell small-12 medium-4" style="display:none">
-
-                            <div class="section-subheader">
-                                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
-                                    <?php echo esc_html( $field_options["reason_paused"]["name"] ?? '' ) ?>
-                                    </button>
-                                </div>
-
-                            <select id="reason-paused-options">
-                                <option></option>
-                                <?php
-                                foreach ( $field_options["reason_paused"]["default"] as $reason_key => $option ) {
-                                    if ( $option["label"] ) {
-                                        ?>
-                                        <option value="<?php echo esc_attr( $reason_key ) ?>"
-                                            <?php if ( ( $contact["reason_paused"]["key"] ?? "" ) === $reason_key ) {
-                                                echo "selected";
-                                            } ?>>
-                                            <?php echo esc_html( $option["label"] ?? "" ) ?>
-                                        </option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </select>
                             </div>
                             <div class="cell small-12 medium-4 center-items">
                             <span style="margin-right:5px"><?php esc_html_e( 'Request Update', 'disciple_tools' )?>:</span>
