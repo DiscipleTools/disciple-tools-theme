@@ -4,8 +4,9 @@ Template Name: View Duplicates
 */
 dt_please_log_in();
 
-if ( ! current_user_can( 'view_any_contacts' ) ) {
+if ( ! current_user_can( 'dt_all_access_contacts' ) ) {
     wp_safe_redirect( '/settings' );
+    exit();
 }
 
 get_header();

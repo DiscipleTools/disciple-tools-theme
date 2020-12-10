@@ -86,7 +86,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Config' ) ) {
              * Add logic to evaluate current user and return a bool decision on permission to the mapping module
              * Example below gives permission to dispatchers and admins.
              */
-            if ( current_user_can( 'view_any_contacts' )
+            if ( current_user_can( 'dt_all_access_contacts' )
                 || current_user_can( 'view_project_metrics' )
                 || current_user_can( 'view_mapping' ) ) {
                 return true;

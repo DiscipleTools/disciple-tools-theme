@@ -8,6 +8,7 @@ dt_please_log_in();
 
 if ( ! current_user_can( 'access_contacts' ) ) {
     wp_safe_redirect( '/settings' );
+    exit();
 }
 ?>
 

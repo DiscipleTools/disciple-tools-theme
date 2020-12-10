@@ -148,7 +148,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     private function field_select(){
         global $wp_post_types;
         $select_options = [];
-        $post_types = apply_filters( 'dt_registered_post_types', [] );
+        $post_types = DT_Posts::get_post_types();
         foreach ( $post_types as $post_type ){
             $select_options[$post_type] = [];
             $fields = $this->get_post_fields( $post_type );
@@ -585,7 +585,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
     private function add_field(){
         global $wp_post_types;
-        $post_types = apply_filters( 'dt_registered_post_types', [] );
+        $post_types = DT_Posts::get_post_types();
         $tile_options = [];
         foreach ( $post_types as $post_type ){
             $tile_options[ $post_type ] = DT_Posts::get_post_tiles( $post_type );

@@ -402,7 +402,7 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
                             </tbody>
                         </table>
 
-                        <?php if ( current_user_can( "view_any_contacts" ) ): ?>
+                        <?php if ( current_user_can( "dt_all_access_contacts" ) ): ?>
                             <p>
                                 <strong><?php esc_html_e( 'Follow all contacts', 'disciple_tools' )?></strong>
                             </p>
