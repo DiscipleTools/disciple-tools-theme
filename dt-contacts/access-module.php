@@ -76,6 +76,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             ], $multiplier_permissions )
         ];
         $expected_roles["administrator"]["permissions"]["dt_all_access_contacts"] = true;
+        $expected_roles["administrator"]["permissions"]["assign_any_contacts"] = true;
 
         return $expected_roles;
     }
