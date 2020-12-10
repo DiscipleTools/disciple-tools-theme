@@ -230,10 +230,7 @@ dt_please_log_in();
                                             foreach ( $field_options["reason_paused"]["default"] as $reason_key => $option ) {
                                                 if ( $option["label"] ) {
                                                     ?>
-                                                    <option value="<?php echo esc_attr( $reason_key ) ?>"
-                                                        <?php if ( ( $contact["reason_paused"]["key"] ?? "" ) === $reason_key ) {
-                                                            echo "selected";
-                                                        } ?>>
+                                                    <option value="<?php echo esc_attr( $reason_key ) ?>">
                                                         <?php echo esc_html( $option["label"] ?? "" ) ?>
                                                     </option>
                                                     <?php
