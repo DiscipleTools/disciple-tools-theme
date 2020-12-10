@@ -103,7 +103,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                 return $fields;
             }
 
-            foreach( $types as $type ){
+            foreach ( $types as $type ){
                 if ( $post_type === $type['post_type'] ){
                     if ( !isset( $fields[$type['meta_key']] ) ){
                         $fields[$type['meta_key']] = [
@@ -296,7 +296,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             return $hash;
         }
 
-        function get_current_public_key(){
+        public function get_current_public_key(){
             $parts = self::parse_url_parts();
             if ( isset( $parts['public_key'] ) && ! empty( $parts['public_key'] ) ) {
                 return $parts['public_key'];
@@ -304,7 +304,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             return false;
         }
 
-        function get_current_action(){
+        public function get_current_action(){
             $parts = self::parse_url_parts();
             if ( isset( $parts['action'] ) && ! empty( $parts['action'] ) ) {
                 return (string) $parts['action'];
@@ -340,7 +340,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
         }
 
         public function api_create_key( WP_REST_Request $request ){
-            return DT_Magic_URL::create_unique_key();
+            return self::create_unique_key();
         }
     }
 }
