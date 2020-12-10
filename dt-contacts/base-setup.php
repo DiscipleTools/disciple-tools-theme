@@ -317,7 +317,7 @@ class DT_Contacts_Base {
                 <select id="type-options">
                     <?php
                     foreach ( $contact_fields["type"]["default"] as $option_key => $option ) {
-                        if ( !empty( $option["label"] ) && ( isset( $option["hidden"] ) && true !== $option["hidden"] ) ) {
+                        if ( !empty( $option["label"] ) && ( !isset( $option["hidden"] ) || $option["hidden"] !== true ) ) {
                             $selected = ( $option_key === ( $post["type"]["key"] ?? "" ) ) ? "selected" : "";
                             ?>
                             <option value="<?php echo esc_attr( $option_key ) ?>" <?php echo esc_html( $selected ) ?>>
@@ -447,10 +447,13 @@ class DT_Contacts_Base {
             $filters["filters"][] = [
                 'ID' => 'recent',
                 'tab' => 'default',
-                'name' => __( "Recent", 'disciple_tools' ),
+                'name' => __( "My Recently Viewed", 'disciple_tools' ),
                 'query' => [
                     'dt_recent' => true
                 ],
+                'labels' => [
+                    [ "id" => 'recent', 'name' => __( "Last 30 viewed", 'disciple_tools' ) ]
+                ]
             ];
             $filters["filters"][] = [
                 'ID' => 'personal',
