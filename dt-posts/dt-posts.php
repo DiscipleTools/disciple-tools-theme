@@ -254,7 +254,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|WP_Error
      */
     public static function update_post( string $post_type, int $post_id, array $fields, bool $silent = false, bool $check_permissions = true ){
-        $post_types = DT_Posts::get_post_types();
+        $post_types = self::get_post_types();
         if ( !in_array( $post_type, $post_types ) ){
             return new WP_Error( __FUNCTION__, "Post type does not exist", [ 'status' => 403 ] );
         }

@@ -1,4 +1,5 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 class DT_Groups_Base extends DT_Module_Base {
     private static $_instance = null;
@@ -41,7 +42,6 @@ class DT_Groups_Base extends DT_Module_Base {
         add_filter( "dt_filter_access_permissions", [ $this, "dt_filter_access_permissions" ], 20, 2 );
 
     }
-
 
     public function after_setup_theme(){
         if ( class_exists( 'Disciple_Tools_Post_Type_Template' )) {
