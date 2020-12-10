@@ -294,13 +294,13 @@ dt_please_log_in();
                             </div>
                         </div>
 
-                        <button class="button dt-green" id="bulk_edit_submit">Update <?php
+                        <button class="button dt-green" id="bulk_edit_submit"><span id="bulk_edit_submit_text" style="    text-transform:capitalize">Update <?php
                         if ( $post_type == "contacts" ) {
                             esc_html_e( 'Contacts', 'disciple_tools' );
                         } elseif ( $post_type == "groups" ) {
                             esc_html_e( 'Groups', 'disciple_tools' );
                         }
-                        ?>
+                        ?></span>
                         <span id="bulk_edit_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
                         </button>
                     </div>

@@ -1128,10 +1128,12 @@
 
   function bulk_edit_count() {
     let bulk_edit_total_checked = $('.bulk_edit_checkbox input:checked').length;
+    let bulk_edit_submit_button_text = $('#bulk_edit_submit_text')
+
     if (bulk_edit_total_checked == 0) {
-      bulk_edit_submit_button.text(`Update ${list_settings.post_type}`)
+      bulk_edit_submit_button_text.text(`Update ${list_settings.post_type}`)
     } else {
-      bulk_edit_submit_button.text(`Update ${bulk_edit_total_checked} ${list_settings.post_type}`)
+      bulk_edit_submit_button_text.text(`Update ${bulk_edit_total_checked} ${list_settings.post_type}`)
     }
   }
 
