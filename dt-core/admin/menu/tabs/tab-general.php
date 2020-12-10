@@ -318,8 +318,8 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 </thead>
                 <?php foreach ( $update_required_options as $option_key => $option ) : ?>
                     <tr>
-                        <td><?php echo esc_html( $field_options["overall_status"]['default'][$option['status']]["label"] ) ?></td>
-                        <td><?php echo esc_html( $field_options["seeker_path"]['default'][$option['seeker_path']]["label"] ) ?></td>
+                        <td><?php echo esc_html( $field_options["overall_status"]['default'][$option['status']]["label"] ?? '' ) ?></td>
+                        <td><?php echo esc_html( $field_options["seeker_path"]['default'][$option['seeker_path']]["label"] ?? '_missing_' ) ?></td>
                         <td>
                             <input name="<?php echo esc_html( $option_key ) ?>_days" type="number"
                                 value="<?php echo esc_html( $option["days"] ) ?>"  />
@@ -496,9 +496,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                                    <?php checked( $module_values['enabled'] ) ?> />
                         </td>
                         <td>
-                            <?php echo esc_html( join(array_map( function ( $req_key ) use ( $modules ){
+                            <?php echo esc_html( join( ", ", array_map( function ( $req_key ) use ( $modules ){
                                 return $modules[$req_key]["name"];
-                            }, ( $module_values["prerequisites"] ?? [] ) ), ", ") );
+                            }, ( $module_values["prerequisites"] ?? [] ) ) ) );
                             ?>
                         </td>
                         <td>
