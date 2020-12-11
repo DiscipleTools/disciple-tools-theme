@@ -1147,7 +1147,9 @@ class Disciple_Tools_Posts
         return $users;
     }
 
-
+    /*
+     * Get disctinct meta values for a specific meta key (joins tables)
+     */
     public static function get_multi_select_options( $post_type, $field, $search = ""){
         if ( !self::can_access( $post_type ) ){
             return new WP_Error( __FUNCTION__, "You do not have access to: " . $field, [ 'status' => 403 ] );
@@ -1162,6 +1164,21 @@ class Disciple_Tools_Posts
             ORDER BY $wpdb->postmeta.meta_value ASC
             LIMIT 20
         ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%'));
+
+        return $options;
+    }
+
+    /*
+     * Get disctinct meta values for a specific meta key (doesn't join tables)
+     */
+    public static function get_single_select_options( string $field ) {
+        global $wpdb;
+        $options = $wpdb->get_col(
+            $wpdb->prepare("
+                SELECT DISTINCT $wpdb->postmeta.meta_value FROM $wpdb->postmeta
+                WHERE $wpdb->postmeta.meta_key = %s
+                ORDER BY $wpdb->postmeta.meta_value ASC;",
+                esc_sql( $field ) ) );
 
         return $options;
     }
