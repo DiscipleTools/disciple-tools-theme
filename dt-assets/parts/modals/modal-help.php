@@ -1,13 +1,15 @@
 <div class="reveal" id="help-modal" data-reveal>
     <?php
-    $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
-    $contact_channels = DT_Posts::get_post_settings( "contacts" )["channels"];
-    $group_fields = DT_Posts::get_post_field_settings( "groups" );
-    $group_channels = DT_Posts::get_post_settings( "groups" )["channels"];
+    $post_type = get_post_type();
+    if ( empty( $post_type ) ){
+        return;
+    }
+    $post_fields = DT_Posts::get_post_field_settings( $post_type );
+
     /**
      * Contact Record
      */
-    if ( is_singular( "contacts" ) ) :
+    if ( $post_type === "contacts" ) :
         ?>
         <!--    Quick Actions   -->
         <div class="help-section" id="quick-action-help-text" style="display: none">
@@ -20,11 +22,11 @@
 
     <?php endif;
 
-    if ( is_singular( [ "contacts", "groups" ] ) ) : ?>
+    if ( !empty( $post_type ) && isset( $post_fields["assigned_to"] ) ) : ?>
         <!--    Assigned to -->
         <div class="help-section" id="assigned-to-help-text" style="display: none">
-            <h3><?php echo esc_html( $contact_fields["assigned_to"]["name"] )?></h3>
-            <p><?php echo esc_html( $contact_fields["assigned_to"]["description"] ) ?></p>
+            <h3><?php echo esc_html( $post_fields["assigned_to"]["name"] )?></h3>
+            <p><?php echo esc_html( $post_fields["assigned_to"]["description"] ) ?></p>
             <?php if ( current_user_can( "dt_all_access_contacts" ) ) : ?>
                 <p><strong><?php echo esc_html_x( "User workload status icons legend:", 'Optional Documentation', 'disciple_tools' ) ?></strong></p>
                 <ul style="list-style-type:none">
@@ -42,7 +44,7 @@
     /**
      * Group record
      */
-    if ( is_singular( "groups" ) ) : ?>
+    if ( $post_type === "groups" ) : ?>
 
 
         <!--  Four Fields Tile -->
@@ -51,11 +53,11 @@
             <p><?php echo esc_html_x( "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:", 'Optional Documentation', 'disciple_tools' ) ?></p>
 
             <ul>
-                <li><strong><?php echo esc_html( $group_fields["four_fields_unbelievers"]["name"] ) ?></strong> - <?php echo esc_html( $group_fields["four_fields_unbelievers"]["description"] ?? "" ) ?></li>
-                <li><strong><?php echo esc_html( $group_fields["four_fields_believers"]["name"] ) ?></strong> - <?php echo esc_html( $group_fields["four_fields_believers"]["description"] ?? "" ) ?></li>
-                <li><strong><?php echo esc_html( $group_fields["four_fields_accountable"]["name"] ) ?></strong> - <?php echo esc_html( $group_fields["four_fields_accountable"]["description"] ?? "" ) ?></li>
-                <li><strong><?php echo esc_html( $group_fields["four_fields_church_commitment"]["name"] ) ?></strong> - <?php echo esc_html( $group_fields["four_fields_church_commitment"]["description"] ?? "" ) ?></li>
-                <li><strong><?php echo esc_html( $group_fields["four_fields_multiplying"]["name"] ) ?></strong> - <?php echo esc_html( $group_fields["four_fields_multiplying"]["description"] ?? "" ) ?></li>
+                <li><strong><?php echo esc_html( $post_fields["four_fields_unbelievers"]["name"] ) ?></strong> - <?php echo esc_html( $post_fields["four_fields_unbelievers"]["description"] ?? "" ) ?></li>
+                <li><strong><?php echo esc_html( $post_fields["four_fields_believers"]["name"] ) ?></strong> - <?php echo esc_html( $post_fields["four_fields_believers"]["description"] ?? "" ) ?></li>
+                <li><strong><?php echo esc_html( $post_fields["four_fields_accountable"]["name"] ) ?></strong> - <?php echo esc_html( $post_fields["four_fields_accountable"]["description"] ?? "" ) ?></li>
+                <li><strong><?php echo esc_html( $post_fields["four_fields_church_commitment"]["name"] ) ?></strong> - <?php echo esc_html( $post_fields["four_fields_church_commitment"]["description"] ?? "" ) ?></li>
+                <li><strong><?php echo esc_html( $post_fields["four_fields_multiplying"]["name"] ) ?></strong> - <?php echo esc_html( $post_fields["four_fields_multiplying"]["description"] ?? "" ) ?></li>
             </ul>
         </div>
 
