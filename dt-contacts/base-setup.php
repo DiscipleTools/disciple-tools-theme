@@ -1,4 +1,5 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 class DT_Contacts_Base {
     private static $_instance = null;
@@ -317,7 +318,7 @@ class DT_Contacts_Base {
                 <select id="type-options">
                     <?php
                     foreach ( $contact_fields["type"]["default"] as $option_key => $option ) {
-                        if ( !empty( $option["label"] ) && ( isset( $option["hidden"] ) && true !== $option["hidden"] ) ) {
+                        if ( !empty( $option["label"] ) && ( !isset( $option["hidden"] ) || $option["hidden"] !== true ) ) {
                             $selected = ( $option_key === ( $post["type"]["key"] ?? "" ) ) ? "selected" : "";
                             ?>
                             <option value="<?php echo esc_attr( $option_key ) ?>" <?php echo esc_html( $selected ) ?>>
@@ -357,10 +358,18 @@ class DT_Contacts_Base {
         if ( $post_type === "contacts" ){
             ?>
             <li>
-                <a data-open="contact-type-modal"><?php echo esc_html( sprintf( _x( "Change %s Type", "Change Record Type", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
+
+                <a data-open="contact-type-modal">
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg' ) ?>"/>
+                    <?php echo esc_html( sprintf( _x( "Change %s Type", "Change Record Type", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
             </li>
-            <li><a data-open="merge-dupe-edit-modal"><?php esc_html_e( "See duplicates", 'disciple_tools' ) ?></a></li>
-            <li><a id="open_merge_with_contact"><?php esc_html_e( "Merge with another contact", 'disciple_tools' ) ?></a></li>
+            <li><a data-open="merge-dupe-edit-modal">
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
+
+                    <?php esc_html_e( "See duplicates", 'disciple_tools' ) ?></a></li>
+            <li><a id="open_merge_with_contact">
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/merge.svg' ) ?>"/>
+                    <?php esc_html_e( "Merge with another contact", 'disciple_tools' ) ?></a></li>
             <?php get_template_part( 'dt-assets/parts/merge', 'details' ); ?>
             <?php
         }
@@ -439,10 +448,13 @@ class DT_Contacts_Base {
             $filters["filters"][] = [
                 'ID' => 'recent',
                 'tab' => 'default',
-                'name' => __( "Recent", 'disciple_tools' ),
+                'name' => __( "My Recently Viewed", 'disciple_tools' ),
                 'query' => [
                     'dt_recent' => true
                 ],
+                'labels' => [
+                    [ "id" => 'recent', 'name' => __( "Last 30 viewed", 'disciple_tools' ) ]
+                ]
             ];
             $filters["filters"][] = [
                 'ID' => 'personal',

@@ -179,10 +179,12 @@ window.write_input_widget = function write_input_widget() {
 
   if ( jQuery('#mapbox-autocomplete').length === 0 ) {
     jQuery('#mapbox-wrapper').prepend(`
-    <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true">
+    <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true" data-add-address="true">
         <input id="mapbox-search" type="text" name="mapbox_search" class="input-group-field" autocomplete="off" placeholder="${ dtMapbox.translations.search_location /*Search Location*/ }" />
         <div class="input-group-button">
-            <button id="mapbox-spinner-button" class="button hollow" style="display:none;"><span class="loading-spinner active"></span></button>
+            <button id="mapbox-spinner-button" class="button hollow" style="display:none;border-color:lightgrey;">
+                <span class="" style="border-radius: 50%;width: 24px;height: 24px;border: 0.25rem solid lightgrey;border-top-color: black;animation: spin 1s infinite linear;display: inline-block;"></span>
+            </button>
             <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${ _.escape( dtMapbox.translations.clear ) /*Delete Location*/}" style="display:none;">&times;</button>
         </div>
         <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
@@ -389,7 +391,10 @@ function mapbox_autocomplete(address){
       }
     })
 
-    list.append(`<div data-value="address" style="font-weight:bold;">${_.escape( window.dtMapbox.translations.use )}: "${_.escape( address )}"</div>`)
+    let add_address = jQuery('#mapbox-autocomplete').data('add-address')
+    if ( typeof add_address === 'undefined' || add_address === true ) {
+      list.append(`<div data-value="address" style="font-weight:bold;">${_.escape( window.dtMapbox.translations.use )}: "${_.escape( address )}"</div>`)
+    }
 
     jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
       close_all_lists(e.target.attributes['data-value'].value);
@@ -421,7 +426,10 @@ function google_autocomplete(address){
         }
       })
 
-      list.append(`<div data-value="address" style="font-weight:bold;">${_.escape( window.dtMapbox.translations.use )}: "${_.escape( address )}"</div>`)
+      let add_address = jQuery('#mapbox-autocomplete').data('add-address')
+      if ( typeof add_address === 'undefined' || add_address === true ) {
+        list.append(`<div data-value="address" style="font-weight:bold;">${_.escape( window.dtMapbox.translations.use )}: "${_.escape( address )}"</div>`)
+      }
 
       jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
         close_all_lists(e.target.attributes['data-value'].value);

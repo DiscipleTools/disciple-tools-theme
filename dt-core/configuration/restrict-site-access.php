@@ -42,7 +42,6 @@ function dt_please_log_in() {
     }
     return 1;
 }
-add_action( 'init', 'dt_please_log_in', 0 );
 
 /**
  * Removes feeds via filters
