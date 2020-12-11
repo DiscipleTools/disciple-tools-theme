@@ -87,7 +87,7 @@ class Disciple_Tools_Core_Endpoints {
                 }
 
                 if ( !$has_permission ) {
-                    return new WP_Error(__FUNCTION__, "You do not have permission for this", ['status' => 403]);
+                    return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
                 }
             }
         }
