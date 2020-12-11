@@ -87,8 +87,10 @@ class DT_Contacts_Access extends DT_Module_Base {
             $fields["type"]["default"]["access"] = [
                 "label" => __( 'Access', 'disciple_tools' ),
                 "color" => "#2196F3",
-                "description" => __( 'A ministry contact, designed for collaboration', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/share.svg"
+                "description" => __( 'Someone to follow-up with', 'disciple_tools' ),
+                "visibility" => __( "Collaborators", 'disciple_tools' ),
+                "icon" => get_template_directory_uri() . "/dt-assets/images/share.svg",
+                "order" => 20
             ];
 
             $fields['assigned_to'] = [
