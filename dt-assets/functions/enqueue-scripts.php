@@ -208,6 +208,8 @@ function dt_site_scripts() {
                 'jquery',
                 'lodash',
                 'shared-functions',
+                'typeahead-jquery',
+                'jquery-masonry'
             ) );
             wp_localize_script( 'details', 'detailsSettings', [
                 'post_type' => $post_type,
