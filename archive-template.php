@@ -194,6 +194,7 @@ dt_please_log_in();
                                 <?php
                                 if ( $post_type == "contacts" ) {?>
                                     <div class="cell small-12 medium-4">
+                                    <?php $field_options['subassigned']["custom_display"] = false ?>
                                     <?php render_field_for_display( "subassigned", $field_options, null, false, false, "bulk_" ); ?>
                                     </div>
                                     <div class="cell small-12 medium-4">
@@ -238,6 +239,7 @@ dt_please_log_in();
 
                                 <?php } elseif ( $post_type == "groups" ) {?>
                                     <div class="cell small-12 medium-4">
+                                    <?php $field_options['coaches']["custom_display"] = false ?>
                                     <?php
                                     render_field_for_display( "coaches", $field_options, null, false, false, "bulk_" ); ?>
                                     </div>
