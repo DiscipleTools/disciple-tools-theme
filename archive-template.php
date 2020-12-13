@@ -207,13 +207,8 @@ dt_please_log_in();
                                         <select id="overall_status" class="select-field">
                                             <option></option>
                                             <?php foreach ($field_options["overall_status"]["default"] as $key => $option){
-                                                $value = $option["label"] ?? "";
-                                                if ( $contact["overall_status"]["key"] === $key ) {
-                                                    ?>
-                                                    <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
-                                                <?php } else { ?>
+                                                $value = $option["label"] ?? "";?>
                                                     <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
-                                                <?php } ?>
                                             <?php } ?>
                                         </select>
                                     </div>
