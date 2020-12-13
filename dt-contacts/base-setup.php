@@ -119,13 +119,15 @@ class DT_Contacts_Base {
                         "label" => __( 'User', 'disciple_tools' ),
                         "description" => __( "Representing a User in the system", 'disciple_tools' ),
                         "color" => "#3F729B",
-                        "hidden" => true,
+                        "hidden" => true
                     ],
                     'personal' => [
                         "label" => __( 'Personal', 'disciple_tools' ),
                         "color" => "#9b379b",
-                        "description" => __( "Visible only to me", 'disciple_tools' ),
+                        "description" => __( "A friend, family member or acquaintance", 'disciple_tools' ),
+                        "visibility" => __( "Only me", 'disciple_tools' ),
                         "icon" => get_template_directory_uri() . "/dt-assets/images/locked.svg",
+                        "order" => 50
                     ],
                 ],
                 'customizable' => false

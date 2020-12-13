@@ -35,20 +35,38 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
 
                     <div class="type-control-field" style="margin:20px 0">
                         <strong>
-                        <?php echo esc_html( sprintf( __( 'Select your %s type', 'disciple_tools' ), $post_settings["label_singular"] ) ) ?>
+                        <?php echo esc_html( sprintf( __( 'Select the %s type:', 'disciple_tools' ), $post_settings["label_singular"] ) ) ?>
                         </strong>
                     </div>
                     <div class="type-options">
-                        <?php foreach ( $post_settings["fields"]["type"]["default"] as $option_key => $type_option ) {
+                        <?php if ( isset( $post_settings["fields"]["type"]["default"] ) ) {
+                            uasort( $post_settings["fields"]["type"]["default"], function ( $a, $b ){
+                                return $a['order'] ?? 100 <=> $b['order'] ?? 100;
+                            });
+                        }
+                        foreach ( $post_settings["fields"]["type"]["default"] as $option_key => $type_option ) {
+                            //order fields alphabetically by Name
                             if ( empty( $type_option["hidden"] ) ){ ?>
                                 <div class="type-option" id="<?php echo esc_html( $option_key ); ?>">
-                                    <input type="radio" name="type" value="<?php echo esc_html( $option_key ); ?>">
-                                    <div>
-                                        <?php if ( isset( $type_option["icon"] ) ) : ?>
-                                        <img class="dt-icon" src="<?php echo esc_url( $type_option["icon"] ) ?>">
-                                        <?php endif; ?>
-                                        <strong style="color:#3f729b"><?php echo esc_html( $type_option["label"] ); ?></strong>
-                                        <span style="display:block"><?php echo esc_html( $type_option["description"] ?? "" ); ?></span>
+                                    <div class="type-option-border">
+                                        <input type="radio" name="type" value="<?php echo esc_html( $option_key ); ?>" style="display: none">
+                                        <div class="type-option-rows">
+                                            <div>
+                                                <?php if ( isset( $type_option["icon"] ) ) : ?>
+                                                <img class="dt-icon" src="<?php echo esc_url( $type_option["icon"] ) ?>">
+                                                <?php endif; ?>
+                                                <strong class="type-option-title"><?php echo esc_html( $type_option["label"] ); ?></strong>
+                                            </div>
+                                            <div>
+                                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/visibility.svg' ) ?>"/>
+                                                 <?php echo esc_html( $type_option["visibility"] ?? "" ); ?>
+                                            </div>
+                                            <div>
+                                                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                                <?php echo esc_html( $type_option["description"] ?? "" ); ?>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             <?php }

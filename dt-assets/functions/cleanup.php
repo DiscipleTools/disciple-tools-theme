@@ -16,22 +16,22 @@ add_action( 'after_setup_theme', 'dt_start', 99 );
  */
 function dt_start() {
 
-    // remove pesky injected css for recent comments widget
+    // Remove pesky injected css for recent comments widget
     add_filter( 'wp_head', 'dt_remove_wp_widget_recent_comments_style', 1 );
 
-    // clean up comment styles in the head
+    // Clean up comment styles in the head
     add_action( 'wp_head', 'dt_remove_recent_comments_style', 1 );
 
-    // clean up gallery output in wp
+    // Clean up gallery output in wp
     add_filter( 'gallery_style', 'dt_gallery_style' );
 
-    // cleaning up excerpt
+    // Cleaning up excerpt
     add_filter( 'excerpt_more', 'dt_excerpt_more' );
 
     // Removes WP sticky class in favor or foundations sticky class
     add_filter( 'post_class', 'dt_remove_sticky_class' );
 
-    // sets the theme to "light"
+    // Sets the theme to "light"
     add_filter( 'get_user_option_admin_color', 'dt_change_admin_color' );
     remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' ); // Remove options for admin area color scheme
 
@@ -58,9 +58,7 @@ function dt_remove_recent_comments_style() {
     global $wp_widget_factory;
     if ( isset( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'] ) ) {
         remove_action( 'wp_head', array(
-            $wp_widget_factory->widgets['WP_Widget_Recent_Comments'],
-            'recent_comments_style'
-        ) );
+            $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style' ) );
     }
 }
 
@@ -85,7 +83,7 @@ function dt_gallery_style( $css ) {
 function dt_excerpt_more( $more ) {
     global $post;
 
-    // edit here if you like
+    // Edit here if you like
     return '<a class="excerpt-read-more" href="' . get_permalink( $post->ID ) . '" title="Read' . esc_html( get_the_title( $post->ID ) ) . '"> ... Read more &raquo; </a>';
 }
 
@@ -139,19 +137,20 @@ function dt_remove_dashboard_meta() {
     remove_meta_box( 'dashboard_recent_drafts', 'dashboard', 'side' );
     remove_meta_box( 'dashboard_right_now', 'dashboard', 'normal' );
 
-    //remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
-    //remove_meta_box( 'dashboard_activity', 'dashboard', 'normal');
+    // remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
+    // remove_meta_box( 'dashboard_activity', 'dashboard', 'normal');
 
-    // Remove_meta_box('dashboard_right_now', 'dashboard', 'core');    // Right Now Widget
+    // remove_meta_box('dashboard_right_now', 'dashboard', 'core');    // Right Now Widget
     remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'core' ); // Comments Widget
     remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'core' );  // Incoming Links Widget
     remove_meta_box( 'dashboard_plugins', 'dashboard', 'core' );         // Plugins Widget
 
-    // Remove_meta_box('dashboard_quick_press', 'dashboard', 'core');  // Quick Press Widget
+    // remove_meta_box('dashboard_quick_press', 'dashboard', 'core');  // Quick Press Widget
     remove_meta_box( 'dashboard_recent_drafts', 'dashboard', 'core' );   // Recent Drafts Widget
     remove_meta_box( 'dashboard_primary', 'dashboard', 'core' );
     remove_meta_box( 'dashboard_secondary', 'dashboard', 'core' );
-    // Removing plugin dashboard boxes
+    
+    // Remove plugin dashboard boxes
     remove_meta_box( 'yoast_db_widget', 'dashboard', 'normal' );         // Yoast's SEO Plugin Widget
 }
 
@@ -173,13 +172,13 @@ function dt_change_admin_color( $result ) {
  */
 function dt_remove_post_admin_menus() {
 
-    remove_menu_page( 'edit.php' );                   //Posts
-    remove_menu_page( 'upload.php' );                 //Media
-    remove_menu_page( 'edit.php?post_type=page' );    //Pages
-    remove_menu_page( 'edit-comments.php' );          //Comments
+    remove_menu_page( 'edit.php' );                     // Posts
+    remove_menu_page( 'upload.php' );                   // Media
+    remove_menu_page( 'edit.php?post_type=page' );      // Pages
+    remove_menu_page( 'edit-comments.php' );            // Comments
 
-    if ( ! current_user_can( 'manage_dt' ) ) { // add menu items to hide from all but admin
-        remove_menu_page( 'tools.php' );                  //Tools
+    if ( ! current_user_can( 'manage_dt' ) ) {          // Add menu items to hide from all but admin
+        remove_menu_page( 'tools.php' );                // Tools
     }
 }
 
