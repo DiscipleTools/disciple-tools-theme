@@ -375,8 +375,6 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
         <h3><?php echo esc_html( sprintf( _x( "Delete %s", "Delete Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></h3>
         <p><?php echo esc_html( sprintf( _x( "Are you sure you want to delete %s?", "Are you sure you want to delete name?", 'disciple_tools' ), $dt_post["name"] ) ) ?></p>
 
-
-
         <div class="grid-x">
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
                 <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>

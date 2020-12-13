@@ -288,7 +288,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             }
             update_option( 'dt_site_options', $site_options, true );
         }
-
     }
 
     public function update_required_options(){
