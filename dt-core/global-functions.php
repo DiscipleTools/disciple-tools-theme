@@ -173,6 +173,20 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    if ( ! function_exists( 'recursive_sanitize_text_field' ) ) {
+        function recursive_sanitize_text_field( array $array ) : array {
+            foreach ( $array as $key => &$value ) {
+                if ( is_array( $value ) ) {
+                    $value = recursive_sanitize_text_field( $value );
+                }
+                else {
+                    $value = sanitize_text_field( wp_unslash( $value ) );
+                }
+            }
+            return $array;
+        }
+    }
+
     if ( ! function_exists( 'dt_get_translations' ) ) {
         function dt_get_translations() {
             require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
@@ -247,19 +261,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
-    if ( ! function_exists( 'dt_has_permissions' ) ) {
-        function dt_has_permissions( array $permissions ) : bool {
-            if ( count( $permissions ) > 0 ) {
-                foreach ( $permissions as $permission ){
-                    if ( current_user_can( $permission ) ){
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-    }
-
 
     /**
      * Prints the name of the Group or User
@@ -315,7 +316,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
         return $merged;
     }
-
 
     /**
      * Accepts types: key_select, multi_select, text, number, date, connection, location, communication_channel

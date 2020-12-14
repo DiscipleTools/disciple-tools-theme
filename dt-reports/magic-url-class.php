@@ -287,7 +287,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          * Generates a unique id key
          * @return string
          */
-        public static function create_unique_key() : string {
+        public function create_unique_key() : string {
             try {
                 $hash = hash( 'sha256', bin2hex( random_bytes( 256 ) ) );
             } catch ( Exception $exception ) {
@@ -340,7 +340,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
         }
 
         public function api_create_key( WP_REST_Request $request ){
-            return self::create_unique_key();
+            return $this->create_unique_key();
         }
     }
 }
