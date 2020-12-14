@@ -428,8 +428,8 @@ class DT_Posts extends Disciple_Tools_Posts {
 
 
         self::adjust_post_custom_fields( $post_settings, $post_id, $fields );
-        $fields["name"] = $wp_post->post_title;
-        $fields["title"] = $wp_post->post_title;
+        $fields["name"] = wp_specialchars_decode( $wp_post->post_title );
+        $fields["title"] = wp_specialchars_decode( $wp_post->post_title );
 
         $fields = apply_filters( 'dt_after_get_post_fields_filter', $fields, $post_type );
         wp_cache_set( "post_" . $current_user_id . '_' . $post_id, $fields );
@@ -479,6 +479,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $ids = [];
         foreach ( $records as $record ) {
+            $record->post_title = wp_specialchars_decode( $record->post_title );
             $ids[] = $record->ID;
         }
         $ids_sql = dt_array_to_sql( $ids );
@@ -542,7 +543,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
             self::adjust_post_custom_fields( $post_settings, $record["ID"], $record, $fields_to_return, $all_posts[$record["ID"]] ?? [], $all_post_user_meta[$record["ID"]] ?? [] );
             $record["permalink"] = $site_url . '/' . $post_type .'/' . $record["ID"];
-            $record["name"] = $record["post_title"];
+            $record["name"] = wp_specialchars_decode( $record["post_title"] );
             $record["post_date"] = [
                 "timestamp" => is_numeric( $record["post_date"] ) ? $record["post_date"] : dt_format_date( $record["post_date"], "U" ),
                 "formatted" => dt_format_date( $record["post_date"] )
