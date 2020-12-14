@@ -12,6 +12,16 @@
 function dt_please_log_in() {
 
     global $wpdb, $pagenow;
+    if ( 'wp-login.php' === $pagenow ){
+        return 1;
+    }
+    if ( dt_is_rest() ) {
+        // rest requests are secured by restrict-rest-api.php
+        return 1;
+    }
+    if ( apply_filters( 'dt_allow_non_login_access', false ) ){
+        return 1;
+    }
     if ( is_multisite() ) { // tests if user has access to current site in multi-site
         if ( 'wp-activate.php' === $pagenow ) {
             return 1;
@@ -26,16 +36,12 @@ function dt_please_log_in() {
             exit;
         }
     }
-    if ( 'wp-login.php' === $pagenow ){
-        return 1;
-    }
     if ( ! is_user_logged_in() ) {
         auth_redirect();
         exit;
     }
     return 1;
 }
-add_action( 'init', 'dt_please_log_in', 0 );
 
 /**
  * Removes feeds via filters

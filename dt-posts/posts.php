@@ -222,21 +222,21 @@ class Disciple_Tools_Posts
             if ($activity->field_type === "connection from"){
                 $from = get_post( $activity->object_id );
                 $to = get_post( $activity->meta_value );
-                $from_title = $from->post_title;
-                $to_title = $to->post_title ?? '#' . $activity->meta_value;
+                $from_title = wp_specialchars_decode( $from->post_title );
+                $to_title = wp_specialchars_decode( $to->post_title ) ?? '#' . $activity->meta_value;
             } elseif ( $activity->field_type === "connection to"){
                 $to = get_post( $activity->object_id );
                 $from = get_post( $activity->meta_value );
-                $to_title = $to->post_title;
-                $from_title = $from->post_title ?? '#' . $activity->meta_value;
+                $to_title = wp_specialchars_decode( $to->post_title );
+                $from_title = wp_specialchars_decode( $from->post_title ) ?? '#' . $activity->meta_value;
             } else {
                 return "CONNECTION DESTROYED";
             }
         } else {
             $p2p_from = get_post( $p2p_record->p2p_from, ARRAY_A );
             $p2p_to = get_post( $p2p_record->p2p_to, ARRAY_A );
-            $from_title = $p2p_from["post_title"];
-            $to_title = $p2p_to["post_title"];
+            $from_title = wp_specialchars_decode( $p2p_from["post_title"] );
+            $to_title = wp_specialchars_decode( $p2p_to["post_title"] );
         }
         $object_note_from = '';
         $object_note_to = '';
@@ -905,7 +905,7 @@ class Disciple_Tools_Posts
         if ( $check_permissions && !self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, "You do not have access to these", [ 'status' => 403 ] );
         }
-        $post_types = apply_filters( 'dt_registered_post_types', [] );
+        $post_types = DT_Posts::get_post_types();
         if ( !in_array( $post_type, $post_types ) ){
             return new WP_Error( __FUNCTION__, "$post_type in not a valid post type", [ 'status' => 400 ] );
         }
@@ -1008,8 +1008,11 @@ class Disciple_Tools_Posts
                     $sort_sql = "ISNULL(p2p_post.post_title), p2p_post.post_title $sort_dir";
                 }
             } elseif ( $post_fields[$sort]["type"] === "communication_channel" ){
-                $joins = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key LIKE '{$sort}%' AND sort.meta_key NOT LIKE '%_details' )";
-                $sort_sql = "sort.meta_value IS NULL, sort.meta_value * 1 $sort_dir, sort.meta_value $sort_dir";
+                $joins = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key LIKE '{$sort}%' AND sort.meta_key NOT LIKE '%_details' AND sort.meta_id = ( SELECT meta_id FROM $wpdb->postmeta pm_sort  where pm_sort.post_id = p.ID AND pm_sort.meta_key LIKE '{$sort}%' AND sort.meta_key NOT LIKE '%_details' LIMIT 1 ))";
+                $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', sort.meta_value * 1 $sort_dir, sort.meta_value $sort_dir";
+            } elseif ( $post_fields[$sort]["type"] === "location" ){
+                $joins = "LEFT JOIN $wpdb->postmeta sort ON ( sort.post_id = p.ID AND sort.meta_key = '$sort' AND sort.meta_id = ( SELECT meta_id FROM $wpdb->postmeta pm_sort where pm_sort.post_id = p.ID AND pm_sort.meta_key = '$sort' LIMIT 1 ) )";
+                $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
             } else {
                 $joins = "LEFT JOIN $wpdb->postmeta as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
@@ -1063,6 +1066,10 @@ class Disciple_Tools_Posts
                 $posts[] = $post;
                 $total_rows++;
             }
+        }
+        //decode special characters in post titles
+        foreach ( $posts as $post ) {
+            $post->post_title = wp_specialchars_decode( $post->post_title );
         }
         return [
             "posts" => $posts,

@@ -204,7 +204,7 @@ else {
 
                 $url_path = strtok( dt_get_url_path(), '?' ); //allow get parameters
 
-                if ( isset( $template_for_url[ $url_path ] ) ) {
+                if ( isset( $template_for_url[ $url_path ] ) && dt_please_log_in() ) {
                     $template_filename = locate_template( $template_for_url[ $url_path ], true );
                     if ( $template_filename ) {
                         exit(); // just exit if template was found and loaded
@@ -337,6 +337,7 @@ else {
              * Reports
              */
             require_once( get_template_directory() . '/dt-reports/reports.php' );
+            require_once( get_template_directory() . '/dt-reports/magic-url-class.php' );
 
             /**
              * Workflows

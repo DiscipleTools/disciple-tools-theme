@@ -743,6 +743,14 @@ a.dt-green:hover {
     margin-right: 3px;
     margin-left: 3px;
 }
+.help-button-tile {
+    margin-right: 3px;
+    margin-left: 3px;
+}
+.help-button-field {
+    margin-right: 3px;
+    margin-left: 3px;
+}
 
 .help-section h3 {
     font-size: 1.6rem;
@@ -1019,26 +1027,45 @@ img.dt-blue-icon {
         margin-bottom: 15px;
     }
     .type-option:hover {
-        background-color: #ecf5fc;
-        border: 1px solid #c2e0ff;
-        border-radius:15px;
+        .type-option-border {
+            background-color: #ecf5fc;
+            border: 1px solid #c2e0ff;
+            border-radius:15px;
+        }
     }
     .type-option.selected {
-        background-color: #ecf5fc;
-        border: 1px solid #c2e0ff;
-        border-radius:15px;
+        .type-option-border {
+            background-color: #ecf5fc;
+            border: 1px solid #c2e0ff;
+            border-radius:15px;
+        }
     }
     .type-option{
+        padding-right:10px;
         display:flex;
-        padding: 5px 10px;
         flex-basis: 25%;
+        .type-option-border {
+            padding: 5px 10px;
+            border: 1px solid #c2e0ff;
+            border-radius:15px;
+        }
         input {
             align-self:center;
             margin-right:5px;
             margin-bottom: 0;
         }
-        div {
-            display: inline-block
+        .type-option-title {
+            color:#3f729b;
+            font-size: larger;
+        }
+
+        .type-option-rows {
+            display: inline-block;
+            div {
+                display: block;
+                margin-bottom: 5px;
+            }
+
         }
     }
 }

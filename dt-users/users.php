@@ -66,7 +66,7 @@ class Disciple_Tools_Users
         $user_id = get_current_user_id();
         $users = [];
         $update_needed = [];
-        if ( !current_user_can( 'view_any_contacts' ) && !current_user_can( 'dt_list_users' ) ){
+        if ( !current_user_can( 'dt_all_access_contacts' ) && !current_user_can( 'dt_list_users' ) ){
             // users that are shared posts that are shared with me
             if ( $search_string ){
                 $users_ids = $wpdb->get_results( $wpdb->prepare("
@@ -187,7 +187,7 @@ class Disciple_Tools_Users
                     "contact_id" => self::get_contact_for_user( $user->ID )
                 ];
                 //extra information for the dispatcher
-                if ( current_user_can( 'view_any_contacts' ) && !$get_all ){
+                if ( current_user_can( 'dt_all_access_contacts' ) && !$get_all ){
                     $workload_status = get_user_option( 'workload_status', $user->ID );
                     if ( $workload_status && isset( $workload_status_options[ $workload_status ]["color"] ) ) {
                         $u['status_color'] = $workload_status_options[$workload_status]["color"];

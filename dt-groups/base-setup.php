@@ -1,4 +1,5 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 class DT_Groups_Base extends DT_Module_Base {
     private static $_instance = null;
@@ -41,7 +42,6 @@ class DT_Groups_Base extends DT_Module_Base {
         add_filter( "dt_filter_access_permissions", [ $this, "dt_filter_access_permissions" ], 20, 2 );
 
     }
-
 
     public function after_setup_theme(){
         if ( class_exists( 'Disciple_Tools_Post_Type_Template' )) {
@@ -129,7 +129,8 @@ class DT_Groups_Base extends DT_Module_Base {
                         'color' => "#4CAF50"
                     ],
                 ],
-                'tile'     => '',
+                'tile'     => 'status',
+                'custom_display' => true,
                 'icon' => get_template_directory_uri() . '/dt-assets/images/status.svg',
                 "default_color" => "#366184",
                 "show_in_table" => 10,
@@ -230,7 +231,8 @@ class DT_Groups_Base extends DT_Module_Base {
                     ],
                 ],
                 "customizable" => "add_only",
-                'tile' => '',
+                'tile' => 'health-metrics',
+                'custom_display' => true
             ];
 
             $fields['start_date'] = [
@@ -306,7 +308,9 @@ class DT_Groups_Base extends DT_Module_Base {
                 "type" => "connection",
                 "post_type" => "contacts",
                 "p2p_direction" => "to",
-                "p2p_key" => "contacts_to_groups"
+                "p2p_key" => "contacts_to_groups",
+                'tile' => 'relationships',
+                'custom_display' => true
             ];
             $fields["leaders"] = [
                 "name" => __( 'Leaders', 'disciple_tools' ),
@@ -324,7 +328,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 "post_type" => "contacts",
                 "p2p_direction" => "from",
                 "p2p_key" => "groups_to_coaches",
-                'tile' => '',
+                'tile' => 'status',
+                'custom_display' => true,
                 'icon' => get_template_directory_uri() . '/dt-assets/images/coach.svg',
                 'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-contact.svg',
             ];
@@ -439,6 +444,7 @@ class DT_Groups_Base extends DT_Module_Base {
             ?>
 
                 <div class="cell small-12 medium-4">
+                    <?php $group_fields['group_status']["custom_display"] = false ?>
                     <?php render_field_for_display( "group_status", $group_fields, $group, true ); ?>
                 </div>
                 <div class="cell small-12 medium-4">
@@ -471,6 +477,7 @@ class DT_Groups_Base extends DT_Module_Base {
                     </div>
                 </div>
                 <div class="cell small-12 medium-4">
+                    <?php $group_fields['coaches']["custom_display"] = false ?>
                     <?php render_field_for_display( "coaches", $group_fields, $group, true ); ?>
                 </div>
         <?php }

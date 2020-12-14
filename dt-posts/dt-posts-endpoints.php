@@ -363,6 +363,18 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
+        //Get Post Field Settings
+        register_rest_route(
+            "dt-public/v" . intval( $this->version ), '/(?P<post_type>\w+)/settings_fields', [
+                [
+                    "methods"  => "POST",
+                    "callback" => [ $this, 'get_post_field_settings' ],
+                    "args" => [
+                        "post_type" => $arg_schemas["post_type"],
+                    ]
+                ]
+            ]
+        );
     }
 
     /**
@@ -386,7 +398,7 @@ class Disciple_Tools_Posts_Endpoints {
                 return new WP_Error( 'rest_invalid_param', sprintf( '%1$s is not of type %2$s', $param, 'integer' ), array( 'status' => 400 ) );
             }
             if ( 'post_type' === $argument['type'] ){
-                $post_types = apply_filters( 'dt_registered_post_types', [] );
+                $post_types = DT_Posts::get_post_types();
                 if ( !in_array( $value, $post_types ) ){
                     return new WP_Error( 'rest_invalid_param', sprintf( '%1$s is not a valid post type', $value ), array( 'status' => 400 ) );
                 }
@@ -541,6 +553,25 @@ class Disciple_Tools_Posts_Endpoints {
     public function get_post_settings( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
         return DT_Posts::get_post_settings( $url_params["post_type"] );
+    }
+
+    public function get_post_field_settings( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+
+        /**
+         * Access to the dt-public url and these field settings requires site to site link with valid token.
+         */
+        $params = $request->get_params();
+        if ( ! isset( $params['transfer_token'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing parameters.' );
+        }
+        $valid_token = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
+        if ( ! $valid_token ) {
+            dt_write_log( $valid_token );
+            return new WP_Error( __METHOD__, 'Invalid transfer token' );
+        }
+
+        return DT_Posts::get_post_field_settings( $url_params["post_type"] );
     }
 
 }

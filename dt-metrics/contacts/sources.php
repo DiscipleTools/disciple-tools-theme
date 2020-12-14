@@ -14,7 +14,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
     public $slug = 'sources'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/contacts/sources.js'; // should be full file name plus extension
-    public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
+    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
 
     public function __construct() {
         parent::__construct();
@@ -119,7 +119,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
 
     public function api_sources_chart_data( WP_REST_Request $request ) {
         $params = $request->get_params();
-        if ( !( current_user_can( "view_any_contacts" ) || current_user_can( "view_project_metrics" ) ) ) {
+        if ( !( current_user_can( "dt_all_access_contacts" ) || current_user_can( "view_project_metrics" ) ) ) {
             return new WP_Error( __FUNCTION__, "Permission required: view all contacts", [ 'status' => 403 ] );
         }
         try {

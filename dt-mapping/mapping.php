@@ -65,7 +65,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
              */
             $this->permissions = apply_filters( 'dt_mapping_module_has_permissions', false );
             if ( ! $this->permissions ) {
-                if ( current_user_can( 'view_any_contacts' )
+                if ( current_user_can( 'dt_all_access_contacts' )
                     || current_user_can( 'view_project_metrics' )
                     || current_user_can( 'view_mapping' ) ) {
                     $this->permissions = true;
