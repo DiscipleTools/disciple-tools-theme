@@ -304,6 +304,11 @@ function dt_site_scripts() {
             'translations' => apply_filters( 'dt_list_js_translations', $translations ),
             'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
         ) );
+        if ( DT_Mapbox_API::get_key() ){
+            DT_Mapbox_API::load_mapbox_search_widget();
+            $dependencies[] = 'mapbox-search-widget';
+            $dependencies[] = 'mapbox-gl';
+        }
     }
 
     if ( strpos( $url_path, "/new" ) !== false && in_array( str_replace( "/new", "", $url_path ), $post_types ) ){

@@ -737,8 +737,12 @@
   }
 
   /**
-   * location_grid
+   * Location
    */
+   $('#mapbox-clear-autocomplete').click("input", function(){
+       delete window.location_data;
+    });
+
   let loadLocationTypeahead = ()=> {
     if (!window.Typeahead['.js-typeahead-location_grid']) {
       $.typeahead({
@@ -1089,6 +1093,9 @@
           }
         })
     })
+    if (window.location_data) {
+      updatePayload['location_grid_meta'] = window.location_data.location_grid_meta;
+    }
 
     let multiSelectUpdatePayload = {};
     multiSelectInputs.each(function () {
@@ -1193,9 +1200,6 @@
 
   // a per-item action
   function doEach( item, done, update, share ) {
-    console.log('starting ...' ); //t('starting ...');
-    console.log(item);
-    console.log(update);
     let promises = [];
 
     if (Object.keys(update).length) {
@@ -1214,7 +1218,6 @@
   }
 
   function doDone() {
-    console.log('done');
     $('#bulk_edit_submit-spinner').removeClass('active');
     window.location.reload();
   }
@@ -1279,6 +1282,7 @@ $.typeahead({
     matchOn: ["ID"],
     callback: {
       onCancel: function (node, item) {
+        $(node).removeData( `bulk_key_bulk_share` );
         $('#share-result-container').html("");
 
       }
@@ -1375,8 +1379,8 @@ $.typeahead({
   })
 
   $('#bulk_edit_picker .dt_location_grid').each(()=> {
-    let field_id = 'location_grid'
-    console.log(this);
+    let field_id = 'location_grid';
+    let typeaheadTotals = {};
     $.typeahead({
       input: '.js-typeahead-location_grid',
       minLength: 0,
@@ -1397,7 +1401,7 @@ $.typeahead({
             data: {
               s: "{{query}}",
               filter: function () {
-                return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                // return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
               }
             },
             beforeSend: function (xhr) {
@@ -1422,14 +1426,13 @@ $.typeahead({
         data: '',
         callback: {
           onCancel: function (node, item) {
-            // API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}})
-            // .catch(err => { console.error(err) })
+            $(node).removeData( `bulk_key_${field_id}` );
           }
         }
       },
       callback: {
         onClick: function (node, a, item, event) {
-          $(`#${element_id}-spinner`).addClass('active');
+          // $(`#${element_id}-spinner`).addClass('active');
           node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
         },
         onReady() {
@@ -1547,20 +1550,3 @@ $.typeahead({
 
 
 })(window.jQuery, window.list_settings, window.Foundation);
-
-
-function write_input_widget() {
-
-  if ( jQuery('#mapbox-autocomplete').length === 0 ) {
-    jQuery('#mapbox-wrapper').prepend(`
-    <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true">
-        <input id="mapbox-search" type="text" name="mapbox_search" class="input-group-field" autocomplete="off" placeholder="${ dtMapbox.translations.search_location /*Search Location*/ }" />
-        <div class="input-group-button">
-            <button id="mapbox-spinner-button" class="button hollow" style="display:none;"><span class="loading-spinner active"></span></button>
-            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${ _.escape( dtMapbox.translations.clear ) /*Delete Location*/}" style="display:none;">&times;</button>
-        </div>
-        <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
-    </div>
-  `)
-  }
-}
