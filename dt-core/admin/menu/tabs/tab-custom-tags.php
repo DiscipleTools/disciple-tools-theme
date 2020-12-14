@@ -78,7 +78,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                 if ( isset( $_POST['tags'] ) ) {
                     if( $_POST['select_action'] == 'Bulk actions' ) {
                         /* 
-                         * Checks to see if new tag is the same and if so, skips it.
+                         * Checks to see if new tag already exists and if so, skips it.
                          * Also skips updating tags that don't have any edits made on them.
                          */
                         $tags = $_POST['tags'];
@@ -103,11 +103,11 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                     if( $_POST['select_action'] == 'Delete' ) {
                         
                          /** If dropdown is delete but no checkboxes were selected, do nothing. */
-                        if ( !isset($_POST['checkbox_delete_tag'] ) ){
+                        if ( !isset($_POST['checkbox_delete_tag'] ) ) {
                             return;
                         }
-                        foreach( $_POST['checkbox_delete_tag'] as $delete_tag ){
-                            self::process_delete_tag( esc_html( esc_html( $delete_tag ) ) );
+                        foreach( $_POST['checkbox_delete_tag'] as $delete_tag ) {
+                            self::process_delete_tag( esc_html( $delete_tag ) );
                         }
                     }
                 }
@@ -122,7 +122,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
     /*
      * Get all created tags
      */
-    private function get_all_tags(){
+    private function get_all_tags() {
         global $wpdb;
 
         $query = "
@@ -139,7 +139,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
     /*
      * Delete tag from database
      */
-    private function process_delete_tag( string $tag_delete ){        
+    private function process_delete_tag( string $tag_delete ) {        
         global $wpdb;
             $query = "
                 DELETE FROM $wpdb->postmeta
@@ -147,10 +147,10 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                 AND meta_value = %s;";
 
             $retval = $wpdb->query( $wpdb->prepare( $query, $tag_delete ) );
-            if( $retval ){
+            if( $retval ) {
                 self::admin_notice( __( "Tag '" . esc_html( $tag_delete ) . "' deleted successfully ", 'disciple_tools' ), 'success' );
             } else {
-                self::admin_notice( __( "Error deleting tag '".esc_html( $tag_delete )."'", 'disciple_tools' ), 'error' );
+                self::admin_notice( __( "Error deleting tag '". esc_html( $tag_delete ) . "'", 'disciple_tools' ), 'error' );
             }
             return $tag_delete;
     }
@@ -213,7 +213,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                     return;
                 }
 
-        if ( !empty( $tag_new ) ){
+        if ( !empty( $tag_new ) ) {
             global $wpdb;
 
         $query = "
@@ -223,8 +223,8 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
             AND meta_key = 'tags';";
 
             $retval = $wpdb->query( $wpdb->prepare( $query, $tag_new, $tag_old ) );
-            if( $retval ){
-                self::admin_notice( __( "Tag edited successfully: '".esc_html ( $tag_old )."' -> '". esc_html( $tag_new )."'", 'disciple_tools' ), 'success' );
+            if( $retval ) {
+                self::admin_notice( __( "Tag edited successfully: '" . esc_html ( $tag_old ) . "' -> '" . esc_html( $tag_new ) ."'", 'disciple_tools' ), 'success' );
             } else {
                 self::admin_notice( __( "Error editing tag $tag_old into $tag_new", 'disciple_tools' ), 'error' );
             }            
@@ -241,11 +241,9 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
     public static function admin_notice( string $notice, string $type ) {
         ?>
         <div class="notice notice-<?php echo esc_attr( $type ) ?> is-dismissible">
-            <p><?php echo esc_html( $notice ) ?></p>
+            <p><?php echo esc_html( $notice ); ?></p>
         </div>
         <?php
     }
 }
 Disciple_Tools_Tab_Custom_Tags::instance();
-
-
