@@ -283,7 +283,7 @@ dt_please_log_in();
                             </span>
                             <div id="bulk_more" class="grid-x grid-margin-x" style="display:none;">
                                 <?php foreach ( $field_options as $field_option => $value ) {
-                                    if ( $field_option !== 'subassigned' && $field_option !== 'assigned_to' && $field_option !== 'overall_status' && $field_option !== 'location_grid' && $field_option !== 'location_grid_meta' && $field_option !== 'tags' && array_key_exists( 'type', $value ) && $value['type'] != "communication_channel" && array_key_exists( 'tile', $value ) ) { ?>
+                                    if ( $field_option !== 'subassigned' && $field_option !== 'assigned_to' && $field_option !== 'overall_status' && $field_option !== 'tags' && array_key_exists( 'type', $value ) && $value['type'] != "communication_channel" && array_key_exists( 'tile', $value ) ) { ?>
                                     <div class="cell small-12 medium-<?php echo esc_attr( ( $field_option === "milestones" ) ? "12" : "4" ) ?>">
                                         <?php render_field_for_display( $field_option, $field_options, null, false, false, "bulk_" ); ?>
                                     </div>
