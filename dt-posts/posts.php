@@ -1168,21 +1168,6 @@ class Disciple_Tools_Posts
         return $options;
     }
 
-    /*
-     * Get disctinct meta values for a specific meta key (doesn't join tables)
-     */
-    public static function get_single_select_options( string $field ) {
-        global $wpdb;
-        $options = $wpdb->get_col(
-            $wpdb->prepare("
-                SELECT DISTINCT $wpdb->postmeta.meta_value FROM $wpdb->postmeta
-                WHERE $wpdb->postmeta.meta_key = %s
-                ORDER BY $wpdb->postmeta.meta_value ASC;",
-                esc_sql( $field ) ) );
-
-        return $options;
-    }
-
     public static function delete_post( string $post_type, int $post_id, bool $check_permissions = true ){
         if ( $check_permissions && !self::can_delete( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );

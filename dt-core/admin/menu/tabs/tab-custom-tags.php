@@ -21,7 +21,7 @@ if ( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
 {
     private static $_instance = null;
-    
+
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
@@ -63,7 +63,6 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
      */
     public function content( $tab ) {
         if ( $tab == 'tags' ) :
-
             $this->template( 'begin' );
 
             /*
@@ -76,48 +75,83 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
 
                 /** Checks to see if tag has both an old and new name. */
                 if ( isset( $_POST['tags'] ) ) {
-                    if( $_POST['select_action'] == 'Bulk actions' ) {
-                        /* 
+                    if ( sanitize_text_field( wp_unslash( $_POST['select_action'] ) ) == 'Bulk actions' ) {
+                        /*
                          * Checks to see if new tag already exists and if so, skips it.
                          * Also skips updating tags that don't have any edits made on them.
                          */
-                        $tags = $_POST['tags'];
-                        foreach( $tags as $tag ) {
-                            if( empty( $tag['new'] ) ){
+                        $tags = wp_unslash( $_POST['tags'] ) ;
+                        foreach ( $tags as $tag ) {
+                            if ( empty( $tag['new'] ) ) {
                                 continue;
                             }
-                            
+
                             $tag_old = $tag['old'];
                             $tag_new = $tag['new'];
-                                                    
-                            $retval = self::process_edit_tag( $tag_old, $tag_new);
+
+                            $retval = self::process_edit_tag( $tag_old, $tag_new );
 
                             if ( $retval ) {
-                                self::admin_notice( __( "Tag '$tag_old' is now called '$tag_new'.", 'disciple_tools'), 'success');
+                                self::admin_notice( __( "Tag '$tag_old' is now called '$tag_new'.", 'disciple_tools' ), 'success' );
                                 continue;
                             }
                         }
                     }
 
                     /** Checks if Delete option was selected in dropdown menu */
-                    if( $_POST['select_action'] == 'Delete' ) {
-                        
+                    if ( $_POST['select_action'] == 'Delete' ) {
+
                          /** If dropdown is delete but no checkboxes were selected, do nothing. */
-                        if ( !isset($_POST['checkbox_delete_tag'] ) ) {
+                        if ( !isset( $_POST['checkbox_delete_tag'] ) ) {
                             return;
                         }
-                        foreach( $_POST['checkbox_delete_tag'] as $delete_tag ) {
+                        foreach ( wp_unslash( $_POST['checkbox_delete_tag'] ) as $delete_tag ) {
                             self::process_delete_tag( esc_html( $delete_tag ) );
                         }
                     }
                 }
             }
 
-            $this->box( 'top', __( 'Edit or delete tags', 'disciple_tools' ) );
+            $this->box( 'top', __( 'Edit, merge or delete tags', 'disciple_tools' ) );
             $this->tag_select();
             $this->box( 'bottom' );
+
+            /** Right Column */
+            $this->template( 'right_column' );
+            $this->box( 'top', 'Help' );
+            $this->add_help_box();
+            $this->box( 'bottom' );
+
+            /** End */
+            $this->template( 'end' );
     endif;
     }
+
+
+    public function add_help_box() {
+        ?>
+        <form method="post">
+            <dl>
+                <dt>
+                    <p>
+                    Bulk edit your tags from a single page.
+                    <br>
+                    <br>
+                    <b>Edit:</b><br> Write the new name for the tag and click 'Apply changes'.
+                    <br>
+                    <br>
+                    <b>Merge:</b><br> Write the name of the tag you want to merge into and click 'Apply changes'.
+                    <br>
+                    <br>
+                    <b>Delete:</b><br> Check all the tags you no longer need, select 'Delete' from the 'Bulk actions' dropdown and click 'Apply changes'.
+                    </p>
+                </dt>
+            </dl>
+
+        </form>
+        <?php
+    }
+
 
     /*
      * Get all created tags
@@ -125,13 +159,12 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
     private function get_all_tags() {
         global $wpdb;
 
-        $query = "
+        $results = $wpdb->get_col( $wpdb->prepare( "
             SELECT DISTINCT meta_value
             FROM $wpdb->postmeta
             WHERE meta_key = 'tags'
-            ORDER BY meta_value ASC;";
+            ORDER BY meta_value ASC;", $post_id ) );
 
-        $results = $wpdb->get_col($query);
         return $results;
     }
 
@@ -139,19 +172,20 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
     /*
      * Delete tag from database
      */
-    private function process_delete_tag( string $tag_delete ) {        
+    private function process_delete_tag( string $tag_delete ) {
         global $wpdb;
-            $query = "
+
+            $retval = $wpdb->query( $wpdb->prepare( "
                 DELETE FROM $wpdb->postmeta
                 WHERE meta_key = 'tags'
-                AND meta_value = %s;";
+                AND meta_value = %s;", $tag_delete ) );
 
-            $retval = $wpdb->query( $wpdb->prepare( $query, $tag_delete ) );
-            if( $retval ) {
+        if ( $retval ) {
                 self::admin_notice( __( "Tag '" . esc_html( $tag_delete ) . "' deleted successfully ", 'disciple_tools' ), 'success' );
-            } else {
-                self::admin_notice( __( "Error deleting tag '". esc_html( $tag_delete ) . "'", 'disciple_tools' ), 'error' );
-            }
+        } else {
+                self::admin_notice( __( "Error deleting tag '" . esc_html( $tag_delete ) . "'", 'disciple_tools' ), 'error' );
+        }
+
             return $tag_delete;
     }
 
@@ -177,10 +211,11 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
             </tr>
             </thead>
             <?php
-            #$tags = self::get_all_tags();
-            $tags = Disciple_Tools_Posts::get_single_select_options('tags');
             
-            for( $i=0;$i<=count($tags)-1;$i++): ?>
+            $tags = self::get_all_tags();
+            $tags_amount = count( $tags );
+
+            for ( $i = 0; $i <= $tags_amount - 1; $i++): ?>
                 <tr>
                     <td style="vertical-align: middle">
                         <input type="checkbox" name="checkbox_delete_tag[<?php echo esc_html( $tags[$i]['old'] ?? $tags[$i] ); ?>]" value="<?php echo esc_html( $tags[$i]['old'] ?? $tags[$i] ); ?>">
@@ -205,29 +240,28 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
     /*
      * Save tag changes to database
      */
-    private function process_edit_tag( string $tag_old, string $tag_new ) { 
+    private function process_edit_tag( string $tag_old, string $tag_new ) {
         $tag_old = sanitize_text_field( wp_unslash( $tag_old ) );
         $tag_new = sanitize_text_field( wp_unslash( $tag_new ) );
 
         if ( !wp_verify_nonce( sanitize_key( $_POST['tag_edit_nonce'] ), 'tag_edit' ) ) {
-                    return;
-                }
+            return;
+        }
 
         if ( !empty( $tag_new ) ) {
             global $wpdb;
 
-        $query = "
-            UPDATE $wpdb->postmeta
-            SET meta_value = %s
-            WHERE meta_value = %s
-            AND meta_key = 'tags';";
+            $retval = $wpdb->query( $wpdb->prepare( "
+                UPDATE $wpdb->postmeta
+                SET meta_value = %s
+                WHERE meta_value = %s
+                AND meta_key = 'tags';", $tag_new, $tag_old ) );
 
-            $retval = $wpdb->query( $wpdb->prepare( $query, $tag_new, $tag_old ) );
-            if( $retval ) {
+            if ( $retval ) {
                 self::admin_notice( __( "Tag edited successfully: '" . esc_html ( $tag_old ) . "' -> '" . esc_html( $tag_new ) ."'", 'disciple_tools' ), 'success' );
             } else {
                 self::admin_notice( __( "Error editing tag $tag_old into $tag_new", 'disciple_tools' ), 'error' );
-            }            
+            }
         }
         return;
     }
