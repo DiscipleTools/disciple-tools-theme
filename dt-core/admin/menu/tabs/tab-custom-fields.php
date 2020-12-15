@@ -133,7 +133,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $this->add_field();
                 $this->box( 'bottom' );
             }
-            if ( $post_type && $this->get_post_fields( $post_type )[$field_key] ){
+            if ( $post_type && isset( $this->get_post_fields( $post_type )[$field_key] ) ){
                 $this->box( 'top', $this->get_post_fields( $post_type )[$field_key]["name"] );
                 $this->edit_field( $field_key, $post_type );
                 $this->box( 'bottom' );
