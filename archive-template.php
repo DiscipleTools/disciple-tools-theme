@@ -194,6 +194,7 @@ dt_please_log_in();
                                 <?php
                                 if ( $post_type == "contacts" ) {?>
                                     <div class="cell small-12 medium-4">
+                                    <?php $field_options['subassigned']["custom_display"] = false ?>
                                     <?php render_field_for_display( "subassigned", $field_options, null, false, false, "bulk_" ); ?>
                                     </div>
                                     <div class="cell small-12 medium-4">
@@ -207,13 +208,8 @@ dt_please_log_in();
                                         <select id="overall_status" class="select-field">
                                             <option></option>
                                             <?php foreach ($field_options["overall_status"]["default"] as $key => $option){
-                                                $value = $option["label"] ?? "";
-                                                if ( $contact["overall_status"]["key"] === $key ) {
-                                                    ?>
-                                                    <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
-                                                <?php } else { ?>
+                                                $value = $option["label"] ?? "";?>
                                                     <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
-                                                <?php } ?>
                                             <?php } ?>
                                         </select>
                                     </div>
@@ -243,6 +239,7 @@ dt_please_log_in();
 
                                 <?php } elseif ( $post_type == "groups" ) {?>
                                     <div class="cell small-12 medium-4">
+                                    <?php $field_options['coaches']["custom_display"] = false ?>
                                     <?php
                                     render_field_for_display( "coaches", $field_options, null, false, false, "bulk_" ); ?>
                                     </div>
@@ -286,8 +283,9 @@ dt_please_log_in();
                             </span>
                             <div id="bulk_more" class="grid-x grid-margin-x" style="display:none;">
                                 <?php foreach ( $field_options as $field_option => $value ) {
-                                    if ( $field_option !== 'subassigned' && $field_option !== 'assigned_to' && $field_option !== 'overall_status' && $field_option !== 'location_grid' && $field_option !== 'location_grid_meta' && $field_option !== 'tags' && array_key_exists( 'type', $value ) && $value['type'] != "communication_channel" && array_key_exists( 'tile', $value ) ) { ?>
-                                    <div class="cell small-12 medium-<?php echo esc_attr( ( $field_option === "milestones" ) ? "12" : "4" ) ?>">
+                                    if ( $field_option !== 'subassigned' && $field_option !== 'assigned_to' && $field_option !== 'overall_status' && $field_option !== 'tags' && array_key_exists( 'type', $value ) && $value['type'] != "communication_channel" && array_key_exists( 'tile', $value ) ) { ?>
+                                    <div class="cell small-12 medium-<?php echo esc_attr( ( $field_option === "milestones" ) ? "12" : ( $field_option === "health_metrics" ) ? "12" : "4" ) ?>">
+                                        <?php $field_options[$field_option]["custom_display"] = false ?>
                                         <?php render_field_for_display( $field_option, $field_options, null, false, false, "bulk_" ); ?>
                                     </div>
                                     <?php }

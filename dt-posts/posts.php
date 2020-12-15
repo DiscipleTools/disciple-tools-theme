@@ -222,21 +222,21 @@ class Disciple_Tools_Posts
             if ($activity->field_type === "connection from"){
                 $from = get_post( $activity->object_id );
                 $to = get_post( $activity->meta_value );
-                $from_title = $from->post_title;
-                $to_title = $to->post_title ?? '#' . $activity->meta_value;
+                $from_title = wp_specialchars_decode( $from->post_title );
+                $to_title = wp_specialchars_decode( $to->post_title ) ?? '#' . $activity->meta_value;
             } elseif ( $activity->field_type === "connection to"){
                 $to = get_post( $activity->object_id );
                 $from = get_post( $activity->meta_value );
-                $to_title = $to->post_title;
-                $from_title = $from->post_title ?? '#' . $activity->meta_value;
+                $to_title = wp_specialchars_decode( $to->post_title );
+                $from_title = wp_specialchars_decode( $from->post_title ) ?? '#' . $activity->meta_value;
             } else {
                 return "CONNECTION DESTROYED";
             }
         } else {
             $p2p_from = get_post( $p2p_record->p2p_from, ARRAY_A );
             $p2p_to = get_post( $p2p_record->p2p_to, ARRAY_A );
-            $from_title = $p2p_from["post_title"];
-            $to_title = $p2p_to["post_title"];
+            $from_title = wp_specialchars_decode( $p2p_from["post_title"] );
+            $to_title = wp_specialchars_decode( $p2p_to["post_title"] );
         }
         $object_note_from = '';
         $object_note_to = '';
@@ -1066,6 +1066,10 @@ class Disciple_Tools_Posts
                 $posts[] = $post;
                 $total_rows++;
             }
+        }
+        //decode special characters in post titles
+        foreach ( $posts as $post ) {
+            $post->post_title = wp_specialchars_decode( $post->post_title );
         }
         return [
             "posts" => $posts,

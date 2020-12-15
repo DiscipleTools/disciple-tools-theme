@@ -1,15 +1,15 @@
 <div class="reveal" id="help-modal" data-reveal>
     <?php
-    $post_type = get_post_type();
-    if ( empty( $post_type ) ){
+    $current_post_type = get_post_type();
+    if ( empty( $current_post_type ) ){
         return;
     }
-    $post_fields = DT_Posts::get_post_field_settings( $post_type );
+    $post_fields = DT_Posts::get_post_field_settings( $current_post_type );
 
     /**
      * Contact Record
      */
-    if ( $post_type === "contacts" ) :
+    if ( $current_post_type === "contacts" ) :
         ?>
         <!--    Quick Actions   -->
         <div class="help-section" id="quick-action-help-text" style="display: none">
@@ -22,7 +22,7 @@
 
     <?php endif;
 
-    if ( !empty( $post_type ) && isset( $post_fields["assigned_to"] ) ) : ?>
+    if ( !empty( $current_post_type ) && isset( $post_fields["assigned_to"] ) ) : ?>
         <!--    Assigned to -->
         <div class="help-section" id="assigned-to-help-text" style="display: none">
             <h3><?php echo esc_html( $post_fields["assigned_to"]["name"] )?></h3>
@@ -44,7 +44,7 @@
     /**
      * Group record
      */
-    if ( $post_type === "groups" ) : ?>
+    if ( $current_post_type === "groups" ) : ?>
 
 
         <!--  Four Fields Tile -->

@@ -58,7 +58,9 @@ function dt_remove_recent_comments_style() {
     global $wp_widget_factory;
     if ( isset( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'] ) ) {
         remove_action( 'wp_head', array(
-            $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style' ) );
+            $wp_widget_factory->widgets['WP_Widget_Recent_Comments'],
+            'recent_comments_style'
+        ) );
     }
 }
 
@@ -149,7 +151,7 @@ function dt_remove_dashboard_meta() {
     remove_meta_box( 'dashboard_recent_drafts', 'dashboard', 'core' );   // Recent Drafts Widget
     remove_meta_box( 'dashboard_primary', 'dashboard', 'core' );
     remove_meta_box( 'dashboard_secondary', 'dashboard', 'core' );
-    
+
     // Remove plugin dashboard boxes
     remove_meta_box( 'yoast_db_widget', 'dashboard', 'normal' );         // Yoast's SEO Plugin Widget
 }
