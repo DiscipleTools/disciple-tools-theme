@@ -1155,7 +1155,7 @@ class Disciple_Tools_Posts
     }
 
 
-    public static function get_multi_select_options( $post_type, $field, $search = ""){
+    public static function get_multi_select_options( $post_type, $field, $search = "", $limit = 20 ){
         if ( !self::can_access( $post_type ) ){
             return new WP_Error( __FUNCTION__, "You do not have access to: " . $field, [ 'status' => 403 ] );
         }
@@ -1167,8 +1167,8 @@ class Disciple_Tools_Posts
             AND $wpdb->postmeta.meta_value LIKE %s
             AND $wpdb->posts.post_status = 'publish'
             ORDER BY $wpdb->postmeta.meta_value ASC
-            LIMIT 20
-        ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%'));
+            LIMIT %s
+        ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%'), esc_sql( $limit ));
 
         return $options;
     }
