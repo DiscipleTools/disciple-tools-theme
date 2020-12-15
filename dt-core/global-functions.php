@@ -547,6 +547,19 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     /**
+     * Test if module is enabled
+     */
+    if ( ! function_exists( 'dt_is_module_enabled' ) ) {
+        function dt_is_module_enabled( string $module_key ) : bool {
+            $modules = dt_get_option( "dt_post_type_modules" );
+            if ( isset( $modules[$module_key] ) && isset( $modules[$module_key]["enabled"] ) &&  ! empty( $modules[$module_key]["enabled"] ) ){
+                return true;
+            }
+            return false;
+        }
+    }
+
+    /**
      * All code above here.
      */
 } // end if ( ! defined( 'DT_FUNCTIONS_READY' ) )
