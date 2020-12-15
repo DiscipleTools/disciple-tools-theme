@@ -74,13 +74,13 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                 }
 
                 /** Checks to see if tag has both an old and new name. */
-                if ( isset( $_POST['tags'] ) ) {
+                if ( isset( $_POST['tags'] ) && isset( $_POST['select_action'] ) ) {
                     if ( sanitize_text_field( wp_unslash( $_POST['select_action'] ) ) == 'Bulk actions' ) {
                         /*
                          * Checks to see if new tag already exists and if so, skips it.
                          * Also skips updating tags that don't have any edits made on them.
                          */
-                        $tags = wp_unslash( $_POST['tags'] ) ;
+                        $tags = wp_unslash( $_POST['tags'] );
                         foreach ( $tags as $tag ) {
                             if ( empty( $tag['new'] ) ) {
                                 continue;
@@ -92,7 +92,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                             $retval = self::process_edit_tag( $tag_old, $tag_new );
 
                             if ( $retval ) {
-                                self::admin_notice( __( "Tag '$tag_old' is now called '$tag_new'.", 'disciple_tools' ), 'success' );
+                                self::admin_notice( "Tag '$tag_old' is now called '$tag_new'.", 'success' );
                                 continue;
                             }
                         }
@@ -181,9 +181,9 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                 AND meta_value = %s;", $tag_delete ) );
 
         if ( $retval ) {
-                self::admin_notice( __( "Tag '" . esc_html( $tag_delete ) . "' deleted successfully ", 'disciple_tools' ), 'success' );
+                self::admin_notice( "Tag '" . esc_html( $tag_delete ) . "' deleted successfully ", 'success' );
         } else {
-                self::admin_notice( __( "Error deleting tag '" . esc_html( $tag_delete ) . "'", 'disciple_tools' ), 'error' );
+                self::admin_notice( "Error deleting tag '" . esc_html( $tag_delete ) . "'", 'error' );
         }
 
             return $tag_delete;
@@ -211,7 +211,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
             </tr>
             </thead>
             <?php
-            
+
             $tags = self::get_all_tags();
             $tags_amount = count( $tags );
 
@@ -241,10 +241,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
      * Save tag changes to database
      */
     private function process_edit_tag( string $tag_old, string $tag_new ) {
-        $tag_old = sanitize_text_field( wp_unslash( $tag_old ) );
-        $tag_new = sanitize_text_field( wp_unslash( $tag_new ) );
-
-        if ( !wp_verify_nonce( sanitize_key( $_POST['tag_edit_nonce'] ), 'tag_edit' ) ) {
+        if ( !isset( $_POST['tag_edit_nonce'] ) || !wp_verify_nonce( sanitize_key( $_POST['tag_edit_nonce'] ), 'tag_edit' ) ) {
             return;
         }
 
@@ -255,12 +252,12 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                 UPDATE $wpdb->postmeta
                 SET meta_value = %s
                 WHERE meta_value = %s
-                AND meta_key = 'tags';", $tag_new, $tag_old ) );
+                AND meta_key = 'tags';", esc_sql( $tag_new ), esc_sql( $tag_old ) ) );
 
             if ( $retval ) {
-                self::admin_notice( __( "Tag edited successfully: '" . esc_html ( $tag_old ) . "' -> '" . esc_html( $tag_new ) ."'", 'disciple_tools' ), 'success' );
+                self::admin_notice( "Tag edited successfully: '$tag_old' -> '$tag_new'", 'success' );
             } else {
-                self::admin_notice( __( "Error editing tag $tag_old into $tag_new", 'disciple_tools' ), 'error' );
+                self::admin_notice( "Error editing tag $tag_old into $tag_new", 'error' );
             }
         }
         return;
