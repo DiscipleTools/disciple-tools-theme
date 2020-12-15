@@ -56,6 +56,15 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
         <?php
     }
 
+    /** Sanitizes each element in an array */
+    private static function dt_recursive_sanitize_array_field( $post, $key ) {
+        if ( !isset( $post[$key] ) ){
+            return false;
+        }
+        $post[$key] = dt_recursive_sanitize_array( $post[$key] );
+        return $post[$key];
+    }
+
     /**
      * Packages and prints tab page
      *
@@ -80,7 +89,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                          * Checks to see if new tag already exists and if so, skips it.
                          * Also skips updating tags that don't have any edits made on them.
                          */
-                        $tags = dt_recursive_sanitize_array( $_POST['tags'] );
+                        $tags = self::dt_recursive_sanitize_array_field( $_POST, 'tags' );
                         foreach ( $tags as $tag ) {
                             if ( empty( $tag['new'] ) ) {
                                 continue;
@@ -105,7 +114,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                         if ( !isset( $_POST['checkbox_delete_tag'] ) ) {
                             return;
                         }
-                        foreach ( dt_recursive_sanitize_array( $_POST['checkbox_delete_tag'] ) as $delete_tag ) {
+                        foreach ( self::dt_recursive_sanitize_array_field( $_POST, 'checkbox_delete_tag' ) as $delete_tag ) {
                             self::process_delete_tag( esc_html( $delete_tag ) );
                         }
                     }
@@ -147,7 +156,6 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
                     </p>
                 </dt>
             </dl>
-
         </form>
         <?php
     }
