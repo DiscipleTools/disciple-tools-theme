@@ -173,11 +173,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
-    if ( ! function_exists( 'recursive_sanitize_text_field' ) ) {
-        function recursive_sanitize_text_field( array $array ) : array {
+    if ( ! function_exists( 'dt_recursive_sanitize_array' ) ) {
+        function dt_recursive_sanitize_array( array $array ) : array {
             foreach ( $array as $key => &$value ) {
                 if ( is_array( $value ) ) {
-                    $value = recursive_sanitize_text_field( $value );
+                    $value = dt_recursive_sanitize_array( $value );
                 }
                 else {
                     $value = sanitize_text_field( wp_unslash( $value ) );
