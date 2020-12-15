@@ -4,6 +4,7 @@ Template Name: User Management
 */
 if ( !current_user_can( 'list_users' ) && !current_user_can( 'manage_dt' ) ) {
     wp_safe_redirect( '/settings' );
+    exit();
 }
 $dt_url_path = dt_get_url_path();
 $user_management_options = DT_User_Management::user_management_options();

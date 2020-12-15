@@ -1,4 +1,5 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 class DT_Contacts_DMM  extends DT_Module_Base {
     public $post_type = "contacts";
@@ -48,7 +49,9 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "label" => __( 'Connection', 'disciple_tools' ),
                 "color" => "#FF9800",
                 "description" => __( 'Connected to a contact, or generational fruit', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/network.svg"
+                "icon" => get_template_directory_uri() . "/dt-assets/images/network.svg",
+                "order" => 40,
+                "visibility" => __( "Only me", 'disciple_tools' ),
             ];
             $fields["milestones"] = [
                 "name"    => __( 'Faith Milestones', 'disciple_tools' ),
@@ -122,7 +125,8 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "post_type" => "contacts",
                 "p2p_direction" => "to",
                 "p2p_key" => "contacts_to_subassigned",
-//                "tile" => "status",
+                "tile" => "status",
+                "custom_display" => true,
                 'icon' => get_template_directory_uri() . "/dt-assets/images/subassigned.svg",
             ];
 

@@ -3,6 +3,8 @@
 Template Name: Merge Details
 */
 
+dt_please_log_in();
+
 if ( ! current_user_can( 'access_contacts' ) ) {
     wp_die( esc_html( "You do not have permission to access contacts" ), "Permission denied", 403 );
 }

@@ -130,6 +130,9 @@ class DT_Duplicate_Checker_And_Merging {
         }
         $search_query = self::query_for_duplicate_searches( $post_type, $post_id, $exact );
         $res = DT_Posts::search_viewable_post( "contacts", [ $search_query["query"] ] );
+        if ( is_wp_error( $res ) ){
+            return $res;
+        }
         $ids = array_map( function ( $post ){
             return $post->ID;
         }, $res["posts"] );

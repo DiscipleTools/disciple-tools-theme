@@ -21,6 +21,10 @@ class DT_Posts extends Disciple_Tools_Posts {
         'strong' => array(),
     );
 
+    public static function get_post_types(){
+        return apply_filters( 'dt_registered_post_types', [] );
+    }
+
     /**
      * Get settings on the post type
      *
@@ -250,7 +254,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|WP_Error
      */
     public static function update_post( string $post_type, int $post_id, array $fields, bool $silent = false, bool $check_permissions = true ){
-        $post_types = apply_filters( 'dt_registered_post_types', [] );
+        $post_types = self::get_post_types();
         if ( !in_array( $post_type, $post_types ) ){
             return new WP_Error( __FUNCTION__, "Post type does not exist", [ 'status' => 403 ] );
         }
@@ -424,8 +428,8 @@ class DT_Posts extends Disciple_Tools_Posts {
 
 
         self::adjust_post_custom_fields( $post_settings, $post_id, $fields );
-        $fields["name"] = $wp_post->post_title;
-        $fields["title"] = $wp_post->post_title;
+        $fields["name"] = wp_specialchars_decode( $wp_post->post_title );
+        $fields["title"] = wp_specialchars_decode( $wp_post->post_title );
 
         $fields = apply_filters( 'dt_after_get_post_fields_filter', $fields, $post_type );
         wp_cache_set( "post_" . $current_user_id . '_' . $post_id, $fields );
@@ -475,6 +479,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $ids = [];
         foreach ( $records as $record ) {
+            $record->post_title = wp_specialchars_decode( $record->post_title );
             $ids[] = $record->ID;
         }
         $ids_sql = dt_array_to_sql( $ids );
@@ -538,7 +543,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
             self::adjust_post_custom_fields( $post_settings, $record["ID"], $record, $fields_to_return, $all_posts[$record["ID"]] ?? [], $all_post_user_meta[$record["ID"]] ?? [] );
             $record["permalink"] = $site_url . '/' . $post_type .'/' . $record["ID"];
-            $record["name"] = $record["post_title"];
+            $record["name"] = wp_specialchars_decode( $record["post_title"] );
             $record["post_date"] = [
                 "timestamp" => is_numeric( $record["post_date"] ) ? $record["post_date"] : dt_format_date( $record["post_date"], "U" ),
                 "formatted" => dt_format_date( $record["post_date"] )
@@ -1315,6 +1320,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                         }
                     }
                 }
+            }
+        }
+        foreach ( $fields as $field_key => &$field ){
+            if ( !isset( $field["name"] ) ){
+                $field["name"] = $field_key; //set a field name so integration can depend on it.
             }
         }
 

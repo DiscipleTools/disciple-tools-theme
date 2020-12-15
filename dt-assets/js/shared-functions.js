@@ -156,6 +156,61 @@ jQuery(document).on('click', '.help-button', function () {
   jQuery(".help-section").hide()
   jQuery(`#${section}`).show()
 })
+jQuery(document).on('click', '.help-button-tile', function () {
+  jQuery('#help-modal-field').foundation('open')
+  let section = jQuery(this).data("tile")
+  jQuery(".help-section").hide()
+  let tile = window.wpApiShare.tiles[section]
+  if ( tile && window.post_type_fields ){
+    if ( tile.label ){
+      $('#help-modal-field-title').html(tile.label)
+    }
+    if ( tile.description ){
+      $('#help-modal-field-description').html(tile.description)
+    }
+    let html = ``
+    _.forOwn( window.post_type_fields, (field, field_key)=>{
+      if ( field.tile === section && ( field.description || _.isObject(field.default) )){
+        html += `<h2>${_.escape(field.name)}</h2>`
+        html += `<p>${_.escape(field.description)}</p>`
+
+        if ( _.isObject(field.default) ){
+          let list_html = `<ul>`
+          _.forOwn(field.default, (field_options, field_key)=>{
+            list_html += `<li><strong>${_.escape(field_options.label)}</strong> ${_.escape(!field_options.description ? '' : '- ' + field_options.description)}</li>`
+          })
+          list_html += `</ul>`
+          html += list_html
+        }
+      }
+    })
+    $('#help-modal-field-body').html(html)
+  }
+  jQuery(`#${section}`).show()
+})
+jQuery(document).on('click', '.help-button-field', function () {
+  jQuery('#help-modal-field').foundation('open')
+  let section = jQuery(this).data("section").replace('-help-text', '')
+  jQuery(".help-section").hide()
+
+  if ( window.post_type_fields && window.post_type_fields[section] ){
+    let field = window.post_type_fields[section]
+    if ( field.description ){
+      $('#help-modal-field-title').html(field.name)
+      $('#help-modal-field-description').html(field.description)
+    }
+    if ( _.isObject(field.default) ){
+      let html = `<ul>`
+      _.forOwn(field.default, (field_options, field_key)=>{
+        html += `<li><strong>${_.escape(field_options.label)}</strong> ${_.escape(!field_options.description ? '' : '- ' + field_options.description)}</li>`
+      })
+      html += `</ul>`
+      $('#help-modal-field-body').html(html)
+    }
+  }
+  jQuery(`#${section}`).show()
+})
+
 
 window.TYPEAHEADS = {
   typeaheadSource : function (field, url) {
@@ -466,7 +521,7 @@ window.METRICS = {
 // nonce timeout fix
 // every 5 minutes will check if nonce timed out
 // if it did then it will redirect to login
-setInterval(function() {
+window.fiveMinuteTimer = setInterval(function() {
   //check if timed out
   get_new_notification_count()
   .fail(function(x) {

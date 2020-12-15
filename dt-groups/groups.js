@@ -111,7 +111,7 @@ jQuery(document).ready(function($) {
     API.update_post( post_type, post_id, {'members': {values:[{value:id, delete:true}]}}).then(groupRes=>{
       post=groupRes
       populateMembersList()
-      masonGrid.masonry('layout')
+      window.masonGrid.masonry('layout')
     })
     if( _.find( post.leaders || [], {ID: id}) ) {
       API.update_post( post_type, post_id, {'leaders': {values: [{value: id, delete: true}]}})

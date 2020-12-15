@@ -1,5 +1,5 @@
 <?php
-
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 class DT_Contacts_Access extends DT_Module_Base {
     public $post_type = "contacts";
@@ -76,6 +76,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             ], $multiplier_permissions )
         ];
         $expected_roles["administrator"]["permissions"]["dt_all_access_contacts"] = true;
+        $expected_roles["administrator"]["permissions"]["assign_any_contacts"] = true;
 
         return $expected_roles;
     }
@@ -86,8 +87,10 @@ class DT_Contacts_Access extends DT_Module_Base {
             $fields["type"]["default"]["access"] = [
                 "label" => __( 'Access', 'disciple_tools' ),
                 "color" => "#2196F3",
-                "description" => __( 'A ministry contact, designed for collaboration', 'disciple_tools' ),
-                "icon" => get_template_directory_uri() . "/dt-assets/images/share.svg"
+                "description" => __( 'Someone to follow-up with', 'disciple_tools' ),
+                "visibility" => __( "Collaborators", 'disciple_tools' ),
+                "icon" => get_template_directory_uri() . "/dt-assets/images/share.svg",
+                "order" => 20
             ];
 
             $fields['assigned_to'] = [
@@ -393,9 +396,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
                     <?php esc_html_e( "Status", 'disciple_tools' ) ?>
-                    <button class="help-button" data-section="overall-status-help-text">
-                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                    </button>
                 </div>
                 <?php
                 $active_color = "#366184";
@@ -480,6 +480,7 @@ class DT_Contacts_Access extends DT_Module_Base {
 
             <!-- SUBASSIGNED -->
             <div class="cell small-12 medium-4">
+                <?php $contact_fields['subassigned']["custom_display"] = false ?>
                 <?php render_field_for_display( "subassigned", $contact_fields, $contact, true ); ?>
             </div>
             <div class="reveal" id="closed-contact-modal" data-reveal>
@@ -1367,7 +1368,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $had_cap = current_user_can( 'dt_all_access_contacts' );
             $current_user->add_cap( "dt_all_access_contacts" );
             $dup_ids = DT_Duplicate_Checker_And_Merging::ids_of_non_dismissed_duplicates( $post_type, $post_id, true );
-            if ( sizeof( $dup_ids["ids"] ) < 10 ){
+            if ( ! is_wp_error( $dup_ids ) && sizeof( $dup_ids["ids"] ) < 10 ){
                 $comment = __( "This record might be a duplicate of: ", 'disciple_tools' );
                 foreach ( $dup_ids["ids"] as $id_of_duplicate ){
                     $comment .= " \n -  [$id_of_duplicate]($id_of_duplicate)";

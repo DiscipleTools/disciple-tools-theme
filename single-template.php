@@ -1,9 +1,12 @@
 <?php
 declare( strict_types=1 );
 
+dt_please_log_in();
+
 $dt_post_type = get_post_type();
 if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
     wp_safe_redirect( '/settings' );
+    exit();
 }
 
 ( function () {
@@ -18,6 +21,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
     $dt_post = DT_Posts::get_post( $post_type, $post_id );
     $tiles = DT_Posts::get_post_tiles( $post_type );
     $following = DT_Posts::get_users_following_post( $post_type, $post_id );
+    Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
     get_header();
     dt_print_details_bar(
         true,
@@ -89,7 +93,11 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                     <section id="contact-status" class="small-12 cell bordered-box">
                         <h3 class="section-header">
                             <?php echo esc_html__( "Status", "disciple_tools" )?>
+                            <button class="help-button-tile" data-tile="status">
+                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                            </button>
                         </h3>
+
                         <div class="grid-x grid-margin-x">
                         <?php do_action( "dt_details_additional_section", 'status', $post_type ); ?>
                         <?php
@@ -125,6 +133,9 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                     <section id="details-tile" class="small-12 cell bordered-box collapsed" >
                         <h3 class="section-header">
                             <?php echo esc_html__( "Details", "disciple_tools" )?>
+                            <button class="help-button-tile" data-tile="details">
+                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                            </button>
                             <button class="section-chevron chevron_down show-details-section">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                             </button>
@@ -270,6 +281,9 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                         if ( isset( $tile_options["label"] ) ){ ?>
                                             <h3 class="section-header">
                                                 <?php echo esc_html( $tile_options["label"] )?>
+                                                <button class="help-button-tile" data-tile="<?php echo esc_html( $tile_key ) ?>">
+                                                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                                </button>
                                                 <button class="section-chevron chevron_down">
                                                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                                                 </button>
@@ -361,8 +375,6 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
     <div class="reveal" id="delete-record-modal" data-reveal data-reset-on-close>
         <h3><?php echo esc_html( sprintf( _x( "Delete %s", "Delete Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></h3>
         <p><?php echo esc_html( sprintf( _x( "Are you sure you want to delete %s?", "Are you sure you want to delete name?", 'disciple_tools' ), $dt_post["name"] ) ) ?></p>
-
-
 
         <div class="grid-x">
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
