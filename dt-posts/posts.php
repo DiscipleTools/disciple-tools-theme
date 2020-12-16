@@ -1167,8 +1167,8 @@ class Disciple_Tools_Posts
             AND $wpdb->postmeta.meta_value LIKE %s
             AND $wpdb->posts.post_status = 'publish'
             ORDER BY $wpdb->postmeta.meta_value ASC
-            LIMIT %s
-        ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%'), esc_sql( $limit ));
+            LIMIT %d
+        ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%', esc_sql( $limit ) ) );
 
         return $options;
     }
