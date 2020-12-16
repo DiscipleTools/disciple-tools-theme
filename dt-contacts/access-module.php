@@ -368,7 +368,7 @@ class DT_Contacts_Access extends DT_Module_Base {
     public function dt_details_additional_tiles( $sections, $post_type = "" ){
         if ( is_singular( "contacts" ) ) {
             $contact = DT_Posts::get_post( "contacts", get_the_ID() );
-            if ( isset( $contact["type"]["key"] ) && $contact["type"]["key"] !== "access" ) {
+            if ( is_wp_error( $contact ) || ( isset( $contact["type"]["key"] ) && $contact["type"]["key"] !== "access" ) ) {
                 return $sections;
             }
         }

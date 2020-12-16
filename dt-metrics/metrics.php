@@ -99,16 +99,20 @@ class Disciple_Tools_Metrics
         /**
          * Add Navigation Menu
          */
-        add_action( 'dt_top_nav_desktop', function(){
-            ?>
-            <li><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li>
-            <?php
-        }, 21 );
-        add_action( 'dt_off_canvas_nav', function(){
-            ?>
-            <li><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li>
-            <?php
-        }, 21 );
+        add_action( 'desktop_navbar_menu_options', function( $tabs ){
+            $tabs[] = [
+                "link" => site_url( '/metrics/' ),
+                "label" => __( "Metrics", "disciple_tools" )
+            ];
+            return $tabs;
+        }, 25 );
+        add_action( 'off_canvas_menu_options', function( $tabs ){
+            $tabs[] = [
+                "link" => site_url( '/metrics/' ),
+                "label" => __( "Metrics", "disciple_tools" )
+            ];
+            return $tabs;
+        }, 25 );
     }
 
 }

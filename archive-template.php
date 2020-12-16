@@ -284,7 +284,7 @@ dt_please_log_in();
                             <div id="bulk_more" class="grid-x grid-margin-x" style="display:none;">
                                 <?php foreach ( $field_options as $field_option => $value ) {
                                     if ( $field_option !== 'subassigned' && $field_option !== 'assigned_to' && $field_option !== 'overall_status' && $field_option !== 'tags' && array_key_exists( 'type', $value ) && $value['type'] != "communication_channel" && array_key_exists( 'tile', $value ) ) { ?>
-                                    <div class="cell small-12 medium-<?php echo esc_attr( ( $field_option === "milestones" ) ? "12" : ( $field_option === "health_metrics" ) ? "12" : "4" ) ?>">
+                                        <div class="cell small-12 medium-<?php echo esc_attr( ( $field_option === "milestones" ) ? "12" : ( $field_option === "health_metrics" ? "12" : "4" ) ) ?>">
                                         <?php $field_options[$field_option]["custom_display"] = false ?>
                                         <?php render_field_for_display( $field_option, $field_options, null, false, false, "bulk_" ); ?>
                                     </div>
