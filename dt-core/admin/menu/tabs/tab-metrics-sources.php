@@ -156,6 +156,7 @@ class Disciple_Tools_Metric_Sources_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     public function save_settings(){
         if ( !empty( $_POST ) ){
+            dt_write_log($_POST);
             if ( isset( $_POST['sources_edit_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['sources_edit_nonce'] ), 'sources_edit' ) ) {
                 if ( isset( $_POST["add_source"], $_POST["new_label"], $_POST["new_description"], $_POST["new_section"] ) ){
                     $label = sanitize_text_field( wp_unslash( $_POST["new_label"] ) );
