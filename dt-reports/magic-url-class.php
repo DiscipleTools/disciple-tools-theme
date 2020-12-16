@@ -3,7 +3,7 @@
  * DT URL Magic Utilities
  * These static functions support the process of offering magic links in the DT System
  *
- * Initialized as DT_Magic_URL::instance( string $root, array $types );
+ * Initialized as new DT_Magic_URL( string $root );
  *
  * @version 1.0 Initialized.
  */
@@ -45,13 +45,13 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
         public $root;
         public $namespace = 'dt-magic-url/v1';
 
-        private static $_instance = null;
-        public static function instance( string $root ) {
-            if ( is_null( self::$_instance ) ) {
-                self::$_instance = new self( $root );
-            }
-            return self::$_instance;
-        } // End instance()
+//        private static $_instance = null;
+//        public static function instance( string $root ) {
+//            if ( is_null( self::$_instance ) ) {
+//                self::$_instance = new self( $root );
+//            }
+//            return self::$_instance;
+//        } // End instance()
 
         public function __construct( string $root ) {
             $this->root = $root;
@@ -287,7 +287,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          * Generates a unique id key
          * @return string
          */
-        public static function create_unique_key() : string {
+        public function create_unique_key() : string {
             try {
                 $hash = hash( 'sha256', bin2hex( random_bytes( 256 ) ) );
             } catch ( Exception $exception ) {
@@ -340,7 +340,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
         }
 
         public function api_create_key( WP_REST_Request $request ){
-            return self::create_unique_key();
+            return $this->create_unique_key();
         }
     }
 }

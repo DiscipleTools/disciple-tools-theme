@@ -173,6 +173,20 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    if ( ! function_exists( 'dt_recursive_sanitize_array' ) ) {
+        function dt_recursive_sanitize_array( array $array ) : array {
+            foreach ( $array as $key => &$value ) {
+                if ( is_array( $value ) ) {
+                    $value = dt_recursive_sanitize_array( $value );
+                }
+                else {
+                    $value = sanitize_text_field( wp_unslash( $value ) );
+                }
+            }
+            return $array;
+        }
+    }
+
     if ( ! function_exists( 'dt_get_translations' ) ) {
         function dt_get_translations() {
             require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
@@ -247,19 +261,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
-    if ( ! function_exists( 'dt_has_permissions' ) ) {
-        function dt_has_permissions( array $permissions ) : bool {
-            if ( count( $permissions ) > 0 ) {
-                foreach ( $permissions as $permission ){
-                    if ( current_user_can( $permission ) ){
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-    }
-
 
     /**
      * Prints the name of the Group or User
@@ -315,7 +316,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
         return $merged;
     }
-
 
     /**
      * Accepts types: key_select, multi_select, text, number, date, connection, location, communication_channel
@@ -544,6 +544,19 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 return null;
             }
         }, $array );
+    }
+
+    /**
+     * Test if module is enabled
+     */
+    if ( ! function_exists( 'dt_is_module_enabled' ) ) {
+        function dt_is_module_enabled( string $module_key ) : bool {
+            $modules = dt_get_option( "dt_post_type_modules" );
+            if ( isset( $modules[$module_key] ) && isset( $modules[$module_key]["enabled"] ) && ! empty( $modules[$module_key]["enabled"] ) ){
+                return true;
+            }
+            return false;
+        }
     }
 
     /**
