@@ -19,9 +19,8 @@ class Disciple_Tools_Post_Type_Template {
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'rewrite_init' ] );
         add_filter( 'post_type_link', [ $this, 'permalink' ], 1, 3 );
-        add_action( 'dt_top_nav_desktop', [ $this, 'add_menu_link' ], 20 );
-        add_action( 'dt_off_canvas_nav', [ $this, 'add_menu_link' ], 20 );
-        add_filter( 'off_canvas_menu_options', [ $this, 'add_hamburger_menu' ] );
+        add_action( 'desktop_navbar_menu_options', [ $this, 'add_navigation_links' ], 20 );
+        add_filter( 'off_canvas_menu_options', [ $this, 'add_navigation_links' ], 20 );
         add_filter( 'dt_templates_for_urls', [ $this, 'add_template_for_url' ] );
         add_action( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ] );
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 2 );
@@ -110,13 +109,7 @@ class Disciple_Tools_Post_Type_Template {
         }
     }
 
-    public function add_menu_link(){
-        if ( current_user_can( 'access_' . $this->post_type ) ) : ?>
-            <li><a href="<?php echo esc_url( site_url( '/' . $this->post_type . '/' ) ); ?>"><?php echo esc_html( $this->plural ); ?></a></li>
-        <?php endif;
-    }
-
-    public function add_hamburger_menu( $tabs ) {
+    public function add_navigation_links( $tabs ) {
         if ( current_user_can( 'access_' . $this->post_type ) ) {
             $tabs[] = [
                 "link" => site_url( "/$this->post_type/" ),

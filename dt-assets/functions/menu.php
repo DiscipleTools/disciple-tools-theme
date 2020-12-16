@@ -11,10 +11,16 @@
 function disciple_tools_top_nav_desktop() {
 
     /**
-     * Loads top row menu
+     * Loads nav bar menu items
      * @note Main post types (Contacts, Groups, Metrics) fire between 20-30. If you want to add an item before the
      * main post types, load before 20, if you want to load after the list, load after 30.
      */
+    $tabs = apply_filters( "desktop_navbar_menu_options", [] );
+    foreach ( $tabs as $tab ) : ?>
+        <li><a href="<?php echo esc_url( $tab["link"] ) ?>"> <?php echo esc_html( $tab["label"] ) ?> </a></li>
+    <?php endforeach;
+
+    //append a non standard menu item at the end
     do_action( 'dt_top_nav_desktop' );
 }
 
@@ -29,14 +35,20 @@ function disciple_tools_off_canvas_nav() {
             </div>
             <hr/>
         </li>
-
         <?php
 
         /**
-         * Loads main menu items
+         * Loads offcanvas menu items for mobile
          * @note Main post types (Contacts, Groups, Metrics) fire between 20-30. If you want to add an item before the
          * main post types, load before 20, if you want to load after the list, load after 30.
          */
+        $tabs = apply_filters( "off_canvas_menu_options", [] );
+
+        foreach ( $tabs as $tab ) : ?>
+            <li><a href="<?php echo esc_url( $tab["link"] ) ?>"> <?php echo esc_html( $tab["label"] ) ?> </a></li>
+        <?php endforeach;
+
+        //append a non standard menu item at the end
         do_action( 'dt_off_canvas_nav' );
 
         ?>
