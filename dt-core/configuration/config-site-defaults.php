@@ -185,7 +185,7 @@ function dt_get_option( string $name ) {
             $modules = apply_filters( 'dt_post_type_modules', [] );
             $module_options = get_option( 'dt_post_type_modules', [] );
             // remove modules not present
-            foreach( $module_options as $key => $module ){
+            foreach ( $module_options as $key => $module ){
                 if ( ! isset( $modules[$key] ) ) {
                     unset( $module_options[$key] );
                 }

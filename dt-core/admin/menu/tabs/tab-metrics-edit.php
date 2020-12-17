@@ -70,14 +70,13 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
                     if ( ! empty( $new_id ) ) {
                         wp_redirect( '?page=dt_metrics&tab=edit&report_id='.$new_id );
                     }
-
                 } elseif ( isset( $_POST["update_report"] ) ) {
                     $id = isset( $_GET["report_id"] ) ? sanitize_key( wp_unslash( $_GET["report_id"] ) ) : null;
                     if ( ! empty( $id ) ) {
                         global $wpdb;
                         $current_meta_raw = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->dt_reportmeta WHERE report_id = %s", $id ), ARRAY_A );
                         $current_meta = [];
-                        foreach( $current_meta_raw as $value ){
+                        foreach ( $current_meta_raw as $value ){
                             $current_meta[$value['meta_key']] = $value;
                         }
 
@@ -93,7 +92,6 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
                             }
                         }
                     }
-
                 } elseif ( isset( $_POST["delete_report"] ) ) {
                     $id = isset( $_GET["report_id"] ) ? sanitize_key( wp_unslash( $_GET["report_id"] ) ) : null;
                     Disciple_Tools_Reports::delete( $id );
