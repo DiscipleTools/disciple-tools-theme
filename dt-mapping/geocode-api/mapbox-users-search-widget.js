@@ -163,7 +163,7 @@ function validate_timer() {
     // toggle buttons back
     jQuery('#mapbox-spinner-button').hide()
     jQuery('#mapbox-clear-autocomplete').show()
-  }, 1000);
+  }, 700);
 
 }
 function clear_timer() {

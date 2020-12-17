@@ -184,6 +184,13 @@ function dt_get_option( string $name ) {
         case 'dt_post_type_modules':
             $modules = apply_filters( 'dt_post_type_modules', [] );
             $module_options = get_option( 'dt_post_type_modules', [] );
+            // remove modules not present
+            foreach ( $module_options as $key => $module ){
+                if ( ! isset( $modules[$key] ) ) {
+                    unset( $module_options[$key] );
+                }
+            }
+            // merge distinct
             $modules = dt_array_merge_recursive_distinct( $modules, $module_options );
             return $modules;
 

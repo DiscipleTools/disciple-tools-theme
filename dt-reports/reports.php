@@ -268,6 +268,19 @@ class Disciple_Tools_Reports
                     $report = $results;
                 }
                 break;
+
+            /**
+             * Returns by row id and includes any meta into ['meta_input']
+             */
+            case 'id_and_meta':
+                $results = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_reports WHERE id = %s", $value ), ARRAY_A );
+                if ( ! empty( $results ) ) {
+                    $results['payload'] = maybe_unserialize( $results['payload'] );
+                    $report = $results;
+                }
+                $meta = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->dt_reportmeta WHERE report_id = %s", $value ), ARRAY_A );
+                $report['meta_input'] = $meta;
+                break;
         }
 
         return $report;
@@ -305,7 +318,6 @@ class Disciple_Tools_Reports
      */
     public static function add_meta( $report_id, $meta_key, $meta_value ) {
         global $wpdb;
-
         $wpdb->insert(
             $wpdb->dt_reportmeta,
             [
@@ -349,6 +361,8 @@ class Disciple_Tools_Reports
             [ '%s' ],
             [ '%d', '%s' ]
         );
+
+
     }
 
 

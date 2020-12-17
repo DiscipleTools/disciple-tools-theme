@@ -109,21 +109,21 @@ class Disciple_Tools_Counter
                 return Disciple_Tools_Counter_Groups::get_groups_count( 'church_planters', $start, $end );
                 break;
             case 'people_groups':
-
-            case 'manual_additions':
-                return Disciple_Tools_Counter_Outreach::get_outreach_count( 'manual_additions', $start, $end );
+                break;
+//            case 'manual_additions':
+//                return Disciple_Tools_Counter_Outreach::get_outreach_count( 'manual_additions', $start, $end );
             case 'all':
-                $manual_additions = self::critical_path( 'manual_additions', $start, $end );
-                $data = [];
-                foreach ( $manual_additions as $addition ){
-                    if ( $addition["section"] == "before") {
-                        $data[] = [
-                            "key" => $addition["source"],
-                            "label" => $addition["label"],
-                            "value" => $addition["total"]
-                        ];
-                    }
-                }
+//                $manual_additions = self::critical_path( 'manual_additions', $start, $end );
+//                $data = [];
+//                foreach ( $manual_additions as $addition ){
+//                    if ( $addition["section"] == "before") {
+//                        $data[] = [
+//                            "key" => $addition["source"],
+//                            "label" => $addition["label"],
+//                            "value" => $addition["total"]
+//                        ];
+//                    }
+//                }
                 $data[] = [
                     "key" => "new_contacts",
                     "label" => __( "New Contacts", "disciple_tools" ),
@@ -186,15 +186,15 @@ class Disciple_Tools_Counter
                     "value" => self::critical_path( 'church_planters', $start, $end )
                 ];
 //                @todo ppl groups
-                foreach ( $manual_additions as $addition ){
-                    if ( $addition["section"] == "after") {
-                        $data[] = [
-                            "key" => $addition["source"],
-                            "label" => $addition["label"],
-                            "value" => $addition["total"]
-                        ];
-                    }
-                }
+//                foreach ( $manual_additions as $addition ){
+//                    if ( $addition["section"] == "after") {
+//                        $data[] = [
+//                            "key" => $addition["source"],
+//                            "label" => $addition["label"],
+//                            "value" => $addition["total"]
+//                        ];
+//                    }
+//                }
                 return $data;
                 break;
             default:
