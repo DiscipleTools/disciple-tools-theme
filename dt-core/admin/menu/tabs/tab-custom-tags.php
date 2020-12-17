@@ -183,10 +183,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
     private function process_delete_tag( string $tag_delete ) {
         global $wpdb;
 
-            $retval = $wpdb->query( $wpdb->prepare( "
-                DELETE FROM $wpdb->postmeta
-                WHERE meta_key = 'tags'
-                AND meta_value = %s;", $tag_delete ) );
+            $retval = $wpdb->delete( $wpdb->postmeta, [ 'meta_value' => esc_sql( $tag_delete ) ] );
 
         if ( $retval ) {
                 self::admin_notice( "Tag '" . esc_html( $tag_delete ) . "' deleted successfully ", 'success' );
@@ -256,11 +253,16 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
         if ( !empty( $tag_new ) ) {
             global $wpdb;
 
-            $retval = $wpdb->query( $wpdb->prepare( "
-                UPDATE $wpdb->postmeta
-                SET meta_value = %s
-                WHERE meta_value = %s
-                AND meta_key = 'tags';", esc_sql( $tag_new ), esc_sql( $tag_old ) ) );
+            $retval = $wpdb->update(
+                $wpdb->postmeta,
+                [
+                    'meta_value' => esc_sql( $tag_new )
+                ],
+                [
+                    'meta_key' => 'tags',
+                    'meta_value' => esc_sql( $tag_old )
+                ],
+            );
 
             if ( $retval ) {
                 self::admin_notice( "Tag edited successfully: '$tag_old' -> '$tag_new'", 'success' );
