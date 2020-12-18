@@ -44,7 +44,7 @@ class DT_Contacts_Base {
 
     public function after_setup_theme(){
         if ( class_exists( 'Disciple_Tools_Post_Type_Template' )) {
-            new Disciple_Tools_Post_Type_Template( "contacts", 'Contact', 'Contacts' );
+            new Disciple_Tools_Post_Type_Template( "contacts", __( 'Contact', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ) );
         }
     }
 

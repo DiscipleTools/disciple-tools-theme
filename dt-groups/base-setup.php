@@ -45,7 +45,7 @@ class DT_Groups_Base extends DT_Module_Base {
 
     public function after_setup_theme(){
         if ( class_exists( 'Disciple_Tools_Post_Type_Template' )) {
-            new Disciple_Tools_Post_Type_Template( "groups", 'Group', 'Groups' );
+            new Disciple_Tools_Post_Type_Template( "groups", __( 'Group', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ) );
         }
     }
     public function dt_set_roles_and_permissions( $expected_roles ){
