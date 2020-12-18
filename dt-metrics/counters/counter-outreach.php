@@ -48,36 +48,36 @@ class Disciple_Tools_Counter_Outreach extends Disciple_Tools_Counter_Base
 
 
             case 'manual_additions':
-                global $wpdb;
-
-                $manual_additions = $wpdb->get_results($wpdb->prepare( "
-                SELECT a.type as source,
-                  h.meta_value as total,
-                  g.meta_value as section
-                FROM $wpdb->dt_reports as a
-                LEFT JOIN $wpdb->dt_reportmeta as e
-                  ON a.id=e.report_id
-                     AND e.meta_key = 'year'
-                LEFT JOIN $wpdb->dt_reportmeta as h
-                  ON a.id=h.report_id
-                     AND h.meta_key = 'total'
-                  LEFT JOIN $wpdb->dt_reportmeta as g
-                    ON a.id=g.report_id
-                       AND g.meta_key = 'section'
-                WHERE type = 'monthly_report'
-                  AND a.id IN ( SELECT MAX( bb.report_id )
-                    FROM $wpdb->dt_reportmeta as bb
-                      LEFT JOIN $wpdb->dt_reportmeta as d
-                        ON bb.report_id=d.report_id
-                           AND d.meta_key = 'source'
-                      LEFT JOIN $wpdb->dt_reportmeta as e
-                        ON bb.report_id=e.report_id
-                           AND e.meta_key = 'year'
-                    WHERE bb.meta_key = 'submit_date'
-                    GROUP BY d.meta_value, e.meta_value
-                  )
-                AND e.meta_value = %s
-                ", $year ), ARRAY_A );
+//                global $wpdb;
+//
+//                $manual_additions = $wpdb->get_results($wpdb->prepare( "
+//                SELECT a.type as source,
+//                  h.meta_value as total,
+//                  g.meta_value as section
+//                FROM $wpdb->dt_reports as a
+//                LEFT JOIN $wpdb->dt_reportmeta as e
+//                  ON a.id=e.report_id
+//                     AND e.meta_key = 'year'
+//                LEFT JOIN $wpdb->dt_reportmeta as h
+//                  ON a.id=h.report_id
+//                     AND h.meta_key = 'total'
+//                  LEFT JOIN $wpdb->dt_reportmeta as g
+//                    ON a.id=g.report_id
+//                       AND g.meta_key = 'section'
+//                WHERE type = 'monthly_report'
+//                  AND a.id IN ( SELECT MAX( bb.report_id )
+//                    FROM $wpdb->dt_reportmeta as bb
+//                      LEFT JOIN $wpdb->dt_reportmeta as d
+//                        ON bb.report_id=d.report_id
+//                           AND d.meta_key = 'source'
+//                      LEFT JOIN $wpdb->dt_reportmeta as e
+//                        ON bb.report_id=e.report_id
+//                           AND e.meta_key = 'year'
+//                    WHERE bb.meta_key = 'submit_date'
+//                    GROUP BY d.meta_value, e.meta_value
+//                  )
+//                AND e.meta_value = %s
+//                ", $year ), ARRAY_A );
 
             /*
                 $manual_additions = $wpdb->get_results($wpdb->prepare( "
@@ -92,17 +92,17 @@ class Disciple_Tools_Counter_Outreach extends Disciple_Tools_Counter_Base
             */
 
 
-                $sources = get_option( 'dt_critical_path_sources', [] );
-                $additions = [];
-                foreach ( $sources as $source ){
-                    foreach ( $manual_additions as $addition_i => $addition ){
-                        if ( $source["key"] === $addition["source"] ){
-                            $addition["label"] = $source["label"];
-                            $additions[] = $addition;
-                        }
-                    }
-                }
-                return $additions;
+//                $sources = get_option( 'dt_critical_path_sources', [] );
+//                $additions = [];
+//                foreach ( $sources as $source ){
+//                    foreach ( $manual_additions as $addition_i => $addition ){
+//                        if ( $source["key"] === $addition["source"] ){
+//                            $addition["label"] = $source["label"];
+//                            $additions[] = $addition;
+//                        }
+//                    }
+//                }
+//                return $additions;
                 break;
             default: // countable outreach
 //                global $wpdb;
@@ -128,8 +128,6 @@ class Disciple_Tools_Counter_Outreach extends Disciple_Tools_Counter_Base
 
 
     public static function get_monthly_reports_count( $start, $end ){
-        dt_write_log( $start );
-        dt_write_log( $end );
         global $wpdb;
         $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT report.id, FROM_UNIXTIME(report.time_end) as report_date, rm.meta_key, rm.meta_value
@@ -154,7 +152,6 @@ class Disciple_Tools_Counter_Outreach extends Disciple_Tools_Counter_Base
                 "latest" => null
             ];
         }
-        dt_write_log( $results );
         foreach ( $results as $res ){
             if ( isset( $reports[ $res["meta_key"] ] ) ) {
                 $reports[$res["meta_key"]]["sum"] += (int) $res["meta_value"];
@@ -163,7 +160,6 @@ class Disciple_Tools_Counter_Outreach extends Disciple_Tools_Counter_Base
                 }
             }
         }
-        dt_write_log( $reports );
 
         return $reports;
     }
