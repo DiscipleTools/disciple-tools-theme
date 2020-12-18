@@ -11,7 +11,7 @@ if ( ! current_user_can( 'dt_all_access_contacts' ) ) {
 
 get_header();
 
-$dt_duplicates = Disciple_Tools_Contacts::get_all_duplicates(); // @todo upgrade for the DT 1.0 post type upgrade
+$dt_duplicates = DT_Duplicate_Checker_And_Merging::get_duplicates();
 $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
 ?>
 
@@ -21,16 +21,37 @@ $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
 
             <main id="main" class="large-12 medium-12 cell" role="main">
                 <div class="bordered-box">
-                    <h3><?php esc_html_e( 'Duplicate Contacts', 'disciple_tools' ) ?>
+                    <h1><?php esc_html_e( 'Duplicate Contacts', 'disciple_tools' ) ?>
                         <span id="duplicates-spinner" class="loading-spinner"></span>
                         <button class="help-button float-right" data-section="duplicates-template-help-text">
                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                         </button>
-                    </h3>
+                    </h1>
 
                     <?php
+                    foreach ( $dt_duplicates as $contact ){
+                        ?>
+                            <h2 style="display: inline-block; margin-top: 40px"><?php echo esc_html( $contact["post_title"] ); ?></h2>
+                            <div style="display: inline-block; margin-left: 20px"><a> Dismiss all duplicates on <?php echo esc_html( $contact["post_title"] ); ?></a></div>
+                            <div><strong>Found matches:</strong></div>
+                            <?php
+                            foreach ( $contact["dups"] as $field_key => $dups ) : ?>
+                            <div style="display: flex">
+                                <div style="flex-basis: 20%"><?php echo esc_html( $field_key ); ?></div>
+                                <div>
+                                <?php foreach ( $dups as $dup ) : ?>
+                                    <a target="_blank"><?php echo esc_html( $dup["post_title"] ); ?></a>
+                                <?php endforeach; ?>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+
+
+                        <?php
+                    }
+
                     foreach ( $dt_duplicates as $channel_key => $channel_values ) {
-                        if ( empty( $channel_values["dups"] ) ) {
+                        if ( empty( $channel_values["dupas"] ) ) {
                             continue;
                         }
                         ?>
