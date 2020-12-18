@@ -610,7 +610,7 @@ class Disciple_Tools_People_Groups_Post_Type
         //            'section' => 'status'
         //        ];
 
-        return apply_filters( 'dt_custom_fields_settings', $fields, "people_groups" );
+        return DT_Posts::get_post_field_settings( "people_groups" );
     }
 
     public function dt_registered_post_types( $post_types ){
