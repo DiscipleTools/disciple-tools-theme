@@ -354,7 +354,14 @@ class DT_Posts extends Disciple_Tools_Posts {
                         return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
                     }
                 }
-                $already_handled = [ "multi_select", "post_user_meta", "location", "location_meta", "communication_channel" ];
+                /**
+                 * Custom Handled Meta
+                 *
+                 * This filter includes the types of fields handled in the above section, but can have a new
+                 * field type included, so that it can be skipped here and handled later through the
+                 * dt_post_updated action.
+                 */
+                $already_handled = apply_filters( 'dt_post_updated_custom_handled_meta', [ "multi_select", "post_user_meta", "location", "location_meta", "communication_channel" ], $post_type );
                 if ( $field_type && !in_array( $field_type, $already_handled ) ) {
                     update_post_meta( $post_id, $field_key, $field_value );
                 }
