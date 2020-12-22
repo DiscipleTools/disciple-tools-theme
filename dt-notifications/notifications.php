@@ -338,9 +338,9 @@ class Disciple_Tools_Notifications
     public static function pretty_timestamp( $timestamp ) {
         /** Get current time */
         $now = time();
-        
+
         /** Get "this" notification timestamp */
-        $notification_date = strtotime( $timestamp ); 
+        $notification_date = strtotime( $timestamp );
 
         /** Initalize vars */
         $minutes = $hours = $days = $weeks = $diff = $months = $years = $message = "";
@@ -350,7 +350,7 @@ class Disciple_Tools_Notifications
         $hours = round( ( $now - $notification_date ) / ( 60 * 60 ) );
         $days = round( ( $now - $notification_date ) / ( 60 * 60 * 24 ) );
         $weeks = ceil( abs( $now - $notification_date ) / 60 / 60 / 24 / 7 );
-        
+
         /** Get number of months between now and timestamp. This was tricky... */
         $min_date = min( $now, $notification_date );
         $max_date = max( $now, $notification_date );
@@ -375,59 +375,49 @@ class Disciple_Tools_Notifications
           $range = (object) $range;
 
         /** Determine which condition meets "this" notification timestamp */
-        
+
         /** The following 6 sprintf() items are the only items in this function that need to be translated in WP */
         if ($range->minutes < 60) {
             /** The exact number our minutes if this timestamp is < 60 minutes ago */
             $message = sprintf( _n( '%s minute ago', '%s minutes ago', $range->minutes, 'disciple_tools' ), $range->minutes );
         }
-        
+
         elseif ( ( $range->hours > 0 ) && ( $range->hours < 24 ) ) {
             /** The exact number our hours if this timestamp is < 24 hours ago */
             $message = sprintf( _n( '%s hour ago', '%s hours ago', $range->hours, 'disciple_tools' ), $range->hours );
         }
-        
-        elseif ( ( $range->days > 0 ) && ( $range->days < 14 ) ) {
+
+        elseif ( ( $range->hours >= 24 ) && ( $range->days < 14 ) ) {
             /** The exact number of days if this timestamp is < 2 weeks ago */
             $message = sprintf( _n( '%s day ago', '%s days ago', $range->days, 'disciple_tools' ), $range->days );
         }
-        
-        elseif ( ( $range->weeks > 0 ) && ( $range->weeks < 8 ) ) {
+
+        elseif ( ( $range->weeks >= 2 ) && ( $range->weeks < 8 ) ) {
             /** The exact number of weeks if this timestamp is < 2 months ago */
             $message = sprintf( _n( '%s week ago', '%s weeks ago', $range->weeks, 'disciple_tools' ), $range->weeks );
         }
-        
-        elseif ( ( $range->months > 0 ) && ( $range->months < 12 ) ) {
+
+        elseif ( ( $range->months >= 2 ) && ( $range->months < 12 ) ) {
             /** The exact number of months if this timestamp is < 1 year */
             $message = sprintf( _n( '%s month ago', '%s months ago', floor( $range->months ), 'disciple_tools' ), floor( $range->months ) );
         }
 
-            /** The exact number of years and months if this timestamp is >= 1 year*/
+            /** The exact number of years and months if this timestamp is >= 1 year */
         elseif ( $range->years >= 1 ) {
                 /** Gets the exact number of years */
                 $years = floor( abs( $range->months / 12 ) );
 
                 /** Gets the exact number months after the number of years has been substracted */
                 $months = $range->months - ( $years * 12 );
-                
-                /*
-                 * Makes the word 'month' a plural if more than one month has passed
-                 * after the number of years have been substracted
-                 */
-                $month_plural = '';
-                
-                if ( $months != 1 ) {
-                    $months_plural = 's';
-                }
 
             if ( $range->months % 12 == 0 ) {
-               
+
                 /** Show exact amount of years version of message */
                 $message = sprintf( _n( '%s year ago', '%s years ago', $years, 'disciple_tools' ), $years );
             } else {
 
                 /** Show non-exact number of years version of message */
-                $message = sprintf( _n( '%s year and %s month%s ago', '%s years and %s month%s ago', $years, $months, $months_plural, 'disciple_tools' ), $years, $months, $months_plural );
+                $message = sprintf( _n( 'over %s year ago', 'over %s years ago', $years, 'disciple_tools' ), $years );
             }
         }
         /**
