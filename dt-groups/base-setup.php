@@ -100,19 +100,43 @@ class DT_Groups_Base extends DT_Module_Base {
                 'default'     => [],
                 'hidden'      => true
             ];
-
+            $fields["requires_update"] = [
+                'name'        => __( 'Requires Update', 'disciple_tools' ),
+                'description' => '',
+                'type'        => 'boolean',
+                'default'     => false,
+            ];
             $fields['tasks'] = [
                 'name' => __( 'Tasks', 'disciple_tools' ),
                 'type' => 'post_user_meta',
             ];
-
             $fields["duplicate_data"] = [
                 "name" => 'Duplicates', //system string does not need translation
                 'type' => 'array',
                 'default' => [],
             ];
-
-
+            $fields['assigned_to'] = [
+                'name'        => __( 'Assigned To', 'disciple_tools' ),
+                'description' => __( "Select the main person who is responsible for reporting on this group.", 'disciple_tools' ),
+                'type'        => 'user_select',
+                'default'     => '',
+                'tile' => 'status',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/assigned-to.svg',
+                "show_in_table" => 16,
+                'custom_display' => true,
+            ];
+            $fields["coaches"] = [
+                "name" => __( 'Group Coach / Church Planter', 'disciple_tools' ),
+                'description' => _x( 'The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group.', 'Optional Documentation', 'disciple_tools' ),
+                "type" => "connection",
+                "post_type" => "contacts",
+                "p2p_direction" => "from",
+                "p2p_key" => "groups_to_coaches",
+                'tile' => 'status',
+                'custom_display' => true,
+                'icon' => get_template_directory_uri() . '/dt-assets/images/coach.svg',
+                'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-contact.svg',
+            ];
             $fields['group_status'] = [
                 'name'        => __( 'Group Status', 'disciple_tools' ),
                 'description' => _x( 'Set the current status of the group.', 'field description', 'disciple_tools' ),
@@ -163,16 +187,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 "show_in_table" => 15
             ];
 
-            $fields['assigned_to'] = [
-                'name'        => __( 'Assigned To', 'disciple_tools' ),
-                'description' => __( "Select the main person who is responsible for reporting on this group.", 'disciple_tools' ),
-                'type'        => 'user_select',
-                'default'     => '',
-                'tile' => 'status',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/assigned-to.svg',
-                "show_in_table" => 16,
-                'custom_display' => true,
-            ];
+
+
 
             $fields['health_metrics'] = [
                 "name" => __( 'Church Health', 'disciple_tools' ),
@@ -261,6 +277,36 @@ class DT_Groups_Base extends DT_Module_Base {
                 'icon' => get_template_directory_uri() . '/dt-assets/images/date-end.svg',
             ];
 
+
+
+            $fields["member_count"] = [
+                'name' => __( 'Member Count', 'disciple_tools' ),
+                'description' => _x( 'The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the group.', 'Optional Documentation', 'disciple_tools' ),
+                'type' => 'number',
+                'default' => '',
+                'tile' => 'relationships',
+                "show_in_table" => 25
+            ];
+            $fields["members"] = [
+                "name" => __( 'Member List', 'disciple_tools' ),
+                'description' => _x( 'The contacts who are members of this group.', 'Optional Documentation', 'disciple_tools' ),
+                "type" => "connection",
+                "post_type" => "contacts",
+                "p2p_direction" => "to",
+                "p2p_key" => "contacts_to_groups",
+            ];
+            $fields["leaders"] = [
+                "name" => __( 'Leaders', 'disciple_tools' ),
+                'description' => '',
+                "type" => "connection",
+                "post_type" => "contacts",
+                "p2p_direction" => "from",
+                "p2p_key" => "groups_to_leaders",
+                "show_in_table" => 30
+            ];
+
+
+
             $fields["parent_groups"] = [
                 "name" => __( 'Parent Group', 'disciple_tools' ),
                 'description' => _x( 'A group that founded this group.', 'Optional Documentation', 'disciple_tools' ),
@@ -294,52 +340,10 @@ class DT_Groups_Base extends DT_Module_Base {
                 'icon' => get_template_directory_uri() . '/dt-assets/images/group-child.svg',
                 'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
             ];
-            $fields["member_count"] = [
-                'name' => __( 'Member Count', 'disciple_tools' ),
-                'description' => _x( 'The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the group.', 'Optional Documentation', 'disciple_tools' ),
-                'type' => 'number',
-                'default' => '',
-                'tile' => 'relationships',
-                "show_in_table" => 25
-            ];
-            $fields["members"] = [
-                "name" => __( 'Member List', 'disciple_tools' ),
-                'description' => _x( 'The contacts who are members of this group.', 'Optional Documentation', 'disciple_tools' ),
-                "type" => "connection",
-                "post_type" => "contacts",
-                "p2p_direction" => "to",
-                "p2p_key" => "contacts_to_groups",
-                'tile' => 'relationships',
-                'custom_display' => true
-            ];
-            $fields["leaders"] = [
-                "name" => __( 'Leaders', 'disciple_tools' ),
-                'description' => '',
-                "type" => "connection",
-                "post_type" => "contacts",
-                "p2p_direction" => "from",
-                "p2p_key" => "groups_to_leaders",
-                "show_in_table" => 30
-            ];
-            $fields["coaches"] = [
-                "name" => __( 'Group Coach / Church Planter', 'disciple_tools' ),
-                'description' => _x( 'The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group.', 'Optional Documentation', 'disciple_tools' ),
-                "type" => "connection",
-                "post_type" => "contacts",
-                "p2p_direction" => "from",
-                "p2p_key" => "groups_to_coaches",
-                'tile' => 'status',
-                'custom_display' => true,
-                'icon' => get_template_directory_uri() . '/dt-assets/images/coach.svg',
-                'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-contact.svg',
-            ];
 
-            $fields["requires_update"] = [
-                'name'        => __( 'Requires Update', 'disciple_tools' ),
-                'description' => '',
-                'type'        => 'boolean',
-                'default'     => false,
-            ];
+
+
+
 
             // Group Locations
             $fields['location_grid'] = [
@@ -373,6 +377,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 $fields["location_grid"]["mapbox"] = true;
                 $fields["location_grid_meta"]["mapbox"] = true;
             }
+
 
 
             $fields["people_groups"] = [
