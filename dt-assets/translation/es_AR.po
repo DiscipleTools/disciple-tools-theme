@@ -5,7 +5,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: POEditor.com\n"
 "Project-Id-Version: Disciple.Tools\n"
-"Language: es-419\n"
+"Language: es-ar\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: 403.php:9
