@@ -33,7 +33,6 @@ class Disciple_Tools_Counter_Outreach extends Disciple_Tools_Counter_Base
      * @param int $start
      * @param null $end
      *
-     * @return int|array
      */
     public static function get_outreach_count( string $status = '', int $start = 0, $end = null ) {
 
