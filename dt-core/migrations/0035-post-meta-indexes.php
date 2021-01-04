@@ -148,8 +148,8 @@ class Disciple_Tools_Migration_0035 extends Disciple_Tools_Migration {
                   PRIMARY KEY (`meta_id`),
                   KEY `post_id` (`post_id`),
                   KEY `meta_key` (`meta_key`),
-                  KEY `meta_key_post_id` (`meta_key`,`post_id`),
-                  KEY `meta_key_meta_value_post_id` (`meta_key`(100),`meta_value`(100),`post_id`)
+                  KEY `meta_key_meta_value_post_id` (`meta_key`(100),`meta_value`(100),`post_id`),
+                  KEY `meta_key_post_id_dt` (`meta_key` (100),`post_id`)
             ) $charset_collate;",
             "{$wpdb->prefix}dt_activity_log" =>
                 "CREATE TABLE `{$wpdb->prefix}dt_activity_log` (
