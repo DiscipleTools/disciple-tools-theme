@@ -219,16 +219,16 @@ class Disciple_Tools_Posts
         $p2p_record = p2p_get_connection( (int) $p2p_id ); // returns object
 
         if ( !$p2p_record ){
-            if ($activity->field_type === "connection from"){
+            if ( $activity->field_type === "connection from" ){
                 $from = get_post( $activity->object_id );
                 $to = get_post( $activity->meta_value );
-                $from_title = wp_specialchars_decode( $from->post_title );
-                $to_title = wp_specialchars_decode( $to->post_title ) ?? '#' . $activity->meta_value;
-            } elseif ( $activity->field_type === "connection to"){
+                $from_title = wp_specialchars_decode( isset( $from->post_title ) ? $from->post_title : "" );
+                $to_title = wp_specialchars_decode( isset( $to->post_title ) ? $to->post_title : "" ) ?? '#' . $activity->meta_value;
+            } elseif ( $activity->field_type === "connection to" ){
                 $to = get_post( $activity->object_id );
                 $from = get_post( $activity->meta_value );
-                $to_title = wp_specialchars_decode( $to->post_title );
-                $from_title = wp_specialchars_decode( $from->post_title ) ?? '#' . $activity->meta_value;
+                $to_title = wp_specialchars_decode( isset( $to->post_title ) ? $to->post_title : "" );
+                $from_title = wp_specialchars_decode( isset( $from->post_title ) ? $from->post_title : "" ) ?? '#' . $activity->meta_value;
             } else {
                 return "CONNECTION DESTROYED";
             }
