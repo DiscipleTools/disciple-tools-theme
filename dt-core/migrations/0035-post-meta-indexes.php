@@ -126,12 +126,9 @@ class Disciple_Tools_Migration_0035 extends Disciple_Tools_Migration {
     }
 
     public function down() {
-        global $wpdb;
-
     }
 
     public function test() {
-        $this->test_expected_tables();
     }
 
 
@@ -143,13 +140,13 @@ class Disciple_Tools_Migration_0035 extends Disciple_Tools_Migration {
                 "CREATE TABLE `{$wpdb->postmeta}` (
                   `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
                   `post_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-                  `meta_key` varchar(255) NOT NULL,
-                  `meta_value` longtext NOT NULL,
+                  `meta_key` varchar(255) DEFAULT NULL,
+                  `meta_value` longtext,
                   PRIMARY KEY (`meta_id`),
                   KEY `post_id` (`post_id`),
-                  KEY `meta_key` (`meta_key`),
-                  KEY `meta_key_meta_value_post_id` (`meta_key`(100),`meta_value`(100),`post_id`),
-                  KEY `meta_key_post_id_dt` (`meta_key` (100),`post_id`)
+                  KEY `meta_key` (`meta_key`(191)),
+                  KEY `meta_key_meta_value_post_id_dt` (`meta_key`(100),`meta_value`(100),`post_id`),
+                  KEY `meta_key_post_id_dt` (`meta_key`(100),`post_id`)
             ) $charset_collate;",
             "{$wpdb->prefix}dt_activity_log" =>
                 "CREATE TABLE `{$wpdb->prefix}dt_activity_log` (
