@@ -256,12 +256,12 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
             $retval = $wpdb->update(
                 $wpdb->postmeta,
                 [
-                    'meta_value' => esc_sql( $tag_new )
+                    'meta_value' => esc_sql( $tag_new ),
                 ],
                 [
                     'meta_key' => 'tags',
-                    'meta_value' => esc_sql( $tag_old )
-                ],
+                    'meta_value' => esc_sql( $tag_old ),
+                ]
             );
 
             if ( $retval ) {
