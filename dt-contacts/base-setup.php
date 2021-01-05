@@ -196,7 +196,7 @@ class DT_Contacts_Base {
 
             // add location fields
             $fields['location_grid'] = [
-                'name'        => __( 'Locations', 'disciple_tools' ),
+                'name'        => __( 'Locations or Address', 'disciple_tools' ),
                 'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'location',
                 'mapbox'    => false,
@@ -206,7 +206,6 @@ class DT_Contacts_Base {
             ];
             $fields['location_grid_meta'] = [
                 'name'        => __( 'Locations', 'disciple_tools' ), //system string does not need translation
-                'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'location_meta',
                 "tile"      => "details",
                 'mapbox'    => false,
@@ -221,7 +220,7 @@ class DT_Contacts_Base {
                 "customizable" => false
             ];
             if ( DT_Mapbox_API::get_key() ){
-                $fields["contact_address"]["hidden"] = true;
+                $fields["contact_address"]["custom_display"] = true;
                 $fields["contact_address"]["mapbox"] = true;
                 $fields["location_grid"]["mapbox"] = true;
                 $fields["location_grid_meta"]["mapbox"] = true;
