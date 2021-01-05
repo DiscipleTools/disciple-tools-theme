@@ -186,11 +186,16 @@ class Disciple_Tools_Post_Type_Template {
                 return $cached;
             }
             $fields = $this->get_custom_fields_settings();
+            $channels = [];
+            foreach ( $fields as $field_key => $field_value ){
+                if ( $field_value["type"] === "communication_channel" ){
+                    $field_value["label"] = $field_value["name"];
+                    $channels[str_replace( "contact_", "", $field_key )] = $field_value;
+                }
+            }
             $settings = [
                 'fields' => $fields,
-                'channels' => array_filter( $fields, function ( $a ) {
-                    return $a["type"] === "communication_channel";
-                } ),
+                'channels' => $channels,
                 'connection_types' => array_keys( array_filter( $fields, function ( $a ) {
                     return $a["type"] === "connection";
                 } ) ),
