@@ -793,17 +793,9 @@ jQuery(document).ready(function($) {
             return `${_.escape( _.get( field_options, `default[${v}].label`, v ))}`;
           }).join(', ')
         } else if ( ['location', 'location_meta' ].includes(field_options.type) ){
-          let vals = []
-          vals = field_value.map(v=>{
+          values_html = field_value.map(v=>{
             return _.escape(v.label);
-          })
-          if ( _.get( post, 'contact_address', false) && _.get( field_settings, "contact_address.hidden" ) === true ){
-           vals = vals.concat(post.contact_address.map(v=>{
-             return _.escape(v.value);
-           }))
-          }
-          values_html = vals.join(', ')
-
+          }).join(', ')
         } else if ( field_options.type === 'communication_channel' ){
           values_html = field_value.map(v=>{
             return _.escape(v.value);

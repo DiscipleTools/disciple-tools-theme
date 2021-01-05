@@ -286,7 +286,6 @@ else {
             $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
             require_once( get_template_directory() . '/dt-people-groups/people-groups.php' );
             if ( strpos( $url_path, 'people-groups' ) !== false ){
-                require_once( get_template_directory() . '/dt-people-groups/people-groups-template.php' );
                 require_once( get_template_directory() . '/dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
                 $this->endpoints['peoplegroups'] = Disciple_Tools_People_Groups_Endpoints::instance();
             }
