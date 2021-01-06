@@ -100,6 +100,7 @@ function dt_site_scripts() {
 
     $post_type = get_post_type();
     $url_path = dt_get_url_path();
+    $post_type = $post_type ?: $url_path;
 
     dt_theme_enqueue_script( 'shared-functions', 'dt-assets/js/shared-functions.js', array( 'jquery', 'lodash', 'moment', 'datepicker' ) );
     wp_localize_script(
@@ -139,7 +140,7 @@ function dt_site_scripts() {
                 'showing_x_items' => _x( 'Showing %s items', 'Showing 30 items', 'disciple_tools' ),
                 'showing_x_items_matching' => _x( 'Showing %1$s items matching %2$s', 'Showing 30 items matching bob', 'disciple_tools' ),
             ],
-            'post_type' => $post_type ? $post_type : $url_path,
+            'post_type' => $post_type,
             'url_path' => $url_path,
             'post_type_modules' => dt_get_option( "dt_post_type_modules" ),
             'tiles' => DT_Posts::get_post_tiles( $post_type ),
