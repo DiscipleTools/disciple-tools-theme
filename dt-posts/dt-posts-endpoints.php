@@ -552,6 +552,9 @@ class Disciple_Tools_Posts_Endpoints {
 
     public function get_post_settings( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
+        if ( ! ( DT_Posts::can_access( $url_params["post_type"] ) || DT_Posts::can_create( $url_params["post_type"] ) ) ){
+            return new WP_Error( __FUNCTION__, "No permissions to read " . $url_params["post_type"], [ 'status' => 403 ] );
+        }
         return DT_Posts::get_post_settings( $url_params["post_type"] );
     }
 

@@ -33,9 +33,6 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|WP_Error
      */
     public static function get_post_settings( string $post_type ){
-        if ( ! ( self::can_access( $post_type ) || self::can_create( $post_type ) ) ){
-            return new WP_Error( __FUNCTION__, "No permissions to read " . $post_type, [ 'status' => 403 ] );
-        }
         $cached = wp_cache_get( $post_type . "_post_type_settings" );
         if ( $cached ){
             return $cached;
