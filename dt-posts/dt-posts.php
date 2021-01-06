@@ -67,7 +67,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         $initial_fields = $fields;
-        $post_settings = DT_Posts::get_post_settings( $post_type );
+        $post_settings = self::get_post_settings( $post_type );
 
         //check to see if we want to create this contact.
         //could be used to check for duplicates first
