@@ -401,6 +401,8 @@ else {
             }
             /* End Admin configuration section */
 
+            require_once( get_template_directory() . '/dt-core/dependencies/deprecated-dt-functions.php' );
+
             add_action( 'switch_blog', 'set_up_wpdb_tables', 99, 2 );
 
         } // End __construct()
