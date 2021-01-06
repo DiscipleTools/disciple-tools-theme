@@ -17,7 +17,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
         die();
     }
     $current_user_id = get_current_user_id();
-    $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+    $post_settings = DT_Posts::get_post_settings( $post_type );
     $dt_post = DT_Posts::get_post( $post_type, $post_id );
     $tiles = DT_Posts::get_post_tiles( $post_type );
     $following = DT_Posts::get_users_following_post( $post_type, $post_id );

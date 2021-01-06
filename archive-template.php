@@ -9,7 +9,7 @@ dt_please_log_in();
         wp_safe_redirect( '/settings' );
         exit();
     }
-    $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+    $post_settings = DT_Posts::get_post_settings( $post_type );
 
     $field_options = $post_settings["fields"];
     get_header();

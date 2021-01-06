@@ -193,7 +193,7 @@ class Disciple_Tools_Post_Type_Template {
                     $channels[str_replace( "contact_", "", $field_key )] = $field_value;
                 }
             }
-            $settings = [
+            $s = [
                 'fields' => $fields,
                 'channels' => $channels,
                 'connection_types' => array_keys( array_filter( $fields, function ( $a ) {
@@ -203,6 +203,8 @@ class Disciple_Tools_Post_Type_Template {
                 'label_plural' => $this->plural,
                 'post_type' => $this->post_type
             ];
+            $settings = dt_array_merge_recursive_distinct( $settings, $s );
+
             wp_cache_set( $post_type . "_type_settings", $settings );
         }
         return $settings;
