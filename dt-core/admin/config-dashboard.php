@@ -56,6 +56,8 @@ final class Disciple_Tools_Dashboard
             /* Add dashboard widgets */
             add_action( 'wp_dashboard_setup', [ $this, 'add_widgets' ] );
 
+            add_action( 'wp_dashboard_setup', [ $this, 'dt_dashboard_tile' ] );
+
             /* Remove Dashboard defaults */
             add_action( 'admin_init', [ $this, 'remove_dashboard_meta' ] );
             remove_action( 'welcome_panel', 'wp_welcome_panel' );
@@ -124,4 +126,21 @@ final class Disciple_Tools_Dashboard
         return $query_args;
     }
 
+
+    public function dt_dashboard_tile(){
+        wp_add_dashboard_widget('dt_setup_wizard', 'Disciple.Tools Setup Wizard', function (){
+            $mapbox_key = DT_Mapbox_API::get_key();
+            $todo = 0;
+            $todo += empty( $mapbox_key ) ? 1 : 0;
+
+            ?>
+            <p>Remaining Setup Tasks: <?php echo esc_html( $todo ) ?></p>
+            <?php
+            if ( empty( $mapbox_key ) ){
+                ?>
+                For geo-location and mapping <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=geocoding' ) ); ?>">Add a Mapbox Key</a>
+                <?php
+            }
+        });
+    }
 }

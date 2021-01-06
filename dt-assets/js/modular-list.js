@@ -14,6 +14,8 @@
   let loading_spinner = $("#list-loading-spinner")
   let old_filters = JSON.stringify(list_settings.filters)
   let table_header_row = $('.js-list thead .sortable th')
+  let fields_to_show_in_table = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_show_in_table', [] );
+  let current_user_id = wpApiNotifications.current_user_id;
 
   let items = []
   try {
@@ -21,44 +23,68 @@
   } catch (e) {
     cached_filter = {}
   }
-  let current_filter = {
-    query:{},
-  }
-  if ( cached_filter && !_.isEmpty(cached_filter)){
-    if ( cached_filter.type === "custom_filter" ){
-      add_custom_filter(cached_filter.name, "default", cached_filter.query, cached_filter.labels, false)
-    }
-    current_filter = cached_filter
-  }
+  let current_filter = (cached_filter && !_.isEmpty(cached_filter)) ? cached_filter : { query:{} }
 
+  //set up main filters
   setup_filters()
-  let fields_to_show_in_table = [];
-  _.forOwn( list_settings.post_type_settings.fields, (field_settings, field_key)=> {
-    if (_.get(field_settings, 'show_in_table')===true) {
-      fields_to_show_in_table.push(field_key)
-    }
-  })
 
-  //open the filter tabs
-  $(`#list-filter-tabs [data-id='${_.escape( current_filter.tab )}'] a`).click()
-  if ( current_filter.ID ){
-    $(`.is-active input[name=view][data-id="${_.escape( current_filter.ID )}"].js-list-view`).prop('checked', true);
+  //set up custom cached filter
+  if ( cached_filter && !_.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ){
+    cached_filter.query.offset = 0;
+    add_custom_filter(cached_filter.name, "default", cached_filter.query, cached_filter.labels, false)
   } else {
-    $('#list-filter-tabs .accordion-item a')[0].click()
-    $($('.js-list-view')[0]).prop('checked', true)
+    //check select filter
+    if ( current_filter.ID ){
+      //open the filter tabs
+      $(`#list-filter-tabs [data-id='${_.escape( current_filter.tab )}'] a`).click()
+      let filter_element = $(`input[name=view][data-id="${_.escape( current_filter.ID )}"].js-list-view`)
+      if ( filter_element.length ){
+        filter_element.prop('checked', true);
+      } else {
+        $('#list-filter-tabs .accordion-item a')[0].click()
+        $($('.js-list-view')[0]).prop('checked', true)
+      }
+    } else {
+      $('#list-filter-tabs .accordion-item a')[0].click()
+      $($('.js-list-view')[0]).prop('checked', true)
+    }
   }
+
+  //determine list columns
+  if ( _.isEmpty(fields_to_show_in_table)){
+    _.forOwn( list_settings.post_type_settings.fields, (field_settings, field_key)=> {
+      if (_.get(field_settings, 'show_in_table')===true || _.get(field_settings, 'show_in_table') > 0) {
+        fields_to_show_in_table.push(field_key)
+      }
+    })
+    fields_to_show_in_table.sort((a,b)=>{
+      let a_order = list_settings.post_type_settings.fields[a].show_in_table ? ( list_settings.post_type_settings.fields[a].show_in_table === true ? 50 : list_settings.post_type_settings.fields[a].show_in_table ) : 200
+      let b_order = list_settings.post_type_settings.fields[b].show_in_table ? ( list_settings.post_type_settings.fields[b].show_in_table === true ? 50 : list_settings.post_type_settings.fields[b].show_in_table ) : 200
+      return a_order > b_order ? 1 : -1
+    })
+  }
+
+  // get records on load and when a filter is clicked
   get_records_for_current_filter()
-
-
-
   $(document).on('change', '.js-list-view', () => {
     get_records_for_current_filter()
   });
+
+  //load record for the first filter when a tile is clicked
+  $(document).on('click', '.accordion-title', function(){
+    let selected_filter = $(".js-list-view:checked").data('id')
+    let tab = $(this).data('id');
+    if ( selected_filter ){
+      $(`.accordion-item[data-id='${tab}'] .js-list-view`).first().prop('checked', true);
+      get_records_for_current_filter()
+    }
+  })
 
   function get_records_for_current_filter(){
     let checked = $(".js-list-view:checked")
     let current_view = checked.val()
     let filter_id = checked.data("id") || current_view || ""
+    let sort = current_filter.query.sort || null;
     if ( current_view === "custom_filter" ){
       let filterId = checked.data("id")
       current_filter = _.find(custom_filters, {ID:filterId})
@@ -68,6 +94,7 @@
       current_filter.type = 'default'
       current_filter.labels = current_filter.labels || [{ id:filter_id, name:current_filter.name}]
     }
+    current_filter.query.sort = sort || current_filter.query.sort;
     if ( Array.isArray(current_filter.query) ){
       current_filter.query = {}; //make sure query is an object instead of an array.
     }
@@ -85,25 +112,26 @@
     list_settings.filters.tabs.forEach( tab =>{
       html += `
       <li class="accordion-item" data-accordion-item data-id="${_.escape(tab.key)}">
-        <a href="#" class="accordion-title">
+        <a href="#" class="accordion-title" data-id="${_.escape(tab.key)}">
           ${_.escape(tab.label)}
           <span class="tab-count-span" data-tab="${_.escape(tab.key)}">
-              ${tab.count || tab.count >= 0 ? `(${_.escape(tab.count)})`: ``} 
+              ${tab.count || tab.count >= 0 ? `(${_.escape(tab.count)})`: ``}
           </span>
         </a>
         <div class="accordion-content" data-tab-content>
           <div class="list-views">
             ${  list_settings.filters.filters.map( filter =>{
-              if (filter.tab===tab.key && filter.tab !== 'custom') {
-                return `
-                      <label class="list-view" style="${ filter.subfilter ? 'margin-left:15px' : ''}">
-                        <input type="radio" name="view" value="${_.escape(filter.ID)}" data-id="${_.escape(filter.ID)}" class="js-list-view" autocomplete="off">
-                        <span id="total_filter_label">${_.escape(filter.name)}</span>
-                        <span class="list-view__count js-list-view-count" data-value="${_.escape(filter.ID)}">${_.escape(filter.count )}</span>
-                      </label>
-                      `
-              }
-            }).join('')}
+        if (filter.tab===tab.key && filter.tab !== 'custom') {
+          let indent = filter.subfilter && Number.isInteger(filter.subfilter) ? 15 * filter.subfilter : 15;
+          return `
+                  <label class="list-view" style="${ filter.subfilter ? `margin-left:${indent}px` : ''}">
+                    <input type="radio" name="view" value="${_.escape(filter.ID)}" data-id="${_.escape(filter.ID)}" class="js-list-view" autocomplete="off">
+                    <span id="total_filter_label">${_.escape(filter.name)}</span>
+                    <span class="list-view__count js-list-view-count" data-value="${_.escape(filter.ID)}">${_.escape(filter.count )}</span>
+                  </label>
+                  `
+        }
+      }).join('')}
           </div>
         </div>
       </li>
@@ -220,8 +248,7 @@
       } else if (  sortLabel.includes('post_date') ) {
         sortLabel = list_settings.translations.creation_date
       } else  {
-        //get label for table header
-        sortLabel = $(`.sortable [data-id="${_.escape( sortLabel.replace('-', '') )}"]`).text()
+        sortLabel = _.get( list_settings, `post_type_settings.fields[${filter.query.sort}].name`, sortLabel)
       }
       html += `<span class="current-filter" data-id="sort">
           ${_.escape( list_settings.translations.sorting_by )}: ${_.escape( sortLabel )}
@@ -230,7 +257,7 @@
     currentFilters.html(html)
   }
 
-  
+
   let sort_field = _.get( current_filter, "query.sort", "name" )
   //reset sorting in table header
   table_header_row.removeClass("sorting_asc")
@@ -239,7 +266,7 @@
   header_cell.addClass(`sorting_${ sort_field.startsWith('-') ? 'desc' : 'asc'}`)
   table_header_row.data("sort", '')
   header_cell.data("sort", 'asc')
-  
+
   $('.js-sort-by').on("click", function () {
     table_header_row.removeClass("sorting_asc")
     table_header_row.removeClass("sorting_desc")
@@ -250,7 +277,11 @@
 
   //sort the table by clicking the header
   $('.js-list th').on("click", function () {
-    let id = $(this).data('id')
+    //check is this is the bulk_edit_master checkbox
+    if ( this.id == "bulk_edit_master") {
+      return;
+    }
+    let id = $(this).data('id');
     let sort = $(this).data('sort')
     table_header_row.removeClass("sorting_asc")
     table_header_row.removeClass("sorting_desc")
@@ -268,36 +299,116 @@
     get_records(0, id)
   })
 
+  $('#choose_fields_to_show_in_table').on('click', function(){
+    $('#list_column_picker').toggle()
+  })
+  $('#save_column_choices').on('click', function(){
+    let new_selected = [];
+    $('#list_column_picker input:checked').each((index, elem)=>{
+      new_selected.push($(elem).val())
+    })
+    fields_to_show_in_table = _.intersection( fields_to_show_in_table, new_selected ) // remove unchecked
+    fields_to_show_in_table = _.uniq(_.union( fields_to_show_in_table, new_selected ))
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type )
+    window.location.reload()
+  })
+  $('#reset_column_choices').on('click', function(){
+    fields_to_show_in_table = []
+    window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type )
+    window.location.reload()
+  })
+
+
+  $('#records-table').dragableColumns({
+    drag: true,
+    dragClass: 'drag',
+    overClass: 'over',
+    movedContainerSelector: '.dnd-moved',
+    onDragEnd: ()=>{
+      fields_to_show_in_table = []
+      $('.table-headers th').each((i, e)=>{
+        let field = $(e).data('id')
+        if ( field ){
+          fields_to_show_in_table.push(field)
+        }
+      })
+      window.SHAREDFUNCTIONS.save_json_cookie('fields_to_show_in_table', fields_to_show_in_table, list_settings.post_type )
+    }
+  }).on('click', 'tbody tr', function(){
+    window.location = $(this).data('link')
+  })
+
   let build_table = (records)=>{
     let table_rows = ``
-
+    let mobile = $(window).width() < 640
     records.forEach( ( record, index )=>{
       let row_fields_html = ''
-      _.forOwn( list_settings.post_type_settings.fields, (field_settings, field_key)=>{
-        if ( _.get( field_settings, 'show_in_table' ) === true ) {
+      fields_to_show_in_table.forEach(field_key=>{
+        let values_html = '';
+        let values = [];
+        if ( field_key === "name" ){
+          if ( mobile ){ return }
+          values_html = `<a href="${ _.escape( record.permalink ) }" title="${ _.escape( record.post_title ) }">${ _.escape( record.post_title ) }</a>`
+        } else if ( list_settings.post_type_settings.fields[field_key] ) {
+          let field_settings = list_settings.post_type_settings.fields[field_key]
           let field_value = _.get( record, field_key, false )
-          let values_html = '';
-          if ( field_value !== false ) {
-            if (field_settings.type === 'text') {
-              values_html = _.escape(field_value)
+
+          if ( field_value ) {
+            if (['text', 'number'].includes(field_settings.type)) {
+              values = [_.escape(field_value)]
             } else if (field_settings.type === 'date') {
-              values_html = _.escape(field_value.formatted)
+              values = [_.escape(field_value.formatted)]
+            } else if (field_settings.type === 'user_select') {
+              values = [_.escape(field_value.display)]
             } else if (field_settings.type === 'key_select') {
-              values_html = _.escape(field_value.label)
+              values = [_.escape(field_value.label)]
             } else if (field_settings.type === 'multi_select') {
-              values_html = field_value.map(v => {
-                return `<li>${_.escape(_.get(field_settings, `default[${v}].label`, v))}</li>`;
-              }).join('')
+              values = field_value.map(v => {
+                return `${_.escape(_.get(field_settings, `default[${v}].label`, v))}`;
+              })
             } else if ( field_settings.type === "location" ){
-              values_html = field_value.map(v => {
-                return `<li>${_.escape( v.label )}</li>`;
-              }).join('')
+              values = field_value.map(v => {
+                return `${_.escape( v.label )}`;
+              })
+            } else if ( field_settings.type === "communication_channel" ){
+              values = field_value.map(v => {
+                return `${_.escape( v.value )}`;
+              })
+            } else if ( field_settings.type === "connection" ){
+              values = field_value.map(v => {
+                return `${_.escape( v.post_title )}`;
+              })
+            } else if ( field_settings.type === "boolean" ){
+              values = ['&check;']
             }
           }
+        } else {
+          return;
+        }
+        values_html += values.map(v=>{
+          return `<li>${v}</li>`
+        }).join('')
 
+        if ( $(window).width() < 640 ){
           row_fields_html += `
             <td>
-              <ul style="margin: 0; list-style: none">
+              <div class="mobile-list-field-name">
+                <ul>
+                ${_.escape(_.get(list_settings, `post_type_settings.fields[${field_key}].name`, field_key))}
+                </ul>
+              </div>
+              <div class="mobile-list-field-value">
+                <ul style="line-height:20px" >
+                  ${values.join(', ')}
+                </ul>
+              </div>
+
+            </td>
+          `
+        } else {
+          row_fields_html += `
+            <td title="${values.join(', ')}">
+              <ul>
                 ${values_html}
               </ul>
             </td>
@@ -305,11 +416,26 @@
         }
       })
 
-      table_rows += `<tr>
-        <td>${index+1}.</td>
-        <td><a href="${ _.escape( record.permalink ) }">${ _.escape( record.post_title ) }</a></td>
-        ${ row_fields_html }
-      `
+      if ( mobile ){
+        table_rows += `<tr data-link="${_.escape(record.permalink)}">
+          <td class="bulk_edit_checkbox">
+          <input type="checkbox" name="bulk_edit_id" value="${record.ID}">
+            <div class="mobile-list-field-name">
+                ${index+1}.
+              </div>
+              <div class="mobile-list-field-value">
+                  <a href="${ _.escape( record.permalink ) }">${ _.escape( record.post_title ) }</a>
+              </div>
+          </td>
+          ${ row_fields_html }
+        `
+      } else {
+        table_rows += `<tr class="dnd-moved" data-link="${_.escape(record.permalink)}">
+          <td class="bulk_edit_checkbox" ><input type="checkbox" name="bulk_edit_id" value="${record.ID}"></td>
+          <td style="white-space: nowrap" >${index+1}.</td>
+          ${ row_fields_html }
+        `
+      }
     })
     if ( records.length === 0 ){
       table_rows = `<tr><td colspan="10">${_.escape(list_settings.translations.empty_list)}</td></tr>`
@@ -319,14 +445,12 @@
       ${table_rows}
     `
     $('#table-content').html(table_html)
+    bulk_edit_checkbox_event();
   }
 
-
   function get_records( offset = 0, sort = null ){
-    loading_spinner.addClass("active")
+    loading_spinner.addClass("active");
     let query = current_filter.query
-
-    document.cookie = `last_view=${JSON.stringify(current_filter)}`
     if ( offset ){
       query["offset"] = offset
     }
@@ -334,6 +458,8 @@
       query.sort = sort
       query.offset = 0
     }
+
+    window.SHAREDFUNCTIONS.save_json_cookie(`last_view`, current_filter, list_settings.post_type )
     if ( get_records_promise && _.get(get_records_promise, "readyState") !== 4){
       get_records_promise.abort()
     }
@@ -345,6 +471,10 @@
       } else  {
         items = response.posts || []
       }
+      window.records_list = response // adds global access to current list for plugins
+
+      $('#bulk_edit_master_checkbox').prop("checked", false); //unchecks the bulk edit master checkbox when the list reloads.
+
       $('#load-more').toggle(items.length !== parseInt( response.total ))
       let result_text = list_settings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", response.total)
       $('.filter-result-text').html(result_text)
@@ -388,9 +518,6 @@
         ${_.escape( name )}
     `).append(save_filter)
     $(".custom-filters").append(filterRow)
-    $(".custom-filters input").on("change", function () {
-      get_records_for_current_filter()
-    })
     if ( load_records ){
       get_records_for_current_filter()
     }
@@ -407,7 +534,7 @@
         search_query[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "key")
       } if ( type === "location" ){
         search_query[field] = _.map( _.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID')
-      } else if ( type === "date" || field === "created_on" ) {
+      } else if ( type === "date" ) {
         search_query[field] = {}
         let start = $(`.dt_date_picker[data-field="${field}"][data-delimit="start"]`).val()
         if ( start ){
@@ -458,7 +585,7 @@
           [field]: {
             display: ["value"],
             ajax: {
-              url: `${list_settings.root}dt-posts/v2/contacts/multi-select-values`,
+              url: window.wpApiShare.root + `dt-posts/v2/${list_settings.post_type}/multi-select-values`,
               data: {
                 s: "{{query}}",
                 field
@@ -564,9 +691,58 @@
     })
   }
 
+  let load_user_select_typeaheads = ()=>{
+    $(".typeahead__query [data-type='user_select']").each((key, el)=>{
+      let field_key = $(el).data('field')
+      if (!window.Typeahead[`.js-typeahead-${field_key}`]) {
+        $.typeahead({
+          input: `.js-typeahead-${field_key}`,
+          minLength: 0,
+          accent: true,
+          searchOnFocus: true,
+          maxItem: 20,
+          template: function (query, item) {
+            return `<span dir="auto">${_.escape(item.name)} (#${_.escape( item.ID )})</span>`
+          },
+          source: TYPEAHEADS.typeaheadUserSource(),
+          display: "name",
+          templateValue: "{{name}}",
+          dynamic: true,
+          multiselect: {
+            matchOn: ["ID"],
+            data: [],
+            callback: {
+              onCancel: function (node, item) {
+                $(`.current-filter[data-id="${item.ID}"].${field_key}`).remove()
+                _.pullAllBy(new_filter_labels, [{id: item.ID}], "id")
+              }
+            }
+          },
+          callback: {
+            onResult: function (node, query, result, resultCount) {
+              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              $(`#${field_key}-result-container`).html(text);
+            },
+            onHideLayout: function () {
+              $(`#${field_key}-result-container`).html("");
+            },
+            onClick: function (node, a, item) {
+              new_filter_labels.push({id: item.ID, name: item.name, field: field_key})
+              selected_filters.append(`<span class="current-filter ${field_key}" data-id="${_.escape( item.ID )}">${_.escape( item.name )}</span>`)
+            }
+          }
+        });
+      }
+    })
+  }
+
   /**
-   * location_grid
+   * Location
    */
+   $('#mapbox-clear-autocomplete').click("input", function(){
+       delete window.location_data;
+    });
+
   let loadLocationTypeahead = ()=> {
     if (!window.Typeahead['.js-typeahead-location_grid']) {
       $.typeahead({
@@ -652,6 +828,7 @@
     new_filter_labels=[]
     loadLocationTypeahead()
     load_post_type_typeaheads()
+    load_user_select_typeaheads()
     typeaheads_loaded = load_multi_select_typeaheads().catch(err => { console.error(err) })
     $('#new-filter-name').val('')
     $("#filter-modal input.dt_date_picker").each(function () {
@@ -761,9 +938,6 @@
       let delimiter = $(this).data('delimit')
       let delimiter_label = list_settings.translations[`range_${delimiter}`]
       let field_name = _.get( list_settings, `post_type_settings.fields.${id}.name` , id)
-      if ( id === "created_on" ){
-        field_name = list_settings.translations.creation_date
-      }
       //remove existing filters
       _.pullAllBy(new_filter_labels, [{id:`${id}_${delimiter}`}], "id")
       $(`.current-filter[data-id="${id}_${delimiter}"]`).remove()
@@ -831,7 +1005,7 @@
 
   $("#search").on("click", function () {
     let searchText = $("#search-query").val()
-    let query = {text:searchText, assigned_to:["all"]}
+    let query = {text:searchText}
     let labels = [{ id:"search", name:searchText, field: "search"}]
     add_custom_filter(searchText, "search", query, labels)
   })
@@ -859,6 +1033,520 @@
   $("#open-search").on("click", function () {
     $(".hideable-search").toggle()
   })
+
+
+
+  /***
+   * Bulk Edit
+   */
+
+  $('#bulk_edit_controls').on('click', function(){
+    $('#bulk_edit_picker').toggle();
+    $('#records-table').toggleClass('bulk_edit_on');
+  })
+
+  $('#bulk_edit_seeMore').on('click', function(){
+    $('#bulk_more').toggle();
+    $('#bulk_edit_seeMore').children().toggle()
+  })
+
+  function bulk_edit_checkbox_event() {
+    $("tbody tr td.bulk_edit_checkbox").on('click', function(e) {
+      e.stopImmediatePropagation();
+      bulk_edit_count();
+    });
+  }
+
+  $('#bulk_edit_master').on('click', function(e){
+    e.stopImmediatePropagation();
+    let checked = $(this).children('input').is(':checked');
+        $('.bulk_edit_checkbox input').each(function() {
+        $(this).prop('checked', checked);
+        bulk_edit_count();
+    })
+  })
+  /**
+   * Bulk_Assigned_to
+   */
+  let bulk_edit_submit_button = $('#bulk_edit_submit');
+
+  bulk_edit_submit_button.on('click', function(e) {
+    bulk_edit_submit();
+  });
+
+  function bulk_edit_submit() {
+    $('#bulk_edit_submit-spinner').addClass('active');
+    let allInputs = $('#bulk_edit_picker input, #bulk_edit_picker select, #bulk_edit_picker .button').not('#bulk_share');
+    let multiSelectInputs = $('#bulk_edit_picker .dt_multi_select')
+    let shareInput = $('#bulk_share');
+    let updatePayload = {};
+    let sharePayload;
+
+    allInputs.each(function () {
+        let inputData = $(this).data();
+        $.each(inputData, function (key, value) {
+          if (key.includes('bulk_key_') && value) {
+            let field_key = key.replace('bulk_key_', '');
+            if(field_key) {
+              updatePayload[field_key] = value;
+            }
+          }
+        })
+    })
+    if (window.location_data) {
+      updatePayload['location_grid_meta'] = window.location_data.location_grid_meta;
+    }
+
+    let multiSelectUpdatePayload = {};
+    multiSelectInputs.each(function () {
+      let inputData = $(this).data();
+      $.each(inputData, function (key, value) {
+        if (key.includes('bulk_key_') && value) {
+          let field_key = key.replace('bulk_key_', '');
+          if (!multiSelectUpdatePayload[field_key]) {
+            multiSelectUpdatePayload[field_key] = {'values': []};
+          }
+          multiSelectUpdatePayload[field_key].values.push(value.values);
+        }
+      })
+
+    })
+    const multiSelectKeys = Object.keys(multiSelectUpdatePayload);
+
+    multiSelectKeys.forEach((key, index) => {
+      console.log(`${key}: ${multiSelectUpdatePayload[key]}`);
+      updatePayload[key] = multiSelectUpdatePayload[key];
+    });
+
+    shareInput.each(function () {
+      sharePayload = $(this).data('bulk_key_share');
+    })
+
+    let queue =  [];
+    let count = 0;
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
+        let postId = parseInt($(this).val());
+        queue.push( postId );
+      }
+    });
+    process(queue, 10, doEach, doDone, updatePayload, sharePayload);
+  }
+
+  function bulk_edit_count() {
+    let bulk_edit_total_checked = $('.bulk_edit_checkbox input:checked').length;
+    let bulk_edit_submit_button_text = $('#bulk_edit_submit_text')
+
+    if (bulk_edit_total_checked == 0) {
+      bulk_edit_submit_button_text.text(`Update ${list_settings.post_type}`)
+    } else {
+      bulk_edit_submit_button_text.text(`Update ${bulk_edit_total_checked} ${list_settings.post_type}`)
+    }
+  }
+
+  let bulk_edit_picker_checkboxes = $('#bulk_edit_picker #update-needed');
+  bulk_edit_picker_checkboxes.on('click', function(e) {
+    if ($(this).is(':checked')) {
+      $(this).data('bulk_key_requires_update', true);
+    }
+  })
+
+  let bulk_edit_picker_select_field = $('#bulk_edit_picker select');
+  bulk_edit_picker_select_field.on('change', function(e) {
+      let field_key = this.id.replace('bulk_', '');
+      $(this).data(`bulk_key_${field_key}`, this.value);
+  })
+
+  let bulk_edit_picker_button_groups= $('#bulk_edit_picker .select-button');
+  bulk_edit_picker_button_groups.on('click', function(e) {
+      let field_key = $(this).data('field-key').replace('bulk_', '');
+      let optionKey = $(this).attr('id')
+
+      let fieldValue = {};
+
+      fieldValue.values = {value:optionKey};
+
+
+      $(this).addClass('selected-select-button');
+      $(this).data(`bulk_key_${field_key}`, fieldValue);
+  })
+
+  //Bulk Update Queue
+  function process( q, num, fn, done, update, share ) {
+    // remove a batch of items from the queue
+    let items = q.splice(0, num),
+        count = items.length;
+
+    // no more items?
+    if ( !count ) {
+        // exec done callback if specified
+        done && done();
+        // quit
+        return;
+    }
+
+    // loop over each item
+    for ( let i = 0; i < count; i++ ) {
+        // call callback, passing item and
+        // a "done" callback
+        fn(items[i], function() {
+            // when done, decrement counter and
+            // if counter is 0, process next batch
+            --count || process(q, num, fn, done, update, share);
+        }, update, share);
+
+    }
+  }
+
+  // a per-item action
+  function doEach( item, done, update, share ) {
+    let promises = [];
+
+    if (Object.keys(update).length) {
+      promises.push( API.update_post(list_settings.post_type, item, update).catch(err => { console.error(err);}));
+    }
+
+    if (share) {
+      share.forEach(function(value) {
+        promises.push( API.add_shared(list_settings.post_type, item, value).catch(err => { console.error(err) }));
+      })
+    }
+
+    Promise.all(promises).then( function() {
+        done();
+    });
+  }
+
+  function doDone() {
+    $('#bulk_edit_submit-spinner').removeClass('active');
+    window.location.reload();
+  }
+
+
+
+  let bulk_assigned_to_input = $(`.js-typeahead-bulk_assigned_to`)
+  $.typeahead({
+    input: '.js-typeahead-bulk_assigned_to',
+    minLength: 0,
+    maxItem: 0,
+    accent: true,
+    searchOnFocus: true,
+    source: TYPEAHEADS.typeaheadUserSource(),
+    templateValue: "{{name}}",
+    template: function (query, item) {
+      return `<div class="assigned-to-row" dir="auto">
+        <span>
+            <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
+            ${_.escape( item.name )}
+        </span>
+        ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
+        ${ item.update_needed && item.update_needed > 0 ? `<span>
+          <img style="height: 12px;" src="${_.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+          <span style="font-size: 14px">${_.escape(item.update_needed)}</span>
+        </span>` : '' }
+      </div>`
+    },
+    dynamic: true,
+    hint: true,
+    emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
+    callback: {
+      onClick: function(node, a, item){
+        node.data('bulk_key_assigned_to', `user-${item.ID}`);
+      },
+      onResult: function (node, query, result, resultCount) {
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+        $('#bulk_assigned_to-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('.bulk_assigned_to-result-container').html("");
+      },
+      onReady: function () {
+      }
+    },
+  });
+
+
+/**
+ * Bulk share
+*/
+$.typeahead({
+  input: '#bulk_share',
+  minLength: 0,
+  maxItem: 0,
+  accent: true,
+  searchOnFocus: true,
+  source: TYPEAHEADS.typeaheadUserSource(),
+  templateValue: "{{name}}",
+  dynamic: true,
+  multiselect: {
+    matchOn: ["ID"],
+    callback: {
+      onCancel: function (node, item) {
+        $(node).removeData( `bulk_key_bulk_share` );
+        $('#share-result-container').html("");
+
+      }
+    },
+  },
+  callback: {
+    onClick: function (node, a, item, event) {
+      let shareUserArray;
+      if (node.data('bulk_key_share')) {
+        shareUserArray = node.data('bulk_key_share');
+      } else {
+        shareUserArray = [];
+      }
+      shareUserArray.push(item.ID);
+      node.data(`bulk_key_share`, shareUserArray);
+    },
+    onResult: function (node, query, result, resultCount) {
+      if (query) {
+        let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+        $('#share-result-container').html(text);
+      }
+    },
+    onHideLayout: function () {
+      $('#share-result-container').html("");
+    }
+  }
+});
+
+/**
+ * Bulk Typeahead
+ */
+
+  let field_settings = window.list_settings.post_type_settings.fields;
+
+  $('#bulk_edit_picker .dt_typeahead').each((key, el)=>{
+    let field_id = $(el).attr('id').replace('_connection', '').replace('bulk_', '');
+    let element_id =  $(el).attr('id').replace('_connection', '');
+    if (element_id !== "bulk_share") {
+      let listing_post_type = _.get(window.list_settings.post_type_settings.fields[field_id], "post_type", 'contacts')
+      $.typeahead({
+        input: `.js-typeahead-${element_id}`,
+        minLength: 0,
+        accent: true,
+        maxItem: 30,
+        searchOnFocus: true,
+        template: window.TYPEAHEADS.contactListRowTemplate,
+        source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key:field_id}),
+        display: "name",
+        templateValue: "{{name}}",
+        dynamic: true,
+        multiselect: {
+          matchOn: ["ID"],
+          data: '',
+          callback: {
+            onCancel: function (node, item) {
+              $(node).removeData( `bulk_key_${field_id}` );
+            }
+          },
+          href: window.wpApiShare.site_url + `/${listing_post_type}/{{ID}}`
+        },
+        callback: {
+          onClick: function(node, a, item, event){
+            let multiUserArray;
+            if ( node.data(`bulk_key_${field_id}`) ) {
+              multiUserArray = node.data(`bulk_key_${field_id}`).values;
+            } else {
+              multiUserArray = [];
+            }
+            multiUserArray.push({"value":item.ID});
+
+            node.data(`bulk_key_${field_id}`, {values: multiUserArray});
+            this.addMultiselectItemLayout(item)
+            event.preventDefault()
+            this.hideLayout();
+            this.resetInput();
+            //masonGrid.masonry('layout')
+          },
+          onResult: function (node, query, result, resultCount) {
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $(`#${element_id}-result-container`).html(text);
+          },
+          onHideLayout: function (event, query) {
+            if ( !query ){
+              $(`#${element_id}-result-container`).empty()
+            }
+            //masonGrid.masonry('layout')
+          },
+          onShowLayout (){
+            //masonGrid.masonry('layout')
+          }
+        }
+      })
+    }
+  })
+
+  $('#bulk_edit_picker .dt_location_grid').each(()=> {
+    let field_id = 'location_grid';
+    let typeaheadTotals = {};
+    $.typeahead({
+      input: '.js-typeahead-location_grid',
+      minLength: 0,
+      accent: true,
+      searchOnFocus: true,
+      maxItem: 20,
+      dropdownFilter: [{
+        key: 'group',
+        value: 'focus',
+        template: _.escape(window.wpApiShare.translations.regions_of_focus),
+        all: _.escape(window.wpApiShare.translations.all_locations),
+      }],
+      source: {
+        focus: {
+          display: "name",
+          ajax: {
+            url: window.wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+            data: {
+              s: "{{query}}",
+              filter: function () {
+                // return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+              }
+            },
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+            },
+            callback: {
+              done: function (data) {
+                if (typeof typeaheadTotals!=="undefined") {
+                  typeaheadTotals.field = data.total
+                }
+                return data.location_grid
+              }
+            }
+          }
+        }
+      },
+      display: "name",
+      templateValue: "{{name}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["ID"],
+        data: '',
+        callback: {
+          onCancel: function (node, item) {
+            $(node).removeData( `bulk_key_${field_id}` );
+          }
+        }
+      },
+      callback: {
+        onClick: function (node, a, item, event) {
+          // $(`#${element_id}-spinner`).addClass('active');
+          node.data(`bulk_key_${field_id}`, {values:[{"value":item.ID}]});
+        },
+        onReady() {
+          this.filters.dropdown = {key: "group", value: "focus", template: _.escape(window.wpApiShare.translations.regions_of_focus)}
+          this.container
+          .removeClass("filter")
+          .find("." + this.options.selector.filterButton)
+          .html(_.escape(window.wpApiShare.translations.regions_of_focus));
+        },
+        onResult: function (node, query, result, resultCount) {
+          resultCount = typeaheadTotals.location_grid
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $('#location_grid-result-container').html(text);
+        },
+        onHideLayout: function () {
+          $('#location_grid-result-container').html("");
+        }
+      }
+    });
+  })
+
+  $('button.follow').on("click", function () {
+    let following = !($(this).data('value') === "following")
+    $(this).data("value", following ? "following" : "" )
+    $(this).html( following ? "Unfollow" : "Follow")
+    $(this).toggleClass( "hollow" )
+    let follow = { values:[{value:current_user_id, delete:!following}] }
+
+    let unfollow = {values:[{value:current_user_id, delete:following}]}
+
+    $(this).data('bulk_key_follow', follow);
+    $(this).data('bulk_key_unfollow', unfollow);
+  })
+
+  $('#bulk_edit_picker input.text-input').change(function(){
+    const val = $(this).val()
+    let field_key = this.id.replace('bulk_', '')
+    $(this).data(`bulk_key_${field_key}`, val);
+  });
+
+  $('#bulk_edit_picker .dt_textarea').change(function(){
+    const val = $(this).val()
+    let field_key = this.id.replace('bulk_', '')
+    $(this).data(`bulk_key_${field_key}`, val);
+  })
+
+  $('#bulk_edit_picker .dt_date_picker').datepicker({
+    constrainInput: false,
+    dateFormat: 'yy-mm-dd',
+    onClose: function (date) {
+      if (document.querySelector('#group-details-edit-modal') && document.querySelector('#group-details-edit-modal').contains( this)) {
+        // do nothing
+      } else {
+        date = window.SHAREDFUNCTIONS.convertArabicToEnglishNumbers(date);
+
+        if (!$(this).val()) {
+          date = " ";//null;
+        }
+
+        let formattedDate = moment.utc(date).unix();
+
+        let field_key = this.id.replace('bulk_', '')
+        $(this).data(`bulk_key_${field_key}`, formattedDate);
+      }
+    },
+    changeMonth: true,
+    changeYear: true,
+    yearRange: "1900:2050",
+  }).each(function() {
+    if (this.value && moment.unix(this.value).isValid()) {
+      this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
+    }
+  })
+
+
+  let mcleardate = $("#bulk_edit_picker .clear-date-button");
+  mcleardate.click(function() {
+    let input_id = this.dataset.inputid;
+    let date = null;
+    // $(`#${input_id}-spinner`).addClass('active')
+    let field_key = this.id.replace('bulk_', '')
+    $(this).removeData(`bulk_key_${field_key}`);
+    $(`#${input_id}`).val("");
+  });
+
+  $('#bulk_edit_picker select.select-field').change(e => {
+    const val = $(e.currentTarget).val()
+
+    if (val === "paused") {
+      $('#reason-paused-options').parent().toggle()
+    }
+
+    let field_key = e.currentTarget.id.replace('bulk_', '')
+    $(e.currentTarget).data(`bulk_key_${field_key}`, val);
+
+  })
+
+  $('#bulk_edit_picker input.number-input').on("blur", function(){
+    const id = $(this).attr('id')
+    const val = $(this).val()
+
+    let field_key = this.id.replace('bulk_', '')
+    $(this).data(`bulk_key_${field_key}`, val);
+  })
+
+  $('#bulk_edit_picker .dt_contenteditable').on('blur', function(){
+    const id = $(this).attr('id')
+    let val = $(this).html()
+
+    let field_key = this.id.replace('bulk_', '')
+    $(this).data(`bulk_key_${field_key}`, val);
+  })
+
+
 
 
 })(window.jQuery, window.list_settings, window.Foundation);

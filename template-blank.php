@@ -4,7 +4,7 @@ Template Name: Blank
 */
 
 if ( ! apply_filters( 'dt_blank_access', false ) ){
-    echo 'Access to this page not permitted';
+    esc_html_e( 'Access to this page not permitted', 'disciple_tools' );
     exit;
 }
 ?>
@@ -37,17 +37,18 @@ if ( ! apply_filters( 'dt_blank_access', false ) ){
         <meta name="theme-color" content="#3f729b">
     <?php } ?>
 
-    <title><?php do_action( 'dt_blank_title' ) ?></title>
+    <title><?php echo esc_html( apply_filters( 'dt_blank_title', __( 'Form', 'disciple-tools' ) ) ) ?></title>
 
     <?php do_action( 'dt_blank_head' ) ?>
 
 </head>
 <body>
-    <!-- Page Body -->
-    <?php do_action( 'dt_blank_body' ); ?>
 
-    <!-- Page Footer-->
-    <?php do_action( 'dt_blank_footer' ) ?>
+<!-- Page Body -->
+<?php do_action( 'dt_blank_body' ); ?>
+
+<!-- Page Footer-->
+<?php do_action( 'dt_blank_footer' ) ?>
 
 </body>
 </html>

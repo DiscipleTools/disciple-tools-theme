@@ -72,8 +72,8 @@ jQuery(document).ready(function($) {
       let field = item.meta_key
 
       if (field && field.includes("quick_button_")){
-        if (contactsDetailsWpApiSettings){
-          field = _.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings[${item.meta_key}].name`)
+        if (window.detailsSettings){
+          field = _.get(window.detailsSettings,`post_fields[${item.meta_key}].name`)
         }
         item.action = `<a class="revert-activity dt_tooltip" data-id="${_.escape( item.histid )}">
           <img class="revert-arrow-img" src="${commentsSettings.template_dir}/dt-assets/images/undo.svg">
@@ -558,8 +558,8 @@ jQuery(document).ready(function($) {
     $("#confirm-revert").data("id", id)
     API.get_single_activity(postType, postId, id).then(a => {
       let field = a.meta_key
-      if (contactsDetailsWpApiSettings){
-        field = _.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings[${a.meta_key}].name`)
+      if (window.detailsSettings.post_settings){
+        field = _.get(window.detailsSettings, `post_settings.fields[${a.meta_key}].name`)
       }
 
       $(".revert-field").html(field || a.meta_key)

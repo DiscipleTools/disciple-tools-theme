@@ -81,7 +81,7 @@ class DT_Metrics_Personal_Coaching_Tree extends DT_Metrics_Chart_Base
     }
 
     public function get_baptism_generations_tree(){
-        $list = Disciple_Tools_Contacts::get_viewable_contacts_compact( '' );
+        $list = DT_Posts::get_viewable_compact( "contacts", '' );
 
         if ( is_wp_error( $list ) ) {
             return [];

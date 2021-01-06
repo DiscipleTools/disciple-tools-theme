@@ -13,7 +13,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
     public $slug = 'milestones'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/contacts/milestones.js'; // should be full file name plus extension
-    public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
+    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
 
     public function __construct() {
         parent::__construct();
@@ -136,7 +136,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
             GROUP BY log.meta_value
         ", $start, $end ), ARRAY_A );
 
-        $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $field_settings = DT_Posts::get_post_field_settings( "contacts" );
         $milestones_options = $field_settings["milestones"]["default"];
         $milestones_data = [];
 

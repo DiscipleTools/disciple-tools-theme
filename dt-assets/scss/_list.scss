@@ -86,6 +86,7 @@
             font-weight: 100;
             font-size: 12px;
         }
+        padding: 0.75rem 1rem;
     }
 }
 
@@ -212,3 +213,74 @@ table.js-list{
 .group-status--inactive_church    { color: #F43636; }
 .group-status--inactive_group     { color: #F43636; }
 .group-status--inactive_pre_group { color: #F43636; }
+
+
+#table-content {
+    tr {
+        cursor: pointer;
+        ul {
+            list-style: none;
+            margin:0;
+            max-height: 100px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            li {
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+        }
+    }
+    tr:hover{
+        background-color: #ecf5fc
+    }
+}
+
+.bulk_edit_checkbox {
+    cursor: default;
+    display: none;
+    input[type="checkbox"] {
+        margin: 0;
+    }
+}
+
+.bulk_edit_on {
+    .bulk_edit_checkbox {
+        display: table-cell;
+    }
+}
+@media screen and (max-width : 640px) {
+    #table-content {
+        tr {
+            padding: 10px;
+            cursor: pointer;
+            td {
+                padding:0;
+            }
+            .mobile-list-field-name {
+                width: 20%;
+                display: inline-block;
+                overflow: hidden;
+                white-space: nowrap;
+                margin-right: 5%;
+                line-height:20px;
+                font-size: 10px;
+            }
+            .mobile-list-field-value {
+                width: 70%;
+                display: inline-block;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+            ul {
+                li {
+                    display:inline;
+                }
+            }
+        }
+        tr:hover{
+            background-color: #ecf5fc
+        }
+    }
+}

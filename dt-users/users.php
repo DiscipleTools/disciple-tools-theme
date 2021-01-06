@@ -66,26 +66,54 @@ class Disciple_Tools_Users
         $user_id = get_current_user_id();
         $users = [];
         $update_needed = [];
-        if ( !user_can( get_current_user_id(), 'view_any_contacts' ) && !user_can( get_current_user_id(), 'dt_list_users' ) ){
+        if ( !current_user_can( 'dt_all_access_contacts' ) && !current_user_can( 'dt_list_users' ) ){
             // users that are shared posts that are shared with me
-            $users_ids = $wpdb->get_results( $wpdb->prepare("
-                SELECT user_id
-                FROM $wpdb->dt_share
-                WHERE post_id IN (
-                      SELECT post_id
-                      FROM $wpdb->dt_share
-                      WHERE user_id = %1\$s
-                )
-                GROUP BY user_id
-                ",
-                $user_id
-            ), ARRAY_N );
+            if ( $search_string ){
+                $users_ids = $wpdb->get_results( $wpdb->prepare("
+                    SELECT user_id
+                    FROM $wpdb->dt_share
+                    INNER JOIN $wpdb->users as u ON ( u.ID = user_id AND display_name LIKE %s )
+                    WHERE post_id IN (
+                          SELECT post_id
+                          FROM $wpdb->dt_share
+                          WHERE user_id = %s
+                    )
+                    GROUP BY user_id
+                    ",
+                    '%' . $search_string .'%',
+                    $user_id
+                ), ARRAY_N );
+            } else {
+                $users_ids = $wpdb->get_results( $wpdb->prepare("
+                    SELECT user_id
+                    FROM $wpdb->dt_share
+                    WHERE post_id IN (
+                          SELECT post_id
+                          FROM $wpdb->dt_share
+                          WHERE user_id = %1\$s
+                    )
+                    GROUP BY user_id
+                    ",
+                    $user_id
+                ), ARRAY_N );
 
-            $dispatchers = $wpdb->get_results("
-                SELECT user_id FROM $wpdb->usermeta
-                WHERE meta_key = '{$wpdb->prefix}capabilities'
-                AND meta_value LIKE '%dispatcher%'
-            ");
+            }
+
+            if ( $search_string ){
+                $dispatchers = $wpdb->get_results($wpdb->prepare( "
+                    SELECT user_id FROM $wpdb->usermeta um
+                    INNER JOIN $wpdb->users u ON ( u.ID = um.user_id AND display_name LIKE %s )
+                    WHERE meta_key = '{$wpdb->prefix}capabilities'
+                    AND meta_value LIKE %s
+                ", '%' . esc_sql( $search_string ) . '%', '%dispatcher%' ) );
+
+            } else {
+                $dispatchers = $wpdb->get_results("
+                    SELECT user_id FROM $wpdb->usermeta
+                    WHERE meta_key = '{$wpdb->prefix}capabilities'
+                    AND meta_value LIKE '%dispatcher%'
+                ");
+            }
 
             $assure_unique = [];
             foreach ( $dispatchers as $index ){
@@ -159,7 +187,7 @@ class Disciple_Tools_Users
                     "contact_id" => self::get_contact_for_user( $user->ID )
                 ];
                 //extra information for the dispatcher
-                if ( current_user_can( 'view_any_contacts' ) && !$get_all ){
+                if ( current_user_can( 'dt_all_access_contacts' ) && !$get_all ){
                     $workload_status = get_user_option( 'workload_status', $user->ID );
                     if ( $workload_status && isset( $workload_status_options[ $workload_status ]["color"] ) ) {
                         $u['status_color'] = $workload_status_options[$workload_status]["color"];
@@ -306,13 +334,17 @@ class Disciple_Tools_Users
     }
 
 
+    /**
+     * @param $user_id
+     * @return int|WP_Error|null the contact ID
+     */
     public static function get_contact_for_user( $user_id ){
         if ( !current_user_can( "access_contacts" )){
             return new WP_Error( 'no_permission', __( "Insufficient permissions" ), [ 'status' => 403 ] );
         }
         $contact_id = get_user_option( "corresponds_to_contact", $user_id );
         if ( !empty( $contact_id )){
-            return $contact_id;
+            return (int) $contact_id;
         }
         $args = [
             'post_type'  => 'contacts',
@@ -331,7 +363,7 @@ class Disciple_Tools_Users
         $contacts = new WP_Query( $args );
         if ( isset( $contacts->post->ID ) ){
             update_user_option( $user_id, "corresponds_to_contact", $contacts->post->ID );
-            return $contacts->post->ID;
+            return (int) $contacts->post->ID;
         } else {
             return null;
         }
@@ -388,23 +420,24 @@ class Disciple_Tools_Users
             }
 
             if ( empty( $corresponds_to_contact ) || get_post( $corresponds_to_contact ) === null ) {
-                $new_id = Disciple_Tools_Contacts::create_contact( [
+                $current_user_id = get_current_user_id();
+//                wp_set_current_user( 0 );
+                $new_user_contact = DT_Posts::create_post( "contacts", [
                     "title"               => $user->display_name,
-                    "assigned_to"         => "user-" . $user_id,
                     "type"                => "user",
-                    "overall_status"      => "assigned",
                     "corresponds_to_user" => $user_id,
-                ], false );
-                if ( !is_wp_error( $new_id )){
-                    update_user_option( $user_id, "corresponds_to_contact", $new_id );
+                ], true, false );
+//                wp_set_current_user( $current_user_id );
+                if ( !is_wp_error( $new_user_contact )){
+                    update_user_option( $user_id, "corresponds_to_contact", $new_user_contact["ID"] );
                 }
-                return $new_id;
+                return $new_user_contact["ID"];
             } else {
                 $contact = get_post( $corresponds_to_contact );
                 if ( $contact && $contact->post_title != $user->display_name && $user->display_name != $user->user_login ){
-                    Disciple_Tools_Contacts::update_contact( $corresponds_to_contact, [
+                    DT_Posts::update_post( "contacts", $corresponds_to_contact, [
                         "title" => $user->display_name
-                    ], false, true );
+                    ], false, false );
                 }
                 return $contact->ID;
             }
@@ -454,15 +487,15 @@ class Disciple_Tools_Users
             if ( isset( $data["corresponds_to_contact"] ) ){
                 $corresponds_to_contact = $data["corresponds_to_contact"];
                 update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
-                Disciple_Tools_Contacts::update_contact( (int) $corresponds_to_contact, [
+                DT_Posts::update_post( "contacts", (int) $corresponds_to_contact, [
                     "corresponds_to_user" => $user_id
                 ], false, true );
             }
         }
-        if ( isset( $_POST["corresponds_to_contact_id"] ) ) {
+        if ( isset( $_POST["corresponds_to_contact_id"] ) && !empty( $_POST["corresponds_to_contact_id"] ) ) {
             $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
             update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
-            Disciple_Tools_Contacts::update_contact( (int) $corresponds_to_contact, [
+            DT_Posts::update_post( "contacts", (int) $corresponds_to_contact, [
                 "corresponds_to_user" => $user_id
             ], false, true );
         }
@@ -491,6 +524,14 @@ class Disciple_Tools_Users
      */
     public static function profile_update_hook( $user_id ) {
         self::create_contact_for_user( $user_id );
+
+        if ( isset( $_POST["corresponds_to_contact_id"] ) && !empty( $_POST["corresponds_to_contact_id"] ) ){
+            $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
+            update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
+            DT_Posts::update_post( "contacts", (int) $corresponds_to_contact, [
+                "corresponds_to_user" => $user_id
+            ], true, false );
+        }
 
         if ( !empty( $_POST["allowed_sources"] ) ) {
             if ( isset( $_REQUEST['action'] ) && 'update' == $_REQUEST['action'] ) {
@@ -670,7 +711,7 @@ class Disciple_Tools_Users
             <script type="application/javascript">
                 jQuery(document).ready(function($) {
                     jQuery(".corresponds_to_contact").each(function () {
-                        $(this).autocomplete({
+                        jQuery(this).autocomplete({
                             source: function (request, response) {
                                 jQuery.ajax({
                                     url: '<?php echo esc_html( rest_url() ) ?>dt-posts/v2/contacts/compact',
@@ -848,6 +889,13 @@ Please click the following link to confirm the invite:
         return $user_id;
     }
 
+    /**
+     * @param $user_name
+     * @param $user_email
+     * @param $display_name
+     * @param null $corresponds_to_contact
+     * @return int|WP_Error
+     */
     public static function create_user( $user_name, $user_email, $display_name, $corresponds_to_contact = null ){
         if ( !current_user_can( "create_users" ) ){
             return new WP_Error( "no_permissions", "You don't have permissions to create users", [ 'status' => 401 ] );
@@ -894,6 +942,7 @@ Please click the following link to confirm the invite:
         if ( $corresponds_to_contact ) {
             update_user_meta( $user_id, $wpdb->prefix . 'corresponds_to_contact', $corresponds_to_contact );
             update_post_meta( $corresponds_to_contact, 'corresponds_to_user', $user_id );
+            update_post_meta( $corresponds_to_contact, 'type', 'user' );
         }
 
         return $user_id;
@@ -1001,7 +1050,7 @@ Please click the following link to confirm the invite:
         if ( empty( $user_id ) ) {
             $user_id = get_current_user_id();
         }
-
+        $umeta_id = null;
         // use grid_id as primary value
         if ( isset( $location_grid_meta["grid_id"] ) && ! empty( $location_grid_meta["grid_id"] ) ) {
             $geocoder = new Location_Grid_Geocoder();

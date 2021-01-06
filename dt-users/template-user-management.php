@@ -4,6 +4,7 @@ Template Name: User Management
 */
 if ( !current_user_can( 'list_users' ) && !current_user_can( 'manage_dt' ) ) {
     wp_safe_redirect( '/settings' );
+    exit();
 }
 $dt_url_path = dt_get_url_path();
 $user_management_options = DT_User_Management::user_management_options();
@@ -229,7 +230,9 @@ $user_management_options = DT_User_Management::user_management_options();
                             <!-- Contacts -->
                             <div class="bordered-box">
                                 <h4><?php esc_html_e( 'Contacts', 'disciple_tools' ); ?></h4>
-                                <div id="status_chart_div"></div>
+                                <div style="width:100%; height:400px; position:relative">
+                                    <div id="status_chart_div" style="position:absolute; width: 100%; height:400px;  right: -30px; left: -30px;"></div>
+                                </div>
                             </div>
 
                             <div id="user-id-reveal" style="color:darkgrey;margin:0 auto;text-align:center;"></div>
@@ -325,6 +328,7 @@ $user_management_options = DT_User_Management::user_management_options();
                                     $user_roles = [];
 
                                     $dt_roles = dt_multi_role_get_editable_role_names();
+                                    $expected_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
                                     ?>
 
                                     <p> <a href="https://disciple.tools/user-docs/getting-started-info/roles/" target="_blank"><?php esc_html_e( 'Click here to see roles documentation', 'disciple_tools' ); ?></a>  </p>
@@ -337,7 +341,20 @@ $user_management_options = DT_User_Management::user_management_options();
                                                            value="<?php echo esc_attr( $role_key ); ?>"
                                                         <?php checked( in_array( $role_key, $user_roles ) ); ?>
                                                         <?php disabled( $role_key === 'administrator' ); ?> />
-                                                    <?php echo esc_html( $name ); ?>
+                                                    <strong>
+                                                    <?php
+                                                    if ( isset( $expected_roles[$role_key]["label"] ) && !empty( $expected_roles[$role_key]["label"] ) ){
+                                                        echo esc_html( $expected_roles[$role_key]["label"] );
+                                                    } else {
+                                                        echo esc_html( $name );
+                                                    }
+                                                    ?>
+                                                    </strong>
+                                                    <?php
+                                                    if ( isset( $expected_roles[$role_key]["description"] ) ){
+                                                        echo ' - ' . esc_html( $expected_roles[$role_key]["description"] );
+                                                    }
+                                                    ?>
                                                 </label>
                                             </li>
                                         <?php endforeach; ?>

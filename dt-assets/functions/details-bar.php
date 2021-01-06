@@ -1,7 +1,5 @@
 <?php
 declare(strict_types=1);
-
-
 /**
  * @param bool $share_button
  * @param bool $comment_button
@@ -9,7 +7,6 @@ declare(strict_types=1);
  * @param bool $update_needed
  * @param bool $following
  * @param bool $disable_following_toggle_function
- * @param array $dispatcher_actions
  * @param bool $task
  */
 function dt_print_details_bar(
@@ -19,9 +16,10 @@ function dt_print_details_bar(
     bool $update_needed = false,
     bool $following = false,
     bool $disable_following_toggle_function = false,
-    array $dispatcher_actions = [],
     bool $task = false
 ) {
+    $dt_post_type = get_post_type();
+    $post_id = get_the_ID();
     ?>
 
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
@@ -40,32 +38,28 @@ function dt_print_details_bar(
                             <?php } ?>
                         </div>
                         <div class="cell grid-x shrink center-items">
-                            <?php if ( sizeof( $dispatcher_actions ) > 0 ): ?>
                             <ul class="dropdown menu" data-dropdown-menu dropdownmenu-arrow-color="white">
                                 <li style="border-radius: 5px">
                                     <a class="button menu-white-dropdown-arrow"
                                        style="background-color: #00897B; color: white;">
-                                        <?php esc_html_e( "Admin actions", 'disciple_tools' ) ?></a>
+                                        <?php esc_html_e( "Admin Actions", 'disciple_tools' ) ?></a>
                                     <ul class="menu">
-                                        <?php foreach ( $dispatcher_actions as $action ) :
-                                            if ( $action == "make-user-from-contact-modal" ) : ?>
-                                                <li><a data-open="make-user-from-contact-modal"><?php esc_html_e( "Make a user from this contact", 'disciple_tools' ) ?></a></li>
-                                            <?php elseif ( $action == "link-to-user-modal") : ?>
-                                                <li><a data-open="link-to-user-modal"><?php esc_html_e( "Link to an existing user", 'disciple_tools' ) ?></a></li>
-                                            <?php elseif ( $action == "merge_with_contact") : ?>
-                                                <li><a id="open_merge_with_contact"><?php esc_html_e( "Merge with another contact", 'disciple_tools' ) ?></a></li>
-                                            <?php elseif ( $action == "duplicates-modal") : ?>
-                                                <li><a data-open="merge-dupe-edit-modal"><?php esc_html_e( "See duplicates", 'disciple_tools' ) ?></a></li>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
+                                        <?php if ( DT_Posts::can_delete( $dt_post_type, $post_id ) ) : ?>
+                                            <li><a data-open="delete-record-modal">
+                                                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/trash.svg' ) ?>"/>
+                                                    <?php echo esc_html( sprintf( _x( "Delete %s", "Delete Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $dt_post_type )["label_singular"] ) ) ?></a></li>
+                                        <?php endif; ?>
+                                        <?php do_action( 'dt_record_admin_actions', $dt_post_type, $post_id ); ?>
                                     </ul>
                                 </li>
                             </ul>
-                            <?php endif; ?>
+                        </div>
+                        <div class="cell grid-x shrink center-items">
+                            <span id="admin-bar-issues"></span>
                         </div>
                     </div>
                     <div class="cell small-4 center hide-for-small-only">
-                        <strong><?php the_title_attribute(); ?></strong>
+                        <strong id="second-bar-name"><?php the_title_attribute(); ?></strong>
                     </div>
                     <div class="cell small-4 align-right grid-x grid-margin-x">
                         <?php if ( $task ) : ?>
@@ -90,7 +84,7 @@ function dt_print_details_bar(
                         <?php if ( $share_button ): ?>
                         <div class="cell shrink center-items ">
                             <button class="center-items open-share">
-                                <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
+                                <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
                                 <span style="margin:0 10px 2px 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?></span>
                             </button>
                         </div>
@@ -118,7 +112,7 @@ function dt_print_details_bar(
             <?php if ( $share_button ): ?>
                 <div class="cell shrink">
                     <button class="center-items open-share">
-                        <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
+                        <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
                         <span style="margin:2px 10px 0 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?></span>
                     </button>
                 </div>

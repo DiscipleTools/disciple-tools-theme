@@ -13,7 +13,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
     public $base_title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/groups/overview.js'; // should be full file name plus extension
-    public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
+    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
 
     public function __construct() {
         parent::__construct();
@@ -104,7 +104,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
     public function chart_group_types() {
         $chart = [];
 
-        $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+        $group_fields = DT_Posts::get_post_field_settings( "groups" );
         $types = $group_fields["group_type"]["default"];
 
         $results = $this->query_project_group_types();
@@ -119,7 +119,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
     public function chart_group_health() {
 
         // Make key list
-        $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+        $group_fields = DT_Posts::get_post_field_settings( "groups" );
         $labels = [];
 
         foreach ( $group_fields["health_metrics"]["default"] as $key => $option ) {

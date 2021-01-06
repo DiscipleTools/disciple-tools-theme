@@ -1,4 +1,5 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * find and the missed seeker path activity and create records for them.
@@ -11,7 +12,7 @@ class Disciple_Tools_Migration_0023 extends Disciple_Tools_Migration
 
         $sample_locations = $wpdb->get_results("
             SELECT * from $wpdb->posts as post
-            JOIN $wpdb->postmeta pm ON ( post.ID = pm.post_id AND pm.meta_key = '_sample' AND pm.meta_value = 'prepared' ) 
+            JOIN $wpdb->postmeta pm ON ( post.ID = pm.post_id AND pm.meta_key = '_sample' AND pm.meta_value = 'prepared' )
             WHERE post.post_type = 'locations'
         ", ARRAY_A );
         $map = [

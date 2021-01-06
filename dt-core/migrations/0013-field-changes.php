@@ -1,9 +1,11 @@
 <?php
 
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
+
 class Disciple_Tools_Migration_0013 extends Disciple_Tools_Migration {
     public function up() {
-        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( null, null, true );
-        $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( null, null, true );
+        $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
+        $group_fields = DT_Posts::get_post_field_settings( "groups" );
         $custom_lists = dt_get_option( "dt_site_custom_lists" );
         $custom_field_options = dt_get_option( "dt_field_customizations" );
 

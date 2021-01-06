@@ -3,6 +3,8 @@
 Template Name: Merge Details
 */
 
+dt_please_log_in();
+
 if ( ! current_user_can( 'access_contacts' ) ) {
     wp_die( esc_html( "You do not have permission to access contacts" ), "Permission denied", 403 );
 }
@@ -13,17 +15,18 @@ if ( !isset( $_GET['currentid'], $_GET['dupeid'] ) ) {
 $dt_current_id = sanitize_text_field( wp_unslash( $_GET['currentid'] ) );
 $dt_dupe_id = sanitize_text_field( wp_unslash( $_GET['dupeid'] ) );
 
-if ( is_wp_error( $dt_current_id ) || is_wp_error( $dt_dupe_id ) ) {
-    header( "Location: /contacts" );
+$dt_contact = DT_Posts::get_post( "contacts", $dt_current_id, true );
+$dt_duplicate_contact = DT_Posts::get_post( "contacts", $dt_dupe_id, true );
+if ( is_wp_error( $dt_contact ) || is_wp_error( $dt_duplicate_contact ) ) {
+    get_template_part( "403", null, is_wp_error( $dt_contact ) ? $dt_contact : $dt_duplicate_contact );
+    die();
 }
 get_header();
 
-$dt_contact = Disciple_Tools_Contacts::get_contact( $dt_current_id, true );
-$dt_channel_list = Disciple_Tools_Contacts::get_channel_list();
+$dt_channel_list = DT_Posts::get_post_settings( "contacts" )["channels"];
 $dt_current_user = wp_get_current_user();
-$dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
+$dt_contact_fields = DT_Posts::get_post_field_settings( "contacts" );
 
-$dt_duplicate_contact = Disciple_Tools_Contacts::get_contact( $dt_dupe_id, true );
 
 $dt_fields = array(
     'contact_phone' => isset( $dt_channel_list['phone']["label"] ) ? $dt_channel_list['phone']["label"] : "Phone",
@@ -121,7 +124,7 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
                     <br>
                     <span><?php echo esc_html( '#' . $dt_contact["ID"] ) ?></span><br>
                     <span><?php esc_html_e( "Status:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_contact["overall_status"]["label"] ?? "" ) ?></span><br>
-                    <span><?php esc_html_e( "Created:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_contact["created_date"] ?? "" ) ?></span><br>
+                    <span><?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), dt_format_date( $dt_contact["post_date"]["timestamp"] ) ) ); ?></span><br>
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>
                   <div class="merge-column">
@@ -130,7 +133,7 @@ $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='
                     <br>
                     <span><?php echo esc_html( '#' . $dt_duplicate_contact["ID"] ) ?></span><br>
                     <span><?php esc_html_e( "Status:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_duplicate_contact["overall_status"]["label"] ?? "" ) ?></span><br>
-                    <span><?php esc_html_e( "Created:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_duplicate_contact["created_date"] ?? "" ) ?></span><br>
+                    <span><?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), dt_format_date( $dt_duplicate_contact["post_date"]["timestamp"] ) ) ); ?></span><br>
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>
                 </div>

@@ -21,7 +21,8 @@ class Disciple_Tools_Contacts_Transfer
         add_action( 'dt_share_panel', [ $this, 'share_panel' ], 10, 1 );
         add_filter( 'site_link_type', [ $this, 'site_link_type' ], 10, 1 );
         add_filter( 'site_link_type_capabilities', [ $this, 'site_link_capabilities' ], 10, 1 );
-        add_action( 'dt_contact_detail_notification', [ $this, 'contact_transfer_notification' ] );
+        add_action( 'dt_record_top_above_details', [ $this, 'contact_transfer_notification' ], 10, 2 );
+        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
     // Adds the type of connection to the site link system
@@ -44,8 +45,8 @@ class Disciple_Tools_Contacts_Transfer
         return $args;
     }
 
-    public function contact_transfer_notification( $contact ) {
-        if ( isset( $contact['reason_closed']['key'] ) && $contact['reason_closed']['key'] === 'transfer' ) {
+    public function contact_transfer_notification( $post_type, $contact ) {
+        if ( $post_type === "contacts" && isset( $contact['reason_closed']['key'] ) && $contact['reason_closed']['key'] === 'transfer' ) {
             ?>
             <section class="cell small-12">
                 <div class="bordered-box detail-notification-box" style="background-color:#3F729B">
@@ -59,20 +60,41 @@ class Disciple_Tools_Contacts_Transfer
 
     /**
      * Rest Endpoints
-     * @see /dt-contacts/contacts-endpoints.php
      */
+    public function add_api_routes() {
+        $namespace = "dt-posts/v2";
+        register_rest_route(
+            $namespace, '/contacts/transfer', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'contact_transfer_endpoint' ],
+            ]
+        );
+        register_rest_route(
+            $namespace, '/contacts/receive-transfer', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'receive_transfer_endpoint' ],
+            ]
+        );
+        //deprecated
+        register_rest_route(
+            'dt-public/v1', '/contact/transfer', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'public_contact_transfer' ],
+            ]
+        );
+    }
 
     /**
      * Section to display in the share panel for the transfer function
      *
-     * @param $post_type
+     * @param $post
      */
     public function share_panel( $post ) {
         if ( empty( $post ) ) {
             global $post;
         }
 
-        if ( isset( $post->post_type ) && 'contacts' === $post->post_type && current_user_can( 'view_any_contacts' ) ) {
+        if ( isset( $post->post_type ) && 'contacts' === $post->post_type && current_user_can( 'dt_all_access_contacts' ) ) {
             $list = Site_Link_System::get_list_of_sites_by_type( [ 'contact_sharing', 'contact_sending' ] );
             if ( empty( $list ) ) {
                 return;
@@ -87,7 +109,7 @@ class Disciple_Tools_Contacts_Transfer
             }
 
             ?>
-            <hr size="1px">
+            <hr>
             <div class="grid-x">
 
                 <?php if ( $foreign_key_exists ) : ?>
@@ -156,7 +178,7 @@ class Disciple_Tools_Contacts_Transfer
         if ( isset( $postmeta_data['duplicate_data'] ) ) {
             unset( $postmeta_data['duplicate_data'] );
         }
-        $contact = Disciple_Tools_Contacts::get_contact( $contact_id );
+        $contact = DT_Posts::get_post( "contacts", $contact_id );
 
         $args = [
             'method' => 'POST',
@@ -169,10 +191,13 @@ class Disciple_Tools_Contacts_Transfer
                     'people_groups' => $contact['people_groups'],
                     'transfer_foreign_key' => $contact['transfer_foreign_key'] ?? 0,
                 ],
-            ]
+            ],
+            'headers' => [
+                'Authorization' => 'Bearer ' . $site['transfer_token'],
+            ],
         ];
 
-        $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/contact/transfer', $args );
+        $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-posts/v2/contacts/receive-transfer', $args );
         if ( is_wp_error( $result ) ){
             return $result;
         }
@@ -281,6 +306,9 @@ class Disciple_Tools_Contacts_Transfer
                     $lagging_meta_input[] = [ $key => $item ];
                 }
             } else {
+                if ( $key === "type" && $value[0] === "media" ){
+                    $value[0] = "access";
+                }
                 $meta_input[$key] = maybe_unserialize( $value[0] );
             }
         }
@@ -401,6 +429,115 @@ class Disciple_Tools_Contacts_Transfer
             return $duplicate;
         } else {
             return false;
+        }
+    }
+
+    public function public_contact_transfer( WP_REST_Request $request ){
+
+        $params = $this->process_token( $request );
+        if ( is_wp_error( $params ) ) {
+            return [
+                'status' => 'FAIL',
+                'error' => 'Transfer token error.'
+            ];
+        }
+
+        if ( ! current_user_can( 'create_contacts' ) ) {
+            return [
+                'status' => 'FAIL',
+                'error' => 'Permission error.'
+            ];
+        }
+
+        if ( isset( $params['contact_data'] ) ) {
+            $result = self::receive_transferred_contact( $params );
+            if ( is_wp_error( $result ) ) {
+                return [
+                    'status' => 'FAIL',
+                    'error' => $result->get_error_message(),
+                ];
+            } else {
+                return [
+                    'status' => 'OK',
+                    'error' => $result['errors'],
+                    'created_id' => $result['created_id'],
+                ];
+            }
+        } else {
+            return [
+                'status' => 'FAIL',
+                'error' => 'Missing required parameter'
+            ];
+        }
+    }
+
+    /**
+     * Public key processing utility. Use this at the beginning of public endpoints
+     *
+     * @param WP_REST_Request $request
+     *
+     * @return array|WP_Error
+     */
+    public function process_token( WP_REST_Request $request ) {
+
+        $params = $request->get_params();
+
+        // required token parameter challenge
+        if ( ! isset( $params['transfer_token'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing parameters.' );
+        }
+
+        $valid_token = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
+
+        // required valid token challenge
+        if ( ! $valid_token ) {
+            dt_write_log( $valid_token );
+            return new WP_Error( __METHOD__, 'Invalid transfer token' );
+        }
+
+        return $params;
+    }
+
+    public function contact_transfer_endpoint( WP_REST_Request $request ){
+
+        if ( ! ( current_user_can( 'dt_all_access_contacts' ) || current_user_can( 'manage_dt' ) ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions' );
+        }
+
+        $params = $request->get_params();
+        if ( ! isset( $params['contact_id'] ) || ! isset( $params['site_post_id'] ) ){
+            return new WP_Error( __METHOD__, "Missing required parameters.", [ 'status' => 400 ] );
+        }
+
+        return self::contact_transfer( $params['contact_id'], $params['site_post_id'] );
+
+    }
+
+    public function receive_transfer_endpoint( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if ( ! current_user_can( 'create_contacts' ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions' );
+        }
+
+        if ( isset( $params['contact_data'] ) ) {
+            $result = self::receive_transferred_contact( $params );
+            if ( is_wp_error( $result ) ) {
+                return [
+                    'status' => 'FAIL',
+                    'error' => $result->get_error_message(),
+                ];
+            } else {
+                return [
+                    'status' => 'OK',
+                    'error' => $result['errors'],
+                    'created_id' => $result['created_id'],
+                ];
+            }
+        } else {
+            return [
+                'status' => 'FAIL',
+                'error' => 'Missing required parameter'
+            ];
         }
     }
 }

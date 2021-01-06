@@ -158,9 +158,7 @@ NAVIGATION STYLES
     vertical-align: top;
     position: relative;
     top: -5px;
-}
-.menu .notification-count {
-    left: -15px;
+    margin-left:-15px;
 }
 .add-new-items-dropdown {
     background-color: #3f729b;
@@ -180,6 +178,7 @@ nav.second-bar {
     background-color: white;
     width: 100%;
     top: auto !important;
+    transform: translateX(0);
 
     .breadcrumbs {
         margin-bottom: 0;
@@ -655,12 +654,18 @@ html[dir='rtl'] {
     }
 
     .float-left {
+
         float: right !important;
     }
-    .menu .notification-count {
+    .notification-count {
         right: -15px;
         left: 0;
+        margin-left:-15px;
     }
+    .title-bar-right {
+        text-align: left;
+    }
+
 }
 
 .empty-notification-message {
@@ -736,6 +741,14 @@ a.dt-green:hover {
 }
 
 .help-button {
+    margin-right: 3px;
+    margin-left: 3px;
+}
+.help-button-tile {
+    margin-right: 3px;
+    margin-left: 3px;
+}
+.help-button-field {
     margin-right: 3px;
     margin-left: 3px;
 }
@@ -998,4 +1011,67 @@ label.dt-switch:active:after {
     width: 13px;
     display: inline-block;
     border-radius: 2px;
+}
+
+img.dt-icon {
+    height: 15px;
+    width: 15px;
+}
+img.dt-blue-icon {
+    filter: invert(41%) sepia(42%) saturate(518%) hue-rotate(164deg) brightness(94%) contrast(100%);
+}
+
+.template-new-post {
+    .type-options {
+        display:flex;
+        flex-wrap:wrap;
+        margin-bottom: 15px;
+    }
+    .type-option:hover {
+        .type-option-border {
+            background-color: #ecf5fc;
+            border: 1px solid #c2e0ff;
+            border-radius:15px;
+        }
+    }
+    .type-option.selected {
+        .type-option-border {
+            background-color: #ecf5fc;
+            border: 1px solid #c2e0ff;
+            border-radius:15px;
+        }
+    }
+    .type-option{
+        padding-right:10px;
+        display:flex;
+        flex-basis: 25%;
+        .type-option-border {
+            padding: 5px 10px;
+            border: 1px solid #c2e0ff;
+            border-radius:15px;
+        }
+        input {
+            align-self:center;
+            margin-right:5px;
+            margin-bottom: 0;
+        }
+        .type-option-title {
+            color:#3f729b;
+            font-size: larger;
+        }
+
+        .type-option-rows {
+            display: inline-block;
+            div {
+                display: block;
+                margin-bottom: 5px;
+            }
+
+        }
+    }
+}
+@media screen and (max-width : 640px) {
+    .template-new-post .type-option {
+        flex-basis: 100%;
+    }
 }

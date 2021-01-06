@@ -60,8 +60,17 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
 
     public function box_message() {
         $this->box( 'top', 'System Details' );
+        ?>
+        <tr>
+            <td><?php echo esc_html( sprintf( __( 'WordPress version: %1$s | PHP version: %2$s' ), get_bloginfo( 'version' ), phpversion() ) ); ?></td>
+        </tr>
+        <tr>
+            <td>
+                <?php echo esc_html( sprintf( __( 'D.T Migration version: %1$s | Mapping migration version: %2$s' ), Disciple_Tools_Migration_Engine::$migration_number, DT_Mapping_Module_Migration_Engine::$migration_number ) ); ?>
+            </td>
+        </tr>
+        <?php
 
-        echo esc_html( sprintf( __( 'WordPress version: %1$ss | PHP version: %2$s' ), get_bloginfo( 'version' ), phpversion() ) );
 
         $this->box( 'bottom' );
     }

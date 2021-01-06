@@ -13,7 +13,7 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
     public $slug = 'milestones_map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = 'milestones_map.js'; // should be full file name plus extension
-    public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
+    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
     public $namespace = null;
 
     public function __construct() {
@@ -163,7 +163,7 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
         //     'key'   => 'churches',
         //     'label' => __( 'Churches', 'disciple_tools' )
         // ];
-        $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $field_settings = DT_Posts::get_post_field_settings( "contacts" );
         $milestones_options = $field_settings["milestones"]["default"];
         foreach ( $milestones_options as $option_key => $option_value ){
             $column_labels[] = [

@@ -19,8 +19,8 @@ class Disciple_Tools_Post_Type_Template {
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'rewrite_init' ] );
         add_filter( 'post_type_link', [ $this, 'permalink' ], 1, 3 );
-        add_action( 'dt_top_nav_desktop', [ $this, 'add_menu_link' ] );
-        add_filter( 'off_canvas_menu_options', [ $this, 'add_hamburger_menu' ] );
+        add_action( 'desktop_navbar_menu_options', [ $this, 'add_navigation_links' ], 20 );
+        add_filter( 'off_canvas_menu_options', [ $this, 'add_navigation_links' ], 20 );
         add_filter( 'dt_templates_for_urls', [ $this, 'add_template_for_url' ] );
         add_action( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ] );
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 2 );
@@ -42,7 +42,7 @@ class Disciple_Tools_Post_Type_Template {
             'feeds'      => false,
         ];
         $capabilities = [
-//            'create_posts'        => 'do_not_allow', //@todo reenable
+            'create_posts'        => 'do_not_allow',
             'edit_post'           => 'access_' . $this->post_type,
             'read_post'           => 'access_' . $this->post_type,
             'delete_post'         => 'delete_any_' . $this->post_type,
@@ -78,19 +78,6 @@ class Disciple_Tools_Post_Type_Template {
 
         register_post_type( $this->post_type, $defaults );
 
-
-
-        $roles = [ 'dispatcher', 'administrator', 'dt_admin', 'multiplier', 'marketer', 'strategist' ];
-        foreach ( $roles as $role ) {
-            $role = get_role( $role );
-            $role->add_cap( 'access_' . $this->post_type );
-            $role->add_cap( 'create_' . $this->post_type );
-            if ( $role->name != "multiplier" ){
-                $role->add_cap( 'view_any_' . $this->post_type );
-                $role->add_cap( 'update_any_' . $this->post_type );
-                $role->add_cap( 'delete_any_' . $this->post_type );
-            }
-        }
     }
 
     public function rewrite_init(){
@@ -122,13 +109,7 @@ class Disciple_Tools_Post_Type_Template {
         }
     }
 
-    public function add_menu_link(){
-        if ( current_user_can( 'access_' . $this->post_type ) ) : ?>
-            <li><a href="<?php echo esc_url( site_url( '/' . $this->post_type . '/' ) ); ?>"><?php echo esc_html( $this->plural ); ?></a></li>
-        <?php endif;
-    }
-
-    public function add_hamburger_menu( $tabs ) {
+    public function add_navigation_links( $tabs ) {
         if ( current_user_can( 'access_' . $this->post_type ) ) {
             $tabs[] = [
                 "link" => site_url( "/$this->post_type/" ),
@@ -145,14 +126,45 @@ class Disciple_Tools_Post_Type_Template {
     }
 
     public function dt_nav_add_post_menu(){
-        ?>
-        <li>
-            <a class="add-new-menu-item" href="<?php echo esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new'; ?>">
-                <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-plus.svg" ?>">
-                <?php echo sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ) ?>
-            </a>
-        </li>
-        <?php
+        if ( current_user_can( "create_" . $this->post_type ) ){
+            ?>
+            <li>
+                <a class="add-new-menu-item" href="<?php echo esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new'; ?>">
+                    <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-plus.svg" ?>">
+                    <?php echo sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ) ?>
+                </a>
+            </li>
+            <?php
+        }
+    }
+
+
+    public static function get_base_post_type_fields(){
+        $fields = [];
+        $fields["name"] = [
+            'name' => __( "Name", 'disciple_tools' ),
+            'type' => 'text',
+            'tile' => 'details',
+            'in_create_form' => true,
+            'required' => true,
+            'icon' => get_template_directory_uri() . "/dt-assets/images/name.svg",
+            "show_in_table" => 5
+        ];
+        $fields["last_modified"] =[
+            'name' => __( 'Last Modified', 'disciple_tools' ),
+            'type' => 'date',
+            'default' => 0,
+            'customizable' => false,
+            "show_in_table" => 100
+        ];
+        $fields["post_date"] =[
+            'name' => __( 'Creation Date', 'disciple_tools' ),
+            'type' => 'date',
+            'default' => 0,
+            'customizable' => false,
+        ];
+        //tasks, location, ppl group? follow, unfollow?
+        return $fields;
     }
 
     /**
@@ -164,94 +176,26 @@ class Disciple_Tools_Post_Type_Template {
      * @return mixed
      */
     public function get_custom_fields_settings( $with_deleted_options = false, $load_from_cache = true ) {
-
-        $cached = wp_cache_get( $this->post_type . "_field_settings" );
-        if ( $load_from_cache && $cached ){
-            return $cached;
-        }
-//        $fields = $this->get_contact_field_defaults( $post_id, $include_current_post );
-        $fields = [];
-        $fields = apply_filters( 'dt_custom_fields_settings', $fields, $this->post_type );
-
-        $langs = dt_get_available_languages();
-
-        foreach ( $fields as $field_key => $field ){
-            if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
-                foreach ( $field["default"] as $option_key => $option_value ){
-                    if ( !is_array( $option_value )){
-                        $fields[$field_key]["default"][$option_key] = [ "label" => $option_value ];
-                    }
-                }
-            }
-        }
-        $custom_field_options = dt_get_option( "dt_field_customizations" );
-        if ( isset( $custom_field_options[$this->post_type] )){
-            foreach ( $custom_field_options[$this->post_type] as $key => $field ){
-                $field_type = $field["type"] ?? $fields[$key]["type"] ?? "";
-                if ( $field_type ) {
-                    if ( !isset( $fields[ $key ] ) ) {
-                        $fields[ $key ] = $field;
-                    } else {
-                        if ( !empty( $field["name"] ) ) {
-                            $fields[ $key ]["name"] = $field["name"];
-                        }
-                        if ( isset( $field["tile"] ) ) {
-                            $fields[ $key ]["tile"] = $field["tile"];
-                        }
-                        if ( $field_type === "key_select" || $field_type === "multi_select" ) {
-                            if ( isset( $field["default"] ) ) {
-                                foreach ( $field["default"] as $custom_key => &$custom_value ) {
-                                    if ( isset( $custom_value["label"] ) && empty( $custom_value["label"] ) ) {
-                                        unset( $custom_value["label"] );
-                                    }
-                                }
-                                $fields[ $key ]["default"] = array_replace_recursive( $fields[ $key ]["default"], $field["default"] );
-                            }
-                        }
-                        foreach ( $langs as $lang => $val ) {
-                            if ( !empty( $field["translations"][$val['language']] ) ) {
-                                $fields[ $key ]["translations"][$val['language']] = $field["translations"][$val['language']];
-                            }
-                        }
-                    }
-                    if ( $field_type === "key_select" || $field_type === "multi_select" ) {
-                        if ( isset( $field["order"] ) ) {
-                            $with_order = [];
-                            foreach ( $field["order"] as $ordered_key ) {
-                                $with_order[ $ordered_key ] = [];
-                            }
-                            foreach ( $fields[ $key ]["default"] as $option_key => $option_value ) {
-                                $with_order[ $option_key ] = $option_value;
-                            }
-                            $fields[ $key ]["default"] = $with_order;
-                        }
-                    }
-                }
-            }
-        }
-        if ( $with_deleted_options === false ){
-            foreach ( $fields as $field_key => $field ){
-                if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
-                    foreach ( $field["default"] as $option_key => $option_value ){
-                        if ( isset( $option_value["deleted"] ) && $option_value["deleted"] == true ){
-                            unset( $fields[$field_key]["default"][$option_key] );
-                        }
-                    }
-                }
-            }
-        }
-
-        $fields = apply_filters( 'dt_custom_fields_settings_after_combine', $fields, $this->post_type );
-        wp_cache_set( $this->post_type . "_field_settings", $fields );
-        return $fields;
-    } // End get_custom_fields_settings()
+        return DT_Posts::get_post_field_settings( $this->post_type, $load_from_cache, $with_deleted_options );
+    }
 
     public function dt_get_post_type_settings( $settings, $post_type ){
-        if ( $post_type === $this->post_type){
+        if ( $post_type === $this->post_type ){
+            $cached = wp_cache_get( $post_type . "_type_settings" );
+            if ( $cached ){
+                return $cached;
+            }
             $fields = $this->get_custom_fields_settings();
-            $settings = [
+            $channels = [];
+            foreach ( $fields as $field_key => $field_value ){
+                if ( $field_value["type"] === "communication_channel" ){
+                    $field_value["label"] = $field_value["name"];
+                    $channels[str_replace( "contact_", "", $field_key )] = $field_value;
+                }
+            }
+            $s = [
                 'fields' => $fields,
-                'channels' => [],
+                'channels' => $channels,
                 'connection_types' => array_keys( array_filter( $fields, function ( $a ) {
                     return $a["type"] === "connection";
                 } ) ),
@@ -259,6 +203,9 @@ class Disciple_Tools_Post_Type_Template {
                 'label_plural' => $this->plural,
                 'post_type' => $this->post_type
             ];
+            $settings = dt_array_merge_recursive_distinct( $settings, $s );
+
+            wp_cache_set( $post_type . "_type_settings", $settings );
         }
         return $settings;
     }

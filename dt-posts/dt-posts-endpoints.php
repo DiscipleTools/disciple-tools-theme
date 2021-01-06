@@ -116,6 +116,19 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
+        //delete_post
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)', [
+                [
+                    "methods"  => "DELETE",
+                    "callback" => [ $this, 'delete_post' ],
+                    "args" => [
+                        "post_type" => $arg_schemas["post_type"],
+                        "id" => $arg_schemas["id"],
+                    ]
+                ]
+            ]
+        );
 
         //get_posts
         register_rest_route(
@@ -350,6 +363,18 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
+        //Get Post Field Settings
+        register_rest_route(
+            "dt-public/v" . intval( $this->version ), '/(?P<post_type>\w+)/settings_fields', [
+                [
+                    "methods"  => "POST",
+                    "callback" => [ $this, 'get_post_field_settings' ],
+                    "args" => [
+                        "post_type" => $arg_schemas["post_type"],
+                    ]
+                ]
+            ]
+        );
     }
 
     /**
@@ -373,7 +398,7 @@ class Disciple_Tools_Posts_Endpoints {
                 return new WP_Error( 'rest_invalid_param', sprintf( '%1$s is not of type %2$s', $param, 'integer' ), array( 'status' => 400 ) );
             }
             if ( 'post_type' === $argument['type'] ){
-                $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
+                $post_types = DT_Posts::get_post_types();
                 if ( !in_array( $value, $post_types ) ){
                     return new WP_Error( 'rest_invalid_param', sprintf( '%1$s is not a valid post type', $value ), array( 'status' => 400 ) );
                 }
@@ -386,6 +411,9 @@ class Disciple_Tools_Posts_Endpoints {
 
         // If we got this far then the data is valid.
         return true;
+    }
+    public static function prefix_validate_args_static( $value, $request, $param ) {
+        return self::instance()->prefix_validate_args( $value, $request, $param );
     }
 
     public function create_post( WP_REST_Request $request ){
@@ -402,12 +430,18 @@ class Disciple_Tools_Posts_Endpoints {
         return DT_Posts::get_post( $url_params["post_type"], $url_params["id"] );
     }
 
+
     public function update_post( WP_REST_Request $request ){
         $fields = $request->get_json_params() ?? $request->get_body_params();
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
         $silent = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
         return DT_Posts::update_post( $url_params["post_type"], $url_params["id"], $fields, $silent );
+    }
+
+    public function delete_post( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+        return DT_Posts::delete_post( $url_params["post_type"], $url_params["id"] );
     }
 
     public function get_list( WP_REST_Request $request ){
@@ -518,7 +552,29 @@ class Disciple_Tools_Posts_Endpoints {
 
     public function get_post_settings( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
+        if ( ! ( DT_Posts::can_access( $url_params["post_type"] ) || DT_Posts::can_create( $url_params["post_type"] ) ) ){
+            return new WP_Error( __FUNCTION__, "No permissions to read " . $url_params["post_type"], [ 'status' => 403 ] );
+        }
         return DT_Posts::get_post_settings( $url_params["post_type"] );
+    }
+
+    public function get_post_field_settings( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+
+        /**
+         * Access to the dt-public url and these field settings requires site to site link with valid token.
+         */
+        $params = $request->get_params();
+        if ( ! isset( $params['transfer_token'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing parameters.' );
+        }
+        $valid_token = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
+        if ( ! $valid_token ) {
+            dt_write_log( $valid_token );
+            return new WP_Error( __METHOD__, 'Invalid transfer token' );
+        }
+
+        return DT_Posts::get_post_field_settings( $url_params["post_type"] );
     }
 
 }

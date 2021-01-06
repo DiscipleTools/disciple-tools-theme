@@ -32,3 +32,9 @@ jQuery(document).ready($ => {
   // This adds padding to the top of the offcanvas menu, if the wp admin bar is turned on for the profile.
   $('#wpadminbar').addClass('add')
 });
+
+/* Makes sure the inner-content area is no less than the full height of the screen.
+* This prevents dropdowns or other elements from being cut off on short pages */
+jQuery(document).ready(function () {
+  jQuery('#inner-content ').css('min-height', window.innerHeight)
+})

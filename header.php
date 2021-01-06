@@ -29,15 +29,21 @@
             <meta name="theme-color" content="#3f729b">
         <?php } ?>
 
-        <title><?php
+        <title>
+        <?php
         if ( is_single() ) {
-            single_post_title( '', true );
+            if ( DT_Posts::can_view( get_post_type(), GET_THE_ID() ) ){
+                single_post_title( '', true );
+            } else {
+                echo esc_html( __( "D.T Record", 'disciple_tools' ) );
+            }
         } else if ( is_archive() ){
             echo post_type_archive_title();
         } else {
             bloginfo( 'name' );
         }
-        ?></title>
+        ?>
+        </title>
 
         <?php wp_head(); ?>
 

@@ -1,12 +1,14 @@
 <?php
 
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
+
 class Disciple_Tools_Migration_0014 extends Disciple_Tools_Migration {
     public function up() {
 //        get all miltestones grouped by contact
         global $wpdb;
         $milestones = $wpdb->get_results("
-            SELECT * 
-            FROM $wpdb->postmeta 
+            SELECT *
+            FROM $wpdb->postmeta
             WHERE meta_key LIKE 'milestone_%'
             AND `meta_key` != 'milestones'
             AND meta_value = 'yes'
@@ -27,8 +29,8 @@ class Disciple_Tools_Migration_0014 extends Disciple_Tools_Migration {
         " );
 
         $health_metrics = $wpdb->get_results("
-            SELECT * 
-            FROM $wpdb->postmeta 
+            SELECT *
+            FROM $wpdb->postmeta
             WHERE meta_key IN ( 'church_baptism', 'church_bible', 'church_communion', 'church_fellowship', 'church_giving', 'church_prayer', 'church_praise', 'church_sharing', 'church_leaders', 'church_commitment')
             AND meta_value = '1'
         ", ARRAY_A);
@@ -45,11 +47,11 @@ class Disciple_Tools_Migration_0014 extends Disciple_Tools_Migration {
         $wpdb->query( "
             DELETE FROM $wpdb->postmeta
             WHERE `meta_key` IN ( 'church_baptism', 'church_bible', 'church_communion', 'church_fellowship', 'church_giving', 'church_prayer', 'church_praise', 'church_sharing', 'church_leaders', 'church_commitment')
-            AND ( `meta_value` = '1' OR `meta_value` = '0' ) 
+            AND ( `meta_value` = '1' OR `meta_value` = '0' )
         " );
 
 
-        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( null, null, true );
+        $contact_fields = DT_Posts::get_post_field_settings( 'contacts' );
         $custom_field_options = dt_get_option( "dt_field_customizations" );
         $custom_lists = dt_get_option( "dt_site_custom_lists" );
         $custom_milestones = $custom_lists["custom_milestones"] ?? [];
@@ -67,7 +69,7 @@ class Disciple_Tools_Migration_0014 extends Disciple_Tools_Migration {
             }
         }
 
-        $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( null, null, true );
+        $group_fields = DT_Posts::get_post_field_settings( "groups" );
         $custom_church = $custom_lists["custom_church"] ?? [];
         foreach ( $custom_church as $k => $v ){
             if ( ! isset( $custom_field_options["groups"]["health_metrics"] ) ) {

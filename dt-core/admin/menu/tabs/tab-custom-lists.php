@@ -227,14 +227,15 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
 
     public function channels_box(){
-        $channels = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
+        $fields = DT_Posts::get_post_field_settings( "contacts", false );
+
         ?>
         <form method="post" name="channels_box">
             <input type="hidden" name="channels_box_nonce" value="<?php echo esc_attr( wp_create_nonce( 'channels_box' ) ) ?>" />
             <table class="widefat">
                 <thead>
                     <tr>
-                        <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( "Name", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Enabled", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Hide domain if a url", 'disciple_tools' ) ?></td>
@@ -243,7 +244,10 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ( $channels as $channel_key => $channel_option ) :
+                    <?php foreach ( $fields as $channel_key => $channel_option ) :
+                        if ( $channel_option['type'] !== "communication_channel" ){
+                            continue;
+                        }
 
                         $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
                         $hide_domain = isset( $channel_option['hide_domain'] ) && $channel_option['hide_domain'] == true;
@@ -252,7 +256,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         } ?>
 
                     <tr>
-                        <td><input type="text" name="channel_label[<?php echo esc_html( $channel_key ) ?>][default]" value="<?php echo esc_html( $channel_option["label"] ?? $channel_key ) ?>"></td>
+                        <td><input type="text" name="channel_label[<?php echo esc_html( $channel_key ) ?>][default]" value="<?php echo esc_html( $channel_option["name"] ?? $channel_key ) ?>"></td>
                         <td><?php echo esc_html( $channel_key ) ?></td>
                         <td>
                             <input name="channel_enabled[<?php echo esc_html( $channel_key ) ?>]"
@@ -314,71 +318,75 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
     public function process_channels_box(){
         if ( isset( $_POST["channels_box_nonce"] ) ){
-            $channels = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
-            $custom_channels = dt_get_option( "dt_custom_channels" );
+            $fields = DT_Posts::get_post_field_settings( "contacts" );
             if ( !wp_verify_nonce( sanitize_key( $_POST['channels_box_nonce'] ), 'channels_box' ) ){
                 self::admin_notice( __( "Something went wrong", 'disciple_tools' ), "error" );
                 return;
             }
 
             $langs = dt_get_available_languages();
+            $custom_field_options = dt_get_option( "dt_field_customizations" );
+            $custom_contact_fields = $custom_field_options["contacts"];
 
-            foreach ( $channels as $channel_key => $channel_options ){
-                if ( !isset( $custom_channels[$channel_key] ) ){
-                    $custom_channels[$channel_key] = [];
+            foreach ( $fields as $field_key => $field_settings ){
+                if ( $field_settings["type"] !== "communication_channel" ){
+                    continue;
                 }
-                if ( isset( $_POST["channel_label"][$channel_key]["default"] ) ){
-                    $label = sanitize_text_field( wp_unslash( $_POST["channel_label"][$channel_key]["default"] ) );
-                    if ( $channel_options["label"] != $label ){
-                        $custom_channels[$channel_key]["label"] = $label;
+                if ( isset( $_POST["channel_label"][$field_key]["default"] ) ){
+                    $label = sanitize_text_field( wp_unslash( $_POST["channel_label"][$field_key]["default"] ) );
+                    if ( $field_settings["name"] != $label ){
+                        $custom_contact_fields[$field_key]["name"] = $label;
                     }
                 }
                 foreach ( $langs as $lang => $val ){
                     $langcode = $val['language'];
 
-                    if ( isset( $_POST["channel_label"][$channel_key][$langcode] ) ) {
-                        $translated_label = sanitize_text_field( wp_unslash( $_POST["channel_label"][$channel_key][$langcode] ) );
-                        if ( ( empty( $translated_label ) && !empty( $channels[$channel_key]["translations"][$langcode] ) ) || !empty( $translated_label ) ) {
-                            $custom_channels[$channel_key]["translations"][$langcode] = $translated_label;
+                    if ( isset( $_POST["channel_label"][$field_key][$langcode] ) ) {
+                        $translated_label = sanitize_text_field( wp_unslash( $_POST["channel_label"][$field_key][$langcode] ) );
+                        if ( ( empty( $translated_label ) && !empty( $custom_contact_fields[$field_key]["translations"][$langcode] ) ) || !empty( $translated_label ) ) {
+                            $custom_contact_fields[$field_key]["translations"][$langcode] = $translated_label;
                         }
                     }
                 }
-                if ( isset( $_POST["channel_icon"][$channel_key] ) ){
-                    $icon = sanitize_text_field( wp_unslash( $_POST["channel_icon"][$channel_key] ) );
+                if ( isset( $_POST["channel_icon"][$field_key] ) ){
+                    $icon = sanitize_text_field( wp_unslash( $_POST["channel_icon"][$field_key] ) );
                     if ( !isset( $channel_options["icon"] ) || $channel_options["icon"] != $icon ){
-                        $custom_channels[$channel_key]["icon"] = $icon;
+                        $custom_contact_fields[$field_key]["icon"] = $icon;
                     }
                 }
-                if ( isset( $_POST["channel_enabled"][$channel_key] ) ){
-                    $custom_channels[$channel_key]["enabled"] = true;
+                if ( isset( $_POST["channel_enabled"][$field_key] ) ){
+                    $custom_contact_fields[$field_key]["enabled"] = true;
                 } else {
-                    $custom_channels[$channel_key]["enabled"] = false;
+                    $custom_contact_fields[$field_key]["enabled"] = false;
                 }
-                if ( isset( $_POST["channel_hide_domain"][$channel_key] ) ){
-                    $custom_channels[$channel_key]["hide_domain"] = true;
+                if ( isset( $_POST["channel_hide_domain"][$field_key] ) ){
+                    $custom_contact_fields[$field_key]["hide_domain"] = true;
                 } else {
-                    $custom_channels[$channel_key]["hide_domain"] = false;
+                    $custom_contact_fields[$field_key]["hide_domain"] = false;
                 }
-                if ( isset( $_POST["channel_reset_icon"][$channel_key] ) ){
-                    unset( $custom_channels[$channel_key]["icon"] );
+                if ( isset( $_POST["channel_reset_icon"][$field_key] ) ){
+                    unset( $custom_contact_fields[$field_key]["icon"] );
                 }
             }
             if ( !empty( $_POST["add_channel"] ) ){
                 $label = sanitize_text_field( wp_unslash( $_POST["add_channel"] ) );
-                $key = dt_create_field_key( $label );
+                $key = dt_create_field_key( 'contact_' . $label );
                 if ( !empty( $key ) ){
-                    if ( isset( $channels[$key] ) ){
+                    if ( isset( $custom_contact_fields[$key] ) ){
                         self::admin_notice( __( "This channel already exists", 'disciple_tools' ), "error" );
                     } else {
-                        $custom_channels[$key] = [
-                            "label" => $label,
+                        $custom_contact_fields[$key] = [
+                            "name" => $label,
+                            "type" => "communication_channel",
+                            "tile" => "details",
                             "enabled" => true
                         ];
+                        wp_cache_delete( "contacts_field_settings" );
                     }
                 }
             }
-
-            update_option( "dt_custom_channels", $custom_channels );
+            $custom_field_options["contacts"] = $custom_contact_fields;
+            update_option( "dt_field_customizations", $custom_field_options );
         }
     }
 

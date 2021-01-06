@@ -34,7 +34,7 @@ else {
      */
     function dt_theme_loaded() {
         /** We want to make sure roles are up-to-date. */
-        require_once( get_template_directory() . '/dt-core/admin/class-roles.php' );
+        require_once( get_template_directory() . '/dt-core/configuration/class-roles.php' );
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
         disciple_tools();
@@ -44,8 +44,8 @@ else {
          * @see https://www.sitepoint.com/wordpress-plugin-updates-right-way/
          */
         try {
-            require_once( get_template_directory() . '/dt-core/admin/class-migration-engine.php' );
-            Disciple_Tools_Migration_Engine::migrate( Disciple_Tools::instance()->migration_number );
+            require_once( get_template_directory() . '/dt-core/configuration/class-migration-engine.php' );
+            Disciple_Tools_Migration_Engine::migrate( Disciple_Tools_Migration_Engine::$migration_number );
         } catch ( Throwable $e ) {
             new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
         }
@@ -141,8 +141,8 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '0.33.0';
-            $this->migration_number = 31;
+            $this->version = '1.0.0';
+            // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
             $this->theme_path = get_template_directory() . '/';
@@ -165,12 +165,11 @@ else {
             $is_rest = dt_is_rest();
             $url_path = dt_get_url_path();
             require_once( get_template_directory() . '/dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin. Required before DT instance
-            require_once( get_template_directory() . '/dt-core/admin/config-site-defaults.php' ); // Force required site configurations
+            require_once( get_template_directory() . '/dt-core/configuration/config-site-defaults.php' ); // Force required site configurations
             require_once( get_template_directory() . '/dt-core/wp-async-request.php' ); // Async Task Processing
-
-
-            require_once( get_template_directory() . '/dt-core/admin/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
-            require_once( get_template_directory() . '/dt-core/admin/restrict-site-access.php' ); // protect against DDOS attacks.
+            require_once( get_template_directory() . '/dt-core/configuration/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
+            require_once( get_template_directory() . '/dt-core/configuration/restrict-site-access.php' ); // protect against DDOS attacks.
+            require_once( get_template_directory() . '/dt-core/configuration/dt-configuration.php' ); //settings and configuration to alter default WP
 
             /**
              * User Groups & Multi Roles
@@ -197,8 +196,6 @@ else {
                     'metrics'               => 'template-metrics.php',
                     'settings'              => 'template-settings.php',
                     'notifications'         => 'template-notifications.php',
-                    'contacts/new'          => 'template-contacts-new.php',
-                    'groups/new'            => 'template-groups-new.php',
                     'contacts/mergedetails' => 'template-merge-details.php',
                     'view-duplicates'       => 'template-view-duplicates.php',
                 ];
@@ -207,7 +204,7 @@ else {
 
                 $url_path = strtok( dt_get_url_path(), '?' ); //allow get parameters
 
-                if ( isset( $template_for_url[ $url_path ] ) ) {
+                if ( isset( $template_for_url[ $url_path ] ) && dt_please_log_in() ) {
                     $template_filename = locate_template( $template_for_url[ $url_path ], true );
                     if ( $template_filename ) {
                         exit(); // just exit if template was found and loaded
@@ -254,39 +251,27 @@ else {
              * dt-posts
              */
             require_once( get_template_directory() . '/dt-posts/posts.php' );
+            new Disciple_Tools_Posts();
             require_once( get_template_directory() . '/dt-posts/custom-post-type.php' );
             require_once( get_template_directory() . '/dt-posts/dt-posts.php' );
             require_once( get_template_directory() . '/dt-posts/dt-posts-endpoints.php' );
             require_once( get_template_directory() . '/dt-posts/dt-posts-hooks.php' );
+            require_once( get_template_directory() . '/dt-posts/dt-posts-metrics.php' );
             Disciple_Tools_Posts_Endpoints::instance();
             new DT_Posts_Hooks();
+            require_once( get_template_directory() . '/dt-posts/module-base.php' );
 
             /**
              * dt-contacts
              */
-            require_once( get_template_directory() . '/dt-contacts/contacts-post-type.php' );
-            $this->post_types['contacts'] = Disciple_Tools_Contact_Post_Type::instance();
             require_once( get_template_directory() . '/dt-contacts/contacts.php' );
-            new Disciple_Tools_Contacts();
-            require_once( get_template_directory() . '/dt-contacts/contacts-template.php' ); // Functions to support theme
+
             require_once( get_template_directory() . '/dt-contacts/contacts-transfer.php' ); // Functions to support theme
-            if ( strpos( $url_path, 'contact' ) !== false ){
-                require_once( get_template_directory() . '/dt-contacts/contacts-endpoints.php' );
-                $this->endpoints['contacts'] = Disciple_Tools_Contacts_Endpoints::instance();
-            }
 
             /**
              * dt-groups
              */
-            require_once( get_template_directory() . '/dt-groups/groups-post-type.php' );
-            $this->post_types['groups'] = Disciple_Tools_Groups_Post_Type::instance();
-            require_once( get_template_directory() . '/dt-groups/groups-template.php' ); // Functions to support theme
             require_once( get_template_directory() . '/dt-groups/groups.php' );
-            new Disciple_Tools_Groups();
-            if ( strpos( $url_path, 'group' ) !== false ){
-                require_once( get_template_directory() . '/dt-groups/groups-endpoints.php' ); // builds rest endpoints
-                $this->endpoints['groups'] = Disciple_Tools_Groups_Endpoints::instance();
-            }
             /**
              * dt-mapping
              */
@@ -301,7 +286,6 @@ else {
             $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
             require_once( get_template_directory() . '/dt-people-groups/people-groups.php' );
             if ( strpos( $url_path, 'people-groups' ) !== false ){
-                require_once( get_template_directory() . '/dt-people-groups/people-groups-template.php' );
                 require_once( get_template_directory() . '/dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
                 $this->endpoints['peoplegroups'] = Disciple_Tools_People_Groups_Endpoints::instance();
             }
@@ -310,9 +294,8 @@ else {
              */
             require_once( get_template_directory() . '/dt-metrics/counter.php' );
             require_once( get_template_directory() . '/dt-metrics/charts-base.php' );
-            if ( strpos( $url_path, 'metrics' ) !== false ) {
-                require_once( get_template_directory() . '/dt-metrics/metrics.php' );
-            }
+            require_once( get_template_directory() . '/dt-metrics/metrics.php' );
+
 
             /**
              * dt-users
@@ -342,37 +325,24 @@ else {
             require_once( get_template_directory() . '/dt-core/logging/usage.php' );
 
             /**
-             * Post-to-Post configuration
-             */
-            require_once( get_template_directory() . '/dt-core/config-p2p.php' ); // Creates the post to post relationship between the post type tables.
-
-            /**
              * Logging
              */
             require_once( get_template_directory() . '/dt-core/logging/class-activity-api.php' );
             $this->logging_activity_api = new Disciple_Tools_Activity_Log_API();
             require_once( get_template_directory() . '/dt-core/logging/class-activity-hooks.php' ); // contacts and groups report building
             $this->logging_activity_hooks = Disciple_Tools_Activity_Hooks::instance();
-            require_once( get_template_directory() . '/dt-core/logging/class-reports-api.php' );
-            $this->logging_reports_api = new Disciple_Tools_Reports_API();
-            require_once( get_template_directory() . '/dt-core/logging/class-reports-cron.php' ); // Cron scheduling for nightly builds of reports
-            $this->logging_reports_cron = Disciple_Tools_Reports_Cron::instance();
-            require_once( get_template_directory() . '/dt-core/logging/class-reports-dt.php' ); // contacts and groups report building
+
+            /**
+             * Reports
+             */
+            require_once( get_template_directory() . '/dt-reports/reports.php' );
+            require_once( get_template_directory() . '/dt-reports/magic-url-class.php' );
 
             /**
              * Workflows
              */
             require_once( get_template_directory() . '/dt-workflows/workflows.php' );
             $this->workflows = Disciple_Tools_Workflows::instance();
-
-            /**
-             * Network
-             */
-            if ( get_option( 'dt_network_enabled' ) ) {
-                require_once( get_template_directory() . '/dt-network/network-endpoints.php' );
-            }
-            require_once( get_template_directory() . '/dt-network/network.php' );
-            require_once( get_template_directory() . '/dt-network/network-queries.php' );
 
 
             require_once( get_template_directory() . '/dt-core/multisite.php' );
@@ -426,12 +396,7 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-metrics-edit.php' );
                 /* End menu tab section */
 
-
-                // Contacts
-                require_once( get_template_directory() . '/dt-contacts/contacts-config.php' );
-                $this->config_contacts = Disciple_Tools_Config_Contacts::instance();
-                require_once( get_template_directory() . '/dt-groups/groups-config.php' );
-                $this->config_groups = Disciple_Tools_Groups_Config::instance();
+                require_once( get_template_directory() . '/dt-core/setup-functions.php' );
 
             }
             /* End Admin configuration section */

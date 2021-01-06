@@ -97,7 +97,7 @@ function dt_options_scripts() {
 
 function dt_new_user_scripts(){
     global $pagenow;
-    if ( is_admin() && ( $pagenow === 'user-new.php' || $pagenow === 'user-edit.php' ) ) {
+    if ( is_admin() && ( $pagenow === 'user-new.php' || $pagenow === 'user-edit.php' || $pagenow === 'profile.php' ) ) {
         wp_enqueue_script( 'jquery' );
 
         // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
