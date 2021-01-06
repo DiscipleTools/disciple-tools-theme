@@ -31,7 +31,7 @@ class Disciple_Tools_Contacts {
      */
     public static function get_contact( $contact_id, $use_cache = true, $check_permissions = true ) {
         _deprecated_function( __CLASS__ . '::' . __FUNCTION__, '1.0', 'DT_Posts::get_post()' );
-        return DT_Posts::get_post( 'contacts', (int) $contact_id, (bool) $use_cache, (bool) $check_permissions , $silent = false );
+        return DT_Posts::get_post( 'contacts', (int) $contact_id, (bool) $use_cache, (bool) $check_permissions, $silent = false );
     }
 }
 
