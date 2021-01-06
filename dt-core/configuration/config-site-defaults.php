@@ -192,7 +192,7 @@ function dt_get_option( string $name ) {
             }
             // merge distinct
             $modules = dt_array_merge_recursive_distinct( $modules, $module_options );
-            return $modules;
+            return apply_filters( 'dt_post_type_modules_after', $modules );
 
         default:
             return false;

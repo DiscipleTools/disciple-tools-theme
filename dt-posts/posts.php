@@ -172,7 +172,7 @@ class Disciple_Tools_Posts
 
 
     public static function get_label_for_post_type( $post_type, $singular = false ){
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+        $post_settings = DT_Posts::get_post_settings( $post_type );
         if ( $singular ){
             if ( isset( $post_settings["label_singular"] ) ){
                 return $post_settings["label_singular"];
@@ -445,14 +445,14 @@ class Disciple_Tools_Posts
                     }
                 } else if ( strpos( $activity->meta_key, "contact_" ) === 0 ) {
                     $channel = explode( '_', $activity->meta_key );
-                    if ( isset( $channel[1] ) && isset( $post_type_settings["channels"][ "contact_" . $channel[1] ] ) ){
-                        $channel = $post_type_settings["channels"][ "contact_" . $channel[1] ];
+                    if ( isset( $channel[1] ) && isset( $post_type_settings["channels"][ $channel[1] ] ) ){
+                        $channel = $post_type_settings["channels"][ $channel[1] ];
                         if ( $activity->old_value === "" ){
-                            $message = sprintf( _x( 'Added %1$s: %2$s', 'Added Facebook: facebook.com/123', 'disciple_tools' ), $channel["name"] ?? $activity->meta_key, $activity->meta_value );
+                            $message = sprintf( _x( 'Added %1$s: %2$s', 'Added Facebook: facebook.com/123', 'disciple_tools' ), $channel["label"] ?? $activity->meta_key, $activity->meta_value );
                         } else if ( $activity->meta_value != "value_deleted" ){
-                            $message = sprintf( _x( 'Updated %1$s from %2$s to %3$s', 'Update Facebook form facebook.com/123 to facebook.com/mark', 'disciple_tools' ), $channel["name"] ?? $activity->meta_key, $activity->old_value, $activity->meta_value );
+                            $message = sprintf( _x( 'Updated %1$s from %2$s to %3$s', 'Update Facebook form facebook.com/123 to facebook.com/mark', 'disciple_tools' ), $channel["label"] ?? $activity->meta_key, $activity->old_value, $activity->meta_value );
                         } else {
-                            $message = sprintf( _x( 'Deleted %1$s: %2$s', 'Deleted Facebook: facebook.com/123', 'disciple_tools' ), $channel["name"] ?? $activity->meta_key, $activity->old_value );
+                            $message = sprintf( _x( 'Deleted %1$s: %2$s', 'Deleted Facebook: facebook.com/123', 'disciple_tools' ), $channel["label"] ?? $activity->meta_key, $activity->old_value );
                         }
                     }
                 } else if ( $activity->meta_key == "title" ){
@@ -915,7 +915,7 @@ class Disciple_Tools_Posts
 
         global $wpdb;
 
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+        $post_settings = DT_Posts::get_post_settings( $post_type );
         $post_fields = $post_settings["fields"];
 
         $search = "";
@@ -1694,7 +1694,7 @@ class Disciple_Tools_Posts
     }
 
     private static function add_connection_to_post( string $post_type, int $post_id, string $field_key, int $value ){
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+        $post_settings = DT_Posts::get_post_settings( $post_type );
         $connect = null;
         $field_setting = $post_settings["fields"][$field_key] ?? [];
         if ( !isset( $field_setting["p2p_key"], $field_setting["p2p_direction"] ) ) {
@@ -1725,7 +1725,7 @@ class Disciple_Tools_Posts
     }
 
     private static function remove_connection_from_post( string $post_type, int $post_id, string $field_key, int $value ){
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+        $post_settings = DT_Posts::get_post_settings( $post_type );
         $field_setting = $post_settings["fields"][$field_key] ?? [];
         if ( !isset( $field_setting["p2p_key"], $field_setting["p2p_direction"] ) ) {
             return new WP_Error( __FUNCTION__, "Could not remove connection. Field settings missing", [ 'status' => 400 ] );
@@ -1755,7 +1755,7 @@ class Disciple_Tools_Posts
      * data about a particular contact in the required format. You might want
      * to use this instead of get_custom for performance reasons.
      *
-     * @param array $post_settings This is what get_custom_fields_settings() returns
+     * @param string $post_type
      * @param int $post_id The ID number of the contact
      * @param array $fields This array will be mutated with the results
      * @param array $fields_to_return if not empty only add the fields that are specified (optional)
@@ -1764,9 +1764,11 @@ class Disciple_Tools_Posts
      *
      * @return void
      */
-    public static function adjust_post_custom_fields( $post_settings, int $post_id, array &$fields, array $fields_to_return = [], $meta_fields = null, $post_user_meta = null ) {
-        $field_settings = $post_settings["fields"];
-
+    public static function adjust_post_custom_fields( $post_type, int $post_id, array &$fields, array $fields_to_return = [], $meta_fields = null, $post_user_meta = null ) {
+        if ( is_array( $post_type ) && isset( $post_type["post_type"] ) ){
+            $post_type = $post_type["post_type"];
+        }
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
         if ( $meta_fields === null ){
             $meta_fields = get_post_custom( $post_id );
         }
@@ -1779,11 +1781,11 @@ class Disciple_Tools_Posts
                     $key_without_ramdomizers = $exploded[0] . '_' . $exploded[1];
                 }
 
-                if ( strpos( $key, "contact_" ) === 0 && isset( $post_settings["fields"][$key_without_ramdomizers]["type"] ) && $post_settings["fields"][$key_without_ramdomizers]["type"] === "communication_channel" ) {
+                if ( strpos( $key, "contact_" ) === 0 && isset( $field_settings[$key_without_ramdomizers]["type"] ) && $field_settings[$key_without_ramdomizers]["type"] === "communication_channel" ) {
                     if ( strpos( $key, "details" ) === false ) {
                         $type = explode( '_', $key )[1];
                         if ( empty( $fields_to_return ) || in_array( 'contact_' . $type, $fields_to_return ) ) {
-                            $fields["contact_" . $type][] = self::format_post_contact_details( $post_settings, $meta_fields, $type, $key, $value[0] );
+                            $fields["contact_" . $type][] = self::format_post_contact_details( $field_settings, $meta_fields, $type, $key, $value[0] );
                         }
                     }
                 } elseif ( strpos( $key, "address" ) === 0 ) {
@@ -1795,8 +1797,8 @@ class Disciple_Tools_Posts
                         }
                         $details["value"] = $value[0];
                         $details["key"] = $key;
-                        if ( isset( $details["type"] ) ) {
-                            $details["type_label"] = $post_settings["channels"][$details["type"]]["label"];
+                        if ( isset( $details["type"], $field_settings['contact_'.$details["type"]]["name"] ) ) {
+                            $details["type_label"] = $field_settings['contact_' . $details["type"]]["name"];
                         }
                         $fields["address"][] = $details;
                     }
@@ -1907,19 +1909,19 @@ class Disciple_Tools_Posts
             }
         }
 
-        $fields = apply_filters( "dt_adjust_post_custom_fields", $fields, $post_settings["post_type"] );
+        $fields = apply_filters( "dt_adjust_post_custom_fields", $fields, $post_type );
     }
 
 
     /**
      * Find and format all p2p connection fields for a record
      *
-     * @param $post_settings
+     * @param $field_settings
      * @param $post_id
      * @param array $fields
      * @return array
      */
-    public static function get_all_connection_fields( $post_settings, $post_id, array &$fields ){
+    public static function get_all_connection_fields( $field_settings, $post_id, array &$fields ){
         global $wpdb;
         $posts = $wpdb->get_results( $wpdb->prepare( "
             SELECT *
@@ -1927,7 +1929,7 @@ class Disciple_Tools_Posts
             WHERE p2p_to = %s
             OR p2p_from = %s
         ", esc_sql( $post_id ), esc_sql( $post_id ) ), ARRAY_A );
-        foreach ( $post_settings["fields"] as $field_key => $field_value ){
+        foreach ( $field_settings as $field_key => $field_value ){
             if ( $field_value["type"] === "connection" && isset( $field_value["p2p_key"] ) ) {
                 if ( !isset( $fields[$field_key] ) ) {
                     $fields[$field_key] = [];
@@ -1982,9 +1984,6 @@ class Disciple_Tools_Posts
         }
         $details["value"] = $value;
         $details["key"] = $key;
-        if ( isset( $details["type"] ) ) {
-            $details["type_label"] = $post_settings["channels"][ $type ]["types"][ $details["type"] ]["label"];
-        }
         return $details;
     }
 

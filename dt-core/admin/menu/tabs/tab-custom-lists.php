@@ -343,7 +343,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
                     if ( isset( $_POST["channel_label"][$field_key][$langcode] ) ) {
                         $translated_label = sanitize_text_field( wp_unslash( $_POST["channel_label"][$field_key][$langcode] ) );
-                        if ( ( empty( $translated_label ) && !empty( $channels[$field_key]["translations"][$langcode] ) ) || !empty( $translated_label ) ) {
+                        if ( ( empty( $translated_label ) && !empty( $custom_contact_fields[$field_key]["translations"][$langcode] ) ) || !empty( $translated_label ) ) {
                             $custom_contact_fields[$field_key]["translations"][$langcode] = $translated_label;
                         }
                     }

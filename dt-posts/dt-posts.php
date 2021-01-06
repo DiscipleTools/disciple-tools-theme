@@ -36,9 +36,14 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( ! ( self::can_access( $post_type ) || self::can_create( $post_type ) ) ){
             return new WP_Error( __FUNCTION__, "No permissions to read " . $post_type, [ 'status' => 403 ] );
         }
+        $cached = wp_cache_get( $post_type . "_post_type_settings" );
+        if ( $cached ){
+            return $cached;
+        }
         $settings = [];
         $settings["tiles"] = self::get_post_tiles( $post_type );
         $settings = apply_filters( "dt_get_post_type_settings", $settings, $post_type );
+        wp_cache_set( $post_type . "_post_type_settings", $settings );
         return $settings;
     }
 
@@ -62,7 +67,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         $initial_fields = $fields;
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+        $post_settings = self::get_post_settings( $post_type );
 
         //check to see if we want to create this contact.
         //could be used to check for duplicates first
@@ -261,7 +266,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ){
             return new WP_Error( __FUNCTION__, "You do not have permission to update $post_type with ID $post_id", [ 'status' => 403 ] );
         }
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+        $post_settings = self::get_post_settings( $post_type );
         $initial_fields = $fields;
         $post = get_post( $post_id );
         if ( !$post ) {
@@ -412,7 +417,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'object_name' => $wp_post->post_title
             ] );
         }
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+        $field_settings = self::get_post_field_settings( $post_type );
         if ( !$wp_post ){
             return new WP_Error( __FUNCTION__, "post does not exist", [ 'status' => 400 ] );
         }
@@ -421,7 +426,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         /**
          * add connections
          */
-        self::get_all_connection_fields( $post_settings, $post_id, $fields );
+        self::get_all_connection_fields( $field_settings, $post_id, $fields );
         $fields["ID"] = $post_id;
         $fields["post_date"] = [
             "timestamp" => is_numeric( $wp_post->post_date ) ? $wp_post->post_date : dt_format_date( $wp_post->post_date, "U" ),
@@ -434,7 +439,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $fields["post_author_display_name"] = $author ? $author->display_name : "";
 
 
-        self::adjust_post_custom_fields( $post_settings, $post_id, $fields );
+        self::adjust_post_custom_fields( $post_type, $post_id, $fields );
         $fields["name"] = wp_specialchars_decode( $wp_post->post_title );
         $fields["title"] = wp_specialchars_decode( $wp_post->post_title );
 
@@ -469,7 +474,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( is_wp_error( $data ) ) {
             return $data;
         }
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+        $post_settings = self::get_post_settings( $post_type );
         $records = $data["posts"];
         foreach ( $post_settings["connection_types"] as $connection_type ){
             if ( empty( $fields_to_return ) || in_array( $connection_type, $fields_to_return ) && !empty( $records ) ){
@@ -548,7 +553,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
             $record = (array) $record;
 
-            self::adjust_post_custom_fields( $post_settings, $record["ID"], $record, $fields_to_return, $all_posts[$record["ID"]] ?? [], $all_post_user_meta[$record["ID"]] ?? [] );
+            self::adjust_post_custom_fields( $post_type, $record["ID"], $record, $fields_to_return, $all_posts[$record["ID"]] ?? [], $all_post_user_meta[$record["ID"]] ?? [] );
             $record["permalink"] = $site_url . '/' . $post_type .'/' . $record["ID"];
             $record["name"] = wp_specialchars_decode( $record["post_title"] );
             $record["post_date"] = [
@@ -908,7 +913,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read: " . $post_type, [ 'status' => 403 ] );
         }
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+        $post_settings = self::get_post_settings( $post_type );
         $fields = $post_settings["fields"];
         $hidden_fields = [];
         foreach ( $fields as $field_key => $field ){
@@ -975,7 +980,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read group", [ 'status' => 403 ] );
         }
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+        $post_settings = self::get_post_settings( $post_type );
         $activity = $wpdb->get_results( $wpdb->prepare(
             "SELECT
                 *

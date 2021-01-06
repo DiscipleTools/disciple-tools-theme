@@ -100,6 +100,7 @@ function dt_site_scripts() {
 
     $post_type = get_post_type();
     $url_path = dt_get_url_path();
+    $post_type = $post_type ?: $url_path;
 
     dt_theme_enqueue_script( 'shared-functions', 'dt-assets/js/shared-functions.js', array( 'jquery', 'lodash', 'moment', 'datepicker' ) );
     wp_localize_script(
@@ -139,7 +140,7 @@ function dt_site_scripts() {
                 'showing_x_items' => _x( 'Showing %s items', 'Showing 30 items', 'disciple_tools' ),
                 'showing_x_items_matching' => _x( 'Showing %1$s items matching %2$s', 'Showing 30 items matching bob', 'disciple_tools' ),
             ],
-            'post_type' => $post_type ? $post_type : $url_path,
+            'post_type' => $post_type,
             'url_path' => $url_path,
             'post_type_modules' => dt_get_option( "dt_post_type_modules" ),
             'tiles' => DT_Posts::get_post_tiles( $post_type ),
@@ -171,7 +172,7 @@ function dt_site_scripts() {
     if ( is_singular( $post_types ) ) {
         $post = DT_Posts::get_post( get_post_type(), get_the_ID() );
         if ( !is_wp_error( $post )){
-            $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+            $post_settings = DT_Posts::get_post_settings( $post_type );
             dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.min.js', array( 'jquery' ), true );
             dt_theme_enqueue_script( 'jquery-mentions-elastic', 'dt-core/dependencies/jquery-mentions-input/lib/jquery.elastic.min.js', array( 'jquery' ), true );
             dt_theme_enqueue_style( 'jquery-mentions-css', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.css', array() );
@@ -283,7 +284,7 @@ function dt_site_scripts() {
     //list page
     if ( in_array( $url_path, $post_types ) ){
         $post_type = $url_path;
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+        $post_settings = DT_Posts::get_post_settings( $post_type );
         $translations = [
             'save' => __( 'Save', 'disciple_tools' ),
             'edit' => __( 'Edit', 'disciple_tools' ),

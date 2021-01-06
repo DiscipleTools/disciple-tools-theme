@@ -8,7 +8,7 @@
             <h1 style="font-size:1.5rem; padding:10px 0px;"><?php esc_html_e( "Duplicate Contacts", 'disciple_tools' ) ?></h1>
         </div>
         <h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:10px 0px 0px; margin-bottom: 0px;'><?php esc_html_e( "Original Contact", 'disciple_tools' ) ?></h4>
-        <div id="original-contact"></div>
+        <div id="original-contact" class="display-fields"></div>
 
         <div style="text-align: center">
             <h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:20px 0 0; margin-bottom: 0; display: inline-block'><?php esc_html_e( "Possible Duplicates", 'disciple_tools' ) ?></h4>

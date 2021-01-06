@@ -186,11 +186,16 @@ class Disciple_Tools_Post_Type_Template {
                 return $cached;
             }
             $fields = $this->get_custom_fields_settings();
-            $settings = [
+            $channels = [];
+            foreach ( $fields as $field_key => $field_value ){
+                if ( $field_value["type"] === "communication_channel" ){
+                    $field_value["label"] = $field_value["name"];
+                    $channels[str_replace( "contact_", "", $field_key )] = $field_value;
+                }
+            }
+            $s = [
                 'fields' => $fields,
-                'channels' => array_filter( $fields, function ( $a ) {
-                    return $a["type"] === "communication_channel";
-                } ),
+                'channels' => $channels,
                 'connection_types' => array_keys( array_filter( $fields, function ( $a ) {
                     return $a["type"] === "connection";
                 } ) ),
@@ -198,6 +203,8 @@ class Disciple_Tools_Post_Type_Template {
                 'label_plural' => $this->plural,
                 'post_type' => $this->post_type
             ];
+            $settings = dt_array_merge_recursive_distinct( $settings, $s );
+
             wp_cache_set( $post_type . "_type_settings", $settings );
         }
         return $settings;

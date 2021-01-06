@@ -3731,7 +3731,7 @@ msgid_plural "%s minutes ago"
 msgstr[0] "pred %s minuto"
 msgstr[1] "Pred %s minutama"
 msgstr[2] "Pred %s minutami"
-msgstr[3] ""
+msgstr[3] "drugo"
 
 #: dt-notifications/notifications.php:374
 msgid "%s hour ago"
@@ -3739,7 +3739,7 @@ msgid_plural "%s hours ago"
 msgstr[0] "pred %s uro"
 msgstr[1] "pred %s urama"
 msgstr[2] "pred %s urami"
-msgstr[3] ""
+msgstr[3] "drugo"
 
 #: dt-notifications/notifications.php:377
 msgid "%s day ago"
@@ -3747,7 +3747,7 @@ msgid_plural "%s days ago"
 msgstr[0] "pred %s dnevom"
 msgstr[1] "pred %s dnevoma"
 msgstr[2] "pred %s dnevi"
-msgstr[3] ""
+msgstr[3] "drugo"
 
 #: dt-notifications/notifications.php:380
 msgid "%s week ago"
@@ -3755,7 +3755,7 @@ msgid_plural "%s weeks ago"
 msgstr[0] "pred %s tednom"
 msgstr[1] "pred %s tednoma"
 msgstr[2] "pred %s tedni"
-msgstr[3] ""
+msgstr[3] "drugo"
 
 #: dt-notifications/notifications.php:383
 msgid "%s month ago"
@@ -3763,7 +3763,7 @@ msgid_plural "%s months ago"
 msgstr[0] "pred %s mesecem"
 msgstr[1] "pred %s mesecema"
 msgstr[2] "pred %s meseci"
-msgstr[3] ""
+msgstr[3] "drugo"
 
 #: dt-notifications/notifications.php:386
 msgid "%s year ago"
@@ -3771,7 +3771,7 @@ msgid_plural "%s years ago"
 msgstr[0] "pred %s letom"
 msgstr[1] "pred %s letoma"
 msgstr[2] "pred %s leti"
-msgstr[3] ""
+msgstr[3] "drugo"
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Created record on {}"
