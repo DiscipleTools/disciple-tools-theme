@@ -94,10 +94,8 @@
       current_filter.type = 'default'
       current_filter.labels = current_filter.labels || [{ id:filter_id, name:current_filter.name}]
     }
-    current_filter.query.sort = sort || current_filter.query.sort;
-    if ( Array.isArray(current_filter.query) ){
-      current_filter.query = {}; //make sure query is an object instead of an array.
-    }
+    sort = sort || current_filter.query.sort;
+    current_filter.query.sort = (typeof sort === "string") ? sort : "name"
 
     get_records()
   }
@@ -121,17 +119,17 @@
         <div class="accordion-content" data-tab-content>
           <div class="list-views">
             ${  list_settings.filters.filters.map( filter =>{
-        if (filter.tab===tab.key && filter.tab !== 'custom') {
-          let indent = filter.subfilter && Number.isInteger(filter.subfilter) ? 15 * filter.subfilter : 15;
-          return `
+              if (filter.tab===tab.key && filter.tab !== 'custom') {
+                let indent = filter.subfilter && Number.isInteger(filter.subfilter) ? 15 * filter.subfilter : 15;
+                return `
                   <label class="list-view" style="${ filter.subfilter ? `margin-left:${indent}px` : ''}">
                     <input type="radio" name="view" value="${_.escape(filter.ID)}" data-id="${_.escape(filter.ID)}" class="js-list-view" autocomplete="off">
                     <span id="total_filter_label">${_.escape(filter.name)}</span>
                     <span class="list-view__count js-list-view-count" data-value="${_.escape(filter.ID)}">${_.escape(filter.count )}</span>
                   </label>
                   `
-        }
-      }).join('')}
+              }
+            }).join('')}
           </div>
         </div>
       </li>

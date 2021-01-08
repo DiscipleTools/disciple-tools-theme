@@ -620,5 +620,40 @@ class PostsTest extends WP_UnitTestCase {
         $this->assertWPError( $res );
         $res = DT_Posts::search_viewable_post( "contacts", [ "member_count" => [] ], false );
         $this->assertWPError( $res );
+
+
+        /**
+         * structure
+         * AND / OR layers
+         */
+        $group = DT_Posts::create_post( "groups", [ "name" => 'this_is_a_group1' ], true, false );
+        $c1 = DT_Posts::create_post( "contacts", [ "name" => 'this_is_a_test1', "assigned_to" => 1, "gender" => "male", "groups" => [ "values" => [ [ "value" => $group["ID"] ] ] ] ], true, false );
+        DT_Posts::create_post( "contacts", [ "name" => 'this_is_a_test2', "assigned_to" => 1, "gender" => "male", "groups" => [ "values" => [ [ "value" => $group["ID"] ] ] ] ], true, false );
+        //name1 and name 2
+        $res1 = DT_Posts::search_viewable_post( "contacts", [ [ "name" => [ "this_is_a_test1" ] ], [ "name" => [ "this_is_a_test2" ] ] ], false );
+        //with fields key
+        $res2 = DT_Posts::search_viewable_post( "contacts", [ "fields" => [ [ "name" => [ "this_is_a_test1" ] ], [ "name" => [ "this_is_a_test2" ] ] ] ], false );
+        $this->assertCount( 0, $res1["posts"] );
+        $this->assertCount( 0, $res2["posts"] );
+        $this->assertSame( $res1, $res2 );
+        //name1 or name 2
+        $res1 = DT_Posts::search_viewable_post( "contacts", [ [ [ "name" => [ "this_is_a_test1" ] ], [ "name" => [ "this_is_a_test2" ] ] ] ], false );
+        //with fields key
+        $res2 = DT_Posts::search_viewable_post( "contacts", [ "fields" => [ [ [ "name" => [ "this_is_a_test1" ] ], [ "name" => [ "this_is_a_test2" ] ] ] ] ], false );
+        $this->assertCount( 2, $res1["posts"] );
+        $this->assertCount( 2, $res2["posts"] );
+        $this->assertEquals( $res1, $res2 );
+
+        //more ANDs
+        $res1 = DT_Posts::search_viewable_post( "contacts", [ "name" => [ "this_is_a_test1" ], "gender" => [ "male" ], "groups" => [ $group["ID"] ]  ], false );
+        $res2 = DT_Posts::search_viewable_post( "contacts", [ "fields" => [ "name" => [ "this_is_a_test1" ], "gender" => [ "male" ], "groups" => [ $group["ID"] ] ] ], false );
+        $this->assertCount( 1, $res2["posts"] );
+        $this->assertEquals( $res1, $res2 );
+
+        //mixing ANDs and ORs
+        $res1 = DT_Posts::search_viewable_post( "contacts", [ [ "name" => [ "this_is_a_test1" ], "gender" => [ "male" ], ], "groups" => [ $group["ID"] ]  ], false );
+        $res2 = DT_Posts::search_viewable_post( "contacts", [ "fields" => [ [ "name" => [ "this_is_a_test1" ], "gender" => [ "male" ]], [ "groups" => [ $group["ID"] ] ] ] ], false );
+        $this->assertCount( 2, $res2["posts"] );
+        $this->assertEquals( $res1, $res2 );
     }
 }

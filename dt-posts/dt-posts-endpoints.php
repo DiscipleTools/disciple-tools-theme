@@ -446,7 +446,7 @@ class Disciple_Tools_Posts_Endpoints {
 
     public function get_list( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
-        $get_params = $request->get_query_params();
+        $get_params = $request->get_json_params() ?? $request->get_query_params();
         return DT_Posts::list_posts( $url_params["post_type"], $get_params );
     }
 

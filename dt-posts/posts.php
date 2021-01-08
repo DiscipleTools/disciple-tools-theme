@@ -945,6 +945,10 @@ class Disciple_Tools_Posts
             unset( $query["sort"] );
         }
 
+        if ( isset( $query["fields"] ) ){
+            $query = $query["fields"];
+        }
+
         $joins = "";
         $post_query = "";
 
