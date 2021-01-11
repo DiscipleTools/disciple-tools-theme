@@ -892,6 +892,9 @@ class Disciple_Tools_Posts
                 $index_pos++;
                 $args["where_sql"] .= ( ( $index_pos > 1 ) ? $operator : " " ) . " (";
                 $args = self::fields_to_sql( $post_type, $query_value, $operator === "AND" ? "OR" : "AND", $args );
+                if ( is_wp_error( $args ) ){
+                    return $args;
+                }
                 $args["where_sql"] .= ")";
             }
         }
