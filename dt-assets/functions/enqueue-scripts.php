@@ -296,6 +296,8 @@ function dt_site_scripts() {
             'empty_custom_filters' => __( 'No filters, create one below', 'disciple_tools' ),
             'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' ),
             'filter_all' => sprintf( _x( "All %s", 'All records', 'disciple_tools' ), $post_settings["label_plural"] ),
+            'range_start' => __( 'start', 'disciple_tools' ),
+            'range_end' => __( 'end', 'disciple_tools' )
         ];
         dt_theme_enqueue_script( 'drag-n-drop-table-columns', 'dt-core/dependencies/drag-n-drop-table-columns.js', array( 'jquery' ), true );
         dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/js/modular-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js', 'drag-n-drop-table-columns' ), true );

@@ -33,7 +33,7 @@ jQuery(document).ready(function($) {
     onSelect: function (date) {
       API.update_post('contacts', post_id, { baptism_date: date }).then((resp)=>{
         if (this.value) {
-          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
+          this.value = window.SHAREDFUNCTIONS.formatDate(resp["baptism_date"]["timestamp"]);
         }
       }).catch(handleAjaxError)
     },
@@ -106,6 +106,7 @@ jQuery(document).ready(function($) {
    * detect if an update is made on the baptized_by field.
    */
   $( document ).on( 'dt_record_updated', function (e, response, request ){
+    post = response
     if ( _.get(request, "baptized_by" ) && _.get( response, "baptized_by[0]" ) ) {
       openBaptismModal( response )
     }

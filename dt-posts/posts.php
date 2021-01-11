@@ -947,6 +947,9 @@ class Disciple_Tools_Posts
             }
             unset( $query["sort"] );
         }
+        if ( isset( $query["combine"] )){
+            unset( $query["combine"] ); //remove deprecated combine
+        }
 
         if ( isset( $query["fields"] ) ){
             $query = $query["fields"];
@@ -1851,10 +1854,12 @@ class Disciple_Tools_Posts
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'array' ) {
                     $fields[$key] = maybe_unserialize( $value[0] );
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'date' ) {
-                    $fields[$key] = [
-                        "timestamp" => is_numeric( $value[0] ) ? $value[0] : dt_format_date( $value[0], "U" ),
-                        "formatted" => dt_format_date( $value[0] ),
-                    ];
+                    if ( isset( $value[0] ) && !empty( $value[0] ) ){
+                        $fields[$key] = [
+                            "timestamp" => is_numeric( $value[0] ) ? $value[0] : dt_format_date( $value[0], "U" ),
+                            "formatted" => dt_format_date( $value[0] ),
+                        ];
+                    }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'location' ) {
                     $names = Disciple_Tools_Mapping_Queries::get_names_from_ids( $value );
                     $fields[$key] = [];

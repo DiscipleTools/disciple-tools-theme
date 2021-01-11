@@ -35,7 +35,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
-
+        add_filter( "dt_search_viewable_posts_query", [ $this, "dt_search_viewable_posts_query" ], 10, 1 );
         add_action( "dt_comment_action_quick_action", [ $this, "dt_comment_action_quick_action" ], 10, 1 );
 
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
@@ -552,6 +552,17 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             </div>
         </div>
         <?php
+    }
+
+    public function dt_search_viewable_posts_query( $query ){
+        if ( isset( $query["combine"] ) && in_array( "subassigned", $query["combine"] ) && isset( $query["assigned_to"], $query["subassigned"] ) ){
+            $a = $query["assigned_to"];
+            $s = $query["subassigned"];
+            unset( $query["assigned_to"] );
+            unset( $query["subassigned"] );
+            $query[] = [ "assigned_to" => $a, "subassigned" => $s ];
+        }
+        return $query;
     }
 
 }

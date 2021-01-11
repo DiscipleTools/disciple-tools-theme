@@ -421,10 +421,17 @@ dt_please_log_in();
                                         </div>
                                     </div>
                                 </div>
+                                <?php if ( $field === "subassigned" ): ?>
+                                    <p>
+                                        <label><?php esc_html_e( "Filter for subassigned OR Assigned To", 'disciple_tools' ) ?>
+                                            <input id="combine_subassigned" type="checkbox" value="combine_subassigned" />
+                                        </label>
+                                    </p>
+                                <?php endif;?>
                             </div>
 
                         <?php else : ?>
-                            <div class="tabs-panel" id="<?php echo esc_html( $field ) ?>">
+                            <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>"" id="<?php echo esc_html( $field ) ?>">
                                 <div class="section-header"><?php echo esc_html( $field === "post_date" ? __( "Creation Date", "disciple_tools" ) : $field_options[$field]["name"] ?? $field ) ?></div>
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "key_select" ) :

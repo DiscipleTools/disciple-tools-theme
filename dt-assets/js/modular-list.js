@@ -521,33 +521,49 @@
     }
   }
   let get_custom_filter_search_query = ()=>{
-    let search_query = {}
-    let fields_filtered = new_filter_labels.map(f=>f.field)
+    let search_query = []
+    let fields_filtered = _.uniq(new_filter_labels.map(f=>f.field))
     fields_filtered.forEach(field=>{
-      search_query[field] =[]
       let type = _.get(list_settings, `post_type_settings.fields.${field}.type` )
       if ( type === "connection" || type === "user_select" ){
-        search_query[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID")
+        search_query.push( { [field] : _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
       }  if ( type === "multi_select" ){
-        search_query[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "key")
+        search_query.push( {[field] : _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
       } if ( type === "location" ){
-        search_query[field] = _.map( _.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID')
+        search_query.push({ [field] : _.map( _.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID') })
       } else if ( type === "date" ) {
-        search_query[field] = {}
+        let date = {}
         let start = $(`.dt_date_picker[data-field="${field}"][data-delimit="start"]`).val()
         if ( start ){
-          search_query[field]["start"] = start
+          date.start = start
         }
         let end = $(`.dt_date_picker[data-field="${field}"][data-delimit="end"]`).val()
         if ( end ){
-          search_query[field]["end"]  = end
+          date.end = end
         }
+        search_query.push({[field]: date})
       } else {
+        let options = []
         $(`#${field}-options input:checked`).each(function(){
-          search_query[field].push($(this).val())
+          options.push( $(this).val() )
         })
+        if ( options.length ){
+          search_query.push({ [field]: options })
+        }
       }
     })
+    search_query = {
+      fields: search_query
+    }
+    if ( list_settings.post_type === "contacts" ){
+      if ( $("#combine_subassigned").is(":checked") ){
+        let assigned_to = search_query.fields.filter(a=>a.assigned_to)
+        let subassigned = search_query.fields.filter(a=>a.subassigned)
+        search_query.fields = search_query.fields.filter(a=>{return !a.assigned_to && !a.subassigned})
+        search_query.fields.push([assigned_to[0], subassigned[0]])
+        search_query.combine = [ "subassigned" ] // to select checkbox in filter modal
+      }
+    }
     return search_query
   }
   $("#confirm-filter-records").on("click", function () {
@@ -838,13 +854,13 @@
     selected_filters.empty();
     $(".typeahead__query input").each(function () {
       let typeahead = Typeahead['.'+$(this).attr("class").split(/\s+/)[0]]
-      if ( typeahead ){
+      if ( typeahead && typeahead.items ){
         for (let i = 0; i < typeahead.items.length; i ){
           typeahead.cancelMultiselectItem(0)
         }
         typeahead.node.trigger('propertychange.typeahead')
       }
-    })
+    });
     $('#confirm-filter-records').show()
     $('#save-filter-edits').hide()
   })
@@ -866,6 +882,8 @@
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
         } else if ( type === "multi_select" ){
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.name})
+        } else if ( type === "user_select" ){
+          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({name:label.name, ID:label.id})
         }
       })
       ;(filter.query.combine || []).forEach(c=>{
@@ -1264,52 +1282,52 @@
   });
 
 
-/**
- * Bulk share
-*/
-$.typeahead({
-  input: '#bulk_share',
-  minLength: 0,
-  maxItem: 0,
-  accent: true,
-  searchOnFocus: true,
-  source: TYPEAHEADS.typeaheadUserSource(),
-  templateValue: "{{name}}",
-  dynamic: true,
-  multiselect: {
-    matchOn: ["ID"],
+  /**
+   * Bulk share
+  */
+  $.typeahead({
+    input: '#bulk_share',
+    minLength: 0,
+    maxItem: 0,
+    accent: true,
+    searchOnFocus: true,
+    source: TYPEAHEADS.typeaheadUserSource(),
+    templateValue: "{{name}}",
+    dynamic: true,
+    multiselect: {
+      matchOn: ["ID"],
+      callback: {
+        onCancel: function (node, item) {
+          $(node).removeData( `bulk_key_bulk_share` );
+          $('#share-result-container').html("");
+
+        }
+      },
+    },
     callback: {
-      onCancel: function (node, item) {
-        $(node).removeData( `bulk_key_bulk_share` );
+      onClick: function (node, a, item, event) {
+        let shareUserArray;
+        if (node.data('bulk_key_share')) {
+          shareUserArray = node.data('bulk_key_share');
+        } else {
+          shareUserArray = [];
+        }
+        shareUserArray.push(item.ID);
+        node.data(`bulk_key_share`, shareUserArray);
+      },
+      onResult: function (node, query, result, resultCount) {
+        if (query) {
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $('#share-result-container').html(text);
+        }
+      },
+      onHideLayout: function () {
         $('#share-result-container').html("");
-
       }
-    },
-  },
-  callback: {
-    onClick: function (node, a, item, event) {
-      let shareUserArray;
-      if (node.data('bulk_key_share')) {
-        shareUserArray = node.data('bulk_key_share');
-      } else {
-        shareUserArray = [];
-      }
-      shareUserArray.push(item.ID);
-      node.data(`bulk_key_share`, shareUserArray);
-    },
-    onResult: function (node, query, result, resultCount) {
-      if (query) {
-        let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-        $('#share-result-container').html(text);
-      }
-    },
-    onHideLayout: function () {
-      $('#share-result-container').html("");
     }
-  }
-});
+  });
 
-/**
+  /**
  * Bulk Typeahead
  */
 
