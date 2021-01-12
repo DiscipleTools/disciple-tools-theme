@@ -641,12 +641,16 @@ class Disciple_Tools_Posts
                                     $equality = "!=";
                                     $value = ltrim( $value, "-" );
                                     $connector = " AND ";
+                                    if ( sizeof( $query_value ) === 1 ){
+                                        $query_for_null_values = true;
+                                    }
                                 }
                                 if ( $field_type === "boolean" ){
                                     if ( $value === "1" || $value === "yes" || $value === "true" ){
                                         $value = true;
-                                    } elseif ( $value === "0" || $value === "no" || $value === "false" ){
+                                    } elseif ( $value === "0" || $value === "no" || $value === "false" || $value === false ){
                                         $value = false;
+                                        $query_for_null_values = true;
                                     }
                                     $where_sql .= ( $index > 0 ? $connector : " " ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
                                 }
