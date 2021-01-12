@@ -41,13 +41,10 @@ class Disciple_Tools_Notifications_Comments
             if ( is_wp_error( $followers ) ){
                 return $followers;
             }
-            $following_all = get_users( [
-                'meta_key' => 'dt_follow_all',
-                'meta_value' => true
-            ] );
-            foreach ( $following_all as $user ){
-                $followers[] = $user->ID;
-            }
+
+            $users_to_notify = array_unique( array_merge( $mentioned_user_ids, $followers ) );
+
+            $users_to_notify = apply_filters( "dt_filter_users_receiving_comment_notification", $users_to_notify, $post_type, $post_id, $comment );
 
             $source_user_id = $comment->user_id;
             $notification = [
@@ -64,7 +61,6 @@ class Disciple_Tools_Notifications_Comments
                 'field_value'         => '',
             ];
 
-            $users_to_notify = array_unique( array_merge( $mentioned_user_ids, $followers ) );
 
             foreach ( $users_to_notify as $user_to_notify ) {
 
