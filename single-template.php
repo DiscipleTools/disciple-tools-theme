@@ -55,6 +55,18 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                         </div>
                     </section>
 
+                    <!-- archived -->
+                    <section class="cell small-12 archived-notification"
+                             style="display: <?php echo esc_html( ( isset( $dt_post['archived'] ) && $dt_post['archived'] === true ) ? "block" : "none" ) ?> ">
+                        <div class="bordered-box detail-notification-box" style="background-color:#333">
+                            <h4>
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/>
+                                <?php echo esc_html( sprintf( __( 'This %s is archived', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?>
+                            </h4>
+                            <button class="button" id="unarchive-record"><?php esc_html_e( 'Restore', 'disciple_tools' )?></button>
+                        </div>
+                    </section>
+
 
                     <!-- Name section -->
                     <?php $type_color = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ?

@@ -25,6 +25,7 @@ class DT_Contacts_Base {
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles_after' ], 100, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_action( 'dt_record_admin_actions', [ $this, "dt_record_admin_actions" ], 10, 2 );
+        add_action( 'dt_record_footer', [ $this, "dt_record_footer" ], 10, 2 );
 
 
         // hooks
@@ -273,6 +274,11 @@ class DT_Contacts_Base {
                 'default'     => false,
             ];
 
+            $fields["archived"] = [
+                "name" => __( "Archived", 'disciple_tools' ),
+                "type" => "boolean",
+                "default" => false
+            ];
         }
         return $fields;
     }
@@ -357,9 +363,16 @@ class DT_Contacts_Base {
 
     public static function dt_record_admin_actions( $post_type, $post_id ){
         if ( $post_type === "contacts" ){
-            ?>
-            <li>
+            $post = DT_Posts::get_post( $post_type, $post_id );
+            if ( empty( $post["archive"] ) && ( $post["type"]["key"] === "personal" || $post["type"]["key"] === "placeholder" ) ) :?>
+                <li>
+                    <a data-open="archive-record-modal">
+                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/archive.svg' ) ?>"/>
+                        <?php echo esc_html( sprintf( _x( "Archive %s", "Archive Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
+                </li>
+            <?php endif; ?>
 
+            <li>
                 <a data-open="contact-type-modal">
                     <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg' ) ?>"/>
                     <?php echo esc_html( sprintf( _x( "Change %s Type", "Change Record Type", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
@@ -375,6 +388,30 @@ class DT_Contacts_Base {
             <?php
         }
     }
+
+
+    public function dt_record_footer( $post_type, $post_id ){
+        if ( $post_type === "contacts" ) :
+            $dt_post = DT_Posts::get_post( $post_type, $post_id ); ?>
+            <div class="reveal" id="archive-record-modal" data-reveal data-reset-on-close>
+                <h3><?php echo esc_html( sprintf( _x( "Archive %s", "Archive Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></h3>
+                <p><?php echo esc_html( sprintf( _x( "Are you sure you want to archive %s?", "Are you sure you want to archive name?", 'disciple_tools' ), $dt_post["name"] ) ) ?></p>
+
+                <div class="grid-x">
+                    <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                        <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
+                    </button>
+                    <button class="button alert loader" type="button" id="archive-record">
+                        <?php esc_html_e( 'Archive', 'disciple_tools' ); ?>
+                    </button>
+                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        <?php endif;
+    }
+
 
     public function p2p_init(){
         /**
@@ -463,7 +500,8 @@ class DT_Contacts_Base {
                 'name' => __( "Personal", 'disciple_tools' ),
                 'query' => [
                     'type' => [ 'personal' ],
-                    'sort' => 'name'
+                    'sort' => 'name',
+                    "archived" => [ false ]
                 ],
                 "count" => $shared_by_type_counts['keys']['personal'] ?? 0,
             ];
