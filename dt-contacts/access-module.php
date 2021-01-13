@@ -1100,7 +1100,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                     pm.post_id IN ( SELECT post_id from $wpdb->postmeta as source where source.meta_value IN ( $sources_sql ) )
                     OR pm.post_id IN ( SELECT post_id FROM $wpdb->dt_share AS shares where shares.user_id = %s )
                 )
-                GROUP status.meta_value, pm.meta_value
+                GROUP BY status.meta_value, pm.meta_value
             ", esc_sql( get_current_user_id() ) ) , ARRAY_A );
             // phpcs:enable
         }
