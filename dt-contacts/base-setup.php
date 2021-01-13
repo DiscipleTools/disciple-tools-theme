@@ -514,7 +514,7 @@ class DT_Contacts_Base {
                 'query' => [
                     'type' => [ 'personal' ],
                     'sort' => 'name',
-                    "archived" => [ false ]
+                    "overall_status" => [ "-closed" ],
                 ],
                 "count" => $shared_by_type_counts['keys']['personal'] ?? 0,
             ];
