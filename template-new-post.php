@@ -14,7 +14,7 @@ if ( ! current_user_can( 'create_' . $dt_post_type ) ) {
 }
 
 get_header();
-$post_settings = apply_filters( "dt_get_post_type_settings", [], $dt_post_type );
+$post_settings = DT_Posts::get_post_settings( $dt_post_type );
 
 $force_type_choice = false;
 if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields"]["type"]["default"] ) > 1 ){

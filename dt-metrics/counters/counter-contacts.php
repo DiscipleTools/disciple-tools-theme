@@ -383,7 +383,7 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
 
     public static function get_contact_statuses( $user_id = null ){
         global $wpdb;
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
+        $post_settings = DT_Posts::get_post_settings( "contacts" );
         if ( $user_id ){
             $contact_statuses = $wpdb->get_results( $wpdb->prepare( "
                 SELECT COUNT(pm1.meta_value) as count, pm1.meta_value as status FROM $wpdb->posts p

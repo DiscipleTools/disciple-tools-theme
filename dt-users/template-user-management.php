@@ -364,7 +364,7 @@ $user_management_options = DT_User_Management::user_management_options();
 <!--                                    <div style="display: none">-->
                                     <div id="allowed_sources_options" style="display: none">
                                         <?php
-                                        $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
+                                        $post_settings = DT_Posts::get_post_settings( "contacts" );
                                         $sources = isset( $post_settings["fields"]["sources"]["default"] ) ? $post_settings["fields"]["sources"]["default"] : [];
                                         ?>
                                         <h3><?php esc_html_e( 'Access by Source', 'disciple_tools' ); ?></h3>

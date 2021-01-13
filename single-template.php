@@ -55,6 +55,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                         </div>
                     </section>
 
+                    <?php do_action( 'dt_record_notifications_section', $post_type, $dt_post ); ?>
 
                     <!-- Name section -->
                     <?php $type_color = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ?
