@@ -764,7 +764,7 @@ class Disciple_Tools_Users
         </table>
         <?php if ( isset( $user->ID ) && user_can( $user->ID, 'access_specific_sources' ) ) :
             $selected_sources = get_user_option( 'allowed_sources', $user->ID );
-            $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
+            $post_settings = DT_Posts::get_post_settings( "contacts" );
             $sources = isset( $post_settings["fields"]["sources"]["default"] ) ? $post_settings["fields"]["sources"]["default"] : [];
             ?>
             <h3>Access by Source</h3>

@@ -437,7 +437,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                     <a class="button menu-white-dropdown-arrow"
                        style="background-color: #00897B; color: white;">
                         <?php esc_html_e( "Quick Actions", 'disciple_tools' ) ?></a>
-                    <ul class="menu" style="width: max-content">
+                    <ul class="menu is-dropdown-submenu" style="width: max-content">
                         <?php
                         foreach ( $contact_fields as $field => $val ) {
                             if ( strpos( $field, "quick_button" ) === 0 ) {

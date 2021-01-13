@@ -92,7 +92,7 @@ dt_please_log_in();
                             <ul class="dropdown menu" data-dropdown-menu>
                                 <li>
                                     <a href="#"><?php esc_html_e( "Sort", "disciple_tools" ); ?></a>
-                                    <ul class="menu">
+                                    <ul class="menu is-dropdown-submenu">
                                         <li>
                                             <a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="post_date">
                                                 <?php esc_html_e( "Newest", "disciple_tools" ); ?></a>

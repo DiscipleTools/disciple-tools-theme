@@ -88,7 +88,7 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
         <p>Note: Here are this fields available on this Instance. Some are default fields, some are installed by plugins or in the settings page.</p>
         <?php
 
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], $type );
+        $post_settings = DT_Posts::get_post_settings( $type );
         $fields = $post_settings["fields"];
 
 

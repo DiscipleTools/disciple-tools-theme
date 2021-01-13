@@ -14,7 +14,7 @@ if ( ! current_user_can( 'create_' . $dt_post_type ) ) {
 }
 
 get_header();
-$post_settings = apply_filters( "dt_get_post_type_settings", [], $dt_post_type );
+$post_settings = DT_Posts::get_post_settings( $dt_post_type );
 
 $force_type_choice = false;
 if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields"]["type"]["default"] ) > 1 ){
@@ -31,8 +31,9 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                     <h3 class="section-header">
                         <?php echo esc_html( sprintf( __( 'New %s', 'disciple_tools' ), $post_settings["label_singular"] ) ) ?>
                     </h3>
-                    <?php if ( $force_type_choice ){ ?>
 
+                    <!-- choose the record type -->
+                    <?php if ( $force_type_choice ){ ?>
                     <div class="type-control-field" style="margin:20px 0">
                         <strong>
                         <?php echo esc_html( sprintf( __( 'Select the %s type:', 'disciple_tools' ), $post_settings["label_singular"] ) ) ?>
@@ -98,7 +99,9 @@ if ( isset( $post_settings["fields"]["type"] ) && sizeof( $post_settings["fields
                             }
 
                             ?>
-                            <div <?php echo esc_html( $force_type_choice ? "style=display:none" : "" ); ?> class="form-field <?php echo esc_html( $classes ); ?>">
+                            <!-- hide fields until the post type is chosen. hide the fields that were not selected to be displayed by default in the create form -->
+                            <div <?php echo esc_html( ( $force_type_choice || $classes === "other-fields" ) ? "style=display:none" : "" ); ?>
+                                class="form-field <?php echo esc_html( $classes ); ?>">
                             <?php
                             render_field_for_display( $field_key, $post_settings['fields'], [] );
                             if ( isset( $field_settings["required"] ) && $field_settings["required"] === true ) { ?>

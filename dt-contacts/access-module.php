@@ -44,6 +44,8 @@ class DT_Contacts_Access extends DT_Module_Base {
         add_filter( "dt_post_create_fields", [ $this, "dt_post_create_fields" ], 5, 2 );
         add_action( "dt_post_updated", [ $this, "dt_post_updated" ], 10, 5 );
 
+        add_filter( "dt_filter_users_receiving_comment_notification", [ $this, "dt_filter_users_receiving_comment_notification" ], 10, 4 );
+
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){
@@ -1099,7 +1101,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                     pm.post_id IN ( SELECT post_id from $wpdb->postmeta as source where source.meta_value IN ( $sources_sql ) )
                     OR pm.post_id IN ( SELECT post_id FROM $wpdb->dt_share AS shares where shares.user_id = %s )
                 )
-                GROUP status.meta_value, pm.meta_value
+                GROUP BY status.meta_value, pm.meta_value
             ", esc_sql( get_current_user_id() ) ) , ARRAY_A );
             // phpcs:enable
         }
@@ -1385,5 +1387,23 @@ class DT_Contacts_Access extends DT_Module_Base {
                 $current_user->remove_cap( "dt_all_access_contacts" );
             }
         }
+    }
+
+    public function dt_filter_users_receiving_comment_notification( $users_to_notify, $post_type, $post_id, $comment ){
+        if ( $post_type === "contacts" ){
+            $post = DT_Posts::get_post( $post_type, $post_id );
+            if ( !is_wp_error( $post ) && isset( $post["type"]["key"] ) && $post["type"]["key"] === "access" ){
+                $following_all = get_users( [
+                    'meta_key' => 'dt_follow_all',
+                    'meta_value' => true
+                ] );
+                foreach ( $following_all as $user ){
+                    if ( !in_array( $user->ID, $users_to_notify )){
+                        $users_to_notify[] = $user->ID;
+                    }
+                }
+            }
+        }
+        return $users_to_notify;
     }
 }

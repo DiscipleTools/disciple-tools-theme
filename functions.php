@@ -232,6 +232,7 @@ else {
              */
             require_once( get_template_directory() . '/dt-core/config-required-plugins.php' );
             require_once( get_template_directory() . '/dt-core/libraries/class-tgm-plugin-activation.php' );
+            require_once( get_template_directory() . '/dt-core/release-notifications.php' );
 
             /**
              * Data model
