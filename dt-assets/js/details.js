@@ -821,6 +821,21 @@ jQuery(document).ready(function($) {
       window.location = '/' + post_type
     })
   })
+  $('#archive-record').on('click', function(){
+    $(this).attr("disabled", true).addClass("loading");
+    API.update_post( post_type, post_id, {overall_status:"closed"} ).then(()=>{
+      $(this).attr("disabled", false).removeClass("loading");
+      $('#archive-record-modal').foundation('close');
+      $('.archived-notification').show()
+    })
+  })
+  $('#unarchive-record').on('click', function(){
+    $(this).attr("disabled", true).addClass("loading");
+    API.update_post( post_type, post_id, {overall_status:"active"} ).then(()=>{
+      $(this).attr("disabled", false).removeClass("loading");
+      $('.archived-notification').hide()
+    })
+  })
 
   //leave at the end of this file
   masonGrid.masonry({

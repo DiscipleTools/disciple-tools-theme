@@ -25,6 +25,8 @@ class DT_Contacts_Base {
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles_after' ], 100, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_action( 'dt_record_admin_actions', [ $this, "dt_record_admin_actions" ], 10, 2 );
+        add_action( 'dt_record_footer', [ $this, "dt_record_footer" ], 10, 2 );
+        add_action( 'dt_record_notifications_section', [ $this, "dt_record_notifications_section" ], 10, 2 );
 
 
         // hooks
@@ -273,6 +275,23 @@ class DT_Contacts_Base {
                 'default'     => false,
             ];
 
+            $fields["overall_status"] = [
+                "name" => __( "Contact Status", 'disciple_tools' ),
+                'description' => _x( 'The Contact Status describes the progress in communicating with the contact.', "Contact Status field description", 'disciple_tools' ),
+                "type" => "key_select",
+                "default" => [
+                    'active'       => [
+                        "label" => __( 'Active', 'disciple_tools' ),
+                        "description" => _x( "The contact is progressing and/or continually being updated.", "Contact Status field description", 'disciple_tools' ),
+                        "color" => "#4CAF50",
+                    ],
+                    "closed" => [
+                        "label" => __( "Closed - Archived", 'disciple_tools' ),
+                        "color" => "#F43636",
+                        "description" => _x( "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.", "Contact Status field description", 'disciple_tools' ),
+                    ]
+                ]
+            ];
         }
         return $fields;
     }
@@ -357,9 +376,16 @@ class DT_Contacts_Base {
 
     public static function dt_record_admin_actions( $post_type, $post_id ){
         if ( $post_type === "contacts" ){
-            ?>
-            <li>
+            $post = DT_Posts::get_post( $post_type, $post_id );
+            if ( empty( $post["archive"] ) && ( $post["type"]["key"] === "personal" || $post["type"]["key"] === "placeholder" ) ) :?>
+                <li>
+                    <a data-open="archive-record-modal">
+                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/archive.svg' ) ?>"/>
+                        <?php echo esc_html( sprintf( _x( "Archive %s", "Archive Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
+                </li>
+            <?php endif; ?>
 
+            <li>
                 <a data-open="contact-type-modal">
                     <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg' ) ?>"/>
                     <?php echo esc_html( sprintf( _x( "Change %s Type", "Change Record Type", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
@@ -375,6 +401,30 @@ class DT_Contacts_Base {
             <?php
         }
     }
+
+
+    public function dt_record_footer( $post_type, $post_id ){
+        if ( $post_type === "contacts" ) :
+            $dt_post = DT_Posts::get_post( $post_type, $post_id ); ?>
+            <div class="reveal" id="archive-record-modal" data-reveal data-reset-on-close>
+                <h3><?php echo esc_html( sprintf( _x( "Archive %s", "Archive Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></h3>
+                <p><?php echo esc_html( sprintf( _x( "Are you sure you want to archive %s?", "Are you sure you want to archive name?", 'disciple_tools' ), $dt_post["name"] ) ) ?></p>
+
+                <div class="grid-x">
+                    <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                        <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
+                    </button>
+                    <button class="button alert loader" type="button" id="archive-record">
+                        <?php esc_html_e( 'Archive', 'disciple_tools' ); ?>
+                    </button>
+                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        <?php endif;
+    }
+
 
     public function p2p_init(){
         /**
@@ -463,7 +513,8 @@ class DT_Contacts_Base {
                 'name' => __( "Personal", 'disciple_tools' ),
                 'query' => [
                     'type' => [ 'personal' ],
-                    'sort' => 'name'
+                    'sort' => 'name',
+                    "overall_status" => [ "-closed" ],
                 ],
                 "count" => $shared_by_type_counts['keys']['personal'] ?? 0,
             ];
@@ -550,5 +601,24 @@ class DT_Contacts_Base {
             }
         }
         return $sections;
+    }
+
+    public function dt_record_notifications_section( $post_type, $dt_post ){
+        if ( $post_type === "contacts" && ( $dt_post["type"]["key"] === "personal" || $dt_post["type"]["key"] === "placeholder" ) ):
+            $post_settings = DT_Posts::get_post_settings( $post_type );
+            ?>
+            <!-- archived -->
+            <section class="cell small-12 archived-notification"
+                     style="display: <?php echo esc_html( ( isset( $dt_post['overall_status']["key"] ) && $dt_post['overall_status']["key"] === "closed" ) ? "block" : "none" ) ?> ">
+                <div class="bordered-box detail-notification-box" style="background-color:#333">
+                    <h4>
+                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/>
+                        <?php echo esc_html( sprintf( __( 'This %s is archived', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?>
+                    </h4>
+                    <button class="button" id="unarchive-record"><?php esc_html_e( 'Restore', 'disciple_tools' )?></button>
+                </div>
+            </section>
+        <?php endif;
+
     }
 }

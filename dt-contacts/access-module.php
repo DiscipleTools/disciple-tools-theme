@@ -149,7 +149,6 @@ class DT_Contacts_Access extends DT_Module_Base {
 
             $fields['overall_status'] = [
                 'name'        => __( 'Contact Status', 'disciple_tools' ),
-                'description' => _x( 'The Contact Status describes the progress in communicating with the contact.', "Contact Status field description", 'disciple_tools' ),
                 'type'        => 'key_select',
                 "default_color" => "#366184",
                 'default'     => [
@@ -173,21 +172,13 @@ class DT_Contacts_Access extends DT_Module_Base {
                         "description" => _x( "The contact has been assigned to someone, but has not yet been accepted by that person.", "Contact Status field description", 'disciple_tools' ),
                         "color" => "#FF9800",
                     ],
-                    'active'       => [
-                        "label" => __( 'Active', 'disciple_tools' ),
-                        "description" => _x( "The contact is progressing and/or continually being updated.", "Contact Status field description", 'disciple_tools' ),
-                        "color" => "#4CAF50",
-                    ],
+                    'active'       => [], //already declared. Here to indicate order
                     'paused'       => [
                         "label" => __( 'Paused', 'disciple_tools' ),
                         "description" => _x( "This contact is currently on hold (i.e. on vacation or not responding).", "Contact Status field description", 'disciple_tools' ),
                         "color" => "#FF9800",
                     ],
-                    'closed'       => [
-                        "label" => __( 'Closed', 'disciple_tools' ),
-                        "description" => _x( "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.", "Contact Status field description", 'disciple_tools' ),
-                        "color" => "#F43636",
-                    ],
+                    "closed" => [] //already declared. Here to indicate order
                 ],
                 'tile'     => 'status',
                 'customizable' => 'add_only',
@@ -353,9 +344,19 @@ class DT_Contacts_Access extends DT_Module_Base {
             } elseif ( is_array( $fields["contact_address"]['in_create_form'] ) ){
                 $fields["contact_address"]['in_create_form'][] = 'access';
             }
+
+            $declared_fields  = dt_array_merge_recursive_distinct( $declared_fields, $fields );
+
+            //order overall status options
+            uksort( $declared_fields["overall_status"]["default"], function ( $a, $b ) use ( $fields ){
+                return array_search( $a, array_keys( $fields["overall_status"]["default"] ) ) > array_search( $b, array_keys( $fields["overall_status"]["default"] ) );
+            } );
+            $fields = $declared_fields;
         }
 
-        return dt_array_merge_recursive_distinct( $declared_fields, $fields );
+        return $fields;
+
+
     }
 
     public function add_api_routes(){

@@ -387,6 +387,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'name' => sprintf( _x( "Connected %s", 'Personal records', 'disciple_tools' ), $post_label_plural ),
                 'query' => [
                     'type' => [ 'placeholder' ],
+                    "overall_status" => [ "-closed" ],
                     'sort' => 'name'
                 ],
                 "count" => $shared_by_type_counts['keys']['placeholder'] ?? 0,
@@ -400,6 +401,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'count' => $coached_by_me,
                 'query' => [
                     'coached_by' => [ 'me' ],
+                    "overall_status" => [ "-closed" ],
                     'sort' => 'seeker_path',
                 ],
                 'labels' => [
