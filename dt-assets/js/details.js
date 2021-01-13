@@ -823,7 +823,7 @@ jQuery(document).ready(function($) {
   })
   $('#archive-record').on('click', function(){
     $(this).attr("disabled", true).addClass("loading");
-    API.update_post( post_type, post_id, {archived:true} ).then(()=>{
+    API.update_post( post_type, post_id, {overall_status:"closed"} ).then(()=>{
       $(this).attr("disabled", false).removeClass("loading");
       $('#archive-record-modal').foundation('close');
       $('.archived-notification').show()
@@ -831,7 +831,7 @@ jQuery(document).ready(function($) {
   })
   $('#unarchive-record').on('click', function(){
     $(this).attr("disabled", true).addClass("loading");
-    API.update_post( post_type, post_id, {archived:false} ).then(()=>{
+    API.update_post( post_type, post_id, {overall_status:"active"} ).then(()=>{
       $(this).attr("disabled", false).removeClass("loading");
       $('.archived-notification').hide()
     })

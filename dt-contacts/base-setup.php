@@ -26,6 +26,7 @@ class DT_Contacts_Base {
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_action( 'dt_record_admin_actions', [ $this, "dt_record_admin_actions" ], 10, 2 );
         add_action( 'dt_record_footer', [ $this, "dt_record_footer" ], 10, 2 );
+        add_action( 'dt_record_notifications_section', [ $this, "dt_record_notifications_section" ], 10, 2 );
 
 
         // hooks
@@ -274,10 +275,22 @@ class DT_Contacts_Base {
                 'default'     => false,
             ];
 
-            $fields["archived"] = [
-                "name" => __( "Archived", 'disciple_tools' ),
-                "type" => "boolean",
-                "default" => false
+            $fields["overall_status"] = [
+                "name" => __( "Contact Status", 'disciple_tools' ),
+                'description' => _x( 'The Contact Status describes the progress in communicating with the contact.', "Contact Status field description", 'disciple_tools' ),
+                "type" => "key_select",
+                "default" => [
+                    'active'       => [
+                        "label" => __( 'Active', 'disciple_tools' ),
+                        "description" => _x( "The contact is progressing and/or continually being updated.", "Contact Status field description", 'disciple_tools' ),
+                        "color" => "#4CAF50",
+                    ],
+                    "closed" => [
+                        "label" => __( "Closed - Archived", 'disciple_tools' ),
+                        "color" => "#F43636",
+                        "description" => _x( "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.", "Contact Status field description", 'disciple_tools' ),
+                    ]
+                ]
             ];
         }
         return $fields;
@@ -588,5 +601,24 @@ class DT_Contacts_Base {
             }
         }
         return $sections;
+    }
+
+    public function dt_record_notifications_section( $post_type, $dt_post ){
+        if ( $post_type === "contacts" && ( $dt_post["type"]["key"] === "personal" || $dt_post["type"]["key"] === "placeholder" ) ):
+            $post_settings = DT_Posts::get_post_settings( $post_type );
+            ?>
+            <!-- archived -->
+            <section class="cell small-12 archived-notification"
+                     style="display: <?php echo esc_html( ( isset( $dt_post['overall_status']["key"] ) && $dt_post['overall_status']["key"] === "closed" ) ? "block" : "none" ) ?> ">
+                <div class="bordered-box detail-notification-box" style="background-color:#333">
+                    <h4>
+                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/>
+                        <?php echo esc_html( sprintf( __( 'This %s is archived', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?>
+                    </h4>
+                    <button class="button" id="unarchive-record"><?php esc_html_e( 'Restore', 'disciple_tools' )?></button>
+                </div>
+            </section>
+        <?php endif;
+
     }
 }
