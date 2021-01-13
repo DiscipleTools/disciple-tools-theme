@@ -342,15 +342,17 @@ class DT_Contacts_Access extends DT_Module_Base {
             } elseif ( is_array( $fields["contact_address"]['in_create_form'] ) ){
                 $fields["contact_address"]['in_create_form'][] = 'access';
             }
+
+            $declared_fields  = dt_array_merge_recursive_distinct( $declared_fields, $fields );
+
+            //order overall status options
+            uksort( $declared_fields["overall_status"]["default"], function ( $a, $b ) use ( $fields ){
+                return array_search( $a, array_keys( $fields["overall_status"]["default"] ) ) > array_search( $b, array_keys( $fields["overall_status"]["default"] ) );
+            } );
+            $fields = $declared_fields;
         }
 
-        $fields_to_return  = dt_array_merge_recursive_distinct( $declared_fields, $fields );
-
-        //order overall status options
-        uksort( $fields_to_return["overall_status"]["default"], function ( $a, $b ) use ( $fields ){
-            return array_search( $a, array_keys( $fields["overall_status"]["default"] ) ) > array_search( $b, array_keys( $fields["overall_status"]["default"] ) );
-        } );
-        return $fields_to_return;
+        return $fields;
 
 
     }
