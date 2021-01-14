@@ -661,7 +661,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         if ( !$send_quick_results ){
             $query = [ "limit" => 50 ];
-            if ( !empty( $search_string)){
+            if ( !empty( $search_string ) ){
                 $query["name"] = [ $search_string ];
             }
             $posts_list = self::search_viewable_post( $post_type, $query );
@@ -682,12 +682,26 @@ class DT_Posts extends Disciple_Tools_Posts {
             $posts
         );
 
+        //filter out users if requested.
+        foreach ( $posts as $post ) {
+            if ( isset( $args["include-users"] ) && $args["include-users"] === "false" && $post->corresponds_to_user >= 1 ){
+                continue;
+            }
+            $compact[] = [
+                "ID" => $post->ID,
+                "name" => $post->post_title
+            ];
+        }
+
         //add in user results when searching contacts.
-        if ( $search_string && $post_type === 'contacts' && !self::can_view_all( $post_type )
+        if ( $post_type === 'contacts' && !self::can_view_all( $post_type )
             && !( isset( $args["include-users"] ) && $args["include-users"] === "false" )
         ) {
             $users_interacted_with = Disciple_Tools_Users::get_assignable_users_compact( $search_string );
             $users_interacted_with = array_slice( $users_interacted_with, 0, 5 );
+            if ( $current_user ){
+                array_unshift( $users_interacted_with, [ "name" => $current_user->display_name, "ID" => $current_user->ID ] );
+            }
             foreach ( $users_interacted_with as $user ) {
                 $post_id = Disciple_Tools_Users::get_contact_for_user( $user["ID"] );
                 if ( $post_id ){
@@ -702,16 +716,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        //filter out users if requested.
-        foreach ( $posts as $post ) {
-            if ( isset( $args["include-users"] ) && $args["include-users"] === "false" && $post->corresponds_to_user >= 1 ){
-                continue;
-            }
-            $compact[] = [
-                "ID" => $post->ID,
-                "name" => $post->post_title
-            ];
-        }
+
         //set user field if the contact is a user.
         if ( $post_type === "contacts" ){
             $post_ids_sql = dt_array_to_sql( $post_ids );
@@ -729,16 +734,22 @@ class DT_Posts extends Disciple_Tools_Posts {
                     }
                 }
             }
-            //place user records first, then sort by name.
-            uasort( $compact, function ( $a, $b ){
-                if ( isset( $a['user'] ) && !empty( $a['user'] ) ){
-                    return -2;
-                } else if ( isset( $b['user'] ) && !empty( $b['user'] ) ){
-                    return 1;
-                } else {
-                    return $a['name'] <=> $b['name'];
-                }
-            });
+            if ( !empty( $search_string ) ){
+                //place user records first, then sort by name.
+                uasort( $compact, function ( $a, $b ) use ( $search_string ) {
+                    if ( isset( $a['user'] ) && !empty( $a['user'] ) ){
+                        return -3;
+                    } else if ( isset( $b['user'] ) && !empty( $b['user'] ) ){
+                        return 2;
+                    } elseif ( $a["name"] === $search_string ){
+                        return -2;
+                    } else if ( $b["name"] === $search_string ){
+                        return 1;
+                    } else {
+                        return $a['name'] <=> $b['name'];
+                    }
+                });
+            }
         }
 
         $return = [

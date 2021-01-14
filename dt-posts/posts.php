@@ -941,7 +941,7 @@ class Disciple_Tools_Posts
             $limit = MIN( $limit, 1000 );
             unset( $query["limit"] );
         }
-        $sort = "post_title";
+        $sort = "";
         $sort_dir = "asc";
         if ( isset( $query["sort"] )){
             $sort = esc_sql( sanitize_text_field( $query["sort"] ) );
@@ -986,6 +986,9 @@ class Disciple_Tools_Posts
             $sort_sql = "p.post_title  " . $sort_dir;
         } elseif ( $sort === "post_date" ){
             $sort_sql = "p.post_date  " . $sort_dir;
+        }
+        if ( empty( $sort ) && isset( $query["name"][0] ) ){
+            $sort_sql = "( p.post_title = '" . esc_sql( $query["name"][0] ) . "' ) desc, p.post_title asc";
         }
 
         if ( empty( $sort_sql ) && isset( $sort, $post_fields[$sort] ) ) {
