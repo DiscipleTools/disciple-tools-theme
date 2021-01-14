@@ -190,7 +190,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     if ( ! function_exists( 'dt_get_translations' ) ) {
         function dt_get_translations() {
             require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
-            $translations = wp_get_available_translations();
+            $translations = wp_get_available_translations(); // @todo throwing errors if wp.org connection isn't established
             $translations["ar_MA"] = [
                 "language" => "ar_MA",
                 "native_name" => "العربية (المغرب)",
