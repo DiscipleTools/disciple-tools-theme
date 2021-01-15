@@ -2,7 +2,7 @@ Thank you for joining us in contributing to Disciple.Tools! These are the guidel
 
 ### Translations
 D.T  is already being used in multiple languages. Please help us make D.T translable by taking  full advantage of Wordpress’ translatable strings. Any string that will be read by the user must be marked as translatable. Ex:
-`<label class="section-header"><?php esc_html_e( 'Other', 'disciple-tools' )?></label>`
+`<label class="section-header"><?php esc_html_e( 'Other', 'disciple_tools' )?></label>`
 
 Make sure you look for these in PHP, HTML and JavaScript code.
 
