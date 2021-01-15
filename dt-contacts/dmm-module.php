@@ -138,7 +138,8 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "post_type" => "contacts",
                 "p2p_direction" => "to",
                 "p2p_key" => "contacts_to_contacts",
-                "tile" => "other"
+                "tile" => "other",
+                "icon" => get_template_directory_uri() . '/dt-assets/images/share.svg',
             ];
             $fields['baptism_date'] = [
                 'name'        => __( 'Baptism Date', 'disciple_tools' ),
@@ -158,7 +159,8 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "post_type" => "contacts",
                 "p2p_direction" => "from",
                 "p2p_key" => "contacts_to_contacts",
-                "tile" => "status"
+                "tile" => "status",
+                "icon" => get_template_directory_uri() . '/dt-assets/images/coach.svg',
             ];
             $fields["baptized_by"] = [
                 "name" => __( "Baptized by", 'disciple_tools' ),
@@ -167,7 +169,8 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "post_type" => "contacts",
                 "p2p_direction" => "from",
                 "p2p_key" => "baptizer_to_baptized",
-                'tile'     => 'faith'
+                'tile'     => 'faith',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/baptism.svg',
             ];
             $fields["baptized"] = [
                 "name" => __( "Baptized", 'disciple_tools' ),
@@ -176,7 +179,8 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "post_type" => "contacts",
                 "p2p_direction" => "to",
                 "p2p_key" => "baptizer_to_baptized",
-                'tile'     => 'faith'
+                'tile'     => 'faith',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/child.svg',
             ];
             $fields["people_groups"] = [
                 "name" => __( 'People Groups', 'disciple_tools' ),
@@ -407,7 +411,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'labels' => [
                     [
                         'id' => 'my_coached',
-                        'name' => __( 'Coached by be', 'disciple_tools' ),
+                        'name' => __( 'Coached by me', 'disciple_tools' ),
                         'field' => 'coached_by',
                     ],
                 ],

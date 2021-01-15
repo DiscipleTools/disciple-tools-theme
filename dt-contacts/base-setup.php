@@ -132,6 +132,7 @@ class DT_Contacts_Base {
                         "order" => 50
                     ],
                 ],
+                "icon" => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg',
                 'customizable' => false
             ];
             $fields["duplicate_data"] = [

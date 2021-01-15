@@ -144,7 +144,8 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'customizable' => 'add_only',
                 'tile' => 'followup',
                 "show_in_table" => 15,
-                "only_for_types" => [ "access" ]
+                "only_for_types" => [ "access" ],
+                "icon" => get_template_directory_uri() . '/dt-assets/images/sign-post.svg',
             ];
 
             $fields['overall_status'] = [

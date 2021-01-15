@@ -86,6 +86,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'default'     => [],
                 'tile'        => 'other',
                 'custom_display' => true,
+                'icon' => get_template_directory_uri() . '/dt-assets/images/tag.svg'
             ];
             $fields["follow"] = [
                 'name'        => __( 'Follow', 'disciple_tools' ),
@@ -184,7 +185,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 "customizable" => "add_only",
                 'tile' => 'groups',
                 'in_create_form' => true,
-                "show_in_table" => 15
+                "show_in_table" => 15,
+                "icon" => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg',
             ];
 
 
@@ -285,7 +287,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type' => 'number',
                 'default' => '',
                 'tile' => 'relationships',
-                "show_in_table" => 25
+                "show_in_table" => 25,
+                "icon" => get_template_directory_uri() . '/dt-assets/images/tally.svg',
             ];
             $fields["members"] = [
                 "name" => __( 'Member List', 'disciple_tools' ),
@@ -294,6 +297,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 "post_type" => "contacts",
                 "p2p_direction" => "to",
                 "p2p_key" => "contacts_to_groups",
+                "icon" => get_template_directory_uri() . '/dt-assets/images/list.svg',
             ];
             $fields["leaders"] = [
                 "name" => __( 'Leaders', 'disciple_tools' ),
@@ -492,6 +496,7 @@ class DT_Groups_Base extends DT_Module_Base {
             $fields = DT_Posts::get_post_field_settings( $post_type );
             ?>
             <div class="section-subheader">
+                <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag.svg' ) ?>"/>
                 <?php echo esc_html( $fields["tags"]["name"] ) ?>
             </div>
             <div class="tags">
@@ -572,6 +577,7 @@ class DT_Groups_Base extends DT_Module_Base {
             ?>
             <div class="section-subheader members-header" style="padding-top: 10px;">
                 <div style="padding-bottom: 5px; margin-right:10px; display: inline-block">
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/list.svg' ) ?>"/>
                     <?php esc_html_e( "Member List", 'disciple_tools' ) ?>
                 </div>
                 <button type="button" class="create-new-record" data-connection-key="members" style="height: 36px;">
