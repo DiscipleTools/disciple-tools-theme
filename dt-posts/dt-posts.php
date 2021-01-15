@@ -1355,9 +1355,9 @@ class DT_Posts extends Disciple_Tools_Posts {
 
 
 
-    public static function get_post_tiles( $post_type ){
+    public static function get_post_tiles( $post_type, $return_cache = true ){
         $cached = wp_cache_get( $post_type . "_tile_options" );
-        if ( $cached ){
+        if ( $return_cache && $cached ){
             return $cached;
         }
         $tile_options = dt_get_option( "dt_custom_tiles" );
@@ -1375,15 +1375,22 @@ class DT_Posts extends Disciple_Tools_Posts {
         //tile available on all records
         if ( !isset( $tile_options[$post_type]["details"] ) ) {
             $tile_options[$post_type]["details"] = [
-                "label" => __( "Details", 'disciple_tools' )
+                "label" => __( "Details", 'disciple_tools' ),
+                "tile_priority" => 20
             ];
         }
         //tile available on all records
         if ( !isset( $tile_options[$post_type]["status"] ) ) {
             $tile_options[$post_type]["status"] = [
-                "label" => __( "Status", 'disciple_tools' )
+                "label" => __( "Status", 'disciple_tools' ),
             ];
         }
+        $tile_options[$post_type]["status"]["tile_priority"] = 10;
+        $tile_options[$post_type]["details"]["tile_priority"] = 20;
+        uasort($tile_options[$post_type], function( $a, $b) {
+            return ( $a['tile_priority'] ?? 100 ) <=> ( $b['tile_priority'] ?? 100 );
+        });
+
         wp_cache_set( $post_type . "_tile_options", $tile_options[$post_type] );
         return $tile_options[$post_type];
     }
