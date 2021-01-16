@@ -170,9 +170,19 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             }
 
             $this->template( 'right_column' );
+            $this->box( 'top', 'Help' );
+            $this->add_help_box();
+            $this->box( 'bottom' );
 
             $this->template( 'end' );
         endif;
+    }
+
+    private function add_help_box(){
+        ?>
+
+        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/sort-tiles.gif' ) ?>" style="width: 100%"/>
+        <?php
     }
 
 
@@ -369,7 +379,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <?php foreach ( $tile_options as $tile_key => $tile_value ) : ?>
-                            <button type="submit" name="tile-select" class="button" value="<?php echo esc_html( $tile_key ); ?>"><?php echo esc_html( $tile_value["label"] ?: $tile_key ); ?></button>
+                            <button type="submit" name="tile-select" class="button" value="<?php echo esc_html( $tile_key ); ?>"><?php echo esc_html( isset( $tile_value["label"] ) ? $tile_value["label"] : $tile_key ); ?></button>
                         <?php endforeach; ?>
                     </td>
                 </tr>

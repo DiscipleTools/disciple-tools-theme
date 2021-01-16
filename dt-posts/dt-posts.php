@@ -1374,16 +1374,17 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         //tile available on all records
         if ( !isset( $tile_options[$post_type]["details"] ) ) {
-            $tile_options[$post_type]["details"] = [
-                "label" => __( "Details", 'disciple_tools' ),
-                "tile_priority" => 20
-            ];
+            $tile_options[$post_type]["details"] = [];
+        }
+        if ( !isset( $tile_options[$post_type]["details"]["label"] ) ) {
+            $tile_options[$post_type]["details"]["label"] = __( "Details", 'disciple_tools' );
         }
         //tile available on all records
         if ( !isset( $tile_options[$post_type]["status"] ) ) {
-            $tile_options[$post_type]["status"] = [
-                "label" => __( "Status", 'disciple_tools' ),
-            ];
+            $tile_options[$post_type]["status"] = [];
+        }
+        if ( !isset( $tile_options[$post_type]["status"]["label"] ) ) {
+            $tile_options[$post_type]["status"]["label"] = __( "Status", 'disciple_tools' );
         }
         $tile_options[$post_type]["status"]["tile_priority"] = 10;
         $tile_options[$post_type]["details"]["tile_priority"] = 20;
