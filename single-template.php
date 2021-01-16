@@ -103,7 +103,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                         <?php do_action( "dt_details_additional_section", 'status', $post_type ); ?>
                         <?php
                         //setup the order of the tile fields
-                        $order = $custom_tiles[$post_type]['status']["order"] ?? [];
+                        $order = $tiles['status']["order"] ?? [];
                         foreach ( $post_settings["fields"] as $key => $option ){
                             if ( isset( $option["tile"] ) && $option["tile"] === 'status' ){
                                 if ( !in_array( $key, $order )){
@@ -154,7 +154,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             <div class="detail-snippet-row">
                             <?php
                             //setup the order of the tile fields
-                            $order = $custom_tiles[$post_type]['details']["order"] ?? [];
+                            $order = $tiles['details']["order"] ?? [];
                             foreach ( $post_settings["fields"] as $key => $option ){
                                 if ( isset( $option["tile"] ) && $option["tile"] === 'details' && $option['type'] === "communication_channel" ){
                                     if ( !in_array( $key, $order )){
@@ -187,7 +187,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             <!-- row for misc elements -->
                             <div class="detail-snippet-row">
                             <?php
-                            $order = $custom_tiles[$post_type]['details']["order"] ?? [];
+                            $order = $tiles['details']["order"] ?? [];
                             foreach ( $post_settings["fields"] as $key => $option ){
                                 if ( isset( $option["tile"] ) && $option["tile"] === 'details' && $option['type'] !== "communication_channel" ){
                                     if ( !in_array( $key, $order ) && !in_array( $key, [ 'name' ] ) ) {
@@ -235,7 +235,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                 // let the plugin add section content
                                 do_action( "dt_details_additional_section", 'details', $post_type );
                                 //setup the order of the tile fields
-                                $order = $custom_tiles[$post_type]['details']["order"] ?? [];
+                                $order = $tiles['details']["order"] ?? [];
                                 foreach ( $post_settings["fields"] as $key => $option ){
                                     if ( isset( $option["tile"] ) && $option["tile"] === 'details' ){
                                         if ( !in_array( $key, $order )){
@@ -297,17 +297,15 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                                         <div class="section-body">
                                             <?php
                                             // let the plugin add section content
-                                            add_action( "dt_details_additional_section", function ( $t_key, $pt ) use ( $post_type, $tile_key, $post_settings, $dt_post ){
+                                            add_action( "dt_details_additional_section", function ( $t_key, $pt ) use ( $post_type, $tile_key, $post_settings, $dt_post, $tile_options ){
                                                 if ( $pt !== $post_type || $tile_key !== $t_key ){
                                                     return;
                                                 }
                                                 //setup the order of the tile fields
                                                 $order = $tile_options["order"] ?? [];
                                                 foreach ( $post_settings["fields"] as $key => $option ){
-                                                    if ( isset( $option["tile"] ) && $option["tile"] === $tile_key ){
-                                                        if ( !in_array( $key, $order )){
-                                                            $order[] = $key;
-                                                        }
+                                                    if ( isset( $option["tile"] ) && $option["tile"] === $tile_key && !in_array( $key, $order ) ){
+                                                        $order[] = $key;
                                                     }
                                                 }
                                                 foreach ( $order as $field_key ) {

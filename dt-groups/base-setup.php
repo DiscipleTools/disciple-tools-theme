@@ -361,7 +361,6 @@ class DT_Groups_Base extends DT_Module_Base {
             ];
             $fields['location_grid_meta'] = [
                 'name'        => __( 'Locations', 'disciple_tools' ), //system string does not need translation
-                'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'location_meta',
                 "tile"      => "details",
                 'mapbox'    => false,
