@@ -1391,6 +1391,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         uasort($tile_options[$post_type], function( $a, $b) {
             return ( $a['tile_priority'] ?? 100 ) <=> ( $b['tile_priority'] ?? 100 );
         });
+        foreach ( $tile_options[$post_type] as $tile_key => &$tile_value ){
+            if ( !isset( $tile_value["tile_priority"] ) ){
+                $tile_options[$post_type][$tile_key]["tile_priority"] = ( array_search( $tile_key, array_keys( $tile_options[$post_type] ) ) + 1 ) * 10;
+            }
+        }
 
         wp_cache_set( $post_type . "_tile_options", $tile_options[$post_type] );
         return $tile_options[$post_type];
