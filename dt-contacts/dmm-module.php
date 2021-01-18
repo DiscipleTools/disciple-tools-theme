@@ -142,9 +142,10 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "icon" => get_template_directory_uri() . '/dt-assets/images/share.svg',
             ];
             $fields['baptism_date'] = [
-                'name'        => __( 'Baptism Date', 'disciple_tools' ),
-                'type'        => 'date',
-                'tile'     => 'details',
+                'name' => __( 'Baptism Date', 'disciple_tools' ),
+                'type' => 'date',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/calendar.svg',
+                'tile' => 'details',
             ];
 
             $fields['baptism_generation'] = [

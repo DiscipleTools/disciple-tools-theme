@@ -28,6 +28,11 @@
   //set up main filters
   setup_filters()
 
+  let check_first_filter = function (){
+    $('#list-filter-tabs .accordion-item a')[0].click()
+    $($('.js-list-view')[0]).prop('checked', true)
+  }
+
   //set up custom cached filter
   if ( cached_filter && !_.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ){
     cached_filter.query.offset = 0;
@@ -41,12 +46,10 @@
       if ( filter_element.length ){
         filter_element.prop('checked', true);
       } else {
-        $('#list-filter-tabs .accordion-item a')[0].click()
-        $($('.js-list-view')[0]).prop('checked', true)
+        check_first_filter()
       }
     } else {
-      $('#list-filter-tabs .accordion-item a')[0].click()
-      $($('.js-list-view')[0]).prop('checked', true)
+      check_first_filter()
     }
   }
 
@@ -355,7 +358,7 @@
             if (['text', 'number'].includes(field_settings.type)) {
               values = [_.escape(field_value)]
             } else if (field_settings.type === 'date') {
-              values = [_.escape(field_value.formatted)]
+              values = [_.escape(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp))]
             } else if (field_settings.type === 'user_select') {
               values = [_.escape(field_value.display)]
             } else if (field_settings.type === 'key_select') {
@@ -1014,7 +1017,8 @@
       API.delete_filter(list_settings.post_type, filter_to_delete).then(()=>{
         _.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
         setup_filters()
-        $(`#list-filter-tabs [data-id='custom'] a`).click()
+        check_first_filter()
+        get_records_for_current_filter()
       }).catch(err => { console.error(err) })
     }
   })
@@ -1028,7 +1032,7 @@
 
   $("#search-mobile").on("click", function () {
     let searchText = _.escape( $("#search-query-mobile").val() )
-    let query = {text:searchText, assigned_to:["all"]}
+    let query = {text:searchText}
     let labels = [{ id:"search", name:searchText, field: "search"}]
     add_custom_filter(searchText, "search", query, labels)
   })
