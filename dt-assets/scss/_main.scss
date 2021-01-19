@@ -1049,6 +1049,7 @@ img.dt-blue-icon {
             padding: 5px 10px;
             border: 1px solid #c2e0ff;
             border-radius:15px;
+            width: 100%;
         }
         input {
             align-self:center;
@@ -1073,5 +1074,6 @@ img.dt-blue-icon {
 @media screen and (max-width : 640px) {
     .template-new-post .type-option {
         flex-basis: 100%;
+        margin-bottom: 1.25em;
     }
 }
