@@ -25,7 +25,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         $title = get_the_title( $post );
 
         if ( empty( $title ) ) {
-            $title = __( '(no title)', 'disciple-tools' );
+            $title = __( '(no title)', 'disciple_tools' );
         }
 
         return $title;

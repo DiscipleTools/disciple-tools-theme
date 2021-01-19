@@ -283,12 +283,12 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
                         "theme_uri" => get_stylesheet_directory_uri(),
                         "translations" => array(
-                            'add' => __( 'add', 'disciple-tools' ),
-                            'use' => __( 'Use', 'disciple-tools' ),
-                            'search_location' => __( 'Search Location', 'disciple-tools' ),
-                            'delete_location' => __( 'Delete Location', 'disciple-tools' ),
-                            'open_mapping' => __( 'Open Mapping', 'disciple-tools' ),
-                            'clear' => __( 'clear', 'disciple-tools' )
+                            'add' => __( 'add', 'disciple_tools' ),
+                            'use' => __( 'Use', 'disciple_tools' ),
+                            'search_location' => __( 'Search Location', 'disciple_tools' ),
+                            'delete_location' => __( 'Delete Location', 'disciple_tools' ),
+                            'open_mapping' => __( 'Open Mapping', 'disciple_tools' ),
+                            'clear' => __( 'clear', 'disciple_tools' )
                         )
                     )
                 );
@@ -318,7 +318,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
                         "theme_uri" => get_stylesheet_directory_uri(),
                         "translations" => array(
-                            'add' => __( 'add', 'disciple-tools' )
+                            'add' => __( 'add', 'disciple_tools' )
                         )
                     )
                 );

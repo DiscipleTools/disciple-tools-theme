@@ -37,7 +37,7 @@ if ( ! apply_filters( 'dt_blank_access', false ) ){
         <meta name="theme-color" content="#3f729b">
     <?php } ?>
 
-    <title><?php echo esc_html( apply_filters( 'dt_blank_title', __( 'Form', 'disciple-tools' ) ) ) ?></title>
+    <title><?php echo esc_html( apply_filters( 'dt_blank_title', __( 'Form', 'disciple_tools' ) ) ) ?></title>
 
     <?php do_action( 'dt_blank_head' ) ?>
 
