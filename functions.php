@@ -232,6 +232,7 @@ else {
              */
             require_once( get_template_directory() . '/dt-core/config-required-plugins.php' );
             require_once( get_template_directory() . '/dt-core/libraries/class-tgm-plugin-activation.php' );
+            require_once( get_template_directory() . '/dt-core/release-notifications.php' );
 
             /**
              * Data model
@@ -286,7 +287,6 @@ else {
             $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
             require_once( get_template_directory() . '/dt-people-groups/people-groups.php' );
             if ( strpos( $url_path, 'people-groups' ) !== false ){
-                require_once( get_template_directory() . '/dt-people-groups/people-groups-template.php' );
                 require_once( get_template_directory() . '/dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
                 $this->endpoints['peoplegroups'] = Disciple_Tools_People_Groups_Endpoints::instance();
             }
@@ -401,6 +401,8 @@ else {
 
             }
             /* End Admin configuration section */
+
+            require_once( get_template_directory() . '/dt-core/dependencies/deprecated-dt-functions.php' );
 
             add_action( 'switch_blog', 'set_up_wpdb_tables', 99, 2 );
 

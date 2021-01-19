@@ -100,6 +100,7 @@ function dt_site_scripts() {
 
     $post_type = get_post_type();
     $url_path = dt_get_url_path();
+    $post_type = $post_type ?: $url_path;
 
     dt_theme_enqueue_script( 'shared-functions', 'dt-assets/js/shared-functions.js', array( 'jquery', 'lodash', 'moment', 'datepicker' ) );
     wp_localize_script(
@@ -136,10 +137,10 @@ function dt_site_scripts() {
                 'all_locations' => __( 'All Locations', 'disciple_tools' ),
                 'used_locations' => __( 'Used Locations', 'disciple_tools' ),
                 'no_records_found' => _x( 'No results found matching "{{query}}"', "Empty list results. Keep {{query}} as is in english", 'disciple_tools' ),
-                'showing_x_items' => _x( 'Showing %s items', 'Showing 30 items', 'disciple_tools' ),
+                'showing_x_items' => _x( 'Showing %s items. Type to find more.', 'Showing 30 items', 'disciple_tools' ),
                 'showing_x_items_matching' => _x( 'Showing %1$s items matching %2$s', 'Showing 30 items matching bob', 'disciple_tools' ),
             ],
-            'post_type' => $post_type ? $post_type : $url_path,
+            'post_type' => $post_type,
             'url_path' => $url_path,
             'post_type_modules' => dt_get_option( "dt_post_type_modules" ),
             'tiles' => DT_Posts::get_post_tiles( $post_type ),
@@ -171,7 +172,7 @@ function dt_site_scripts() {
     if ( is_singular( $post_types ) ) {
         $post = DT_Posts::get_post( get_post_type(), get_the_ID() );
         if ( !is_wp_error( $post )){
-            $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+            $post_settings = DT_Posts::get_post_settings( $post_type );
             dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.min.js', array( 'jquery' ), true );
             dt_theme_enqueue_script( 'jquery-mentions-elastic', 'dt-core/dependencies/jquery-mentions-input/lib/jquery.elastic.min.js', array( 'jquery' ), true );
             dt_theme_enqueue_style( 'jquery-mentions-css', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.css', array() );
@@ -283,7 +284,7 @@ function dt_site_scripts() {
     //list page
     if ( in_array( $url_path, $post_types ) ){
         $post_type = $url_path;
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+        $post_settings = DT_Posts::get_post_settings( $post_type );
         $translations = [
             'save' => __( 'Save', 'disciple_tools' ),
             'edit' => __( 'Edit', 'disciple_tools' ),
@@ -295,6 +296,8 @@ function dt_site_scripts() {
             'empty_custom_filters' => __( 'No filters, create one below', 'disciple_tools' ),
             'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' ),
             'filter_all' => sprintf( _x( "All %s", 'All records', 'disciple_tools' ), $post_settings["label_plural"] ),
+            'range_start' => __( 'start', 'disciple_tools' ),
+            'range_end' => __( 'end', 'disciple_tools' )
         ];
         dt_theme_enqueue_script( 'drag-n-drop-table-columns', 'dt-core/dependencies/drag-n-drop-table-columns.js', array( 'jquery' ), true );
         dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/js/modular-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js', 'drag-n-drop-table-columns' ), true );

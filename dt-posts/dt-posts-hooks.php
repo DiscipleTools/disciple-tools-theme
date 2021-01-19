@@ -23,7 +23,14 @@ class DT_Posts_Hooks {
                     $fields[$field]["default"] = self::dt_get_custom_fields_translation( $value["default"] );
                 }
                 if ( !empty( $value["translations"][$user_locale] ) ) {
-                    $fields[$field]["name"] = $value["translations"][$user_locale];
+                    if ( !isset( $fields["type"] ) ){
+                        $fields[$field]["label"] = $value["translations"][$user_locale];
+                    } else {
+                        $fields[$field]["name"] = $value["translations"][$user_locale];
+                    }
+                }
+                if ( !empty( $value["description_translations"][$user_locale] ) ) {
+                    $fields[$field]["description"] = $value["description_translations"][$user_locale];
                 }
             }
             return $fields;

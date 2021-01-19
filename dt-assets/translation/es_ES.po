@@ -26,7 +26,7 @@ msgstr "Volver"
 
 #: 404.php:12
 msgid "Epic 404 - Not Found"
-msgstr "Épico 404 - No encontrado"
+msgstr "404 - Página no encontrada"
 
 #: 404.php:16
 msgid "The page you were looking for was not found or was deleted"
@@ -44,11 +44,11 @@ msgstr "Nuevo"
 
 #: dt-contacts/contacts-post-type.php:218
 msgid "Waiting to be accepted"
-msgstr "A la espera de ser aceptado"
+msgstr "Esperando ser aceptado"
 
 #: archive-contacts.php:23
 msgid "Create new contact"
-msgstr "Crear nuevo contacto"
+msgstr "Crear contacto nuevo"
 
 #: archive-contacts.php:31
 msgid "View Duplicates"
@@ -61,11 +61,11 @@ msgstr "Buscar"
 
 #: dt-contacts/contacts.php:2002 dt-contacts/contacts.php:2003
 msgid "Shared with me"
-msgstr "Comparte conmigo"
+msgstr "Compartidos conmigo"
 
 #: archive-contacts.php:81 archive-groups.php:78 archive-template.php:71
 msgid "Add new filter"
-msgstr "Añadir nuevo filtro"
+msgstr "Añadir filtro nuevo"
 
 #: dt-contacts/contacts-post-type.php:189 dt-groups/groups-post-type.php:223
 #: dt-metrics/contacts/mapbox-cluster-map.php:67
@@ -84,11 +84,11 @@ msgstr "Asignado a"
 #: archive-groups.php:169 archive-template.php:178 archive-template.php:214
 #: dt-assets/functions/enqueue-scripts.php:356
 msgid "Creation Date"
-msgstr "Fecha de Creación"
+msgstr "Fecha de creación"
 
 #: archive-contacts.php:176
 msgid "Filter for subassigned OR Assigned To"
-msgstr "Filtro para subasignado O Asignado a"
+msgstr "Filtro para subasignado o asignado a"
 
 #: archive-contacts.php:200 archive-contacts.php:201 archive-groups.php:184
 #: archive-groups.php:185 archive-template.php:230 archive-template.php:231
@@ -120,25 +120,25 @@ msgstr "Guardar"
 
 #: archive-groups.php:26 archive-groups.php:235
 msgid "Filter Groups"
-msgstr "Filtrar Grupos"
+msgstr "Filtrar grupos"
 
 #: dt-assets/functions/details-bar.php:37
 #: dt-core/admin/config-site-defaults.php:326
 #: dt-users/template-user-management.php:76
 msgid "Update Needed"
-msgstr "Actualización Necesaria"
+msgstr "Actualización requerida"
 
 #: dt-assets/functions/details-bar.php:52
 msgid "Make a user from this contact"
-msgstr "Convertir en usuario a este contacto"
+msgstr "Convertir a este contacto en usuario"
 
 #: dt-assets/functions/details-bar.php:54
 msgid "Link to an existing user"
-msgstr "Enlace este contacto a un usuario existente"
+msgstr "Enlazar contacto a un usuario existente"
 
 #: dt-assets/functions/details-bar.php:56
 msgid "Merge with another contact"
-msgstr "Combinar este contacto con otro contacto"
+msgstr "Combinar contacto con otro contacto"
 
 #: dt-assets/functions/details-bar.php:81
 #: dt-assets/functions/details-bar.php:84
@@ -2046,7 +2046,7 @@ msgstr "Grupo Subsiguiente"
 
 #: archive-contacts.php:65
 msgid "Contacts Filters"
-msgstr "Contactos Filtros"
+msgstr "Filtros de Contactos"
 
 #: archive-groups.php:61
 msgid "Groups Filters"

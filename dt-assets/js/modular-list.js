@@ -29,6 +29,11 @@
   //set up main filters
   setup_filters()
 
+  let check_first_filter = function (){
+    $('#list-filter-tabs .accordion-item a')[0].click()
+    $($('.js-list-view')[0]).prop('checked', true)
+  }
+
   //set up custom cached filter
   if ( cached_filter && !_.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ){
     cached_filter.query.offset = 0;
@@ -42,12 +47,10 @@
       if ( filter_element.length ){
         filter_element.prop('checked', true);
       } else {
-        $('#list-filter-tabs .accordion-item a')[0].click()
-        $($('.js-list-view')[0]).prop('checked', true)
+        check_first_filter()
       }
     } else {
-      $('#list-filter-tabs .accordion-item a')[0].click()
-      $($('.js-list-view')[0]).prop('checked', true)
+      check_first_filter()
     }
   }
 
@@ -95,10 +98,8 @@
       current_filter.type = 'default'
       current_filter.labels = current_filter.labels || [{ id:filter_id, name:current_filter.name}]
     }
-    current_filter.query.sort = sort || current_filter.query.sort;
-    if ( Array.isArray(current_filter.query) ){
-      current_filter.query = {}; //make sure query is an object instead of an array.
-    }
+    sort = sort || current_filter.query.sort;
+    current_filter.query.sort = (typeof sort === "string") ? sort : "name"
 
     get_records()
   }
@@ -122,17 +123,17 @@
         <div class="accordion-content" data-tab-content>
           <div class="list-views">
             ${  list_settings.filters.filters.map( filter =>{
-        if (filter.tab===tab.key && filter.tab !== 'custom') {
-          let indent = filter.subfilter && Number.isInteger(filter.subfilter) ? 15 * filter.subfilter : 15;
-          return `
+              if (filter.tab===tab.key && filter.tab !== 'custom') {
+                let indent = filter.subfilter && Number.isInteger(filter.subfilter) ? 15 * filter.subfilter : 15;
+                return `
                   <label class="list-view" style="${ filter.subfilter ? `margin-left:${indent}px` : ''}">
                     <input type="radio" name="view" value="${_.escape(filter.ID)}" data-id="${_.escape(filter.ID)}" class="js-list-view" autocomplete="off">
                     <span id="total_filter_label">${_.escape(filter.name)}</span>
                     <span class="list-view__count js-list-view-count" data-value="${_.escape(filter.ID)}">${_.escape(filter.count )}</span>
                   </label>
                   `
-        }
-      }).join('')}
+              }
+            }).join('')}
           </div>
         </div>
       </li>
@@ -358,7 +359,7 @@
             if (['text', 'number'].includes(field_settings.type)) {
               values = [_.escape(field_value)]
             } else if (field_settings.type === 'date') {
-              values = [_.escape(field_value.formatted)]
+              values = [_.escape(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp))]
             } else if (field_settings.type === 'user_select') {
               values = [_.escape(field_value.display)]
             } else if (field_settings.type === 'key_select') {
@@ -524,33 +525,49 @@
     }
   }
   let get_custom_filter_search_query = ()=>{
-    let search_query = {}
-    let fields_filtered = new_filter_labels.map(f=>f.field)
+    let search_query = []
+    let fields_filtered = _.uniq(new_filter_labels.map(f=>f.field))
     fields_filtered.forEach(field=>{
-      search_query[field] =[]
       let type = _.get(list_settings, `post_type_settings.fields.${field}.type` )
       if ( type === "connection" || type === "user_select" ){
-        search_query[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID")
+        search_query.push( { [field] : _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID") })
       }  if ( type === "multi_select" ){
-        search_query[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "key")
+        search_query.push( {[field] : _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "key") })
       } if ( type === "location" ){
-        search_query[field] = _.map( _.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID')
+        search_query.push({ [field] : _.map( _.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID') })
       } else if ( type === "date" ) {
-        search_query[field] = {}
+        let date = {}
         let start = $(`.dt_date_picker[data-field="${field}"][data-delimit="start"]`).val()
         if ( start ){
-          search_query[field]["start"] = start
+          date.start = start
         }
         let end = $(`.dt_date_picker[data-field="${field}"][data-delimit="end"]`).val()
         if ( end ){
-          search_query[field]["end"]  = end
+          date.end = end
         }
+        search_query.push({[field]: date})
       } else {
+        let options = []
         $(`#${field}-options input:checked`).each(function(){
-          search_query[field].push($(this).val())
+          options.push( $(this).val() )
         })
+        if ( options.length ){
+          search_query.push({ [field]: options })
+        }
       }
     })
+    search_query = {
+      fields: search_query
+    }
+    if ( list_settings.post_type === "contacts" ){
+      if ( $("#combine_subassigned").is(":checked") ){
+        let assigned_to = search_query.fields.filter(a=>a.assigned_to)
+        let subassigned = search_query.fields.filter(a=>a.subassigned)
+        search_query.fields = search_query.fields.filter(a=>{return !a.assigned_to && !a.subassigned})
+        search_query.fields.push([assigned_to[0], subassigned[0]])
+        search_query.combine = [ "subassigned" ] // to select checkbox in filter modal
+      }
+    }
     return search_query
   }
   $("#confirm-filter-records").on("click", function () {
@@ -841,13 +858,13 @@
     selected_filters.empty();
     $(".typeahead__query input").each(function () {
       let typeahead = Typeahead['.'+$(this).attr("class").split(/\s+/)[0]]
-      if ( typeahead ){
+      if ( typeahead && typeahead.items ){
         for (let i = 0; i < typeahead.items.length; i ){
           typeahead.cancelMultiselectItem(0)
         }
         typeahead.node.trigger('propertychange.typeahead')
       }
-    })
+    });
     $('#confirm-filter-records').show()
     $('#save-filter-edits').hide()
   })
@@ -869,6 +886,8 @@
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
         } else if ( type === "multi_select" ){
           Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.name})
+        } else if ( type === "user_select" ){
+          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({name:label.name, ID:label.id})
         }
       })
       ;(filter.query.combine || []).forEach(c=>{
@@ -999,7 +1018,8 @@
       API.delete_filter(list_settings.post_type, filter_to_delete).then(()=>{
         _.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
         setup_filters()
-        $(`#list-filter-tabs [data-id='custom'] a`).click()
+        check_first_filter()
+        get_records_for_current_filter()
       }).catch(err => { console.error(err) })
     }
   })
@@ -1013,7 +1033,7 @@
 
   $("#search-mobile").on("click", function () {
     let searchText = _.escape( $("#search-query-mobile").val() )
-    let query = {text:searchText, assigned_to:["all"]}
+    let query = {text:searchText}
     let labels = [{ id:"search", name:searchText, field: "search"}]
     add_custom_filter(searchText, "search", query, labels)
   })
@@ -1267,52 +1287,52 @@
   });
 
 
-/**
- * Bulk share
-*/
-$.typeahead({
-  input: '#bulk_share',
-  minLength: 0,
-  maxItem: 0,
-  accent: true,
-  searchOnFocus: true,
-  source: TYPEAHEADS.typeaheadUserSource(),
-  templateValue: "{{name}}",
-  dynamic: true,
-  multiselect: {
-    matchOn: ["ID"],
+  /**
+   * Bulk share
+  */
+  $.typeahead({
+    input: '#bulk_share',
+    minLength: 0,
+    maxItem: 0,
+    accent: true,
+    searchOnFocus: true,
+    source: TYPEAHEADS.typeaheadUserSource(),
+    templateValue: "{{name}}",
+    dynamic: true,
+    multiselect: {
+      matchOn: ["ID"],
+      callback: {
+        onCancel: function (node, item) {
+          $(node).removeData( `bulk_key_bulk_share` );
+          $('#share-result-container').html("");
+
+        }
+      },
+    },
     callback: {
-      onCancel: function (node, item) {
-        $(node).removeData( `bulk_key_bulk_share` );
+      onClick: function (node, a, item, event) {
+        let shareUserArray;
+        if (node.data('bulk_key_share')) {
+          shareUserArray = node.data('bulk_key_share');
+        } else {
+          shareUserArray = [];
+        }
+        shareUserArray.push(item.ID);
+        node.data(`bulk_key_share`, shareUserArray);
+      },
+      onResult: function (node, query, result, resultCount) {
+        if (query) {
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          $('#share-result-container').html(text);
+        }
+      },
+      onHideLayout: function () {
         $('#share-result-container').html("");
-
       }
-    },
-  },
-  callback: {
-    onClick: function (node, a, item, event) {
-      let shareUserArray;
-      if (node.data('bulk_key_share')) {
-        shareUserArray = node.data('bulk_key_share');
-      } else {
-        shareUserArray = [];
-      }
-      shareUserArray.push(item.ID);
-      node.data(`bulk_key_share`, shareUserArray);
-    },
-    onResult: function (node, query, result, resultCount) {
-      if (query) {
-        let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-        $('#share-result-container').html(text);
-      }
-    },
-    onHideLayout: function () {
-      $('#share-result-container').html("");
     }
-  }
-});
+  });
 
-/**
+  /**
  * Bulk Typeahead
  */
 

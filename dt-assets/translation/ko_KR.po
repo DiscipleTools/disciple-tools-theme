@@ -1,0 +1,4469 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+"Project-Id-Version: Disciple.Tools\n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+
+#: 403.php:9
+msgid "Permission denied"
+msgstr "권한이 거부됨"
+
+#: 403.php:23
+msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
+msgstr "죄송합니다. id가 %2$s인 %1$s을(를) 볼 수 있는 권한이 없습니다."
+
+#: 403.php:24
+msgid "Request permission from your administrator."
+msgstr "관리자에게 권한을 요청하세요."
+
+#: 403.php:26
+msgid "Back"
+msgstr "뒤로"
+
+#: 404.php:12
+msgid "Epic 404 - Not Found"
+msgstr "Epic 404 - 찾을 수 없음"
+
+#: 404.php:16
+msgid "The page you were looking for was not found or was deleted"
+msgstr "찾고 있던 페이지가 없거나 삭제되었습니다."
+
+#: dt-contacts/contacts-post-type.php:223 dt-groups/groups-post-type.php:189
+#: dt-users/mapbox-coverage-map.php:87 dt-users/template-user-management.php:77
+#: dt-users/user-management.php:98
+msgid "Active"
+msgstr "활성화"
+
+#: template-notifications.php:40
+msgid "New"
+msgstr "신규"
+
+#: dt-contacts/contacts-post-type.php:218
+msgid "Waiting to be accepted"
+msgstr "수락 대기 중"
+
+#: archive-contacts.php:23
+msgid "Create new contact"
+msgstr "새 연락처 생성"
+
+#: archive-contacts.php:31
+msgid "View Duplicates"
+msgstr "중복 보기"
+
+#: archive-contacts.php:37 archive-contacts.php:56 archive-groups.php:32
+#: archive-groups.php:50 archive-template.php:34 archive-template.php:53
+msgid "Search"
+msgstr "검색"
+
+#: dt-contacts/contacts.php:2002 dt-contacts/contacts.php:2003
+msgid "Shared with me"
+msgstr "나와 공유됨"
+
+#: archive-contacts.php:81 archive-groups.php:78 archive-template.php:71
+msgid "Add new filter"
+msgstr "새 필터 추가"
+
+#: dt-contacts/contacts-post-type.php:189 dt-groups/groups-post-type.php:223
+#: dt-metrics/contacts/mapbox-cluster-map.php:67
+#: dt-metrics/contacts/mapbox-point-map.php:67
+#: dt-metrics/groups/mapbox-cluster-map.php:69
+#: dt-metrics/groups/mapbox-point-map.php:66 dt-metrics/groups/tree.php:85
+#: dt-metrics/personal/group-tree.php:86
+#: dt-metrics/personal/mapbox-contacts-cluster-map.php:68
+#: dt-metrics/personal/mapbox-contacts-point-map.php:67
+#: dt-metrics/personal/mapbox-groups-cluster-map.php:68
+#: dt-metrics/personal/mapbox-groups-point-map.php:67
+msgid "Assigned To"
+msgstr "할당 대상"
+
+#: archive-contacts.php:139 archive-contacts.php:185 archive-groups.php:130
+#: archive-groups.php:169 archive-template.php:178 archive-template.php:214
+#: dt-assets/functions/enqueue-scripts.php:356
+msgid "Creation Date"
+msgstr "생성 날짜"
+
+#: archive-contacts.php:176
+msgid "Filter for subassigned OR Assigned To"
+msgstr "하위 할당 또는 할당 대상 필터링"
+
+#: archive-contacts.php:200 archive-contacts.php:201 archive-groups.php:184
+#: archive-groups.php:185 archive-template.php:230 archive-template.php:231
+#: template-settings.php:414
+msgid "No"
+msgstr "아니요"
+
+#: archive-contacts.php:206 archive-contacts.php:207 archive-groups.php:190
+#: archive-groups.php:191 archive-template.php:237 archive-template.php:238
+#: template-settings.php:413
+msgid "Yes"
+msgstr "예"
+
+#: archive-contacts.php:214 archive-contacts.php:225 archive-groups.php:198
+#: archive-groups.php:209 archive-template.php:245 archive-template.php:256
+msgctxt "Clear/empty input"
+msgid "Clear"
+msgstr "지우기"
+
+#: archive-contacts.php:253 archive-groups.php:239 archive-template.php:284
+#: dt-assets/functions/enqueue-scripts.php:339
+#: dt-assets/functions/enqueue-scripts.php:351
+#: dt-assets/parts/contact-details.php:550
+#: dt-assets/parts/group-details.php:344 template-merge-details.php:99
+#: template-merge-details.php:119 template-merge-details.php:129
+#: template-merge-details.php:167 template-settings.php:537
+msgid "Save"
+msgstr "저장"
+
+#: archive-groups.php:26 archive-groups.php:235
+msgid "Filter Groups"
+msgstr "그룹 필터링"
+
+#: dt-assets/functions/details-bar.php:37
+#: dt-core/admin/config-site-defaults.php:326
+#: dt-users/template-user-management.php:76
+msgid "Update Needed"
+msgstr "업데이트 필요"
+
+#: dt-assets/functions/details-bar.php:52
+msgid "Make a user from this contact"
+msgstr "이 연락처에서 사용자 만들기"
+
+#: dt-assets/functions/details-bar.php:54
+msgid "Link to an existing user"
+msgstr "기존 사용자에 연결"
+
+#: dt-assets/functions/details-bar.php:56
+msgid "Merge with another contact"
+msgstr "다른 연락처와 병합"
+
+#: dt-assets/functions/details-bar.php:81
+#: dt-assets/functions/details-bar.php:84
+#: dt-assets/functions/details-bar.php:128
+#: dt-assets/functions/details-bar.php:131
+msgid "Following"
+msgstr "팔로잉"
+
+#: dt-assets/functions/details-bar.php:86
+#: dt-assets/functions/details-bar.php:133
+#: dt-contacts/contacts-post-type.php:606 dt-groups/groups-post-type.php:348
+msgid "Follow"
+msgstr "팔로우"
+
+#: dt-assets/functions/details-bar.php:94
+#: dt-assets/functions/details-bar.php:122
+msgid "Share"
+msgstr "공유"
+
+#: dt-assets/functions/details-bar.php:113
+#: dt-assets/parts/loop-activity-comment.php:119
+#: dt-assets/parts/loop-activity-comment.php:197
+msgid "Comments"
+msgstr "코멘트"
+
+#: dt-assets/functions/enqueue-scripts.php:154
+msgid "You don't have any unread notifications"
+msgstr "읽지 않은 알림이 없습니다"
+
+#: dt-assets/functions/enqueue-scripts.php:155
+msgid "You don't have any notifications"
+msgstr "알림이 없습니다"
+
+#: dt-assets/functions/enqueue-scripts.php:336
+msgid "delete"
+msgstr "삭제"
+
+#: dt-assets/functions/enqueue-scripts.php:233
+#: dt-assets/parts/contact-details.php:238
+#: dt-assets/parts/contact-details.php:289
+msgid "No source set"
+msgstr "설정된 출처 없음"
+
+#: dt-assets/functions/enqueue-scripts.php:234
+msgid "No location set"
+msgstr "설정된 위치 없음"
+
+#: dt-assets/functions/enqueue-scripts.php:235
+msgid "No leaders set"
+msgstr "설정된 지도자 없음"
+
+#: dt-assets/functions/enqueue-scripts.php:236
+msgid "No people group set"
+msgstr "설정된 민족 없음"
+
+#: dt-assets/functions/enqueue-scripts.php:237
+msgid "No email set"
+msgstr "설정된 이메일 없음"
+
+#: dt-assets/functions/enqueue-scripts.php:238
+msgid "No phone set"
+msgstr "설정된 전화 없음"
+
+#: dt-assets/functions/enqueue-scripts.php:239
+msgid "No address set"
+msgstr "설정된 주소 없음"
+
+#: dt-assets/functions/enqueue-scripts.php:240
+msgid "None set"
+msgstr "설정된 사항 없음"
+
+#: dt-assets/functions/enqueue-scripts.php:241
+msgid "No sub-assigned set"
+msgstr "설정된 하위 할당 없음"
+
+#: dt-assets/functions/enqueue-scripts.php:242
+#: dt-assets/parts/contact-details.php:311
+msgid "No age set"
+msgstr "설정된 연령 없음"
+
+#: dt-assets/functions/enqueue-scripts.php:243
+#: dt-assets/parts/contact-details.php:330
+msgid "No gender set"
+msgstr "설정된 성별 없음"
+
+#: dt-assets/functions/enqueue-scripts.php:248
+msgid "Valid"
+msgstr "유효함"
+
+#: dt-assets/functions/enqueue-scripts.php:249
+msgid "Invalid"
+msgstr "유효하지 않음"
+
+#: dt-assets/functions/enqueue-scripts.php:250
+msgid "Unconfirmed"
+msgstr "미확인"
+
+#: dt-assets/functions/enqueue-scripts.php:251
+msgid "Transfer failed. Check site-to-site configuration."
+msgstr "전송에 실패했습니다. 사이트간 구성을 확인하세요."
+
+#: dt-assets/functions/enqueue-scripts.php:198
+#: dt-assets/functions/enqueue-scripts.php:352
+#: dt-assets/parts/contact-details.php:65 dt-assets/parts/group-details.php:31
+#: template-merge-details.php:99 template-merge-details.php:118
+#: template-merge-details.php:129 template-merge-details.php:165
+#: template-settings.php:70 template-settings.php:428
+msgid "Edit"
+msgstr "편집"
+
+#: dt-assets/functions/enqueue-scripts.php:199
+#: dt-assets/functions/enqueue-scripts.php:222
+#: dt-assets/functions/enqueue-scripts.php:353
+#: dt-assets/parts/loop-activity-comment.php:176
+msgid "Delete"
+msgstr "삭제"
+
+#: dt-assets/functions/enqueue-scripts.php:354
+msgctxt "just copy as they are: _START_ and _TOTAL_"
+msgid "Showing _START_ of _TOTAL_"
+msgstr "_START_ of _TOTAL_ 표시"
+
+#: dt-assets/functions/enqueue-scripts.php:355
+msgid "Sorting By"
+msgstr "정렬 기준"
+
+#: dt-assets/functions/enqueue-scripts.php:357
+msgid "Date Modified"
+msgstr "수정 날짜"
+
+#: dt-assets/functions/menu.php:18 dt-assets/functions/menu.php:64
+#: dt-contacts/contacts-post-type.php:114
+#: dt-contacts/contacts-post-type.php:117
+#: dt-contacts/contacts-post-type.php:128
+#: dt-mapping/columns/add-contacts-column.php:59
+#: dt-metrics/combined/hover-map.php:127
+#: dt-metrics/combined/locations-list.php:120
+#: dt-metrics/contacts/baptism-tree.php:25
+#: dt-metrics/contacts/coaching-tree.php:25
+#: dt-metrics/contacts/mapbox-area-map.php:30
+#: dt-metrics/contacts/mapbox-cluster-map.php:30
+#: dt-metrics/contacts/mapbox-point-map.php:30
+#: dt-metrics/contacts/milestones-map.php:25
+#: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
+#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
+#: dt-metrics/groups/overview.php:63 dt-metrics/metrics.php:81
+#: dt-metrics/personal/overview.php:62
+#: dt-users/template-user-management.php:231 template-view-duplicates.php:40
+msgid "Contacts"
+msgstr "연락처"
+
+#: dt-assets/functions/menu.php:22 dt-assets/functions/menu.php:68
+#: dt-contacts/contacts-post-type.php:674 dt-groups/groups-post-type.php:117
+#: dt-mapping/columns/add-groups-column.php:57
+#: dt-metrics/combined/hover-map.php:172
+#: dt-metrics/combined/locations-list.php:165
+#: dt-metrics/groups/mapbox-area-map.php:28
+#: dt-metrics/groups/mapbox-cluster-map.php:30
+#: dt-metrics/groups/mapbox-point-map.php:29 dt-metrics/groups/overview.php:23
+#: dt-metrics/groups/overview.php:64 dt-metrics/groups/tree.php:24
+#: dt-metrics/metrics.php:84 dt-metrics/personal/overview.php:63
+#: single-groups.php:108
+msgid "Groups"
+msgstr "그룹"
+
+#. Template Name of the plugin/theme
+#: dt-assets/functions/menu.php:29 dt-assets/functions/menu.php:72
+msgid "Metrics"
+msgstr "지표"
+
+#. Template Name of the plugin/theme
+#: dt-assets/functions/menu.php:89 dt-assets/parts/nav-offcanvas-topbar.php:57
+#: dt-assets/parts/nav-offcanvas-topbar.php:132 template-notifications.php:31
+#: template-settings.php:45 template-settings.php:363
+msgid "Notifications"
+msgstr "알림"
+
+#. Template Name of the plugin/theme
+#: dt-assets/functions/menu.php:92 dt-assets/parts/modals/modal-help.php:444
+#: dt-assets/parts/nav-offcanvas-topbar.php:62
+#: dt-assets/parts/nav-offcanvas-topbar.php:145 template-notifications.php:57
+msgid "Settings"
+msgstr "설정"
+
+#: dt-assets/functions/menu.php:98 dt-assets/parts/nav-offcanvas-topbar.php:148
+msgid "Admin"
+msgstr "관리자"
+
+#: dt-assets/functions/menu.php:101
+#: dt-assets/parts/nav-offcanvas-topbar.php:158
+msgid "Log Off"
+msgstr "로그 오프"
+
+#: dt-assets/parts/contact-details.php:20
+msgid "This contact needs an update"
+msgstr "이 연락처는 업데이트가 필요합니다"
+
+#: dt-assets/parts/contact-details.php:21 single-groups.php:51
+msgid "Please provide an update by posting a comment."
+msgstr "코멘트를 게시하여 업데이트를 제공하세요."
+
+#: dt-assets/parts/contact-details.php:31
+msgid "This contact has been assigned to you."
+msgstr "이 연락처는 귀하에게 할당되었습니다."
+
+#: dt-assets/parts/contact-details.php:32
+msgid "Accept"
+msgstr "수락"
+
+#: dt-assets/parts/contact-details.php:33
+msgid "Decline"
+msgstr "거절"
+
+#: dt-assets/parts/contact-details.php:41
+msgid "This contact represents a user."
+msgstr "이 연락처는 사용자를 나타냅니다."
+
+#: dt-assets/parts/contact-details.php:74
+#: dt-metrics/contacts/mapbox-area-map.php:60
+#: dt-metrics/contacts/mapbox-cluster-map.php:59
+#: dt-metrics/contacts/mapbox-point-map.php:59
+#: dt-metrics/groups/mapbox-area-map.php:58
+#: dt-metrics/groups/mapbox-cluster-map.php:61
+#: dt-metrics/groups/mapbox-point-map.php:58 dt-metrics/groups/tree.php:86
+#: dt-metrics/personal/group-tree.php:87
+#: dt-metrics/personal/mapbox-contacts-area-map.php:61
+#: dt-metrics/personal/mapbox-contacts-cluster-map.php:60
+#: dt-metrics/personal/mapbox-contacts-point-map.php:59
+#: dt-metrics/personal/mapbox-groups-area-map.php:61
+#: dt-metrics/personal/mapbox-groups-cluster-map.php:60
+#: dt-metrics/personal/mapbox-groups-point-map.php:59
+#: dt-users/mapbox-coverage-map.php:85 dt-users/template-user-management.php:73
+#: dt-users/template-user-management.php:158
+msgid "Status"
+msgstr "상태"
+
+#: dt-contacts/contacts-post-type.php:682
+msgid "Sub-assigned to"
+msgstr "하위 할당 대상"
+
+#: dt-assets/parts/contact-details.php:214
+#: dt-assets/parts/contact-details.php:391
+#: dt-assets/parts/modals/modal-help.php:25
+#: dt-core/admin/config-site-defaults.php:507
+msgid "Social Media"
+msgstr "소셜 미디어"
+
+#: dt-contacts/contacts-post-type.php:949
+#: dt-core/admin/config-site-defaults.php:511
+#: dt-groups/groups-post-type.php:615 template-settings.php:131
+msgid "Address"
+msgstr "주소"
+
+#: dt-assets/parts/modals/modal-help.php:411
+#: dt-contacts/contacts-post-type.php:690 dt-groups/groups-post-type.php:430
+msgid "Locations"
+msgstr "위치"
+
+#: dt-contacts/contacts-post-type.php:666 dt-groups/groups-post-type.php:400
+#: dt-people-groups/people-groups-post-type.php:130
+msgid "People Groups"
+msgstr "민족"
+
+#: dt-contacts/contacts-post-type.php:377
+msgid "Age"
+msgstr "연령"
+
+#: dt-contacts/contacts-post-type.php:367
+msgid "Gender"
+msgstr "성별"
+
+#: dt-assets/parts/contact-details.php:349
+msgid "Edit Contact"
+msgstr "연락처 편집"
+
+#: archive-template.php:119 dt-assets/parts/contact-details.php:354
+#: dt-assets/parts/content-contacts.php:52
+#: dt-assets/parts/content-groups.php:52 dt-assets/parts/group-details.php:212
+#: dt-assets/parts/modals/modal-new-contact.php:7
+#: dt-assets/parts/modals/modal-new-contact.php:9
+#: dt-assets/parts/modals/modal-new-group.php:7 dt-mapping/mapping.php:305
+#: dt-metrics/contacts/mapbox-area-map.php:59
+#: dt-metrics/contacts/mapbox-cluster-map.php:58
+#: dt-metrics/contacts/mapbox-point-map.php:58
+#: dt-metrics/groups/mapbox-area-map.php:57
+#: dt-metrics/groups/mapbox-cluster-map.php:60
+#: dt-metrics/groups/mapbox-point-map.php:57
+#: dt-metrics/personal/mapbox-contacts-area-map.php:60
+#: dt-metrics/personal/mapbox-contacts-cluster-map.php:59
+#: dt-metrics/personal/mapbox-contacts-point-map.php:58
+#: dt-metrics/personal/mapbox-groups-area-map.php:60
+#: dt-metrics/personal/mapbox-groups-cluster-map.php:59
+#: dt-metrics/personal/mapbox-groups-point-map.php:58 template-new-post.php:22
+#: template-settings.php:87
+msgid "Name"
+msgstr "이름"
+
+#: archive-template.php:91 dt-assets/parts/content-contacts.php:21
+#: dt-assets/parts/content-groups.php:21
+msgid "Sort"
+msgstr "정렬"
+
+#: archive-template.php:95 dt-assets/parts/content-contacts.php:24
+#: dt-assets/parts/content-groups.php:24
+msgid "Newest"
+msgstr "최신"
+
+#: archive-template.php:99 dt-assets/parts/content-contacts.php:27
+#: dt-assets/parts/content-groups.php:27
+msgid "Oldest"
+msgstr "가장 오래된"
+
+#: archive-template.php:103 dt-assets/parts/content-contacts.php:30
+#: dt-assets/parts/content-groups.php:30
+msgid "Most recently modified"
+msgstr "최근에 수정됨"
+
+#: archive-template.php:107 dt-assets/parts/content-contacts.php:33
+#: dt-assets/parts/content-groups.php:33
+msgid "Least recently modified"
+msgstr "최근에 수정되지 않음"
+
+#: dt-assets/parts/content-contacts.php:40
+msgid "Closed Contacts"
+msgstr "폐쇄된 연락처"
+
+#: dt-contacts/contacts-post-type.php:244
+#: dt-metrics/contacts/seeker-path.php:25
+#: dt-metrics/contacts/seeker-path.php:62
+msgid "Seeker Path"
+msgstr "구도자의 길"
+
+#. Could be either Hitos or Pilares
+#: dt-contacts/contacts-post-type.php:305
+msgid "Faith Milestones"
+msgstr "신앙적 이정표"
+
+#: dt-groups/groups-post-type.php:116 dt-groups/groups-post-type.php:206
+#: dt-metrics/groups/overview.php:80 dt-metrics/personal/group-tree.php:158
+#: dt-metrics/personal/overview.php:74
+msgid "Group"
+msgstr "그룹"
+
+#: archive-template.php:131 dt-assets/parts/content-contacts.php:63
+#: dt-assets/parts/content-groups.php:61
+msgid "Loading..."
+msgstr "불러오는 중..."
+
+#: dt-assets/parts/content-contacts.php:67
+msgid "Load more contacts"
+msgstr "더 많은 연락처 불러오기"
+
+#: dt-assets/parts/content-groups.php:40
+msgid "Inactive Groups"
+msgstr "비활성화 그룹"
+
+#: dt-assets/parts/content-groups.php:65
+msgid "Load more groups"
+msgstr "더 많은 그룹 불러오기"
+
+#: dt-groups/groups-post-type.php:416
+msgid "Group Coach / Church Planter"
+msgstr "그룹 코치 / 교회 개척자"
+
+#: dt-groups/groups-post-type.php:322 dt-users/template-user-management.php:310
+#: template-settings.php:321 template-settings.php:340
+msgid "Start Date"
+msgstr "시작 날짜"
+
+#: dt-assets/functions/enqueue-scripts.php:244
+msgid "No start date"
+msgstr "시작 날짜 없음"
+
+#: dt-groups/groups-post-type.php:329
+msgid "Church Start Date"
+msgstr "교회 시작 날짜"
+
+#: dt-assets/functions/enqueue-scripts.php:246
+#: dt-assets/parts/group-details.php:181
+msgid "No church start date"
+msgstr "교회 시작 날짜 없음"
+
+#: dt-groups/groups-post-type.php:335 dt-users/template-user-management.php:311
+#: template-settings.php:327 template-settings.php:341
+msgid "End Date"
+msgstr "종료 날짜"
+
+#: dt-assets/functions/enqueue-scripts.php:245
+#: dt-assets/parts/group-details.php:196
+msgid "No end date"
+msgstr "종료 날짜 없음"
+
+#: dt-assets/parts/group-details.php:207
+msgid "Edit Group"
+msgstr "그룹 편집"
+
+#: dt-assets/parts/loop-activity-comment.php:104
+msgid "Submit comment"
+msgstr "코멘트 제출"
+
+#: dt-assets/parts/loop-activity-comment.php:8
+#: dt-assets/parts/modals/modal-help.php:284
+msgid "Comments and Activity"
+msgstr "코멘트 및 활동"
+
+#: dt-assets/parts/loop-activity-comment.php:112
+msgid "Showing:"
+msgstr "표시:"
+
+#: dt-assets/parts/loop-activity-comment.php:124
+#: dt-users/template-user-management.php:408
+msgid "Activity"
+msgstr "활동"
+
+#: dt-assets/parts/loop-activity-comment.php:153
+msgid "show all"
+msgstr "모두 보기"
+
+#: dt-assets/parts/loop-activity-comment.php:157
+msgid "hide all"
+msgstr "모두 숨김"
+
+#: dt-assets/parts/loop-activity-comment.php:169
+msgid "Delete Comment:"
+msgstr "코멘트 삭제:"
+
+#: dt-assets/parts/loop-activity-comment.php:173
+#: dt-assets/parts/loop-activity-comment.php:220
+#: dt-assets/parts/merge-details.php:28
+#: dt-assets/parts/modals/modal-help.php:466
+#: dt-assets/parts/modals/modal-revert.php:15
+#: dt-assets/parts/modals/modal-share.php:50
+#: dt-assets/parts/modals/modal-tasks.php:46 single-contacts.php:547
+#: single-groups.php:435
+msgid "Close"
+msgstr "닫기"
+
+#: dt-assets/parts/loop-activity-comment.php:183
+#: dt-assets/parts/loop-activity-comment.php:230 template-merge-details.php:393
+msgid "Sorry, something went wrong"
+msgstr "죄송합니다. 문제가 발생했습니다"
+
+#: dt-assets/parts/loop-activity-comment.php:184
+msgid "The comment could not be deleted."
+msgstr "해당 코멘트를 삭제할 수 없습니다."
+
+#: dt-assets/parts/loop-activity-comment.php:189
+msgid "Edit Comment:"
+msgstr "코멘트 편집:"
+
+#: dt-assets/parts/loop-activity-comment.php:223
+msgid "Update"
+msgstr "업데이트"
+
+#: dt-assets/parts/loop-activity-comment.php:231
+msgid "The comment could not be updated."
+msgstr "해당 코멘트를 업데이트할 수 없습니다."
+
+#: dt-assets/parts/merge-details.php:8 template-view-duplicates.php:22
+msgid "Duplicate Contacts"
+msgstr "중복 연락처"
+
+#: dt-assets/parts/merge-details.php:10
+msgid "Original Contact"
+msgstr "원래 연락처"
+
+#: dt-assets/parts/merge-details.php:14
+msgid "Possible Duplicates"
+msgstr "중복 가능성"
+
+#: dt-assets/parts/merge-details.php:16
+msgid "Dismiss All"
+msgstr "모두 해제"
+
+#: dt-assets/functions/enqueue-scripts.php:253 template-view-duplicates.php:38
+msgid "Dismiss"
+msgstr "해제"
+
+#: dt-assets/parts/modals/modal-filters.php:3
+#: dt-assets/parts/modals/modal-filters.php:12
+msgid "Save Filter"
+msgstr "필터 저장"
+
+#: dt-assets/parts/modals/modal-filters.php:4
+msgid "What do you want to call this filter?"
+msgstr "이 필터를 호출하시겠습니까?"
+
+#: dt-assets/parts/modals/modal-filters.php:22
+#: dt-assets/parts/modals/modal-filters.php:31
+msgid "Delete Filter"
+msgstr "필터 삭제"
+
+#: dt-groups/groups-post-type.php:179
+msgid "Group Status"
+msgstr "그룹 상태"
+
+#: dt-assets/parts/modals/modal-new-contact.php:3
+#: dt-assets/parts/modals/modal-new-contact.php:12
+msgid "Create Contact"
+msgstr "연락처 생성"
+
+#: dt-assets/parts/modals/modal-help.php:365 template-contacts-new.php:25
+msgid "Name of Contact"
+msgstr "연락처 이름"
+
+#: single-contacts.php:498 single-contacts.php:570 single-groups.php:454
+#: template-contacts-new.php:31 template-groups-new.php:30
+#: template-new-post.php:25
+msgid "This is required"
+msgstr "이 항목은 필수입니다"
+
+#: dt-assets/parts/modals/modal-new-contact.php:20
+msgid "Contact Created"
+msgstr "연락처가 생성됨"
+
+#: dt-assets/parts/modals/modal-new-contact.php:26
+msgid "Edit New Contact"
+msgstr "새 연락처 편집"
+
+#: dt-assets/parts/modals/modal-new-group.php:3
+#: dt-assets/parts/modals/modal-new-group.php:12
+msgid "Create Group"
+msgstr "그룹 생성"
+
+#: dt-assets/parts/modals/modal-new-group.php:19
+msgid "Group Created"
+msgstr "그룹이 생성됨"
+
+#: dt-assets/parts/modals/modal-revert.php:4
+msgid "Revert Activity"
+msgstr "활동 되돌리기"
+
+#: dt-assets/parts/modals/modal-revert.php:5
+msgid "Field"
+msgstr "분야"
+
+#: dt-assets/parts/modals/modal-revert.php:8
+msgid "Current Value"
+msgstr "현재 가치"
+
+#: dt-assets/parts/modals/modal-revert.php:10
+msgid "Old Value"
+msgstr "이전 값"
+
+#: dt-assets/parts/modals/modal-revert.php:18
+msgid "Revert to old value?"
+msgstr "이전 값으로 되돌리겠습니까?"
+
+#: dt-assets/parts/modals/modal-share.php:7
+msgid "Share settings"
+msgstr "공유 설정"
+
+#: dt-assets/parts/modals/modal-share.php:12
+msgid "This group is shared with:"
+msgstr "이 그룹은 여기에 공유됩니다 :"
+
+#: dt-assets/parts/modals/modal-share.php:14
+msgid "This contact is shared with:"
+msgstr "이 연락처는 여기에 공유됩니다 :"
+
+#: dt-assets/parts/nav-offcanvas-topbar.php:36
+#: dt-assets/parts/nav-offcanvas-topbar.php:110
+#: dt-posts/custom-post-type.php:151
+msgid "Add New"
+msgstr "새로 추가"
+
+#: dt-assets/parts/nav-offcanvas-topbar.php:42
+#: dt-assets/parts/nav-offcanvas-topbar.php:117
+#: dt-contacts/contacts-post-type.php:203
+msgid "New Contact"
+msgstr "새 연락처"
+
+#: dt-assets/parts/nav-offcanvas-topbar.php:48
+#: dt-assets/parts/nav-offcanvas-topbar.php:123
+msgid "New Group"
+msgstr "새 그룹"
+
+#: dt-assets/parts/nav-offcanvas-topbar.php:103 template-settings.php:42
+msgid "Profile"
+msgstr "프로필"
+
+#: dt-assets/parts/nav-offcanvas-topbar.php:154
+msgid "Help"
+msgstr "지원"
+
+#: dt-contacts/contacts-post-type.php:269 dt-metrics/counter.php:139
+msgid "Ongoing Meetings"
+msgstr "진행중인 모임"
+
+#: dt-contacts/contacts-post-type.php:282 dt-groups/groups-post-type.php:424
+msgid "Requires Update"
+msgstr "업데이트가 필요합니다"
+
+#: dt-contacts/contacts-post-type.php:330
+#: dt-contacts/contacts-post-type.php:658
+msgid "Baptized"
+msgstr "세례받음"
+
+#: dt-contacts/contacts-post-type.php:350
+msgid "Baptism Date"
+msgstr "세례식 날짜"
+
+#: dt-contacts/contacts-post-type.php:358 dt-metrics/counter.php:156
+msgid "Baptism Generation"
+msgstr "세례 세대"
+
+#: dt-contacts/contacts-post-type.php:504 dt-metrics/contacts/sources.php:90
+#: dt-users/users.php:732
+msgid "Sources"
+msgstr "자료"
+
+#: dt-contacts/contacts-post-type.php:613 dt-groups/groups-post-type.php:355
+msgid "Un-Follow"
+msgstr "팔로우 해제"
+
+#: dt-contacts/contacts-post-type.php:937
+#: dt-core/admin/config-site-defaults.php:499 template-settings.php:120
+msgid "Phone"
+msgstr "휴대폰"
+
+#: dt-core/admin/config-site-defaults.php:524
+msgid "Work"
+msgstr "일"
+
+#: dt-core/admin/config-site-defaults.php:523
+msgid "Home"
+msgstr "집"
+
+#: dt-assets/parts/modals/modal-help.php:135
+#: dt-assets/parts/modals/modal-help.php:275
+#: dt-contacts/contacts-post-type.php:986
+#: dt-core/admin/config-site-defaults.php:515
+#: dt-core/admin/config-site-defaults.php:525 single-contacts.php:330
+#: single-groups.php:195 template-settings.php:153
+msgid "Other"
+msgstr "다른"
+
+#: dt-contacts/contacts-post-type.php:943
+#: dt-core/admin/config-site-defaults.php:303
+#: dt-core/admin/config-site-defaults.php:503 dt-users/user-management.php:156
+#: single-contacts.php:567 template-contacts-new.php:44
+#: template-contacts-new.php:48 template-settings.php:107
+msgid "Email"
+msgstr "이메일"
+
+#: dt-contacts/contacts-post-type.php:481
+#: dt-contacts/contacts-post-type.php:955
+#: dt-contacts/contacts-post-type.php:958
+msgid "Facebook"
+msgstr "페이스북"
+
+#: dt-contacts/contacts-post-type.php:485
+#: dt-contacts/contacts-post-type.php:965
+msgid "Twitter"
+msgstr "트위터"
+
+#: dt-contacts/contacts-post-type.php:971
+#: dt-contacts/contacts-post-type.php:973
+msgid "Instagram"
+msgstr "인스타그램"
+
+#: dt-contacts/contacts-post-type.php:979
+#: dt-contacts/contacts-post-type.php:981
+msgid "Skype"
+msgstr "스카이프"
+
+#: dt-contacts/contacts-transfer.php:29
+msgid "Contact Transfer Both Ways"
+msgstr "양쪽으로 연락처 전송"
+
+#: dt-contacts/contacts-transfer.php:30
+msgid "Contact Transfer Sending Only"
+msgstr "연락처 전송만"
+
+#: dt-contacts/contacts-transfer.php:31
+msgid "Contact Transfer Receiving Only"
+msgstr "연락처 수신만"
+
+#: dt-contacts/contacts-transfer.php:52
+msgid "This contact has been transferred"
+msgstr "연락처가 전송되었습니다"
+
+#: dt-contacts/contacts-transfer.php:53
+msgid "This contact has been transferred to"
+msgstr "이 연락처는 ~~로 전송되었습니다"
+
+#: dt-contacts/contacts-transfer.php:86
+msgid "another site"
+msgstr "다른 사이트"
+
+#: dt-contacts/contacts-transfer.php:96
+msgid "Already transfered to %s"
+msgstr "%s로 이미 전송되었습니다"
+
+#: dt-contacts/contacts-transfer.php:97
+msgid "NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
+msgstr "주의: 이미 연락처 전송을 완료한 상태입니다. 다시 전송하면 중복이 생길 수 있습니다. 그래도 이 경고를 무시하고 전송하시겠습니까?"
+
+#: dt-contacts/contacts-transfer.php:98
+msgid "Override and Continue"
+msgstr "무시하고 계속하기"
+
+#: dt-contacts/contacts-transfer.php:103
+msgid "Transfer this contact to:"
+msgstr "연락처를 여기로 전송합니다:"
+
+#: dt-contacts/contacts-transfer.php:115
+msgid "Confirm Transfer"
+msgstr "전송 확인"
+
+#: dt-contacts/contacts-transfer.php:182
+msgid "Unknown error."
+msgstr "알 수 없는 오류."
+
+#: dt-contacts/contacts-transfer.php:191
+msgid "Minor transfer error."
+msgstr "사소한 전송 오류."
+
+#: dt-contacts/contacts-transfer.php:335 dt-contacts/contacts-transfer.php:353
+#: dt-contacts/contacts-transfer.php:370
+msgid "Transfer Bot"
+msgstr "전송 봇"
+
+#: dt-contacts/contacts-transfer.php:355
+msgid "Contact transferred from site"
+msgstr "사이트에서 연락처가 전송되었습니다"
+
+#: dt-contacts/contacts-transfer.php:362
+msgid "ALERT: Possible duplicate contact from a previous transfer."
+msgstr "경고: 이전 전송에서 중복 연락처가 생성되었을 수도 있습니다."
+
+#: dt-contacts/contacts.php:1312
+msgctxt "Contact1 is a duplicated and was merged into Contact2"
+msgid "%1$s is a duplicate and was merged into %2$s"
+msgstr "%1$s가 중복되었고 %2$s로 병합했습니다"
+
+#: dt-contacts/contacts.php:1319
+msgctxt "Contact1 was merged into Contact2"
+msgid "%1$s was merged into %2$s"
+msgstr "%1$s가 %2$s에 병합되었습니다"
+
+#: dt-contacts/contacts.php:1260
+msgctxt "duplicate comment"
+msgid "(From Duplicate): %s"
+msgstr "(사본에서): %s"
+
+#: dt-contacts/contacts.php:1100
+msgid "more duplicates not shown"
+msgstr "중복이 더이상 나타나지 않음"
+
+#: dt-core/admin/admin-theme-design.php:44
+msgid "Welcome, %1$s"
+msgstr "반갑습니다, %1$s"
+
+#: dt-core/admin/class-roles.php:91
+msgid "Strategist"
+msgstr "전략가"
+
+#: dt-core/admin/class-roles.php:101
+msgid "Dispatcher"
+msgstr "발송자"
+
+#: dt-core/admin/class-roles.php:181
+msgid "Digital Responder"
+msgstr "디지털 응답기"
+
+#: dt-core/admin/class-roles.php:225
+msgid "Disciple.Tools Admin"
+msgstr "제자.도구 관리자"
+
+#: dt-core/admin/class-roles.php:319
+msgid "Multiplier"
+msgstr "승산기"
+
+#: dt-core/admin/class-roles.php:338
+msgid "Registered"
+msgstr "등록됨"
+
+#: dt-core/admin/class-roles.php:463
+msgid "Subscriber"
+msgstr "구독자"
+
+#: dt-core/admin/config-site-defaults.php:311
+msgid "Newly Assigned Contact"
+msgstr "새로 배정된 연락처"
+
+#: dt-core/admin/config-site-defaults.php:316
+msgid "@Mentions"
+msgstr "@멘션"
+
+#: dt-core/admin/config-site-defaults.php:331
+msgid "Contact Info Changed"
+msgstr "연락처 정보 변경됨"
+
+#: dt-core/admin/config-site-defaults.php:336
+#: dt-core/migrations/0012-typo-rename.php:7
+msgid "Contact Milestones and Group Health metrics"
+msgstr "연락처 길잡이 및 그룹 헬스 메트릭스"
+
+#: dt-core/admin/config-site-defaults.php:370
+msgid "This contact is active but there is no record of anybody contacting them. Please do contact them."
+msgstr "이 연락처는 활성화되어 있지만 아무에게도 연락받은 흔적이 없습니다. 연락해보세요."
+
+#: dt-core/admin/config-site-defaults.php:376
+msgid "Please try connecting with this contact again."
+msgstr "다시 한 번 연락처에 연결해보세요."
+
+#: dt-core/admin/config-site-defaults.php:382
+#: dt-core/admin/config-site-defaults.php:388
+#: dt-core/admin/config-site-defaults.php:394
+#: dt-core/admin/config-site-defaults.php:400
+#: dt-core/admin/config-site-defaults.php:406
+msgid "We haven't heard about this person in a while. Do you have an update for this contact?"
+msgstr "한동안 이 사람에 대해 소식을 듣지 못했습니다. 이 연락처에 대한 최신 정보가 있습니까?"
+
+#: dt-core/admin/config-site-defaults.php:416
+msgid "We haven't heard about this group in a while. Do you have an update?"
+msgstr "이 그룹에 대해 한동안 소식을 듣지 못했습니다. 최신 정보가 있습니까?"
+
+#: dt-core/admin/config-site-defaults.php:629
+msgctxt "either rtl or ltr"
+msgid "ltr"
+msgstr "ltr"
+
+#: dt-core/admin/config-site-defaults.php:746
+msgid "Someone has requested a password reset for the following account:"
+msgstr "이 계정의 비밀번호 초기화가 요청되었습니다:"
+
+#. translators: %s: site name
+#: dt-core/admin/config-site-defaults.php:675
+msgid "Site Name: %s"
+msgstr "사이트 이름: %s"
+
+#. translators: %s: user login
+#: dt-core/admin/config-site-defaults.php:750
+msgid "Username: %s"
+msgstr "유저 이름: %s"
+
+#: dt-core/admin/config-site-defaults.php:751
+msgid "If this was a mistake, just ignore this email and nothing will happen."
+msgstr "만약 실수였다면, 이 메일을 무시하면 아무 일도 일어나지 않습니다."
+
+#: dt-core/admin/config-site-defaults.php:752
+msgid "To reset your password, visit the following address:"
+msgstr "비밀번호를 재설정하려면, 이 주소를 방문하세요:"
+
+#: dt-users/template-user-management.php:323 template-settings.php:100
+msgid "Roles"
+msgstr "역할"
+
+#: dt-core/logging/hooks/class-hook-posts.php:28
+msgid "(no title)"
+msgstr "(제목 없음)"
+
+#: dt-groups/groups-post-type.php:276 dt-groups/groups-post-type.php:408
+msgid "Leaders"
+msgstr "대표"
+
+#: dt-posts/posts.php:279
+msgctxt "Baptized contact1"
+msgid "Baptized %s"
+msgstr "세례받은 %s"
+
+#: dt-posts/posts.php:280
+msgctxt "Baptized by contact1"
+msgid "Baptized by %s"
+msgstr "%s에게 세례를 받음"
+
+#: dt-posts/posts.php:282
+msgctxt "Did not baptize contact1"
+msgid "Did not baptize %s"
+msgstr "%s에게 세례하지 않음"
+
+#: dt-posts/posts.php:283
+msgctxt "Not baptized by contact1"
+msgid "Not baptized by %s"
+msgstr "%s에게 세례받지 않음"
+
+#: dt-posts/posts.php:287
+msgctxt "contact1 added to members"
+msgid "%s added to members"
+msgstr "%s가 멤버로 추가됨"
+
+#: dt-posts/posts.php:288
+msgctxt "Added to group group1"
+msgid "Added to group %s"
+msgstr "그룹 %s로 추가됨"
+
+#: dt-posts/posts.php:290
+msgctxt "Removed contact1 from group"
+msgid "Removed %s from group"
+msgstr "그룹에서 %s를 제외함"
+
+#: dt-posts/posts.php:291
+msgctxt "Removed from group group1"
+msgid "Removed from group %s"
+msgstr "그룹 %s에서 제거됨"
+
+#: dt-posts/posts.php:296
+msgctxt "Coaching contact1"
+msgid "Coaching %s"
+msgstr "%s 지도"
+
+#: dt-posts/posts.php:297
+msgctxt "Coached by contact1"
+msgid "Coached by %s"
+msgstr "%s에게 지도받음"
+
+#: dt-posts/posts.php:299
+msgctxt "No longer coaching contact1"
+msgid "No longer coaching %s"
+msgstr "%s를 더이상 지도하지 않음"
+
+#: dt-posts/posts.php:304
+msgctxt "Sub-assigned contact1"
+msgid "Sub-assigned %s"
+msgstr "%s를 하위 배정함"
+
+#: dt-posts/posts.php:305
+msgctxt "Sub-assigned on contact1"
+msgid "Sub-assigned on %s"
+msgstr "%s에 하위 배정됨"
+
+#: dt-posts/posts.php:307
+msgctxt "Removed sub-assigned contact1"
+msgid "Removed sub-assigned %s"
+msgstr "하위 배정된 %s를 제거함"
+
+#: dt-posts/posts.php:312
+msgctxt "Paris added as location on contact1"
+msgid "%1$s added as location on %2$s"
+msgstr "%1$s가 %2$s에 장소로 추가됨"
+
+#: dt-posts/posts.php:313
+msgctxt "Paris added to locations"
+msgid "%s added to locations"
+msgstr "%s가 장소에 추가됨"
+
+#: dt-posts/posts.php:315
+msgctxt "Paris removed from locations on contact1"
+msgid "%1$s removed from locations on %2$s"
+msgstr "%1$s가 %2$s의 장소에서 제외됨"
+
+#: dt-posts/posts.php:316
+msgctxt "Paris removed from locations"
+msgid "%s removed from locations"
+msgstr "%s가 장소에서 제외됨"
+
+#: dt-posts/posts.php:328
+msgctxt "contact1 added as leader on group1"
+msgid "%1$s added as leader on %2$s"
+msgstr "%1$s가 %2$s의 대표로 추가됨"
+
+#: dt-posts/posts.php:329
+msgctxt "contact1 added to leaders"
+msgid "%s added to leaders"
+msgstr "%s가 대표에 추가됨"
+
+#: dt-posts/posts.php:331
+msgctxt "contact1 removed from leaders on group1"
+msgid "%1$s removed from leaders on %2$s"
+msgstr "%1$s가 %2$s의 대표에서 제외됨"
+
+#: dt-posts/posts.php:332
+msgctxt "contact1 removed from leaders"
+msgid "%s removed from leaders"
+msgstr "%s가 대표에서 제외됨"
+
+#: dt-posts/posts.php:336
+msgctxt "contact1 added as coach on group1"
+msgid "%1$s added as coach on %2$s"
+msgstr "%1$s가 %2$s의 지도 교사에 추가됨"
+
+#: dt-posts/posts.php:337
+msgctxt "contact1 added to coaches"
+msgid "%s added to coaches"
+msgstr "%s가 지도 교사에 추가됨"
+
+#: dt-posts/posts.php:339
+msgctxt "contact1 removed from coaches on group2"
+msgid "%1$s removed from coaches on %2$s"
+msgstr "%1$s가 %2$s의 지도 교사에서 제외됨"
+
+#: dt-posts/posts.php:340
+msgctxt "contact1 removed from coaches"
+msgid "%s removed from coaches"
+msgstr "%s가 지도 교사에서 제외됨"
+
+#: dt-posts/posts.php:344
+msgctxt "group2 added to child groups"
+msgid "%s added to child groups"
+msgstr "%s가 아동 그룹에 추가됨"
+
+#: dt-posts/posts.php:345
+msgctxt "group1 added to parent groups"
+msgid "%s added to parent groups"
+msgstr "%s가 부모 그룹에 추가됨"
+
+#: dt-posts/posts.php:347
+msgctxt "group2 removed from child groups"
+msgid "%s removed from child groups"
+msgstr "%s가 아동 그룹에서 제외됨"
+
+#: dt-posts/posts.php:348
+msgctxt "group1 removed from parent groups"
+msgid "%s removed from parent groups"
+msgstr "%s가 부모 그룹에서 제외됨"
+
+#: dt-posts/posts.php:353 dt-posts/posts.php:354
+msgctxt "group1 added to peer groups"
+msgid "%s added to peer groups"
+msgstr "%s가 또래 집단에 추가됨"
+
+#: dt-posts/posts.php:356 dt-posts/posts.php:357
+msgctxt "group1 removed from peer groups"
+msgid "%s removed from peer groups"
+msgstr "%s가 또래 집단에서 제외됨"
+
+#: dt-posts/posts.php:361 dt-posts/posts.php:362 dt-posts/posts.php:369
+#: dt-posts/posts.php:370
+msgctxt "Connected to contact1"
+msgid "Connected to %s"
+msgstr "%s와 연결됨"
+
+#: dt-posts/posts.php:364 dt-posts/posts.php:365 dt-posts/posts.php:372
+#: dt-posts/posts.php:373
+msgctxt "Removed connection to contact1"
+msgid "Removed connection to %s"
+msgstr "%s와의 연결이 해제됨"
+
+#: dt-posts/posts.php:393
+msgctxt "Assigned to: User1"
+msgid "Assigned to: %s"
+msgstr "여기에 배정됨: %s"
+
+#: dt-posts/posts.php:393
+msgid "Nobody"
+msgstr "아무도 없음"
+
+#: dt-posts/posts.php:406
+msgctxt "Milestone1 removed from Milestones"
+msgid "%1$s removed from %2$s"
+msgstr "%1$s가 %2$s에서 제거됨"
+
+#: dt-posts/posts.php:409
+msgctxt "Milestone1 added to Milestones"
+msgid "%1$s added to %2$s"
+msgstr "%1$s가 %2$s에 추가됨"
+
+#: dt-posts/posts.php:421
+msgid "yes"
+msgstr "네"
+
+#: dt-posts/posts.php:423
+msgid "no"
+msgstr "아니요"
+
+#: dt-posts/posts.php:490
+msgctxt "Added Facebook: facebook.com/123"
+msgid "Added %1$s: %2$s"
+msgstr "%1$s이(가) 추가됨 : %2$s"
+
+#: dt-posts/posts.php:492
+msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
+msgid "Updated %1$s from %2$s to %3$s"
+msgstr "%2$s에서 %3$s로 %1$s를 업데이트"
+
+#: dt-posts/posts.php:494
+msgctxt "Deleted Facebook: facebook.com/123"
+msgid "Deleted %1$s: %2$s"
+msgstr "%1$s을(를) 삭제함: %2$s"
+
+#: dt-posts/dt-posts.php:1010
+msgid "Record not deleted."
+msgstr "기록이 지워지지 않았습니다."
+
+#: dt-posts/dt-posts.php:1107
+msgid "Post already shared with user."
+msgstr "사용자에게 이미 공유된 게시물"
+
+#: dt-groups/groups-post-type.php:197
+msgid "Group Type"
+msgstr "그룹 유형"
+
+#: dt-groups/groups-post-type.php:202 dt-metrics/groups/overview.php:79
+#: dt-metrics/personal/overview.php:73
+msgid "Pre-Group"
+msgstr "예비 그룹"
+
+#: dt-groups/groups-post-type.php:210 dt-metrics/groups/overview.php:81
+#: dt-metrics/personal/overview.php:75
+msgid "Church"
+msgstr "교회"
+
+#: dt-groups/groups-post-type.php:386
+msgid "Member Count"
+msgstr "구성원 수"
+
+#: dt-mapping/mapping.php:149
+msgid "Map"
+msgstr "지도"
+
+#: dt-metrics/combined/critical-path.php:221 dt-metrics/counter.php:129
+msgid "New Contacts"
+msgstr "새로운 연락처"
+
+#: dt-metrics/counter.php:134
+msgid "First Meetings"
+msgstr "첫 모임"
+
+#: dt-metrics/counter.php:144
+msgid "Total Baptisms"
+msgstr "모든 세례식"
+
+#: dt-metrics/counter.php:149
+msgid "Total Baptizers"
+msgstr "모든 세례자들"
+
+#: dt-metrics/counter.php:162
+msgid "Total Churches and Groups"
+msgstr "모든 교회 및 그룹"
+
+#: dt-metrics/combined/critical-path.php:308 dt-metrics/counter.php:167
+msgid "Active Groups"
+msgstr "활성화된 그룹"
+
+#: dt-metrics/combined/critical-path.php:318 dt-metrics/counter.php:172
+msgid "Active Churches"
+msgstr "활성화된 교회"
+
+#: dt-metrics/counter.php:179
+msgid "Church Generation"
+msgstr "교회 세대"
+
+#: dt-metrics/combined/critical-path.php:342 dt-metrics/counter.php:185
+msgid "Church Planters"
+msgstr "교회 설립자"
+
+#. This could be either Hitos or Pilares depending on the context.
+#: dt-metrics/contacts/milestones-map.php:65
+#: dt-metrics/contacts/milestones.php:66
+msgid "Milestones"
+msgstr "마일스톤"
+
+#: dt-metrics/combined/critical-path.php:24
+#: dt-metrics/combined/critical-path.php:55
+#: dt-metrics/combined/critical-path.php:88
+msgid "Critical Path"
+msgstr "최상 경로"
+
+#: dt-metrics/combined/critical-path.php:231
+msgid "Assigned Contacts"
+msgstr "배정받은 연락처"
+
+#: dt-metrics/combined/critical-path.php:240
+#: dt-metrics/contacts/overview.php:63 dt-metrics/groups/overview.php:66
+#: dt-metrics/personal/overview.php:68
+#: dt-users/template-user-management.php:162
+msgid "Active Contacts"
+msgstr "활성화된 연락처"
+
+#: dt-metrics/combined/critical-path.php:269
+msgid "Baptisms"
+msgstr "세례"
+
+#: dt-metrics/combined/critical-path.php:298
+msgid "Baptizers"
+msgstr "세례자"
+
+#: dt-contacts/contacts-post-type.php:473 dt-metrics/metrics.php:75
+#: dt-metrics/personal/baptism-tree.php:26
+#: dt-metrics/personal/coaching-tree.php:26
+#: dt-metrics/personal/group-tree.php:25
+#: dt-metrics/personal/mapbox-contacts-area-map.php:31
+#: dt-metrics/personal/mapbox-contacts-cluster-map.php:31
+#: dt-metrics/personal/mapbox-contacts-point-map.php:31
+#: dt-metrics/personal/mapbox-groups-area-map.php:31
+#: dt-metrics/personal/mapbox-groups-cluster-map.php:31
+#: dt-metrics/personal/mapbox-groups-point-map.php:31
+#: dt-metrics/personal/overview.php:23
+msgid "Personal"
+msgstr "개인"
+
+#: dt-metrics/personal/overview.php:59
+msgid "My Overview"
+msgstr "내 상황"
+
+#: dt-metrics/contacts/overview.php:64 dt-metrics/groups/overview.php:67
+#: dt-metrics/personal/overview.php:60
+msgid "Waiting on Accept"
+msgstr "수락 대기중"
+
+#: dt-metrics/contacts/overview.php:65 dt-metrics/groups/overview.php:68
+#: dt-metrics/personal/overview.php:61
+msgid "Waiting on Update"
+msgstr "업데이트 대기중"
+
+#: dt-metrics/contacts/overview.php:66 dt-metrics/groups/overview.php:69
+#: dt-metrics/personal/overview.php:64 dt-metrics/personal/overview.php:69
+msgid "Total Groups"
+msgstr "총 그룹"
+
+#: dt-metrics/groups/overview.php:71 dt-metrics/groups/overview.php:78
+#: dt-metrics/personal/overview.php:65
+msgid "Group Types"
+msgstr "그룹 유형"
+
+#: dt-metrics/groups/overview.php:70 dt-metrics/personal/overview.php:66
+msgid "Group and Church Generations"
+msgstr "그룹 및 교회 세대"
+
+#: dt-metrics/personal/overview.php:67
+msgid "Lead Teams"
+msgstr "리더 팀"
+
+#: dt-metrics/personal/overview.php:70
+msgid "Follow-up of my active contacts"
+msgstr "내 활성화된 연락처 추적"
+
+#: dt-metrics/groups/overview.php:74 dt-metrics/personal/overview.php:71
+msgid "Active Group Health Metrics"
+msgstr "활성화된 그룹 건강 수치"
+
+#: dt-metrics/combined/critical-path.php:25
+#: dt-metrics/combined/hover-map.php:26
+#: dt-metrics/combined/locations-list.php:26 dt-metrics/metrics.php:78
+msgid "Project"
+msgstr "프로젝트"
+
+#: dt-metrics/contacts/overview.php:24 dt-metrics/groups/overview.php:24
+#: dt-metrics/personal/overview.php:22
+msgid "Overview"
+msgstr "개요"
+
+#: dt-metrics/contacts/baptism-tree.php:24
+msgid "Baptism Tree"
+msgstr "세례 지도"
+
+#: dt-metrics/contacts/coaching-tree.php:24
+msgid "Coaching Tree"
+msgstr "코칭 지도"
+
+#: dt-metrics/groups/overview.php:61
+msgid "Project Overview"
+msgstr "프로젝트 개요"
+
+#: dt-metrics/combined/critical-path.php:87
+msgid "Outreach"
+msgstr "봉사활동"
+
+#: dt-metrics/combined/critical-path.php:86
+msgid "Follow Up"
+msgstr "추적"
+
+#: dt-metrics/contacts/overview.php:62 dt-metrics/groups/overview.php:65
+msgid "All Contacts"
+msgstr "모든 연락처"
+
+#: dt-metrics/groups/tree.php:80 dt-metrics/personal/group-tree.php:81
+msgid "Group Generation Tree"
+msgstr "그룹 세대 지도"
+
+#: dt-metrics/contacts/baptism-tree.php:56
+msgid "Baptism Generation Tree"
+msgstr "세례 세대 지도"
+
+#: dt-metrics/contacts/coaching-tree.php:57
+#: dt-metrics/personal/coaching-tree.php:58
+msgid "Coaching Generation Tree"
+msgstr "코칭 세대 지도"
+
+#: dt-metrics/groups/overview.php:72
+msgid "Teams"
+msgstr "팀"
+
+#: dt-metrics/groups/overview.php:75
+msgid "groups"
+msgstr "그룹"
+
+#: dt-metrics/groups/overview.php:76
+msgid "generations"
+msgstr "세대"
+
+#: dt-users/template-user-management.php:63
+msgid "Multipliers"
+msgstr "증대 참여자"
+
+#: dt-metrics/metrics-workers.php:177
+msgid "Dispatchers"
+msgstr "담당자"
+
+#: dt-notifications/notifications-email.php:117
+msgid "Click here to view or reply"
+msgstr "여기를 클릭해 확인하거나 답변하세요"
+
+#: dt-notifications/notifications-email.php:123
+msgctxt "ex: Update on Contact #323"
+msgid "Update on %1$s #%2$s"
+msgstr "%1$s 에 #%2$s 업데이트"
+
+#: dt-notifications/notifications.php:751
+msgctxt "%s was created and assigned to you."
+msgid "%s was created and assigned to you."
+msgstr "%s 이/가 생성되었으며 당신에게 배정되었습니다."
+
+#: dt-notifications/notifications.php:759
+msgctxt "user1 assigned contact1 to user2."
+msgid "%1$s assigned %2$s to %3$s."
+msgstr "%1$s 이/가 %2$s 에서 %3$s 로 배정되었습니다."
+
+#: dt-notifications/notifications.php:762
+#: dt-notifications/notifications.php:769
+#: dt-notifications/notifications.php:776
+#: dt-notifications/notifications.php:780
+#: dt-notifications/notifications.php:790
+#: dt-notifications/notifications.php:797
+msgid "System"
+msgstr "시스템"
+
+#: dt-notifications/notifications.php:763
+msgctxt "User1 shared contact1 with you."
+msgid "%1$s shared %2$s with you."
+msgstr "%1$s 이/가 %2$s 을/를 당신과 공유합니다."
+
+#: dt-notifications/notifications.php:770
+msgctxt "User1 mentioned you on contact1 saying: test"
+msgid "%1$s mentioned you on %2$s saying: %3$s"
+msgstr "%1$s 이/가 당신을 %2$s 의 이하 메시지에서 언급했습니다: %3$s"
+
+#: dt-notifications/notifications.php:777
+msgctxt "User1 commented on contact1 saying: test"
+msgid "%1$s commented on %2$s saying: %3$s"
+msgstr "%1$s 이/가 %2$s 의 이하 메시지에 코멘트를 남겼습니다: %3$s"
+
+#: dt-notifications/notifications.php:781
+msgctxt "User1 subassigned contact1 to you."
+msgid "%1$s subassigned %2$s to you."
+msgstr "%1$s 이/가 당신에게 %2$s 을/를 추가로 배정했습니다."
+
+#: dt-notifications/notifications.php:791
+msgctxt "User1 added milestone Baptizing on contact1."
+msgid "%1$s added milestone %2$s on %3$s."
+msgstr "%1$s 이/가 마일스톤을 %2$s 에 %3$s 에 추가했습니다."
+
+#: dt-notifications/notifications.php:798
+msgctxt "User1 modified contact details on contact1."
+msgid "%1$s modified contact details on %2$s."
+msgstr "%1$s 이/가 %2$s 에 연락처 세부정보를 수정했습니다."
+
+#: dt-notifications/notifications.php:801
+msgctxt "User1 declined assignment on: contact1"
+msgid "%1$s declined assignment on: %2$s."
+msgstr "%1$s 이/가 다음 과제를 거절했습니다: %2$s."
+
+#: dt-people-groups/people-groups-post-type.php:129
+msgid "People Group"
+msgstr "사람 그룹"
+
+#: dt-people-groups/people-groups-post-type.php:279
+msgid "Add/Update People Group"
+msgstr "사람 그룹 추가/업데이트"
+
+#: dt-people-groups/people-groups-post-type.php:280
+msgid "People Group Details"
+msgstr "사람 그룹 세부정보"
+
+#: dt-people-groups/people-groups-post-type.php:587
+msgid "Enter the People Group title here"
+msgstr "사람 그룹 이름을 여기에 입력하세요"
+
+#: dt-users/users.php:62
+msgid "No permissions to assign"
+msgstr "배정할 권한 없음"
+
+#: dt-users/users.php:311
+msgid "Insufficient permissions"
+msgstr "권한 불충분함"
+
+#: dt-users/users.php:703
+msgid "Extra Disciple.Tools Information"
+msgstr "추가 제자. 도구 정보"
+
+#: dt-users/users.php:706
+msgid "Corresponds to Contact"
+msgstr "연락처 배정"
+
+#: dt-users/users.php:915
+msgid "View contact record"
+msgstr "연락 기록 보기"
+
+#: dt-workflows/update-required.php:73 dt-workflows/update-required.php:111
+msgid "Updated Needed"
+msgstr "업데이트 필요"
+
+#: functions.php:504
+msgid "Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:"
+msgstr "제자 도구 테마는 PHP 버전 7.0 이상을 필요로 합니다. 당신의 현재 버전은 다음과 같습니다:"
+
+#: functions.php:506
+msgid "Please upgrade PHP or uninstall this theme"
+msgstr "PHP를 업그레이드하거나 이 테마를 언인스톨하세요"
+
+#: header.php:65
+msgid "Javascript must be enabled for this site to function correctly."
+msgstr "이 사이트가 올바르게 작동하려면 자바스크립트를 허용해야 합니다."
+
+#: header.php:71
+msgid "You seem to be using an out-of-date web browser. Without the most up-to-date version of your browser, this may site may not function correctly. Please note that Internet Explorer is not supported."
+msgstr "유효 기간이 지난 웹 브라우저를 사용하고 계십니다. 브라우저를 최신 버전으로 사용하지 않으면 이 사이트가 정상적으로 작동하지 않을 수 있습니다. 인터넷 익스플로러는 지원되지 않음을 알려드립니다."
+
+#: header.php:73
+msgid "See what browser you are using."
+msgstr "어느 브라우저를 사용하고 있는지 확인하세요."
+
+#: single-contacts.php:71
+msgid "View Comments"
+msgstr "코멘트 보기"
+
+#: single-contacts.php:82
+msgid "This contact has possible duplicates."
+msgstr "이 연락처의 복사본이 존재하는 것으로 보입니다."
+
+#: single-contacts.php:84
+msgid "Go to duplicates"
+msgstr "복사본으로 가기"
+
+#: single-contacts.php:102
+msgid "Connections"
+msgstr "연결점"
+
+#: dt-assets/parts/modals/modal-help.php:80 single-contacts.php:179
+msgid "Progress"
+msgstr "진행"
+
+#: single-contacts.php:490 single-groups.php:447
+msgid "Create Tag"
+msgstr "태그 생성하기"
+
+#: single-contacts.php:495 single-contacts.php:497 single-groups.php:451
+msgid "Tag"
+msgstr "태그"
+
+#: single-contacts.php:506 single-groups.php:462
+msgid "Create and apply tag"
+msgstr "태그 생성하고 적용하기"
+
+#: dt-users/template-user-management.php:72 single-contacts.php:572
+#: single-contacts.php:575
+msgid "Display Name"
+msgstr "이름 표시하기"
+
+#: single-contacts.php:586
+msgid "Create user"
+msgstr "사용자 생성하기"
+
+#: single-contacts.php:599
+msgid "Link this contact to an existing user"
+msgstr "이 연락처를 이미 존재하는 사용자에게 연결하기"
+
+#: single-contacts.php:679
+msgid "Click merge to continue."
+msgstr "통합하기를 클릭해 계속 진행하세요."
+
+#: single-groups.php:50
+msgid "This group needs an update"
+msgstr "이 그룹에 업데이트가 필요합니다"
+
+#: dt-groups/groups-post-type.php:392 single-groups.php:84
+#: single-groups.php:414
+msgid "Member List"
+msgstr "그룹원 리스트"
+
+#: dt-groups/groups-post-type.php:362
+msgid "Parent Group"
+msgstr "부모 그룹"
+
+#: dt-groups/groups-post-type.php:370
+msgid "Peer Group"
+msgstr "동료 그룹"
+
+#: template-contacts-new.php:35 template-contacts-new.php:39
+msgid "Phone number"
+msgstr "전화번호"
+
+#: template-contacts-new.php:141 template-groups-new.php:47
+#: template-new-post.php:28
+msgid "Save and continue editing"
+msgstr "저장하고 편집 계속하기"
+
+#: template-merge-details.php:108
+msgid "Merge Duplicate Contacts"
+msgstr "복사된 연락처 통합하기"
+
+#: template-merge-details.php:109
+msgid "When you merge, the master record is updated with the values you choose, and relationships to other items are shifted to the master record"
+msgstr "통합을 선택하면 마스터 기록이 선택한 값으로 업데이트되며, 다른 항목과의 관계가 마스터 기록으로 이동합니다"
+
+#: template-merge-details.php:123 template-merge-details.php:132
+msgid "Status:"
+msgstr "상태:"
+
+#: template-merge-details.php:124 template-merge-details.php:133
+msgid "Created:"
+msgstr "생성됨:"
+
+#: template-merge-details.php:125 template-merge-details.php:134
+msgid "Select All"
+msgstr "전체 선택"
+
+#: template-merge-details.php:142
+msgid "Master Record"
+msgstr "마스터 기록"
+
+#: template-merge-details.php:147 template-merge-details.php:150
+msgid "Use as master"
+msgstr "마스터로 사용하기"
+
+#: template-notifications.php:49
+msgid "Unread"
+msgstr "읽지 않음"
+
+#: template-notifications.php:61
+msgid "Mark All"
+msgstr "모두 표시하기"
+
+#: dt-users/template-user-management.php:293 template-settings.php:44
+#: template-settings.php:308
+msgid "Availability"
+msgstr "가능함"
+
+#: template-settings.php:68
+msgid "Your Profile"
+msgstr "내 프로필"
+
+#: template-settings.php:81 template-settings.php:448
+msgid "Username"
+msgstr "사용자 이름"
+
+#: dt-users/user-management.php:155 template-settings.php:94
+#: template-settings.php:483
+msgid "Nickname (Display Name)"
+msgstr "별명 (보이는 이름)"
+
+#: template-settings.php:142
+msgid "Social"
+msgstr "소셜"
+
+#: template-settings.php:167
+msgid "Language"
+msgstr "언어"
+
+#: template-settings.php:173
+msgid "English"
+msgstr "영어"
+
+#: template-settings.php:177
+msgid "Biography"
+msgstr "자기소개"
+
+#: template-settings.php:369
+msgid "Type of Notification"
+msgstr "알림 유형"
+
+#: dt-contacts/contacts-post-type.php:477
+#: dt-core/admin/config-site-defaults.php:306
+msgid "Web"
+msgstr "웹"
+
+#: template-settings.php:382
+msgid "required"
+msgstr "필요함"
+
+#: template-settings.php:405
+msgid "Follow all contacts"
+msgstr "모든 연락처 팔로하기"
+
+#: template-settings.php:412
+msgid "Enable"
+msgstr "허용됨"
+
+#: template-settings.php:442
+msgid "Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+msgstr "제자 도구 시스템은 이미지를 저장하지 않습니다. 프로필 이미지는 Gravatar (글로벌 아바타)를 사용합니다. 개인 정보 보호를 위해 본인 사진을 사용하는 대신 만화, 추상적이거나 가명의 이미지로 자신을 표현하기를 권합니다."
+
+#: template-settings.php:443
+msgid "edit image on gravatar.com"
+msgstr "gravatar.com에서 이미지 수정하기"
+
+#: template-settings.php:449 template-settings.php:450
+msgid "Username cannot be changed"
+msgstr "사용자 이름을 변경할 수 없습니다"
+
+#: template-settings.php:110 template-settings.php:454
+msgid "System Email"
+msgstr "시스템 이메일"
+
+#: template-settings.php:455
+msgid "User email can be changed by site administrator."
+msgstr "사용자 이메일을 사이트 관리자가 변경할 수 있습니다."
+
+#: template-settings.php:462
+msgid "Password"
+msgstr "비밀번호"
+
+#: template-settings.php:463
+msgid "Use this email reset form to create a new password."
+msgstr "이 이메일 재설정 양식으로 새 비밀번호를 생성하세요."
+
+#: template-settings.php:465
+msgid "go to password change form"
+msgstr "비밀번호 재설정 양식으로 이동하기"
+
+#: template-settings.php:472
+msgid "First Name"
+msgstr "이름"
+
+#: template-settings.php:478
+msgid "Last Name"
+msgstr "성"
+
+#: template-settings.php:507
+msgid "Description"
+msgstr "설명"
+
+#: dt-notifications/notifications-email.php:118
+msgid "Do not reply directly to this email."
+msgstr "이 이메일에 회신하지 마세요."
+
+#: dt-core/admin/config-site-defaults.php:659
+msgid "Reset password"
+msgstr "비밀번호 재설정"
+
+#: dt-metrics/contacts/sources.php:91
+msgid "Showing contacts created during"
+msgstr "다음 중 생성한 연락처 보기"
+
+#: dt-metrics/contacts/sources.php:92
+msgid "All contacts, by source and status"
+msgstr "수집 장소 및 상태로 분류한 모든 연락처"
+
+#: dt-metrics/contacts/sources.php:93
+msgid "A contact can come from more than one source."
+msgstr "연락처는 하나 이상의 경로로 수집되었을 수 있습니다."
+
+#: dt-metrics/contacts/sources.php:96
+msgid "Active contacts, by source and faith milestone"
+msgstr "수집 장소 및 믿음 마일스톤으로 분류한 활성화된 연락처"
+
+#: dt-metrics/combined/critical-path.php:89
+msgid "Filter Critical Path fields"
+msgstr "최상 경로 영역 필터링"
+
+#: dt-metrics/combined/critical-path.php:90
+msgid "Movement Tracking"
+msgstr "이동 추적"
+
+#: dt-metrics/contacts/milestones.php:67 dt-metrics/contacts/seeker-path.php:63
+#: dt-metrics/contacts/sources.php:87
+msgid "Filter contacts to date range:"
+msgstr "연락처를 기간 내로 한정해 필터링:"
+
+#: dt-metrics/contacts/milestones.php:69 dt-metrics/contacts/seeker-path.php:65
+#: dt-metrics/contacts/sources.php:89
+msgid "Filter to date range"
+msgstr "기간 내로 한정해 필터링"
+
+#: dt-metrics/contacts/sources.php:94
+msgid "Active contacts, by source and seeker path"
+msgstr "수집 장소 및 구도자 경로로 분류한 활성화된 연락처"
+
+#: dt-metrics/contacts/sources.php:98
+msgid "A contact can come from more than one source, and it can have more than one faith milestone at the same time."
+msgstr "연락처는 하나 이상의 장소에서 수집되었을 수 있으며, 하나 이상의 믿음 마일스톤을 가질 수 있습니다."
+
+#: dt-metrics/groups/overview.php:77 dt-metrics/personal/overview.php:76
+msgid "Generation"
+msgstr "세대"
+
+#: dt-users/users.php:716
+msgid "Add the name of the contact record this user corresponds to."
+msgstr "이 사용자에게 배정된 연락처 기록의 이름을 추가하세요."
+
+#: dt-users/users.php:717
+msgid "Learn more."
+msgstr "더 알아보기."
+
+#: dt-users/users.php:833
+msgid ""
+"Hi,\n"
+"\n"
+"You've been invited to join '%1$s' at\n"
+"%2$s with the role of %3$s.\n"
+"\n"
+"Please click the following link to confirm the invite:\n"
+"%4$s"
+msgstr ""
+"안녕하세요,\n"
+"\n"
+"'%1$s'를 %2$s 에 %3$s 역할로 참여하도록 초대받으셨습니다.\n"
+"\n"
+"다음 링크를 클릭해 수락하고 초대하세요:\n"
+"%4$s"
+
+#. translators: Joining confirmation notification email subject. %s: Site title
+#: dt-users/users.php:843
+msgid "[%s] Joining Confirmation"
+msgstr "[%s] 참여 확인"
+
+#: dt-core/admin/config-site-defaults.php:660
+msgid "Lost your password"
+msgstr "비밀번호를 잃었습니다"
+
+#: dt-mapping/columns/add-churches-column.php:57
+#: dt-metrics/combined/hover-map.php:217
+#: dt-metrics/combined/locations-list.php:210
+msgid "Churches"
+msgstr "교회"
+
+#: dt-mapping/mapping-module-config.php:76 dt-mapping/mapping.php:147
+#: dt-mapping/mapping.php:302 dt-metrics/contacts/mapbox-area-map.php:56
+#: dt-metrics/contacts/mapbox-cluster-map.php:55
+#: dt-metrics/contacts/mapbox-point-map.php:55
+#: dt-metrics/groups/mapbox-area-map.php:54
+#: dt-metrics/groups/mapbox-cluster-map.php:57
+#: dt-metrics/groups/mapbox-point-map.php:54
+#: dt-metrics/personal/mapbox-contacts-area-map.php:57
+#: dt-metrics/personal/mapbox-contacts-cluster-map.php:56
+#: dt-metrics/personal/mapbox-contacts-point-map.php:55
+#: dt-metrics/personal/mapbox-groups-area-map.php:57
+#: dt-metrics/personal/mapbox-groups-cluster-map.php:56
+#: dt-metrics/personal/mapbox-groups-point-map.php:55
+msgid "Mapping"
+msgstr "매핑"
+
+#: dt-mapping/mapping.php:304 dt-metrics/contacts/mapbox-area-map.php:58
+#: dt-metrics/contacts/mapbox-cluster-map.php:57
+#: dt-metrics/contacts/mapbox-point-map.php:57
+#: dt-metrics/groups/mapbox-area-map.php:56
+#: dt-metrics/groups/mapbox-cluster-map.php:59
+#: dt-metrics/groups/mapbox-point-map.php:56
+#: dt-metrics/personal/mapbox-contacts-area-map.php:59
+#: dt-metrics/personal/mapbox-contacts-cluster-map.php:58
+#: dt-metrics/personal/mapbox-contacts-point-map.php:57
+#: dt-metrics/personal/mapbox-groups-area-map.php:59
+#: dt-metrics/personal/mapbox-groups-cluster-map.php:58
+#: dt-metrics/personal/mapbox-groups-point-map.php:57
+msgid "Population"
+msgstr "인구"
+
+#: dt-mapping/mapping.php:150
+msgid "List"
+msgstr "목록"
+
+#: dt-mapping/mapping.php:606 dt-mapping/mapping.php:687
+#: dt-metrics/contacts/mapbox-area-map.php:64
+#: dt-metrics/contacts/mapbox-cluster-map.php:63
+#: dt-metrics/contacts/mapbox-point-map.php:63
+#: dt-metrics/groups/mapbox-area-map.php:62
+#: dt-metrics/groups/mapbox-cluster-map.php:65
+#: dt-metrics/groups/mapbox-point-map.php:62
+#: dt-metrics/personal/mapbox-contacts-area-map.php:65
+#: dt-metrics/personal/mapbox-contacts-cluster-map.php:64
+#: dt-metrics/personal/mapbox-contacts-point-map.php:63
+#: dt-metrics/personal/mapbox-groups-area-map.php:65
+#: dt-metrics/personal/mapbox-groups-cluster-map.php:64
+#: dt-metrics/personal/mapbox-groups-point-map.php:63
+#: dt-users/mapbox-coverage-map.php:82
+msgid "World"
+msgstr "세계"
+
+#: dt-posts/custom-post-type.php:152
+msgid "New %s"
+msgstr "새 %s"
+
+#: dt-posts/posts.php:442 dt-posts/posts.php:451
+msgctxt "Location1 added to locations"
+msgid "%1$s added to locations"
+msgstr "%1$s이(가) 위치에 추가됨"
+
+#: single-groups.php:273
+msgid "Four Fields"
+msgstr "4개 항목"
+
+#: dt-core/admin/config-site-defaults.php:695
+msgid "Weekly"
+msgstr "매주"
+
+#: dt-mapping/mapping.php:303 dt-metrics/contacts/mapbox-area-map.php:57
+#: dt-metrics/contacts/mapbox-cluster-map.php:56
+#: dt-metrics/contacts/mapbox-point-map.php:56
+#: dt-metrics/groups/mapbox-area-map.php:55
+#: dt-metrics/groups/mapbox-cluster-map.php:58
+#: dt-metrics/groups/mapbox-point-map.php:55
+#: dt-metrics/personal/mapbox-contacts-area-map.php:58
+#: dt-metrics/personal/mapbox-contacts-cluster-map.php:57
+#: dt-metrics/personal/mapbox-contacts-point-map.php:56
+#: dt-metrics/personal/mapbox-groups-area-map.php:58
+#: dt-metrics/personal/mapbox-groups-cluster-map.php:57
+#: dt-metrics/personal/mapbox-groups-point-map.php:56
+msgid "Refresh Cached Data"
+msgstr "캐시 데이터 새로고침"
+
+#: dt-metrics/contacts/overview.php:68 dt-metrics/groups/overview.php:73
+msgid "Follow-up of all active contacts"
+msgstr "모든 활성화 연락자에 대한 후속 조치"
+
+#: dt-notifications/notifications.php:794
+msgctxt "@Multiplier1, an update is requested on contact1."
+msgid "@%1$s, an update is requested on %2$s."
+msgstr "@%1$s 님, %2$s에 업데이트가 요청됩니다."
+
+#: dt-core/admin/config-site-defaults.php:534
+msgid "Accepting new contacts"
+msgstr "새 연락자 수락"
+
+#: dt-core/admin/config-site-defaults.php:538
+msgid "I'm only investing in existing contacts"
+msgstr "기존 연락자만 관리하고 있습니다"
+
+#: dt-core/admin/config-site-defaults.php:542
+msgid "I have too many contacts"
+msgstr "연락자가 너무 많습니다"
+
+#: template-settings.php:311
+msgid "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
+msgstr "파견자가 귀하께서 새 연락자를 받을 수 있는 상태인지 알 수 있도록 여행 또는 부재 날짜를 설정하세요"
+
+#: template-settings.php:315
+msgid "Schedule Travel or Dates Unavailable"
+msgstr "여행 또는 부재 날짜 설정"
+
+#: template-settings.php:332
+msgid "Add Unavailable dates"
+msgstr "부재 날짜 추가"
+
+#: template-settings.php:346
+msgid "No Travel Scheduled"
+msgstr "예정된 여행 없음"
+
+#: template-settings.php:407
+msgid "You will receive a notification for any update that happens in the system."
+msgstr "시스템에 업데이트 발생 시 알림을 받게 됩니다."
+
+#: dt-assets/parts/modals/modal-help.php:353 template-contacts-new.php:132
+#: template-contacts-new.php:136
+msgid "Initial Comment"
+msgstr "최초 댓글"
+
+#: dt-metrics/combined/critical-path.php:222
+msgid "Any new created contact"
+msgstr "새로 생성된 모든 연락자"
+
+#: dt-metrics/combined/critical-path.php:232
+msgid "Number of contacts assigned for a face-to-face visit"
+msgstr "대면 방문에 배정된 연락자 수"
+
+#: dt-metrics/combined/critical-path.php:241
+msgid "Number of contacts that had the active status"
+msgstr "활성화 상태인 연락자 수"
+
+#: dt-metrics/combined/critical-path.php:251
+msgid "Number of contacts on %s at the end of the time range"
+msgstr "시간 범위 종료 시 %s의 연락자 수"
+
+#: dt-metrics/combined/critical-path.php:253
+msgid "Number of contacts where %s was set on the seeker path"
+msgstr "%S이(가) 구도자 경로에 설정된 연락자 수"
+
+#: dt-metrics/combined/critical-path.php:270
+msgid "Number of baptized contact with a baptism date in date range and baptized by connection"
+msgstr "세례 날짜가 날짜 범위 이내이며 연결을 통해 세례받은 연락자 수"
+
+#: dt-metrics/combined/critical-path.php:287
+msgid "Generation %s Baptisms"
+msgstr "세대 %s 세례"
+
+#: dt-metrics/combined/critical-path.php:288
+msgid "Number of generation %s baptisms"
+msgstr "세대 %s 세례 수"
+
+#: dt-metrics/combined/critical-path.php:299
+msgid "Number of contacts or users who have baptized a contact"
+msgstr "연락자에게 세례한 연락자 또는 사용자 수"
+
+#: dt-metrics/combined/critical-path.php:331
+msgid "Generation %s Churches"
+msgstr "세대 %s 교회"
+
+#: dt-metrics/combined/critical-path.php:332
+msgid "Number of generation %s churches at the end of the time range"
+msgstr "시간 범위 종료 시 세대 %s 교회 수"
+
+#: dt-metrics/combined/critical-path.php:343
+msgid "Number of contacts or users who have started a church and are marked as the church coach"
+msgstr "예배를 시작했고 교회 교사로 표시된 연락자나 사용자 수"
+
+#: dt-notifications/notifications.php:753
+msgctxt "You have been assigned: contact1."
+msgid "You have been assigned: %1$s."
+msgstr "배정됨: %1$s"
+
+#: dt-groups/groups-post-type.php:378
+msgid "Child Group"
+msgstr "아동 그룹"
+
+#: archive-contacts.php:65
+msgid "Contacts Filters"
+msgstr "연락자 필터"
+
+#: archive-groups.php:61
+msgid "Groups Filters"
+msgstr "그룹 필터"
+
+#: dt-assets/parts/modals/modal-help.php:15
+msgid "Contact Details"
+msgstr "연락자 세부정보"
+
+#: dt-assets/parts/content-contacts.php:9
+msgid "Contacts List"
+msgstr "연락자 목록"
+
+#: dt-assets/parts/content-groups.php:9
+msgid "Groups List"
+msgstr "그룹 목록"
+
+#: dt-assets/parts/modals/modal-help.php:150
+msgid "Group Details"
+msgstr "그룹 세부정보"
+
+#: dt-groups/groups-post-type.php:616
+msgid "The address where this group meets. (e.g., 124 Market St or “Jon’s Famous Coffee Shop)."
+msgstr "이 그룹이 만나는 곳의 주소 (예: 124 마켓 스트리트 또는 존스 페이머스 커피숍)"
+
+#: dt-contacts/contacts-post-type.php:208
+msgid "Not Ready"
+msgstr "준비되지 않음"
+
+#: template-groups-new.php:24
+msgid "Name of Group"
+msgstr "그룹 이름"
+
+#: archive-contacts.php:27 archive-contacts.php:250
+msgid "Filter Contacts"
+msgstr "연락자 필터"
+
+#: archive-contacts.php:211 archive-groups.php:195 archive-template.php:242
+msgctxt "The start date of a date range"
+msgid "Range Start"
+msgstr "범위 시작"
+
+#: archive-contacts.php:221 archive-groups.php:205 archive-template.php:252
+msgctxt "The end date of a date range"
+msgid "Range End"
+msgstr "범위 끝"
+
+#: dt-assets/functions/enqueue-scripts.php:337
+msgid "Locations you are responsible for"
+msgstr "담당 위치"
+
+#: archive-groups.php:22 dt-assets/parts/modals/modal-help.php:383
+#: template-groups-new.php:19
+msgid "Create New Group"
+msgstr "새 그룹 생성"
+
+#: dt-contacts/contacts-post-type.php:204
+msgctxt "Contact Status field description"
+msgid "The contact is new in the system."
+msgstr "시스템의 신규 연락자입니다."
+
+#: dt-contacts/contacts-post-type.php:209
+msgctxt "Contact Status field description"
+msgid "There is not enough information to move forward with the contact at this time."
+msgstr "현재 해당 연락자와 계속 연락하는 데 필요한 정보가 부족합니다."
+
+#: dt-contacts/contacts-post-type.php:214
+msgctxt "Contact Status field description"
+msgid "This contact needs to be assigned to a multiplier."
+msgstr "이 연락자는 배가자에게 배정되어야 합니다."
+
+#: dt-contacts/contacts-post-type.php:219
+msgctxt "Contact Status field description"
+msgid "The contact has been assigned to someone, but has not yet been accepted by that person."
+msgstr "해당 연락자는 누군가에게 배정되었으나, 아직 수락되지 않았습니다."
+
+#: dt-contacts/contacts-post-type.php:224
+msgctxt "Contact Status field description"
+msgid "The contact is progressing and/or continually being updated."
+msgstr "해당 연락자는 현재 연락 중이거나 계속 갱신되는 중입니다."
+
+#: dt-contacts/contacts-post-type.php:229
+msgctxt "Contact Status field description"
+msgid "This contact is currently on hold (i.e. on vacation or not responding)."
+msgstr "이 연락자는 현재 보류 중입니다. (예: 휴가 중이거나 응답하지 않음)"
+
+#: dt-contacts/contacts-post-type.php:234
+msgctxt "Contact Status field description"
+msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
+msgstr "이 연락자는 계속 연락하길 원하지 않는다고 알렸거나 귀하가 해당 연락자와 계속 연락하지 않기로 결정했습니다."
+
+#: dt-contacts/contacts-post-type.php:245
+msgctxt "Seeker Path field description"
+msgid "Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
+msgstr "해당 연락자와의 진행 상황을 설정하세요. 이 단계는 연락자가 연락을 계속할 수 있도록 특정한 순서로 발생합니다."
+
+#: dt-contacts/contacts-post-type.php:426
+msgctxt "Reason Paused label"
+msgid "Contact on vacation"
+msgstr "휴가 중인 연락자"
+
+#: dt-contacts/contacts-post-type.php:427
+msgctxt "Reason Paused label"
+msgid "Contact not responding"
+msgstr "응답하지 않는 연락자"
+
+#: dt-contacts/contacts-post-type.php:428
+msgctxt "Reason Paused label"
+msgid "Contact not available"
+msgstr "부재인 연락자"
+
+#: dt-contacts/contacts-post-type.php:429
+msgctxt "Reason Paused label"
+msgid "Contact has little interest/hunger"
+msgstr "연락자가 관심이나 의욕이 적음"
+
+#: dt-contacts/contacts-post-type.php:430
+msgctxt "Reason Paused label"
+msgid "Contact shows no initiative"
+msgstr "연락자가 주도적이지 않음"
+
+#: dt-contacts/contacts-post-type.php:431
+msgctxt "Reason Paused label"
+msgid "Contact has questionable motives"
+msgstr "연락자가 의심스러운 동기를 가지고 있음"
+
+#: dt-contacts/contacts-post-type.php:432
+msgctxt "Reason Paused label"
+msgid "Ball is in the contact's court"
+msgstr "연락자에게 결정권이 있음"
+
+#: dt-contacts/contacts-post-type.php:433
+msgctxt "Reason Paused label"
+msgid "We want to see if/how the contact responds to automated text messages"
+msgstr "연락자가 자동 문자 메시지에 어떻게 응답하는지 확인하고자 합니다."
+
+#: dt-contacts/contacts-post-type.php:445
+msgctxt "Reason Closed label"
+msgid "Duplicate"
+msgstr "중복"
+
+#: dt-contacts/contacts-post-type.php:446
+msgctxt "Reason Closed label"
+msgid "Insufficient contact info"
+msgstr "충분하지 않은 연락자 정보"
+
+#: dt-contacts/contacts-post-type.php:447
+msgctxt "Reason Closed label"
+msgid "Denies submitting contact request"
+msgstr "연락처 제출 요청 거부"
+
+#: dt-contacts/contacts-post-type.php:449
+msgctxt "Reason Closed label"
+msgid "Only wants to argue or debate"
+msgstr "논의나 토론만을 원함"
+
+#: dt-contacts/contacts-post-type.php:450
+msgctxt "Reason Closed label"
+msgid "Just wanted media or book"
+msgstr "미디어나 책만을 원함"
+
+#: dt-contacts/contacts-post-type.php:451
+msgctxt "Reason Closed label"
+msgid "No longer interested"
+msgstr "더 이상 관심 없음"
+
+#: dt-contacts/contacts-post-type.php:452
+msgctxt "Reason Closed label"
+msgid "No longer responding"
+msgstr "더 이상 응답하지 않음"
+
+#: dt-contacts/contacts-post-type.php:453
+msgctxt "Reason Closed label"
+msgid "Already in church or connected with others"
+msgstr "이미 교회에 다니고 있거나 다른 사람과 연락 중임"
+
+#: dt-contacts/contacts-post-type.php:454
+msgctxt "Reason Closed label"
+msgid "Transferred contact to partner"
+msgstr "파트너에 연락자 이전함"
+
+#: dt-contacts/contacts-post-type.php:455
+msgctxt "Reason Closed label"
+msgid "Martyred"
+msgstr "순교함"
+
+#: dt-contacts/contacts-post-type.php:456
+msgctxt "Reason Closed label"
+msgid "Moved or relocated"
+msgstr "이사했거나 위치 변경됨"
+
+#: dt-contacts/contacts-post-type.php:458
+msgctxt "Reason Closed label"
+msgid "Unknown"
+msgstr "알 수 없음"
+
+#: dt-core/admin/config-site-defaults.php:447
+msgid "Personal Phone"
+msgstr "개인 휴대전화"
+
+#: dt-core/admin/config-site-defaults.php:450
+msgid "Personal phone is private to the team, not for distribution."
+msgstr "개인 휴대전화는 팀에 비공개되며, 배부되지 않습니다."
+
+#: dt-core/admin/config-site-defaults.php:454
+msgid "Personal Email"
+msgstr "개인 이메일"
+
+#: dt-core/admin/config-site-defaults.php:457
+msgid "Personal email is private to the team, not for distribution."
+msgstr "개인 이메일은 팀에 비공개되며, 배부되지 않습니다."
+
+#: dt-core/admin/config-site-defaults.php:461
+msgid "Personal Address"
+msgstr "개인 주소"
+
+#: dt-core/admin/config-site-defaults.php:464
+msgid "Personal address is private to the team, not for distribution."
+msgstr "개인 주소는 팀에 비공개되며, 배부되지 않습니다."
+
+#: dt-core/admin/config-site-defaults.php:468
+msgid "Work Phone"
+msgstr "활동 휴대전화"
+
+#: dt-core/admin/config-site-defaults.php:471
+msgid "Work phone is for distribution to contacts and seekers."
+msgstr "활동 휴대전화는 연락자와 구도자에게 배부됩니다."
+
+#: dt-core/admin/config-site-defaults.php:475
+msgid "Work Email"
+msgstr "활동 이메일"
+
+#: dt-core/admin/config-site-defaults.php:478
+msgid "Work email is for distribution to contacts and seekers."
+msgstr "활동 이메일은 연락자와 구도자에게 배부됩니다."
+
+#: dt-core/admin/config-site-defaults.php:482
+msgid "Work Facebook"
+msgstr "활동 Facebook"
+
+#: dt-core/admin/config-site-defaults.php:485
+msgid "Work Facebook is for distribution to contacts and seekers."
+msgstr "활동 Facebook은 연락자와 구도자에게 배부됩니다."
+
+#: dt-core/admin/config-site-defaults.php:489
+msgid "Work WhatsApp"
+msgstr "활동 WhatsApp"
+
+#: dt-core/admin/config-site-defaults.php:492
+msgid "Work WhatsApp is for distribution to contacts and seekers."
+msgstr "활동 WhatsApp은 연락자와 구도자에게 배부됩니다."
+
+#: dt-contacts/contacts-post-type.php:489
+msgid "Transfer"
+msgstr "이전"
+
+#: dt-groups/groups-post-type.php:180
+msgctxt "field description"
+msgid "Set the current status of the group."
+msgstr "그룹의 현재 상태를 설정하세요."
+
+#: dt-groups/groups-post-type.php:185
+msgctxt "field description"
+msgid "The group is no longer meeting."
+msgstr "해당 그룹은 더 이상 만나지 않습니다."
+
+#: dt-groups/groups-post-type.php:190
+msgctxt "field description"
+msgid "The group is actively meeting."
+msgstr "해당 그룹은 활발히 만나고 있습니다."
+
+#: dt-posts/posts.php:439 dt-posts/posts.php:448
+msgctxt "Location1 removed from locations"
+msgid "%1$s removed from locations"
+msgstr "%1$s이(가) 위치에서 제거됨"
+
+#: dt-posts/posts.php:472
+msgctxt "message"
+msgid "verified"
+msgstr "인증됨"
+
+#: dt-posts/posts.php:472
+msgctxt "message"
+msgid "not verified"
+msgstr "인증되지 않음"
+
+#: dt-posts/posts.php:475
+msgctxt "message"
+msgid "invalidated"
+msgstr "무효화됨"
+
+#: dt-posts/posts.php:475
+msgctxt "message"
+msgid "not invalidated"
+msgstr "무효화되지 않음"
+
+#: dt-posts/posts.php:498
+msgctxt "message"
+msgid "Name changed to: %s"
+msgstr "이름이 다음으로 변경됨: %s"
+
+#: dt-posts/posts.php:500
+msgctxt "message"
+msgid "Created from Demo Plugin"
+msgstr "데모 플러그인으로 생성됨"
+
+#: dt-posts/posts.php:507
+msgctxt "message"
+msgid "%s declined assignment"
+msgstr "%s 님이 배정을 거부함"
+
+#: dt-posts/posts.php:507 dt-posts/posts.php:510
+msgctxt "message"
+msgid "A user"
+msgstr "사용자"
+
+#: dt-posts/posts.php:510
+msgctxt "message"
+msgid "%s accepted assignment"
+msgstr "%s 님이 배정을 수락함"
+
+#: dt-posts/posts.php:515
+msgctxt "message"
+msgid "Shared with %s"
+msgstr "%s와(과) 공유됨"
+
+#: dt-posts/posts.php:517
+msgctxt "message"
+msgid "Unshared with %s"
+msgstr "%s와(과) 공유되지 않음"
+
+#: dt-posts/posts.php:536
+msgctxt "message"
+msgid "You do not have access to these %s"
+msgstr "%s에 접근할 수 없습니다"
+
+#: dt-assets/parts/loop-activity-comment.php:69 single-contacts.php:56
+msgid "Quick Actions"
+msgstr "빠른 동작"
+
+#: archive-contacts.php:34 archive-contacts.php:55
+msgctxt "input field placeholder"
+msgid "Search Contacts"
+msgstr "연락자 검색"
+
+#: archive-contacts.php:166 archive-groups.php:49 archive-groups.php:157
+#: archive-template.php:203
+msgctxt "input field placeholder"
+msgid "Type to search"
+msgstr "검색할 유형"
+
+#: archive-groups.php:29
+msgctxt "input field placeholder"
+msgid "Search Groups"
+msgstr "그룹 검색"
+
+#: dt-assets/parts/contact-details.php:138 dt-assets/parts/group-details.php:78
+#: dt-assets/parts/modals/modal-share.php:27 single-contacts.php:615
+msgctxt "input field placeholder"
+msgid "Search Users"
+msgstr "사용자 검색"
+
+#: dt-assets/parts/contact-details.php:175
+#: dt-assets/parts/group-details.php:106 single-contacts.php:156
+#: single-contacts.php:531 single-contacts.php:663
+msgctxt "input field placeholder"
+msgid "Search multipliers and contacts"
+msgstr "배가자 및 연락자 검색"
+
+#: dt-assets/parts/loop-activity-comment.php:25
+msgctxt "input field placeholder"
+msgid "Write your comment or note here"
+msgstr "여기에 댓글이나 메모를 남기세요"
+
+#: dt-assets/parts/modals/modal-new-group.php:9 template-contacts-new.php:29
+#: template-groups-new.php:29 template-new-post.php:24
+msgctxt "input field placeholder"
+msgid "Name"
+msgstr "이름"
+
+#: archive-template.php:31 archive-template.php:52
+#: dt-assets/parts/contact-details.php:429
+#: dt-assets/parts/contact-details.php:467
+#: dt-assets/parts/contact-details.php:489
+#: dt-assets/parts/group-details.php:282 dt-contacts/contacts-post-type.php:129
+#: dt-contacts/contacts-template.php:124 dt-contacts/contacts-template.php:140
+#: dt-groups/groups-post-type.php:118
+#: dt-people-groups/people-groups-post-type.php:131
+#: dt-posts/custom-post-type.php:18 single-contacts.php:126
+#: single-contacts.php:356 single-groups.php:147 single-groups.php:163
+#: single-groups.php:179 single-groups.php:423 template-contacts-new.php:99
+#: template-settings.php:272
+msgctxt "Search 'something'"
+msgid "Search %s"
+msgstr "%s 검색"
+
+#: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
+msgid "This is displaying only the contacts with an 'active' status right now."
+msgstr "현재 '활성화' 상태인 연락자만 표시합니다."
+
+#: dt-posts/posts.php:398
+msgctxt "field1 changed to 'text'"
+msgid "%1$s changed to %2$s"
+msgstr "%1$s이(가) %2$s(으)로 변경됨"
+
+#: single-contacts.php:491
+msgid "Create a tag and apply it to this contact."
+msgstr "태그를 생성하고 이 연락자에 적용하세요."
+
+#: single-contacts.php:517
+msgid "Who was this contact baptized by and when?"
+msgstr "이 연락자가 누구에게, 언제 세례받았습니까?"
+
+#: single-contacts.php:556
+msgctxt "Make user modal"
+msgid "Make User From Contact"
+msgstr "연락자로 사용자 생성"
+
+#: single-contacts.php:559
+msgctxt "Make user modal"
+msgid "This contact is already connected to a user."
+msgstr "이 연락자는 이미 사용자에게 연결되어 있습니다."
+
+#: single-contacts.php:562
+msgctxt "Make user modal"
+msgid "This will invite this contact to become a user of this system. By default, they will be given the role of a 'multiplier'."
+msgstr "이 연락자를 이 시스템의 사용자로 초대하게 됩니다. 해당 사용자는 자동으로 '배가자'의 역할을 맡게 됩니다."
+
+#: single-contacts.php:563
+msgctxt "Make user modal"
+msgid "In the fields below, enter their email address and a 'Display Name' which they can change later."
+msgstr "아래 항목에서 이메일 주소와 '표시 이름'을 입력해 주세요. 표시 이름은 나중에 변경할 수 있습니다."
+
+#: single-contacts.php:602
+msgid "This contact already represents a user."
+msgstr "이 연락자는 이미 한 명의 사용자를 대표합니다."
+
+#: single-contacts.php:606
+msgctxt "Step 1 of link user"
+msgid "To link to an existing user, first, find the user using the field below."
+msgstr "기존 사용자에게 연결하려면 먼저 아래 항목을 사용하는 사용자를 찾으세요."
+
+#: single-contacts.php:630
+msgctxt "Step 2 of link user"
+msgid "To finish the linking, merge this contact with the existing user details."
+msgstr "연결을 완료하려면 이 연락자와 기존 사용자 세부정보를 병합하세요."
+
+#: single-contacts.php:653
+msgid "Merge Contact"
+msgstr "연락자 병합"
+
+#: single-contacts.php:654
+msgid "Merge this contact with another contact."
+msgstr "이 연락처를 다른 연락처와 병합합니다."
+
+#: single-contacts.php:678
+msgctxt "added to the end of a sentence"
+msgid "selected."
+msgstr "선택했습니다."
+
+#: single-groups.php:412
+msgctxt "Add members modal"
+msgid "Add members from existing contacts"
+msgstr "기존 연락처에서 멤버 추가"
+
+#: dt-people-groups/people-groups-post-type.php:281
+msgid "Translations"
+msgstr "번역"
+
+#: dt-posts/posts.php:300
+msgctxt "No longer coached by contact1"
+msgid "No longer coached by %s"
+msgstr "더는 %s의 코치를 받지 않습니다"
+
+#: dt-posts/posts.php:308
+msgctxt "No longer sub-assigned on contact1"
+msgid "No longer sub-assigned on %s"
+msgstr "더는 %s에 하위 할당되지 않습니다"
+
+#: single-groups.php:97
+msgid "To add new members, click on 'Create' or 'Select'."
+msgstr "새 멤버를 추가하려면, '생성' 또는 '선택'을 클릭하세요"
+
+#: archive-template.php:27 archive-template.php:60
+msgid "Filters"
+msgstr "필터"
+
+#: archive-template.php:82
+msgid "Records List"
+msgstr "기록 목록"
+
+#: archive-template.php:136
+msgid "Load More"
+msgstr "더 불러오기"
+
+#: archive-contacts.php:109 archive-groups.php:101 archive-template.php:148
+msgid "Filter Name"
+msgstr "필터 이름"
+
+#: archive-contacts.php:245 archive-groups.php:229 archive-template.php:276
+#: dt-assets/parts/contact-details.php:547
+#: dt-assets/parts/group-details.php:341
+#: dt-assets/parts/modals/modal-filters.php:9
+#: dt-assets/parts/modals/modal-filters.php:28
+#: dt-assets/parts/modals/modal-new-contact.php:14
+#: dt-assets/parts/modals/modal-new-group.php:14 single-contacts.php:416
+#: single-contacts.php:448 single-contacts.php:479 single-contacts.php:503
+#: single-contacts.php:583 single-contacts.php:637 single-contacts.php:684
+#: single-groups.php:459 template-contacts-new.php:140
+#: template-groups-new.php:46 template-merge-details.php:99
+#: template-merge-details.php:118 template-merge-details.php:129
+#: template-merge-details.php:166
+msgid "Cancel"
+msgstr "취소"
+
+#: archive-template.php:281
+msgid "Filter Records"
+msgstr "필터 기록"
+
+#: dt-assets/functions/details-bar.php:74
+#: dt-assets/functions/details-bar.php:140
+#: dt-assets/parts/modals/modal-tasks.php:7
+#: dt-contacts/contacts-post-type.php:708 dt-groups/groups-post-type.php:442
+msgid "Tasks"
+msgstr "작업"
+
+#: dt-assets/functions/enqueue-scripts.php:121
+msgctxt "Dates"
+msgid "January"
+msgstr "1월"
+
+#: dt-assets/functions/enqueue-scripts.php:122
+msgctxt "Dates"
+msgid "February"
+msgstr "2월"
+
+#: dt-assets/functions/enqueue-scripts.php:123
+msgctxt "Dates"
+msgid "March"
+msgstr "3월"
+
+#: dt-assets/functions/enqueue-scripts.php:124
+msgctxt "Dates"
+msgid "April"
+msgstr "4월"
+
+#: dt-assets/functions/enqueue-scripts.php:125
+msgctxt "Dates"
+msgid "May"
+msgstr "5월"
+
+#: dt-assets/functions/enqueue-scripts.php:126
+msgctxt "Dates"
+msgid "June"
+msgstr "6월"
+
+#: dt-assets/functions/enqueue-scripts.php:127
+msgctxt "Dates"
+msgid "July"
+msgstr "7월"
+
+#: dt-assets/functions/enqueue-scripts.php:128
+msgctxt "Dates"
+msgid "August"
+msgstr "8월"
+
+#: dt-assets/functions/enqueue-scripts.php:129
+msgctxt "Dates"
+msgid "September"
+msgstr "9월"
+
+#: dt-assets/functions/enqueue-scripts.php:130
+msgctxt "Dates"
+msgid "October"
+msgstr "10월"
+
+#: dt-assets/functions/enqueue-scripts.php:131
+msgctxt "Dates"
+msgid "November"
+msgstr "11월"
+
+#: dt-assets/functions/enqueue-scripts.php:132
+msgctxt "Dates"
+msgid "December"
+msgstr "12월"
+
+#: dt-assets/functions/enqueue-scripts.php:134
+msgid "Regions of Focus"
+msgstr "초점 지역"
+
+#: dt-assets/functions/enqueue-scripts.php:135
+msgid "All Locations"
+msgstr "모든 위치"
+
+#: dt-assets/functions/enqueue-scripts.php:136
+msgid "Used Locations"
+msgstr "사용한 위치"
+
+#: dt-assets/functions/enqueue-scripts.php:137
+msgctxt "Empty list results. Keep {{query}} as is in english"
+msgid "No results found matching \"{{query}}\""
+msgstr "\"{{query}}\"에 일치하는 검색 결과가 없습니다"
+
+#: dt-assets/functions/enqueue-scripts.php:358
+msgid "No filters, create one below"
+msgstr "필터가 없습니다. 아래에서 만드세요"
+
+#: dt-assets/functions/enqueue-scripts.php:359
+msgid "No records found matching your filter."
+msgstr "필터에 일치하는 기록이 없습니다."
+
+#: dt-contacts/contacts.php:1767 dt-contacts/contacts.php:1867
+#: dt-groups/groups.php:570 dt-groups/groups.php:643 dt-groups/groups.php:651
+#: template-notifications.php:45
+msgctxt "List Filters"
+msgid "All"
+msgstr "전부"
+
+#: dt-contacts/contacts.php:1998 dt-contacts/contacts.php:1999
+msgid "Subassigned only"
+msgstr "하위 할당 전용"
+
+#: dt-contacts/contacts.php:2006 dt-contacts/contacts.php:2007
+msgid "Coached by me"
+msgstr "내가 코치"
+
+#: dt-groups/groups-post-type.php:443
+msgid "Tasks related to this group."
+msgstr "이 그룹에 관련된 작업입니다."
+
+#: dt-groups/groups.php:562
+msgctxt "List Filters"
+msgid "Assigned to me"
+msgstr "나에게 할당"
+
+#: dt-metrics/combined/critical-path.php:309
+msgid "Groups active at the end of the time range"
+msgstr "시간 범위 끝에 활성 상태인 그룹"
+
+#: dt-metrics/combined/critical-path.php:319
+msgid "Churches active at the end of the time range"
+msgstr "시간 범위 끝에 활성 상태인 교회"
+
+#: dt-users/users.php:580
+msgctxt "List Filters"
+msgid "Custom Filters"
+msgstr "사용자 정의 필터"
+
+#: archive-template.php:23
+msgctxt "Create New record"
+msgid "Create New %s"
+msgstr "신규 %s 생성"
+
+#: dt-assets/functions/enqueue-scripts.php:224
+msgid "No task created"
+msgstr "생성된 작업이 없습니다"
+
+#: dt-assets/functions/enqueue-scripts.php:225
+#: dt-assets/parts/modals/modal-tasks.php:17
+msgid "Reminder"
+msgstr "알림"
+
+#: dt-assets/functions/enqueue-scripts.php:226
+msgid "No note set"
+msgstr "설정된 메모가 없습니다"
+
+#: dt-assets/functions/enqueue-scripts.php:365 dt-contacts/contacts.php:1859
+msgctxt "All records"
+msgid "All %s"
+msgstr "모든 %s"
+
+#: dt-assets/functions/menu.php:53
+msgid "Disciple.Tools"
+msgstr "제자.도구"
+
+#: dt-assets/functions/enqueue-scripts.php:252 single-contacts.php:643
+#: single-contacts.php:690 template-merge-details.php:180
+msgid "Merge"
+msgstr "병합"
+
+#: dt-assets/parts/modals/modal-help.php:16
+msgctxt "Optional Documentation"
+msgid "This is the area where you can view and edit the contact details for this contact."
+msgstr "이 연락처의 연락처 세부 정보를 열람하고 수정할 수 있는 영역입니다."
+
+#: dt-assets/parts/modals/modal-help.php:25
+msgctxt "Optional Documentation"
+msgid "Social media accounts for this contact."
+msgstr "이 연락처의 소셜 미디어 계정입니다."
+
+#: dt-assets/parts/modals/modal-help.php:52
+msgctxt "Optional Documentation"
+msgid "User workload status icons legend:"
+msgstr "사용자 작업 부하 상태 아이콘 범례:"
+
+#: dt-assets/parts/modals/modal-help.php:72
+msgctxt "Optional Documentation"
+msgid "These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done."
+msgstr "이러한 빠른 작업 버튼은 연락처 기록을 더 빠르게 업데이트하고 각 작업이 수행된 횟수를 계속 기록하는 데 도움이 됩니다."
+
+#: dt-assets/parts/modals/modal-help.php:73
+msgctxt "Optional Documentation"
+msgid ""
+"For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer.\n"
+"                This action will also change the 'Seeker Path' to 'Contact Attempted'."
+msgstr ""
+"예를 들어, '응답 없음' 버튼을 4번 클릭하면, 해당 연락처에 연락을 4번 시도했지만 응답하지 않은 것으로 기록됩니다.\n"
+"                 또한 이 작업은 '탐구자 경로'를 '연락 시도'로 변경합니다."
+
+#: dt-assets/parts/modals/modal-help.php:81
+msgctxt "Optional Documentation"
+msgid "Here you can track the progress of the contact's faith journey."
+msgstr "여기에서 연락처 신앙 여정의 진행 과정을 추적할 수 있습니다."
+
+#: dt-assets/parts/modals/modal-help.php:121
+msgctxt "Optional Documentation"
+msgid "Contact Connections"
+msgstr "연락처 연결"
+
+#: dt-assets/parts/modals/modal-help.php:122
+msgctxt "Optional Documentation"
+msgid "Connections this contact has with other contacts (and groups) in this system."
+msgstr "이 연락처와 본 시스템의 다른 연락처(및 그룹)와의 연결입니다."
+
+#: dt-assets/parts/modals/modal-help.php:151
+msgctxt "Optional Documentation"
+msgid "This is the area where you can view and edit the contact details for this group."
+msgstr "이 그룹의 연락처 세부 정보를 열람하고 수정할 수 있는 영역입니다."
+
+#: dt-assets/parts/modals/modal-help.php:154
+#: dt-assets/parts/modals/modal-help.php:390
+msgctxt "Optional Documentation"
+msgid "The name of the group is searchable and can be used to help you filter your contacts in the Groups List page."
+msgstr "그룹 이름은 검색이 가능하며 그룹 목록 페이지에서 연락처를 필터링하는 데 사용할 수 있습니다."
+
+#: dt-assets/parts/modals/modal-help.php:195
+msgctxt "Optional Documentation"
+msgid "If the group/church regularly practices any of the elements listed, then click each element to add them inside the circle."
+msgstr "그룹/교회가 열거된 요소 중 하나를 정기적으로 연습한다면, 각 요소를 클릭하여 원 안에 추가합니다."
+
+#: dt-assets/parts/modals/modal-help.php:196
+msgctxt "Optional Documentation"
+msgid "If the group has committed to be a church, indicate this by clicking the \"Church Commitment\" button to make the dotted line circle solid."
+msgstr "그룹이 교회가 되기로 헌신한 경우에는 \"교회 헌신\" 버튼을 클릭하여 점선 원을 단색으로 만듭니다."
+
+#: dt-assets/parts/modals/modal-help.php:202
+msgctxt "Optional Documentation"
+msgid "This is the area where you manage the contacts that are a part of the group."
+msgstr "그룹에 속한 연락처를 관리하는 영역입니다."
+
+#: dt-assets/parts/modals/modal-help.php:207
+msgctxt "Optional Documentation"
+msgid "To remove a member, click the X icon to the right side of the member name. Click the footprint icon next to the members name to signify that this person is a leader of this group. (Multiple leaders can be assigned to a group)."
+msgstr "멤버를 제거하려면 멤버 이름 오른쪽에 있는 X 아이콘을 클릭하세요. 멤버 이름 옆에 있는 발자국 아이콘을 클릭하여 해당 멤버가 이 그룹의 리더임을 나타냅니다. (여러 리더를 한 그룹에 할당할 수 있습니다.)"
+
+#: dt-assets/parts/modals/modal-help.php:208
+msgctxt "Optional Documentation"
+msgid "To add new members, click on the 'Create' or 'Select' and click on the name or search for them."
+msgstr "신규 멤버를 추가하려면, '생성' 또는 '선택'을 클릭하고 이름을 클릭하거나 검색하세요."
+
+#: dt-assets/parts/modals/modal-help.php:238
+#: dt-assets/parts/modals/modal-help.php:249
+msgctxt "Optional Documentation"
+msgid "Group Connections"
+msgstr "그룹 연결"
+
+#: dt-assets/parts/modals/modal-help.php:239
+msgctxt "Optional Documentation"
+msgid "Here you can select what type of group this is and how it is related to other groups in the system."
+msgstr "여기에서 그룹의 유형과 시스템에 있는 다른 그룹과의 관계를 선택할 수 있습니다."
+
+#: dt-assets/parts/modals/modal-help.php:250
+msgctxt "Optional Documentation"
+msgid "Connections this group has with other groups in this system."
+msgstr "이 그룹과 본 시스템에 있는 다른 그룹과의 관계."
+
+#: dt-assets/parts/modals/modal-help.php:261
+msgctxt "Optional Documentation"
+msgid "Four Fields"
+msgstr "포 필드(Four Fields)"
+
+#: dt-assets/parts/modals/modal-help.php:262
+msgctxt "Optional Documentation"
+msgid "There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
+msgstr "포 필드(Four Fields) 도표에는 5개의 사각형이 있습니다. 왼쪽 상단 사분면에서 시작하여 시계 방향으로 이동하고 다섯 번째는 중간에 있으며 다음을 나타냅니다:"
+
+#: dt-assets/parts/modals/modal-help.php:285
+msgctxt "Optional Documentation"
+msgid "This is where you can record notes from meetings and conversations."
+msgstr "모임 및 대화의 메모를 기록할 수 있습니다."
+
+#: dt-assets/parts/modals/modal-help.php:286
+msgctxt "Optional Documentation"
+msgid "Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
+msgstr "@ 기호와 댓글에서 언급할 사용자 이름을 입력하세요. 해당 사용자가 알림을 받게 됩니다."
+
+#: dt-assets/parts/modals/modal-help.php:287
+msgctxt "Optional Documentation"
+msgid "This section also includes the history of activity, such as when the contact or group status became active etc."
+msgstr "이 섹션에는 연락처 또는 그룹 상태가 활성화된시기 등의 활동 내역도 포함됩니다."
+
+#: dt-assets/parts/modals/modal-help.php:288
+msgctxt "Optional Documentation"
+msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
+msgstr "이 섹션은 '전체', '댓글', 또는 '활동'별로 필터링 할 수 있습니다."
+
+#: dt-assets/parts/modals/modal-help.php:299
+msgctxt "Optional Documentation"
+msgid "Use these filters to focus in on the contacts or groups you are responsible for. If the default filters do not fit your needs you can create your own custom filter."
+msgstr "이 필터를 사용하여 담당하는 연락처 또는 그룹에 초점을 맞춥니 다. 기본 필터가 필요에 맞지 않는 경우에는 자신만의 맞춤형 필터를 만들 수 있습니다."
+
+#: dt-assets/parts/modals/modal-help.php:304
+msgctxt "Optional Documentation"
+msgid "Contacts List Tile"
+msgstr "연락처 목록 타일"
+
+#: dt-assets/parts/modals/modal-help.php:305
+msgctxt "Optional Documentation"
+msgid "Your list of contacts will show up here. Whenever you filter contacts, the list will also be changed in this section too. You can sort your contacts by newest, oldest, most recently modified, and least recently modified. If you have a long list of contacts they will not all load at once, so clicking the 'Load more contacts' button at the bottom of the list will allow you to load more."
+msgstr "연락처 목록이 여기에 표시됩니다. 연락처를 필터링 할 때마다 이 섹션에서도 목록이 변경됩니다. 연락처를 최신순, 가장 오래된 순, 가장 최근에 수정한 순, 가장 오래전에 수정한 순으로 정렬할 수 있습니다. 연락처 목록이 길면 한 번에 전부 불러오지 않으므로 목록 하단의 '더 많은 연락처 불러오기' 버튼을 클릭하면 더 많은 연락처를불러올 수 있습니다."
+
+#: dt-assets/parts/modals/modal-help.php:310
+msgctxt "Optional Documentation"
+msgid "Groups List Tile"
+msgstr "그룹 목록 타일"
+
+#: dt-assets/parts/modals/modal-help.php:311
+msgctxt "Optional Documentation"
+msgid "Your list of groups will show up here. Whenever you filter groups, the list will also be changed in this section too. You can sort your groups by newest, oldest, most recently modified, and least recently modified. If you have a long list of groups they will not all load at once, so clicking the 'Load more groups' button at the bottom of the list will allow you to load more."
+msgstr "그룹 목록이 여기에 표시됩니다. 그룹을 필터링 할 때마다 이 섹션에서도 목록이 변경됩니다. 그룹을 최신순, 가장 오래된 순, 가장 최근에 수정한 순, 가장 오래전에 수정한 순으로 정렬할 수 있습니다. 그룹 목록이 길면 한 번에 전부 불러오지 않으므로 목록 하단의 '더 많은 그룹 불러오기' 버튼을 클릭하면 더 많은 그룹을 불러올 수 있습니다."
+
+#: dt-assets/parts/modals/modal-help.php:317
+msgctxt "Optional Documentation"
+msgid "Use this toggle switch to either show or not show closed contacts in the list."
+msgstr "이 토글 스위치를 사용하여 종료된 연락처를 목록에 표시하거나 표시하지 않습니다."
+
+#: dt-assets/parts/modals/modal-help.php:323
+msgctxt "Optional Documentation"
+msgid "Use this toggle switch to either show or not show inactive groups in the list."
+msgstr "이 토글 스위치를 사용하여 비활성 그룹을 목록에 표시하거나 표시하지 않습니다."
+
+#: dt-assets/parts/modals/modal-help.php:354
+msgctxt "Optional Documentation"
+msgid "The Initial Comment field is for any extra information. It will be saved as the first comment under the Activity and Comments Tile."
+msgstr "'첫 댓글' 필드는 추가 정보를 위한 것입니다. '활동' 및 '댓글' 타일 아래 첫 번째 댓글로 저장됩니다."
+
+#: dt-assets/parts/modals/modal-help.php:360
+msgctxt "Optional Documentation"
+msgid "After writing the name of the contact, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new contact has just been just created."
+msgstr "연락처 이름을 작성한 후, '저장하고 계속 수정'을 클릭하기 전에 가능한 한 많은 다른 필드를 작성하세요. 다음 화면에서 방금 생성된 이 신규 연락처에 대한 더 많은 정보를 수정하고 추가할 수 있습니다."
+
+#: dt-assets/parts/modals/modal-help.php:366
+msgctxt "Optional Documentation"
+msgid "The name of the contact is searchable and can be used to help you filter your contacts in the Contacts List page."
+msgstr "연락처 이름은 검색 가능하며 '연락처 목록' 페이지에서 연락처를 필터링 하는 데 사용할 수 있습니다."
+
+#: dt-assets/parts/modals/modal-help.php:384
+msgctxt "Optional Documentation"
+msgid "After writing the name of the group, complete as many other fields as you can, before clicking 'Save and continue editing'. On the next screen you can edit and add more information about this new group has just been created."
+msgstr "그룹 이름을 작성한 후 '저장하고 계속 수정'을 클릭하기 전에 가능한 한 많은 다른 필드를 작성하세요. 다음 화면에서 방금 생성된 이 신규 그룹에 대한 정보를 수정하고 추가할 수 있습니다."
+
+#: dt-assets/parts/modals/modal-help.php:403
+msgctxt "Optional Documentation"
+msgid "Your Profile"
+msgstr "귀하의 프로필"
+
+#: dt-assets/parts/modals/modal-help.php:404
+msgctxt "Optional Documentation"
+msgid "In this area you can see your user profile."
+msgstr "이 영역에서 귀하의 사용자 프로필을 보실 수 있습니다."
+
+#: dt-assets/parts/modals/modal-help.php:405
+msgctxt "Optional Documentation"
+msgid "You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
+msgstr "이러한 프로필 필드를 작성하지 않으셔도 됩니다. 해당 팀의 필요를 충족하기 위한 선택 사항입니다."
+
+#: dt-assets/parts/modals/modal-help.php:406
+msgctxt "Optional Documentation"
+msgid "By clicking 'Edit', you will be able adjust things like the language that this system operates in."
+msgstr "'수정'을 클릭하면 본 시스템이 운영되는 언어 등의 사항을 조정할 수 있습니다."
+
+#: dt-assets/parts/modals/modal-help.php:412
+msgctxt "Optional Documentation"
+msgid "These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
+msgstr "귀하의 담당 지역입니다. '추가' 버튼을 클릭하면 선택할 수 있는 위치 목록이 표시됩니다."
+
+#: dt-assets/parts/modals/modal-help.php:417
+msgctxt "Optional Documentation"
+msgid "Your Notifications"
+msgstr "귀하의 알림"
+
+#: dt-assets/parts/modals/modal-help.php:418
+msgctxt "Optional Documentation"
+msgid "You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
+msgstr "귀하의 알림 환경 설정에 따라 웹 알림 및 이메일 알림을 받게 됩니다. 환경 설정을 변경하려면 토글 버튼을 클릭하세요."
+
+#: dt-assets/parts/modals/modal-help.php:420
+msgctxt "Optional Documentation"
+msgid "Notifications Turned On: The toggle will appear blue."
+msgstr "알림 켜짐: 토글이 파란색으로 표시됩니다."
+
+#: dt-assets/parts/modals/modal-help.php:421
+msgctxt "Optional Documentation"
+msgid "Notifications Turned Off: The toggle will appear grey."
+msgstr "알림 꺼짐: 토글이 회색으로 표시됩니다."
+
+#: dt-assets/parts/modals/modal-help.php:423
+msgctxt "Optional Documentation"
+msgid "Some of the types of notifications cannot be adjusted because they are required by the system."
+msgstr "일부 알림 유형은 시스템에 필요하기 때문에 조정할 수 없습니다."
+
+#: dt-assets/parts/modals/modal-help.php:424
+msgctxt "Optional Documentation"
+msgid "Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+msgstr "새 댓글, 연락처 정보 변경, '연락처 마일스톤' 및 '그룹 건강 지표'에 대한 알림 표시 여부와 시스템에서 발생하는 업데이트에 대한 알림 수신 여부를 조정합니다."
+
+#: dt-assets/parts/modals/modal-help.php:437
+msgctxt "Optional Documentation"
+msgid "Notifications Page"
+msgstr "알림 페이지"
+
+#: dt-assets/parts/modals/modal-help.php:438
+msgctxt "Optional Documentation"
+msgid "This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
+msgstr "이 '알림 페이지'에서는 사용자 및 그룹에 대한 업데이트를 읽을 수 있습니다. 기록 활동에 대한 알림을 표시합니다."
+
+#: dt-assets/parts/modals/modal-help.php:439
+msgctxt "Optional Documentation"
+msgid "All / Unread"
+msgstr "모두 / 읽지 않음"
+
+#: dt-assets/parts/modals/modal-help.php:440
+msgctxt "Optional Documentation"
+msgid "Click the 'All' button to show the full list of all of your notifications."
+msgstr "'모두' 버튼을 클릭해 모든 알림의 전체 목록을 표시하세요."
+
+#: dt-assets/parts/modals/modal-help.php:441
+msgctxt "Optional Documentation"
+msgid "Click the 'Unread' button to show the list of all of your unread notifications."
+msgstr "'읽지 않음' 버튼을 클릭해 읽지 않은 모든 알림 목록을 표시하세요."
+
+#: dt-assets/parts/modals/modal-help.php:443
+msgctxt "Optional Documentation"
+msgid "If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+msgstr "알림을 읽었음을 나타내기 위해 각 행의 오른쪽에 위치한 속이 채워진 각 원을 클릭하고 싶지 않다면, 상단의 '모두 읽음으로 표시' 링크를 클릭하여 모든 메시지를 전부 읽은 상태로 빠르게  조정할 수 있습니다."
+
+#: dt-assets/parts/modals/modal-help.php:445
+msgctxt "Optional Documentation"
+msgid "Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+msgstr "'설정' 링크를 클릭하여 알림 설정 영역으로 이동하여 새 댓글, 연락처 정보 변경, '연락처 마일스톤' 및 '그룹 건강 지표'에 대한 알림 표시 여부와 시스템에서 발생하는 업데이트에 대한 알림 수신 여부를 조정합니다."
+
+#: dt-assets/parts/modals/modal-help.php:450
+msgctxt "Optional Documentation"
+msgid "Duplicate Contact page"
+msgstr "중복 연락처 페이지"
+
+#: dt-assets/parts/modals/modal-help.php:451
+msgctxt "Optional Documentation"
+msgid "This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
+msgstr "이 '중복 연락처 페이지'에서는 시스템이 (해당 이름, 이메일 및 전화번호를 비교하여) 기존의 다른 연락처와 중복될 가능성이 있는 것으로 감지한 연락처를 검토, 거부, 또는 병합할 수 있습니다."
+
+#: dt-assets/parts/modals/modal-help.php:472
+msgctxt "Optional Documentation"
+msgid "Need more help?"
+msgstr "더 많은 도움이 필요하신가요?"
+
+#: dt-assets/parts/modals/modal-help.php:473
+msgctxt "Optional Documentation"
+msgid "Read the documentation"
+msgstr "문서 읽기"
+
+#: dt-assets/parts/modals/modal-new-contact.php:30
+#: dt-assets/parts/modals/modal-new-group.php:29
+msgctxt "back to record"
+msgid "Back to %s"
+msgstr "%s(으)로 돌아가기"
+
+#: dt-assets/parts/modals/modal-tasks.php:12
+msgid "Set a reminder or a task with a note and receive a notification on the due date."
+msgstr "메모가 있는 알림 또는 작업을 설정하고 마감일에 알림을 받습니다."
+
+#: dt-assets/parts/modals/modal-tasks.php:22
+msgid "Custom"
+msgstr "사용자 지정"
+
+#: dt-assets/parts/modals/modal-tasks.php:28
+msgid "Due Date"
+msgstr "마감일"
+
+#: dt-assets/parts/modals/modal-tasks.php:32
+msgid "Create Task"
+msgstr "작업 생성"
+
+#: dt-assets/parts/modals/modal-tasks.php:38
+msgid "Existing tasks for this record:"
+msgstr "이 기록의 기존 작업:"
+
+#: dt-assets/parts/nav-offcanvas-topbar.php:95
+msgid "Theme Update Available!"
+msgstr "테마 업데이트를 사용하실 수 있습니다!"
+
+#: dt-assets/functions/menu.php:95 dt-assets/parts/nav-offcanvas-topbar.php:152
+#: dt-mapping/columns/add-users-column.php:56
+#: dt-metrics/combined/hover-map.php:264
+#: dt-metrics/combined/locations-list.php:257
+#: dt-users/template-user-management.php:61 dt-users/user-management.php:90
+msgid "Users"
+msgstr "사용자"
+
+#: dt-contacts/contacts-post-type.php:190
+msgid "Select the main person who is responsible for reporting on this contact."
+msgstr "이 연락처에 대한 보고를 담당하는 주 담당자를 선택하세요."
+
+#: dt-contacts/contacts-post-type.php:198
+msgid "Contact Status"
+msgstr "연락처 상태"
+
+#: dt-contacts/contacts-post-type.php:213
+msgid "Dispatch Needed"
+msgstr "파견 필요"
+
+#: dt-contacts/contacts-post-type.php:228
+msgid "Paused"
+msgstr "일시 중지됨"
+
+#: dt-contacts/contacts-post-type.php:233
+msgid "Closed"
+msgstr "종료됨"
+
+#: dt-contacts/contacts-post-type.php:249
+msgid "Contact Attempt Needed"
+msgstr "연락 시도 필요"
+
+#: dt-contacts/contacts-post-type.php:253
+msgid "Contact Attempted"
+msgstr "연락 시도함"
+
+#: dt-contacts/contacts-post-type.php:257
+#: dt-contacts/contacts-post-type.php:530
+msgid "Contact Established"
+msgstr "연락 성사"
+
+#: dt-contacts/contacts-post-type.php:261
+msgid "First Meeting Scheduled"
+msgstr "첫 모임 예정"
+
+#: dt-contacts/contacts-post-type.php:265
+msgid "First Meeting Complete"
+msgstr "첫 모임 완료"
+
+#: dt-contacts/contacts-post-type.php:273
+msgid "Being Coached"
+msgstr "코치를 받는 중"
+
+#: dt-contacts/contacts-post-type.php:306
+msgctxt "Optional Documentation"
+msgid "Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
+msgstr "해당 연락 대상이 신앙 여정에서 도달한 마일스톤을 지정하세요. 이는 연락 대상의 영적 여정에서 기념할 가치가 있는 순간이며, 어떤 순서로든 일어날 수 있습니다."
+
+#: dt-contacts/contacts-post-type.php:310
+msgid "Has Bible"
+msgstr "성경 보유"
+
+#: dt-contacts/contacts-post-type.php:314
+msgid "Reading Bible"
+msgstr "성경 읽는 중"
+
+#: dt-contacts/contacts-post-type.php:318
+msgid "States Belief"
+msgstr "신앙 고백"
+
+#: dt-contacts/contacts-post-type.php:322
+msgid "Can Share Gospel/Testimony"
+msgstr "복음/간증을 공유할 수 있습니다"
+
+#: dt-contacts/contacts-post-type.php:326
+msgid "Sharing Gospel/Testimony"
+msgstr "복음/간증 공유"
+
+#: dt-contacts/contacts-post-type.php:334
+msgid "Baptizing"
+msgstr "세례 주기"
+
+#: dt-contacts/contacts-post-type.php:338
+msgid "In Church/Group"
+msgstr "교회/그룹 내"
+
+#: dt-contacts/contacts-post-type.php:342
+msgid "Starting Churches"
+msgstr "교회 시작하기"
+
+#: dt-contacts/contacts-post-type.php:371
+msgid "Male"
+msgstr "남성"
+
+#: dt-contacts/contacts-post-type.php:372
+msgid "Female"
+msgstr "여성"
+
+#: dt-contacts/contacts-post-type.php:381
+msgid "Under 18 years old"
+msgstr "18세 미만"
+
+#: dt-contacts/contacts-post-type.php:382
+msgid "18-25 years old"
+msgstr "18~25세"
+
+#: dt-contacts/contacts-post-type.php:383
+msgid "26-40 years old"
+msgstr "26~40세"
+
+#: dt-contacts/contacts-post-type.php:384
+msgid "Over 40 years old"
+msgstr "40세 이상"
+
+#: dt-contacts/contacts-post-type.php:390
+msgid "Reason Not Ready"
+msgstr "준비되지 않은 이유"
+
+#: dt-contacts/contacts-post-type.php:391
+msgctxt "Optional Documentation"
+msgid "The main reason the contact is not ready to be assigned to a user."
+msgstr "연락처를 사용자에게 배정하기에 아직 준비가 되지 않은 주된 사유."
+
+#: dt-contacts/contacts-post-type.php:398
+msgid "Insufficient Contact Information"
+msgstr "불충분한 연락처 정보"
+
+#: dt-contacts/contacts-post-type.php:401
+msgid "Unknown Location"
+msgstr "위치 알려지지 않음"
+
+#: dt-contacts/contacts-post-type.php:404
+msgid "Only wants media"
+msgstr "미디어 정보만 원함"
+
+#: dt-contacts/contacts-post-type.php:407
+msgid "Outside Area"
+msgstr "구역 외"
+
+#: dt-contacts/contacts-post-type.php:410
+msgid "Needs Review"
+msgstr "검토 필요"
+
+#: dt-contacts/contacts-post-type.php:413
+msgid "Waiting for Confirmation"
+msgstr "승인 대기중"
+
+#: dt-contacts/contacts-post-type.php:421
+msgid "Reason Paused"
+msgstr "일시정지 이유"
+
+#: dt-contacts/contacts-post-type.php:422
+msgctxt "Optional Documentation"
+msgid "A paused contact is one you are not currently interacting with but expect to in the future."
+msgstr "일시정지된 연락처는 현재 연락중이지 않지만 향후 연락할 가능성이 있는 연락처입니다."
+
+#: dt-contacts/contacts-post-type.php:440
+msgid "Reason Closed"
+msgstr "종료 이유"
+
+#: dt-contacts/contacts-post-type.php:441
+msgctxt "Optional Documentation"
+msgid "A closed contact is one you can't or don't wish to interact with."
+msgstr "종료된 연락처는 연락할 수 없거나 연락하고 싶지 않은 연락처입니다."
+
+#: dt-contacts/contacts-post-type.php:448
+msgctxt "Reason Closed label"
+msgid "Hostile, playing games or self gain"
+msgstr "적대적이거나 장난치고 있거나 자기 이익을 위함"
+
+#: dt-contacts/contacts-post-type.php:464
+msgid "Accepted"
+msgstr "승인됨"
+
+#: dt-contacts/contacts-post-type.php:505
+msgctxt "Optional Documentation"
+msgid "The website, event or location this contact came from."
+msgstr "이 연락처가 수집된 웹사이트, 행사 또는 위치."
+
+#: dt-contacts/contacts-post-type.php:513
+msgid "Source Details"
+msgstr "수집처 상세 정보"
+
+#: dt-contacts/contacts-post-type.php:522
+msgid "No Answer"
+msgstr "응답 없음"
+
+#: dt-contacts/contacts-post-type.php:538
+msgid "Meeting Scheduled"
+msgstr "모임 일정 계획됨"
+
+#: dt-contacts/contacts-post-type.php:546
+msgid "Meeting Complete"
+msgstr "모임 완료"
+
+#: dt-contacts/contacts-post-type.php:554
+msgid "Meeting No-show"
+msgstr "모임에 나타나지 않음"
+
+#: dt-contacts/contacts-post-type.php:563
+msgid "Corresponds to user"
+msgstr "사용자 할당"
+
+#: dt-contacts/contacts-post-type.php:564
+msgctxt "Optional Documentation"
+msgid "The id of the user this contact corresponds to"
+msgstr "이 연락처가 할당된 사용자의 ID"
+
+#: dt-contacts/contacts-post-type.php:574
+msgid "Media"
+msgstr "미디어"
+
+#: dt-contacts/contacts-post-type.php:578
+msgid "User"
+msgstr "사용자"
+
+#: dt-groups/groups-post-type.php:447
+msgid "Last modified"
+msgstr "최근 수정됨"
+
+#: dt-contacts/contacts-post-type.php:598 dt-groups/groups-post-type.php:454
+#: single-groups.php:203
+msgid "Tags"
+msgstr "태그"
+
+#: dt-contacts/contacts-post-type.php:599 dt-groups/groups-post-type.php:455
+msgctxt "Optional Documentation"
+msgid "A useful way to group related items and can help group contacts associated with noteworthy characteristics. e.g. business owner, sports lover. The contacts can also be filtered using these tags."
+msgstr "연관된 항목을 그룹화하기 유용한 방법이며 연락처를 사업주, 스포츠 애호가 등 주목할 만한 특징으로 묶을 수 있습니다. 연락처를 이 태그를 사용해 필터링할 수도 있습니다."
+
+#: dt-contacts/contacts-post-type.php:626
+msgid "Relation"
+msgstr "관계"
+
+#: dt-contacts/contacts-post-type.php:627
+msgctxt "Optional Documentation"
+msgid "Relationship this contact has with another contact in the system."
+msgstr "시스템 내 이 연락처와 다른 연락처의 관계입니다."
+
+#: dt-contacts/contacts-post-type.php:634
+msgid "Coached by"
+msgstr "코칭 지도자"
+
+#: dt-contacts/contacts-post-type.php:635
+msgctxt "Optional Documentation"
+msgid "Who is coaching this contact"
+msgstr "연락상대를 코칭중인 사람"
+
+#: dt-contacts/contacts-post-type.php:642
+msgid "Coached"
+msgstr "코칭함"
+
+#: dt-contacts/contacts-post-type.php:643
+msgctxt "Optional Documentation"
+msgid "Who is this contact coaching"
+msgstr "이 연락처가 코칭중인 사람"
+
+#: dt-contacts/contacts-post-type.php:650
+msgid "Baptized by"
+msgstr "세례를 내린 사람"
+
+#: dt-contacts/contacts-post-type.php:651
+msgctxt "Optional Documentation"
+msgid "Who baptized this contact"
+msgstr "이 연락처에게 세례를 베푼 사람"
+
+#: dt-contacts/contacts-post-type.php:659
+msgctxt "Optional Documentation"
+msgid "Who this contact has baptized"
+msgstr "이 연락처가 세례를 베푼 사람"
+
+#: dt-contacts/contacts-post-type.php:667 dt-groups/groups-post-type.php:401
+msgctxt "Optional Documentation"
+msgid "The people groups represented by this group."
+msgstr "이 그룹이 대표하는 사람 그룹."
+
+#: dt-contacts/contacts-post-type.php:675
+msgctxt "Optional Documentation"
+msgid "Groups this contact is a member of."
+msgstr "이 연락처가 속한 그룹."
+
+#: dt-contacts/contacts-post-type.php:683
+msgid "Contact or User assisting the Assigned To user to follow up with the contact."
+msgstr "연락처를 배정받은 사용자가 연락처에 이어 연락하기를 돕는 다른 연락처 또는 사용자."
+
+#: dt-contacts/contacts-post-type.php:691
+msgctxt "Optional Documentation"
+msgid "The general location where this contact is located."
+msgstr "이 연락처가 보통 위치한 장소."
+
+#: dt-contacts/contacts-post-type.php:702
+msgid "Coordinates"
+msgstr "좌표"
+
+#: dt-contacts/contacts.php:1759
+msgctxt "My records"
+msgid "My %s"
+msgstr "내 %s"
+
+#: dt-core/admin/config-site-defaults.php:655
+msgid "ERROR: Invalid username/password combination."
+msgstr "오류: 부적절한 사용자 이름/비밀번호 조합입니다."
+
+#: dt-groups/groups-post-type.php:184 dt-users/mapbox-coverage-map.php:90
+#: dt-users/user-management.php:101
+msgid "Inactive"
+msgstr "비활성화"
+
+#: dt-groups/groups-post-type.php:203
+msgctxt "Optional Documentation"
+msgid "A group predominantly of non-believers."
+msgstr "주로 불신자로 구성된 그룹."
+
+#: dt-groups/groups-post-type.php:207
+msgctxt "Optional Documentation"
+msgid "A group having 3 or more believers but not identifying as church."
+msgstr "3인 이상 신자로 구성되었지만 교회로 인식하지 않는 그룹."
+
+#: dt-groups/groups-post-type.php:211
+msgctxt "Optional Documentation"
+msgid "A group having 3 or more believers and identifying as church."
+msgstr "3인 이상의 신자로 구성되었으며 교회로 인식하는 그룹."
+
+#: dt-groups/groups-post-type.php:214
+msgid "Team"
+msgstr "팀"
+
+#: dt-groups/groups-post-type.php:215
+msgctxt "Optional Documentation"
+msgid "A special group that is not meeting as a church (or trying to become church)."
+msgstr "교회로 모이지 않거나 교회가 되려고 하지 않는 특별 그룹."
+
+#: dt-groups/groups-post-type.php:224
+msgid "Select the main person who is responsible for reporting on this group."
+msgstr "이 그룹에 대해 보고할 의무가 있는 주 책임자를 선택하세요."
+
+#: dt-groups/groups-post-type.php:231
+msgid "Church Health"
+msgstr "교회 건강"
+
+#: dt-groups/groups-post-type.php:232
+msgctxt "Optional Documentation"
+msgid "Track the progress and health of a group/church."
+msgstr "모임/교회의 진척 사항과 건강을 추적하세요."
+
+#: dt-groups/groups-post-type.php:236 dt-metrics/personal/baptism-tree.php:132
+msgid "Baptism"
+msgstr "세례"
+
+#: dt-groups/groups-post-type.php:237
+msgctxt "Optional Documentation"
+msgid "The group is baptising."
+msgstr "이 그룹은 세례를 줍니다."
+
+#: dt-groups/groups-post-type.php:241
+msgid "Bible Study"
+msgstr "성경 공부"
+
+#: dt-groups/groups-post-type.php:242
+msgctxt "Optional Documentation"
+msgid "The group is studying the bible."
+msgstr "이 그룹은 성경을 공부합니다."
+
+#: dt-groups/groups-post-type.php:246
+msgid "Communion"
+msgstr "성찬식"
+
+#: dt-groups/groups-post-type.php:247
+msgctxt "Optional Documentation"
+msgid "The group is practicing communion."
+msgstr "이 그룹은 성찬식을 진행합니다."
+
+#: dt-groups/groups-post-type.php:251
+msgid "Fellowship"
+msgstr "친교"
+
+#: dt-groups/groups-post-type.php:252
+msgctxt "Optional Documentation"
+msgid "The group is fellowshiping."
+msgstr "이 그룹은 친교 시간을 갖습니다."
+
+#: dt-groups/groups-post-type.php:256
+msgid "Giving"
+msgstr "기부"
+
+#: dt-groups/groups-post-type.php:257
+msgctxt "Optional Documentation"
+msgid "The group is giving."
+msgstr "이 그룹은 기부합니다."
+
+#: dt-groups/groups-post-type.php:261
+msgid "Prayer"
+msgstr "기도"
+
+#: dt-groups/groups-post-type.php:262
+msgctxt "Optional Documentation"
+msgid "The group is praying."
+msgstr "이 그룹은 기도합니다."
+
+#: dt-groups/groups-post-type.php:266
+msgid "Praise"
+msgstr "축복"
+
+#: dt-groups/groups-post-type.php:267
+msgctxt "Optional Documentation"
+msgid "The group is praising."
+msgstr "이 그룹은 축복합니다."
+
+#: dt-groups/groups-post-type.php:271
+msgid "Sharing the Gospel"
+msgstr "복음성가 나누기"
+
+#: dt-groups/groups-post-type.php:281 dt-groups/groups-post-type.php:309
+msgid "Church Commitment"
+msgstr "교회 헌신"
+
+#: dt-groups/groups-post-type.php:291
+msgid "Unbelievers"
+msgstr "불신자"
+
+#: dt-groups/groups-post-type.php:297
+msgid "Believers"
+msgstr "신자"
+
+#: dt-groups/groups-post-type.php:303
+msgid "Accountable"
+msgstr "책임 있음"
+
+#: dt-groups/groups-post-type.php:310
+msgctxt "Optional Documentation"
+msgid "Is this a church - yes or no?"
+msgstr "이 그룹은 교회입니까, 아닙니까?"
+
+#: dt-groups/groups-post-type.php:315
+msgid "Multiplying"
+msgstr "증대"
+
+#: dt-groups/groups-post-type.php:316
+msgctxt "Optional Documentation"
+msgid "Number of people helping start other groups. How many members are multiplying?"
+msgstr "다른 그룹을 돕는 사람의 수입니다. 얼마나 많은 그룹원이 증대에 참여하고 있습니까?"
+
+#: dt-groups/groups-post-type.php:323
+msgctxt "Optional Documentation"
+msgid "The date this group began meeting."
+msgstr "이 그룹이 만나기 시작한 일자입니다."
+
+#: dt-groups/groups-post-type.php:330
+msgctxt "Optional Documentation"
+msgid "The date this group first identified as being a church."
+msgstr "이 그룹이 교회로 인식하기 시작한 일자."
+
+#: dt-groups/groups-post-type.php:336
+msgctxt "Optional Documentation"
+msgid "The date this group stopped meeting (if applicable)."
+msgstr "(해당되는 경우) 이 그룹이 만나기 중단한 일자."
+
+#: dt-groups/groups-post-type.php:363
+msgctxt "Optional Documentation"
+msgid "A group that founded this group."
+msgstr "이 그룹을 설립한 그룹."
+
+#: dt-groups/groups-post-type.php:371
+msgctxt "Optional Documentation"
+msgid "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+msgstr "부모자식 관계가 아닌 관계로 연관된 그룹. 서로 협동하거나, 통합될 가능성이 있거나, 최근에 분열된 경우 등을 포함합니다."
+
+#: dt-groups/groups-post-type.php:379
+msgctxt "Optional Documentation"
+msgid "A group that has been birthed out of this group."
+msgstr "이 그룹에서 탄생한 그룹."
+
+#: dt-groups/groups-post-type.php:387
+msgctxt "Optional Documentation"
+msgid "The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the group."
+msgstr "이 그룹의 그룹원 수. 그룹원이 그룹원 리스트에 새로 추가되거나 삭제될 때 자동적으로 업데이트됩니다. 시스템에 입력되지 않았지만 그룹원인 사람을 수동으로 포함하기 위해 이 숫자를 직접 변경할 수 있습니다."
+
+#: dt-groups/groups-post-type.php:393
+msgctxt "Optional Documentation"
+msgid "The contacts who are members of this group."
+msgstr "이 그룹의 소속된 연락처."
+
+#: dt-groups/groups-post-type.php:417
+msgctxt "Optional Documentation"
+msgid "The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
+msgstr "이 그룹을 시작하거나 또는 코칭하고 있는 사람입니다. 한 사람만 이 항목으로 그룹에 배정할 수 있지만 여러 명을 코치 또는 교회 설립자로 이 그룹에 추가할 수 있습니다."
+
+#: dt-groups/groups-post-type.php:431
+msgctxt "Optional Documentation"
+msgid "The general location where this group meets."
+msgstr "이 그룹이 모이는 일반적인 장소입니다."
+
+#: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
+#: dt-metrics/contacts/sources.php:88 dt-users/template-user-management.php:206
+msgid "All Time"
+msgstr "모든 시간"
+
+#: dt-users/template-user-management.php:202
+msgid "This Year"
+msgstr "올해"
+
+#: dt-metrics/metrics-workers.php:186
+msgid "Last Year"
+msgstr "지난 해"
+
+#: dt-users/template-user-management.php:196
+msgid "Last Month"
+msgstr "지난 달"
+
+#: dt-users/template-user-management.php:192
+msgid "This Month"
+msgstr "이번 달"
+
+#: dt-users/template-user-management.php:74
+#: dt-users/template-user-management.php:256
+msgid "Workload Status"
+msgstr "업무량 상태"
+
+#: dt-users/template-user-management.php:75
+msgid "Accept Needed"
+msgstr "승인이 필요함"
+
+#: dt-users/template-user-management.php:79
+msgid "Last Activity"
+msgstr "최근 활동"
+
+#: dt-users/template-user-management.php:115
+msgid "No activity"
+msgstr "활동 없음"
+
+#: dt-users/template-user-management.php:139
+msgid "Multiplier Name"
+msgstr "증대 참여자 이름"
+
+#: dt-users/template-user-management.php:174
+msgid "Pending"
+msgstr "대기중"
+
+#: dt-users/template-user-management.php:181
+msgid "Unread Notifications"
+msgstr "읽지 않은 공지사항"
+
+#: dt-users/template-user-management.php:245
+msgid "User Status"
+msgstr "사용자 상태"
+
+#: dt-users/template-user-management.php:330
+msgid "Click here to see roles documentation"
+msgstr "여기를 클릭해 역할 문서를 확인하세요"
+
+#: dt-users/template-user-management.php:345
+msgid "Save Roles"
+msgstr "역할 저장하기"
+
+#: dt-assets/parts/group-details.php:244
+#: dt-users/template-user-management.php:281 template-settings.php:229
+msgid "Search Locations"
+msgstr "위치 저장하기"
+
+#: dt-users/template-user-management.php:294
+msgid "Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts"
+msgstr "참여가 불가능한 일자를 입력해 담당자들이 새 연락처를 배정할 일자를 결정하도록 도우세요"
+
+#: dt-users/template-user-management.php:305
+msgid "Travel or Away Dates"
+msgstr "여행 또는 부재 일자"
+
+#: dt-users/template-user-management.php:402
+msgid "Daily Activity"
+msgstr "일일 활동"
+
+#: dt-users/mapbox-coverage-map.php:88 dt-users/user-management.php:99
+msgid "Away"
+msgstr "부재"
+
+#: dt-users/mapbox-coverage-map.php:89 dt-users/user-management.php:100
+msgid "Inconsistent"
+msgstr "불일치"
+
+#: dt-users/user-management.php:147
+msgctxt "Bob was accepted on Jul 8 after 10 days"
+msgid "%1$s was accepted on %2$s after %3$s days"
+msgstr "%1$s 은/는 %2$s 에 %3$s 일 후 승인되었습니다"
+
+#: dt-users/user-management.php:148
+msgctxt "Bob waiting for contact for 10 days"
+msgid "%1$s waiting for Contact Attempt for %2$s days"
+msgstr "%1$s 의 연락 시도 승인을 위해 %2$s 일 동안 대기하고 있습니다"
+
+#: dt-users/user-management.php:149
+msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
+msgid "Contact with %1$s was attempted on %2$s after %3$s days"
+msgstr "%1$s 와 연락을 %2$s 에 %3$s 일 후 시도했습니다"
+
+#: dt-users/user-management.php:336
+msgctxt "Updated record Bob"
+msgid "Updated contact %s"
+msgstr "업데이트된 연락처 %s"
+
+#: dt-users/user-management.php:339
+msgctxt "Updated record Bob"
+msgid "Updated group %s"
+msgstr "업데이트된 그룹 %s"
+
+#: dt-users/user-management.php:344
+msgctxt "Commented on record Bob"
+msgid "Commented on contact %s"
+msgstr "연락처 코멘트 %s"
+
+#: dt-users/user-management.php:347
+msgctxt "Commented on record Bob"
+msgid "Commented on group %s"
+msgstr "그룹 코멘트 %s"
+
+#: dt-users/user-management.php:352
+msgctxt "Created record Bob"
+msgid "Created contact %s"
+msgstr "콘택트 생성 %s"
+
+#: dt-users/user-management.php:355
+msgctxt "Created record Bob"
+msgid "Created group %s"
+msgstr "그룹 생성 %s"
+
+#: dt-users/user-management.php:359
+msgid "Logged In"
+msgstr "로그인 되었습니다"
+
+#: dt-users/user-management.php:362
+msgctxt "Declined assignment on Bob"
+msgid "Declined assignment on %s"
+msgstr "%s 에 임무를 거절했습니다"
+
+#: dt-users/user-management.php:310
+msgid "%s days since last update"
+msgstr "마지막 업데이트 후 %s 일 경과"
+
+#: dt-workflows/tasks.php:82
+msgctxt "You set a reminder for today on contact1"
+msgid "You set a reminder for today on %1$s"
+msgstr "%1$s 에 오늘 상기하도록 설정했습니다"
+
+#: dt-workflows/tasks.php:86
+msgctxt "You set this task on contact1: task note"
+msgid "You set this task on %1$s: %2$s"
+msgstr "%1$s 에 이 과제를 설정했습니다: %2$s"
+
+#: single-contacts.php:400 single-contacts.php:429 single-contacts.php:460
+msgid "Choose an option:"
+msgstr "선택 사항 고르기:"
+
+#: single-contacts.php:419 single-contacts.php:451 single-contacts.php:482
+msgid "Confirm"
+msgstr "확인"
+
+#: single-groups.php:87
+msgid "Create"
+msgstr "생성"
+
+#: single-groups.php:92
+msgid "Select"
+msgstr "선택"
+
+#: single-groups.php:413
+msgctxt "Add members modal"
+msgid "In the 'Member List' field, type the name of an existing contact to add them to this group."
+msgstr "\"멤버 목록\" 항목에는 기존 연락처의 이름을 입력해 멤버들을 이 그룹에 추가합니다."
+
+#: dt-assets/parts/modals/modal-help.php:359 template-contacts-new.php:20
+msgid "Create New Contact"
+msgstr "새 연락처 생성"
+
+#: template-view-duplicates.php:35
+msgid "duplicates"
+msgstr "복제"
+
+#: dt-notifications/notifications.php:371
+msgid "%s minute ago"
+msgid_plural "%s minutes ago"
+msgstr[0] "%s분 전"
+
+#: dt-notifications/notifications.php:374
+msgid "%s hour ago"
+msgid_plural "%s hours ago"
+msgstr[0] "%s시간 전"
+
+#: dt-notifications/notifications.php:377
+msgid "%s day ago"
+msgid_plural "%s days ago"
+msgstr[0] "%s일 전"
+
+#: dt-notifications/notifications.php:380
+msgid "%s week ago"
+msgid_plural "%s weeks ago"
+msgstr[0] "%s주 전"
+
+#: dt-notifications/notifications.php:383
+msgid "%s month ago"
+msgid_plural "%s months ago"
+msgstr[0] "%s개월 전"
+
+#: dt-notifications/notifications.php:386
+msgid "%s year ago"
+msgid_plural "%s years ago"
+msgstr[0] "%s년 전"
+
+#: dt-assets/functions/enqueue-scripts.php:194
+msgid "Created record on {}"
+msgstr "{}에 기록 생성됨"
+
+#: dt-assets/functions/enqueue-scripts.php:200
+msgid "Translate with Google Translate"
+msgstr "Google 번역으로 번역"
+
+#: dt-assets/functions/enqueue-scripts.php:201
+msgid "Hide Translation"
+msgstr "번역 숨기기"
+
+#: dt-assets/functions/enqueue-scripts.php:338
+msgid "Add"
+msgstr "추가"
+
+#: dt-assets/parts/loop-activity-comment.php:32
+msgid "Comment"
+msgstr "댓글"
+
+#: dt-assets/parts/loop-activity-comment.php:41
+msgid "Type:"
+msgstr "유형:"
+
+#: dt-assets/parts/loop-activity-comment.php:204
+msgid "Type of Comment"
+msgstr "댓글 유형"
+
+#: dt-contacts/contacts-post-type.php:491
+msgid "Contacts transferred from a partnership with another Disciple.Tools site."
+msgstr "다른 Disciple.Tools 사이트와 제휴를 맺으면서 이전된 연락처입니다."
+
+#: dt-mapping/geocode-api/mapbox-api.php:281
+#: dt-mapping/geocode-api/mapbox-api.php:305
+#: dt-users/template-user-management.php:269 template-settings.php:214
+msgid "add"
+msgstr "추가"
+
+#: dt-posts/posts.php:431
+msgid "%s removed"
+msgstr "%s개 제거됨"
+
+#: dt-users/template-user-management.php:78
+msgid "Location"
+msgstr "위치"
+
+#: dt-users/template-user-management.php:168
+msgid "Updates Needed"
+msgstr "업데이트 필요"
+
+#: dt-users/template-user-management.php:188
+msgid "Assignments"
+msgstr "할당"
+
+#: dt-users/template-user-management.php:216
+msgid "Pace"
+msgstr "속도"
+
+#: dt-users/template-user-management.php:217
+msgid "Assigned and not accepted"
+msgstr "배정되었지만 수락되지 않음"
+
+#: dt-users/template-user-management.php:219
+msgid "Time from assigned to contact accepted for the last 10 contacts"
+msgstr "지난 10개 연락에 대하여 배정된 이후부터 연락 수락되기까지의 시간"
+
+#: dt-users/template-user-management.php:221
+msgid "Accepted with no contact attempt"
+msgstr "연락 시도 없이 수락됨"
+
+#: dt-users/template-user-management.php:223
+msgid "Oldest 10 update needed"
+msgstr "최근 10개 업데이트 필요"
+
+#: dt-users/template-user-management.php:225
+msgid "Time from assigned to contact attempt for the last 10 contacts"
+msgstr "지난 10개 연락에 대하여 배정된 이후부터 연락 시도하기까지의 시간"
+
+#: dt-users/template-user-management.php:269
+#: dt-users/template-user-management.php:272
+msgid "Location Responsibility"
+msgstr "위치 신뢰성"
+
+#: dt-users/template-user-management.php:296
+msgid "Schedule Unavailability"
+msgstr "일정 사용 불가"
+
+#: dt-users/user-management.php:91
+msgid "Add User"
+msgstr "사용자 추가"
+
+#: dt-users/users.php:869
+msgid "Email already exists and is a user on this site"
+msgstr "이미 존재하는 이메일이며 이 사이트의 사용자입니다"
+
+#: dt-users/users.php:875
+msgid "Failed to add user to site."
+msgstr "사이트에 사용자를 추가하는 데 실패했습니다."
+
+#: dt-assets/functions/enqueue-scripts.php:112
+msgctxt "Abbreviation of Sunday"
+msgid "Su"
+msgstr "일요일"
+
+#: dt-assets/functions/enqueue-scripts.php:113
+msgctxt "Abbreviation of Monday"
+msgid "Mo"
+msgstr "월요일"
+
+#: dt-assets/functions/enqueue-scripts.php:114
+msgctxt "Abbreviation of Tuesday"
+msgid "Tu"
+msgstr "화요일"
+
+#: dt-assets/functions/enqueue-scripts.php:115
+msgctxt "Abbreviation of Wednesday"
+msgid "We"
+msgstr "수요일"
+
+#: dt-assets/functions/enqueue-scripts.php:116
+msgctxt "Abbreviation of Thursday"
+msgid "Th"
+msgstr "목요일"
+
+#: dt-assets/functions/enqueue-scripts.php:117
+msgctxt "Abbreviation of Friday"
+msgid "Fr"
+msgstr "금요일"
+
+#: dt-assets/functions/enqueue-scripts.php:118
+msgctxt "Abbreviation of Saturday"
+msgid "Sa"
+msgstr "토요일"
+
+#: dt-assets/functions/enqueue-scripts.php:223
+msgid "Mark as complete"
+msgstr "완료로 표시"
+
+#: dt-assets/parts/modals/modal-help.php:18
+msgid "Contact Name"
+msgstr "연락처 이름"
+
+#: dt-assets/parts/modals/modal-help.php:58
+msgid "2 contacts need an update"
+msgstr "2개 연락처를 업데이트해야 합니다"
+
+#: dt-assets/parts/modals/modal-help.php:71
+msgid "Quick Action Buttons"
+msgstr "빠른 실행 단추"
+
+#: dt-assets/parts/modals/modal-help.php:154
+#: dt-assets/parts/modals/modal-help.php:389
+msgid "Group Name"
+msgstr "그룹 이름"
+
+#: dt-assets/parts/modals/modal-help.php:201 dt-metrics/groups/tree.php:83
+#: dt-metrics/personal/group-tree.php:84
+msgid "Members"
+msgstr "멤버"
+
+#: dt-assets/parts/modals/modal-help.php:298
+msgctxt "Optional Documentation"
+msgid "Default and Custom Filters Tile"
+msgstr "기본값 및 사용자 지정 필터 타일"
+
+#: dt-assets/parts/modals/modal-help.php:316
+msgctxt "Optional Documentation"
+msgid "Closed Contacts Switch"
+msgstr "닫힌 연락처 전환"
+
+#: dt-assets/parts/modals/modal-help.php:322
+msgctxt "Optional Documentation"
+msgid "Inactive Groups Switch"
+msgstr "비활성 그룹 전환"
+
+#: dt-assets/parts/modals/modal-help.php:442 template-notifications.php:55
+msgid "Mark all as read"
+msgstr "모두 읽음으로 표시"
+
+#: dt-assets/parts/modals/modal-new-group.php:25
+msgid "Edit New Group"
+msgstr "새 그룹 편집"
+
+#: dt-assets/parts/modals/modal-tasks.php:13
+msgid "Task Type"
+msgstr "작업 유형"
+
+#: dt-contacts/contacts-post-type.php:199
+msgctxt "Contact Status field description"
+msgid "The Contact Status describes the progress in communicating with the contact."
+msgstr "연락처 상태에서는 해당 연락처와 연락 진행 상황이 나타납니다."
+
+#: dt-contacts/contacts-post-type.php:571
+msgid "Contact Type"
+msgstr "연락처 유형"
+
+#: dt-contacts/contacts-post-type.php:584
+msgid "Last Modified"
+msgstr "마지막으로 수정됨"
+
+#: dt-core/admin/config-site-defaults.php:321
+msgid "New Comments"
+msgstr "새 댓글"
+
+#: dt-groups/groups-post-type.php:272
+msgctxt "Optional Documentation"
+msgid "The group is sharing the gospel."
+msgstr "그룹이 신조를 공유하고 있습니다."
+
+#: dt-groups/groups-post-type.php:277
+msgctxt "Optional Documentation"
+msgid "The group has leaders."
+msgstr "그룹에 리더들이 있습니다."
+
+#: dt-groups/groups-post-type.php:282
+msgctxt "Optional Documentation"
+msgid "The group has committed to be church."
+msgstr "그룹이 교회에 헌신적입니다."
+
+#: dt-groups/groups-post-type.php:292
+msgctxt "Optional Documentation"
+msgid "Number of unbelievers in this group."
+msgstr "이 그룹 내 불신자 수"
+
+#: dt-groups/groups-post-type.php:298
+msgctxt "Optional Documentation"
+msgid "Number of believers in this group."
+msgstr "이 그룹 내 신자 수"
+
+#: dt-groups/groups-post-type.php:304
+msgctxt "Optional Documentation"
+msgid "Number of people in accountability group."
+msgstr "어카운터빌리티 그룹 내 사람 수"
+
+#: dt-metrics/metrics-workers.php:183
+msgid "Select All Time or a specific year to display"
+msgstr "시간 또는 특정 년도 선택 및 표시"
+
+#: dt-posts/posts.php:320
+msgctxt "Shaikh added as people group on contact1"
+msgid "%1$s added as people group on %2$s"
+msgstr "%1$s이(가) %2$s에 사람 그룹으로 추가됨"
+
+#: dt-posts/posts.php:321
+msgctxt "Shaikh added to people groups"
+msgid "%s added to people groups"
+msgstr "%s이(가) 사람 그룹에 추가됨"
+
+#: dt-posts/posts.php:323
+msgctxt "Shaikh removed from people groups on contact1"
+msgid "%1$s removed from people groups on %2$s"
+msgstr "%1$s이(가) %2$s에 사람 그룹에서 제거됨"
+
+#: dt-posts/posts.php:324
+msgctxt "Shaikh removed from people groups"
+msgid "%s removed from people groups"
+msgstr "%s이(가) 사람 그룹에서 제거됨"
+
+#: dt-users/users.php:714
+msgid "View Contact"
+msgstr "연락처 보기"
+
+#: template-notifications.php:75 template-notifications.php:78
+msgid "Load more notifications"
+msgstr "더 많은 알림 가져오기"
+
+#: dt-contacts/contacts-post-type.php:127
+msgid "Contact"
+msgstr "연락처"
+
+#: dt-assets/functions/enqueue-scripts.php:138
+msgctxt "Showing 30 items"
+msgid "Showing %s items"
+msgstr "%s개 항목 표시 중"
+
+#: dt-assets/functions/enqueue-scripts.php:139
+msgctxt "Showing 30 items matching bob"
+msgid "Showing %1$s items matching %2$s"
+msgstr "%2$s와(과) 일치하는 %1$s개 항목 표시 중"
+
+#: dt-metrics/contacts/milestones-map.php:24
+#: dt-metrics/contacts/milestones-map.php:40
+msgid "Milestones Map"
+msgstr "마일스톤 지도"
+
+#: dt-users/user-management.php:150
+msgid "Unable to update"
+msgstr "업데이트 할 수 없음"
+
+#: dt-assets/functions/details-bar.php:48
+msgid "Admin actions"
+msgstr "관리자 작업"
+
+#: dt-contacts/contacts-post-type.php:457
+msgctxt "Reason Closed label"
+msgid "GDPR request"
+msgstr "GDPR(개인정보보호 규정) 요청"
+
+#: dt-contacts/contacts-post-type.php:575
+msgid "Seeker"
+msgstr "구도자"
+
+#: dt-contacts/contacts-post-type.php:576
+msgid "Believer"
+msgstr "신자"
+
+#: dt-contacts/contacts-post-type.php:577
+msgid "Leader"
+msgstr "리더"
+
+#: dt-contacts/contacts-transfer.php:414
+msgid "redacted email"
+msgstr "수정된 이메일"
+
+#: dt-contacts/contacts-transfer.php:415
+msgid "redacted name"
+msgstr "수정된 이름"
+
+#: dt-contacts/contacts-transfer.php:416
+msgid "redacted"
+msgstr "수정됨"
+
+#: dt-core/admin/class-roles.php:205
+msgid "Partner"
+msgstr "파트너"
+
+#. translators: %s: Site name.
+#: dt-core/admin/config-site-defaults.php:748
+msgid "DT Site Name: %s"
+msgstr "DT 사이트 이름: %s"
+
+#: dt-metrics/combined/critical-path.php:169
+msgid "No Results"
+msgstr "결과 없음"
+
+#: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "호버 지도"
+
+#: dt-metrics/combined/locations-list.php:25
+msgid "Locations List"
+msgstr "위치 목록"
+
+#: dt-metrics/contacts/mapbox-area-map.php:29
+#: dt-metrics/groups/mapbox-area-map.php:27
+msgid "Area Map"
+msgstr "영역 지도"
+
+#: dt-metrics/contacts/mapbox-area-map.php:61
+#: dt-metrics/contacts/mapbox-cluster-map.php:60
+#: dt-metrics/contacts/mapbox-point-map.php:60
+#: dt-metrics/groups/mapbox-area-map.php:59
+#: dt-metrics/groups/mapbox-cluster-map.php:62
+#: dt-metrics/groups/mapbox-point-map.php:59
+#: dt-metrics/personal/mapbox-contacts-area-map.php:62
+#: dt-metrics/personal/mapbox-contacts-cluster-map.php:61
+#: dt-metrics/personal/mapbox-contacts-point-map.php:60
+#: dt-metrics/personal/mapbox-groups-area-map.php:62
+#: dt-metrics/personal/mapbox-groups-cluster-map.php:61
+#: dt-metrics/personal/mapbox-groups-point-map.php:60
+#: dt-users/mapbox-coverage-map.php:86
+msgid "Status - All"
+msgstr "상태 - 전부"
+
+#: dt-metrics/contacts/mapbox-area-map.php:62
+#: dt-metrics/contacts/mapbox-cluster-map.php:61
+#: dt-metrics/contacts/mapbox-point-map.php:61
+#: dt-metrics/groups/mapbox-area-map.php:60
+#: dt-metrics/groups/mapbox-cluster-map.php:63
+#: dt-metrics/groups/mapbox-point-map.php:60
+#: dt-metrics/personal/mapbox-contacts-area-map.php:63
+#: dt-metrics/personal/mapbox-contacts-cluster-map.php:62
+#: dt-metrics/personal/mapbox-contacts-point-map.php:61
+#: dt-metrics/personal/mapbox-groups-area-map.php:63
+#: dt-metrics/personal/mapbox-groups-cluster-map.php:62
+#: dt-metrics/personal/mapbox-groups-point-map.php:61
+#: dt-users/mapbox-coverage-map.php:80
+msgid "Zoom Level"
+msgstr "확대/축소 수준"
+
+#: dt-metrics/contacts/mapbox-area-map.php:63
+#: dt-metrics/contacts/mapbox-cluster-map.php:62
+#: dt-metrics/contacts/mapbox-point-map.php:62
+#: dt-metrics/groups/mapbox-area-map.php:61
+#: dt-metrics/groups/mapbox-cluster-map.php:64
+#: dt-metrics/groups/mapbox-point-map.php:61
+#: dt-metrics/personal/mapbox-contacts-area-map.php:64
+#: dt-metrics/personal/mapbox-contacts-cluster-map.php:63
+#: dt-metrics/personal/mapbox-contacts-point-map.php:62
+#: dt-metrics/personal/mapbox-groups-area-map.php:64
+#: dt-metrics/personal/mapbox-groups-cluster-map.php:63
+#: dt-metrics/personal/mapbox-groups-point-map.php:62
+#: dt-users/mapbox-coverage-map.php:81
+msgid "Auto Zoom"
+msgstr "자동 확대/축소"
+
+#: dt-metrics/contacts/mapbox-area-map.php:65
+#: dt-metrics/contacts/mapbox-cluster-map.php:64
+#: dt-metrics/contacts/mapbox-point-map.php:64
+#: dt-metrics/groups/mapbox-area-map.php:63
+#: dt-metrics/groups/mapbox-cluster-map.php:66
+#: dt-metrics/groups/mapbox-point-map.php:63
+#: dt-metrics/personal/mapbox-contacts-area-map.php:66
+#: dt-metrics/personal/mapbox-contacts-cluster-map.php:65
+#: dt-metrics/personal/mapbox-contacts-point-map.php:64
+#: dt-metrics/personal/mapbox-groups-area-map.php:66
+#: dt-metrics/personal/mapbox-groups-cluster-map.php:65
+#: dt-metrics/personal/mapbox-groups-point-map.php:64
+#: dt-users/mapbox-coverage-map.php:83
+msgid "Country"
+msgstr "국가"
+
+#: dt-metrics/contacts/mapbox-area-map.php:66
+#: dt-metrics/contacts/mapbox-cluster-map.php:65
+#: dt-metrics/contacts/mapbox-point-map.php:65
+#: dt-metrics/groups/mapbox-area-map.php:64
+#: dt-metrics/groups/mapbox-cluster-map.php:67
+#: dt-metrics/groups/mapbox-point-map.php:64
+#: dt-metrics/personal/mapbox-contacts-area-map.php:67
+#: dt-metrics/personal/mapbox-contacts-cluster-map.php:66
+#: dt-metrics/personal/mapbox-contacts-point-map.php:65
+#: dt-metrics/personal/mapbox-groups-area-map.php:67
+#: dt-metrics/personal/mapbox-groups-cluster-map.php:66
+#: dt-metrics/personal/mapbox-groups-point-map.php:65
+#: dt-users/mapbox-coverage-map.php:84
+msgid "State"
+msgstr "주/도"
+
+#: dt-metrics/contacts/mapbox-cluster-map.php:29
+#: dt-metrics/groups/mapbox-cluster-map.php:29
+msgid "Cluster Map"
+msgstr "클러스터 지도"
+
+#: dt-metrics/contacts/mapbox-cluster-map.php:66
+#: dt-metrics/contacts/mapbox-point-map.php:66
+#: dt-metrics/groups/mapbox-cluster-map.php:68
+#: dt-metrics/groups/mapbox-point-map.php:65 dt-metrics/groups/tree.php:84
+#: dt-metrics/personal/group-tree.php:85
+#: dt-metrics/personal/mapbox-contacts-cluster-map.php:67
+#: dt-metrics/personal/mapbox-contacts-point-map.php:66
+#: dt-metrics/personal/mapbox-groups-cluster-map.php:67
+#: dt-metrics/personal/mapbox-groups-point-map.php:66
+msgid "View Record"
+msgstr "기록 보기"
+
+#: dt-metrics/contacts/mapbox-point-map.php:29
+#: dt-metrics/groups/mapbox-point-map.php:28
+msgid "Points Map"
+msgstr "포인트 지도"
+
+#: dt-metrics/contacts/milestones.php:23
+msgid "Milestones Chart"
+msgstr "마일스톤 차트"
+
+#: dt-metrics/contacts/overview.php:61
+msgid "Contacts Overview"
+msgstr "연락처 개요"
+
+#: dt-metrics/contacts/sources.php:24
+msgid "Sources Chart"
+msgstr "소스 차트"
+
+#: dt-metrics/groups/overview.php:62
+msgid "Groups Overview"
+msgstr "그룹 개요"
+
+#: dt-metrics/groups/tree.php:81 dt-metrics/personal/group-tree.php:82
+msgid "Highlight Active"
+msgstr "활성 강조"
+
+#: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
+msgid "Highlight Churches"
+msgstr "교회 강조"
+
+#: dt-metrics/groups/tree.php:87 dt-metrics/personal/group-tree.php:88
+msgid "Total Members"
+msgstr "총 멤버"
+
+#: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
+msgid "View Group"
+msgstr "그룹 보기"
+
+#: dt-metrics/personal/baptism-tree.php:57
+msgid "My Baptism Generation Tree"
+msgstr "나의 세례 생성 트리"
+
+#: dt-metrics/personal/coaching-tree.php:133
+msgid "Disciple"
+msgstr "신봉자"
+
+#: dt-metrics/personal/mapbox-contacts-area-map.php:30
+msgid "Contacts Area Map"
+msgstr "연락처 영역 지도"
+
+#: dt-metrics/personal/mapbox-contacts-cluster-map.php:30
+msgid "Contacts Cluster Map"
+msgstr "연락처 클러스터 지도"
+
+#: dt-metrics/personal/mapbox-contacts-point-map.php:30
+msgid "Contacts Points Map"
+msgstr "연락처 포인트 지도"
+
+#: dt-metrics/personal/mapbox-groups-area-map.php:30
+msgid "Groups Area Map"
+msgstr "그룹 영역 지도"
+
+#: dt-metrics/personal/mapbox-groups-cluster-map.php:30
+msgid "Groups Cluster Map"
+msgstr "그룹 클러스터 지도"
+
+#: dt-metrics/personal/mapbox-groups-point-map.php:30
+msgid "Groups Points Map"
+msgstr "그룹 포인트 지도"
+
+#: dt-metrics/personal/overview.php:72
+msgid "stats as of"
+msgstr "통계 기준일:"
+
+#: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:55
+#: dt-users/mapbox-coverage-map.php:78
+msgid "Coverage Map"
+msgstr "범위 지도"
+
+#: dt-users/hover-coverage-map.php:140
+msgid "Locations Covered"
+msgstr "포함된 위치"
+
+#: dt-users/hover-coverage-map.php:191
+msgid "Locations with Active Users"
+msgstr "활성 사용자가 있는 위치"
+
+#: dt-users/hover-coverage-map.php:242
+msgid "Locations with Inactive Assigned"
+msgstr "비활성 배정됨이 있는 위치"
+
+#: dt-users/mapbox-coverage-map.php:79
+msgid "Responsibility"
+msgstr "신뢰성"
+
+#: dt-users/mapbox-coverage-map.php:91
+msgid "Response Coverage"
+msgstr "응답 범위"
+
+#: dt-users/template-user-management.php:353
+msgid "Access by Source"
+msgstr "소스로 액세스"
+
+#: dt-users/template-user-management.php:359 dt-users/users.php:739
+msgid "All Sources - gives access to all contacts"
+msgstr "모든 소스 - 모든 연락처에 액세스 권한 부여"
+
+#: dt-users/template-user-management.php:365 dt-users/users.php:746
+msgid "Custom - Access own contacts and all the contacts of the selected sources below"
+msgstr "사용자 지정 - 본인의 연락처와 아래에서 선택된 소스의 연락처 일체에 액세스"
+
+#: dt-users/template-user-management.php:371 dt-users/users.php:753
+msgid "No Sources - only own contacts"
+msgstr "소스 없음 - 본인의 연락처만"
+
+#: dt-users/template-user-management.php:377
+msgid "Sources List"
+msgstr "소스 목록"
+
+#: dt-users/template-user-management.php:387
+msgid "Save Allowed Sources"
+msgstr "허용된 소스 저장"
+
+#: dt-users/user-management.php:151
+msgid "Add New User"
+msgstr "신규 사용자 추가"
+
+#: dt-users/user-management.php:153
+msgid "There are some errors in your form."
+msgstr "귀하의 포럼에 에러가 있습니다."
+
+#: dt-users/user-management.php:154
+msgid "Contact to make a user (optional)"
+msgstr "연락해서 이용자 만들기(옵션)"
+
+#: dt-users/user-management.php:157
+msgid "Create User"
+msgstr "이용자 만들기"
+
+#: dt-users/user-management.php:158
+msgid "Email address is already in the system as a user!"
+msgstr "시스템의 사용자가 이미 이용 중인 이메일 주소입니다!"
+
+#: dt-users/user-management.php:159
+msgid "Username is already in the system as a user!"
+msgstr "시스템의 사용자가 이미 이용 중인 사용자명입니다!"
+
+#: dt-users/user-management.php:160
+msgid "Search multipliers and contacts"
+msgstr "배율 및 연락처 검색"
+
+#: dt-users/user-management.php:161
+msgid "Remove"
+msgstr "삭제"
+
+#: dt-metrics/groups/tree.php:25
+msgid "Groups Tree"
+msgstr "그룹 트리"
+
+#: dt-metrics/personal/baptism-tree.php:25
+msgid "My Baptism Tree"
+msgstr "나의 세례 트리"
+
+#: dt-metrics/personal/coaching-tree.php:25
+msgid "My Coaching Tree"
+msgstr "나의 코칭 트리"
+
+#: dt-metrics/personal/group-tree.php:26
+msgid "My Groups Tree"
+msgstr "나의 그룹 트리"
+
+#: dt-assets/functions/details-bar.php:58
+msgid "See duplicates"
+msgstr "중복 보기"
+
+#: dt-assets/functions/enqueue-scripts.php:254
+msgid "Dismissed Duplicates"
+msgstr "해제된 중복"
+
+#: dt-assets/functions/enqueue-scripts.php:255
+msgid "Duplicates on: %s"
+msgstr "중복 위치: %s"
+
+#: dt-assets/parts/merge-details.php:19
+msgid "No duplicates found."
+msgstr "중복 찾지 못함."
+
+#: dt-contacts/contacts-post-type.php:712
+msgid "Languages"
+msgstr "언어"
+
+#: dt-contacts/contacts-transfer.php:213
+msgid "This contact was transferred to %s for further follow-up."
+msgstr "해당 연락처는 추가 후속 조치를 위해 %s(으)로 이동되었습니다."
+
+#: dt-contacts/contacts.php:1098
+msgctxt "This record duplicated and was merged into Contact2"
+msgid "This record is a duplicate and was merged into %2$s"
+msgstr "이 레코드는 중복이며 %2$s와 병합되었습니다"
+
+#: dt-contacts/contacts.php:1102 dt-contacts/contacts.php:1285
+msgid "Duplicate Checker"
+msgstr "중복 확인 도구"
+
+#: dt-contacts/contacts.php:1111
+msgctxt "User1 merged Contact1 into this record"
+msgid "%1$s merged %2$s into this record"
+msgstr "%1$s이(가) %2$s와(과) 이 레코드로 병홥되었습니다"
+
+#: dt-posts/dt-posts.php:881
+msgid "D.T System"
+msgstr "D.T 시스템"
+
+#: dt-users/user-management.php:152
+msgid "View New User"
+msgstr "새 사용자 보기"
+
+#: dt-users/user-management.php:162
+msgid "This contact is already a user."
+msgstr "이 연락처의 사용자가 이미 있습니다."
+
+#: dt-users/user-management.php:163
+msgid "View User"
+msgstr "사용자 보기"
+
+#: single-groups.php:212
+msgid "Search Tags"
+msgstr "검색 태그"
+
+#: single-groups.php:453
+msgid "tag"
+msgstr "태그"
+
+#: template-settings.php:43 template-settings.php:206
+msgid "Multiplier Preferences"
+msgstr "배율 환경설정"
+
+#: template-settings.php:214 template-settings.php:219
+msgid "Locations you are willing to be responsible for"
+msgstr "책임지고자 하는 위치"
+
+#: template-settings.php:242
+msgid "Languages you are comfortable speaking"
+msgstr "사용하시기 편한 언어"
+
+#: template-settings.php:262
+msgid "People Groups you wish to serve"
+msgstr "서비스를 제공하고자 하는 사용자 그룹"
+
+#: template-settings.php:284
+msgid "Availability to receive contacts from the Dispatcher"
+msgstr "발송도구(Dispatcher)로부터 연락처를 받을 수 있는 기능"
+
+#: template-settings.php:514
+msgid "System Language"
+msgstr "시스템 언어"
+
+#: template-view-duplicates.php:35
+msgid "Exact matches on: %s"
+msgstr "정확한 일치 위치: %s"
+
+#: template-view-duplicates.php:49
+msgid "Dismiss Row"
+msgstr "행 해제하기"

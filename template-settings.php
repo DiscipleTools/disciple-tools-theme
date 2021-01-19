@@ -22,7 +22,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 $dt_user_locale = get_user_locale( $dt_user->ID );
 $translations = dt_get_translations();
 
-$contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" )["fields"];
+$contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
 
 ?>
 
@@ -43,6 +43,7 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
                         <li><a href="#multiplier"><?php esc_html_e( 'Multiplier Preferences', 'disciple_tools' )?></a></li>
                         <li><a href="#availability"><?php esc_html_e( 'Availability', 'disciple_tools' )?></a></li>
                         <li><a href="#notifications"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></a></li>
+                        <?php do_action( 'dt_profile_settings_page_menu' ) ?>
                     </ul>
 
                 </div>

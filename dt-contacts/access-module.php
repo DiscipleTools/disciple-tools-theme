@@ -44,6 +44,8 @@ class DT_Contacts_Access extends DT_Module_Base {
         add_filter( "dt_post_create_fields", [ $this, "dt_post_create_fields" ], 5, 2 );
         add_action( "dt_post_updated", [ $this, "dt_post_updated" ], 10, 5 );
 
+        add_filter( "dt_filter_users_receiving_comment_notification", [ $this, "dt_filter_users_receiving_comment_notification" ], 10, 4 );
+
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){
@@ -77,6 +79,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         ];
         $expected_roles["administrator"]["permissions"]["dt_all_access_contacts"] = true;
         $expected_roles["administrator"]["permissions"]["assign_any_contacts"] = true;
+        $expected_roles["dt_admin"]["permissions"]["assign_any_contacts"] = true;
 
         return $expected_roles;
     }
@@ -141,12 +144,12 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'customizable' => 'add_only',
                 'tile' => 'followup',
                 "show_in_table" => 15,
-                "only_for_types" => [ "access" ]
+                "only_for_types" => [ "access" ],
+                "icon" => get_template_directory_uri() . '/dt-assets/images/sign-post.svg',
             ];
 
             $fields['overall_status'] = [
                 'name'        => __( 'Contact Status', 'disciple_tools' ),
-                'description' => _x( 'The Contact Status describes the progress in communicating with the contact.', "Contact Status field description", 'disciple_tools' ),
                 'type'        => 'key_select',
                 "default_color" => "#366184",
                 'default'     => [
@@ -170,21 +173,13 @@ class DT_Contacts_Access extends DT_Module_Base {
                         "description" => _x( "The contact has been assigned to someone, but has not yet been accepted by that person.", "Contact Status field description", 'disciple_tools' ),
                         "color" => "#FF9800",
                     ],
-                    'active'       => [
-                        "label" => __( 'Active', 'disciple_tools' ),
-                        "description" => _x( "The contact is progressing and/or continually being updated.", "Contact Status field description", 'disciple_tools' ),
-                        "color" => "#4CAF50",
-                    ],
+                    'active'       => [], //already declared. Here to indicate order
                     'paused'       => [
                         "label" => __( 'Paused', 'disciple_tools' ),
                         "description" => _x( "This contact is currently on hold (i.e. on vacation or not responding).", "Contact Status field description", 'disciple_tools' ),
                         "color" => "#FF9800",
                     ],
-                    'closed'       => [
-                        "label" => __( 'Closed', 'disciple_tools' ),
-                        "description" => _x( "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.", "Contact Status field description", 'disciple_tools' ),
-                        "color" => "#F43636",
-                    ],
+                    "closed" => [] //already declared. Here to indicate order
                 ],
                 'tile'     => 'status',
                 'customizable' => 'add_only',
@@ -350,9 +345,19 @@ class DT_Contacts_Access extends DT_Module_Base {
             } elseif ( is_array( $fields["contact_address"]['in_create_form'] ) ){
                 $fields["contact_address"]['in_create_form'][] = 'access';
             }
+
+            $declared_fields  = dt_array_merge_recursive_distinct( $declared_fields, $fields );
+
+            //order overall status options
+            uksort( $declared_fields["overall_status"]["default"], function ( $a, $b ) use ( $fields ){
+                return array_search( $a, array_keys( $fields["overall_status"]["default"] ) ) > array_search( $b, array_keys( $fields["overall_status"]["default"] ) );
+            } );
+            $fields = $declared_fields;
         }
 
-        return dt_array_merge_recursive_distinct( $declared_fields, $fields );
+        return $fields;
+
+
     }
 
     public function add_api_routes(){
@@ -1097,7 +1102,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                     pm.post_id IN ( SELECT post_id from $wpdb->postmeta as source where source.meta_value IN ( $sources_sql ) )
                     OR pm.post_id IN ( SELECT post_id FROM $wpdb->dt_share AS shares where shares.user_id = %s )
                 )
-                GROUP status.meta_value, pm.meta_value
+                GROUP BY status.meta_value, pm.meta_value
             ", esc_sql( get_current_user_id() ) ) , ARRAY_A );
             // phpcs:enable
         }
@@ -1383,5 +1388,23 @@ class DT_Contacts_Access extends DT_Module_Base {
                 $current_user->remove_cap( "dt_all_access_contacts" );
             }
         }
+    }
+
+    public function dt_filter_users_receiving_comment_notification( $users_to_notify, $post_type, $post_id, $comment ){
+        if ( $post_type === "contacts" ){
+            $post = DT_Posts::get_post( $post_type, $post_id );
+            if ( !is_wp_error( $post ) && isset( $post["type"]["key"] ) && $post["type"]["key"] === "access" ){
+                $following_all = get_users( [
+                    'meta_key' => 'dt_follow_all',
+                    'meta_value' => true
+                ] );
+                foreach ( $following_all as $user ){
+                    if ( !in_array( $user->ID, $users_to_notify )){
+                        $users_to_notify[] = $user->ID;
+                    }
+                }
+            }
+        }
+        return $users_to_notify;
     }
 }

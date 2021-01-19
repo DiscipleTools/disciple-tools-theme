@@ -43,7 +43,7 @@ function dt_print_details_bar(
                                     <a class="button menu-white-dropdown-arrow"
                                        style="background-color: #00897B; color: white;">
                                         <?php esc_html_e( "Admin Actions", 'disciple_tools' ) ?></a>
-                                    <ul class="menu">
+                                    <ul class="menu is-dropdown-submenu">
                                         <?php if ( DT_Posts::can_delete( $dt_post_type, $post_id ) ) : ?>
                                             <li><a data-open="delete-record-modal">
                                                     <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/trash.svg' ) ?>"/>

@@ -1191,7 +1191,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 if ( isset( $_POST['country_select'] ) && ! empty( $_POST['country_select'] ) ) {
                     $admin0_code = sanitize_text_field( wp_unslash( $_POST['country_select'] ) );
                     $this->install_additional_levels( $admin0_code );
-                    dt_write_log( 'test' );
                 }
 
                 if ( isset( $_POST['remove'] ) && ! empty( $_POST['remove'] ) ) {

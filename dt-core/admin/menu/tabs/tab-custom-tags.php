@@ -167,11 +167,11 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
     private function get_all_tags() {
         global $wpdb;
 
-        $results = $wpdb->get_col( $wpdb->prepare( "
+        $results = $wpdb->get_col("
             SELECT DISTINCT meta_value
             FROM $wpdb->postmeta
             WHERE meta_key = 'tags'
-            ORDER BY meta_value ASC;" ) );
+            ORDER BY meta_value ASC;" );
 
         return $results;
     }
@@ -256,12 +256,12 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
             $retval = $wpdb->update(
                 $wpdb->postmeta,
                 [
-                    'meta_value' => esc_sql( $tag_new )
+                    'meta_value' => esc_sql( $tag_new ),
                 ],
                 [
                     'meta_key' => 'tags',
-                    'meta_value' => esc_sql( $tag_old )
-                ],
+                    'meta_value' => esc_sql( $tag_old ),
+                ]
             );
 
             if ( $retval ) {

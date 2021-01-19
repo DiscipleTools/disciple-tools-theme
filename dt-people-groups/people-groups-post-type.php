@@ -98,6 +98,8 @@ class Disciple_Tools_People_Groups_Post_Type
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 2 );
         add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
+        add_filter( "dt_filter_access_permissions", [ $this, "dt_filter_access_permissions" ], 20, 2 );
+        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 100, 1 );
 
         if ( is_admin() ) {
             global $pagenow;
@@ -144,9 +146,9 @@ class Disciple_Tools_People_Groups_Post_Type
             'feeds'      => false,
         ];
         $capabilities = [
-            'edit_post'           => 'edit_peoplegroup',
-            'read_post'           => 'read_peoplegroup',
-            'delete_post'         => 'delete_peoplegroup',
+            'edit_post'           => 'edit_peoplegroups',
+            'read_post'           => 'read_peoplegroups',
+            'delete_post'         => 'delete_peoplegroups',
             'delete_others_posts' => 'delete_others_peoplegroups',
             'delete_posts'        => 'delete_peoplegroups',
             'edit_posts'          => 'edit_peoplegroups',
@@ -610,7 +612,7 @@ class Disciple_Tools_People_Groups_Post_Type
         //            'section' => 'status'
         //        ];
 
-        return apply_filters( 'dt_custom_fields_settings', $fields, "people_groups" );
+        return DT_Posts::get_post_field_settings( "people_groups" );
     }
 
     public function dt_registered_post_types( $post_types ){
@@ -702,6 +704,22 @@ class Disciple_Tools_People_Groups_Post_Type
         unset(
             $submenu['edit.php?post_type=peoplegroups'][10]
         );
+    }
+
+    public static function dt_filter_access_permissions( $permissions, $post_type ){
+        if ( $post_type === "peoplegroups" ){
+            $permissions = [];
+        }
+        return $permissions;
+    }
+    public function dt_set_roles_and_permissions( $expected_roles ){
+        if ( isset( $expected_roles["administrator"] ) ){
+            $expected_roles["administrator"]["permissions"]['edit_peoplegroups'] = true;
+        }
+        if ( isset( $expected_roles["dt_admin"] ) ){
+            $expected_roles["dt_admin"]["permissions"]['edit_peoplegroups'] = true;
+        }
+        return $expected_roles;
     }
 
 } // End Class

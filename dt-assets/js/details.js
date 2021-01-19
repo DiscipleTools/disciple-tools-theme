@@ -470,10 +470,10 @@ jQuery(document).ready(function($) {
     });
   })
 
-  $('.dt_location_grid').each(()=> {
-    let field_id = 'location_grid'
+  $('.dt_location_grid').each((key, el)=> {
+    let field_id = $(el).data('id') || 'location_grid'
     $.typeahead({
-      input: '.js-typeahead-location_grid',
+      input: `.js-typeahead-${field_id}`,
       minLength: 0,
       accent: true,
       searchOnFocus: true,
@@ -492,7 +492,7 @@ jQuery(document).ready(function($) {
             data: {
               s: "{{query}}",
               filter: function () {
-                return _.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                return _.get(window.Typeahead[`.js-typeahead-${field_id}`].filters.dropdown, 'value', 'all')
               }
             },
             beforeSend: function (xhr) {
@@ -515,7 +515,7 @@ jQuery(document).ready(function($) {
       multiselect: {
         matchOn: ["ID"],
         data: function () {
-          return (post.location_grid || []).map(g => {
+          return (post[field_id] || []).map(g => {
             return {ID: g.id, name: g.label}
           })
 
@@ -543,12 +543,12 @@ jQuery(document).ready(function($) {
           .html(_.escape(window.wpApiShare.translations.regions_of_focus));
         },
         onResult: function (node, query, result, resultCount) {
-          resultCount = typeaheadTotals.location_grid
+          resultCount = typeaheadTotals[field_id]
           let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-          $('#location_grid-result-container').html(text);
+          $(`#${field_id}-result-container`).html(text);
         },
         onHideLayout: function () {
-          $('#location_grid-result-container').html("");
+          $(`#${field_id}-result-container`).html("");
         }
       }
     });
@@ -793,17 +793,9 @@ jQuery(document).ready(function($) {
             return `${_.escape( _.get( field_options, `default[${v}].label`, v ))}`;
           }).join(', ')
         } else if ( ['location', 'location_meta' ].includes(field_options.type) ){
-          let vals = []
-          vals = field_value.map(v=>{
+          values_html = field_value.map(v=>{
             return _.escape(v.label);
-          })
-          if ( _.get( post, 'contact_address', false) && _.get( field_settings, "contact_address.hidden" ) === true ){
-           vals = vals.concat(post.contact_address.map(v=>{
-             return _.escape(v.value);
-           }))
-          }
-          values_html = vals.join(', ')
-
+          }).join(', ')
         } else if ( field_options.type === 'communication_channel' ){
           values_html = field_value.map(v=>{
             return _.escape(v.value);
@@ -827,6 +819,21 @@ jQuery(document).ready(function($) {
     $(this).attr("disabled", true).addClass("loading");
     API.delete_post( post_type, post_id ).then(()=>{
       window.location = '/' + post_type
+    })
+  })
+  $('#archive-record').on('click', function(){
+    $(this).attr("disabled", true).addClass("loading");
+    API.update_post( post_type, post_id, {overall_status:"closed"} ).then(()=>{
+      $(this).attr("disabled", false).removeClass("loading");
+      $('#archive-record-modal').foundation('close');
+      $('.archived-notification').show()
+    })
+  })
+  $('#unarchive-record').on('click', function(){
+    $(this).attr("disabled", true).addClass("loading");
+    API.update_post( post_type, post_id, {overall_status:"active"} ).then(()=>{
+      $(this).attr("disabled", false).removeClass("loading");
+      $('.archived-notification').hide()
     })
   })
 

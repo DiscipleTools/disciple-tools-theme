@@ -19,7 +19,7 @@ get_header();
                         if ( isset( $args ) && is_wp_error( $args ) ){
                             echo esc_html( $args->get_error_message() );
                         } else {
-                            $post_settings = apply_filters( "dt_get_post_type_settings", [], get_post_type() ?: "contacts" );
+                            $post_settings = DT_Posts::get_post_settings( get_post_type() ?: "contacts" );
                             $dt_post_type = $post_settings["label_singular"] ?: "item";
                             $dt_id = GET_THE_ID();
                             echo sprintf( esc_html__( 'Sorry, you don\'t have permission to view the %1$s with id %2$s.', 'disciple_tools' ), esc_html( $dt_post_type ), esc_html( $dt_id ) ) . ' ';

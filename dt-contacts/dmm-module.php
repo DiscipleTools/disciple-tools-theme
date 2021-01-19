@@ -35,7 +35,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
-
+        add_filter( "dt_search_viewable_posts_query", [ $this, "dt_search_viewable_posts_query" ], 10, 1 );
         add_action( "dt_comment_action_quick_action", [ $this, "dt_comment_action_quick_action" ], 10, 1 );
 
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
@@ -138,12 +138,14 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "post_type" => "contacts",
                 "p2p_direction" => "to",
                 "p2p_key" => "contacts_to_contacts",
-                "tile" => "other"
+                "tile" => "other",
+                "icon" => get_template_directory_uri() . '/dt-assets/images/share.svg',
             ];
             $fields['baptism_date'] = [
-                'name'        => __( 'Baptism Date', 'disciple_tools' ),
-                'type'        => 'date',
-                'tile'     => 'details',
+                'name' => __( 'Baptism Date', 'disciple_tools' ),
+                'type' => 'date',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/calendar.svg',
+                'tile' => 'details',
             ];
 
             $fields['baptism_generation'] = [
@@ -158,7 +160,8 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "post_type" => "contacts",
                 "p2p_direction" => "from",
                 "p2p_key" => "contacts_to_contacts",
-                "tile" => "status"
+                "tile" => "status",
+                "icon" => get_template_directory_uri() . '/dt-assets/images/coach.svg',
             ];
             $fields["baptized_by"] = [
                 "name" => __( "Baptized by", 'disciple_tools' ),
@@ -167,7 +170,8 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "post_type" => "contacts",
                 "p2p_direction" => "from",
                 "p2p_key" => "baptizer_to_baptized",
-                'tile'     => 'faith'
+                'tile'     => 'faith',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/baptism.svg',
             ];
             $fields["baptized"] = [
                 "name" => __( "Baptized", 'disciple_tools' ),
@@ -176,7 +180,8 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "post_type" => "contacts",
                 "p2p_direction" => "to",
                 "p2p_key" => "baptizer_to_baptized",
-                'tile'     => 'faith'
+                'tile'     => 'faith',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/child.svg',
             ];
             $fields["people_groups"] = [
                 "name" => __( 'People Groups', 'disciple_tools' ),
@@ -387,6 +392,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'name' => sprintf( _x( "Connected %s", 'Personal records', 'disciple_tools' ), $post_label_plural ),
                 'query' => [
                     'type' => [ 'placeholder' ],
+                    "overall_status" => [ "-closed" ],
                     'sort' => 'name'
                 ],
                 "count" => $shared_by_type_counts['keys']['placeholder'] ?? 0,
@@ -400,12 +406,13 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'count' => $coached_by_me,
                 'query' => [
                     'coached_by' => [ 'me' ],
+                    "overall_status" => [ "-closed" ],
                     'sort' => 'seeker_path',
                 ],
                 'labels' => [
                     [
                         'id' => 'my_coached',
-                        'name' => __( 'Coached by be', 'disciple_tools' ),
+                        'name' => __( 'Coached by me', 'disciple_tools' ),
                         'field' => 'coached_by',
                     ],
                 ],
@@ -435,7 +442,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                     <a class="button menu-white-dropdown-arrow"
                        style="background-color: #00897B; color: white;">
                         <?php esc_html_e( "Quick Actions", 'disciple_tools' ) ?></a>
-                    <ul class="menu" style="width: max-content">
+                    <ul class="menu is-dropdown-submenu" style="width: max-content">
                         <?php
                         foreach ( $contact_fields as $field => $val ) {
                             if ( strpos( $field, "quick_button" ) === 0 ) {
@@ -552,6 +559,17 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             </div>
         </div>
         <?php
+    }
+
+    public function dt_search_viewable_posts_query( $query ){
+        if ( isset( $query["combine"] ) && in_array( "subassigned", $query["combine"] ) && isset( $query["assigned_to"], $query["subassigned"] ) ){
+            $a = $query["assigned_to"];
+            $s = $query["subassigned"];
+            unset( $query["assigned_to"] );
+            unset( $query["subassigned"] );
+            $query[] = [ "assigned_to" => $a, "subassigned" => $s ];
+        }
+        return $query;
     }
 
 }

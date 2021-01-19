@@ -190,7 +190,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     if ( ! function_exists( 'dt_get_translations' ) ) {
         function dt_get_translations() {
             require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
-            $translations = wp_get_available_translations();
+            $translations = wp_get_available_translations(); // @todo throwing errors if wp.org connection isn't established
             $translations["ar_MA"] = [
                 "language" => "ar_MA",
                 "native_name" => "العربية (المغرب)",
@@ -488,19 +488,19 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <?php elseif ( DT_Mapbox_API::get_key() ) : // test if Mapbox key is present ?>
                     <div id="mapbox-wrapper"></div>
                 <?php else : ?>
-                    <div class="dt_location_grid">
-                        <var id="location_grid-result-container" class="result-container"></var>
-                        <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
+                    <div class="dt_location_grid" data-id="<?php echo esc_html( $field_key ); ?>">
+                        <var id="<?php echo esc_html( $field_key ); ?>-result-container" class="result-container"></var>
+                        <div id="<?php echo esc_html( $field_key ); ?>_t" name="form-<?php echo esc_html( $field_key ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
                             <div class="typeahead__container">
                                 <div class="typeahead__field">
-                            <span class="typeahead__query">
-                                <input class="js-typeahead-location_grid input-height"
-                                       data-field="<?php echo esc_html( $display_field_id ); ?>"
-                                       data-field_type="location"
-                                       name="location_grid[query]"
-                                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
-                                       autocomplete="off" />
-                            </span>
+                                    <span class="typeahead__query">
+                                        <input class="js-typeahead-<?php echo esc_html( $field_key ); ?> input-height"
+                                               data-field="<?php echo esc_html( $display_field_id ); ?>"
+                                               data-field_type="location"
+                                               name="<?php echo esc_html( $field_key ); ?>[query]"
+                                               placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
+                                               autocomplete="off" />
+                                    </span>
                                 </div>
                             </div>
                         </div>

@@ -9,7 +9,7 @@ dt_please_log_in();
         wp_safe_redirect( '/settings' );
         exit();
     }
-    $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
+    $post_settings = DT_Posts::get_post_settings( $post_type );
 
     $field_options = $post_settings["fields"];
     get_header();
@@ -93,7 +93,7 @@ dt_please_log_in();
                             <ul class="dropdown menu" data-dropdown-menu>
                                 <li>
                                     <a href="#"><?php esc_html_e( "Sort", "disciple_tools" ); ?></a>
-                                    <ul class="menu">
+                                    <ul class="menu is-dropdown-submenu">
                                         <li>
                                             <a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="post_date">
                                                 <?php esc_html_e( "Newest", "disciple_tools" ); ?></a>
@@ -379,7 +379,7 @@ dt_please_log_in();
                     $allowed_types = [ "user_select", "multi_select", "key_select", "boolean", "date", "location", "connection" ];
                     //order fields alphabetically by Name
                     uasort( $field_options, function ( $a, $b ){
-                        return $a['name'] ?? 'z' <=> $b['name'] ?? 'z';
+                        return strnatcmp( $a['name'] ?? 'z', $b['name'] ?? 'z' );
                     });
                     foreach ( $field_options as $field_key => $field){
                         if ( $field_key && in_array( $field["type"] ?? "", $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
@@ -422,10 +422,17 @@ dt_please_log_in();
                                         </div>
                                     </div>
                                 </div>
+                                <?php if ( $field === "subassigned" ): ?>
+                                    <p>
+                                        <label><?php esc_html_e( "Filter for subassigned OR Assigned To", 'disciple_tools' ) ?>
+                                            <input id="combine_subassigned" type="checkbox" value="combine_subassigned" />
+                                        </label>
+                                    </p>
+                                <?php endif;?>
                             </div>
 
                         <?php else : ?>
-                            <div class="tabs-panel" id="<?php echo esc_html( $field ) ?>">
+                            <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>"" id="<?php echo esc_html( $field ) ?>">
                                 <div class="section-header"><?php echo esc_html( $field === "post_date" ? __( "Creation Date", "disciple_tools" ) : $field_options[$field]["name"] ?? $field ) ?></div>
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $field_options[$field] ) && $field_options[$field]["type"] == "key_select" ) :
