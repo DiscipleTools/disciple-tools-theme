@@ -40,8 +40,8 @@ jQuery(document).ready(function($) {
 
 /**
  *
- * @param type
- * @param url
+ * @param type: GET POST DELETE
+ * @param url: users/get_users
  * @param data
  * @param base, when using a custom D.T endpoint that does not start with dt/v1
  * @returns {jQuery}

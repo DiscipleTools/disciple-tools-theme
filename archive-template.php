@@ -27,6 +27,7 @@ dt_please_log_in();
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php esc_html_e( "Filters", 'disciple_tools' ) ?></span>
                 </a>
+                <?php do_action( "archive_template_action_bar_buttons", $post_type ) ?>
                 <input class="search-input" style="max-width:200px;display: inline-block;"
                        type="search" id="search-query"
                        placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $post_settings["label_plural"] ?? $post_type ) ) ?>">
