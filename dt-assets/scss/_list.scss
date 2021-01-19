@@ -250,7 +250,7 @@ table.js-list{
         display: table-cell;
     }
 }
-@media screen and (max-width : 640px) {
+@media screen and (max-width : #{map-get($breakpoints, large)}) {
     #table-content {
         tr {
             padding: 10px;

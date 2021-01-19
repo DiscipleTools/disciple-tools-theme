@@ -280,6 +280,19 @@ function dt_site_scripts() {
         );
     }
 
+    if ( 'view-duplicates' === $url_path ){
+        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/view-duplicates.js', [ 'jquery' ], true );
+        wp_localize_script(
+            'dt-settings', 'view_duplicates_settings', array(
+                'translations'          => apply_filters( 'dt_settings_js_translations', [
+                    'matches_found' => _x( 'Matches Found:', 'Matches for duplicate contacts found: 230', 'disciple_tools' ),
+                    'dismiss_all' => _x( "Dismiss all matches for %s", 'Dismiss all duplicate matches for Bob', 'disciple_tools' ),
+                ] ),
+                "fields" => DT_Posts::get_post_field_settings( "contacts" ),
+            )
+        );
+    }
+
 
     //list page
     if ( in_array( $url_path, $post_types ) ){
