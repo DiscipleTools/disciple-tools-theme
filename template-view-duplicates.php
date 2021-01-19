@@ -4,15 +4,12 @@ Template Name: View Duplicates
 */
 dt_please_log_in();
 
-if ( ! current_user_can( 'dt_all_access_contacts' ) ) {
+if ( ! current_user_can( 'dt_all_access_contacts' ) || !dt_is_module_enabled( "access_module" ) ) {
     wp_safe_redirect( '/settings' );
     exit();
 }
-
 get_header();
 
-$dt_duplicates = DT_Duplicate_Checker_And_Merging::get_duplicates();
-$post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
 ?>
 
     <div id="content" class="template-view-duplicates duplicates-page">
@@ -21,87 +18,76 @@ $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
 
             <main id="main" class="large-12 medium-12 cell" role="main">
                 <div class="bordered-box">
-                    <h1><?php esc_html_e( 'Duplicate Contacts', 'disciple_tools' ) ?>
+                    <h1><?php esc_html_e( 'Duplicate Access Contacts', 'disciple_tools' ) ?>
                         <span id="duplicates-spinner" class="loading-spinner"></span>
                         <button class="help-button float-right" data-section="duplicates-template-help-text">
                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                         </button>
                     </h1>
+                    <p>Scanning for duplicates. Starting with the most recently modified contacts. Limiting results to those that have less than 10 exact matches.</p>
+                    <p>Scanned <span id="scanned_number">0</span> access contacts. <span class="loading-spinner active"></span> Found <span id="found_text">0</span> duplicates.</p>
+                </div>
+                <div id="duplicates-content" class="grid-y grid-margin-y" style="margin-top:50px">
 
-                    <?php
-                    foreach ( $dt_duplicates as $contact ){
-                        ?>
-                            <h2 style="display: inline-block; margin-top: 40px"><?php echo esc_html( $contact["post_title"] ); ?></h2>
-                            <div style="display: inline-block; margin-left: 20px"><a> Dismiss all duplicates on <?php echo esc_html( $contact["post_title"] ); ?></a></div>
-                            <div><strong>Found matches:</strong></div>
-                            <?php
-                            foreach ( $contact["dups"] as $field_key => $dups ) : ?>
-                            <div style="display: flex">
-                                <div style="flex-basis: 20%"><?php echo esc_html( $field_key ); ?></div>
-                                <div>
-                                <?php foreach ( $dups as $dup ) : ?>
-                                    <a target="_blank"><?php echo esc_html( $dup["post_title"] ); ?></a>
-                                <?php endforeach; ?>
-                                </div>
-                            </div>
-                            <?php endforeach; ?>
-
-
-                        <?php
-                    }
-
-                    foreach ( $dt_duplicates as $channel_key => $channel_values ) {
-                        if ( empty( $channel_values["dupas"] ) ) {
-                            continue;
-                        }
-                        ?>
-                        <h4><?php echo esc_html( sprintf( __( "Exact matches on: %s", 'disciple_tools' ), $channel_values["name"] ) ); ?></h4>
-                        <table style="margin-bottom:100px">
-                            <tr>
-                                <th style="text-align: start"><?php esc_html_e( 'Dismiss', 'disciple_tools' ); ?></th>
-                                <th style="text-align: start"><?php echo esc_html( $channel_values["name"] ); ?></th>
-                                <th style="text-align: start"><?php esc_html_e( 'Contacts', 'disciple_tools' ); ?></th>
-                            </tr>
-                        <?php foreach ( $channel_values["dups"] as $dt_dup_val => $dt_duplicate_values ) {
-                            $first_id = array_keys( $dt_duplicate_values )[0];
-                            $row = $channel_key . '-' . $first_id
-                            ?>
-                            <tr id='<?php echo esc_attr( $row ) ?>'>
-                                <td>
-                                    <a class="dismiss_all" data-row="<?php echo esc_html( $row ); ?>" data-id="<?php echo esc_html( $first_id ); ?>">
-                                        <?php esc_html_e( 'Dismiss Row', 'disciple_tools' ); ?>
-                                    </a>
-                                </td>
-                                <td><?php echo esc_html( $dt_dup_val )?></td>
-                                <td><?php foreach ( $dt_duplicate_values["posts"] as $dup_post_id => $post_values ):
-                                    $status_option = isset( $post_settings["fields"]["overall_status"]["default"][$post_values["status"]] ) ? $post_settings["fields"]["overall_status"]["default"][$post_values["status"]] : [];
-                                    $reason_closed = isset( $post_settings["fields"]["reason_closed"]["default"][$post_values["reason_closed"]] ) ? $post_settings["fields"]["reason_closed"]["default"][$post_values["reason_closed"]]["label"] : "";
-                                    ?>
-                                    <a target="_blank" href="<?php echo esc_html( site_url() )."/contacts/".esc_html( $dup_post_id ) ?>?open-duplicates=1"><?php echo esc_html( $post_values["name"] ); ?></a>
-                                    <span class="dt-status-square" title="<?php echo esc_html( $status_option["label"] . ( $reason_closed ? ' - ' . $reason_closed : '' ) ); ?>"
-                                          style="background-color: <?php echo esc_html( $status_option["color"] ?? '' ) ?>; vertical-align: sub">&nbsp;
-                                    </span>
-                                    <span style="margin-right: 5px; margin-left: 5px">|</span>
-                                <?php endforeach; ?>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                        </table>
-                    <?php } ?>
                 </div>
             </main> <!-- end #main -->
         </div> <!-- end #inner-content -->
 
         <script type="text/javascript">
-          $('.dismiss_all').on( 'click', function () {
-            $('#duplicates-spinner').addClass('active')
+          $( document ).on( "click", '.dismiss-all', function (){
+            $(this).addClass('loading')
             let id = $(this).data('id')
-            let row = $(this).data('row')
-            makeRequestOnPosts('GET', `contacts/${id}/dismiss-duplicates`, {'id':'all'}).then(()=> {
-              $(`#${row}`).remove()
-              $('#duplicates-spinner').removeClass('active')
+            makeRequestOnPosts('POST', `contacts/${id}/dismiss-duplicates`, {'id':'all'}).then(()=> {
+              $(`#contact_${id}`).remove()
+              $(this).removeClass('loading')
             })
           })
+
+          let get_duplicates = (limit=0)=>{
+              window.makeRequest("GET", "contacts/all-duplicates", {limit:limit}, "dt-posts/v2/" ).then(response=>{
+                  let html = ``
+                  response.posts_with_matches.forEach(post=>{
+                      let inner_html = ``
+                      _.forOwn( post.dups, (dup_values, dup_key)=>{
+                        inner_html += `<div style="display: flex"><div style="flex-basis: 100px"><strong>${_.escape(dup_key)}</strong></div><div>`;
+                        dup_values.forEach(dup=>{
+                            inner_html += `<a target="_blank" href="contacts/${_.escape(dup.ID)}" style="margin: 0 10px 0 5px">
+                              ${_.escape(dup.post_title)}: ${dup.field === "post_title" ? "" : _.escape(dup.value)} (#${_.escape(dup.ID)})
+                            </a>`;
+                        })
+                          inner_html += `</div></div>`
+                      })
+                      let channels = post.info.map(info=>info.value?info.value:null).join( ", ")
+                      html += `
+                          <div class="bordered-box cell" id="contact_${_.escape(post.ID)}">
+                            <a style="color: #3f729b; font-size: 1.5rem;" target="_blank" href="contacts/${_.escape(post.ID)}">
+                              ${_.escape(post.post_title)} (#${_.escape(post.ID)})
+                            </a>
+                            <div class="label" style="display:inline-block; background: ${_.escape(post.overall_status.color)}">${_.escape(post.overall_status.label)}</div>
+                            <div style="display:inline-block;">${_.escape(channels)}</div>
+                            <h4 style="margin-top:20px">Matches Found:</h4>
+                            <div>${inner_html}</div>
+
+                            <button class="button hollow dismiss-all loader" data-id="${_.escape(post.ID)}"  style="margin-top:20px">Dismiss all matches for ${_.escape(post.post_title)}</button>
+                          </div>
+                      `
+                  })
+                  $('#duplicates-content').append(html)
+                  $('#scanned_number').html(_.escape(response.scanned))
+                  let found = $('#duplicates-content .bordered-box').length
+                  $('#found_text').html(_.escape(found));
+                  if ( found < 100 ){
+                    get_duplicates(response.scanned)
+                  } else {
+                      $('.loading-spinner').removeClass("active")
+                  }
+              })
+
+          }
+          get_duplicates(0)
+
+
+
         </script>
 
     </div> <!-- end #content -->

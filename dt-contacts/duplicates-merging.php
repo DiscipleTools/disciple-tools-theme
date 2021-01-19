@@ -69,6 +69,13 @@ class DT_Duplicate_Checker_And_Merging {
                 "callback" => [ $this, 'merge_posts_endpoint' ],
             ]
         );
+        //Merge Posts
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/all-duplicates', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_access_duplicates' ],
+            ]
+        );
     }
 
     public function get_ids_of_non_dismissed_duplicates_endpoint( WP_REST_Request $request ){
@@ -525,6 +532,9 @@ class DT_Duplicate_Checker_And_Merging {
 
 
     public function archive_template_action_bar_buttons( string $post_type ){
+        if ( !dt_is_module_enabled( "access_module" ) ){
+            return;
+        }
         ?>
         <a class="button" href="<?php echo esc_url( site_url( '/view-duplicates' ) ); ?>">
             <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate-white.svg' ) ?>"/>
@@ -533,47 +543,90 @@ class DT_Duplicate_Checker_And_Merging {
         <?php
     }
 
-    public static function get_duplicates(){
+
+    /**
+     * Rest endpoint for the View Duplicates page.
+     * @param WP_REST_Request $request "limit" for how many records to skip
+     * @return array|WP_Error
+     */
+
+    public static function get_access_duplicates( WP_REST_Request $request ){
+        if ( !current_user_can( "dt_all_access_contacts" ) ){
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
+        }
+        if ( !dt_is_module_enabled( "access_module" ) ){
+            return new WP_Error( __FUNCTION__, "Access Module is not enabled", [ 'status' => 403 ] );
+        }
+        $params = $request->get_params();
+        $limit = $params["limit"] ?? 0;
+        $field_settings = DT_Posts::get_post_field_settings( "contacts" );
+        $return = [];
+
+        //get all the most recently modified access contacts
         global $wpdb;
-//        @todo instead use creation date?
-        $recent_contacts = $wpdb->get_results("
+        $recent_contacts = $wpdb->get_results( $wpdb->prepare( "
             SELECT posts.post_title, pm.meta_value as last_modified, posts.ID, posts.post_date
             FROM $wpdb->posts posts
             INNER JOIN $wpdb->postmeta pm ON ( posts.ID = pm.post_id and pm.meta_key = 'last_modified' )
             INNER JOIN $wpdb->postmeta type ON ( posts.ID = type.post_id and type.meta_key = 'type' AND type.meta_value = 'access' )
             WHERE posts.post_type = 'contacts'
             ORDER BY posts.post_date DESC
-            LIMIT 100
-        ", ARRAY_A );
-
-        $return = [];
+            LIMIT %d, 100
+        ", esc_sql( $limit ) ), ARRAY_A );
 
 
-
+        //search for duplicates on each post
         foreach ( $recent_contacts as &$contact ){
             $dups = self::query_for_duplicate_searches_v2( "contacts", $contact["ID"] );
+            $post = DT_Posts::get_post( "contacts", $contact["ID"] );
             $contact["dups"] = [];
+            $contact["overall_status"] = $post["overall_status"];
+            $contact["overall_status"]["color"] = isset( $field_settings["overall_status"]["default"][$post["overall_status"]["key"]]["color"] ) ? $field_settings["overall_status"]["default"][$post["overall_status"]["key"]]["color"] : "blue";
+            $contact["info"] = [];
+            foreach ( $field_settings as $field_key => $field_value ){
+                if ( isset( $field_value["type"] ) && $field_value["type"] === "communication_channel" && isset( $post[$field_key] ) ){
+                    foreach ( $post[$field_key] as $channel ){
+                        $contact["info"][] = $channel;
+                    }
+                }
+            }
             $fields = [];
             foreach ( $dups as $dup ){
-                $fields[$dup["field"]][] = $dup;
+                if ( !isset( $post["duplicate_data"]["override"] ) || !in_array( (int) $dup["ID"], $post["duplicate_data"]["override"] ) ){
+                    $fields[$dup["field"]][] = $dup;
+                }
             }
             foreach ( $fields as $field_key => $dups_on_field ){
                 if ( count( $dups_on_field ) > 10 ){
                     unset( $fields[$field_key] );
                 } else {
-                    $contact["dups"][$field_key] = $dups_on_field;
+                    if ( $field_key === "post_title" ){
+                        $field_key = "name";
+                    }
+                    $name = isset( $field_settings[$field_key]["name"] ) ? $field_settings[$field_key]["name"] : $field_key;
+                    $contact["dups"][$name] = $dups_on_field;
                 }
             }
-
             if ( !empty( $contact["dups"] ) ){
                 $return[] = $contact;
             }
         }
-        return $return;
+
+        return [
+            "scanned" => $limit + 100,
+            "posts_with_matches" => $return
+        ];
     }
 
-    private static function query_for_duplicate_searches_v2( $post_type, $post_id, $exact = true ){
-        //@todo permission acccess access contacts
+    /**
+     * Search for potential duplicates on a post
+     *
+     * @param $post_type
+     * @param int $post_id the post to look for duplicates on
+     * @param bool $exact search only for exact matches
+     * @return array|object|null, the array of matches
+     */
+    private static function query_for_duplicate_searches_v2( $post_type, $post_id, bool $exact = true ){
         $post = DT_Posts::get_post( $post_type, $post_id );
         $fields = DT_Posts::get_post_field_settings( $post_type );
         $search_query = [];
@@ -591,7 +644,7 @@ class DT_Duplicate_Checker_And_Merging {
                     $sql_joins = "";
                     $where_sql = "";
                     $sql_joins .= " LEFT JOIN $wpdb->postmeta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key LIKE '" . esc_sql( $field_key ) . "%' AND $table_key.meta_key NOT LIKE '%_details' )";
-                    $sql_joins .= " INNER JOIN $wpdb->postmeta as type ON ( type.post_id = p.ID AND type.meta_key LIKE 'type' AND type.meta_key NOT LIKE 'access' )";
+                    $sql_joins .= " INNER JOIN $wpdb->postmeta as type ON ( type.post_id = p.ID AND type.meta_key = 'type' AND type.meta_value = 'access' )";
                     $channel_queries = [];
                     foreach ( $field_value as $value ){
                         if ( !empty( $value["value"] ) ){
@@ -603,11 +656,11 @@ class DT_Duplicate_Checker_And_Merging {
                         if ( !empty( $all_sql ) ){
                             $all_sql .= " UNION ";
                         }
-                        $all_sql .= "SELECT p.ID, p.post_title, '" . esc_sql( $field_key ) . "' as field
+                        $all_sql .= "SELECT p.ID, p.post_title, '" . esc_sql( $field_key ) . "' as field, $table_key.meta_value as value
                             FROM $wpdb->posts p
                             $sql_joins
                             WHERE
-                            $where_sql
+                            ( $where_sql )
                             AND p.ID != $post_id
                         ";
                     }
@@ -618,9 +671,11 @@ class DT_Duplicate_Checker_And_Merging {
                 }
                 $all_sql .= "
                     SELECT
-                    p.ID, p.post_title, 'post_title' as field
+                    p.ID, p.post_title, 'post_title' as field, p.post_title as value
                     FROM $wpdb->posts p
+                    JOIN $wpdb->postmeta pm ON ( p.ID = pm.post_id AND pm.meta_key = 'type' AND pm.meta_value = 'access' )
                     WHERE p.post_title = '" . esc_sql( $field_value ) . "'
+                    AND p.post_type = 'contacts'
                     AND p.ID != $post_id
                 ";
 
@@ -628,7 +683,7 @@ class DT_Duplicate_Checker_And_Merging {
                 $search_query[$field_key] = [ $exact_template . $field_value ];
             }
         }
-        $contacts = $wpdb->get_results( $all_sql,  ARRAY_A );
+        $contacts = $wpdb->get_results( $all_sql, ARRAY_A ); // @phpcs:ignore
         return $contacts;
     }
 }

@@ -16,6 +16,7 @@
   let table_header_row = $('.js-list thead .sortable th')
   let fields_to_show_in_table = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_show_in_table', [] );
   let current_user_id = wpApiNotifications.current_user_id;
+  let mobile_breakpoint = 1024
 
   let items = []
   try {
@@ -340,7 +341,7 @@
 
   let build_table = (records)=>{
     let table_rows = ``
-    let mobile = $(window).width() < 640
+    let mobile = $(window).width() < mobile_breakpoint
     records.forEach( ( record, index )=>{
       let row_fields_html = ''
       fields_to_show_in_table.forEach(field_key=>{
@@ -389,7 +390,7 @@
           return `<li>${v}</li>`
         }).join('')
 
-        if ( $(window).width() < 640 ){
+        if ( $(window).width() < mobile_breakpoint ){
           row_fields_html += `
             <td>
               <div class="mobile-list-field-name">
@@ -419,8 +420,8 @@
       if ( mobile ){
         table_rows += `<tr data-link="${_.escape(record.permalink)}">
           <td class="bulk_edit_checkbox">
-          <input type="checkbox" name="bulk_edit_id" value="${record.ID}">
-            <div class="mobile-list-field-name">
+              <input class="bulk_edit_checkbox" type="checkbox" name="bulk_edit_id" value="${record.ID}">
+              <div class="mobile-list-field-name">
                 ${index+1}.
               </div>
               <div class="mobile-list-field-value">
