@@ -24,8 +24,12 @@ get_header();
                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                         </button>
                     </h1>
-                    <p>Scanning for duplicates. Starting with the most recently modified contacts. Limiting results to those that have less than 10 exact matches.</p>
-                    <p>Scanned <span id="scanned_number">0</span> access contacts. <span class="loading-spinner active"></span> Found <span id="found_text">0</span> duplicates.</p>
+                    <p><?php esc_html_e( 'Scanning for duplicates starting with the most recently modified contacts. Results are limited to ones that have less than 10 exact matches.', 'disciple_tools' ); ?></p>
+                    <p>
+                        <span class="loading-spinner active"></span>
+                        <?php echo esc_html( _x( "Access contacts scanned:", 'Access contact scanned: 100', 'disciple_tools' ) ); ?> <span id="scanned_number">0</span>.
+                        <?php echo esc_html( _x( "Duplicates found:", 'Duplicate contacts found: 100', 'disciple_tools' ) ); ?> <span id="found_text">0</span>.
+                    </p>
                 </div>
                 <div id="duplicates-content" class="grid-y grid-margin-y" style="margin-top:50px">
 
@@ -33,62 +37,6 @@ get_header();
             </main> <!-- end #main -->
         </div> <!-- end #inner-content -->
 
-        <script type="text/javascript">
-          $( document ).on( "click", '.dismiss-all', function (){
-            $(this).addClass('loading')
-            let id = $(this).data('id')
-            makeRequestOnPosts('POST', `contacts/${id}/dismiss-duplicates`, {'id':'all'}).then(()=> {
-              $(`#contact_${id}`).remove()
-              $(this).removeClass('loading')
-            })
-          })
-
-          let get_duplicates = (limit=0)=>{
-              window.makeRequest("GET", "contacts/all-duplicates", {limit:limit}, "dt-posts/v2/" ).then(response=>{
-                  let html = ``
-                  response.posts_with_matches.forEach(post=>{
-                      let inner_html = ``
-                      _.forOwn( post.dups, (dup_values, dup_key)=>{
-                        inner_html += `<div style="display: flex"><div style="flex-basis: 100px"><strong>${_.escape(dup_key)}</strong></div><div>`;
-                        dup_values.forEach(dup=>{
-                            inner_html += `<a target="_blank" href="contacts/${_.escape(dup.ID)}" style="margin: 0 10px 0 5px">
-                              ${_.escape(dup.post_title)}: ${dup.field === "post_title" ? "" : _.escape(dup.value)} (#${_.escape(dup.ID)})
-                            </a>`;
-                        })
-                          inner_html += `</div></div>`
-                      })
-                      let channels = post.info.map(info=>info.value?info.value:null).join( ", ")
-                      html += `
-                          <div class="bordered-box cell" id="contact_${_.escape(post.ID)}">
-                            <a style="color: #3f729b; font-size: 1.5rem;" target="_blank" href="contacts/${_.escape(post.ID)}">
-                              ${_.escape(post.post_title)} (#${_.escape(post.ID)})
-                            </a>
-                            <div class="label" style="display:inline-block; background: ${_.escape(post.overall_status.color)}">${_.escape(post.overall_status.label)}</div>
-                            <div style="display:inline-block;">${_.escape(channels)}</div>
-                            <h4 style="margin-top:20px">Matches Found:</h4>
-                            <div>${inner_html}</div>
-
-                            <button class="button hollow dismiss-all loader" data-id="${_.escape(post.ID)}"  style="margin-top:20px">Dismiss all matches for ${_.escape(post.post_title)}</button>
-                          </div>
-                      `
-                  })
-                  $('#duplicates-content').append(html)
-                  $('#scanned_number').html(_.escape(response.scanned))
-                  let found = $('#duplicates-content .bordered-box').length
-                  $('#found_text').html(_.escape(found));
-                  if ( found < 100 ){
-                    get_duplicates(response.scanned)
-                  } else {
-                      $('.loading-spinner').removeClass("active")
-                  }
-              })
-
-          }
-          get_duplicates(0)
-
-
-
-        </script>
 
     </div> <!-- end #content -->
 

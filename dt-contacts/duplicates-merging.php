@@ -661,7 +661,7 @@ class DT_Duplicate_Checker_And_Merging {
                             $sql_joins
                             WHERE
                             ( $where_sql )
-                            AND p.ID != $post_id
+                            AND p.ID != " . esc_sql( $post_id ) . "
                         ";
                     }
                 }
@@ -676,7 +676,7 @@ class DT_Duplicate_Checker_And_Merging {
                     JOIN $wpdb->postmeta pm ON ( p.ID = pm.post_id AND pm.meta_key = 'type' AND pm.meta_value = 'access' )
                     WHERE p.post_title = '" . esc_sql( $field_value ) . "'
                     AND p.post_type = 'contacts'
-                    AND p.ID != $post_id
+                    AND p.ID != " . esc_sql( $post_id ) . "
                 ";
 
                 $fields_with_values[] = $field_key;
