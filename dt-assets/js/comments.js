@@ -8,7 +8,7 @@ jQuery(document).ready(function($) {
   let rest_api = window.API;
 
   let comments = [];
-  // root comments is a test variable to see if it stores the parent_comment value.
+  // root comments is a test variable to see if it stores the parent_comment value
   let rootComments = [];
   let activity = []; // not guaranteed to be in any particular order
   let langcode = document.querySelector("html").getAttribute("lang")
@@ -37,6 +37,7 @@ jQuery(document).ready(function($) {
               updated_comment.comment_date_gmt + "Z"
             );
             comments.push(updated_comment);
+
             display_activity_comment();
             // fire comment posted event
             $("#content")[0].dispatchEvent(commentPostedEvent);
@@ -141,12 +142,16 @@ jQuery(document).ready(function($) {
         if (a.comment){ %>
           <% is_Comment = true; %>
             <div dir="auto" id= "comment-<%- a.comment_ID%>" class="comment-bubble <%- a.comment_ID %>">
-              <div class="comment-text" title="<%- date %>" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
+              <div class="comment-text" title="<%- date %>" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %>
+              <ul id="childcomment-<%- a.comment_ID%>"></ul>
+
+              </div>
             </div>
             <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate' ) { %>
               <div class="translation-bubble" dir=auto></div>
             <% } %>
 
+            // add div for child comment
             <p class="comment-controls">
                <% if ( a.comment_ID ) { %>
                 <% has_Comment_ID = true %>
@@ -299,12 +304,22 @@ jQuery(document).ready(function($) {
         let updated_comment = data.comment || data;
 
         updated_comment.date = moment(updated_comment.comment_date_gmt + "Z");
-
-        comments.push(updated_comment);
+        // let inputElem = `
+        //           <li>
+        //             ${updated_comment.comment_content}
+        //           </li>
+        //           `;
+        //
+        // document.getElementById(
+        //   `childcomment-${comment_parent}`
+        // ).innerHTML += inputElem;
         //       if(parent != null) {
         // 	commentArr[parent].childrenIds.push(commentArr.length-1);
         // }
-        display_activity_comment();
+        // childListElem = `<li > ${update_comment} </li>`;
+        // document.getElementById(
+        //   `commentchild-${id}`
+        // ).innerHTML += childListElem;
 
         $("#content")[0].dispatchEvent(commentPostedEvent);
       })
@@ -425,14 +440,16 @@ jQuery(document).ready(function($) {
         if (!hiddenTabs.includes("activity")) {
           displayed = _.union(displayed, activity);
         }
-        if (
-          !hiddenTabs.includes(comment.comment_type) &&
-          comment.comment_parent == 0
-        ) {
-          displayed.push(comment);
+        if (!hiddenTabs.includes(comment.comment_type)) {
+          if (comment.comment_parent == 0) {
+            displayed.push(comment);
+          }
         }
+        // if (!comment.comment_parent == 0) {
+        // }
       }
     });
+
     displayed = _.orderBy(displayed, "date", "desc");
     let array = [];
 
@@ -465,6 +482,16 @@ jQuery(document).ready(function($) {
       if (!first || (first.name === name && diff < 1)) {
         array.push(obj);
       } else {
+        // another if statement if it has a parent comment id take that comment text and put it in the empty div of appropriate comment
+        //   if (hasParentCommentID) {
+        //   var replyWrapper = $(#commentID .emptyReplyDiv)
+        //   replyWrapper.append(commentTemplate({
+        //     name: array[0].name,
+        //     gravatar: array[0].gravatar,
+        //     date:window.SHAREDFUNCTIONS.formatDate(moment(array[0].date).unix(), true),
+        //     activity: array
+        //   }))
+        // }
         commentsWrapper.append(
           commentTemplate({
             name: array[0].name,
@@ -492,7 +519,19 @@ jQuery(document).ready(function($) {
         })
       );
     }
+
+    comments.forEach(d => {
+      var ul = document.getElementById(`childcomment-${d.comment_parent}`);
+      var li = document.createElement("li");
+      li.textContent = `${d.comment_content}`;
+      if (ul.nextSibling) {
+        ul.parentNode.insertBefore(li, ul.nextSibling);
+      } else {
+        ul.parentNode.appendChild(li);
+      }
+    });
   }
+
   function baptismTimestamptoDate(match, timestamp) {
     return window.SHAREDFUNCTIONS.formatDate(timestamp);
   }
