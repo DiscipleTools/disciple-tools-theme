@@ -16,6 +16,7 @@
   let table_header_row = $('.js-list thead .sortable th')
   let fields_to_show_in_table = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_show_in_table', [] );
   let current_user_id = wpApiNotifications.current_user_id;
+  let mobile_breakpoint = 1024
 
   let items = []
   try {
@@ -27,6 +28,11 @@
 
   //set up main filters
   setup_filters()
+
+  let check_first_filter = function (){
+    $('#list-filter-tabs .accordion-item a')[0].click()
+    $($('.js-list-view')[0]).prop('checked', true)
+  }
 
   //set up custom cached filter
   if ( cached_filter && !_.isEmpty(cached_filter) && cached_filter.type === "custom_filter" ){
@@ -41,12 +47,10 @@
       if ( filter_element.length ){
         filter_element.prop('checked', true);
       } else {
-        $('#list-filter-tabs .accordion-item a')[0].click()
-        $($('.js-list-view')[0]).prop('checked', true)
+        check_first_filter()
       }
     } else {
-      $('#list-filter-tabs .accordion-item a')[0].click()
-      $($('.js-list-view')[0]).prop('checked', true)
+      check_first_filter()
     }
   }
 
@@ -338,7 +342,7 @@
 
   let build_table = (records)=>{
     let table_rows = ``
-    let mobile = $(window).width() < 640
+    let mobile = $(window).width() < mobile_breakpoint
     records.forEach( ( record, index )=>{
       let row_fields_html = ''
       fields_to_show_in_table.forEach(field_key=>{
@@ -355,7 +359,7 @@
             if (['text', 'number'].includes(field_settings.type)) {
               values = [_.escape(field_value)]
             } else if (field_settings.type === 'date') {
-              values = [_.escape(field_value.formatted)]
+              values = [_.escape(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp))]
             } else if (field_settings.type === 'user_select') {
               values = [_.escape(field_value.display)]
             } else if (field_settings.type === 'key_select') {
@@ -387,7 +391,7 @@
           return `<li>${v}</li>`
         }).join('')
 
-        if ( $(window).width() < 640 ){
+        if ( $(window).width() < mobile_breakpoint ){
           row_fields_html += `
             <td>
               <div class="mobile-list-field-name">
@@ -417,8 +421,8 @@
       if ( mobile ){
         table_rows += `<tr data-link="${_.escape(record.permalink)}">
           <td class="bulk_edit_checkbox">
-          <input type="checkbox" name="bulk_edit_id" value="${record.ID}">
-            <div class="mobile-list-field-name">
+              <input class="bulk_edit_checkbox" type="checkbox" name="bulk_edit_id" value="${record.ID}">
+              <div class="mobile-list-field-name">
                 ${index+1}.
               </div>
               <div class="mobile-list-field-value">
@@ -1014,7 +1018,8 @@
       API.delete_filter(list_settings.post_type, filter_to_delete).then(()=>{
         _.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
         setup_filters()
-        $(`#list-filter-tabs [data-id='custom'] a`).click()
+        check_first_filter()
+        get_records_for_current_filter()
       }).catch(err => { console.error(err) })
     }
   })
@@ -1028,7 +1033,7 @@
 
   $("#search-mobile").on("click", function () {
     let searchText = _.escape( $("#search-query-mobile").val() )
-    let query = {text:searchText, assigned_to:["all"]}
+    let query = {text:searchText}
     let labels = [{ id:"search", name:searchText, field: "search"}]
     add_custom_filter(searchText, "search", query, labels)
   })

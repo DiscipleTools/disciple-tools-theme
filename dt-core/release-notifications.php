@@ -9,12 +9,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function dt_release_modal() {
+    $current_release_version = 1; // increment this number with each new release modal
+
     $last_release_notification = get_user_option( 'dt_release_notification', get_current_user_id() );
-    if ( $last_release_notification >= 1 ){
+    if ( $last_release_notification >= $current_release_version ){
         return;
     }
 
-    update_user_option( get_current_user_id(), 'dt_release_notification', 1 );
+    update_user_option( get_current_user_id(), 'dt_release_notification', $current_release_version );
     ?>
     <script>
       jQuery(document).ready(function() {
@@ -35,6 +37,8 @@ function dt_release_modal() {
                 </ul>
 
                 <p>See full list of changes <a href="https://disciple.tools/news/disciple-tools-theme-version-1-0-changes-and-new-features/" target="_blank">here</a>.</p>
+
+                <p>Sign up for more news and announcements: <a href="https://disciple.tools/news/" target="_blank">here</a>.</p>
 
                 <p class="center"><button type="button" class="button hollow" data-close>Close</button>
 

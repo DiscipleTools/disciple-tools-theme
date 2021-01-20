@@ -40,8 +40,8 @@ jQuery(document).ready(function($) {
 
 /**
  *
- * @param type
- * @param url
+ * @param type: GET POST DELETE
+ * @param url: users/get_users
  * @param data
  * @param base, when using a custom D.T endpoint that does not start with dt/v1
  * @returns {jQuery}
@@ -170,7 +170,7 @@ jQuery(document).on('click', '.help-button-tile', function () {
     }
     let html = ``
     _.forOwn( window.post_type_fields, (field, field_key)=>{
-      if ( field.tile === section && ( field.description || _.isObject(field.default) )){
+      if ( field.tile === section && ( field.description || _.isObject(field.default) ) && !field.hidden){
         html += `<h2>${_.escape(field.name)}</h2>`
         html += `<p>${_.escape(field.description)}</p>`
 

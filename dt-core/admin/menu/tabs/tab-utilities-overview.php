@@ -66,10 +66,20 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         </tr>
         <tr>
             <td>
-                <?php echo esc_html( sprintf( __( 'D.T Migration version: %1$s | Mapping migration version: %2$s' ), Disciple_Tools_Migration_Engine::$migration_number, DT_Mapping_Module_Migration_Engine::$migration_number ) ); ?>
+                <?php echo esc_html( sprintf( __( 'D.T Migration version: %1$s ' ), Disciple_Tools_Migration_Engine::$migration_number ) ); ?>.
+                Lock: <?php echo esc_html( get_option( 'dt_migration_lock', 0 ) ) ?>
             </td>
         </tr>
+        <tr>
+            <td>
+                <?php echo esc_html( sprintf( __( 'Mapping migration version: %1$s' ), DT_Mapping_Module_Migration_Engine::$migration_number ) ); ?>.
+                Lock: <?php echo esc_html( get_option( 'dt_mapping_module_migration_lock', 0 ) ) ?>
+            </td>
+        </tr>
+
+
         <?php
+        do_action( "dt_utilities_system_details" );
 
 
         $this->box( 'bottom' );
