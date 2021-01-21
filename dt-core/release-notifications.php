@@ -12,7 +12,7 @@ function dt_release_modal() {
     $current_release_version = 1; // increment this number with each new release modal
 
     $last_release_notification = get_user_option( 'dt_release_notification', get_current_user_id() );
-    if ( $last_release_notification > $current_release_version ){
+    if ( $last_release_notification >= $current_release_version ){
         return;
     }
 
