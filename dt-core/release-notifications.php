@@ -40,7 +40,7 @@ function dt_release_modal() {
 
                 <hr>
 
-                <h5>Subscribe <a href="https://disciple.tools/news/" target="_blank">here</a> for future news and announcements!</h5>
+                <h5>Subscribe <a href="http://eepurl.com/dP9kR5" target="_blank">here</a> for future news and announcements!</h5>
                 <br>
 
                 <p class="center"><button type="button" class="button hollow" data-close>Close</button>
