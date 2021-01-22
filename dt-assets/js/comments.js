@@ -21,6 +21,7 @@ jQuery(document).ready(function($) {
   function post_comment(postId) {
     let commentInput = jQuery("#comment-input");
     let commentButton = jQuery("#add-comment-button");
+
     let commentType = $("#comment_type_selector").val();
     getCommentWithMentions(comment_plain_text => {
       if (comment_plain_text) {
@@ -321,7 +322,7 @@ jQuery(document).ready(function($) {
         //   `commentchild-${id}`
         // ).innerHTML += childListElem;
 
-        $("#content")[0].dispatchEvent(commentPostedEvent);
+        // $("#content")[0].dispatchEvent(commentPostedEvent);
       })
       .catch(err => {
         console.log("error");
@@ -435,6 +436,7 @@ jQuery(document).ready(function($) {
     commentsWrapper.empty();
     let displayed = [];
 
+    let childComments = [];
     comments.forEach(comment => {
       if (comments.length) {
         if (!hiddenTabs.includes("activity")) {
@@ -443,10 +445,10 @@ jQuery(document).ready(function($) {
         if (!hiddenTabs.includes(comment.comment_type)) {
           if (comment.comment_parent == 0) {
             displayed.push(comment);
+          } else {
+            childComments.push(comment);
           }
         }
-        // if (!comment.comment_parent == 0) {
-        // }
       }
     });
 
@@ -520,14 +522,17 @@ jQuery(document).ready(function($) {
       );
     }
 
-    comments.forEach(d => {
+    childComments.forEach(d => {
       var ul = document.getElementById(`childcomment-${d.comment_parent}`);
+
       var li = document.createElement("li");
       li.textContent = `${d.comment_content}`;
-      if (ul.nextSibling) {
-        ul.parentNode.insertBefore(li, ul.nextSibling);
-      } else {
-        ul.parentNode.appendChild(li);
+      if (ul != null) {
+        if (ul.nextSibling) {
+          ul.parentNode.insertBefore(li, ul.nextSibling);
+        } else {
+          ul.parentNode.appendChild(li);
+        }
       }
     });
   }
