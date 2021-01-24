@@ -26,6 +26,7 @@ function dt_print_details_bar(
         <nav role="navigation"
              data-sticky data-options="marginTop:0;" style="width:100%" data-sticky-on="medium"
              class="second-bar">
+             class="second-bar" id="second-bar-medium">
             <div class="container-width">
 
                 <div class="grid-x grid-margin-x">
@@ -138,5 +139,11 @@ function dt_print_details_bar(
             <?php endif; ?>
         </div>
     </nav>
+    <nav class="second-bar" data-sticky data-top-anchor="topbar:bottom" data-margin-top="0" style="width:100%" data-sticky-on="small">
+        <div class="cell small-12 center show-for-small-only">
+                <strong id="second-bar-name"><?php the_title_attribute(); ?></strong>
+        </div>
+    </nav>
+    </div>
     <?php endif;
 }
