@@ -144,6 +144,7 @@ jQuery(document).ready(function($) {
           <% is_Comment = true; %>
             <div dir="auto" id= "comment-<%- a.comment_ID%>" class="comment-bubble <%- a.comment_ID %>">
               <div class="comment-text" title="<%- date %>" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %>
+
               <ul id="childcomment-<%- a.comment_ID%>"></ul>
 
               </div>
@@ -152,9 +153,9 @@ jQuery(document).ready(function($) {
               <div class="translation-bubble" dir=auto></div>
             <% } %>
 
-            // add div for child comment
+
             <p class="comment-controls">
-               <% if ( a.comment_ID ) { %>
+               <% if (a.user_id === commentsSettings.current_user_id  ) { %>
                 <% has_Comment_ID = true %>
                   <a class="open-edit-comment" data-id="<%- a.comment_ID %>" data-type="<%- a.comment_type %>" style="margin-right:5px">
                       <img src="${
@@ -474,8 +475,7 @@ jQuery(document).ready(function($) {
         gravatar,
         text: d.object_note || formatComment(d.comment_content),
         comment: !!d.comment_content,
-        comment_ID:
-          d.user_id === commentsSettings.current_user_id ? d.comment_ID : false,
+        comment_ID: d.comment_ID,
         comment_type: d.comment_type,
         action: d.action
       };
@@ -523,10 +523,65 @@ jQuery(document).ready(function($) {
     }
 
     childComments.forEach(d => {
+      let name = d.comment_author || d.name;
       var ul = document.getElementById(`childcomment-${d.comment_parent}`);
 
       var li = document.createElement("li");
-      li.textContent = `${d.comment_content}`;
+      var gravatar = d.gravatar;
+      li.innerHTML = `
+      <div class="activity-block">
+        <div>
+            <span class="gravatar"><img src=${d.gravatar} /></span>
+            <span><strong>${name}</strong></span>
+            <span class="comment-date"> ${d.date} </span>
+          </div>
+        <div class="activity-text">
+                <div dir="auto" id= "comment-${
+                  d.comment_ID
+                }" class="comment-bubble ${d.comment_ID}">
+                  <div class="comment-text" title="${d.date}"
+
+          </div><div class="comment-text" dir=auto>
+          ${d.comment_content}
+
+
+
+
+                  </div>
+                </div>
+                  <div class="translation-bubble" dir=auto></div>
+
+
+                <p class="comment-controls">
+
+                      <a class="open-edit-comment" data-id="${
+                        d.comment_ID
+                      }" data-type="${d.comment_type}" style="margin-right:5px">
+                          <img src="${
+                            commentsSettings.template_dir
+                          }/dt-assets/images/edit-blue.svg">
+                          ${_.escape(commentsSettings.translations.edit)}
+                      </a>
+                      <a class="open-delete-comment" data-id="${d.comment_ID}">
+                          <img src="${
+                            commentsSettings.template_dir
+                          }/dt-assets/images/trash-blue.svg">
+                          ${_.escape(commentsSettings.translations.delete)}
+                      </a>
+
+                </p>
+
+
+      </p>
+
+            <a class="translate-button hideTranslation hide">${_.escape(
+              commentsSettings.translations.hide_translation
+            )}</a>
+            </div>
+
+        </div>
+      `;
+
       if (ul != null) {
         if (ul.nextSibling) {
           ul.parentNode.insertBefore(li, ul.nextSibling);
