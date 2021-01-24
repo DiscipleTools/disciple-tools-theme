@@ -219,6 +219,16 @@ nav.second-bar {
     }
 }
 
+#second-bar-small{
+    transition: all .3s;
+    border-top: none;
+    &.is-stuck {
+        border-top: .5rem solid $primary-color;
+        .grid-x {
+            display: none;
+        }
+    }
+}
 .off-canvas-list {
     ul {
         margin-left: 0;
@@ -272,6 +282,9 @@ div.sticky-container {
     z-index: 1;
 }
 
+.title-bar {
+    padding: 0.7rem;
+}
 .title-bar img {
     vertical-align: middle;
 }

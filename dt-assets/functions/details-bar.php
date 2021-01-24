@@ -22,11 +22,10 @@ function dt_print_details_bar(
     $post_id = get_the_ID();
     ?>
 
-    <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
+    <div data-sticky-container class="show-for-medium" style="z-index: 9">
         <nav role="navigation"
-             data-sticky data-options="marginTop:0;" style="width:100%" data-sticky-on="medium"
-             class="second-bar">
-             class="second-bar" id="second-bar-medium">
+             data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
+             class="second-bar" id="second-bar-large">
             <div class="container-width">
 
                 <div class="grid-x grid-margin-x">
@@ -96,53 +95,55 @@ function dt_print_details_bar(
         </nav>
     </div>
 
+    <div data-sticky-container class="show-for-small-only" style="z-index: 9">
     <?php if ( $comment_button || $share_button ): ?>
-    <nav  role="navigation" style="width:100%;"
-          class="second-bar show-for-small-only">
+    <nav role="navigation"
+        data-sticky data-options="marginTop:0;" data-sticky-on="small" data-top-anchor="95" style="width:100%"
+        class="second-bar" id="second-bar-small">
         <?php if ( $comment_button ): ?>
-        <div class="grid-x align-center" style="align-items: center">
-            <div class="cell shrink">
-                <button  id="nav-view-comments" class="center-items">
-                    <a href="#comment-activity-section" class="center-items" style="color:black">
-                        <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/view-comments.svg" ); ?>">
-                        <span style="margin:0 10px 0 10px"><?php esc_html_e( "Comments", "disciple_tools" ); ?></span>
-                    </a>
-                </button>
-            </div>
-            <?php endif; ?>
-            <?php if ( $share_button ): ?>
+            <div class="container-width">
+            <div class="grid-x align-center" style="align-items: center">
                 <div class="cell shrink">
-                    <button class="center-items open-share">
-                        <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
-                        <span style="margin:2px 10px 0 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?></span>
+                    <button  id="nav-view-comments" class="center-items">
+                        <a href="#comment-activity-section" class="center-items" style="color:black">
+                            <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/view-comments.svg" ); ?>">
+                            <span style="margin:0 10px 0 10px"><?php esc_html_e( "Comments", "disciple_tools" ); ?></span>
+                        </a>
                     </button>
                 </div>
-            <?php endif; ?>
-            <div class="cell shrink">
-                <?php if ( $disable_following_toggle_function ) : ?>
-                    <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
-                <?php else :
-                    if ( $following ) : ?>
-                        <button class="button follow hollow" data-value="following"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
-                    <?php else : ?>
-                        <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?></button>
+                <?php endif; ?>
+                <?php if ( $share_button ): ?>
+                    <div class="cell shrink">
+                        <button class="center-items open-share">
+                            <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
+                            <span style="margin:2px 10px 0 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?></span>
+                        </button>
+                    </div>
+                <?php endif; ?>
+                <div class="cell shrink">
+                    <?php if ( $disable_following_toggle_function ) : ?>
+                        <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
+                    <?php else :
+                        if ( $following ) : ?>
+                            <button class="button follow hollow" data-value="following"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
+                        <?php else : ?>
+                            <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?></button>
+                        <?php endif; ?>
                     <?php endif; ?>
+                </div>
+                <?php if ( $task ) : ?>
+                    <div class="cell shrink center-items">
+                        <button class="button open-set-task">
+                            <?php esc_html_e( 'Tasks', 'disciple_tools' ); ?>
+                            <i class="fi-clock"></i>
+                        </button>
+                    </div>
                 <?php endif; ?>
             </div>
-            <?php if ( $task ) : ?>
-                <div class="cell shrink center-items">
-                    <button class="button open-set-task">
-                        <?php esc_html_e( 'Tasks', 'disciple_tools' ); ?>
-                        <i class="fi-clock"></i>
-                    </button>
+            <div class="cell small-12 center">
+                    <strong id="second-bar-name"><?php the_title_attribute(); ?></strong>
+            </div>
                 </div>
-            <?php endif; ?>
-        </div>
-    </nav>
-    <nav class="second-bar" data-sticky data-top-anchor="topbar:bottom" data-margin-top="0" style="width:100%" data-sticky-on="small">
-        <div class="cell small-12 center show-for-small-only">
-                <strong id="second-bar-name"><?php the_title_attribute(); ?></strong>
-        </div>
     </nav>
     </div>
     <?php endif;

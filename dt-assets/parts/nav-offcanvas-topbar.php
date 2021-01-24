@@ -14,7 +14,8 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
 
 ?>
 <!--  /* TOP LEFT SIDE MENU AREA */ -->
-<div class="title-bar show-for-small-only" data-responsive-toggle="top-bar-menu">
+<div data-sticky-container>
+<div class="title-bar hide-for-large" data-sticky data-responsive-toggle="top-bar-menu" data-margin-top="0">
     <div class="title-bar-left">
         <button class="" type="button" data-open="off-canvas">
             <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/hamburger.svg" ?>">
@@ -52,9 +53,10 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
 
     </div>
 </div>
+</div>
 
 <!--  /* LOGO AREA */ -->
-<div data-sticky-container class="hide-for-small-only">
+<div data-sticky-container class="show-for-large">
     <div class="top-bar" id="top-bar-menu"
          data-sticky style="width:100%;margin-top:0">
         <div>
