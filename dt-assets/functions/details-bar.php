@@ -20,6 +20,7 @@ function dt_print_details_bar(
 ) {
     $dt_post_type = get_post_type();
     $post_id = get_the_ID();
+    $dt_post = DT_Posts::get_post( $dt_post_type, $post_id );
     ?>
 
     <div data-sticky-container class="show-for-medium" style="z-index: 9">
@@ -59,7 +60,25 @@ function dt_print_details_bar(
                         </div>
                     </div>
                     <div class="cell small-4 center hide-for-small-only">
-                        <strong id="second-bar-name"><?php the_title_attribute(); ?></strong>
+                         <?php
+                         $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
+                            if ( !empty( $picture ) ) : ?>
+                                <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
+                            <?php else : ?>
+                                <i class="fi-torso medium" style=" color:#3f729b"></i>
+                            <?php endif; ?>
+                            <strong id="second-bar-name"><?php the_title_attribute(); ?></strong>
+                            <br>
+                            <?php do_action( 'dt_post_record_name_tagline' ); ?>
+                            <span style="font-size: 10px; display: inline-block; ">
+                            <?php if ( isset( $dt_post["type"]["label"] ) ) : ?>
+                                <a data-open="contact-type-modal" style="font-size: 10px"><?php echo esc_html( $dt_post["type"]["label"] ?? "" )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
+                            <?php endif; ?>
+                                <?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), $dt_post["post_date"]["formatted"] ) );
+                                if ( $dt_post["post_author_display_name"] ):
+                                    echo esc_html( ' ' . sprintf( _x( 'by %s', '(record created) by multiplier1', 'disciple_tools' ), $dt_post["post_author_display_name"] ) );
+                                endif; ?>
+                            </span>
                     </div>
                     <div class="cell small-4 align-right grid-x grid-margin-x">
                         <?php if ( $task ) : ?>
@@ -141,7 +160,19 @@ function dt_print_details_bar(
                 <?php endif; ?>
             </div>
             <div class="cell small-12 center">
-                    <strong id="second-bar-name"><?php the_title_attribute(); ?></strong>
+                <strong id="second-bar-name"><?php the_title_attribute(); ?></strong>
+            </div>
+            <div id="record-tagline" class="cell small-12 center">
+                <?php do_action( 'dt_post_record_name_tagline' ); ?>
+                <span style="font-size: 10px; display: inline-block; ">
+                <?php if ( isset( $dt_post["type"]["label"] ) ) : ?>
+                    <a data-open="contact-type-modal" style="font-size: 10px"><?php echo esc_html( $dt_post["type"]["label"] ?? "" )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
+                <?php endif; ?>
+                    <?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), $dt_post["post_date"]["formatted"] ) );
+                    if ( $dt_post["post_author_display_name"] ):
+                        echo esc_html( ' ' . sprintf( _x( 'by %s', '(record created) by multiplier1', 'disciple_tools' ), $dt_post["post_author_display_name"] ) );
+                    endif; ?>
+                </span>
             </div>
                 </div>
     </nav>
