@@ -237,6 +237,17 @@ table.js-list{
     }
 }
 
+#list_column_picker ul {
+    column-count: 1;
+    margin-bottom: 10px
+}
+
+@media screen and (min-width : 640px) {
+    #list_column_picker ul {
+        column-count: 4;
+    }
+}
+
 .bulk_edit_checkbox {
     cursor: default;
     display: none;

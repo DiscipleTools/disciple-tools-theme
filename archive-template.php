@@ -144,7 +144,7 @@ dt_please_log_in();
                         });
 
                         ?>
-                        <ul class="ul-no-bullets" style="column-count:4; margin-bottom: 10px">
+                        <ul class="ul-no-bullets" style="">
                         <?php foreach ( $post_settings["fields"] as $field_key => $field_values ):
                             if ( !empty( $field_values["hidden"] )){
                                 continue;
