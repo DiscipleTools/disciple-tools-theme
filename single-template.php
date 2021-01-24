@@ -57,34 +57,6 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
 
                     <?php do_action( 'dt_record_notifications_section', $post_type, $dt_post ); ?>
 
-                    <!-- Name section -->
-                    <?php $type_color = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ?
-                        $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] : "#000000";
-                    ?>
-                    <section class="cell" id="contact-type">
-                        <div class="bordered-box detail-notification-box" style="color:black; border: 2px solid <?php echo esc_html( $type_color ); ?>">
-                            <?php $picture = apply_filters( 'dt_record_picture', null, $post_type, $post_id );
-                            if ( !empty( $picture ) ) : ?>
-                                <img src="<?php echo esc_html( $picture )?>" style="height:50px; vertical-align:middle">
-                            <?php else : ?>
-                                <i class="fi-torso large" style="padding-bottom: 1.2rem; color:<?php echo esc_html( $type_color ); ?>"></i>
-                            <?php endif; ?>
-                            <span id="title" style="margin:0 10px" contenteditable="true" class="title dt_contenteditable item-details-header"><?php the_title_attribute(); ?></span>
-                            <?php do_action( 'dt_post_record_name_tagline' ); ?>
-                            <?php if ( isset( $dt_post["type"]["label"] ) ) : ?>
-                            <a data-open="contact-type-modal" style="font-size: 10px"><?php echo esc_html( $dt_post["type"]["label"] ?? "" )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
-                            <?php endif; ?>
-                            <span style="font-size: 10px">
-                                <?php echo esc_html( sprintf( _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ), $dt_post["post_date"]["formatted"] ) );
-                                if ( $dt_post["post_author_display_name"] ):
-                                    echo esc_html( ' ' . sprintf( _x( 'by %s', '(record created) by multiplier1', 'disciple_tools' ), $dt_post["post_author_display_name"] ) );
-                                endif; ?>
-                            </span>
-                        </div>
-                    </section>
-
-
-
 
                     <?php do_action( 'dt_record_top_above_details', $post_type, $dt_post ); ?>
 
