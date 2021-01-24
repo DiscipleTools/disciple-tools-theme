@@ -76,8 +76,6 @@ dt_please_log_in();
                         <div class="custom-filters"></div>
                     </div>
                 </div>
-
-                <br>
                 <?php do_action( 'dt_post_list_filters_sidebar', $post_type ) ?>
             </aside>
 
