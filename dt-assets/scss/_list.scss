@@ -250,6 +250,15 @@ table.js-list{
         display: table-cell;
     }
 }
+
+#bulk_edit_picker .button-group.small .button {
+    border: 1px solid #ccc;
+}
+
+#bulk_edit_picker .button-group.small .button.selected-select-button {
+    border: none;
+}
+
 @media screen and (max-width : #{map-get($breakpoints, large)}) {
     #table-content {
         tr {
