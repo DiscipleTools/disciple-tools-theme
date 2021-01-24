@@ -46,13 +46,15 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                     <!-- Requires update block -->
                     <section class="cell small-12 update-needed-notification"
                              style="display: <?php echo esc_html( ( isset( $dt_post['requires_update'] ) && $dt_post['requires_update'] === true ) ? "block" : "none" ) ?> ">
-                        <div class="bordered-box detail-notification-box" style="background-color:#F43636">
-                            <h4>
-                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/>
-                                <?php echo esc_html( sprintf( __( 'This %s needs an update.', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?>
-                            </h4>
-                            <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?></p>
-                        </div>
+                        <a href="#comment-activity-section">
+                            <div class="bordered-box detail-notification-box" style="background-color:#F43636">
+                                <h4>
+                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/>
+                                    <?php echo esc_html( sprintf( __( 'This %s needs an update.', 'disciple_tools' ), strtolower( $post_settings["label_singular"] ) ) ) ?>
+                                </h4>
+                                <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?></p>
+                            </div>
+                        </a>
                     </section>
 
                     <?php do_action( 'dt_record_notifications_section', $post_type, $dt_post ); ?>
