@@ -185,6 +185,10 @@ nav.second-bar {
     top: auto;
     transform: translateX(0);
 
+    .title {
+        font-weight: bold;
+    }
+
     .breadcrumbs {
         margin-bottom: 0;
     }

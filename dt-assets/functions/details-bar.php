@@ -68,7 +68,7 @@ function dt_print_details_bar(
                             <?php else : ?>
                                 <i class="fi-torso medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                             <?php endif; ?>
-                            <strong id="second-bar-name"><?php the_title_attribute(); ?></strong>
+                            <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
                             <br>
                             <?php do_action( 'dt_post_record_name_tagline' ); ?>
                             <span style="font-size: 10px; display: inline-block; ">
@@ -168,7 +168,7 @@ function dt_print_details_bar(
                 <?php else : ?>
                     <i class="fi-torso medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                 <?php endif; ?>
-                <strong id="second-bar-name"><?php the_title_attribute(); ?></strong>
+                <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
             </div>
             <div id="record-tagline" class="cell small-12 center">
                 <?php do_action( 'dt_post_record_name_tagline' ); ?>
