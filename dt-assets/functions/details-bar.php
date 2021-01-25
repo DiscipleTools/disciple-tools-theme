@@ -20,6 +20,7 @@ function dt_print_details_bar(
 ) {
     $dt_post_type = get_post_type();
     $post_id = get_the_ID();
+    $post_settings = DT_Posts::get_post_settings( $dt_post_type );
     $dt_post = DT_Posts::get_post( $dt_post_type, $post_id );
     ?>
 
@@ -61,10 +62,11 @@ function dt_print_details_bar(
                     </div>
                     <div class="cell small-4 center hide-for-small-only">
                             <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
+                             $type_color = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ? $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] : "#000000";
                             if ( !empty( $picture ) ) : ?>
                                 <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                             <?php else : ?>
-                                <i class="fi-torso medium" style=" color:#3f729b"></i>
+                                <i class="fi-torso medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                             <?php endif; ?>
                             <strong id="second-bar-name"><?php the_title_attribute(); ?></strong>
                             <br>
@@ -116,7 +118,7 @@ function dt_print_details_bar(
     <div data-sticky-container class="show-for-small-only" style="z-index: 9">
     <?php if ( $comment_button || $share_button ): ?>
     <nav role="navigation"
-        data-sticky data-options="marginTop:0;" data-sticky-on="small" data-top-anchor="95" style="width:100%"
+        data-sticky data-options="marginTop:0;" data-sticky-on="small" data-top-anchor="95" style="width:100%; border-color: <?php echo esc_html( $type_color ); ?>"
         class="second-bar" id="second-bar-small">
         <?php if ( $comment_button ): ?>
             <div class="container-width">
@@ -159,6 +161,13 @@ function dt_print_details_bar(
                 <?php endif; ?>
             </div>
             <div class="cell small-12 center">
+                <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
+                    $type_color = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ? $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] : "#000000";
+                if ( !empty( $picture ) ) : ?>
+                    <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
+                <?php else : ?>
+                    <i class="fi-torso medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
+                <?php endif; ?>
                 <strong id="second-bar-name"><?php the_title_attribute(); ?></strong>
             </div>
             <div id="record-tagline" class="cell small-12 center">

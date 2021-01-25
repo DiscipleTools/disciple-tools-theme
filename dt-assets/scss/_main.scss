@@ -365,8 +365,10 @@ i.large {
     line-height: 50px;
 }
 i.medium {
-    font-size: 30px;
-    line-height: 30px;
+    font-size: 25px;
+    line-height: 25px;
+    transform: translateY(2px);
+    display: inline-block;
 }
 
 button {
