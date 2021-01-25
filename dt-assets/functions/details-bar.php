@@ -60,8 +60,7 @@ function dt_print_details_bar(
                         </div>
                     </div>
                     <div class="cell small-4 center hide-for-small-only">
-                         <?php
-                         $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
+                            <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
                             if ( !empty( $picture ) ) : ?>
                                 <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                             <?php else : ?>
