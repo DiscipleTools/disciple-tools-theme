@@ -422,6 +422,8 @@
         table_rows += `<tr data-link="${_.escape(record.permalink)}">
           <td class="bulk_edit_checkbox">
               <input class="bulk_edit_checkbox" type="checkbox" name="bulk_edit_id" value="${record.ID}">
+          </td>
+          <td>
               <div class="mobile-list-field-name">
                 ${index+1}.
               </div>

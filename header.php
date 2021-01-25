@@ -40,7 +40,8 @@
         } else if ( is_archive() ){
             echo post_type_archive_title();
         } else {
-            bloginfo( 'name' );
+            $title_string = ucwords( str_replace( '/', ' - ', dt_get_url_path() ) );
+            echo esc_html( $title_string );
         }
         ?>
         </title>
