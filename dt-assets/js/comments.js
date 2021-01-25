@@ -155,7 +155,9 @@ jQuery(document).ready(function($) {
 
 
             <p class="comment-controls">
+
                <% if (a.user_id === commentsSettings.current_user_id  ) { %>
+
                 <% has_Comment_ID = true %>
                   <a class="open-edit-comment" data-id="<%- a.comment_ID %>" data-type="<%- a.comment_type %>" style="margin-right:5px">
                       <img src="${
@@ -274,7 +276,7 @@ jQuery(document).ready(function($) {
     let id = this.id.split("reply-")[1];
     let inputElem = `
     					<li id="input-${id}">
-    						<textarea rows="5" id="content-${id}" class="comment-box" placeholder="Your reply...."></textarea>
+    						<textarea rows="5" class="mention" id="comment-input" class="comment-box" placeholder="Your reply...."></textarea>
     						<div>
     							<button id="addreply-${id}" class="add-btn">Submit</button>
     						</div>
@@ -476,6 +478,7 @@ jQuery(document).ready(function($) {
         text: d.object_note || formatComment(d.comment_content),
         comment: !!d.comment_content,
         comment_ID: d.comment_ID,
+        user_id: d.user_id,
         comment_type: d.comment_type,
         action: d.action
       };
@@ -523,64 +526,86 @@ jQuery(document).ready(function($) {
     }
 
     childComments.forEach(d => {
-      let name = d.comment_author || d.name;
+      let array = [];
       var ul = document.getElementById(`childcomment-${d.comment_parent}`);
-
+      let name = d.comment_author || d.name;
+      let gravatar = d.gravatar || "";
+      let obj = {
+        name: name,
+        date: d.date,
+        gravatar,
+        text: d.object_note || formatComment(d.comment_content),
+        comment: !!d.comment_content,
+        comment_ID: d.comment_ID,
+        user_id: d.user_id,
+        comment_type: d.comment_type,
+        action: d.action
+      };
+      array.push(obj);
       var li = document.createElement("li");
-      var gravatar = d.gravatar;
-      li.innerHTML = `
-      <div class="activity-block">
-        <div>
-            <span class="gravatar"><img src=${d.gravatar} /></span>
-            <span><strong>${name}</strong></span>
-            <span class="comment-date"> ${d.date} </span>
-          </div>
-        <div class="activity-text">
-                <div dir="auto" id= "comment-${
-                  d.comment_ID
-                }" class="comment-bubble ${d.comment_ID}">
-                  <div class="comment-text" title="${d.date}"
+      li.innerHTML = commentTemplate({
+        gravatar: array[0].gravatar,
+        name: array[0].name,
+        date: window.SHAREDFUNCTIONS.formatDate(
+          moment(array[0].date).unix(),
+          true
+        ),
+        activity: array
+      });
 
-          </div><div class="comment-text" dir=auto>
-          ${d.comment_content}
-
-
-
-
-                  </div>
-                </div>
-                  <div class="translation-bubble" dir=auto></div>
-
-
-                <p class="comment-controls">
-
-                      <a class="open-edit-comment" data-id="${
-                        d.comment_ID
-                      }" data-type="${d.comment_type}" style="margin-right:5px">
-                          <img src="${
-                            commentsSettings.template_dir
-                          }/dt-assets/images/edit-blue.svg">
-                          ${_.escape(commentsSettings.translations.edit)}
-                      </a>
-                      <a class="open-delete-comment" data-id="${d.comment_ID}">
-                          <img src="${
-                            commentsSettings.template_dir
-                          }/dt-assets/images/trash-blue.svg">
-                          ${_.escape(commentsSettings.translations.delete)}
-                      </a>
-
-                </p>
-
-
-      </p>
-
-            <a class="translate-button hideTranslation hide">${_.escape(
-              commentsSettings.translations.hide_translation
-            )}</a>
-            </div>
-
-        </div>
-      `;
+      // `
+      // <div class="activity-block">
+      //   <div>
+      //       <span class="gravatar"><img src=${d.gravatar} /></span>
+      //       <span><strong>${name}</strong></span>
+      //       <span class="comment-date"> ${d.date} </span>
+      //     </div>
+      //   <div class="activity-text">
+      //           <div dir="auto" id= "comment-${
+      //             d.comment_ID
+      //           }" class="comment-bubble ${d.comment_ID}">
+      //             <div class="comment-text" title="${d.date}"
+      //
+      //     </div><div class="comment-text" dir=auto>
+      //     ${d.comment_content}
+      //
+      //
+      //
+      //
+      //             </div>
+      //           </div>
+      //             <div class="translation-bubble" dir=auto></div>
+      //
+      //
+      //           <p class="comment-controls">
+      //
+      //                 <a class="open-edit-comment" data-id="${
+      //                   d.comment_ID
+      //                 }" data-type="${d.comment_type}" style="margin-right:5px">
+      //                     <img src="${
+      //                       commentsSettings.template_dir
+      //                     }/dt-assets/images/edit-blue.svg">
+      //                     ${_.escape(commentsSettings.translations.edit)}
+      //                 </a>
+      //                 <a class="open-delete-comment" data-id="${d.comment_ID}">
+      //                     <img src="${
+      //                       commentsSettings.template_dir
+      //                     }/dt-assets/images/trash-blue.svg">
+      //                     ${_.escape(commentsSettings.translations.delete)}
+      //                 </a>
+      //
+      //           </p>
+      //
+      //
+      // </p>
+      //
+      //       <a class="translate-button hideTranslation hide">${_.escape(
+      //         commentsSettings.translations.hide_translation
+      //       )}</a>
+      //       </div>
+      //
+      //   </div>
+      // `;
 
       if (ul != null) {
         if (ul.nextSibling) {
