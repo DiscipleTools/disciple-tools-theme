@@ -15,7 +15,7 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
 ?>
 <!--  /* TOP LEFT SIDE MENU AREA */ -->
 <div data-sticky-container>
-<div class="title-bar hide-for-large" data-sticky data-responsive-toggle="top-bar-menu" data-margin-top="0">
+<div class="title-bar hide-for-large" data-sticky data-responsive-toggle="top-bar-menu" data-margin-top="0" data-sticky-on="medium">
     <div class="title-bar-left">
         <button class="" type="button" data-open="off-canvas">
             <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/hamburger.svg" ?>">
