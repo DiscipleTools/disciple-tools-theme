@@ -1819,7 +1819,7 @@ class Disciple_Tools_Posts
                         }
                         $fields["address"][] = $details;
                     }
-                } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]["type"] == "key_select" && !empty( $value[0] ) ) {
+                } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]["type"] == "key_select" ) {
                     if ( empty( $value[0] ) ) {
                         unset( $fields[$key] );
                         continue;
