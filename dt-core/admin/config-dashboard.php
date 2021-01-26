@@ -147,7 +147,7 @@ final class Disciple_Tools_Dashboard
             } else {
                 if ( !$mapbox_upgraded ) : ?>
                     <p style="padding: 10px; background-color: lightcoral;">
-                        <strong>Mapping:</strong> Please upgrade Users, Contacts and Groups for the Locations to show up on maps and charts. <a class="button button-tertiary" style="background: #0071a1; color:white; border-color:white">here</a>
+                        <strong>Mapping:</strong> Please upgrade Users, Contacts and Groups for the Locations to show up on maps and charts. <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=geocoding' ) ); ?>" class="button button-tertiary" style="background: #0071a1; color:white; border-color:white">here</a>
                     </p>
                 <?php endif;
             }
