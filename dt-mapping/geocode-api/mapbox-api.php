@@ -482,9 +482,8 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                 </ol>
                             <?php elseif ( self::is_dt() ) :
                                 global $wpdb;
-                                $location_wo_meta = $wpdb->get_var( "SELECT count(*) FROM $wpdb->postmeta WHERE meta_key = 'location_grid' AND meta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta) AND meta_value >= 100000000" );
-                                $user_location_wo_meta = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->usermeta WHERE meta_key = %s AND umeta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta ) AND meta_value >= 100000000", $wpdb->prefix . 'location_grid' ) );
-                                if ( !empty( $location_wo_meta ) || !empty( $user_location_wo_meta ) ) : ?>
+                                $records_upgraded = self::are_records_and_users_upgraded_with_mapbox();
+                                if ( !$records_upgraded ) : ?>
                                     <p class="not-connected">
                                         <strong>Next:</strong> Please upgrade Users, Contacts and Groups below for the Locations to show up on maps and charts.
                                     </p>
@@ -522,6 +521,16 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             }
 
             return false;
+        }
+
+        public static function are_records_and_users_upgraded_with_mapbox(){
+            global $wpdb;
+            $location_wo_meta = $wpdb->get_var( "SELECT count(*) FROM $wpdb->postmeta WHERE meta_key = 'location_grid' AND meta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta) AND meta_value >= 100000000" );
+            $user_location_wo_meta = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->usermeta WHERE meta_key = %s AND umeta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta ) AND meta_value >= 100000000", $wpdb->prefix . 'location_grid' ) );
+            if ( !empty( $location_wo_meta ) || !empty( $user_location_wo_meta ) ){
+                return false;
+            }
+            return true;
         }
 
         public static function parse_raw_result( array $raw_response, $item, $first_result_only = false ) {
