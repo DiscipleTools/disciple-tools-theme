@@ -285,13 +285,13 @@ add_filter( 'network_site_url', function( $url, $path, $scheme) {
 
 // fixes URLs in email that goes out.
 function dt_multisite_retrieve_password_message( $message, $key, $user_login, $user_data) {
-    $message = __( 'Someone has requested a password reset for the following account:' ) . "\r\n\r\n";
+    $message = __( 'Someone has requested a password reset for the following account:', 'disciple_tools' ) . "\r\n\r\n";
     /* translators: %s: Site name. */
-    $message .= sprintf( __( 'DT Site Name: %s' ), wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) ) . "\r\n\r\n";
+    $message .= sprintf( __( 'DT Site Name: %s', 'disciple_tools' ), wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) ) . "\r\n\r\n";
     /* translators: %s: User login. */
-    $message .= sprintf( __( 'Username: %s' ), $user_login ) . "\r\n\r\n";
-    $message .= __( 'If this was a mistake, just ignore this email and nothing will happen.' ) . "\r\n\r\n";
-    $message .= __( 'To reset your password, visit the following address:' ) . "\r\n\r\n";
+    $message .= sprintf( __( 'Username: %s', 'disciple_tools' ), $user_login ) . "\r\n\r\n";
+    $message .= __( 'If this was a mistake, just ignore this email and nothing will happen.', 'disciple_tools' ) . "\r\n\r\n";
+    $message .= __( 'To reset your password, visit the following address:', 'disciple_tools' ) . "\r\n\r\n";
     $message .= '<' . site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'https' ) . ">\r\n";
     return $message;
 }

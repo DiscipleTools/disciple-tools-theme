@@ -1096,7 +1096,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $result = $wpdb->delete( $table, $where );
 
         if ( $result == false ) {
-            return new WP_Error( 'remove_shared', __( "Record not deleted." ), [ 'status' => 418 ] );
+            return new WP_Error( 'remove_shared', "Record not deleted.", [ 'status' => 418 ] );
         } else {
 
             // log share activity
@@ -1193,7 +1193,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
             return $results;
         } else {
-            return new WP_Error( 'add_shared', __( "Post already shared with user." ), [ 'status' => 418 ] );
+            return new WP_Error( 'add_shared', __( "Post already shared with user.", 'disciple_tools' ), [ 'status' => 418 ] );
         }
     }
 

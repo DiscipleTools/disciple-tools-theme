@@ -71,7 +71,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Config' ) ) {
             if ( $this->custom_permission_check() ){
                 ?>
                 <li><a
-                    href="<?php echo esc_url( site_url( '/mapping/' ) ) . '#mapping_view'; ?>"><?php esc_html_e( "Mapping" ); ?></a>
+                    href="<?php echo esc_url( site_url( '/mapping/' ) ) . '#mapping_view'; ?>"><?php esc_html_e( "Mapping", 'disciple_tools' ); ?></a>
                 </li><?php
             }
         }

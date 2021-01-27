@@ -59,7 +59,7 @@ class Disciple_Tools_Users
      */
     public static function get_assignable_users_compact( string $search_string = null, $get_all = false ) {
         if ( !current_user_can( "access_contacts" ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to assign" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, __( "No permissions to assign", 'disciple_tools' ), [ 'status' => 403 ] );
         }
 
         global $wpdb;
@@ -340,7 +340,7 @@ class Disciple_Tools_Users
      */
     public static function get_contact_for_user( $user_id ){
         if ( !current_user_can( "access_contacts" )){
-            return new WP_Error( 'no_permission', __( "Insufficient permissions" ), [ 'status' => 403 ] );
+            return new WP_Error( 'no_permission', __( "Insufficient permissions", 'disciple_tools' ), [ 'status' => 403 ] );
         }
         $contact_id = get_user_option( "corresponds_to_contact", $user_id );
         if ( !empty( $contact_id )){
@@ -877,11 +877,11 @@ You\'ve been invited to join \'%1$s\' at
 %2$s with the role of %3$s.
 
 Please click the following link to confirm the invite:
-%4$s'
+%4$s', 'disciple_tools'
         );
 
         /* translators: Joining confirmation notification email subject. %s: Site title */
-        wp_mail( $user_email, sprintf( __( '[%s] Joining Confirmation' ), wp_specialchars_decode( get_option( 'blogname' ) ) ), sprintf( $message, get_option( 'blogname' ), home_url(), wp_specialchars_decode( translate_user_role( $role['name'] ) ), home_url( "/newbloguser/$newuser_key/" ) ) );
+        wp_mail( $user_email, sprintf( __( '[%s] Joining Confirmation', 'disciple_tools' ), wp_specialchars_decode( get_option( 'blogname' ) ) ), sprintf( $message, get_option( 'blogname' ), home_url(), wp_specialchars_decode( translate_user_role( $role['name'] ) ), home_url( "/newbloguser/$newuser_key/" ) ) );
 
         if ( $switched_locale ) {
             restore_previous_locale();
@@ -961,7 +961,7 @@ Please click the following link to confirm the invite:
         $contact_id = self::get_contact_for_user( $user->ID );
         if ( $contact_id ){
             $link = get_permalink( $contact_id );
-            $actions["view"] = '<a href="' . $link . '" aria-label="View contact">' . __( "View contact record", "Disciple Tools" ) . '</a>';
+            $actions["view"] = '<a href="' . $link . '" aria-label="View contact">' . __( "View contact record", 'disciple_tools' ) . '</a>';
         }
         return $actions;
     }

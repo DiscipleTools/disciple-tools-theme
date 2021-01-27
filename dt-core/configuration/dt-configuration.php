@@ -93,7 +93,7 @@ function dt_wpmu_signup_blog_notification_email( $message, $domain, $path, $titl
 function dt_cron_schedules( $schedules ) {
     $schedules['weekly'] = array(
         'interval' => 60 * 60 * 24 * 7, # 604,800, seconds in a week
-        'display'  => __( 'Weekly' )
+        'display'  => 'Weekly'
     );
     return $schedules;
 }

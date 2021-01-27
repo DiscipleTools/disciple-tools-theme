@@ -105,7 +105,7 @@ class Disciple_Tools_Contacts_Transfer
             if ( $transfer_site_link_post_id ) {
                 $site_title = get_the_title( $transfer_site_link_post_id );
             } else {
-                $site_title = __( 'another site' );
+                $site_title = __( 'another site', 'disciple_tools' );
             }
 
             ?>
@@ -115,7 +115,7 @@ class Disciple_Tools_Contacts_Transfer
                 <?php if ( $foreign_key_exists ) : ?>
                 <div class="cell" id="transfer-warning">
 
-                    <h6><?php echo sprintf( esc_html__( 'Already transfered to %s' ), esc_html( $site_title ) ) ?></h6>
+                    <h6><?php echo sprintf( esc_html__( 'Already transfered to %s', 'disciple_tools' ), esc_html( $site_title ) ) ?></h6>
                     <p><?php esc_html_e( 'NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?', 'disciple_tools' ) ?></p>
                     <p><button type="button" onclick="jQuery('#transfer-form').show();jQuery('#transfer-warning').hide();" class="button"><?php esc_html_e( 'Override and Continue', 'disciple_tools' ) ?></button></p>
                 </div>
@@ -204,7 +204,7 @@ class Disciple_Tools_Contacts_Transfer
         $result_body = json_decode( $result['body'] );
 
         if ( ! ( isset( $result_body->status ) && 'OK' === $result_body->status ) ) {
-            $errors->add( 'transfer', $result_body->error ?? __( 'Unknown error.' ) );
+            $errors->add( 'transfer', $result_body->error ?? __( 'Unknown error.', 'disciple_tools' ) );
             return $errors;
         }
 
@@ -360,7 +360,7 @@ class Disciple_Tools_Contacts_Transfer
             foreach ( $comment_data as $comment ) {
                 // set variables
                 $comment['comment_post_ID'] = $post_id;
-                $comment['comment_author'] = __( 'Transfer Bot' ) . ' (' . $comment['user_id'] . ')';
+                $comment['comment_author'] = __( 'Transfer Bot', 'disciple_tools' ) . ' (' . $comment['user_id'] . ')';
                 $comment['user_id'] = 0;
                 $comment['comment_approved'] = 1;
                 unset( $comment['comment_ID'] );
@@ -378,16 +378,16 @@ class Disciple_Tools_Contacts_Transfer
         $transfer_comment = wp_insert_comment([
                 'user_id' => 0,
                 'comment_post_ID' => $post_id,
-                'comment_author' => __( 'Transfer Bot' ),
+                'comment_author' => __( 'Transfer Bot', 'disciple_tools' ),
                 'comment_approved' => 1,
-                'comment_content' => __( 'Contact transferred from site' ) . ' "' . esc_html( get_the_title( $site_link_post_id ) ) . '"',
+                'comment_content' => __( 'Contact transferred from site', 'disciple_tools' ) . ' "' . esc_html( get_the_title( $site_link_post_id ) ) . '"',
         ]);
         if ( is_wp_error( $transfer_comment ) ) {
             $errors->add( 'comment_insert_fail', 'Comment insert fail for transfer notation.' );
         }
 
         if ( $possible_duplicate || $duplicate_post_id ) {
-            $message = __( 'ALERT: Possible duplicate contact from a previous transfer.' );
+            $message = __( 'ALERT: Possible duplicate contact from a previous transfer.', 'disciple_tools' );
             if ( $duplicate_post_id ) {
                 $message = $message . ' <a href="'. esc_url( site_url() ) . '/contacts/' . esc_attr( $duplicate_post_id ) .'">' . esc_attr( get_the_title( $duplicate_post_id ) ) . '</a>';
             }
@@ -395,7 +395,7 @@ class Disciple_Tools_Contacts_Transfer
             $transfer_comment = wp_insert_comment([
                 'user_id' => 0,
                 'comment_post_ID' => $post_id,
-                'comment_author' => __( 'Transfer Bot' ),
+                'comment_author' => __( 'Transfer Bot', 'disciple_tools' ),
                 'comment_approved' => 1,
                 'comment_content' => $message,
             ]);
@@ -548,9 +548,9 @@ function dt_get_comments_with_redacted_user_data( $post_id ) {
     if ( empty( $comments ) ) {
         return $comments;
     }
-    $email_note = __( 'redacted email' );
-    $name_note = __( 'redacted name' );
-    $redacted_note = __( 'redacted' );
+    $email_note = __( 'redacted email', 'disciple_tools' );
+    $name_note = __( 'redacted name', 'disciple_tools' );
+    $redacted_note = __( 'redacted', 'disciple_tools' );
 
     $users = get_users();
 

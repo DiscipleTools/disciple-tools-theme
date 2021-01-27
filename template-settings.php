@@ -456,7 +456,7 @@ $contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
                                 </tr>
                                 <tr>
                                     <td><?php esc_html_e( 'System Email', 'disciple_tools' )?></td>
-                                    <td><span data-tooltip data-click-open="true" class="top" tabindex="3" title="<?php esc_html_e( 'User email can be changed by site administrator.' ) ?>">
+                                    <td><span data-tooltip data-click-open="true" class="top" tabindex="3" title="<?php esc_html_e( 'User email can be changed by site administrator.', 'disciple_tools' ) ?>">
                                         <input type="text" class="profile-input" id="user_email"
                                             name="user_email"
                                             value="<?php echo esc_html( $dt_user->user_email ); ?>"/>

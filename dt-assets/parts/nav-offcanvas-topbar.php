@@ -105,7 +105,7 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
                 <!--  /* HEADER notifications */ -->
                 <li class="image-menu-nav">
                     <a href="<?php echo esc_url( site_url( '/notifications' ) ); ?>">
-                        <img title="<?php esc_html_e( "Notifications" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
+                        <img title="<?php esc_html_e( "Notifications", 'disciple_tools' ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
                         <span class="badge alert notification-count" style="display:none"></span>
                     </a>
                 </li>
