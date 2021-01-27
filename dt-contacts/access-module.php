@@ -841,7 +841,9 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tab' => 'default',
                 'name' => __( "My Follow-Up", 'disciple_tools' ),
                 'query' => [
-                    [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
+                    'assigned_to' => [ 'me' ],
+                    'subassigned' => [ 'me' ],
+                    'combine' => [ 'subassigned' ],
                     'overall_status' => [ '-closed' ],
                     'type' => [ 'access' ],
                     'sort' => 'overall_status',
@@ -860,7 +862,9 @@ class DT_Contacts_Access extends DT_Module_Base {
                         "tab" => 'default',
                         "name" => $status_value["label"],
                         "query" => [
-                            [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
+                            'assigned_to' => [ 'me' ],
+                            'subassigned' => [ 'me' ],
+                            'combine' => [ 'subassigned' ],
                             'type' => [ 'access' ],
                             'overall_status' => [ $status_key ],
                             'sort' => 'seeker_path'
@@ -880,7 +884,9 @@ class DT_Contacts_Access extends DT_Module_Base {
                                 "tab" => 'default',
                                 "name" => $fields["requires_update"]["name"],
                                 "query" => [
-                                    [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
+                                    'assigned_to' => [ 'me' ],
+                                    'subassigned' => [ 'me' ],
+                                    'combine' => [ 'subassigned' ],
                                     'overall_status' => [ 'active' ],
                                     'requires_update' => [ true ],
                                     'type' => [ 'access' ],
@@ -902,7 +908,9 @@ class DT_Contacts_Access extends DT_Module_Base {
                                     "tab" => 'default',
                                     "name" => $seeker_path_value["label"],
                                     "query" => [
-                                        [ 'assigned_to' => [ 'me' ], 'subassigned' => [ 'me' ] ],
+                                        'assigned_to' => [ 'me' ],
+                                        'subassigned' => [ 'me' ],
+                                        'combine' => [ 'subassigned' ],
                                         'overall_status' => [ 'active' ],
                                         'seeker_path' => [ $seeker_path_key ],
                                         'type' => [ 'access' ],
