@@ -133,8 +133,7 @@ jQuery(document).ready(function($) {
 
   $('.dt_contenteditable').on('blur', function(){
     const id = $(this).attr('id')
-    let val = $(this).text();
-    console.log($(this).text());
+    let val = $(this).html()
     rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
       $( document ).trigger( "contenteditable-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
