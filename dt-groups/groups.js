@@ -60,6 +60,7 @@ jQuery(document).ready(function($) {
   /* Member List*/
   let memberList = $('.member-list')
   let memberCountInput = $('#member_count')
+  let leaderCountInput = $('#leader_count')
   let populateMembersList = ()=>{
     memberList.empty()
 
@@ -95,6 +96,7 @@ jQuery(document).ready(function($) {
       $("#empty-members-list-message").hide()
     }
     memberCountInput.val( post.member_count )
+    leaderCountInput.val( post.leader_count )
     window.masonGrid.masonry('layout')
   }
   populateMembersList()

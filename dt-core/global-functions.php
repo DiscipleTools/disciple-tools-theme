@@ -215,6 +215,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 "english_name" => "Spanish (Latin America)",
                 "iso" => [ "es" ]
             ];
+            $translations["am_ET"] = [
+                "language" => "am_ET",
+                "native_name" => "Amharic (Ethiopia)",
+                "english_name" => "Amharic (Ethiopia)",
+                "iso" => [ "am" ]
+            ];
             return $translations;
         }
     }

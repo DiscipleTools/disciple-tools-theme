@@ -65,12 +65,15 @@ class DT_Groups_Base extends DT_Module_Base {
 
         if ( isset( $expected_roles["administrator"] ) ){
             $expected_roles["administrator"]["permissions"]['view_any_groups'] = true;
+            $expected_roles["administrator"]["permissions"]['update_any_groups'] = true;
         }
         if ( isset( $expected_roles["dispatcher"] ) ){
             $expected_roles["dispatcher"]["permissions"]['view_any_groups'] = true;
+            $expected_roles["dispatcher"]["permissions"]['update_any_groups'] = true;
         }
         if ( isset( $expected_roles["dt_admin"] ) ){
             $expected_roles["dt_admin"]["permissions"]['view_any_groups'] = true;
+            $expected_roles["dt_admin"]["permissions"]['update_any_groups'] = true;
         }
 
         return $expected_roles;
@@ -307,6 +310,13 @@ class DT_Groups_Base extends DT_Module_Base {
                 "p2p_direction" => "from",
                 "p2p_key" => "groups_to_leaders",
                 "show_in_table" => 30
+            ];
+            $fields["leader_count"] = [
+                'name' => __( 'Leader Count', 'disciple_tools' ),
+                'description' => _x( 'The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the training.', 'Optional Documentation', 'disciple_tools' ),
+                'type' => 'number',
+                'default' => '',
+                'tile' => 'relationships',
             ];
 
 
@@ -733,6 +743,9 @@ class DT_Groups_Base extends DT_Module_Base {
                 }
                 self::update_group_member_count( $post_id );
             }
+            if ( $field_key === "leaders" ){
+                self::update_group_leader_count( $post_id );
+            }
             if ( $field_key === "coaches" ){
                 // share the group with the coach when a coach is added.
                 $user_id = get_post_meta( $value, "corresponds_to_user", true );
@@ -759,6 +772,9 @@ class DT_Groups_Base extends DT_Module_Base {
         if ( $post_type === "groups" ){
             if ( $field_key === "members" ){
                 self::update_group_member_count( $post_id, "removed" );
+            }
+            if ( $field_key === "leaders" ){
+                self::update_group_leader_count( $post_id, "removed" );
             }
         }
         if ( $post_type === "contacts" && $field_key === "groups" ){
@@ -815,6 +831,24 @@ class DT_Groups_Base extends DT_Module_Base {
             update_post_meta( $group_id, 'member_count', sizeof( $members ) );
         } elseif ( $action === "removed" ){
             update_post_meta( $group_id, 'member_count', intval( $member_count ) - 1 );
+        }
+    }
+
+    private static function update_group_leader_count( $group_id, $action = "added" ){
+        $list = get_post( $group_id );
+        $args = [
+            'connected_type'   => "groups_to_leaders",
+            'connected_direction' => 'from',
+            'connected_items'  => $list,
+            'nopaging'         => true,
+            'suppress_filters' => false,
+        ];
+        $leaders = get_posts( $args );
+        $leader_count = get_post_meta( $group_id, 'leader_count', true );
+        if ( sizeof( $leaders ) > intval( $leader_count ) ){
+            update_post_meta( $group_id, 'leader_count', sizeof( $leaders ) );
+        } elseif ( $action === "removed" ){
+            update_post_meta( $group_id, 'leader_count', intval( $leader_count - 1 ) );
         }
     }
 

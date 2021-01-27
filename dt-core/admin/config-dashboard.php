@@ -132,6 +132,10 @@ final class Disciple_Tools_Dashboard
             $mapbox_key = DT_Mapbox_API::get_key();
             $todo = 0;
             $todo += empty( $mapbox_key ) ? 1 : 0;
+            $mapbox_upgraded = DT_Mapbox_API::are_records_and_users_upgraded_with_mapbox();
+            if ( !$mapbox_upgraded ){
+                $todo++;
+            }
 
             ?>
             <p>Remaining Setup Tasks: <?php echo esc_html( $todo ) ?></p>
@@ -140,6 +144,12 @@ final class Disciple_Tools_Dashboard
                 ?>
                 For geo-location and mapping <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=geocoding' ) ); ?>">Add a Mapbox Key</a>
                 <?php
+            } else {
+                if ( !$mapbox_upgraded ) : ?>
+                    <p style="padding: 10px; background-color: lightcoral;">
+                        <strong>Mapping:</strong> Please upgrade Users, Contacts and Groups for the Locations to show up on maps and charts. <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=geocoding' ) ); ?>" class="button button-tertiary" style="background: #0071a1; color:white; border-color:white">here</a>
+                    </p>
+                <?php endif;
             }
         });
     }

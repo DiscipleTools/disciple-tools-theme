@@ -18,6 +18,7 @@ class PostsTest extends WP_UnitTestCase {
         "requires_update" => true,
         "nickname" => "Bob the builder",
         "contact_phone" => [ "values" => [ [ "value" => "798456780" ] ] ],
+        "contact_email" => [ "values" => [ [ "value" => "bob@example.com" ] ] ]
     ];
 
     public $sample_group = [
@@ -629,6 +630,23 @@ class PostsTest extends WP_UnitTestCase {
         $this->assertWPError( $res );
         $res = DT_Posts::search_viewable_post( "contacts", [ "member_count" => [] ], false );
         $this->assertWPError( $res );
+
+
+        /**
+         * Search input
+         */
+        $res = DT_Posts::search_viewable_post( "contacts", [ "text" => "Bob" ], false );
+        $this->assertContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
+        $res = DT_Posts::search_viewable_post( "contacts", [ "text" => "ob" ], false );
+        $this->assertContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
+        $res = DT_Posts::search_viewable_post( "contacts", [ "text" => "798456780" ], false );
+        $this->assertContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
+        $res = DT_Posts::search_viewable_post( "contacts", [ "text" => "6780" ], false );
+        $this->assertContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
+        $res = DT_Posts::search_viewable_post( "contacts", [ "text" => "example.com" ], false );
+        $this->assertContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
+        $res = DT_Posts::search_viewable_post( "contacts", [ "text" => "bob@example.com" ], false );
+        $this->assertContains( $sample_contact["ID"], self::map_ids( $res["posts"] ) );
 
 
         /**

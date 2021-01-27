@@ -968,7 +968,7 @@ class Disciple_Tools_Posts
                 OR p.ID IN ( SELECT post_id
                              FROM $wpdb->postmeta
                              WHERE meta_key LIKE 'contact_%'
-                             AND REPLACE( meta_value, ' ', '') LIKE REPLACE( '" . esc_sql( $search ) . "', ' ', '')
+                             AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
                 )
             ";
             foreach ( $other_search_fields as $field ){
@@ -1819,7 +1819,7 @@ class Disciple_Tools_Posts
                         }
                         $fields["address"][] = $details;
                     }
-                } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]["type"] == "key_select" && !empty( $value[0] ) ) {
+                } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]["type"] == "key_select" ) {
                     if ( empty( $value[0] ) ) {
                         unset( $fields[$key] );
                         continue;
