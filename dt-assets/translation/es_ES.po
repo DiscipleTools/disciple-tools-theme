@@ -4207,46 +4207,46 @@ msgstr "Restaurar"
 #: dt-assets/functions/enqueue-scripts.php:140
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr ""
+msgstr "Mostrando %s artículos. Escriba para encontrar más."
 
 #: dt-assets/functions/enqueue-scripts.php:288
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
-msgstr ""
+msgstr "Coincidencias encontradas:"
 
 #: dt-assets/functions/enqueue-scripts.php:289
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr ""
+msgstr "Descartar todas las coincidencias de %s"
 
 #: dt-contacts/base-setup.php:290
 msgid "Archived"
-msgstr ""
+msgstr "Archivado"
 
 #: dt-groups/base-setup.php:315
 msgid "Leader Count"
-msgstr ""
+msgstr "Conteo de líderes"
 
 #: dt-groups/base-setup.php:316
 msgctxt "Optional Documentation"
 msgid "The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to included people who may not be in the system but are also members of the training."
-msgstr ""
+msgstr "El número de miembros de este grupo. Se actualizará automáticamente cuando se agreguen o eliminen nuevos miembros en la lista de miembros. Cambie este número manualmente para incluir personas que tal vez no estén en el sistema pero que también son miembros de la capacitación."
 
 #: template-view-duplicates.php:21
 msgid "Duplicate Access Contacts"
-msgstr ""
+msgstr "Contactos de Acceso Duplicados"
 
 #: template-view-duplicates.php:27
 msgid "Scanning for duplicates starting with the most recently modified contacts. Results are limited to ones that have less than 10 exact matches."
-msgstr ""
+msgstr "Escaneo de duplicados comenzando con los contactos modificados más recientemente. Los resultados se limitan a los que tienen menos de 10 coincidencias exactas."
 
 #: template-view-duplicates.php:30
 msgctxt "Access contact scanned: 100"
 msgid "Access contacts scanned:"
-msgstr ""
+msgstr "Contactos de Acceso escaneados:"
 
 #: template-view-duplicates.php:31
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
-msgstr ""
+msgstr "Duplicados Encontrados:"
 

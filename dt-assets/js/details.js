@@ -133,7 +133,7 @@ jQuery(document).ready(function($) {
 
   $('.dt_contenteditable').on('blur', function(){
     const id = $(this).attr('id')
-    let val = $(this).html()
+    let val = $(this).text();
     rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
       $( document ).trigger( "contenteditable-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
@@ -207,14 +207,14 @@ jQuery(document).ready(function($) {
   $( document ).on( 'text-input-updated', function (e, newContact, id, val){
     if ( id === "name" ){
       $("#title").html(_.escape(val))
-      $("#second-bar-name").html(_.escape(val))
+      $("#second-bar-name").text(_.escape(val))
     }
   })
 
   $( document ).on( 'contenteditable-updated', function (e, newContact, id, val){
     if ( id === "title" ){
       $("#name").val(_.escape(val))
-      $("#second-bar-name").html(_.escape(val))
+      $("#second-bar-name").text(_.escape(val))
     }
   })
 
