@@ -142,11 +142,8 @@ jQuery(document).ready(function($) {
     <% _.forEach(activity, function(a){
         if (a.comment){ %>
           <% is_Comment = true; %>
-
             <div dir="auto" id= "comment-<%- a.comment_ID%>" class="comment-bubble <%- a.comment_ID %>">
               <div class="comment-text" title="<%- date %>" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %>
-
-
             </div>
 
 </div>
@@ -162,7 +159,7 @@ jQuery(document).ready(function($) {
                       ${_.escape(commentsSettings.translations.reply)}
                   </a>
               <%}%>
-               <% if (a.user_id === commentsSettings.current_user_id  ) { %>
+              <% if (a.user_id === commentsSettings.current_user_id  ) { %>
                   <% has_Comment_ID = true %>
                   <a class="open-edit-comment" data-id="<%- a.comment_ID %>" data-type="<%- a.comment_type %>" style="margin-right:5px">
                       <img src="${
@@ -176,18 +173,14 @@ jQuery(document).ready(function($) {
                       }/dt-assets/images/trash-blue.svg">
                       ${_.escape(commentsSettings.translations.delete)}
                   </a>
-             <%}%>
+          <%}%>
           </p>
             <div class="panel panel-default panel-comment-<%- a.comment_ID%> panel-collapsed" style="display:none">
-             <div class="panel-body">
-
-
-                     <textarea class="form-control input-lg" class="mention" id="content-<%- a.comment_ID%>" autofocus placeholder="What do you want to share?"  style="width: 484px; margin: 0px 6.59375px 16px 45px; position: relative; height: 115px; resize: none"></textarea>
-                     <button class="add-btn" id="addreply-<%- a.comment_ID%>" data-dismiss="modal" aria-hidden="true" >Submit</button>
-
-
-             </div>
-           </div>
+            <div class="panel-body">
+                    <textarea class="reply-comment" id="content-<%- a.comment_ID%>" autofocus placeholder="What do you want to share?"></textarea>
+                    <button class="add-btn" id="addreply-<%- a.comment_ID%>" data-dismiss="modal" aria-hidden="true"  >Submit</button>
+            </div>
+          </div>
             <div class= "nested-comments "id="childcomment-<%- a.comment_ID%>"></div>
         <% } else { %>
             <p class="activity-bubble" title="<%- date %>">  <%- a.text %> <% print(a.action) %> </p>
@@ -302,65 +295,23 @@ jQuery(document).ready(function($) {
       $(`.panel-comment-${id}`).addClass("panel-collapsed");
       $(`.panel-comment-${id}`).removeClass("panel-open");
     }
-    activateMentions();
   });
 
-  // $(document).on("click", ".reply", function() {
-  //   let id = this.id.split("reply-")[1];
-  //   let inputElem = `
-  //   					<li id="input-${id}">
-  //   						<textarea rows="5" class="mention" id="content-${id}" placeholder="Your reply...."></textarea>
-  //   						<div>
-  //   							<button id="addreply-${id}" class="add-btn">Submit</button>
-  //   						</div>
-  //   					</li>
-  //              <div class="panel panel-default panel-comment panel-collapsed">
-  //   					`;
-  //
-  //   let childListElemId = `childlist-${id}`;
-  //   let childListElem = document.getElementById(childListElemId);
-  //
-  //   if (childListElem == null) {
-  //     childListElem = `<ul id="childlist-${id}"> ${inputElem} </ul>`;
-  //     document.getElementById(`comment-${id}`).innerHTML += childListElem;
-  //   } else {
-  //     childListElem.innerHTML = inputElem + childListElem.innerHTML;
-  //   }
-  //   activateMentions();
-  // });
 
   $(document).on("click", ".add-btn", function() {
-    let commentType = $("#comment_type_selector").val();
-
-    // const id = this.id;
-    // console.dir(id);
     const comment_parent = this.id.split("addreply-")[1];
     let content = document.getElementById(`content-${comment_parent}`).value;
-    // post_type, postId, comment, (comment_type = "comment");
+      if (content == '' || null ){
+        return false
+      }
+    let commentType = $("#comment_type_selector").val();
+    
     rest_api
       .post_comment(postType, postId, content, commentType, comment_parent)
       .then(data => {
         let updated_comment = data.comment || data;
 
         updated_comment.date = moment(updated_comment.comment_date_gmt + "Z");
-        // let inputElem = `
-        //           <li>
-        //             ${updated_comment.comment_content}
-        //           </li>
-        //           `;
-        //
-        // document.getElementById(
-        //   `childcomment-${comment_parent}`
-        // ).innerHTML += inputElem;
-        //       if(parent != null) {
-        // 	commentArr[parent].childrenIds.push(commentArr.length-1);
-        // }
-        // childListElem = `<li > ${update_comment} </li>`;
-        // document.getElementById(
-        //   `commentchild-${id}`
-        // ).innerHTML += childListElem;
-
-        // $("#content")[0].dispatchEvent(commentPostedEvent);
       })
       .catch(err => {
         console.log("error");
@@ -368,7 +319,7 @@ jQuery(document).ready(function($) {
         jQuery("#errors").append(err.responseText);
       });
   });
-
+  
   $(document).on("click", ".open-delete-comment", function() {
     let id = $(this).data("id");
     $("#comment-to-delete").html($(`.comment-bubble.${id}`).html());
@@ -522,16 +473,6 @@ jQuery(document).ready(function($) {
       if (!first || (first.name === name && diff < 1)) {
         array.push(obj);
       } else {
-        // another if statement if it has a parent comment id take that comment text and put it in the empty div of appropriate comment
-        //   if (hasParentCommentID) {
-        //   var replyWrapper = $(#commentID .emptyReplyDiv)
-        //   replyWrapper.append(commentTemplate({
-        //     name: array[0].name,
-        //     gravatar: array[0].gravatar,
-        //     date:window.SHAREDFUNCTIONS.formatDate(moment(array[0].date).unix(), true),
-        //     activity: array
-        //   }))
-        // }
         commentsWrapper.append(
           commentTemplate({
             name: array[0].name,
@@ -590,61 +531,6 @@ jQuery(document).ready(function($) {
         ),
         activity: array
       });
-
-      // `
-      // <div class="activity-block">
-      //   <div>
-      //       <span class="gravatar"><img src=${d.gravatar} /></span>
-      //       <span><strong>${name}</strong></span>
-      //       <span class="comment-date"> ${d.date} </span>
-      //     </div>
-      //   <div class="activity-text">
-      //           <div dir="auto" id= "comment-${
-      //             d.comment_ID
-      //           }" class="comment-bubble ${d.comment_ID}">
-      //             <div class="comment-text" title="${d.date}"
-      //
-      //     </div><div class="comment-text" dir=auto>
-      //     ${d.comment_content}
-      //
-      //
-      //
-      //
-      //             </div>
-      //           </div>
-      //             <div class="translation-bubble" dir=auto></div>
-      //
-      //
-      //           <p class="comment-controls">
-      //
-      //                 <a class="open-edit-comment" data-id="${
-      //                   d.comment_ID
-      //                 }" data-type="${d.comment_type}" style="margin-right:5px">
-      //                     <img src="${
-      //                       commentsSettings.template_dir
-      //                     }/dt-assets/images/edit-blue.svg">
-      //                     ${_.escape(commentsSettings.translations.edit)}
-      //                 </a>
-      //                 <a class="open-delete-comment" data-id="${d.comment_ID}">
-      //                     <img src="${
-      //                       commentsSettings.template_dir
-      //                     }/dt-assets/images/trash-blue.svg">
-      //                     ${_.escape(commentsSettings.translations.delete)}
-      //                 </a>
-      //
-      //           </p>
-      //
-      //
-      // </p>
-      //
-      //       <a class="translate-button hideTranslation hide">${_.escape(
-      //         commentsSettings.translations.hide_translation
-      //       )}</a>
-      //       </div>
-      //
-      //   </div>
-      // `;
-
       if (parent != null) {
         if (parent.nextSibling) {
           parent.parentNode.insertBefore(child, parent.nextSibling);
@@ -832,8 +718,7 @@ jQuery(document).ready(function($) {
   };
 
   let searchUsersPromise = null;
-
-  let activateMentions = () => {
+ 
     $("textarea.mention").mentionsInput({
       onDataRequest: function(mode, query, callback) {
         $("#comment-input").addClass("loading-gif");
@@ -870,7 +755,7 @@ jQuery(document).ready(function($) {
       showAvatars: true,
       minChars: 0
     });
-  };
+  
   let getMentionedUsers = callback => {
     $("textarea.mention").mentionsInput("getMentions", function(data) {
       callback(data);
@@ -882,8 +767,6 @@ jQuery(document).ready(function($) {
       callback(text);
     });
   };
-
-  activateMentions();
 
   //
   $(document).on("click", ".revert-activity", function() {
