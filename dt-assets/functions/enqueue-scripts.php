@@ -197,6 +197,7 @@ function dt_site_scripts() {
                     'translations' => [
                         "edit" => strtolower( __( "Edit", "disciple_tools" ) ),
                         "delete" => strtolower( __( "Delete", "disciple_tools" ) ),
+                        "reply" => strtolower( __( "Reply", "disciple_tools" ) ),
                         "translate" => __( "Translate with Google Translate", "disciple_tools" ),
                         "hide_translation" => __( "Hide Translation", "disciple_tools" ),
                     ],

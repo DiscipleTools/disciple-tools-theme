@@ -142,23 +142,28 @@ jQuery(document).ready(function($) {
     <% _.forEach(activity, function(a){
         if (a.comment){ %>
           <% is_Comment = true; %>
+
             <div dir="auto" id= "comment-<%- a.comment_ID%>" class="comment-bubble <%- a.comment_ID %>">
               <div class="comment-text" title="<%- date %>" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %>
 
-              <ul id="childcomment-<%- a.comment_ID%>"></ul>
 
-              </div>
             </div>
+
+</div>
             <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate' ) { %>
               <div class="translation-bubble" dir=auto></div>
             <% } %>
-
-
             <p class="comment-controls">
-
+              <% if (!a.childComment  ) { %>
+                  <a  class="btn btn-primary btn-xs btn-xs clickable" class="reply" id="reply-<%- a.comment_ID%>" style="margin-right:5px">
+                      <img src="${
+                        commentsSettings.template_dir
+                      }/dt-assets/images/reply.svg">
+                      ${_.escape(commentsSettings.translations.reply)}
+                  </a>
+              <%}%>
                <% if (a.user_id === commentsSettings.current_user_id  ) { %>
-
-                <% has_Comment_ID = true %>
+                  <% has_Comment_ID = true %>
                   <a class="open-edit-comment" data-id="<%- a.comment_ID %>" data-type="<%- a.comment_type %>" style="margin-right:5px">
                       <img src="${
                         commentsSettings.template_dir
@@ -171,9 +176,19 @@ jQuery(document).ready(function($) {
                       }/dt-assets/images/trash-blue.svg">
                       ${_.escape(commentsSettings.translations.delete)}
                   </a>
-               <% } %>
-            </p>
-              <a href="#" role="button" class="reply" id="reply-<%- a.comment_ID%>">Reply</a>
+             <%}%>
+          </p>
+            <div class="panel panel-default panel-comment-<%- a.comment_ID%> panel-collapsed" style="display:none">
+             <div class="panel-body">
+
+
+                     <textarea class="form-control input-lg" class="mention" id="content-<%- a.comment_ID%>" autofocus placeholder="What do you want to share?"  style="width: 484px; margin: 0px 6.59375px 16px 45px; position: relative; height: 115px; resize: none"></textarea>
+                     <button class="add-btn" id="addreply-<%- a.comment_ID%>" data-dismiss="modal" aria-hidden="true" >Submit</button>
+
+
+             </div>
+           </div>
+            <div class= "nested-comments "id="childcomment-<%- a.comment_ID%>"></div>
         <% } else { %>
             <p class="activity-bubble" title="<%- date %>">  <%- a.text %> <% print(a.action) %> </p>
         <%  }
@@ -189,6 +204,7 @@ jQuery(document).ready(function($) {
         </div>
     <% } %>
     </div>
+
   </div>`);
 
   $(document).on("click", ".translate-button.showTranslation", function() {
@@ -272,27 +288,46 @@ jQuery(document).ready(function($) {
     translate_button.removeClass("hide");
   });
 
-  $(document).on("click", ".reply", function() {
+  $(document).on("click", "a.clickable", function() {
     let id = this.id.split("reply-")[1];
-    let inputElem = `
-    					<li id="input-${id}">
-    						<textarea rows="5" class="mention" id="comment-input" class="comment-box" placeholder="Your reply...."></textarea>
-    						<div>
-    							<button id="addreply-${id}" class="add-btn">Submit</button>
-    						</div>
-    					</li>
-    					`;
 
-    let childListElemId = `childlist-${id}`;
-    let childListElem = document.getElementById(childListElemId);
-
-    if (childListElem == null) {
-      childListElem = `<ul id="childlist-${id}"> ${inputElem} </ul>`;
-      document.getElementById(`comment-${id}`).innerHTML += childListElem;
+    if ($(`.panel-comment-${id}`).hasClass("panel-collapsed")) {
+      // expand the panel
+      $(`.panel-comment-${id}`).slideDown(50);
+      $(`.panel-comment-${id}`).removeClass("panel-collapsed");
+      $(`.panel-comment-${id}`).addClass("panel-open");
     } else {
-      childListElem.innerHTML = inputElem + childListElem.innerHTML;
+      // collapse the panel
+      $(`.panel-comment-${id}`).slideUp(50);
+      $(`.panel-comment-${id}`).addClass("panel-collapsed");
+      $(`.panel-comment-${id}`).removeClass("panel-open");
     }
+    activateMentions();
   });
+
+  // $(document).on("click", ".reply", function() {
+  //   let id = this.id.split("reply-")[1];
+  //   let inputElem = `
+  //   					<li id="input-${id}">
+  //   						<textarea rows="5" class="mention" id="content-${id}" placeholder="Your reply...."></textarea>
+  //   						<div>
+  //   							<button id="addreply-${id}" class="add-btn">Submit</button>
+  //   						</div>
+  //   					</li>
+  //              <div class="panel panel-default panel-comment panel-collapsed">
+  //   					`;
+  //
+  //   let childListElemId = `childlist-${id}`;
+  //   let childListElem = document.getElementById(childListElemId);
+  //
+  //   if (childListElem == null) {
+  //     childListElem = `<ul id="childlist-${id}"> ${inputElem} </ul>`;
+  //     document.getElementById(`comment-${id}`).innerHTML += childListElem;
+  //   } else {
+  //     childListElem.innerHTML = inputElem + childListElem.innerHTML;
+  //   }
+  //   activateMentions();
+  // });
 
   $(document).on("click", ".add-btn", function() {
     let commentType = $("#comment_type_selector").val();
@@ -527,7 +562,7 @@ jQuery(document).ready(function($) {
 
     childComments.forEach(d => {
       let array = [];
-      var ul = document.getElementById(`childcomment-${d.comment_parent}`);
+      var parent = document.getElementById(`childcomment-${d.comment_parent}`);
       let name = d.comment_author || d.name;
       let gravatar = d.gravatar || "";
       let obj = {
@@ -539,11 +574,14 @@ jQuery(document).ready(function($) {
         comment_ID: d.comment_ID,
         user_id: d.user_id,
         comment_type: d.comment_type,
-        action: d.action
+        action: d.action,
+        childComment: true
       };
       array.push(obj);
-      var li = document.createElement("li");
-      li.innerHTML = commentTemplate({
+
+      var child = document.createElement("div");
+      child.setAttribute("style", "margin-left:40px");
+      child.innerHTML = commentTemplate({
         gravatar: array[0].gravatar,
         name: array[0].name,
         date: window.SHAREDFUNCTIONS.formatDate(
@@ -607,11 +645,11 @@ jQuery(document).ready(function($) {
       //   </div>
       // `;
 
-      if (ul != null) {
-        if (ul.nextSibling) {
-          ul.parentNode.insertBefore(li, ul.nextSibling);
+      if (parent != null) {
+        if (parent.nextSibling) {
+          parent.parentNode.insertBefore(child, parent.nextSibling);
         } else {
-          ul.parentNode.appendChild(li);
+          parent.parentNode.appendChild(child);
         }
       }
     });
@@ -795,40 +833,44 @@ jQuery(document).ready(function($) {
 
   let searchUsersPromise = null;
 
-  $("textarea.mention").mentionsInput({
-    onDataRequest: function(mode, query, callback) {
-      $("#comment-input").addClass("loading-gif");
-      if (searchUsersPromise && _.get(searchUsersPromise, "readyState") !== 4) {
-        searchUsersPromise.abort("abortPromise");
-      }
-      searchUsersPromise = API.search_users(query);
-      searchUsersPromise
-        .then(responseData => {
-          $("#comment-input").removeClass("loading-gif");
-          let data = [];
-          responseData.forEach(user => {
-            data.push({
-              id: user.ID,
-              name: user.name,
-              type: postType,
-              avatar: user.avatar
+  let activateMentions = () => {
+    $("textarea.mention").mentionsInput({
+      onDataRequest: function(mode, query, callback) {
+        $("#comment-input").addClass("loading-gif");
+        if (
+          searchUsersPromise &&
+          _.get(searchUsersPromise, "readyState") !== 4
+        ) {
+          searchUsersPromise.abort("abortPromise");
+        }
+        searchUsersPromise = API.search_users(query);
+        searchUsersPromise
+          .then(responseData => {
+            $("#comment-input").removeClass("loading-gif");
+            let data = [];
+            responseData.forEach(user => {
+              data.push({
+                id: user.ID,
+                name: user.name,
+                type: postType,
+                avatar: user.avatar
+              });
+              callback.call(this, data);
             });
-            callback.call(this, data);
+          })
+          .catch(err => {
+            console.error(err);
           });
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    },
-    templates: {
-      mentionItemSyntax: function(data) {
-        return `[${data.value}](${data.id})`;
-      }
-    },
-    showAvatars: true,
-    minChars: 0
-  });
-
+      },
+      templates: {
+        mentionItemSyntax: function(data) {
+          return `[${data.value}](${data.id})`;
+        }
+      },
+      showAvatars: true,
+      minChars: 0
+    });
+  };
   let getMentionedUsers = callback => {
     $("textarea.mention").mentionsInput("getMentions", function(data) {
       callback(data);
@@ -840,6 +882,8 @@ jQuery(document).ready(function($) {
       callback(text);
     });
   };
+
+  activateMentions();
 
   //
   $(document).on("click", ".revert-activity", function() {
