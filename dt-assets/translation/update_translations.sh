@@ -49,5 +49,5 @@ php download-poeditor-updates.php --token="$TOKEN" --app-id="$APP_ID"
 git add *.pot;
 git add *.po;
 git add *.mo;
-#git commit -m "translations updated.";
+git commit -m "Update Translations";
 # git push origin master?
