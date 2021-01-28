@@ -1,4 +1,4 @@
-# This script
+# This script generates the .pot file, uploads it to poeditor and downloads the .po and .mo files for each language
 # Pass in script: ./update_translations.sh -t 'token'
 
 APP_ID='251019';
@@ -23,9 +23,9 @@ wp i18n make-pot ../.. $POT_FILE_NAME --domain="disciple_tools" --skip-audit --e
 dt-core/admin,template-blank*,*.css"
 
 
-# //@todo this runs ever time
 #upload the .pot file to poeditor if there are any new translation strings
-if [[ `git diff --shortstat  $POT_FILENAME |  sed -E 's/.* ([0-9]+) insertion.* ([0-9]+) deletion.*/\1'/` > "1" ]]
+NUMBER_POT_LINE_CHANGES=$(git diff --shortstat "$POT_FILE_NAME" |  sed -E 's/.* ([0-9]+) insertion.* ([0-9]+) deletion.*/\1'/)
+if [[ NUMBER_POT_LINE_CHANGES > "1" ]]
   then
     echo "uploading new .pot file"
 
