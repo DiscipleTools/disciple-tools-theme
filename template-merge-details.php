@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: Merge Details
+ *  Name: Merge Details
 */
 
 dt_please_log_in();

@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: User Management
+ * Name: User Management
 */
 if ( !current_user_can( 'list_users' ) && !current_user_can( 'manage_dt' ) ) {
     wp_safe_redirect( '/settings' );
