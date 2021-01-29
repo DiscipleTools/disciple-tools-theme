@@ -1855,7 +1855,7 @@ class Disciple_Tools_Posts
                         }
                     }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'multi_select' ) {
-                    $fields[$key] = $value;
+                    $fields[$key] = array_values(array_filter(array_map('trim', $value), 'strlen')); //remove empty values
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'boolean' ) {
                     $fields[$key] = $value[0] === "1";
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'array' ) {
