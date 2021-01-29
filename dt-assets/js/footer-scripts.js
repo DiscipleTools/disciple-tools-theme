@@ -3,8 +3,7 @@ These functions make sure WordPress
 and Foundation play nice together.
 */
 if (Foundation.MediaQuery.current == 'small') {
-  console.log($('.title-bar'));
-  $('.title-bar').removeAttr('data-sticky').removeClass('is-anchored is-at-bottom').attr('style', ''); ;
+  $('.title-bar').removeAttr('data-sticky').removeClass('is-anchored is-at-bottom').attr('style', '');
 }
 
 jQuery(document).foundation();
