@@ -1,8 +1,7 @@
 <?php
 /*
-Template Name: Metrics Wide
-
-@note Full width template for plugin or extension use.
+ * Name: Metrics Wide
+ * @note Full width template for plugin or extension use.
 */
 dt_please_log_in();
 
