@@ -48,6 +48,8 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
     public function content( $tab ) {
         if ( 'overview' == $tab ) {
 
+            $this->reset_lock();
+
             self::template( 'begin' );
 
             $this->box_message();
@@ -58,22 +60,42 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         }
     }
 
+    private function reset_lock(){
+        if ( isset( $_POST["_wpnonce"] ) && wp_verify_nonce( sanitize_key( $_POST["_wpnonce"] ), 'utilities_overview' ) ){
+            if ( isset( $_POST["reset_lock"] ) ){
+                $lock_name = sanitize_key( $_POST["reset_lock"] );
+                update_option( $lock_name, 0 );
+            }
+        }
+    }
+
     public function box_message() {
-        $this->box( 'top', 'System Details' );
+        ?>
+        <form method="post">
+        <?php
+        wp_nonce_field( 'utilities_overview' );
+        $this->box( 'top', 'System Details', [ "col_span" => 2 ] );
         ?>
         <tr>
             <td><?php echo esc_html( sprintf( __( 'WordPress version: %1$s | PHP version: %2$s' ), get_bloginfo( 'version' ), phpversion() ) ); ?></td>
+            <td></td>
         </tr>
         <tr>
             <td>
                 <?php echo esc_html( sprintf( __( 'D.T Migration version: %1$s of %2$s' ), Disciple_Tools_Migration_Engine::get_current_db_migration(), Disciple_Tools_Migration_Engine::$migration_number ) ); ?>.
                 Lock: <?php echo esc_html( get_option( 'dt_migration_lock', 0 ) ) ?>
             </td>
+            <td>
+                <button name="reset_lock" value="dt_migration_lock">Reset Lock</button>
+            </td>
         </tr>
         <tr>
             <td>
                 <?php echo esc_html( sprintf( __( 'Mapping migration version: %1$s of %2$s' ), DT_Mapping_Module_Migration_Engine::get_current_db_migration(), DT_Mapping_Module_Migration_Engine::$migration_number ) ); ?>.
                 Lock: <?php echo esc_html( get_option( 'dt_mapping_module_migration_lock', 0 ) ) ?>
+            </td>
+            <td>
+                <button name="reset_lock" value="dt_mapping_module_migration_lock">Reset Lock</button>
             </td>
         </tr>
 
