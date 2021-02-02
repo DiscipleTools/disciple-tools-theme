@@ -147,6 +147,7 @@
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.NoSpaceAfterComma" />
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma" />
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceBeforeComma" />
+    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound" />
     <exclude name="WordPress.PHP.YodaConditions.NotYoda" />
     <!-- <exclude name="WordPress.WhiteSpace.CastStructureSpacing.NoSpaceBeforeOpenParenthesis" /> -->
     <!-- <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.BlankLineAfterEnd" /> -->
@@ -233,6 +234,13 @@
   <!-- <rule ref="PSR2.Files.ClosingTag"/> -->
   <!-- <rule ref="Squiz.PHP.ForbiddenFunctions"/> -->
 
+  <rule ref="WordPress.Security.ValidatedSanitizedInput">
+    <properties>
+      <property name="customUnslashingSanitizingFunctions" type="array">
+        <element value="dt_recursive_sanitize_array" />
+      </property>
+    </properties>
+  </rule>
 
 </ruleset>
 

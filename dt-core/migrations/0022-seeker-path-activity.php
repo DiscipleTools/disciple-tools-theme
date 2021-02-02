@@ -1,5 +1,5 @@
 <?php
-
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * find and the missed seeker path activity and create records for them.
  *
@@ -8,7 +8,7 @@ class Disciple_Tools_Migration_0022 extends Disciple_Tools_Migration
 {
     public function up() {
         global $wpdb;
-        $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $field_settings = DT_Posts::get_post_field_settings( "contacts" );
         $seeker_path_options = $field_settings["seeker_path"]["default"];
         $option_keys = array_keys( $seeker_path_options );
 
@@ -21,7 +21,7 @@ class Disciple_Tools_Migration_0022 extends Disciple_Tools_Migration
                     FROM $wpdb->dt_activity_log log
                     WHERE log.meta_key = 'seeker_path'
                     AND log.meta_value = %s
-                    AND log.object_id NOT IN ( 
+                    AND log.object_id NOT IN (
                         SELECT object_id
                         FROM $wpdb->dt_activity_log
                         WHERE meta_key = 'seeker_path'

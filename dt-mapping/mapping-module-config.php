@@ -14,8 +14,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Config' ) ) {
 
         public function __construct() {
 
-//        add_action( 'dt_top_nav_desktop', [ $this, 'top_nav_desktop' ], 5 ); // add menu bar before checking for page
-
             /**
              * Load custom columns or remove these and replace with your own.
              * Use these as examples and make your own columns.
@@ -73,7 +71,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Config' ) ) {
             if ( $this->custom_permission_check() ){
                 ?>
                 <li><a
-                    href="<?php echo esc_url( site_url( '/mapping/' ) ) . '#mapping_view'; ?>"><?php esc_html_e( "Mapping" ); ?></a>
+                    href="<?php echo esc_url( site_url( '/mapping/' ) ) . '#mapping_view'; ?>"><?php esc_html_e( "Mapping", 'disciple_tools' ); ?></a>
                 </li><?php
             }
         }
@@ -88,7 +86,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Config' ) ) {
              * Add logic to evaluate current user and return a bool decision on permission to the mapping module
              * Example below gives permission to dispatchers and admins.
              */
-            if ( current_user_can( 'view_any_contacts' )
+            if ( current_user_can( 'dt_all_access_contacts' )
                 || current_user_can( 'view_project_metrics' )
                 || current_user_can( 'view_mapping' ) ) {
                 return true;

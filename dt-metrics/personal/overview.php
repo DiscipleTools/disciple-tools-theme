@@ -77,11 +77,14 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
             ],
             'preferences'       => $this->preferences(),
             'hero_stats'        => $this->chart_my_hero_stats(),
-            'contacts_progress' => $this->chart_contacts_progress(),
             'group_types'       => $this->chart_group_types(),
             'group_health'      => $this->chart_group_health(),
             'group_generations' => $this->chart_group_generations(),
         ];
+        $modules = dt_get_option( "dt_post_type_modules" );
+        if ( !empty( $modules["access_module"]["enabled"] ) ){
+            $data['contacts_progress'] = $this->chart_contacts_progress();
+        }
 
         return apply_filters( 'dt_my_metrics', $data );
     }
@@ -160,7 +163,7 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
 
         $chart = [];
 
-        $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+        $group_fields = DT_Posts::get_post_field_settings( "groups" );
         $types = $group_fields["group_type"]["default"];
 
         $results = $this->query_my_group_types();
@@ -175,7 +178,7 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
     public function chart_group_health() {
 
         // Make key list
-        $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+        $group_fields = DT_Posts::get_post_field_settings( "groups" );
         $labels = [];
 
         foreach ( $group_fields["health_metrics"]["default"] as $key => $option ) {
@@ -478,7 +481,7 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
         }
 
         $defaults = [];
-        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
         $seeker_path_options = $contact_fields["seeker_path"]["default"];
         foreach ( $seeker_path_options as $key => $option ) {
             $defaults[$key] = [

@@ -569,7 +569,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                                 }
                                 else {
                                     echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th>
-                                    <td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" /> <a onclick="jQuery(\'#' . esc_attr( $k ) . '\').val( window.location.hostname );">add this site</a>' . "\n";
+                                    <td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" /> <a onclick="jQuery(\'#' . esc_attr( $k ) . '\').val( window.location.href.substring(0, window.location.href.indexOf(\'/wp-admin\')).replace(/http[s]?:\/\//, \'\') );">add this site</a>' . "\n";
                                     echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
                                     echo '</td><tr/>' . "\n";
                                 }
@@ -930,10 +930,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             if ( $this->post_type === $pt ) {
 
-                $url = '';
-                if ( isset( $_SERVER["HTTP_HOST"] ) ) {
-                    $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
-                }
+                $url = self::get_current_site_base_url();
+                $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? "http://$url" : "https://$url";
+
                 echo "<script type='text/javascript'>
 
                 function check_link_status( site_link_id, id ) {

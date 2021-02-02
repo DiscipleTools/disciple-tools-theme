@@ -38,6 +38,7 @@ final class Disciple_Tools_Admin_User_Edit {
 
         // Only run our customization on the 'user-edit.php' page in the admin.
         add_action( 'load-user-edit.php', [ $this, 'load_user_edit' ] );
+        add_action( 'load-profile.php', [ $this, 'load_user_edit' ] );
     }
 
     /**
@@ -77,6 +78,15 @@ final class Disciple_Tools_Admin_User_Edit {
 
         $editable_roles = dt_multi_role_get_editable_role_names();
 
+        $can_not_promote_to_roles = [];
+        if ( !dt_current_user_has_role( 'administrator' ) ){
+            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ "administrator" ] );
+        }
+        if ( !current_user_can( 'manage_dt' ) ){
+            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
+        }
+
+
 //        asort( $editable_roles );
 
         wp_nonce_field( 'new_user_roles', 'dt_multi_role_new_user_roles_nonce' ); ?>
@@ -91,11 +101,29 @@ final class Disciple_Tools_Admin_User_Edit {
 
                 <td>
                     <ul>
-                    <?php foreach ( $editable_roles as $role => $name ) : ?>
+                    <?php
+                    $expected_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
+                    foreach ( $editable_roles as $role => $name ) : ?>
                         <li>
                             <label>
-                                <input type="checkbox" name="dt_multi_role_user_roles[]" value="<?php echo esc_attr( $role ); ?>" <?php checked( in_array( $role, $user_roles ) ); ?> />
-                                <?php echo esc_html( $name ); ?>
+                                <input type="checkbox" name="dt_multi_role_user_roles[]"
+                                       value="<?php echo esc_attr( $role ); ?>"
+                                       <?php checked( in_array( $role, $user_roles ) ); ?>
+                                       <?php echo esc_html( in_array( $role, $can_not_promote_to_roles ) ? 'disabled' : '' ) ?>/>
+                                <strong>
+                                <?php
+                                if ( isset( $expected_roles[$role]["label"] ) && !empty( $expected_roles[$role]["label"] ) ){
+                                    echo esc_html( $expected_roles[$role]["label"] );
+                                } else {
+                                    echo esc_html( $name );
+                                }
+                                ?>
+                                </strong>
+                                <?php
+                                if ( isset( $expected_roles[$role]["description"] ) ){
+                                    echo ' - ' . esc_html( $expected_roles[$role]["description"] );
+                                }
+                                ?>
                             </label>
                         </li>
                     <?php endforeach; ?>
@@ -131,6 +159,13 @@ final class Disciple_Tools_Admin_User_Edit {
         // Create a new user object.
         $user = new WP_User( $user_id );
 
+        $can_not_promote_to_roles = [];
+        if ( !dt_current_user_has_role( 'administrator' ) ){
+            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ "administrator" ] );
+        }
+        if ( !current_user_can( 'manage_dt' ) ){
+            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
+        }
         // If we have an array of roles.
         if ( ! empty( $_POST['dt_multi_role_user_roles'] ) ) {
 
@@ -145,7 +180,9 @@ final class Disciple_Tools_Admin_User_Edit {
 
                 // If the user doesn't already have the role, add it.
                 if ( dt_multi_role_is_role_editable( $new_role ) && ! in_array( $new_role, (array) $user->roles ) ) {
-                    $user->add_role( $new_role );
+                    if ( !in_array( $new_role, $can_not_promote_to_roles ) ){
+                        $user->add_role( $new_role );
+                    }
                 }
             }
 
@@ -154,7 +191,9 @@ final class Disciple_Tools_Admin_User_Edit {
 
                 // If the role is editable and not in the new roles array, remove it.
                 if ( dt_multi_role_is_role_editable( $old_role ) && ! in_array( $old_role, $new_roles ) ) {
-                    $user->remove_role( $old_role );
+                    if ( !in_array( $old_role, $can_not_promote_to_roles ) ){
+                        $user->remove_role( $old_role );
+                    }
                 }
             }
 
@@ -166,7 +205,9 @@ final class Disciple_Tools_Admin_User_Edit {
 
                 // Remove the role if it is editable.
                 if ( dt_multi_role_is_role_editable( $old_role ) ) {
-                    $user->remove_role( $old_role );
+                    if ( !in_array( $old_role, $can_not_promote_to_roles ) ){
+                        $user->remove_role( $old_role );
+                    }
                 }
             }
         }

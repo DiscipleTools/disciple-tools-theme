@@ -2,8 +2,11 @@
 /*
 Template Name: Metrics
 */
+dt_please_log_in();
+
 if ( !current_user_can( 'access_contacts' ) && !current_user_can( "view_project_metrics" ) ) {
     wp_safe_redirect( '/settings' );
+    exit();
 }
 ?>
 
@@ -19,17 +22,30 @@ if ( !current_user_can( 'access_contacts' ) && !current_user_can( "view_project_
 
                     <div class="bordered-box">
 
-                        <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu>
+                        <div class="section-header show-for-small-only"><?php esc_html_e( 'Menu', 'disciple_tools' )?>&nbsp;
+                            <button class="section-chevron chevron_down">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>" alt="expand"/>
+                            </button>
+                            <button class="section-chevron chevron_up">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>" alt="collapse"/>
+                            </button>
+                        </div>
 
-                            <?php
+                        <div class="section-body">
 
-                            // WordPress.XSS.EscapeOutput.OutputNotEscaped
-                            // @phpcs:ignore
-                            echo apply_filters( 'dt_metrics_menu', '' );
+                            <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu>
 
-                            ?>
+                                <?php
 
-                        </ul>
+                                // WordPress.XSS.EscapeOutput.OutputNotEscaped
+                                // @phpcs:ignore
+                                echo apply_filters( 'dt_metrics_menu', '' );
+
+                                ?>
+
+                            </ul>
+
+                        </div>
 
                     </div>
 

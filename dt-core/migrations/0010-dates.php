@@ -1,11 +1,12 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Migration_0010 extends Disciple_Tools_Migration {
     public function up() {
         global $wpdb;
         $dates_meta = $wpdb->get_results( "
-            SELECT * FROM $wpdb->postmeta pm 
-            WHERE 
+            SELECT * FROM $wpdb->postmeta pm
+            WHERE
             ( pm.meta_key = 'start_date' OR pm.meta_key = 'end_date' OR pm.meta_key = 'baptism_date' )
             AND meta_value != ''
         ", ARRAY_A);

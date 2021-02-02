@@ -267,22 +267,37 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     $post_record = false;
                 }
 
+                if ( ! function_exists( 'dt_get_location_grid_mirror' ) ) {
+                    require_once( get_template_directory() . '/dt-mapping/globals.php' );
+                }
 
-                wp_enqueue_script( 'mapbox-search-widget', trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/geocode-api/mapbox-search-widget.js', [ 'jquery', 'mapbox-gl', 'shared-functions' ], filemtime( get_template_directory() . '/dt-mapping/geocode-api/mapbox-search-widget.js' ), true );
+                wp_enqueue_script( 'mapbox-search-widget', trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/geocode-api/mapbox-search-widget.js', [ 'jquery', 'mapbox-gl' ], filemtime( get_template_directory() . '/dt-mapping/geocode-api/mapbox-search-widget.js' ), true );
                 wp_localize_script(
                     "mapbox-search-widget", "dtMapbox", array(
                         'post_type' => get_post_type(),
                         "post_id" => $post->ID ?? 0,
                         "post" => $post_record ?? false,
                         "map_key" => self::get_key(),
+                        "mirror_source" => dt_get_location_grid_mirror( true ),
+                        "google_map_key" => ( Disciple_Tools_Google_Geocode_API::get_key() ) ? Disciple_Tools_Google_Geocode_API::get_key() : false,
                         "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
                         "theme_uri" => get_stylesheet_directory_uri(),
                         "translations" => array(
-                            'add' => __( 'add', 'disciple-tools' )
+                            'add' => __( 'add', 'disciple_tools' ),
+                            'use' => __( 'Use', 'disciple_tools' ),
+                            'search_location' => __( 'Search Location', 'disciple_tools' ),
+                            'delete_location' => __( 'Delete Location', 'disciple_tools' ),
+                            'open_mapping' => __( 'Open Mapping', 'disciple_tools' ),
+                            'clear' => __( 'clear', 'disciple_tools' )
                         )
                     )
                 );
                 add_action( 'wp_head', [ 'DT_Mapbox_API', 'mapbox_search_widget_css' ] );
+
+                // load Google Geocoder if key is present.
+                if ( Disciple_Tools_Google_Geocode_API::get_key() ){
+                    Disciple_Tools_Google_Geocode_API::load_google_geocoding_scripts();
+                }
             }
         }
 
@@ -299,14 +314,20 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         "user_id" => get_current_user_id(),
                         "user_location" => Disciple_Tools_Users::get_user_location( get_current_user_id() ),
                         "map_key" => self::get_key(),
+                        "google_map_key" => ( Disciple_Tools_Google_Geocode_API::get_key() ) ? Disciple_Tools_Google_Geocode_API::get_key() : false,
                         "spinner_url" => get_stylesheet_directory_uri() . '/spinner.svg',
                         "theme_uri" => get_stylesheet_directory_uri(),
                         "translations" => array(
-                            'add' => __( 'add', 'disciple-tools' )
+                            'add' => __( 'add', 'disciple_tools' )
                         )
                     )
                 );
                 add_action( 'wp_head', [ 'DT_Mapbox_API', 'mapbox_search_widget_css' ] );
+
+                // load Google Geocoder if key is present.
+                if ( Disciple_Tools_Google_Geocode_API::get_key() ){
+                    Disciple_Tools_Google_Geocode_API::load_google_geocoding_scripts();
+                }
             }
         }
 
@@ -406,7 +427,11 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 $message = 'Successfully connected to selected source.';
             } else {
                 $status_class = 'not-connected';
-                $message = 'API NOT AVAILABLE';
+                if ( empty( $key )){
+                    $message = 'Please add a Mapbox API Token';
+                } else {
+                    $message = 'Could not connect to the Mapbox API or could not verify the token';
+                }
             }
             ?>
             <form method="post">
@@ -455,20 +480,57 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                                         Paste the token into the "Mapbox API Token" field in the box above.
                                     </li>
                                 </ol>
+                            <?php elseif ( self::is_dt() ) :
+                                global $wpdb;
+                                $records_upgraded = self::are_records_and_users_upgraded_with_mapbox();
+                                if ( !$records_upgraded ) : ?>
+                                    <p class="not-connected">
+                                        <strong>Next:</strong> Please upgrade Users, Contacts and Groups below for the Locations to show up on maps and charts.
+                                    </p>
+                                <?php endif; ?>
                             <?php endif; ?>
-
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </form>
             <style>
-                .connected{ padding: 10px; background-color: lightgreen;}
+                #reachable_source.connected{ padding: 0 10px 0 0; color: darkgreen; background-color: transparent}
                 .not-connected { padding: 10px; background-color: lightcoral; }
             </style>
             <br>
 
             <?php
+        }
+
+        public static function is_dt(): bool
+        {
+            $wp_theme = wp_get_theme();
+
+            // child theme check
+            if ( get_template_directory() !== get_stylesheet_directory() ) {
+                if ( 'disciple-tools-theme' == $wp_theme->get( 'Template' ) ) {
+                    return true;
+                }
+            }
+
+            // main theme check
+            $is_theme_dt = strpos( $wp_theme->get_template(), "disciple-tools-theme" ) !== false || $wp_theme->name === "Disciple Tools";
+            if ($is_theme_dt) {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static function are_records_and_users_upgraded_with_mapbox(){
+            global $wpdb;
+            $location_wo_meta = $wpdb->get_var( "SELECT count(*) FROM $wpdb->postmeta WHERE meta_key = 'location_grid' AND meta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta) AND meta_value >= 100000000" );
+            $user_location_wo_meta = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->usermeta WHERE meta_key = %s AND umeta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta ) AND meta_value >= 100000000", $wpdb->prefix . 'location_grid' ) );
+            if ( !empty( $location_wo_meta ) || !empty( $user_location_wo_meta ) ){
+                return false;
+            }
+            return true;
         }
 
         public static function parse_raw_result( array $raw_response, $item, $first_result_only = false ) {

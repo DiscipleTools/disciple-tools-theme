@@ -36,18 +36,6 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
                     <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-plus.svg" ?>" style="width:24px;">
                 </button>
                 <ul class="submenu menu vertical add-new-items-dropdown " style="text-align:left;"><!--  /* HEADER add menu */ -->
-                    <li>
-                        <a href="<?php echo esc_url( site_url( '/' ) ) . 'contacts/new'; ?>">
-                            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-contact.svg" ?>">
-                                <?php esc_html_e( 'New Contact', 'disciple_tools' )?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo esc_url( site_url( '/' ) ) . 'groups/new'; ?>">
-                            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-group.svg" ?>">
-                            <?php esc_html_e( 'New Group', 'disciple_tools' )?>
-                        </a>
-                    </li>
                     <?php do_action( 'dt_nav_add_post_menu' ) ?>
                 </ul>
             </li>
@@ -111,25 +99,13 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
                     </button>
                     <!--  /* HEADER add menu */ -->
                     <ul class="submenu menu vertical title-bar-right add-new-items-dropdown">
-                        <li>
-                            <a href="<?php echo esc_url( site_url( '/' ) ) . 'contacts/new'; ?>">
-                                <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-contact.svg" ?>">
-                                <?php esc_html_e( 'New Contact', 'disciple_tools' )?>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?php echo esc_url( site_url( '/' ) ) . 'groups/new'; ?>">
-                                <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-group.svg" ?>">
-                                <?php esc_html_e( 'New Group', 'disciple_tools' )?>
-                            </a>
-                        </li>
                         <?php do_action( 'dt_nav_add_post_menu' ) ?>
                     </ul>
                 </li>
                 <!--  /* HEADER notifications */ -->
                 <li class="image-menu-nav">
                     <a href="<?php echo esc_url( site_url( '/notifications' ) ); ?>">
-                        <img title="<?php esc_html_e( "Notifications" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
+                        <img title="<?php esc_html_e( "Notifications", 'disciple_tools' ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
                         <span class="badge alert notification-count" style="display:none"></span>
                     </a>
                 </li>
@@ -158,6 +134,9 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
                         <li><a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( 'Log Off', 'disciple_tools' )?></a></li>
                     </ul>
                 </li>
+
+                <?php do_action( 'dt_nav_add_post_settings' ) ?>
+
             </ul>
         </div>
     </div>

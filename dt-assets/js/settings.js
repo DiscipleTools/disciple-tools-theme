@@ -44,10 +44,6 @@ function load_locations() {
         dtMapbox.post_type = 'user'
         write_results_box()
 
-        jQuery( '#new-mapbox-search' ).on( "click", function() {
-          dtMapbox.post_type = 'user'
-          write_input_widget()
-        });
       } else {
         //locations
         let typeahead = Typeahead['.js-typeahead-location_grid']

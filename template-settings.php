@@ -22,7 +22,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 $dt_user_locale = get_user_locale( $dt_user->ID );
 $translations = dt_get_translations();
 
-$contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" )["fields"];
+$contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
 
 ?>
 
@@ -43,6 +43,7 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
                         <li><a href="#multiplier"><?php esc_html_e( 'Multiplier Preferences', 'disciple_tools' )?></a></li>
                         <li><a href="#availability"><?php esc_html_e( 'Availability', 'disciple_tools' )?></a></li>
                         <li><a href="#notifications"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></a></li>
+                        <?php do_action( 'dt_profile_settings_page_menu' ) ?>
                     </ul>
 
                 </div>
@@ -257,6 +258,7 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
 
 
                             <!-- People Groups -->
+                            <?php if ( isset( $contact_fields["people_groups"]["name"] ) ): ?>
                             <div class="section-subheader cell" style="margin-top:20px">
                                 <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
                                 <?php esc_html_e( 'People Groups you wish to serve', 'disciple_tools' ); ?>
@@ -277,6 +279,7 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
                                 </div>
                             </div>
                         </div>
+                        <?php endif; ?>
 
                         <div class="small-12 medium-6 cell" style="border-left: 1px solid lightgrey; padding-left: 1em;">
                             <!-- Workload -->
@@ -400,7 +403,7 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
                             </tbody>
                         </table>
 
-                        <?php if ( current_user_can( "view_any_contacts" ) ): ?>
+                        <?php if ( current_user_can( "dt_all_access_contacts" ) ): ?>
                             <p>
                                 <strong><?php esc_html_e( 'Follow all contacts', 'disciple_tools' )?></strong>
                             </p>
@@ -415,11 +418,12 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
                                 </label>
                             </div>
                         <?php endif; ?>
-
-
-                    </div> <!-- End Notifications -->
-
+                    </div>
                 </div>
+                <!-- End Notifications -->
+
+                <!-- hook for more sections added by plugins -->
+                <?php do_action( 'dt_profile_settings_page_sections' ) ?>
 
                 <div class="reveal" id="edit-profile-modal" data-reveal>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
@@ -452,7 +456,7 @@ $contact_fields = $post_settings = apply_filters( "dt_get_post_type_settings", [
                                 </tr>
                                 <tr>
                                     <td><?php esc_html_e( 'System Email', 'disciple_tools' )?></td>
-                                    <td><span data-tooltip data-click-open="true" class="top" tabindex="3" title="<?php esc_html_e( 'User email can be changed by site administrator.' ) ?>">
+                                    <td><span data-tooltip data-click-open="true" class="top" tabindex="3" title="<?php esc_html_e( 'User email can be changed by site administrator.', 'disciple_tools' ) ?>">
                                         <input type="text" class="profile-input" id="user_email"
                                             name="user_email"
                                             value="<?php echo esc_html( $dt_user->user_email ); ?>"/>

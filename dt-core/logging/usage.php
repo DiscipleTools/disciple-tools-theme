@@ -1,7 +1,5 @@
 <?php
-if ( !defined( 'ABSPATH' ) ) {
-    exit;
-} // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Usage {
 
@@ -126,13 +124,13 @@ class Disciple_Tools_Usage {
             WHERE post_type = 'groups'
             AND post_status = 'publish'
             ) as total_churches,
-            
+
             (
             SELECT COUNT(*)
             FROM $wpdb->postmeta pm
             WHERE pm.meta_key = '_sample'
             ) as has_demo_data;
-            
+
             ", ARRAY_A );
 
         return $results;

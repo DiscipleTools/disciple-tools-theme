@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 100 100" fill="#000000" style="enable-background:new 0 0 100 100;" xmlns="http://www.w3.org/2000/svg">
+  <line style="stroke-linecap: round; paint-order: fill; fill: none; stroke: rgb(112, 112, 112); stroke-width: 15px;" x1="7.97" y1="50.199" x2="76.069" y2="50.128" transform="matrix(0.999999, 0.001017, -0.001017, 0.999999, 0.051038, -0.042708)"/>
+  <line style="stroke-linecap: round; stroke: rgb(112, 112, 112); stroke-width: 15px;" x1="7.97" y1="17.751" x2="92.058" y2="17.751"/>
+  <line style="stroke-linecap: round; stroke: rgb(112, 112, 112); stroke-width: 15px;" x1="7.97" y1="82.853" x2="42.343" y2="82.853"/>
+  <polygon style="stroke-linecap: round; stroke-miterlimit: 1; stroke-linejoin: round; stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255); paint-order: stroke; stroke-width: 9px;" points="22.982 64.982 33.592 53.186 50.916 70.608 82.902 21.308 95 30.85 52.256 95"/>
+</svg>

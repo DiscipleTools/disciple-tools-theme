@@ -14,7 +14,7 @@ cache:
 
 matrix:
   include:
-    - php: 7.2
+    - php: 7.4
       env: WP_VERSION=latest
     - php: 7.1
       env: WP_VERSION=latest
@@ -33,7 +33,6 @@ before_script:
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
       bash tests/install-wp-tests.sh wordpress_test root '' localhost latest
-      composer global require "phpunit/phpunit=7.5.*"
     fi
 script:
   - ./tests/test_for_syntax_errors.sh
@@ -50,6 +49,8 @@ script:
   # of npm.)
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
-      phpunit
-      WP_MULTISITE=1 phpunit
+      composer require "phpunit/phpunit=7.5.*"
+      vendor/phpunit/phpunit/phpunit --version
+      vendor/phpunit/phpunit/phpunit
+      WP_MULTISITE=1 vendor/phpunit/phpunit/phpunit
     fi

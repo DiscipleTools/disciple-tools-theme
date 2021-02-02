@@ -40,6 +40,10 @@ function _register_theme() {
     add_filter( 'pre_option_stylesheet', function () use ( $current_theme ) {
         return $current_theme;
     } );
+    add_filter( "init", function(){
+        require_once( get_template_directory() . '/dt-core/setup-functions.php' );
+        dt_setup_roles_and_permissions();
+    }, 500, 0 );
 }
 
 tests_add_filter( 'muplugins_loaded', '_register_theme' );
