@@ -134,6 +134,10 @@ class Disciple_Tools_Migration_Engine
         }
     }
 
+    public static function get_current_db_migration(){
+        return get_option( 'dt_migration_number' );
+    }
+
 }
 
 
