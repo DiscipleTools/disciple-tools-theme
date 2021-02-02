@@ -327,10 +327,58 @@ class DT_Contacts_Base {
             </div>
         <?php endif;
 
-        if ( $post_type === "contacts" && $section === "status" ){
+    }
+
+    public static function dt_record_admin_actions( $post_type, $post_id ){
+        if ( $post_type === "contacts" ){
+            $post = DT_Posts::get_post( $post_type, $post_id );
+            if ( empty( $post["archive"] ) && ( $post["type"]["key"] === "personal" || $post["type"]["key"] === "placeholder" ) ) :?>
+                <li>
+                    <a data-open="archive-record-modal">
+                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/archive.svg' ) ?>"/>
+                        <?php echo esc_html( sprintf( _x( "Archive %s", "Archive Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
+                </li>
+            <?php endif; ?>
+
+            <li>
+                <a data-open="contact-type-modal">
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg' ) ?>"/>
+                    <?php echo esc_html( sprintf( _x( "Change %s Type", "Change Record Type", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
+            </li>
+            <li><a data-open="merge-dupe-edit-modal">
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
+
+                    <?php esc_html_e( "See duplicates", 'disciple_tools' ) ?></a></li>
+            <li><a id="open_merge_with_contact">
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/merge.svg' ) ?>"/>
+                    <?php esc_html_e( "Merge with another contact", 'disciple_tools' ) ?></a></li>
+            <?php get_template_part( 'dt-assets/parts/merge', 'details' ); ?>
+            <?php
+        }
+    }
+
+
+    public function dt_record_footer( $post_type, $post_id ){
+        if ( $post_type === "contacts" ) :
             $contact_fields = DT_Posts::get_post_field_settings( $post_type );
-            $post = DT_Posts::get_post( $post_type, GET_THE_ID() );
-            ?>
+            $post = DT_Posts::get_post( $post_type, $post_id ); ?>
+            <div class="reveal" id="archive-record-modal" data-reveal data-reset-on-close>
+                <h3><?php echo esc_html( sprintf( _x( "Archive %s", "Archive Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></h3>
+                <p><?php echo esc_html( sprintf( _x( "Are you sure you want to archive %s?", "Are you sure you want to archive name?", 'disciple_tools' ), $post["name"] ) ) ?></p>
+
+                <div class="grid-x">
+                    <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                        <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
+                    </button>
+                    <button class="button alert loader" type="button" id="archive-record">
+                        <?php esc_html_e( 'Archive', 'disciple_tools' ); ?>
+                    </button>
+                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+
             <div class="reveal" id="contact-type-modal" data-reveal>
                 <h3><?php echo esc_html( $contact_fields["type"]["name"] ?? '' )?></h3>
                 <p><?php echo esc_html( $contact_fields["type"]["description"] ?? '' )?></p>
@@ -368,61 +416,10 @@ class DT_Contacts_Base {
                 jQuery('#confirm-type-close').on('click', function(){
                     $(this).toggleClass('loading')
                     API.update_post('contacts', <?php echo esc_html( GET_THE_ID() ); ?>, {type:$('#type-options').val()}).then(contactData=>{
-                      window.location.reload()
+                        window.location.reload()
                     }).catch(err => { console.error(err) })
                 })
             </script>
-        <?php }
-    }
-
-    public static function dt_record_admin_actions( $post_type, $post_id ){
-        if ( $post_type === "contacts" ){
-            $post = DT_Posts::get_post( $post_type, $post_id );
-            if ( empty( $post["archive"] ) && ( $post["type"]["key"] === "personal" || $post["type"]["key"] === "placeholder" ) ) :?>
-                <li>
-                    <a data-open="archive-record-modal">
-                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/archive.svg' ) ?>"/>
-                        <?php echo esc_html( sprintf( _x( "Archive %s", "Archive Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
-                </li>
-            <?php endif; ?>
-
-            <li>
-                <a data-open="contact-type-modal">
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg' ) ?>"/>
-                    <?php echo esc_html( sprintf( _x( "Change %s Type", "Change Record Type", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></a>
-            </li>
-            <li><a data-open="merge-dupe-edit-modal">
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
-
-                    <?php esc_html_e( "See duplicates", 'disciple_tools' ) ?></a></li>
-            <li><a id="open_merge_with_contact">
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/merge.svg' ) ?>"/>
-                    <?php esc_html_e( "Merge with another contact", 'disciple_tools' ) ?></a></li>
-            <?php get_template_part( 'dt-assets/parts/merge', 'details' ); ?>
-            <?php
-        }
-    }
-
-
-    public function dt_record_footer( $post_type, $post_id ){
-        if ( $post_type === "contacts" ) :
-            $dt_post = DT_Posts::get_post( $post_type, $post_id ); ?>
-            <div class="reveal" id="archive-record-modal" data-reveal data-reset-on-close>
-                <h3><?php echo esc_html( sprintf( _x( "Archive %s", "Archive Contact", 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )["label_singular"] ) ) ?></h3>
-                <p><?php echo esc_html( sprintf( _x( "Are you sure you want to archive %s?", "Are you sure you want to archive name?", 'disciple_tools' ), $dt_post["name"] ) ) ?></p>
-
-                <div class="grid-x">
-                    <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                        <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
-                    </button>
-                    <button class="button alert loader" type="button" id="archive-record">
-                        <?php esc_html_e( 'Archive', 'disciple_tools' ); ?>
-                    </button>
-                    <button class="close-button" data-close aria-label="Close modal" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
         <?php endif;
     }
 

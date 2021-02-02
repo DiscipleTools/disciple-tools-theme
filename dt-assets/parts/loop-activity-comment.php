@@ -148,7 +148,7 @@
 
     <div class="reveal" id="edit-comment-modal" data-reveal>
         <p class="lead"><?php esc_html_e( 'Edit Comment:', 'disciple_tools' ) ?></p>
-        <textarea id="comment-to-edit" rows="10" dir="auto"></textarea>
+        <textarea id="comment-to-edit" rows="5" dir="auto"></textarea>
         <div class="grid-x">
             <div class="cell small-12" id="edit_typeOfComment">
                 <?php if ( is_singular( "contacts" ) ) :

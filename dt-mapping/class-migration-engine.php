@@ -135,6 +135,10 @@ class DT_Mapping_Module_Migration_Engine
         }
     }
 
+    public static function get_current_db_migration(){
+        return get_option( 'dt_mapping_module_migration_number' );
+    }
+
 }
 
 
