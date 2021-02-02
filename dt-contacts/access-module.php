@@ -27,9 +27,9 @@ class DT_Contacts_Access extends DT_Module_Base {
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 20, 2 );
         //display tiles and fields
-        add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 20, 2 );
         add_action( 'dt_record_top_above_details', [ $this, 'dt_record_top_above_details' ], 20, 2 );
+        add_action( 'dt_render_field_for_display_template', [ $this, 'dt_render_field_for_display_template' ], 20, 4 );
 
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
@@ -388,16 +388,20 @@ class DT_Contacts_Access extends DT_Module_Base {
         return $sections;
     }
 
-    public function dt_details_additional_section( $section, $post_type ){
-        if ( $post_type === "contacts" && $section === "status" ){
-            $contact = DT_Posts::get_post( $post_type, get_the_ID() );
+    public function dt_render_field_for_display_template( $post, $field_type, $field_key, $required_tag ){
+        $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
+
+        if ( isset( $post["post_type"] ) && $post["post_type"] === "contacts" && $field_key === "overall_status"
+            && isset( $contact_fields[$field_key] ) && !empty( $contact_fields[$field_key]["custom_display"] )
+            && empty( $contact_fields[$field_key]["hidden"] )
+            ){
+            $contact = $post;
             if ( !isset( $contact["type"]["key"] ) || $contact["type"]["key"] !== "access" ){
                 return;
             }
+            $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
 
-            $contact_fields = DT_Posts::get_post_field_settings( $post_type );
             ?>
-            <div class="cell small-12 medium-4">
                 <div class="section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
                     <?php esc_html_e( "Status", 'disciple_tools' ) ?>
@@ -426,13 +430,13 @@ class DT_Contacts_Access extends DT_Module_Base {
                         $hide_edit_button = false;
                         $status_key = isset( $contact["overall_status"]["key"] ) ? $contact["overall_status"]["key"] : "";
                         if ( $status_key === "paused" &&
-                             isset( $contact["reason_paused"]["label"] )){
+                            isset( $contact["reason_paused"]["label"] )){
                             echo '(' . esc_html( $contact["reason_paused"]["label"] ) . ')';
                         } else if ( $status_key === "closed" &&
-                                    isset( $contact["reason_closed"]["label"] )){
+                            isset( $contact["reason_closed"]["label"] )){
                             echo '(' . esc_html( $contact["reason_closed"]["label"] ) . ')';
                         } else if ( $status_key === "unassignable" &&
-                                    isset( $contact["reason_unassignable"]["label"] )){
+                            isset( $contact["reason_unassignable"]["label"] )){
                             echo '(' . esc_html( $contact["reason_unassignable"]["label"] ) . ')';
                         } else {
                             if ( !in_array( $status_key, [ "paused", "closed", "unassignable" ] ) ){
@@ -443,80 +447,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                     </span>
                     <button id="edit-reason" <?php if ( $hide_edit_button ) : ?> style="display: none"<?php endif; ?> ><i class="fi-pencil"></i></button>
                 </p>
-            </div>
-
-            <!-- ASSIGNED TO -->
-            <div class="cell small-12 medium-4">
-                <div class="section-subheader">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
-                    <?php echo esc_html( $contact_fields["assigned_to"]["name"] )?>
-                    <button class="help-button" data-section="assigned-to-help-text">
-                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                    </button>
-                </div>
-
-                <div class="assigned_to details">
-                    <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
-                    <div id="assigned_to_t" name="form-assigned_to" class="scrollable-typeahead">
-                        <div class="typeahead__container" style="margin-bottom: 0">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-assigned_to input-height" dir="auto"
-                                           name="assigned_to[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
-                                           autocomplete="off">
-                                </span>
-                                <span class="typeahead__button">
-                                    <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
-                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <p>
-                    <span id="reason_assigned_to">
-                        <?php if ( isset( $contact["reason_assigned_to"]["label"] ) ) : ?>
-                            (<?php echo esc_html( $contact["reason_assigned_to"]["label"] ); ?>)
-                        <?php endif; ?>
-                    </span>
-                </p>
-            </div>
-
-            <!-- SUBASSIGNED -->
-            <div class="cell small-12 medium-4">
-                <?php $contact_fields['subassigned']["custom_display"] = false ?>
-                <?php render_field_for_display( "subassigned", $contact_fields, $contact, true ); ?>
-            </div>
-            <div class="reveal" id="closed-contact-modal" data-reveal>
-                <h3><?php echo esc_html( $contact_fields["reason_closed"]["name"] ?? '' )?></h3>
-                <p><?php echo esc_html( $contact_fields["reason_closed"]["description"] ?? '' )?></p>
-                <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
-
-                <select id="reason-closed-options">
-                    <?php
-                    foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $option ) {
-                        if ( !empty( $option["label"] ) ) {
-                            $selected = ( $reason_key === ( $contact["reason_closed"]["key"] ?? "" ) ) ? "selected" : "";
-                            ?>
-                            <option
-                                value="<?php echo esc_attr( $reason_key ) ?>" <?php echo esc_html( $selected ) ?>> <?php echo esc_html( $option["label"] ?? "" ) ?></option>
-                            <?php
-                        }
-                    }
-                    ?>
-                </select>
-                <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                    <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
-                </button>
-                <button class="button loader confirm-reason-button" type="button" id="confirm-close" data-field="closed">
-                    <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
-                </button>
-                <button class="close-button" data-close aria-label="Close modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
             <div class="reveal" id="paused-contact-modal" data-reveal>
                 <h3><?php echo esc_html( $contact_fields["reason_paused"]["name"] ?? '' )?></h3>
                 <p><?php echo esc_html( $contact_fields["reason_paused"]["description"] ?? '' )?></p>
@@ -579,9 +509,88 @@ class DT_Contacts_Access extends DT_Module_Base {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div class="reveal" id="closed-contact-modal" data-reveal>
+                <h3><?php echo esc_html( $contact_fields["reason_closed"]["name"] ?? '' )?></h3>
+                <p><?php echo esc_html( $contact_fields["reason_closed"]["description"] ?? '' )?></p>
+                <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
+
+                <select id="reason-closed-options">
+                    <?php
+                    foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $option ) {
+                        if ( !empty( $option["label"] ) ) {
+                            $selected = ( $reason_key === ( $contact["reason_closed"]["key"] ?? "" ) ) ? "selected" : "";
+                            ?>
+                            <option
+                                value="<?php echo esc_attr( $reason_key ) ?>" <?php echo esc_html( $selected ) ?>> <?php echo esc_html( $option["label"] ?? "" ) ?></option>
+                            <?php
+                        }
+                    }
+                    ?>
+                </select>
+                <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                    <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
+                </button>
+                <button class="button loader confirm-reason-button" type="button" id="confirm-close" data-field="closed">
+                    <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
+                </button>
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <?php
         }
+
+        if ( isset( $post["post_type"] ) && $post["post_type"] === "contacts" && $field_key === "assigned_to"
+            && isset( $contact_fields[$field_key] ) && !empty( $contact_fields[$field_key]["custom_display"] )
+            && empty( $contact_fields[$field_key]["hidden"] )
+        ){
+            $contact = $post;
+            if ( !isset( $contact["type"]["key"] ) || $contact["type"]["key"] !== "access" ){
+                return;
+            }
+            $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
+            ?>
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
+                    <?php echo esc_html( $contact_fields["assigned_to"]["name"] )?>
+                    <button class="help-button" data-section="assigned-to-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
+                </div>
+
+                <div class="assigned_to details">
+                    <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
+                    <div id="assigned_to_t" name="form-assigned_to" class="scrollable-typeahead">
+                        <div class="typeahead__container" style="margin-bottom: 0">
+                            <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-assigned_to input-height" dir="auto"
+                                           name="assigned_to[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
+                                           autocomplete="off">
+                                </span>
+                                <span class="typeahead__button">
+                                    <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p>
+                    <span id="reason_assigned_to">
+                        <?php if ( isset( $contact["reason_assigned_to"]["label"] ) ) : ?>
+                            (<?php echo esc_html( $contact["reason_assigned_to"]["label"] ); ?>)
+                        <?php endif; ?>
+                    </span>
+                </p>
+
+
+            <?php
+        }
+
     }
+
 
     public function dt_record_top_above_details( $post_type, $contact ){
         if ( $post_type === "contacts" && isset( $contact["type"] ) && $contact["type"]["key"] === "access" ) {
