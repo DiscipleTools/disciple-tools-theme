@@ -81,10 +81,19 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
             <td></td>
         </tr>
         <tr>
+            <td>Server: <?php echo esc_html( isset( $_SERVER["SERVER_SOFTWARE"] ) ? sanitize_text_field( wp_unslash( $_SERVER["SERVER_SOFTWARE"] ) ) : "" ); ?></td>
+        </tr>
+        <tr>
             <td>
                 D.T Theme Version: <?php echo esc_html( wp_get_theme()->version ) ?>
             </td>
             <td></td>
+        </tr>
+        <tr>
+            <td>Instance Url: <?php echo esc_html( get_site_url() ); ?></td>
+        </tr>
+        <tr>
+            <td>Is multisite: <?php echo esc_html( is_multisite() ? "True" : "False" ); ?></td>
         </tr>
         <tr>
             <td><strong>Migrations</strong></td><td></td>
