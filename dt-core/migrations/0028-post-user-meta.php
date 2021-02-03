@@ -1,4 +1,5 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Migration_0028 extends Disciple_Tools_Migration {
     public function up() {
@@ -8,7 +9,7 @@ class Disciple_Tools_Migration_0028 extends Disciple_Tools_Migration {
             from information_schema.statistics
             where table_schema = %s
             and table_name = '{$wpdb->prefix}dt_post_user_meta'
-            and index_name like %s 
+            and index_name like %s
         ", DB_NAME, 'meta_key_index' ));
         if ( $meta_key_index_exists === 0 ){
             $alter = $wpdb->query( "

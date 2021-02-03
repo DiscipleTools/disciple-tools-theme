@@ -15,7 +15,7 @@ class DT_Mapping_Module_Migration_Engine
      * Current Migration number for the mapping system
      * @var int
      */
-    public static $migration_number = 11;
+    public static $migration_number = 12;
     /** End Current Migration Number */
 
     protected static $migrations = null;
@@ -133,6 +133,10 @@ class DT_Mapping_Module_Migration_Engine
                 throw new Exception( "Expected to find table name in table definition of $name" );
             }
         }
+    }
+
+    public static function get_current_db_migration(){
+        return get_option( 'dt_mapping_module_migration_number' );
     }
 
 }

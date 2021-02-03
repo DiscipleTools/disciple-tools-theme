@@ -56,6 +56,8 @@ final class Disciple_Tools_Dashboard
             /* Add dashboard widgets */
             add_action( 'wp_dashboard_setup', [ $this, 'add_widgets' ] );
 
+            add_action( 'wp_dashboard_setup', [ $this, 'dt_dashboard_tile' ] );
+
             /* Remove Dashboard defaults */
             add_action( 'admin_init', [ $this, 'remove_dashboard_meta' ] );
             remove_action( 'welcome_panel', 'wp_welcome_panel' );
@@ -124,4 +126,40 @@ final class Disciple_Tools_Dashboard
         return $query_args;
     }
 
+
+    public function dt_dashboard_tile(){
+        wp_add_dashboard_widget('dt_setup_wizard', 'Disciple.Tools Setup Wizard', function (){
+            $setup_options = get_option( "dt_setup_options", [] );
+            $mapbox_key = DT_Mapbox_API::get_key();
+
+            $todo = 0;
+            $todo += empty( $mapbox_key ) ? 1 : 0;
+
+            $mapbox_upgraded = true;
+            if ( !isset( $setup_options["mapbox_upgrade"] ) ){
+                $mapbox_upgraded = DT_Mapbox_API::are_records_and_users_upgraded_with_mapbox();
+                if ( !$mapbox_upgraded ){
+                    $todo++;
+                } else {
+                    $setup_options["mapbox_upgrade"] = 1;
+                    update_option( "dt_setup_options", $setup_options );
+                }
+            }
+
+            ?>
+            <p>Remaining Setup Tasks: <?php echo esc_html( $todo ) ?></p>
+            <?php
+            if ( empty( $mapbox_key ) ){
+                ?>
+                For geo-location and mapping <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=geocoding' ) ); ?>">Add a Mapbox Key</a>
+                <?php
+            } else {
+                if ( !$mapbox_upgraded ) : ?>
+                    <p style="padding: 10px; background-color: lightcoral;">
+                        <strong>Mapping:</strong> Please upgrade Users, Contacts and Groups for the Locations to show up on maps and charts. <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=geocoding' ) ); ?>" class="button button-tertiary" style="background: #0071a1; color:white; border-color:white">here</a>
+                    </p>
+                <?php endif;
+            }
+        });
+    }
 }

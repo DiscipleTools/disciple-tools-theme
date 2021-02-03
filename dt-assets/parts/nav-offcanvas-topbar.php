@@ -14,7 +14,8 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
 
 ?>
 <!--  /* TOP LEFT SIDE MENU AREA */ -->
-<div class="title-bar show-for-small-only" data-responsive-toggle="top-bar-menu">
+<div data-sticky-container>
+<div class="title-bar hide-for-large" data-sticky data-responsive-toggle="top-bar-menu" data-margin-top="0" data-sticky-on="medium">
     <div class="title-bar-left">
         <button class="" type="button" data-open="off-canvas">
             <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/hamburger.svg" ?>">
@@ -36,18 +37,6 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
                     <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-plus.svg" ?>" style="width:24px;">
                 </button>
                 <ul class="submenu menu vertical add-new-items-dropdown " style="text-align:left;"><!--  /* HEADER add menu */ -->
-                    <li>
-                        <a href="<?php echo esc_url( site_url( '/' ) ) . 'contacts/new'; ?>">
-                            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-contact.svg" ?>">
-                                <?php esc_html_e( 'New Contact', 'disciple_tools' )?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo esc_url( site_url( '/' ) ) . 'groups/new'; ?>">
-                            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-group.svg" ?>">
-                            <?php esc_html_e( 'New Group', 'disciple_tools' )?>
-                        </a>
-                    </li>
                     <?php do_action( 'dt_nav_add_post_menu' ) ?>
                 </ul>
             </li>
@@ -64,9 +53,10 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
 
     </div>
 </div>
+</div>
 
 <!--  /* LOGO AREA */ -->
-<div data-sticky-container class="hide-for-small-only">
+<div data-sticky-container class="show-for-large">
     <div class="top-bar" id="top-bar-menu"
          data-sticky style="width:100%;margin-top:0">
         <div>
@@ -111,25 +101,13 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
                     </button>
                     <!--  /* HEADER add menu */ -->
                     <ul class="submenu menu vertical title-bar-right add-new-items-dropdown">
-                        <li>
-                            <a href="<?php echo esc_url( site_url( '/' ) ) . 'contacts/new'; ?>">
-                                <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-contact.svg" ?>">
-                                <?php esc_html_e( 'New Contact', 'disciple_tools' )?>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?php echo esc_url( site_url( '/' ) ) . 'groups/new'; ?>">
-                                <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-group.svg" ?>">
-                                <?php esc_html_e( 'New Group', 'disciple_tools' )?>
-                            </a>
-                        </li>
                         <?php do_action( 'dt_nav_add_post_menu' ) ?>
                     </ul>
                 </li>
                 <!--  /* HEADER notifications */ -->
                 <li class="image-menu-nav">
                     <a href="<?php echo esc_url( site_url( '/notifications' ) ); ?>">
-                        <img title="<?php esc_html_e( "Notifications" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
+                        <img title="<?php esc_html_e( "Notifications", 'disciple_tools' ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
                         <span class="badge alert notification-count" style="display:none"></span>
                     </a>
                 </li>

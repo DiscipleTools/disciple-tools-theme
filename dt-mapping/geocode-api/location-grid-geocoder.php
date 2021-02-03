@@ -629,8 +629,8 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             WHERE
             g.north_latitude >= %f AND
             g.south_latitude <= %f AND
-            g.west_longitude >= %f AND
-            g.east_longitude <= %f AND
+            g.west_longitude <= %f AND
+            g.east_longitude >= %f AND
             g.level = %d
             LIMIT 10;
 		", $latitude, $latitude, $longitude, $longitude, $level ), ARRAY_A );
@@ -659,8 +659,8 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 WHERE
                 g.north_latitude >= %f AND
                 g.south_latitude <= %f AND
-                g.west_longitude >= %f AND
-                g.east_longitude <= %f
+                g.west_longitude <= %f AND
+                g.east_longitude >= %f
                 ORDER BY g.level DESC
                 LIMIT 10;
             ", $latitude, $latitude, $longitude, $longitude ), ARRAY_A );
@@ -703,8 +703,8 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 g.level = %d AND
                 g.north_latitude >= %f AND
                 g.south_latitude <= %f AND
-                g.west_longitude >= %f AND
-                g.east_longitude <= %f
+                g.west_longitude <= %f AND
+                g.east_longitude >= %f
                 ORDER BY g.level DESC
                 LIMIT 10;
             ", $level, $latitude, $latitude, $longitude, $longitude ), ARRAY_A );
@@ -720,26 +720,25 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
         public function query_centerpoints_within_bbox( $north_latitude, $south_latitude, $west_longitude, $east_longitude, $level ) {
             global $wpdb;
             if ( $level ) {
-                $query = $wpdb->get_col( $wpdb->prepare( "
-                SELECT grid_id
-                FROM $wpdb->dt_location_grid as g
-                WHERE
-                g.latitude <= %f AND
-                g.latitude >= %f AND
-                g.longitude >= %f AND
-                g.longitude <= %f AND
-                g.level = %d
-        ", $north_latitude, $south_latitude, $west_longitude, $east_longitude, $level ) );
+                $query = $wpdb->get_results( $wpdb->prepare( "
+                    SELECT grid_id, parent_id
+                    FROM $wpdb->dt_location_grid as g
+                    WHERE
+                    g.latitude <= %f AND
+                    g.latitude >= %f AND
+                    ( ( g.longitude >= %f AND g.longitude <= %f ) OR ( g.longitude <= %f AND g.longitude >= %f ) )
+                    AND g.level_name = %s
+                ", $north_latitude, $south_latitude, $west_longitude, $east_longitude, -$west_longitude, -$east_longitude, $level ), ARRAY_A );
             } else {
                 $query = $wpdb->get_col( $wpdb->prepare( "
-                SELECT grid_id
-                FROM $wpdb->dt_location_grid as g
-                WHERE
-                g.latitude <= %f AND
-                g.latitude >= %f AND
-                g.longitude >= %f AND
-                g.longitude <= %f
-        ", $north_latitude, $south_latitude, $west_longitude, $east_longitude ) );
+                    SELECT grid_id, parent_id
+                    FROM $wpdb->dt_location_grid as g
+                    WHERE
+                    g.latitude <= %f AND
+                    g.latitude >= %f AND
+                    g.longitude >= %f AND
+                    g.longitude <= %f
+                ", $north_latitude, $south_latitude, $west_longitude, $east_longitude ) );
             }
 
             if ( empty( $query ) ) {
@@ -747,7 +746,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             }
 
             foreach ( $query as $index => $item ) {
-                $query[ $index ] = (int) $item;
+                $query[ $index ] = $item;
             }
 
             return $query;
@@ -769,8 +768,8 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 WHERE
                 g.north_latitude >= %f AND
                 g.south_latitude <= %f AND
-                g.west_longitude >= %f AND
-                g.east_longitude <= %f AND
+                g.west_longitude <= %f AND
+                g.east_longitude >= %f AND
                 g.country_code = %s
                 ORDER BY g.level DESC
                 LIMIT 15;
@@ -788,8 +787,8 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
                 WHERE
                 g.north_latitude >= %f AND
                 g.south_latitude <= %f AND
-                g.west_longitude >= %f AND
-                g.east_longitude <= %f
+                g.west_longitude <= %f AND
+                g.east_longitude >= %f
                 ORDER BY g.level DESC
                 LIMIT 15;
             ", $latitude, $latitude, $longitude, $longitude ), ARRAY_A );
@@ -806,16 +805,16 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             global $wpdb;
 
             return $this->_format_location_grid_results( $wpdb->get_row( $wpdb->prepare( "
-                        SELECT g.*, a0.name as admin0_name, a1.name as admin1_name, a2.name as admin2_name, a3.name as admin3_name, a4.name as admin4_name, a5.name as admin5_name
-                        FROM $wpdb->dt_location_grid as g
-                        LEFT JOIN $wpdb->dt_location_grid as a0 ON g.admin0_grid_id=a0.grid_id
-                        LEFT JOIN $wpdb->dt_location_grid as a1 ON g.admin1_grid_id=a1.grid_id
-                        LEFT JOIN $wpdb->dt_location_grid as a2 ON g.admin2_grid_id=a2.grid_id
-                        LEFT JOIN $wpdb->dt_location_grid as a3 ON g.admin3_grid_id=a3.grid_id
-                        LEFT JOIN $wpdb->dt_location_grid as a4 ON g.admin4_grid_id=a4.grid_id
-                        LEFT JOIN $wpdb->dt_location_grid as a5 ON g.admin5_grid_id=a5.grid_id
-                        WHERE g.grid_id = %d
-                    ", $grid_id ), ARRAY_A ) );
+                SELECT g.*, a0.name as admin0_name, a1.name as admin1_name, a2.name as admin2_name, a3.name as admin3_name, a4.name as admin4_name, a5.name as admin5_name
+                FROM $wpdb->dt_location_grid as g
+                LEFT JOIN $wpdb->dt_location_grid as a0 ON g.admin0_grid_id=a0.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a1 ON g.admin1_grid_id=a1.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a2 ON g.admin2_grid_id=a2.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a3 ON g.admin3_grid_id=a3.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a4 ON g.admin4_grid_id=a4.grid_id
+                LEFT JOIN $wpdb->dt_location_grid as a5 ON g.admin5_grid_id=a5.grid_id
+                WHERE g.grid_id = %d
+            ", $grid_id ), ARRAY_A ) );
         }
 
         /**

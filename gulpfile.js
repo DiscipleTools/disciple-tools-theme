@@ -112,7 +112,7 @@ gulp.task('scripts', function () {
     .pipe(plugin.concat('scripts.js'))
     .pipe(plugin.uglify())
     .pipe(rename({ suffix: '.min' }))
-    .pipe(plugin.sourcemaps.write('.')) // Creates sourcemap for minified JS
+    // .pipe(plugin.sourcemaps.write('.')) // Creates sourcemap for minified JS
     .pipe(frep(patterns))
     .pipe(gulp.dest(BUILD_DIRS.scripts));
 });
@@ -131,7 +131,7 @@ gulp.task('styles', function () {
     }))
     .pipe(rename({ suffix: '.min' }))
     .pipe(postcss([cssnano()]))
-    .pipe(plugin.sourcemaps.write('.'))
+    // .pipe(plugin.sourcemaps.write('.'))
     .pipe(frep(patterns))
     .pipe(gulp.dest(BUILD_DIRS.styles))
     .pipe(touch());

@@ -1,4 +1,8 @@
-<?php get_header(); ?>
+<?php
+dt_please_log_in();
+
+get_header();
+?>
 
     <div id="content" class="template-error">
 

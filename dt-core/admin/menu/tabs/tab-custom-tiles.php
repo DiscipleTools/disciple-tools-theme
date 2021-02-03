@@ -43,27 +43,20 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
     } // End __construct()
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'Custom Tiles', 'disciple_tools' ), __( 'Custom Tiles', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=custom-tiles', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_options', __( 'Tiles', 'disciple_tools' ), __( 'Tiles', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=custom-tiles', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
     }
 
     public function add_tab( $tab ) {
         ?>
         <a href="<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_options&tab=custom-tiles"
            class="nav-tab <?php echo esc_html( $tab == 'custom-tiles' ? 'nav-tab-active' : '' ) ?>">
-            <?php echo esc_html__( 'Custom Tiles' ) ?>
+            <?php echo esc_html__( 'Tiles' ) ?>
         </a>
         <?php
     }
 
     private function get_post_fields( $post_type ){
-        if ( $post_type === "groups" ){
-            return Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( null, null, true );
-        } elseif ( $post_type === "contacts" ){
-            return Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( null, null, true );
-        } else {
-            $post_settings = apply_filters( "dt_get_post_type_settings", [], $post_type );
-            return isset( $post_settings["fields"] ) ? $post_settings["fields"] : null;
-        }
+        return DT_Posts::get_post_field_settings( $post_type, false, true );
     }
 
     /**
@@ -75,25 +68,33 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         if ( 'custom-tiles' == $tab ) :
             $show_add_tile = false;
             $tile_key = false;
+            if ( isset( $_POST['tile_key'] ) ){
+                 $tile_key = sanitize_text_field( wp_unslash( $_POST["tile_key"] ) ) ?: false;
+            }
             $post_type = null;
+
+            /**
+             * Post Type Select
+             */
+            if ( isset( $_POST['post_type_select_nonce'] ) ){
+                if ( !wp_verify_nonce( sanitize_key( $_POST['post_type_select_nonce'] ), 'post_type_select' ) ) {
+                    return;
+                }
+                if ( isset( $_POST["post_type"] ) ){
+                    $post_type = sanitize_key( $_POST["post_type"] );
+                }
+            }
+            $this->box( 'top', __( 'Edit Tiles', 'disciple_tools' ) );
+            $this->post_type_select();
+            $this->box( 'bottom' );
+
+
+            //<------------------------------------------------->
+
 
             $tile_options = dt_get_option( "dt_custom_tiles" );
 
             $this->template( 'begin' );
-
-            if ( isset( $_POST['tile_select_nonce'] ) ){
-                if ( !wp_verify_nonce( sanitize_key( $_POST['tile_select_nonce'] ), 'tile_select' ) ) {
-                    return;
-                }
-                if ( isset( $_POST["show_add_new_tile"] ) ){
-                    $show_add_tile = true;
-                } else if ( !empty( $_POST["tile-select"] ) ){
-                    $tile = explode( "_", sanitize_text_field( wp_unslash( $_POST["tile-select"] ) ), 2 );
-                    $tile_key = $tile[1];
-                    $post_type = $tile[0];
-                }
-            }
-
 
             /*
              * Process Add tile
@@ -112,6 +113,19 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 }
                 $post_type = $post_submission["post_type"];
             }
+
+            if ( isset( $_POST['tile_select_nonce'] ) ){
+                if ( !wp_verify_nonce( sanitize_key( $_POST['tile_select_nonce'] ), 'tile_select' ) ) {
+                    return;
+                }
+                if ( isset( $_POST["show_add_new_tile"] ) ){
+                    $show_add_tile = true;
+                } else if ( !empty( $_POST["tile-select"] ) ){
+                    $tile_key = sanitize_key( $_POST["tile-select"] );
+                }
+            }
+
+
             /*
              * Process Edit tile
              */
@@ -126,63 +140,250 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 $this->process_edit_tile( $post_submission );
             }
 
-            $this->box( 'top', __( 'Create or update tiles', 'disciple_tools' ) );
-            $this->tile_select();
-            $this->box( 'bottom' );
 
+            if ( isset( $_POST['tile_order_edit_nonce'] ) ){
+                $this->process_tile_order( $post_type );
+            }
+
+
+            if ( $post_type ){
+                $this->box( 'top', "Sort Tiles and Fields" );
+                $this->edit_post_type_tiles( $post_type );
+                $this->box( 'bottom' );
+            }
+
+            if ( $post_type ){
+                $this->box( 'top', __( 'Create or update tiles', 'disciple_tools' ) );
+                $this->tile_select( $post_type );
+                $this->box( 'bottom' );
+            }
 
             if ( $show_add_tile ){
                 $this->box( 'top', __( "Add new tile", 'disciple_tools' ) );
-                $this->add_tile();
+                $this->add_tile( $post_type );
                 $this->box( 'bottom' );
             }
             if ( $tile_key && $post_type ){
-                $this->box( 'top', $tile_options[$post_type][$tile_key]["label"] ?? $tile_key );
+                $this->box( 'top', "Modify " . ( $tile_options[$post_type][$tile_key]["label"] ?? $tile_key ) . " name, translations and fields" );
                 $this->edit_tile( $tile_key, $post_type );
                 $this->box( 'bottom' );
             }
 
             $this->template( 'right_column' );
+            $this->box( 'top', 'Help' );
+            $this->add_help_box();
+            $this->box( 'bottom' );
 
             $this->template( 'end' );
         endif;
     }
 
-    private function tile_select(){
+    private function add_help_box(){
+        ?>
+
+        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/sort-tiles.gif' ) ?>" style="width: 100%"/>
+        <?php
+    }
+
+
+    private function post_type_select(){
         global $wp_post_types;
-        $tile_options = dt_get_option( "dt_custom_tiles" );
-        $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
-        foreach ( $post_types as $post_type ){
-            $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type );
+        $post_types = DT_Posts::get_post_types();
+        ?>
+        <form method="post">
+            <input type="hidden" name="post_type_select_nonce" id="post_type_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'post_type_select' ) ) ?>" />
+            <table>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <label for="tile-select"><?php esc_html_e( "For what post type?", 'disciple_tools' ) ?></label>
+                    </td>
+                    <td>
+                        <?php foreach ( $post_types as $post_type ) : ?>
+                            <button type="submit" name="post_type" class="button" value="<?php echo esc_html( $post_type ); ?>"><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></button>
+                        <?php endforeach; ?>
+                    </td>
+                </tr>
+            </table>
+            <br>
+        </form>
+        <?php
+    }
+
+    private function edit_post_type_tiles( $post_type ){
+        $fields = DT_Posts::get_post_field_settings( $post_type, false );
+        $tile_options = DT_Posts::get_post_tiles( $post_type, false );
+
+        ?>
+        <style>
+          .connectedSortable li {
+            margin: 0 0 5px 0;
+            padding: 5px;
+            width: 110px;
+          }
+          .connectedSortable {
+            border: 1px solid #eee;
+            width: 125px;
+            min-height: 60px;
+            list-style-type: none;
+            margin: 0;
+            padding: 5px;
+            float: left;
+            background-color: #eee;
+            height: 300px;
+            overflow-x: hidden;
+            overflow-y: auto;
+          }
+          .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+
+
+          #sort-tiles > div {
+            border: 1px solid #eee;
+            width: 150px;
+            min-height: 20px;
+            float:left;
+          }
+          .column-header{
+            font-weight: bold;
+          }
+          .field-container {
+            padding: 5px;
+          }
+          .disabled-drag {
+            color: grey
+          }
+          </style>
+
+        <form method="post" name="post_type_tiles_form" id="tile-order-form">
+            <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type )?>">
+            <input type="hidden" name="post_type_select_nonce" id="post_type_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'post_type_select' ) ) ?>" />
+            <input type="hidden" name="tile_order_edit_nonce" id="tile_order_edit_nonce" value="<?php echo esc_attr( wp_create_nonce( 'tile_order_edit' ) ) ?>" />
+            <p><strong>Drag</strong> columns to change the order of the tiles. <strong>Drag</strong> field to change field order. Drag field between columns</p>
+            <div id="sort-tiles" style="display: inline-block; width: 100%">
+
+                <?php foreach ( $tile_options as $tile_key => $tile ) :
+                    //@todo display hidden tile greyed out
+                    $disabled_ui = !in_array( $tile_key, [ "status", "details" ] ) ? "draggable-header" : "disabled-drag";
+                    ?>
+                    <div class="sort-tile <?php echo esc_html( $disabled_ui ); ?>" id="<?php echo esc_html( $tile_key ); ?>">
+                        <div class="field-container">
+                            <h3 class="column-header <?php echo esc_html( $disabled_ui ); ?>">
+                                <?php if ( !in_array( $tile_key, [ "status", "details" ] ) ) : ?>
+                                    <span class="ui-icon ui-icon-arrow-4"></span>
+                                <?php endif ?>
+                                <?php echo esc_html( isset( $tile["label"] ) ? $tile["label"] : $tile_key ); ?>
+                            </h3>
+                            <ul class="connectedSortable">
+                                <?php foreach ( $tile["order"] ?? [] as $order_key ):
+                                    if ( isset( $fields[$order_key]["tile"] ) && $fields[$order_key]["tile"] === $tile_key ) : ?>
+                                        <li class="ui-state-default" id="<?php echo esc_html( $order_key ); ?>">
+                                            <span class="ui-icon ui-icon-arrow-4"></span>
+                                            <?php echo esc_html( $fields[$order_key]["name"] ); ?>
+                                        </li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+
+
+                                <?php foreach ( $fields as $field_key => $field_value ) :
+                                    if ( isset( $field_value["tile"] ) && $field_value["tile"] === $tile_key && !in_array( $field_key, $tile["order"] ?? [] ) ) :?>
+                                        <li class="ui-state-default" id="<?php echo esc_html( $field_key ); ?>">
+                                            <span class="ui-icon ui-icon-arrow-4"></span>
+                                            <?php echo esc_html( $field_value["name"] ); ?>
+                                        </li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+
+                <div class="sort-tile disabled-drag" id="no-tile" >
+                    <div class="field-container">
+                        <h3 class="column-header disabled-drag"><span class="ui-icon ui-icon-arrow-4"></span>No Tile / Hidden</h3>
+                        <ul class="connectedSortable">
+                            <?php foreach ( $fields as $field_key => $field_value ) :
+                                if ( ( empty( $field_value["hidden"] ) && ( isset( $field_value["customizable"] ) && $field_value["customizable"] !== false ) )
+                                    && ( !isset( $field_value["tile"] ) || !in_array( $field_value["tile"], array_keys( $tile_options ) ) ) ) :?>
+                                    <li class="ui-state-default" id="<?php echo esc_html( $field_key ); ?>">
+                                        <span class="ui-icon ui-icon-arrow-4"></span>
+                                        <?php echo esc_html( $field_value["name"] ); ?>
+                                    </li>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="button" id="save-drag-changes">Save tile and field order</button>
+            <?php if ( isset( $_POST["tile_order_edit_nonce"] ) && wp_verify_nonce( sanitize_key( $_POST['tile_order_edit_nonce'] ), 'tile_order_edit' ) ) : ?>
+                <span style="vertical-align: bottom; margin: 12px">Changes saved!</span>
+            <?php endif; ?>
+        </form>
+
+
+        <?php
+
+    }
+
+    private function process_tile_order( $post_type ){
+        if ( isset( $_POST['tile_order_edit_nonce'], $_POST["order"] ) ){
+            if ( !wp_verify_nonce( sanitize_key( $_POST['tile_order_edit_nonce'] ), 'tile_order_edit' ) ) {
+                return;
+            }
+            $order = dt_recursive_sanitize_array( json_decode( sanitize_text_field( wp_unslash( $_POST["order"] ) ), true ) );
+            $tile_options = dt_get_option( "dt_custom_tiles" );
             if ( !isset( $tile_options[$post_type] ) ){
                 $tile_options[$post_type] = [];
             }
-            foreach ( $sections as $section_id ){
-                $tile_options[$post_type][$section_id] = [];
+
+            if ( !empty( $order ) ){
+                //update order of field in a tile.
+                foreach ( $order as $index => $tile_order ){
+                    if ( $tile_order["key"] !== "no-tile" ){
+                        if ( !isset( $tile_options[$post_type][$tile_order["key"]] ) ){
+                            $tile_options[$post_type][$tile_order["key"]] = [];
+                        }
+                        $tile_options[$post_type][$tile_order["key"]]["order"] = $tile_order["fields"];
+                        $tile_options[$post_type][$tile_order["key"]]["tile_priority"] = ( $index + 1 ) * 10;
+                    }
+                }
+                update_option( "dt_custom_tiles", $tile_options );
+
+                //update tiles fields belong to.
+                $custom_fields = dt_get_option( "dt_field_customizations" );
+                foreach ( $order as $tile_order ){
+                    foreach ( $tile_order["fields"] as $field_key){
+                        if ( !isset( $custom_fields[$post_type][$field_key] ) ){
+                            $custom_fields[$post_type][$field_key] = [];
+                        }
+                        if ( $tile_order["key"] === "no-tile" ){
+                            $custom_fields[$post_type][$field_key]["tile"] = "";
+                        } else {
+                            $custom_fields[$post_type][$field_key]["tile"] = $tile_order["key"];
+                        }
+                    }
+                }
+                update_option( "dt_field_customizations", $custom_fields );
             }
         }
+    }
 
+    private function tile_select( $post_type ){
+        $tile_options = DT_Posts::get_post_tiles( $post_type, false );
         ?>
         <form method="post">
             <input type="hidden" name="tile_select_nonce" id="tile_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'tile_select' ) ) ?>" />
+            <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type )?>">
+            <input type="hidden" name="post_type_select_nonce" id="post_type_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'post_type_select' ) ) ?>" />
             <table>
                 <tr>
                     <td style="vertical-align: middle">
                         <label for="tile-select"><?php esc_html_e( "Modify an existing tile", 'disciple_tools' ) ?></label>
                     </td>
                     <td>
-                        <select id="tile-select" name="tile-select">
-                            <option></option>
-                            <?php foreach ( $post_types as $post_type ) : ?>
-                                <option disabled>---<?php echo esc_html( $wp_post_types[$post_type]->label ); ?> tiles---</option>
-                                <?php foreach ( $tile_options[$post_type] as $option_key => $option_value ) : ?>
-                                    <option value="<?php echo esc_html( $post_type . '_' . $option_key ) ?>">
-                                        <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            <?php endforeach; ?>
-                        </select>
-                        <button type="submit" class="button" name="tile_selected"><?php esc_html_e( "Select", 'disciple_tools' ) ?></button>
+                        <?php foreach ( $tile_options as $tile_key => $tile_value ) : ?>
+                            <button type="submit" name="tile-select" class="button" value="<?php echo esc_html( $tile_key ); ?>"><?php echo esc_html( isset( $tile_value["label"] ) ? $tile_value["label"] : $tile_key ); ?></button>
+                        <?php endforeach; ?>
                     </td>
                 </tr>
                 <tr>
@@ -201,19 +402,14 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
     private function edit_tile( $tile_key, $post_type ){
 
-        $tile_options = dt_get_option( "dt_custom_tiles" );
-        $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type );
-        foreach ( $sections as $section_id ){
-            if ( !isset( $tile_options[$post_type][$section_id] ) ){
-                $tile_options[$post_type][$section_id] = [];
-            }
-        }
-        if ( !isset( $tile_options[$post_type][$tile_key] )){
+        $tile_options = DT_Posts::get_post_tiles( $post_type, false );
+
+        if ( !isset( $tile_options[$tile_key] )){
             self::admin_notice( __( "Tile not found", 'disciple_tools' ), "error" );
             return;
         }
 
-        $tile = $tile_options[$post_type][$tile_key];
+        $tile = $tile_options[$tile_key];
         $fields = $this->get_post_fields( $post_type );
 
         $first = true;
@@ -222,7 +418,8 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         <form method="post" name="tile_edit_form">
         <input type="hidden" name="tile_key" value="<?php echo esc_html( $tile_key )?>">
         <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type )?>">
-        <input type="hidden" name="tile-select" value="<?php echo esc_html( $post_type . "_" . $tile_key )?>">
+        <input type="hidden" name="post_type_select_nonce" id="post_type_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'post_type_select' ) ) ?>" />
+        <input type="hidden" name="tile-select" value="<?php echo esc_html( $tile_key )?>">
         <input type="hidden" name="tile_select_nonce" id="tile_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'tile_select' ) ) ?>" />
         <input type="hidden" name="tile_edit_nonce" id="tile_edit_nonce" value="<?php echo esc_attr( wp_create_nonce( 'tile_edit' ) ) ?>" />
 
@@ -231,6 +428,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             <p><?php esc_html_e( "Note: This tile is hidden and will not show on the record page", 'disciple_tools' ) ?></p>
         <?php endif; ?>
 
+
         <table class="widefat">
             <thead>
             <tr>
@@ -238,7 +436,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Hide", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
-                <td></td></td>
+                <td></td>
             </tr>
             </thead>
             <tbody>
@@ -247,7 +445,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                         <?php echo esc_html( $tile_key ) ?>
                     </td>
                     <td>
-                        <input name="tile_label" type="text" value="<?php echo esc_html( $tile["label"] ?? $tile_key ) ?>"/>
+                        <input name="tile_label" type="text" value="<?php echo esc_html( $tile["label"] ?? "" ) ?>"/>
                     </td>
                     <td>
                         <?php if ( isset( $tile["hidden"] ) && $tile["hidden"] === true ): ?>
@@ -287,6 +485,12 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 </tr>
             </tbody>
         </table>
+        <br>
+
+        <label><strong>Tile Description</strong>
+            <input style="width: 100%" type="text" name="tile_description" value="<?php echo esc_html( $tile["description"] ?? "" )?>">
+        </label>
+        <button class="button" type="submit">Save Description</button>
 
         <br>
 
@@ -343,16 +547,9 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         //save values
         $post_type = $post_submission["post_type"];
         $tile_options = dt_get_option( "dt_custom_tiles" );
-        $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type );
-        foreach ( $sections as $section_id ){
-            if ( !isset( $tile_options[$post_type][$section_id] ) ){
-                $tile_options[$post_type][$section_id] = [];
-            }
-        }
         $tile_key = $post_submission["tile_key"];
         if ( !isset( $tile_options[$post_type][$tile_key] )){
-            self::admin_notice( __( "Tile not found", 'disciple_tools' ), "error" );
-            return;
+            $tile_options[$post_type][$tile_key] = [];
         }
         $post_fields = $this->get_post_fields( $post_type );
         if ( !isset( $tile_options[$post_type][$tile_key] ) ){
@@ -369,13 +566,16 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         if ( isset( $post_submission["restore_tile"] ) ){
             $custom_tile["hidden"] = false;
         }
+        if ( isset( $post_submission["tile_description"] ) && $post_submission["tile_description"] != ( $custom_tile["description"] ?? "" ) ){
+            $custom_tile["description"] = $post_submission["tile_description"];
+        }
         //update other Translations
         $langs = dt_get_available_languages();
 
         foreach ( $langs as $lang => $val ){
             $langcode = $val['language'];
             $translation_key = "tile_label_translation-" . $langcode;
-            if ( isset( $post_submission[$translation_key] ) ) {
+            if ( !empty( $post_submission[$translation_key] ) ) {
                 $custom_tile["translations"][$langcode] = $post_submission[$translation_key];
             }
         }
@@ -414,25 +614,13 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
 
 
-    private function add_tile(){
-        global $wp_post_types;
-        $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
+    private function add_tile( $post_type ){
         ?>
         <form method="post">
+            <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type )?>">
+            <input type="hidden" name="post_type_select_nonce" id="post_type_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'post_type_select' ) ) ?>" />
             <input type="hidden" name="tile_add_nonce" id="tile_add_nonce" value="<?php echo esc_attr( wp_create_nonce( 'tile_add' ) ) ?>" />
             <table>
-                <tr>
-                    <td style="vertical-align: middle">
-                        <?php esc_html_e( "Page type", 'disciple_tools' ) ?>
-                    </td>
-                    <td>
-                        <select name="post_type">
-                            <?php foreach ( $post_types as $post_type ) : ?>
-                                <option value="<?php echo esc_html( $post_type ); ?>"><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </td>
-                </tr>
                 <tr>
                     <td style="vertical-align: middle">
                         <label for="new_tile_name"><?php esc_html_e( "New Tile Name", 'disciple_tools' ) ?></label>
@@ -458,9 +646,9 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         if ( isset( $post_submission["new_tile_name"], $post_submission["post_type"] ) ){
             $post_type = $post_submission["post_type"];
             $tile_options = dt_get_option( "dt_custom_tiles" );
-            $sections = apply_filters( 'dt_details_additional_section_ids', [], "contacts" );
+            $post_tiles = DT_Posts::get_post_tiles( $post_type );
             $tile_key = dt_create_field_key( $post_submission["new_tile_name"] );
-            if ( in_array( $tile_key, array_keys( $tile_options[$post_type] ) ) || in_array( $tile_key, $sections ) ){
+            if ( in_array( $tile_key, array_keys( $post_tiles ) ) ){
                 self::admin_notice( __( "tile already exists", 'disciple_tools' ), "error" );
                 return false;
             }

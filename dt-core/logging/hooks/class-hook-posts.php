@@ -25,7 +25,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         $title = get_the_title( $post );
 
         if ( empty( $title ) ) {
-            $title = __( '(no title)', 'disciple-tools' );
+            $title = __( '(no title)', 'disciple_tools' );
         }
 
         return $title;
@@ -110,6 +110,9 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
     public function hooks_updated_post_meta( $meta_id, $object_id, $meta_key, $meta_value, $new = false, $deleted = false ) {
         global $wpdb;
         $parent_post = get_post( $object_id, ARRAY_A ); // get object info
+        if ( empty( $parent_post ) ){
+            return;
+        }
 
         $ignore_fields = [ '_edit_lock', '_edit_last', "last_modified", "follow" , "unfollow" ];
 
@@ -157,20 +160,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         }
         $field_type = "";
         $object_note = '';
-        switch ($parent_post['post_type']) { // get custom fields for post type. Else, skip object note.
-            case 'contacts':
-                $fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( true, $object_id );
-                if (strpos( $meta_key, "quick_button" ) !== false ){
-                    $object_note = $this->_key_name( $meta_key, $fields );
-                }
-                break;
-            case 'groups':
-                $fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
-                break;
-            default:
-                $fields = '';
-                break;
-        }
+        $fields = DT_Posts::get_post_field_settings( $parent_post['post_type'] );
 
         //build message for verifying and invalidating contact information fields.
         if (strpos( $meta_key, "_details" ) !== false && is_array( $meta_value )) {

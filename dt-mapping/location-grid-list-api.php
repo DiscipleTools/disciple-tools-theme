@@ -6,8 +6,6 @@
  * loading the most minimal of WP services.
  */
 
-// @todo may not be needed. Should be able to just use the disciple tools geocoder and ditch this one.
-
 if ( defined( 'ABSPATH' ) ) { exit; }
 /**
  * @link https://stackoverflow.com/questions/45421976/wordpress-rest-api-slow-response-time

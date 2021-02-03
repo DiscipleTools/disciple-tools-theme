@@ -26,7 +26,7 @@ We are building on the Wordpress platform because of its open-source availabilit
 
 ## Guidebook
 
-Visit our [online guidebook](https://disciple.tools/user-doccs)
+Visit our [online guidebook](https://disciple.tools/user-docs)
 
 
 ## Theme

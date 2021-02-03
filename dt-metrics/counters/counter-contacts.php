@@ -75,17 +75,17 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                 $res = $wpdb->get_var( $wpdb->prepare( "
                 SELECT count(DISTINCT(a.ID)) as count
                 FROM $wpdb->posts as a
-                JOIN ( 
-                    SELECT object_id, MIN( c.hist_time ) min_time 
+                JOIN (
+                    SELECT object_id, MIN( c.hist_time ) min_time
                         FROM $wpdb->dt_activity_log c
                         WHERE c.object_type = 'contacts'
                         AND c.meta_key = 'seeker_path'
                         AND ( c.meta_value = 'met' OR c.meta_value = 'ongoing' OR c.meta_value = 'coaching' )
-                        GROUP BY c.object_id  
-                ) b 
+                        GROUP BY c.object_id
+                ) b
                 ON a.ID = b.object_id
                 WHERE a.post_status = 'publish'
-                  AND b.min_time  BETWEEN %s and %s 
+                  AND b.min_time  BETWEEN %s and %s
                   AND a.post_type = 'contacts'
                   AND a.ID NOT IN (
                     SELECT post_id
@@ -105,28 +105,28 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                 ON a.ID = b.post_id
                    AND b.meta_key = 'seeker_path'
                    AND ( b.meta_value = 'ongoing' OR b.meta_value = 'coaching' )
-                JOIN $wpdb->dt_activity_log time 
+                JOIN $wpdb->dt_activity_log time
                 ON
                     time.object_id = a.ID
                     AND time.object_type = 'contacts'
                     AND time.meta_key = 'seeker_path'
                     AND ( time.meta_value = 'ongoing' OR time.meta_value = 'coaching' )
-                    AND time.hist_time < %s  
+                    AND time.hist_time < %s
                 LEFT JOIN $wpdb->postmeta as d
                    ON a.ID=d.post_id
                    AND d.meta_key = 'overall_status'
-                LEFT JOIN ( 
-                    SELECT object_id, MAX( c.hist_time ) max_time 
+                LEFT JOIN (
+                    SELECT object_id, MAX( c.hist_time ) max_time
                         FROM $wpdb->dt_activity_log c
                         WHERE c.object_type = 'contacts'
                         AND c.meta_key = 'overall_status'
                         AND c.old_value = 'active'
-                        GROUP BY c.object_id  
+                        GROUP BY c.object_id
                 ) close
                 ON close.object_id = a.ID
                 WHERE a.post_status = 'publish'
                   AND a.post_type = 'contacts'
-                  AND ( d.meta_value = 'active' OR close.max_time > %s ) 
+                  AND ( d.meta_value = 'active' OR close.max_time > %s )
                   AND a.ID NOT IN (
                     SELECT post_id
                     FROM $wpdb->postmeta
@@ -173,14 +173,14 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                 FROM $wpdb->dt_activity_log log
                 INNER JOIN $wpdb->postmeta as type ON ( log.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
                 INNER JOIN $wpdb->posts post
-                ON ( 
+                ON (
                     post.ID = log.object_id
                     AND post.post_type = 'contacts'
                     AND post.post_status = 'publish'
                 )
                 WHERE log.meta_key = 'overall_status'
                 AND log.meta_value = 'assigned'
-                AND log.object_type = 'contacts' 
+                AND log.object_type = 'contacts'
                 AND log.hist_time > %s
                 AND log.hist_time < %s
             ", $start, $end
@@ -197,14 +197,14 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                 FROM $wpdb->dt_activity_log log
                 INNER JOIN $wpdb->postmeta as type ON ( log.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
                 INNER JOIN $wpdb->posts post
-                ON ( 
+                ON (
                     post.ID = log.object_id
                     AND post.post_type = 'contacts'
                     AND post.post_status = 'publish'
                 )
                 WHERE log.meta_key = 'overall_status'
                 AND log.meta_value = 'active'
-                AND log.object_type = 'contacts' 
+                AND log.object_type = 'contacts'
                 AND log.hist_time > %s
                 AND log.hist_time < %s
             ", $start, $end
@@ -225,10 +225,10 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
             FROM $wpdb->dt_activity_log log
             INNER JOIN $wpdb->postmeta as type ON ( log.object_id = type.post_id AND type.meta_key = 'type' AND type.meta_value != 'user' )
             INNER JOIN $wpdb->posts post
-            ON ( 
+            ON (
                 post.ID = log.object_id
                 AND log.meta_key = 'seeker_path'
-                AND log.object_type = 'contacts' 
+                AND log.object_type = 'contacts'
             )
             INNER JOIN $wpdb->postmeta pm
             ON (
@@ -242,7 +242,7 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
             GROUP BY log.meta_value
         ", $start, $end ), ARRAY_A );
 
-        $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $field_settings = DT_Posts::get_post_field_settings( "contacts" );
         $seeker_path_options = $field_settings["seeker_path"]["default"];
         $seeker_path_data = [];
         foreach ( $seeker_path_options as $option_key => $option_value ){
@@ -284,7 +284,7 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                     AND log.object_id = b.object_id
                 )
                 JOIN $wpdb->dt_activity_log as sl ON (
-                    sl.object_type = 'contacts' 
+                    sl.object_type = 'contacts'
                     AND sl.object_id = log.object_id
                     AND sl.meta_key = 'overall_status'
                     AND sl.meta_value = 'active'
@@ -306,7 +306,7 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
             ", $end, $end
             ), ARRAY_A
         );
-        $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $field_settings = DT_Posts::get_post_field_settings( "contacts" );
         $seeker_path_options = $field_settings["seeker_path"]["default"];
         $seeker_path_data = [];
         foreach ( $seeker_path_options as $option_key => $option_value ){
@@ -338,9 +338,9 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
             $wpdb->prepare( "
                 SELECT count( DISTINCT( log.object_id ) ) as value, log.meta_value as overall_status
                 FROM $wpdb->dt_activity_log log
-                INNER JOIN $wpdb->posts post ON ( 
+                INNER JOIN $wpdb->posts post ON (
                     post.ID = log.object_id
-                    AND post.post_type = 'contacts' 
+                    AND post.post_type = 'contacts'
                 )
                 JOIN (
                     SELECT MAX( hist_time ) as hist_time, object_id
@@ -362,7 +362,7 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
             ", $end
             ), ARRAY_A
         );
-        $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $field_settings = DT_Posts::get_post_field_settings( "contacts" );
         $overall_status_options = $field_settings["overall_status"]["default"];
         $overall_status_data = [];
         foreach ( $overall_status_options as $option_key => $option_value ){
@@ -383,7 +383,7 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
 
     public static function get_contact_statuses( $user_id = null ){
         global $wpdb;
-        $post_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" );
+        $post_settings = DT_Posts::get_post_settings( "contacts" );
         if ( $user_id ){
             $contact_statuses = $wpdb->get_results( $wpdb->prepare( "
                 SELECT COUNT(pm1.meta_value) as count, pm1.meta_value as status FROM $wpdb->posts p

@@ -11,61 +11,63 @@ jQuery(document).ready(function() {
 
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#personal-menu'));
 
-    chartDiv.empty().html(`
-        <div class="cell center">
-            <h3 >${ _.escape( translations.title ) }</h3>
-        </div>
-        <br><br>
-        <div class="grid-x grid-padding-x grid-padding-y">
+    let html = `
+      <div class="cell center">
+          <h3 >${ _.escape( translations.title ) }</h3>
+      </div>
+      <br><br>
+      <div class="grid-x grid-padding-x grid-padding-y">
         <h3 class="section-header">${ _.escape( translations.title_contacts ) }</h3>
+        <div class="cell center callout">
+            <div class="grid-x">
+                <div class="medium-4 cell center ">
+                    <h5>${ _.escape( translations.title_waiting_on_accept ) }<br><span id="needs_accepted">0</span></h5>
+                </div>
+                <div class="medium-4 cell center left-border-grey">
+                    <h5>${ _.escape( translations.title_waiting_on_update ) }<br><span id="updates_needed">0</span></h5>
+                </div>
+                <div class="medium-4 cell center left-border-grey">
+                    <h5>${ _.escape( translations.label_active_contacts ) }<br><span id="contacts">0</span></h5>
+                </div>
+            </div>
+        </div>`
+      if ( sourceData.contacts_progress ){
+        html += `<div class="cell">
+            <div id="my_contacts_progress" style="height: 350px; width=100%"></div>
+        </div>`
+      }
+
+      html += `<h3 class="section-header" style="margin-top:40px;">${ _.escape( translations.title_groups ) }</h3>
+        <div class="cell">
             <div class="cell center callout">
                 <div class="grid-x">
-                    <div class="medium-4 cell center ">
-                        <h5>${ _.escape( translations.title_waiting_on_accept ) }<br><span id="needs_accepted">0</span></h5>
+                    <div class="medium-4 cell center">
+                        <h5>${ _.escape( translations.title_total_groups ) }<br><span id="total_groups">0</span></h5>
                     </div>
                     <div class="medium-4 cell center left-border-grey">
-                        <h5>${ _.escape( translations.title_waiting_on_update ) }<br><span id="updates_needed">0</span></h5>
+                        <h5>${ _.escape( translations.title_teams ) }<br><span id="teams">0</span></h5>
                     </div>
-                    <div class="medium-4 cell center left-border-grey">
-                        <h5>${ _.escape( translations.label_active_contacts ) }<br><span id="contacts">0</span></h5>
-                    </div>
-                </div>
+               </div>
             </div>
-            <div class="cell">
-                <div id="my_contacts_progress" style="height: 350px; width=100%"></div>
-            </div>
-            <h3 class="section-header" style="margin-top:40px;">${ _.escape( translations.title_groups ) }</h3>
-            <div class="cell">
-                <div class="cell center callout">
-                    <div class="grid-x">
-                        <div class="medium-4 cell center">
-                            <h5>${ _.escape( translations.title_total_groups ) }<br><span id="total_groups">0</span></h5>
-                        </div>
-                        <div class="medium-4 cell center left-border-grey">
-                            <h5>${ _.escape( translations.title_teams ) }<br><span id="teams">0</span></h5>
-                        </div>
-                   </div>
-                </div>
-            </div>
-
-            <div class="cell"  id="my_groups_health_container">
-                <div id="my_groups_health" style="height: 500px;"></div>
-                <hr>
-            </div>
-            <div class="cell">
-
-                <div class="grid-x">
-                    <div class="cell medium-6 center">
-                        <div id="group_types" style="height: 400px;"></div>
-                    </div>
-                    <div class="cell medium-6">
-                        <div id="group_generations" style="height: 400px;"></div>
-                    </div>
-                </div>
-            </div>
-
         </div>
-        `)
+
+        <div class="cell"  id="my_groups_health_container">
+            <div id="my_groups_health" style="height: 500px;"></div>
+            <hr>
+        </div>
+        <div class="cell">
+            <div class="grid-x">
+                <div class="cell medium-6 center">
+                    <div id="group_types" style="height: 400px;"></div>
+                </div>
+                <div class="cell medium-6">
+                    <div id="group_generations" style="height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+      </div>`
+
+    chartDiv.empty().html( html )
 
     let hero = sourceData.hero_stats
     jQuery('#contacts').html( numberWithCommas( hero.contacts ) )
@@ -77,8 +79,10 @@ jQuery(document).ready(function() {
 
 
 
-    // build charts
-    drawMyContactsProgress()
+    if ( sourceData.contacts_progress ){
+      // build charts
+      drawMyContactsProgress()
+    }
     if ( sourceData.preferences.groups.church_metrics ) {
       drawMyGroupHealth();
     } else {

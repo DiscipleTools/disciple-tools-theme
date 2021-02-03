@@ -70,7 +70,11 @@ function dt_options_scripts() {
         wp_enqueue_script( 'dt_options_script', disciple_tools()->admin_js_url . 'dt-options.js', [
             'jquery',
             'jquery-ui-core',
+            'jquery-ui-sortable',
         ], filemtime( disciple_tools()->admin_js_path . 'dt-options.js' ), true );
+        wp_register_style( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css' );
+        wp_enqueue_style( 'jquery-ui' );
+
         if ( isset( $_GET["tab"] ) && $_GET["tab"] === 'people-groups' ) {
             wp_enqueue_script( 'dt_peoplegroups_scripts', get_template_directory_uri() . '/dt-people-groups/people-groups.js', [
                 'jquery',
@@ -97,7 +101,7 @@ function dt_options_scripts() {
 
 function dt_new_user_scripts(){
     global $pagenow;
-    if ( is_admin() && ( $pagenow === 'user-new.php' || $pagenow === 'user-edit.php' ) ) {
+    if ( is_admin() && ( $pagenow === 'user-new.php' || $pagenow === 'user-edit.php' || $pagenow === 'profile.php' ) ) {
         wp_enqueue_script( 'jquery' );
 
         // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion

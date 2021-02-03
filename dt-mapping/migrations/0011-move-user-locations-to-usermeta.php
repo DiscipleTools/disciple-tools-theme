@@ -1,7 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
- * Class DT_Mapping_Module_Migration_0010
+ * Class DT_Mapping_Module_Migration_0011
  * Migrates contact user locations to usermeta table for new user locations system.
  */
 class DT_Mapping_Module_Migration_0011 extends DT_Mapping_Module_Migration {

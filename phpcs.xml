@@ -234,6 +234,13 @@
   <!-- <rule ref="PSR2.Files.ClosingTag"/> -->
   <!-- <rule ref="Squiz.PHP.ForbiddenFunctions"/> -->
 
+  <rule ref="WordPress.Security.ValidatedSanitizedInput">
+    <properties>
+      <property name="customUnslashingSanitizingFunctions" type="array">
+        <element value="dt_recursive_sanitize_array" />
+      </property>
+    </properties>
+  </rule>
 
 </ruleset>
 
