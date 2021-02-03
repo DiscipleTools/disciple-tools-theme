@@ -82,6 +82,15 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         </tr>
         <tr>
             <td>
+                D.T Theme Version: <?php echo esc_html( wp_get_theme()->version ) ?>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><strong>Migrations</strong></td><td></td>
+        </tr>
+        <tr>
+            <td>
                 <?php echo esc_html( sprintf( __( 'D.T Migration version: %1$s of %2$s' ), Disciple_Tools_Migration_Engine::get_current_db_migration(), Disciple_Tools_Migration_Engine::$migration_number ) ); ?>.
                 Lock: <?php echo esc_html( get_option( 'dt_migration_lock', 0 ) ) ?>
             </td>
@@ -102,7 +111,29 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
 
         <?php
         do_action( "dt_utilities_system_details" );
+        ?>
+        <tr>
+            <td><strong>Plugins</strong></td><td></td>
+        </tr>
+        <?php
+        $plugins = get_plugins();
+        $active_plugins = get_option( 'active_plugins' );
+        foreach ( $plugins as $i => $v ){
+            if ( !isset( $v["Name"], $v["Version"] )){
+                continue;
+            }
+            ?>
+            <tr>
+            <td><?php echo esc_html( $v["Name"] ); ?> version: <?php echo esc_html( $v["Version"] ); ?></td>
+            <td>
+            <?php if ( in_array( $i, $active_plugins )): ?>
+                Plugin Active
+            <?php endif; ?>
 
+            </td>
+            <tr>
+            <?php
+        }
 
         $this->box( 'bottom' );
     }
