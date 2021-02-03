@@ -129,12 +129,21 @@ final class Disciple_Tools_Dashboard
 
     public function dt_dashboard_tile(){
         wp_add_dashboard_widget('dt_setup_wizard', 'Disciple.Tools Setup Wizard', function (){
+            $setup_options = get_option( "dt_setup_options", [] );
             $mapbox_key = DT_Mapbox_API::get_key();
+
             $todo = 0;
             $todo += empty( $mapbox_key ) ? 1 : 0;
-            $mapbox_upgraded = DT_Mapbox_API::are_records_and_users_upgraded_with_mapbox();
-            if ( !$mapbox_upgraded ){
-                $todo++;
+
+            $mapbox_upgraded = true;
+            if ( !isset( $setup_options["mapbox_upgrade"] ) ){
+                $mapbox_upgraded = DT_Mapbox_API::are_records_and_users_upgraded_with_mapbox();
+                if ( !$mapbox_upgraded ){
+                    $todo++;
+                } else {
+                    $setup_options["mapbox_upgrade"] = 1;
+                    update_option( "dt_setup_options", $setup_options );
+                }
             }
 
             ?>
