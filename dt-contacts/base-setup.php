@@ -111,7 +111,7 @@ class DT_Contacts_Base {
                 'name' => __( "Nickname", 'disciple_tools' ),
                 'type' => 'text',
                 'tile' => 'details',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/name.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/nametag.svg",
             ];
             $fields["type"] = [
                 'name'        => __( 'Contact Type', 'disciple_tools' ),
