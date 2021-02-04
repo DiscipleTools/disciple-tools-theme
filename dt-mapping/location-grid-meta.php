@@ -102,7 +102,7 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
 
             self::validate_location_grid_meta( $location_grid_meta );
 
-            if (empty( $location_grid_meta['lng'] ) || empty( $location_grid_meta['lat'] )) {
+            if ( !isset( $location_grid_meta['lng'] ) || !isset( $location_grid_meta['lat'] )) {
                 return new WP_Error( __METHOD__, 'Missing required lng or lat' );
             }
 
@@ -207,7 +207,7 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
 
             self::validate_location_grid_meta( $location_grid_meta );
 
-            if (empty( $location_grid_meta['lng'] ) || empty( $location_grid_meta['lat'] )) {
+            if ( !isset( $location_grid_meta['lng'] ) || !isset( $location_grid_meta['lat'] ) ){
                 return new WP_Error( __METHOD__, 'Missing required lng or lat' );
             }
 
