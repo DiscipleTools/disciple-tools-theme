@@ -355,7 +355,7 @@ class Disciple_Tools_Posts
                     }
                 }
                 if ( $fields[$activity->meta_key]["type"] === "text"){
-                    if ( !empty( $activity->meta_value ) && !empty( $activity->old_value ) ){
+                    if ( !empty( $activity->meta_value ) ){
                         $message = sprintf( _x( '%1$s changed to %2$s', "field1 changed to 'text'", 'disciple_tools' ), $fields[$activity->meta_key]["name"], $activity->meta_value );
                     }
                 }

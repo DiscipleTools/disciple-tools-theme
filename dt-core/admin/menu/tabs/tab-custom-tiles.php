@@ -314,7 +314,10 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 </div>
             </div>
 
-            <button type="button" class="button" id="save-drag-changes">Save Drag and Sort Changes</button>
+            <button type="button" class="button" id="save-drag-changes">Save tile and field order</button>
+            <?php if ( isset( $_POST["tile_order_edit_nonce"] ) && wp_verify_nonce( sanitize_key( $_POST['tile_order_edit_nonce'] ), 'tile_order_edit' ) ) : ?>
+                <span style="vertical-align: bottom; margin: 12px">Changes saved!</span>
+            <?php endif; ?>
         </form>
 
 
