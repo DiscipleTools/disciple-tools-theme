@@ -317,6 +317,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'type' => 'number',
                 'default' => '',
                 'tile' => 'relationships',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/tallying.svg',
             ];
 
 
