@@ -168,27 +168,13 @@ DT comments and activity
     }
 
     .reply-textarea {
-        width: 484px;
-        margin: 0px 6.59375px 16px 45px;
-        position: relative;
-        height: 115px;
+        min-height: 115px;
+        width: 75%;
         resize: none
     }
 
     .add-btn {
-        position: absolute;
-        right: 10px;
-        margin-top: -67px;
-        border: none;
-        background: #ededed;
-        border-radius: 8px;
-        padding: 15px;
-        font-size: 15px;
-        width: 80px;
-    }
-    .add-btn:hover {
-        background-color: #3f729b;
-        color: white;
+
     }
 
     .reply-comment{
@@ -200,11 +186,17 @@ DT comments and activity
         width: 100%;
     }
 
+    .nested-comment {
+        margin-left: 3em;
+    }
 
     .panel-body-container{
         position: relative
     }
 
+    .panel-body {
+        margin-left: 2em;
+    }
 
     #add-comment-button {
         margin-bottom: 0;

@@ -500,7 +500,7 @@ jQuery(document).ready(function($) {
       array.push(obj);
 
       var child = document.createElement("div");
-      child.setAttribute("style", "margin-left:40px");
+      $(child).addClass('nested-comment')
       child.innerHTML = commentTemplate({
         gravatar: array[0].gravatar,
         name: array[0].name,
