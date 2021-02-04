@@ -256,7 +256,7 @@ class DT_Contacts_Base {
                 "p2p_key" => "contacts_to_relation",
                 "tile" => "other",
                 "in_create_form" => [ "placeholder" ],
-                'icon' => get_template_directory_uri() . "/dt-assets/images/connection.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/connection-people.svg",
             ];
 
             $fields['gender'] = [
