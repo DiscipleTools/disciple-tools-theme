@@ -205,7 +205,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
         echo '</select>';
 
-        echo '<span style="float:right;"><button type="submit" class="button float-right">Update</button></span>';
+        echo '<span style="float:right;"><button type="submit" class="button float-right">' . esc_html__( "Update", 'disciple_tools' ) . '</button></span>';
         echo '</form>';
     }
 
