@@ -789,6 +789,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'comment_post_ID'      => $post_id,
                 'comment_content'      => wp_kses($comment, self::$allowable_comment_tags),
                 'user_id'              => $user_id,
+                'comment_parent'       => $args["comment_parent"],
                 'comment_author'       => $args["comment_author"] ?? $user->display_name,
                 'comment_author_url'   => $args["comment_author_url"] ?? "",
                 'comment_author_email' => $user->user_email,
@@ -891,7 +892,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 "comment_content" => wp_kses( $comment->comment_content, self::$allowable_comment_tags),
                 "user_id" => $comment->user_id,
                 "comment_type" => $comment->comment_type,
-                "comment_post_ID" => $comment->comment_post_ID
+                "comment_post_ID" => $comment->comment_post_ID,
+                "comment_parent" => $comment->comment_parent
             ];
             $response_body[] =$c;
         }
@@ -1402,5 +1404,3 @@ class DT_Posts extends Disciple_Tools_Posts {
     }
 
 }
-
-

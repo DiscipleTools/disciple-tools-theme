@@ -167,6 +167,37 @@ DT comments and activity
         }
     }
 
+    .reply-textarea {
+        min-height: 115px;
+        width: 75%;
+        resize: none
+    }
+
+    .add-btn {
+
+    }
+
+    .reply-comment{
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        resize: none;
+        height: 60px;
+        width: 100%;
+    }
+
+    .nested-comment {
+        margin-left: 3em;
+    }
+
+    .panel-body-container{
+        position: relative
+    }
+
+    .panel-body {
+        margin-left: 2em;
+    }
+
     #add-comment-button {
         margin-bottom: 0;
         height: 3rem;

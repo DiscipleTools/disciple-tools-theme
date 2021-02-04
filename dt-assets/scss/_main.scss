@@ -70,6 +70,11 @@ footer {
     bottom: 0;
     width: 95%;
 }
+
+object {
+    width: 100%;
+    height: 100%;
+}
 /*********************
 LINK STYLES
 *********************/
@@ -177,8 +182,12 @@ nav.second-bar {
     padding: 0.5em;
     background-color: white;
     width: 100%;
-    top: auto !important;
+    top: auto;
     transform: translateX(0);
+
+    .title {
+        font-weight: bold;
+    }
 
     .breadcrumbs {
         margin-bottom: 0;
@@ -214,6 +223,27 @@ nav.second-bar {
     }
 }
 
+#second-bar-small{
+    // transition: all .2s;
+    border-top: none;
+    &.is-stuck {
+        border-top: .5rem solid $primary-color;
+        .grid-x {
+            display: none;
+        }
+        #record-tagline {
+            opacity:0;
+            height: 0;
+        }
+    }
+    .grid-x {
+        margin-bottom: .3rem;
+    }
+    #record-tagline {
+        transition: all .3s;
+        opacity:1;
+    }
+}
 .off-canvas-list {
     ul {
         margin-left: 0;
@@ -267,6 +297,9 @@ div.sticky-container {
     z-index: 1;
 }
 
+.title-bar {
+    padding: 0.7rem;
+}
 .title-bar img {
     vertical-align: middle;
 }
@@ -335,6 +368,12 @@ i.large {
     font-size: 50px;
     line-height: 50px;
 }
+i.medium {
+    font-size: 25px;
+    line-height: 25px;
+    transform: translateY(2px);
+    display: inline-block;
+}
 
 button {
     cursor: pointer;
@@ -380,6 +419,7 @@ Title for boxed section
     font-size: 14px;
     white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 /*********************
 JQUERY OVERRIDES

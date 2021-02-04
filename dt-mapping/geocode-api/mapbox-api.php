@@ -524,9 +524,8 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
         }
 
         public static function are_records_and_users_upgraded_with_mapbox(){
-            global $wpdb;
-            $location_wo_meta = $wpdb->get_var( "SELECT count(*) FROM $wpdb->postmeta WHERE meta_key = 'location_grid' AND meta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta) AND meta_value >= 100000000" );
-            $user_location_wo_meta = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->usermeta WHERE meta_key = %s AND umeta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta ) AND meta_value >= 100000000", $wpdb->prefix . 'location_grid' ) );
+            $location_wo_meta = DT_Mapping_Module_Admin::instance()->get_record_count_with_no_location_meta();
+            $user_location_wo_meta = DT_Mapping_Module_Admin::instance()->get_user_count_with_no_location_meta();
             if ( !empty( $location_wo_meta ) || !empty( $user_location_wo_meta ) ){
                 return false;
             }

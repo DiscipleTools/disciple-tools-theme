@@ -501,13 +501,20 @@ class Disciple_Tools_Posts_Endpoints {
         $body = $request->get_json_params() ?? $request->get_body_params();
         $silent = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
         $args = [];
+
         if ( isset( $body["date"] ) ){
             $args["comment_date"] = $body["date"];
         }
+
         $type = 'comment';
         if ( isset( $body["comment_type"] ) ){
             $type = $body["comment_type"];
         }
+
+        if ( isset( $body["comment_parent"] ) ){
+            $args["comment_parent"] = $body["comment_parent"];
+        }
+
 
         $result = DT_Posts::add_post_comment( $url_params["post_type"], $url_params["id"], $body["comment"], $type, $args, true, $silent );
         if ( is_wp_error( $result ) ) {
