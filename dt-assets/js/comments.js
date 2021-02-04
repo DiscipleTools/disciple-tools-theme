@@ -8,9 +8,9 @@ jQuery(document).ready(function($) {
   let postType = window.detailsSettings.post_type;
   let rest_api = window.API;
 
-  let comments = []  
+  let comments = []
   let activity = [] // not guaranteed to be in any particular order
-  let langcode = document.querySelector('html').getAttribute('lang') ? 
+  let langcode = document.querySelector('html').getAttribute('lang') ?
   document.querySelector('html').getAttribute('lang').replace('_', '-'): "en"; // get the language attribute from the HTML or default to english if it doesn't exists.
 
 
@@ -146,7 +146,7 @@ jQuery(document).ready(function($) {
                       ${_.escape(commentsSettings.translations.reply)}
                   </a>
               <%}%>
-              <% if (a.user_id === commentsSettings.current_user_id  ) { %>
+               <% if (a.user_id === commentsSettings.current_user_id  ) { %>
                   <% has_Comment_ID = true %>
                   <a class="open-edit-comment" data-id="<%- a.comment_ID %>" data-type="<%- a.comment_type %>" style="margin-right:5px">
                       <img src="${
@@ -160,14 +160,18 @@ jQuery(document).ready(function($) {
                       }/dt-assets/images/trash-blue.svg">
                       ${_.escape(commentsSettings.translations.delete)}
                   </a>
-          <%}%>
+             <%}%>
           </p>
             <div class="panel panel-default panel-comment-<%- a.comment_ID%> panel-collapsed" style="display:none">
-            <div class="panel-body">
-                    <textarea class="reply-comment" id="content-<%- a.comment_ID%>" autofocus placeholder="What do you want to share?"></textarea>
-                    <button class="add-btn" id="addreply-<%- a.comment_ID%>" data-dismiss="modal" aria-hidden="true"  >Submit</button>
-            </div>
-          </div>
+             <div class="panel-body">
+
+
+                     <textarea class="form-control input-lg" class="mention" id="content-<%- a.comment_ID%>" autofocus placeholder="What do you want to share?"  style="width: 484px; margin: 0px 6.59375px 16px 45px; position: relative; height: 115px; resize: none"></textarea>
+                     <button class="add-btn" id="addreply-<%- a.comment_ID%>" data-dismiss="modal" aria-hidden="true" >Submit</button>
+
+
+             </div>
+           </div>
             <div class= "nested-comments "id="childcomment-<%- a.comment_ID%>"></div>
         <% } else { %>
             <p class="activity-bubble" title="<%- date %>">  <%- a.text %> <% print(a.action) %> </p>
@@ -186,7 +190,7 @@ jQuery(document).ready(function($) {
     </div>
   </div>`)
 
-  
+
   $(document).on("click", ".translate-button.showTranslation", function() {
     let combinedArray = [];
     jQuery(this).siblings('.comment-bubble').each(function(index, comment) {
@@ -279,7 +283,7 @@ jQuery(document).ready(function($) {
         return false
       }
     let commentType = $("#comment_type_selector").val();
-    
+
     rest_api
       .post_comment(postType, postId, content, commentType, comment_parent)
       .then(data => {
@@ -293,7 +297,7 @@ jQuery(document).ready(function($) {
         jQuery("#errors").append(err.responseText);
       });
   });
-  
+
   $(document).on("click", ".open-delete-comment", function() {
     let id = $(this).data("id")
     $('#comment-to-delete').html($(`.comment-bubble.${id}`).html())
@@ -547,7 +551,6 @@ jQuery(document).ready(function($) {
   });
 
   let refreshActivity = () => {
-    console.log("refreshing now");
     get_all();
   };
 
@@ -610,7 +613,7 @@ jQuery(document).ready(function($) {
     getCommentsPromise = rest_api.get_comments(postType, postId)
     getActivityPromise = rest_api.get_activity(postType, postId)
     getAllPromise = $.when(
-      getCommentsPromise, 
+      getCommentsPromise,
       getActivityPromise
     )
     getAllPromise.then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
@@ -693,7 +696,7 @@ jQuery(document).ready(function($) {
   };
 
   let searchUsersPromise = null;
- 
+
     $("textarea.mention").mentionsInput({
       onDataRequest: function(mode, query, callback) {
         $("#comment-input").addClass("loading-gif");
@@ -730,7 +733,7 @@ jQuery(document).ready(function($) {
       showAvatars: true,
       minChars: 0
     });
-  
+
   let getMentionedUsers = callback => {
     $('textarea.mention').mentionsInput("getMentions", function(data) {
       callback(data);
