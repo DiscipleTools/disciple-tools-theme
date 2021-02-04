@@ -167,6 +167,14 @@ DT comments and activity
         }
     }
 
+    .reply-textarea {
+        width: 484px;
+        margin: 0px 6.59375px 16px 45px;
+        position: relative;
+        height: 115px;
+        resize: none
+    }
+
     .add-btn {
         position: absolute;
         right: 10px;
@@ -182,6 +190,7 @@ DT comments and activity
         background-color: #3f729b;
         color: white;
     }
+
     .reply-comment{
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;

@@ -166,8 +166,8 @@ jQuery(document).ready(function($) {
              <div class="panel-body">
 
 
-                     <textarea class="form-control input-lg" class="mention" id="content-<%- a.comment_ID%>" autofocus placeholder="What do you want to share?"  style="width: 484px; margin: 0px 6.59375px 16px 45px; position: relative; height: 115px; resize: none"></textarea>
-                     <button class="add-btn" id="addreply-<%- a.comment_ID%>" data-dismiss="modal" aria-hidden="true" >Submit</button>
+                     <textarea class="form-control input-lg reply-textarea" class="mention" id="content-<%- a.comment_ID%>" autofocus placeholder="What do you want to share?"></textarea>
+                     <button class="add-btn button" id="addreply-<%- a.comment_ID%>" data-dismiss="modal" aria-hidden="true" >Submit</button>
 
 
              </div>
