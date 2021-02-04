@@ -516,7 +516,7 @@ class Disciple_Tools_Posts_Endpoints {
         }
 
 
-        $result = DT_Posts::add_post_comment( $url_params["post_type"], $url_params["id"], $body["comment"],$type, $args, true, $silent );
+        $result = DT_Posts::add_post_comment( $url_params["post_type"], $url_params["id"], $body["comment"], $type, $args, true, $silent );
         if ( is_wp_error( $result ) ) {
             return $result;
         } else {
