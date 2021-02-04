@@ -12,47 +12,50 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
     return;
 }
 
+/**
+ * Filter for replacing the logo
+ */
+$logo_url = apply_filters( 'dt_default_logo', get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png" );
+
+$navigation = apply_filters( 'dt_nav_topbar', [
+
+] );
+
 ?>
 <!--  /* TOP LEFT SIDE MENU AREA */ -->
 <div data-sticky-container>
-<div class="title-bar hide-for-large" data-sticky data-responsive-toggle="top-bar-menu" data-margin-top="0" data-sticky-on="medium">
-    <div class="title-bar-left">
-        <button class="" type="button" data-open="off-canvas">
-            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/hamburger.svg" ?>">
-        </button>
-        <div class="title-bar-title" style="margin-left: 5px">
-            <a href="<?php echo esc_url( site_url() )?>" style="padding-left:0;vertical-align: middle"><img src="<?php
-            /**
-             * Filter for replacing the logo
-             */
-            $url = apply_filters( 'dt_default_logo', get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png" );
-            echo esc_url( $url );
-            ?>" style="margin:0; height: 20px" alt="logo-image"></a>
+    <div class="title-bar hide-for-large" data-sticky data-responsive-toggle="top-bar-menu" data-margin-top="0" data-sticky-on="medium">
+        <div class="title-bar-left">
+            <button class="" type="button" data-open="off-canvas">
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/hamburger.svg" ?>">
+            </button>
+            <div class="title-bar-title" style="margin-left: 5px">
+                <a href="<?php echo esc_url( site_url() )?>" style="padding-left:0;vertical-align: middle" ><img src="<?php echo esc_url( $logo_url ); ?>" style="margin:0; height: 20px" alt="logo-image"></a>
+            </div>
+        </div>
+        <div class="title-bar-right">
+            <ul class="dropdown menu" data-dropdown-menu style="display:inline-block; margin-left: 10px">
+                <li class="has-submenu center-items" style="width:21px;">
+                    <button>
+                        <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-plus.svg" ?>" style="width:24px;">
+                    </button>
+                    <ul class="submenu menu vertical add-new-items-dropdown " style="text-align:left;"><!--  /* HEADER add menu */ -->
+                        <?php do_action( 'dt_nav_add_post_menu' ) ?>
+                    </ul>
+                </li>
+            </ul>
+
+            <a href="<?php echo esc_url( site_url( '/notifications' ) ); ?>" style="margin-left: 10px">
+                <img title="<?php esc_html_e( "Notifications", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
+                <span class="badge alert notification-count" style="display:none"></span>
+            </a>
+
+            <a href="<?php echo esc_url( site_url( '/' ) ) . 'settings/'; ?>" style="margin-left: 10px">
+                <img title="<?php esc_html_e( "Settings", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/gear.svg" ?>">
+            </a>
+
         </div>
     </div>
-    <div class="title-bar-right">
-        <ul class="dropdown menu" data-dropdown-menu style="display:inline-block; margin-left: 10px">
-            <li class="has-submenu center-items" style="width:21px;">
-                <button>
-                    <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-plus.svg" ?>" style="width:24px;">
-                </button>
-                <ul class="submenu menu vertical add-new-items-dropdown " style="text-align:left;"><!--  /* HEADER add menu */ -->
-                    <?php do_action( 'dt_nav_add_post_menu' ) ?>
-                </ul>
-            </li>
-        </ul>
-
-        <a href="<?php echo esc_url( site_url( '/notifications' ) ); ?>" style="margin-left: 10px">
-            <img title="<?php esc_html_e( "Notifications", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
-            <span class="badge alert notification-count" style="display:none"></span>
-        </a>
-
-        <a href="<?php echo esc_url( site_url( '/' ) ) . 'settings/'; ?>" style="margin-left: 10px">
-            <img title="<?php esc_html_e( "Settings", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/gear.svg" ?>">
-        </a>
-
-    </div>
-</div>
 </div>
 
 <!--  /* LOGO AREA */ -->
@@ -60,17 +63,35 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
     <div class="top-bar" id="top-bar-menu"
          data-sticky style="width:100%;margin-top:0">
         <div>
-            <a href="<?php echo esc_url( site_url() )?>" style="padding-left:0;vertical-align: middle"><img src="<?php
-            /**
-             * Filter for replacing the logo
-             */
-            $url = apply_filters( 'dt_default_logo', get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png" );
-            echo esc_url( $url );
-            ?>" style="margin:0 17px; height: 20px" alt="logo-image"></a>
+            <a href="<?php echo esc_url( site_url() )?>" style="padding-left:0;vertical-align: middle"><img src="<?php echo esc_url( $logo_url ); ?>" style="margin:0 17px; height: 20px" alt="logo-image"></a>
         </div>
         <div class="top-bar-left">
-            <ul class="menu">
-                <?php disciple_tools_top_nav_desktop(); ?>
+            <ul class="dropdown menu" data-dropdown-menu>
+                <?php
+                /**
+                 * Loads nav bar menu items
+                 * @note Main post types (Contacts, Groups, Metrics) fire between 20-30. If you want to add an item before the
+                 * main post types, load before 20, if you want to load after the list, load after 30.
+                 */
+                $tabs = apply_filters( "desktop_navbar_menu_options", [] );
+                foreach ( $tabs as $tab ) : ?>
+                    <li><a href="<?php echo esc_url( $tab["link"] ) ?>"><?php echo esc_html( $tab["label"] ) ?>&nbsp;</a>
+                        <?php
+                        if ( isset( $tab['submenu'] ) && ! empty( $tab['submenu'] ) ) {
+                            ?><ul><?php
+                            foreach( $tab['submenu'] as $submenu ) {
+                                ?>
+                                <li><a href="<?php echo esc_url( $submenu["link"] ) ?>"><?php echo esc_html( $submenu["label"] ) ?></a></li>
+                                <?php
+                            }
+                            ?></ul><?php
+                        }
+                        ?></li>
+                <?php endforeach;
+
+                //append a non standard menu item at the end
+                do_action( 'dt_top_nav_desktop' );
+                ?>
             </ul>
         </div>
         <div class="top-bar-right">
