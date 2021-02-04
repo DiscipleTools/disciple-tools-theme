@@ -257,6 +257,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type )?>">
             <input type="hidden" name="post_type_select_nonce" id="post_type_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'post_type_select' ) ) ?>" />
             <input type="hidden" name="tile_order_edit_nonce" id="tile_order_edit_nonce" value="<?php echo esc_attr( wp_create_nonce( 'tile_order_edit' ) ) ?>" />
+            <button type="button" class="button" id="save-drag-changes">Save tile and field order</button>
             <p><strong>Drag</strong> columns to change the order of the tiles. <strong>Drag</strong> field to change field order. Drag field between columns</p>
             <div id="sort-tiles" style="display: inline-block; width: 100%">
 
@@ -679,5 +680,3 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
     }
 }
 Disciple_Tools_Tab_Custom_Tiles::instance();
-
-
