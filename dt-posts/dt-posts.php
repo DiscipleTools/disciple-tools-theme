@@ -774,7 +774,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @return false|int|WP_Error
      */
-    public static function add_post_comment( string $post_type, int $post_id, string $comment_html, string $type = "comment",  array $args = [], bool $check_permissions = true, $silent = false ) {
+    public static function add_post_comment( string $post_type, int $post_id, string $comment_html, string $type = "comment", array $args = [], bool $check_permissions = true, $silent = false ) {
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }

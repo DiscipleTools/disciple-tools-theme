@@ -1,39 +1,34 @@
 /* global moment:false, _:false, commentsSettings:false */
 jQuery(document).ready(function($) {
-  let commentPostedEvent = document.createEvent("Event");
-  commentPostedEvent.initEvent("comment_posted", true, true);
+
+  let commentPostedEvent = document.createEvent('Event');
+  commentPostedEvent.initEvent('comment_posted', true, true);
 
   let postId = window.detailsSettings.post_id;
   let postType = window.detailsSettings.post_type;
   let rest_api = window.API;
 
-  let comments = [];
-  // root comments is a test variable to see if it stores the parent_comment value
-  let rootComments = [];
-  let activity = []; // not guaranteed to be in any particular order
-  let langcode = document.querySelector("html").getAttribute("lang")
-    ? document
-        .querySelector("html")
-        .getAttribute("lang")
-        .replace("_", "-")
-    : "en"; // get the language attribute from the HTML or default to english if it doesn't exists.
+  let comments = []  
+  let activity = [] // not guaranteed to be in any particular order
+  let langcode = document.querySelector('html').getAttribute('lang') ? 
+  document.querySelector('html').getAttribute('lang').replace('_', '-'): "en"; // get the language attribute from the HTML or default to english if it doesn't exists.
+
 
   function post_comment(postId) {
     let commentInput = jQuery("#comment-input");
     let commentButton = jQuery("#add-comment-button");
 
-    let commentType = $("#comment_type_selector").val();
+    let commentType = $('#comment_type_selector').val();
     getCommentWithMentions(comment_plain_text => {
+
       if (comment_plain_text) {
-        commentButton.toggleClass("loading");
+        commentButton.toggleClass('loading');
         commentInput.attr("disabled", true);
         commentButton.attr("disabled", true);
-        rest_api
-          .post_comment(postType, postId, comment_plain_text, commentType)
-          .then(data => {
+        rest_api.post_comment(postType, postId, comment_plain_text, commentType).then(data => {
             let updated_comment = data.comment || data;
             commentInput.val("").trigger("change");
-            commentButton.toggleClass("loading");
+            commentButton.toggleClass('loading');
             updated_comment.date = moment(
               updated_comment.comment_date_gmt + "Z"
             );
@@ -41,10 +36,10 @@ jQuery(document).ready(function($) {
 
             display_activity_comment();
             // fire comment posted event
-            $("#content")[0].dispatchEvent(commentPostedEvent);
+            $('#content')[0].dispatchEvent(commentPostedEvent);
             commentInput.attr("disabled", false);
             commentButton.attr("disabled", false);
-            $("textarea.mention").mentionsInput("reset");
+            $('textarea.mention').mentionsInput('reset');
           })
           .catch(err => {
             console.log("error");
@@ -61,29 +56,23 @@ jQuery(document).ready(function($) {
      * to avoid duplicating data with the post's metadata. */
     let settings = commentsSettings;
     const currentContact = settings.post;
-    let createdDate = moment.utc(
-      currentContact.post_date_gmt,
-      "YYYY-MM-DD HH:mm:ss",
-      true
-    );
+    let createdDate = moment.utc(currentContact.post_date_gmt,"YYYY-MM-DD HH:mm:ss",true);
+
     const createdContactActivityItem = {
       hist_time: createdDate.unix(),
-      object_note: settings.txt_created.replace(
-        "{}",
-        window.SHAREDFUNCTIONS.formatDate(createdDate.unix())
-      ),
+      object_note: settings.txt_created.replace( "{}",window.SHAREDFUNCTIONS.formatDate(createdDate.unix()) ),
       name: settings.contact_author_name,
       user_id: currentContact.post_author
-    };
-    activityData.push(createdContactActivityItem);
+    }
+    activityData.push(createdContactActivityItem)
     if (_.get(settings, "post_with_fields.initial_comments")) {
       const initialComments = {
-        hist_time: createdDate.unix() + 1,
+        hist_time: createdDate.unix()+1,
         object_note: settings.post_with_fields.initial_comments,
         name: settings.contact_author_name,
-        user_id: currentContact.post_author
-      };
-      activityData.push(initialComments);
+        user_id: currentContact.post_author,
+      }
+      activityData.push(initialComments)
     }
 
     activityData.forEach(item => {
@@ -106,25 +95,23 @@ jQuery(document).ready(function($) {
           <span class="tooltiptext">${_.escape(field || item.meta_key)} </span>
         </a>`;
       } else {
-        item.action = "";
+        item.action = ''
       }
     });
 
     let tab = $(`[data-id="activity"].tab-button-label`);
     let text = tab.text();
-    text = text.substring(0, text.indexOf("(")) || text;
+    text = text.substring(0, text.indexOf('(')) || text;
     text += ` (${formatNumber(activityData.length, langcode)})`;
     tab.text(text);
-    tab
-      .parent()
-      .parent(".hide")
-      .removeClass("hide");
+    tab.parent().parent('.hide').removeClass('hide');
+
   }
   $(".show-tabs").on("click", function() {
     let id = $(this).attr("id");
-    $("input.tabs-section").prop("checked", id === "show-all-tabs");
-    saveTabs();
-  });
+    $('input.tabs-section').prop('checked', id === 'show-all-tabs')
+    saveTabs()
+  })
 
   /* We use the CSS 'white-space:pre-wrap' and '<div dir=auto>' HTML elements
    * to match the behaviour that the user sees when editing the comment in an
@@ -197,23 +184,19 @@ jQuery(document).ready(function($) {
         </div>
     <% } %>
     </div>
+  </div>`)
 
-  </div>`);
-
+  
   $(document).on("click", ".translate-button.showTranslation", function() {
     let combinedArray = [];
-    jQuery(this)
-      .siblings(".comment-bubble")
-      .each(function(index, comment) {
+    jQuery(this).siblings('.comment-bubble').each(function(index, comment) {
         let sourceText = $(comment).text();
-        sourceText = sourceText.replace(/\s+/g, " ").trim();
+        sourceText = sourceText.replace(/\s+/g, ' ').trim();
         combinedArray[index] = sourceText;
       });
 
-    let translation_bubble = $(this).siblings(".translation-bubble");
-    let translation_hide = $(this).siblings(
-      ".translate-button.hideTranslation"
-    );
+    let translation_bubble = $(this).siblings('.translation-bubble');
+    let translation_hide = $(this).siblings('.translate-button.hideTranslation');
 
     let url = `https://translation.googleapis.com/language/translate/v2?key=${_.escape(
       commentsSettings.google_translate_key
@@ -221,18 +204,14 @@ jQuery(document).ready(function($) {
     let targetLang;
 
     if (langcode !== "zh-TW") {
-      targetLang = langcode.substr(0, 2);
+      targetLang = langcode.substr(0,2);
     } else {
       targetLang = langcode;
     }
 
-    function google_translate_fetch(
-      postData,
-      translate_button,
-      arrayStartPos = 0
-    ) {
+    function google_translate_fetch(postData,translate_button,arrayStartPos = 0) {
       fetch(url, {
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(postData)
       })
         .then(response => response.json())
@@ -242,44 +221,39 @@ jQuery(document).ready(function($) {
               translation.translatedText
             );
           });
-          translation_hide.removeClass("hide");
-          $(translate_button).addClass("hide");
-        });
+          translation_hide.removeClass('hide');
+          $(translate_button).addClass('hide');
+        })
     }
 
     if (combinedArray.length <= 128) {
       let postData = {
-        q: combinedArray,
-        target: targetLang
-      };
+        "q": combinedArray,
+        "target": targetLang
+      }
       google_translate_fetch(postData, this);
     } else {
-      var i,
-        j,
-        temparray,
-        chunk = 128;
+      var i,j,temparray,chunk = 128;
       for (i = 0, j = combinedArray.length; i < j; i += chunk) {
         temparray = combinedArray.slice(i, i + chunk);
 
         let postData = {
-          q: temparray,
-          target: targetLang
+          "q": temparray,
+          "target": targetLang
         };
         google_translate_fetch(postData, this, i);
       }
     }
-  });
+  })
 
-  $(document).on("click", ".translate-button.hideTranslation", function() {
-    let translation_bubble = $(this).siblings(".translation-bubble");
-    let translate_button = $(this).siblings(
-      ".translate-button.showTranslation"
-    );
+  $(document).on("click",' .translate-button.hideTranslation', function() {
+    let translation_bubble = $(this).siblings('.translation-bubble');
+    let translate_button = $(this).siblings('.translate-button.showTranslation')
 
     translation_bubble.empty();
-    $(this).addClass("hide");
-    translate_button.removeClass("hide");
-  });
+    $(this).addClass('hide');
+    translate_button.removeClass('hide');
+  })
 
   $(document).on("click", "a.clickable", function() {
     let id = this.id.split("reply-")[1];
@@ -321,36 +295,36 @@ jQuery(document).ready(function($) {
   });
   
   $(document).on("click", ".open-delete-comment", function() {
-    let id = $(this).data("id");
-    $("#comment-to-delete").html($(`.comment-bubble.${id}`).html());
-    $(".delete-comment.callout").hide();
-    $("#delete-comment-modal").foundation("open");
-    $("#confirm-comment-delete").data("id", id);
-  });
-  $("#confirm-comment-delete").on("click", function() {
-    let id = $(this).data("id");
-    $(this).toggleClass("loading");
+    let id = $(this).data("id")
+    $('#comment-to-delete').html($(`.comment-bubble.${id}`).html())
+    $('.delete-comment.callout').hide()
+    $('#delete-comment-modal').foundation('open')
+    $('#confirm-comment-delete').data("id", id)
+  })
+  $('#confirm-comment-delete').on("click", function() {
+    let id = $(this).data("id")
+    $(this).toggleClass('loading')
     rest_api
       .delete_comment(postType, postId, id)
       .then(response => {
-        $(this).toggleClass("loading");
+        $(this).toggleClass("loading")
         if (response) {
-          $("#delete-comment-modal").foundation("close");
+          $('#delete-comment-modal').foundation("close")
         } else {
-          $(".delete-comment.callout").show();
+          $('.delete-comment.callout').show()
         }
       })
       .catch(err => {
-        $(this).toggleClass("loading");
+        $(this).toggleClass('loading')
         if (_.get(err, "responseJSON.message")) {
-          $(".delete-comment.callout").show();
-          $("#delete-comment-error").html(err.responseJSON.message);
+          $('.delete-comment.callout').show()
+          $('#delete-comment-error').html(err.responseJSON.message)
         }
-      });
+      })
   });
 
   $(document).on("click", ".open-edit-comment", function() {
-    let id = $(this).data("id");
+    let id = $(this).data("id")
     let comment_type = $(this).data("type");
     let comment = _.find(comments, { comment_ID: id.toString() });
 
@@ -362,50 +336,51 @@ jQuery(document).ready(function($) {
 
     function unescapeHtml(safe) {
       return (
-        safe
-          .replace(/&amp;/g, "&")
+        safe.replace(/&amp;/g, '&')
+
+
           //.replace(/&lt;/g, '<')
           //.replace(/&gt;/g, '>')
           .replace(/&quot;/g, '"')
           .replace(/&#39;/g, "'")
           .replace(/&#039;/g, "'")
-      );
+      )
     }
 
     // textarea deos not render HTML, so using _.unescape is safe. Note that
     // _.unescape will silently ignore invalid HTML, for instance,
     // _.unescape("Tom & Jerry") will return "Tom & Jerry"
-    $("#comment-to-edit").val(unescapeHtml(comment_html));
+    $('#comment-to-edit').val(unescapeHtml(comment_html));
 
-    $("#edit_comment_type_selector").val(comment_type);
+    $('#edit_comment_type_selector').val(comment_type);
 
-    $(".edit-comment.callout").hide();
-    $("#edit-comment-modal").foundation("open");
-    $("#confirm-comment-edit").data("id", id);
+    $('.edit-comment.callout').hide();
+    $('#edit-comment-modal').foundation('open');
+    $('#confirm-comment-edit').data("id", id);
   });
-  $("#confirm-comment-edit").on("click", function() {
-    $(this).toggleClass("loading");
-    let id = $(this).data("id");
-    let updated_comment = $("#comment-to-edit").val();
-    let commentType = $("#edit_comment_type_selector").val();
+  $('#confirm-comment-edit').on("click", function() {
+    $(this).toggleClass('loading')
+    let id = $(this).data("id")
+    let updated_comment = $('#comment-to-edit').val()
+    let commentType = $('#edit_comment_type_selector').val();
     rest_api
       .update_comment(postType, postId, id, updated_comment, commentType)
       .then(response => {
-        $(this).toggleClass("loading");
+        $(this).toggleClass('loading')
         if (response === 1 || response === 0 || response.comment_ID) {
-          $("#edit-comment-modal").foundation("close");
+          $('#edit-comment-modal').foundation('close')
         } else {
-          $(".edit-comment.callout").show();
+          $('.edit-comment.callout').show()
         }
       })
       .catch(err => {
-        $(this).toggleClass("loading");
+        $(this).toggleClass('loading')
         if (_.get(err, "responseJSON.message")) {
-          $(".edit-comment.callout").show();
-          $("#edit-comment-error").html(err.responseJSON.message);
+          $('.edit-comment.callout').show()
+          $('#edit-comment-error').html(err.responseJSON.message);
         }
-      });
-  });
+      })
+  })
 
   function formatNumber(num, lang) {
     return num.toLocaleString(lang);
@@ -461,13 +436,13 @@ jQuery(document).ready(function($) {
         name: name,
         date: d.date,
         gravatar,
-        text: d.object_note || formatComment(d.comment_content),
+        text:d.object_note || formatComment(d.comment_content),
         comment: !!d.comment_content,
         comment_ID: d.comment_ID,
         user_id: d.user_id,
         comment_type: d.comment_type,
         action: d.action
-      };
+      }
 
       let diff = first ? first.date.diff(obj.date, "hours") : 0;
       if (!first || (first.name === name && diff < 1)) {
@@ -576,19 +551,19 @@ jQuery(document).ready(function($) {
     get_all();
   };
 
-  let formatComment = comment => {
-    if (comment) {
+  let formatComment = (comment=>{
+    if(comment){
       let mentionRegex = /\@\[(.*?)\]\((.+?)\)/g;
-      comment = comment.replace(mentionRegex, (match, text, id) => {
+      comment = comment.replace(mentionRegex, (match, text, id)=>{
         /* dir=auto means that @ will be put to the left of the name if the
          * mentioned name is LTR, and to the right if the mentioned name is
          * RTL, instead of letting the surrounding dir determine the placement
          * of @ */
         return `<a dir="auto">@${text}</a>`;
       });
-      let urlRegex = /((href=('|"))|(\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g;
+      let urlRegex = /((href=('|"))|(\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g
       comment = comment.replace(urlRegex, match => {
-        let url = match;
+        let url = match
         if (
           match.indexOf("@") === -1 &&
           match.indexOf("[") === -1 &&
@@ -596,59 +571,59 @@ jQuery(document).ready(function($) {
           match.indexOf("href") === -1
         ) {
           if (match.indexOf("http") === 0 && match.indexOf("www.") === -1) {
-            url = match;
+            url = match
           } else if (
             match.indexOf("http") === -1 &&
             match.indexOf("www.") === 0
           ) {
             url = "http://" + match;
           } else if (match.indexOf("www.") === -1) {
-            url = "http://www." + match;
+            url = "http://www." + match
           }
-          return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`;
+          return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`
         }
-        return match;
+        return match
       });
       let linkRegex = /\[(.*?)\]\((.+?)\)/g;
-      comment = comment.replace(linkRegex, (match, text, url) => {
+      comment = comment.replace(linkRegex, (match, text, url)=>{
         if (text.includes("http") && !url.includes("http")) {
-          [url, text] = [text, url];
+          [url, text] = [text, url]
         }
         url = url.includes("http")
           ? url
           : `${window.wpApiShare.site_url}/${window.wpApiShare.post_type}/${url}`;
         return `<a href="${url}">${text}</a>`;
-      });
+      })
     }
-    return comment;
-  };
+    return comment
+  });
 
-  let getAllPromise = null;
-  let getCommentsPromise = null;
-  let getActivityPromise = null;
+  let getAllPromise = null
+  let getCommentsPromise = null
+  let getActivityPromise = null
   function get_all() {
     //abort previous promise if it is not finished.
     if (getAllPromise && _.get(getAllPromise, "readyState") !== 4) {
-      getActivityPromise.abort();
-      getCommentsPromise.abort();
+      getActivityPromise.abort()
+      getCommentsPromise.abort()
     }
-    getCommentsPromise = rest_api.get_comments(postType, postId);
-    getActivityPromise = rest_api.get_activity(postType, postId);
-    getAllPromise = $.when(getCommentsPromise, getActivityPromise);
-    getAllPromise
-      .then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
-        $("#comments-activity-spinner.loading-spinner").removeClass("active");
+    getCommentsPromise = rest_api.get_comments(postType, postId)
+    getActivityPromise = rest_api.get_activity(postType, postId)
+    getAllPromise = $.when(
+      getCommentsPromise, 
+      getActivityPromise
+    )
+    getAllPromise.then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
+        $("#comments-activity-spinner.loading-spinner").removeClass("active")
         const commentData = commentDataStatusJQXHR[0].comments;
-
         const activityData = activityDataStatusJQXHR[0].activity;
-        prepareData(commentData, activityData);
-      })
-      .catch(err => {
+        prepareData(commentData, activityData)
+      }).catch(err => {
         if (!_.get(err, "statusText") === "abort") {
           console.error(err);
           jQuery("#errors").append(err.responseText);
         }
-      });
+      })
   }
 
   let prepareData = function(commentData, activityData) {
@@ -656,7 +631,7 @@ jQuery(document).ready(function($) {
     // console.log(commentsSettings.comments.comments);
     let typesCount = {};
     commentData.forEach(comment => {
-      comment.date = moment(comment.comment_date_gmt + "Z");
+      comment.date = moment(comment.comment_date_gmt + "Z")
 
       /* comment_content should be HTML. However, we want to make sure that
        * HTML like "<div>Hello" gets transformed to "<div>Hello</div>", that
@@ -757,19 +732,19 @@ jQuery(document).ready(function($) {
     });
   
   let getMentionedUsers = callback => {
-    $("textarea.mention").mentionsInput("getMentions", function(data) {
+    $('textarea.mention').mentionsInput("getMentions", function(data) {
       callback(data);
     });
   };
 
-  let getCommentWithMentions = callback => {
-    $("textarea.mention").mentionsInput("val", function(text) {
+  let getCommentWithMentions = (callback)=>{
+    $('textarea.mention').mentionsInput('val', function(text) {
       callback(text);
     });
   };
 
   //
-  $(document).on("click", ".revert-activity", function() {
+  $(document).on("click", '.revert-activity', function() {
     let id = $(this).data("id");
     $("#revert-modal").foundation("open");
     $("#confirm-revert").data("id", id);
@@ -809,7 +784,7 @@ jQuery(document).ready(function($) {
   });
 
   window.onbeforeunload = function() {
-    if ($("textarea.mention").val()) {
+    if ( $('textarea.mention').val() ) {
       return true;
     }
   };
