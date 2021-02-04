@@ -167,6 +167,36 @@ DT comments and activity
         }
     }
 
+    .add-btn {
+        position: absolute;
+        right: 10px;
+        margin-top: -67px;
+        border: none;
+        background: #ededed;
+        border-radius: 8px;
+        padding: 15px;
+        font-size: 15px;
+        width: 80px;
+    }
+    .add-btn:hover {
+        background-color: #3f729b;
+        color: white;
+    }
+    .reply-comment{
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        resize: none;
+        height: 60px;
+        width: 100%;
+    }
+
+
+    .panel-body-container{
+        position: relative
+    }
+
+
     #add-comment-button {
         margin-bottom: 0;
         height: 3rem;
