@@ -496,13 +496,11 @@ class Disciple_Tools_Posts_Endpoints {
     }
 
     public function add_comment( WP_REST_Request $request ){
-
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
         $body = $request->get_json_params() ?? $request->get_body_params();
         $silent = isset( $get_params["silent"] ) && $get_params["silent"] === "true";
         $args = [];
-
 
         if ( isset( $body["date"] ) ){
             $args["comment_date"] = $body["date"];
