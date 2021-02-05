@@ -188,10 +188,11 @@ jQuery(document).ready(function($) {
         </div>
     <% } %>
     </div>
-  </div>`)
+  </div>`
+  )
 
 
-  $(document).on("click", ".translate-button.showTranslation", function() {
+  $(document).on("click",' .translate-button.showTranslation', function() {
     let combinedArray = [];
     jQuery(this).siblings('.comment-bubble').each(function(index, comment) {
       let sourceText = $(comment).text();
@@ -239,7 +240,7 @@ jQuery(document).ready(function($) {
     } else {
       var i,j,temparray,chunk = 128;
       for (i=0,j=combinedArray.length; i<j; i+=chunk) {
-          temparray = combinedArray.slice(i, i+chunk);
+          temparray = combinedArray.slice(i,i+chunk);
 
           let postData = {
             "q": temparray,
@@ -250,7 +251,7 @@ jQuery(document).ready(function($) {
     }
   })
 
-  $(document).on("click",'.translate-button.hideTranslation', function() {
+  $(document).on("click", '.translate-button.hideTranslation', function() {
     let translation_bubble = $(this).siblings('.translation-bubble');
     let translate_button = $(this).siblings('.translate-button.showTranslation')
 
@@ -599,7 +600,7 @@ jQuery(document).ready(function($) {
       })
     }
     return comment
-   }) 
+  }) 
 
   let getAllPromise = null
   let getCommentsPromise = null
