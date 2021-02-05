@@ -235,4 +235,11 @@ jQuery(document).ready(function($) {
     assigned_to_input.focus()
   })
 
+  //update the end date input when group is closed.
+  $( document ).on( 'select-field-updated', function (e, new_group, field_key, val) {
+    if ( field_key === "group_status" && new_group.end_date){
+      $('#end_date').val(window.SHAREDFUNCTIONS.formatDate( new_group.end_date.timestamp) )
+    }
+  })
+
 })
