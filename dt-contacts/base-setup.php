@@ -101,6 +101,7 @@ class DT_Contacts_Base {
 
         $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $multiplier_permissions );
         $expected_roles["administrator"]["permissions"] = array_merge( $expected_roles["dt_admin"]["permissions"], $user_management_permissions );
+        $expected_roles["administrator"]["permissions"]["dt_all_admin_contacts"] = true;
 
         return $expected_roles;
     }

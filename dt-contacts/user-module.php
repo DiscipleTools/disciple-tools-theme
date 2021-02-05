@@ -43,6 +43,13 @@ class DT_Contacts_User {
                 'customizable' => false,
                 'hidden' => true
             ];
+            $fields['corresponds_to_user_name'] = [
+                'name' => 'Corresponds to user_name', //untranslated.
+                'description' => 'Field used in the multisite invite process', //untranslated.
+                'type' => 'text',
+                'customizable' => false,
+                'hidden' => true
+            ];
         }
 
         return $fields;

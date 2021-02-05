@@ -785,7 +785,7 @@ jQuery(document).ready(function($) {
         if ( field_options.type === 'text' ){
           values_html = _.escape( field_value )
         } else if ( field_options.type === 'date' ){
-          values_html = _.escape( field_value.formatted )
+          values_html = _.escape( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )
         } else if ( field_options.type === 'key_select' ){
           values_html = _.escape( field_value.label )
         } else if ( field_options.type === 'multi_select' ){

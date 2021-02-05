@@ -66,6 +66,7 @@ class DT_Groups_Base extends DT_Module_Base {
         if ( isset( $expected_roles["administrator"] ) ){
             $expected_roles["administrator"]["permissions"]['view_any_groups'] = true;
             $expected_roles["administrator"]["permissions"]['update_any_groups'] = true;
+            $expected_roles["administrator"]["permissions"]["dt_all_admin_groups"] = true;
         }
         if ( isset( $expected_roles["dispatcher"] ) ){
             $expected_roles["dispatcher"]["permissions"]['view_any_groups'] = true;
