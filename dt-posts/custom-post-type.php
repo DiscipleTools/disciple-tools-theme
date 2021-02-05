@@ -19,7 +19,7 @@ class Disciple_Tools_Post_Type_Template {
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'rewrite_init' ] );
         add_filter( 'post_type_link', [ $this, 'permalink' ], 1, 3 );
-        add_action( 'desktop_navbar_menu_options', [ $this, 'add_navigation_links' ], 20 );
+        add_filter( 'desktop_navbar_menu_options', [ $this, 'add_navigation_links' ], 20 );
         add_filter( 'off_canvas_menu_options', [ $this, 'add_navigation_links' ], 20 );
         add_filter( 'dt_templates_for_urls', [ $this, 'add_template_for_url' ] );
         add_action( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ] );
