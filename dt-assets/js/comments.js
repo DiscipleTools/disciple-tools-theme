@@ -60,7 +60,7 @@ jQuery(document).ready(function($) {
 
     const createdContactActivityItem = {
       hist_time: createdDate.unix(),
-      object_note: settings.txt_created.replace("{}", window.SHAREDFUNCTIONS.formatDate(createdDate.unix()) ),
+      object_note: settings.txt_created.replace("{}", window.SHAREDFUNCTIONS.formatDate(createdDate.unix())),
       name: settings.contact_author_name,
       user_id: currentContact.post_author,
     }
@@ -217,7 +217,7 @@ jQuery(document).ready(function($) {
       fetch(url, {
             method: 'POST',
             body: JSON.stringify(postData),
-       })
+        })
         .then(response => response.json())
         .then(result => {
           $.each(result.data.translations, function(index, translation) {
@@ -230,7 +230,7 @@ jQuery(document).ready(function($) {
         })
     }
 
-    if (combinedArray.length <= 128) {
+    if( combinedArray.length <= 128) {
       let postData = {
         "q": combinedArray,
         "target": targetLang
@@ -250,7 +250,7 @@ jQuery(document).ready(function($) {
     }
   })
 
-  $(document).on("click",' .translate-button.hideTranslation', function() {
+  $(document).on("click",'.translate-button.hideTranslation', function() {
     let translation_bubble = $(this).siblings('.translation-bubble');
     let translate_button = $(this).siblings('.translate-button.showTranslation')
 
@@ -521,7 +521,7 @@ jQuery(document).ready(function($) {
   }
 
   function baptismTimestamptoDate(match, timestamp) {
-    return window.SHAREDFUNCTIONS.formatDate(timestamp);
+    return window.SHAREDFUNCTIONS.formatDate(timestamp)
   }
 
   /**
@@ -552,7 +552,7 @@ jQuery(document).ready(function($) {
 
   let refreshActivity = ()=>{
     get_all();
-  };
+  }
 
   let formatComment = (comment=>{
     if(comment){
@@ -599,7 +599,7 @@ jQuery(document).ready(function($) {
       })
     }
     return comment
-  }) 
+   }) 
 
   let getAllPromise = null
   let getCommentsPromise = null
@@ -626,7 +626,7 @@ jQuery(document).ready(function($) {
         console.error(err);
         jQuery("#errors").append(err.responseText)
       }
-      })
+    })
   }
 
   let prepareData = function(commentData, activityData) {
@@ -744,7 +744,7 @@ jQuery(document).ready(function($) {
     $('textarea.mention').mentionsInput('val', function(text) {
       callback(text);
     });
-  };
+  }
 
   //
   $(document).on("click", '.revert-activity', function() {

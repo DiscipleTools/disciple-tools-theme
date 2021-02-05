@@ -477,12 +477,12 @@ window.METRICS = {
         [moment().format("MMMM YYYY")]: [moment().startOf('month'), 
           moment().endOf('month')],
         [moment().subtract(1, 'month').format("MMMM YYYY")]: [moment().subtract(1, 'month').startOf('month'),
-        moment().subtract(1, 'month').endOf('month')],
+          moment().subtract(1, 'month').endOf('month')],
         [moment().format("YYYY")]: [moment().startOf('year'), moment().endOf('year')],
         [moment().subtract(1, 'year').format("YYYY")]: [moment().subtract(1, 'year').startOf('year'),
-        moment().subtract(1, 'year').endOf('year')],
+          moment().subtract(1, 'year').endOf('year')],
         [moment().subtract(2, 'year').format("YYYY")]: [moment().subtract(2, 'year').startOf('year'),
-        moment().subtract(2, 'year').endOf('year')]
+          moment().subtract(2, 'year').endOf('year')]
       },
       "linkedCalendars": false,
       locale: {
@@ -507,13 +507,13 @@ window.METRICS = {
           label = start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY')
         }
         callback(data, label, start, end )
-        })
-        .fail(function (err) {
-          console.log("error")
-          console.log(err)
-          // jQuery("#errors").append(err.responseText)
-        })
-        // console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+      })
+      .fail(function (err) {
+        console.log("error")
+        console.log(err)
+        // jQuery("#errors").append(err.responseText)
+      })
+      // console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
     });
   }
 }
