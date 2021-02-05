@@ -139,7 +139,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 "p2p_direction" => "to",
                 "p2p_key" => "contacts_to_contacts",
                 "tile" => "other",
-                "icon" => get_template_directory_uri() . '/dt-assets/images/share.svg',
+                "icon" => get_template_directory_uri() . '/dt-assets/images/coaching.svg',
             ];
             $fields['baptism_date'] = [
                 'name' => __( 'Baptism Date', 'disciple_tools' ),
