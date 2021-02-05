@@ -311,6 +311,9 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             $tiles["faith"] = [
                 "label" => __( "Faith", 'disciple_tools' )
             ];
+            if ( isset( $tiles["status"] ) && !isset( $tiles["status"]["order"] ) ){
+                $tiles["status"]["order"] = [ "subassigned", "faith_status", "coached_by" ];
+            }
         }
         return $tiles;
     }

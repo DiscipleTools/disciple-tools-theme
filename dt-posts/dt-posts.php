@@ -1361,7 +1361,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $cached;
         }
         $tile_options = dt_get_option( "dt_custom_tiles" );
-        $sections = apply_filters( 'dt_details_additional_tiles', [], $post_type );
+        $default = [
+            "status" => [ "label" => __( "Status", 'disciple_tools' ), "tile_priority" => 10 ],
+            "details" => [ "label" => __( "Details", 'disciple_tools' ), "tile_priority" => 20 ]
+        ];
+        $sections = apply_filters( 'dt_details_additional_tiles', $default, $post_type );
         if ( !isset( $tile_options[$post_type] ) ){
             $tile_options[$post_type] = [];
         }
@@ -1372,22 +1376,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $tile_options[$post_type][$section_id] = [];
             }
         }
-        //tile available on all records
-        if ( !isset( $tile_options[$post_type]["details"] ) ) {
-            $tile_options[$post_type]["details"] = [];
-        }
-        if ( !isset( $tile_options[$post_type]["details"]["label"] ) ) {
-            $tile_options[$post_type]["details"]["label"] = __( "Details", 'disciple_tools' );
-        }
-        //tile available on all records
-        if ( !isset( $tile_options[$post_type]["status"] ) ) {
-            $tile_options[$post_type]["status"] = [];
-        }
-        if ( !isset( $tile_options[$post_type]["status"]["label"] ) ) {
-            $tile_options[$post_type]["status"]["label"] = __( "Status", 'disciple_tools' );
-        }
-        $tile_options[$post_type]["status"]["tile_priority"] = 10;
-        $tile_options[$post_type]["details"]["tile_priority"] = 20;
+
         uasort($tile_options[$post_type], function( $a, $b) {
             return ( $a['tile_priority'] ?? 100 ) <=> ( $b['tile_priority'] ?? 100 );
         });

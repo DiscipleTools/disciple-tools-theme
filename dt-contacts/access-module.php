@@ -384,6 +384,9 @@ class DT_Contacts_Access extends DT_Module_Base {
                     "type" => [ "access" ],
                 ]
             ];
+            if ( isset( $sections["status"]["order"] ) && !in_array( "overall_status", $sections["status"]["order"], true ) ){
+                $sections["status"]["order"] = array_merge( [ "overall_status", "assigned_to" ], $sections["status"]["order"] );
+            }
         }
         return $sections;
     }

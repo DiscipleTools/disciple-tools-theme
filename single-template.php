@@ -99,7 +99,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
                             }
 
                             $field = $post_settings["fields"][$field_key];
-                            if ( isset( $field["tile"] ) && $field["tile"] === 'status' && !( isset( $field["only_for_types"], $dt_post["type"] ) && !in_array( $dt_post["type"], $field["only_for_types"] ) ) && empty( $field["hidden"] ) ) {
+                            if ( isset( $field["tile"] ) && $field["tile"] === 'status' && !( isset( $field["only_for_types"], $dt_post["type"]["key"] ) && !in_array( $dt_post["type"]["key"], $field["only_for_types"] ) ) && empty( $field["hidden"] ) ) {
                                 ?>
                                 <div class="cell small-12 medium-4">
                                     <?php render_field_for_display( $field_key, $post_settings["fields"], $dt_post, true ); ?>
