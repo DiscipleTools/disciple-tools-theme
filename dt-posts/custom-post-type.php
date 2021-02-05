@@ -43,15 +43,15 @@ class Disciple_Tools_Post_Type_Template {
         ];
         $capabilities = [
             'create_posts'        => 'do_not_allow',
-            'edit_post'           => 'access_' . $this->post_type,
-            'read_post'           => 'access_' . $this->post_type,
-            'delete_post'         => 'delete_any_' . $this->post_type,
-            'delete_others_posts' => 'delete_any_' . $this->post_type,
-            'delete_posts'        => 'delete_any_' . $this->post_type,
-            'edit_posts'          => 'access_' . $this->post_type,
-            'edit_others_posts'   => 'update_any_' . $this->post_type,
-            'publish_posts'       => 'create_' . $this->post_type,
-            'read_private_posts'  => 'view_any_' . $this->post_type,
+            'edit_post'           => 'dt_all_admin_' . $this->post_type, // needed for bulk edit
+            'read_post'           => 'do_not_allow',
+            'delete_post'         => 'dt_all_admin_' . $this->post_type, // delete individual post
+            'delete_others_posts' => 'do_not_allow',
+            'delete_posts'        => 'dt_all_admin_' . $this->post_type, // bulk delete posts
+            'edit_posts'          => 'dt_all_admin_' . $this->post_type, //menu link in WP Admin
+            'edit_others_posts'   => 'do_not_allow',
+            'publish_posts'       => 'do_not_allow',
+            'read_private_posts'  => 'do_not_allow',
         ];
         $defaults = [
             'label'                 => $this->singular,
@@ -66,7 +66,7 @@ class Disciple_Tools_Post_Type_Template {
             'capability_type'       => $this->post_type,
             'has_archive'           => true, //$archive_slug,
             'hierarchical'          => false,
-            'supports'              => [ 'title', 'comments' ],
+            'supports'              => [ 'title' ],
             'menu_position'         => 5,
             'menu_icon'             => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNOSwxMmMyLjc1NywwLDUtMi4yNDMsNS01VjVjMC0yLjc1Ny0yLjI0My01LTUtNVM0LDIuMjQzLDQsNXYyQzQsOS43NTcsNi4yNDMsMTIsOSwxMnoiPjwvcGF0aD4gPHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTE1LjQyMywxNS4xNDVDMTQuMDQyLDE0LjYyMiwxMS44MDYsMTQsOSwxNHMtNS4wNDIsMC42MjItNi40MjQsMS4xNDZDMS4wMzUsMTUuNzI5LDAsMTcuMjMzLDAsMTguODg2VjI0IGgxOHYtNS4xMTRDMTgsMTcuMjMzLDE2Ljk2NSwxNS43MjksMTUuNDIzLDE1LjE0NXoiPjwvcGF0aD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTYiIHk9IjMiIGZpbGw9IiNmZmZmZmYiIHdpZHRoPSI4IiBoZWlnaHQ9IjIiPjwvcmVjdD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTYiIHk9IjgiIGZpbGw9IiNmZmZmZmYiIHdpZHRoPSI4IiBoZWlnaHQ9IjIiPjwvcmVjdD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTkiIHk9IjEzIiBmaWxsPSIjZmZmZmZmIiB3aWR0aD0iNSIgaGVpZ2h0PSIyIj48L3JlY3Q+PC9nPjwvc3ZnPg==',
             'show_in_admin_bar'     => true,

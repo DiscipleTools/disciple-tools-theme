@@ -314,7 +314,7 @@ function restrict_super_admin( $caps, $cap, $user_id, $args ){
             return array_keys( $a["permissions"] );
         }, $expected_roles );
         $dt_permissions = array_merge( ...array_values( $dt_roles ) );
-        if ( !in_array( $cap, $dt_permissions )){
+        if ( !in_array( $cap, $dt_permissions, true )){
             return $caps;
         }
         //limit the super admin to the actions the administrator or dt_admin can take on a site.
