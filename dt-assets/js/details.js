@@ -795,7 +795,7 @@ jQuery(document).ready(function($) {
         } else if ( ['location', 'location_meta' ].includes(field_options.type) ){
           values_html = field_value.map(v=>{
             return _.escape(v.label);
-          }).join(', ')
+          }).join(' / ')
         } else if ( field_options.type === 'communication_channel' ){
           values_html = field_value.map(v=>{
             return _.escape(v.value);
