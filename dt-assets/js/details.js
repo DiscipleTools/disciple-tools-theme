@@ -236,7 +236,7 @@ jQuery(document).ready(function($) {
   /**
    * Update Needed
    */
-  $('#update-needed.dt-switch').change(function () {
+  $('.update-needed.dt-switch').change(function () {
     let updateNeeded = $(this).is(':checked')
     API.update_post( post_type, post_id, {"requires_update":updateNeeded}).then(resp=>{
       post = resp
@@ -853,5 +853,5 @@ jQuery(document).ready(function($) {
 // change update needed notification and switch if needed.
 function record_updated(updateNeeded) {
   $('.update-needed-notification').toggle(updateNeeded)
-  $('#update-needed').prop("checked", updateNeeded)
+  $('.update-needed').prop("checked", updateNeeded)
 }

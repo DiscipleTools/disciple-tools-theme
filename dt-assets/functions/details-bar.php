@@ -35,8 +35,8 @@ function dt_print_details_bar(
                         <div class="cell grid-x shrink center-items">
                             <?php if ( $show_update_needed ){ ?>
                                 <span style="margin-right:5px"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?>:</span>
-                                <input type="checkbox" id="update-needed" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : "" ) ?>/>
-                                <label class="dt-switch" for="update-needed" style="vertical-align: top;"></label>
+                                <input type="checkbox" id="update-needed-large" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : "" ) ?>/>
+                                <label class="dt-switch" for="update-needed-large" style="vertical-align: top;"></label>
                             <?php } ?>
                         </div>
                         <div class="cell grid-x shrink center-items">
@@ -173,8 +173,8 @@ function dt_print_details_bar(
                 <div class="cell shrink center-item">
                     <?php if ( $show_update_needed ){ ?>
                         <span style="margin-right:5px"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?>:</span>
-                        <input type="checkbox" id="update-needed" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : "" ) ?>/>
-                        <label class="dt-switch" for="update-needed" style="vertical-align: top;"></label>
+                        <input type="checkbox" id="update-needed-small" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : "" ) ?>/>
+                        <label class="dt-switch" for="update-needed-small" style="vertical-align: top;"></label>
                     <?php } ?>
                 </div>
             </div>
