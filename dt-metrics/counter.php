@@ -398,6 +398,7 @@ class Disciple_Tools_Queries
 
     public function tree( $query_name, $args = [] ) {
         global $wpdb;
+        $query = [];
 
         switch ( $query_name ) {
 
@@ -429,7 +430,6 @@ class Disciple_Tools_Queries
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = 'baptizer_to_baptized'
                 ", ARRAY_A );
-                return $query;
                 break;
 
             case 'multiplying_baptisms_only':
@@ -461,7 +461,6 @@ class Disciple_Tools_Queries
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = 'baptizer_to_baptized'
                 ", ARRAY_A );
-                return $query;
                 break;
 
             case 'group_all':
@@ -496,7 +495,6 @@ class Disciple_Tools_Queries
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = 'groups_to_groups'
                 ", ARRAY_A );
-                return $query;
                 break;
 
             case 'multiplying_groups_only':
@@ -538,7 +536,6 @@ class Disciple_Tools_Queries
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = 'groups_to_groups'
                 ", ARRAY_A );
-                return $query;
                 break;
 
             case 'coaching_all':
@@ -563,7 +560,6 @@ class Disciple_Tools_Queries
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = 'contacts_to_contacts'
                 ", ARRAY_A );
-                return $query;
                 break;
 
             case 'multiplying_coaching_only':
@@ -595,7 +591,6 @@ class Disciple_Tools_Queries
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = 'contacts_to_contacts'
                 ", ARRAY_A );
-                return $query;
                 break;
 
             case 'user_hero_stats':
@@ -649,13 +644,64 @@ class Disciple_Tools_Queries
                               AND a.post_type = 'locations'
                       ) as total_counties;
                 ");
-                return $query;
                 break;
 
             default:
-                return false;
                 break;
         }
+
+        $not_circular = $this->check_circular_logic( $query );
+        if ( is_numeric( $not_circular ) ){
+            return new WP_Error( 500, "Circular tree structure detected with record: " . $not_circular, [ "record" =>  $not_circular, "link" => get_permalink( $query ) ]  );
+        }
+
+        return $query;
+
+
+    }
+
+
+    /**
+     * Check to see if there is any circular logic in the tree
+     * @param $nodes
+     * @param int[] $node_ids
+     * @param array $parents
+     * @return bool|int true if good, int of the record ID if circular tree detected
+     */
+    public function check_circular_logic( $nodes, $node_ids = [ 0 ], $parents = [] ){
+
+        foreach ( $nodes as $node ){
+            $parent_id = $node["parent_id"] ?? $node["parentId"];
+            if ( in_array( $parent_id, $node_ids ) ){
+                //if the node is already in the tree
+                if ( in_array( $node["id"], $parents )){
+                    return (int) $node["id"]; //return the ID of the node
+                }
+                //continue with children
+                $d = $this->check_circular_logic( $nodes, [$node["id"]], array_merge( $parents, [ $node["id"] ] ) );
+                if ( is_numeric( $d ) ){
+                    return $d;
+                }
+            }
+        }
+        return true;
+    }
+
+
+    public function get_node_descendants( $nodes, $node_ids ){
+        $descendants = [];
+        $children = [];
+        foreach ( $nodes as $node ){
+            $parent_id = $node["parent_id"] ?? $node["parentId"];
+            if ( in_array( $parent_id, $node_ids ) ){
+                $descendants[] = $node;
+                $children[] = $node["id"];
+            }
+        }
+        if ( sizeof( $children ) > 0 ){
+            $descendants = array_merge( $descendants, $this->get_node_descendants( $nodes, $children ) );
+        }
+        return $descendants;
     }
 
 }

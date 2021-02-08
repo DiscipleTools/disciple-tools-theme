@@ -80,29 +80,35 @@ class DT_Metrics_Personal_Baptism_Tree extends DT_Metrics_Chart_Base
     }
 
     public function get_baptism_generations_tree(){
-        $list = DT_Posts::get_viewable_compact( "contacts", '' );
-
-        if ( is_wp_error( $list ) ) {
-            return $this->_no_results();
-        }
-
-        foreach ( $list['posts'] as $post ) {
-            $this->my_list[$post['ID']] = $post['ID'];
+        global $wpdb;
+        $user = wp_get_current_user();
+        $baptized_contacts_shared_with_me = $wpdb->get_results( $wpdb->prepare( "
+            SELECT s.post_id FROM $wpdb->p2p p2p
+            INNER JOIN $wpdb->dt_share s ON ( s.post_id = p2p.p2p_from && s.user_id = %s )
+            WHERE p2p.p2p_type = 'baptizer_to_baptized'
+            ", $user->ID ), ARRAY_A
+        );
+        foreach( $baptized_contacts_shared_with_me as $l ){
+            $this->my_list[] = (int) $l["post_id"];
         }
 
         $query = dt_queries()->tree( 'multiplying_baptisms_only' );
-        if ( empty( $query ) ) {
-            return $this->_no_results();
+        if ( is_wp_error( $query )){
+            return $this->_circular_structure_error( $query );
         }
+        $contact_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
+        $this->my_list[] = $contact_id;
+        $node = [
+            "parent_id" => 0,
+            "id" => $contact_id,
+            "name" => $user->display_name
+        ];
+        //Stream of baptisms starting with me.
+        $query =  array_merge( [ $node ], dt_queries()->get_node_descendants( $query, [ $contact_id ] ) );
+
         $menu_data = $this->prepare_menu_array( $query );
 
-        foreach ( $menu_data['parents'] as $parent_id => $parent ) {
-            if ( ! isset( $this->my_list[$parent_id] ) && 0 !== $parent_id ) {
-                unset( $menu_data['parents'][$parent_id] );
-                unset( $menu_data['parents'][0][array_search( $parent_id, $menu_data['parents'][0] )] );
-            }
-        }
-        if ( count( $menu_data['parents'] ) <= 1 ) {
+        if ( count( $menu_data['parents'] ) === 0 ) {
             return $this->_no_results();
         }
 
@@ -161,9 +167,7 @@ class DT_Metrics_Personal_Baptism_Tree extends DT_Metrics_Chart_Base
         return $menu_data;
     }
 
-    public function _no_results() {
-        return '<p>'. esc_attr( 'No Results', 'disciple_tools' ) .'</p>';
-    }
+
 
 }
 new DT_Metrics_Personal_Baptism_Tree();
