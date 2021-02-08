@@ -67,7 +67,7 @@
         <?php endif; ?>
 
         <?php
-        /* Notifications */
+        /* Logoff */
         if ( isset( $admin['logoff'] ) && ! empty( $admin['logoff'] ) ) : ?>
             <li><a href="<?php echo esc_url( $admin['logoff']['link'] ?? '' ); ?>"><?php echo esc_html( $admin['logoff']['label'] ?? '' ); ?></a></li>
         <?php endif; ?>
