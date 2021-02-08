@@ -21,8 +21,8 @@ class Disciple_Tools_Post_Type_Template {
         add_filter( 'post_type_link', [ $this, 'permalink' ], 1, 3 );
         add_filter( 'desktop_navbar_menu_options', [ $this, 'add_navigation_links' ], 20 );
         add_filter( 'off_canvas_menu_options', [ $this, 'add_navigation_links' ], 20 );
+        add_filter( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ], 10, 1 );
         add_filter( 'dt_templates_for_urls', [ $this, 'add_template_for_url' ] );
-        add_action( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ] );
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 2 );
         add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
         add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
@@ -111,9 +111,12 @@ class Disciple_Tools_Post_Type_Template {
 
     public function add_navigation_links( $tabs ) {
         if ( current_user_can( 'access_' . $this->post_type ) ) {
-            $tabs[] = [
+            $tabs[$this->post_type] = [
                 "link" => site_url( "/$this->post_type/" ),
-                "label" => $this->plural
+                "label" => $this->plural,
+                'icon' => '',
+                'hidden' => false,
+                'submenu' => []
             ];
         }
         return $tabs;
@@ -125,17 +128,16 @@ class Disciple_Tools_Post_Type_Template {
         return $template_for_url;
     }
 
-    public function dt_nav_add_post_menu(){
+    public function dt_nav_add_post_menu( $links ){
         if ( current_user_can( "create_" . $this->post_type ) ){
-            ?>
-            <li>
-                <a class="add-new-menu-item" href="<?php echo esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new'; ?>">
-                    <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add-plus.svg" ?>">
-                    <?php echo sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ) ?>
-                </a>
-            </li>
-            <?php
+            $links[] = [
+                'label' => sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ),
+                'link' => esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new',
+                'icon' => get_template_directory_uri() . "/dt-assets/images/circle-add-plus.svg",
+                'hidden' => false,
+            ];
         }
+        return $links;
     }
 
 

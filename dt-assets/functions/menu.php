@@ -38,7 +38,7 @@ function dt_default_menu_array(){
             'settings' => [
                 'label' => __( "Settings", 'disciple_tools' ),
                 'link' => site_url( '/settings/' ),
-                'icon' => get_template_directory_uri() . "/dt-assets/images/gear.svg",
+                'icon' => get_template_directory_uri() . "/dt-assets/images/settings.svg" ,
                 'hidden' => false,
                 'submenu' => [
                     'settings' => [
@@ -49,21 +49,16 @@ function dt_default_menu_array(){
                     'admin' => [
                         'label' => __( "Admin", 'disciple_tools' ),
                         'link' => get_admin_url(),
-                        'hidden' => false,
+                        'hidden' => ( ! current_user_can( 'manage_dt' ) ),
                     ],
                     'user_management' => [
                         'label' => __( "Users", "disciple_tools" ),
                         'link' => site_url( '/user-management/users/' ),
-                        'hidden' => false,
+                        'hidden' => ( ! ( current_user_can( 'manage_dt' ) || current_user_can( 'list_users' ) ) ),
                     ],
                     'help' => [
                         'label' => __( "Help", "disciple_tools" ),
                         'link' => 'https://disciple.tools/user-docs',
-                        'hidden' => false,
-                    ],
-                    'logoff' => [
-                        'label' => __( "Log Off", 'disciple_tools' ),
-                        'link' => wp_logout_url(),
                         'hidden' => false,
                     ],
                 ]
