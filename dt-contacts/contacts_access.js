@@ -58,7 +58,7 @@ jQuery(document).ready(function($) {
     })
   })
   $('#content')[0].addEventListener('comment_posted', function (e) {
-    if ( $('#update-needed').prop("checked") === true ){
+    if ( $('.update-needed').prop("checked") === true ){
       API.get_post("contacts",  post_id ).then(resp=>{
         post = resp
         record_updated(_.get(resp, "requires_update") === true )
