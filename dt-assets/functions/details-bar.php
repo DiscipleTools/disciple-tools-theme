@@ -66,7 +66,8 @@ function dt_print_details_bar(
                             if ( !empty( $picture ) ) : ?>
                                 <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                             <?php else : ?>
-                                <i class="fi-torso medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
+                                <?php $gender = $dt_post["gender"]["key"];?>
+                                <i class="fi-torso<?php echo esc_html( ( $gender == 'female' ) ? '-'.$gender : "" ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                             <?php endif; ?>
                             <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
                             <br>
@@ -182,7 +183,8 @@ function dt_print_details_bar(
                 if ( !empty( $picture ) ) : ?>
                     <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                 <?php else : ?>
-                    <i class="fi-torso medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
+                    <?php $gender = $dt_post["gender"]["key"];?>
+                    <i class="fi-torso<?php echo esc_html( ( $gender == 'female' ) ? '-'.$gender : "" ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                 <?php endif; ?>
                 <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
             </div>
