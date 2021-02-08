@@ -651,7 +651,7 @@ class Disciple_Tools_Queries
         }
 
 
-        return $this->check_tree_health($query);
+        return $this->check_tree_health( $query );
 
 
     }
@@ -660,7 +660,7 @@ class Disciple_Tools_Queries
      * Check the health of a generational tree
      * Find circular structure looping on itself
      * Find orphaned groups
-     * @param $tree
+     * @param array $tree
      * @return array|WP_Error True for healthy tree. WP_Error when there are issues.
      */
     public function check_tree_health( array $tree ){
@@ -668,15 +668,14 @@ class Disciple_Tools_Queries
         $nodes = $tree;
         $not_circular = $this->check_circular_logic( $nodes );
         if ( is_numeric( $not_circular ) ){
-            return new WP_Error( 500, "Circular tree structure detected with record: " . $not_circular . ".", [ "record" =>  $not_circular, "link" => get_permalink( $not_circular ) ]  );
+            return new WP_Error( 500, "Circular tree structure detected with record: " . $not_circular . ".", [ "record" => $not_circular, "link" => get_permalink( $not_circular ) ] );
         }
         foreach ( $nodes as $node ){
-            if ( !isset( $node["done"])){
-                return new WP_Error( 500, "Orphaned tree structure detected with record: " . $node['id'] . ".", [ "record" =>  $node["id"], "link" => get_permalink( $node["id"] ) ]  );
+            if ( !isset( $node["done"] ) ){
+                return new WP_Error( 500, "Orphaned tree structure detected with record: " . $node['id'] . ".", [ "record" => $node["id"], "link" => get_permalink( $node["id"] ) ] );
             }
         }
         return $tree;
-
     }
 
 
@@ -698,7 +697,7 @@ class Disciple_Tools_Queries
                 }
                 $node["done"] = true; //lets us look at what nodes where not processed later
                 //continue with children
-                $d = $this->check_circular_logic( $nodes, [$node["id"]], array_merge( $parents, [ $node["id"] ] ) );
+                $d = $this->check_circular_logic( $nodes, [ $node["id"] ], array_merge( $parents, [ $node["id"] ] ) );
                 if ( is_numeric( $d ) ){
                     return $d;
                 }

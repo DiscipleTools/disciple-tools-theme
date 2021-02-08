@@ -90,7 +90,7 @@ class DT_Metrics_Personal_Coaching_Tree extends DT_Metrics_Chart_Base
             ", $user->ID ), ARRAY_A
         );
 
-        foreach( $coached_contacts_shared_with_me as $l ){
+        foreach ( $coached_contacts_shared_with_me as $l ){
             $this->my_list[] = (int) $l["post_id"];
         }
 
@@ -109,7 +109,7 @@ class DT_Metrics_Personal_Coaching_Tree extends DT_Metrics_Chart_Base
             "name" => $user->display_name
         ];
         //Stream of baptisms starting with me.
-        $query =  array_merge( [ $node ], dt_queries()->get_node_descendants( $query, [ $contact_id ] ) );
+        $query = array_merge( [ $node ], dt_queries()->get_node_descendants( $query, [ $contact_id ] ) );
         $menu_data = $this->prepare_menu_array( $query );
 
         if ( count( $menu_data['parents'] ) <= 1 ) {
