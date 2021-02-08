@@ -560,7 +560,11 @@ jQuery(document).ready(function($) {
   $('button.follow').on("click", function () {
     let following = !($(this).data('value') === "following")
     $(this).data("value", following ? "following" : "" )
-    $(this).html( following ? "Following" : "Follow")
+    if ($(this).hasClass('mobile')) {
+      $(this).html( following ? "<i class='fi-eye'></i>" : "<i class='fi-eye'></i>")
+    } else {
+      $(this).html( following ? "Following <i class='fi-eye'></i>" : "Follow <i class='fi-eye'></i>")
+    }
     $(this).toggleClass( "hollow" )
     let update = {
       follow: {values:[{value:window.detailsSettings.current_user_id, delete:!following}]},

@@ -92,12 +92,18 @@ function dt_print_details_bar(
                         <?php endif; ?>
                         <div class="cell shrink center-items">
                         <?php if ( $disable_following_toggle_function ) : ?>
-                            <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
+                            <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?>
+                                <i class="fi-eye"></i>
+                            </button>
                         <?php else :
                             if ( $following ) : ?>
-                                <button class="button follow hollow" data-value="following"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
+                                <button class="button follow hollow" data-value="following"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?>
+                                    <i class="fi-eye"></i>
+                                </button>
                             <?php else : ?>
-                                <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?></button>
+                                <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?>
+                                    <i class="fi-eye"></i>
+                                </button>
                             <?php endif; ?>
                         <?php endif; ?>
                         </div>
@@ -140,16 +146,16 @@ function dt_print_details_bar(
                 <?php endif; ?>
                 <div class="cell shrink">
                     <?php if ( $disable_following_toggle_function ) : ?>
-                        <button class="button follow hollow" data-value="following" disabled><img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/eye.svg' ) ?>"/><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?>
+                        <button class="button follow mobile hollow" data-value="following" disabled>
                             <i class="fi-eye"></i>
                         </button>
                     <?php else :
                         if ( $following ) : ?>
-                            <button class="button follow hollow" data-value="following"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?>
+                            <button class="button follow mobile hollow" data-value="following">
                                 <i class="fi-eye"></i>
                             </button>
                         <?php else : ?>
-                            <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?>
+                            <button class="button follow mobile" data-value="">
                                 <i class="fi-eye"></i>
                             </button>
                         <?php endif; ?>

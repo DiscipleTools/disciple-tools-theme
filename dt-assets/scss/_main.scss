@@ -200,6 +200,19 @@ nav.second-bar {
             padding-right: 5px;
         }
         padding: 0.4em 0.75em;
+
+        &.follow {
+
+        }
+        @media screen and (max-width : 639px) {
+            &.follow {
+                padding: 0em .75em;
+                .fi-eye {
+                    font-size: 22px;
+                    line-height: 16px;
+                }
+            }
+        }
     }
     .dropdown.menu>li>a {
         padding-top: 0.4em;
