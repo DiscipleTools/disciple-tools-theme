@@ -205,7 +205,7 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
             WHERE b.p2p_type = 'baptizer_to_baptized'
         ", ARRAY_A);
 
-        return dt_queries()->check_tree_health($results);
+        return dt_queries()->check_tree_health( $results );
     }
 
     public static function build_baptism_generation_counts( array $elements, $parent_id = 0, $generation = -1, $counts = [] ) {
