@@ -12,7 +12,6 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
     return;
 }
 
-
 /**
  * Loads nav bar menu items
  * @note Main post types (Contacts, Groups, Metrics) fire between 20-30. If you want to add an item before the
@@ -64,7 +63,6 @@ $tabs = dt_default_menu_array();
                             </li>
                         <?php endforeach; ?>
                         <?php endif; ?>
-                        <?php //do_action( 'dt_nav_add_post_menu' )// @todo remove ?>
                     </ul>
                 </li>
             </ul>
@@ -114,9 +112,6 @@ $tabs = dt_default_menu_array();
                         }
                         ?></li>
                 <?php endforeach; ?>
-
-                <?php //do_action( 'dt_top_nav_desktop' ); // @todo remove ?>
-
             </ul>
         </div>
         <div class="top-bar-right">
@@ -167,7 +162,6 @@ $tabs = dt_default_menu_array();
                                 </li>
                             <?php endforeach; ?>
                         <?php endif; ?>
-                        <?php //do_action( 'dt_nav_add_post_menu' )@todo remove ?>
                     </ul>
                 </li>
                 <?php endif; // end add new ?>
@@ -191,8 +185,6 @@ $tabs = dt_default_menu_array();
                         <img src="<?php echo esc_url( $tabs['admin']['settings']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/settings.svg" ) ?>">
                     </button>
                     <ul class="submenu menu vertical">
-
-                        <?php //do_action( 'dt_settings_menu_pre' ) @todo remove ?>
 
                         <?php foreach( $tabs['admin']['settings']['submenu'] as $submenu ) : ?>
                             <li><a href="<?php echo esc_url( $submenu['link'] ) ?>"><?php echo esc_html( $submenu['label'] ) ?></a></li>

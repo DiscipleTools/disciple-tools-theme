@@ -40,8 +40,6 @@
             </li>
         <?php endforeach; ?>
 
-        <?php //do_action( 'dt_off_canvas_nav' ); // @todo remove ?>
-
         <li>&nbsp;<!-- Spacer--></li>
 
         <!--  notifications -->

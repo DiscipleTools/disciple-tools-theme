@@ -1,5 +1,36 @@
 <?php
-
+/**
+ * This array is the primary structure for the Disciple.Tools navigation
+ *
+ * FILTER: dt_nav
+ * This filter is the top filter for the navigation. If you add_filter and modify this array, you can change any link
+ * icon or title. You can also prepend or append new links to the main or admin sections.
+ *
+ * Note: All sections are build with label, link, icon, and hidden (default false). You can add a link to any section by
+ * adding an array element with these four components.
+ *
+ * `main`
+ * The main section is the main navigation. Usually, contacts, groups, metrics. By adding a submenu element to any of these
+ * you can add a dropdown to them, or you can add a new element by just prepending or appending a new array item. It is
+ * recommended to add your new array item with an associative key, but it is not required.
+ *
+ * `admin`
+ * This section drives the administrative section of the menu. Unlike the main section array order does not effect the
+ * display order, except in the submenus.
+ *
+ * SUB SECTION FILTER: desktop_navbar_menu_options
+ * This filter is a convenience filter allowing especially post types to add a menu item and using the add_filter load order
+ * to order the menu array. The filter is used by post-types. This filter could also be used by plugins to add custom sections.
+ * @see custom-post-type.php file for example usage
+ * @link /dt-posts/custom-post-type.php:111
+ *
+ * SUB SECTION FILTER: dt_nav_add_post_menu
+ * This filter adds menu items to the add new drop down.
+ * @see custom-post-type.php for example usage
+ * @link /dt-posts/custom-post-type.php:124
+ *
+ * @return array
+ */
 function dt_default_menu_array() : array {
     return apply_filters( "dt_nav", [
         'main' => apply_filters( 'desktop_navbar_menu_options', [] ),
