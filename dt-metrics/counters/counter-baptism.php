@@ -60,6 +60,9 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
     public static function get_baptism_generations( $start, $end ){
         if ( !isset( self::$generations[$start . $end] ) ){
             $raw_baptism_generation_list = self::query_get_all_baptism_connections();
+            if ( is_wp_error( $raw_baptism_generation_list ) ){
+                return $raw_baptism_generation_list;
+            }
             $all_baptisms = self::build_baptism_generation_counts( $raw_baptism_generation_list );
             $baptism_generations_this_year = self::build_baptism_generations_in_range( $all_baptisms, $start, $end );
             //hide extra generations that are only 0;
@@ -177,32 +180,32 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
         //get all other baptism connects with id and parent_id
         $results = $wpdb->get_results(  "
             SELECT
-              a.ID as id,
-              0    as parent_id
+                a.ID as id,
+                0    as parent_id
             FROM $wpdb->posts as a
             WHERE a.post_type = 'contacts'
-                  AND a.post_status = 'publish'
-                  AND a.ID NOT IN (
+                AND a.post_status = 'publish'
+                AND a.ID NOT IN (
                     SELECT
-                      DISTINCT( b.p2p_from ) as id
+                    DISTINCT( b.p2p_from ) as id
                     FROM $wpdb->p2p as b
                     WHERE b.p2p_type = 'baptizer_to_baptized'
-                  )
-                  AND a.ID IN (
+                )
+                AND a.ID IN (
                     SELECT
-                      DISTINCT( b.p2p_to ) as id
+                    DISTINCT( b.p2p_to ) as id
                     FROM $wpdb->p2p as b
                     WHERE b.p2p_type = 'baptizer_to_baptized'
-            )
+                )
             UNION
             SELECT
-              b.p2p_from as id,
-              b.p2p_to as parent_id
+                b.p2p_from as id,
+                b.p2p_to as parent_id
             FROM $wpdb->p2p as b
             WHERE b.p2p_type = 'baptizer_to_baptized'
         ", ARRAY_A);
 
-        return $results;
+        return dt_queries()->check_tree_health( $results );
     }
 
     public static function build_baptism_generation_counts( array $elements, $parent_id = 0, $generation = -1, $counts = [] ) {
@@ -248,6 +251,9 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
      */
     public static function save_all_contact_generations(){
         $raw_baptism_generation_list = self::query_get_all_baptism_connections();
+        if ( is_wp_error( $raw_baptism_generation_list ) ){
+            return $raw_baptism_generation_list;
+        }
         $all_baptisms = self::build_baptism_generation_counts( $raw_baptism_generation_list );
         foreach ( $all_baptisms as $baptism_generation ){
             $generation = $baptism_generation["generation"];
@@ -267,7 +273,7 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
         global $wpdb;
         $parents = $wpdb->get_results( $wpdb->prepare("
             SELECT contact.ID as contact_id, gen.meta_value as baptism_generation
-            FROM $wpdb->p2p as b 
+            FROM $wpdb->p2p as b
             JOIN $wpdb->posts as contact ON ( contact.ID = b.p2p_to )
             LEFT JOIN $wpdb->postmeta gen ON ( gen.post_id = contact.ID AND gen.meta_key = 'baptism_generation' )
             WHERE b.p2p_type = 'baptizer_to_baptized'
@@ -294,7 +300,7 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
             }
             $children = $wpdb->get_results( $wpdb->prepare("
                 SELECT contact.ID as contact_id, gen.meta_value as baptism_generation
-                FROM $wpdb->p2p as b 
+                FROM $wpdb->p2p as b
                 JOIN $wpdb->posts as contact ON ( contact.ID = b.p2p_from )
                 LEFT JOIN $wpdb->postmeta gen ON ( gen.post_id = contact.ID AND gen.meta_key = 'baptism_generation' )
                 WHERE b.p2p_type = 'baptizer_to_baptized'

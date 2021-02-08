@@ -650,14 +650,32 @@ class Disciple_Tools_Queries
                 break;
         }
 
-        $not_circular = $this->check_circular_logic( $query );
+
+        return $this->check_tree_health( $query );
+
+
+    }
+
+    /**
+     * Check the health of a generational tree
+     * Find circular structure looping on itself
+     * Find orphaned groups
+     * @param array $tree
+     * @return array|WP_Error True for healthy tree. WP_Error when there are issues.
+     */
+    public function check_tree_health( array $tree ){
+
+        $nodes = $tree;
+        $not_circular = $this->check_circular_logic( $nodes );
         if ( is_numeric( $not_circular ) ){
-            return new WP_Error( 500, "Circular tree structure detected with record: " . $not_circular, [ "record" => $not_circular, "link" => get_permalink( $query ) ] );
+            return new WP_Error( 500, "Circular tree structure detected with record: " . $not_circular . ".", [ "record" => $not_circular, "link" => get_permalink( $not_circular ) ] );
         }
-
-        return $query;
-
-
+        foreach ( $nodes as $node ){
+            if ( !isset( $node["done"] ) ){
+                return new WP_Error( 500, "Orphaned tree structure detected with record: " . $node['id'] . ".", [ "record" => $node["id"], "link" => get_permalink( $node["id"] ) ] );
+            }
+        }
+        return $tree;
     }
 
 
@@ -668,7 +686,7 @@ class Disciple_Tools_Queries
      * @param array $parents
      * @return bool|int true if good, int of the record ID if circular tree detected
      */
-    public function check_circular_logic( $nodes, $node_ids = [ 0 ], $parents = [] ){
+    private function check_circular_logic( &$nodes, $node_ids = [ 0 ], $parents = [] ){
 
         foreach ( $nodes as $node ){
             $parent_id = $node["parent_id"] ?? $node["parentId"];
@@ -677,6 +695,7 @@ class Disciple_Tools_Queries
                 if ( in_array( $node["id"], $parents )){
                     return (int) $node["id"]; //return the ID of the node
                 }
+                $node["done"] = true; //lets us look at what nodes where not processed later
                 //continue with children
                 $d = $this->check_circular_logic( $nodes, [ $node["id"] ], array_merge( $parents, [ $node["id"] ] ) );
                 if ( is_numeric( $d ) ){
