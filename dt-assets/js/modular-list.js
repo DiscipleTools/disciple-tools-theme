@@ -1167,7 +1167,7 @@
     }
   }
 
-  let bulk_edit_picker_checkboxes = $('#bulk_edit_picker #update-needed');
+  let bulk_edit_picker_checkboxes = $('#bulk_edit_picker .update-needed');
   bulk_edit_picker_checkboxes.on('click', function(e) {
     if ($(this).is(':checked')) {
       $(this).data('bulk_key_requires_update', true);
