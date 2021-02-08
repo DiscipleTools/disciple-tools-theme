@@ -36,10 +36,9 @@ class Disciple_Tools_Metrics{
 
 
             // Personal
-            //@todo fix query and re-enable
-            //require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
-            //require_once( get_template_directory() . '/dt-metrics/personal/baptism-tree.php' );
-            //require_once( get_template_directory() . '/dt-metrics/personal/group-tree.php' );
+            require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
+            require_once( get_template_directory() . '/dt-metrics/personal/baptism-tree.php' );
+            require_once( get_template_directory() . '/dt-metrics/personal/group-tree.php' );
 
             require_once( get_template_directory() . '/dt-metrics/personal/mapbox-contacts-maps.php' );
             require_once( get_template_directory() . '/dt-metrics/personal/mapbox-groups-maps.php' );

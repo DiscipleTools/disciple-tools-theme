@@ -267,8 +267,8 @@ dt_please_log_in();
                             </div>
                             <div class="cell small-12 medium-4 center-items">
                             <span style="margin-right:5px"><?php esc_html_e( 'Request Update', 'disciple_tools' )?>:</span>
-                                    <input type="checkbox" id="update-needed" class="dt-switch update-needed" data-bulk_key_requires_update=""/>
-                                    <label class="dt-switch" for="update-needed" style="vertical-align: top;"></label>
+                                    <input type="checkbox" id="update-needed-bulk" class="dt-switch update-needed" data-bulk_key_requires_update=""/>
+                                    <label class="dt-switch" for="update-needed-bulk" style="vertical-align: top;"></label>
                             </div>
                             <div class="cell small-12 medium-4 center-items">
                             <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?></button>

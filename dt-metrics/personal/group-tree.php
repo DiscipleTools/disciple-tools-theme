@@ -92,24 +92,30 @@ class DT_Metrics_Personal_Groups_Tree extends DT_Metrics_Chart_Base
     }
 
     public function get_group_generations_tree(){
-        $list = Disciple_Tools_Posts::search_viewable_post( 'groups', [ "assigned_to" => [ "shared", "me" ] ] );
+        global $wpdb;
+        $user = wp_get_current_user();
+        $generational_groups_shared_with_me = $wpdb->get_results( $wpdb->prepare( "
+            SELECT s.post_id FROM $wpdb->p2p p2p
+            INNER JOIN $wpdb->dt_share s ON ( ( s.post_id = p2p.p2p_from OR s.post_id = p2p.p2p_to ) && s.user_id = %s )
+            WHERE p2p.p2p_type = 'groups_to_groups'
+            ", $user->ID ), ARRAY_A
+        );
 
-        if ( is_wp_error( $list ) ) {
-            return [];
-        }
-
-        foreach ( $list['posts'] as $post ) {
-            $this->my_list[$post->ID] = $post->ID;
+        foreach( $generational_groups_shared_with_me as $l ){
+            $this->my_list[] = (int) $l["post_id"];
         }
 
         $query = dt_queries()->tree( 'multiplying_groups_only' );
+        if ( is_wp_error( $query )){
+            return $this->_circular_structure_error( $query );
+        }
         if ( empty( $query ) ) {
             return $this->_no_results();
         }
         $menu_data = $this->prepare_menu_array( $query );
 
         foreach ( $menu_data['parents'] as $parent_id => $parent ) {
-            if ( ! isset( $this->my_list[$parent_id] ) && 0 !== $parent_id ) {
+            if ( !in_array( $parent_id, $this->my_list ) && 0 !== $parent_id ) {
                 unset( $menu_data['parents'][$parent_id] );
                 unset( $menu_data['parents'][0][array_search( $parent_id, $menu_data['parents'][0] )] );
             }
@@ -153,7 +159,7 @@ class DT_Metrics_Personal_Groups_Tree extends DT_Metrics_Chart_Base
                 $html .= '<li class="gen-node li-gen-' . esc_html( $gen ) . ' ' . esc_html( $first_section ) . '">';
                 $html .= '<span class="' . esc_html( $menu_data['items'][ $item_id ]['group_status'] ) . ' ' . esc_html( $menu_data['items'][ $item_id ]['group_type'] ) . '">(' . esc_html( $gen ) . ') ';
                 if ( in_array( $item_id, $this->my_list ) ) {
-                    $html .= '<a onclick="open_modal_details(' . esc_html( $item_id ) . ');">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></span>';
+                    $html .= '<a onclick="open_modal_details(' . esc_html( $item_id ) . ')">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></span>';
                 } else {
                     $html .= __( 'Group', 'disciple_tools' ) . '</span>';
                 }
@@ -168,9 +174,6 @@ class DT_Metrics_Personal_Groups_Tree extends DT_Metrics_Chart_Base
         return $html;
     }
 
-    public function _no_results() {
-        return '<p>'. esc_attr( 'No Results', 'disciple_tools' ) .'</p>';
-    }
 
 }
 new DT_Metrics_Personal_Groups_Tree();

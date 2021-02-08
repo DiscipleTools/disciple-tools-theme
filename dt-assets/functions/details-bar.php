@@ -35,8 +35,8 @@ function dt_print_details_bar(
                         <div class="cell grid-x shrink center-items">
                             <?php if ( $show_update_needed ){ ?>
                                 <span style="margin-right:5px"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?>:</span>
-                                <input type="checkbox" id="update-needed" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : "" ) ?>/>
-                                <label class="dt-switch" for="update-needed" style="vertical-align: top;"></label>
+                                <input type="checkbox" id="update-needed-large" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : "" ) ?>/>
+                                <label class="dt-switch" for="update-needed-large" style="vertical-align: top;"></label>
                             <?php } ?>
                         </div>
                         <div class="cell grid-x shrink center-items">
@@ -66,7 +66,9 @@ function dt_print_details_bar(
                             if ( !empty( $picture ) ) : ?>
                                 <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                             <?php else : ?>
-                                <i class="fi-torso medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
+                                <?php
+                                    $gender = isset( $dt_post["gender"] ) ? $dt_post["gender"]["key"] : "male";?>
+                                <i class="fi-torso<?php echo esc_html( ( $gender == 'female' ) ? '-'.$gender : "" ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                             <?php endif; ?>
                             <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
                             <br>
@@ -92,12 +94,18 @@ function dt_print_details_bar(
                         <?php endif; ?>
                         <div class="cell shrink center-items">
                         <?php if ( $disable_following_toggle_function ) : ?>
-                            <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
+                            <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?>
+                                <i class="fi-eye"></i>
+                            </button>
                         <?php else :
                             if ( $following ) : ?>
-                                <button class="button follow hollow" data-value="following"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
+                                <button class="button follow hollow" data-value="following"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?>
+                                    <i class="fi-eye"></i>
+                                </button>
                             <?php else : ?>
-                                <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?></button>
+                                <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?>
+                                    <i class="fi-eye"></i>
+                                </button>
                             <?php endif; ?>
                         <?php endif; ?>
                         </div>
@@ -127,7 +135,6 @@ function dt_print_details_bar(
                     <button  id="nav-view-comments" class="center-items">
                         <a href="#comment-activity-section" class="center-items" style="color:black">
                             <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/view-comments.svg" ); ?>">
-                            <span style="margin:0 10px 0 10px"><?php esc_html_e( "Comments", "disciple_tools" ); ?></span>
                         </a>
                     </button>
                 </div>
@@ -136,29 +143,40 @@ function dt_print_details_bar(
                     <div class="cell shrink">
                         <button class="center-items open-share">
                             <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
-                            <span style="margin:2px 10px 0 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?></span>
                         </button>
                     </div>
                 <?php endif; ?>
                 <div class="cell shrink">
                     <?php if ( $disable_following_toggle_function ) : ?>
-                        <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
+                        <button class="button follow mobile hollow" data-value="following" disabled>
+                            <i class="fi-eye"></i>
+                        </button>
                     <?php else :
                         if ( $following ) : ?>
-                            <button class="button follow hollow" data-value="following"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
+                            <button class="button follow mobile hollow" data-value="following">
+                                <i class="fi-eye"></i>
+                            </button>
                         <?php else : ?>
-                            <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?></button>
+                            <button class="button follow mobile" data-value="">
+                                <i class="fi-eye"></i>
+                            </button>
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>
                 <?php if ( $task ) : ?>
                     <div class="cell shrink center-items">
                         <button class="button open-set-task">
-                            <?php esc_html_e( 'Tasks', 'disciple_tools' ); ?>
                             <i class="fi-clock"></i>
                         </button>
                     </div>
                 <?php endif; ?>
+                <div class="cell shrink center-item">
+                    <?php if ( $show_update_needed ){ ?>
+                        <span style="margin-right:5px"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?>:</span>
+                        <input type="checkbox" id="update-needed-small" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : "" ) ?>/>
+                        <label class="dt-switch" for="update-needed-small" style="vertical-align: top;"></label>
+                    <?php } ?>
+                </div>
             </div>
             <div class="cell small-12 center">
                 <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
@@ -166,7 +184,8 @@ function dt_print_details_bar(
                 if ( !empty( $picture ) ) : ?>
                     <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                 <?php else : ?>
-                    <i class="fi-torso medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
+                    <?php $gender = isset( $dt_post["gender"] ) ? $dt_post["gender"]["key"] : "male";?>
+                    <i class="fi-torso<?php echo esc_html( ( $gender == 'female' ) ? '-'.$gender : "" ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                 <?php endif; ?>
                 <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
             </div>

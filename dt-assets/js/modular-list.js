@@ -651,7 +651,7 @@
           onClick: function(node, a, item){
             let name = _.get(list_settings, `post_type_settings.fields.${field}.name`, field)
             selected_filters.append(`<span class="current-filter ${_.escape( field )}" data-id="${_.escape( item.key )}">${_.escape( name )}:${_.escape( item.value )}</span>`)
-            new_filter_labels.push({id:item.key, name:`${name}:${item.value}`, field})
+            new_filter_labels.push({id:item.key, name:`${name}: ${item.value}`, field})
           },
           onResult: function (node, query, result, resultCount) {
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
@@ -832,7 +832,7 @@
           },
           onClick: function (node, a, item) {
             let name = _.get(list_settings, `post_type_settings.fields.location_grid.name`, 'location_grid')
-            new_filter_labels.push({id: item.ID, name: `${name}:${item.name}`, field: "location_grid"})
+            new_filter_labels.push({id: item.ID, name: `${name}: ${item.name}`, field: "location_grid"})
             selected_filters.append(`<span class="current-filter location_grid" data-id="${_.escape( item.ID )}">${_.escape( name )}:${_.escape( item.name )}</span>`)
           }
         }
@@ -930,7 +930,7 @@
       let field_options = _.get( list_settings, `post_type_settings.fields.${field_key}.default` )
       let option_name = field_options[option_id]["label"]
       let name = _.get(list_settings, `post_type_settings.fields.${field_key}.name`, field_key)
-      new_filter_labels.push({id:$(this).val(), name:`${name}:${option_name}`, field:field_key})
+      new_filter_labels.push({id:$(this).val(), name:`${name}: ${option_name}`, field:field_key})
       selected_filters.append(`<span class="current-filter ${_.escape( field_key )}" data-id="${_.escape( option_id )}">${_.escape( name )}:${_.escape( option_name )}</span>`)
     } else {
       $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
@@ -944,7 +944,7 @@
     let label = $(this).data('label');
     if ($(this).is(":checked")){
       let field = _.get( list_settings, `post_type_settings.fields.${field_key}` )
-      new_filter_labels.push({id:$(this).val(), name:`${field.name}:${label}`, field:field_key})
+      new_filter_labels.push({id:$(this).val(), name:`${field.name}: ${label}`, field:field_key})
       selected_filters.append(`<span class="current-filter ${_.escape( field_key )}" data-id="${_.escape( option_id )}">${_.escape( field.name )}:${_.escape( label )}</span>`)
     } else {
       $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
@@ -964,7 +964,7 @@
       _.pullAllBy(new_filter_labels, [{id:`${id}_${delimiter}`}], "id")
       $(`.current-filter[data-id="${id}_${delimiter}"]`).remove()
       //add new filters
-      new_filter_labels.push({id:`${id}_${delimiter}`, name:`${field_name} ${delimiter_label}:${date}`, field:id, date:date})
+      new_filter_labels.push({id:`${id}_${delimiter}`, name:`${field_name} ${delimiter_label}: ${date}`, field:id, date:date})
       selected_filters.append(`
         <span class="current-filter ${id}_${delimiter}"
               data-id="${id}_${delimiter}">
@@ -1157,7 +1157,7 @@
   }
 
   function bulk_edit_count() {
-    let bulk_edit_total_checked = $('.bulk_edit_checkbox input:checked').length;
+    let bulk_edit_total_checked = $('.bulk_edit_checkbox:not(#bulk_edit_master) input:checked').length;
     let bulk_edit_submit_button_text = $('#bulk_edit_submit_text')
 
     if (bulk_edit_total_checked == 0) {
@@ -1167,7 +1167,7 @@
     }
   }
 
-  let bulk_edit_picker_checkboxes = $('#bulk_edit_picker #update-needed');
+  let bulk_edit_picker_checkboxes = $('#bulk_edit_picker .update-needed');
   bulk_edit_picker_checkboxes.on('click', function(e) {
     if ($(this).is(':checked')) {
       $(this).data('bulk_key_requires_update', true);
