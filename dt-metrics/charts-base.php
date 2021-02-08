@@ -134,7 +134,7 @@ abstract class DT_Metrics_Chart_Base
     public function _circular_structure_error( $wp_error) {
         $link = false;
         $data = $wp_error->get_error_data();
-        if ( isset( $data["record"])){
+        if ( isset( $data["record"] )){
             $link = "<a target='_blank' href=" . get_permalink( $data["record"] ) . ">Open record</a>";
         }
         return '<p>' . esc_html( $wp_error->get_error_message() ) . ' ' . $link . '</p>';

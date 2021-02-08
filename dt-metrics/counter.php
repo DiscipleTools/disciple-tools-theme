@@ -652,7 +652,7 @@ class Disciple_Tools_Queries
 
         $not_circular = $this->check_circular_logic( $query );
         if ( is_numeric( $not_circular ) ){
-            return new WP_Error( 500, "Circular tree structure detected with record: " . $not_circular, [ "record" =>  $not_circular, "link" => get_permalink( $query ) ]  );
+            return new WP_Error( 500, "Circular tree structure detected with record: " . $not_circular, [ "record" => $not_circular, "link" => get_permalink( $query ) ] );
         }
 
         return $query;
@@ -678,7 +678,7 @@ class Disciple_Tools_Queries
                     return (int) $node["id"]; //return the ID of the node
                 }
                 //continue with children
-                $d = $this->check_circular_logic( $nodes, [$node["id"]], array_merge( $parents, [ $node["id"] ] ) );
+                $d = $this->check_circular_logic( $nodes, [ $node["id"] ], array_merge( $parents, [ $node["id"] ] ) );
                 if ( is_numeric( $d ) ){
                     return $d;
                 }

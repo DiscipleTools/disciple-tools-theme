@@ -101,7 +101,7 @@ class DT_Metrics_Personal_Groups_Tree extends DT_Metrics_Chart_Base
             ", $user->ID ), ARRAY_A
         );
 
-        foreach( $generational_groups_shared_with_me as $l ){
+        foreach ( $generational_groups_shared_with_me as $l ){
             $this->my_list[] = (int) $l["post_id"];
         }
 

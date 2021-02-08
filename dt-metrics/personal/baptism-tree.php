@@ -88,7 +88,7 @@ class DT_Metrics_Personal_Baptism_Tree extends DT_Metrics_Chart_Base
             WHERE p2p.p2p_type = 'baptizer_to_baptized'
             ", $user->ID ), ARRAY_A
         );
-        foreach( $baptized_contacts_shared_with_me as $l ){
+        foreach ( $baptized_contacts_shared_with_me as $l ){
             $this->my_list[] = (int) $l["post_id"];
         }
 
@@ -104,7 +104,7 @@ class DT_Metrics_Personal_Baptism_Tree extends DT_Metrics_Chart_Base
             "name" => $user->display_name
         ];
         //Stream of baptisms starting with me.
-        $query =  array_merge( [ $node ], dt_queries()->get_node_descendants( $query, [ $contact_id ] ) );
+        $query = array_merge( [ $node ], dt_queries()->get_node_descendants( $query, [ $contact_id ] ) );
 
         $menu_data = $this->prepare_menu_array( $query );
 

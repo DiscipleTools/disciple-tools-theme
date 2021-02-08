@@ -98,10 +98,10 @@ class Disciple_Tools_Groups_Post_Type {
 function deprecated_actions(){
     ob_start();
 
-    do_action_deprecated('dt_off_canvas_nav', [], '1.0.1', 'desktop_navbar_menu_options', 'This function was removed completely and replaced with an array system found in /dt-assets/functions/menu.php' );
-    do_action_deprecated('dt_nav_add_post_menu', [], '1.0.1', 'dt_nav_add_post_menu', 'This action was change to a filtered array. @see /dt-assets/functions/menu.php' );
-    do_action_deprecated('dt_top_nav_desktop', [], '1.0.1', 'dt_top_nav_desktop', 'This action was change to a filtered array. @see /dt-assets/functions/menu.php' );
-    do_action_deprecated('dt_settings_menu_pre', [], '1.0.1', 'dt_nav', 'This action was replaced and is haddled with the new dt_nav filter. @see /dt-assets/functions/menu.php' );
+    do_action_deprecated( 'dt_off_canvas_nav', [], '1.0.1', 'desktop_navbar_menu_options', 'This function was removed completely and replaced with an array system found in /dt-assets/functions/menu.php' );
+    do_action_deprecated( 'dt_nav_add_post_menu', [], '1.0.1', 'dt_nav_add_post_menu', 'This action was change to a filtered array. @see /dt-assets/functions/menu.php' );
+    do_action_deprecated( 'dt_top_nav_desktop', [], '1.0.1', 'dt_top_nav_desktop', 'This action was change to a filtered array. @see /dt-assets/functions/menu.php' );
+    do_action_deprecated( 'dt_settings_menu_pre', [], '1.0.1', 'dt_nav', 'This action was replaced and is haddled with the new dt_nav filter. @see /dt-assets/functions/menu.php' );
 
     ob_flush();
 }
