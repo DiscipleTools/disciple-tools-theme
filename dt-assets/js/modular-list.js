@@ -1157,7 +1157,7 @@
   }
 
   function bulk_edit_count() {
-    let bulk_edit_total_checked = $('.bulk_edit_checkbox input:checked').length;
+    let bulk_edit_total_checked = $('.bulk_edit_checkbox:not(#bulk_edit_master) input:checked').length;
     let bulk_edit_submit_button_text = $('#bulk_edit_submit_text')
 
     if (bulk_edit_total_checked == 0) {
