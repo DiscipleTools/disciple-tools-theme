@@ -18,7 +18,7 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
  * @note Main post types (Contacts, Groups, Metrics) fire between 20-30. If you want to add an item before the
  * main post types, load before 20, if you want to load after the list, load after 30.
  */
-$tabs = apply_filters( "dt_nav", dt_default_menu_array() );
+$tabs = dt_default_menu_array();
 
 
 ?>
@@ -38,7 +38,7 @@ $tabs = apply_filters( "dt_nav", dt_default_menu_array() );
             <!-- site logo -->
             <?php if ( ! $tabs['admin']['site']['hidden'] ?? ! false ) : ?>
             <div class="title-bar-title" style="margin-left: 5px">
-                <a href="<?php echo esc_url( $tabs['admin']['site']['link'] ?? site_url() )?>" style="padding-left:0;vertical-align: middle" ><img src="<?php echo esc_url( $tabs['admin']['site']['link'] ?? get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png" ); ?>" style="margin:0; height: 20px" alt="logo-image"></a>
+                <a href="<?php echo esc_url( $tabs['admin']['site']['link'] ?? site_url() )?>" style="padding-left:0;vertical-align: middle" ><img src="<?php echo esc_url( $tabs['admin']['site']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-white.png" ); ?>" style="margin:0; height: 20px" alt="logo-image"></a>
             </div>
             <?php endif; ?>
 
@@ -64,7 +64,7 @@ $tabs = apply_filters( "dt_nav", dt_default_menu_array() );
                             </li>
                         <?php endforeach; ?>
                         <?php endif; ?>
-                        <?php //do_action( 'dt_nav_add_post_menu' ) ?>
+                        <?php //do_action( 'dt_nav_add_post_menu' )// @todo remove ?>
                     </ul>
                 </li>
             </ul>
@@ -115,7 +115,7 @@ $tabs = apply_filters( "dt_nav", dt_default_menu_array() );
                         ?></li>
                 <?php endforeach; ?>
 
-                <?php do_action( 'dt_top_nav_desktop' ); // @todo remove ?>
+                <?php //do_action( 'dt_top_nav_desktop' ); // @todo remove ?>
 
             </ul>
         </div>

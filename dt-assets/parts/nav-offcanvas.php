@@ -7,70 +7,77 @@
          * @note Main post types (Contacts, Groups, Metrics) fire between 20-30. If you want to add an item before the
          * main post types, load before 20, if you want to load after the list, load after 30.
          */
-        $tabs = apply_filters( "dt_nav", dt_default_menu_array() );
-        $admin = $tabs['admin'] ?? [];
-        unset($tabs['admin']);
-        $icons = $tabs['icons'] ?? [];
-        unset($tabs['icons']);
-        $site = $tabs['site'] ?? [];
-        unset($tabs['site']);
+        $tabs = dt_default_menu_array();
+        ?>
 
-        foreach ( $tabs as $tab ) :
+        <!-- profile name -->
+        <?php if ( isset( $tabs['admin']['profile']['hidden'] ) && empty( $tabs['admin']['profile']['hidden'] ) ) : ?>
+        <li class="image-menu-nav">
+            <a href="<?php echo esc_url( $tabs['admin']['profile']['link'] ?? get_template_directory_uri() . "/dt-assets/images/profile.svg" ); ?>">
+                <img title="<?php echo esc_html( $tabs['admin']['profile']['label'] ); ?>" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/profile.svg" ) ?>">
+                <span dir="auto"><?php echo esc_html( $tabs['admin']['profile']['label'] ); ?></span>
+            </a>
+        </li>
+        <?php endif; // end profile ?>
+
+        <li>&nbsp;<!-- Spacer--></li>
+
+        <?php
+        foreach ( $tabs['main'] as $tab ) :
             ?>
-            <li><a href="<?php echo esc_url( $tab['link'] ?? '' ) ?>"><?php echo esc_html( $tab['label'] ?? '' ) ?>&nbsp;</a>
+            <li><a href="<?php echo esc_url( $tab['link'] ) ?>"><?php echo esc_html( $tab['label'] ) ?>&nbsp;</a>
                 <?php
                 if ( isset( $tab['submenu'] ) && ! empty( $tab['submenu'] ) ) {
                     ?><ul class="is-active"><?php
                     foreach( $tab['submenu'] as $submenu ) {
                         ?>
-                        <li><a href="<?php echo esc_url( $submenu["link"] ) ?>"> <?php echo esc_html( $submenu["label"] ) ?></a></li>
+                        <li><a href="<?php echo esc_url( $submenu['link'] ) ?>"><?php echo esc_html( $submenu['label'] ) ?></a></li>
                         <?php
                     }
                     ?></ul><?php
                 }
-                ?></li>
-        <?php endforeach;
+                ?>
+            </li>
+        <?php endforeach; ?>
 
-        //append a non standard menu item at the end
-        do_action( 'dt_off_canvas_nav' );
-
-        ?>
+        <?php //do_action( 'dt_off_canvas_nav' ); // @todo remove ?>
 
         <li>&nbsp;<!-- Spacer--></li>
 
+        <!--  notifications -->
+        <?php if ( isset( $tabs['admin']['notifications']['hidden'] ) && empty( $tabs['admin']['notifications']['hidden'] ) ) : ?>
+            <li class="image-menu-nav">
+                <a href="<?php echo esc_url( $tabs['admin']['notifications']['link'] ?? site_url( '/notifications/' ) ); ?>">
+                    <img title="<?php echo esc_html( $tabs['admin']['notifications']['label'] ?? __( "Notifications", 'disciple_tools' ) ); ?>" src="<?php echo esc_url( $tabs['admin']['notifications']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/bell.svg" ) ?>">
+                    <span class="badge alert notification-count" style="display:none"></span>
+                </a>
+            </li>
+        <?php endif; // end notifications ?>
+
+
         <?php
-        /* Notifications */
-        if ( isset( $admin['notifications'] ) && ! empty( $admin['notifications'] ) ) : ?>
-            <li><a href="<?php echo esc_url( $admin['notifications']['link'] ?? '' ); ?>"><?php echo esc_html( $admin['notifications']['label'] ?? '' ); ?></a></li>
+        /* settings */
+        if ( isset( $tabs['admin']['settings']['hidden'] ) && empty( $tabs['admin']['settings']['hidden'] ) ) : ?>
+            <li><a href="<?php echo esc_url( $tabs['admin']['settings']['link'] ?? '' ); ?>"><?php echo esc_html( $tabs['admin']['settings']['label'] ?? '' ); ?></a></li>
         <?php endif; ?>
 
-        <?php
-        /* Settings */
-        if ( isset( $admin['settings'] ) && ! empty( $admin['settings'] ) ) : ?>
-            <li><a href="<?php echo esc_url( $admin['settings']['link'] ?? '' ); ?>"><?php echo esc_html( $admin['settings']['label'] ?? '' ); ?></a></li>
-        <?php endif; ?>
-
 
         <?php
-        /* User Management */
-        if ( ( current_user_can( 'manage_dt' ) || current_user_can( 'list_users' )
-            && ( isset( $admin['user_management'] ) && ! empty( $admin['user_management'] ) ) ) ) : ?>
-            <li><a href="<?php echo esc_url( $admin['user_management']['link'] ?? '' ); ?>"><?php echo esc_html( $admin['user_management']['label'] ?? '' ); ?></a></li>
+        /* user management */
+        if ( ( current_user_can( 'manage_dt' ) || current_user_can( 'list_users' ) )
+            && ( isset( $tabs['admin']['settings']['submenu']['user_management']['link'] ) && ! empty( $tabs['admin']['settings']['submenu']['user_management']['link'] ) ) ) : ?>
+            <li><a href="<?php echo esc_url( $tabs['admin']['settings']['submenu']['user_management']['link'] ?? '' ); ?>"><?php echo esc_html( $tabs['admin']['settings']['submenu']['user_management']['label'] ?? '' ); ?></a></li>
         <?php endif; ?>
 
 
         <?php
         /* Admin */
         if ( ( user_can( get_current_user_id(), 'manage_dt' ) )
-        && (isset( $admin['admin'] ) && ! empty( $admin['admin'] ) ) ) : ?>
-            <li><a href="<?php echo esc_url( $admin['admin']['link'] ?? '' ); ?>"><?php echo esc_html( $admin['admin']['label'] ?? '' ); ?></a></li>
+        && (isset( $tabs['admin']['settings']['submenu']['admin']['link'] ) && ! empty( $tabs['admin']['settings']['submenu']['admin']['link'] ) ) ) : ?>
+            <li><a href="<?php echo esc_url( $tabs['admin']['settings']['submenu']['admin']['link'] ?? '' ); ?>"><?php echo esc_html( $tabs['admin']['settings']['submenu']['admin']['label'] ?? '' ); ?></a></li>
         <?php endif; ?>
 
-        <?php
-        /* Logoff */
-        if ( isset( $admin['logoff'] ) && ! empty( $admin['logoff'] ) ) : ?>
-            <li><a href="<?php echo esc_url( $admin['logoff']['link'] ?? '' ); ?>"><?php echo esc_html( $admin['logoff']['label'] ?? '' ); ?></a></li>
-        <?php endif; ?>
+        <li><a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( 'Log Off', 'disciple_tools' )?></a></li>
 
     </ul>
 </div>

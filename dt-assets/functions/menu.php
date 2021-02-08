@@ -1,7 +1,7 @@
 <?php
 
-function dt_default_menu_array(){
-    return [
+function dt_default_menu_array() : array {
+    return apply_filters( "dt_nav", [
         'main' => apply_filters( 'desktop_navbar_menu_options', [] ),
         'admin' => [
             'menu' => [
@@ -64,5 +64,5 @@ function dt_default_menu_array(){
                 ]
             ],
         ],
-    ];
+    ] );
 }
