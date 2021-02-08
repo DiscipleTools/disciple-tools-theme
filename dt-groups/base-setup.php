@@ -164,6 +164,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 "default_color" => "#366184",
                 "show_in_table" => 10,
             ];
+
             $fields['group_type'] = [
                 'name'        => __( 'Group Type', 'disciple_tools' ),
                 'description' => '',
@@ -321,8 +322,6 @@ class DT_Groups_Base extends DT_Module_Base {
                 "icon" => get_template_directory_uri() . '/dt-assets/images/tallying.svg',
             ];
 
-
-
             $fields["parent_groups"] = [
                 "name" => __( 'Parent Group', 'disciple_tools' ),
                 'description' => _x( 'A group that founded this group.', 'Optional Documentation', 'disciple_tools' ),
@@ -334,6 +333,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'icon' => get_template_directory_uri() . '/dt-assets/images/group-parent.svg',
                 'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
             ];
+
             $fields["peer_groups"] = [
                 "name" => __( 'Peer Group', 'disciple_tools' ),
                 'description' => _x( "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc.", 'Optional Documentation', 'disciple_tools' ),
@@ -345,6 +345,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'icon' => get_template_directory_uri() . '/dt-assets/images/group-peer.svg',
                 'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
             ];
+
             $fields["child_groups"] = [
                 "name" => __( 'Child Group', 'disciple_tools' ),
                 'description' => _x( 'A group that has been birthed out of this group.', 'Optional Documentation', 'disciple_tools' ),
@@ -371,6 +372,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 "tile" => "details",
                 "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg",
             ];
+
             $fields['location_grid_meta'] = [
                 'name'        => __( 'Locations', 'disciple_tools' ), //system string does not need translation
                 'type'        => 'location_meta',
@@ -378,6 +380,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'mapbox'    => false,
                 'hidden' => true
             ];
+
             $fields["contact_address"] = [
                 "name" => __( 'Address', 'disciple_tools' ),
                 "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg",
@@ -386,6 +389,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'mapbox'    => false,
                 "customizable" => false
             ];
+
             if ( DT_Mapbox_API::get_key() ){
                 $fields["contact_address"]["hidden"] = true;
                 $fields["contact_address"]["mapbox"] = true;
@@ -458,6 +462,7 @@ class DT_Groups_Base extends DT_Module_Base {
     }
 
     public function dt_details_additional_section( $section, $post_type ){
+        // Display 'Group Status' tile
         if ( $post_type === "groups" && $section === "status" ){
             $group = DT_Posts::get_post( $post_type, get_the_ID() );
             $group_fields = DT_Posts::get_post_field_settings( $post_type );
@@ -502,7 +507,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 </div>
         <?php }
 
-
+        // Display 'Other' tile
         if ( $post_type === "groups" && $section === "other" ) :
             $fields = DT_Posts::get_post_field_settings( $post_type );
             ?>
@@ -532,6 +537,7 @@ class DT_Groups_Base extends DT_Module_Base {
             </div>
         <?php endif;
 
+        // Display 'Health Metrics' tile
         if ( $post_type === "groups" && $section === "health-metrics" ) {
             $group_preferences = dt_get_option( 'group_preferences' );
             $fields = DT_Posts::get_post_field_settings( $post_type );
@@ -555,31 +561,28 @@ class DT_Groups_Base extends DT_Module_Base {
                 </div>
             <?php endif; ?>
 
-
-            <!-- Four Fields -->
-            <?php if ( ! empty( $group_preferences['four_fields'] ) ) : ?>
-                <section id="four-fields" class="xlarge-6 large-12 medium-6 cell grid-item">
-                    <div class="bordered-box js-progress-bordered-box" id="four-fields-tile">
-
-                        <h3 class="section-header"><?php esc_html_e( 'Four Fields', 'disciple_tools' ) ?>
-                            <button class="help-button" data-section="four-fields-help-text">
-                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                            </button>
-                            <button class="section-chevron chevron_down">
-                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                            </button>
-                            <button class="section-chevron chevron_up">
-                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
-                            </button>
-                        </h3>
-                        <div class="section-body"><!-- start collapse -->
-
-                            <div class="grid-x" id="four-fields-inputs">
-                                <div style="width:100%; height:375px;background-image:url('<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/four-fields.svg' ); ?>');background-repeat:no-repeat;"></div>
+        <?php }
+            // Display 'Four Fields' tile
+        if ( $post_type === "groups" && $section === "four-fields" ) {
+            $group_preferences = dt_get_option( 'group_preferences' );
+            $fields = DT_Posts::get_post_field_settings( $post_type );
+            //<!-- Health Metrics-->
+            if ( ! empty( $group_preferences['four_fields'] ) ) : ?>
+                <!-- Four Fields -->
+                <section id="four-fields" class="xlarge-6 large-12 medium-6 cell">
+                    
+                        <div class="section-body">
+                            <!-- start collapse -->
+                            <div style="background:url('<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/four-fields.svg' ); ?>');background-size: 100% 100%;height: 379px;display: grid;grid-template-columns: 1fr 1fr 1fr;grid-template-rows: auto;justify-items: center;align-items: center;" id="four-fields-inputs">
+                                
                             </div>
-                        </div><!-- end collapse --></div>
+                            <!-- end collapse -->
+                        </div>
                 </section>
             <?php endif; ?>
+            
+
+
         <?php }
 
         if ( $post_type === "groups" && $section === "relationships" ) {
@@ -724,6 +727,7 @@ class DT_Groups_Base extends DT_Module_Base {
         if ( $post_type === "groups" ){
             $tiles["relationships"] = [ "label" => __( "Member List", 'disciple_tools' ) ];
             $tiles["health-metrics"] = [ "label" => __( "Church Health", 'disciple_tools' ) ];
+            $tiles["four-fields"] = [ "label" => __( "Four Fields", 'disciple_tools' ) ];
             $tiles["groups"] = [ "label" => __( "Groups", 'disciple_tools' ) ];
             $tiles["other"] = [ "label" => __( "Other", 'disciple_tools' ) ];
         }
