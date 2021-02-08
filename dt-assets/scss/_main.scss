@@ -200,10 +200,9 @@ nav.second-bar {
             padding-right: 5px;
         }
         padding: 0.4em 0.75em;
+        margin-top: .2em;
+        margin-bottom: .2em;
 
-        &.follow {
-
-        }
         @media screen and (max-width : 639px) {
             &.follow {
                 padding: 0em .75em;
