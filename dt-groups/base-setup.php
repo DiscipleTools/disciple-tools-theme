@@ -561,7 +561,7 @@ class DT_Groups_Base extends DT_Module_Base {
 
         <?php }
             // Display 'Four Fields' tile
-            if ( $post_type === "groups" && $section === "four-fields" ) {
+        if ( $post_type === "groups" && $section === "four-fields" ) {
             $group_preferences = dt_get_option( 'group_preferences' );
             $fields = DT_Posts::get_post_field_settings( $post_type );
             //<!-- Health Metrics-->
