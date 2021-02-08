@@ -168,6 +168,13 @@ function dt_print_details_bar(
                         </button>
                     </div>
                 <?php endif; ?>
+                <div class="cell shrink center-item">
+                    <?php if ( $show_update_needed ){ ?>
+                        <span style="margin-right:5px"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?>:</span>
+                        <input type="checkbox" id="update-needed" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : "" ) ?>/>
+                        <label class="dt-switch" for="update-needed" style="vertical-align: top;"></label>
+                    <?php } ?>
+                </div>
             </div>
             <div class="cell small-12 center">
                 <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
