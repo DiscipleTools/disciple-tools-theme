@@ -28,7 +28,7 @@ jQuery(document).ready(function ($) {
     cancel: ".connectedSortable",
   }).disableSelection();
 
-  $("#save-drag-changes").on( "click", function (){
+  $(".save-drag-changes").on( "click", function (){
     let order = [];
     $(".sort-tile").each((a, b)=>{
       let tile_key = $(b).attr("id")
