@@ -688,16 +688,16 @@ class Disciple_Tools_Queries
      */
     private function check_circular_logic( &$nodes, $node_ids = [ 0 ], $parents = [] ){
 
-        foreach ( $nodes as $node ){
+        foreach ( $nodes as &$node ){
             $parent_id = $node["parent_id"] ?? $node["parentId"];
-            if ( in_array( $parent_id, $node_ids ) ){
+            if ( in_array( (int) $parent_id, $node_ids ) ){
                 //if the node is already in the tree
-                if ( in_array( $node["id"], $parents )){
+                if ( in_array( (int) $node["id"], $parents, true )){
                     return (int) $node["id"]; //return the ID of the node
                 }
                 $node["done"] = true; //lets us look at what nodes where not processed later
                 //continue with children
-                $d = $this->check_circular_logic( $nodes, [ $node["id"] ], array_merge( $parents, [ $node["id"] ] ) );
+                $d = $this->check_circular_logic( $nodes, [ (int) $node["id"] ], array_merge( $parents, [ (int) $node["id"] ] ) );
                 if ( is_numeric( $d ) ){
                     return $d;
                 }
