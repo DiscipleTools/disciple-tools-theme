@@ -88,7 +88,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     /**
-     * The the base site url with, including the subfolder if wp is installed in a subfolder.
+     * The path of the url excluding the subfolder if wp is installed in a subfolder.
+     * https://example.com/sub/contacts/3/?param=true
+     * will return contacts/3/?param=true
      * @return string
      */
     if ( ! function_exists( 'dt_get_url_path' ) ) {
