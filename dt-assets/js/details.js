@@ -236,7 +236,7 @@ jQuery(document).ready(function($) {
   /**
    * Update Needed
    */
-  $('#update-needed.dt-switch').change(function () {
+  $('.update-needed.dt-switch').change(function () {
     let updateNeeded = $(this).is(':checked')
     API.update_post( post_type, post_id, {"requires_update":updateNeeded}).then(resp=>{
       post = resp
@@ -560,7 +560,11 @@ jQuery(document).ready(function($) {
   $('button.follow').on("click", function () {
     let following = !($(this).data('value') === "following")
     $(this).data("value", following ? "following" : "" )
-    $(this).html( following ? "Following" : "Follow")
+    if ($(this).hasClass('mobile')) {
+      $(this).html( following ? "<i class='fi-eye'></i>" : "<i class='fi-eye'></i>")
+    } else {
+      $(this).html( following ? "Following <i class='fi-eye'></i>" : "Follow <i class='fi-eye'></i>")
+    }
     $(this).toggleClass( "hollow" )
     let update = {
       follow: {values:[{value:window.detailsSettings.current_user_id, delete:!following}]},
@@ -785,7 +789,7 @@ jQuery(document).ready(function($) {
         if ( field_options.type === 'text' ){
           values_html = _.escape( field_value )
         } else if ( field_options.type === 'date' ){
-          values_html = _.escape( field_value.formatted )
+          values_html = _.escape( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )
         } else if ( field_options.type === 'key_select' ){
           values_html = _.escape( field_value.label )
         } else if ( field_options.type === 'multi_select' ){
@@ -795,7 +799,7 @@ jQuery(document).ready(function($) {
         } else if ( ['location', 'location_meta' ].includes(field_options.type) ){
           values_html = field_value.map(v=>{
             return _.escape(v.label);
-          }).join(', ')
+          }).join(' / ')
         } else if ( field_options.type === 'communication_channel' ){
           values_html = field_value.map(v=>{
             return _.escape(v.value);
@@ -849,5 +853,5 @@ jQuery(document).ready(function($) {
 // change update needed notification and switch if needed.
 function record_updated(updateNeeded) {
   $('.update-needed-notification').toggle(updateNeeded)
-  $('#update-needed').prop("checked", updateNeeded)
+  $('.update-needed').prop("checked", updateNeeded)
 }

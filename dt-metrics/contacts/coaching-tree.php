@@ -82,6 +82,9 @@ class DT_Metrics_Coaching_Tree extends DT_Metrics_Chart_Base
 
     public function get_baptism_generations_tree(){
         $query = dt_queries()->tree( 'multiplying_coaching_only' );
+        if ( is_wp_error( $query )){
+            return $this->_circular_structure_error( $query );
+        }
         if ( empty( $query ) ) {
             return $this->_no_results();
         }
@@ -137,9 +140,6 @@ class DT_Metrics_Coaching_Tree extends DT_Metrics_Chart_Base
         return $menu_data;
     }
 
-    public function _no_results() {
-        return '<p>'. esc_attr( 'No Results', 'disciple_tools' ) .'</p>';
-    }
 
 }
 new DT_Metrics_Coaching_Tree();

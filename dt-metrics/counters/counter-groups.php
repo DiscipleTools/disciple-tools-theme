@@ -101,6 +101,9 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
     public static function get_group_generations( $start, $end, $args = [] ){
         if ( !isset( self::$generations[$start.$end] ) ){
             $raw_connections = self::query_get_all_group_connections();
+            if ( is_wp_error( $raw_connections ) ){
+                return $raw_connections;
+            }
             $groups_in_time_range = self::query_get_groups_id_list( $start, $end, $args );
             $church_generation = self::build_group_generation_counts( $raw_connections, 0, 0, [], $groups_in_time_range );
             $generations = [];
@@ -157,7 +160,7 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
             WHERE p.p2p_type = 'groups_to_groups'
         ", ARRAY_A );
 
-        return $results;
+        return dt_queries()->check_tree_health( $results );
     }
 
 
@@ -185,7 +188,7 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
               JOIN $wpdb->postmeta as assigned_to
                 ON a.ID = assigned_to.post_id
                 AND assigned_to.meta_key = 'assigned_to'
-                AND assigned_to.meta_value LIKE %s 
+                AND assigned_to.meta_value LIKE %s
               LEFT JOIN $wpdb->postmeta as c
                 ON a.ID = c.post_id
                    AND c.meta_key = 'start_date'
@@ -197,12 +200,12 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
                 AND e.meta_key = 'church_start_date'
             WHERE a.post_type = 'groups'
               AND a.post_status = 'publish'
-              AND ( 
-                type.meta_value = 'pre-group' 
-                OR ( type.meta_value = 'group'  
+              AND (
+                type.meta_value = 'pre-group'
+                OR ( type.meta_value = 'group'
                   AND c.meta_value < %d
                   AND ( status.meta_value = 'active' OR d.meta_value > %d ) )
-                OR ( type.meta_value = 'church'  
+                OR ( type.meta_value = 'church'
                   AND e.meta_value < %d
                   AND ( status.meta_value = 'active' OR d.meta_value > %d ) )
               )
@@ -260,10 +263,10 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
         $count = $wpdb->get_var( $wpdb->prepare("
             SELECT COUNT(DISTINCT(p2p.p2p_to))
             FROM $wpdb->posts as p
-            JOIN $wpdb->postmeta pm ON ( 
-                p.ID = pm.post_id 
-                AND pm.meta_key = 'church_start_date' 
-                AND pm.meta_value > %s 
+            JOIN $wpdb->postmeta pm ON (
+                p.ID = pm.post_id
+                AND pm.meta_key = 'church_start_date'
+                AND pm.meta_value > %s
                 AND pm.meta_value < %s
             )
             JOIN $wpdb->p2p p2p ON (

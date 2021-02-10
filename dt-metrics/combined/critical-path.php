@@ -165,9 +165,6 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
         return $chart;
     }
 
-    public function _no_results() {
-        return '<p>' . esc_html__( 'No Results', 'disciple_tools' ) . '</p>';
-    }
 
     public function critical_path_activity_callback( WP_REST_Request $request ){
         if ( !$this->has_permission() ) {

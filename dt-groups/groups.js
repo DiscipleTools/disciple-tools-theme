@@ -160,11 +160,15 @@ jQuery(document).ready(function($) {
   }
 
   let ffInputs = `
-    <input type="text" name="four_fields_unbelievers" id="four_fields_unbelievers" class="four_fields" style="width:60px; position:absolute; top:120px; left:75px;" />
-    <input type="text" name="four_fields_believers" id="four_fields_believers" class="four_fields" style="width:60px; position:absolute; top:120px; right:75px;" />
-    <input type="text" name="four_fields_accountable" id="four_fields_accountable" class="four_fields" style="width:60px; position:absolute; bottom:80px; right:75px;" />
-    <input type="text" name="four_fields_church_commitment" id="four_fields_church_commitment" class="four_fields" style="width:60px; position:absolute; bottom:80px; left:75px;" />
-    <input type="text" name="four_fields_multiplying" id="four_fields_multiplying" class="four_fields" style="width:60px; position:absolute; top:220px; left:170px;" />
+    <input style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin-left:33.3%;margin-top:25%;" type="text" name="four_fields_unbelievers" id="four_fields_unbelievers">
+    <div></div>
+    <input style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin-right:33.3%;margin-top:25%;" type="text" name="four_fields_believers" id="four_fields_believers">
+    <div></div>
+    <input style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin-top:8%" type="text" name="four_fields_multiplying" id="four_fields_multiplying">
+    <div></div>
+    <input style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin-left:33.3%;margin-bottom:30%;" type="text" name="four_fields_accountable" id="four_fields_accountable">
+    <div></div>
+    <input style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin-right:33.3%;margin-bottom:30%;" type="text" name="four_fields_church_commitment" id="four_fields_church_commitment">
   `
   $('#four-fields-inputs').append(ffInputs)
   loadFourFields()
@@ -233,6 +237,13 @@ jQuery(document).ready(function($) {
     assigned_to_input.val("")
     assigned_to_input.trigger('input.typeahead')
     assigned_to_input.focus()
+  })
+
+  //update the end date input when group is closed.
+  $( document ).on( 'select-field-updated', function (e, new_group, field_key, val) {
+    if ( field_key === "group_status" && new_group.end_date){
+      $('#end_date').val(window.SHAREDFUNCTIONS.formatDate( new_group.end_date.timestamp) )
+    }
   })
 
 })
