@@ -12,15 +12,15 @@
 
         <!-- profile name -->
         <?php if ( isset( $dt_nav_tabs['admin']['profile']['hidden'] ) && empty( $dt_nav_tabs['admin']['profile']['hidden'] ) ) : ?>
-        <li class="image-menu-nav">
-            <a href="<?php echo esc_url( $dt_nav_tabs['admin']['profile']['link'] ?? get_template_directory_uri() . "/dt-assets/images/profile.svg" ); ?>">
-                <img title="<?php echo esc_html( $dt_nav_tabs['admin']['profile']['label'] ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['profile']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/profile.svg" ) ?>">
-                <span dir="auto"><?php echo esc_html( $dt_nav_tabs['admin']['profile']['label'] ); ?></span>
-            </a>
-        </li>
+            <li class="image-menu-nav">
+                <a href="<?php echo esc_url( $dt_nav_tabs['admin']['profile']['link'] ?? get_template_directory_uri() . "/dt-assets/images/profile.svg" ); ?>">
+                    <img title="<?php echo esc_html( $dt_nav_tabs['admin']['profile']['label'] ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['profile']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/profile.svg" ) ?>" style="vertical-align: middle;">
+                    <span dir="auto"><?php echo esc_html( $dt_nav_tabs['admin']['profile']['label'] ); ?></span>
+                </a>
+            </li>
         <?php endif; // end profile ?>
 
-        <li>&nbsp;<!-- Spacer--></li>
+        <li><hr ><!-- Spacer--></li>
 
         <?php
         foreach ( $dt_nav_tabs['main'] as $dt_main_tabs ) :
@@ -29,15 +29,17 @@
                 <?php
                 if ( isset( $dt_main_tabs['submenu'] ) && ! empty( $dt_main_tabs['submenu'] ) ) : ?>
                     <ul class="is-active">
-                        <?php foreach ( $dt_main_tabs['submenu'] as $dt_nav_submenu ) : ?>
-                            <li><a href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>"><?php echo esc_html( $dt_nav_submenu['label'] ) ?></a></li>
-                        <?php endforeach; ?>
+                        <?php foreach ( $dt_main_tabs['submenu'] as $dt_nav_submenu ) :
+                            if ( ! $dt_nav_submenu['hidden'] ?? false ) : ?>
+                                <li><a href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>"><?php echo esc_html( $dt_nav_submenu['label'] ) ?></a></li>
+                            <?php endif;
+                        endforeach; ?>
                     </ul>
                 <?php endif; ?>
             </li>
         <?php endforeach; ?>
 
-        <li>&nbsp;<!-- Spacer--></li>
+        <li><hr ><!-- Spacer--></li>
 
         <!--  notifications -->
         <?php if ( isset( $dt_nav_tabs['admin']['notifications']['hidden'] ) && empty( $dt_nav_tabs['admin']['notifications']['hidden'] ) ) : ?>
@@ -68,7 +70,7 @@
         <?php
         /* Admin */
         if ( ( user_can( get_current_user_id(), 'manage_dt' ) )
-        && ( isset( $dt_nav_tabs['admin']['settings']['submenu']['admin']['link'] ) && ! empty( $dt_nav_tabs['admin']['settings']['submenu']['admin']['link'] ) ) ) : ?>
+            && ( isset( $dt_nav_tabs['admin']['settings']['submenu']['admin']['link'] ) && ! empty( $dt_nav_tabs['admin']['settings']['submenu']['admin']['link'] ) ) ) : ?>
             <li><a href="<?php echo esc_url( $dt_nav_tabs['admin']['settings']['submenu']['admin']['link'] ?? '' ); ?>"><?php echo esc_html( $dt_nav_tabs['admin']['settings']['submenu']['admin']['label'] ?? '' ); ?></a></li>
         <?php endif; ?>
 
