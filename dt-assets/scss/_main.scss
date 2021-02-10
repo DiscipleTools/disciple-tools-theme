@@ -126,6 +126,9 @@ NAVIGATION STYLES
         a {
           background-color: $primary-color;
         }
+        li.active a {
+            background: #005a87;
+        }
     }
 
     a {
