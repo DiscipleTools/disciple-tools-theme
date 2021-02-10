@@ -167,10 +167,11 @@ dt_please_log_in();
                         <p style="font-weight:bold"><?php
                         echo sprintf( esc_html__( 'Select all the  %1$s you want to update from the list, and update them below', 'disciple_tools' ), esc_html( $post_type ) );?></p>
                         <div class="grid-x grid-margin-x">
+                            <?php if ( isset( $field_options["assigned_to"] ) ) : ?>
                             <div class="cell small-12 medium-4">
                             <div class="section-subheader">
                                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
-                                <?php esc_html_e( 'Assign To', 'disciple_tools' ) ?>
+                                <?php echo esc_html( $field_options["assigned_to"]["name"] ); ?>
                                 <button class="help-button" data-section="assigned-to-help-text">
                                     <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                 </button>
@@ -190,6 +191,7 @@ dt_please_log_in();
                                     </div>
                                 </div>
                             </div>
+                            <?php endif; ?>
                                 <?php
                                 if ( $post_type == "contacts" ) {?>
                                     <div class="cell small-12 medium-4">
@@ -265,11 +267,13 @@ dt_please_log_in();
                                     </div>
                                 </div>
                             </div>
+                            <?php if ( isset( $field_options["requires_update"] ) ) : ?>
                             <div class="cell small-12 medium-4 center-items">
-                            <span style="margin-right:5px"><?php esc_html_e( 'Request Update', 'disciple_tools' )?>:</span>
+                            <span style="margin-right:5px"><?php echo esc_html( $field_options["requires_update"]["name"] ); ?>:</span>
                                     <input type="checkbox" id="update-needed-bulk" class="dt-switch update-needed" data-bulk_key_requires_update=""/>
                                     <label class="dt-switch" for="update-needed-bulk" style="vertical-align: top;"></label>
                             </div>
+                            <?php endif; ?>
                             <div class="cell small-12 medium-4 center-items">
                             <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?></button>
                             </div>
