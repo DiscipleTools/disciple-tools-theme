@@ -71,7 +71,7 @@ $dt_nav_tabs = dt_default_menu_array();
             <!-- notifications -->
             <?php if ( isset( $dt_nav_tabs['admin']['notifications'] ) && ! empty( $dt_nav_tabs['admin']['notifications'] ) ) : ?>
             <a href="<?php echo esc_url( site_url( '/notifications' ) ); ?>" style="margin-left: 10px">
-                <img title="<?php esc_html( $dt_nav_tabs['admin']['notifications']['label'] ?? '' ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['notifications']['icon'] ?? get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
+                <img title="<?php esc_html( $dt_nav_tabs['admin']['notifications']['label'] ?? __( "Notifications", 'disciple_tools' ) ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['notifications']['icon'] ?? get_template_directory_uri() . "/dt-assets/images/bell.svg" ); ?>">
                 <span class="badge alert notification-count" style="display:none"></span>
             </a>
             <?php endif; ?>
@@ -102,13 +102,17 @@ $dt_nav_tabs = dt_default_menu_array();
                     <li><a href="<?php echo esc_url( $dt_main_tabs['link'] ) ?>"><?php echo esc_html( $dt_main_tabs['label'] ) ?>&nbsp;</a>
                         <?php
                         if ( isset( $dt_main_tabs['submenu'] ) && ! empty( $dt_main_tabs['submenu'] ) ) {
-                            ?><ul><?php
-foreach ( $dt_main_tabs['submenu'] as $dt_nav_submenu ) {
-    ?>
-                                <li><a href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>"><?php echo esc_html( $dt_nav_submenu['label'] ) ?></a></li>
-                                <?php
-}
-?></ul><?php
+                            ?>
+                            <ul>
+                            <?php
+                            foreach ( $dt_main_tabs['submenu'] as $dt_nav_submenu ) {
+                                ?>
+                                    <li><a href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>"><?php echo esc_html( $dt_nav_submenu['label'] ) ?></a></li>
+                                    <?php
+                            }
+                            ?>
+                            </ul>
+                            <?php
                         }
                         ?></li>
                 <?php endforeach; ?>
